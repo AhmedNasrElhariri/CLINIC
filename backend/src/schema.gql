@@ -1,0 +1,125 @@
+scalar Date
+scalar VitalData
+scalar JSON
+
+enum PatientMembershipType {
+  Primary
+  Secondary
+}
+
+enum AppointmentType {
+  Examination
+  Followup
+}
+
+enum Sex {
+  Female
+  Male
+}
+
+########################### Query ##################################
+
+type Query {
+  hello(name: String): String!
+  patients: [Patient!]
+  appointments(input: AppointmentQueryInput): [Appointment!]
+  appointment(id: ID!): Appointment
+  appointmentHistory(id: ID!): [Appointment!]
+  patient(id: ID!): Patient
+}
+
+########################### Mutation ##################################
+
+type Mutation {
+  createPatient(input: PatientInput!): Patient!
+  createAppointment(input: AppointmentInput!): Appointment!
+  updateAppointment(id: ID!, appointment: UpdateAppointmentInput!): Appointment!
+  archiveAppointment(id: ID!): Appointment!
+}
+
+########################### Patient ##################################
+
+type Patient {
+  id: ID!
+  type: PatientMembershipType!
+  name: String! 
+  phoneNo: String!
+  age: Int!
+  sex: Sex!
+  appointments: [Appointment!]
+}
+
+input PatientInput {
+  name: String!
+  phoneNo: String!
+  age: Int!
+  sex: Sex!
+  type: PatientMembershipType!
+}
+
+########################### Appointment ##################################
+
+type Appointment {
+  id: ID!
+  date: Date
+  type: AppointmentType!
+  archived: Boolean!
+  labs: JSON
+  complain: String
+  signs: String
+  diagnosis: String
+  treatment: String
+  recommendations: String
+  patient: Patient!
+  vitalData: VitalData
+}
+
+input AppointmentInput {
+  patient: ID!
+  date: Date!
+  type: AppointmentType!
+  vitalData: VitalDataInput
+
+  labs: JSON
+  complain: String
+  signs: String
+  diagnosis: String
+  treatment: String
+  recommendations: String
+}
+
+input UpdateAppointmentInput {
+  vitalData: VitalDataInput
+  labs: JSON
+  complain: String
+  signs: String
+  diagnosis: String
+  treatment: String
+  recommendations: String
+}
+
+input AppointmentQueryInput {
+  ids: [ID]
+  patients: [ID]
+  fromDate: Date
+  toDate: Date
+  type: AppointmentType
+}
+
+########################### Vital Data ##################################
+
+# type VitalData {
+#   weight: Float
+#   height: Float
+#   pulse: Float
+#   temp: Float
+#   glucoseLevel: Float
+# }
+
+input VitalDataInput {
+  weight: Float
+  height: Float
+  pulse: Float
+  temp: Float
+  glucoseLevel: Float
+}

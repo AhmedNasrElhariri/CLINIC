@@ -1,0 +1,12 @@
+# IF THERE'S A GIT CONFLICT IN THIS FILE, DON'T SOLVE IT MANUALLY!
+# INSTEAD EXECUTE `prisma migrate fix`
+# Prisma Migrate lockfile v1
+# Read more about conflict resolution here: TODO
+
+20200425000711-init
+20200425003541-make-labs-optional
+20200425123031-set-appointment-archived-default-value
+20200425123820
+20200425123933-set-default-value
+20200425125603-alter-id-type-to-uuid
+20200425125700-alter-uuid-to-string
