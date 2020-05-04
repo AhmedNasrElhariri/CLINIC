@@ -14,8 +14,9 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { LIST_APPOINTMENTS } from '@/apollo-client/queries';
 import { getStartOfDay, format } from '@/services/date.service';
+import { NAVIGATIONS } from '@/utils/constants';
 
-export default function TodayAppointments() {
+export default function TodayAppointments({ navigation }) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: {
       input: {
@@ -31,7 +32,13 @@ export default function TodayAppointments() {
       <Content>
         <List>
           {appointments.map((appointment, idx) => (
-            <ListItem key={idx}>
+            <ListItem
+              key={idx}
+              onPress={() =>
+                navigation.navigate(NAVIGATIONS.APPOINTMENT, {
+                  appointmentId: appointment.id,
+                })
+              }>
               <Body>
                 <Text>{appointment.patient.name}</Text>
                 <Text note>{appointment.type}</Text>

@@ -4,7 +4,6 @@ import moment from 'moment';
 import { prisma } from '@';
 
 const appointments = (_, { input }) => {
-  // let dates = getStartAndEndDateOfDay(input);
   return prisma.appointment.findMany({
     where: {
       date: {

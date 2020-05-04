@@ -3,6 +3,7 @@ import { Container, Content, Button, Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import { NAVIGATIONS } from '@/utils/constants';
 
 export const HELLO = gql`
   query {
@@ -22,14 +23,16 @@ export default ({ navigation }) => {
               full
               primary
               style={{ height: 130 }}
-              onPress={() => navigation.navigate('NewAppointment')}>
+              onPress={() => navigation.navigate(NAVIGATIONS.NEW_APPOINTMENT)}>
               <Text>New Appointment</Text>
             </Button>
             <Button
               full
               danger
               style={{ height: 130 }}
-              onPress={() => navigation.navigate('TodayAppointments')}>
+              onPress={() =>
+                navigation.navigate(NAVIGATIONS.TODAY_APPOINTMENTS)
+              }>
               <Text>Today Appointments</Text>
             </Button>
           </Col>
@@ -38,14 +41,14 @@ export default ({ navigation }) => {
               full
               light
               style={{ height: 130 }}
-              onPress={() => navigation.navigate('NewPatient')}>
+              onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}>
               <Text>New Patient</Text>
             </Button>
             <Button
               full
               success
               style={{ height: 130 }}
-              onPress={() => navigation.navigate('Calendar')}>
+              onPress={() => navigation.navigate(NAVIGATIONS.CALENDAR)}>
               <Text>Calendar</Text>
             </Button>
           </Col>
