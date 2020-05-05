@@ -3,6 +3,7 @@ export const MEMBERSHIP_TYPES = ['Primary', 'Secondary'];
 export const SEX = ['Male', 'Female'];
 
 export const NAVIGATIONS = {
+  LOGIN: 'Login',
   NEW_APPOINTMENT: 'NewAppointment',
   TODAY_APPOINTMENTS: 'TodayAppointments',
   APPOINTMENT: 'Appointments',

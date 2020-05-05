@@ -1,0 +1,15 @@
+{
+  "extends": ["prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2017,
+    "allowImportExportEverywhere": false,
+    "ecmaFeatures": {
+      "globalReturn": false
+    }
+  }
+}

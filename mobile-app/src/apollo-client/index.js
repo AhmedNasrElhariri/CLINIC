@@ -5,7 +5,10 @@ import { onError } from 'apollo-link-error';
 
 const defaultOptions = {
   query: {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
+  },
+  watchQuery: {
+    fetchPolicy: 'cache-and-network',
   },
 };
 

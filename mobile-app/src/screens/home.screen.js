@@ -35,6 +35,13 @@ export default ({ navigation }) => {
               }>
               <Text>Today Appointments</Text>
             </Button>
+            <Button
+              full
+              dark
+              style={{ height: 130 }}
+              onPress={() => navigation.navigate(NAVIGATIONS.LOGIN)}>
+              <Text>Login</Text>
+            </Button>
           </Col>
           <Col>
             <Button

@@ -27,7 +27,6 @@ export default function TodayAppointments({ navigation }) {
 
   const appointments = R.propOr([], 'appointments')(data);
 
-  console.log(appointments)
   return (
     <Container>
       <Content>
@@ -36,7 +35,7 @@ export default function TodayAppointments({ navigation }) {
             <ListItem
               key={idx}
               onPress={() =>
-                navigation.navigate(NAVIGATIONS.APPOINTMENT, {
+                navigation.navigate(NAVIGATIONS.LOGIN, {
                   appointmentId: appointment.id,
                 })
               }>
