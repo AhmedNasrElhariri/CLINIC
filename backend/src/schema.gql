@@ -35,14 +35,36 @@ type Mutation {
   createAppointment(input: AppointmentInput!): Appointment!
   updateAppointment(id: ID!, appointment: UpdateAppointmentInput!): Appointment!
   archiveAppointment(id: ID!): Appointment!
+  login(email: String!, password:String!): AuthPayload
 }
+
+########################### Auth ##################################
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+input UserLoginInput {
+  email: String!
+  password: String!
+}
+
+########################### User ##################################
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+}
+
 
 ########################### Patient ##################################
 
 type Patient {
   id: ID!
   type: PatientMembershipType!
-  name: String! 
+  name: String!
   phoneNo: String!
   age: Int!
   sex: Sex!

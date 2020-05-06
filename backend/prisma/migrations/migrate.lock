@@ -10,3 +10,5 @@
 20200425123933-set-default-value
 20200425125603-alter-id-type-to-uuid
 20200425125700-alter-uuid-to-string
+20200506011126-add-email-and-password
+20200506014822-set-email-unique

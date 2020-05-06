@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -32,7 +32,7 @@ enum PatientMembershipType {
 model User {
   id                 String  @id @default(uuid())
   name               String
-  email              String  @unique
+  email              String
   password           String
   specialty          Specialty
 }

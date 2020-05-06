@@ -1,11 +1,10 @@
 import { GraphQLServer } from 'graphql-yoga';
-import express from 'express';
+import cookieParser from 'cookie-parser';
 
 import { PrismaClient } from '@prisma/client';
 import typeDefs from './schema.gql';
 import resolvers from './resolvers';
-import path from 'path';
-import authenticate from '@/middlewares/authenticate';
+import { verify } from '@/services/auth.service';
 
 export const prisma = new PrismaClient();
 
@@ -17,10 +16,18 @@ const options = {
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
-  context: {
-    prisma,
-  },
-  // middlewares: [authenticate],
+  context: ({ request, response }) => ({ request, response }),
+});
+
+const app = server.express;
+
+app.use(cookieParser());
+
+app.use((req, _, next) => {
+  const token = req.cookies['access-token'];
+  const data = verify(token);
+  req.userId = data.userId;
+  next();
 });
 
 // server.express.use(express.static(path.join(__dirname, 'build')));

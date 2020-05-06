@@ -1,9 +1,10 @@
 {
-  "extends": ["prettier"],
-  "plugins": ["prettier"],
-  "rules": {
-    "prettier/prettier": ["error"]
-  },
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  // "extends": ["prettier"],
+  // "plugins": ["prettier"],
+  // "rules": {
+  //   "prettier/prettier": ["error"]
+  // },
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2017,
