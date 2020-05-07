@@ -1,31 +1,15 @@
-import * as R from 'ramda';
-import moment from 'moment';
-
 import { prisma } from '@';
+import R from 'ramda';
 
 const appointments = (_, { input }) => {
   return prisma.appointment.findMany({
     where: {
       date: {
-        gte: input.fromDate,
-        lte: input.toDate,
+        gte: R.prop('fromDate')(input),
+        lte: R.prop('toDate')(input),
       },
     },
   });
-};
-
-const getStartAndEndDateOfDay = input => {
-  const date = R.path(['date'])(input);
-  return date
-    ? [
-        moment(input.date)
-          .startOf('day')
-          .toDate(),
-        moment(input.date)
-          .endOf('day')
-          .toDate(),
-      ]
-    : [];
 };
 
 export default appointments;

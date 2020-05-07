@@ -5,7 +5,7 @@ import moment from 'moment';
 import * as R from 'ramda';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
-import { getAppointmentTime } from 'utils/appointments';
+import { format } from 'services/date.service';
 
 function renderCell(list) {
   const displayList = list.filter((_, index) => index < 2);
@@ -25,7 +25,8 @@ function renderCell(list) {
                 </p>
               ))}
             </Popover>
-          }>
+          }
+        >
           <Button appearance="link">{moreCount} more</Button>
         </Whisper>
       </li>
@@ -60,7 +61,7 @@ function AppointmentCalendar() {
             R.is(Array),
             R.addIndex(R.map)((appointment, idx) => ({
               ...appointment,
-              time: getAppointmentTime(appointment, idx),
+              time: format(appointment.date, 'h:mm a'),
             })),
             R.curry(R.always([]))
           )

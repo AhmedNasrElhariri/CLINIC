@@ -1,10 +1,11 @@
 import { GraphQLServer } from 'graphql-yoga';
-import cookieParser from 'cookie-parser';
+import { AuthenticationError } from 'apollo-server-core';
 
 import { PrismaClient } from '@prisma/client';
 import typeDefs from './schema.gql';
 import resolvers from './resolvers';
-import { verify } from '@/services/auth.service';
+import { getUserPayloads } from '@/services/auth.service';
+import { rule, shield, allow } from 'graphql-shield';
 
 export const prisma = new PrismaClient();
 
@@ -13,21 +14,37 @@ const options = {
   playground: '/playground',
 };
 
+const isAuthenticated = rule({ cache: 'contextual' })(async (_, __, ctx) => {
+  const { request } = ctx;
+  const { userId, organizationId } = getUserPayloads(request);
+  ctx.userId = userId;
+  ctx.organizationId = organizationId;
+  return true;
+});
+
+const permissions = shield(
+  {
+    Query: {
+      '*': isAuthenticated,
+      hello: allow,
+    },
+    Mutation: {
+      '*': isAuthenticated,
+      login: allow,
+      verify: allow,
+    },
+  },
+  {
+    fallbackError: new AuthenticationError('Not Authenticated'),
+    debug: true,
+  }
+);
+
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
-  context: ({ request, response }) => ({ request, response }),
-});
-
-const app = server.express;
-
-app.use(cookieParser());
-
-app.use((req, _, next) => {
-  const token = req.cookies['access-token'];
-  const data = verify(token);
-  req.userId = data.userId;
-  next();
+  middlewares: [permissions],
+  context: ({ request }) => ({ request }),
 });
 
 // server.express.use(express.static(path.join(__dirname, 'build')));

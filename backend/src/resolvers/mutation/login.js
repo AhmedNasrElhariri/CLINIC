@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '@';
 import { APP_SECRET } from '../../utils/constants';
 
-const login = async (_, { email, password }, { response }) => {
+const login = async (_, { email, password }) => {
   const user = await prisma.user.findOne({ where: { email } });
   if (!user) {
     throw new Error('No such user found');
@@ -14,9 +14,10 @@ const login = async (_, { email, password }, { response }) => {
     throw new Error('Invalid password');
   }
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
-
-  response.cookie('access-token', token);
+  const token = jwt.sign(
+    { userId: user.id, organizationId: user.organizationId },
+    APP_SECRET
+  );
 
   return {
     token,

@@ -31,7 +31,7 @@ const createAppointment = async (_, { input: { patient, ...appointment } }) => {
       date,
       doctor: {
         connect: {
-          id: '47202e8c-86e3-11ea-bc55-0242ac130003',
+          id: '6625951a-3a69-46ee-ab5f-d0f523d463de',
         },
       },
     },

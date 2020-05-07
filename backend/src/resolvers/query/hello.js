@@ -1,3 +1,5 @@
-const hello = (_, { name }) => `Clinic R`;
+const hello = (_, __, { userId }) => {
+  return 'Hello To Clinic R';
+};
 
 export default hello;

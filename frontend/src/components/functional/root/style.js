@@ -35,3 +35,12 @@ export const ContentContainerStyled = styled.div`
   padding: 1rem 3rem;
   width: 100%;
 `;
+
+export const LoginContainerStyled = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 5rem;
+`;

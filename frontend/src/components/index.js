@@ -1,8 +1,9 @@
 export { default as Root } from './functional/root';
-export { default as Router } from './functional/router';
+export { default as AppRouter } from './functional/router';
 
 /******************       users    *********************************/
 export { default as Login } from './user/login';
+export { default as Logout } from './user/logout';
 
 /******************       Appointment    *********************************/
 export { default as NewAppointment } from './appointments/new-appointment';

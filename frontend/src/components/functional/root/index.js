@@ -1,34 +1,47 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
-import { Router } from 'components';
-import { GlobalStyle, ContainerStyled, ContentContainerStyled } from './style';
+import { AppRouter, Login } from 'components';
+import {
+  GlobalStyle,
+  ContainerStyled,
+  ContentContainerStyled,
+  LoginContainerStyled,
+} from './style';
 import Sidebar from 'components/layout/sidebar';
+import useAuth from 'hooks/auth';
 
-const HELLO = gql`
-  {
-    hello
+function Root() {
+  const { isVerified, isAuthenticated } = useAuth();
+
+  if (!isVerified) {
+    return <div>Loading ...</div>;
   }
-`;
 
-function App() {
-  const { loading, error, data } = useQuery(HELLO);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle></GlobalStyle>
       <ContainerStyled>
-        <Sidebar></Sidebar>
-        <ContentContainerStyled>
-          <h1 style={{marginBottom:'50px'}}>{data.hello}</h1>
-          <Router></Router>
-        </ContentContainerStyled>
+        {isAuthenticated ? (
+          <>
+            <Sidebar></Sidebar>
+            <ContentContainerStyled>
+              <AppRouter></AppRouter>
+            </ContentContainerStyled>
+          </>
+        ) : (
+          <>
+            <Route path="/login">
+              <LoginContainerStyled>
+                <Login />
+              </LoginContainerStyled>
+            </Route>
+            <Redirect to="/login"></Redirect>
+          </>
+        )}
       </ContainerStyled>
-    </>
+    </BrowserRouter>
   );
 }
 
-export default App;
+export default Root;

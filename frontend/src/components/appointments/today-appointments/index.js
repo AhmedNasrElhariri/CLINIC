@@ -6,8 +6,8 @@ import { List, FlexboxGrid, Button, Icon } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
-import { getAppointmentTime } from 'utils/appointments';
 import { AppointmentPrintout, Div } from 'components';
+import { getStartOfDay, format } from 'services/date.service';
 
 function AppointmentCalendar() {
   const history = useHistory();
@@ -16,7 +16,7 @@ function AppointmentCalendar() {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: {
       input: {
-        date: new Date().toDateString(),
+        fromDate: getStartOfDay(new Date()),
       },
     },
   });
@@ -38,7 +38,7 @@ function AppointmentCalendar() {
         >
           <FlexboxGrid>
             <FlexboxGrid.Item colspan={8}>
-              {getAppointmentTime(appointment, idx)}
+              {format(appointment.date, 'h:mm a')}
             </FlexboxGrid.Item>
 
             <FlexboxGrid.Item colspan={8}>

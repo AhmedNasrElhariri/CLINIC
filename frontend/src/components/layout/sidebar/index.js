@@ -2,32 +2,42 @@ import React from 'react';
 
 import { Dropdown, Nav, Sidenav } from 'rsuite';
 import { ContainerStyled } from './style';
+import { Link, useLocation } from 'react-router-dom';
+
+const LinkWrapper = React.forwardRef(({ children, ...rest }, ref) => (
+  <Dropdown.Item componentClass={Link} {...rest}>
+    {children}
+  </Dropdown.Item>
+));
+
+const items = [
+  { to: '/appointments/new', name: 'New Appointment' },
+  { to: '/appointments/today', name: 'Today Appointments' },
+  { to: '/calendar', name: 'Calendar' },
+  { to: '/appointments', name: 'Appointments' },
+  { to: '/patients', name: 'Patients' },
+  { to: '/reports', name: 'Reports' },
+];
 
 export default function Sidebar() {
+  const { pathname } = useLocation();
+
   return (
-    <ContainerStyled defaultOpenKeys={['3', '4']}>
+    <ContainerStyled defaultOpenKeys={['1']}>
       <Sidenav.Body>
         <Nav>
-          <Dropdown eventKey="3" title="Main">
+          <Dropdown eventKey="1" title="Main">
             <Dropdown.Item divider />
-            <Dropdown.Item href="/appointments/new" eventKey="3-1">
-              New Appointment
-            </Dropdown.Item>
-            <Dropdown.Item href="/appointments/today" eventKey="3-2">
-              Today Appointments
-            </Dropdown.Item>
-            <Dropdown.Item href="/calendar" eventKey="3-3">
-              Calendar
-            </Dropdown.Item>
-            <Dropdown.Item href="/appointments" eventKey="3-4">
-              Appointments
-            </Dropdown.Item>
-            <Dropdown.Item href="/patients" eventKey="3-5">
-              Patients
-            </Dropdown.Item>
-            <Dropdown.Item href="/reports" eventKey="3-6">
-              Reports
-            </Dropdown.Item>
+            {items.map(({ to, name }, idx) => (
+              <LinkWrapper
+                key={idx}
+                to={to}
+                eventKey="1-4"
+                active={pathname === to}
+              >
+                {name}
+              </LinkWrapper>
+            ))}
           </Dropdown>
         </Nav>
       </Sidenav.Body>
