@@ -28,3 +28,6 @@ export { default as Reports } from './reports/reports';
 
 /******************       Widgets    *********************************/
 export { H3, H4, H5, Div } from './widgets';
+
+/******************       layout    *********************************/
+export { default as Views } from './layout/edit-views';

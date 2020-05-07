@@ -17,6 +17,7 @@ const items = [
   { to: '/appointments', name: 'Appointments' },
   { to: '/patients', name: 'Patients' },
   { to: '/reports', name: 'Reports' },
+  { to: '/views', name: 'Views' },
 ];
 
 export default function Sidebar() {

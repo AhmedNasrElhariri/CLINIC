@@ -10,6 +10,7 @@ import {
   Patients,
   Patient,
   Reports,
+  Views,
 } from 'components';
 
 function AppRouter() {
@@ -42,7 +43,9 @@ function AppRouter() {
       <Route path="/reports">
         <Reports />
       </Route>
-      {/* <Redirect to="/appointments/new" /> */}
+      <Route path="/views">
+        <Views />
+      </Route>
     </Switch>
   );
 }
