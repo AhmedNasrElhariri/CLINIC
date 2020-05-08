@@ -28,6 +28,8 @@ export { default as Reports } from './reports/reports';
 
 /******************       Widgets    *********************************/
 export { H3, H4, H5, Div } from './widgets';
+export { default as InputField } from './widgets/input-field';
+export { default as CheckField } from './widgets/check-field';
 
 /******************       layout    *********************************/
 export { default as Views } from './layout/edit-views';

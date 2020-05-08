@@ -5,6 +5,7 @@ const initialState = {
   isAuthenticated: false,
   isVerified: false,
   user: null,
+  lanes: [],
 };
 
 const { useGlobalState } = createGlobalState(initialState);
