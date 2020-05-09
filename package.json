@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "ramda-adjunct": "^2.26.0"
+  }
+}

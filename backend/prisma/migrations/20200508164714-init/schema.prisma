@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -80,10 +80,10 @@ model Appointment {
 }
 
 model FieldGroup {
-  id     String  @default(uuid()) @id
+  id     String   @default(uuid()) @id
   name   String
-  order  Int     @unique
   fields Field[]
+  order  Int      @unique
 }
 
 model Field {
@@ -92,7 +92,7 @@ model Field {
   order        Int
   type         FieldType
   required     Boolean
-  fieldGroup   FieldGroup? @relation(fields: [fieldGroupId], references: [id])
+  FieldGroup   FieldGroup? @relation(fields: [fieldGroupId], references: [id])
   fieldGroupId String?
 
   @@unique([order, fieldGroupId], name: "order_fieldGroupId_unique_constraint")

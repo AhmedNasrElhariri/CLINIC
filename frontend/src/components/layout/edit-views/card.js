@@ -1,12 +1,20 @@
-import React from 'react';
-import { Panel, Form, Input, SelectPicker, RadioGroup, Radio } from 'rsuite';
+import React, { useCallback } from 'react';
+import {
+  Panel,
+  Form,
+  Input,
+  SelectPicker,
+  RadioGroup,
+  Radio,
+  Icon,
+} from 'rsuite';
 import { InputField } from 'components';
 import useGlobalState from 'state';
 
 const fieldTypes = [
-  { label: 'Number', value: 'number' },
-  { label: 'Text', value: 'text' },
-  { label: 'Text Area', value: 'textArea' },
+  { label: 'Number', value: 'Number' },
+  { label: 'Text', value: 'Text' },
+  { label: 'Text Area', value: 'LongText' },
 ];
 
 const Card = ({ laneId, index }) => {
@@ -16,13 +24,26 @@ const Card = ({ laneId, index }) => {
   const cards = lane.cards;
   const formValue = cards[index];
 
-  const update = data => {
+  const update = useCallback(
+    data => {
+      const newLanes = lanes.map(l => ({
+        ...l,
+        cards: l.cards.map(c => (c.id === data.id ? data : c)),
+      }));
+      setLanes(newLanes);
+    },
+    [lanes, setLanes]
+  );
+
+  const remove = useCallback(() => {
     const newLanes = lanes.map(l => ({
       ...l,
-      cards: l.cards.map(c => (c.id === data.id ? data : c)),
+      cards: l.cards.filter(c => c.id !== formValue.id),
     }));
+    console.log(newLanes);
     setLanes(newLanes);
-  };
+  }, [formValue, lanes, setLanes]);
+
   return (
     <Panel
       bordered
@@ -56,6 +77,16 @@ const Card = ({ laneId, index }) => {
           <Radio value={false}>No</Radio>
         </InputField>
       </Form>
+      <Icon
+        icon="trash"
+        onClick={remove}
+        style={{
+          color: '#f44336',
+          float: 'right',
+          position: 'relative',
+          top: -10,
+        }}
+      />
     </Panel>
   );
 };

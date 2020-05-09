@@ -110,7 +110,13 @@ function NewPatient({ onCreate }) {
         <Button
           appearance="primary"
           block
-          onClick={() => createPatient({ variables: { input: formValue } })}
+          onClick={() =>
+            createPatient({
+              variables: {
+                input: { ...formValue, age: Number(formValue.age) },
+              },
+            })
+          }
         >
           Create
         </Button>

@@ -22,6 +22,7 @@ const isAuthenticated = rule({ cache: 'contextual' })(async (_, __, ctx) => {
   return true;
 });
 
+
 const permissions = shield(
   {
     Query: {

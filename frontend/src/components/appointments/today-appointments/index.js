@@ -19,6 +19,7 @@ function AppointmentCalendar() {
         fromDate: getStartOfDay(new Date()),
       },
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const appointments = R.propOr([], 'appointments')(data);

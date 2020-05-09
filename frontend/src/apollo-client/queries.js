@@ -145,3 +145,26 @@ export const GET_PATIENT = gql`
     }
   }
 `;
+
+export const LIST_VIEW = gql`
+  query listView {
+    listView {
+      id
+      name
+      order
+      fields {
+        id
+        name
+        order
+        type
+        required
+      }
+    }
+  }
+`;
+
+export const EDIT_VIEW = gql`
+  mutation editView($groups: [GroupInput!]) {
+    editView(groups: $groups)
+  }
+`;

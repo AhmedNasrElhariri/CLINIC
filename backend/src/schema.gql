@@ -17,6 +17,12 @@ enum Sex {
   Male
 }
 
+enum FieldType {
+  Text
+  Number
+  LongText
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -26,6 +32,7 @@ type Query {
   appointment(id: ID!): Appointment
   appointmentHistory(id: ID!): [Appointment!]
   patient(id: ID!): Patient
+  listView: [GroupField!]
 }
 
 ########################### Mutation ##################################
@@ -35,7 +42,8 @@ type Mutation {
   createAppointment(input: AppointmentInput!): Appointment!
   updateAppointment(id: ID!, appointment: UpdateAppointmentInput!): Appointment!
   archiveAppointment(id: ID!): Appointment!
-  login(email: String!, password:String!): AuthPayload
+  editView(groups: [GroupInput!]): Boolean
+  login(email: String!, password: String!): AuthPayload
   verify(token: String): User
 }
 
@@ -58,7 +66,6 @@ type User {
   name: String!
   email: String!
 }
-
 
 ########################### Patient ##################################
 
@@ -131,18 +138,43 @@ input AppointmentQueryInput {
 
 ########################### Vital Data ##################################
 
-# type VitalData {
-#   weight: Float
-#   height: Float
-#   pulse: Float
-#   temp: Float
-#   glucoseLevel: Float
-# }
-
 input VitalDataInput {
   weight: Float
   height: Float
   pulse: Float
   temp: Float
   glucoseLevel: Float
+}
+
+########################### FieldGroups ##################################
+
+
+type GroupField  {
+  id:     String!  
+  name:   String!
+  order:  Int!    
+  fields: [Field!]
+}
+
+type Field {
+  id:           String!      
+  name:         String!
+  order:        Int!
+  type:         FieldType!
+  required:     Boolean!
+}
+
+input GroupInput {
+  id: ID
+  name: String!
+  order: Int!
+  fields: [FieldInput!]
+}
+
+input FieldInput {
+  id: ID
+  name: String!
+  order: Int!
+  type: FieldType!
+  required: Boolean!
 }
