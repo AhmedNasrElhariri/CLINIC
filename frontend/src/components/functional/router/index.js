@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import {
   NewPatient,
   NewAppointment,
@@ -45,6 +45,9 @@ function AppRouter() {
       </Route>
       <Route path="/views">
         <Views />
+      </Route>
+      <Route path="/login">
+        <Redirect to="/" />
       </Route>
     </Switch>
   );

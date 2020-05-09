@@ -19,26 +19,33 @@ const items = [
   { to: '/reports', name: 'Reports' },
   { to: '/views', name: 'Views' },
 ];
+const panelStyles = {
+  padding: '15px 20px',
+  color: '#aaa',
+};
 
-export default function Sidebar() {
+export default function Sidebar({ onLogout }) {
   const { pathname } = useLocation();
 
   return (
-    <ContainerStyled defaultOpenKeys={['1']}>
+    <ContainerStyled defaultOpenKeys={['1', '2']}>
       <Sidenav.Body>
         <Nav>
-          <Dropdown eventKey="1" title="Main">
+          <Dropdown eventKey="1" title="Advanced">
             <Dropdown.Item divider />
+            <Dropdown.Item panel style={panelStyles}>
+              Main
+            </Dropdown.Item>
             {items.map(({ to, name }, idx) => (
-              <LinkWrapper
-                key={idx}
-                to={to}
-                eventKey="1-4"
-                active={pathname === to}
-              >
+              <LinkWrapper key={idx} to={to} active={pathname === to}>
                 {name}
               </LinkWrapper>
             ))}
+            <Dropdown.Item divider />
+            <Dropdown.Item panel style={panelStyles}>
+              User
+            </Dropdown.Item>
+            <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
           </Dropdown>
         </Nav>
       </Sidenav.Body>

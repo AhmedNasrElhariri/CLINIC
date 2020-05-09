@@ -15,6 +15,7 @@ import PatientInfo from './patient-info';
 import { H5, Div, PatientProgress, PatientHistory } from 'components';
 import AppointmentInput from './appointment-input';
 import navs from './navs.metadata';
+import useGlobalState from 'state';
 
 const tabs = ['Home', 'History', 'Progress'];
 
@@ -28,6 +29,7 @@ const initialValue = navs.reduce(
 
 function Appointment() {
   const [formValue, setFormValue] = useState(initialValue);
+  const [groups] = useGlobalState('viewGroups');
   const [disabled, setDisabled] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
   let { appointmentId } = useParams();
@@ -119,6 +121,7 @@ function Appointment() {
                 disabled={disabled}
                 formValue={formValue}
                 onChange={setFormValue}
+                groups={groups}
               />
             )}
             {showComp('1') && <PatientHistory history={appointmentHistory} />}

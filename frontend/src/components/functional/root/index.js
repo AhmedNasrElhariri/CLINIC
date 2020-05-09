@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { LIST_VIEW } from 'apollo-client/queries';
+import { ACCESS_TOKEN } from 'utils/constants';
 import * as R from 'ramda';
 
 import { AppRouter, Login } from 'components';
@@ -18,9 +19,10 @@ import { mapGroupFieldsToLanes } from 'utils/view';
 
 function Root() {
   const [getView, { data }] = useLazyQuery(LIST_VIEW);
-  const { isVerified, isAuthenticated } = useAuth();
+  const { isVerified, isAuthenticated, setAuthenticated } = useAuth();
 
   const [_, setLanes] = useGlobalState('lanes');
+  const [__, setViews] = useGlobalState('viewGroups');
 
   useEffect(() => {
     if (isVerified && isAuthenticated) {
@@ -29,11 +31,31 @@ function Root() {
   }, [data, getView, isAuthenticated, isVerified, setLanes]);
 
   useEffect(() => {
-    const serverData = R.prop('listView')(data);
-    if (serverData) {
-      setLanes(mapGroupFieldsToLanes(serverData));
+    const groupsFields = R.prop('listView')(data);
+    if (groupsFields) {
+      setLanes(mapGroupFieldsToLanes(groupsFields));
+      setViews(groupsFields);
     }
-  }, [data, setLanes]);
+  }, [data, setLanes, setViews]);
+
+  const onLoginSucceeded = useCallback(
+    token => {
+      localStorage.setItem(ACCESS_TOKEN, token);
+      setAuthenticated(true);
+    },
+    [setAuthenticated]
+  );
+
+  const onLoginFailed = useCallback(() => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    setAuthenticated(false);
+  }, [setAuthenticated]);
+
+  const logout = useCallback(() => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    setAuthenticated(false);
+    window.location.reload();
+  }, [setAuthenticated]);
 
   if (!isVerified) {
     return <div>Loading ...</div>;
@@ -45,7 +67,7 @@ function Root() {
       <ContainerStyled>
         {isAuthenticated ? (
           <>
-            <Sidebar></Sidebar>
+            <Sidebar onLogout={logout} />
             <ContentContainerStyled>
               <AppRouter></AppRouter>
             </ContentContainerStyled>
@@ -54,7 +76,10 @@ function Root() {
           <>
             <Route path="/login">
               <LoginContainerStyled>
-                <Login />
+                <Login
+                  onLoginSucceeded={onLoginSucceeded}
+                  onLoginFailed={onLoginFailed}
+                />
               </LoginContainerStyled>
             </Route>
             <Redirect to="/login"></Redirect>

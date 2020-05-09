@@ -10,12 +10,7 @@ import {
 } from 'rsuite';
 import { InputField } from 'components';
 import useGlobalState from 'state';
-
-const fieldTypes = [
-  { label: 'Number', value: 'Number' },
-  { label: 'Text', value: 'Text' },
-  { label: 'Text Area', value: 'LongText' },
-];
+import { FIELD_TYPES } from 'utils/constants';
 
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState('lanes');
@@ -65,7 +60,7 @@ const Card = ({ laneId, index }) => {
           cleanable={false}
           searchable={false}
           placeholder="Select type"
-          data={fieldTypes}
+          data={FIELD_TYPES}
         />
         <InputField
           name="required"

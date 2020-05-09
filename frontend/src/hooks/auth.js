@@ -30,5 +30,6 @@ export default () => {
     isAuthenticated,
     isVerified,
     user,
+    setAuthenticated,
   };
 };

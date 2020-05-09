@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Button } from 'rsuite';
+import { Button, Alert } from 'rsuite';
 import { v4 as uuidv4 } from 'uuid';
 import Board from 'react-trello';
 import { useMutation } from '@apollo/react-hooks';
@@ -8,7 +8,6 @@ import { EDIT_VIEW } from 'apollo-client/queries';
 import Card from './card';
 import useGlobalState from 'state';
 import { mapLanesToGroupFields } from 'utils/view';
-
 
 const addCard = ({ onAdd }) => {
   onAdd({
@@ -49,7 +48,14 @@ const components = {
 };
 
 export default function ViewCard() {
-  const [editView] = useMutation(EDIT_VIEW);
+  const [editView] = useMutation(EDIT_VIEW, {
+    onCompleted() {
+      Alert.success('Group Fields Updated Successfully');
+    },
+    onError() {
+      Alert.error('Failed To Save');
+    },
+  });
   const [lanes, setLanes] = useGlobalState('lanes');
 
   const onChange = useCallback(({ lanes }) => setLanes(lanes), [setLanes]);
@@ -65,6 +71,7 @@ export default function ViewCard() {
     <>
       <Button onClick={onClick}>Save</Button>
       <Board
+        laneStyle={{ cursor: 'pointer' }}
         data={{ lanes }}
         draggable
         editable

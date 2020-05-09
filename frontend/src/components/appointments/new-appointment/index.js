@@ -32,15 +32,20 @@ const model = Schema.Model({
 const initialValues = {
   type: 'Examination',
   patient: '',
+  date: null,
 };
+
+const canAddPatient = formValue =>
+  formValue.type === 'Examination' ? true : false;
 
 function NewAppointment() {
   const [patientModal, setPatentModal] = useState(false);
-  const [formValue, SetFormValue] = useState(initialValues);
+  const [formValue, setFormValue] = useState(initialValues);
 
   const { data } = useQuery(LIST_PATIENTS);
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: () => {
+      setFormValue(initialValues);
       Alert.success('Reservation Created Successfully');
     },
     onError: () => Alert.error('Invalid Input'),
@@ -66,7 +71,8 @@ function NewAppointment() {
           fluid
           model={model}
           formValue={formValue}
-          onChange={value => SetFormValue(value)}>
+          onChange={value => setFormValue(value)}
+        >
           <FormGroup>
             <ControlLabel>Examination/Followup</ControlLabel>
             <FormControl
@@ -91,7 +97,11 @@ function NewAppointment() {
               valueKey="id"
               data={patients}
             />
-            <Button appearance="link" onClick={showModal}>
+            <Button
+              appearance="link"
+              onClick={showModal}
+              disabled={!canAddPatient(formValue)}
+            >
               New Patient
             </Button>
           </FormGroup>
@@ -111,7 +121,8 @@ function NewAppointment() {
             block
             onClick={() =>
               createAppointment({ variables: { input: formValue } })
-            }>
+            }
+          >
             Create
           </Button>
         </Form>

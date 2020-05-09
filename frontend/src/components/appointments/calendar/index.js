@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { Badge, Button, Calendar, Popover, Whisper } from 'rsuite';
 import { useQuery } from '@apollo/react-hooks';
 import moment from 'moment';
@@ -6,6 +7,12 @@ import * as R from 'ramda';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { format } from 'services/date.service';
+
+const AppointmentTime = ({ appointment }) => (
+  <Link to={`/appointments/${appointment.id}`}>
+    <b>{appointment.time}</b> {appointment.type}
+  </Link>
+);
 
 function renderCell(list) {
   const displayList = list.filter((_, index) => index < 2);
@@ -21,7 +28,7 @@ function renderCell(list) {
             <Popover>
               {list.map((app, index) => (
                 <p key={index}>
-                  <b>{app.time}</b> {app.type}
+                  <AppointmentTime appointment={app} />
                 </p>
               ))}
             </Popover>
@@ -36,7 +43,7 @@ function renderCell(list) {
       <ul className="calendar-todo-list no-list-style">
         {displayList.map((app, index) => (
           <li key={index}>
-            <Badge /> <b>{app.time}</b> {app.type}
+            <Badge /> <AppointmentTime appointment={app} />
           </li>
         ))}
         {moreCount ? moreItem : null}

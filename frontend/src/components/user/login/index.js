@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { useHistory } from 'react-router-dom';
 import {
   Alert,
   Form,
@@ -15,8 +14,6 @@ import {
 
 import { LOGIN } from 'apollo-client/queries';
 import { FormStyled } from './style';
-import { ACCESS_TOKEN } from 'utils/constants';
-import useGlobalState from 'state';
 
 const { StringType } = Schema.Types;
 
@@ -30,19 +27,17 @@ const initialValues = {
   password: '',
 };
 
-function Login() {
-  const [isAuthenticated, setAuthenticated] = useGlobalState('isAuthenticated');
+function Login({ onLoginSucceeded, onLoginFailed }) {
   const [formValue, SetFormValue] = useState(initialValues);
 
   const [login] = useMutation(LOGIN, {
     onCompleted: ({ login: { token } }) => {
       Alert.success('Your Logged Successfully');
-      localStorage.setItem(ACCESS_TOKEN, token);
-      setAuthenticated(true);
+      onLoginSucceeded(token);
     },
     onError: () => {
-      Alert.error('Invalid Input');
-      setAuthenticated(false);
+      Alert.error('Invalid Input2');
+      onLoginFailed();
     },
   });
 

@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Nav, Form, FormControl } from 'rsuite';
 import { Link as ScrollLink, Element } from 'react-scroll';
 
 import { Div } from 'components';
-// import navs from './navs.metadata';
+import navs from './navs.metadata';
 
-import {
-  getFormInitValue,
-  convertGroupFieldsToNavs,
-  getFormInitValues,
-} from 'services/appointment';
-import InputField from './input-field';
-
-const initForm = () => {};
+import { convertGroupFieldsToNavs } from 'services/appointment';
 
 const ScrollNavLink = ({ element, children, ...props }) => (
   <Nav.Item
@@ -28,22 +21,22 @@ const ScrollNavLink = ({ element, children, ...props }) => (
   </Nav.Item>
 );
 
-function AppointmentInput({ disabled, groups }) {
-  const [activeSection, setActiveSection] = useState('');
-  const navs = convertGroupFieldsToNavs(groups);
-  console.log(getFormInitValues(groups));
-  const [formValue, setFormValue] = useState({});
+function AppointmentInput({
+  disabled,
+  formValue,
+  onChange: setFormValue,
+  groups,
+}) {
+  const [activeSection, setActiveSection] = useState(navs[0].to);
 
-  useEffect(() => {
-    setFormValue(getFormInitValues(groups));
-  }, [groups]);
+  console.log(convertGroupFieldsToNavs(groups));
 
   return (
     <>
       <Div display="flex">
         <Div width={150}>
-          <Nav vertical appearance="subtle" >
-            {convertGroupFieldsToNavs(groups).map((v, idx) => (
+          <Nav vertical appearance="tabs">
+            {navs.concat(convertGroupFieldsToNavs(groups)).map((v, idx) => (
               <ScrollNavLink
                 {...v}
                 key={idx}
@@ -63,20 +56,23 @@ function AppointmentInput({ disabled, groups }) {
           height={600}
           overflow="scroll"
         >
-          <Form formValue={formValue} onChange={setFormValue} fluid>
+          <Form onChange={setFormValue} formValue={formValue}>
             {navs.map((v, idx) => (
               <Div
                 as={Element}
                 key={idx}
                 name={v.to}
-                pt={idx === 0 ? 0 : 4}
-                pb={4}
+                pt={idx === 0 ? 0 : 5}
+                pb={5}
               >
                 <Div background="#f7f7fa" p={4} minHeight={400}>
                   <h3>{v.title}</h3>
-                  {v.fields.map(f => (
-                    <InputField key={f.id} {...f} />
-                  ))}
+                  <FormControl
+                    {...v}
+                    disabled={disabled}
+                    accepter={v.element}
+                    style={{ width: '100%' }}
+                  ></FormControl>
                 </Div>
               </Div>
             ))}
