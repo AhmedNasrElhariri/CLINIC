@@ -9,13 +9,31 @@ export const convertGroupFieldsToNavs = groups => {
   }));
 };
 
-export const getFormLabelsAndNames = groups => {
-  const fields = groups.map(group =>
-    group.fields.map(({ id }) => [String(id), ''])
+export const normalizeFieldsOfGroups = (groups, data = []) => {
+  const normalizedFieldsData = normalizeFieldsData(data);
+  const fields = groups.map(group => group.fields);
+  return R.unnest(fields).reduce(
+    (obj, f) => ({ ...obj, [f.id]: normalizedFieldsData[f.id] }),
+    {}
   );
-  return R.unnest(fields);
 };
 
-export const getFormInitValues = groups => {
-  return R.fromPairs(getFormLabelsAndNames(groups));
+export const normalizeFieldsData = data => {
+  return data.reduce((obj, f) => ({ ...obj, [f.field.id]: f }), {});
+};
+
+export const getFormInitValues = (normFields) => {
+  return Object.keys(normFields).reduce((obj, id) => {
+    const fieldData = normFields[id];
+    const value = R.propOr('', 'value')(fieldData);
+    return { ...obj, [id]: value };
+  }, {});
+};
+
+export const mapFormValueToAppointmentData = (normFields, fromValue) => {
+  return Object.keys(normFields).map(id => ({
+    id: normFields[id].id,
+    value: fromValue[id],
+    fieldId: id,
+  }));
 };

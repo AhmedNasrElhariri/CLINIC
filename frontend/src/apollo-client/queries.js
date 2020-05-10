@@ -66,13 +66,13 @@ export const GET_APPOINTMENT = gql`
       id
       type
       date
-      labs
-      complain
-      signs
-      diagnosis
-      treatment
-      recommendations
-      archived
+      data {
+        id
+        value
+        field {
+          id
+        }
+      }
       patient {
         id
         name
@@ -85,8 +85,8 @@ export const GET_APPOINTMENT = gql`
 `;
 
 export const UPDATE_APPOINTMENT = gql`
-  mutation updateAppointment($id: ID!, $appointment: UpdateAppointmentInput!) {
-    updateAppointment(id: $id, appointment: $appointment) {
+  mutation updateAppointment($appointment: UpdateAppointmentInput!) {
+    updateAppointment(appointment: $appointment) {
       id
     }
   }

@@ -12,6 +12,7 @@ import {
   SelectPicker,
   DatePicker,
   Schema,
+  Panel,
 } from 'rsuite';
 
 import { FormStyled } from './style';
@@ -67,65 +68,67 @@ function NewAppointment() {
         </Modal.Body>
       </Modal>
       <FormStyled>
-        <Form
-          fluid
-          model={model}
-          formValue={formValue}
-          onChange={value => setFormValue(value)}
-        >
-          <FormGroup>
-            <ControlLabel>Examination/Followup</ControlLabel>
-            <FormControl
-              name="type"
-              accepter={SelectPicker}
-              defaultValue={0}
-              block
-              cleanable={false}
-              searchable={false}
-              data={appointmentTypes}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <ControlLabel>Patient</ControlLabel>
-            <FormControl
-              block
-              name="patient"
-              accepter={SelectPicker}
-              cleanable={false}
-              labelKey="name"
-              valueKey="id"
-              data={patients}
-            />
-            <Button
-              appearance="link"
-              onClick={showModal}
-              disabled={!canAddPatient(formValue)}
-            >
-              New Patient
-            </Button>
-          </FormGroup>
-
-          <FormGroup>
-            <ControlLabel>Date</ControlLabel>
-            <FormControl
-              block
-              name="date"
-              format="DD-MM-YYYY"
-              accepter={DatePicker}
-            />
-          </FormGroup>
-
-          <Button
-            appearance="primary"
-            block
-            onClick={() =>
-              createAppointment({ variables: { input: formValue } })
-            }
+        <Panel bordered>
+          <Form
+            fluid
+            model={model}
+            formValue={formValue}
+            onChange={value => setFormValue(value)}
           >
-            Create
-          </Button>
-        </Form>
+            <FormGroup>
+              <ControlLabel>Examination/Followup</ControlLabel>
+              <FormControl
+                name="type"
+                accepter={SelectPicker}
+                defaultValue={0}
+                block
+                cleanable={false}
+                searchable={false}
+                data={appointmentTypes}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <ControlLabel>Patient</ControlLabel>
+              <FormControl
+                block
+                name="patient"
+                accepter={SelectPicker}
+                cleanable={false}
+                labelKey="name"
+                valueKey="id"
+                data={patients}
+              />
+              <Button
+                appearance="link"
+                onClick={showModal}
+                disabled={!canAddPatient(formValue)}
+              >
+                New Patient
+              </Button>
+            </FormGroup>
+
+            <FormGroup>
+              <ControlLabel>Date</ControlLabel>
+              <FormControl
+                block
+                name="date"
+                format="DD-MM-YYYY"
+                accepter={DatePicker}
+              />
+            </FormGroup>
+
+            <Button
+              appearance="primary"
+              block
+              onClick={() =>
+                createAppointment({ variables: { input: formValue } })
+              }
+            >
+              Create
+            </Button>
+          </Form>
+        </Panel>
       </FormStyled>
     </>
   );

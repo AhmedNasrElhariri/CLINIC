@@ -31,7 +31,7 @@ export default function Sidebar({ onLogout }) {
     <ContainerStyled defaultOpenKeys={['1', '2']}>
       <Sidenav.Body>
         <Nav>
-          <Dropdown eventKey="1" title="Advanced">
+          <Dropdown eventKey="1" title="Clinic R">
             <Dropdown.Item divider />
             <Dropdown.Item panel style={panelStyles}>
               Main

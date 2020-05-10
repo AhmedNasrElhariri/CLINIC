@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Nav, ButtonToolbar, Button, Icon } from 'rsuite';
+import { Nav, ButtonToolbar, Button, Icon, Alert } from 'rsuite';
 
 import {
   GET_APPOINTMENT,
@@ -13,9 +13,15 @@ import {
 
 import PatientInfo from './patient-info';
 import { H5, Div, PatientProgress, PatientHistory } from 'components';
-import AppointmentInput from './appointment-input';
+import AppointmentData from './appointment-data';
 import navs from './navs.metadata';
 import useGlobalState from 'state';
+
+import {
+  getFormInitValues,
+  normalizeFieldsOfGroups,
+  mapFormValueToAppointmentData,
+} from 'services/appointment';
 
 const tabs = ['Home', 'History', 'Progress'];
 
@@ -28,16 +34,17 @@ const initialValue = navs.reduce(
 );
 
 function Appointment() {
-  const [formValue, setFormValue] = useState(initialValue);
+  const [formValue, setFormValue] = useState({});
   const [groups] = useGlobalState('viewGroups');
   const [disabled, setDisabled] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
   let { appointmentId } = useParams();
 
-  const { data } = useQuery(GET_APPOINTMENT, {
+  const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
       id: appointmentId,
     },
+    fetchPolicy: 'no-cache',
     onCompleted: ({ appointment }) => {
       setFormValue(
         R.pick([
@@ -60,26 +67,51 @@ function Appointment() {
     },
   });
 
-  const [update] = useMutation(UPDATE_APPOINTMENT);
-  const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
-    onCompleted: () => setDisabled(true),
+  const [update] = useMutation(UPDATE_APPOINTMENT, {
+    onCompleted: () => {
+      Alert.success('Appointment has been updates successfully');
+    },
   });
-  const appointment = R.prop('appointment')(data) || {};
+  const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
+    onCompleted: () => {
+      // Alert.success('Appointment has been updates successfully');
+      setDisabled(true);
+    },
+  });
+
+  const appointment = R.prop('appointment')(appointmentRes) || {};
   const patient = R.propOr({}, 'patient')(appointment);
   const appointmentHistory = R.pathOr([], ['appointmentHistory'])(history);
+  const data = useMemo(() => R.propOr([], ['data'])(appointment), [
+    appointment,
+  ]);
+
+  const normalizedFields = useMemo(
+    () => normalizeFieldsOfGroups(groups, data),
+    [data, groups]
+  );
 
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const onUpdate = useCallback(() => {
     update({
-      variables: { appointment: formValue, id: appointmentId },
+      variables: {
+        appointment: {
+          data: mapFormValueToAppointmentData(normalizedFields, formValue),
+          id: appointmentId,
+        },
+      },
     });
-  }, [formValue, update, appointmentId]);
+  }, [update, normalizedFields, formValue, appointmentId]);
 
   const onArchive = useCallback(() => {
     archive({
       variables: { id: appointmentId },
     });
   }, [archive, appointmentId]);
+
+  useEffect(() => {
+    setFormValue(getFormInitValues(normalizedFields));
+  }, [normalizedFields]);
 
   return (
     <>
@@ -117,7 +149,7 @@ function Appointment() {
           </Div>
           <Div py={3}>
             {showComp('0') && (
-              <AppointmentInput
+              <AppointmentData
                 disabled={disabled}
                 formValue={formValue}
                 onChange={setFormValue}

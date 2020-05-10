@@ -1,3 +1,5 @@
+import express from 'express';
+import path from 'path';
 import { GraphQLServer } from 'graphql-yoga';
 import { AuthenticationError } from 'apollo-server-core';
 
@@ -21,7 +23,6 @@ const isAuthenticated = rule({ cache: 'contextual' })(async (_, __, ctx) => {
   ctx.organizationId = organizationId;
   return true;
 });
-
 
 const permissions = shield(
   {
@@ -48,29 +49,19 @@ const server = new GraphQLServer({
   context: ({ request }) => ({ request }),
 });
 
-// server.express.use(express.static(path.join(__dirname, 'build')));
-// server.express.get('*', (req, res, next) => {
-//   // Handle graphql-yoga specific routes
-//   if (
-//     req.url == options.playground ||
-//     req.url == options.subscriptions ||
-//     req.url == options.endpoint
-//   ) {
-//     return next();
-//   }
-//   res.sendFile(path.join(__dirname, 'build/index.html'));
-// });
-// server.express.use(express.static('./build/'));
+const app = server.express;
 
-// server.express.use((req, res, next) => {
-//   const { authorization } = req.headers;
-//   jwt.verify(authorization, 'secret', (err, decodedToken) => {
-//     if (err || !decodedToken) {
-//       res.status(401).send('not authorized');
-//       return;
-//     }
-//     next();
-//   });
-// });
-
+if (process.env.NODE_ENV === 'production') {
+  server.express.use(express.static(path.join(__dirname, 'build')));
+  app.get('*', (req, res, next) => {
+    if (
+      req.url == options.playground ||
+      req.url == options.subscriptions ||
+      req.url == options.endpoint
+    ) {
+      return next();
+    }
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
 server.start(options, () => console.log('Server is running on localhost:4000'));

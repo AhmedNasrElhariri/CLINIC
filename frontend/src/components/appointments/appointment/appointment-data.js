@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Nav, Form, FormControl } from 'rsuite';
 import { Link as ScrollLink, Element } from 'react-scroll';
 
 import { Div } from 'components';
-// import navs from './navs.metadata';
 
 import {
-  getFormInitValue,
   convertGroupFieldsToNavs,
   getFormInitValues,
+  normalizeFieldsOfGroups,
+  mapFormValueToAppointmentData,
 } from 'services/appointment';
 import InputField from './input-field';
-
-const initForm = () => {};
 
 const ScrollNavLink = ({ element, children, ...props }) => (
   <Nav.Item
@@ -28,21 +26,15 @@ const ScrollNavLink = ({ element, children, ...props }) => (
   </Nav.Item>
 );
 
-function AppointmentInput({ disabled, groups }) {
+function AppointmentData({ formValue, groups, onChange }) {
   const [activeSection, setActiveSection] = useState('');
-  const navs = convertGroupFieldsToNavs(groups);
-  console.log(getFormInitValues(groups));
-  const [formValue, setFormValue] = useState({});
-
-  useEffect(() => {
-    setFormValue(getFormInitValues(groups));
-  }, [groups]);
+  const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
 
   return (
     <>
       <Div display="flex">
         <Div width={150}>
-          <Nav vertical appearance="subtle" >
+          <Nav vertical appearance="subtle">
             {convertGroupFieldsToNavs(groups).map((v, idx) => (
               <ScrollNavLink
                 {...v}
@@ -63,28 +55,30 @@ function AppointmentInput({ disabled, groups }) {
           height={600}
           overflow="scroll"
         >
-          <Form formValue={formValue} onChange={setFormValue} fluid>
-            {navs.map((v, idx) => (
-              <Div
-                as={Element}
-                key={idx}
-                name={v.to}
-                pt={idx === 0 ? 0 : 4}
-                pb={4}
-              >
-                <Div background="#f7f7fa" p={4} minHeight={400}>
-                  <h3>{v.title}</h3>
-                  {v.fields.map(f => (
-                    <InputField key={f.id} {...f} />
-                  ))}
+          {Object.keys(formValue).length && (
+            <Form formValue={formValue} onChange={onChange} fluid>
+              {navs.map((v, idx) => (
+                <Div
+                  as={Element}
+                  key={idx}
+                  name={v.to}
+                  pt={idx === 0 ? 0 : 4}
+                  pb={4}
+                >
+                  <Div background="#f7f7fa" p={4} minHeight={400}>
+                    <h3>{v.title}</h3>
+                    {v.fields.map(f => (
+                      <InputField key={f.id} {...f} />
+                    ))}
+                  </Div>
                 </Div>
-              </Div>
-            ))}
-          </Form>
+              ))}
+            </Form>
+          )}
         </Div>
       </Div>
     </>
   );
 }
 
-export default AppointmentInput;
+export default AppointmentData;

@@ -36,7 +36,7 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
       onLoginSucceeded(token);
     },
     onError: () => {
-      Alert.error('Invalid Input2');
+      Alert.error('Invalid Input');
       onLoginFailed();
     },
   });

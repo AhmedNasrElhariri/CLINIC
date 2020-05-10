@@ -48,15 +48,17 @@ const components = {
 };
 
 export default function ViewCard() {
+  const [lanes, setLanes] = useGlobalState('lanes');
+  const [_, setViewGroups] = useGlobalState('viewGroups');
   const [editView] = useMutation(EDIT_VIEW, {
     onCompleted() {
+      setViewGroups(mapLanesToGroupFields(lanes));
       Alert.success('Group Fields Updated Successfully');
     },
     onError() {
       Alert.error('Failed To Save');
     },
   });
-  const [lanes, setLanes] = useGlobalState('lanes');
 
   const onChange = useCallback(({ lanes }) => setLanes(lanes), [setLanes]);
   const onClick = useCallback(() => {

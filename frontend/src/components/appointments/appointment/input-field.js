@@ -40,7 +40,7 @@ const InputField = ({ id, name, type, ...props }) => {
     <FormGroup style={{ maxWidth: 700 }}>
       <ControlLabel>{name}</ControlLabel>
       <FormControl
-        name={name === 'totod' ? '92add961-5332-4788-a213-197be77e5c13' : name}
+        name={id}
         {...props}
         accepter={getAccepter(type)}
         {...getExtraCutomProps(type)}
