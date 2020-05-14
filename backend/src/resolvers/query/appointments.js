@@ -1,5 +1,5 @@
 import { prisma } from '@';
-import R from 'ramda';
+import * as R from 'ramda';
 
 const appointments = (_, { input }) => {
   return prisma.appointment.findMany({

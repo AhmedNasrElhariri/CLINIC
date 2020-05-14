@@ -1,5 +1,6 @@
 const NodemonPlugin = require('nodemon-webpack-plugin');
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   target: 'node',
@@ -30,6 +31,6 @@ module.exports = {
   node: {
     __dirname: false,
   },
-  plugins: [new NodemonPlugin()],
+  plugins: [new NodemonPlugin(), new CleanWebpackPlugin()],
   mode: 'development',
 };
