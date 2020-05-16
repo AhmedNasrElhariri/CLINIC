@@ -73,7 +73,7 @@ function NewAppointment() {
             fluid
             model={model}
             formValue={formValue}
-            onChange={value => setFormValue(value)}
+            onChange={setFormValue}
           >
             <FormGroup>
               <ControlLabel>Examination/Followup</ControlLabel>

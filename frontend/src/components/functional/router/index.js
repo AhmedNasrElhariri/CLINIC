@@ -10,8 +10,10 @@ import {
   Patients,
   Patient,
   Reports,
-  Views,
+  ListViews,
+  CreateView,
 } from 'components';
+import CreateDefaultView from 'components/views/create-default-view';
 
 function AppRouter() {
   return (
@@ -43,8 +45,14 @@ function AppRouter() {
       <Route path="/reports">
         <Reports />
       </Route>
-      <Route path="/views">
-        <Views />
+      <Route path="/views/new">
+        <CreateView />
+      </Route>
+      <Route path="/views" exact>
+        <ListViews />
+      </Route>
+      <Route path="/init-default-view">
+        <CreateDefaultView />
       </Route>
       <Route path="/login">
         <Redirect to="/" />

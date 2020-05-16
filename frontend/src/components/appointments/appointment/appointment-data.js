@@ -4,12 +4,7 @@ import { Link as ScrollLink, Element } from 'react-scroll';
 
 import { Div } from 'components';
 
-import {
-  convertGroupFieldsToNavs,
-  getFormInitValues,
-  normalizeFieldsOfGroups,
-  mapFormValueToAppointmentData,
-} from 'services/appointment';
+import { convertGroupFieldsToNavs } from 'services/appointment';
 import InputField from './input-field';
 
 const ScrollNavLink = ({ element, children, ...props }) => (
@@ -26,14 +21,14 @@ const ScrollNavLink = ({ element, children, ...props }) => (
   </Nav.Item>
 );
 
-function AppointmentData({ formValue, groups, onChange }) {
+function AppointmentData({ formValue, groups, onChange, disabled }) {
   const [activeSection, setActiveSection] = useState('');
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
 
   return (
     <>
       <Div display="flex">
-        <Div width={150}>
+        <Div width={200}>
           <Nav vertical appearance="subtle">
             {convertGroupFieldsToNavs(groups).map((v, idx) => (
               <ScrollNavLink
@@ -55,7 +50,7 @@ function AppointmentData({ formValue, groups, onChange }) {
           height={600}
           overflow="scroll"
         >
-          {Object.keys(formValue).length && (
+          {Object.keys(formValue).length > 0 && (
             <Form formValue={formValue} onChange={onChange} fluid>
               {navs.map((v, idx) => (
                 <Div
@@ -68,7 +63,7 @@ function AppointmentData({ formValue, groups, onChange }) {
                   <Div background="#f7f7fa" p={4} minHeight={400}>
                     <h3>{v.title}</h3>
                     {v.fields.map(f => (
-                      <InputField key={f.id} {...f} />
+                      <InputField key={f.id} {...f} disabled={disabled} />
                     ))}
                   </Div>
                 </Div>

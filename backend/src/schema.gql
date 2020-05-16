@@ -32,7 +32,9 @@ type Query {
   appointment(id: ID!): Appointment
   appointmentHistory(id: ID!): [Appointment!]
   patient(id: ID!): Patient
-  listView: [GroupField!]
+  listMyViews: [View!]
+  activeView: View!
+  listMyViewsStatus: ViewStatus
 }
 
 ########################### Mutation ##################################
@@ -42,9 +44,12 @@ type Mutation {
   createAppointment(input: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
   archiveAppointment(id: ID!): Appointment!
-  editView(groups: [GroupInput!]): Boolean
+  createView(view: ViewInput!): Boolean
+  editView(groups: [FieldGroupInput!]): Boolean
   login(email: String!, password: String!): AuthPayload
   verify(token: String): User
+  activateView(viewId: ID!): ViewStatus!
+  createDefaultView: Boolean
 }
 
 ########################### Auth ##################################
@@ -95,11 +100,6 @@ type Appointment {
   type: AppointmentType!
   archived: Boolean!
   labs: JSON
-  complain: String
-  signs: String
-  diagnosis: String
-  treatment: String
-  recommendations: String
   patient: Patient!
   vitalData: VitalData
   data: [AppointmentField!]
@@ -161,9 +161,18 @@ input VitalDataInput {
   glucoseLevel: Float
 }
 
-########################### FieldGroups ##################################
+########################### views ##################################
 
-type GroupField {
+type View {
+  id: ID!
+  name: String
+  default: Boolean
+  user: User
+  userId: String
+  fieldGroups: [FieldGroup!]
+}
+
+type FieldGroup {
   id: ID!
   name: String!
   order: Int!
@@ -178,7 +187,23 @@ type Field {
   required: Boolean!
 }
 
-input GroupInput {
+type ViewStatus {
+  id: ID!
+  user: User
+  userId: String
+  defaultView: View
+  defaultViewId: String
+  activeView: View
+  activeViewId: String
+}
+
+input ViewInput {
+  id: ID
+  name: String!
+  fieldGroups: [FieldGroupInput!]
+}
+
+input FieldGroupInput {
   id: ID
   name: String!
   order: Int!

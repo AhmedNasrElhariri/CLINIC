@@ -3,32 +3,28 @@ import { PanelGroup, Panel } from 'rsuite';
 
 import { toTitleCase } from 'utils/text';
 import PropProgress from './prop-progress';
+import { NUMBER_FIELD_TYPE } from 'utils/constants';
 
-const getValues = [
-  'vitalData',
-  'labs',
-  'complain',
-  'signs',
-  'diagnosis',
-  'treatment',
-  'recommendations',
-];
+const getFieldValueByViewField = (data, f) =>
+  data.find(d => d.field.id === f.id).value;
 
-const mapToPropValue = (history, prop) =>
-  history.map(h => ({ value: h[prop], date: h.date }));
+const mapToPropValue = (appointments, field) =>
+  appointments.map(appointment => ({
+    value: getFieldValueByViewField(appointment.data, field),
+    date: appointment.date,
+  }));
 
-const renderProps = history => {
-  return getValues.map((key, idx) => (
-    <Panel key={idx} header={toTitleCase(key)}>
-      <PropProgress values={mapToPropValue(history, key)} />
-    </Panel>
-  ));
-};
-
-function Progress({ history }) {
+function Progress({ history, viewFields }) {
   return (
     <PanelGroup accordion bordered>
-      {renderProps(history)}
+      {viewFields.map((field, idx) => (
+        <Panel key={idx} header={toTitleCase(field.name)}>
+          <PropProgress
+            values={mapToPropValue(history, field)}
+            chart={field.type === NUMBER_FIELD_TYPE}
+          />
+        </Panel>
+      ))}
     </PanelGroup>
   );
 }

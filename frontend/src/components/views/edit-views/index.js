@@ -47,7 +47,7 @@ const components = {
   NewLaneForm,
 };
 
-export default function ViewCard() {
+export default function EditView() {
   const [lanes, setLanes] = useGlobalState('lanes');
   const [_, setViewGroups] = useGlobalState('viewGroups');
   const [editView] = useMutation(EDIT_VIEW, {

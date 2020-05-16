@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/react-hooks';
-import { LIST_VIEW } from 'apollo-client/queries';
+import { ACTIVE_VIEW } from 'apollo-client/queries';
 import { ACCESS_TOKEN } from 'utils/constants';
 import * as R from 'ramda';
 
@@ -15,28 +15,25 @@ import {
 import Sidebar from 'components/layout/sidebar';
 import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
-import { mapGroupFieldsToLanes } from 'utils/view';
 
 function Root() {
-  const [getView, { data }] = useLazyQuery(LIST_VIEW);
+  const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
   const { isVerified, isAuthenticated, setAuthenticated } = useAuth();
 
-  const [_, setLanes] = useGlobalState('lanes');
-  const [__, setViews] = useGlobalState('viewGroups');
+  const [__, setActiveView] = useGlobalState('activeView');
 
   useEffect(() => {
     if (isVerified && isAuthenticated) {
       getView();
     }
-  }, [data, getView, isAuthenticated, isVerified, setLanes]);
+  }, [data, getView, isAuthenticated, isVerified]);
 
   useEffect(() => {
-    const groupsFields = R.prop('listView')(data);
-    if (groupsFields) {
-      setLanes(mapGroupFieldsToLanes(groupsFields));
-      setViews(groupsFields);
+    const activeView = R.prop('activeView')(data);
+    if (activeView) {
+      setActiveView(activeView);
     }
-  }, [data, setLanes, setViews]);
+  }, [data, setActiveView]);
 
   const onLoginSucceeded = useCallback(
     token => {

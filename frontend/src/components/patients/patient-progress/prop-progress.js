@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Toggle, Table, Divider,List } from 'rsuite';
+import { Toggle, Table, Divider, List } from 'rsuite';
 import * as R from 'ramda';
 import LineChart from '@rsuite/charts/lib/charts/LineChart';
 import Line from '@rsuite/charts/lib/series/Line';
@@ -8,10 +8,7 @@ import YAxis from '@rsuite/charts/lib/components/YAxis';
 import { formatDate } from 'utils/date';
 import { isValidNumber } from 'utils/nubmer';
 import { Div } from 'components/widgets';
-import {
-  KeyStyled,
-  ValueStyled,
-} from 'components/misc';
+import { KeyStyled, ValueStyled } from 'components/misc';
 
 const Value = ({ value }) => {
   return R.is(Object)(value) ? (
@@ -50,16 +47,11 @@ const mapToChartData = values => {
   });
 };
 
-function PropProgress({ values }) {
+function PropProgress({ values, chart }) {
   const [data, setData] = useState([]);
-  const [canUseChart, setCanUseChart] = useState(false);
 
   useEffect(() => {
     const data = mapToChartData(values);
-    const isValid = values.every(({ value }) =>
-      R.is(Object)(value) ? R.all(isValidNumber)(value) : isValidNumber(value)
-    );
-    setCanUseChart(isValid);
     setData(data);
   }, [values]);
 
@@ -72,7 +64,7 @@ function PropProgress({ values }) {
 
   return (
     <Div>
-      {canUseChart && (
+      {chart && (
         <Div display="flex" justifyContent="flex-end">
           <Div mr={1}>
             <h5>Chart : </h5>

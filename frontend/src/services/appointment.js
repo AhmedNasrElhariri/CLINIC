@@ -12,17 +12,21 @@ export const convertGroupFieldsToNavs = groups => {
 export const normalizeFieldsOfGroups = (groups, data = []) => {
   const normalizedFieldsData = normalizeFieldsData(data);
   const fields = groups.map(group => group.fields);
-  return R.unnest(fields).reduce(
-    (obj, f) => ({ ...obj, [f.id]: normalizedFieldsData[f.id] }),
-    {}
-  );
+
+  return R.unnest(fields).reduce((obj, f) => {
+    const appointmentField = normalizedFieldsData[f.id] || {
+      value: '',
+      field: f,
+    };
+    return { ...obj, [f.id]: appointmentField };
+  }, {});
 };
 
 export const normalizeFieldsData = data => {
   return data.reduce((obj, f) => ({ ...obj, [f.field.id]: f }), {});
 };
 
-export const getFormInitValues = (normFields) => {
+export const getFormInitValues = normFields => {
   return Object.keys(normFields).reduce((obj, id) => {
     const fieldData = normFields[id];
     const value = R.propOr('', 'value')(fieldData);

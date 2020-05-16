@@ -7,3 +7,6 @@
 20200508221019-rename-field-to-field
 20200509224049-add-appointment-fields
 20200509225810-add-value-to-appointement-field
+20200514201212-create-user-view
+20200514214957-add-view-statuses
+20200515000813-remove-active-from-view

@@ -14,7 +14,7 @@ import {
 import PatientInfo from './patient-info';
 import { H5, Div, PatientProgress, PatientHistory } from 'components';
 import AppointmentData from './appointment-data';
-import navs from './navs.metadata';
+import Prescription from './prescription';
 import useGlobalState from 'state';
 
 import {
@@ -25,20 +25,19 @@ import {
 
 const tabs = ['Home', 'History', 'Progress'];
 
-const initialValue = navs.reduce(
-  (acc, { name, defaultValue }) => ({
-    ...acc,
-    [name]: defaultValue || '',
-  }),
-  {}
-);
-
 function Appointment() {
   const [formValue, setFormValue] = useState({});
-  const [groups] = useGlobalState('viewGroups');
+  const [view] = useGlobalState('activeView');
   const [disabled, setDisabled] = useState(false);
+  const [isPrescriptionVisible, setPrescriptionVisible] = useState(true);
   const [activeTab, setActiveTab] = useState('0');
   let { appointmentId } = useParams();
+
+  const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
+  const viewFields = useMemo(
+    () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),
+    [groups]
+  );
 
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
@@ -46,17 +45,7 @@ function Appointment() {
     },
     fetchPolicy: 'no-cache',
     onCompleted: ({ appointment }) => {
-      setFormValue(
-        R.pick([
-          'vitalData',
-          'labs',
-          'complain',
-          'signs',
-          'diagnosis',
-          'treatment',
-          'recommendations',
-        ])(appointment)
-      );
+      setFormValue(R.pick(['labs'])(appointment));
       setDisabled(appointment.archived);
     },
   });
@@ -82,9 +71,7 @@ function Appointment() {
   const appointment = R.prop('appointment')(appointmentRes) || {};
   const patient = R.propOr({}, 'patient')(appointment);
   const appointmentHistory = R.pathOr([], ['appointmentHistory'])(history);
-  const data = useMemo(() => R.propOr([], ['data'])(appointment), [
-    appointment,
-  ]);
+  const data = useMemo(() => R.propOr([], 'data')(appointment), [appointment]);
 
   const normalizedFields = useMemo(
     () => normalizeFieldsOfGroups(groups, data),
@@ -131,6 +118,9 @@ function Appointment() {
               ))}
             </Nav>
             <ButtonToolbar>
+              <Button color="blue" onClick={() => setPrescriptionVisible(true)}>
+                Prescription <Icon icon="add" />
+              </Button>
               <Button color="blue" onClick={onUpdate} disabled={disabled}>
                 Save <Icon icon="save" />
               </Button>
@@ -157,13 +147,23 @@ function Appointment() {
               />
             )}
             {showComp('1') && <PatientHistory history={appointmentHistory} />}
-            {showComp('2') && <PatientProgress history={appointmentHistory} />}
+            {showComp('2') && (
+              <PatientProgress
+                history={appointmentHistory}
+                viewFields={viewFields}
+              />
+            )}
           </Div>
         </Div>
         <Div width="320px">
           <PatientInfo patient={patient} />
         </Div>
       </Div>
+      <Prescription
+        visible={isPrescriptionVisible}
+        patient={patient}
+        onClose={() => setPrescriptionVisible(false)}
+      />
     </>
   );
 }

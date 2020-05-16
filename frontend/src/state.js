@@ -6,7 +6,7 @@ const initialState = {
   isVerified: false,
   user: null,
   lanes: [],
-  viewGroups: [],
+  activeView: {},
 };
 
 const { useGlobalState } = createGlobalState(initialState);

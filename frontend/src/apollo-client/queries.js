@@ -66,11 +66,13 @@ export const GET_APPOINTMENT = gql`
       id
       type
       date
+      archived
       data {
         id
         value
         field {
           id
+          name
         }
       }
       patient {
@@ -107,19 +109,21 @@ export const GET_APPOINTMENT_HISTORY = gql`
       type
       date
       labs
-      complain
-      signs
-      diagnosis
-      treatment
-      recommendations
       archived
+      data {
+        id
+        value
+        field {
+          id
+          name
+        }
+      }
       patient {
         id
         name
         age
         sex
       }
-      vitalData
     }
   }
 `;
@@ -134,30 +138,28 @@ export const GET_PATIENT = gql`
       appointments {
         id
         labs
-        complain
-        signs
-        diagnosis
-        treatment
-        recommendations
         archived
-        vitalData
       }
     }
   }
 `;
 
-export const LIST_VIEW = gql`
-  query listView {
-    listView {
+export const ACTIVE_VIEW = gql`
+  query activeView {
+    activeView {
       id
       name
-      order
-      fields {
+      fieldGroups {
         id
         name
         order
-        type
-        required
+        fields {
+          id
+          name
+          order
+          type
+          required
+        }
       }
     }
   }
@@ -166,5 +168,44 @@ export const LIST_VIEW = gql`
 export const EDIT_VIEW = gql`
   mutation editView($groups: [GroupInput!]) {
     editView(groups: $groups)
+  }
+`;
+
+export const CREATE_VIEW = gql`
+  mutation createView($view: ViewInput!) {
+    createView(view: $view)
+  }
+`;
+
+export const LIST_MY_VIEWS_SUMMARY = gql`
+  {
+    listMyViews {
+      id
+      name
+    }
+  }
+`;
+export const LIST_MY_VIEWS_STATUS = gql`
+  {
+    listMyViewsStatus {
+      id
+      activeViewId
+      defaultViewId
+    }
+  }
+`;
+
+export const CREATE_DEFAULT_VIEW = gql`
+  mutation createDefaultView {
+    createDefaultView
+  }
+`;
+
+export const ACTIVATE_VIEW = gql`
+  mutation activateView($viewId: ID!) {
+    activateView(viewId: $viewId) {
+      id
+      activeViewId
+    }
   }
 `;

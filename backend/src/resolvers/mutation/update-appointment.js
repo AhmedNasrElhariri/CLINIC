@@ -5,16 +5,16 @@ const updateAppointment = (_, { appointment }) => {
   return prisma.appointment.update({
     data: {
       data: {
-        upsert: appointment.data.map(fieldData => ({
+        upsert: appointment.data.map(({ id, value, fieldId }) => ({
           create: {
-            value: fieldData.value,
-            field: { connect: { id: fieldData.fieldId } },
+            value: value,
+            field: { connect: { id: fieldId } },
           },
           update: {
-            value: fieldData.value,
-            field: { connect: { id: fieldData.fieldId } },
+            value: value,
+            field: { connect: { id: fieldId } },
           },
-          where: { id: fieldData.id },
+          where: { id: id || fieldId },
         })),
       },
     },
