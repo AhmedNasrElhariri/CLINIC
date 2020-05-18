@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Nav, Form, FormControl } from 'rsuite';
+import React, { useState, useMemo } from 'react';
+import { Nav, Form } from 'rsuite';
 import { Link as ScrollLink, Element } from 'react-scroll';
 
 import { Div } from 'components';

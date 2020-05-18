@@ -15,7 +15,11 @@ const getDayAppointments = day => {
   });
 };
 
-const createAppointment = async (_, { input: { patient, ...appointment } }) => {
+const createAppointment = async (
+  _,
+  { input: { patient, ...appointment } },
+  { userId }
+) => {
   const appointments = await getDayAppointments();
   const date = calculateAppointmentTime(appointments, appointment.date);
 
@@ -23,6 +27,7 @@ const createAppointment = async (_, { input: { patient, ...appointment } }) => {
     data: {
       ...appointment,
       specialty: 'Dentistry',
+      status: 'Scheduled',
       patient: {
         connect: {
           id: patient,
@@ -31,7 +36,7 @@ const createAppointment = async (_, { input: { patient, ...appointment } }) => {
       date,
       doctor: {
         connect: {
-          id: '6625951a-3a69-46ee-ab5f-d0f523d463de',
+          id: userId,
         },
       },
     },

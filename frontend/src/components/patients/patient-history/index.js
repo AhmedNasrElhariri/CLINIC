@@ -26,14 +26,18 @@ export default function PatientHistory({ history }) {
 
   return (
     <>
-      {history.map(({ data, date }, i) => (
-        <Div mb={3} key={i}>
-          <Panel header={`No ${i + 1}`} bordered>
-            {renderProp('Date', formatDate(date))}
-            {renderAppointment(data)}
-          </Panel>
-        </Div>
-      ))}
+      {history.length ? (
+        history.map(({ data, date }, i) => (
+          <Div mb={3} key={i}>
+            <Panel header={`No ${i + 1}`} bordered>
+              {renderProp('Date', formatDate(date))}
+              {renderAppointment(data)}
+            </Panel>
+          </Div>
+        ))
+      ) : (
+        <h4>No History</h4>
+      )}
     </>
   );
 }

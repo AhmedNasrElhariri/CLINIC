@@ -21,6 +21,7 @@ import {
   getFormInitValues,
   normalizeFieldsOfGroups,
   mapFormValueToAppointmentData,
+  isArchived,
 } from 'services/appointment';
 
 const tabs = ['Home', 'History', 'Progress'];
@@ -29,16 +30,9 @@ function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [view] = useGlobalState('activeView');
   const [disabled, setDisabled] = useState(false);
-  const [isPrescriptionVisible, setPrescriptionVisible] = useState(true);
+  const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
   let { appointmentId } = useParams();
-
-  const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
-  const viewFields = useMemo(
-    () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),
-    [groups]
-  );
-
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
       id: appointmentId,
@@ -46,38 +40,48 @@ function Appointment() {
     fetchPolicy: 'no-cache',
     onCompleted: ({ appointment }) => {
       setFormValue(R.pick(['labs'])(appointment));
-      setDisabled(appointment.archived);
+      setDisabled(isArchived(appointment));
     },
   });
-
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {
       id: appointmentId,
     },
   });
-
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
     },
   });
+
+  const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
+  const viewFields = useMemo(
+    () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),
+    [groups]
+  );
   const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
     onCompleted: () => {
-      // Alert.success('Appointment has been updates successfully');
+      Alert.success('Appointment has been Archived successfully');
       setDisabled(true);
     },
   });
-
-  const appointment = R.prop('appointment')(appointmentRes) || {};
-  const patient = R.propOr({}, 'patient')(appointment);
-  const appointmentHistory = R.pathOr([], ['appointmentHistory'])(history);
+  const appointment = useMemo(
+    () => R.prop('appointment')(appointmentRes) || {},
+    [appointmentRes]
+  );
+  const patient = useMemo(() => R.propOr({}, 'patient')(appointment), [
+    appointment,
+  ]);
+  const appointmentHistory = useMemo(
+    () => R.pathOr([], ['appointmentHistory'])(history),
+    [history]
+  );
   const data = useMemo(() => R.propOr([], 'data')(appointment), [appointment]);
 
   const normalizedFields = useMemo(
     () => normalizeFieldsOfGroups(groups, data),
     [data, groups]
   );
-
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const onUpdate = useCallback(() => {
     update({

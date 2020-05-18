@@ -7,11 +7,10 @@ const appointmentHistory = async (_, { id }) => {
 
   return prisma.appointment.findMany({
     where: {
-      archived: true,
+      status: 'Archived',
       patient: {
         id: appointment.patientId,
       },
-      specialty: appointment.specialty,
     },
   });
 };

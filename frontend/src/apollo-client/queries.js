@@ -50,6 +50,7 @@ export const LIST_APPOINTMENTS = gql`
       id
       type
       date
+      status
       patient {
         id
         name
@@ -66,7 +67,7 @@ export const GET_APPOINTMENT = gql`
       id
       type
       date
-      archived
+      status
       data {
         id
         value
@@ -81,7 +82,6 @@ export const GET_APPOINTMENT = gql`
         age
         sex
       }
-      vitalData
     }
   }
 `;
@@ -102,6 +102,15 @@ export const ARCHIVE_APPOINTMENT = gql`
   }
 `;
 
+export const SET_APPOINTMENT_DONE = gql`
+  mutation setAppointmentDone($id: ID!) {
+    setAppointmentDone(id: $id) {
+      id
+      status
+    }
+  }
+`;
+
 export const GET_APPOINTMENT_HISTORY = gql`
   query($id: ID!) {
     appointmentHistory(id: $id) {
@@ -109,7 +118,7 @@ export const GET_APPOINTMENT_HISTORY = gql`
       type
       date
       labs
-      archived
+      status
       data {
         id
         value
@@ -138,7 +147,7 @@ export const GET_PATIENT = gql`
       appointments {
         id
         labs
-        archived
+        status
       }
     }
   }

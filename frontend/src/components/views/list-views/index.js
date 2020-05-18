@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Button, Col, Row, Toggle, Divider } from 'rsuite';
 import * as R from 'ramda';
 

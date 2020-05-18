@@ -23,6 +23,15 @@ enum FieldType {
   LongText
 }
 
+enum AppointmentStatus {
+  Scheduled
+  Cancelled
+  Missed
+  Changed
+  Archived
+  Done
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -44,6 +53,7 @@ type Mutation {
   createAppointment(input: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
   archiveAppointment(id: ID!): Appointment!
+  setAppointmentDone(id: ID!): Appointment!
   createView(view: ViewInput!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
   login(email: String!, password: String!): AuthPayload
@@ -98,10 +108,9 @@ type Appointment {
   id: ID!
   date: Date
   type: AppointmentType!
-  archived: Boolean!
+  status: AppointmentStatus!
   labs: JSON
   patient: Patient!
-  vitalData: VitalData
   data: [AppointmentField!]
 }
 
@@ -115,26 +124,13 @@ input AppointmentInput {
   patient: ID!
   date: Date!
   type: AppointmentType!
-  vitalData: VitalDataInput
-
   labs: JSON
-  complain: String
-  signs: String
-  diagnosis: String
-  treatment: String
-  recommendations: String
 }
 
 input UpdateAppointmentInput {
   id: ID!
   labs: JSON
   data: [AppointmentFieldInput!]
-  # vitalData: VitalDataInput
-  # complain: String
-  # signs: String
-  # diagnosis: String
-  # treatment: String
-  # recommendations: String
 }
 
 input AppointmentQueryInput {
@@ -149,16 +145,6 @@ input AppointmentFieldInput {
   id: ID
   value: JSON
   fieldId: ID!
-}
-
-########################### Vital Data ##################################
-
-input VitalDataInput {
-  weight: Float
-  height: Float
-  pulse: Float
-  temp: Float
-  glucoseLevel: Float
 }
 
 ########################### views ##################################

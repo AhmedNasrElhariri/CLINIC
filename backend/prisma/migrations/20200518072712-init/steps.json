@@ -11,6 +11,18 @@
     },
     {
       "tag": "CreateEnum",
+      "enum": "AppointmentStatus",
+      "values": [
+        "Scheduled",
+        "Cancelled",
+        "Missed",
+        "Changed",
+        "Archived",
+        "Occurred"
+      ]
+    },
+    {
+      "tag": "CreateEnum",
       "enum": "Sex",
       "values": [
         "Female",
@@ -208,6 +220,20 @@
       "model": "User",
       "field": "Appointment",
       "type": "Appointment",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "View",
+      "type": "View",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "ViewStatus",
+      "type": "ViewStatus",
       "arity": "List"
     },
     {
@@ -875,8 +901,26 @@
     {
       "tag": "CreateField",
       "model": "Appointment",
-      "field": "archived",
-      "type": "Boolean",
+      "field": "status",
+      "type": "AppointmentStatus",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Appointment",
+      "field": "data",
+      "type": "AppointmentField",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "View"
+    },
+    {
+      "tag": "CreateField",
+      "model": "View",
+      "field": "id",
+      "type": "String",
       "arity": "Required"
     },
     {
@@ -884,8 +928,8 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Appointment",
-          "field": "archived"
+          "model": "View",
+          "field": "id"
         },
         "directive": "default"
       }
@@ -896,13 +940,409 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Appointment",
-          "field": "archived"
+          "model": "View",
+          "field": "id"
         },
         "directive": "default"
       },
       "argument": "",
-      "value": "false"
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "View",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "View",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "View",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "View",
+      "field": "fieldGroups",
+      "type": "FieldGroup",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "View",
+      "field": "defaultViewsStatuses",
+      "type": "ViewStatus",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "defaultViewsStatuses"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "defaultViewsStatuses"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"defaultView\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "View",
+      "field": "activeViewsStatuses",
+      "type": "ViewStatus",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "activeViewsStatuses"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "activeViewsStatuses"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"activeView\""
+    },
+    {
+      "tag": "CreateModel",
+      "model": "ViewStatus"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ViewStatus",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "ViewStatus",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ViewStatus",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ViewStatus",
+      "field": "defaultView",
+      "type": "View",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "defaultView"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "defaultView"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"defaultView\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "defaultView"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[defaultViewId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "defaultView"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ViewStatus",
+      "field": "defaultViewId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ViewStatus",
+      "field": "activeView",
+      "type": "View",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "activeView"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "activeView"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"activeView\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "activeView"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[activeViewId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "activeView"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ViewStatus",
+      "field": "activeViewId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "ViewStatus",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[userId, defaultViewId, activeViewId]"
+            },
+            {
+              "name": "name",
+              "value": "\"userId_defaultViewId_activeViewId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
     },
     {
       "tag": "CreateModel",
@@ -961,15 +1401,15 @@
     {
       "tag": "CreateField",
       "model": "FieldGroup",
-      "field": "fields",
-      "type": "Field",
-      "arity": "List"
+      "field": "order",
+      "type": "Int",
+      "arity": "Required"
     },
     {
       "tag": "CreateField",
       "model": "FieldGroup",
-      "field": "order",
-      "type": "Int",
+      "field": "view",
+      "type": "View",
       "arity": "Required"
     },
     {
@@ -978,7 +1418,69 @@
         "path": {
           "tag": "Field",
           "model": "FieldGroup",
-          "field": "order"
+          "field": "view"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "FieldGroup",
+          "field": "view"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[viewId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "FieldGroup",
+          "field": "view"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "FieldGroup",
+      "field": "viewId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "FieldGroup",
+      "field": "fields",
+      "type": "Field",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "FieldGroup",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[order, viewId]"
+            },
+            {
+              "name": "name",
+              "value": "\"order_viewId_unique_constraint\""
+            }
+          ]
         },
         "directive": "unique"
       }
@@ -1061,7 +1563,7 @@
     {
       "tag": "CreateField",
       "model": "Field",
-      "field": "FieldGroup",
+      "field": "fieldGroup",
       "type": "FieldGroup",
       "arity": "Optional"
     },
@@ -1071,7 +1573,7 @@
         "path": {
           "tag": "Field",
           "model": "Field",
-          "field": "FieldGroup"
+          "field": "fieldGroup"
         },
         "directive": "relation"
       }
@@ -1083,7 +1585,7 @@
         "path": {
           "tag": "Field",
           "model": "Field",
-          "field": "FieldGroup"
+          "field": "fieldGroup"
         },
         "directive": "relation"
       },
@@ -1097,7 +1599,7 @@
         "path": {
           "tag": "Field",
           "model": "Field",
-          "field": "FieldGroup"
+          "field": "fieldGroup"
         },
         "directive": "relation"
       },
@@ -1110,6 +1612,13 @@
       "field": "fieldGroupId",
       "type": "String",
       "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Field",
+      "field": "appointmentFields",
+      "type": "AppointmentField",
+      "arity": "List"
     },
     {
       "tag": "CreateDirective",
@@ -1125,6 +1634,186 @@
             {
               "name": "name",
               "value": "\"order_fieldGroupId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "AppointmentField"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentField",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentField",
+      "field": "appointment",
+      "type": "Appointment",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[appointmentId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentField",
+      "field": "appointmentId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentField",
+      "field": "field",
+      "type": "Field",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "field"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "field"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[fieldId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "field"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentField",
+      "field": "fieldId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentField",
+      "field": "value",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "AppointmentField",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[appointmentId, fieldId]"
+            },
+            {
+              "name": "name",
+              "value": "\"appointment_fieldId_unique_constraint\""
             }
           ]
         },

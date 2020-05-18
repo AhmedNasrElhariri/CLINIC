@@ -1,17 +1,24 @@
 import React, { useRef } from 'react';
 import * as R from 'ramda';
 import { useHistory } from 'react-router-dom';
-import { useQuery } from '@apollo/react-hooks';
-import { List, FlexboxGrid, Button, Icon } from 'rsuite';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { List, FlexboxGrid, Button, Icon, Alert } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { AppointmentPrintout, Div } from 'components';
 import { getStartOfDay, format } from 'services/date.service';
+import { isScheduled } from 'services/appointment';
+import { SET_APPOINTMENT_DONE } from 'apollo-client/queries';
 
 function AppointmentCalendar() {
   const history = useHistory();
   const componentRef = useRef();
+  const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
+    onCompleted: () => {
+      Alert.success('Appointment has been Archived successfully');
+    },
+  });
 
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: {
@@ -38,15 +45,31 @@ function AppointmentCalendar() {
           }}
         >
           <FlexboxGrid>
-            <FlexboxGrid.Item colspan={8}>
+            <FlexboxGrid.Item colspan={6}>
               {format(appointment.date, 'h:mm a')}
             </FlexboxGrid.Item>
 
-            <FlexboxGrid.Item colspan={8}>
+            <FlexboxGrid.Item colspan={6}>
               {appointment.patient.name}
             </FlexboxGrid.Item>
 
-            <FlexboxGrid.Item colspan={8}>
+            <FlexboxGrid.Item colspan={6}>
+              {isScheduled(appointment) ? (
+                <Button
+                  appearance="primary"
+                  onClick={e => {
+                    e.stopPropagation();
+                    setAppointmentDone({ variables: { id: appointment.id } });
+                  }}
+                >
+                  Done
+                </Button>
+              ) : (
+                <span>{appointment.status}</span>
+              )}
+            </FlexboxGrid.Item>
+
+            <FlexboxGrid.Item colspan={6}>
               <ReactToPrint
                 trigger={() => (
                   <Button appearance="link" data-trigger>

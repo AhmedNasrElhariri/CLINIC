@@ -1,4 +1,8 @@
 import * as R from 'ramda';
+import moment from 'moment';
+import { mapArrToChoices } from 'utils/misc';
+
+const MAX_TIMESTAMP = 8640000000000000;
 
 export const convertGroupFieldsToNavs = groups => {
   return groups.map(g => ({
@@ -41,3 +45,41 @@ export const mapFormValueToAppointmentData = (normFields, fromValue) => {
     fieldId: id,
   }));
 };
+
+const filterByDate = (appointments, filter) => {
+  const { date } = filter;
+
+  const start = R.propOr(new Date(null), '0')(date);
+  const end = R.propOr(new Date(MAX_TIMESTAMP), '1')(date);
+
+  return appointments.filter(app =>
+    moment(app.date).isBetween(start, end, 'day', '[]')
+  );
+};
+
+const filterByPatientName = (appointments, filter) => {
+  const name = R.propOr('', 'name')(filter);
+
+  return appointments.filter(app =>
+    app.patient.name.toLowerCase().includes(name.toLowerCase())
+  );
+};
+
+const filterByType = (appointments, filter) => {
+  const type = R.prop('type')(filter);
+
+  return !type ? appointments : appointments.filter(app => app.type === type);
+};
+
+export const filterAppointments = (appointments = [], filter) => {
+  const filters = [filterByDate, filterByPatientName, filterByType];
+  return filters.reduce((app, fn) => fn(app, filter), appointments);
+};
+
+export const getAppointmentTypes = () => ['Examination', 'Followup'];
+
+export const appointmentTypes = mapArrToChoices(getAppointmentTypes());
+
+export const isArchived = appointment => appointment.status === 'Archived';
+
+export const isScheduled = appointment => appointment.status === 'Scheduled';
