@@ -11,6 +11,7 @@ export { default as TodayAppointment } from './appointments/today-appointments';
 export { default as Appointment } from './appointments/appointment';
 export { default as Calendar } from './appointments/calendar';
 export { default as Appointments } from './appointments/appointments';
+export { default as AdjustAppointment } from './appointments/adjust-appointment';
 
 /******************       Patient    *********************************/
 export { default as Patients } from './patients/patients';

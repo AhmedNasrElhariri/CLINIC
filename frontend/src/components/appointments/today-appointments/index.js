@@ -6,10 +6,11 @@ import { List, FlexboxGrid, Button, Icon, Alert } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
-import { AppointmentPrintout, Div } from 'components';
-import { getStartOfDay, format } from 'services/date.service';
+import { AppointmentPrintout, AdjustAppointment, Div } from 'components';
+import { getStartOfDay, format, getEndOfDay } from 'services/date.service';
 import { isScheduled } from 'services/appointment';
 import { SET_APPOINTMENT_DONE } from 'apollo-client/queries';
+import { isAfterMoment } from 'utils/date';
 
 function AppointmentCalendar() {
   const history = useHistory();
@@ -24,6 +25,7 @@ function AppointmentCalendar() {
     variables: {
       input: {
         fromDate: getStartOfDay(new Date()),
+        toDate: getEndOfDay(new Date()),
       },
     },
     fetchPolicy: 'cache-and-network',
@@ -69,11 +71,11 @@ function AppointmentCalendar() {
               )}
             </FlexboxGrid.Item>
 
-            <FlexboxGrid.Item colspan={6}>
+            <FlexboxGrid.Item colspan={6} onClick={e => e.stopPropagation()}>
               <ReactToPrint
                 trigger={() => (
                   <Button appearance="link" data-trigger>
-                    Print <Icon icon="print" data-trigger />
+                    <Icon icon="print" data-trigger />
                   </Button>
                 )}
                 content={() => componentRef.current}
@@ -86,6 +88,9 @@ function AppointmentCalendar() {
                   sex={appointment.patient.sex}
                 />
               </Div>
+              {isAfterMoment(appointment.date) && (
+                <AdjustAppointment appointment={appointment} />
+              )}
             </FlexboxGrid.Item>
           </FlexboxGrid>
         </List.Item>

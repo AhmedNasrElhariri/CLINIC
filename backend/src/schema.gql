@@ -60,6 +60,8 @@ type Mutation {
   verify(token: String): User
   activateView(viewId: ID!): ViewStatus!
   createDefaultView: Boolean
+  adjustAppointment(id: ID!, date: Date!): Appointment!
+  cancelAppointment(id: ID!): Appointment!
 }
 
 ########################### Auth ##################################

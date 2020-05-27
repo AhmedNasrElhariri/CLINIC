@@ -17,6 +17,7 @@ import {
 
 import { FormStyled } from './style';
 import { LIST_PATIENTS, CREATE_APPOINTMENT } from 'apollo-client/queries';
+import { isBeforeToday } from 'utils/date';
 
 const { StringType } = Schema.Types;
 
@@ -94,7 +95,7 @@ function NewAppointment() {
                 block
                 name="patient"
                 accepter={SelectPicker}
-                cleanable={false}
+                cleanable={true}
                 labelKey="name"
                 valueKey="id"
                 data={patients}
@@ -115,6 +116,7 @@ function NewAppointment() {
                 name="date"
                 format="DD-MM-YYYY"
                 accepter={DatePicker}
+                disabledDate={isBeforeToday}
               />
             </FormGroup>
 

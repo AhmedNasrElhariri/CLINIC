@@ -68,17 +68,17 @@ model Patient {
 }
 
 model Appointment {
-  id              String             @default(uuid()) @id
-  date            DateTime           @default(now()) @unique
-  type            AppointmentType
-  patient         Patient            @relation(fields: [patientId], references: [id])
-  patientId       String
-  specialty       Specialty
-  doctor          User               @relation(fields: [doctorId], references: [id])
-  doctorId        String
-  labs            String?            @default("[]")
-  status          AppointmentStatus
-  data            AppointmentField[]
+  id        String             @default(uuid()) @id
+  date      DateTime           @default(now()) @unique
+  type      AppointmentType
+  patient   Patient            @relation(fields: [patientId], references: [id])
+  patientId String
+  specialty Specialty
+  doctor    User               @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  labs      String?            @default("[]")
+  status    AppointmentStatus
+  data      AppointmentField[]
 }
 
 model View {

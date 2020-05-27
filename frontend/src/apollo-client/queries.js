@@ -218,3 +218,20 @@ export const ACTIVATE_VIEW = gql`
     }
   }
 `;
+
+export const ADJUST_APPOINTMENT = gql`
+  mutation adjustAppointment($id: ID!, $date: Date!) {
+    adjustAppointment(id: $id, date: $date) {
+      id
+      date
+    }
+  }
+`;
+
+export const CANCEL_APPOINTMENT = gql`
+  mutation cancelAppointment($id: ID!) {
+    cancelAppointment(id: $id) {
+      id
+    }
+  }
+`;

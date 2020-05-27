@@ -7,11 +7,21 @@ import * as R from 'ramda';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { format } from 'services/date.service';
+import { AdjustAppointment, Div } from 'components';
+import { isAfterMoment } from 'utils/date';
 
 const AppointmentTime = ({ appointment }) => (
-  <Link to={`/appointments/${appointment.id}`}>
-    <b>{appointment.time}</b> {appointment.type}
-  </Link>
+  <>
+    <Link to={`/appointments/${appointment.id}`}>
+      <b>{appointment.time}</b>
+      <Div as="span" mr={2}>
+        {appointment.type}
+      </Div>
+    </Link>
+    {isAfterMoment(appointment.date) && (
+      <AdjustAppointment appointment={appointment} iconSize="lg" />
+    )}
+  </>
 );
 
 function renderCell(list) {
@@ -40,7 +50,7 @@ function renderCell(list) {
     );
 
     return (
-      <ul className="calendar-todo-list no-list-style">
+      <ul className="calendar-todo-list no-list-style" style={{ padding: 0 }}>
         {displayList.map((app, index) => (
           <li key={index}>
             <Badge /> <AppointmentTime appointment={app} />
@@ -66,7 +76,7 @@ function AppointmentCalendar() {
           R.prop(moment(date).startOf('day')),
           R.ifElse(
             R.is(Array),
-            R.addIndex(R.map)((appointment, idx) => ({
+            R.map(appointment => ({
               ...appointment,
               time: format(appointment.date, 'h:mm a'),
             })),
