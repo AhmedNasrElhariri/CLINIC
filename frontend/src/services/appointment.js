@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import moment from 'moment';
 import { mapArrToChoices } from 'utils/misc';
+import { isDateBefore } from 'utils/date';
 
 const MAX_TIMESTAMP = 8640000000000000;
 
@@ -83,3 +84,7 @@ export const appointmentTypes = mapArrToChoices(getAppointmentTypes());
 export const isArchived = appointment => appointment.status === 'Archived';
 
 export const isScheduled = appointment => appointment.status === 'Scheduled';
+
+export const canAjdust = appointment =>
+  appointment.status === 'Scheduled' &&
+  isDateBefore(new Date(), appointment.date);

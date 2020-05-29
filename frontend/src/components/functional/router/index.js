@@ -12,6 +12,8 @@ import {
   Reports,
   ListViews,
   CreateView,
+  AppointmentSettings,
+  StaticSettings,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 
@@ -51,11 +53,20 @@ function AppRouter() {
       <Route path="/views" exact>
         <ListViews />
       </Route>
-      <Route path="/init-default-view">
-        <CreateDefaultView />
-      </Route>
       <Route path="/login">
         <Redirect to="/" />
+      </Route>
+
+      <Route path="/settings/appointment">
+        <AppointmentSettings />
+      </Route>
+
+      <Route path="/settings/static">
+        <StaticSettings />
+      </Route>
+
+      <Route path="/init-default-view">
+        <CreateDefaultView />
       </Route>
     </Switch>
   );

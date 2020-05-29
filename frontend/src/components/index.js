@@ -32,9 +32,13 @@ export { H3, H4, H5, Div } from './widgets';
 export { default as InputField } from './widgets/input-field';
 export { default as CheckField } from './widgets/check-field';
 
-/******************       views    *********************************/
+/******************       Views    *********************************/
 export { default as ListViews } from './views/list-views';
 export { default as CreateView } from './views/create-view';
 export { default as EditView } from './views/edit-views';
 export { default as ViewForm } from './views/view-form';
 export { default as CreateDefaultView } from './views/create-default-view';
+
+/******************     Settings    *********************************/
+export { default as AppointmentSettings } from './settings/appointment';
+export { default as StaticSettings } from './settings/static';

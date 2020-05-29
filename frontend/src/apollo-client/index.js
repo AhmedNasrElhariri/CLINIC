@@ -5,6 +5,7 @@ import { ApolloClient } from 'apollo-client';
 import { setContext } from 'apollo-link-context';
 import { ACCESS_TOKEN } from 'utils/constants';
 import * as R from 'ramda';
+import { createUploadLink } from 'apollo-upload-client';
 
 const httpLink = createHttpLink({ uri: '/graphql' });
 
@@ -27,7 +28,9 @@ const errorLink = onError(({ graphQLErrors, operation }) => {
 });
 
 const client = new ApolloClient({
-  link: errorLink.concat(authLink.concat(httpLink)),
+  link: errorLink.concat(
+    authLink.concat(createUploadLink({ uri: '/graphql' }))
+  ),
   cache: new InMemoryCache(),
 });
 

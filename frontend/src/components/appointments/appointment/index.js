@@ -9,6 +9,7 @@ import {
   UPDATE_APPOINTMENT,
   ARCHIVE_APPOINTMENT,
   GET_APPOINTMENT_HISTORY,
+  GET_MY_CLINIC,
 } from 'apollo-client/queries';
 
 import PatientInfo from './patient-info';
@@ -32,6 +33,7 @@ function Appointment() {
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
+  const { data: clinicInfo } = useQuery(GET_MY_CLINIC);
   let { appointmentId } = useParams();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
@@ -100,6 +102,17 @@ function Appointment() {
     });
   }, [archive, appointmentId]);
 
+  const prescriptionField = useMemo(() => {
+    const field = R.find(R.where({ field: R.propEq('name', 'Prescription') }))(
+      Object.values(normalizedFields)
+    );
+    return R.propOr({}, 'field')(field);
+  }, [normalizedFields]);
+
+  const prescriptionBody = useMemo(() => {
+    return formValue[R.propOr('', 'id')(prescriptionField)];
+  }, [formValue, prescriptionField]);
+
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
   }, [normalizedFields]);
@@ -167,6 +180,13 @@ function Appointment() {
         visible={isPrescriptionVisible}
         patient={patient}
         onClose={() => setPrescriptionVisible(false)}
+        content={prescriptionBody}
+        clinicInfo={R.propOr({}, 'myClinic')(clinicInfo)}
+        onChange={val => {
+          setFormValue(
+            R.mergeDeepRight(formValue, { [prescriptionField.id]: val })
+          );
+        }}
       />
     </>
   );

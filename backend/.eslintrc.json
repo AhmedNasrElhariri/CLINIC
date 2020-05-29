@@ -7,5 +7,8 @@
     "ecmaFeatures": {
       "globalReturn": false
     }
+  },
+  "env": {
+    "node": true
   }
 }

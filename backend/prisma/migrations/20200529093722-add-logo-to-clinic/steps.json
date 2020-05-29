@@ -1,0 +1,65 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "File",
+      "field": "Clinic",
+      "type": "Clinic",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Clinic",
+      "field": "logo",
+      "type": "File",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "logo"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "logo"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[logoId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "logo"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Clinic",
+      "field": "logoId",
+      "type": "String",
+      "arity": "Optional"
+    }
+  ]
+}

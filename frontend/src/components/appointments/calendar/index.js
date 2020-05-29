@@ -8,7 +8,7 @@ import * as R from 'ramda';
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { format } from 'services/date.service';
 import { AdjustAppointment, Div } from 'components';
-import { isAfterMoment } from 'utils/date';
+import { canAjdust } from 'services/appointment';
 
 const AppointmentTime = ({ appointment }) => (
   <>
@@ -18,7 +18,7 @@ const AppointmentTime = ({ appointment }) => (
         {appointment.type}
       </Div>
     </Link>
-    {isAfterMoment(appointment.date) && (
+    {canAjdust(appointment) && (
       <AdjustAppointment appointment={appointment} iconSize="lg" />
     )}
   </>

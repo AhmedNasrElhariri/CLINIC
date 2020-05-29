@@ -235,3 +235,37 @@ export const CANCEL_APPOINTMENT = gql`
     }
   }
 `;
+
+export const SINGLE_UPLOAD = gql`
+  mutation singleUpload($file: Upload!) {
+    singleUpload(file: $file) {
+      id
+      url
+    }
+  }
+`;
+
+export const GET_MY_CLINIC = gql`
+  query myClinic {
+    myClinic {
+      id
+      doctorName
+      doctorTitle
+      doctorJobDescription
+      address
+      phoneNo
+      logo {
+        id
+        url
+      }
+    }
+  }
+`;
+
+export const UPDATE_CLINIC = gql`
+  mutation updateClinic($clinic: ClinicInput!) {
+    updateClinic(clinic: $clinic) {
+      id
+    }
+  }
+`;

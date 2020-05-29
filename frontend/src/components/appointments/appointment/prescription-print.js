@@ -1,6 +1,10 @@
 import React from 'react';
+import * as R from 'ramda';
+
 import { formatDate } from 'utils/date';
 import styled from 'styled-components';
+import { Div } from 'components/widgets';
+import { Divider } from 'rsuite';
 
 const Info = ({ name, value }) => (
   <div className="info">
@@ -39,13 +43,19 @@ const PrescriptionSyled = styled.div`
     margin-left: 20px;
   }
 
-  & .body {
+  & .content-container {
     flex-grow: 1;
+    display: flex;
     border: 2px solid black;
     border-radius: 10px;
     margin-top: 15px;
     padding-left: 14px;
+    display: flex;
+    flex-direction: column;
+  }
 
+  & .body {
+    flex-grow: 1;
     & p {
       padding-left: 40px;
       padding-right: 20px;
@@ -54,26 +64,48 @@ const PrescriptionSyled = styled.div`
     }
   }
 
-  & img {
+  & .footer {
+    padding: 20px;
+    border-top: 1px solid #eeeeee;
+  }
+
+  & .rx {
     width: 60px;
+    height: 60px;
     display: block;
+  }
+
+  & .logo {
+    border-radius: 4px;
   }
 `;
 
-const PrescriptionPrint = React.forwardRef(({ content, name, age }, ref) => {
-  return (
-    <PrescriptionSyled ref={ref}>
-      <div className="header">
-        <Info name="Date" value={formatDate(new Date())} />
-        <Info name="Name" value={name} />
-        <Info name="Age" value={age} />
-      </div>
-      <div className="body">
-        <img src="/rx.png" alt="rx" />
-        <p>{content}</p>
-      </div>
-    </PrescriptionSyled>
-  );
-});
+const PrescriptionPrint = React.forwardRef(
+  ({ content, name, age, clinicInfo }, ref) => {
+    const logoUlr = R.path(['logo', 'url'])(clinicInfo);
+    return (
+      <PrescriptionSyled ref={ref}>
+        <Div display="flex" justifyContent="space-between">
+          <div className="header">
+            <Info name="Date" value={formatDate(new Date())} />
+            <Info name="Name" value={name} />
+            <Info name="Age" value={age} />
+          </div>
+          <img src={logoUlr} width={75} height={75} alt="" className="logo" />
+        </Div>
+        <div className="content-container">
+          <div className="body">
+            <img src="/rx.png" alt="rx" className="rx" />
+            <p>{content}</p>
+          </div>
+          <div className="footer">
+            <p><b>Tel: </b> {clinicInfo.phoneNo}</p>
+            <p><b>Address: </b>{clinicInfo.address}</p>
+          </div>
+        </div>
+      </PrescriptionSyled>
+    );
+  }
+);
 
 export default PrescriptionPrint;

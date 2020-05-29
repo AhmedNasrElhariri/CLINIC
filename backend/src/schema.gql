@@ -1,6 +1,7 @@
 scalar Date
 scalar VitalData
 scalar JSON
+scalar Upload
 
 enum PatientMembershipType {
   Primary
@@ -44,6 +45,7 @@ type Query {
   listMyViews: [View!]
   activeView: View!
   listMyViewsStatus: ViewStatus
+  myClinic: Clinic!
 }
 
 ########################### Mutation ##################################
@@ -62,6 +64,9 @@ type Mutation {
   createDefaultView: Boolean
   adjustAppointment(id: ID!, date: Date!): Appointment!
   cancelAppointment(id: ID!): Appointment!
+  singleUpload(file: Upload!): File!
+  multipleUpload(files: [Upload!]!): [File!]!
+  updateClinic(clinic: ClinicInput!): Clinic
 }
 
 ########################### Auth ##################################
@@ -204,4 +209,36 @@ input FieldInput {
   order: Int!
   type: FieldType!
   required: Boolean!
+}
+
+########################### File ##################################
+
+type Clinic {
+  id: ID
+  doctorName: String
+  doctorTitle: String
+  doctorJobDescription: String
+  address: String
+  phoneNo: String
+  logo: File
+}
+
+input ClinicInput {
+  id: ID
+  doctorName: String
+  doctorTitle: String
+  doctorJobDescription: String
+  address: String
+  phoneNo: String
+  logoId: ID
+}
+
+########################### File ##################################
+
+type File {
+  id: ID!
+  filename: String!
+  mimetype: String
+  encoding: String
+  url: String
 }

@@ -9,3 +9,5 @@ export const isBeforeToday = date => moment(date).isBefore(moment(), 'days');
 
 export const isAfterMoment = date => moment(date).isAfter(moment());
 export const isBeforeMoment = date => moment(date).isBefore(moment());
+
+export const isDateBefore = (d1, d2) => moment(d1).isBefore(moment(d2));

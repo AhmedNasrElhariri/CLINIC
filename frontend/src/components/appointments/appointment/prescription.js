@@ -1,22 +1,38 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Modal, Button, Input, Icon } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 
 import PrescriptionPrint from './prescription-print';
 
-const Prescription = ({ visible, patient, onClose }) => {
+const Prescription = ({
+  visible,
+  patient,
+  onClose,
+  content,
+  onChange,
+  clinicInfo,
+}) => {
   const ref = useRef();
-  const [content, setContent] = useState('');
 
   return (
     <>
       <Modal show={visible} onHide={onClose}>
-        <PrescriptionPrint ref={ref} content={content} {...patient} />
+        <PrescriptionPrint
+          ref={ref}
+          content={content}
+          clinicInfo={clinicInfo}
+          {...patient}
+        />
         <Modal.Header>
           <Modal.Title>Prescription</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Input componentClass="textarea" rows={38} onChange={setContent} />
+          <Input
+            componentClass="textarea"
+            value={content}
+            rows={38}
+            onChange={onChange}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={onClose} appearance="primary">

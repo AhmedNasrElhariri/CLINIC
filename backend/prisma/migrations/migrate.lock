@@ -6,3 +6,11 @@
 20200518072712-init
 20200518073540-updated-appointment-schema
 20200518080023-rename-occured-to-done
+20200528002001-file-table
+20200528093650-change-path-to-url
+20200529092228-add-clinic-model
+20200529093722-add-logo-to-clinic
+20200529164515-add-organization-id-to-user
+20200529184642-set-default-value-for-clinic
+20200529195745-add-phoneno-to-clinic
+20200529200310-set-default-value

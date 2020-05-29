@@ -20,7 +20,7 @@ function Root() {
   const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
   const { isVerified, isAuthenticated, setAuthenticated } = useAuth();
 
-  const [__, setActiveView] = useGlobalState('activeView');
+  const [_, setActiveView] = useGlobalState('activeView');
 
   useEffect(() => {
     if (isVerified && isAuthenticated) {

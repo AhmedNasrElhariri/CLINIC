@@ -8,6 +8,7 @@
     "apollo-boost": "^0.4.7",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-link-context": "^1.0.20",
+    "apollo-upload-client": "^13.0.0",
     "echarts": "^4.7.0",
     "font-awesome": "^4.7.0",
     "formik": "^2.1.4",

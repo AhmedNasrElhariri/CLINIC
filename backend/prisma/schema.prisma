@@ -55,6 +55,8 @@ model User {
   Appointment    Appointment[]
   View           View[]
   ViewStatus     ViewStatus[]
+  clinic         Clinic        @relation(fields: [clinicId], references: [id])
+  clinicId       String
 }
 
 model Patient {
@@ -136,4 +138,30 @@ model AppointmentField {
   value         String
 
   @@unique([appointmentId, fieldId], name: "appointment_fieldId_unique_constraint")
+}
+
+model File {
+  id       String   @default(uuid()) @id
+  url      String
+  filename String
+  mimetype String?
+  encoding String?
+  Clinic   Clinic[]
+}
+
+model Clinic {
+  id                   String  @default(uuid()) @id
+  // shown on prescription
+  doctorName           String? @default("''")
+  // shown on prescription
+  doctorTitle          String? @default("''")
+  phoneNo              String? @default("''")
+  // shown on prescription
+  doctorJobDescription String? @default("''")
+  // shown on prescription
+  address              String? @default("''")
+  logo                 File?   @relation(fields: [logoId], references: [id])
+  logoId               String?
+  users                User[]
+  organizationId       String
 }

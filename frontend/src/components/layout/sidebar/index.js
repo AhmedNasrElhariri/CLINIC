@@ -19,6 +19,12 @@ const items = [
   { to: '/reports', name: 'Reports' },
   { to: '/views', name: 'Views' },
 ];
+
+const settingsItems = [
+  { to: '/settings/appointment', name: 'Appointment' },
+  { to: '/settings/static', name: 'Static' },
+];
+
 const panelStyles = {
   padding: '15px 20px',
   color: '#aaa',
@@ -37,6 +43,15 @@ export default function Sidebar({ onLogout }) {
               Main
             </Dropdown.Item>
             {items.map(({ to, name }, idx) => (
+              <LinkWrapper key={idx} to={to} active={pathname === to}>
+                {name}
+              </LinkWrapper>
+            ))}
+            <Dropdown.Item divider />
+            <Dropdown.Item panel style={panelStyles}>
+              Settings
+            </Dropdown.Item>
+            {settingsItems.map(({ to, name }, idx) => (
               <LinkWrapper key={idx} to={to} active={pathname === to}>
                 {name}
               </LinkWrapper>

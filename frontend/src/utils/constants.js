@@ -11,3 +11,5 @@ export const FIELD_TYPES = [
   { label: 'Text', value: TEXT_FIELD_TYPE },
   { label: 'Text Area', value: LONG_TEXT_FIELD_TYPE },
 ];
+
+export const DAYS = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri'];

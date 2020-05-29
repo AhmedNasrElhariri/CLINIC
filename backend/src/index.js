@@ -8,6 +8,10 @@ import typeDefs from './schema.gql';
 import resolvers from './resolvers';
 import { getUserPayloads } from '@/services/auth.service';
 import { rule, shield, allow } from 'graphql-shield';
+import mkdirp from 'mkdirp';
+
+export const UPLOAD_DIR = '/uploads';
+mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
 
 export const prisma = new PrismaClient();
 
@@ -51,8 +55,10 @@ const server = new GraphQLServer({
 
 const app = server.express;
 
+app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
+
 if (process.env.NODE_ENV === 'production') {
-  server.express.use(express.static(path.join(__dirname, 'build')));
+  app.use(express.static(path.join(__dirname, 'build')));
   app.get('*', (req, res, next) => {
     if (
       req.url == options.playground ||

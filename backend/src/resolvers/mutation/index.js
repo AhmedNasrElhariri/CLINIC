@@ -11,3 +11,6 @@ export { default as activateView } from './activate-view';
 export { default as createDefaultView } from './create-default-view';
 export { default as adjustAppointment } from './adjust-appointment';
 export { default as cancelAppointment } from './cancel-appointment';
+export { default as singleUpload } from './single-upload';
+export { default as multipleUpload } from './multiple-upload';
+export { default as updateClinic } from './update-clinic';
