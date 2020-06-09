@@ -2,6 +2,8 @@ import express from 'express';
 import path from 'path';
 import { GraphQLServer } from 'graphql-yoga';
 import { AuthenticationError } from 'apollo-server-core';
+import moment from 'moment';
+import 'moment-timezone';
 
 import { PrismaClient } from '@prisma/client';
 import typeDefs from './schema.gql';
@@ -26,6 +28,14 @@ const isAuthenticated = rule({ cache: 'contextual' })(async (_, __, ctx) => {
   ctx.userId = userId;
   ctx.organizationId = organizationId;
   return true;
+});
+
+moment.tz.setDefault('Africa/Cairo');
+moment.updateLocale('en', {
+  week: {
+    dow: 6,
+    doy: 12,
+  },
 });
 
 const permissions = shield(

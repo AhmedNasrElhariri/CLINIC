@@ -23,14 +23,18 @@ module.exports = merge(common, {
         from: 'node_modules/.prisma/client/query-engine-debian-openssl-1.1.x',
         to: '',
       },
+      {
+        from: '../frontend/build/',
+        to: 'build',
+      },
+      {
+        from: './prisma/migrations/',
+        to: 'migrations',
+      },
+      {
+        from: './prisma/.env',
+        to: '',
+      },
     ]),
-    // new CopyPlugin([
-    //   { from: 'node_modules/@prisma/client/index.js', to: 'dist' },
-    //   { from: 'node_modules/@prisma/schema.prisma', to: 'dist' },
-    //   {
-    //     from: 'node_modules/@prisma/query-engine-debian-openssl-1.1.x',
-    //     to: 'dist',
-    //   },
-    // ]),
   ],
 });

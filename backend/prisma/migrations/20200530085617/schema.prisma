@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -175,11 +175,9 @@ model Week {
 }
 
 model WorkingHours {
-  id       String   @default(uuid()) @id
-  week     Week     @relation(fields: [weekId], references: [id])
-  weekId   String
-  doctor   User     @relation(fields: [doctorId], references: [id])
-  doctorId String
-  start    DateTime
-  end      DateTime
+  id     String   @default(uuid()) @id
+  week   Week     @relation(fields: [weekId], references: [id])
+  weekId String
+  start  DateTime
+  end    DateTime
 }

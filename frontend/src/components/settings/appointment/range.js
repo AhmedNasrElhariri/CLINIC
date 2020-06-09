@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { RangeSlider } from 'rsuite';
 
-function Range({ disabled }) {
+function Range({ disabled, value, onChange }) {
   return (
     <RangeSlider
       disabled={disabled}
-      defaultValue={[360, 600]}
+      value={value}
       step={30}
       graduated
       progress
@@ -27,6 +27,7 @@ function Range({ disabled }) {
         }
         return null;
       }}
+      onChange={onChange}
     />
   );
 }
