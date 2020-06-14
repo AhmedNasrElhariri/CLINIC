@@ -4,13 +4,13 @@ import { GraphQLServer } from 'graphql-yoga';
 import { AuthenticationError } from 'apollo-server-core';
 import moment from 'moment';
 import 'moment-timezone';
+import { rule, shield, allow } from 'graphql-shield';
+import mkdirp from 'mkdirp';
 
 import { PrismaClient } from '@prisma/client';
 import typeDefs from './schema.gql';
 import resolvers from './resolvers';
 import { getUserPayloads } from '@/services/auth.service';
-import { rule, shield, allow } from 'graphql-shield';
-import mkdirp from 'mkdirp';
 
 export const UPLOAD_DIR = '/uploads';
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));

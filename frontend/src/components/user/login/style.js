@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import { Div } from 'components';
 
-const FormStyled = styled.div`
-  width: 300px;
+export const CoverStyled = styled(Div)`
+  background-image: url('images/login.png');
+  background-size: cover;
 `;
-
-export { FormStyled };

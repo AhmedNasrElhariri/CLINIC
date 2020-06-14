@@ -1,30 +1,15 @@
-import React, { useRef, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import * as R from 'ramda';
-import { useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import {
-  List,
-  FlexboxGrid,
-  Button,
-  Icon,
-  Alert,
-  PanelGroup,
-  Panel,
-  Divider,
-} from 'rsuite';
-import ReactToPrint from 'react-to-print';
+import { Alert } from 'rsuite';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
-import { AppointmentPrintout, AdjustAppointment, Div } from 'components';
-import { getStartOfDay, format, getEndOfDay } from 'services/date.service';
-import { isScheduled } from 'services/appointment';
+import { Div } from 'components';
 import { SET_APPOINTMENT_DONE } from 'apollo-client/queries';
-import { isAfterMoment } from 'utils/date';
+import { getStartOfDay, getEndOfDay } from 'services/date.service';
 import ListAppointments from './list-appointments';
 
 function AppointmentCalendar() {
-  const history = useHistory();
-  const componentRef = useRef();
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
@@ -67,31 +52,18 @@ function AppointmentCalendar() {
   return (
     <>
       <ListAppointments
-        title="Upcoming"
+        title="Upcoming Appointments"
         appointments={upcomingAppointments}
         onDone={onClickDone}
+        defaultExpanded={true}
       />
       <Div my={5} />
       <ListAppointments
-        title="Completed"
+        title="Completed Appointments"
         appointments={completedAppointments}
         onDone={onClickDone}
       />
     </>
-    // <PanelGroup>
-    //   <Panel header="Upcoming">
-    //     <ListAppointments
-    //       appointments={upcomingAppointments}
-    //       onDone={onClickDone}
-    //     />
-    //   </Panel>
-    //   <Panel header="Completed">
-    //     <ListAppointments
-    //       appointments={completedAppointments}
-    //       onDone={onClickDone}
-    //     />
-    //   </Panel>
-    // </PanelGroup>
   );
 }
 

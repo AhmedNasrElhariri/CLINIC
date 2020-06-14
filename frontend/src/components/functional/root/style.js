@@ -1,39 +1,14 @@
-import styled, { createGlobalStyle } from 'styled-components';
-
-export const GlobalStyle = createGlobalStyle`
-    body {
-      margin: 0;
-      padding:0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    code {
-      font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
-    }
-
-    .no-list-style {
-      list-style-type:none;
-    }
-
-    .cursor-pointer{
-      cursor: pointer;
-    }
-
-
-`;
+import styled from 'styled-components';
 
 export const ContainerStyled = styled.div`
   display: flex;
 `;
 
-export const ContentContainerStyled = styled.div`
-  padding: 1rem 3rem;
-  width: 100%;
+export const MainStyled = styled.div`
+  flex-grow: 1;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
 `;
 
 export const LoginContainerStyled = styled.div`
@@ -42,5 +17,12 @@ export const LoginContainerStyled = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 5rem;
+`;
+
+export const ContentStyled = styled.div`
+  flex-grow: 1;
+  width: 100%;
+  border: solid 1px rgb(112, 112, 112, 0.03);
+  background-color: ${props => props.theme.colors.background};
+  padding: 64px;
 `;

@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import {
-  Form,
-  InputNumber,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Button,
-  SelectPicker,
-  Schema,
-  Alert,
-} from 'rsuite';
+import { Form, InputNumber, Button, SelectPicker, Schema, Alert } from 'rsuite';
 
-import { FormStyled } from './style';
 import { CREATE_PATIENT, LIST_PATIENTS } from 'apollo-client/queries';
+import {
+  CRSelectInput,
+  CRTextInput,
+  CRNumberInput,
+  CRButton,
+} from 'components';
 
 const membershipTypes = [
   { label: 'Primary', value: 'Primary' },
@@ -62,66 +57,55 @@ function NewPatient({ onCreate }) {
     onError: () => Alert.error('Invalid Input'),
   });
 
+  // console.log(formValue);
+
   return (
-    <FormStyled>
-      <Form
-        fluid
-        model={model}
-        formValue={formValue}
-        onChange={value => SetFormValue(value)}
+    <Form
+      fluid
+      model={model}
+      formValue={formValue}
+      onChange={value => SetFormValue(value)}
+    >
+      <CRSelectInput
+        label="Membership Type"
+        name="type"
+        accepter={SelectPicker}
+        searchable={false}
+        data={membershipTypes}
+        block
+      />
+
+      <CRTextInput label="Patient Name" name="name" />
+
+      <CRTextInput label="Phone no" name="phoneNo" />
+
+      <CRNumberInput label="Age" name="age" />
+
+      <CRTextInput label="Guardian's Name" name="guardianName" />
+
+      <CRTextInput label="Guardian's Phone No" name="guardianPhoneNo" />
+
+      <CRSelectInput
+        label="Sex"
+        name="type"
+        searchable={false}
+        data={SEX}
+        block
+      />
+
+      <CRButton
+        block
+        onClick={() =>
+          createPatient({
+            variables: {
+              input: { ...formValue, age: Number(formValue.age) },
+            },
+          })
+        }
       >
-        <FormGroup>
-          <ControlLabel>Membership Type</ControlLabel>
-          <FormControl
-            name="type"
-            accepter={SelectPicker}
-            searchable={false}
-            data={membershipTypes}
-            block
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <ControlLabel>Patient Name</ControlLabel>
-          <FormControl name="name" />
-        </FormGroup>
-
-        <FormGroup>
-          <ControlLabel>Phone no</ControlLabel>
-          <FormControl name="phoneNo" />
-        </FormGroup>
-
-        <FormGroup>
-          <ControlLabel>Age</ControlLabel>
-          <FormControl name="age" accepter={InputNumber} />
-        </FormGroup>
-
-        <FormGroup>
-          <ControlLabel>Sex</ControlLabel>
-          <FormControl
-            name="sex"
-            accepter={SelectPicker}
-            searchable={false}
-            data={SEX}
-            block
-          />
-        </FormGroup>
-
-        <Button
-          appearance="primary"
-          block
-          onClick={() =>
-            createPatient({
-              variables: {
-                input: { ...formValue, age: Number(formValue.age) },
-              },
-            })
-          }
-        >
-          Create
-        </Button>
-      </Form>
-    </FormStyled>
+        Create
+      </CRButton>
+    </Form>
   );
 }
 

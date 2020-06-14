@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Panel, FlexboxGrid } from 'rsuite';
-import { styles } from 'components/widgets';
+import { styles } from 'components/widgets/html';
 
 
 

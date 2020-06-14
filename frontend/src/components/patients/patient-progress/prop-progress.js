@@ -6,8 +6,7 @@ import Line from '@rsuite/charts/lib/series/Line';
 import YAxis from '@rsuite/charts/lib/components/YAxis';
 
 import { formatDate } from 'utils/date';
-import { isValidNumber } from 'utils/nubmer';
-import { Div } from 'components/widgets';
+import { Div } from 'components/widgets/html';
 import { KeyStyled, ValueStyled } from 'components/misc';
 
 const Value = ({ value }) => {

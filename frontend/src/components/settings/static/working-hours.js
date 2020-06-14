@@ -3,7 +3,7 @@ import moment from 'moment';
 import { RangeSlider, Checkbox } from 'rsuite';
 
 import Range from './range';
-import { Div } from 'components/widgets';
+import { Div } from 'components/widgets/html';
 import { DAYS } from 'utils/constants';
 
 const initValue = DAYS.map(d => ({

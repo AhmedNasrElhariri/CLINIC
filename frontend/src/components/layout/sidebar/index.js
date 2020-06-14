@@ -1,18 +1,13 @@
 import React from 'react';
 
-import { Dropdown, Nav, Sidenav } from 'rsuite';
-import { ContainerStyled } from './style';
-import { Link, useLocation } from 'react-router-dom';
+import { ContainerStyled, BodyStyled } from './style';
+import { useLocation } from 'react-router-dom';
 
-const LinkWrapper = React.forwardRef(({ children, ...rest }, ref) => (
-  <Dropdown.Item componentClass={Link} {...rest}>
-    {children}
-  </Dropdown.Item>
-));
+import Link from './link';
+import { Div, Img } from 'components';
 
 const items = [
-  { to: '/appointments/new', name: 'New Appointment' },
-  { to: '/appointments/today', name: 'Today Appointments' },
+  { to: '/appointments/today', name: `Today's Appointments` },
   { to: '/calendar', name: 'Calendar' },
   { to: '/appointments', name: 'Appointments' },
   { to: '/patients', name: 'Patients' },
@@ -20,50 +15,21 @@ const items = [
   { to: '/views', name: 'Views' },
 ];
 
-const settingsItems = [
-  { to: '/settings/appointment', name: 'Appointment' },
-  { to: '/settings/static', name: 'Static' },
-];
-
-const panelStyles = {
-  padding: '15px 20px',
-  color: '#aaa',
-};
-
 export default function Sidebar({ onLogout }) {
   const { pathname } = useLocation();
 
   return (
     <ContainerStyled defaultOpenKeys={['1', '2']}>
-      <Sidenav.Body>
-        <Nav>
-          <Dropdown eventKey="1" title="Clinic R">
-            <Dropdown.Item divider />
-            <Dropdown.Item panel style={panelStyles}>
-              Main
-            </Dropdown.Item>
-            {items.map(({ to, name }, idx) => (
-              <LinkWrapper key={idx} to={to} active={pathname === to}>
-                {name}
-              </LinkWrapper>
-            ))}
-            <Dropdown.Item divider />
-            <Dropdown.Item panel style={panelStyles}>
-              Settings
-            </Dropdown.Item>
-            {settingsItems.map(({ to, name }, idx) => (
-              <LinkWrapper key={idx} to={to} active={pathname === to}>
-                {name}
-              </LinkWrapper>
-            ))}
-            <Dropdown.Item divider />
-            <Dropdown.Item panel style={panelStyles}>
-              User
-            </Dropdown.Item>
-            <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
-          </Dropdown>
-        </Nav>
-      </Sidenav.Body>
+      <Div position="absolute" left={35} top={50}>
+        <Img src="/logo.png" alt="" width={120} />
+      </Div>
+      <BodyStyled>
+        {items.map(({ to, name }, idx) => (
+          <Link key={idx} to={to} active={pathname === to}>
+            {name}
+          </Link>
+        ))}
+      </BodyStyled>
     </ContainerStyled>
   );
 }

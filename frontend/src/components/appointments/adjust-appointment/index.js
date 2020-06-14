@@ -21,6 +21,8 @@ import {
   LIST_APPOINTMENTS,
 } from 'apollo-client/queries';
 
+import { EditOLIcon, DeleteOLIcon } from 'components/icons';
+
 const calcDate = ({ date, time }) =>
   moment(date)
     .set({
@@ -97,12 +99,8 @@ export default ({ appointment, iconSize = 'lg' }) => {
 
   return (
     <Div display="inline-flex">
-      <Div>
-        <Icon icon="calendar" size={iconSize} onClick={() => onOpen('edit')} />
-      </Div>
-      <Div ml={2}>
-        <Icon icon="close" size={iconSize} onClick={() => onOpen('cancel')} />
-      </Div>
+      <EditOLIcon onClick={() => onOpen('edit')} ml={2} />
+      <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
 
       <Modal show={visible.edit}>
         <Form formValue={formValue} onChange={setFormValue}>

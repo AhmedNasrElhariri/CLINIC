@@ -5,7 +5,6 @@ import { ControlLabel } from 'rsuite';
 export const ControlLabelStyled = styled(ControlLabel)`
   margin-bottom: 0px;
   font-size: 13px;
-  /* font-weight: 600; */
 `;
 
 ControlLabelStyled.propTypes = {

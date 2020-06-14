@@ -1,3 +1,15 @@
+/******************       Widgets    *********************************/
+export { H1, H2, H3, H4, H5, H6, Img, Div } from './widgets/html';
+export { default as InputField } from './widgets/input-field';
+export { default as CheckField } from './widgets/check-field';
+export { default as CRTextInput } from './widgets/text-input';
+export { default as CRNumberInput } from './widgets/number-input';
+export { default as CRSelectInput } from './widgets/select-input';
+export { default as CRButton } from './widgets/button';
+export { default as CRDatePicker } from './widgets/date-picker';
+export { default as CRTimePicker } from './widgets/time-picker';
+
+/******************       functional  *********************************/
 export { default as Root } from './functional/root';
 export { default as AppRouter } from './functional/router';
 
@@ -26,11 +38,6 @@ export { default as AppointmentPrintout } from './printouts/appointment-printout
 
 /******************       Reports    *********************************/
 export { default as Reports } from './reports/reports';
-
-/******************       Widgets    *********************************/
-export { H3, H4, H5, Div } from './widgets';
-export { default as InputField } from './widgets/input-field';
-export { default as CheckField } from './widgets/check-field';
 
 /******************       Views    *********************************/
 export { default as ListViews } from './views/list-views';

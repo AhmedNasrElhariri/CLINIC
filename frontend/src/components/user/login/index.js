@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import {
-  Alert,
-  Form,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Button,
-  Input,
-  Schema,
-  Panel,
-} from 'rsuite';
+import { Alert, Form, Schema } from 'rsuite';
 
+import { Div, CRTextInput, CRButton, H1 } from 'components';
 import { LOGIN } from 'apollo-client/queries';
-import { FormStyled } from './style';
+import { CoverStyled } from './style';
 
 const { StringType } = Schema.Types;
 
@@ -28,7 +19,7 @@ const initialValues = {
 };
 
 function Login({ onLoginSucceeded, onLoginFailed }) {
-  const [formValue, SetFormValue] = useState(initialValues);
+  const [formValue, setFormValue] = useState(initialValues);
 
   const [login] = useMutation(LOGIN, {
     onCompleted: ({ login: { token } }) => {
@@ -42,34 +33,50 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
   });
 
   return (
-    <Panel shaded>
-      <FormStyled>
-        <Form
-          fluid
-          model={model}
-          formValue={formValue}
-          onChange={value => SetFormValue(value)}
-        >
-          <FormGroup>
-            <ControlLabel>Email</ControlLabel>
-            <FormControl name="email" accepter={Input} />
-          </FormGroup>
-
-          <FormGroup>
-            <ControlLabel>Passoword</ControlLabel>
-            <FormControl name="password" type="password" accepter={Input} />
-          </FormGroup>
-
-          <Button
-            appearance="primary"
-            block
-            onClick={() => login({ variables: { ...formValue } })}
-          >
-            Login
-          </Button>
-        </Form>
-      </FormStyled>
-    </Panel>
+    <Div display="flex" width="100%" height="100vh">
+      <Div
+        flexGrow={1}
+        width="100%"
+        pt={90}
+        display="flex"
+        flexDirection="column"
+      >
+        <Div>
+          <Div as="img" src="logo.png" alt="" width="auto" />
+        </Div>
+        <Div flexGrow={1}>
+          <Div>
+            <H1 variant="primary" textTransform="uppercase">
+              Appointments
+            </H1>
+            <H1 variant="dark" textTransform="uppercase">
+              Reports
+            </H1>
+            <H1 variant="dark" textTransform="uppercase">
+              Agenda
+            </H1>
+          </Div>
+          <Div width={447}>
+            <Form
+              fluid
+              model={model}
+              formValue={formValue}
+              onChange={value => setFormValue(value)}
+            >
+              <CRTextInput placeholder="Email" name="email" />
+              <CRTextInput placeholder="Password" name="password" type="password" />
+              <CRButton
+                block
+                onClick={() => login({ variables: { ...formValue } })}
+              >
+                Login
+              </CRButton>
+            </Form>
+          </Div>
+        </Div>
+      </Div>
+      <CoverStyled flexGrow={1} width="100%" />
+    </Div>
   );
 }
 

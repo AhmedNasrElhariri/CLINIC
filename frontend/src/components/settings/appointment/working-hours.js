@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import { Checkbox, Button } from 'rsuite';
 
 import Range from './range';
-import { Div } from 'components/widgets';
+import { Div } from 'components/widgets/html';
 import { DAYS } from 'utils/constants';
 
 const initValue = DAYS.map(d => ({

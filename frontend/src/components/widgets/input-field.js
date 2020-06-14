@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormGroup, FormControl, ControlLabel } from 'rsuite';
+import { FormGroup, FormControl } from 'rsuite';
 
 export default ({ label, ...rest }) => {
   return (

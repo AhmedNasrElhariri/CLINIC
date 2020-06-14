@@ -7,14 +7,16 @@ import * as R from 'ramda';
 
 import { AppRouter, Login } from 'components';
 import {
-  GlobalStyle,
   ContainerStyled,
-  ContentContainerStyled,
+  MainStyled,
+  ContentStyled,
   LoginContainerStyled,
 } from './style';
 import Sidebar from 'components/layout/sidebar';
+import Navbar from 'components/layout/navbar';
 import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
+import NewAppointment from 'components/appointments/new-appointment';
 
 function Root() {
   const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
@@ -60,14 +62,17 @@ function Root() {
 
   return (
     <BrowserRouter>
-      <GlobalStyle></GlobalStyle>
       <ContainerStyled>
         {isAuthenticated ? (
           <>
             <Sidebar onLogout={logout} />
-            <ContentContainerStyled>
-              <AppRouter></AppRouter>
-            </ContentContainerStyled>
+            <MainStyled>
+              <Navbar />
+              <ContentStyled>
+                <AppRouter></AppRouter>
+              </ContentStyled>
+            </MainStyled>
+            <NewAppointment />
           </>
         ) : (
           <>
