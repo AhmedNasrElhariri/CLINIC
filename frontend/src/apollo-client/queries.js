@@ -32,6 +32,7 @@ export const LIST_PATIENTS = gql`
       id
       name
       type
+      phoneNo
     }
   }
 `;
@@ -82,6 +83,8 @@ export const GET_APPOINTMENT = gql`
         name
         age
         sex
+        type
+        phoneNo
       }
     }
   }

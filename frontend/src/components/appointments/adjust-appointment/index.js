@@ -1,18 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import {
-  Icon,
   DatePicker,
-  Modal,
-  Divider,
-  Button,
   Alert,
-  Form,
-  FormControl,
+  Form
 } from 'rsuite';
 import { useMutation } from '@apollo/react-hooks';
 import moment from 'moment';
 
-import { Div } from 'components';
+import { Div, CRModal, CRCard, CRDatePicker, H6 } from 'components';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { isBeforeToday, formatDate } from 'utils/date';
 import {
@@ -33,7 +28,7 @@ const calcDate = ({ date, time }) =>
     })
     .toDate();
 
-export default ({ appointment, iconSize = 'lg' }) => {
+export default ({ appointment }) => {
   const [visible, setVisible] = useState({ edit: false, cancel: false });
   const [formValue, setFormValue] = useState({
     date: null,
@@ -102,29 +97,43 @@ export default ({ appointment, iconSize = 'lg' }) => {
       <EditOLIcon onClick={() => onOpen('edit')} ml={2} />
       <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
 
-      <Modal show={visible.edit}>
-        <Form formValue={formValue} onChange={setFormValue}>
+      <CRModal
+        show={visible.edit}
+        header="Adjust Appointment"
+        bodyStyle={{
+          padding: '40px 89px ',
+        }}
+        okTitle="Adjust"
+        onOk={onAdjust}
+        onCancel={() => onClose('edit')}
+        onHide={() => onClose('edit')}
+      >
+        <Form formValue={formValue} onChange={setFormValue} fluid>
           <Div my={3}>
-            <Div as="h6" mb={2}>
-              Old Date
-            </Div>
-            {formatDate(appointment.date, STANDARD_DATE_FORMAT + ' HH:mm')}
-            <Divider />
-            <Div as="h6" mb={2}>
-              New Date
-            </Div>
-            <Div display="flex">
-              <Div flexGrow={1}>
-                <FormControl
-                  format={STANDARD_DATE_FORMAT}
+            <CRCard>
+              <H6 color="texts.1" mb={3}>
+                Old Date
+              </H6>
+              <H6>
+                {formatDate(
+                  appointment.date,
+                  STANDARD_DATE_FORMAT + ' - hh:mm a'
+                )}
+              </H6>
+            </CRCard>
+
+            <CRCard mt={40} pb={50}>
+              <H6 color="texts.1" mb={3}>
+                New Date
+              </H6>
+              <Div px={53}>
+                <CRDatePicker
                   disabledDate={isBeforeToday}
                   accepter={DatePicker}
                   name="date"
                   block
                 />
-              </Div>
-              <Div flexGrow={1}>
-                <FormControl
+                <CRDatePicker
                   format="HH:mm"
                   hideMinutes={minute => minute % 5 !== 0}
                   name="time"
@@ -133,39 +142,19 @@ export default ({ appointment, iconSize = 'lg' }) => {
                   block
                 />
               </Div>
-            </Div>
+            </CRCard>
           </Div>
         </Form>
-        <Modal.Footer>
-          <Button appearance="primary" onClick={onAdjust}>
-            Adjust
-          </Button>
-          <Button appearance="subtle" onClick={() => onClose('edit')}>
-            Cancel
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      </CRModal>
 
-      <Modal backdrop="static" show={visible.cancel} size="xs">
-        <Modal.Body>
-          <Icon
-            icon="remind"
-            style={{
-              color: '#ffb300',
-              fontSize: 24,
-            }}
-          />
-          Cancel Appointment?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button appearance="primary" onClick={onCancel}>
-            Ok
-          </Button>
-          <Button appearance="subtle" onClick={() => onClose('cancel')}>
-            Cancel
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <CRModal
+        onOk={onCancel}
+        onCancel={() => onClose('cancel')}
+        show={visible.cancel}
+        header="Cancel Appointment"
+      >
+        <Div textAlign="center">Are you Sure you want to Cancel Appointment?</Div>
+      </CRModal>
     </Div>
   );
 };

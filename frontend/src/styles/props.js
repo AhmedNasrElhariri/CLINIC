@@ -7,3 +7,7 @@ export const textTransform = system({
 export const cursor = system({
   cursor: true,
 });
+
+export const zIndex = system({
+  zIndex: true,
+});

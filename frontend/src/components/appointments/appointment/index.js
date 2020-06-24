@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Nav, ButtonToolbar, Button, Icon, Alert } from 'rsuite';
+import { ButtonToolbar, Button, Icon, Alert } from 'rsuite';
 
 import {
   GET_APPOINTMENT,
@@ -13,7 +13,14 @@ import {
 } from 'apollo-client/queries';
 
 import PatientInfo from './patient-info';
-import { H5, Div, PatientProgress, PatientHistory } from 'components';
+import {
+  Div,
+  PatientProgress,
+  PatientSummary,
+  H3,
+  CRNav,
+  CRButton,
+} from 'components';
 import AppointmentData from './appointment-data';
 import Prescription from './prescription';
 import useGlobalState from 'state';
@@ -25,14 +32,14 @@ import {
   isArchived,
 } from 'services/appointment';
 
-const tabs = ['Home', 'History', 'Progress'];
+const tabs = ['Home', 'Summary', 'Progress'];
 
 function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [view] = useGlobalState('activeView');
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('0');
+  const [activeTab, setActiveTab] = useState('2');
   const { data: clinicInfo } = useQuery(GET_MY_CLINIC);
   let { appointmentId } = useParams();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
@@ -118,63 +125,63 @@ function Appointment() {
   }, [normalizedFields]);
 
   return (
-    <>
-      <H5 mb={2}>Reservation</H5>
-      <Div display="flex">
-        <Div flexGrow={1}>
-          <Div display="flex" justifyContent="space-between">
-            <Nav
-              appearance="tabs"
-              activeKey={activeTab}
-              onSelect={setActiveTab}
-            >
-              {tabs.map((t, idx) => (
-                <Nav.Item eventKey={idx + ''} key={idx}>
-                  {t}
-                </Nav.Item>
-              ))}
-            </Nav>
-            <ButtonToolbar>
-              <Button color="blue" onClick={() => setPrescriptionVisible(true)}>
-                Prescription <Icon icon="add" />
-              </Button>
-              <Button color="blue" onClick={onUpdate} disabled={disabled}>
-                Save <Icon icon="save" />
-              </Button>
-              <Button
-                color="violet"
-                appearance="ghost"
-                onClick={onArchive}
-                disabled={disabled}
+    <Div display="flex">
+      <Div flexGrow={1}>
+        <Div display="flex" justifyContent="space-between">
+          <H3 mb={64}>Appointment</H3>
+          <ButtonToolbar>
+            <CRButton primary onClick={() => setPrescriptionVisible(true)}>
+              Prescription
+              <Icon icon="add" />
+            </CRButton>
+            <CRButton primary onClick={onUpdate} disabled={disabled}>
+              Save <Icon icon="save" />
+            </CRButton>
+            <CRButton primary onClick={onArchive} disabled={disabled}>
+              Archive <Icon icon="archive" />
+            </CRButton>
+            <Button color="red" appearance="link">
+              Delete <Icon icon="trash-o" />
+            </Button>
+          </ButtonToolbar>
+        </Div>
+        <Div display="flex">
+          <Div flexGrow={1}>
+            <Div display="flex" justifyContent="space-between">
+              <CRNav
+                appearance="tabs"
+                activeKey={activeTab}
+                onSelect={setActiveTab}
               >
-                Archive <Icon icon="archive" />
-              </Button>
-              <Button color="red" appearance="link">
-                Delete <Icon icon="trash-o" />
-              </Button>
-            </ButtonToolbar>
-          </Div>
-          <Div py={3}>
-            {showComp('0') && (
-              <AppointmentData
-                disabled={disabled}
-                formValue={formValue}
-                onChange={setFormValue}
-                groups={groups}
-              />
-            )}
-            {showComp('1') && <PatientHistory history={appointmentHistory} />}
-            {showComp('2') && (
-              <PatientProgress
-                history={appointmentHistory}
-                viewFields={viewFields}
-              />
-            )}
+                {tabs.map((t, idx) => (
+                  <CRNav.CRItem eventKey={idx + ''} key={idx}>
+                    {t}
+                  </CRNav.CRItem>
+                ))}
+              </CRNav>
+            </Div>
+            <Div py={3} bg="white">
+              {showComp('0') && (
+                <AppointmentData
+                  disabled={disabled}
+                  formValue={formValue}
+                  onChange={setFormValue}
+                  groups={groups}
+                />
+              )}
+              {showComp('1') && <PatientSummary summary={appointmentHistory} />}
+              {showComp('2') && (
+                <PatientProgress
+                  history={appointmentHistory}
+                  viewFields={viewFields}
+                />
+              )}
+            </Div>
           </Div>
         </Div>
-        <Div width="320px">
-          <PatientInfo patient={patient} />
-        </Div>
+      </Div>
+      <Div width={325} ml={64}>
+        <PatientInfo patient={patient} />
       </Div>
       <Prescription
         visible={isPrescriptionVisible}
@@ -188,7 +195,7 @@ function Appointment() {
           );
         }}
       />
-    </>
+    </Div>
   );
 }
 

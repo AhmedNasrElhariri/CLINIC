@@ -17,7 +17,7 @@ export const Headers = styled(FlexboxGrid)`
 
 Headers.Item = ({ children }) => (
   <FlexboxGrid.Item colspan={4}>
-    <H6 color="texts.1">{children}</H6>
+    <H6 color="texts.2">{children}</H6>
   </FlexboxGrid.Item>
 );
 

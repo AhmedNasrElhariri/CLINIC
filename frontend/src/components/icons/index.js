@@ -35,4 +35,14 @@ export const ExitOLIcon = props => (
   <IconStyled src="/icons/exit-outline.png" {...props} />
 );
 
-export const AddIcon = props => <IconStyled src="/icons/plus.png" {...props} />;
+export const AddIcon = props => <IconStyled src="/icons/add.png" {...props} />;
+
+export const MinusIcon = props => <IconStyled src="/icons/minus.png" {...props} />;
+
+export const NotificationIcon = props => (
+  <IconStyled src="/icons/notification.png" {...props} />
+);
+
+export const SettingsIcon = props => (
+  <IconStyled src="/icons/settings.png" {...props} />
+);

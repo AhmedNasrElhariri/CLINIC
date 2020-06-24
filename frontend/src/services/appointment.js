@@ -86,7 +86,6 @@ export const isArchived = appointment => appointment.status === 'Archived';
 export const isScheduled = appointment => appointment.status === 'Scheduled';
 
 export const canAjdust = appointment => {
-  return true;
   return (
     appointment.status === 'Scheduled' &&
     isDateBefore(new Date(), appointment.date)

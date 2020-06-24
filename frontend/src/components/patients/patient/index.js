@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { Nav } from 'rsuite';
 
 import { GET_PATIENT } from 'apollo-client/queries';
-import { H5, Div, PatientHistory, PatientProgress } from 'components';
+import { H5, Div, PatientSummary, PatientProgress } from 'components';
 
 const tabs = ['History', 'Progress'];
 
@@ -35,7 +35,7 @@ function Appointment() {
         </Nav>
       </Div>
       <Div py={3}>
-        {showComp('0') && <PatientHistory history={appointments} />}
+        {showComp('0') && <PatientSummary summary={appointments} />}
         {showComp('1') && <PatientProgress history={appointments} />}
       </Div>
     </>

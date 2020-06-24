@@ -7,7 +7,7 @@ import {
   TodayAppointment,
   Appointment,
   Appointments,
-  Patients,
+  ListPatients,
   Patient,
   Reports,
   ListViews,
@@ -36,7 +36,7 @@ function AppRouter() {
         <Appointment />
       </Route>
       <Route path="/patients" exact>
-        <Patients />
+        <ListPatients />
       </Route>
       <Route path="/patients/:patientId">
         <Patient />

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Modal } from 'rsuite';
 
@@ -30,9 +30,6 @@ const NewPatientModalBody = styled(Modal.Body)`
 `;
 
 export default function NewAppointmentModal({ open, onHide }) {
-  // const [open, setOpen] = useState(true);
-  // const hideModal = useCallback(() => setOpen(false), []);
-
   return (
     <>
       <ModalBodyStyled show={open} onHide={onHide}>

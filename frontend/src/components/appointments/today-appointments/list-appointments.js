@@ -81,7 +81,9 @@ function ListAppointments({
                     <FlexboxGrid justify="end" align="middle">
                       {isScheduled(appointment) ? (
                         <CRButton
-                          variant="primary"
+                          primary
+                          round
+                          small
                           onClick={e => {
                             e.stopPropagation();
                             onDone(appointment);

@@ -62,7 +62,7 @@ const VBorder = styled.span`
 `;
 
 export default ({ to, active, children, ...props }) => (
-  <LinkStyled to={to} active={active} {...props}>
+  <LinkStyled to={to} active={active ? 1 : 0} {...props}>
     <span>{children}</span>
     <VBorder active={active} />
   </LinkStyled>

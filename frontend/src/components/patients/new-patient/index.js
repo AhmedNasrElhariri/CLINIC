@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { Form, InputNumber, Button, SelectPicker, Schema, Alert } from 'rsuite';
+import { Form, SelectPicker, Schema, Alert } from 'rsuite';
 
 import { CREATE_PATIENT, LIST_PATIENTS } from 'apollo-client/queries';
 import {
@@ -38,6 +38,7 @@ const initialValues = {
   name: '',
   phoneNo: '',
   age: '',
+  type: membershipTypes[0].value,
 };
 
 function NewPatient({ onCreate }) {
@@ -56,8 +57,6 @@ function NewPatient({ onCreate }) {
     },
     onError: () => Alert.error('Invalid Input'),
   });
-
-  // console.log(formValue);
 
   return (
     <Form

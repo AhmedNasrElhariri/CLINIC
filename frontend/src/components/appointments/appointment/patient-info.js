@@ -1,42 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Sidenav, Nav, Dropdown, Divider } from 'rsuite';
+import styled from 'styled-components';
 
-import { KeyStyled, ValueStyled } from 'components/misc';
 
-const generalInfo = [
-  {
-    name: 'Name',
-    prop: 'name',
-  },
-  {
-    name: 'Sex',
-    prop: 'sex',
-  },
-  {
-    name: 'Age',
-    prop: 'age',
-  },
-];
+import { CRCard, H3, H5, P, Div, Img } from 'components';
+
+const PatientIntials = styled.div`
+  border-radius: ${props => props.theme.radius}px;
+  background-color: ${props => props.theme.colors.primaryLighter};
+  width: 76px;
+  height: 76px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Summary = ({ patient }) => (
+  <>
+    <Div display="flex">
+      <PatientIntials>
+        <H5>JD</H5>
+      </PatientIntials>
+      <Div ml={3} display="flex" alignItems="center">
+        <Div>
+          <H5 fontWeight={600}>{patient.name}</H5>
+          <P variant="primary" fontWeight={600}>
+            {patient.type}
+          </P>
+        </Div>
+      </Div>
+    </Div>
+    <P>
+      {patient.sex} . {patient.age} yrs
+    </P>
+  </>
+);
+
+const Detail = ({ img, children }) => (
+  <Div display="flex" alignItems="center">
+    <Img src={img} alt="" width={35} height={35} />
+    <P ml={25}>{children}</P>
+  </Div>
+);
 
 export default function PatientInfo({ patient }) {
   return (
-    <Sidenav defaultOpenKeys={['3', '4']}>
-      <Sidenav.Body>
-        <Nav>
-          <Dropdown eventKey="3" title="Patient Info">
-            <Dropdown.Item divider />
-            {generalInfo.map(({ name, prop }, idx) => (
-              <Dropdown.Item key={idx}>
-                <KeyStyled>{name}</KeyStyled>
-                <Divider vertical />
-                <ValueStyled>{patient[prop]}</ValueStyled>
-              </Dropdown.Item>
-            ))}
-          </Dropdown>
-        </Nav>
-      </Sidenav.Body>
-    </Sidenav>
+    <CRCard borderless>
+      <H3 mb={4}>Patient Info</H3>
+      <Summary patient={patient} />
+      <Detail img="/icons/phone.svg">{patient.phoneNo}</Detail>
+    </CRCard>
   );
 }
 

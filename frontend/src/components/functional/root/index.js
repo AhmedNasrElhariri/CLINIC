@@ -1,11 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { ACTIVE_VIEW } from 'apollo-client/queries';
 import { ACCESS_TOKEN } from 'utils/constants';
 import * as R from 'ramda';
 
-import { AppRouter, Login } from 'components';
+import { AppRouter, Login, Div } from 'components';
 import {
   ContainerStyled,
   MainStyled,
@@ -17,8 +17,10 @@ import Navbar from 'components/layout/navbar';
 import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
 import NewAppointment from 'components/appointments/new-appointment';
+import Settings from 'components/functional/settings';
 
 function Root() {
+  const [openSettings, setOpenSettings] = useState(false);
   const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
   const { isVerified, isAuthenticated, setAuthenticated } = useAuth();
 
@@ -65,14 +67,18 @@ function Root() {
       <ContainerStyled>
         {isAuthenticated ? (
           <>
-            <Sidebar onLogout={logout} />
+            <Sidebar />
             <MainStyled>
-              <Navbar />
+              <Navbar
+                onLogout={logout}
+                onClickSettings={() => setOpenSettings(!openSettings)}
+              />
               <ContentStyled>
                 <AppRouter></AppRouter>
               </ContentStyled>
             </MainStyled>
             <NewAppointment />
+            <Settings open={openSettings} onLogout={logout} />
           </>
         ) : (
           <>

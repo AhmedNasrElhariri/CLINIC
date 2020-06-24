@@ -26,6 +26,12 @@ export default createGlobalStyle`
       font-weight: 800;
     }
 
+    @font-face {
+      font-family: 'SegoeUI';
+      src: url(${require('./fonts/Segoe_UI_Semi_light.woff')}) format('woff');
+      font-weight: 200;
+    }
+
     * {
       font-family: 'SegoeUI';
     }

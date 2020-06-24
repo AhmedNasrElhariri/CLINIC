@@ -37,42 +37,49 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
       <Div
         flexGrow={1}
         width="100%"
-        pt={90}
+        py="4%"
+        pl="10%"
         display="flex"
         flexDirection="column"
+        justifyContent="space-around"
+        alingItems="center"
       >
         <Div>
           <Div as="img" src="logo.png" alt="" width="auto" />
         </Div>
-        <Div flexGrow={1}>
-          <Div>
-            <H1 variant="primary" textTransform="uppercase">
-              Appointments
-            </H1>
-            <H1 variant="dark" textTransform="uppercase">
-              Reports
-            </H1>
-            <H1 variant="dark" textTransform="uppercase">
-              Agenda
-            </H1>
-          </Div>
-          <Div width={447}>
-            <Form
-              fluid
-              model={model}
-              formValue={formValue}
-              onChange={value => setFormValue(value)}
+        <Div>
+          <H1 variant="primary" textTransform="uppercase" fontWeight={400}>
+            Appointments
+          </H1>
+          <H1 variant="dark" textTransform="uppercase" fontWeight={400}>
+            Reports
+          </H1>
+          <H1 variant="dark" textTransform="uppercase" fontWeight={400}>
+            Agenda
+          </H1>
+        </Div>
+        <Div width={447}>
+          <Form
+            fluid
+            model={model}
+            formValue={formValue}
+            onChange={value => setFormValue(value)}
+          >
+            <CRTextInput placeholder="Email" name="email" />
+            <CRTextInput
+              placeholder="Password"
+              name="password"
+              type="password"
+            />
+            <CRButton
+              block
+              bold
+              uppercase
+              onClick={() => login({ variables: { ...formValue } })}
             >
-              <CRTextInput placeholder="Email" name="email" />
-              <CRTextInput placeholder="Password" name="password" type="password" />
-              <CRButton
-                block
-                onClick={() => login({ variables: { ...formValue } })}
-              >
-                Login
-              </CRButton>
-            </Form>
-          </Div>
+              Login
+            </CRButton>
+          </Form>
         </Div>
       </Div>
       <CoverStyled flexGrow={1} width="100%" />

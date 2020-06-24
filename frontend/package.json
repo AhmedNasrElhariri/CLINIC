@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@rsuite/charts": "^3.2.4",
+    "@rsuite/responsive-nav": "^0.0.10",
     "apollo-boost": "^0.4.7",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-link-context": "^1.0.20",
