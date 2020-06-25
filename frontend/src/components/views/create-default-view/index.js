@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Alert } from 'rsuite';
 import { useMutation } from '@apollo/react-hooks';
 

@@ -17,7 +17,7 @@ const mapToChartData = values => {
   });
 };
 
-function PropProgress({ values, chart }) {
+function PropProgress({ values }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Checkbox, Button } from 'rsuite';
+import { Toggle } from 'rsuite';
 
 import Range from './range';
-import { Div } from 'components/widgets/html';
+import { CRCard, Div, H6 } from 'components';
 import { DAYS } from 'utils/constants';
 
 const initValue = DAYS.map(d => ({
@@ -24,17 +24,22 @@ function WorkingHours() {
   };
 
   return (
-    <>
-      <Div>
-        {DAYS.map((d, idx) => (
-          <Div display="flex" my={5} key={idx} mt={idx === 0 ? 0 : 5}>
-            <Div width={80}>
-              <Checkbox
+    <CRCard borderless>
+      <Div py={30}>
+        {DAYS.map((day, idx) => (
+          <Div
+            display="flex"
+            my={5}
+            key={idx}
+            mt={idx === 0 ? 0 : 5}
+            alignItems="flex-end"
+          >
+            <Div width={140} display="flex">
+              <Toggle
                 checked={formValue[idx].checked}
-                onChange={(_, val) => onToggleCheck(val, idx)}
-              >
-                {d}
-              </Checkbox>
+                onChange={val => onToggleCheck(val, idx)}
+              />
+              <H6 ml={2}>{day}</H6>
             </Div>
             <Div flexGrow={1} px={4}>
               <Range
@@ -46,10 +51,7 @@ function WorkingHours() {
           </Div>
         ))}
       </Div>
-      <Div>
-        <Button appearance="primary">Save</Button>
-      </Div>
-    </>
+    </CRCard>
   );
 }
 

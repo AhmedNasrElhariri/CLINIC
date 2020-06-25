@@ -4,7 +4,6 @@ import * as R from 'ramda';
 import { formatDate } from 'utils/date';
 import styled from 'styled-components';
 import { Div } from 'components/widgets/html';
-import { Divider } from 'rsuite';
 
 const Info = ({ name, value }) => (
   <div className="info">

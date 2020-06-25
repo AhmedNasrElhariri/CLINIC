@@ -6,7 +6,6 @@ import {
   CRSelectInput,
   CRDatePicker,
   CRTimePicker,
-  CRButton,
   Div,
   H5,
   CRModal,
@@ -60,18 +59,18 @@ export default function NewAppointment() {
 
   return (
     <>
-      <CRModal show={patientModal} onHide={hideModal} header="New Patient">
-        <NewPatient onCreate={hideModal} />
-      </CRModal>
+      <NewPatient onCreate={hideModal} show={patientModal} onHide={hideModal} />
       <Div position="fixed" right={64} bottom={64} zIndex={99999}>
         <Fab open={open} setOpen={setOpen} />
       </Div>
       <CRModal
         show={open}
-        onHide={() => setOpen(false)}
         header="New Appointment"
         CRContainer={ContainerStyled}
         CRBody={ModalBodyStyled}
+        onOk={() => createAppointment({ variables: { input: formValue } })}
+        onHide={() => setOpen(false)}
+        onCancel={() => setOpen(false)}
       >
         <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
           <CRSelectInput
@@ -124,7 +123,7 @@ export default function NewAppointment() {
             placement="top"
           />
 
-          <CRButton
+          {/* <CRButton
             block
             bold
             uppercase
@@ -133,11 +132,13 @@ export default function NewAppointment() {
             }
           >
             Create
-          </CRButton>
+          </CRButton> */}
         </Form>
       </CRModal>
-      {/* </ModalBodyStyled>
-      </NewAppointmentModal> */}
     </>
   );
 }
+
+NewAppointment.propTypes = {};
+
+NewAppointment.defaultProps = {};

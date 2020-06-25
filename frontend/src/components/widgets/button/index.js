@@ -1,4 +1,3 @@
-import React from 'react';
 import { space, typography, layout, variant, border } from 'styled-system';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';

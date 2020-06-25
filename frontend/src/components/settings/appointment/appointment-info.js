@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
-import moment from 'moment';
-import {
-  Form,
-  InputNumber,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Button,
-  Schema,
-} from 'rsuite';
+import { Form, FlexboxGrid, Schema } from 'rsuite';
 
-import { Div } from 'components';
+import { Div, CRCard } from 'components';
+import { CRNumberInput } from 'components/widgets';
 
 const model = Schema.Model({});
 
@@ -26,39 +17,32 @@ function AppointmentSettings({ onCreate }) {
   const [formValue, SetFormValue] = useState(initialValues);
 
   return (
-    <>
+    <CRCard borderless>
       <Form
         fluid
         model={model}
         formValue={formValue}
         onChange={value => SetFormValue(value)}
       >
-        <Div width={300}>
-          <FormGroup>
-            <ControlLabel>Examination Price</ControlLabel>
-            <FormControl name="examinationPrice" accepter={InputNumber} />
-          </FormGroup>
-
-          <FormGroup>
-            <ControlLabel>Followup Price</ControlLabel>
-            <FormControl name="followupPrice" accepter={InputNumber} />
-          </FormGroup>
-
-          <FormGroup>
-            <ControlLabel>Duration</ControlLabel>
-            <FormControl name="duration" accepter={InputNumber} />
-          </FormGroup>
-
-          <FormGroup>
-            <ControlLabel>Count per day</ControlLabel>
-            <FormControl name="count" accepter={InputNumber} />
-          </FormGroup>
-        </Div>
+        <FlexboxGrid>
+          <FlexboxGrid.Item colspan={12}>
+            <Div maxWidth={447}>
+              <CRNumberInput
+                label="Examination Price"
+                name="examinationPrice"
+              />
+              <CRNumberInput label="Duration (min)" name="duration" />
+            </Div>
+          </FlexboxGrid.Item>
+          <FlexboxGrid.Item colspan={12}>
+            <Div maxWidth={447}>
+              <CRNumberInput label="Followup Price" name="followupPrice" />
+              <CRNumberInput label="Counts per day" name="count" />
+            </Div>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
       </Form>
-      <Div mt={2}>
-        <Button appearance="primary">Save</Button>
-      </Div>
-    </>
+    </CRCard>
   );
 }
 

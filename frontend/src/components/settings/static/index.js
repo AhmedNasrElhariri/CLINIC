@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import * as R from 'ramda';
-import {
-  Form,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Button,
-  Schema,
-  Alert,
-  Panel,
-  PanelGroup,
-} from 'rsuite';
+import { Form, Button, Schema, Alert } from 'rsuite';
 
 import { UPDATE_CLINIC, GET_MY_CLINIC } from 'apollo-client/queries';
-import { Div } from 'components';
+import { Div, CRCard, H3, CRTextInput } from 'components';
 import LogoUpload from './logo-upload';
 
-const { StringType, NumberType } = Schema.Types;
 
 const model = Schema.Model({});
 
@@ -67,34 +56,20 @@ function StaticSettings({ onCreate }) {
   if (loading) return 'Loading ...';
 
   return (
-    <PanelGroup bordered>
-      <Panel header="Static Info">
+    <>
+      <H3 mb={64}>Static Info</H3>
+      <CRCard borderless>
         <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
           <Div width={600}>
-            <FormGroup>
+            {/* <FormGroup>
               <ControlLabel>Doctor Full Name</ControlLabel>
               <FormControl name="doctorName" />
-            </FormGroup>
-
-            <FormGroup>
-              <ControlLabel>Title</ControlLabel>
-              <FormControl name="doctorTitle" />
-            </FormGroup>
-
-            <FormGroup>
-              <ControlLabel>Job Description</ControlLabel>
-              <FormControl name="doctorJobDescription" />
-            </FormGroup>
-
-            <FormGroup>
-              <ControlLabel>Phone No</ControlLabel>
-              <FormControl name="phoneNo" />
-            </FormGroup>
-
-            <FormGroup>
-              <ControlLabel>Address</ControlLabel>
-              <FormControl name="address" componentClass="textarea" />
-            </FormGroup>
+            </FormGroup> */}
+            <CRTextInput label="Doctor Full Name" name="doctorName" />
+            <CRTextInput label="Title" name="doctorTitle" />
+            <CRTextInput label="Job Description" name="doctorJobDescription" />
+            <CRTextInput label="Phone No" name="phoneNo" />
+            <CRTextInput label="Address" name="address" />
 
             <LogoUpload
               onUpload={logo => {
@@ -120,10 +95,10 @@ function StaticSettings({ onCreate }) {
             </Div>
           </Div>
         </Form>
-      </Panel>
+      </CRCard>
       {/* <Panel header="Working Hours">
       </Panel> */}
-    </PanelGroup>
+    </>
   );
 }
 

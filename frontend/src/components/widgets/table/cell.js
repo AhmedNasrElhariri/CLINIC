@@ -1,11 +1,10 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { byTheme } from 'services/theme';
 import { Table } from 'rsuite';
 import { H6 } from '../html/index';
 
-const CRCell = styled(H6).attrs(({ bold, semiBold }) => ({
+export const CRCellStyled = styled(H6).attrs(({ bold, semiBold }) => ({
   fontWeight: bold ? 800 : semiBold ? 600 : 400,
 }))`
   height: 100%;
@@ -16,10 +15,12 @@ const CRCell = styled(H6).attrs(({ bold, semiBold }) => ({
 
 export default ({ children, bold, semiBold, dataKey, ...props }) => (
   <Table.Cell {...props}>
-    {data => (
-      <CRCell bold={bold} semiBold={semiBold}>
-        {data[dataKey]}
-      </CRCell>
-    )}
+    {children
+      ? children
+      : data => (
+          <CRCellStyled bold={bold} semiBold={semiBold}>
+            {data[dataKey]}
+          </CRCellStyled>
+        )}
   </Table.Cell>
 );

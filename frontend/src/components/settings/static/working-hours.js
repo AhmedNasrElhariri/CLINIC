@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import moment from 'moment';
-import { RangeSlider, Checkbox } from 'rsuite';
+import { Checkbox } from 'rsuite';
 
 import Range from './range';
 import { Div } from 'components/widgets/html';

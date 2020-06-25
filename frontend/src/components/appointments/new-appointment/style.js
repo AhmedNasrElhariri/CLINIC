@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Modal } from 'rsuite';
 
 import { CRModal } from 'components';
 

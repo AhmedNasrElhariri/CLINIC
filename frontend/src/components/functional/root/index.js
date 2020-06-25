@@ -5,7 +5,7 @@ import { ACTIVE_VIEW } from 'apollo-client/queries';
 import { ACCESS_TOKEN } from 'utils/constants';
 import * as R from 'ramda';
 
-import { AppRouter, Login, Div } from 'components';
+import { AppRouter, Login } from 'components';
 import {
   ContainerStyled,
   MainStyled,
@@ -18,9 +18,11 @@ import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
 import NewAppointment from 'components/appointments/new-appointment';
 import Settings from 'components/functional/settings';
+import Notifications from 'components/functional/notifications';
 
 function Root() {
   const [openSettings, setOpenSettings] = useState(false);
+  const [openNotifications, setOpenNotifications] = useState(false);
   const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
   const { isVerified, isAuthenticated, setAuthenticated } = useAuth();
 
@@ -71,14 +73,34 @@ function Root() {
             <MainStyled>
               <Navbar
                 onLogout={logout}
-                onClickSettings={() => setOpenSettings(!openSettings)}
+                toggleSettings={() => {
+                  setOpenSettings(true);
+                  setOpenNotifications(false);
+                }}
+                toggleNotification={() => {
+                  setOpenNotifications(true);
+                  setOpenSettings(false);
+                }}
               />
               <ContentStyled>
                 <AppRouter></AppRouter>
               </ContentStyled>
             </MainStyled>
             <NewAppointment />
-            <Settings open={openSettings} onLogout={logout} />
+            {openSettings && (
+              <Settings
+                open={openSettings}
+                onLogout={logout}
+                onClose={() => setOpenSettings(false)}
+              />
+            )}
+            {openNotifications && (
+              <Notifications
+                open={openSettings}
+                onLogout={logout}
+                onClose={() => setOpenNotifications(false)}
+              />
+            )}
           </>
         ) : (
           <>

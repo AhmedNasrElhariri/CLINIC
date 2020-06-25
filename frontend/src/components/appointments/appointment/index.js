@@ -39,7 +39,7 @@ function Appointment() {
   const [view] = useGlobalState('activeView');
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('2');
+  const [activeTab, setActiveTab] = useState('0');
   const { data: clinicInfo } = useQuery(GET_MY_CLINIC);
   let { appointmentId } = useParams();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {

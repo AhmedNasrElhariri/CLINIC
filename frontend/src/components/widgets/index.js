@@ -1,4 +1,4 @@
-export { H1, H2, H3, H4, H5, H6, P, Img, Div } from './html';
+export { H1, H2, H3, H4, H5, H6, H7, P, Img, Div } from './html';
 export { default as InputField } from './input-field';
 export { default as CheckField } from './check-field';
 export { default as CRTextInput } from './input/text-input';
@@ -7,8 +7,10 @@ export { default as CRNumberInput } from './input/number-input';
 export { default as CRSelectInput } from './select-input';
 export { default as CRButton } from './button/';
 export { default as CRDatePicker } from './date-picker';
+export { default as CRDateRangePicker } from './date-range-picker';
 export { default as CRTimePicker } from './time-picker';
 export { default as CRModal } from './modal';
 export { default as CRCard } from './card';
 export { default as CRTable } from './table';
 export { default as CRNav } from './nav';
+export { default as CRVDivider } from './vertical-divider';

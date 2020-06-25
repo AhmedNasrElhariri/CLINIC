@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Nav, Form } from 'rsuite';
-import { Link as ScrollLink, Element } from 'react-scroll';
-// import * as Scroll from 'react-scroll';
+import { Form } from 'rsuite';
+import { Element } from 'react-scroll';
 
 import {
   Div,

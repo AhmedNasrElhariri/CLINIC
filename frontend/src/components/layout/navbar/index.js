@@ -9,7 +9,7 @@ import SwitchClinic from './switch-clinic';
 import Avtar from './avatar';
 import { NotificationIcon, SettingsIcon } from 'components/icons/index';
 
-const Navbar = ({ onClickSettings, onLogout }) => {
+const Navbar = ({ toggleSettings, toggleNotification }) => {
   return (
     <NavStyled>
       <Form style={{ width: 276 }}>
@@ -33,8 +33,8 @@ const Navbar = ({ onClickSettings, onLogout }) => {
           maxWidth={630}
         >
           <SwitchClinic />
-          <NotificationIcon />
-          <SettingsIcon textAlign="center" onClick={onClickSettings} />
+          <NotificationIcon onClick={toggleNotification} />
+          <SettingsIcon textAlign="center" onClick={toggleSettings} />
           <Avtar />
         </Div>
       </Div>
@@ -43,7 +43,8 @@ const Navbar = ({ onClickSettings, onLogout }) => {
 };
 
 Navbar.propTypes = {
-  onClickSettings: PropTypes.func.isRequired,
+  toggleSettings: PropTypes.func.isRequired,
+  toggleNotification: PropTypes.func.isRequired,
 };
 
 export default Navbar;

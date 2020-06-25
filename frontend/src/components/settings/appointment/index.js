@@ -1,37 +1,22 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
-import moment from 'moment';
-import { Alert, Panel, PanelGroup } from 'rsuite';
+import React from 'react';
 
-import { CREATE_PATIENT, LIST_PATIENTS } from 'apollo-client/queries';
 import WorkingHours from './working-hours';
 import AppointmentInfo from './appointment-info';
+import { H3, Div, CRButton } from 'components';
 
 function AppointmentSettings({ onCreate }) {
-  const [createPatient] = useMutation(CREATE_PATIENT, {
-    update(cache, { data: { createPatient: patient } }) {
-      const { patients } = cache.readQuery({ query: LIST_PATIENTS });
-      cache.writeQuery({
-        query: LIST_PATIENTS,
-        data: { patients: patients.concat([patient]) },
-      });
-    },
-    onCompleted: () => {
-      onCreate();
-      Alert.success('Patient Created Successfully');
-    },
-    onError: () => Alert.error('Invalid Input'),
-  });
-
   return (
-    <PanelGroup bordered>
-      <Panel header="Appointment Info">
-        <AppointmentInfo />
-      </Panel>
-      <Panel header="Working Hours">
-        <WorkingHours />
-      </Panel>
-    </PanelGroup>
+    <>
+      <Div display="flex" justifyContent="space-between">
+        <H3 mb={64}>Appointments Info</H3>
+        <Div>
+          <CRButton>Save</CRButton>
+        </Div>
+      </Div>
+      <AppointmentInfo />
+      <H3 my={64}>Working Hours</H3>
+      <WorkingHours />
+    </>
   );
 }
 

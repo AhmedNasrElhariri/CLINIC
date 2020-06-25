@@ -85,7 +85,6 @@ export const H4 = styled.h4`
 
 export const H5 = styled.h5`
   font-family: 'SegoeUI';
-  line-height: 32px;
   ${byTheme({
     fontSize: {
       normal: 18.7,
@@ -99,7 +98,6 @@ export const H5 = styled.h5`
 export const H6 = styled.h6`
   ${headerscss}
   font-family: 'SegoeUI';
-  line-height: 1.35rem;
   ${byTheme({
     fontSize: {
       normal: 16,
@@ -111,6 +109,22 @@ export const H6 = styled.h6`
 H6.defaultProps = {
   fontWeight: 'normal',
 };
+
+export const H7 = styled.h6`
+  ${headerscss}
+  font-family: 'SegoeUI';
+  ${byTheme({
+    fontSize: {
+      normal: 16,
+      large: 18,
+    },
+  })};
+`;
+
+H7.defaultProps = {
+  fontWeight: 'normal',
+};
+
 
 export const P = styled.p`
   ${headerscss}

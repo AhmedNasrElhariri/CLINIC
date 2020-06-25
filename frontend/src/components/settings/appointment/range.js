@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { RangeSlider } from 'rsuite';
+import { H6 } from 'components';
 
 function Range({ disabled, value, onChange }) {
   return (
@@ -23,7 +24,7 @@ function Range({ disabled, value, onChange }) {
               millisecond: 0,
             })
             .format('HH:mm');
-          return <span>{label}</span>;
+          return <H6 as="span" fontWeight={600}>{label}</H6>;
         }
         return null;
       }}

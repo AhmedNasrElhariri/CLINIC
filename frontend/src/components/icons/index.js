@@ -46,3 +46,8 @@ export const NotificationIcon = props => (
 export const SettingsIcon = props => (
   <IconStyled src="/icons/settings.png" {...props} />
 );
+
+export const CameraIcon = props => (
+  <IconStyled src="/icons/camera.svg" {...props} />
+);
+

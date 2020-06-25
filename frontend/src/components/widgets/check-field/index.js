@@ -1,6 +1,5 @@
 import React from 'react';
-import { FormGroup, Checkbox, FormControl } from 'rsuite';
-import { ControlLabelStyled } from './style';
+import { FormGroup, Checkbox } from 'rsuite';
 
 export default ({
   label,

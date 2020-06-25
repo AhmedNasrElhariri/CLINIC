@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { Img, H6, Div } from 'components';
-
+import { Img, H6 } from 'components';
 import { Container, LinkStyled } from './style';
 
 const items = [
   {
     name: 'Clinic Information',
     icon: '/icons/clinic.png',
-    path: '',
+    path: '/settings/appointment',
   },
   {
-    name: 'Static Data',
+    name: 'Static Info',
     icon: '/icons/static.png',
-    path: '',
+    path: '/settings/static',
   },
   {
     name: 'Snippets',
@@ -37,16 +37,38 @@ const Item = ({ name, icon, path, onClick }) => {
   );
 };
 
-export default function Settings({ open, ...props }) {
+export default function Settings({ onClose, ...props }) {
+  const history = useHistory();
+  const handleKeyPress = useCallback(
+    event => {
+      if (event.keyCode === 27) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress, false);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress, false);
+    };
+  }, [handleKeyPress]);
+
   return (
-    <>
-      {open && (
-        <Container>
-          {items.map((item, idx) => (
-            <Item key={idx} {...item} onClick={props[item.action]} />
-          ))}
-        </Container>
-      )}
-    </>
+    <Container onKeyPress={handleKeyPress}>
+      {items.map(({ path, action, ...item }, idx) => (
+        <Item
+          key={idx}
+          path={path}
+          {...item}
+          onClick={() => {
+            action ? props[action]() : history.push(path);
+            onClose();
+          }}
+        />
+      ))}
+    </Container>
   );
 }

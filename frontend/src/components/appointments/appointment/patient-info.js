@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-
 import { CRCard, H3, H5, P, Div, Img } from 'components';
 
 const PatientIntials = styled.div`
@@ -30,15 +29,15 @@ const Summary = ({ patient }) => (
         </Div>
       </Div>
     </Div>
-    <P>
+    <P mt={3}>
       {patient.sex} . {patient.age} yrs
     </P>
   </>
 );
 
 const Detail = ({ img, children }) => (
-  <Div display="flex" alignItems="center">
-    <Img src={img} alt="" width={35} height={35} />
+  <Div display="flex" alignItems="center" mt={3}>
+    <Img src={img} alt="" width={25} height={25} />
     <P ml={25}>{children}</P>
   </Div>
 );

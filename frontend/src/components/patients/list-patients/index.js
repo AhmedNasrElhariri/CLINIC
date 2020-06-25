@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 
 import { LIST_PATIENTS } from 'apollo-client/queries';
-import PatientsFilter from '../filter';
-import { H3, H6, MainContainer, CRTable } from 'components';
+import { MainContainer, CRTable } from 'components';
+import PatientsFilter from '../filter/index';
 
 function Patients() {
   const history = useHistory();
@@ -27,7 +27,7 @@ function Patients() {
   return (
     <>
       <MainContainer title="Patients">
-        {/* <PatientsFilter onNameChange={onNameChange}></PatientsFilter> */}
+        <PatientsFilter onNameChange={onNameChange}></PatientsFilter>
         <CRTable
           autoHeight
           data={patients}

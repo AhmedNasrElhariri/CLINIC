@@ -1,48 +1,22 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Alert } from 'rsuite';
+
+import { CRModal } from 'components';
 import { useMutation } from '@apollo/react-hooks';
-import { Form, SelectPicker, Schema, Alert } from 'rsuite';
 
-import { CREATE_PATIENT, LIST_PATIENTS } from 'apollo-client/queries';
-import {
-  CRSelectInput,
-  CRTextInput,
-  CRNumberInput,
-  CRButton,
-} from 'components';
-
-const membershipTypes = [
-  { label: 'Primary', value: 'Primary' },
-  { label: 'Secondary', value: 'Secondary' },
-];
-
-const SEX = ['Male', 'Female'].map(s => ({
-  label: s,
-  value: s,
-}));
-
-const { StringType, NumberType } = Schema.Types;
-
-const model = Schema.Model({
-  name: StringType().isRequired('User name is required'),
-  phoneNo: StringType()
-    .isRequired('Required')
-    .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
-  age: NumberType('Age should be a number').range(
-    0,
-    100,
-    'Age should be 0-100 years old'
-  ),
-});
+import Form from './form';
+import { LIST_PATIENTS, CREATE_PATIENT } from 'apollo-client/queries';
 
 const initialValues = {
   name: '',
   phoneNo: '',
   age: '',
-  type: membershipTypes[0].value,
+  type: null,
 };
 
-function NewPatient({ onCreate }) {
-  const [formValue, SetFormValue] = useState(initialValues);
+export default function NewPatient({ show, onHide, onCreate }) {
+  const [formValue, setFormValue] = useState(initialValues);
   const [createPatient] = useMutation(CREATE_PATIENT, {
     update(cache, { data: { createPatient: patient } }) {
       const { patients } = cache.readQuery({ query: LIST_PATIENTS });
@@ -52,60 +26,35 @@ function NewPatient({ onCreate }) {
       });
     },
     onCompleted: () => {
-      onCreate();
       Alert.success('Patient Created Successfully');
+      onCreate();
     },
     onError: () => Alert.error('Invalid Input'),
   });
-
   return (
-    <Form
-      fluid
-      model={model}
-      formValue={formValue}
-      onChange={value => SetFormValue(value)}
+    <CRModal
+      show={show}
+      onHide={onHide}
+      header="New Patient"
+      onOk={() =>
+        createPatient({
+          variables: {
+            input: { ...formValue },
+          },
+        })
+      }
     >
-      <CRSelectInput
-        label="Membership Type"
-        name="type"
-        accepter={SelectPicker}
-        searchable={false}
-        data={membershipTypes}
-        block
-      />
-
-      <CRTextInput label="Patient Name" name="name" />
-
-      <CRTextInput label="Phone no" name="phoneNo" />
-
-      <CRNumberInput label="Age" name="age" />
-
-      <CRTextInput label="Guardian's Name" name="guardianName" />
-
-      <CRTextInput label="Guardian's Phone No" name="guardianPhoneNo" />
-
-      <CRSelectInput
-        label="Sex"
-        name="type"
-        searchable={false}
-        data={SEX}
-        block
-      />
-
-      <CRButton
-        block
-        onClick={() =>
-          createPatient({
-            variables: {
-              input: { ...formValue, age: Number(formValue.age) },
-            },
-          })
-        }
-      >
-        Create
-      </CRButton>
-    </Form>
+      <Form onChange={setFormValue} />
+    </CRModal>
   );
 }
 
-export default NewPatient;
+NewPatient.propTypes = {
+  show: PropTypes.bool.isRequired,
+  onHide: PropTypes.func,
+  onCreate: PropTypes.func,
+};
+
+NewPatient.defaultProps = {
+  show: false,
+};

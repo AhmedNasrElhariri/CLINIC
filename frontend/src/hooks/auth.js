@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { VERIFY } from 'apollo-client/queries';
 import { useMutation } from '@apollo/react-hooks';
 import { ACCESS_TOKEN } from '../utils/constants';

@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import { Nav } from 'rsuite';
 
 import { Div } from 'components/widgets';
-import { Link as ScrollLink, Element } from 'react-scroll';
 
 const activeStyles = css`
   background-color: #ffffff;
@@ -13,12 +12,7 @@ const activeStyles = css`
   font-weight: 800;
 `;
 
-const Item = styled(ScrollLink).attrs(() => ({
-  spy: true,
-  smooth: true,
-  duration: 500,
-  isDynamic: true,
-}))`
+const Item = styled(Div)`
   height: 80px;
   font-size: 24px;
   font-weight: 400;

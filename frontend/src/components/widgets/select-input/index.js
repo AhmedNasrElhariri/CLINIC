@@ -53,7 +53,6 @@ const ItemStyled = styled.div`
   display: flex;
   align-items: center;
   font-size: 18px;
-  font-weight: 400;
   ${paddingLeft}
 
   & .rs-picker-select-menu-item {
@@ -62,6 +61,9 @@ const ItemStyled = styled.div`
 
   color: ${props =>
     props.active ? props.theme.colors.primary : props.theme.colors.texts[1]};
+
+  font-weight: ${props =>
+    props.active ? 600 : 400};
 
   & input.rs-picker-search-bar-input {
     ${borderCss}

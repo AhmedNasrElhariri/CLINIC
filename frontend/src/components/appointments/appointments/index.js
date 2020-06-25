@@ -2,23 +2,12 @@ import React, { useState, useEffect } from 'react';
 import * as R from 'ramda';
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
-import {
-  Table,
-  DateRangePicker,
-  Form,
-  FormGroup,
-  ControlLabel,
-  FormControl,
-  Row,
-  Col,
-  Input,
-  SelectPicker,
-} from 'rsuite';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { formatDate } from 'utils/date';
-import { filterAppointments, appointmentTypes } from 'services/appointment';
-import { Div } from 'components';
+import { filterAppointments } from 'services/appointment';
+import { Div, CRCard, H3, CRTable } from 'components';
+import Filter from './filter';
 
 const fetchedAppointmetns = data => R.propOr([], 'appointments')(data);
 
@@ -38,13 +27,15 @@ function Appointments() {
 
   return (
     <>
+      <H3 mb={64}>Appointments</H3>
       <Div mb={4}>
-        <Form formValue={formValue} onChange={setFormValue} fluid>
+        <Filter formValue={formValue} onChange={setFormValue} />
+        {/* <Form formValue={formValue} onChange={setFormValue} fluid>
           <Row gutter={16}>
             <Col xs={4}>
               <FormGroup>
                 <ControlLabel>Range</ControlLabel>
-                <FormControl name="date" accepter={DateRangePicker} block/>
+                <FormControl name="date" accepter={DateRangePicker} block />
               </FormGroup>
             </Col>
             <Col xs={4}>
@@ -68,33 +59,43 @@ function Appointments() {
               </FormGroup>
             </Col>
           </Row>
-        </Form>
+        </Form> */}
       </Div>
-      <Table
-        autoHeight
-        data={appointments}
-        style={{ cursor: 'pointer' }}
-        onRowClick={({ id }) => {
-          history.push(`/appointments/${id}`);
-        }}
-      >
-        <Table.Column flexGrow={1}>
-          <Table.HeaderCell>Name</Table.HeaderCell>
-          <Table.Cell>{({ patient }) => patient.name}</Table.Cell>
-        </Table.Column>
 
-        <Table.Column flexGrow={1}>
-          <Table.HeaderCell>Type</Table.HeaderCell>
-          <Table.Cell dataKey="type" />
-        </Table.Column>
+      <CRCard borderless>
+        <CRTable
+          autoHeight
+          data={appointments}
+          style={{ cursor: 'pointer' }}
+          onRowClick={({ id }) => {
+            history.push(`/appointments/${id}`);
+          }}
+          bordered={false}
+        >
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="name">
+              {({ patient }) => (
+                <CRTable.CRCellStyled bold>{patient.name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
 
-        <Table.Column flexGrow={1}>
-          <Table.HeaderCell>Date</Table.HeaderCell>
-          <Table.Cell dataKey="date">
-            {({ date }) => formatDate(date)}
-          </Table.Cell>
-        </Table.Column>
-      </Table>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="type" semiBold />
+          </CRTable.CRColumn>
+
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="name">
+              {({ date }) => (
+                <CRTable.CRCellStyled>{formatDate(date)}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+        </CRTable>
+      </CRCard>
     </>
   );
 }

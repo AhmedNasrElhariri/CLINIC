@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Div } from 'components';
 import { AddOLIcon, ExitOLIcon } from 'components/icons/index';
