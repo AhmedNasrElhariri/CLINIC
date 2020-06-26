@@ -22,6 +22,7 @@ export const CREATE_PATIENT = gql`
       id
       name
       type
+      phoneNo
     }
   }
 `;
@@ -41,6 +42,16 @@ export const CREATE_APPOINTMENT = gql`
   mutation createAppointment($input: AppointmentInput!) {
     createAppointment(input: $input) {
       id
+      type
+      date
+      status
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
     }
   }
 `;
@@ -141,6 +152,32 @@ export const GET_APPOINTMENT_HISTORY = gql`
   }
 `;
 
+export const GET_PATIENT_HISTORY = gql`
+  query($id: ID!) {
+    patientHistory(id: $id) {
+      id
+      type
+      date
+      labs
+      status
+      data {
+        id
+        value
+        field {
+          id
+          name
+        }
+      }
+      patient {
+        id
+        name
+        age
+        sex
+      }
+    }
+  }
+`;
+
 export const GET_PATIENT = gql`
   query($id: ID!) {
     patient(id: $id) {
@@ -148,11 +185,7 @@ export const GET_PATIENT = gql`
       name
       age
       sex
-      appointments {
-        id
-        labs
-        status
-      }
+      phoneNo
     }
   }
 `;
@@ -173,6 +206,24 @@ export const ACTIVE_VIEW = gql`
           type
           required
         }
+      }
+    }
+  }
+`;
+
+export const MY_CLINICS = gql`
+  query myClinics {
+    myClinics {
+      id
+      name
+      doctorName
+      doctorTitle
+      doctorJobDescription
+      address
+      phoneNo
+      logo {
+        id
+        url
       }
     }
   }
@@ -245,23 +296,6 @@ export const SINGLE_UPLOAD = gql`
     singleUpload(file: $file) {
       id
       url
-    }
-  }
-`;
-
-export const GET_MY_CLINIC = gql`
-  query myClinic {
-    myClinic {
-      id
-      doctorName
-      doctorTitle
-      doctorJobDescription
-      address
-      phoneNo
-      logo {
-        id
-        url
-      }
     }
   }
 `;

@@ -2,9 +2,12 @@ import React, { useCallback } from 'react';
 
 import { FormGroup, FormControl } from 'rsuite';
 import Label from '../label';
-import { CRButton } from 'components';
 import { AddIcon, MinusIcon } from 'components/icons';
-import { NumberContainerStyled, NumberInputStyled } from './style';
+import {
+  NumberContainerStyled,
+  NumberInputStyled,
+  NumberButton,
+} from './style';
 
 const CustomInput = ({ value, onChange, ...props }) => {
   const setValue = useCallback(val => onChange(val), [onChange]);
@@ -21,27 +24,25 @@ const CustomInput = ({ value, onChange, ...props }) => {
 
   return (
     <NumberContainerStyled>
-      <CRButton
-        minWidth={98}
+      <NumberButton
         borderTopRightRadius={0}
         borderBottomRightRadius={0}
         onClick={() => setValue(Number(value || 0) - 1)}
       >
         <MinusIcon />
-      </CRButton>
+      </NumberButton>
       <NumberInputStyled
         value={value}
         onChange={onChangeValue}
         {...props}
       ></NumberInputStyled>
-      <CRButton
-        minWidth={98}
+      <NumberButton
         borderTopLeftRadius={0}
         borderBottomLeftRadius={0}
         onClick={() => setValue(Number(value || 0) + 1)}
       >
         <AddIcon />
-      </CRButton>
+      </NumberButton>
     </NumberContainerStyled>
   );
 };

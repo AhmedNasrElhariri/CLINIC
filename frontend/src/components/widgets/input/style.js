@@ -4,6 +4,8 @@ import { space, typography, layout, border } from 'styled-system';
 
 import { Input, InputGroup } from 'rsuite';
 import { byTheme } from 'services/theme';
+import CRButton from 'components/widgets/button';
+import stCss from '@styled-system/css';
 
 const fontTheme = {
   fontSize: {
@@ -133,4 +135,13 @@ export const NumberInputStyled = styled.input`
 export const TextAreaStyled = styled.textarea`
   ${InputCss}
   resize: none;
+`;
+
+export const NumberButton = styled(CRButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${stCss({
+    minWidth: [20, 35, 50, 60, 98],
+  })}
 `;

@@ -16,3 +16,7 @@
 20200529200310-set-default-value
 20200530085617
 20200530085706-add-working-hours
+20200626001614-set-orgainzation-id-for-patients-and-clinic-id-for-appointment
+20200626005201-many-to-many-users-clinics
+20200626005719-add-name-to-clinic
+20200626010554-remove-clinic-id-from-user

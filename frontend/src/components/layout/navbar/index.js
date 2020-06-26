@@ -9,7 +9,13 @@ import SwitchClinic from './switch-clinic';
 import Avtar from './avatar';
 import { NotificationIcon, SettingsIcon } from 'components/icons/index';
 
-const Navbar = ({ toggleSettings, toggleNotification }) => {
+const Navbar = ({
+  toggleSettings,
+  toggleNotification,
+  onSelectClinic,
+  clinics,
+  currentClinic,
+}) => {
   return (
     <NavStyled>
       <Form style={{ width: 276 }}>
@@ -32,7 +38,11 @@ const Navbar = ({ toggleSettings, toggleNotification }) => {
           width="100%"
           maxWidth={630}
         >
-          <SwitchClinic />
+          <SwitchClinic
+            onSelectClinic={onSelectClinic}
+            clinics={clinics}
+            currentClinic={currentClinic}
+          />
           <NotificationIcon onClick={toggleNotification} />
           <SettingsIcon textAlign="center" onClick={toggleSettings} />
           <Avtar />

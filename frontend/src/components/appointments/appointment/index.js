@@ -8,8 +8,6 @@ import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
   ARCHIVE_APPOINTMENT,
-  GET_APPOINTMENT_HISTORY,
-  GET_MY_CLINIC,
 } from 'apollo-client/queries';
 
 import PatientInfo from './patient-info';
@@ -23,24 +21,22 @@ import {
 } from 'components';
 import AppointmentData from './appointment-data';
 import Prescription from './prescription';
-import useGlobalState from 'state';
 
 import {
   getFormInitValues,
-  normalizeFieldsOfGroups,
   mapFormValueToAppointmentData,
   isArchived,
 } from 'services/appointment';
+
+import usePatientHistory from './use-patient-history';
 
 const tabs = ['Home', 'Summary', 'Progress'];
 
 function Appointment() {
   const [formValue, setFormValue] = useState({});
-  const [view] = useGlobalState('activeView');
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
-  const { data: clinicInfo } = useQuery(GET_MY_CLINIC);
   let { appointmentId } = useParams();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
@@ -52,22 +48,12 @@ function Appointment() {
       setDisabled(isArchived(appointment));
     },
   });
-  const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
-    variables: {
-      id: appointmentId,
-    },
-  });
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
     },
   });
 
-  const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
-  const viewFields = useMemo(
-    () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),
-    [groups]
-  );
   const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
@@ -81,16 +67,14 @@ function Appointment() {
   const patient = useMemo(() => R.propOr({}, 'patient')(appointment), [
     appointment,
   ]);
-  const appointmentHistory = useMemo(
-    () => R.pathOr([], ['appointmentHistory'])(history),
-    [history]
-  );
-  const data = useMemo(() => R.propOr([], 'data')(appointment), [appointment]);
 
-  const normalizedFields = useMemo(
-    () => normalizeFieldsOfGroups(groups, data),
-    [data, groups]
-  );
+  const {
+    normalizedFields,
+    appointmentHistory,
+    viewFields,
+    groups,
+  } = usePatientHistory({ appointmentId, appointment });
+
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const onUpdate = useCallback(() => {
     update({
@@ -140,9 +124,9 @@ function Appointment() {
             <CRButton primary onClick={onArchive} disabled={disabled}>
               Archive <Icon icon="archive" />
             </CRButton>
-            <Button color="red" appearance="link">
+            {/* <Button color="red" appearance="link">
               Delete <Icon icon="trash-o" />
-            </Button>
+            </Button> */}
           </ButtonToolbar>
         </Div>
         <Div display="flex">
@@ -180,15 +164,14 @@ function Appointment() {
           </Div>
         </Div>
       </Div>
-      <Div width={325} ml={64}>
-        <PatientInfo patient={patient} />
-      </Div>
+      <PatientInfo patient={patient} />
       <Prescription
         visible={isPrescriptionVisible}
         patient={patient}
         onClose={() => setPrescriptionVisible(false)}
         content={prescriptionBody}
-        clinicInfo={R.propOr({}, 'myClinic')(clinicInfo)}
+        // clinicInfo={R.propOr({}, 'myClinic')(clinicInfo)}
+        clinicInfo={{}}
         onChange={val => {
           setFormValue(
             R.mergeDeepRight(formValue, { [prescriptionField.id]: val })

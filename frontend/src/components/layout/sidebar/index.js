@@ -19,7 +19,7 @@ export default function Sidebar({ onLogout }) {
   const { pathname } = useLocation();
 
   return (
-    <ContainerStyled defaultOpenKeys={['1', '2']}>
+    <ContainerStyled>
       <Div position="absolute" left={35} top={50}>
         <Img src="/logo.png" alt="" width={120} />
       </Div>

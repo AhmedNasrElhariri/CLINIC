@@ -48,5 +48,7 @@ export default {
     height: '130px',
   },
 
+  breakpoints: ['40em', '52em', '64em', '100em'],
+
   radius: 17,
 };

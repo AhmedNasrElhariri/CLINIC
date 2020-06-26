@@ -11,10 +11,18 @@ import {
   CRModal,
   NewPatient,
 } from 'components';
-import { LIST_PATIENTS, CREATE_APPOINTMENT } from 'apollo-client/queries';
+import {
+  LIST_PATIENTS,
+  CREATE_APPOINTMENT,
+  LIST_APPOINTMENTS,
+} from 'apollo-client/queries';
 import { isBeforeToday } from 'utils/date';
 import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
+import useGlobalState from 'state';
+import { getStartOfDay, getEndOfDay } from 'services/date.service';
+
+import { useVariables } from 'components/appointments/today-appointments/fetch-appointments';
 
 const { StringType } = Schema.Types;
 
@@ -42,6 +50,9 @@ export default function NewAppointment() {
   const [patientModal, setPatientModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [formValue, setFormValue] = useState(initialValues);
+  const [currentClinic] = useGlobalState('currentClinic');
+
+  const appointmentVariables = useVariables();
 
   const { data } = useQuery(LIST_PATIENTS);
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
@@ -50,6 +61,12 @@ export default function NewAppointment() {
       Alert.success('Reservation Created Successfully');
     },
     onError: () => Alert.error('Invalid Input'),
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
+        variables: appointmentVariables,
+      },
+    ],
   });
 
   const showModal = useCallback(() => setPatientModal(true), []);
@@ -68,7 +85,11 @@ export default function NewAppointment() {
         header="New Appointment"
         CRContainer={ContainerStyled}
         CRBody={ModalBodyStyled}
-        onOk={() => createAppointment({ variables: { input: formValue } })}
+        onOk={() =>
+          createAppointment({
+            variables: { input: { ...formValue, clinicId: currentClinic.id } },
+          })
+        }
         onHide={() => setOpen(false)}
         onCancel={() => setOpen(false)}
       >
@@ -122,17 +143,6 @@ export default function NewAppointment() {
             disabledDate={isBeforeToday}
             placement="top"
           />
-
-          {/* <CRButton
-            block
-            bold
-            uppercase
-            onClick={() =>
-              createAppointment({ variables: { input: formValue } })
-            }
-          >
-            Create
-          </CRButton> */}
         </Form>
       </CRModal>
     </>

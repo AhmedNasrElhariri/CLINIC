@@ -18,6 +18,8 @@ import {
   LONG_TEXT_FIELD_TYPE,
 } from 'utils/constants';
 
+import { HomeSidebarStyled } from './style';
+
 const ScrollNavLink = ({ element, children, ...props }) => {
   return (
     <CRNav.CRScoll {...props} containerId="clinic-scroll-id">
@@ -46,7 +48,7 @@ function AppointmentData({ formValue, groups, onChange, disabled }) {
   return (
     <>
       <Div display="flex">
-        <Div width={300}>
+        <HomeSidebarStyled>
           <CRNav vertical onSelect={setActiveSection}>
             {convertGroupFieldsToNavs(groups).map((v, idx) => (
               <ScrollNavLink
@@ -59,7 +61,7 @@ function AppointmentData({ formValue, groups, onChange, disabled }) {
               </ScrollNavLink>
             ))}
           </CRNav>
-        </Div>
+        </HomeSidebarStyled>
         <Div
           id="clinic-scroll-id"
           flexGrow={1}

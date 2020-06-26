@@ -1,12 +1,6 @@
 import { prisma } from '@';
 
-const updateClinic = async (
-  _,
-  { clinic: { logoId, ...clinic } },
-  { userId }
-) => {
-  const { id } = await prisma.user.findOne({ where: { id: userId } }).clinic();
-
+const updateClinic = async (_, { clinic: { id, logoId, ...clinic } }) => {
   return prisma.clinic.update({
     data: {
       ...clinic,

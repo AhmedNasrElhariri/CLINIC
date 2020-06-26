@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { CRCard, H3, H5, P, Div, Img } from 'components';
+import { PatientInfoStyled } from './style';
 
 const PatientIntials = styled.div`
   border-radius: ${props => props.theme.radius}px;
@@ -44,11 +45,13 @@ const Detail = ({ img, children }) => (
 
 export default function PatientInfo({ patient }) {
   return (
-    <CRCard borderless>
-      <H3 mb={4}>Patient Info</H3>
-      <Summary patient={patient} />
-      <Detail img="/icons/phone.svg">{patient.phoneNo}</Detail>
-    </CRCard>
+    <PatientInfoStyled>
+      <CRCard borderless>
+        <H3 mb={4}>Patient Info</H3>
+        <Summary patient={patient} />
+        <Detail img="/icons/phone.svg">{patient.phoneNo}</Detail>
+      </CRCard>
+    </PatientInfoStyled>
   );
 }
 

@@ -44,7 +44,7 @@ export default function NewPatient({ show, onHide, onCreate }) {
         })
       }
     >
-      <Form onChange={setFormValue} />
+      <Form onChange={setFormValue} formValue={formValue} />
     </CRModal>
   );
 }

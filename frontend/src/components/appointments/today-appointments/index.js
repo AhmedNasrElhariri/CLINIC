@@ -1,13 +1,13 @@
 import React, { useMemo, useCallback } from 'react';
 import * as R from 'ramda';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { Alert } from 'rsuite';
 
-import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { Div } from 'components';
 import { SET_APPOINTMENT_DONE } from 'apollo-client/queries';
-import { getStartOfDay, getEndOfDay } from 'services/date.service';
 import ListAppointments from './list-appointments';
+
+import useFetchAppointments from './fetch-appointments';
 
 function AppointmentCalendar() {
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
@@ -16,32 +16,15 @@ function AppointmentCalendar() {
     },
   });
 
-  const { data } = useQuery(LIST_APPOINTMENTS, {
-    variables: {
-      input: {
-        fromDate: getStartOfDay(new Date()),
-        toDate: getEndOfDay(new Date()),
-      },
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
+  const appointments = useFetchAppointments();
   const upcomingAppointments = useMemo(
-    () =>
-      R.pipe(
-        R.propOr([], 'appointments'),
-        R.reject(R.propEq('status', 'Done'))
-      )(data),
-    [data]
+    () => R.pipe(R.reject(R.propEq('status', 'Done')))(appointments),
+    [appointments]
   );
 
   const completedAppointments = useMemo(
-    () =>
-      R.pipe(
-        R.propOr([], 'appointments'),
-        R.filter(R.propEq('status', 'Done'))
-      )(data),
-    [data]
+    () => R.pipe(R.filter(R.propEq('status', 'Done')))(appointments),
+    [appointments]
   );
 
   const onClickDone = useCallback(

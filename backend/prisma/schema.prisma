@@ -47,26 +47,27 @@ model Organization {
 }
 
 model User {
-  id             String        @default(uuid()) @id
+  id             String         @default(uuid()) @id
   name           String
-  email          String        @unique
+  email          String         @unique
   password       String
   organizationId String
   Appointment    Appointment[]
   View           View[]
   ViewStatus     ViewStatus[]
-  clinic         Clinic        @relation(fields: [clinicId], references: [id])
-  clinicId       String
+  clinics        Clinic[]       @relation(references: [id])
+  WorkingHours   WorkingHours[]
 }
 
 model Patient {
-  id           String                @default(uuid()) @id
-  name         String
-  phoneNo      String                @unique
-  type         PatientMembershipType
-  appointments Appointment[]
-  age          Int
-  sex          Sex
+  id             String                @default(uuid()) @id
+  name           String
+  phoneNo        String                @unique
+  type           PatientMembershipType
+  appointments   Appointment[]
+  age            Int
+  sex            Sex
+  organizationId String
 }
 
 model Appointment {
@@ -81,6 +82,7 @@ model Appointment {
   labs      String?            @default("[]")
   status    AppointmentStatus
   data      AppointmentField[]
+  clinicId  String
 }
 
 model View {
@@ -151,6 +153,7 @@ model File {
 
 model Clinic {
   id                   String  @default(uuid()) @id
+  name                 String?
   // shown on prescription
   doctorName           String? @default("''")
   // shown on prescription
@@ -162,7 +165,7 @@ model Clinic {
   address              String? @default("''")
   logo                 File?   @relation(fields: [logoId], references: [id])
   logoId               String?
-  users                User[]
+  users                User[]  @relation(references: [id])
   organizationId       String
 }
 
@@ -172,6 +175,7 @@ model Week {
   year   Int
 
   @@unique([weekNo, year], name: "week_year_unique_constraint")
+  WorkingHours WorkingHours[]
 }
 
 model WorkingHours {

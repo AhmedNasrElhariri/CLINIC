@@ -1,8 +1,8 @@
 import { prisma } from '@';
 
-const createPatient = (_, { input: patient }) => {
+const createPatient = (_, { input: patient }, { organizationId }) => {
   return prisma.patient.create({
-    data: patient,
+    data: { ...patient, organizationId },
   });
 };
 

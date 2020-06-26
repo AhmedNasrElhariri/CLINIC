@@ -41,11 +41,12 @@ type Query {
   appointments(input: AppointmentQueryInput): [Appointment!]
   appointment(id: ID!): Appointment
   appointmentHistory(id: ID!): [Appointment!]
+  patientHistory(id: ID!): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
   activeView: View!
   listMyViewsStatus: ViewStatus
-  myClinic: Clinic!
+  myClinics: [Clinic!]
 }
 
 ########################### Mutation ##################################
@@ -131,6 +132,7 @@ input AppointmentInput {
   patient: ID!
   date: Date!
   type: AppointmentType!
+  clinicId: ID!
   labs: JSON
 }
 
@@ -141,7 +143,7 @@ input UpdateAppointmentInput {
 }
 
 input AppointmentQueryInput {
-  ids: [ID]
+  clinicIds: [ID!]!
   patients: [ID]
   fromDate: Date
   toDate: Date
@@ -215,6 +217,7 @@ input FieldInput {
 
 type Clinic {
   id: ID
+  name: String!
   doctorName: String
   doctorTitle: String
   doctorJobDescription: String

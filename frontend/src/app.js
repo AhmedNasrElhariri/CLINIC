@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ThemeProvider } from 'styled-components';
+import { BrowserRouter } from 'react-router-dom';
 
 import client from './apollo-client';
 import 'rsuite/dist/styles/rsuite-default.css';
@@ -18,7 +19,9 @@ export default function App() {
       <GlobalStyle />
       <ApolloProvider client={client}>
         <ThemeProvider theme={lightTheme}>
-          <Root />
+          <BrowserRouter>
+            <Root />
+          </BrowserRouter>
         </ThemeProvider>
       </ApolloProvider>
     </>
