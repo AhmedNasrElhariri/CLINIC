@@ -1,11 +1,7 @@
 import React from 'react';
 import { Form, SelectPicker, Schema } from 'rsuite';
 
-import {
-  CRSelectInput,
-  CRTextInput,
-  CRNumberInput,
-} from 'components';
+import { CRSelectInput, CRTextInput, CRNumberInput, ShowIf } from 'components';
 
 const membershipTypes = [
   { label: 'Primary', value: 'Primary' },
@@ -31,14 +27,12 @@ const model = Schema.Model({
   ),
 });
 
+const isPrimary = ({ type }) => type === membershipTypes[0].value;
+const isSecondary = ({ type }) => type === membershipTypes[1].value;
+
 const NewPatient = ({ formValue, onChange }) => {
   return (
-    <Form
-      fluid
-      model={model}
-      formValue={formValue}
-      onChange={onChange}
-    >
+    <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput
         label="Membership Type"
         name="type"
@@ -50,7 +44,14 @@ const NewPatient = ({ formValue, onChange }) => {
 
       <CRTextInput label="Patient Name" name="name" />
 
-      <CRTextInput label="Phone no" name="phoneNo" />
+      <ShowIf show={isPrimary(formValue)}>
+        <CRTextInput label="Phone no" name="phoneNo" />
+      </ShowIf>
+
+      <ShowIf show={isSecondary(formValue)}>
+        <CRTextInput label="Guardian's Name" name="guardianName" />
+        <CRTextInput label="Guardian's Phone No" name="phoneNo" />
+      </ShowIf>
 
       <CRNumberInput label="Age" name="age" />
 
@@ -61,10 +62,6 @@ const NewPatient = ({ formValue, onChange }) => {
         data={SEX}
         block
       />
-
-      {/* <CRTextInput label="Guardian's Name" name="guardianName" />
-
-      <CRTextInput label="Guardian's Phone No" name="guardianPhoneNo" /> */}
     </Form>
   );
 };

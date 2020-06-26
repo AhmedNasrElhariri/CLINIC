@@ -3,17 +3,11 @@ import { Modal, Button, Input, Icon } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 
 import PrescriptionPrint from './prescription-print';
+import useGlobalState from 'state';
 
-const Prescription = ({
-  visible,
-  patient,
-  onClose,
-  content,
-  onChange,
-  clinicInfo,
-}) => {
+const Prescription = ({ visible, patient, onClose, content, onChange }) => {
   const ref = useRef();
-
+  const [clinicInfo] = useGlobalState('currentClinic');
   return (
     <>
       <Modal show={visible} onHide={onClose}>

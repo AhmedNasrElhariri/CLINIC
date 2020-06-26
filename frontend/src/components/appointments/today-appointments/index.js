@@ -18,12 +18,20 @@ function AppointmentCalendar() {
 
   const appointments = useFetchAppointments();
   const upcomingAppointments = useMemo(
-    () => R.pipe(R.reject(R.propEq('status', 'Done')))(appointments),
+    () => R.pipe(R.filter(R.propEq('status', 'Scheduled')))(appointments),
     [appointments]
   );
 
   const completedAppointments = useMemo(
-    () => R.pipe(R.filter(R.propEq('status', 'Done')))(appointments),
+    () =>
+      R.pipe(
+        R.filter(
+          R.propSatisfies(
+            status => status === 'Done' || status === 'Archived',
+            'status'
+          )
+        )
+      )(appointments),
     [appointments]
   );
 

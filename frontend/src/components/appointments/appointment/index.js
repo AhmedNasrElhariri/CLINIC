@@ -170,7 +170,6 @@ function Appointment() {
         patient={patient}
         onClose={() => setPrescriptionVisible(false)}
         content={prescriptionBody}
-        // clinicInfo={R.propOr({}, 'myClinic')(clinicInfo)}
         clinicInfo={{}}
         onChange={val => {
           setFormValue(

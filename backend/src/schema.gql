@@ -108,6 +108,7 @@ input PatientInput {
   age: Int!
   sex: Sex!
   type: PatientMembershipType!
+  guardianName: String
 }
 
 ########################### Appointment ##################################

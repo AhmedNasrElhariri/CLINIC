@@ -82,6 +82,7 @@ const PrescriptionSyled = styled.div`
 const PrescriptionPrint = React.forwardRef(
   ({ content, name, age, clinicInfo }, ref) => {
     const logoUlr = R.path(['logo', 'url'])(clinicInfo);
+
     return (
       <PrescriptionSyled ref={ref}>
         <Div display="flex" justifyContent="space-between">
@@ -98,8 +99,13 @@ const PrescriptionPrint = React.forwardRef(
             <p>{content}</p>
           </div>
           <div className="footer">
-            <p><b>Tel: </b> {clinicInfo.phoneNo}</p>
-            <p><b>Address: </b>{clinicInfo.address}</p>
+            <p>
+              <b>Tel: </b> {clinicInfo.phoneNo}
+            </p>
+            <p>
+              <b>Address: </b>
+              {clinicInfo.address}
+            </p>
           </div>
         </div>
       </PrescriptionSyled>

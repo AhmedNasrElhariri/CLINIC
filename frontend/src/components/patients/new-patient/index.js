@@ -13,6 +13,7 @@ const initialValues = {
   phoneNo: '',
   age: '',
   type: null,
+  guardianName: '',
 };
 
 export default function NewPatient({ show, onHide, onCreate }) {
