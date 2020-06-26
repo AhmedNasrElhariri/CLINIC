@@ -36,6 +36,7 @@ export default function NewPatient({ show, onHide, onCreate }) {
       show={show}
       onHide={onHide}
       header="New Patient"
+      onCancel={onHide}
       onOk={() =>
         createPatient({
           variables: {

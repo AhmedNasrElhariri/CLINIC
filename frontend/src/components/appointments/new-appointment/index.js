@@ -20,7 +20,6 @@ import { isBeforeToday } from 'utils/date';
 import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import useGlobalState from 'state';
-import { getStartOfDay, getEndOfDay } from 'services/date.service';
 
 import { useVariables } from 'components/appointments/today-appointments/fetch-appointments';
 
@@ -135,14 +134,14 @@ export default function NewAppointment() {
             disabledDate={isBeforeToday}
           />
 
-          <CRTimePicker
+          {/* <CRTimePicker
             label="Time"
             block
             name="time"
             accepter={DatePicker}
             disabledDate={isBeforeToday}
             placement="top"
-          />
+          /> */}
         </Form>
       </CRModal>
     </>

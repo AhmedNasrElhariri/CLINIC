@@ -70,7 +70,7 @@ function Root() {
     window.location.reload();
   }, [setAuthenticated]);
 
-  if (!isVerified || R.isEmpty(currentClinic)) {
+  if (!isVerified) {
     return <div>Loading ...</div>;
   }
 

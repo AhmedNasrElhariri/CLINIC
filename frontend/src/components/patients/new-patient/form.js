@@ -62,9 +62,9 @@ const NewPatient = ({ formValue, onChange }) => {
         block
       />
 
-      <CRTextInput label="Guardian's Name" name="guardianName" />
+      {/* <CRTextInput label="Guardian's Name" name="guardianName" />
 
-      <CRTextInput label="Guardian's Phone No" name="guardianPhoneNo" />
+      <CRTextInput label="Guardian's Phone No" name="guardianPhoneNo" /> */}
     </Form>
   );
 };
