@@ -4,6 +4,7 @@ import * as R from 'ramda';
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { getStartOfDay, getEndOfDay } from 'services/date.service';
 import useGlobalState from 'state';
+import { useMemo } from 'react';
 
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
@@ -11,22 +12,20 @@ export function useVariables() {
     return {};
   }
   return {
-    input: {
-      clinicIds: [currentClinic.id],
-      fromDate: getStartOfDay(new Date()),
-      toDate: getEndOfDay(new Date()),
-    },
+    clinicIds: [currentClinic.id],
+    fromDate: getStartOfDay(new Date()),
+    toDate: getEndOfDay(new Date()),
   };
 }
 
-function AppointmentCalendar() {
-  const variables = useVariables();
+function FetchAppointments(variables) {
+  const mergerdVariables = { ...useVariables(), ...variables };
 
   const { data } = useQuery(LIST_APPOINTMENTS, {
-    variables,
+    variables: { input: mergerdVariables },
     fetchPolicy: 'cache-and-network',
   });
-  return R.propOr([], 'appointments')(data);
+  return useMemo(()=>R.propOr([], 'appointments')(data),[data]) ;
 }
 
-export default AppointmentCalendar;
+export default FetchAppointments;

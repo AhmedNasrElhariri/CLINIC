@@ -1,7 +1,11 @@
-import { transparentize } from 'polished';
+import { transparentize, setLightness } from 'polished';
 
 const textColor = '#283148';
 const primaryColor = '#51C6F3';
+const eventColor1 = primaryColor;
+const eventColor2 = '#40C173';
+const eventColor3 = textColor;
+
 export const scrollbarColor = transparentize(0.8, textColor);
 
 export const colors = {
@@ -16,6 +20,7 @@ export const colors = {
   subtle: transparentize(0.9, textColor),
   input: '#283148',
   text: textColor,
+  iconBg: transparentize(0.9, primaryColor),
   texts: [
     transparentize(0.3, textColor),
     transparentize(0.5, textColor),
@@ -25,6 +30,23 @@ export const colors = {
   cardBorder: transparentize(0.9, textColor),
   border: transparentize(0.85, primaryColor),
   borders: [transparentize(0.8, textColor)],
+  events: [
+    {
+      color: eventColor1,
+      bg: setLightness(0.97, eventColor1),
+      hover: setLightness(0.88, eventColor1),
+    },
+    {
+      color: eventColor2,
+      bg: setLightness(0.97, eventColor2),
+      hover: setLightness(0.88, eventColor2),
+    },
+    {
+      color: eventColor3,
+      bg: setLightness(0.97, eventColor3),
+      hover: setLightness(0.88, eventColor3),
+    },
+  ],
 };
 
 export default {

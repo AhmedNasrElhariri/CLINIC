@@ -6,6 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import client from './apollo-client';
 import 'rsuite/dist/styles/rsuite-default.css';
 
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 import { Root } from 'components';
 import './state';
 

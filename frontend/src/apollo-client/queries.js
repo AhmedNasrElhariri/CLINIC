@@ -63,6 +63,7 @@ export const LIST_APPOINTMENTS = gql`
       type
       date
       status
+      date
       patient {
         id
         name

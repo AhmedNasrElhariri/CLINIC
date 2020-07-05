@@ -5,7 +5,6 @@ import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
 import {
   CRSelectInput,
   CRDatePicker,
-  CRTimePicker,
   Div,
   H5,
   CRModal,
@@ -21,7 +20,7 @@ import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import useGlobalState from 'state';
 
-import { useVariables } from 'components/appointments/today-appointments/fetch-appointments';
+import { useVariables } from 'hooks/fetch-appointments';
 
 const { StringType } = Schema.Types;
 
@@ -51,7 +50,7 @@ export default function NewAppointment() {
   const [formValue, setFormValue] = useState(initialValues);
   const [currentClinic] = useGlobalState('currentClinic');
 
-  const appointmentVariables = useVariables();
+  const appointmentVariables = { input: useVariables() };
 
   const { data } = useQuery(LIST_PATIENTS);
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {

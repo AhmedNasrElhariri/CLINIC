@@ -52,7 +52,7 @@ const getBorderRadius = ({ noRadius, round }) =>
     ? byTheme(roundBorderRadius)
     : byTheme(normalBorderRadius);
 
-const InputCss = css`
+const inputCss = css`
   background-color: #ffffff;
   width: 100%;
   font-weight: normal;
@@ -62,7 +62,7 @@ const InputCss = css`
   letter-spacing: normal;
   text-align: left;
   padding: 16px 32px;
-  color: ${props => props.theme.colors.text};
+  color: ${(props) => props.theme.colors.text};
   border: none;
   ${space}
   ${typography}
@@ -78,7 +78,7 @@ const InputCss = css`
 `;
 
 export const InputStyled = styled.input`
-  ${InputCss}
+  ${inputCss}
   ${byTheme(heightTheme)}
   ${({ addonAfter }) =>
     addonAfter
@@ -115,7 +115,7 @@ export const InputGroupStyled = styled(InputGroup)`
     &:hover,
     &:visited {
       outline: none;
-      border: solid 1px ${props => props.theme.colors.primary} !important;
+      border: solid 1px ${(props) => props.theme.colors.primary} !important;
     }
   }
 `;
@@ -123,17 +123,17 @@ export const InputGroupStyled = styled(InputGroup)`
 export const NumberContainerStyled = styled.div`
   display: flex;
   border-radius: 17px;
-  border: 1px solid ${props => props.theme.colors.borders[0]};
+  border: 1px solid ${(props) => props.theme.colors.borders[0]};
   ${byTheme(heightTheme)}
   box-sizing: content-box;
 `;
 
 export const NumberInputStyled = styled.input`
-  ${InputCss}
+  ${inputCss}
 `;
 
 export const TextAreaStyled = styled.textarea`
-  ${InputCss}
+  ${inputCss}
   resize: none;
 `;
 

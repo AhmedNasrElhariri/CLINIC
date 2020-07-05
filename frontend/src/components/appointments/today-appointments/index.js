@@ -7,7 +7,7 @@ import { Div } from 'components';
 import { SET_APPOINTMENT_DONE } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 
-import useFetchAppointments from './fetch-appointments';
+import useFetchAppointments from 'hooks/fetch-appointments';
 
 function AppointmentCalendar() {
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {

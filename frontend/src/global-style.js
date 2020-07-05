@@ -57,7 +57,7 @@ export default createGlobalStyle`
     }
 
     ::-webkit-scrollbar {
-      width: 5px;
+      width: 7px;
       background-color: yellow;
     }
 
@@ -73,4 +73,5 @@ export default createGlobalStyle`
     .rs-picker-select-menu-item{
       padding: 0 !important;
     }
+
 `;

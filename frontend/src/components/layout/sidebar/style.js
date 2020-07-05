@@ -7,7 +7,7 @@ export const ContainerStyled = styled.div`
 
   ${css({
     width: [100, 200, 200, 310, 400],
-    minWidth: [100, 200, 200, 310, 400],
+    maxWidth: [100, 200, 200, 240, 400],
   })}
 `;
 

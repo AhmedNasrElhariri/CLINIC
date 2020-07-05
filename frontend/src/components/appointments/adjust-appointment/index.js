@@ -1,9 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {
-  DatePicker,
-  Alert,
-  Form
-} from 'rsuite';
+import { DatePicker, Alert, Form } from 'rsuite';
 import { useMutation } from '@apollo/react-hooks';
 import moment from 'moment';
 
@@ -28,7 +24,7 @@ const calcDate = ({ date, time }) =>
     })
     .toDate();
 
-export default ({ appointment }) => {
+export default ({ appointment, cancelComp, editComp }) => {
   const [visible, setVisible] = useState({ edit: false, cancel: false });
   const [formValue, setFormValue] = useState({
     date: null,
@@ -94,8 +90,24 @@ export default ({ appointment }) => {
 
   return (
     <Div display="inline-flex">
-      <EditOLIcon onClick={() => onOpen('edit')} ml={2} />
-      <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+      {editComp ? (
+        React.cloneElement(editComp, {
+          onClick() {
+            onOpen('edit');
+          },
+        })
+      ) : (
+        <EditOLIcon onClick={() => onOpen('edit')} ml={2} />
+      )}
+      {cancelComp ? (
+        React.cloneElement(cancelComp, {
+          onClick() {
+            onOpen('cancel');
+          },
+        })
+      ) : (
+        <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+      )}
 
       <CRModal
         show={visible.edit}
@@ -153,7 +165,9 @@ export default ({ appointment }) => {
         show={visible.cancel}
         header="Cancel Appointment"
       >
-        <Div textAlign="center">Are you Sure you want to Cancel Appointment?</Div>
+        <Div textAlign="center">
+          Are you Sure you want to Cancel Appointment?
+        </Div>
       </CRModal>
     </Div>
   );

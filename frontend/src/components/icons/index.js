@@ -37,7 +37,9 @@ export const ExitOLIcon = props => (
 
 export const AddIcon = props => <IconStyled src="/icons/add.png" {...props} />;
 
-export const MinusIcon = props => <IconStyled src="/icons/minus.png" {...props} />;
+export const MinusIcon = props => (
+  <IconStyled src="/icons/minus.png" {...props} />
+);
 
 export const NotificationIcon = props => (
   <IconStyled src="/icons/notification.png" {...props} />
@@ -51,3 +53,14 @@ export const CameraIcon = props => (
   <IconStyled src="/icons/camera.svg" {...props} />
 );
 
+export const CalendarIcon = props => (
+  <IconStyled src="/icons/calendar.png" {...props} />
+);
+
+export const LeftArrowIcon = props => (
+  <IconStyled src="/icons/left-arrow.svg" {...props} />
+);
+
+export const RightArrowIcon = props => (
+  <IconStyled src="/icons/right-arrow.svg" {...props} />
+);

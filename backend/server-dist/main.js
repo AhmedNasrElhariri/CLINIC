@@ -86,135 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "../node_modules/nanoid/format.js":
-/*!****************************************!*\
-  !*** ../node_modules/nanoid/format.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/**\n * Secure random string generator with custom alphabet.\n *\n * Alphabet must contain 256 symbols or less. Otherwise, the generator\n * will not be secure.\n *\n * @param {generator} random The random bytes generator.\n * @param {string} alphabet Symbols to be used in new random string.\n * @param {size} size The number of symbols in new random string.\n *\n * @return {string} Random string.\n *\n * @example\n * const format = require('nanoid/format')\n *\n * function random (size) {\n *   const result = []\n *   for (let i = 0; i < size; i++) {\n *     result.push(randomByte())\n *   }\n *   return result\n * }\n *\n * format(random, \"abcdef\", 5) //=> \"fbaef\"\n *\n * @name format\n * @function\n */\nmodule.exports = function (random, alphabet, size) {\n  // We can’t use bytes bigger than the alphabet. To make bytes values closer\n  // to the alphabet, we apply bitmask on them. We look for the closest\n  // `2 ** x - 1` number, which will be bigger than alphabet size. If we have\n  // 30 symbols in the alphabet, we will take 31 (00011111).\n  var mask = (2 << 31 - Math.clz32((alphabet.length - 1) | 1)) - 1\n  // Bitmask is not a perfect solution (in our example it will pass 31 bytes,\n  // which is bigger than the alphabet). As a result, we will need more bytes,\n  // than ID size, because we will refuse bytes bigger than the alphabet.\n\n  // Every hardware random generator call is costly,\n  // because we need to wait for entropy collection. This is why often it will\n  // be faster to ask for few extra bytes in advance, to avoid additional calls.\n\n  // Here we calculate how many random bytes should we call in advance.\n  // It depends on ID length, mask / alphabet size and magic number 1.6\n  // (which was selected according benchmarks).\n  var step = Math.ceil(1.6 * mask * size / alphabet.length)\n  var id = ''\n\n  while (true) {\n    var bytes = random(step)\n    // Compact alternative for `for (var i = 0; i < step; i++)`\n    var i = step\n    while (i--) {\n      // If random byte is bigger than alphabet even after bitmask,\n      // we refuse it by `|| ''`.\n      id += alphabet[bytes[i] & mask] || ''\n      // More compact than `id.length + 1 === size`\n      if (id.length === +size) return id\n    }\n  }\n}\n\n/**\n * @callback generator\n * @param {number} bytes The number of bytes to generate.\n * @return {number[]} Random bytes.\n */\n\n\n//# sourceURL=webpack:///../node_modules/nanoid/format.js?");
-
-/***/ }),
-
-/***/ "../node_modules/nanoid/random.js":
-/*!****************************************!*\
-  !*** ../node_modules/nanoid/random.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var crypto = __webpack_require__(/*! crypto */ \"crypto\")\n\nif (crypto.randomFillSync) {\n  // We reuse buffers with the same size to avoid memory fragmentations\n  // for better performance\n  var buffers = { }\n  module.exports = function (bytes) {\n    var buffer = buffers[bytes]\n    if (!buffer) {\n      // `Buffer.allocUnsafe()` faster because it don’t clean memory.\n      // We do not need it, since we will fill memory with new bytes anyway.\n      buffer = Buffer.allocUnsafe(bytes)\n      if (bytes <= 255) buffers[bytes] = buffer\n    }\n    return crypto.randomFillSync(buffer)\n  }\n} else {\n  module.exports = crypto.randomBytes\n}\n\n\n//# sourceURL=webpack:///../node_modules/nanoid/random.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/index.js":
-/*!****************************************!*\
-  !*** ../node_modules/shortid/index.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nmodule.exports = __webpack_require__(/*! ./lib/index */ \"../node_modules/shortid/lib/index.js\");\n\n\n//# sourceURL=webpack:///../node_modules/shortid/index.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/lib/alphabet.js":
-/*!***********************************************!*\
-  !*** ../node_modules/shortid/lib/alphabet.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\nvar randomFromSeed = __webpack_require__(/*! ./random/random-from-seed */ \"../node_modules/shortid/lib/random/random-from-seed.js\");\n\nvar ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';\nvar alphabet;\nvar previousSeed;\n\nvar shuffled;\n\nfunction reset() {\n    shuffled = false;\n}\n\nfunction setCharacters(_alphabet_) {\n    if (!_alphabet_) {\n        if (alphabet !== ORIGINAL) {\n            alphabet = ORIGINAL;\n            reset();\n        }\n        return;\n    }\n\n    if (_alphabet_ === alphabet) {\n        return;\n    }\n\n    if (_alphabet_.length !== ORIGINAL.length) {\n        throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. You submitted ' + _alphabet_.length + ' characters: ' + _alphabet_);\n    }\n\n    var unique = _alphabet_.split('').filter(function(item, ind, arr){\n       return ind !== arr.lastIndexOf(item);\n    });\n\n    if (unique.length) {\n        throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. These characters were not unique: ' + unique.join(', '));\n    }\n\n    alphabet = _alphabet_;\n    reset();\n}\n\nfunction characters(_alphabet_) {\n    setCharacters(_alphabet_);\n    return alphabet;\n}\n\nfunction setSeed(seed) {\n    randomFromSeed.seed(seed);\n    if (previousSeed !== seed) {\n        reset();\n        previousSeed = seed;\n    }\n}\n\nfunction shuffle() {\n    if (!alphabet) {\n        setCharacters(ORIGINAL);\n    }\n\n    var sourceArray = alphabet.split('');\n    var targetArray = [];\n    var r = randomFromSeed.nextValue();\n    var characterIndex;\n\n    while (sourceArray.length > 0) {\n        r = randomFromSeed.nextValue();\n        characterIndex = Math.floor(r * sourceArray.length);\n        targetArray.push(sourceArray.splice(characterIndex, 1)[0]);\n    }\n    return targetArray.join('');\n}\n\nfunction getShuffled() {\n    if (shuffled) {\n        return shuffled;\n    }\n    shuffled = shuffle();\n    return shuffled;\n}\n\n/**\n * lookup shuffled letter\n * @param index\n * @returns {string}\n */\nfunction lookup(index) {\n    var alphabetShuffled = getShuffled();\n    return alphabetShuffled[index];\n}\n\nfunction get () {\n  return alphabet || ORIGINAL;\n}\n\nmodule.exports = {\n    get: get,\n    characters: characters,\n    seed: setSeed,\n    lookup: lookup,\n    shuffled: getShuffled\n};\n\n\n//# sourceURL=webpack:///../node_modules/shortid/lib/alphabet.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/lib/build.js":
-/*!********************************************!*\
-  !*** ../node_modules/shortid/lib/build.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\nvar generate = __webpack_require__(/*! ./generate */ \"../node_modules/shortid/lib/generate.js\");\nvar alphabet = __webpack_require__(/*! ./alphabet */ \"../node_modules/shortid/lib/alphabet.js\");\n\n// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.\n// This number should be updated every year or so to keep the generated id short.\n// To regenerate `new Date() - 0` and bump the version. Always bump the version!\nvar REDUCE_TIME = 1567752802062;\n\n// don't change unless we change the algos or REDUCE_TIME\n// must be an integer and less than 16\nvar version = 7;\n\n// Counter is used when shortid is called multiple times in one second.\nvar counter;\n\n// Remember the last time shortid was called in case counter is needed.\nvar previousSeconds;\n\n/**\n * Generate unique id\n * Returns string id\n */\nfunction build(clusterWorkerId) {\n    var str = '';\n\n    var seconds = Math.floor((Date.now() - REDUCE_TIME) * 0.001);\n\n    if (seconds === previousSeconds) {\n        counter++;\n    } else {\n        counter = 0;\n        previousSeconds = seconds;\n    }\n\n    str = str + generate(version);\n    str = str + generate(clusterWorkerId);\n    if (counter > 0) {\n        str = str + generate(counter);\n    }\n    str = str + generate(seconds);\n    return str;\n}\n\nmodule.exports = build;\n\n\n//# sourceURL=webpack:///../node_modules/shortid/lib/build.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/lib/generate.js":
-/*!***********************************************!*\
-  !*** ../node_modules/shortid/lib/generate.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\nvar alphabet = __webpack_require__(/*! ./alphabet */ \"../node_modules/shortid/lib/alphabet.js\");\nvar random = __webpack_require__(/*! ./random/random-byte */ \"../node_modules/shortid/lib/random/random-byte.js\");\nvar format = __webpack_require__(/*! nanoid/format */ \"../node_modules/nanoid/format.js\");\n\nfunction generate(number) {\n    var loopCounter = 0;\n    var done;\n\n    var str = '';\n\n    while (!done) {\n        str = str + format(random, alphabet.get(), 1);\n        done = number < (Math.pow(16, loopCounter + 1 ) );\n        loopCounter++;\n    }\n    return str;\n}\n\nmodule.exports = generate;\n\n\n//# sourceURL=webpack:///../node_modules/shortid/lib/generate.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/lib/index.js":
-/*!********************************************!*\
-  !*** ../node_modules/shortid/lib/index.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\nvar alphabet = __webpack_require__(/*! ./alphabet */ \"../node_modules/shortid/lib/alphabet.js\");\nvar build = __webpack_require__(/*! ./build */ \"../node_modules/shortid/lib/build.js\");\nvar isValid = __webpack_require__(/*! ./is-valid */ \"../node_modules/shortid/lib/is-valid.js\");\n\n// if you are using cluster or multiple servers use this to make each instance\n// has a unique value for worker\n// Note: I don't know if this is automatically set when using third\n// party cluster solutions such as pm2.\nvar clusterWorkerId = __webpack_require__(/*! ./util/cluster-worker-id */ \"../node_modules/shortid/lib/util/cluster-worker-id.js\") || 0;\n\n/**\n * Set the seed.\n * Highly recommended if you don't want people to try to figure out your id schema.\n * exposed as shortid.seed(int)\n * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.\n */\nfunction seed(seedValue) {\n    alphabet.seed(seedValue);\n    return module.exports;\n}\n\n/**\n * Set the cluster worker or machine id\n * exposed as shortid.worker(int)\n * @param workerId worker must be positive integer.  Number less than 16 is recommended.\n * returns shortid module so it can be chained.\n */\nfunction worker(workerId) {\n    clusterWorkerId = workerId;\n    return module.exports;\n}\n\n/**\n *\n * sets new characters to use in the alphabet\n * returns the shuffled alphabet\n */\nfunction characters(newCharacters) {\n    if (newCharacters !== undefined) {\n        alphabet.characters(newCharacters);\n    }\n\n    return alphabet.shuffled();\n}\n\n/**\n * Generate unique id\n * Returns string id\n */\nfunction generate() {\n  return build(clusterWorkerId);\n}\n\n// Export all other functions as properties of the generate function\nmodule.exports = generate;\nmodule.exports.generate = generate;\nmodule.exports.seed = seed;\nmodule.exports.worker = worker;\nmodule.exports.characters = characters;\nmodule.exports.isValid = isValid;\n\n\n//# sourceURL=webpack:///../node_modules/shortid/lib/index.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/lib/is-valid.js":
-/*!***********************************************!*\
-  !*** ../node_modules/shortid/lib/is-valid.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nvar alphabet = __webpack_require__(/*! ./alphabet */ \"../node_modules/shortid/lib/alphabet.js\");\n\nfunction isShortId(id) {\n    if (!id || typeof id !== 'string' || id.length < 6 ) {\n        return false;\n    }\n\n    var nonAlphabetic = new RegExp('[^' +\n      alphabet.get().replace(/[|\\\\{}()[\\]^$+*?.-]/g, '\\\\$&') +\n    ']');\n    return !nonAlphabetic.test(id);\n}\n\nmodule.exports = isShortId;\n\n\n//# sourceURL=webpack:///../node_modules/shortid/lib/is-valid.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/lib/random/random-byte.js":
-/*!*********************************************************!*\
-  !*** ../node_modules/shortid/lib/random/random-byte.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("module.exports = __webpack_require__(/*! nanoid/random */ \"../node_modules/nanoid/random.js\");\n\n\n//# sourceURL=webpack:///../node_modules/shortid/lib/random/random-byte.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/lib/random/random-from-seed.js":
-/*!**************************************************************!*\
-  !*** ../node_modules/shortid/lib/random/random-from-seed.js ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\n// Found this seed-based random generator somewhere\n// Based on The Central Randomizer 1.3 (C) 1997 by Paul Houle (houle@msc.cornell.edu)\n\nvar seed = 1;\n\n/**\n * return a random number based on a seed\n * @param seed\n * @returns {number}\n */\nfunction getNextValue() {\n    seed = (seed * 9301 + 49297) % 233280;\n    return seed/(233280.0);\n}\n\nfunction setSeed(_seed_) {\n    seed = _seed_;\n}\n\nmodule.exports = {\n    nextValue: getNextValue,\n    seed: setSeed\n};\n\n\n//# sourceURL=webpack:///../node_modules/shortid/lib/random/random-from-seed.js?");
-
-/***/ }),
-
-/***/ "../node_modules/shortid/lib/util/cluster-worker-id.js":
-/*!*************************************************************!*\
-  !*** ../node_modules/shortid/lib/util/cluster-worker-id.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\nvar cluster = __webpack_require__(/*! cluster */ \"cluster\");\n\nvar clusterId = 0;\nif (!cluster.isMaster && cluster.worker) {\n    clusterId = cluster.worker.id;\n}\nmodule.exports = parseInt(process.env.NODE_UNIQUE_ID || clusterId, 10);\n\n\n//# sourceURL=webpack:///../node_modules/shortid/lib/util/cluster-worker-id.js?");
-
-/***/ }),
-
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -810,7 +681,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"processUpload\", function() { return processUpload; });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ */ \"./src/index.js\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fs */ \"fs\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shortid */ \"../node_modules/shortid/index.js\");\n/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_3__);\n\n\n\n\n\nconst storeUpload = async ({\n  stream,\n  filename\n}) => {\n  const id = shortid__WEBPACK_IMPORTED_MODULE_3___default.a.generate();\n  const url = `${___WEBPACK_IMPORTED_MODULE_0__[\"UPLOAD_DIR\"]}/${id}-${filename}`; // eslint-disable-next-line no-undef\n\n  return new Promise((resolve, reject) => stream.pipe(Object(fs__WEBPACK_IMPORTED_MODULE_1__[\"createWriteStream\"])(path__WEBPACK_IMPORTED_MODULE_2___default.a.join(__dirname, url))).on('finish', () => resolve(url)).on('error', reject));\n}; // const recordFile = file => db.get('uploads').push(file).last().write();\n\n\nconst recordFile = file => ___WEBPACK_IMPORTED_MODULE_0__[\"prisma\"].file.create({\n  data: file\n});\n\nconst processUpload = async upload => {\n  const {\n    createReadStream,\n    filename,\n    mimetype,\n    encoding\n  } = await upload;\n  const stream = createReadStream();\n  const url = await storeUpload({\n    stream,\n    filename\n  });\n  return recordFile({\n    filename,\n    mimetype,\n    encoding,\n    url\n  });\n};\n\n//# sourceURL=webpack:///./src/services/upload.service.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"processUpload\", function() { return processUpload; });\n/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ */ \"./src/index.js\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fs */ \"fs\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! shortid */ \"shortid\");\n/* harmony import */ var shortid__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(shortid__WEBPACK_IMPORTED_MODULE_3__);\n\n\n\n\n\nconst storeUpload = async ({\n  stream,\n  filename\n}) => {\n  const id = shortid__WEBPACK_IMPORTED_MODULE_3___default.a.generate();\n  const url = `${___WEBPACK_IMPORTED_MODULE_0__[\"UPLOAD_DIR\"]}/${id}-${filename}`; // eslint-disable-next-line no-undef\n\n  return new Promise((resolve, reject) => stream.pipe(Object(fs__WEBPACK_IMPORTED_MODULE_1__[\"createWriteStream\"])(path__WEBPACK_IMPORTED_MODULE_2___default.a.join(__dirname, url))).on('finish', () => resolve(url)).on('error', reject));\n}; // const recordFile = file => db.get('uploads').push(file).last().write();\n\n\nconst recordFile = file => ___WEBPACK_IMPORTED_MODULE_0__[\"prisma\"].file.create({\n  data: file\n});\n\nconst processUpload = async upload => {\n  const {\n    createReadStream,\n    filename,\n    mimetype,\n    encoding\n  } = await upload;\n  const stream = createReadStream();\n  const url = await storeUpload({\n    stream,\n    filename\n  });\n  return recordFile({\n    filename,\n    mimetype,\n    encoding,\n    url\n  });\n};\n\n//# sourceURL=webpack:///./src/services/upload.service.js?");
 
 /***/ }),
 
@@ -856,28 +727,6 @@ eval("module.exports = require(\"apollo-server-core\");\n\n//# sourceURL=webpack
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"bcryptjs\");\n\n//# sourceURL=webpack:///external_%22bcryptjs%22?");
-
-/***/ }),
-
-/***/ "cluster":
-/*!**************************!*\
-  !*** external "cluster" ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"cluster\");\n\n//# sourceURL=webpack:///external_%22cluster%22?");
-
-/***/ }),
-
-/***/ "crypto":
-/*!*************************!*\
-  !*** external "crypto" ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"crypto\");\n\n//# sourceURL=webpack:///external_%22crypto%22?");
 
 /***/ }),
 
@@ -1010,6 +859,17 @@ eval("module.exports = require(\"ramda\");\n\n//# sourceURL=webpack:///external_
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"ramda-adjunct\");\n\n//# sourceURL=webpack:///external_%22ramda-adjunct%22?");
+
+/***/ }),
+
+/***/ "shortid":
+/*!**************************!*\
+  !*** external "shortid" ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"shortid\");\n\n//# sourceURL=webpack:///external_%22shortid%22?");
 
 /***/ })
 
