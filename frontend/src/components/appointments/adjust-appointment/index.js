@@ -6,11 +6,7 @@ import moment from 'moment';
 import { Div, CRModal, CRCard, CRDatePicker, H6 } from 'components';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { isBeforeToday, formatDate } from 'utils/date';
-import {
-  ADJUST_APPOINTMENT,
-  CANCEL_APPOINTMENT,
-  LIST_APPOINTMENTS,
-} from 'apollo-client/queries';
+import { ADJUST_APPOINTMENT, CANCEL_APPOINTMENT } from 'apollo-client/queries';
 
 import { EditOLIcon, DeleteOLIcon } from 'components/icons';
 
@@ -24,7 +20,7 @@ const calcDate = ({ date, time }) =>
     })
     .toDate();
 
-export default ({ appointment, cancelComp, editComp }) => {
+export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
   const [visible, setVisible] = useState({ edit: false, cancel: false });
   const [formValue, setFormValue] = useState({
     date: null,
@@ -32,51 +28,53 @@ export default ({ appointment, cancelComp, editComp }) => {
   });
 
   const [adjust] = useMutation(ADJUST_APPOINTMENT, {
-    onCompleted: () => {
+    onCompleted: ({ adjustAppointment }) => {
       setVisible({ edit: false });
+      onAdjust({ ...appointment, ...adjustAppointment });
       Alert.success('Appointment has been changed successfully');
     },
-    update(
-      cache,
-      {
-        data: {
-          adjustAppointment: { id, date },
-        },
-      }
-    ) {
-      const { appointments } = cache.readQuery({ query: LIST_APPOINTMENTS });
-      cache.writeQuery({
-        query: LIST_APPOINTMENTS,
-        data: {
-          appointments: appointments.map(app =>
-            app.id === id ? { ...app, date } : app
-          ),
-        },
-      });
-    },
+    // update(
+    //   cache,
+    //   {
+    //     data: {
+    //       adjustAppointment: { id, date },
+    //     },
+    //   }
+    // ) {
+    //   const { appointments } = cache.readQuery({ query: LIST_APPOINTMENTS });
+    //   cache.writeQuery({
+    //     query: LIST_APPOINTMENTS,
+    //     data: {
+    //       appointments: appointments.map(app =>
+    //         app.id === id ? { ...app, date } : app
+    //       ),
+    //     },
+    //   });
+    // },
   });
 
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {
     onCompleted: () => {
       setVisible({ cancel: false });
+      onCancel(appointment);
       Alert.success('Appointment has been cancelled successfully');
     },
-    update(cache) {
-      const { appointments } = cache.readQuery({ query: LIST_APPOINTMENTS });
-      cache.writeQuery({
-        query: LIST_APPOINTMENTS,
-        data: {
-          appointments: appointments.filter(app => app.id !== appointment.id),
-        },
-      });
-    },
+    // update(cache) {
+    //   const { appointments } = cache.readQuery({ query: LIST_APPOINTMENTS });
+    //   cache.writeQuery({
+    //     query: LIST_APPOINTMENTS,
+    //     data: {
+    //       appointments: appointments.filter(app => app.id !== appointment.id),
+    //     },
+    //   });
+    // },
   });
 
-  const onAdjust = useCallback(() => {
+  const handleAdjust = useCallback(() => {
     adjust({ variables: { id: appointment.id, date: calcDate(formValue) } });
   }, [adjust, formValue, appointment]);
 
-  const onCancel = useCallback(() => {
+  const handleCancel = useCallback(() => {
     cancel({ variables: { id: appointment.id } });
   }, [cancel, appointment]);
 
@@ -116,7 +114,7 @@ export default ({ appointment, cancelComp, editComp }) => {
           padding: '40px 89px ',
         }}
         okTitle="Adjust"
-        onOk={onAdjust}
+        onOk={handleAdjust}
         onCancel={() => onClose('edit')}
         onHide={() => onClose('edit')}
       >
@@ -160,7 +158,7 @@ export default ({ appointment, cancelComp, editComp }) => {
       </CRModal>
 
       <CRModal
-        onOk={onCancel}
+        onOk={handleCancel}
         onCancel={() => onClose('cancel')}
         show={visible.cancel}
         header="Cancel Appointment"

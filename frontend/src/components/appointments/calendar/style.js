@@ -26,9 +26,7 @@ const variants = props =>
     },
   });
 
-export const MonthEventStyled = styled.div.attrs(({ variant }) => ({
-  variant,
-}))`
+export const MonthEventStyled = styled.div`
   text-align: left;
   letter-spacing: 0px;
   opacity: 1;
@@ -110,8 +108,7 @@ export const MonthWrapper = styled.div`
 export const WeekWrapper = styled.div`
   & .rbc-event {
     background: transparent !important;
-    border: 1px solid ${props => props.theme.colors.primary};
-    border-radius: 8px;
+    ${variants}
     &:focus,
     &:visited {
       outline: none;
@@ -123,11 +120,10 @@ export const WeekWrapper = styled.div`
   }
 `;
 
-export const WeekEventStyled = styled.div.attrs(({ variant }) => ({
-  variant,
-}))`
+export const WeekEventStyled = styled.div`
   height: 100%;
   ${variants}
+  border: none;
 `;
 
 export const DayWrapper = styled.div`

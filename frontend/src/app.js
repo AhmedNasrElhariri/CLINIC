@@ -3,7 +3,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 
-import client from './apollo-client';
+import client from './apollo-client/client';
 import 'rsuite/dist/styles/rsuite-default.css';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';

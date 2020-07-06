@@ -16,7 +16,7 @@ function AppointmentCalendar() {
     },
   });
 
-  const appointments = useFetchAppointments();
+  const { data: appointments } = useFetchAppointments();
   const upcomingAppointments = useMemo(
     () => R.pipe(R.filter(R.propEq('status', 'Scheduled')))(appointments),
     [appointments]
