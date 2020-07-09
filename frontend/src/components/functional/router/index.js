@@ -14,6 +14,7 @@ import {
   CreateView,
   AppointmentSettings,
   StaticSettings,
+  Snippets
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 
@@ -56,13 +57,14 @@ function AppRouter() {
       <Route path="/login">
         <Redirect to="/" />
       </Route>
-
       <Route path="/settings/appointment">
         <AppointmentSettings />
       </Route>
-
       <Route path="/settings/static">
         <StaticSettings />
+      </Route>
+      <Route path="/snippets">
+        <Snippets />
       </Route>
 
       <Route path="/init-default-view">

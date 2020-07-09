@@ -26,6 +26,11 @@ export { default as PatientSummary } from './patients/summary';
 export { default as PatientProgress } from './patients/progress';
 export { default as PatientFilter } from './patients/filter';
 
+/******************       Snippets    *********************************/
+export { default as Snippets } from './snippets/snippets';
+export { default as NewSnippet } from './snippets/new-snippet';
+export { default as ListSnippets } from './snippets/list-snippets';
+
 /******************       Printouts    *********************************/
 export { default as AppointmentPrintout } from './printouts/appointment-printout';
 

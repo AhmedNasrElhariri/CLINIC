@@ -18,7 +18,7 @@ const items = [
   {
     name: 'Snippets',
     icon: '/icons/snippets.png',
-    path: 'snippets.png',
+    path: '/snippets',
   },
   {
     name: 'Logout',

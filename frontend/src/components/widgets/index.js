@@ -14,3 +14,5 @@ export { default as CRCard } from './card';
 export { default as CRTable } from './table';
 export { default as CRNav } from './nav';
 export { default as CRVDivider } from './vertical-divider';
+export { default as CRPanelGroup } from './panel-group';
+export { default as CRPanel } from './panel';

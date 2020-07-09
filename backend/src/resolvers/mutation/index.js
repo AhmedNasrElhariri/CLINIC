@@ -14,3 +14,4 @@ export { default as cancelAppointment } from './cancel-appointment';
 export { default as singleUpload } from './single-upload';
 export { default as multipleUpload } from './multiple-upload';
 export { default as updateClinic } from './update-clinic';
+export { default as createSnippet } from './create-snippet';

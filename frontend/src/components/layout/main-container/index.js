@@ -1,10 +1,18 @@
 import React from 'react';
 
-import { CRCard, H3 } from 'components';
+import { CRCard, H3, Div } from 'components';
 
-export default ({ title, children }) => (
+export default ({ title, children, nobody, more = null }) => (
   <>
-    <H3 mb={64}>{title}</H3>
-    <CRCard borderless>{children}</CRCard>
+    <Div
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      mb={64}
+    >
+      <H3>{title}</H3>
+      {more}
+    </Div>
+    {!nobody && <CRCard borderless>{children}</CRCard>}
   </>
 );

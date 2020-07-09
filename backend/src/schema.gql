@@ -47,6 +47,7 @@ type Query {
   activeView: View!
   listMyViewsStatus: ViewStatus
   myClinics: [Clinic!]
+  mySnippets: [Snippet!]
 }
 
 ########################### Mutation ##################################
@@ -68,6 +69,7 @@ type Mutation {
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
   updateClinic(clinic: ClinicInput!): Clinic
+  createSnippet(snippet: SnippetInput!): Snippet!
 }
 
 ########################### Auth ##################################
@@ -245,4 +247,17 @@ type File {
   mimetype: String
   encoding: String
   url: String
+}
+
+########################### Snipp\et ##################################
+
+type Snippet {
+  id: ID!
+  title: String!
+  body: String!
+}
+
+input SnippetInput {
+  title: String!
+  body: String!
 }

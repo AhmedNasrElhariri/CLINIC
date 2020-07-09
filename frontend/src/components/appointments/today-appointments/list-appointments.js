@@ -10,13 +10,14 @@ import {
   H5,
   H6,
   CRButton,
+  CRPanelGroup,
 } from 'components';
 import { format } from 'services/date.service';
 import { isScheduled } from 'services/appointment';
 import { canAjdust } from 'services/appointment';
 
 import { PrintOLIcon } from 'components/icons';
-import { PanelStyled, Headers, Body } from './style';
+import { Headers, Body } from './style';
 import NoAppointments from './no-appointments';
 
 function ListAppointments({
@@ -29,7 +30,7 @@ function ListAppointments({
   const componentRef = useRef();
 
   return (
-    <PanelStyled accordion>
+    <CRPanelGroup accordion>
       <Panel
         header={
           <H5 fontWeight={600} px={4} py={3}>
@@ -120,7 +121,7 @@ function ListAppointments({
           <NoAppointments />
         )}
       </Panel>
-    </PanelStyled>
+    </CRPanelGroup>
   );
 }
 

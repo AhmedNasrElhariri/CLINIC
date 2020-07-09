@@ -33,24 +33,6 @@ export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
       onAdjust({ ...appointment, ...adjustAppointment });
       Alert.success('Appointment has been changed successfully');
     },
-    // update(
-    //   cache,
-    //   {
-    //     data: {
-    //       adjustAppointment: { id, date },
-    //     },
-    //   }
-    // ) {
-    //   const { appointments } = cache.readQuery({ query: LIST_APPOINTMENTS });
-    //   cache.writeQuery({
-    //     query: LIST_APPOINTMENTS,
-    //     data: {
-    //       appointments: appointments.map(app =>
-    //         app.id === id ? { ...app, date } : app
-    //       ),
-    //     },
-    //   });
-    // },
   });
 
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {
@@ -59,15 +41,6 @@ export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
       onCancel(appointment);
       Alert.success('Appointment has been cancelled successfully');
     },
-    // update(cache) {
-    //   const { appointments } = cache.readQuery({ query: LIST_APPOINTMENTS });
-    //   cache.writeQuery({
-    //     query: LIST_APPOINTMENTS,
-    //     data: {
-    //       appointments: appointments.filter(app => app.id !== appointment.id),
-    //     },
-    //   });
-    // },
   });
 
   const handleAdjust = useCallback(() => {

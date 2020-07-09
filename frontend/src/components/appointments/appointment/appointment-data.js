@@ -35,7 +35,7 @@ const renderItem = ({ type, id, name, ...props }) => {
     case TEXT_FIELD_TYPE:
       return <CRTextInput label={name} name={id} {...props} />;
     case LONG_TEXT_FIELD_TYPE:
-      return <CRTextArea label={name} name={id} {...props} />;
+      return <CRTextArea label={name} name={id} {...props} importable />;
     default:
       return null;
   }
