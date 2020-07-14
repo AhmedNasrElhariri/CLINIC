@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -213,6 +213,6 @@ model LabDocument {
   id           String     @default(uuid()) @id
   file         File       @relation(fields: [fileId], references: [id])
   fileId       String
-  patientLab   PatientLab @relation(fields: [patientLabId], references: [id])
-  patientLabId String
+  pateintLab   PatientLab @relation(fields: [pateintLabId], references: [id])
+  pateintLabId String
 }

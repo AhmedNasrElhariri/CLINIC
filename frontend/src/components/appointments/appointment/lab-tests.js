@@ -329,7 +329,6 @@ export default [
     label: 'Vitamin E (Tocopherol) Test',
     value: 'Vitamin E (Tocopherol) Test',
   },
-  { label: 'Yeast Infection Tests', value: 'Yeast Infection Tests' },
   { label: 'Whooping Cough Diagnosis', value: 'Whooping Cough Diagnosis' },
   { label: 'Yeast Infection Tests', value: 'Yeast Infection Tests' },
   { label: 'Zika Virus Test', value: 'Zika Virus Test' },

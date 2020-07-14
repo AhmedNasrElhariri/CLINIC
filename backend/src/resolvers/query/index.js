@@ -10,3 +10,4 @@ export { default as activeView } from './active-view';
 export { default as myClinics } from './my-clinics';
 export { default as patientHistory } from './patient-history';
 export { default as mySnippets } from './my-snippets';
+export { default as patientLabs } from './patient-labs';

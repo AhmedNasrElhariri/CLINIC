@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -70,7 +70,7 @@ model Patient {
   sex            Sex
   organizationId String
   guardianName   String?
-  pateintLab     PatientLab[]
+  pateintLab     PateintLab[]
 }
 
 model Appointment {
@@ -200,19 +200,18 @@ model Snippet {
   body   String
 }
 
-model PatientLab {
-  id        String        @default(uuid()) @id
-  patient   Patient       @relation(fields: [patientId], references: [id])
-  patientId String
-  name      String
-  documents LabDocument[]
-  @@unique([name, patientId], name: "name_patientId_unique_constraint")
+model PateintLab {
+  id          String        @default(uuid()) @id
+  patient     Patient       @relation(fields: [patientId], references: [id])
+  patientId   String
+  name        String
+  LabDocument LabDocument[]
 }
 
 model LabDocument {
   id           String     @default(uuid()) @id
   file         File       @relation(fields: [fileId], references: [id])
   fileId       String
-  patientLab   PatientLab @relation(fields: [patientLabId], references: [id])
-  patientLabId String
+  pateintLab   PateintLab @relation(fields: [pateintLabId], references: [id])
+  pateintLabId String
 }

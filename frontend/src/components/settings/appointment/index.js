@@ -4,7 +4,7 @@ import WorkingHours from './working-hours';
 import AppointmentInfo from './appointment-info';
 import { H3, Div, CRButton } from 'components';
 
-function AppointmentSettings({ onCreate }) {
+function AppointmentSettings() {
   return (
     <>
       <Div display="flex" justifyContent="space-between">

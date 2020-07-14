@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { ButtonToolbar, Button, Icon, Alert } from 'rsuite';
+import { ButtonToolbar, Icon, Alert } from 'rsuite';
 
 import {
   GET_APPOINTMENT,
@@ -10,7 +10,6 @@ import {
   ARCHIVE_APPOINTMENT,
 } from 'apollo-client/queries';
 
-import PatientInfo from './patient-info';
 import {
   Div,
   PatientProgress,
@@ -18,9 +17,11 @@ import {
   H3,
   CRNav,
   CRButton,
+  PatientInfo,
 } from 'components';
 import AppointmentData from './appointment-data';
 import Prescription from './prescription';
+import PatientLabs from './patient-labs';
 
 import {
   getFormInitValues,
@@ -30,13 +31,13 @@ import {
 
 import usePatientHistory from './use-patient-history';
 
-const tabs = ['Home', 'Summary', 'Progress'];
+const tabs = ['Home', 'Summary', 'Progress', 'Labs'];
 
 function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('0');
+  const [activeTab, setActiveTab] = useState('3');
   let { appointmentId } = useParams();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
@@ -124,9 +125,6 @@ function Appointment() {
             <CRButton primary onClick={onArchive} disabled={disabled}>
               Archive <Icon icon="archive" />
             </CRButton>
-            {/* <Button color="red" appearance="link">
-              Delete <Icon icon="trash-o" />
-            </Button> */}
           </ButtonToolbar>
         </Div>
         <Div display="flex">
@@ -160,6 +158,7 @@ function Appointment() {
                   viewFields={viewFields}
                 />
               )}
+              {showComp('3') && <PatientLabs patient={patient}/>}
             </Div>
           </Div>
         </Div>

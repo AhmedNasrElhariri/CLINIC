@@ -1,0 +1,25 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "PatientLab",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[name, patientId]"
+            },
+            {
+              "name": "name",
+              "value": "\"name_patientId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

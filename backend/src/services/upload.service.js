@@ -18,7 +18,6 @@ const storeUpload = async ({ stream, filename }) => {
   );
 };
 
-// const recordFile = file => db.get('uploads').push(file).last().write();
 const recordFile = file => prisma.file.create({ data: file });
 
 export const processUpload = async upload => {
@@ -26,4 +25,19 @@ export const processUpload = async upload => {
   const stream = createReadStream();
   const url = await storeUpload({ stream, filename });
   return recordFile({ filename, mimetype, encoding, url });
+};
+
+const recordFile2 = (file, url) => {
+  const { name: filename, mimetype, encoding } = file;
+  return prisma.file.create({ data: { filename, mimetype, url, encoding } });
+};
+
+export const upload = async file => {
+  const { name } = file;
+  const id = shortid.generate();
+  const url = `${UPLOAD_DIR}/${id}-${name}`;
+
+  // eslint-disable-next-line no-undef
+  file.mv(path.join(__dirname, url));
+  return recordFile2(file, url);
 };

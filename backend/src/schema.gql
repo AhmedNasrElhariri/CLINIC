@@ -48,6 +48,7 @@ type Query {
   listMyViewsStatus: ViewStatus
   myClinics: [Clinic!]
   mySnippets: [Snippet!]
+  patientLabs(patientId: ID!): [PatientLab!]
 }
 
 ########################### Mutation ##################################
@@ -70,6 +71,7 @@ type Mutation {
   multipleUpload(files: [Upload!]!): [File!]!
   updateClinic(clinic: ClinicInput!): Clinic
   createSnippet(snippet: SnippetInput!): Snippet!
+  addLabDocs(patientLab: PatientLabInput!): PatientLab!
 }
 
 ########################### Auth ##################################
@@ -249,7 +251,7 @@ type File {
   url: String
 }
 
-########################### Snipp\et ##################################
+########################### Snippet ##################################
 
 type Snippet {
   id: ID!
@@ -260,4 +262,24 @@ type Snippet {
 input SnippetInput {
   title: String!
   body: String!
+}
+
+########################### Labs ##################################
+
+type PatientLab {
+  id: ID
+  patient: Patient
+  name: String
+  documents: [LabDocument!]
+}
+
+type LabDocument {
+  id: ID
+  file: File
+}
+
+input PatientLabInput {
+  patientId: ID!
+  name: String!
+  documents: [ID!]
 }

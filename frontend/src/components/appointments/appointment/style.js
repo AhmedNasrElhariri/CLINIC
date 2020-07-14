@@ -19,11 +19,3 @@ export const HomeSidebarStyled = styled(Div)`
     width: [100, 200, 200, 240, 300],
   })}
 `;
-
-export const PatientInfoStyled = styled(Div)`
-  width: 310px;
-  min-width: 310px;
-  ${css({
-    marginLeft: [20, 35, 50, 55, 64],
-  })}
-`;

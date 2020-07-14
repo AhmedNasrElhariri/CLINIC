@@ -8,7 +8,7 @@ import { Div, PatientSummary, PatientProgress, H3 } from 'components';
 import CRNav from '../../widgets/nav/index';
 
 import usePatientHistory from './use-patient-history';
-import PatientInfo from '../../appointments/appointment/patient-info';
+import PatientInfo from '../patient-info';
 
 const tabs = ['History', 'Progress'];
 

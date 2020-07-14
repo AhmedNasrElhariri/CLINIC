@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { CRModal, Div, CRTextInput, CRTimePicker } from 'components';
 import { Form } from 'rsuite';

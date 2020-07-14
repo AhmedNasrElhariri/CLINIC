@@ -10,14 +10,6 @@ export { default as ShowIf } from './functional/show-if';
 export { default as Login } from './user/login';
 export { default as Logout } from './user/logout';
 
-/******************       Appointment    *********************************/
-export { default as NewAppointment } from './appointments/new-appointment';
-export { default as TodayAppointment } from './appointments/today-appointments';
-export { default as Appointment } from './appointments/appointment';
-export { default as Calendar } from './appointments/calendar';
-export { default as Appointments } from './appointments/appointments';
-export { default as AdjustAppointment } from './appointments/adjust-appointment';
-
 /******************       Patient    *********************************/
 export { default as ListPatients } from './patients/list-patients';
 export { default as NewPatient } from './patients/new-patient';
@@ -25,6 +17,15 @@ export { default as Patient } from './patients/patient';
 export { default as PatientSummary } from './patients/summary';
 export { default as PatientProgress } from './patients/progress';
 export { default as PatientFilter } from './patients/filter';
+export { default as PatientInfo } from './patients/patient-info';
+
+/******************       Appointment    *********************************/
+export { default as NewAppointment } from './appointments/new-appointment';
+export { default as TodayAppointment } from './appointments/today-appointments';
+export { default as Appointment } from './appointments/appointment';
+export { default as Calendar } from './appointments/calendar';
+export { default as Appointments } from './appointments/appointments';
+export { default as AdjustAppointment } from './appointments/adjust-appointment';
 
 /******************       Snippets    *********************************/
 export { default as Snippets } from './snippets/snippets';

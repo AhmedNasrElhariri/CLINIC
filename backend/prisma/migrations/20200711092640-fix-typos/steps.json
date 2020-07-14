@@ -1,0 +1,68 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "LabDocument",
+      "field": "patientLab",
+      "type": "PatientLab",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "LabDocument",
+          "field": "patientLab"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "LabDocument",
+          "field": "patientLab"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[patientLabId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "LabDocument",
+          "field": "patientLab"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "LabDocument",
+      "field": "patientLabId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "LabDocument",
+      "field": "pateintLab"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "LabDocument",
+      "field": "pateintLabId"
+    }
+  ]
+}

@@ -6,7 +6,6 @@ import { FormGroup, FormControl, SelectPicker } from 'rsuite';
 import { byTheme } from 'services/theme';
 
 import Label from '../label';
-import { inputCss } from '../input/style';
 
 const theme = {
   fontSize: {

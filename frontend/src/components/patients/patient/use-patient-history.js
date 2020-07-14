@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import * as R from 'ramda';
 
 import { normalizeFieldsOfGroups } from 'services/appointment';

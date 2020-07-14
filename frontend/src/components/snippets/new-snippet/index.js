@@ -1,16 +1,7 @@
-import React, { useState, useCallback } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Alert, Form, Schema } from 'rsuite';
+import React, { useState } from 'react';
+import { Form, Schema } from 'rsuite';
 
 import { CRTextArea, CRTextInput, CRModal } from 'components';
-import {
-  LIST_PATIENTS,
-  CREATE_APPOINTMENT,
-  LIST_APPOINTMENTS,
-} from 'apollo-client/queries';
-import useGlobalState from 'state';
-
-import { useVariables } from 'hooks/fetch-appointments';
 
 const { StringType } = Schema.Types;
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { GraphQLServer } from 'graphql-yoga';
+import fileUpload from 'express-fileupload';
 
 import moment from 'moment';
 import 'moment-timezone';
@@ -11,6 +12,7 @@ import typeDefs from './schema.gql';
 import resolvers from './resolvers';
 
 import middlewares from './middlewares';
+import { upload } from './services/upload.service';
 
 export const UPLOAD_DIR = '/uploads';
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
@@ -40,6 +42,18 @@ const server = new GraphQLServer({
 const app = server.express;
 
 app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
+
+app.use(fileUpload());
+
+app.post('/upload', async function (req, res) {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  let file = req.files.file;
+
+  res.send(await upload(file));
+});
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'build')));

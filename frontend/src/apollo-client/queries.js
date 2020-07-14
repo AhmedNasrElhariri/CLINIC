@@ -328,3 +328,27 @@ export const CREATE_SNIPPET = gql`
     }
   }
 `;
+
+export const ADD_LAB_DOCS = gql`
+  mutation addLabDocs($patientLab: PatientLabInput!) {
+    addLabDocs(patientLab: $patientLab) {
+      id
+    }
+  }
+`;
+
+export const LIST_PATIENT_LABS = gql`
+  query patientLabs($patientId: ID!) {
+    patientLabs(patientId: $patientId) {
+      id
+      name
+      documents {
+        id
+        file {
+          id
+          url
+        }
+      }
+    }
+  }
+`;
