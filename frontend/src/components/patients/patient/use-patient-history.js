@@ -5,7 +5,7 @@ import { normalizeFieldsOfGroups } from 'services/appointment';
 
 import useGlobalState from 'state';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_PATIENT_HISTORY } from 'apollo-client/queries';
+import { GET_APPOINTMENT_HISTORY } from 'apollo-client/queries';
 
 export default ({ patientId, appointment = {} }) => {
   if (!patientId) {
@@ -18,7 +18,7 @@ export default ({ patientId, appointment = {} }) => {
   }
 
   const [view] = useGlobalState('activeView');
-  const { data: history } = useQuery(GET_PATIENT_HISTORY, {
+  const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {
       id: patientId,
     },

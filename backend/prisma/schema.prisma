@@ -71,6 +71,8 @@ model Patient {
   organizationId String
   guardianName   String?
   pateintLab     PatientLab[]
+  MedicalHistory MedicalHistory[]
+  FamilyHistory  FamilyHistory[]
 }
 
 model Appointment {
@@ -215,4 +217,22 @@ model LabDocument {
   fileId       String
   patientLab   PatientLab @relation(fields: [patientLabId], references: [id])
   patientLabId String
+}
+
+model MedicalHistory {
+  id           String    @default(uuid()) @id
+  medicineName String
+  frequency    String?
+  dose         String?
+  fromDate     DateTime?
+  patient      Patient   @relation(fields: [patientId], references: [id])
+  patientId    String
+}
+
+model FamilyHistory {
+  id        String  @default(uuid()) @id
+  disease   String
+  relative  String
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
 }

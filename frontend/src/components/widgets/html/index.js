@@ -112,7 +112,6 @@ H6.defaultProps = {
 
 export const H7 = styled.h6`
   ${headerscss}
-  font-family: 'SegoeUI';
   ${byTheme({
     fontSize: {
       normal: 16,
@@ -125,15 +124,24 @@ H7.defaultProps = {
   fontWeight: 'normal',
 };
 
-
 export const P = styled.p`
   ${headerscss}
-  font-family: 'SegoeUI';
   font-weight: 200;
   ${byTheme({
     fontSize: {
       normal: 16,
       large: 18,
+    },
+  })};
+`;
+
+export const P2 = styled.p`
+  ${headerscss}
+  font-weight: 200;
+  ${byTheme({
+    fontSize: {
+      normal: 14,
+      large: 16,
     },
   })};
 `;

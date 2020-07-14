@@ -29,15 +29,16 @@ import {
   isArchived,
 } from 'services/appointment';
 
-import usePatientHistory from './use-patient-history';
+import useAppointmentHistory from './fetch-appointment-history';
+import History from './patient-history';
 
-const tabs = ['Home', 'Summary', 'Progress', 'Labs'];
+const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
 
 function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('3');
+  const [activeTab, setActiveTab] = useState('4');
   let { appointmentId } = useParams();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
@@ -74,7 +75,7 @@ function Appointment() {
     appointmentHistory,
     viewFields,
     groups,
-  } = usePatientHistory({ appointmentId, appointment });
+  } = useAppointmentHistory({ appointmentId, appointment });
 
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const onUpdate = useCallback(() => {
@@ -158,7 +159,8 @@ function Appointment() {
                   viewFields={viewFields}
                 />
               )}
-              {showComp('3') && <PatientLabs patient={patient}/>}
+              {showComp('3') && <PatientLabs patient={patient} />}
+              {showComp('4') && <History patient={patient} />}
             </Div>
           </Div>
         </Div>

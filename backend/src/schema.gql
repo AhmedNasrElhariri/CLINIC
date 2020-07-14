@@ -40,8 +40,7 @@ type Query {
   patients: [Patient!]
   appointments(input: AppointmentQueryInput): [Appointment!]
   appointment(id: ID!): Appointment
-  appointmentHistory(id: ID!): [Appointment!]
-  patientHistory(id: ID!): [Appointment!]
+  appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
   activeView: View!
@@ -49,6 +48,8 @@ type Query {
   myClinics: [Clinic!]
   mySnippets: [Snippet!]
   patientLabs(patientId: ID!): [PatientLab!]
+  medicalHistory(patientId: ID!): [MedicalHistory!]
+  familyHistory(patientId: ID!): [FamilyHistory!]
 }
 
 ########################### Mutation ##################################
@@ -72,6 +73,8 @@ type Mutation {
   updateClinic(clinic: ClinicInput!): Clinic
   createSnippet(snippet: SnippetInput!): Snippet!
   addLabDocs(patientLab: PatientLabInput!): PatientLab!
+  createMedicalHistory(medicalHistory: MedicalHistoryInput!): MedicalHistory!
+  createFamilyHistory(familyHistory: FamilyHistoryInput!): FamilyHistory!
 }
 
 ########################### Auth ##################################
@@ -241,8 +244,6 @@ input ClinicInput {
   logoId: ID
 }
 
-########################### File ##################################
-
 type File {
   id: ID!
   filename: String!
@@ -282,4 +283,34 @@ input PatientLabInput {
   patientId: ID!
   name: String!
   documents: [ID!]
+}
+
+########################### History ##################################
+
+type MedicalHistory {
+  id: ID!
+  medicineName: String!
+  frequency: String
+  dose: String
+  fromDate: Date
+}
+
+type FamilyHistory {
+  id: ID!
+  disease: String!
+  relative: String!
+}
+
+input MedicalHistoryInput {
+  medicineName: String!
+  frequency: String
+  dose: String
+  fromDate: Date
+  patientId: ID!
+}
+
+input FamilyHistoryInput {
+  disease: String!
+  relative: String!
+  patientId: ID!
 }

@@ -128,8 +128,8 @@ export const SET_APPOINTMENT_DONE = gql`
 `;
 
 export const GET_APPOINTMENT_HISTORY = gql`
-  query($id: ID!) {
-    appointmentHistory(id: $id) {
+  query($appointmentId: ID, $patientId: ID) {
+    appointmentHistory(appointmentId: $appointmentId, patientId: $patientId) {
       id
       type
       date
@@ -153,31 +153,31 @@ export const GET_APPOINTMENT_HISTORY = gql`
   }
 `;
 
-export const GET_PATIENT_HISTORY = gql`
-  query($id: ID!) {
-    patientHistory(id: $id) {
-      id
-      type
-      date
-      labs
-      status
-      data {
-        id
-        value
-        field {
-          id
-          name
-        }
-      }
-      patient {
-        id
-        name
-        age
-        sex
-      }
-    }
-  }
-`;
+// export const GET_APPOINTMENTS_HISTORY = gql`
+//   query($id: ID!) {
+//     appointmentHistory(id: $id) {
+//       id
+//       type
+//       date
+//       labs
+//       status
+//       data {
+//         id
+//         value
+//         field {
+//           id
+//           name
+//         }
+//       }
+//       patient {
+//         id
+//         name
+//         age
+//         sex
+//       }
+//     }
+//   }
+// `;
 
 export const GET_PATIENT = gql`
   query($id: ID!) {
@@ -349,6 +349,47 @@ export const LIST_PATIENT_LABS = gql`
           url
         }
       }
+    }
+  }
+`;
+
+export const CREATE_MEDICAL_HISTORY = gql`
+  mutation createMedicalHistory($medicalHistory: MedicalHistoryInput!) {
+    createMedicalHistory(medicalHistory: $medicalHistory) {
+      id
+      medicineName
+      frequency
+      dose
+    }
+  }
+`;
+
+export const CREATE_FAMILY_HISTORY = gql`
+  mutation createFamilyHistory($familyHistory: FamilyHistoryInput!) {
+    createFamilyHistory(familyHistory: $familyHistory) {
+      id
+      disease
+      relative
+    }
+  }
+`;
+
+export const LIST_MEDICAL_HISTORY = gql`
+  query medicalHistory($patientId: ID!) {
+    medicalHistory(patientId: $patientId) {
+      id
+      medicineName
+      frequency
+      dose
+    }
+  }
+`;
+export const LIST_FAMILY_HISTORY = gql`
+  query familyHistory($patientId: ID!) {
+    familyHistory(patientId: $patientId) {
+      id
+      disease
+      relative
     }
   }
 `;

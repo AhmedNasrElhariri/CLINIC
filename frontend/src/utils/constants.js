@@ -12,4 +12,10 @@ export const FIELD_TYPES = [
   { label: 'Text Area', value: LONG_TEXT_FIELD_TYPE },
 ];
 
+export const MEDICAL_HISTORY_TYPES = Object.freeze({
+  medical: 'Medical',
+  family: 'Family',
+  social: 'Social',
+});
+
 export const DAYS = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI'];

@@ -17,6 +17,7 @@ export const colors = {
   shadow: '#0000000D',
   grey: '#707070',
   grey100: '#2831481A',
+  grey200: transparentize(0.95, textColor),
   subtle: transparentize(0.9, textColor),
   input: '#283148',
   text: textColor,
