@@ -38,7 +38,6 @@ function Appointments() {
         <CRTable
           autoHeight
           data={appointments}
-          style={{ cursor: 'pointer' }}
           onRowClick={({ id }) => {
             history.push(`/appointments/${id}`);
           }}

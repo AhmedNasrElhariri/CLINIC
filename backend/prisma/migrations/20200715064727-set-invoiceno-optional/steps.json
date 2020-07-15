@@ -1,0 +1,17 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Expense",
+      "field": "invoiceNo",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Revenue",
+      "field": "invoiceNo",
+      "arity": "Optional"
+    }
+  ]
+}

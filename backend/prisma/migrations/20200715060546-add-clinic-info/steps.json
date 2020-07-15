@@ -1,0 +1,133 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Clinic",
+      "field": "examinationPrice",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "examinationPrice"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "examinationPrice"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "100"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Clinic",
+      "field": "followupPrice",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "followupPrice"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "followupPrice"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "50"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Clinic",
+      "field": "duration",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "duration"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "duration"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "15"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Clinic",
+      "field": "appointmentsCount",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "appointmentsCount"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "appointmentsCount"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "20"
+    }
+  ]
+}

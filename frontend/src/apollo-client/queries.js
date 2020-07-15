@@ -217,6 +217,10 @@ export const MY_CLINICS = gql`
     myClinics {
       id
       name
+      examinationPrice
+      followupPrice
+      duration
+      appointmentsCount
       doctorName
       doctorTitle
       doctorJobDescription
@@ -384,12 +388,49 @@ export const LIST_MEDICAL_HISTORY = gql`
     }
   }
 `;
+
 export const LIST_FAMILY_HISTORY = gql`
   query familyHistory($patientId: ID!) {
     familyHistory(patientId: $patientId) {
       id
       disease
       relative
+    }
+  }
+`;
+
+export const LIST_EXPENSES = gql`
+  query expenses($clinicId: ID!) {
+    expenses(clinicId: $clinicId) {
+      id
+      name
+      amount
+      date
+      invoiceNo
+    }
+  }
+`;
+
+export const LIST_REVENUES = gql`
+  query revenues($clinicId: ID!) {
+    revenues(clinicId: $clinicId) {
+      id
+      name
+      amount
+      date
+      invoiceNo
+    }
+  }
+`;
+
+export const CREATE_EXPENSE = gql`
+  mutation createExpense($expense: ExpenseInput!) {
+    createExpense(expense: $expense) {
+      id
+      name
+      amount
+      date
+      invoiceNo
     }
   }
 `;

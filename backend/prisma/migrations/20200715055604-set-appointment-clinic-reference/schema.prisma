@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -159,14 +159,8 @@ model File {
 }
 
 model Clinic {
-  id                String  @default(uuid()) @id
-  name              String?
-  examinationPrice  Int     @default(100)
-  followupPrice     Int     @default(50)
-  duration          Int     @default(15)
-  appointmentsCount Int     @default(20)
-
-
+  id                   String        @default(uuid()) @id
+  name                 String?
   // shown on prescription
   doctorName           String?       @default("''")
   // shown on prescription
@@ -252,7 +246,7 @@ model Expense {
   name      String
   date      DateTime
   amount    Int
-  invoiceNo String?
+  invoiceNo String
   clinic    Clinic   @relation(fields: [clinicId], references: [id])
   clinicId  String
 }
@@ -262,7 +256,7 @@ model Revenue {
   name      String
   date      DateTime
   amount    Int
-  invoiceNo String?
+  invoiceNo String
   clinic    Clinic   @relation(fields: [clinicId], references: [id])
   clinicId  String
 }

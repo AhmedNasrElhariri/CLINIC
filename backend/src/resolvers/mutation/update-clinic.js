@@ -2,14 +2,16 @@ import { prisma } from '@';
 
 const updateClinic = async (_, { clinic: { id, logoId, ...clinic } }) => {
   return prisma.clinic.update({
-    data: {
-      ...clinic,
-      logo: {
-        connect: {
-          id: logoId,
+    data: Object.assign(
+      clinic,
+      logoId && {
+        logo: {
+          connect: {
+            id: logoId,
+          },
         },
-      },
-    },
+      }
+    ),
     where: { id },
   });
 };

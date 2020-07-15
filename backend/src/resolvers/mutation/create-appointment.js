@@ -17,7 +17,7 @@ const getDayAppointments = day => {
 
 const createAppointment = async (
   _,
-  { input: { patient, ...appointment } },
+  { input: { patient, clinicId, ...appointment } },
   { userId }
 ) => {
   const appointments = await getDayAppointments();
@@ -34,6 +34,11 @@ const createAppointment = async (
         },
       },
       date,
+      clinic: {
+        connect: {
+          id: clinicId,
+        },
+      },
       doctor: {
         connect: {
           id: userId,

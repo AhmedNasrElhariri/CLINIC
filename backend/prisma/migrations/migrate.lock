@@ -30,3 +30,10 @@
 20200714042419-medical-and-family-history
 20200714044941-fix-typo
 20200714052103-add-patient-id-to-history
+20200715043642-add-expense
+20200715043951-add-invoiceno
+20200715045535-fix-realtionship-for-expense
+20200715054207-add-expenses
+20200715055604-set-appointment-clinic-reference
+20200715060546-add-clinic-info
+20200715064727-set-invoiceno-optional

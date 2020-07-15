@@ -14,7 +14,8 @@ import {
   CreateView,
   AppointmentSettings,
   StaticSettings,
-  Snippets
+  Snippets,
+  AccountingContainer,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 
@@ -65,6 +66,9 @@ function AppRouter() {
       </Route>
       <Route path="/snippets">
         <Snippets />
+      </Route>
+      <Route path="/settings/accounting">
+        <AccountingContainer />
       </Route>
 
       <Route path="/init-default-view">

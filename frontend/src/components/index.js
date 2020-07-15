@@ -46,8 +46,11 @@ export { default as ViewForm } from './views/view-form';
 export { default as CreateDefaultView } from './views/create-default-view';
 
 /******************     Settings    *********************************/
-export { default as AppointmentSettings } from './settings/appointment';
+export { default as AppointmentSettings } from './settings/clinic';
 export { default as StaticSettings } from './settings/static';
 
 /******************     Layout    *********************************/
 export { default as MainContainer } from './layout/main-container';
+
+/******************     Accounting    *******************************/
+export { default as AccountingContainer } from './accounting/accounting-container';

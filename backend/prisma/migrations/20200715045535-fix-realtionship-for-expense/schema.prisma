@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -87,7 +87,6 @@ model Appointment {
   labs      String?            @default("[]")
   status    AppointmentStatus
   data      AppointmentField[]
-  clinic    Clinic             @relation(fields: [clinicId], references: [id])
   clinicId  String
 }
 
@@ -159,30 +158,22 @@ model File {
 }
 
 model Clinic {
-  id                String  @default(uuid()) @id
-  name              String?
-  examinationPrice  Int     @default(100)
-  followupPrice     Int     @default(50)
-  duration          Int     @default(15)
-  appointmentsCount Int     @default(20)
-
-
+  id                   String    @default(uuid()) @id
+  name                 String?
   // shown on prescription
-  doctorName           String?       @default("''")
+  doctorName           String?   @default("''")
   // shown on prescription
-  doctorTitle          String?       @default("''")
-  phoneNo              String?       @default("''")
+  doctorTitle          String?   @default("''")
+  phoneNo              String?   @default("''")
   // shown on prescription
-  doctorJobDescription String?       @default("''")
+  doctorJobDescription String?   @default("''")
   // shown on prescription
-  address              String?       @default("''")
-  logo                 File?         @relation(fields: [logoId], references: [id])
+  address              String?   @default("''")
+  logo                 File?     @relation(fields: [logoId], references: [id])
   logoId               String?
-  users                User[]        @relation(references: [id])
+  users                User[]    @relation(references: [id])
   organizationId       String
   Expense              Expense[]
-  Revenue              Revenue[]
-  Appointment          Appointment[]
 }
 
 model Week {
@@ -252,17 +243,7 @@ model Expense {
   name      String
   date      DateTime
   amount    Int
-  invoiceNo String?
-  clinic    Clinic   @relation(fields: [clinicId], references: [id])
-  clinicId  String
-}
-
-model Revenue {
-  id        String   @default(uuid()) @id
-  name      String
-  date      DateTime
-  amount    Int
-  invoiceNo String?
+  invoiceNo String
   clinic    Clinic   @relation(fields: [clinicId], references: [id])
   clinicId  String
 }

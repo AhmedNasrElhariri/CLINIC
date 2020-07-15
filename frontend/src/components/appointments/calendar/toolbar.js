@@ -3,10 +3,10 @@ import moment from 'moment';
 import { Views } from 'react-big-calendar';
 
 import { Div } from 'components';
-import { ButtonStyled, ButtonsGroupStyled, TodayButtonStyled } from './style';
+import { TodayButtonStyled } from './style';
 import { LeftArrowIcon, RightArrowIcon } from 'components/icons';
 import { formatDate } from 'utils/date';
-import { H4 } from 'components';
+import { H4, CRButtonGroup } from 'components';
 
 const renderDate = (date, view) => {
   switch (view) {
@@ -38,26 +38,17 @@ function Toolbar({ date, view, onNavigate, onView }) {
         >
           Today
         </TodayButtonStyled>
-        <ButtonsGroupStyled>
-          <ButtonStyled
-            active={view === Views.MONTH}
-            onClick={() => onView(Views.MONTH)}
-          >
+        <CRButtonGroup activeKey={view} onSelect={onView}>
+          <CRButtonGroup.CRButton eventKey={Views.MONTH}>
             Month
-          </ButtonStyled>
-          <ButtonStyled
-            active={view === Views.WEEK}
-            onClick={() => onView(Views.WEEK)}
-          >
+          </CRButtonGroup.CRButton>
+          <CRButtonGroup.CRButton eventKey={Views.WEEK}>
             Week
-          </ButtonStyled>
-          <ButtonStyled
-            active={view === Views.DAY}
-            onClick={() => onView(Views.DAY)}
-          >
+          </CRButtonGroup.CRButton>
+          <CRButtonGroup.CRButton eventKey={Views.DAY}>
             Day
-          </ButtonStyled>
-        </ButtonsGroupStyled>
+          </CRButtonGroup.CRButton>
+        </CRButtonGroup>
       </Div>
     </Div>
   );

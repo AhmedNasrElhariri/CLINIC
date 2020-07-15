@@ -16,6 +16,11 @@ const items = [
     path: '/settings/static',
   },
   {
+    name: 'Accounting',
+    icon: '/icons/static.png',
+    path: '/settings/accounting',
+  },
+  {
     name: 'Snippets',
     icon: '/icons/snippets.png',
     path: '/snippets',

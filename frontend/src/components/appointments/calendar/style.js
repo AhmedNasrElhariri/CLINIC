@@ -4,6 +4,7 @@ import { Calendar } from 'react-big-calendar';
 import { Icon, Popover } from 'rsuite';
 import { variant, space } from 'styled-system';
 import { createGlobalStyle } from 'styled-components';
+import { CRButtonGroup } from 'components';
 
 const variants = props =>
   variant({
@@ -149,44 +150,7 @@ export const DayEventStyled = styled.div`
   color: ${props => props.theme.colors.primary};
 `;
 
-export const ButtonsGroupStyled = styled.div`
-  & button:first-child {
-    border-radius: 10px 0px 0px 10px;
-  }
-  & button:last-child {
-    border-radius: 0px 10px 10px 0px;
-  }
-`;
-
-export const ButtonStyled = styled.button.attrs(({ active }) => ({
-  className: active ? 'active' : '',
-}))`
-  border: 1px solid ${props => props.theme.colors.border};
-  height: 40px;
-  width: 100px;
-  background: transparent;
-  color: ${props => props.theme.colors.texts[1]};
-  cursor: pointer;
-
-  &.active {
-    font-weight: 800;
-    color: ${props => props.theme.colors.primary};
-    background-image: none;
-    background: none;
-    box-shadow: none;
-  }
-
-  &:focus,
-  &:hover,
-  &:visited {
-    box-shadow: none;
-    background: transparent;
-    outline: none;
-    border-color: ${props => props.theme.colors.border};
-  }
-`;
-
-export const TodayButtonStyled = styled(ButtonStyled)`
+export const TodayButtonStyled = styled(CRButtonGroup.CRButton)`
   border-radius: 10px;
   margin-right: 20px;
 `;

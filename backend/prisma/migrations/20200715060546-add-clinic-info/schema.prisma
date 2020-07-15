@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -252,7 +252,7 @@ model Expense {
   name      String
   date      DateTime
   amount    Int
-  invoiceNo String?
+  invoiceNo String
   clinic    Clinic   @relation(fields: [clinicId], references: [id])
   clinicId  String
 }
@@ -262,7 +262,7 @@ model Revenue {
   name      String
   date      DateTime
   amount    Int
-  invoiceNo String?
+  invoiceNo String
   clinic    Clinic   @relation(fields: [clinicId], references: [id])
   clinicId  String
 }
