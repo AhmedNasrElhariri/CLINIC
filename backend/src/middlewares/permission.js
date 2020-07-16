@@ -2,6 +2,7 @@ import { AuthenticationError } from 'apollo-server-core';
 import { rule, shield, allow } from 'graphql-shield';
 
 import { getUserPayloads } from '@/services/auth.service';
+import { APIExceptcion } from '@/services/erros.service';
 
 const isAuthenticated = rule({ cache: 'contextual' })(async (_, __, ctx) => {
   const { request } = ctx;
@@ -24,7 +25,16 @@ export default shield(
     },
   },
   {
-    fallbackError: new AuthenticationError('Not Authenticated'),
+    fallbackError: thrownThing => {
+      if (thrownThing instanceof APIExceptcion) {
+        return thrownThing;
+      } else if (thrownThing instanceof AuthenticationError) {
+        return thrownThing;
+      } else {
+        return new AuthenticationError('not Authenticated');
+      }
+    },
+    // fallbackError: new AuthenticationError('Not Authenticated'),
     debug: true,
   }
 );

@@ -13,3 +13,11 @@ export const calculateAppointmentTime = (
     .set('hour', getSessionsStartingHour())
     .add(getAppointmentLength() * appointments.length, 'minute')
     .toDate();
+
+export const validDate = (newDate, appointments) => {
+  return appointments.every(({ date }) => {
+    const startDate = moment(date);
+    const endDate = moment(startDate).add(15, 'minutes');
+    return !moment(newDate).isBetween(startDate, endDate, 'minutes', '[)');
+  });
+};

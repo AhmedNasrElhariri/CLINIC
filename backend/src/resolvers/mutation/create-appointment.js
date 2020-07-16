@@ -1,6 +1,7 @@
 import { prisma } from '@';
 import { getStartOfDay, getEndOfDay } from '@/services/date.service';
-import { calculateAppointmentTime } from '@/services/appointment.service';
+import { validDate } from '@/services/appointment.service';
+import { APIExceptcion } from '@/services/erros.service';
 
 const getDayAppointments = day => {
   const start = getStartOfDay(day);
@@ -20,8 +21,12 @@ const createAppointment = async (
   { input: { patient, clinicId, ...appointment } },
   { userId }
 ) => {
-  const appointments = await getDayAppointments();
-  const date = calculateAppointmentTime(appointments, appointment.date);
+  const appointments = await getDayAppointments(appointment.date);
+
+  if (!validDate(appointment.date, appointments)) {
+    console.log('e')
+    throw new APIExceptcion('Time slot already reversed');
+  }
 
   return prisma.appointment.create({
     data: {
@@ -33,7 +38,6 @@ const createAppointment = async (
           id: patient,
         },
       },
-      date,
       clinic: {
         connect: {
           id: clinicId,

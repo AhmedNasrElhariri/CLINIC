@@ -1,26 +1,25 @@
-import React, { useState, useCallback } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import React, { useState, useCallback, useMemo } from 'react';
+import * as moment from 'moment';
+import { useMutation } from '@apollo/react-hooks';
 import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
 
 import {
   CRSelectInput,
+  CRTimePicker,
   CRDatePicker,
   Div,
   H5,
   CRModal,
   NewPatient,
 } from 'components';
-import {
-  LIST_PATIENTS,
-  CREATE_APPOINTMENT,
-  LIST_APPOINTMENTS,
-} from 'apollo-client/queries';
+import { CREATE_APPOINTMENT, LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { isBeforeToday } from 'utils/date';
 import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import useGlobalState from 'state';
 
 import { useVariables } from 'hooks/fetch-appointments';
+import useFetchData from './fetch-data';
 
 const { StringType } = Schema.Types;
 
@@ -37,8 +36,8 @@ const model = Schema.Model({
 const initialValues = {
   type: 'Examination',
   patient: '',
-  date: null,
-  // time: null,
+  date: new Date(),
+  time: null,
 };
 
 const canAddPatient = formValue =>
@@ -46,19 +45,19 @@ const canAddPatient = formValue =>
 
 export default function NewAppointment() {
   const [patientModal, setPatientModal] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [formValue, setFormValue] = useState(initialValues);
+  const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
 
   const appointmentVariables = { input: useVariables() };
 
-  const { data } = useQuery(LIST_PATIENTS);
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: () => {
       setFormValue(initialValues);
       Alert.success('Reservation Created Successfully');
     },
-    onError: () => Alert.error('Invalid Input'),
+    onError: (a) => console.log(a.message),
     refetchQueries: [
       {
         query: LIST_APPOINTMENTS,
@@ -70,7 +69,46 @@ export default function NewAppointment() {
   const showModal = useCallback(() => setPatientModal(true), []);
   const hideModal = useCallback(() => setPatientModal(false), []);
 
-  const patients = (data && data.patients) || [];
+  const { patients, appointments } = useFetchData();
+
+  const selectedAppointments = useMemo(
+    () =>
+      appointments.filter(({ date }) =>
+        moment(date).isSame(formValue.date, 'day')
+      ),
+    [appointments, formValue.date]
+  );
+
+  const handleCreate = useCallback(() => {
+    const { patient, type } = formValue;
+
+    const timeDate = moment(formValue.time);
+    const date = moment(formValue.date).set({
+      hours: timeDate.hours(),
+      minute: timeDate.minutes(),
+    });
+    createAppointment({
+      variables: { input: { patient, type, clinicId: currentClinic.id, date } },
+    });
+  }, [createAppointment, currentClinic.id, formValue]);
+
+  const disabledMinutes = useCallback(
+    minute => {
+      const selectedDate = formValue.date;
+
+      const newDate = moment(selectedDate).set({
+        hours: selectedHour,
+        minute: minute,
+      });
+
+      return selectedAppointments.some(({ date }) => {
+        const startDate = moment(date);
+        const endDate = moment(startDate).add(15, 'minutes');
+        return newDate.isBetween(startDate, endDate, 'minutes', '[)');
+      });
+    },
+    [formValue.date, selectedAppointments, selectedHour]
+  );
 
   return (
     <>
@@ -83,11 +121,7 @@ export default function NewAppointment() {
         header="New Appointment"
         CRContainer={ContainerStyled}
         CRBody={ModalBodyStyled}
-        onOk={() =>
-          createAppointment({
-            variables: { input: { ...formValue, clinicId: currentClinic.id } },
-          })
-        }
+        onOk={handleCreate}
         onHide={() => setOpen(false)}
         onCancel={() => setOpen(false)}
       >
@@ -131,16 +165,20 @@ export default function NewAppointment() {
             name="date"
             accepter={DatePicker}
             disabledDate={isBeforeToday}
+            placement="top"
           />
 
-          {/* <CRTimePicker
+          <CRTimePicker
             label="Time"
             block
             name="time"
             accepter={DatePicker}
             disabledDate={isBeforeToday}
             placement="top"
-          /> */}
+            disabledMinutes={disabledMinutes}
+            minInterval={15}
+            onSelect={a => setSelectedHour(moment(a).hour())}
+          />
         </Form>
       </CRModal>
     </>

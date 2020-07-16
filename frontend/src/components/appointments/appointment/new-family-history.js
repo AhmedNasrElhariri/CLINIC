@@ -1,7 +1,7 @@
 import React, { useState, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
-import { CRTextInput, CRDatePicker } from 'components/widgets';
+import { CRTextInput } from 'components/widgets';
 
 const initValue = {
   disease: '',
