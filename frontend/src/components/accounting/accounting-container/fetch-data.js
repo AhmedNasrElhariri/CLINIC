@@ -1,21 +1,28 @@
 import { useMemo } from 'react';
 import * as R from 'ramda';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
+import client from 'apollo-client/client';
 
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
 import useGlobalState from 'state';
 
-const AccountingContainer = () => {
-  const [clinic] = useGlobalState('currentClinic');
+export function useVariables() {
+  const [currentClinic] = useGlobalState('currentClinic');
+  if (!currentClinic) {
+    return {};
+  }
+  return {
+    clinicId: currentClinic.id,
+  };
+}
+
+const useFetchAccountingData = () => {
+  const variables = useVariables();
   const { data: expensesData } = useQuery(LIST_EXPENSES, {
-    variables: {
-      clinicId: clinic.id,
-    },
+    variables,
   });
   const { data: revenueData } = useQuery(LIST_REVENUES, {
-    variables: {
-      clinicId: clinic.id,
-    },
+    variables,
   });
 
   const expenses = useMemo(() => R.propOr([], 'expenses')(expensesData), [
@@ -35,14 +42,24 @@ const AccountingContainer = () => {
     [revenues]
   );
 
-  return {
-    expenses,
-    revenues,
-    totalExpenses,
-    totalRevenues,
-  };
+  return useMemo(
+    () => ({
+      expenses,
+      revenues,
+      totalExpenses,
+      totalRevenues,
+      updateCache: expenses => {
+        client.writeQuery({
+          query: LIST_EXPENSES,
+          variables,
+          data: {
+            expenses,
+          },
+        });
+      },
+    }),
+    [expenses, revenues, totalExpenses, totalRevenues, variables]
+  );
 };
 
-AccountingContainer.propTypes = {};
-
-export default AccountingContainer;
+export default useFetchAccountingData;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Alert, Form, Schema } from 'rsuite';
 
 import { Div, CRTextInput, CRButton, H1 } from 'components';

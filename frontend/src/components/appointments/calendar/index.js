@@ -11,12 +11,6 @@ import components from './custom-components';
 import CalendarContext from './context';
 
 import { CalendarStyled } from './style';
-import {
-  getStartOfDay,
-  getEndOfDay,
-  startWeekOfMonthDay,
-  endWeekOfMonthDay,
-} from 'services/date.service';
 
 const localizer = momentLocalizer(moment);
 
@@ -24,11 +18,6 @@ const variants = {
   Examination: 'one',
   Followup: 'two',
 };
-
-const getMonthDateRange = () => ({
-  fromDate: getStartOfDay(startWeekOfMonthDay()),
-  toDate: getEndOfDay(endWeekOfMonthDay()),
-});
 
 const initialValue = {
   name: '',
@@ -44,7 +33,7 @@ function AppointmentCalendar() {
   const [formValue, setFormValue] = useState(initialValue);
   const [events, setEvents] = useState([]);
 
-  const { data, updateCache } = useFetchAppointments(getMonthDateRange());
+  const { appointments: data, updateCache } = useFetchAppointments();
 
   const appointments = useMemo(
     () =>

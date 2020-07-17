@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { VERIFY } from 'apollo-client/queries';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { ACCESS_TOKEN } from '../utils/constants';
 
 import useGlobalState from 'state';

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import * as moment from 'moment';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
 
 import {
@@ -12,13 +12,14 @@ import {
   CRModal,
   NewPatient,
 } from 'components';
-import { CREATE_APPOINTMENT, LIST_APPOINTMENTS } from 'apollo-client/queries';
+import { CREATE_APPOINTMENT } from 'apollo-client/queries';
 import { isBeforeToday } from 'utils/date';
+import { isValid } from 'services/form';
 import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import useGlobalState from 'state';
+import { sortAppointmentsByDate } from 'services/appointment';
 
-import { useVariables } from 'hooks/fetch-appointments';
 import useFetchData from './fetch-data';
 
 const { StringType } = Schema.Types;
@@ -37,39 +38,39 @@ const initialValues = {
   type: 'Examination',
   patient: '',
   date: new Date(),
-  time: null,
+  time: moment().set({ hours: 0, minutes: 0 }).toDate(),
 };
 
 const canAddPatient = formValue =>
   formValue.type === 'Examination' ? true : false;
 
+const searchBy = (text, _, { name, phoneNo }) => {
+  return (
+    name.toLowerCase().includes(text.toLowerCase()) || phoneNo.includes(text)
+  );
+};
+
 export default function NewAppointment() {
   const [patientModal, setPatientModal] = useState(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [formValue, setFormValue] = useState(initialValues);
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
-
-  const appointmentVariables = { input: useVariables() };
+  const { patients, appointments, updateAppointments } = useFetchData();
 
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
-    onCompleted: () => {
+    onCompleted: ({ createAppointment }) => {
       setFormValue(initialValues);
       Alert.success('Reservation Created Successfully');
+      updateAppointments(
+        sortAppointmentsByDate([createAppointment, ...appointments])
+      );
     },
-    onError: (a) => console.log(a.message),
-    refetchQueries: [
-      {
-        query: LIST_APPOINTMENTS,
-        variables: appointmentVariables,
-      },
-    ],
+    onError: ({ message }) => Alert.error(message),
   });
 
   const showModal = useCallback(() => setPatientModal(true), []);
   const hideModal = useCallback(() => setPatientModal(false), []);
-
-  const { patients, appointments } = useFetchData();
 
   const selectedAppointments = useMemo(
     () =>
@@ -80,6 +81,10 @@ export default function NewAppointment() {
   );
 
   const handleCreate = useCallback(() => {
+    if (!isValid(model, formValue)) {
+      Alert.error('Complete Required Fields');
+      return;
+    }
     const { patient, type } = formValue;
 
     const timeDate = moment(formValue.time);
@@ -138,11 +143,13 @@ export default function NewAppointment() {
           <CRSelectInput
             label="Patient"
             name="patient"
+            placeholder="Name / Phone no"
             accepter={SelectPicker}
             cleanable={true}
             labelKey="name"
             valueKey="id"
             data={patients}
+            searchBy={searchBy}
             block
           >
             <Div display="flex" justifyContent="flex-end">

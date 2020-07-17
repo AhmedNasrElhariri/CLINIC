@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as R from 'ramda';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { Form } from 'rsuite';
 
 import { CRModal } from 'components';

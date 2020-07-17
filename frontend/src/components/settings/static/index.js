@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import * as R from 'ramda';
 import { Form, Schema, Alert } from 'rsuite';
 

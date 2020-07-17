@@ -65,11 +65,11 @@ function AppointmentData({ formValue, groups, onChange, disabled }) {
         <Div
           id="clinic-scroll-id"
           flexGrow={1}
-          px={4}
-          pb={6}
-          height="100vh"
-          maxHeight="100vh"
-          overflow="scroll"
+          // px={4}
+          // pb={6}
+          // height="100vh"
+          // maxHeight="100vh"
+          // overflow="scroll"
         >
           {Object.keys(formValue).length > 0 && (
             <Form formValue={formValue} onChange={onChange} fluid>

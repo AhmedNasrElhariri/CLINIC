@@ -1,7 +1,7 @@
-import { onError } from 'apollo-link-error';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { setContext } from 'apollo-link-context';
+import { onError } from '@apollo/client/link/error';
+import { InMemoryCache } from '@apollo/client/cache';
+import { ApolloClient } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { ACCESS_TOKEN } from 'utils/constants';
 import { createUploadLink } from 'apollo-upload-client';
 

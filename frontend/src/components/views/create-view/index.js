@@ -7,7 +7,7 @@ import {
   FormGroup,
   ControlLabel,
 } from 'rsuite';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { CREATE_VIEW } from 'apollo-client/queries';
 
 import useGlobalState from 'state';

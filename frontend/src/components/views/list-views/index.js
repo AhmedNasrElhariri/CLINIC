@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Button, Col, Row, Toggle, Divider } from 'rsuite';
 import * as R from 'ramda';
 
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/client';
 import { Panel } from 'rsuite';
 
 import { Link } from 'react-router-dom';

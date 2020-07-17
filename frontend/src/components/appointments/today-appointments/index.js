@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import * as R from 'ramda';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 
 import { Div } from 'components';
@@ -9,14 +9,14 @@ import ListAppointments from './list-appointments';
 
 import useFetchAppointments from 'hooks/fetch-appointments';
 
-function AppointmentCalendar() {
+function TodayAppointments() {
+  const { todayAppointments: appointments } = useFetchAppointments();
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
     },
   });
 
-  const { data: appointments } = useFetchAppointments();
   const upcomingAppointments = useMemo(
     () => R.pipe(R.filter(R.propEq('status', 'Scheduled')))(appointments),
     [appointments]
@@ -58,4 +58,4 @@ function AppointmentCalendar() {
   );
 }
 
-export default AppointmentCalendar;
+export default TodayAppointments;

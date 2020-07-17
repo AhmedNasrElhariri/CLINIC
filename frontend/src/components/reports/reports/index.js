@@ -1,15 +1,14 @@
 import React from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
-import { useQuery } from '@apollo/react-hooks';
 import LineChart from '@rsuite/charts/lib/charts/LineChart';
 import PieChart from '@rsuite/charts/lib/charts/PieChart';
 import BarChart from '@rsuite/charts/lib/charts/BarChart';
 import Bars from '@rsuite/charts/lib/series/Bars';
 import YAxis from '@rsuite/charts/lib/components/YAxis';
 
-import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { Div } from 'components';
+import useFetchAppointments from 'hooks/fetch-appointments';
 
 const groupByAge = R.groupBy(({ age }) =>
   age <= 10
@@ -38,9 +37,7 @@ const groupByMoths = R.groupBy(appointment =>
 );
 
 function Reports() {
-  const { data } = useQuery(LIST_APPOINTMENTS);
-
-  const appointments = R.pipe(R.pathOr([], ['appointments']))(data);
+  const { appointments } = useFetchAppointments();
 
   const appointmentsByMonth = R.pipe(
     R.sortBy(R.prop('date')),

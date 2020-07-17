@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Alert } from 'rsuite';
 
 import { CRModal } from 'components';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 
 import Form from './form';
 import { LIST_PATIENTS, CREATE_PATIENT } from 'apollo-client/queries';

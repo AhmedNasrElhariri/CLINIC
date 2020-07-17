@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import * as R from 'ramda';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 
 import { MainContainer, Div, CRCard } from 'components';
@@ -18,15 +17,22 @@ import Summary from '../summary';
 
 const AccountingContainer = () => {
   const [clinic] = useGlobalState('currentClinic');
-  const [activeTab, setActiveTab] = useState('1');
-  const [activePeriod, setActivePeriod] = useState('0');
+  const [activeTab, setActiveTab] = useState('0');
+  const [activePeriod, setActivePeriod] = useState('1');
   const [visible, setVisible] = useState(false);
 
-  const { expenses, revenues, totalExpenses, totalRevenues } = useFetch();
+  const {
+    expenses,
+    revenues,
+    totalExpenses,
+    totalRevenues,
+    updateCache,
+  } = useFetch();
   const [createExpense] = useMutation(CREATE_EXPENSE, {
-    onCompleted() {
+    onCompleted({ createExpense: expnese }) {
       Alert.success('Expense Added Successfully');
       setVisible(false);
+      updateCache([...expenses,expnese]);
     },
     onError() {
       Alert.error('Failed to add new Expense');
@@ -58,6 +64,8 @@ const AccountingContainer = () => {
         />
         <Div pt={5}>
           {activeTab === '0' ? (
+            <Summary expenses={totalExpenses} revenues={totalRevenues} />
+          ) : (
             <Div display="flex">
               <Div flexGrow={1} mr={2}>
                 <ListData title="Revenue" data={revenues} />
@@ -67,8 +75,6 @@ const AccountingContainer = () => {
                 <ListData title="Expenses" data={expenses} />
               </Div>
             </Div>
-          ) : (
-            <Summary expenses={totalExpenses} revenues={totalRevenues} />
           )}
         </Div>
         <AddExpense

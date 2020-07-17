@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 
 import { LIST_PATIENTS } from 'apollo-client/queries';
 import { MainContainer, CRTable } from 'components';

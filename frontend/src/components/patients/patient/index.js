@@ -1,11 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 
 import { GET_PATIENT } from 'apollo-client/queries';
-import { Div, PatientSummary, PatientProgress, H3 } from 'components';
-import CRNav from '../../widgets/nav/index';
+import { Div, PatientSummary, PatientProgress, H3, CRNav } from 'components';
 
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';

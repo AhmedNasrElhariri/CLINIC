@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Nav } from 'rsuite';
+import Nav from '@rsuite/responsive-nav';
 
 import { ItemStyled } from './style';
 

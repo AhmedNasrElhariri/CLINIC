@@ -91,3 +91,9 @@ export const canAjdust = appointment => {
     isDateBefore(new Date(), appointment.date)
   );
 };
+
+export const sortAppointmentsByDate = appointments => {
+  return R.sort((a, b) => moment(a.date).valueOf() - moment(b.date).valueOf())(
+    appointments
+  );
+};

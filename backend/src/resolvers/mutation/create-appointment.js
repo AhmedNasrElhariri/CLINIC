@@ -24,7 +24,6 @@ const createAppointment = async (
   const appointments = await getDayAppointments(appointment.date);
 
   if (!validDate(appointment.date, appointments)) {
-    console.log('e')
     throw new APIExceptcion('Time slot already reversed');
   }
 

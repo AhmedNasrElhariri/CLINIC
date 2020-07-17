@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
-import { useParams } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useParams, useHistory } from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/client';
 import { ButtonToolbar, Icon, Alert } from 'rsuite';
 
 import {
@@ -18,6 +18,7 @@ import {
   CRNav,
   CRButton,
   PatientInfo,
+  CRResponsiveNav,
 } from 'components';
 import AppointmentData from './appointment-data';
 import Prescription from './prescription';
@@ -35,10 +36,11 @@ import History from './patient-history';
 const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
 
 function Appointment() {
+  const history = useHistory();
   const [formValue, setFormValue] = useState({});
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('4');
+  const [activeTab, setActiveTab] = useState('0');
   let { appointmentId } = useParams();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
@@ -60,6 +62,7 @@ function Appointment() {
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
       setDisabled(true);
+      history.push('/appointments/today');
     },
   });
   const appointment = useMemo(
@@ -131,17 +134,18 @@ function Appointment() {
         <Div display="flex">
           <Div flexGrow={1}>
             <Div display="flex" justifyContent="space-between">
-              <CRNav
+              <CRResponsiveNav
                 appearance="tabs"
                 activeKey={activeTab}
                 onSelect={setActiveTab}
+                style={{ width: 780 }}
               >
                 {tabs.map((t, idx) => (
-                  <CRNav.CRItem eventKey={idx + ''} key={idx}>
+                  <CRResponsiveNav.CRItem eventKey={idx + ''} key={idx}>
                     {t}
-                  </CRNav.CRItem>
+                  </CRResponsiveNav.CRItem>
                 ))}
-              </CRNav>
+              </CRResponsiveNav>
             </Div>
             <Div py={3} bg="white">
               {showComp('0') && (

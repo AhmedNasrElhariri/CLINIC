@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import { normalizeFieldsOfGroups } from 'services/appointment';
 
 import useGlobalState from 'state';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { GET_APPOINTMENT_HISTORY } from 'apollo-client/queries';
 
 export default ({ appointmentId, appointment }) => {

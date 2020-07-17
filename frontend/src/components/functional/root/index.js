@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/client';
 import { ACTIVE_VIEW, MY_CLINICS } from 'apollo-client/queries';
 import { ACCESS_TOKEN } from 'utils/constants';
 import * as R from 'ramda';

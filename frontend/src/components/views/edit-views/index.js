@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Button, Alert } from 'rsuite';
 import { v4 as uuidv4 } from 'uuid';
 import Board from 'react-trello';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { EDIT_VIEW } from 'apollo-client/queries';
 
 import Card from './card';

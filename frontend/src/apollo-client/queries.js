@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export const LOGIN = gql`
   mutation login($email: String!, $password: String!) {
@@ -114,6 +114,7 @@ export const ARCHIVE_APPOINTMENT = gql`
   mutation archiveAppointment($id: ID!) {
     archiveAppointment(id: $id) {
       id
+      status
     }
   }
 `;

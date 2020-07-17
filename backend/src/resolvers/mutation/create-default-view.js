@@ -28,7 +28,7 @@ const view = {
         {
           name: 'Pressure',
           required: false,
-          type: 'Number',
+          type: 'Text',
           order: 3,
         },
       ],

@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
+import moment from 'moment';
 
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
-import { getStartOfDay, getEndOfDay } from 'services/date.service';
 import useGlobalState from 'state';
 import client from 'apollo-client/client';
+
+import { sortAppointmentsByDate } from 'services/appointment';
 
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
@@ -13,31 +15,44 @@ export function useVariables() {
     return {};
   }
   return {
-    clinicIds: [currentClinic.id],
-    fromDate: getStartOfDay(new Date()),
-    toDate: getEndOfDay(new Date()),
+    input: {
+      clinicIds: [currentClinic.id],
+    },
   };
 }
 
-function FetchAppointments(variables) {
-  const mergerdVariables = { ...useVariables(), ...variables };
-
+function useFetchAppointments() {
+  const variables = useVariables();
   const { data } = useQuery(LIST_APPOINTMENTS, {
-    variables: { input: mergerdVariables },
-    fetchPolicy: 'network',
+    variables,
   });
-  return useMemo(() => ({
-    data: R.propOr([], 'appointments')(data),
-    updateCache: appointments => {
-      client.writeQuery({
-        query: LIST_APPOINTMENTS,
-        variables: { input: mergerdVariables },
-        data: {
-          appointments,
-        },
-      });
-    },
-  }),[data, mergerdVariables]);
+  const appointments = useMemo(
+    () => R.pipe(R.propOr([], 'appointments'), sortAppointmentsByDate)(data),
+    [data]
+  );
+  const todayAppointments = useMemo(
+    () =>
+      appointments.filter(({ date }) =>
+        moment(date).isSame(new Date(), 'days')
+      ),
+    [appointments]
+  );
+  return useMemo(
+    () => ({
+      appointments,
+      todayAppointments,
+      updateCache: appointments => {
+        client.writeQuery({
+          query: LIST_APPOINTMENTS,
+          variables,
+          data: {
+            appointments,
+          },
+        });
+      },
+    }),
+    [appointments, todayAppointments, variables]
+  );
 }
 
-export default FetchAppointments;
+export default useFetchAppointments;

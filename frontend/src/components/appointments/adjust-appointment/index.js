@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { DatePicker, Alert, Form } from 'rsuite';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import moment from 'moment';
 
 import { Div, CRModal, CRCard, CRDatePicker, H6 } from 'components';

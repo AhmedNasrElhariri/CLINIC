@@ -1,31 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import * as R from 'ramda';
+import React, { useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useQuery } from '@apollo/react-hooks';
 
-import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import { formatDate } from 'utils/date';
 import { filterAppointments } from 'services/appointment';
 import { Div, CRCard, H3, CRTable } from 'components';
 import Filter from './filter';
-import useGlobalState from 'state';
-
-const fetchedAppointmetns = data => R.propOr([], 'appointments')(data);
+import useFetchAppointments from 'hooks/fetch-appointments';
 
 function Appointments() {
   const history = useHistory();
   const [formValue, setFormValue] = useState({ date: [], name: '' });
-  const [appointments, setAppointments] = useState([]);
-  const [currentClinic] = useGlobalState('currentClinic');
 
-  const { data } = useQuery(LIST_APPOINTMENTS, {
-    variables: { input: { clinicIds: [currentClinic.id] } },
-  });
+  const { appointments } = useFetchAppointments();
 
-  useEffect(() => {
-    const appointments = fetchedAppointmetns(data);
-    setAppointments(filterAppointments(appointments, formValue));
-  }, [data, formValue]);
+  const filteredAppointments = useMemo(
+    () => filterAppointments(appointments, formValue),
+    [appointments, formValue]
+  );
 
   return (
     <>
@@ -37,7 +28,7 @@ function Appointments() {
       <CRCard borderless>
         <CRTable
           autoHeight
-          data={appointments}
+          data={filteredAppointments}
           onRowClick={({ id }) => {
             history.push(`/appointments/${id}`);
           }}

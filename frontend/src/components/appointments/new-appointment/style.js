@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { CRModal } from 'components';
+import { Modal } from 'rsuite';
 
 export const ContainerStyled = styled(CRModal.CRContainer)`
   position: absolute;
@@ -19,7 +20,7 @@ export const ContainerStyled = styled(CRModal.CRContainer)`
   & .rs-modal-body {
     margin-right: 20px;
     max-height: calc(100vh - 20rem) !important;
-  } 
+  }
 `;
 
 export const ModalBodyStyled = styled(CRModal.CRBody)`

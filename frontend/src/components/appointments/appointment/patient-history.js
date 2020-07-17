@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import * as R from 'ramda';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import { Grid, Row, Col, Alert } from 'rsuite';
 
 import { Div, CRNav } from 'components';
