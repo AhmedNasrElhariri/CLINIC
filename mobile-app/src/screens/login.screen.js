@@ -1,55 +1,75 @@
-import React, { useRef } from 'react';
-import * as R from 'ramda';
+import React from 'react';
+import { Form, Toast, Content } from 'native-base';
+import { Formik, Field } from 'formik';
+import * as Yup from 'yup';
+import { useMutation } from '@apollo/react-hooks';
 
-import {
-  List,
-  ListItem,
-  Text,
-  Container,
-  Content,
-  Body,
-  Right,
-} from 'native-base';
-import { useQuery } from '@apollo/react-hooks';
-
-import { LIST_APPOINTMENTS } from '@/apollo-client/queries';
-import { getStartOfDay, format } from '@/services/date.service';
+import { LOGIN } from '@/apollo-client/queries';
+import { CRMainLayout, CRPrimaryButton, CRTextInput } from '@/components';
 import { NAVIGATIONS } from '@/utils/constants';
 
-export default function TodayAppointments({ navigation }) {
-  const { data } = useQuery(LIST_APPOINTMENTS, {
-    variables: {
-      input: {
-        fromDate: getStartOfDay(new Date()),
-      },
+const ValidationSchema = Yup.object().shape({
+  email: Yup.string().email().required('Required'),
+  password: Yup.string().required('Required'),
+});
+
+const LoginScreen = ({ navigation }) => {
+  const [login] = useMutation(LOGIN, {
+    onCompleted: () => {
+      Toast.show({
+        text: 'Patient Created Successfully!',
+        type: 'success',
+        duration: 3000,
+      });
+
+      navigation.navigate(NAVIGATIONS.TODAY_APPOINTMENTS);
     },
+    onError: () =>
+      Toast.show({
+        text: 'Invalid Email or Password',
+        type: 'danger',
+        duration: 3000,
+      }),
   });
 
-  const appointments = R.propOr([], 'appointments')(data);
-
   return (
-    <Container>
-      <Content>
-        <List>
-          {appointments.map((appointment, idx) => (
-            <ListItem
-              key={idx}
-              onPress={() =>
-                navigation.navigate(NAVIGATIONS.LOGIN, {
-                  appointmentId: appointment.id,
-                })
-              }>
-              <Body>
-                <Text>{appointment.patient.name}</Text>
-                <Text note>{appointment.type}</Text>
-              </Body>
-              <Right>
-                <Text note>{format(appointment.date, 'h:mm a')}</Text>
-              </Right>
-            </ListItem>
-          ))}
-        </List>
+    <CRMainLayout>
+      <Content style={{ marginTop: 135 }}>
+        <Formik
+          validateOnMount
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={ValidationSchema}
+        >
+          {form => (
+            <Form>
+              <Field name="email" placeholder="Email" component={CRTextInput} />
+              <Field
+                name="password"
+                placeholder="Password"
+                secureTextEntry
+                component={CRTextInput}
+              />
+              <CRPrimaryButton
+                disabled={!form.isValid}
+                onPress={() =>
+                  login({
+                    variables: {
+                      ...form.values,
+                    },
+                  })
+                }
+              >
+                Create
+              </CRPrimaryButton>
+            </Form>
+          )}
+        </Formik>
       </Content>
-    </Container>
+    </CRMainLayout>
   );
-}
+};
+
+export default LoginScreen;

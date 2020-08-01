@@ -1,52 +1,65 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { Footer, FooterTab, Button, Icon, Text } from 'native-base';
 
-import HomeScreen from '@/screens/home.screen';
-import NewPatientScreen from '@/screens/new-patient.screen';
-import NewAppointmentScreen from '@/screens/new-appointment.screen';
-import TodayAppointmentsScreen from '@/screens/today-appointments.screen';
-import CalendarScreen from '@/screens/calendar.screen';
-import AppointmentScreen from '@/screens/appointment.screen';
-import { NAVIGATIONS } from '@/utils/constants';
+import StackNavigator from './stack-navigator';
+import TabNavigator from './tab-navigator';
 
-const Stack = createStackNavigator();
+const BottomNavigation = ({ state, descriptors, navigation }) => {
+  return (
+    <Footer>
+      <FooterTab>
+        {state.routes.map((route, index) => {
+          const { options } = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+              ? options.title
+              : route.name;
+
+          const isFocused = state.index === index;
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
+
+          const onLongPress = () => {
+            navigation.emit({
+              type: 'tabLongPress',
+              target: route.key,
+            });
+          };
+
+          return (
+            <Button
+              active={isFocused}
+              vertical
+              onPress={onPress}
+              onLongPress={onLongPress}
+              key={index}
+            >
+              <Icon name={options.icon} />
+              <Text>{label}</Text>
+            </Button>
+          );
+        })}
+      </FooterTab>
+    </Footer>
+  );
+};
 
 export default function MainStackNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
-        <Stack.Screen
-          name='Home'
-          component={HomeScreen}
-          options={{ title: 'Home' }}
-        />
-        <Stack.Screen
-          name={NAVIGATIONS.NEW_APPOINTMENT}
-          component={NewAppointmentScreen}
-          options={{ title: 'New Appointment' }}
-        />
-        <Stack.Screen
-          name={NAVIGATIONS.NEW_PATIENT}
-          component={NewPatientScreen}
-          options={{ title: 'New Patient' }}
-        />
-        <Stack.Screen
-          name={NAVIGATIONS.TODAY_APPOINTMENTS}
-          component={TodayAppointmentsScreen}
-          options={{ title: 'Today Appointments' }}
-        />
-        <Stack.Screen
-          name={NAVIGATIONS.CALENDAR}
-          component={CalendarScreen}
-          options={{ title: 'Calendar' }}
-        />
-        <Stack.Screen
-          name={NAVIGATIONS.APPOINTMENT}
-          component={AppointmentScreen}
-          options={{ title: 'Appointment' }}
-        />
-      </Stack.Navigator>
+      <StackNavigator />
     </NavigationContainer>
   );
 }

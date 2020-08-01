@@ -25,7 +25,7 @@ const ValidationSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
 });
 
-export default () => {
+const NewAppointmentScreen = () => {
   const [modalVisibility, setModalVisibility] = useState(false);
 
   const { data } = useQuery(LIST_PATIENTS);
@@ -37,7 +37,7 @@ export default () => {
         duration: 3000,
       });
     },
-    onError: e =>
+    onError: () =>
       Toast.show({
         text: 'Invalid Input!',
         type: 'danger',
@@ -66,34 +66,35 @@ export default () => {
                 alert(JSON.stringify(values, null, 2));
                 actions.setSubmitting(false);
               }, 1000);
-            }}>
+            }}
+          >
             {form => (
               <Form>
                 <Item>
                   <Field
-                    name='patient'
-                    placeholder='Select patient'
+                    name="patient"
+                    placeholder="Select patient"
                     component={PickerInput}
                     choices={patients}
-                    labelKey='name'
-                    valueKey='id'
+                    labelKey="name"
+                    valueKey="id"
                   />
                   <Icon
-                    name='add'
+                    name="add"
                     style={{ color: 'red' }}
                     onPress={openModal}
                   />
                 </Item>
                 <Item>
                   <Field
-                    name='type'
-                    placeholder='type'
+                    name="type"
+                    placeholder="type"
                     component={PickerInput}
                     choices={mapArrToChoices(APPOINTMENT_TYPES)}
                   />
                 </Item>
                 <Item>
-                  <Field name='date' placeholder='date' component={DateInput} />
+                  <Field name="date" placeholder="date" component={DateInput} />
                 </Item>
                 <Button
                   primary
@@ -102,7 +103,8 @@ export default () => {
                     createAppointment({
                       variables: { input: form.values },
                     })
-                  }>
+                  }
+                >
                   <Text>Create</Text>
                 </Button>
               </Form>
@@ -113,10 +115,13 @@ export default () => {
           isVisible={modalVisibility}
           onSwipeComplete={closeModal}
           swipeDirection={['left']}
-          onBackButtonPress={closeModal}>
-          <NewPatient onCreate={closeModal}></NewPatient>
+          onBackButtonPress={closeModal}
+        >
+          <NewPatient onCreate={closeModal} />
         </Modal>
       </Content>
     </Container>
   );
 };
+
+export default NewAppointmentScreen;

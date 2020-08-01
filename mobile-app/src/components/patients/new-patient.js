@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Container,
-  Content,
-  Form,
-  Button,
-  Text,
-  Toast,
-  Item,
-} from 'native-base';
+import { Form, Button, Text, Toast } from 'native-base';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { useMutation } from '@apollo/react-hooks';
@@ -28,7 +20,7 @@ const prepareSubmittedData = data => ({
   age: Number(data.age),
 });
 
-export default ({ onCreate }) => {
+export default ({ onCreate, ...props }) => {
   const [createPatient] = useMutation(CREATE_PATIENT, {
     update(cache, { data: { createPatient: patient } }) {
       const { patients } = cache.readQuery({ query: LIST_PATIENTS });
@@ -54,64 +46,54 @@ export default ({ onCreate }) => {
   });
 
   return (
-    <Container>
-      <Content>
-        <Formik
-          initialValues={{
-            name: '',
-            phoneNo: '',
-            age: null,
-            sex: null,
-            type: null,
-          }}
-          validationSchema={ValidationSchema}>
-          {form => (
-            <Form>
-              <Item>
-                <Field name='name' placeholder='name' component={TextInput} />
-              </Item>
-              <Field
-                name='phoneNo'
-                placeholder='phoneNo'
-                component={TextInput}
-                keyboardType='number-pad'
-              />
-              <Item>
-                <Field
-                  name='age'
-                  placeholder='age'
-                  component={TextInput}
-                  keyboardType='numeric'
-                />
-              </Item>
-              <Item>
-                <Field
-                  name='sex'
-                  placeholder='sex'
-                  component={PickerInput}
-                  choices={mapArrToChoices(SEX)}
-                />
-              </Item>
-              <Item>
-                <Field
-                  name='type'
-                  placeholder='membership type'
-                  component={PickerInput}
-                  choices={mapArrToChoices(MEMBERSHIP_TYPES)}
-                />
-              </Item>
-              <Button
-                onPress={() =>
-                  createPatient({
-                    variables: { input: prepareSubmittedData(form.values) },
-                  })
-                }>
-                <Text>Create</Text>
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </Content>
-    </Container>
+    <Formik
+      initialValues={{
+        name: '',
+        phoneNo: '',
+        age: null,
+        sex: null,
+        type: null,
+      }}
+      validationSchema={ValidationSchema}
+    >
+      {form => (
+        <Form>
+          <Field name="name" placeholder="name" component={TextInput} />
+          <Field
+            name="phoneNo"
+            placeholder="PhoneNo"
+            component={TextInput}
+            keyboardType="number-pad"
+          />
+          <Field
+            name="age"
+            placeholder="Age"
+            component={TextInput}
+            keyboardType="numeric"
+          />
+          <Field
+            name="sex"
+            placeholder="Sex"
+            component={PickerInput}
+            choices={mapArrToChoices(SEX)}
+          />
+          <Field
+            name="type"
+            placeholder="Membership"
+            component={PickerInput}
+            choices={mapArrToChoices(MEMBERSHIP_TYPES)}
+          />
+          <Button
+            onPress={() =>
+              createPatient({
+                variables: { input: prepareSubmittedData(form.values) },
+              })
+            }
+          >
+            <Text>Create</Text>
+          </Button>
+        </Form>
+      )}
+    </Formik>
   );
 };

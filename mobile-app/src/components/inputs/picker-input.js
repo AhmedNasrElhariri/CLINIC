@@ -1,5 +1,7 @@
 import React from 'react';
-import { Picker, Icon } from 'native-base';
+import { Picker, Icon, View } from 'native-base';
+
+import crVariables from '@/utils/cr-variables';
 
 export default ({
   field: { name, onBlur, value },
@@ -14,18 +16,30 @@ export default ({
     form.setFieldValue(name, val);
   };
   return (
-    <Picker
-      mode='dropdown'
-      iosIcon={<Icon name='arrow-down' />}
-      name={name}
-      selectedValue={value}
-      onValueChange={onValueChange}
-      onBlur={onBlur}
-      {...props}>
-      {<Picker.Item label={placeholder} value={undefined} enabled={false} />}
-      {choices.map(({ [labelKey]: label, [valueKey]: value }) => (
-        <Picker.Item key={value} label={label} value={value} />
-      ))}
-    </Picker>
+    <View
+      style={{
+        borderWidth: crVariables.borderWidth,
+        borderColor: crVariables.borderColor,
+        borderRadius: crVariables.borderRadius,
+        marginBottom: crVariables.fieldMarginBottom,
+        paddingLeft: crVariables.fieldPaddingLeft - 5,
+        paddingRight: crVariables.fieldPaddingRight - 5,
+      }}
+    >
+      <Picker
+        mode="dropdown"
+        iosIcon={<Icon name="arrow-down" />}
+        name={name}
+        selectedValue={value}
+        onValueChange={onValueChange}
+        onBlur={onBlur}
+        {...props}
+      >
+        {<Picker.Item label={placeholder} value={undefined} enabled={false} />}
+        {choices.map(({ [labelKey]: label, [valueKey]: value }) => (
+          <Picker.Item key={value} label={label} value={value} />
+        ))}
+      </Picker>
+    </View>
   );
 };

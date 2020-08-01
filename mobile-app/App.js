@@ -1,12 +1,15 @@
 import React from 'react';
 import { AppLoading } from 'expo';
-import { Root } from 'native-base';
+import { Root, StyleProvider } from 'native-base';
 
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import client from './src/apollo-client';
+import getTheme from './native-base-theme/components';
+import variables from './native-base-theme/variables/platform';
+
+import client from './src/apollo-client/client';
 import MainStackNavigator from './src/navigation/main-stack-navigation';
 
 export default class App extends React.Component {
@@ -19,6 +22,10 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
+      SegoeUI: require('./assets/fonts/SegoeUI.ttf'),
+      SegoeUIBold: require('./assets/fonts/SegoeUI-Bold.ttf'),
+      SegoeUISemiBold: require('./assets/fonts/SegoeUI-Semibold.ttf'),
+      SegoeUISemiLight: require('./assets/fonts/SegoeUI-Semi-light.ttf'),
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
@@ -34,7 +41,9 @@ export default class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <Root>
-          <MainStackNavigator />
+          <StyleProvider style={getTheme(variables)}>
+            <MainStackNavigator />
+          </StyleProvider>
         </Root>
       </ApolloProvider>
     );

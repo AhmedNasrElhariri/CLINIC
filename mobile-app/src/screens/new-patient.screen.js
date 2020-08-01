@@ -1,13 +1,13 @@
 import React from 'react';
-import { Container, Content } from 'native-base';
 import NewPatient from '@/components/patients/new-patient';
+import MainLayout from '@/components/layout/main';
 
-export default () => {
+const NewPatientScreen = props => {
   return (
-    <Container>
-      <Content>
-        <NewPatient onCreate={() => {}} />
-      </Content>
-    </Container>
+    <MainLayout {...props}>
+      <NewPatient onCreate={() => {}} />
+    </MainLayout>
   );
 };
+
+export default NewPatientScreen;

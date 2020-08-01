@@ -1,5 +1,6 @@
 import React from 'react';
-import { Item, Input, Icon } from 'native-base';
+import { Content, Item, Input, Icon } from 'native-base';
+import crVariables from '@/utils/cr-variables';
 
 export default ({ field: { name }, form, ...props }) => {
   const touched = form.touched[name];
@@ -7,11 +8,18 @@ export default ({ field: { name }, form, ...props }) => {
   const onBlur = () => form.setFieldTouched(name, true, true);
 
   return (
-    <Item
-      error={touched && !!form.errors[name]}
-      success={touched && !form.errors[name]}>
-      <Input onChangeText={onChangeText} onBlur={onBlur} {...props} />
-      {touched && <Icon name='close-circle' />}
-    </Item>
+    <Content
+      // error={touched && !!form.errors[name]}
+      // success={touched && !form.errors[name]}
+      marginBottom={crVariables.fieldMarginBottom}
+    >
+      <Input
+        onChangeText={onChangeText}
+        onBlur={onBlur}
+        {...props}
+        placeholderTextColor={crVariables.placeholderColor}
+      />
+      {/* {touched && <Icon name="close-circle" />} */}
+    </Content>
   );
 };

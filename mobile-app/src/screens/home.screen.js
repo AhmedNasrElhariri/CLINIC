@@ -11,9 +11,8 @@ export const HELLO = gql`
   }
 `;
 
-export default ({ navigation }) => {
+const HomeScreen = ({ navigation }) => {
   const { data, error, loading } = useQuery(HELLO);
-  console.log(data);
   return (
     <Container>
       <Content>
@@ -23,7 +22,8 @@ export default ({ navigation }) => {
               full
               primary
               style={{ height: 130 }}
-              onPress={() => navigation.navigate(NAVIGATIONS.NEW_APPOINTMENT)}>
+              onPress={() => navigation.navigate(NAVIGATIONS.NEW_APPOINTMENT)}
+            >
               <Text>New Appointment</Text>
             </Button>
             <Button
@@ -32,14 +32,16 @@ export default ({ navigation }) => {
               style={{ height: 130 }}
               onPress={() =>
                 navigation.navigate(NAVIGATIONS.TODAY_APPOINTMENTS)
-              }>
+              }
+            >
               <Text>Today Appointments</Text>
             </Button>
             <Button
               full
               dark
               style={{ height: 130 }}
-              onPress={() => navigation.navigate(NAVIGATIONS.LOGIN)}>
+              onPress={() => navigation.navigate(NAVIGATIONS.LOGIN)}
+            >
               <Text>Login</Text>
             </Button>
           </Col>
@@ -48,14 +50,16 @@ export default ({ navigation }) => {
               full
               light
               style={{ height: 130 }}
-              onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}>
+              onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}
+            >
               <Text>New Patient</Text>
             </Button>
             <Button
               full
               success
               style={{ height: 130 }}
-              onPress={() => navigation.navigate(NAVIGATIONS.CALENDAR)}>
+              onPress={() => navigation.navigate(NAVIGATIONS.CALENDAR)}
+            >
               <Text>Calendar</Text>
             </Button>
           </Col>
@@ -64,3 +68,5 @@ export default ({ navigation }) => {
     </Container>
   );
 };
+
+export default HomeScreen;
