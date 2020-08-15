@@ -1,50 +1,58 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import * as R from 'ramda';
-import { List, ListItem, Text, Body, Right } from 'native-base';
-import { useQuery } from '@apollo/react-hooks';
 
-import { format } from '@/services/date';
-import { NAVIGATIONS } from '@/utils/constants';
 import useFetchAppointments from '@/hooks/fetch-appointments';
 import { CRMainLayout } from '@/components';
-import ListTodayAppointments from '@/components/appointments/list-today-appointments';
+import ListTodayAppointments from '@/components/today-appointments/list';
+import TodayAppointmentsTabs from '@/components/today-appointments/tabs';
+import { Button, Icon } from 'native-base';
+import Filter from '@/components/today-appointments/filter';
 
-const TodayAppointments = ({ navigation }) => {
-  // const { data } = useQuery(LIST_APPOINTMENTS, {
-  //   variables: {
-  //     input: {
-  //       fromDate: getStartOfDay(new Date()),
-  //     },
-  //   },
-  // });
+const TodayAppointments = () => {
+  const { todayAppointments } = useFetchAppointments();
+  const [active, setActive] = useState(0);
+  const [filter, setfilter] = useState({ type: ['All'] });
+  const [filterVisible, setFilterVisible] = useState(false);
 
-  // const appointments = R.propOr([], 'appointments')(data);
+  const activeAppointments = useMemo(() => {
+    const statuses = active === 0 ? ['Scheduled'] : ['Done', 'Archived'];
+    return todayAppointments.filter(p => statuses.includes(p.status));
+  }, [active, todayAppointments]);
 
-  const { todayAppointments, appointments } = useFetchAppointments();
+  const appointments = useMemo(() => {
+    return activeAppointments.filter(
+      p => filter.type.includes('All') || filter.type.includes(p.type)
+    );
+  }, [filter, activeAppointments]);
 
   return (
-    <CRMainLayout header="Appointments">
+    <CRMainLayout
+      header="Appointments"
+      search
+      extra={
+        <Button small transparent onPress={() => setFilterVisible(true)}>
+          <Icon name="ios-options" style={{ color: '#000000' }} />
+        </Button>
+      }
+    >
+      <TodayAppointmentsTabs
+        onPress={active => setActive(active)}
+        active={active}
+      />
       <ListTodayAppointments appointments={appointments} />
-      {/* <List>
-        {appointments.map((appointment, idx) => (
-          <ListItem
-            key={idx}
-            onPress={() =>
-              navigation.navigate(NAVIGATIONS.APPOINTMENT, {
-                appointmentId: appointment.id,
-              })
-            }
-          >
-            <Body>
-              <Text>{appointment.patient.name}</Text>
-              <Text note>{appointment.type}</Text>
-            </Body>
-            <Right>
-              <Text note>{format(appointment.date, 'h:mm a')}</Text>
-            </Right>
-          </ListItem>
-        ))}
-      </List> */}
+      <Filter
+        onDone={() => setFilterVisible(false)}
+        onClear={() =>
+          setfilter({
+            type: [],
+          })
+        }
+        isVisible={filterVisible}
+        onChange={filter => {
+          setfilter(filter);
+        }}
+        filter={filter}
+      />
     </CRMainLayout>
   );
 };

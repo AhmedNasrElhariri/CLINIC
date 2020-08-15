@@ -1,9 +1,10 @@
 import crVariables from '@/utils/cr-variables';
 
 export const buttonStyle = {
-  height: 50,
-  borderRadius: crVariables.borderRadius,
-  paddingLeft: crVariables.fieldPaddingLeft - 15,
+  // height: 50,
+  justifyContent: 'center',
+  // borderRadius: crVariables.borderRadius,
+  // padding: crVariables.fieldPaddingLeft - 15,
 };
 
 export const textStyle = {

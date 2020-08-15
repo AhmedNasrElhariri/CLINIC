@@ -14,3 +14,4 @@ export { default as medicalHistory } from './medical-history';
 export { default as familyHistory } from './family-history';
 export { default as expenses } from './expenses';
 export { default as revenues } from './revenues';
+export { default as search } from './search';

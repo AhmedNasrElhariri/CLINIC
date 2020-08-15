@@ -3,6 +3,7 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
+import { Platform } from 'react-native';
 
 const defaultOptions = {
   query: {
@@ -26,10 +27,13 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+console.log(Platform.OS);
+
 // create an apollo link instance, a network interface for apollo client
 const httpLink = new HttpLink({
-  uri: `http://localhost:4000/graphql`,
-  // uri: `http://192.168.1.12:4000/graphql`,
+  // uri: `http://localhost:4000/graphql`,
+  uri: `http://172.20.10.2:4000/graphql`,
+  // uri: `http://192.168.1.14:4000/graphql`,
   // uri: `http://192.168.1.12:4000/graphql`,
   // headers: {
   //   Authorization: `Bearer ${token}`,

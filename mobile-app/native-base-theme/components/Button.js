@@ -2,6 +2,7 @@
 
 import variable from './../variables/platform';
 import { PLATFORM } from './../variables/commonColor';
+import crVariables from '@/utils/cr-variables';
 
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
@@ -30,7 +31,8 @@ export default (variables /* : * */ = variable) => {
   };
   const primaryCommon = {
     'NativeBase.Text': {
-      color: variables.buttonPrimaryBg,
+      color: crVariables.primaryColor,
+      // color: variables.buttonPrimaryBg,
     },
     'NativeBase.Icon': {
       color: variables.buttonPrimaryBg,
@@ -282,7 +284,8 @@ export default (variables /* : * */ = variable) => {
     '.small': {
       height: 30,
       'NativeBase.Text': {
-        fontSize: 14,
+        fontSize: 11,
+        fontFamily: crVariables.fonts.SegoeUISemiBold,
       },
       'NativeBase.Icon': {
         fontSize: 20,

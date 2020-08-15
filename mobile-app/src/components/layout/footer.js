@@ -27,7 +27,7 @@ const CRFooter = ({ navigation }) => {
       <FooterTab>
         <FooterItem
           onPress={() => navigation.navigate(NAVIGATIONS.TODAY_APPOINTMENTS)}
-          title="Aptments"
+          title="Appointments"
           icon="home"
         />
         <FooterItem

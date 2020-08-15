@@ -154,32 +154,6 @@ export const GET_APPOINTMENT_HISTORY = gql`
   }
 `;
 
-// export const GET_APPOINTMENTS_HISTORY = gql`
-//   query($id: ID!) {
-//     appointmentHistory(id: $id) {
-//       id
-//       type
-//       date
-//       labs
-//       status
-//       data {
-//         id
-//         value
-//         field {
-//           id
-//           name
-//         }
-//       }
-//       patient {
-//         id
-//         name
-//         age
-//         sex
-//       }
-//     }
-//   }
-// `;
-
 export const GET_PATIENT = gql`
   query($id: ID!) {
     patient(id: $id) {
@@ -188,6 +162,7 @@ export const GET_PATIENT = gql`
       age
       sex
       phoneNo
+      type
     }
   }
 `;
@@ -433,5 +408,26 @@ export const CREATE_EXPENSE = gql`
       date
       invoiceNo
     }
+  }
+`;
+
+export const SEARCH = gql`
+  query($q: String!) {
+    search(q: $q) {
+      patients {
+        id
+        searchName
+      }
+      snippets {
+        id
+        searchName
+      }
+    }
+    # search(id: $id) {
+    #   __typename
+    #   ... on Searchable {
+    #     searchResult
+    #   }
+    # }
   }
 `;

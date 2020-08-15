@@ -5,6 +5,7 @@ import { Platform, PixelRatio } from 'react-native';
 import pickerTheme from './Picker';
 import variable from './../variables/platform';
 import { PLATFORM } from './../variables/commonColor';
+import crVariables from '@/utils/cr-variables';
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
@@ -113,7 +114,8 @@ export default (variables /* : * */ = variable) => {
       marginLeft: null,
       padding: variables.listItemPadding,
       paddingLeft: variables.listItemPadding + 5,
-      backgroundColor: variables.listDividerBg,
+      // backgroundColor: variables.listDividerBg,
+      backgroundColor: crVariables.listDividerBg,
       flexDirection: 'row',
       borderColor: variables.listBorderColor
     },

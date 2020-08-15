@@ -38,6 +38,7 @@ enum AppointmentStatus {
 type Query {
   hello(name: String): String!
   patients: [Patient!]
+  clinicPatients(clinicId: ID!): [Patient!]
   appointments(input: AppointmentQueryInput): [Appointment!]
   appointment(id: ID!): Appointment
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
@@ -52,6 +53,7 @@ type Query {
   familyHistory(patientId: ID!): [FamilyHistory!]
   expenses(clinicId: ID!): [Expense!]
   revenues(clinicId: ID!): [Revenue!]
+  search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
 }
 
 ########################### Mutation ##################################
@@ -100,12 +102,24 @@ type User {
   email: String!
 }
 
+########################### Search ##################################
+
+interface Searchable {
+  searchName: String!
+}
+
+type SearchResult {
+  patients: [Patient!]
+  snippets: [Snippet!]
+}
+
 ########################### Patient ##################################
 
-type Patient {
+type Patient implements Searchable {
   id: ID!
   type: PatientMembershipType!
   name: String!
+  searchName: String!
   phoneNo: String!
   age: Int!
   sex: Sex!
@@ -265,9 +279,10 @@ type File {
 
 ########################### Snippet ##################################
 
-type Snippet {
+type Snippet implements Searchable {
   id: ID!
   title: String!
+  searchName: String!
   body: String!
 }
 

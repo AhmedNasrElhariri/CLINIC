@@ -48,7 +48,7 @@ export default {
   androidRipple: true,
   androidRippleColor: 'rgba(256, 256, 256, 0.3)',
   androidRippleColorDark: 'rgba(0, 0, 0, 0.15)',
-  buttonUppercaseAndroidText: true,
+  buttonUppercaseAndroidText: false,
 
   // Badge
   badgeBg: '#ED1727',
@@ -105,7 +105,8 @@ export default {
     return this.fontSizeBase * 0.8;
   },
   get borderRadiusLarge() {
-    return this.fontSizeBase * 3.8;
+    return crVariables.borderRadius;
+    // return this.fontSizeBase * 3.8;
   },
   get iconSizeLarge() {
     return this.iconFontSize * 1.5;
@@ -121,7 +122,8 @@ export default {
   cardItemPadding: platform === PLATFORM.IOS ? 10 : 12,
 
   // CheckBox
-  CheckboxRadius: platform === PLATFORM.IOS ? 13 : 0,
+  CheckboxRadius: 13,
+  // CheckboxRadius: platform === PLATFORM.IOS ? 13 : 0,
   CheckboxBorderWidth: platform === PLATFORM.IOS ? 1 : 2,
   CheckboxPaddingLeft: platform === PLATFORM.IOS ? 4 : 2,
   CheckboxPaddingBottom: platform === PLATFORM.IOS ? 0 : 5,

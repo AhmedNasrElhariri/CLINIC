@@ -25,7 +25,7 @@ export default class App extends React.Component {
       SegoeUI: require('./assets/fonts/SegoeUI.ttf'),
       SegoeUIBold: require('./assets/fonts/SegoeUI-Bold.ttf'),
       SegoeUISemiBold: require('./assets/fonts/SegoeUI-Semibold.ttf'),
-      SegoeUISemiLight: require('./assets/fonts/SegoeUI-Semi-light.ttf'),
+      SegoeUISemiLight: require('./assets/fonts/SegoeUI-Semilight.ttf'),
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,

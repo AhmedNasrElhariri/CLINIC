@@ -9,4 +9,11 @@ export const NAVIGATIONS = {
   APPOINTMENT: 'Appointments',
   NEW_PATIENT: 'NewPatient',
   CALENDAR: 'Calendar',
+  SEARCH: 'Search',
+  PATIENTS: 'Patients',
+  PATIENT: 'Patient',
+  PATIENT_INFO: 'PatientInfo',
+  HISTORY_SUMMARY: 'PatientSummary',
+  HISTORY_PROGRESS: 'HistoryProgress',
+  PATIENT_LABS: 'PatientLabs',
 };

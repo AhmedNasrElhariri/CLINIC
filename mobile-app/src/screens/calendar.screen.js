@@ -28,43 +28,31 @@ const testIDs = {
   weekCalendar: { CONTAINER: 'weekCalendar' },
 };
 
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+  },
+  emptyDate: {
+    height: 15,
+    flex: 1,
+    paddingTop: 30,
+  },
+});
+
 export default class AgendaScreen extends Component {
   constructor(props) {
     super(props);
 
+    this.loadItems = this.loadItems.bind(this);
+
     this.state = {
       items: {},
     };
-  }
-
-  render() {
-    return (
-      <MainLayout {...this.props}>
-        <Agenda
-          testID={testIDs.agenda.CONTAINER}
-          items={this.state.items}
-          loadItemsForMonth={this.loadItems.bind(this)}
-          selected="2017-05-16"
-          renderItem={this.renderItem.bind(this)}
-          renderEmptyDate={this.renderEmptyDate.bind(this)}
-          rowHasChanged={this.rowHasChanged.bind(this)}
-          // markingType={'period'}
-          // markedDates={{
-          //    '2017-05-08': {textColor: '#43515c'},
-          //    '2017-05-09': {textColor: '#43515c'},
-          //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-          //    '2017-05-21': {startingDay: true, color: 'blue'},
-          //    '2017-05-22': {endingDay: true, color: 'gray'},
-          //    '2017-05-24': {startingDay: true, color: 'gray'},
-          //    '2017-05-25': {color: 'gray'},
-          //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-          // monthFormat={'yyyy'}
-          // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-          //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-          // hideExtraDays={false}
-        />
-      </MainLayout>
-    );
   }
 
   loadItems(day) {
@@ -73,6 +61,9 @@ export default class AgendaScreen extends Component {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
         if (!this.state.items[strTime]) {
+          // this.setState(prevState => ({
+          //   items: { ...prevState.items, strTime: [] },
+          // }));
           this.state.items[strTime] = [];
           const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
@@ -121,20 +112,34 @@ export default class AgendaScreen extends Component {
     const date = new Date(time);
     return date.toISOString().split('T')[0];
   }
-}
 
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17,
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30,
-  },
-});
+  render() {
+    return (
+      <MainLayout {...this.props}>
+        <Agenda
+          testID={testIDs.agenda.CONTAINER}
+          items={this.state.items}
+          loadItemsForMonth={this.loadItems}
+          selected="2017-05-16"
+          renderItem={this.renderItem}
+          renderEmptyDate={this.renderEmptyDate}
+          rowHasChanged={this.rowHasChanged}
+          // markingType={'period'}
+          // markedDates={{
+          //    '2017-05-08': {textColor: '#43515c'},
+          //    '2017-05-09': {textColor: '#43515c'},
+          //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
+          //    '2017-05-21': {startingDay: true, color: 'blue'},
+          //    '2017-05-22': {endingDay: true, color: 'gray'},
+          //    '2017-05-24': {startingDay: true, color: 'gray'},
+          //    '2017-05-25': {color: 'gray'},
+          //    '2017-05-26': {endingDay: true, color: 'gray'}}}
+          // monthFormat={'yyyy'}
+          // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+          //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+          // hideExtraDays={false}
+        />
+      </MainLayout>
+    );
+  }
+}

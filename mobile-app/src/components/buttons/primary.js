@@ -3,23 +3,25 @@ import { Button, Text } from 'native-base';
 
 import { primaryStyle } from './style';
 
-export default ({ children, onPress, disabled, ...props }) => {
+const { button, text } = primaryStyle;
+
+const PrimaryButton = ({ children, onPress, disabled, width, ...props }) => {
   return (
     <Button
-      style={
-        disabled ? primaryStyle.button.disabled : primaryStyle.button.normal
-      }
+      style={Object.assign({
+        width,
+        ...(disabled ? button.disabled : button.normal),
+      })}
       onPress={onPress}
       {...props}
-      block
-      rounded
     >
-      <Text
-        uppercase={false}
-        style={disabled ? primaryStyle.text.disabled : primaryStyle.text.normal}
-      >
-        {children}
-      </Text>
+      <Text style={disabled ? text.disabled : text.normal}>{children}</Text>
     </Button>
   );
 };
+
+PrimaryButton.defaultProps = {
+  rounded: true,
+};
+
+export default PrimaryButton;
