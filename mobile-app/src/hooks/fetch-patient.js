@@ -22,23 +22,11 @@ export function useVariables() {
   };
 }
 
-const pickPath = R.curry((paths, obj) =>
-  R.reduce((o, p) => R.assocPath(p, R.path(p, obj), o), {}, paths)
-);
-
 function useFetchPatient(id) {
   const { data } = useQuery(GET_PATIENT, { variables: { id } });
   const result = useQuery(GET_APPOINTMENT_HISTORY, { variables: { id } });
   const patient = useMemo(() => R.propOr({}, 'patient')(data), [data]);
-  const summary = useMemo(
-    () =>
-      R.pipe(
-        R.pathOr([], ['data', 'appointmentHistory']),
-        R.map(R.prop('data')),
-        R.map(R.map(({ field: { name }, value }) => ({ name, value })))
-      )(result),
-    [result]
-  );
+
   const fields = useMemo(
     () =>
       R.pipe(
@@ -51,13 +39,53 @@ function useFetchPatient(id) {
     [result]
   );
 
+  const summary = useMemo(
+    () =>
+      R.pipe(
+        R.pathOr([], ['data', 'appointmentHistory']),
+        R.map(R.prop('data')),
+        R.map(
+          R.pipe(
+            R.map(({ field: { name }, value }) => ({ [name]: value })),
+            R.mergeAll
+          )
+        )
+      )(result),
+    [result]
+  );
+
+  const progress = useMemo(() => {
+    const progressWithDate = R.pipe(
+      R.pathOr([], ['data', 'appointmentHistory']),
+      R.map(({ date, data }) => {
+        return {
+          date,
+          data: R.pipe(
+            R.map(({ field: { name }, value }) => ({ [name]: value })),
+            R.mergeAll
+          )(data),
+        };
+      })
+    )(result);
+
+    return R.pipe(
+      R.map(f => ({
+        [f]: R.map(({ date, data }) => ({
+          value: R.path([f])(data),
+          date,
+        }))(progressWithDate),
+      })),
+      R.mergeAll
+    )(fields);
+  }, [fields, result]);
+
   return useMemo(
     () => ({
       patient,
       summary,
-      fields,
+      progress,
     }),
-    [patient, summary, fields]
+    [patient, summary, progress]
   );
 }
 

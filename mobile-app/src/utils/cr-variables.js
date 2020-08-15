@@ -1,5 +1,6 @@
 const textColor = 'rgb(40, 49, 72)';
 const textColorLight = 'rgba(40, 49, 72, 0.5)';
+const textColorLighter = 'rgba(40, 49, 72, 0.25)';
 const primaryColor = '#51C6F3';
 const eventColor1 = primaryColor;
 const eventColor2 = '#40C173';
@@ -9,6 +10,7 @@ export default {
   primaryColor,
   textColor,
   textColorLight,
+  textColorLighter,
   borderColor: 'rgba(40, 49, 72, 0.2)',
   placeholderColor: 'rgba(40, 49, 72, 0.3)',
   disabledBgColor: 'rgb(233, 234, 236)',
@@ -40,6 +42,7 @@ const fontColor = {
   normal: textColor,
   primary: primaryColor,
   light: textColorLight,
+  lighter: textColorLighter,
 };
 
 export const getFontWeight = weight => fontFamily[weight];

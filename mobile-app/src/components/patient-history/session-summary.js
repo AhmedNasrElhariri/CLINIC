@@ -6,7 +6,7 @@ import { CRText } from '@/components';
 const SessionSummary = ({ session }) => {
   return (
     <>
-      {session.map(({ name, value }) => (
+      {Object.entries(session).map(([name, value]) => (
         <View
           style={{
             flexDirection: 'row',
@@ -26,7 +26,7 @@ const SessionSummary = ({ session }) => {
 };
 
 SessionSummary.defaultProps = {
-  session: [],
+  session: {},
 };
 
 export default SessionSummary;

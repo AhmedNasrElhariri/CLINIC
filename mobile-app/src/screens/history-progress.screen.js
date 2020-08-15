@@ -1,21 +1,24 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Button, Icon, Accordion, View } from 'native-base';
 
 import useFetchPatient from '@/hooks/fetch-patient';
-import { CRMainLayout, CRText } from '@/components';
-import SessionSummary from '@/components/patient-history/session-summary';
+import { CRMainLayout, CRSearchInput, CRText } from '@/components';
+import ListPatients from '@/components/patients/list-patients';
+import { NAVIGATIONS } from '@/utils/constants';
+import { SEARCH_SUBJECTS } from './search.screen';
+import AttributeProgress from '@/components/patient-history/attribute-progress';
 
-const HistorySummaryScreen = ({ navigation }) => {
+const HistoryProgressScreen = ({ navigation }) => {
   const id = '843c2857-e784-4eb2-bb98-7b848b1020db';
-  const { summary } = useFetchPatient(id);
+  const { progress } = useFetchPatient(id);
 
-  const sessionsSummary = useMemo(
+  const progressData = useMemo(
     () =>
-      summary.map((s, idx) => ({
-        data: s,
-        title: `Session ${idx + 1}`,
+      Object.entries(progress).map(([title, data]) => ({
+        title,
+        data,
       })),
-    [summary]
+    [progress]
   );
 
   return (
@@ -28,7 +31,7 @@ const HistorySummaryScreen = ({ navigation }) => {
       }
     >
       <Accordion
-        dataArray={sessionsSummary}
+        dataArray={progressData}
         icon="add"
         expandedIcon="remove"
         renderHeader={({ data, title }, expanded) => {
@@ -51,10 +54,10 @@ const HistorySummaryScreen = ({ navigation }) => {
             </View>
           );
         }}
-        renderContent={({ data }) => <SessionSummary session={data} />}
+        renderContent={({ data }) => <AttributeProgress progress={data} />}
       />
     </CRMainLayout>
   );
 };
 
-export default HistorySummaryScreen;
+export default HistoryProgressScreen;

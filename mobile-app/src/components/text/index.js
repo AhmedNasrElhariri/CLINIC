@@ -22,7 +22,7 @@ const CRText = ({ children, size, weight, variant, style, ...props }) => {
 CRText.propTypes = {
   size: PropTypes.number,
   weight: PropTypes.oneOf(['normal', 'bold', 'semiBold', 'semiLight']),
-  variant: PropTypes.oneOf(['normal', 'light', 'primary']),
+  variant: PropTypes.oneOf(['normal', 'light', 'primary', 'lighter']),
 };
 
 CRText.defaultProps = {

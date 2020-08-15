@@ -13,13 +13,13 @@ import SearchScreen from '@/screens/search.screen';
 import Patients from '@/screens/patients.screen';
 import Patient from '@/screens/patient.screen';
 import PatientInfo from '@/screens/patient-info.screen';
-import HistoryProgressScreen from '@/screens/history-progress';
+import HistoryProgressScreen from '@/screens/history-progress.screen';
 import HistorySummaryScreen from '@/screens/history-summary.screen';
 
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
 
-const initalRoute = NAVIGATIONS.HISTORY_SUMMARY;
+const initalRoute = NAVIGATIONS.HISTORY_PROGRESS;
 
 const MainStackScreen = () => {
   return (
