@@ -46,7 +46,7 @@ function useFetchPatient(id) {
         R.map(R.prop('data')),
         R.map(R.map(R.path(['field', 'name']))),
         R.reduce(R.concat, []),
-        R.uniq,
+        R.uniq
       )(result),
     [result]
   );
