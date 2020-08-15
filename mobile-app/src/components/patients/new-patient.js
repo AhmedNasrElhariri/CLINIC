@@ -29,8 +29,8 @@ export default ({ onCreate, ...props }) => {
         data: { patients: patients.concat([patient]) },
       });
     },
-    onCompleted: () => {
-      onCreate();
+    onCompleted: ({ createPatient: patient }) => {
+      onCreate(patient);
       Toast.show({
         text: 'Patient Created Successfully!',
         type: 'success',

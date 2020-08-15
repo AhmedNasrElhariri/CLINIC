@@ -22,7 +22,11 @@ const Patients = ({ navigation }) => {
     <CRMainLayout
       header="Patients"
       extra={
-        <Button small transparent onPress={() => {}}>
+        <Button
+          small
+          transparent
+          onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}
+        >
           <Icon name="add" style={{ color: '#000000' }} />
         </Button>
       }

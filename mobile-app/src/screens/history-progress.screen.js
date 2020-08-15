@@ -1,15 +1,13 @@
-import React, { useCallback, useMemo } from 'react';
-import { Button, Icon, Accordion, View } from 'native-base';
+import React, { useMemo } from 'react';
+import { Icon, Accordion, View } from 'native-base';
+import * as R from 'ramda';
 
 import useFetchPatient from '@/hooks/fetch-patient';
-import { CRMainLayout, CRSearchInput, CRText } from '@/components';
-import ListPatients from '@/components/patients/list-patients';
-import { NAVIGATIONS } from '@/utils/constants';
-import { SEARCH_SUBJECTS } from './search.screen';
+import { CRMainLayout, CRText } from '@/components';
 import AttributeProgress from '@/components/patient-history/attribute-progress';
 
-const HistoryProgressScreen = ({ navigation }) => {
-  const id = '843c2857-e784-4eb2-bb98-7b848b1020db';
+const HistoryProgressScreen = ({ route }) => {
+  const id = R.path(['params', 'patient', 'id'])(route);
   const { progress } = useFetchPatient(id);
 
   const progressData = useMemo(
@@ -22,14 +20,7 @@ const HistoryProgressScreen = ({ navigation }) => {
   );
 
   return (
-    <CRMainLayout
-      header="Patients"
-      extra={
-        <Button small transparent onPress={() => {}}>
-          <Icon name="add" style={{ color: '#000000' }} />
-        </Button>
-      }
-    >
+    <CRMainLayout header="Patient Progress">
       <Accordion
         dataArray={progressData}
         icon="add"

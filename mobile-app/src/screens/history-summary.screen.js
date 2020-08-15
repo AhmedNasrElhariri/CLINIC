@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
-import { Button, Icon, Accordion, View } from 'native-base';
+import * as R from 'ramda';
+import { Icon, Accordion, View } from 'native-base';
 
 import useFetchPatient from '@/hooks/fetch-patient';
 import { CRMainLayout, CRText } from '@/components';
 import SessionSummary from '@/components/patient-history/session-summary';
 
-const HistorySummaryScreen = ({ navigation }) => {
-  const id = '843c2857-e784-4eb2-bb98-7b848b1020db';
+const HistorySummaryScreen = ({ route }) => {
+  const id = R.path(['params', 'patient', 'id'])(route);
   const { summary } = useFetchPatient(id);
 
   const sessionsSummary = useMemo(
@@ -19,14 +20,7 @@ const HistorySummaryScreen = ({ navigation }) => {
   );
 
   return (
-    <CRMainLayout
-      header="Patients"
-      extra={
-        <Button small transparent onPress={() => {}}>
-          <Icon name="add" style={{ color: '#000000' }} />
-        </Button>
-      }
-    >
+    <CRMainLayout header="Patient Summary">
       <Accordion
         dataArray={sessionsSummary}
         icon="add"

@@ -5,7 +5,6 @@ import { CRText } from '@/components';
 import { format } from '@/services/date';
 
 const AttributeProgress = ({ progress }) => {
-  console.log(progress);
   return (
     <>
       <View

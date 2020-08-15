@@ -19,7 +19,7 @@ import HistorySummaryScreen from '@/screens/history-summary.screen';
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
 
-const initalRoute = NAVIGATIONS.HISTORY_PROGRESS;
+const initalRoute = NAVIGATIONS.PATIENT;
 
 const MainStackScreen = () => {
   return (
@@ -75,6 +75,10 @@ const RootStackNavigator = () => {
     <RootStack.Navigator mode="modal" headerMode="none">
       <RootStack.Screen name="Main" component={MainStackScreen} />
       <RootStack.Screen name={NAVIGATIONS.SEARCH} component={SearchScreen} />
+      <RootStack.Screen
+        name={NAVIGATIONS.NEW_PATIENT}
+        component={NewPatientScreen}
+      />
     </RootStack.Navigator>
   );
 };

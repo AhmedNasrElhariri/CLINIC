@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import {
   Container,
   Content,
@@ -12,22 +12,19 @@ import {
 import { Formik, Field } from 'formik';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import * as Yup from 'yup';
-import Modal from 'react-native-modal';
 
 import PickerInput from '../components/inputs/picker-input';
 import DateInput from '../components/inputs/date-input';
 import { mapArrToChoices } from '../utils/misc';
 import { APPOINTMENT_TYPES } from '../utils/constants';
-import NewPatient from '../components/patients/new-patient';
 import { CREATE_APPOINTMENT, LIST_PATIENTS } from '../apollo-client/queries';
+import { NAVIGATIONS } from '@/utils/constants';
 
 const ValidationSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
 });
 
-const NewAppointmentScreen = () => {
-  const [modalVisibility, setModalVisibility] = useState(false);
-
+const NewAppointmentScreen = ({ navigation }) => {
   const { data } = useQuery(LIST_PATIENTS);
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: () => {
@@ -44,9 +41,6 @@ const NewAppointmentScreen = () => {
         duration: 3000,
       }),
   });
-
-  const openModal = useCallback(() => setModalVisibility(true), []);
-  const closeModal = useCallback(() => setModalVisibility(false), []);
 
   const patients = (data && data.patients) || [];
 
@@ -82,7 +76,11 @@ const NewAppointmentScreen = () => {
                   <Icon
                     name="add"
                     style={{ color: 'red' }}
-                    onPress={openModal}
+                    onPress={() =>
+                      navigation.navigate(NAVIGATIONS.NEW_PATIENT, {
+                        onGoBack: a => console.log(a),
+                      })
+                    }
                   />
                 </Item>
                 <Item>
@@ -111,14 +109,6 @@ const NewAppointmentScreen = () => {
             )}
           </Formik>
         </Form>
-        <Modal
-          isVisible={modalVisibility}
-          onSwipeComplete={closeModal}
-          swipeDirection={['left']}
-          onBackButtonPress={closeModal}
-        >
-          <NewPatient onCreate={closeModal} />
-        </Modal>
       </Content>
     </Container>
   );
