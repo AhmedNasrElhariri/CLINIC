@@ -8,6 +8,7 @@ export { default as CRButton } from './buttons';
 
 ////////////////////  Input  //////////////////////////
 export { default as CRTextInput } from './inputs/text-input';
+export { default as CRPickerInput } from './inputs/picker-input';
 export { default as CRText } from './text';
 
 ////////////////////  Search  //////////////////////////

@@ -10,7 +10,7 @@ import {
   Icon,
   View,
 } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Footer from './footer';
 import { CRText } from '@/components';
@@ -19,6 +19,7 @@ import crVariables from '@/utils/cr-variables';
 
 const MainLayout = ({ children, header, extra, plain, search, noBack }) => {
   const navigation = useNavigation();
+  const route = useRoute();
   return (
     <Container>
       {!plain && (
@@ -61,7 +62,7 @@ const MainLayout = ({ children, header, extra, plain, search, noBack }) => {
         {children}
         {/* <NewAppointmentFab /> */}
       </Content>
-      {!plain && <Footer navigation={navigation} />}
+      {!plain && <Footer navigation={navigation} route={route} />}
     </Container>
   );
 };

@@ -4,16 +4,49 @@ import { NAVIGATIONS } from '@/utils/constants';
 
 import crVariables from '@/utils/cr-variables';
 
-const FooterItem = ({ title, icon, onPress }) => {
+const FooterItem = ({ title, icon, onPress, active }) => {
   return (
     <Button onPress={onPress}>
-      <Icon name={icon} style={{ color: crVariables.footerLogoColor }} />
+      <Icon
+        name={icon}
+        style={{
+          color: active ? crVariables.textColor : crVariables.footerLogoColor,
+        }}
+      />
       <Text style={{ textTransform: 'capitalize' }}>{title}</Text>
     </Button>
   );
 };
 
-const CRFooter = ({ navigation }) => {
+const items = [
+  {
+    id: 1,
+    route: NAVIGATIONS.TODAY_APPOINTMENTS,
+    title: 'Appointments',
+    icon: 'home',
+  },
+  {
+    id: 2,
+    route: NAVIGATIONS.CALENDAR,
+    title: 'Agenda',
+    icon: 'calendar',
+  },
+  {
+    id: 3,
+    route: NAVIGATIONS.PATIENTS,
+    title: 'Patients',
+    icon: 'person',
+  },
+  {
+    id: 4,
+    route: NAVIGATIONS.NEW_PATIENT,
+    title: 'More',
+    icon: 'menu',
+  },
+];
+
+const CRFooter = ({ navigation, route }) => {
+  const path = route.name;
   return (
     <Footer
       style={{
@@ -25,26 +58,15 @@ const CRFooter = ({ navigation }) => {
       }}
     >
       <FooterTab>
-        <FooterItem
-          onPress={() => navigation.navigate(NAVIGATIONS.TODAY_APPOINTMENTS)}
-          title="Appointments"
-          icon="home"
-        />
-        <FooterItem
-          onPress={() => navigation.navigate(NAVIGATIONS.CALENDAR)}
-          title="Agenda"
-          icon="calendar"
-        />
-        <FooterItem
-          onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}
-          title="Patients"
-          icon="person"
-        />
-        <FooterItem
-          onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}
-          title="More"
-          icon="menu"
-        />
+        {items.map(({ id, route, title, icon }) => (
+          <FooterItem
+            key={id}
+            onPress={() => navigation.navigate(route)}
+            title={title}
+            icon={icon}
+            active={path === route}
+          />
+        ))}
       </FooterTab>
     </Footer>
   );

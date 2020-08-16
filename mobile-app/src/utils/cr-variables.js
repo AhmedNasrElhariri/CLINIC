@@ -2,9 +2,7 @@ const textColor = 'rgb(40, 49, 72)';
 const textColorLight = 'rgba(40, 49, 72, 0.5)';
 const textColorLighter = 'rgba(40, 49, 72, 0.25)';
 const primaryColor = '#51C6F3';
-const eventColor1 = primaryColor;
-const eventColor2 = '#40C173';
-const eventColor3 = textColor;
+const darkMent = 'rgb(64, 193, 115)';
 
 export default {
   primaryColor,
@@ -39,12 +37,20 @@ const fontFamily = {
 };
 
 const fontColor = {
+  white: '#ffffff',
   normal: textColor,
   primary: primaryColor,
   light: textColorLight,
   lighter: textColorLighter,
 };
 
+const eventColor = {
+  Examination: primaryColor,
+  Followup: darkMent,
+};
+
 export const getFontWeight = weight => fontFamily[weight];
 
 export const getFontColor = variant => fontColor[variant] || fontColor.normal;
+
+export const getCalendarEventBgColor = type => eventColor[type];

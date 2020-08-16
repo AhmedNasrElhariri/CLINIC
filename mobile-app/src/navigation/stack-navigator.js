@@ -19,7 +19,7 @@ import HistorySummaryScreen from '@/screens/history-summary.screen';
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
 
-const initalRoute = NAVIGATIONS.PATIENT;
+const initalRoute = NAVIGATIONS.CALENDAR;
 
 const MainStackScreen = () => {
   return (

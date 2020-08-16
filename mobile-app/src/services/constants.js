@@ -6,6 +6,8 @@ export const LONG_TEXT_FIELD_TYPE = 'LongText';
 
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
 
+export const CALENDAR_DATE_FORMAT = 'YYYY-MM-DD';
+
 export const FIELD_TYPES = [
   { label: 'Number', value: NUMBER_FIELD_TYPE },
   { label: 'Text', value: TEXT_FIELD_TYPE },

@@ -1,145 +1,64 @@
-import React, { Component } from 'react';
-import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import moment from 'moment';
 import { Agenda } from 'react-native-calendars';
-import MainLayout from '@/components/layout/main';
+import * as R from 'ramda';
+import { View } from 'native-base';
 
-const testIDs = {
-  menu: {
-    CONTAINER: 'menu',
-    CALENDARS: 'calendars_btn',
-    CALENDAR_LIST: 'calendar_list_btn',
-    HORIZONTAL_LIST: 'horizontal_list_btn',
-    AGENDA: 'agenda_btn',
-    EXPANDABLE_CALENDAR: 'expandable_calendar_btn',
-    WEEK_CALENDAR: 'week_calendar_btn',
-  },
-  calendars: {
-    CONTAINER: 'calendars',
-    FIRST: 'first_calendar',
-    LAST: 'last_calendar',
-  },
-  calendarList: { CONTAINER: 'calendarList' },
-  horizontalList: { CONTAINER: 'horizontalList' },
-  agenda: {
-    CONTAINER: 'agenda',
-    ITEM: 'item',
-  },
-  expandableCalendar: { CONTAINER: 'expandableCalendar' },
-  weekCalendar: { CONTAINER: 'weekCalendar' },
+import MainLayout from '@/components/layout/main';
+import { CRText } from '@/components';
+import useFetchAppointments from '@/hooks/fetch-appointments';
+import { formatDate, getMonthDays } from '@/services/date';
+import { CALENDAR_DATE_FORMAT } from '@/services/constants';
+import { getCalendarEventBgColor } from '@/utils/cr-variables';
+
+const renderItem = (item, firstItem) => {
+  return (
+    <View style={{ flexDirection: 'row' }}>
+      {/* <View style={{ height: 10, color: 'green', width: 3 }} /> */}
+      <View
+        style={{
+          width: 80,
+          backgroundColor: getCalendarEventBgColor(item.type),
+          borderRadius: 3,
+          paddingLeft: 6,
+        }}
+      >
+        <CRText weight="semiBold" variant="white">
+          {item.patient.name}
+        </CRText>
+      </View>
+    </View>
+  );
 };
 
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17,
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30,
-  },
-});
+const CalendarScreen = props => {
+  const { appointments } = useFetchAppointments();
 
-export default class AgendaScreen extends Component {
-  constructor(props) {
-    super(props);
-
-    this.loadItems = this.loadItems.bind(this);
-
-    this.state = {
-      items: {},
-    };
-  }
-
-  loadItems(day) {
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
-          // this.setState(prevState => ({
-          //   items: { ...prevState.items, strTime: [] },
-          // }));
-          this.state.items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 3 + 1);
-          for (let j = 0; j < numItems; j++) {
-            this.state.items[strTime].push({
-              name: 'Item for ' + strTime + ' #' + j,
-              height: Math.max(50, Math.floor(Math.random() * 150)),
-            });
-          }
-        }
-      }
-      const newItems = {};
-      Object.keys(this.state.items).forEach(key => {
-        newItems[key] = this.state.items[key];
-      });
-      this.setState({
-        items: newItems,
-      });
-    }, 1000);
-  }
-
-  renderItem(item) {
-    return (
-      <TouchableOpacity
-        testID={testIDs.agenda.ITEM}
-        style={[styles.item, { height: item.height }]}
-        onPress={() => Alert.alert(item.name)}
-      >
-        <Text>{item.name}</Text>
-      </TouchableOpacity>
+  const items = useMemo(() => {
+    const days = getMonthDays();
+    const groupByDays = R.groupBy(
+      R.pipe(R.prop('date'), R.partialRight(formatDate, [CALENDAR_DATE_FORMAT]))
+    )(appointments);
+    return days.reduce(
+      (acc, day) => ({ ...acc, [day]: groupByDays[day] || [] }),
+      {}
     );
-  }
+  }, [appointments]);
 
-  renderEmptyDate() {
-    return (
-      <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
-      </View>
-    );
-  }
-
-  rowHasChanged(r1, r2) {
-    return r1.name !== r2.name;
-  }
-
-  timeToString(time) {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
-  }
-
-  render() {
-    return (
-      <MainLayout {...this.props}>
+  return (
+    <MainLayout {...props}>
+      <View>
         <Agenda
-          testID={testIDs.agenda.CONTAINER}
-          items={this.state.items}
-          loadItemsForMonth={this.loadItems}
-          selected="2017-05-16"
-          renderItem={this.renderItem}
-          renderEmptyDate={this.renderEmptyDate}
-          rowHasChanged={this.rowHasChanged}
-          // markingType={'period'}
-          // markedDates={{
-          //    '2017-05-08': {textColor: '#43515c'},
-          //    '2017-05-09': {textColor: '#43515c'},
-          //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-          //    '2017-05-21': {startingDay: true, color: 'blue'},
-          //    '2017-05-22': {endingDay: true, color: 'gray'},
-          //    '2017-05-24': {startingDay: true, color: 'gray'},
-          //    '2017-05-25': {color: 'gray'},
-          //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-          // monthFormat={'yyyy'}
-          // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-          //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-          // hideExtraDays={false}
+          theme={{ backgroundColor: 'white' }}
+          items={items}
+          selected={moment().format('YYYY-MM-DD')}
+          renderItem={(item, firstItemInDay) => {
+            return renderItem(item, firstItemInDay);
+          }}
         />
-      </MainLayout>
-    );
-  }
-}
+      </View>
+    </MainLayout>
+  );
+};
+
+export default CalendarScreen;

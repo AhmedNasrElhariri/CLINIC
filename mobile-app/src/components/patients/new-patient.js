@@ -9,6 +9,7 @@ import PickerInput from '@/components/inputs/picker-input';
 import { mapArrToChoices } from '@/utils/misc';
 import { SEX, MEMBERSHIP_TYPES } from '@/utils/constants';
 import { CREATE_PATIENT, LIST_PATIENTS } from '@/apollo-client/queries';
+import { CRTextInput, CRPrimaryButton, CRPickerInput } from '@/components';
 
 const ValidationSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
@@ -62,36 +63,36 @@ export default ({ onCreate, ...props }) => {
           <Field
             name="phoneNo"
             placeholder="PhoneNo"
-            component={TextInput}
+            component={CRTextInput}
             keyboardType="number-pad"
           />
           <Field
             name="age"
             placeholder="Age"
-            component={TextInput}
+            component={CRTextInput}
             keyboardType="numeric"
           />
           <Field
             name="sex"
             placeholder="Sex"
-            component={PickerInput}
+            component={CRPickerInput}
             choices={mapArrToChoices(SEX)}
           />
           <Field
             name="type"
             placeholder="Membership"
-            component={PickerInput}
+            component={CRPickerInput}
             choices={mapArrToChoices(MEMBERSHIP_TYPES)}
           />
-          <Button
+          <CRPrimaryButton
             onPress={() =>
               createPatient({
                 variables: { input: prepareSubmittedData(form.values) },
               })
             }
           >
-            <Text>Create</Text>
-          </Button>
+            Create
+          </CRPrimaryButton>
         </Form>
       )}
     </Formik>

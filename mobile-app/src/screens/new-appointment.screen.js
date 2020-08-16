@@ -13,12 +13,12 @@ import { Formik, Field } from 'formik';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import * as Yup from 'yup';
 
-import PickerInput from '../components/inputs/picker-input';
 import DateInput from '../components/inputs/date-input';
 import { mapArrToChoices } from '../utils/misc';
 import { APPOINTMENT_TYPES } from '../utils/constants';
 import { CREATE_APPOINTMENT, LIST_PATIENTS } from '../apollo-client/queries';
 import { NAVIGATIONS } from '@/utils/constants';
+import { CRPickerInput } from '@/components';
 
 const ValidationSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
@@ -68,7 +68,7 @@ const NewAppointmentScreen = ({ navigation }) => {
                   <Field
                     name="patient"
                     placeholder="Select patient"
-                    component={PickerInput}
+                    component={CRPickerInput}
                     choices={patients}
                     labelKey="name"
                     valueKey="id"
@@ -76,18 +76,14 @@ const NewAppointmentScreen = ({ navigation }) => {
                   <Icon
                     name="add"
                     style={{ color: 'red' }}
-                    onPress={() =>
-                      navigation.navigate(NAVIGATIONS.NEW_PATIENT, {
-                        onGoBack: a => console.log(a),
-                      })
-                    }
+                    onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}
                   />
                 </Item>
                 <Item>
                   <Field
                     name="type"
                     placeholder="type"
-                    component={PickerInput}
+                    component={CRPickerInput}
                     choices={mapArrToChoices(APPOINTMENT_TYPES)}
                   />
                 </Item>
