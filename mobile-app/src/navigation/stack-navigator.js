@@ -16,12 +16,15 @@ import PatientInfo from '@/screens/patient-info.screen';
 import HistoryProgressScreen from '@/screens/history-progress.screen';
 import HistorySummaryScreen from '@/screens/history-summary.screen';
 
+import useGlobalState from '@/state';
+
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
 
-const initalRoute = NAVIGATIONS.CALENDAR;
+const initalRoute = NAVIGATIONS.TODAY_APPOINTMENTS;
 
 const MainStackScreen = () => {
+  const [isVerified] = useGlobalState('isVerified');
   return (
     <MainStack.Navigator
       initialRouteName={initalRoute}
@@ -29,43 +32,48 @@ const MainStackScreen = () => {
         headerShown: false,
       }}
     >
-      <MainStack.Screen name={NAVIGATIONS.LOGIN} component={LoginScreen} />
-      <MainStack.Screen name="Home" component={HomeScreen} />
-      <MainStack.Screen
-        name={NAVIGATIONS.NEW_APPOINTMENT}
-        component={NewAppointmentScreen}
-      />
-      <MainStack.Screen
-        name={NAVIGATIONS.NEW_PATIENT}
-        component={NewPatientScreen}
-        options={{ title: 'New Patient' }}
-      />
-      <MainStack.Screen
-        name={NAVIGATIONS.TODAY_APPOINTMENTS}
-        component={TodayAppointmentsScreen}
-      />
-      <MainStack.Screen
-        name={NAVIGATIONS.CALENDAR}
-        component={CalendarScreen}
-      />
-      <MainStack.Screen name={NAVIGATIONS.PATIENTS} component={Patients} />
-      <MainStack.Screen name={NAVIGATIONS.PATIENT} component={Patient} />
-      <MainStack.Screen
-        name={NAVIGATIONS.PATIENT_INFO}
-        component={PatientInfo}
-      />
-      <MainStack.Screen
-        name={NAVIGATIONS.APPOINTMENT}
-        component={AppointmentScreen}
-      />
-      <MainStack.Screen
-        name={NAVIGATIONS.HISTORY_PROGRESS}
-        component={HistoryProgressScreen}
-      />
-      <MainStack.Screen
-        name={NAVIGATIONS.HISTORY_SUMMARY}
-        component={HistorySummaryScreen}
-      />
+      {!isVerified ? (
+        <MainStack.Screen name={NAVIGATIONS.LOGIN} component={LoginScreen} />
+      ) : (
+        <>
+          <MainStack.Screen name="Home" component={HomeScreen} />
+          <MainStack.Screen
+            name={NAVIGATIONS.NEW_APPOINTMENT}
+            component={NewAppointmentScreen}
+          />
+          <MainStack.Screen
+            name={NAVIGATIONS.NEW_PATIENT}
+            component={NewPatientScreen}
+            options={{ title: 'New Patient' }}
+          />
+          <MainStack.Screen
+            name={NAVIGATIONS.TODAY_APPOINTMENTS}
+            component={TodayAppointmentsScreen}
+          />
+          <MainStack.Screen
+            name={NAVIGATIONS.CALENDAR}
+            component={CalendarScreen}
+          />
+          <MainStack.Screen name={NAVIGATIONS.PATIENTS} component={Patients} />
+          <MainStack.Screen name={NAVIGATIONS.PATIENT} component={Patient} />
+          <MainStack.Screen
+            name={NAVIGATIONS.PATIENT_INFO}
+            component={PatientInfo}
+          />
+          <MainStack.Screen
+            name={NAVIGATIONS.APPOINTMENT}
+            component={AppointmentScreen}
+          />
+          <MainStack.Screen
+            name={NAVIGATIONS.HISTORY_PROGRESS}
+            component={HistoryProgressScreen}
+          />
+          <MainStack.Screen
+            name={NAVIGATIONS.HISTORY_SUMMARY}
+            component={HistorySummaryScreen}
+          />
+        </>
+      )}
     </MainStack.Navigator>
   );
 };

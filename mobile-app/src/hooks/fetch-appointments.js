@@ -16,8 +16,7 @@ export function useVariables() {
   }
   return {
     input: {
-      // clinicIds: [currentClinic.id],
-      clinicIds: ['ac9821c3-9a54-4dad-a0ef-dc3bb684d5e4'],
+      clinicIds: [currentClinic.id],
     },
   };
 }

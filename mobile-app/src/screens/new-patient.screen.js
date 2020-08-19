@@ -7,7 +7,7 @@ import MainLayout from '@/components/layout/main';
 const NewPatientScreen = ({ route, navigation, ...props }) => {
   const onGoBack = R.path(['params', 'onGoBack'])(route);
   return (
-    <MainLayout {...props}>
+    <MainLayout {...props} header="New Patient">
       <NewPatient
         onCreate={patient => {
           onGoBack && onGoBack(patient);

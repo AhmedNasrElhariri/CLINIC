@@ -1,11 +1,12 @@
 import { createGlobalState } from 'react-hooks-global-state';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const initialState = {
-  isAuthenticated: false,
+  isLoading: true,
+  isSignout: false,
   isVerified: false,
+  userToken: null,
   user: null,
-  lanes: [],
-  activeView: {},
   currentClinic: {},
 };
 

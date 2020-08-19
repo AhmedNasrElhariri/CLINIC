@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/react-hooks';
 
 import { LOGIN } from '@/apollo-client/queries';
 import { CRMainLayout, CRPrimaryButton, CRTextInput } from '@/components';
-import { NAVIGATIONS } from '@/utils/constants';
+import { AuthContext } from '../../main';
 
 const ValidationSchema = Yup.object().shape({
   email: Yup.string().email().required('Required'),
@@ -14,15 +14,16 @@ const ValidationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({ navigation }) => {
+  const { onSignIn } = React.useContext(AuthContext);
+
   const [login] = useMutation(LOGIN, {
-    onCompleted: () => {
+    onCompleted: async ({ login }) => {
       Toast.show({
         text: 'Patient Created Successfully!',
         type: 'success',
         duration: 3000,
       });
-
-      navigation.navigate(NAVIGATIONS.TODAY_APPOINTMENTS);
+      onSignIn(login.token);
     },
     onError: () =>
       Toast.show({
@@ -62,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
                   })
                 }
               >
-                Create
+                Login
               </CRPrimaryButton>
             </Form>
           )}

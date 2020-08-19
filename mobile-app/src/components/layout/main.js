@@ -16,8 +16,17 @@ import Footer from './footer';
 import { CRText } from '@/components';
 import { NAVIGATIONS } from '@/utils/constants';
 import crVariables from '@/utils/cr-variables';
+import NewAppointmentFab from '../appointments/new-appointment-fab';
 
-const MainLayout = ({ children, header, extra, plain, search, noBack }) => {
+const MainLayout = ({
+  children,
+  header,
+  extra,
+  plain,
+  search,
+  noBack,
+  newAppointment,
+}) => {
   const navigation = useNavigation();
   const route = useRoute();
   return (
@@ -37,7 +46,10 @@ const MainLayout = ({ children, header, extra, plain, search, noBack }) => {
                   onPress={() => navigation.goBack()}
                 />
               )}
-              <Title style={{ marginLeft: 15 }}>
+              <Title
+                style={{ marginLeft: 15 }}
+                onPress={() => navigation.goBack()}
+              >
                 <CRText size={18} weight="bold">
                   {header}
                 </CRText>
@@ -60,8 +72,31 @@ const MainLayout = ({ children, header, extra, plain, search, noBack }) => {
       )}
       <Content style={{ paddingHorizontal: 30, paddingVertical: 20 }}>
         {children}
-        {/* <NewAppointmentFab /> */}
       </Content>
+      {newAppointment && (
+        <View
+          style={{
+            position: 'absolute',
+            zIndex: 999,
+            right: 30,
+            width: 60,
+            bottom: 80,
+            height: 60,
+            borderRadius: 60,
+            backgroundColor: crVariables.primaryColor,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Icon
+            type="MaterialIcons"
+            name="edit"
+            style={{ color: '#ffffff' }}
+            onPress={() => navigation.navigate(NAVIGATIONS.NEW_APPOINTMENT)}
+          />
+        </View>
+      )}
       {!plain && <Footer navigation={navigation} route={route} />}
     </Container>
   );
@@ -71,6 +106,7 @@ MainLayout.defaultProps = {
   plain: false,
   search: false,
   noBack: false,
+  newAppointment: false,
 };
 
 export default MainLayout;

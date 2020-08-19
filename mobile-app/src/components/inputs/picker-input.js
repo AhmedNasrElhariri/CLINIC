@@ -24,6 +24,7 @@ export default ({
         marginBottom: crVariables.fieldMarginBottom,
         paddingLeft: crVariables.fieldPaddingLeft - 5,
         paddingRight: crVariables.fieldPaddingRight - 5,
+        flexGrow: 1,
       }}
     >
       <Picker
@@ -32,6 +33,7 @@ export default ({
         name={name}
         selectedValue={value}
         onValueChange={onValueChange}
+        placeholder={placeholder}
         onBlur={onBlur}
         {...props}
       >

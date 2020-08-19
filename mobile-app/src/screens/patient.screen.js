@@ -31,8 +31,7 @@ const screens = [
 ];
 
 const Patient = ({ navigation, route: { params } }) => {
-  const id = '843c2857-e784-4eb2-bb98-7b848b1020db';
-  // const id = R.prop('id')(params);
+  const id = R.prop('id')(params);
   const { patient } = useFetchPatient(id);
 
   return (

@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import * as R from 'ramda';
 
 import useFetchAppointments from '@/hooks/fetch-appointments';
 import { CRMainLayout } from '@/components';
@@ -28,6 +27,7 @@ const TodayAppointments = () => {
   return (
     <CRMainLayout
       header="Appointments"
+      newAppointment
       search
       extra={
         <Button small transparent onPress={() => setFilterVisible(true)}>
