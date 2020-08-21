@@ -62,15 +62,7 @@ function AppointmentData({ formValue, groups, onChange, disabled }) {
             ))}
           </CRNav>
         </HomeSidebarStyled>
-        <Div
-          id="clinic-scroll-id"
-          flexGrow={1}
-          // px={4}
-          // pb={6}
-          // height="100vh"
-          // maxHeight="100vh"
-          // overflow="scroll"
-        >
+        <Div id="clinic-scroll-id" flexGrow={1}>
           {Object.keys(formValue).length > 0 && (
             <Form formValue={formValue} onChange={onChange} fluid>
               {navs.map((v, idx) => (

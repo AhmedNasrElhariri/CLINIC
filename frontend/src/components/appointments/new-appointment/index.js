@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import * as moment from 'moment';
 import { useMutation } from '@apollo/client';
 import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
@@ -38,7 +38,7 @@ const initialValues = {
   type: 'Examination',
   patient: '',
   date: new Date(),
-  time: moment().set({ hours: 0, minutes: 0 }).toDate(),
+  time: null,
 };
 
 const canAddPatient = formValue =>
@@ -180,7 +180,6 @@ export default function NewAppointment() {
             block
             name="time"
             accepter={DatePicker}
-            disabledDate={isBeforeToday}
             placement="top"
             disabledMinutes={disabledMinutes}
             minInterval={15}

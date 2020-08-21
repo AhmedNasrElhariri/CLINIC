@@ -7,7 +7,7 @@ const TimePicker = ({ minInterval = 10, ...props }) => {
   return (
     <DatePicker
       format="hh:mm a"
-      hideHours={hour => hour < 16 || hour > 22}
+      hideHours={hour => hour < 12 || hour > 24}
       hideMinutes={minute => minute % minInterval !== 0}
       {...props}
     />

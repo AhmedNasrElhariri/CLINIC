@@ -46,7 +46,7 @@ function Appointment() {
     variables: {
       id: appointmentId,
     },
-    fetchPolicy: 'no-cache',
+    // fetchPolicy: 'no-cache',
     onCompleted: ({ appointment }) => {
       setFormValue(R.pick(['labs'])(appointment));
       setDisabled(isArchived(appointment));
