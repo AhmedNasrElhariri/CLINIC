@@ -1053,6 +1053,18 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@casl/ability@^4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-4.1.5.tgz#c34fedc1fd7e631f9f70309eecd5c8a2a7550ead"
+  integrity sha512-9nY2ear3CfCi0ckRZ4V6dRiy+f0wxj/aUPkelmGrZuEJusXfhROKahRHFGxXf5xLi3oA10SS/vbSLK4RAy7ttA==
+  dependencies:
+    sift "^13.0.0"
+
+"@casl/react@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@casl/react/-/react-2.1.1.tgz#8c2d886e3147a25b99a2cb84860c8cb4f2564dd3"
+  integrity sha512-DD0j40OZ+dcQopRdt1tsFaAZ79a1+HGCuMWvExdRcqrbjXFVnFi2kN26KMtwQuzL5FFiH4fmCADCxW3Xjxhs9A==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -7250,6 +7262,11 @@ nan@^2.12.1:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.1.tgz#d7be34dfa3105b91494c3147089315eff8874b01"
   integrity sha512-isWHgVjnFjh2x2yuJ/tj3JbwoHu3UC2dX5G/88Cm24yB6YopVgxvBObDY7n5xW6ExmFhJpSEQqFPvq9zaXc8Jw==
 
+nanoid@^3.1.12:
+  version "3.1.12"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.12.tgz#6f7736c62e8d39421601e4a0c77623a97ea69654"
+  integrity sha512-1qstj9z5+x491jfiC4Nelk+f8XBad7LN20PmyWINJEMRSf3wcAjAWysw1qaA8z6NSKe2sjq1hRSDpBH5paCb6A==
+
 nanomatch@^1.2.9:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -10002,6 +10019,11 @@ side-channel@^1.0.2:
   dependencies:
     es-abstract "^1.17.0-next.1"
     object-inspect "^1.7.0"
+
+sift@^13.0.0:
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/sift/-/sift-13.3.0.tgz#d17fa7d9f6cd4cfa3fe7abe3473d6a1f49ae215c"
+  integrity sha512-7QU0yomqQhu9O4dGfHpURRZBnIGfz6sio1V6jlb1N4Z7hTqSJxTI5kPWycH1fUgDcJLOg8dfdkrHDDCM3m+hKw==
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.3"

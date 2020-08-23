@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import { Form, Alert } from 'rsuite';
 import * as R from 'ramda';

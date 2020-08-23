@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { CRModal } from 'components';
-import { Modal } from 'rsuite';
 
 export const ContainerStyled = styled(CRModal.CRContainer)`
   position: absolute;

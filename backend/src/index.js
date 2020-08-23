@@ -13,6 +13,7 @@ import resolvers from './resolvers';
 
 import middlewares from './middlewares';
 import { upload } from './services/upload.service';
+import { getContextData } from './services/auth.service';
 
 export const UPLOAD_DIR = '/uploads';
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
@@ -36,7 +37,10 @@ const server = new GraphQLServer({
   typeDefs,
   resolvers,
   middlewares,
-  context: ({ request }) => ({ request }),
+  context: async ctx => ({
+    ...ctx,
+    ...(await getContextData(ctx)),
+  }),
 });
 
 const app = server.express;

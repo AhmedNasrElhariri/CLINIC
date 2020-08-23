@@ -58,6 +58,7 @@ model User {
   clinics        Clinic[]       @relation(references: [id])
   WorkingHours   WorkingHours[]
   Snippet        Snippet[]
+  permissions    Json           @default("[]")
 }
 
 model Patient {

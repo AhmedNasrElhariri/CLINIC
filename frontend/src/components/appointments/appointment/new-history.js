@@ -1,5 +1,4 @@
 import React, { useState, memo } from 'react';
-import PropTypes from 'prop-types';
 import { CRModal, Div } from 'components';
 import { CRButton } from 'components';
 

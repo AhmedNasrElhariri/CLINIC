@@ -9,6 +9,7 @@ import { isBeforeToday, formatDate } from 'utils/date';
 import { ADJUST_APPOINTMENT, CANCEL_APPOINTMENT } from 'apollo-client/queries';
 
 import { EditOLIcon, DeleteOLIcon } from 'components/icons';
+import { Can } from 'components/user/can';
 
 const calcDate = ({ date, time }) =>
   moment(date)
@@ -68,7 +69,9 @@ export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
           },
         })
       ) : (
-        <EditOLIcon onClick={() => onOpen('edit')} ml={2} />
+        <Can I="reschedule" an="Appointment">
+          <EditOLIcon onClick={() => onOpen('edit')} ml={2} />
+        </Can>
       )}
       {cancelComp ? (
         React.cloneElement(cancelComp, {
@@ -77,7 +80,9 @@ export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
           },
         })
       ) : (
-        <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+        <Can I="delete" an="Appointment">
+          <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+        </Can>
       )}
 
       <CRModal

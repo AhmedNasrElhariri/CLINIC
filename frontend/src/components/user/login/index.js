@@ -22,9 +22,9 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
   const [formValue, setFormValue] = useState(initialValues);
 
   const [login] = useMutation(LOGIN, {
-    onCompleted: ({ login: { token } }) => {
+    onCompleted: ({ login: { token, user } }) => {
       Alert.success('Your Logged Successfully');
-      onLoginSucceeded(token);
+      onLoginSucceeded({ token, user });
     },
     onError: () => {
       Alert.error('Invalid Input');

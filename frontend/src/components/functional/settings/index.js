@@ -26,6 +26,11 @@ const items = [
     path: '/snippets',
   },
   {
+    name: 'Permissions',
+    icon: '/icons/snippets.png',
+    path: '/permissions',
+  },
+  {
     name: 'Logout',
     icon: '/icons/logout.png',
     path: '/logout.png',

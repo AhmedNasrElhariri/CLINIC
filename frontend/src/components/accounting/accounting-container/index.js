@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 

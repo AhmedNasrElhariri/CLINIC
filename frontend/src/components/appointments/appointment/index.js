@@ -15,7 +15,6 @@ import {
   PatientProgress,
   PatientSummary,
   H3,
-  CRNav,
   CRButton,
   PatientInfo,
   CRResponsiveNav,
@@ -41,7 +40,7 @@ function Appointment() {
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
-  let { appointmentId } = useParams();
+  const { appointmentId } = useParams();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
       id: appointmentId,

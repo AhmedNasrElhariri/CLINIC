@@ -4,6 +4,13 @@ export const LOGIN = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
+      user {
+        id
+        permissions {
+          action
+          subject
+        }
+      }
     }
   }
 `;
@@ -12,6 +19,10 @@ export const VERIFY = gql`
   mutation verify($token: String) {
     verify(token: $token) {
       id
+      permissions {
+        action
+        subject
+      }
     }
   }
 `;
@@ -433,5 +444,42 @@ export const CREATE_EXPENSE = gql`
       date
       invoiceNo
     }
+  }
+`;
+
+export const CLINIC_USERS = gql`
+  query clinicUsers($clinicId: ID!) {
+    clinicUsers(clinicId: $clinicId) {
+      id
+      name
+      email
+      permissions {
+        subject
+        action
+      }
+    }
+  }
+`;
+
+export const USER = gql`
+  query user($id: ID!) {
+    user(id: $id) {
+      id
+      name
+      email
+      permissions {
+        subject
+        action
+      }
+    }
+  }
+`;
+
+export const UPDATE_USER_PERMISSIONS = gql`
+  mutation updateUserPermissions(
+    $userId: ID!
+    $permissions: [PermissionInput!]!
+  ) {
+    updateUserPermissions(userId: $userId, permissions: $permissions)
   }
 `;

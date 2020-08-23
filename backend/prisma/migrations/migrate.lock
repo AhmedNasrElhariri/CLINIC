@@ -1,7 +1,4 @@
-# IF THERE'S A GIT CONFLICT IN THIS FILE, DON'T SOLVE IT MANUALLY!
-# INSTEAD EXECUTE `prisma migrate fix`
 # Prisma Migrate lockfile v1
-# Read more about conflict resolution here: TODO
 
 20200518072712-init
 20200518073540-updated-appointment-schema
@@ -37,3 +34,5 @@
 20200715055604-set-appointment-clinic-reference
 20200715060546-add-clinic-info
 20200715064727-set-invoiceno-optional
+20200821064057-permissions
+20200821080237-change-default-value

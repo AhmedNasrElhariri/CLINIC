@@ -6,7 +6,8 @@ import { CRModal } from 'components';
 import { useMutation } from '@apollo/client';
 
 import Form from './form';
-import { LIST_PATIENTS, CREATE_PATIENT } from 'apollo-client/queries';
+import { CREATE_PATIENT } from 'apollo-client/queries';
+import useFetchPatients from 'hooks/fetch-patients';
 
 const initialValues = {
   name: '',
@@ -18,17 +19,14 @@ const initialValues = {
 
 export default function NewPatient({ show, onHide, onCreate }) {
   const [formValue, setFormValue] = useState(initialValues);
+  const { patients, updateCache } = useFetchPatients();
   const [createPatient] = useMutation(CREATE_PATIENT, {
     update(cache, { data: { createPatient: patient } }) {
-      const { patients } = cache.readQuery({ query: LIST_PATIENTS });
-      cache.writeQuery({
-        query: LIST_PATIENTS,
-        data: { patients: patients.concat([patient]) },
-      });
+      updateCache(patients.concat([patient]));
     },
-    onCompleted: () => {
+    onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
-      onCreate();
+      onCreate(patient);
     },
     onError: () => Alert.error('Invalid Input'),
   });

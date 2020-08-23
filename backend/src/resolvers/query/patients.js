@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const patients = (_, __, { organizationId }) => {
+const patients = async (_, __, { organizationId }) => {
   return prisma.patient.findMany({
     where: {
       organizationId,

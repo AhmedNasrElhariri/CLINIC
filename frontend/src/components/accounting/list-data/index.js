@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 
 import { H5, CRTable } from 'components';
 import { formatDate } from 'utils/date';

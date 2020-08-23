@@ -1,4 +1,5 @@
 import React from 'react';
+import { Ability } from '@casl/ability';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
@@ -15,17 +16,23 @@ import './global-style.js';
 import GlobalStyle from './global-style';
 import lightTheme from 'styles/light';
 
+import { AbilityContext } from 'components/user/can/index';
+
 export default function App() {
   return (
     <>
       <GlobalStyle />
-      <ApolloProvider client={client}>
-        <ThemeProvider theme={lightTheme}>
-          <BrowserRouter>
-            <Root />
-          </BrowserRouter>
-        </ThemeProvider>
-      </ApolloProvider>
+      <AbilityContext.Provider
+        value={new Ability()}
+      >
+        <ApolloProvider client={client}>
+          <ThemeProvider theme={lightTheme}>
+            <BrowserRouter>
+              <Root />
+            </BrowserRouter>
+          </ThemeProvider>
+        </ApolloProvider>
+      </AbilityContext.Provider>
     </>
   );
 }

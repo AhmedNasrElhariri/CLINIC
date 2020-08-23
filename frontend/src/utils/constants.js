@@ -19,3 +19,79 @@ export const MEDICAL_HISTORY_TYPES = Object.freeze({
 });
 
 export const DAYS = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI'];
+
+export const RAW_PERMISSIONS = new Map([
+  [
+    'Appointment',
+    [
+      {
+        name: 'View',
+        action: 'view',
+        subject: 'Appointment',
+      },
+      {
+        name: 'Create',
+        action: 'create',
+        subject: 'Appointment',
+      },
+      {
+        name: 'Delete',
+        action: 'delete',
+        subject: 'Appointment',
+      },
+      {
+        name: 'Reschedule',
+        action: 'reschedule',
+        subject: 'Appointment',
+      },
+      {
+        name: 'Close',
+        action: 'close',
+        subject: 'Appointment',
+      },
+      {
+        name: 'Archive',
+        action: 'archive',
+        subject: 'Appointment',
+      },
+    ],
+  ],
+  [
+    'Patients',
+    [
+      {
+        name: 'View',
+        action: 'view',
+        subject: 'Patient',
+      },
+      {
+        name: 'Create',
+        action: 'create',
+        subject: 'Patient',
+      },
+      {
+        name: 'View history',
+        action: 'viewHistory',
+        subject: 'Patient',
+      },
+    ],
+  ],
+  [
+    'Report',
+    [
+      { name: 'View', action: 'view', subject: 'Report' },
+      {
+        name: 'Print',
+        action: 'print',
+        subject: 'Report',
+      },
+    ],
+  ],
+]);
+
+export const PERMISSIONS = new Map(
+  [...RAW_PERMISSIONS.entries()].map(([key, value]) => [
+    key,
+    value.map(v => ({ ...v, id: v.action + v.subject })),
+  ])
+);

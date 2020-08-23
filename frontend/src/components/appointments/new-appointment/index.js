@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import * as moment from 'moment';
 import { useMutation } from '@apollo/client';
 import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
@@ -117,7 +117,14 @@ export default function NewAppointment() {
 
   return (
     <>
-      <NewPatient onCreate={hideModal} show={patientModal} onHide={hideModal} />
+      <NewPatient
+        onCreate={({ id }) => {
+          setFormValue({ ...formValue, patient: id });
+          hideModal();
+        }}
+        show={patientModal}
+        onHide={hideModal}
+      />
       <Div position="fixed" right={64} bottom={64} zIndex={99999}>
         <Fab open={open} setOpen={setOpen} />
       </Div>
@@ -127,8 +134,14 @@ export default function NewAppointment() {
         CRContainer={ContainerStyled}
         CRBody={ModalBodyStyled}
         onOk={handleCreate}
-        onHide={() => setOpen(false)}
-        onCancel={() => setOpen(false)}
+        onHide={() => {
+          setOpen(false);
+          setFormValue(initialValues);
+        }}
+        onCancel={() => {
+          setOpen(false);
+          setFormValue(initialValues);
+        }}
       >
         <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
           <CRSelectInput
@@ -150,6 +163,7 @@ export default function NewAppointment() {
             valueKey="id"
             data={patients}
             searchBy={searchBy}
+            virtualized={false}
             block
           >
             <Div display="flex" justifyContent="flex-end">

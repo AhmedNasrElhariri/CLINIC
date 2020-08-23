@@ -15,3 +15,5 @@ export { default as familyHistory } from './family-history';
 export { default as expenses } from './expenses';
 export { default as revenues } from './revenues';
 export { default as search } from './search';
+export { default as clinicUsers } from './clinic-users';
+export { default as user } from './user';

@@ -19,6 +19,7 @@ import useGlobalState from 'state';
 import NewAppointment from 'components/appointments/new-appointment';
 import Settings from 'components/functional/settings';
 import Notifications from 'components/functional/notifications';
+import { Can } from 'components/user/can';
 
 function Root() {
   const history = useHistory();
@@ -27,7 +28,12 @@ function Root() {
   const [clinics, setClinics] = useState([]);
   const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
   const [getClinics, { data: clinicsList }] = useLazyQuery(MY_CLINICS);
-  const { isVerified, isAuthenticated, setAuthenticated } = useAuth();
+  const {
+    isVerified,
+    isAuthenticated,
+    setAuthenticated,
+    updatePermissions,
+  } = useAuth();
 
   const [_, setActiveView] = useGlobalState('activeView');
   const [currentClinic, setCurrentClinic] = useGlobalState('currentClinic');
@@ -52,11 +58,12 @@ function Root() {
   }, [clinicsList, data, setActiveView, setCurrentClinic]);
 
   const onLoginSucceeded = useCallback(
-    token => {
+    ({ token, user: { permissions } }) => {
       localStorage.setItem(ACCESS_TOKEN, token);
       setAuthenticated(true);
+      updatePermissions(permissions);
     },
-    [setAuthenticated]
+    [setAuthenticated, updatePermissions]
   );
 
   const onLoginFailed = useCallback(() => {
@@ -103,7 +110,9 @@ function Root() {
               <AppRouter></AppRouter>
             </ContentStyled>
           </MainStyled>
-          <NewAppointment />
+          <Can I="create" a="Appointment">
+            <NewAppointment />
+          </Can>
           {openSettings && (
             <Settings
               open={openSettings}

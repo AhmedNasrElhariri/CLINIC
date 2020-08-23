@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { Uploader, FormControl } from 'rsuite';
 
 const UploaderStyled = styled(Uploader)`

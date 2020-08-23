@@ -54,6 +54,8 @@ type Query {
   expenses(clinicId: ID!): [Expense!]
   revenues(clinicId: ID!): [Revenue!]
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
+  clinicUsers(clinicId: ID!): [User!]
+  user(id: ID!): User
 }
 
 ########################### Mutation ##################################
@@ -80,6 +82,7 @@ type Mutation {
   createMedicalHistory(medicalHistory: MedicalHistoryInput!): MedicalHistory!
   createFamilyHistory(familyHistory: FamilyHistoryInput!): FamilyHistory!
   createExpense(expense: ExpenseInput!): Expense
+  updateUserPermissions(userId: ID!, permissions: [PermissionInput!]!): Boolean
 }
 
 ########################### Auth ##################################
@@ -100,6 +103,17 @@ type User {
   id: ID!
   name: String!
   email: String!
+  permissions: [Permission!]
+}
+
+type Permission {
+  action: String
+  subject: String
+}
+
+input PermissionInput {
+  action: String
+  subject: String
 }
 
 ########################### Search ##################################
