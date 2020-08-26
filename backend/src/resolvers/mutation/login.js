@@ -3,8 +3,10 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '@';
 import { APP_SECRET } from '../../utils/constants';
 
-const login = async (_, { email, password }) => {
-  const user = await prisma.user.findOne({ where: { email } });
+const login = async (_, { email = '', password }) => {
+  const user = await prisma.user.findOne({
+    where: { email: email.toLowerCase() },
+  });
   if (!user) {
     throw new Error('No such user found');
   }

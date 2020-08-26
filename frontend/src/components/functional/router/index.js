@@ -78,6 +78,9 @@ function AppRouter() {
       <Route path="/permissions/:userId">
         <UserPermissions />
       </Route>
+      <Route path="" exact>
+        <Redirect to="/appointments/today" />
+      </Route>
 
       <Route path="/init-default-view">
         <CreateDefaultView />

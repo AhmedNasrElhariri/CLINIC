@@ -30,25 +30,8 @@ const NotificationBody = ({ body, date }) => {
 };
 
 export default function Settings({ onClose, ...props }) {
-  const handleKeyPress = useCallback(
-    event => {
-      if (event.keyCode === 27) {
-        onClose();
-      }
-    },
-    [onClose]
-  );
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyPress, false);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyPress, false);
-    };
-  }, [handleKeyPress]);
-
   return (
-    <Container onKeyPress={handleKeyPress}>
+    <Container>
       <H4 ml={4} mt={4}>
         Notifications
       </H4>

@@ -1,4 +1,5 @@
 import { prisma } from '@';
+import moment from 'moment';
 import { getStartOfDay, getEndOfDay } from '@/services/date.service';
 import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
@@ -16,6 +17,8 @@ const getDayAppointments = day => {
   });
 };
 
+const isBeforeNow = date => moment(date).isBefore(moment(), 'minute');
+
 const createAppointment = async (
   _,
   { input: { patient, clinicId, ...appointment } },
@@ -25,6 +28,10 @@ const createAppointment = async (
 
   if (!validDate(appointment.date, appointments)) {
     throw new APIExceptcion('Time slot already reversed');
+  }
+
+  if (isBeforeNow(appointment.date)) {
+    throw new APIExceptcion('Can not set to past time');
   }
 
   return prisma.appointment.create({

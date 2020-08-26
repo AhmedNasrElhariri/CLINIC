@@ -1,21 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { Form } from 'rsuite';
+import { Form, Whisper, Popover } from 'rsuite';
 import { NavStyled } from './style';
 import { CRTextInput, Div } from 'components';
 
 import SwitchClinic from './switch-clinic';
 import Avtar from './avatar';
 import { NotificationIcon, SettingsIcon } from 'components/icons/index';
+import Notifications from 'components/functional/notifications';
+import Settings from 'components/functional/settings';
 
-const Navbar = ({
-  toggleSettings,
-  toggleNotification,
-  onSelectClinic,
-  clinics,
-  currentClinic,
-}) => {
+const Navbar = ({ onSelectClinic, clinics, currentClinic, onLogout }) => {
+  const notificationsRef = useRef();
+  const settingsRef = useRef();
+
   return (
     <NavStyled>
       <Form style={{ width: 276 }}>
@@ -36,25 +35,52 @@ const Navbar = ({
           alignItems="center"
           cursor="pointer"
           width="100%"
-          maxWidth={630}
+          maxWidth={430}
         >
           <SwitchClinic
             onSelectClinic={onSelectClinic}
             clinics={clinics}
             currentClinic={currentClinic}
           />
-          <NotificationIcon onClick={toggleNotification} />
-          <SettingsIcon textAlign="center" onClick={toggleSettings} />
-          <Avtar />
+          <Whisper
+            placement="bottomEnd"
+            trigger="click"
+            triggerRef={notificationsRef}
+            speaker={
+              <Popover full>
+                <Notifications
+                  onClose={() => notificationsRef.current.hide()}
+                />
+              </Popover>
+            }
+            full
+          >
+            <NotificationIcon />
+          </Whisper>
+          <Whisper
+            placement="bottomEnd"
+            trigger="click"
+            triggerRef={settingsRef}
+            speaker={
+              <Popover full>
+                <Settings
+                  onLogout={onLogout}
+                  onClose={() => settingsRef.current.hide()}
+                />
+              </Popover>
+            }
+            full
+          >
+            <SettingsIcon />
+          </Whisper>
+
+          {/* <Avtar /> */}
         </Div>
       </Div>
     </NavStyled>
   );
 };
 
-Navbar.propTypes = {
-  toggleSettings: PropTypes.func.isRequired,
-  toggleNotification: PropTypes.func.isRequired,
-};
+Navbar.propTypes = {};
 
 export default Navbar;

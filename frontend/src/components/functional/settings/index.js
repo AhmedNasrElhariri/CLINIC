@@ -33,7 +33,6 @@ const items = [
   {
     name: 'Logout',
     icon: '/icons/logout.png',
-    path: '/logout.png',
     action: 'onLogout',
   },
 ];
@@ -49,25 +48,9 @@ const Item = ({ name, icon, path, onClick }) => {
 
 export default function Settings({ onClose, ...props }) {
   const history = useHistory();
-  const handleKeyPress = useCallback(
-    event => {
-      if (event.keyCode === 27) {
-        onClose();
-      }
-    },
-    [onClose]
-  );
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyPress, false);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyPress, false);
-    };
-  }, [handleKeyPress]);
 
   return (
-    <Container onKeyPress={handleKeyPress}>
+    <Container>
       {items.map(({ path, action, ...item }, idx) => (
         <Item
           key={idx}

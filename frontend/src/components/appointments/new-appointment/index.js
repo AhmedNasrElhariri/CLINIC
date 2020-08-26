@@ -106,6 +106,11 @@ export default function NewAppointment() {
         minute: minute,
       });
 
+      const isBeforeNow = newDate.isBefore(moment(), 'minute');
+      if (isBeforeNow) {
+        return true;
+      }
+
       return selectedAppointments.some(({ date }) => {
         const startDate = moment(date);
         const endDate = moment(startDate).add(15, 'minutes');
@@ -197,6 +202,7 @@ export default function NewAppointment() {
             placement="top"
             disabledMinutes={disabledMinutes}
             minInterval={15}
+            startHour={8}
             onSelect={a => setSelectedHour(moment(a).hour())}
           />
         </Form>

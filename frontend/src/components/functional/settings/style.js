@@ -6,13 +6,13 @@ export const Container = styled.div`
   width: 517px;
   -webkit-backdrop-filter: blur(30px);
   backdrop-filter: blur(30px);
-  box-shadow: -6px 6px 20px 0 rgba(0, 0, 0, 0.05);
+  /* box-shadow: -6px 6px 20px 0 rgba(0, 0, 0, 0.05); */
   border: solid 1px rgba(40, 49, 72, 0.1);
   background-color: #ffffff;
   position: absolute;
-  right: 170px;
-  top: 140px;
-  z-index: 100;
+  right: 30px;
+  top: 40px;
+  /* z-index: 100; */
   border-radius: 17px;
 `;
 

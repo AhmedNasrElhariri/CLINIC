@@ -17,14 +17,10 @@ import Navbar from 'components/layout/navbar';
 import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
 import NewAppointment from 'components/appointments/new-appointment';
-import Settings from 'components/functional/settings';
-import Notifications from 'components/functional/notifications';
 import { Can } from 'components/user/can';
 
 function Root() {
   const history = useHistory();
-  const [openSettings, setOpenSettings] = useState(false);
-  const [openNotifications, setOpenNotifications] = useState(false);
   const [clinics, setClinics] = useState([]);
   const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
   const [getClinics, { data: clinicsList }] = useLazyQuery(MY_CLINICS);
@@ -94,14 +90,6 @@ function Root() {
           <MainStyled>
             <Navbar
               onLogout={logout}
-              toggleSettings={() => {
-                setOpenSettings(true);
-                setOpenNotifications(false);
-              }}
-              toggleNotification={() => {
-                setOpenNotifications(true);
-                setOpenSettings(false);
-              }}
               clinics={clinics}
               onSelectClinic={onSelectClinic}
               currentClinic={currentClinic}
@@ -113,20 +101,6 @@ function Root() {
           <Can I="create" a="Appointment">
             <NewAppointment />
           </Can>
-          {openSettings && (
-            <Settings
-              open={openSettings}
-              onLogout={logout}
-              onClose={() => setOpenSettings(false)}
-            />
-          )}
-          {openNotifications && (
-            <Notifications
-              open={openSettings}
-              onLogout={logout}
-              onClose={() => setOpenNotifications(false)}
-            />
-          )}
         </>
       ) : (
         <>
