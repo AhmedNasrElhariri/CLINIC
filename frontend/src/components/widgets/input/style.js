@@ -62,8 +62,9 @@ const inputCss = css`
   letter-spacing: normal;
   text-align: left;
   padding: 16px 32px;
-  color: ${(props) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   border: none;
+  border-radius: 17px;
   ${space}
   ${typography}
   ${layout}
@@ -107,6 +108,7 @@ export const InputGroupStyled = styled(InputGroup)`
   &.rs-input-group {
     ${getBorderRadius}
     ${getBorder}
+    width:100% !important;
   }
 
   &.rs-input-group {
@@ -115,7 +117,7 @@ export const InputGroupStyled = styled(InputGroup)`
     &:hover,
     &:visited {
       outline: none;
-      border: solid 1px ${(props) => props.theme.colors.primary} !important;
+      border: solid 1px ${props => props.theme.colors.primary} !important;
     }
   }
 `;
@@ -123,7 +125,7 @@ export const InputGroupStyled = styled(InputGroup)`
 export const NumberContainerStyled = styled.div`
   display: flex;
   border-radius: 17px;
-  border: 1px solid ${(props) => props.theme.colors.borders[0]};
+  border: 1px solid ${props => props.theme.colors.borders[0]};
   ${byTheme(heightTheme)}
   box-sizing: content-box;
 `;

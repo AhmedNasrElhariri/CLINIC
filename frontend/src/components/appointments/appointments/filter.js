@@ -8,7 +8,7 @@ function Appointments({ formValue, onChange }) {
   return (
     <Form formValue={formValue} onChange={onChange} fluid>
       <Row gutter={16}>
-        <Col xs={6}>
+        <Col xs={8}>
           <CRDateRangePicker
             name="date"
             label="Range"
@@ -16,10 +16,10 @@ function Appointments({ formValue, onChange }) {
             block
           />
         </Col>
-        <Col xs={6}>
+        <Col xs={8}>
           <CRTextInput name="name" label="Name" />
         </Col>
-        <Col xs={6}>
+        <Col xs={8}>
           <CRSelectInput
             name="type"
             label="Type"

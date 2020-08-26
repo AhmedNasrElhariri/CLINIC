@@ -9,7 +9,7 @@ import {
   Appointments,
   ListPatients,
   Patient,
-  Reports,
+  ReportsContainer,
   ListViews,
   CreateView,
   AppointmentSettings,
@@ -49,7 +49,7 @@ function AppRouter() {
         <Calendar />
       </Route>
       <Route path="/reports">
-        <Reports />
+        <ReportsContainer />
       </Route>
       <Route path="/views/new">
         <CreateView />
@@ -78,12 +78,12 @@ function AppRouter() {
       <Route path="/permissions/:userId">
         <UserPermissions />
       </Route>
-      <Route path="" exact>
-        <Redirect to="/appointments/today" />
-      </Route>
-
       <Route path="/init-default-view">
         <CreateDefaultView />
+      </Route>
+
+      <Route path="" exact>
+        <Redirect to="/appointments/today" />
       </Route>
     </Switch>
   );

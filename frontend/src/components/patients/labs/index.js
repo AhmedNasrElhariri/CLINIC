@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { CRCard, H3, H5, P, Div, Img } from 'components';
 import { PatientInfoStyled } from './style';
+import { getInitials } from 'services/patient';
 
 const PatientIntials = styled.div`
   border-radius: ${props => props.theme.radius}px;
@@ -19,7 +20,7 @@ const Summary = ({ patient }) => (
   <>
     <Div display="flex">
       <PatientIntials>
-        <H5>JD</H5>
+        <H5>{getInitials(patient.name)}</H5>
       </PatientIntials>
       <Div ml={3} display="flex" alignItems="center">
         <Div>

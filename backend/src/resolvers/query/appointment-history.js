@@ -12,7 +12,7 @@ const appointmentHistory = async (_, { appointmentId, patientId }) => {
             },
           },
         },
-        first: 1,
+        take: 1,
       })
       .then(R.propOr({}, '0'));
     patientId = patient.id;

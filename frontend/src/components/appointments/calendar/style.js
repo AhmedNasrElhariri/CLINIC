@@ -166,7 +166,7 @@ export const PopoverStyled = styled(Popover).attrs(({ variant }) => ({
   ${variants}
 
   width: 320px;
-  padding: 20px;
+  padding: 10px 15px;
   border-radius: 10px;
   z-index: 20;
 `;
@@ -201,4 +201,10 @@ export const ActionIconStyled = styled(Icon).attrs(({ variant }) => ({
         },
       })}
   }
+`;
+
+export const CloseIconStyled = styled(Icon).attrs(() => ({
+  icon: 'close',
+}))`
+  cursor: pointer;
 `;

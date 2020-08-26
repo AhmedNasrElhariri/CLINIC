@@ -7,7 +7,7 @@ import BarChart from '@rsuite/charts/lib/charts/BarChart';
 import Bars from '@rsuite/charts/lib/series/Bars';
 import YAxis from '@rsuite/charts/lib/components/YAxis';
 
-import { Div } from 'components';
+import { Div, MainContainer } from 'components';
 import useFetchAppointments from 'hooks/fetch-appointments';
 
 const groupByAge = R.groupBy(({ age }) =>
@@ -65,6 +65,7 @@ function Reports() {
 
   return (
     <>
+      <MainContainer title="Statistical Reports" nobody></MainContainer>
       <Div maxWidth={800}>
         <LineChart name="No of patients" data={appointmentsByMonth} />
         <PieChart

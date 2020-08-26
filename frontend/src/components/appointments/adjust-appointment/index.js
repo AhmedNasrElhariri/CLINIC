@@ -21,7 +21,15 @@ const calcDate = ({ date, time }) =>
     })
     .toDate();
 
-export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
+const AdjustAppointment = ({
+  appointment,
+  cancelComp,
+  editComp,
+  onClickEdit,
+  children,
+  onCancel,
+  onAdjust,
+}) => {
   const [visible, setVisible] = useState({ edit: false, cancel: false });
   const [formValue, setFormValue] = useState({
     date: null,
@@ -60,29 +68,30 @@ export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
     setVisible({ [type]: false });
   }, []);
 
+  const getStateAndHelpers = () => {
+    return {
+      onEdit: () => onOpen('edit'),
+    };
+  };
+
   return (
     <Div display="inline-flex">
-      {editComp ? (
-        React.cloneElement(editComp, {
-          onClick() {
-            onOpen('edit');
-          },
-        })
+      {children ? (
+        children(getStateAndHelpers())
       ) : (
-        <Can I="reschedule" an="Appointment">
-          <EditOLIcon onClick={() => onOpen('edit')} ml={2} />
-        </Can>
-      )}
-      {cancelComp ? (
-        React.cloneElement(cancelComp, {
-          onClick() {
-            onOpen('cancel');
-          },
-        })
-      ) : (
-        <Can I="delete" an="Appointment">
-          <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
-        </Can>
+        <>
+          <Can I="reschedule" an="Appointment">
+            <EditOLIcon
+              onClick={() => {
+                onOpen('edit');
+              }}
+              ml={2}
+            />
+          </Can>
+          <Can I="delete" an="Appointment">
+            <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+          </Can>
+        </>
       )}
 
       <CRModal
@@ -127,6 +136,7 @@ export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
                   name="time"
                   accepter={DatePicker}
                   disabledDate={isBeforeToday}
+                  placement="top"
                   block
                 />
               </Div>
@@ -148,3 +158,5 @@ export default ({ appointment, cancelComp, editComp, onCancel, onAdjust }) => {
     </Div>
   );
 };
+
+export default AdjustAppointment;

@@ -45,11 +45,11 @@ const Navbar = ({ onSelectClinic, clinics, currentClinic, onLogout }) => {
           <Whisper
             placement="bottomEnd"
             trigger="click"
-            triggerRef={notificationsRef}
+            ref={notificationsRef}
             speaker={
               <Popover full>
                 <Notifications
-                  onClose={() => notificationsRef.current.hide()}
+                  onClose={() => notificationsRef.current.close()}
                 />
               </Popover>
             }
@@ -60,12 +60,12 @@ const Navbar = ({ onSelectClinic, clinics, currentClinic, onLogout }) => {
           <Whisper
             placement="bottomEnd"
             trigger="click"
-            triggerRef={settingsRef}
+            ref={settingsRef}
             speaker={
               <Popover full>
                 <Settings
                   onLogout={onLogout}
-                  onClose={() => settingsRef.current.hide()}
+                  onClose={() => settingsRef.current.close()}
                 />
               </Popover>
             }

@@ -30,7 +30,7 @@
     "react-scroll": "^1.7.16",
     "react-to-print": "^2.7.0",
     "react-trello": "^2.2.5",
-    "rsuite": "^4.4.1",
+    "rsuite": "^4.8.1",
     "styled-system": "^5.1.5",
     "yup": "^0.28.5"
   },

@@ -36,7 +36,7 @@ export { default as ListSnippets } from './snippets/list-snippets';
 export { default as AppointmentPrintout } from './printouts/appointment-printout';
 
 /******************       Reports    *********************************/
-export { default as Reports } from './reports/reports';
+export { default as ReportsContainer } from './reports/reports-container';
 
 /******************       Views    *********************************/
 export { default as ListViews } from './views/list-views';
