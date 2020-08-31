@@ -9,7 +9,7 @@ import useFetchAppointments from 'hooks/fetch-appointments';
 
 function Appointments() {
   const history = useHistory();
-  const [formValue, setFormValue] = useState({ date: [], name: '' });
+  const [formValue, setFormValue] = useState({ date: [], patient: '' });
 
   const { appointments } = useFetchAppointments();
 

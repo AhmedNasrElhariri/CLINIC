@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Div, H5, CRVDivider } from 'components';
+import NumberFormat from 'react-number-format';
 
 import PieChart from '@rsuite/charts/lib/charts/PieChart';
+
+import { Div, H5, CRVDivider } from 'components';
 
 const Box = ({ name, value }) => (
   <Div display="flex" alignItems="center" mb={3}>
@@ -25,9 +27,36 @@ const Summary = ({ expenses, revenues }) => {
   return (
     <Div display="flex">
       <Div width="50%">
-        <Box name="Revenue" value={revenues} />
-        <Box name="Expenses" value={expenses} />
-        <Box name="Profit" value={revenues - expenses} />
+        <Box
+          name="Revenue"
+          value={
+            <NumberFormat
+              value={revenues}
+              displayType={'text'}
+              thousandSeparator
+            />
+          }
+        />
+        <Box
+          name="Expenses"
+          value={
+            <NumberFormat
+              value={expenses}
+              displayType={'text'}
+              thousandSeparator
+            />
+          }
+        />
+        <Box
+          name="Profit"
+          value={
+            <NumberFormat
+              value={revenues - expenses}
+              displayType={'text'}
+              thousandSeparator
+            />
+          }
+        />
       </Div>
       <Div width="50%">
         <PieChart

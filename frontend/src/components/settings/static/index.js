@@ -18,7 +18,7 @@ const initialValues = {
   phoneNo: '',
 };
 
-function StaticSettings({ onCreate }) {
+function StaticSettings() {
   const [formValue, setFormValue] = useState(initialValues);
   const [logo, setLogo] = React.useState(null);
   const [clinic, setCurrentClinic] = useGlobalState('currentClinic');
@@ -55,7 +55,7 @@ function StaticSettings({ onCreate }) {
       <Div display="flex" justifyContent="space-between">
         <H3 mb={64}>Static Info</H3>
         <CRButton
-          variant="primary"
+          primary
           onClick={() =>
             updateClinic({
               variables: {

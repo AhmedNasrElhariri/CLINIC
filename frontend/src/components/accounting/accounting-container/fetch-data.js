@@ -48,12 +48,21 @@ const useFetchAccountingData = () => {
       revenues,
       totalExpenses,
       totalRevenues,
-      updateCache: expenses => {
+      updateExpenseCache: expenses => {
         client.writeQuery({
           query: LIST_EXPENSES,
           variables,
           data: {
             expenses,
+          },
+        });
+      },
+      updateRevenueCache: revenues => {
+        client.writeQuery({
+          query: LIST_REVENUES,
+          variables,
+          data: {
+            revenues,
           },
         });
       },

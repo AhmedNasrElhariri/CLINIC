@@ -36,10 +36,10 @@ const EventDetails = ({ patient, name, start, end, onClose, ...props }) => {
           onCancel={onCancel}
           onAdjust={onAdjust}
         >
-          {({ onEdit }) => (
+          {({ onEdit, onCancel }) => (
             <>
-              <ActionIconStyled icon="edit" onClick={() => onEdit()} />
-              <ActionIconStyled icon="trash-o" />
+              <ActionIconStyled icon="edit" onClick={onEdit} />
+              <ActionIconStyled icon="trash-o" onClick={onCancel} />
             </>
           )}
         </AdjustAppointment>
@@ -80,24 +80,6 @@ export default {
         </Whisper>
       );
     },
-    // event: ({ event }) => (
-    //   <Whisper
-    //     placement="bottomEnd"
-    //     trigger="click"
-    //     speaker={
-    //       <PopoverStyled {...event}>
-    //         <EventDetails {...event} />
-    //       </PopoverStyled>
-    //     }
-    //   >
-    //     <MonthEventStyled {...event}>
-    //       <Div>
-    //         <Time>{formatDate(event.start, 'HH:mm a ')}</Time>
-    //         <Name>{event.name}</Name>
-    //       </Div>
-    //     </MonthEventStyled>
-    //   </Whisper>
-    // ),
   },
   week: {
     eventWrapper: ({ children, event }) => (

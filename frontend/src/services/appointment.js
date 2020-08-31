@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import moment from 'moment';
 import { mapArrToChoices } from 'utils/misc';
 import { isDateBefore } from 'utils/date';
+import { filterPatientBy, filterPatients } from 'utils/patient';
 
 const MAX_TIMESTAMP = 8640000000000000;
 
@@ -58,12 +59,10 @@ const filterByDate = (appointments, filter) => {
   );
 };
 
-const filterByPatientName = (appointments, filter) => {
-  const name = R.propOr('', 'name')(filter);
+const filterByPatientNameOrPhoneNo = (appointments, filter) => {
+  const text = R.propOr('', 'patient')(filter);
 
-  return appointments.filter(app =>
-    app.patient.name.toLowerCase().includes(name.toLowerCase())
-  );
+  return appointments.filter(app => filterPatientBy(text, app.patient));
 };
 
 const filterByType = (appointments, filter) => {
@@ -73,7 +72,7 @@ const filterByType = (appointments, filter) => {
 };
 
 export const filterAppointments = (appointments = [], filter) => {
-  const filters = [filterByDate, filterByPatientName, filterByType];
+  const filters = [filterByDate, filterByPatientNameOrPhoneNo, filterByType];
   return filters.reduce((app, fn) => fn(app, filter), appointments);
 };
 

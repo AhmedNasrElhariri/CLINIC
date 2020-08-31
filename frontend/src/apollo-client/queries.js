@@ -447,6 +447,18 @@ export const CREATE_EXPENSE = gql`
   }
 `;
 
+export const CREATE_REVENUE = gql`
+  mutation createExpense($revenue: RevenueInput!) {
+    createRevenue(revenue: $revenue) {
+      id
+      name
+      amount
+      date
+      invoiceNo
+    }
+  }
+`;
+
 export const CLINIC_USERS = gql`
   query clinicUsers($clinicId: ID!) {
     clinicUsers(clinicId: $clinicId) {
@@ -481,5 +493,16 @@ export const UPDATE_USER_PERMISSIONS = gql`
     $permissions: [PermissionInput!]!
   ) {
     updateUserPermissions(userId: $userId, permissions: $permissions)
+  }
+`;
+
+export const CHANGE_PASSWORD = gql`
+  mutation changePassword($currentPassword: String!, $newPassword: String!) {
+    changePassword(
+      currentPassword: $currentPassword
+      newPassword: $newPassword
+    ) {
+      token
+    }
   }
 `;

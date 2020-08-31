@@ -1,27 +1,30 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { Form, Whisper, Popover } from 'rsuite';
+import { Whisper, Popover } from 'rsuite';
 import { NavStyled } from './style';
-import { CRTextInput, Div } from 'components';
+import { Div } from 'components';
 
 import SwitchClinic from './switch-clinic';
-import Avtar from './avatar';
 import { NotificationIcon, SettingsIcon } from 'components/icons/index';
 import Notifications from 'components/functional/notifications';
 import Settings from 'components/functional/settings';
+import Avatar from './avatar';
 
-const Navbar = ({ onSelectClinic, clinics, currentClinic, onLogout }) => {
+const Navbar = ({
+  onSelectClinic,
+  clinics,
+  currentClinic,
+  onLogout,
+  onClickAvatar,
+  renderSearch,
+}) => {
   const notificationsRef = useRef();
   const settingsRef = useRef();
 
   return (
     <NavStyled>
-      <Form style={{ width: 276 }}>
-        <CRTextInput name="body" placeholder="Search">
-          search
-        </CRTextInput>
-      </Form>
+      {renderSearch()}
       <Div
         flexGrow={1}
         display="flex"
@@ -35,7 +38,7 @@ const Navbar = ({ onSelectClinic, clinics, currentClinic, onLogout }) => {
           alignItems="center"
           cursor="pointer"
           width="100%"
-          maxWidth={430}
+          maxWidth={530}
         >
           <SwitchClinic
             onSelectClinic={onSelectClinic}
@@ -74,7 +77,7 @@ const Navbar = ({ onSelectClinic, clinics, currentClinic, onLogout }) => {
             <SettingsIcon />
           </Whisper>
 
-          {/* <Avtar /> */}
+          <Avatar onClick={onClickAvatar} />
         </Div>
       </Div>
     </NavStyled>

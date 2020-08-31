@@ -56,7 +56,9 @@ function AppointmentSettings() {
       <Div display="flex" justifyContent="space-between">
         <H3 mb={64}>Clinic Info</H3>
         <Div>
-          <CRButton onClick={handleSave}>Save</CRButton>
+          <CRButton onClick={handleSave} primary>
+            Save
+          </CRButton>
         </Div>
       </Div>
       <AppointmentInfo formValue={formValue} onChange={setFormValue} />

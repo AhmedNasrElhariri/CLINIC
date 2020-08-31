@@ -18,12 +18,18 @@ import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
 import NewAppointment from 'components/appointments/new-appointment';
 import { Can } from 'components/user/can';
+import { Form, AutoComplete, Icon, InputGroup } from 'rsuite';
+import useFetchPatients from 'hooks/fetch-patients';
+
+import { filterPatientBy } from 'utils/patient';
 
 function Root() {
   const history = useHistory();
   const [clinics, setClinics] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
   const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
   const [getClinics, { data: clinicsList }] = useLazyQuery(MY_CLINICS);
+  const { patients } = useFetchPatients();
   const {
     isVerified,
     isAuthenticated,
@@ -81,7 +87,6 @@ function Root() {
     setCurrentClinic(clinic);
     history.push('/');
   };
-
   return (
     <ContainerStyled>
       {isAuthenticated ? (
@@ -93,6 +98,30 @@ function Root() {
               clinics={clinics}
               onSelectClinic={onSelectClinic}
               currentClinic={currentClinic}
+              onClickAvatar={() => history.push('/me')}
+              renderSearch={() => (
+                <Form style={{ width: 276 }}>
+                  <InputGroup>
+                    <AutoComplete
+                      data={patients}
+                      value={searchValue}
+                      onChange={setSearchValue}
+                      filterBy={(val, item) => {
+                        return filterPatientBy(val, item, true);
+                      }}
+                      renderItem={item => {
+                        return item.name;
+                      }}
+                      onSelect={({ id }) => {
+                        history.push(`/patients/${id}`);
+                      }}
+                    />
+                    <InputGroup.Button>
+                      <Icon icon="search" />
+                    </InputGroup.Button>
+                  </InputGroup>
+                </Form>
+              )}
             />
             <ContentStyled>
               <AppRouter></AppRouter>

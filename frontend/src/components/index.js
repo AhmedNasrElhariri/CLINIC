@@ -1,12 +1,13 @@
 /******************       Widgets    *********************************/
 export * from './widgets';
 
-/******************       functional  *********************************/
+/******************       Functional  *********************************/
 export { default as Root } from './functional/root';
 export { default as AppRouter } from './functional/router';
 export { default as ShowIf } from './functional/show-if';
 
 /******************       users    *********************************/
+export { default as Profile } from './user/profile';
 export { default as Login } from './user/login';
 export { default as Logout } from './user/logout';
 

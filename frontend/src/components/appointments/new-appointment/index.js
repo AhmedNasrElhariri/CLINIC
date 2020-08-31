@@ -21,6 +21,7 @@ import useGlobalState from 'state';
 import { sortAppointmentsByDate } from 'services/appointment';
 
 import useFetchData from './fetch-data';
+import { filterPatientBy } from 'utils/patient';
 
 const { StringType } = Schema.Types;
 
@@ -44,10 +45,8 @@ const initialValues = {
 const canAddPatient = formValue =>
   formValue.type === 'Examination' ? true : false;
 
-const searchBy = (text, _, { name, phoneNo }) => {
-  return (
-    name.toLowerCase().includes(text.toLowerCase()) || phoneNo.includes(text)
-  );
+const searchBy = (text, _, patient) => {
+  return filterPatientBy(text, patient);
 };
 
 export default function NewAppointment() {

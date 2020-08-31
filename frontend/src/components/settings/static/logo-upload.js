@@ -5,6 +5,7 @@ import { SINGLE_UPLOAD } from 'apollo-client/queries';
 import { Div, Img } from 'components';
 import { BadgtStyled } from './style';
 import { CameraIcon } from 'components/icons';
+import useUpload from 'hooks/upload';
 
 const styles = {
   width: '100%',
@@ -19,9 +20,9 @@ const UploadIcon = () => (
 );
 
 function LogoUpload({ onUpload, url }) {
-  const [uploadFileMutation, { loading }] = useMutation(SINGLE_UPLOAD, {
-    onCompleted({ singleUpload }) {
-      onUpload(singleUpload);
+  const { upload, loading } = useUpload({
+    onCompleted(res) {
+      onUpload(res);
       Alert.success('Uploaded successfully');
     },
     onError() {
@@ -30,28 +31,31 @@ function LogoUpload({ onUpload, url }) {
   });
 
   return (
-    <Div display="flex" position="relative">
-      <Uploader
-        autoUpload={false}
-        fileListVisible={false}
-        listType="picture"
-        onChange={files => {
-          uploadFileMutation({ variables: { file: files[0].blobFile } });
-        }}
-      >
-        <Div minWidth={150} minHeight={150}>
-          <Img src={url} alt="" />
-          {url ? (
+    <Div>
+      <label className="rs-control-label">Upload</label>
+      <Div display="flex" position="relative">
+        <Uploader
+          autoUpload={false}
+          fileListVisible={false}
+          listType="picture"
+          onChange={files => {
+            upload(files[0].blobFile);
+          }}
+        >
+          <Div minWidth={150} minHeight={150}>
             <Img src={url} alt="" />
-          ) : (
-            <button style={styles}>
-              {loading && <Loader backdrop center />}
-              <Icon icon="plus-square-o" size="5x" />
-            </button>
-          )}
-        </Div>
-      </Uploader>
-      <UploadIcon />
+            {url ? (
+              <Img src={url} alt="" />
+            ) : (
+              <button style={styles}>
+                {loading && <Loader backdrop center />}
+                <Icon icon="plus-square-o" size="5x" />
+              </button>
+            )}
+          </Div>
+        </Uploader>
+        <UploadIcon />
+      </Div>
     </Div>
   );
 }

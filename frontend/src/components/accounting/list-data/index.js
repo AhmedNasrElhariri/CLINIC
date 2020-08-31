@@ -1,8 +1,9 @@
 import React from 'react';
-
+import NumberFormat from 'react-number-format';
 import { H5, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 
+// import NumberFormat from 'react-number-format';
 const AddExpense = ({ title, data }) => {
   return (
     <div>
@@ -17,7 +18,17 @@ const AddExpense = ({ title, data }) => {
 
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="amount" bold />
+          <CRTable.CRCell>
+            {({ amount }) => (
+              <CRTable.CRCellStyled bold>
+                <NumberFormat
+                  value={amount}
+                  displayType={'text'}
+                  thousandSeparator
+                />
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
         </CRTable.CRColumn>
 
         <CRTable.CRColumn flexGrow={1}>

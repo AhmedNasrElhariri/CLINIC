@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Img, H6 } from 'components';
@@ -14,11 +14,6 @@ const items = [
     name: 'Static Info',
     icon: '/icons/static.png',
     path: '/settings/static',
-  },
-  {
-    name: 'Accounting',
-    icon: '/icons/static.png',
-    path: '/settings/accounting',
   },
   {
     name: 'Snippets',

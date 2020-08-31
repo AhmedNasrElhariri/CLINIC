@@ -5,50 +5,78 @@ import { Alert } from 'rsuite';
 import { MainContainer, Div, CRCard } from 'components';
 import Toolbar from '../toolbar';
 import AddExpense from '../add-expense';
+import AddRevenue from '../add-revenue';
 import ListData from '../list-data';
 import Tabs from '../tabs';
 
 import useFetch from './fetch-data';
 
-import { CREATE_EXPENSE } from 'apollo-client/queries';
+import { CREATE_EXPENSE, CREATE_REVENUE } from 'apollo-client/queries';
 import useGlobalState from 'state';
 import Summary from '../summary';
+
+const TYPES = {
+  EXPENSE: 'expense',
+  REVENUE: 'revenue',
+};
 
 const AccountingContainer = () => {
   const [clinic] = useGlobalState('currentClinic');
   const [activeTab, setActiveTab] = useState('0');
   const [activePeriod, setActivePeriod] = useState('1');
-  const [visible, setVisible] = useState(false);
+  const [type, setType] = useState(null);
 
   const {
     expenses,
     revenues,
     totalExpenses,
     totalRevenues,
-    updateCache,
+    updateExpenseCache,
+    updateRevenueCache,
   } = useFetch();
+
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
       Alert.success('Expense Added Successfully');
-      setVisible(false);
-      updateCache([...expenses,expnese]);
+      setType(null);
+      updateExpenseCache([...expenses, expnese]);
     },
     onError() {
       Alert.error('Failed to add new Expense');
     },
   });
 
+  const [createRevenue] = useMutation(CREATE_REVENUE, {
+    onCompleted({ createRevenue: revenue }) {
+      Alert.success('Expense Added Successfully');
+      setType(null);
+      updateRevenueCache([...revenues, revenue]);
+    },
+    onError() {
+      Alert.error('Failed to add new Revenue');
+    },
+  });
+
   const handleOk = useCallback(
-    expense =>
-      createExpense({
-        variables: {
-          expense: {
-            ...expense,
-            clinicId: clinic.id,
-          },
-        },
-      }),
-    [clinic, createExpense]
+    val =>
+      type === TYPES.EXPENSE
+        ? createExpense({
+            variables: {
+              expense: {
+                ...val,
+                clinicId: clinic.id,
+              },
+            },
+          })
+        : createRevenue({
+            variables: {
+              revenue: {
+                ...val,
+                clinicId: clinic.id,
+              },
+            },
+          }),
+    [clinic.id, createExpense, createRevenue, type]
   );
 
   return (
@@ -57,7 +85,8 @@ const AccountingContainer = () => {
       <Tabs onSelect={setActiveTab} activeTab={activeTab} />
       <CRCard borderless>
         <Toolbar
-          onAdd={() => setVisible(true)}
+          onAddExpense={() => setType(TYPES.EXPENSE)}
+          onAddRevenue={() => setType(TYPES.REVENUE)}
           activeKey={activePeriod}
           onSelect={setActivePeriod}
         />
@@ -77,8 +106,13 @@ const AccountingContainer = () => {
           )}
         </Div>
         <AddExpense
-          show={visible}
-          onCancel={() => setVisible(false)}
+          show={type === TYPES.EXPENSE}
+          onCancel={() => setType(false)}
+          onOk={handleOk}
+        />
+        <AddRevenue
+          show={type === TYPES.REVENUE}
+          onCancel={() => setType(false)}
           onOk={handleOk}
         />
       </CRCard>

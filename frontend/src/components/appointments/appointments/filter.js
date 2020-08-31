@@ -4,7 +4,7 @@ import { Form, Row, Col } from 'rsuite';
 import { appointmentTypes } from 'services/appointment';
 import { CRTextInput, CRSelectInput, CRDateRangePicker } from 'components';
 
-function Appointments({ formValue, onChange }) {
+function AppointmentsFilter({ formValue, onChange }) {
   return (
     <Form formValue={formValue} onChange={onChange} fluid>
       <Row gutter={16}>
@@ -17,7 +17,7 @@ function Appointments({ formValue, onChange }) {
           />
         </Col>
         <Col xs={8}>
-          <CRTextInput name="name" label="Name" />
+          <CRTextInput name="patient" label="Name / phoneNo" />
         </Col>
         <Col xs={8}>
           <CRSelectInput
@@ -34,4 +34,4 @@ function Appointments({ formValue, onChange }) {
   );
 }
 
-export default Appointments;
+export default AppointmentsFilter;

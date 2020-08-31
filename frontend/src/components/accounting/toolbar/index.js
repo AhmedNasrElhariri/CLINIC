@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CRButtonGroup, Div, CRButton } from 'components';
 
-const Toolbar = ({ onAdd, activeKey, onSelect }) => {
+const Toolbar = ({ activeKey, onAddExpense, onAddRevenue, onSelect }) => {
   return (
     <Div display="flex" justifyContent="space-between">
       <CRButtonGroup onSelect={onSelect} activeKey={activeKey}>
@@ -12,9 +12,14 @@ const Toolbar = ({ onAdd, activeKey, onSelect }) => {
         <CRButtonGroup.CRButton eventKey="3">Quarter</CRButtonGroup.CRButton>
         <CRButtonGroup.CRButton eventKey="4">Year</CRButtonGroup.CRButton>
       </CRButtonGroup>
-      <CRButton primary small onClick={onAdd}>
-        Add
-      </CRButton>
+      <Div>
+        <CRButton primary small onClick={onAddExpense}>
+          + Expense
+        </CRButton>
+        <CRButton primary small onClick={onAddRevenue} ml={1}>
+          + Reveneue
+        </CRButton>
+      </Div>
     </Div>
   );
 };

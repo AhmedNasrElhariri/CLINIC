@@ -71,6 +71,7 @@ const AdjustAppointment = ({
   const getStateAndHelpers = () => {
     return {
       onEdit: () => onOpen('edit'),
+      onCancel: () => onOpen('cancel'),
     };
   };
 
