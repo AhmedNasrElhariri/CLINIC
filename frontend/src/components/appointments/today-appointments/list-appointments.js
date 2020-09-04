@@ -12,7 +12,7 @@ import {
   CRButton,
   CRPanelGroup,
 } from 'components';
-import { format } from 'services/date.service';
+import { format } from 'utils/date';
 import { isScheduled } from 'services/appointment';
 import { canAjdust } from 'services/appointment';
 

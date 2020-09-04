@@ -13,6 +13,7 @@ import useFetch from './fetch-data';
 
 import { CREATE_EXPENSE, CREATE_REVENUE } from 'apollo-client/queries';
 import useGlobalState from 'state';
+import { ACCOUNTING_VIEWS } from 'utils/constants';
 import Summary from '../summary';
 
 const TYPES = {
@@ -23,7 +24,7 @@ const TYPES = {
 const AccountingContainer = () => {
   const [clinic] = useGlobalState('currentClinic');
   const [activeTab, setActiveTab] = useState('0');
-  const [activePeriod, setActivePeriod] = useState('1');
+  const [activePeriod, setActivePeriod] = useState(ACCOUNTING_VIEWS.WEEK);
   const [type, setType] = useState(null);
 
   const {
@@ -33,7 +34,7 @@ const AccountingContainer = () => {
     totalRevenues,
     updateExpenseCache,
     updateRevenueCache,
-  } = useFetch();
+  } = useFetch(activePeriod);
 
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
@@ -87,8 +88,10 @@ const AccountingContainer = () => {
         <Toolbar
           onAddExpense={() => setType(TYPES.EXPENSE)}
           onAddRevenue={() => setType(TYPES.REVENUE)}
+          onPrint={() => setType(TYPES.REVENUE)}
           activeKey={activePeriod}
           onSelect={setActivePeriod}
+          data={{ revenues, expenses }}
         />
         <Div pt={5}>
           {activeTab === '0' ? (

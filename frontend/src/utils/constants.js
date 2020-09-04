@@ -95,3 +95,12 @@ export const PERMISSIONS = new Map(
     value.map(v => ({ ...v, id: v.action + v.subject })),
   ])
 );
+
+
+export const ACCOUNTING_VIEWS = {
+  DAY: 'DAY',
+  WEEK: 'WEEK',
+  MONTH: 'MONTH',
+  QUARTER: 'QUARTER',
+  YEAR: 'YEAR',
+};

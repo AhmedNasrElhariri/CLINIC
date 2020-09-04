@@ -12,7 +12,7 @@ const changePassword = async (
   if (!valid) {
     throw new Error('Invalid password');
   }
-  
+
   await prisma.user.update({
     data: {
       password: await bcrypt.hash(newPassword, 10),

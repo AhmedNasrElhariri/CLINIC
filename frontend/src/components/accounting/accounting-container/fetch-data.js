@@ -5,6 +5,7 @@ import client from 'apollo-client/client';
 
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
 import useGlobalState from 'state';
+import { filterAccountingList } from 'utils/accounting';
 
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
@@ -16,7 +17,7 @@ export function useVariables() {
   };
 }
 
-const useFetchAccountingData = () => {
+const useFetchAccountingData = view => {
   const variables = useVariables();
   const { data: expensesData } = useQuery(LIST_EXPENSES, {
     variables,
@@ -25,11 +26,22 @@ const useFetchAccountingData = () => {
     variables,
   });
 
-  const expenses = useMemo(() => R.propOr([], 'expenses')(expensesData), [
+  const allExpenses = useMemo(() => R.propOr([], 'expenses')(expensesData), [
     expensesData,
   ]);
-  const revenues = useMemo(() => R.propOr([], 'revenues')(revenueData), [
+
+  const allRevenues = useMemo(() => R.propOr([], 'revenues')(revenueData), [
     revenueData,
+  ]);
+
+  const expenses = useMemo(() => filterAccountingList(allExpenses, view), [
+    allExpenses,
+    view,
+  ]);
+
+  const revenues = useMemo(() => filterAccountingList(allRevenues, view), [
+    allRevenues,
+    view,
   ]);
 
   const totalExpenses = useMemo(

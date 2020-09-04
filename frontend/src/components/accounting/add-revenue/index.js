@@ -24,7 +24,12 @@ const AddRevenue = ({ show, onCancel, onOk }) => {
       <Form fluid formValue={formValue} onChange={setFormValue}>
         <CRTextInput label="Name" name="name" block></CRTextInput>
         <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
-        <CRDatePicker label="Date" name="date" block></CRDatePicker>
+        <CRDatePicker
+          label="Date"
+          name="date"
+          placement="top"
+          block
+        ></CRDatePicker>
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
       </Form>
     </CRModal>
