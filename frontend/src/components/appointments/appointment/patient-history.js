@@ -50,7 +50,7 @@ const ListHistory = memo(({ type, history }) => (
   </Grid>
 ));
 
-function PatientHistory({ patient }) {
+function PatientHistory({ patient, noAdd }) {
   const [activeNav, setActiveNav] = useState('');
   const [history, setHistory] = useState([]);
   const { data: medicalHistoryData } = useQuery(LIST_MEDICAL_HISTORY, {
@@ -177,7 +177,9 @@ function PatientHistory({ patient }) {
           </CRNav>
         </Div>
         <Div flexGrow={1} px={4} pb={6}>
-          <NewHistory type={activeNav.value} onCreate={handleCreate} />
+          {!noAdd && (
+            <NewHistory type={activeNav.value} onCreate={handleCreate} />
+          )}
           <Div mt={3}>
             <ListHistory type={activeNav.value} history={history} />
           </Div>

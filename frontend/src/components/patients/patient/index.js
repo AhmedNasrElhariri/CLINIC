@@ -8,8 +8,10 @@ import { Div, PatientSummary, PatientProgress, H3, CRNav } from 'components';
 
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
+import PatientLabs from 'components/appointments/appointment/patient-labs';
+import History from 'components/appointments/appointment/patient-history';
 
-const tabs = ['History', 'Progress'];
+const tabs = ['History', 'Progress', 'Labs', 'History'];
 
 function Appointment() {
   let { patientId } = useParams();
@@ -51,6 +53,8 @@ function Appointment() {
                 viewFields={viewFields}
               />
             )}
+            {showComp('2') && <PatientLabs patient={patient} noAdd />}
+            {showComp('3') && <History patient={patient} noAdd />}
           </Div>
         </Div>
         <Div width={325} ml={64}>

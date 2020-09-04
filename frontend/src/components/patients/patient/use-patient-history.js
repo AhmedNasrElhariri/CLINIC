@@ -20,7 +20,7 @@ export default ({ patientId, appointment = {} }) => {
   const [view] = useGlobalState('activeView');
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {
-      id: patientId,
+      patientId,
     },
   });
 
@@ -30,7 +30,7 @@ export default ({ patientId, appointment = {} }) => {
     [groups]
   );
   const appointmentHistory = useMemo(
-    () => R.pathOr([], ['patientHistory'])(history),
+    () => R.pathOr([], ['appointmentHistory'])(history),
     [history]
   );
   const data = useMemo(() => R.propOr([], 'data')(appointment), [appointment]);

@@ -7,7 +7,7 @@ import AddLabDocs from './add-lab-docs';
 import ListLabDocs from './list-lab-docs';
 import { LIST_PATIENT_LABS } from 'apollo-client/queries';
 
-const PatientLabs = ({ patient }) => {
+const PatientLabs = ({ patient, noAdd = false }) => {
   const [visible, setVisible] = useState(false);
   const { data } = useQuery(LIST_PATIENT_LABS, {
     variables: {
@@ -21,9 +21,11 @@ const PatientLabs = ({ patient }) => {
   const labDocs = R.propOr([], 'patientLabs')(data);
   return (
     <>
-      <div>
-        <CRButton onClick={() => setVisible(true)}>Add</CRButton>
-      </div>
+      {!noAdd && (
+        <div>
+          <CRButton onClick={() => setVisible(true)}>Add</CRButton>
+        </div>
+      )}
       <AddLabDocs
         show={visible}
         onCancel={() => setVisible(false)}
