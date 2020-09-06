@@ -18,31 +18,32 @@ import {
 
 import Toolbar from './toolbar';
 import CalendarContext from './context';
-import { Div, AdjustAppointment } from 'components';
+import { Div } from 'components';
 import { formatDate } from 'utils/date';
 import { Whisper } from 'rsuite';
 
-const EventDetails = ({ patient, name, start, end, onClose, ...props }) => {
+const EventDetails = ({
+  patient,
+  name,
+  start,
+  end,
+  onEdit,
+  onClose,
+  id,
+  ...props
+}) => {
   const { onCancel, onAdjust } = useContext(CalendarContext);
   return (
     <Div>
-      <Div textAlign="right">
+      {/* <Div textAlign="right">
         <CloseIconStyled onClick={onClose} />
-      </Div>
+      </Div> */}
       <Div display="flex" justifyContent="space-between" alignItems="center">
         <PatientName>{R.prop('name')(patient)}</PatientName>
-        <AdjustAppointment
-          appointment={{ patient, ...props }}
-          onCancel={onCancel}
-          onAdjust={onAdjust}
-        >
-          {({ onEdit, onCancel }) => (
-            <>
-              <ActionIconStyled icon="edit" onClick={onEdit} />
-              <ActionIconStyled icon="trash-o" onClick={onCancel} />
-            </>
-          )}
-        </AdjustAppointment>
+        <Div>
+          <ActionIconStyled icon="edit" onClick={() => onAdjust(id)} />
+          <ActionIconStyled icon="trash-o" onClick={() => onCancel(id)} />
+        </Div>
       </Div>
       <Div fontSize={14}>{name}</Div>
       <Div fontSize={14} fontWeight={600}>
@@ -53,31 +54,30 @@ const EventDetails = ({ patient, name, start, end, onClose, ...props }) => {
     </Div>
   );
 };
-const ref = React.createRef();
-
 export default {
   toolbar: Toolbar,
   month: {
     eventWrapper: props => <MonthWrapper {...props} />,
     event: ({ event }) => {
       return (
-        <Whisper
-          placement="bottomEnd"
-          trigger="none"
-          triggerRef={ref}
-          speaker={
-            <PopoverStyled {...event}>
-              <EventDetails {...event} onClose={() => ref.current.close()} />
-            </PopoverStyled>
-          }
-        >
-          <MonthEventStyled {...event} onClick={() => ref.current.open()}>
-            <Div>
-              <Time>{formatDate(event.start, 'HH:mm a ')}</Time>
-              <Name>{event.name}</Name>
-            </Div>
-          </MonthEventStyled>
-        </Whisper>
+        <>
+          <Whisper
+            placement="bottomEnd"
+            trigger="click"
+            speaker={
+              <PopoverStyled {...event}>
+                <EventDetails {...event} />
+              </PopoverStyled>
+            }
+          >
+            <MonthEventStyled {...event}>
+              <Div>
+                <Time>{formatDate(event.start, 'HH:mm a ')}</Time>
+                <Name>{event.name}</Name>
+              </Div>
+            </MonthEventStyled>
+          </Whisper>
+        </>
       );
     },
   },

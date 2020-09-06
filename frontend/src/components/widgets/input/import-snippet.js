@@ -23,20 +23,18 @@ export default ({ show, onOk, onCancel }) => {
       onHide={onCancel}
       onCancel={onCancel}
     >
-      <CRModal.CRBody>
-        <Form fluid formValue={formValue} onChange={setFormvalue}>
-          <CRSelectInput
-            label="Title"
-            name="snippet"
-            labelKey="title"
-            valueKey="id"
-            block
-            cleanable={true}
-            searchable={true}
-            data={snippets}
-          ></CRSelectInput>
-        </Form>
-      </CRModal.CRBody>
+      <Form fluid formValue={formValue} onChange={setFormvalue}>
+        <CRSelectInput
+          label="Title"
+          name="snippet"
+          labelKey="title"
+          valueKey="id"
+          block
+          cleanable={true}
+          searchable={true}
+          data={snippets}
+        ></CRSelectInput>
+      </Form>
     </CRModal>
   );
 };

@@ -60,7 +60,7 @@ const useFetchAccountingData = view => {
       revenues,
       totalExpenses,
       totalRevenues,
-      updateExpenseCache: expenses => {
+      updateExpensesCache: expenses => {
         client.writeQuery({
           query: LIST_EXPENSES,
           variables,
@@ -69,7 +69,7 @@ const useFetchAccountingData = view => {
           },
         });
       },
-      updateRevenueCache: revenues => {
+      updateRevenuesCache: revenues => {
         client.writeQuery({
           query: LIST_REVENUES,
           variables,
@@ -78,6 +78,10 @@ const useFetchAccountingData = view => {
           },
         });
       },
+      refetchRevenues: () => ({
+        query: LIST_REVENUES,
+        variables,
+      }),
     }),
     [expenses, revenues, totalExpenses, totalRevenues, variables]
   );

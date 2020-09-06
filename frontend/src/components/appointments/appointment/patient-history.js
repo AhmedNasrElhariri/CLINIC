@@ -17,7 +17,7 @@ import HistoryBox from './history-box';
 const navs = [
   { name: 'Medical', value: MEDICAL_HISTORY_TYPES.medical },
   { name: 'Family', value: MEDICAL_HISTORY_TYPES.family },
-  { name: 'Social', value: MEDICAL_HISTORY_TYPES.social },
+  // { name: 'Social', value: MEDICAL_HISTORY_TYPES.social },
 ];
 
 const getProps = (type, h) => {

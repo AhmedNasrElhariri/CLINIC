@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 
-import { Div, CRNav } from 'components';
+import { Div, CRNav, H6 } from 'components';
 import ListLabImages from './list-lab-images';
 
 function ListLabDocs({ labDocs }) {
@@ -20,24 +20,37 @@ function ListLabDocs({ labDocs }) {
 
   return (
     <>
-      <Div display="flex">
-        <Div width={300}>
-          <CRNav vertical onSelect={setActiveLab}>
-            {labDocs.map((lab, idx) => (
-              <CRNav.CRVItem
-                eventKey={lab}
-                key={lab.id}
-                active={activeLab.id === lab.id}
-              >
-                {lab.name}
-              </CRNav.CRVItem>
-            ))}
-          </CRNav>
+      {labDocs.length ? (
+        <Div display="flex">
+          <Div width={300}>
+            <CRNav vertical onSelect={setActiveLab}>
+              {labDocs.map((lab, idx) => (
+                <CRNav.CRVItem
+                  eventKey={lab}
+                  key={lab.id}
+                  active={activeLab.id === lab.id}
+                >
+                  {lab.name}
+                </CRNav.CRVItem>
+              ))}
+            </CRNav>
+          </Div>
+          <Div flexGrow={1} px={4} pb={6}>
+            <ListLabImages images={images} />
+          </Div>
         </Div>
-        <Div flexGrow={1} px={4} pb={6}>
-          <ListLabImages images={images} />
-        </Div>
-      </Div>
+      ) : (
+        <>
+          <Div
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height={300}
+          >
+            <H6 color="texts.2">No Labs</H6>
+          </Div>
+        </>
+      )}
     </>
   );
 }

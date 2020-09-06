@@ -11,7 +11,7 @@ import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import History from 'components/appointments/appointment/patient-history';
 
-const tabs = ['History', 'Progress', 'Labs', 'History'];
+const tabs = ['Summary', 'Progress', 'Labs', 'History'];
 
 function Appointment() {
   let { patientId } = useParams();
@@ -26,6 +26,7 @@ function Appointment() {
   const patient = R.propOr({}, 'patient')(data);
 
   const { appointmentHistory, viewFields } = usePatientHistory({ patientId });
+  
 
   return (
     <>

@@ -59,7 +59,11 @@ function StaticSettings() {
           onClick={() =>
             updateClinic({
               variables: {
-                clinic: { ...formValue, id: clinic.id, logoId: logo.id },
+                clinic: {
+                  ...formValue,
+                  id: clinic.id,
+                  logoId: R.prop('id')(logo),
+                },
               },
             })
           }

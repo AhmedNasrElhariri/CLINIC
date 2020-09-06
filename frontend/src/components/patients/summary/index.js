@@ -60,12 +60,25 @@ export default function PatientHistory({ summary = [] }) {
           </CRNav.CRVItem>
         ))}
       </CRNav>
-      <Div m={4}>
-        <H3 mb={4}>Session {sessionId + 1}</H3>
-        <Div>
-          {renderProp('Date', formatDate(date))}
-          {renderAppointment(data)}
-        </Div>
+      <Div m={4} flexGrow={1}>
+        {summary.length ? (
+          <>
+            <H3 mb={4}>Session {sessionId + 1}</H3>
+            <Div>
+              {renderProp('Date', formatDate(date))}
+              {renderAppointment(data)}
+            </Div>
+          </>
+        ) : (
+          <Div
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height={200}
+          >
+            <H6 color="texts.2">No Summary</H6>
+          </Div>
+        )}
       </Div>
     </Div>
   );

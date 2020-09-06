@@ -32,15 +32,15 @@ const AccountingContainer = () => {
     revenues,
     totalExpenses,
     totalRevenues,
-    updateExpenseCache,
-    updateRevenueCache,
+    updateExpensesCache,
+    updateRevenuesCache,
   } = useFetch(activePeriod);
 
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
       Alert.success('Expense Added Successfully');
       setType(null);
-      updateExpenseCache([...expenses, expnese]);
+      updateExpensesCache([...expenses, expnese]);
     },
     onError() {
       Alert.error('Failed to add new Expense');
@@ -51,7 +51,7 @@ const AccountingContainer = () => {
     onCompleted({ createRevenue: revenue }) {
       Alert.success('Expense Added Successfully');
       setType(null);
-      updateRevenueCache([...revenues, revenue]);
+      updateRevenuesCache([...revenues, revenue]);
     },
     onError() {
       Alert.error('Failed to add new Revenue');

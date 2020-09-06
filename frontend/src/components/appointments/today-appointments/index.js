@@ -8,10 +8,13 @@ import { SET_APPOINTMENT_DONE } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 
 import useFetchAppointments from 'hooks/fetch-appointments';
+import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
 
 function TodayAppointments() {
   const { todayAppointments: appointments } = useFetchAppointments();
+  const { refetchRevenues } = useFetchAccountingData();
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
+    refetchQueries: () => [refetchRevenues()],
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
     },

@@ -1,15 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import { DatePicker, Alert, Form } from 'rsuite';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Alert } from 'rsuite';
 import { useMutation } from '@apollo/client';
 import moment from 'moment';
 
-import { Div, CRModal, CRCard, CRDatePicker, H6 } from 'components';
-import { STANDARD_DATE_FORMAT } from 'utils/constants';
-import { isBeforeToday, formatDate } from 'utils/date';
+import { Div } from 'components';
 import { ADJUST_APPOINTMENT, CANCEL_APPOINTMENT } from 'apollo-client/queries';
 
 import { EditOLIcon, DeleteOLIcon } from 'components/icons';
 import { Can } from 'components/user/can';
+import EditAppointment from '../edit-appointment';
+import CancelAppointment from '../cancel-appointment';
 
 const calcDate = ({ date, time }) =>
   moment(date)
@@ -21,20 +21,12 @@ const calcDate = ({ date, time }) =>
     })
     .toDate();
 
-const AdjustAppointment = ({
-  appointment,
-  cancelComp,
-  editComp,
-  onClickEdit,
-  children,
-  onCancel,
-  onAdjust,
-}) => {
+export const useAdjustAppointment = ({
+  onAdjust = () => {},
+  onCancel = () => {},
+} = {}) => {
   const [visible, setVisible] = useState({ edit: false, cancel: false });
-  const [formValue, setFormValue] = useState({
-    date: null,
-    time: null,
-  });
+  const [appointment, setAppointment] = useState(null);
 
   const [adjust] = useMutation(ADJUST_APPOINTMENT, {
     onCompleted: ({ adjustAppointment }) => {
@@ -52,21 +44,53 @@ const AdjustAppointment = ({
     },
   });
 
-  const handleAdjust = useCallback(() => {
-    adjust({ variables: { id: appointment.id, date: calcDate(formValue) } });
-  }, [adjust, formValue, appointment]);
+  const handleEdit = useCallback(
+    formValue => {
+      adjust({ variables: { id: appointment.id, date: calcDate(formValue) } });
+    },
+    [adjust, appointment]
+  );
 
   const handleCancel = useCallback(() => {
     cancel({ variables: { id: appointment.id } });
   }, [cancel, appointment]);
 
-  const onOpen = useCallback(type => {
-    setVisible({ [type]: true });
-  }, []);
+  return {
+    appointment,
+    setAppointment,
+    edit: handleEdit,
+    cancel: handleCancel,
+    visible,
+    setVisible,
+  };
+};
 
-  const onClose = useCallback(type => {
-    setVisible({ [type]: false });
-  }, []);
+const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
+  const {
+    edit,
+    cancel,
+    visible,
+    setVisible,
+    setAppointment,
+  } = useAdjustAppointment();
+
+  useEffect(() => {
+    setAppointment(appointment);
+  }, [appointment, setAppointment]);
+
+  const onOpen = useCallback(
+    type => {
+      setVisible({ [type]: true });
+    },
+    [setVisible]
+  );
+
+  const onClose = useCallback(
+    type => {
+      setVisible({ [type]: false });
+    },
+    [setVisible]
+  );
 
   const getStateAndHelpers = () => {
     return {
@@ -95,67 +119,18 @@ const AdjustAppointment = ({
         </>
       )}
 
-      <CRModal
-        show={visible.edit}
-        header="Adjust Appointment"
-        bodyStyle={{
-          padding: '40px 89px ',
-        }}
-        okTitle="Adjust"
-        onOk={handleAdjust}
-        onCancel={() => onClose('edit')}
-        onHide={() => onClose('edit')}
-      >
-        <Form formValue={formValue} onChange={setFormValue} fluid>
-          <Div my={3}>
-            <CRCard>
-              <H6 color="texts.1" mb={3}>
-                Old Date
-              </H6>
-              <H6>
-                {formatDate(
-                  appointment.date,
-                  STANDARD_DATE_FORMAT + ' - hh:mm a'
-                )}
-              </H6>
-            </CRCard>
-
-            <CRCard mt={40} pb={50}>
-              <H6 color="texts.1" mb={3}>
-                New Date
-              </H6>
-              <Div px={53}>
-                <CRDatePicker
-                  disabledDate={isBeforeToday}
-                  accepter={DatePicker}
-                  name="date"
-                  block
-                />
-                <CRDatePicker
-                  format="HH:mm"
-                  hideMinutes={minute => minute % 5 !== 0}
-                  name="time"
-                  accepter={DatePicker}
-                  disabledDate={isBeforeToday}
-                  placement="top"
-                  block
-                />
-              </Div>
-            </CRCard>
-          </Div>
-        </Form>
-      </CRModal>
-
-      <CRModal
-        onOk={handleCancel}
-        onCancel={() => onClose('cancel')}
-        show={visible.cancel}
-        header="Cancel Appointment"
-      >
-        <Div textAlign="center">
-          Are you Sure you want to Cancel Appointment?
-        </Div>
-      </CRModal>
+      <EditAppointment
+        onOk={edit}
+        visible={visible.edit}
+        appointment={appointment}
+        onClose={() => onClose('edit')}
+      />
+      <CancelAppointment
+        visible={visible.cancel}
+        appointment={appointment}
+        onOk={cancel}
+        onClose={() => onClose('cancel')}
+      />
     </Div>
   );
 };

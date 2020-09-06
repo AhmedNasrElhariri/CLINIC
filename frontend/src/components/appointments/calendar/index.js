@@ -11,6 +11,9 @@ import components from './custom-components';
 import CalendarContext from './context';
 
 import { CalendarStyled } from './style';
+import { useAdjustAppointment } from '../adjust-appointment/index';
+import EditAppointment from '../edit-appointment/index';
+import CancelAppointment from '../cancel-appointment/index';
 
 const localizer = momentLocalizer(moment);
 
@@ -32,8 +35,20 @@ function AppointmentCalendar() {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState(initialValue);
   const [events, setEvents] = useState([]);
-
   const { appointments: data, updateCache } = useFetchAppointments();
+  const {
+    edit,
+    cancel,
+    appointment,
+    setAppointment,
+    visible: adjustVisible,
+    setVisible: setAdjustVisible,
+  } = useAdjustAppointment({
+    onCancel: ({ id }) => {
+      const newEvents = appointments.filter(a => a.id !== id);
+      updateCache(newEvents);
+    },
+  });
 
   const appointments = useMemo(
     () =>
@@ -47,20 +62,36 @@ function AppointmentCalendar() {
     [data]
   );
 
-  const handleCancel = useCallback(
-    app => {
-      const newEvents = appointments.filter(e => e.id !== app.id);
-      updateCache(newEvents);
+  const onOpen = useCallback(
+    type => {
+      setAdjustVisible({ [type]: true });
     },
-    [appointments, updateCache]
+    [setAdjustVisible]
+  );
+
+  const onClose = useCallback(
+    type => {
+      setAdjustVisible({ [type]: false });
+    },
+    [setAdjustVisible]
   );
 
   const handleAdjust = useCallback(
-    app => {
-      const newEvents = appointments.map(a => (a.id === app.id ? app : a));
-      updateCache(newEvents);
+    id => {
+      const appointment = appointments.find(a => a.id === id);
+      setAppointment(appointment);
+      onOpen('edit');
     },
-    [appointments, updateCache]
+    [appointments, onOpen, setAppointment]
+  );
+
+  const handleCancel = useCallback(
+    id => {
+      const appointment = appointments.find(a => a.id === id);
+      setAppointment(appointment);
+      onOpen('cancel');
+    },
+    [appointments, onOpen, setAppointment]
   );
 
   const allEvents = useMemo(() => [...appointments, ...events], [
@@ -118,6 +149,18 @@ function AppointmentCalendar() {
           onChange={setFormValue}
         />
       </Div>
+      <EditAppointment
+        onOk={edit}
+        visible={adjustVisible.edit}
+        appointment={appointment}
+        onClose={() => onClose('edit')}
+      />
+      <CancelAppointment
+        visible={adjustVisible.cancel}
+        appointment={appointment}
+        onOk={cancel}
+        onClose={() => onClose('cancel')}
+      />
     </CalendarContext.Provider>
   );
 }

@@ -18,7 +18,7 @@ const Info = ({ name, value }) => (
 
 const PrescriptionPrint = React.forwardRef(
   ({ content, name, age, clinicInfo }, ref) => {
-    const logoUlr = R.path(['logo', 'url'])(clinicInfo);
+    const logoURL = R.path(['logo', 'url'])(clinicInfo);
 
     return (
       <Div height={0} overflow="hidden">
@@ -29,7 +29,15 @@ const PrescriptionPrint = React.forwardRef(
               <Info name="Name" value={name} />
               <Info name="Age" value={age} />
             </div>
-            <img src={logoUlr} width={75} height={75} alt="" className="logo" />
+            {logoURL && (
+              <img
+                src={logoURL}
+                width={75}
+                height={75}
+                alt=""
+                className="logo"
+              />
+            )}
           </Div>
           <div className="content-container">
             <div className="body">
