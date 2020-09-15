@@ -6,7 +6,6 @@ export const ModalStyled = styled(Modal)`
   ${space}
   width: ${({ width }) => (width ? width + 'px' : '810px')};
 
-
   & .rs-modal-content {
     z-index: 99999999;
   }
@@ -20,8 +19,10 @@ export const ModalStyled = styled(Modal)`
 
   & .rs-modal-body {
     margin-top: 0;
-    overflow: inherit;
-    max-height: none !important;
+    /* overflow: inherit; */
+    /* max-height: none !important; */
+    margin-right: 20px;
+    max-height: calc(100vh - 10rem) !important;
   }
 `;
 

@@ -27,7 +27,12 @@ function useFetchAppointments() {
     variables,
   });
   const appointments = useMemo(
-    () => R.pipe(R.propOr([], 'appointments'), sortAppointmentsByDate)(data),
+    () =>
+      R.pipe(
+        R.propOr([], 'appointments'),
+        R.reject(R.propEq('status', 'Cancelled')),
+        sortAppointmentsByDate
+      )(data),
     [data]
   );
   const todayAppointments = useMemo(

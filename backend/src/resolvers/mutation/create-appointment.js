@@ -13,6 +13,9 @@ const getDayAppointments = day => {
         gte: start,
         lte: end,
       },
+      status: {
+        not: 'Cancelled',
+      },
     },
   });
 };
@@ -26,12 +29,14 @@ const createAppointment = async (
 ) => {
   const appointments = await getDayAppointments(appointment.date);
 
-  if (!validDate(appointment.date, appointments)) {
-    throw new APIExceptcion('Time slot already reversed');
-  }
+  if (appointment.type !== 'Urgent') {
+    if (!validDate(appointment.date, appointments)) {
+      throw new APIExceptcion('Time slot already reversed');
+    }
 
-  if (isBeforeNow(appointment.date)) {
-    throw new APIExceptcion('Can not set to past time');
+    if (isBeforeNow(appointment.date)) {
+      throw new APIExceptcion('Can not set to past time');
+    }
   }
 
   return prisma.appointment.create({

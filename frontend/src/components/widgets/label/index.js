@@ -9,10 +9,16 @@ const labelTheme = {
   },
 };
 
-export default styled(ControlLabel)`
+const CRLabel = styled(ControlLabel)`
   ${byTheme(labelTheme)}
   line-height: 32px;
   color: ${props => props.theme.colors.text};
   margin: 0;
-  margin-bottom: 10px;
+  margin-bottom: ${({ noLabel }) => (noLabel ? '0px' : '10px')};
 `;
+
+CRLabel.defaultProps = {
+  noLabel: false,
+};
+
+export default CRLabel;

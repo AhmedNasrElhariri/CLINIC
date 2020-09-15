@@ -4,12 +4,14 @@ import { pdf } from '@react-pdf/renderer';
 import { CRButton } from 'components';
 import PdfDocument from './pdf-document';
 
-const PdfView = ({ data }) => {
+const PdfView = ({ data, period }) => {
   const [pdfData, setPdfData] = useState({ loaded: false });
 
   useEffect(() => {
     (async () => {
-      const blob = await pdf(<PdfDocument data={data} />).toBlob();
+      const blob = await pdf(
+        <PdfDocument data={data} period={period} />
+      ).toBlob();
       const url = URL.createObjectURL(blob);
 
       setPdfData({
@@ -18,7 +20,7 @@ const PdfView = ({ data }) => {
         blob,
       });
     })();
-  }, [data]);
+  }, [data, period]);
 
   return !pdfData.loaded ? (
     'loading'

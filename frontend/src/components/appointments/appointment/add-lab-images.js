@@ -31,7 +31,7 @@ const LabFormInput = ({ value, onChange }) => {
       draggable
       listType="picture"
       fileList={images}
-      action={'/upload'}
+      action="/upload"
       onChange={setImages}
       onSuccess={onUpload}
     >

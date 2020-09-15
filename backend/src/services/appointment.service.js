@@ -17,7 +17,7 @@ export const calculateAppointmentTime = (
 export const validDate = (newDate, appointments) => {
   return appointments.every(({ date }) => {
     const startDate = moment(date);
-    const endDate = moment(startDate).add(15, 'minutes');
+    const endDate = moment(startDate).add(5, 'minutes');
     return !moment(newDate).isBetween(startDate, endDate, 'minutes', '[)');
   });
 };

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { FormGroup, FormControl, InputGroup, Icon } from 'rsuite';
 import Label from '../label';
 import { InputStyled, InputGroupStyled } from './style';
 
-const CustomInput = ({ onChange, ...props }) => {
+const CustomInput = memo(({ onChange, ...props }) => {
   return <InputStyled onChange={e => onChange(e.target.value)} {...props} />;
-};
+});
 
-export default ({ label, children, borderless = false, ...rest }) => {
+const TextInput = ({ label, children, borderless = false, ...rest }) => {
   return (
     <FormGroup>
       <Label>{label}</Label>
@@ -23,3 +23,5 @@ export default ({ label, children, borderless = false, ...rest }) => {
     </FormGroup>
   );
 };
+
+export default memo(TextInput);

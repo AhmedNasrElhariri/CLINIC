@@ -13,13 +13,22 @@ import { formatDate } from 'utils/date';
 
 const styles = StyleSheet.create({
   page: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4',
+    backgroundColor: '#ffffff',
+    padding: 20,
+  },
+  header: {
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   section: {
-    margin: 10,
-    padding: 10,
     flexGrow: 1,
+  },
+  tableContainer: {
+    flexDirection: 'row',
+    marginTop: 30,
+  },
+  profit: {
+    marginTop: 30,
   },
 });
 
@@ -38,21 +47,46 @@ const PdfTable = ({ data }) => (
   </Table>
 );
 
-const PdfDocument = ({ data: { revenues, expenses } }) => {
+const calculateTotal = data =>
+  data.reduce((sum, { amount }) => sum + amount, 0);
+
+const PdfDocument = ({ period, data: { revenues, expenses } }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <Text>Revenue</Text>
-          <PdfTable data={revenues} />
+        <Text>Accounting Report</Text>
+        <Text>
+          from {formatDate(period[0])} to {formatDate(period[1])}
+        </Text>
+        <View style={styles.profit}>
+          <Text style={styles.header}>
+            Revenues = {calculateTotal(revenues)}
+          </Text>
+          <Text style={styles.header}>
+            Expenses = {calculateTotal(expenses)}
+          </Text>
+          <Text style={styles.header}>
+            Profit = {calculateTotal(revenues) - calculateTotal(expenses)}
+          </Text>
         </View>
-        <View style={styles.section}>
-          <Text>Expenses</Text>
-          <PdfTable data={expenses} />
+
+        <View style={styles.tableContainer}>
+          <View style={styles.section}>
+            <Text>Revenue</Text>
+            <PdfTable data={revenues} />
+          </View>
+          <View style={styles.section}>
+            <Text>Expenses</Text>
+            <PdfTable data={expenses} />
+          </View>
         </View>
       </Page>
     </Document>
   );
+};
+
+PdfDocument.defaultProps = {
+  period: [new Date(), new Date()],
 };
 
 export default PdfDocument;

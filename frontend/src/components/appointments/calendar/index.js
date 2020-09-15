@@ -14,6 +14,7 @@ import { CalendarStyled } from './style';
 import { useAdjustAppointment } from '../adjust-appointment/index';
 import EditAppointment from '../edit-appointment/index';
 import CancelAppointment from '../cancel-appointment/index';
+import { MIN_EVENT_DURATION } from 'utils/constants';
 
 const localizer = momentLocalizer(moment);
 
@@ -28,14 +29,13 @@ const initialValue = {
   end: null,
 };
 
-const MIN_EVENT_DURATION = 15;
 let allViews = Object.keys(Views).map(k => Views[k]);
 
 function AppointmentCalendar() {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState(initialValue);
   const [events, setEvents] = useState([]);
-  const { appointments: data, updateCache } = useFetchAppointments();
+  const { appointments: data } = useFetchAppointments();
   const {
     edit,
     cancel,
@@ -43,12 +43,7 @@ function AppointmentCalendar() {
     setAppointment,
     visible: adjustVisible,
     setVisible: setAdjustVisible,
-  } = useAdjustAppointment({
-    onCancel: ({ id }) => {
-      const newEvents = appointments.filter(a => a.id !== id);
-      updateCache(newEvents);
-    },
-  });
+  } = useAdjustAppointment();
 
   const appointments = useMemo(
     () =>

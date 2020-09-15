@@ -11,8 +11,8 @@ const activeStyles = css`
 `;
 
 export const ItemStyled = styled(Div)`
-  width: 193px;
-  height: 93px;
+  width: 150px;
+  height: 80px;
   font-size: 24px;
   font-weight: 400;
   font-stretch: normal;

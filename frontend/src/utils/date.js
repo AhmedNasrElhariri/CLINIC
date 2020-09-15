@@ -36,9 +36,37 @@ export const getCurrentWeekDays = () => {
   );
 };
 
+export const getDayStartAndEnd = date => {
+  return getStartAndEndByUnitOfTime(date, 'day');
+};
+
+export const getWeekStartAndEnd = date => {
+  return getStartAndEndByUnitOfTime(date, 'week');
+};
+
+export const getMonthStartAndEnd = date => {
+  return getStartAndEndByUnitOfTime(date, 'month');
+};
+
+export const getQuarterStartAndEnd = date => {
+  return getStartAndEndByUnitOfTime(date, 'quarter');
+};
+
+export const getYearStartAndEnd = date => {
+  return getStartAndEndByUnitOfTime(date, 'year');
+};
+
+export const getStartAndEndByUnitOfTime = (
+  date = new Date(),
+  unitOfTime = 'week'
+) => {
+  const day = moment(date);
+  return [day.startOf(unitOfTime).toDate(), day.endOf(unitOfTime).toDate()];
+};
+
 export const getStartAndEnd = days => {
   return {
-    start: R.head()(days),
-    end: R.last()(days),
+    start: R.head()(days).format(),
+    end: R.last()(days).format(),
   };
 };

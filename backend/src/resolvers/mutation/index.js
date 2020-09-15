@@ -21,4 +21,7 @@ export { default as createMedicalHistory } from './create-medical-history';
 export { default as createFamilyHistory } from './create-family-history';
 export { default as createExpense } from './create-expense';
 export { default as createRevenue } from './create-revenue';
+export { default as updateExpense } from './update-expense';
+export { default as updateRevenue } from './update-revenue';
+export { default as setAvatar } from './set-avatar';
 export { default as updateUserPermissions } from './update-user-permissions';

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import { FlexboxGrid, Panel } from 'rsuite';
+import { Panel } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 
 import {
@@ -8,17 +8,16 @@ import {
   AdjustAppointment,
   Div,
   H5,
-  H6,
   CRButton,
   CRPanelGroup,
+  CRTable,
 } from 'components';
-import { format } from 'utils/date';
 import { isScheduled } from 'services/appointment';
 import { canAjdust } from 'services/appointment';
 
 import { PrintOLIcon } from 'components/icons';
-import { Headers, Body } from './style';
-import NoAppointments from './no-appointments';
+import { formatDate } from 'utils/date';
+import { FULL_DATE_FORMAT } from 'utils/constants';
 
 function ListAppointments({
   appointments,
@@ -40,86 +39,85 @@ function ListAppointments({
         bodyFill
         defaultExpanded={defaultExpanded}
       >
-        <Headers>
-          <Headers.Item>Time</Headers.Item>
-          <Headers.Item>Name</Headers.Item>
-          <Headers.Item>Phone</Headers.Item>
-        </Headers>
+        <Div padding={20} wd>
+          <CRTable
+            autoHeight
+            data={appointments}
+            onRowClick={appointment => {
+              history.push(`/appointments/${appointment.id}`);
+            }}
+          >
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ date }) => (
+                  <CRTable.CRCellStyled>
+                    {formatDate(date, FULL_DATE_FORMAT)}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
 
-        {appointments.length ? (
-          appointments.map((appointment, idx) => (
-            <Body
-              key={idx}
-              index={idx}
-              onClick={e => {
-                if (!e.target.getAttribute('data-trigger')) {
-                  history.push(`/appointments/${appointment.id}`);
-                }
-              }}
-            >
-              <Body.Content>
-                <FlexboxGrid align="middle">
-                  <FlexboxGrid.Item colspan={4}>
-                    <H6 fontWeight="bold" textTransform="uppercase">
-                      {format(appointment.date, 'h:mm a')}
-                    </H6>
-                  </FlexboxGrid.Item>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ patient }) => (
+                  <CRTable.CRCellStyled bold>
+                    {patient.name}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
 
-                  <FlexboxGrid.Item colspan={4}>
-                    <H6 color="texts.0" fontWeight={600}>
-                      {appointment.patient.name}
-                    </H6>
-                  </FlexboxGrid.Item>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ patient }) => (
+                  <CRTable.CRCellStyled>{patient.phoneNo}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
 
-                  <FlexboxGrid.Item colspan={4}>
-                    <H6 color="texts.0">{appointment.patient.phoneNo}</H6>
-                  </FlexboxGrid.Item>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {appointment => (
+                  <Div display="flex">
+                    {isScheduled(appointment) && (
+                      <CRButton
+                        primary
+                        round
+                        small
+                        onClick={e => {
+                          e.stopPropagation();
+                          onDone(appointment);
+                        }}
+                      >
+                        Done
+                      </CRButton>
+                    )}
 
-                  <FlexboxGrid.Item
-                    colspan={12}
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <FlexboxGrid justify="end" align="middle">
-                      {isScheduled(appointment) ? (
-                        <CRButton
-                          primary
-                          round
-                          small
-                          onClick={e => {
-                            e.stopPropagation();
-                            onDone(appointment);
-                          }}
-                        >
-                          Done
-                        </CRButton>
-                      ) : (
-                        <span>{appointment.status}</span>
-                      )}
-
-                      <ReactToPrint
-                        trigger={() => <PrintOLIcon ml={2} />}
-                        content={() => componentRef.current}
+                    <ReactToPrint
+                      trigger={() => <PrintOLIcon ml={2} />}
+                      content={() => componentRef.current}
+                    />
+                    <Div display="none">
+                      <AppointmentPrintout
+                        ref={componentRef}
+                        name={appointment.patient.name}
+                        age={appointment.patient.age}
+                        sex={appointment.patient.sex}
                       />
-                      <Div display="none">
-                        <AppointmentPrintout
-                          ref={componentRef}
-                          name={appointment.patient.name}
-                          age={appointment.patient.age}
-                          sex={appointment.patient.sex}
-                        />
-                      </Div>
-                      {canAjdust(appointment) && (
-                        <AdjustAppointment appointment={appointment} />
-                      )}
-                    </FlexboxGrid>
-                  </FlexboxGrid.Item>
-                </FlexboxGrid>
-              </Body.Content>
-            </Body>
-          ))
-        ) : (
-          <NoAppointments />
-        )}
+                    </Div>
+                    {canAjdust(appointment) && (
+                      <AdjustAppointment appointment={appointment} />
+                    )}
+                  </Div>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+          </CRTable>
+        </Div>
       </Panel>
     </CRPanelGroup>
   );

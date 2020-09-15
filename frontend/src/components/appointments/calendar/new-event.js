@@ -2,6 +2,7 @@ import React from 'react';
 
 import { CRModal, Div, CRTextInput, CRTimePicker } from 'components';
 import { Form } from 'rsuite';
+import { MIN_EVENT_DURATION } from 'utils/constants';
 
 function NewEvent({ show, onOk, onCancel, formValue, onChange }) {
   return (
@@ -20,14 +21,14 @@ function NewEvent({ show, onOk, onCancel, formValue, onChange }) {
             block
             name="start"
             placement="top"
-            minInterval={15}
+            minInterval={MIN_EVENT_DURATION}
           />
           <CRTimePicker
             label="End"
             block
             name="end"
             placement="top"
-            minInterval={15}
+            minInterval={MIN_EVENT_DURATION}
           />
         </Div>
       </Form>

@@ -2,9 +2,10 @@ import React from 'react';
 import NumberFormat from 'react-number-format';
 import { H5, CRTable } from 'components';
 import { formatDate } from 'utils/date';
+import { Icon } from 'rsuite';
 
 // import NumberFormat from 'react-number-format';
-const AddExpense = ({ title, data }) => {
+const ListData = ({ title, data, onEdit }) => {
   return (
     <div>
       <H5 mb={3} textAlign="center">
@@ -39,11 +40,18 @@ const AddExpense = ({ title, data }) => {
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
+
+        <CRTable.CRColumn width={35}>
+          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
       </CRTable>
     </div>
   );
 };
 
-AddExpense.propTypes = {};
+ListData.propTypes = {};
 
-export default AddExpense;
+export default ListData;

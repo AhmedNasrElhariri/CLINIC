@@ -30,7 +30,7 @@ const ChangePassword = () => {
 
   return (
     <CRCard borderless>
-      <Div mb={40} display="flex" justifyContent="space-between">
+      <Div mb={30} display="flex" justifyContent="space-between">
         <H6 fontWeight="bold">Change Password</H6>
         <CRButton
           small

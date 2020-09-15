@@ -1,4 +1,5 @@
 # Prisma Migrate lockfile v1
 
-20200823060028-init
-20200831013022-change-static-info-default-values
+20200911101639-init
+20200911102154-set-appt-date-not-unique
+20200915161934-add-avatar

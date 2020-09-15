@@ -20,8 +20,8 @@ export default function Sidebar({ onLogout }) {
 
   return (
     <ContainerStyled>
-      <Div position="absolute" left={35} top={50}>
-        <Img src="/logo.png" alt="" width={120} />
+      <Div position="absolute" left={35} top={-10}>
+        <Img src="/logo.svg" alt="" width={150} />
       </Div>
       <BodyStyled>
         {items.map(({ to, name }, idx) => (

@@ -112,14 +112,23 @@ VALUES
 DELETE FROM public."Appointment";
 DELETE FROM public."AppointmentField";
 DELETE FROM public."Clinic";
+DELETE FROM public."Expense";
+DELETE FROM public."FamilyHistory";
 DELETE FROM public."Field";
 DELETE FROM public."FieldGroup";
 DELETE FROM public."File";
+DELETE FROM public."LabDocument";
+DELETE FROM public."MedicalHistory";
 DELETE FROM public."Organization";
 DELETE FROM public."Patient";
+DELETE FROM public."PatientLab";
+DELETE FROM public."Revenue";
 DELETE FROM public."User";
 DELETE FROM public."View";
 DELETE FROM public."ViewStatus";
+DELETE FROM public."Week";
+DELETE FROM public."WorkingHours";
+DELETE FROM public."_ClinicToUser";
 DELETE FROM public."_Migration";
 
 sudo -u postgres psql

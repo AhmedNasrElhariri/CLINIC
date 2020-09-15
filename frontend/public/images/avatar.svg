@@ -1,0 +1,18 @@
+<svg id="patient" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="55" height="55" viewBox="0 0 55 55">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#b6b7b7"/>
+      <stop offset="1" stop-color="#a6abab"/>
+    </linearGradient>
+    <clipPath id="clip-path">
+      <circle id="Ellipse_271" data-name="Ellipse 271" cx="27.5" cy="27.5" r="27.5" transform="translate(392 535)" fill="url(#linear-gradient)"/>
+    </clipPath>
+  </defs>
+  <circle id="Ellipse_238" data-name="Ellipse 238" cx="27.5" cy="27.5" r="27.5" fill="url(#linear-gradient)"/>
+  <g id="Mask_Group_1898" data-name="Mask Group 1898" transform="translate(-392 -535)" clip-path="url(#clip-path)">
+    <g id="person" transform="translate(322.96 518.531)">
+      <path id="Path_2229" data-name="Path 2229" d="M113.77,244.255a23.021,23.021,0,0,0-4.982-14.518,15.176,15.176,0,0,0-23.767,0,23.014,23.014,0,0,0-4.981,14.5c1.769.886,9.091,4.3,16.865,4.3A37.527,37.527,0,0,0,113.77,244.255Z" transform="translate(0 -173.598)" fill="#fff"/>
+      <circle id="Ellipse_270" data-name="Ellipse 270" cx="8.434" cy="8.434" r="8.434" transform="translate(88.47 32)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

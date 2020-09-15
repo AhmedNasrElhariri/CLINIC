@@ -18,16 +18,17 @@ import { isValid } from 'services/form';
 import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import useGlobalState from 'state';
-import { sortAppointmentsByDate } from 'services/appointment';
+import { sortAppointmentsByDate, isUrgent } from 'services/appointment';
 
 import useFetchData from './fetch-data';
 import { filterPatientBy } from 'utils/patient';
+import { APPT_TYPE } from 'utils/constants';
 
 const { StringType } = Schema.Types;
 
-const appointmentTypes = ['Examination', 'Followup'].map(t => ({
-  label: t,
-  value: t,
+const appointmentTypes = Object.entries(APPT_TYPE).map(([label, value]) => ({
+  label,
+  value,
 }));
 
 const model = Schema.Model({
@@ -71,7 +72,7 @@ export default function NewAppointment() {
   const showModal = useCallback(() => setPatientModal(true), []);
   const hideModal = useCallback(() => setPatientModal(false), []);
 
-  const selectedAppointments = useMemo(
+  const selectedDayAppointments = useMemo(
     () =>
       appointments.filter(({ date }) =>
         moment(date).isSame(formValue.date, 'day')
@@ -98,6 +99,9 @@ export default function NewAppointment() {
 
   const disabledMinutes = useCallback(
     minute => {
+      if (isUrgent(formValue)) {
+        return false;
+      }
       const selectedDate = formValue.date;
 
       const newDate = moment(selectedDate).set({
@@ -110,13 +114,33 @@ export default function NewAppointment() {
         return true;
       }
 
-      return selectedAppointments.some(({ date }) => {
+      return selectedDayAppointments.some(({ date }) => {
         const startDate = moment(date);
-        const endDate = moment(startDate).add(15, 'minutes');
+        const endDate = moment(startDate).add(5, 'minutes');
         return newDate.isBetween(startDate, endDate, 'minutes', '[)');
       });
     },
-    [formValue.date, selectedAppointments, selectedHour]
+    [formValue, selectedDayAppointments, selectedHour]
+  );
+
+  const hideHours = useCallback(
+    hours => {
+      const hourDate = moment(formValue.date).set({
+        hours,
+      });
+      if (hourDate.isBefore(moment(), 'hours')) {
+        return true;
+      }
+      if (isUrgent(formValue)) {
+        return false;
+      }
+      return (
+        selectedDayAppointments.filter(app =>
+          moment(app.date).isSame(hourDate, 'hours')
+        ).length >= 4
+      );
+    },
+    [formValue, selectedDayAppointments]
   );
 
   return (
@@ -147,64 +171,71 @@ export default function NewAppointment() {
           setFormValue(initialValues);
         }}
       >
-        <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
-          <CRSelectInput
-            label="Examination/Followup"
-            name="type"
-            block
-            cleanable={false}
-            searchable={false}
-            data={appointmentTypes}
-          />
-
-          <CRSelectInput
-            label="Patient"
-            name="patient"
-            placeholder="Name / Phone no"
-            accepter={SelectPicker}
-            cleanable={true}
-            labelKey="name"
-            valueKey="id"
-            data={patients}
-            searchBy={searchBy}
-            virtualized={false}
-            block
+        <Div>
+          <Form
+            fluid
+            model={model}
+            formValue={formValue}
+            onChange={setFormValue}
           >
-            <Div display="flex" justifyContent="flex-end">
-              <H5
-                onClick={showModal}
-                disabled={!canAddPatient(formValue)}
-                variant="primary"
-                fontWeight={600}
-                className="cursor-pointer"
-                mt={2}
-              >
-                Create New Patient
-              </H5>
-            </Div>
-          </CRSelectInput>
+            <CRSelectInput
+              label="Examination/Followup"
+              name="type"
+              block
+              cleanable={false}
+              searchable={false}
+              data={appointmentTypes}
+            />
 
-          <CRDatePicker
-            label="Date"
-            block
-            name="date"
-            accepter={DatePicker}
-            disabledDate={isBeforeToday}
-            placement="top"
-          />
+            <CRSelectInput
+              label="Patient"
+              name="patient"
+              placeholder="Name / Phone no"
+              accepter={SelectPicker}
+              cleanable={true}
+              labelKey="name"
+              valueKey="id"
+              data={patients}
+              searchBy={searchBy}
+              virtualized={false}
+              block
+            >
+              <Div display="flex" justifyContent="flex-end">
+                <H5
+                  onClick={showModal}
+                  disabled={!canAddPatient(formValue)}
+                  variant="primary"
+                  fontWeight={600}
+                  className="cursor-pointer"
+                  mt={2}
+                >
+                  Create New Patient
+                </H5>
+              </Div>
+            </CRSelectInput>
 
-          <CRTimePicker
-            label="Time"
-            block
-            name="time"
-            accepter={DatePicker}
-            placement="top"
-            disabledMinutes={disabledMinutes}
-            minInterval={15}
-            startHour={8}
-            onSelect={a => setSelectedHour(moment(a).hour())}
-          />
-        </Form>
+            <CRDatePicker
+              label="Date"
+              block
+              name="date"
+              accepter={DatePicker}
+              disabledDate={isBeforeToday}
+              placement="top"
+            />
+
+            <CRTimePicker
+              label="Time"
+              block
+              name="time"
+              accepter={DatePicker}
+              placement="top"
+              disabledMinutes={disabledMinutes}
+              hideHours={hideHours}
+              startHour={8}
+              onSelect={a => setSelectedHour(moment(a).hour())}
+            />
+          </Form>
+        </Div>
       </CRModal>
     </>
   );

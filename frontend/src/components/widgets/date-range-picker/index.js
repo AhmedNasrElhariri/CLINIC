@@ -2,36 +2,31 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { FormGroup, FormControl, DateRangePicker } from 'rsuite';
-import { byTheme } from 'services/theme';
 import Label from '../label';
 
-const theme = {
-  fontSize: {
-    normal: 18,
-    large: 22,
-  },
+const smallStyle = css`
+  font-size: 18px;
+  height: 42px;
+  border-radius: 10px;
+`;
 
-  height: {
-    normal: 48,
-    large: 59,
-  },
-  borderRadius: {
-    normal: 10,
-    large: 17,
-  },
-};
+const largeStyle = css`
+  font-size: 22px;
+  height: 59px;
+  border-radius: 17px;
+`;
 
 const paddingLeft = css`
   padding-left: 22px;
 `;
 
-const DatePickerStyled = styled(DateRangePicker)`
+const DateRangePickerStyled = styled(DateRangePicker)`
   & a.rs-picker-toggle.rs-btn {
     padding: 0;
     ${paddingLeft}
     display: flex;
     align-items: center;
-    ${byTheme(theme)}
+    ${props => (props.small ? smallStyle : largeStyle)}
     &:focus,
     &:active,
     &:hover,
@@ -44,6 +39,7 @@ const DatePickerStyled = styled(DateRangePicker)`
   }
   & .rs-picker-toggle-caret {
     color: ${props => props.theme.colors.text} !important;
+    top: auto !important;
   }
 `;
 
@@ -54,20 +50,20 @@ const CustomDatePicker = ({
   ...props
 }) => {
   return (
-    <DatePickerStyled
+    <DateRangePickerStyled
       {...props}
       value={value}
       format={format}
       onChange={onChange}
       ranges={[]}
-    ></DatePickerStyled>
+    ></DateRangePickerStyled>
   );
 };
 
-export default ({ label, children, ...rest }) => {
+export default ({ label, noLabel, children, ...rest }) => {
   return (
     <FormGroup>
-      <Label>{label}</Label>
+      <Label noLabel={noLabel}>{label}</Label>
       <FormControl {...rest} accepter={CustomDatePicker} />
       {children}
     </FormGroup>

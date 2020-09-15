@@ -17,7 +17,6 @@ import {
   H3,
   CRButton,
   PatientInfo,
-  CRResponsiveNav,
 } from 'components';
 import AppointmentData from './appointment-data';
 import Prescription from './prescription';
@@ -27,10 +26,14 @@ import {
   getFormInitValues,
   mapFormValueToAppointmentData,
   isArchived,
+  isScheduled,
+  isDone,
 } from 'services/appointment';
 
 import useAppointmentHistory from './fetch-appointment-history';
 import History from './patient-history';
+import CRNav from '../../widgets/nav/normal';
+import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
 
 const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
 
@@ -39,8 +42,9 @@ function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('0');
+  const [activeTab, setActiveTab] = useState('1');
   const { appointmentId } = useParams();
+  const { refetchRevenues } = useFetchAccountingData();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
       id: appointmentId,
@@ -58,6 +62,7 @@ function Appointment() {
   });
 
   const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
+    refetchQueries: () => [refetchRevenues()],
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
       setDisabled(true);
@@ -118,33 +123,41 @@ function Appointment() {
         <Div display="flex" justifyContent="space-between">
           <H3 mb={64}>Appointment</H3>
           <ButtonToolbar>
-            <CRButton primary onClick={() => setPrescriptionVisible(true)}>
+            <CRButton
+              small
+              primary
+              onClick={() => setPrescriptionVisible(true)}
+            >
               Prescription
               <Icon icon="add" />
             </CRButton>
-            <CRButton primary onClick={onUpdate} disabled={disabled}>
-              Save <Icon icon="save" />
-            </CRButton>
-            <CRButton primary onClick={onArchive} disabled={disabled}>
-              Archive <Icon icon="archive" />
-            </CRButton>
+            {isScheduled(appointment) && (
+              <CRButton small primary onClick={onUpdate} disabled={disabled}>
+                Save <Icon icon="save" />
+              </CRButton>
+            )}
+            {(isScheduled(appointment) || isDone(appointment)) && (
+              <CRButton small primary onClick={onArchive} disabled={disabled}>
+                Archive <Icon icon="archive" />
+              </CRButton>
+            )}
           </ButtonToolbar>
         </Div>
         <Div display="flex">
           <Div flexGrow={1}>
             <Div display="flex" justifyContent="space-between">
-              <CRResponsiveNav
+              <CRNav
                 appearance="tabs"
                 activeKey={activeTab}
                 onSelect={setActiveTab}
                 style={{ width: 780 }}
               >
                 {tabs.map((t, idx) => (
-                  <CRResponsiveNav.CRItem eventKey={idx + ''} key={idx}>
+                  <CRNav.CRItem eventKey={idx + ''} key={idx}>
                     {t}
-                  </CRResponsiveNav.CRItem>
+                  </CRNav.CRItem>
                 ))}
-              </CRResponsiveNav>
+              </CRNav>
             </Div>
             <Div py={3} bg="white">
               {showComp('0') && (
@@ -155,7 +168,12 @@ function Appointment() {
                   groups={groups}
                 />
               )}
-              {showComp('1') && <PatientSummary summary={appointmentHistory} />}
+              {showComp('1') && (
+                <PatientSummary
+                  summary={appointmentHistory}
+                  fields={viewFields}
+                />
+              )}
               {showComp('2') && (
                 <PatientProgress
                   history={appointmentHistory}

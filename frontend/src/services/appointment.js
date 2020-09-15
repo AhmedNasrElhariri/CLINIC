@@ -2,7 +2,8 @@ import * as R from 'ramda';
 import moment from 'moment';
 import { mapArrToChoices } from 'utils/misc';
 import { isDateBefore } from 'utils/date';
-import { filterPatientBy, filterPatients } from 'utils/patient';
+import { filterPatientBy } from 'utils/patient';
+import { APPT_TYPE } from '../utils/constants';
 
 const MAX_TIMESTAMP = 8640000000000000;
 
@@ -71,6 +72,8 @@ const filterByType = (appointments, filter) => {
   return !type ? appointments : appointments.filter(app => app.type === type);
 };
 
+export const sortAppointments = R.sort(R.descend(R.prop('date')));
+
 export const filterAppointments = (appointments = [], filter) => {
   const filters = [filterByDate, filterByPatientNameOrPhoneNo, filterByType];
   return filters.reduce((app, fn) => fn(app, filter), appointments);
@@ -79,6 +82,8 @@ export const filterAppointments = (appointments = [], filter) => {
 export const getAppointmentTypes = () => ['Examination', 'Followup'];
 
 export const appointmentTypes = mapArrToChoices(getAppointmentTypes());
+
+export const isDone = appointment => appointment.status === 'Done';
 
 export const isArchived = appointment => appointment.status === 'Archived';
 
@@ -95,4 +100,9 @@ export const sortAppointmentsByDate = appointments => {
   return R.sort((a, b) => moment(a.date).valueOf() - moment(b.date).valueOf())(
     appointments
   );
+};
+
+export const isUrgent = appointment => {
+  console.log(appointment);
+  return R.propEq('type', APPT_TYPE.Urgent)(appointment);
 };

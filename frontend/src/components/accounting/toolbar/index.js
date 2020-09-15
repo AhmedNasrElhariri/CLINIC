@@ -1,12 +1,20 @@
 import React from 'react';
 
-import { CRButtonGroup, Div, CRButton } from 'components';
+import { CRButtonGroup, Div, CRButton, CRDateRangePicker } from 'components';
 import PdfView from './pdf';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
+import { Form } from 'rsuite';
 
-const Toolbar = ({ activeKey, onAddExpense, onAddRevenue, onSelect, data }) => {
+const Toolbar = ({
+  activeKey,
+  onAddExpense,
+  onAddRevenue,
+  onSelect,
+  onChangePeriod,
+  data,
+}) => {
   return (
-    <Div display="flex" justifyContent="space-between">
+    <Div display="flex">
       <CRButtonGroup onSelect={onSelect} activeKey={activeKey}>
         <CRButtonGroup.CRButton eventKey={ACCOUNTING_VIEWS.DAY}>
           Today
@@ -24,16 +32,20 @@ const Toolbar = ({ activeKey, onAddExpense, onAddRevenue, onSelect, data }) => {
           Year
         </CRButtonGroup.CRButton>
       </CRButtonGroup>
-      <Div>
-        <CRButton primary small onClick={onAddExpense}>
-          + Expense
-        </CRButton>
-        <CRButton primary small onClick={onAddRevenue} ml={1}>
-          + Reveneue
-        </CRButton>
-        <Div ml={1}>
-          <PdfView data={data} />
-        </Div>
+
+      <Div width={180}>
+        <Form fluid>
+          <CRDateRangePicker
+            name=""
+            label=""
+            placeholder="Timeframe"
+            size="sm"
+            block
+            small
+            noLabel
+            onChange={onChangePeriod}
+          />
+        </Form>
       </Div>
     </Div>
   );

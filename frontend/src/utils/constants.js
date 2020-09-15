@@ -5,6 +5,7 @@ export const TEXT_FIELD_TYPE = 'Text';
 export const LONG_TEXT_FIELD_TYPE = 'LongText';
 
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
+export const FULL_DATE_FORMAT = 'hh:mm a';
 
 export const FIELD_TYPES = [
   { label: 'Number', value: NUMBER_FIELD_TYPE },
@@ -18,7 +19,40 @@ export const MEDICAL_HISTORY_TYPES = Object.freeze({
   social: 'Social',
 });
 
+export const APPT_STATUS = Object.freeze({
+  SCHEDUlEd: 'Scheduled',
+  CANCELLED: 'Cancelled',
+  MISSED: 'Missed',
+  CHANGED: 'Changed',
+  DONE: 'Done',
+  ARCHIVED: 'Archived',
+});
+
+export const APPT_TYPE = Object.freeze({
+  Examination: 'Examination',
+  Followup: 'Followup',
+  Urgent: 'Urgent',
+});
+
+export const MIN_EVENT_DURATION = 15;
+
+export const MIN_EXAMINATION_DURATION = 5;
+
 export const DAYS = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI'];
+
+export const FORM_ACTIONS = Object.freeze({
+  CREATE: 'CREATE',
+  EDIT: 'EDIT',
+});
+
+export const ACCOUNTING_VIEWS = {
+  DAY: 'DAY',
+  WEEK: 'WEEK',
+  MONTH: 'MONTH',
+  QUARTER: 'QUARTER',
+  YEAR: 'YEAR',
+  TIME_SLOT: 'TIME_SLOT',
+};
 
 export const RAW_PERMISSIONS = new Map([
   [
@@ -95,12 +129,3 @@ export const PERMISSIONS = new Map(
     value.map(v => ({ ...v, id: v.action + v.subject })),
   ])
 );
-
-
-export const ACCOUNTING_VIEWS = {
-  DAY: 'DAY',
-  WEEK: 'WEEK',
-  MONTH: 'MONTH',
-  QUARTER: 'QUARTER',
-  YEAR: 'YEAR',
-};

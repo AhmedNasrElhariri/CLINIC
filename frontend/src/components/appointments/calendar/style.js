@@ -24,6 +24,11 @@ const variants = props =>
         border: `1px solid ${props.theme.colors.events[2].color}`,
         background: props.theme.colors.events[2].bg,
       },
+      four: {
+        color: props.theme.colors.events[3].color,
+        border: `1px solid ${props.theme.colors.events[3].color}`,
+        background: props.theme.colors.events[3].bg,
+      },
     },
   });
 

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { formatDate } from 'utils/date';
-import { filterAppointments } from 'services/appointment';
+import { filterAppointments, sortAppointments } from 'services/appointment';
 import { Div, CRCard, H3, CRTable } from 'components';
 import Filter from './filter';
 import useFetchAppointments from 'hooks/fetch-appointments';
@@ -14,7 +14,7 @@ function Appointments() {
   const { appointments } = useFetchAppointments();
 
   const filteredAppointments = useMemo(
-    () => filterAppointments(appointments, formValue),
+    () => sortAppointments(filterAppointments(appointments, formValue)),
     [appointments, formValue]
   );
 

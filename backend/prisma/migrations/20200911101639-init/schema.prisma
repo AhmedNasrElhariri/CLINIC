@@ -1,4 +1,4 @@
-datasource db {
+datasource postgresql {
   provider = "postgresql"
   url = "***"
 }
@@ -10,6 +10,7 @@ generator client {
 enum AppointmentType {
   Examination
   Followup
+  Urgent
 }
 
 enum AppointmentStatus {
@@ -169,14 +170,14 @@ model Clinic {
 
 
   // shown on prescription
-  doctorName           String?       @default("''")
+  doctorName           String?       @default("")
   // shown on prescription
-  doctorTitle          String?       @default("''")
-  phoneNo              String?       @default("''")
+  doctorTitle          String?       @default("")
+  phoneNo              String?       @default("")
   // shown on prescription
-  doctorJobDescription String?       @default("''")
+  doctorJobDescription String?       @default("")
   // shown on prescription
-  address              String?       @default("''")
+  address              String?       @default("")
   logo                 File?         @relation(fields: [logoId], references: [id])
   logoId               String?
   users                User[]        @relation(references: [id])

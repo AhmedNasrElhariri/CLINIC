@@ -10,6 +10,7 @@ generator client {
 enum AppointmentType {
   Examination
   Followup
+  Urgent
 }
 
 enum AppointmentStatus {
@@ -59,6 +60,7 @@ model User {
   WorkingHours   WorkingHours[]
   Snippet        Snippet[]
   permissions    Json           @default("[]")
+  avatar         String?         
 }
 
 model Patient {
@@ -78,7 +80,7 @@ model Patient {
 
 model Appointment {
   id        String             @default(uuid()) @id
-  date      DateTime           @default(now()) @unique
+  date      DateTime           @default(now())
   type      AppointmentType
   patient   Patient            @relation(fields: [patientId], references: [id])
   patientId String

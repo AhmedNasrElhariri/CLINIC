@@ -11,6 +11,7 @@ enum PatientMembershipType {
 enum AppointmentType {
   Examination
   Followup
+  Urgent
 }
 
 enum Sex {
@@ -84,6 +85,9 @@ type Mutation {
   createFamilyHistory(familyHistory: FamilyHistoryInput!): FamilyHistory!
   createExpense(expense: ExpenseInput!): Expense
   createRevenue(revenue: RevenueInput!): Revenue
+  updateExpense(expense: ExpenseUpdateInput!): Expense
+  updateRevenue(revenue: RevenueUpdateInput!): Revenue
+  setAvatar(url: String!): Boolean
   updateUserPermissions(userId: ID!, permissions: [PermissionInput!]!): Boolean
 }
 
@@ -375,6 +379,14 @@ input ExpenseInput {
   clinicId: ID!
 }
 
+input ExpenseUpdateInput {
+  id: ID!
+  name: String!
+  amount: Int!
+  date: Date!
+  invoiceNo: String
+}
+
 ########################### Revenue ##################################
 
 type Revenue {
@@ -391,4 +403,12 @@ input RevenueInput {
   date: Date!
   invoiceNo: String
   clinicId: ID!
+}
+
+input RevenueUpdateInput {
+  id: ID!
+  name: String!
+  amount: Int!
+  date: Date!
+  invoiceNo: String
 }

@@ -1,14 +1,18 @@
 import React from 'react';
-import { Img } from 'components';
+import { Icon } from 'rsuite';
+import { Div } from '../../widgets/html/index';
 
 const Avatar = ({ onClick }) => (
-  <Img
-    onClick={onClick}
-    src="/images/avatar.jpg"
-    width={45}
-    height={45}
-    borderRadius="50%"
-  />
+  <Div borderRadius="50%" onClick={onClick}>
+    <Icon icon="avatar" size="3x" />
+  </Div>
+  // <Img
+  //   onClick={onClick}
+  //   src="/images/avatar.svg"
+  //   width={45}
+  //   height={45}
+  //   borderRadius="50%"
+  // />
 );
 
 export default Avatar;

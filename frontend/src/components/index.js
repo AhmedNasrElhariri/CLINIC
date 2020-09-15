@@ -47,7 +47,7 @@ export { default as ViewForm } from './views/view-form';
 export { default as CreateDefaultView } from './views/create-default-view';
 
 /******************     Settings    *********************************/
-export { default as AppointmentSettings } from './settings/clinic';
+export { default as ClinicInfo } from './settings/clinic';
 export { default as StaticSettings } from './settings/static';
 
 /******************     Layout    *********************************/

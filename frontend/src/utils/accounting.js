@@ -10,11 +10,15 @@ const granularity = {
   [VIEWS.YEAR]: 'year',
 };
 
-const filterByView = (data, view) => {
+const filterByView = (data, { view } = {}) => {
   return data.filter(i => moment(i.date).isSame(moment(), granularity[view]));
 };
 
-export const filterAccountingList = (data, view) => {
-  const filters = [filterByView];
-  return filters.reduce((result, fn) => fn(result, view), data);
+const filterByPeriod = (data, { period: [start, end] }) => {
+  return data.filter(i => moment(i.date).isBetween(start, end));
+};
+
+export const filterAccountingList = (data, view, period) => {
+  const filters = period && period.length ? [filterByPeriod] : [filterByView];
+  return filters.reduce((result, fn) => fn(result, { view, period }), data);
 };

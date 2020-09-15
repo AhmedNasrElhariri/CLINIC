@@ -56,6 +56,7 @@ function TodayAppointments() {
         title="Completed Appointments"
         appointments={completedAppointments}
         onDone={onClickDone}
+        defaultExpanded={true}
       />
     </>
   );

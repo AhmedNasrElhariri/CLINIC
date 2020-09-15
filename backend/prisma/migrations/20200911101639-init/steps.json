@@ -6,7 +6,8 @@
       "enum": "AppointmentType",
       "values": [
         "Examination",
-        "Followup"
+        "Followup",
+        "Urgent"
       ]
     },
     {
@@ -55,13 +56,13 @@
     },
     {
       "tag": "CreateSource",
-      "source": "db"
+      "source": "postgresql"
     },
     {
       "tag": "CreateArgument",
       "location": {
         "tag": "Source",
-        "source": "db"
+        "source": "postgresql"
       },
       "argument": "provider",
       "value": "\"postgresql\""
@@ -70,7 +71,7 @@
       "tag": "CreateArgument",
       "location": {
         "tag": "Source",
-        "source": "db"
+        "source": "postgresql"
       },
       "argument": "url",
       "value": "\"***\""
@@ -1967,7 +1968,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "\"''\""
+      "value": "\"\""
     },
     {
       "tag": "CreateField",
@@ -1999,7 +2000,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "\"''\""
+      "value": "\"\""
     },
     {
       "tag": "CreateField",
@@ -2031,7 +2032,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "\"''\""
+      "value": "\"\""
     },
     {
       "tag": "CreateField",
@@ -2063,7 +2064,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "\"''\""
+      "value": "\"\""
     },
     {
       "tag": "CreateField",
@@ -2095,7 +2096,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "\"''\""
+      "value": "\"\""
     },
     {
       "tag": "CreateField",

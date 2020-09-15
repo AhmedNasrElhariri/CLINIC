@@ -1,14 +1,11 @@
 import React from 'react';
+import * as R from 'ramda';
 import PropTypes from 'prop-types';
 
 import DatePicker from '../date-picker';
+import { MIN_EXAMINATION_DURATION } from 'utils/constants';
 
-const TimePicker = ({
-  minInterval = 10,
-  startHour = 12,
-  endHour = 24,
-  ...props
-}) => {
+const TimePicker = ({ minInterval, startHour, endHour, ...props }) => {
   return (
     <DatePicker
       format="hh:mm a"
@@ -17,6 +14,12 @@ const TimePicker = ({
       {...props}
     />
   );
+};
+
+TimePicker.defaultProps = {
+  minInterval: MIN_EXAMINATION_DURATION,
+  startHour: 12,
+  endHour: 24,
 };
 
 TimePicker.propTypes = {

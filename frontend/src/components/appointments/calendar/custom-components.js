@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import * as R from 'ramda';
 import {
   MonthEventStyled,
@@ -13,7 +13,6 @@ import {
   PopoverStyled,
   PatientName,
   ActionIconStyled,
-  CloseIconStyled,
 } from './style';
 
 import Toolbar from './toolbar';
@@ -21,6 +20,7 @@ import CalendarContext from './context';
 import { Div } from 'components';
 import { formatDate } from 'utils/date';
 import { Whisper } from 'rsuite';
+import { canAjdust } from 'services/appointment';
 
 const EventDetails = ({
   patient,
@@ -30,19 +30,21 @@ const EventDetails = ({
   onEdit,
   onClose,
   id,
+  canAjdust,
   ...props
 }) => {
   const { onCancel, onAdjust } = useContext(CalendarContext);
   return (
     <Div>
-      {/* <Div textAlign="right">
-        <CloseIconStyled onClick={onClose} />
-      </Div> */}
       <Div display="flex" justifyContent="space-between" alignItems="center">
         <PatientName>{R.prop('name')(patient)}</PatientName>
         <Div>
-          <ActionIconStyled icon="edit" onClick={() => onAdjust(id)} />
-          <ActionIconStyled icon="trash-o" onClick={() => onCancel(id)} />
+          {canAjdust && (
+            <>
+              <ActionIconStyled icon="edit" onClick={() => onAdjust(id)} />
+              <ActionIconStyled icon="trash-o" onClick={() => onCancel(id)} />
+            </>
+          )}
         </Div>
       </Div>
       <Div fontSize={14}>{name}</Div>
@@ -66,7 +68,7 @@ export default {
             trigger="click"
             speaker={
               <PopoverStyled {...event}>
-                <EventDetails {...event} />
+                <EventDetails {...event} canAjdust={canAjdust(event)}/>
               </PopoverStyled>
             }
           >

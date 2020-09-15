@@ -6,6 +6,14 @@ import client from 'apollo-client/client';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
 import useGlobalState from 'state';
 import { filterAccountingList } from 'utils/accounting';
+import { ACCOUNTING_VIEWS } from 'utils/constants';
+import {
+  getDayStartAndEnd,
+  getWeekStartAndEnd,
+  getMonthStartAndEnd,
+  getQuarterStartAndEnd,
+  getYearStartAndEnd,
+} from 'utils/date';
 
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
@@ -17,7 +25,7 @@ export function useVariables() {
   };
 }
 
-const useFetchAccountingData = view => {
+const useFetchAccountingData = ({ view, period } = {}) => {
   const variables = useVariables();
   const { data: expensesData } = useQuery(LIST_EXPENSES, {
     variables,
@@ -34,15 +42,15 @@ const useFetchAccountingData = view => {
     revenueData,
   ]);
 
-  const expenses = useMemo(() => filterAccountingList(allExpenses, view), [
-    allExpenses,
-    view,
-  ]);
+  const expenses = useMemo(
+    () => filterAccountingList(allExpenses, view, period),
+    [allExpenses, period, view]
+  );
 
-  const revenues = useMemo(() => filterAccountingList(allRevenues, view), [
-    allRevenues,
-    view,
-  ]);
+  const revenues = useMemo(
+    () => filterAccountingList(allRevenues, view, period),
+    [allRevenues, period, view]
+  );
 
   const totalExpenses = useMemo(
     () => expenses.reduce((acc, e) => acc + e.amount, 0),
@@ -54,12 +62,31 @@ const useFetchAccountingData = view => {
     [revenues]
   );
 
+  const getTimeFrameByView = view => {
+    const viewVsFn = {
+      [ACCOUNTING_VIEWS.DAY]: getDayStartAndEnd,
+      [ACCOUNTING_VIEWS.WEEK]: getWeekStartAndEnd,
+      [ACCOUNTING_VIEWS.MONTH]: getMonthStartAndEnd,
+      [ACCOUNTING_VIEWS.QUARTER]: getQuarterStartAndEnd,
+      [ACCOUNTING_VIEWS.YEAR]: getYearStartAndEnd,
+    };
+
+    if (viewVsFn[view]) {
+      return viewVsFn[view]();
+    }
+  };
+  const timeFrame = useMemo(
+    () => (period && period.length ? period : getTimeFrameByView(view)),
+    [period, view]
+  );
+
   return useMemo(
     () => ({
       expenses,
       revenues,
       totalExpenses,
       totalRevenues,
+      timeFrame,
       updateExpensesCache: expenses => {
         client.writeQuery({
           query: LIST_EXPENSES,
@@ -83,7 +110,7 @@ const useFetchAccountingData = view => {
         variables,
       }),
     }),
-    [expenses, revenues, totalExpenses, totalRevenues, variables]
+    [expenses, revenues, timeFrame, totalExpenses, totalRevenues, variables]
   );
 };
 

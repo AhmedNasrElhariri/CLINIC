@@ -43,6 +43,8 @@ const LinkStyled = styled(Link)`
     opacity: 1;
   }
   position: relative;
+  padding-right: 10px;
+
 `;
 
 const VBorder = styled.span`

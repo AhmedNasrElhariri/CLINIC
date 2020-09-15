@@ -12,7 +12,7 @@ import {
   ReportsContainer,
   ListViews,
   CreateView,
-  AppointmentSettings,
+  ClinicInfo,
   StaticSettings,
   Snippets,
   ListUsers,
@@ -60,8 +60,8 @@ function AppRouter() {
       <Route path="/login">
         <Redirect to="/" />
       </Route>
-      <Route path="/settings/appointment">
-        <AppointmentSettings />
+      <Route path="/settings/clinic">
+        <ClinicInfo />
       </Route>
       <Route path="/settings/static">
         <StaticSettings />

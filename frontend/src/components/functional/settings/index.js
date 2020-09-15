@@ -8,7 +8,7 @@ const items = [
   {
     name: 'Clinic Information',
     icon: '/icons/clinic.png',
-    path: '/settings/appointment',
+    path: '/settings/clinic',
   },
   {
     name: 'Static Info',

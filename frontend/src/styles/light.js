@@ -4,7 +4,8 @@ const textColor = '#283148';
 const primaryColor = '#51C6F3';
 const eventColor1 = primaryColor;
 const eventColor2 = '#40C173';
-const eventColor3 = textColor;
+const eventColor3 = '#d40000';
+const eventColor4 = textColor;
 
 export const scrollbarColor = transparentize(0.8, textColor);
 
@@ -46,6 +47,11 @@ export const colors = {
       color: eventColor3,
       bg: setLightness(0.97, eventColor3),
       hover: setLightness(0.88, eventColor3),
+    },
+    {
+      color: eventColor4,
+      bg: setLightness(0.97, eventColor4),
+      hover: setLightness(0.88, eventColor4),
     },
   ],
 };

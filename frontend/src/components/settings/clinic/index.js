@@ -16,7 +16,7 @@ const initialValues = {
   appointmentsCount: 20,
 };
 
-function AppointmentSettings() {
+function ClinicInfo() {
   const [clinic, setCurrentClinic] = useGlobalState('currentClinic');
   const [formValue, setFormValue] = useState(initialValues);
 
@@ -68,4 +68,4 @@ function AppointmentSettings() {
   );
 }
 
-export default AppointmentSettings;
+export default ClinicInfo;

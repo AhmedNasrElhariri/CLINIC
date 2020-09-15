@@ -1,7 +1,8 @@
 import { prisma } from '@';
 
 const cancelAppointment = (_, { id }) => {
-  return prisma.appointment.delete({
+  return prisma.appointment.update({
+    data: { status: 'Cancelled' },
     where: { id },
   });
 };

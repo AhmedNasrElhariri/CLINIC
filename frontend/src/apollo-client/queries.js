@@ -304,6 +304,7 @@ export const CANCEL_APPOINTMENT = gql`
   mutation cancelAppointment($id: ID!) {
     cancelAppointment(id: $id) {
       id
+      status
     }
   }
 `;
@@ -459,6 +460,30 @@ export const CREATE_REVENUE = gql`
   }
 `;
 
+export const UPDATE_EXPENSE = gql`
+  mutation createExpense($expense: ExpenseUpdateInput!) {
+    updateExpense(expense: $expense) {
+      id
+      name
+      amount
+      date
+      invoiceNo
+    }
+  }
+`;
+
+export const UPDATE_REVENUE = gql`
+  mutation createExpense($revenue: RevenueUpdateInput!) {
+    updateRevenue(revenue: $revenue) {
+      id
+      name
+      amount
+      date
+      invoiceNo
+    }
+  }
+`;
+
 export const CLINIC_USERS = gql`
   query clinicUsers($clinicId: ID!) {
     clinicUsers(clinicId: $clinicId) {
@@ -504,5 +529,11 @@ export const CHANGE_PASSWORD = gql`
     ) {
       token
     }
+  }
+`;
+
+export const SET_AVATAR = gql`
+  mutation setAvatar($url: String!) {
+    setAvatar(url: $url)
   }
 `;
