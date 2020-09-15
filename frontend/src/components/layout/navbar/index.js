@@ -18,6 +18,7 @@ const Navbar = ({
   onLogout,
   onClickAvatar,
   renderSearch,
+  avatar,
 }) => {
   const notificationsRef = useRef();
   const settingsRef = useRef();
@@ -77,7 +78,7 @@ const Navbar = ({
             <SettingsIcon />
           </Whisper>
 
-          <Avatar onClick={onClickAvatar} />
+          <Avatar onClick={onClickAvatar} url={avatar} />
         </Div>
       </Div>
     </NavStyled>

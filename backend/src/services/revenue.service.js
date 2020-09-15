@@ -10,13 +10,18 @@ export const createAppointmentRevenue = async ({ id }) => {
           followupPrice: true,
         },
       },
+      patient: {
+        select: {
+          name: true,
+        },SummaryTable
+      },
     },
   });
 
-  const { clinic, type } = appointment;
+  const { clinic, type, patient } = appointment;
 
   const revenue = {
-    name: type,
+    name: type + ' - ' + patient.name,
     date: new Date(),
     amount:
       type === 'Examination' ? clinic.examinationPrice : clinic.followupPrice,

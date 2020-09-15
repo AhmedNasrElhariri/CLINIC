@@ -110,6 +110,7 @@ type User {
   name: String!
   email: String!
   permissions: [Permission!]
+  avatar: String
 }
 
 type Permission {

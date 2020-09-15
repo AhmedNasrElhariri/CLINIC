@@ -3,7 +3,7 @@ import { Uploader, Loader, Icon, Alert } from 'rsuite';
 import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
 
-import { Div, CRCard, H6, CRButton } from 'components';
+import { Div, CRCard, H6, CRButton, Img } from 'components';
 import useGlobalState from 'state';
 import { SET_AVATAR } from 'apollo-client/queries';
 
@@ -19,15 +19,18 @@ const ChangePassword = () => {
   const [uploading, setUploading] = React.useState(false);
   const [url, setURL] = React.useState(null);
   const [fileInfo, setFileInfo] = React.useState(null);
-  const [setAvatar] = useMutation(SET_AVATAR);
+  const [setAvatar] = useMutation(SET_AVATAR, {
+    onCompleted() {
+      Alert.success('Avatar has been set successfully');
+      setUser({ ...user, avatar: url });
+    },
+  });
   const [user, setUser] = useGlobalState('user');
 
-  const avatar = useMemo(() => R.propOr(fileInfo, 'avatar')(user), [
+  const avatar = useMemo(() => fileInfo || R.prop('avatar')(user), [
     fileInfo,
     user,
   ]);
-
-  console.log(avatar);
 
   return (
     <Div mb={20}>
@@ -54,7 +57,6 @@ const ChangePassword = () => {
           listType="picture"
           action="/upload"
           onSuccess={(response, file) => {
-            console.log(file);
             setUploading(false);
             setURL(response.url);
             previewFile(file.blobFile, value => {
@@ -66,7 +68,7 @@ const ChangePassword = () => {
           <button>
             {uploading && <Loader backdrop center />}
             {avatar ? (
-              <img src={avatar} width="100%" height="100%" alt="avatar" />
+              <Img src={avatar} width="100%" height="100%" alt="avatar" />
             ) : (
               <Icon icon="avatar" size="5x" />
             )}

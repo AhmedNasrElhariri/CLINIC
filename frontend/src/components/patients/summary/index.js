@@ -74,7 +74,8 @@ const PatientSummary = ({ summary, fields }) => {
             (obj, val) => Object.assign(obj, { [val.field.id]: val.value }),
             {}
           );
-        })
+        }),
+        R.filter(R.pipe(R.isEmpty, R.not))
       )(summary),
     [pickTabularFields, summary]
   );
@@ -84,7 +85,7 @@ const PatientSummary = ({ summary, fields }) => {
   }
 
   return (
-    <Div display="flex"  position="relative">
+    <Div display="flex" position="relative">
       <CRNav vertical width={300} onSelect={setActiveSession}>
         {summary.map((session, idx) => (
           <CRNav.CRVItem

@@ -6,6 +6,7 @@ export const LOGIN = gql`
       token
       user {
         id
+        avatar
         permissions {
           action
           subject
@@ -19,6 +20,7 @@ export const VERIFY = gql`
   mutation verify($token: String) {
     verify(token: $token) {
       id
+      avatar
       permissions {
         action
         subject

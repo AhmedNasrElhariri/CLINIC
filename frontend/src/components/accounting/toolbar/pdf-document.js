@@ -35,14 +35,14 @@ const styles = StyleSheet.create({
 const PdfTable = ({ data }) => (
   <Table data={data}>
     <TableHeader>
-      <TableCell>Name</TableCell>
-      <TableCell>Amount</TableCell>
-      <TableCell>Date</TableCell>
+      <TableCell weighting={0.6}>Name</TableCell>
+      <TableCell weighting={0.2}>Amount</TableCell>
+      <TableCell weighting={0.2}>Date</TableCell>
     </TableHeader>
     <TableBody>
-      <DataTableCell getContent={r => r.name} />
-      <DataTableCell getContent={r => r.amount} />
-      <DataTableCell getContent={r => formatDate(r.date)} />
+      <DataTableCell getContent={r => r.name} weighting={0.6} />
+      <DataTableCell getContent={r => r.amount} weighting={0.2} />
+      <DataTableCell getContent={r => formatDate(r.date)} weighting={0.2} />
     </TableBody>
   </Table>
 );
@@ -53,7 +53,7 @@ const calculateTotal = data =>
 const PdfDocument = ({ period, data: { revenues, expenses } }) => {
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" orientation="landscape" style={styles.page}>
         <Text>Accounting Report</Text>
         <Text>
           from {formatDate(period[0])} to {formatDate(period[1])}

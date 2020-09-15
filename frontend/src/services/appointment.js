@@ -103,6 +103,5 @@ export const sortAppointmentsByDate = appointments => {
 };
 
 export const isUrgent = appointment => {
-  console.log(appointment);
   return R.propEq('type', APPT_TYPE.Urgent)(appointment);
 };

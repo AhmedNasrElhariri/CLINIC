@@ -111,6 +111,20 @@ export const RAW_PERMISSIONS = new Map([
     ],
   ],
   [
+    'Accounting',
+    [
+      { name: 'View', action: 'view', subject: 'Accounting' },
+      { name: 'Edit', action: 'edit', subject: 'Accounting' },
+      { name: 'Create Revenue', action: 'create_revenue', subject: 'Accounting' },
+      { name: 'Create Expense', action: 'create_expense', subject: 'Accounting' },
+      {
+        name: 'Print',
+        action: 'print',
+        subject: 'Accounting',
+      },
+    ],
+  ],
+  [
     'Report',
     [
       { name: 'View', action: 'view', subject: 'Report' },

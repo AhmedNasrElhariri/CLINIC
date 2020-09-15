@@ -5,7 +5,7 @@ import { CRTable, Div } from 'components';
 const SummaryTable = ({ data, fields }) => {
   console.log(data);
   return (
-    <Div>
+    <Div height={600}>
       <CRTable autoHeight data={data}>
         {fields.map(f => (
           <CRTable.CRColumn flexGrow={1} key={f.id}>

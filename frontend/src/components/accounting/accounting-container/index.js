@@ -8,6 +8,8 @@ import Toolbar from '../toolbar';
 import ListData from '../list-data';
 import Tabs from '../tabs';
 
+import Profit from '../profit';
+
 import useFetch from './fetch-data';
 
 import {
@@ -224,6 +226,7 @@ const AccountingContainer = () => {
         <AccountingForm {...createExpenseForm} />
         <AccountingForm {...editRevenueForm} />
         <AccountingForm {...editExpenseForm} />
+        <Profit expenses={totalExpenses} revenues={totalRevenues} />
       </CRCard>
     </>
   );

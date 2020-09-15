@@ -38,6 +38,7 @@ function Root() {
   } = useAuth();
 
   const [_, setActiveView] = useGlobalState('activeView');
+  const [user] = useGlobalState('user');
   const [currentClinic, setCurrentClinic] = useGlobalState('currentClinic');
 
   useEffect(() => {
@@ -99,6 +100,7 @@ function Root() {
               onSelectClinic={onSelectClinic}
               currentClinic={currentClinic}
               onClickAvatar={() => history.push('/me')}
+              avatar={R.prop('avatar')(user)}
               renderSearch={() => (
                 <Form style={{ width: 276 }}>
                   <InputGroup>
