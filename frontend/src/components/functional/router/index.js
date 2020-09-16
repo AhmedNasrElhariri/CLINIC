@@ -20,6 +20,7 @@ import {
   Profile,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
+import ProtectedRoute from '../protected-route/index';
 
 function AppRouter() {
   return (
@@ -36,15 +37,25 @@ function AppRouter() {
       <Route path="/appointments" exact>
         <Appointments />
       </Route>
-      <Route path="/appointments/:appointmentId">
-        <Appointment />
-      </Route>
+
+      <ProtectedRoute
+        path="/appointments/:appointmentId"
+        component={Appointment}
+        action="view"
+        subject="Appointment"
+      />
+
       <Route path="/patients" exact>
         <ListPatients />
       </Route>
-      <Route path="/patients/:patientId">
-        <Patient />
-      </Route>
+
+      <ProtectedRoute
+        path="/patients/:patientId"
+        component={Patient}
+        action="view"
+        subject="Patient"
+      />
+
       <Route path="/calendar">
         <Calendar />
       </Route>
@@ -69,12 +80,23 @@ function AppRouter() {
       <Route path="/snippets">
         <Snippets />
       </Route>
-      <Route path="/permissions" exact>
-        <ListUsers />
-      </Route>
-      <Route path="/permissions/:userId">
-        <UserPermissions />
-      </Route>
+
+      <ProtectedRoute
+        path="/permissions"
+        component={ListUsers}
+        action="manage"
+        subject="all"
+        exact
+      />
+
+      <ProtectedRoute
+        path="/permissions/:userId"
+        component={UserPermissions}
+        action="manage"
+        subject="all"
+        exact
+      />
+
       <Route path="/init-default-view">
         <CreateDefaultView />
       </Route>

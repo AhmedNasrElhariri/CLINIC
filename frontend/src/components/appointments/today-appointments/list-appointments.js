@@ -18,6 +18,7 @@ import { canAjdust } from 'services/appointment';
 import { PrintOLIcon } from 'components/icons';
 import { formatDate } from 'utils/date';
 import { FULL_DATE_FORMAT } from 'utils/constants';
+import { Can } from 'components/user/can';
 
 function ListAppointments({
   appointments,
@@ -93,17 +94,19 @@ function ListAppointments({
                 {appointment => (
                   <Div display="flex">
                     {isScheduled(appointment) && (
-                      <CRButton
-                        primary
-                        round
-                        small
-                        onClick={e => {
-                          e.stopPropagation();
-                          onDone(appointment);
-                        }}
-                      >
-                        Done
-                      </CRButton>
+                      <Can I="finish" an="Appointment">
+                        <CRButton
+                          primary
+                          round
+                          small
+                          onClick={e => {
+                            e.stopPropagation();
+                            onDone(appointment);
+                          }}
+                        >
+                          Done
+                        </CRButton>
+                      </Can>
                     )}
 
                     <ReactToPrint

@@ -5,7 +5,7 @@ import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
 
 // import NumberFormat from 'react-number-format';
-const ListData = ({ title, data, onEdit }) => {
+const ListData = ({ title, data, onEdit, canEdit }) => {
   return (
     <div>
       <H5 mb={3} textAlign="center">
@@ -41,12 +41,14 @@ const ListData = ({ title, data, onEdit }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn width={35}>
-          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
+        {canEdit && (
+          <CRTable.CRColumn width={35}>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+        )}
       </CRTable>
     </div>
   );

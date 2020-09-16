@@ -9,6 +9,7 @@ import YAxis from '@rsuite/charts/lib/components/YAxis';
 
 import { Div, MainContainer } from 'components';
 import useFetchAppointments from 'hooks/fetch-appointments';
+import { Can } from 'components/user/can';
 
 const groupByAge = R.groupBy(({ age }) =>
   age <= 10
@@ -65,20 +66,22 @@ function Reports() {
 
   return (
     <>
-      <MainContainer title="Statistical Reports" nobody></MainContainer>
-      <Div maxWidth={800}>
-        <LineChart name="No of patients" data={appointmentsByMonth} />
-        <PieChart
-          name="Genders"
-          data={genderData}
-          legend={false}
-          startAngle={210}
-        />
-        <BarChart name="Age" data={ageData}>
-          <YAxis />
-          <Bars />
-        </BarChart>
-      </Div>
+      <Can I="view" an="Report">
+        <MainContainer title="Statistical Reports" nobody></MainContainer>
+        <Div maxWidth={800}>
+          <LineChart name="No of patients" data={appointmentsByMonth} />
+          <PieChart
+            name="Genders"
+            data={genderData}
+            legend={false}
+            startAngle={210}
+          />
+          <BarChart name="Age" data={ageData}>
+            <YAxis />
+            <Bars />
+          </BarChart>
+        </Div>
+      </Can>
     </>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 
 import { Whisper, Popover } from 'rsuite';
 import { NavStyled } from './style';

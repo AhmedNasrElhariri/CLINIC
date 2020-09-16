@@ -113,7 +113,7 @@ const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
               ml={2}
             />
           </Can>
-          <Can I="delete" an="Appointment">
+          <Can I="cancel" an="Appointment">
             <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
           </Can>
         </>

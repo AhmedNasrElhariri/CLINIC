@@ -9,6 +9,7 @@ import ListAppointments from './list-appointments';
 
 import useFetchAppointments from 'hooks/fetch-appointments';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
+import { Can } from 'components/user/can';
 
 function TodayAppointments() {
   const { todayAppointments: appointments } = useFetchAppointments();
@@ -45,19 +46,23 @@ function TodayAppointments() {
 
   return (
     <>
-      <ListAppointments
-        title="Upcoming Appointments"
-        appointments={upcomingAppointments}
-        onDone={onClickDone}
-        defaultExpanded={true}
-      />
+      <Can I="list" an="Appointment">
+        <ListAppointments
+          title="Upcoming Appointments"
+          appointments={upcomingAppointments}
+          onDone={onClickDone}
+          defaultExpanded={true}
+        />
+      </Can>
       <Div my={5} />
-      <ListAppointments
-        title="Completed Appointments"
-        appointments={completedAppointments}
-        onDone={onClickDone}
-        defaultExpanded={true}
-      />
+      <Can I="list" an="Appointment">
+        <ListAppointments
+          title="Completed Appointments"
+          appointments={completedAppointments}
+          onDone={onClickDone}
+          defaultExpanded={true}
+        />
+      </Can>
     </>
   );
 }

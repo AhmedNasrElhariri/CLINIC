@@ -40,5 +40,6 @@ export default () => {
       ability.update(permissions);
     },
     isAdmin: ability.can('manage', 'all'),
+    can: (action, subject) => ability.can(action, subject),
   };
 };

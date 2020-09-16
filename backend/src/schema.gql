@@ -266,6 +266,7 @@ type Clinic {
   name: String!
   examinationPrice: Int
   followupPrice: Int
+  urgentPrice: Int
   duration: Int
   appointmentsCount: Int
   doctorName: String
@@ -286,6 +287,7 @@ input ClinicInput {
   logoId: ID
   examinationPrice: Int
   followupPrice: Int
+  urgentPrice: Int
   duration: Int
   appointmentsCount: Int
 }

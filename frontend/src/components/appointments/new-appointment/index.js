@@ -65,6 +65,7 @@ export default function NewAppointment() {
       updateAppointments(
         sortAppointmentsByDate([createAppointment, ...appointments])
       );
+      setOpen(false);
     },
     onError: ({ message }) => Alert.error(message),
   });

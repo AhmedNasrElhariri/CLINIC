@@ -10,9 +10,10 @@ import { UPDATE_CLINIC } from 'apollo-client/queries';
 import useGlobalState from 'state';
 
 const initialValues = {
-  examinationPrice: 100,
-  duration: 15,
-  followupPrice: 50,
+  examinationPrice: 0,
+  followupPrice: 0,
+  urgentPrice: 0,
+  duration: 5,
   appointmentsCount: 20,
 };
 
@@ -36,6 +37,7 @@ function ClinicInfo() {
       const val = R.pick([
         'examinationPrice',
         'followupPrice',
+        'urgentPrice',
         'duration',
         'appointmentsCount',
       ])(clinic);

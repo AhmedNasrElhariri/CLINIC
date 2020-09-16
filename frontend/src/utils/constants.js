@@ -59,6 +59,11 @@ export const RAW_PERMISSIONS = new Map([
     'Appointment',
     [
       {
+        name: 'List',
+        action: 'list',
+        subject: 'Appointment',
+      },
+      {
         name: 'View',
         action: 'view',
         subject: 'Appointment',
@@ -69,18 +74,18 @@ export const RAW_PERMISSIONS = new Map([
         subject: 'Appointment',
       },
       {
-        name: 'Delete',
-        action: 'delete',
-        subject: 'Appointment',
-      },
-      {
         name: 'Reschedule',
         action: 'reschedule',
         subject: 'Appointment',
       },
       {
-        name: 'Close',
-        action: 'close',
+        name: 'Finish',
+        action: 'finish',
+        subject: 'Appointment',
+      },
+      {
+        name: 'Cancel',
+        action: 'cancel',
         subject: 'Appointment',
       },
       {
@@ -98,25 +103,32 @@ export const RAW_PERMISSIONS = new Map([
         action: 'view',
         subject: 'Patient',
       },
-      {
-        name: 'Create',
-        action: 'create',
-        subject: 'Patient',
-      },
-      {
-        name: 'View history',
-        action: 'viewHistory',
-        subject: 'Patient',
-      },
     ],
   ],
   [
     'Accounting',
     [
       { name: 'View', action: 'view', subject: 'Accounting' },
-      { name: 'Edit', action: 'edit', subject: 'Accounting' },
-      { name: 'Create Revenue', action: 'create_revenue', subject: 'Accounting' },
-      { name: 'Create Expense', action: 'create_expense', subject: 'Accounting' },
+      {
+        name: 'Add Revenue',
+        action: 'add_revenue',
+        subject: 'Accounting',
+      },
+      {
+        name: 'Add Expense',
+        action: 'add_expense',
+        subject: 'Accounting',
+      },
+      {
+        name: 'Edit Revenue',
+        action: 'edit_revenue',
+        subject: 'Accounting',
+      },
+      {
+        name: 'Edit Expense',
+        action: 'edit_expense',
+        subject: 'Accounting',
+      },
       {
         name: 'Print',
         action: 'print',
@@ -124,17 +136,7 @@ export const RAW_PERMISSIONS = new Map([
       },
     ],
   ],
-  [
-    'Report',
-    [
-      { name: 'View', action: 'view', subject: 'Report' },
-      {
-        name: 'Print',
-        action: 'print',
-        subject: 'Report',
-      },
-    ],
-  ],
+  ['Statistical Report', [{ name: 'View', action: 'view', subject: 'Report' }]],
 ]);
 
 export const PERMISSIONS = new Map(

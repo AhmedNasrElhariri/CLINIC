@@ -34,6 +34,7 @@ import useAppointmentHistory from './fetch-appointment-history';
 import History from './patient-history';
 import CRNav from '../../widgets/nav/normal';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
+import { Can } from 'components/user/can';
 
 const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
 
@@ -137,9 +138,11 @@ function Appointment() {
               </CRButton>
             )}
             {(isScheduled(appointment) || isDone(appointment)) && (
-              <CRButton small primary onClick={onArchive} disabled={disabled}>
-                Archive <Icon icon="archive" />
-              </CRButton>
+              <Can I="archive" an="Appointment">
+                <CRButton small primary onClick={onArchive} disabled={disabled}>
+                  Archive <Icon icon="archive" />
+                </CRButton>
+              </Can>
             )}
           </ButtonToolbar>
         </Div>

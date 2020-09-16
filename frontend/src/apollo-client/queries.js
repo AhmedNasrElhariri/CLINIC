@@ -233,6 +233,7 @@ export const MY_CLINICS = gql`
       name
       examinationPrice
       followupPrice
+      urgentPrice
       duration
       appointmentsCount
       doctorName

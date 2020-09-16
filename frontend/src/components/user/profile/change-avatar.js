@@ -68,7 +68,13 @@ const ChangePassword = () => {
           <button>
             {uploading && <Loader backdrop center />}
             {avatar ? (
-              <Img src={avatar} width="100%" height="100%" alt="avatar" />
+              <Img
+                src={avatar}
+                width="100%"
+                height="100%"
+                alt="avatar"
+                borderRadius="50%"
+              />
             ) : (
               <Icon icon="avatar" size="5x" />
             )}

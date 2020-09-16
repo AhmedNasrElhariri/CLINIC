@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 import { LIST_PATIENTS } from 'apollo-client/queries';
 import { MainContainer, CRTable } from 'components';
 import PatientsFilter from '../filter/index';
+import { Can } from 'components/user/can';
 
 function Patients() {
   const history = useHistory();
@@ -27,46 +28,48 @@ function Patients() {
   return (
     <>
       <MainContainer title="Patients">
-        <PatientsFilter onNameChange={onNameChange}></PatientsFilter>
-        <CRTable
-          autoHeight
-          data={patients}
-          onRowClick={({ id }) => {
-            history.push(`/patients/${id}`);
-          }}
-          bordered={false}
-        >
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name" bold />
-          </CRTable.CRColumn>
+        <Can I="view" a="Patient">
+          <PatientsFilter onNameChange={onNameChange}></PatientsFilter>
+          <CRTable
+            autoHeight
+            data={patients}
+            onRowClick={({ id }) => {
+              history.push(`/patients/${id}`);
+            }}
+            bordered={false}
+          >
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+              <CRTable.CRCell dataKey="name" bold />
+            </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Membership Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="type" semiBold />
-          </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Membership Type</CRTable.CRHeaderCell>
+              <CRTable.CRCell dataKey="type" semiBold />
+            </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="phoneNo" />
-          </CRTable.CRColumn>
-        </CRTable>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
+              <CRTable.CRCell dataKey="phoneNo" />
+            </CRTable.CRColumn>
+          </CRTable>
 
-        <CRTable.CRPagination
-          lengthMenu={[
-            {
-              value: 10,
-              label: 10,
-            },
-            {
-              value: 20,
-              label: 20,
-            },
-          ]}
-          activePage={currentPage}
-          total={data && data.patients.length}
-          onChangePage={p => setCurrentPage(p)}
-        />
+          <CRTable.CRPagination
+            lengthMenu={[
+              {
+                value: 10,
+                label: 10,
+              },
+              {
+                value: 20,
+                label: 20,
+              },
+            ]}
+            activePage={currentPage}
+            total={data && data.patients.length}
+            onChangePage={p => setCurrentPage(p)}
+          />
+        </Can>
       </MainContainer>
     </>
   );

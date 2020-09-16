@@ -122,7 +122,9 @@ const PatientSummary = ({ summary, fields }) => {
           Table View
         </CRButton>
         <Modal show={visible} full onHide={close}>
-          <SummaryTable data={tabularData} fields={tabularFields} />
+          <Modal.Body>
+            <SummaryTable data={tabularData} fields={tabularFields} />
+          </Modal.Body>
         </Modal>
       </Div>
     </Div>
@@ -131,6 +133,7 @@ const PatientSummary = ({ summary, fields }) => {
 
 PatientSummary.defaultProps = {
   summary: [],
+  fields: [],
 };
 
 export default PatientSummary;

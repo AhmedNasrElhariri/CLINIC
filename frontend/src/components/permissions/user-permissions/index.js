@@ -49,8 +49,12 @@ const UserPermissions = () => {
   return (
     <>
       <MainContainer
-        title={`${user.name} Permissions`}
-        more={<CRButton onClick={handleSave}>Save</CRButton>}
+        title={`${user.name}'s Permissions`}
+        more={
+          <CRButton onClick={handleSave} small primary>
+            Save
+          </CRButton>
+        }
       >
         <Form formValue={formValue}>
           {[...appPermissions.entries()].map(([subject, value]) => (

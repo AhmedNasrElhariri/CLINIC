@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Img, H6 } from 'components';
 import { Container, LinkStyled } from './style';
+import { Can } from 'components/user/can';
 
 const items = [
   {
@@ -24,6 +25,7 @@ const items = [
     name: 'Permissions',
     icon: '/icons/snippets.png',
     path: '/permissions',
+    permission: { actions: 'manage', subject: 'all' },
   },
   {
     name: 'Logout',
@@ -46,17 +48,31 @@ export default function Settings({ onClose, ...props }) {
 
   return (
     <Container>
-      {items.map(({ path, action, ...item }, idx) => (
-        <Item
-          key={idx}
-          path={path}
-          {...item}
-          onClick={() => {
-            action ? props[action]() : history.push(path);
-            onClose();
-          }}
-        />
-      ))}
+      {items.map(({ path, action, permission, ...item }, idx) =>
+        permission ? (
+          <Can>
+            <Item
+              key={idx}
+              path={path}
+              {...item}
+              onClick={() => {
+                action ? props[action]() : history.push(path);
+                onClose();
+              }}
+            />
+          </Can>
+        ) : (
+          <Item
+            key={idx}
+            path={path}
+            {...item}
+            onClick={() => {
+              action ? props[action]() : history.push(path);
+              onClose();
+            }}
+          />
+        )
+      )}
     </Container>
   );
 }

@@ -1,24 +1,19 @@
 import React from 'react';
 
-import { CRTable, Div } from 'components';
+import { CRTable } from 'components';
 
 const SummaryTable = ({ data, fields }) => {
-  console.log(data);
   return (
-    <Div height={600}>
-      <CRTable autoHeight data={data}>
-        {fields.map(f => (
-          <CRTable.CRColumn flexGrow={1} key={f.id}>
-            <CRTable.CRHeaderCell>{f.name}</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => (
-                <CRTable.CRCellStyled>{data[f.id]}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        ))}
-      </CRTable>
-    </Div>
+    <CRTable data={data} minHeight={400} autoHeight>
+      {fields.map(f => (
+        <CRTable.CRColumn flexGrow={1} key={f.id} fixed>
+          <CRTable.CRHeaderCell>{f.name}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {data => <CRTable.CRCellStyled>{data[f.id]}</CRTable.CRCellStyled>}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+      ))}
+    </CRTable>
   );
 };
 

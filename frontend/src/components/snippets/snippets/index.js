@@ -42,7 +42,11 @@ export default function Snippets() {
       <MainContainer
         title="Snippets"
         nobody
-        more={<CRButton onClick={showModal}>New Snippet</CRButton>}
+        more={
+          <CRButton onClick={showModal} primary small>
+            New Snippet
+          </CRButton>
+        }
       ></MainContainer>
       <NewSnippet
         onCreate={onCreate}

@@ -38,7 +38,7 @@ function Root() {
   } = useAuth();
 
   const [_, setActiveView] = useGlobalState('activeView');
-  const [user] = useGlobalState('user');
+  const [user, setUser] = useGlobalState('user');
   const [currentClinic, setCurrentClinic] = useGlobalState('currentClinic');
 
   useEffect(() => {
@@ -61,12 +61,13 @@ function Root() {
   }, [clinicsList, data, setActiveView, setCurrentClinic]);
 
   const onLoginSucceeded = useCallback(
-    ({ token, user: { permissions } }) => {
+    ({ token, user }) => {
       localStorage.setItem(ACCESS_TOKEN, token);
       setAuthenticated(true);
-      updatePermissions(permissions);
+      setUser(user);
+      updatePermissions(user.permissions);
     },
-    [setAuthenticated, updatePermissions]
+    [setAuthenticated, setUser, updatePermissions]
   );
 
   const onLoginFailed = useCallback(() => {

@@ -1,4 +1,16 @@
 import { prisma } from '@';
+
+const getAppointmentprice = (type, clinic) => {
+  switch (type) {
+    case 'Examination':
+      return clinic.examinationPrice;
+    case 'Followup':
+      return clinic.followupPrice;
+    case 'Urgent':
+      return clinic.urgentPrice;
+  }
+};
+
 export const createAppointmentRevenue = async ({ id }) => {
   const appointment = await prisma.appointment.findOne({
     where: { id },
@@ -8,12 +20,13 @@ export const createAppointmentRevenue = async ({ id }) => {
           id: true,
           examinationPrice: true,
           followupPrice: true,
+          urgentPrice: true,
         },
       },
       patient: {
         select: {
           name: true,
-        },SummaryTable
+        },
       },
     },
   });
@@ -23,8 +36,7 @@ export const createAppointmentRevenue = async ({ id }) => {
   const revenue = {
     name: type + ' - ' + patient.name,
     date: new Date(),
-    amount:
-      type === 'Examination' ? clinic.examinationPrice : clinic.followupPrice,
+    amount: getAppointmentprice(type, clinic),
   };
 
   return prisma.revenue.create({
