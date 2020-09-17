@@ -50,7 +50,7 @@ function AppointmentData({ formValue, groups, onChange, disabled }) {
       <Div display="flex">
         <HomeSidebarStyled>
           <CRNav vertical onSelect={setActiveSection}>
-            {convertGroupFieldsToNavs(groups).map((v, idx) => (
+            {navs.map((v, idx) => (
               <ScrollNavLink
                 eventKey={v.to}
                 {...v}

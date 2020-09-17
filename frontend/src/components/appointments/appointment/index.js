@@ -43,7 +43,7 @@ function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('0');
   const { appointmentId } = useParams();
   const { refetchRevenues } = useFetchAccountingData();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
@@ -52,7 +52,6 @@ function Appointment() {
     },
     // fetchPolicy: 'no-cache',
     onCompleted: ({ appointment }) => {
-      setFormValue(R.pick(['labs'])(appointment));
       setDisabled(isArchived(appointment));
     },
   });
@@ -60,6 +59,12 @@ function Appointment() {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
     },
+    refetchQueries: () => [
+      {
+        query: GET_APPOINTMENT,
+        variables: { id: appointmentId },
+      },
+    ],
   });
 
   const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
