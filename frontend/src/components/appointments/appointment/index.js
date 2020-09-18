@@ -123,6 +123,8 @@ function Appointment() {
     setFormValue(getFormInitValues(normalizedFields));
   }, [normalizedFields]);
 
+  console.log(normalizedFields);
+
   return (
     <Div display="flex">
       <Div flexGrow={1}>

@@ -4,12 +4,19 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import { GET_PATIENT } from 'apollo-client/queries';
-import { Div, PatientSummary, PatientProgress, H3, CRNav } from 'components';
+import {
+  Div,
+  PatientSummary,
+  PatientProgress,
+  CRNav,
+  MainContainer,
+} from 'components';
 
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import History from 'components/appointments/appointment/patient-history';
+import Print from '../print';
 
 const tabs = ['Summary', 'Progress', 'Labs', 'History'];
 
@@ -25,12 +32,29 @@ function Appointment() {
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);
 
-  const { appointmentHistory, viewFields } = usePatientHistory({ patientId });
-  
+  const {
+    appointmentHistory,
+    viewFields,
+    tabularFields,
+    tabularData,
+    normalizedAppointments,
+    appointmentsWithGroups,
+  } = usePatientHistory({ patientId });
 
   return (
     <>
-      <H3 mb={64}>{patient.name}</H3>
+      <MainContainer
+        nobody
+        title={patient.name}
+        more={
+          <Print
+            appoitnments={normalizedAppointments}
+            appoitnmentsWithGroups={appointmentsWithGroups}
+            patient={patient}
+            fields={tabularFields}
+          />
+        }
+      ></MainContainer>
       <Div display="flex">
         <Div flexGrow={1}>
           <Div display="flex" justifyContent="space-between">
@@ -47,7 +71,13 @@ function Appointment() {
             </CRNav>
           </Div>
           <Div py={3} bg="white">
-            {showComp('0') && <PatientSummary summary={appointmentHistory} />}
+            {showComp('0') && (
+              <PatientSummary
+                summary={appointmentHistory}
+                tabularFields={tabularFields}
+                tabularData={tabularData}
+              />
+            )}
             {showComp('1') && (
               <PatientProgress
                 history={appointmentHistory}

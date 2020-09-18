@@ -7,7 +7,6 @@ import { formatDate } from 'utils/date';
 import { useModal } from 'components/widgets/modal';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
-import { NUMBER_FIELD_TYPE, TEXT_FIELD_TYPE } from 'utils/constants';
 
 const renderProp = (key, value) => {
   return (
@@ -27,7 +26,7 @@ const renderAppointment = data => {
   ));
 };
 
-const PatientSummary = ({ summary, fields }) => {
+const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   const [activeSession, setActiveSession] = useState(null);
 
   useEffect(() => {
@@ -48,37 +47,6 @@ const PatientSummary = ({ summary, fields }) => {
   );
 
   const { visible, open, close } = useModal();
-
-  const tabularFields = useMemo(() => {
-    return fields.filter(
-      f => f.type === NUMBER_FIELD_TYPE || f.type === TEXT_FIELD_TYPE
-    );
-  }, [fields]);
-
-  const tabularFieldsIds = useMemo(() => {
-    return R.map(R.prop('id'))(tabularFields);
-  }, [tabularFields]);
-
-  const pickTabularFields = useMemo(
-    () => (val, key) => tabularFieldsIds.includes(val.field.id),
-    [tabularFieldsIds]
-  );
-
-  const tabularData = useMemo(
-    () =>
-      R.pipe(
-        R.map(R.propOr([], 'data')),
-        R.map(d => {
-          const pickedFields = R.pickBy(pickTabularFields)(d);
-          return Object.values(pickedFields).reduce(
-            (obj, val) => Object.assign(obj, { [val.field.id]: val.value }),
-            {}
-          );
-        }),
-        R.filter(R.pipe(R.isEmpty, R.not))
-      )(summary),
-    [pickTabularFields, summary]
-  );
 
   if (!activeSession) {
     return '...No History';

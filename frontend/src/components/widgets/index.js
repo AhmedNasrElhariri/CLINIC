@@ -1,6 +1,6 @@
 export { H1, H2, H3, H4, H5, H6, H7, P, Img, Div, P2 } from './html';
 export { default as InputField } from './input-field';
-export { default as CheckField } from './check-field';
+export { default as CRCheckField } from './check-field';
 export { default as CRTextInput } from './input/text-input';
 export { default as CRTextArea } from './input/text-area';
 export { default as CRNumberInput } from './input/number-input';

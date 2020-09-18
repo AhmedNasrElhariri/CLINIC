@@ -16,6 +16,22 @@ export const convertGroupFieldsToNavs = groups => {
   }));
 };
 
+export const normalizeDataWithGroups = (groups = [], data = []) => {
+  const normalizedFieldsData = normalizeFieldsData(data);
+  return groups.map(group => {
+    return {
+      ...group,
+      fields: R.unnest(group.fields).reduce((obj, f) => {
+        const appointmentField = normalizedFieldsData[f.id] || { field: {} };
+        return {
+          ...obj,
+          [appointmentField.field.name]: appointmentField.value,
+        };
+      }, {}),
+    };
+  });
+};
+
 export const normalizeFieldsOfGroups = (groups, data = []) => {
   const normalizedFieldsData = normalizeFieldsData(data);
   const fields = groups.map(group => group.fields);

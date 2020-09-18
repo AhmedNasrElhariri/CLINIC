@@ -12,6 +12,7 @@
     "@rsuite/responsive-nav": "^0.0.10",
     "apollo-upload-client": "^13.0.0",
     "echarts": "^4.7.0",
+    "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "formik": "^2.1.4",
     "graphql": "^15.0.0",
