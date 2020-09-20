@@ -1,43 +1,52 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 
-import { H4, H7 } from 'components';
+import { H4, H7, Div } from 'components';
 import { Container, NotificationStyled } from './style';
-import { formatDate } from 'utils/date';
-
-const items = [
-  {
-    body: 'New Appointment',
-    date: new Date(),
-  },
-  {
-    body: 'Appointment has been cancelled',
-    date: new Date(),
-  },
-  {
-    body: 'Logout',
-    date: new Date(),
-  },
-];
+import { H6 } from 'components/widgets';
 
 const NotificationBody = ({ body, date }) => {
+
   return (
     <NotificationStyled>
-      <H7 ml={20}>{body}</H7>
-      <H7>&nbsp;at&nbsp;</H7>
-      <H7 fontWeight={800}>{formatDate(date, 'HH:mm a')}</H7>
+      <H7 mx={15}>{body}</H7>
+      {/* <H7>&nbsp;at&nbsp;</H7>
+      <H7 fontWeight={800}>{formatDate(date, 'HH:mm a')}</H7> */}
     </NotificationStyled>
   );
 };
 
-export default function Settings({ onClose, ...props }) {
+const Notifications = ({ onClose, onClear, notifications, ...props }) => {
   return (
     <Container>
-      <H4 ml={4} mt={4}>
-        Notifications
-      </H4>
-      {items.map((item, idx) => (
-        <NotificationBody key={idx} {...item} onClick={props[item.action]} />
+      <Div
+        display="flex"
+        justifyContent="space-between"
+        alignItems="baseline"
+        p={4}
+      >
+        <H4>Notifications</H4>
+        <H6
+          onClick={onClear}
+          variant="primary"
+          fontWeight={600}
+          cursor="pointer"
+        >
+          Clear
+        </H6>
+      </Div>
+      {notifications.map((item, idx) => (
+        <NotificationBody
+          key={idx}
+          body={item.message}
+          onClick={props[item.action]}
+        />
       ))}
     </Container>
   );
-}
+};
+
+Notifications.defaultProps = {
+  notifications: [],
+};
+
+export default Notifications;

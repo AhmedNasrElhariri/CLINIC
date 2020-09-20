@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Form,
-  FormGroup,
-  ControlLabel,
-  HelpBlock,
-  FormControl,
-  Schema,
-} from 'rsuite';
+import { Form, Schema } from 'rsuite';
 
 export const isValid = (model, formValue) => {
   return Object.entries(model.check(formValue)).every(

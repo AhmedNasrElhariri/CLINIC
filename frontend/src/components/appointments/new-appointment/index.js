@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import * as moment from 'moment';
 import { useMutation } from '@apollo/client';
 import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
@@ -18,11 +18,12 @@ import { isValid } from 'services/form';
 import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import useGlobalState from 'state';
-import { sortAppointmentsByDate, isUrgent } from 'services/appointment';
+import { sortAppointmentsByDate } from 'services/appointment';
 
 import useFetchData from './fetch-data';
 import { filterPatientBy } from 'utils/patient';
 import { APPT_TYPE } from 'utils/constants';
+import useAppointmentForm from 'hooks/appointment-form';
 
 const { StringType } = Schema.Types;
 
@@ -73,13 +74,12 @@ export default function NewAppointment() {
   const showModal = useCallback(() => setPatientModal(true), []);
   const hideModal = useCallback(() => setPatientModal(false), []);
 
-  const selectedDayAppointments = useMemo(
-    () =>
-      appointments.filter(({ date }) =>
-        moment(date).isSame(formValue.date, 'day')
-      ),
-    [appointments, formValue.date]
-  );
+  const { disabledMinutes, hideHours } = useAppointmentForm({
+    date: formValue.data,
+    type: formValue.type,
+    selectedHour,
+    appointments,
+  });
 
   const handleCreate = useCallback(() => {
     if (!isValid(model, formValue)) {
@@ -97,52 +97,6 @@ export default function NewAppointment() {
       variables: { input: { patient, type, clinicId: currentClinic.id, date } },
     });
   }, [createAppointment, currentClinic.id, formValue]);
-
-  const disabledMinutes = useCallback(
-    minute => {
-      if (isUrgent(formValue)) {
-        return false;
-      }
-      const selectedDate = formValue.date;
-
-      const newDate = moment(selectedDate).set({
-        hours: selectedHour,
-        minute: minute,
-      });
-
-      const isBeforeNow = newDate.isBefore(moment(), 'minute');
-      if (isBeforeNow) {
-        return true;
-      }
-
-      return selectedDayAppointments.some(({ date }) => {
-        const startDate = moment(date);
-        const endDate = moment(startDate).add(5, 'minutes');
-        return newDate.isBetween(startDate, endDate, 'minutes', '[)');
-      });
-    },
-    [formValue, selectedDayAppointments, selectedHour]
-  );
-
-  const hideHours = useCallback(
-    hours => {
-      const hourDate = moment(formValue.date).set({
-        hours,
-      });
-      if (hourDate.isBefore(moment(), 'hours')) {
-        return true;
-      }
-      if (isUrgent(formValue)) {
-        return false;
-      }
-      return (
-        selectedDayAppointments.filter(app =>
-          moment(app.date).isSame(hourDate, 'hours')
-        ).length >= 4
-      );
-    },
-    [formValue, selectedDayAppointments]
-  );
 
   return (
     <>

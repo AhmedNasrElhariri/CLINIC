@@ -6,6 +6,8 @@ import { Div } from 'components';
 export const Container = styled.div`
   width: 517px;
   -webkit-backdrop-filter: blur(30px);
+  max-height: 500px;
+  overflow: scroll;
   /* backdrop-filter: blur(30px); */
   /* box-shadow: -6px 6px 20px 0 rgba(0, 0, 0, 0.05); */
   border: solid 1px rgba(40, 49, 72, 0.1);
@@ -14,7 +16,7 @@ export const Container = styled.div`
   right: 10px;
   top: 40px;
   border-radius: 17px;
-/* 
+  /* 
   ${css({
     right: [10, 10, '17%'],
   })} */
@@ -30,6 +32,7 @@ export const NotificationStyled = styled(Div)`
   align-items: center;
   height: 100px;
   padding-left: 50px;
+  border: ${props=> `0.5px solid ${props.theme.colors.primaryLight}`} ;
   cursor: pointer;
 
   color: ${props =>

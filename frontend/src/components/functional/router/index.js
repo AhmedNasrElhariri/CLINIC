@@ -49,12 +49,12 @@ function AppRouter() {
         <ListPatients />
       </Route>
 
-      {/* <ProtectedRoute
+      <ProtectedRoute
         path="/patients/:patientId"
         component={Patient}
         action="view"
         subject="Patient"
-      /> */}
+      />
 
       <Route path="/calendar">
         <Calendar />
@@ -104,16 +104,8 @@ function AppRouter() {
         <Profile />
       </Route>
 
-      <Route
-        path="/patients/:patientId"
-        component={Patient}
-        action="view"
-        subject="Patient"
-      />
-
       <Route path="" exact>
-        <Redirect to="/patients/f77c8de2-ff98-4f35-9c3d-1e347dfbe044" />
-        {/* <Redirect to="/appointments/today" /> */}
+        <Redirect to="/appointments/today" />
       </Route>
     </Switch>
   );

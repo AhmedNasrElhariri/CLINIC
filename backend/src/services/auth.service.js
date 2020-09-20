@@ -6,6 +6,9 @@ import { createAbility } from '@/services/ability.service';
 import { isAdmin } from '@/services/ability.service';
 
 export const getUserPayloads = request => {
+  if (!request) {
+    return {};
+  }
   const authorizationHeader = request.get('authorization') || '';
   const token = authorizationHeader.replace('Bearer ', '');
   try {

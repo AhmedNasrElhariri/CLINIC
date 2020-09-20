@@ -11,7 +11,7 @@
     "@rsuite/charts": "^3.2.4",
     "@rsuite/responsive-nav": "^0.0.10",
     "apollo-upload-client": "^13.0.0",
-    "echarts": "^4.7.0",
+    "echarts": "^4.7.0", 
     "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "formik": "^2.1.4",
@@ -37,6 +37,7 @@
     "react-trello": "^2.2.5",
     "rsuite": "^4.8.1",
     "styled-system": "^5.1.5",
+    "subscriptions-transport-ws": "^0.9.18",
     "yup": "^0.28.5"
   },
   "scripts": {

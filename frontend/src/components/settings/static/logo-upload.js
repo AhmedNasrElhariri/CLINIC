@@ -1,7 +1,5 @@
 import React from 'react';
 import { Uploader, Loader, Alert, Icon } from 'rsuite';
-import { useMutation } from '@apollo/client';
-import { SINGLE_UPLOAD } from 'apollo-client/queries';
 import { Div, Img } from 'components';
 import { BadgtStyled } from './style';
 import { CameraIcon } from 'components/icons';

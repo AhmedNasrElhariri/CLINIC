@@ -15,26 +15,50 @@ import { useAdjustAppointment } from '../adjust-appointment/index';
 import EditAppointment from '../edit-appointment/index';
 import CancelAppointment from '../cancel-appointment/index';
 import { MIN_EVENT_DURATION } from 'utils/constants';
+import useFetchEvents from 'hooks/fetch-evets';
 
 const localizer = momentLocalizer(moment);
 
 const variants = {
   Examination: 'one',
   Followup: 'two',
+  Urgent: 'three',
 };
 
 const initialValue = {
   name: '',
-  start: null,
-  end: null,
+  startDate: null,
+  startTime: null,
+  endDate: null,
+  endTime: null,
 };
 
 let allViews = Object.keys(Views).map(k => Views[k]);
 
+const createDateTime = (date, time) =>
+  moment(date)
+    .set({
+      hour: moment(time).hours(),
+      minutes: moment(time).minutes(),
+    })
+    .toDate();
+
+const calculateNewEventDates = ({ startDate, startTime, endDate, endTime }) => {
+  return {
+    start: createDateTime(startDate, startTime),
+    end: createDateTime(endDate, endTime),
+  };
+};
 function AppointmentCalendar() {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState(initialValue);
-  const [events, setEvents] = useState([]);
+  const { events, createEvent } = useFetchEvents({
+    onCreated: () => {
+      setFormValue(initialValue);
+      setVisible(false);
+    },
+  });
+
   const { appointments: data } = useFetchAppointments();
   const {
     edit,
@@ -55,6 +79,15 @@ function AppointmentCalendar() {
         variant: variants[p.type] || 'three',
       })),
     [data]
+  );
+
+  const mappedEvents = useMemo(
+    () =>
+      events.map(p => ({
+        ...p,
+        variant: 'four',
+      })),
+    [events]
   );
 
   const onOpen = useCallback(
@@ -89,18 +122,25 @@ function AppointmentCalendar() {
     [appointments, onOpen, setAppointment]
   );
 
-  const allEvents = useMemo(() => [...appointments, ...events], [
+  const allEvents = useMemo(() => [...appointments, ...mappedEvents], [
     appointments,
-    events,
+    mappedEvents,
   ]);
 
   const handleSelect = ({ start, end }) => {
     setVisible(true);
-    setFormValue({ ...formValue, start, end });
+    setFormValue({
+      ...formValue,
+      startDate: start,
+      startTime: null,
+      endDate: end,
+      endTime: null,
+    });
   };
 
   const onCreateEvent = () => {
-    const { name, start, end } = formValue;
+    const { start, end } = calculateNewEventDates(formValue);
+    const { name } = formValue;
     if (!(start && end && name)) {
       Alert.error('All fields should be set');
       return;
@@ -109,10 +149,11 @@ function AppointmentCalendar() {
       Alert.error('Event duration should be equal or larger than 15 min');
       return;
     }
-    Alert.success('Event has been created successfully');
-    setEvents([...events, { ...formValue, variant: 'three' }]);
-    setFormValue(initialValue);
-    setVisible(false);
+    createEvent({
+      name,
+      start,
+      end,
+    });
   };
 
   return (

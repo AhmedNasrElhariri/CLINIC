@@ -1,23 +1,23 @@
-import { AuthenticationError } from 'apollo-server-core';
+// import { AuthenticationError } from 'apollo-server-core';
 import { rule, shield, allow } from 'graphql-shield';
 
-import { prisma } from '@';
-import { getUserPayloads } from '@/services/auth.service';
-import { APIExceptcion } from '@/services/erros.service';
+// import { prisma } from '@';
+// import { getUserPayloads } from '@/services/auth.service';
+// import { APIExceptcion } from '@/services/erros.service';
 
 const isAuthenticated = rule()(async (parent, args, { user }) => {
   if (user === null) {
-    throw new AuthenticationError();
+    // throw new AuthenticationError();
   }
   return true;
 });
 
-const canCreatePatient = rule()(async (parent, args, { user, ability }) => {
-  console.log({
-    ability: ability.can('create', 'Appointment'),
-  });
-  return ability.can('create', 'Appointments');
-});
+// const canCreatePatient = rule()(async (parent, args, { user, ability }) => {
+//   console.log({
+//     ability: ability.can('create', 'Appointment'),
+//   });
+//   return ability.can('create', 'Appointments');
+// });
 
 // const isAuthenticated = rule({ cache: 'no_cache' })(async (_, __, ctx) => {
 //   console.log({ user: ctx.user });
@@ -49,13 +49,14 @@ export default shield(
   {
     fallbackError: thrownThing => {
       console.log(thrownThing);
-      if (thrownThing instanceof APIExceptcion) {
-        return thrownThing;
-      } else if (thrownThing instanceof AuthenticationError) {
-        return thrownThing;
-      } else {
-        return new AuthenticationError('not Authenticated');
-      }
+      return thrownThing;
+      // if (thrownThing instanceof APIExceptcion) {
+      //   return thrownThing;
+      // } else if (thrownThing instanceof AuthenticationError) {
+      //   return thrownThing;
+      // } else {
+      //   return new AuthenticationError('not Authenticated');
+      // }
     },
     debug: true,
   }

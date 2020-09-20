@@ -1,8 +1,11 @@
 import React from 'react';
-import { Form, Input, ControlLabel, FormGroup } from 'rsuite';
+import { Form } from 'rsuite';
 
-import { Div } from 'components';
+import { Div, CRTextArea, CRTextInput } from 'components';
 import { ContainerStyled, PanelStyled } from './style';
+import useGlobalState from 'state';
+import { LONG_TEXT_FIELD_TYPE } from 'utils/constants';
+import { H5 } from 'components/widgets';
 
 const personalInfo = [
   { name: 'name', label: 'Name' },
@@ -10,46 +13,59 @@ const personalInfo = [
   { name: 'sex', label: 'Sex' },
 ];
 
-const mainFields = [
-  { value: '', label: 'complain' },
-  { value: '', label: 'signs' },
-  { value: '', label: 'labs' },
-];
+const renderField = ({ type, name } = {}) => {
+  return type === LONG_TEXT_FIELD_TYPE ? (
+    <CRTextArea label={name} disabled />
+  ) : (
+    <CRTextInput label={name} disabled />
+  );
+};
 
-class Print extends React.Component {
-  render() {
-    return (
-      <ContainerStyled>
-        <h4>Personal Info</h4>
-        <PanelStyled bordered style={{ marginBottom: '2rem' }}>
-          <Form>
-            <Div display="flex">
-              {personalInfo.map(({ name, label }, idx) => (
-                <Div flexGrow={1} px={2} key={idx}>
-                  <FormGroup>
-                    <ControlLabel>{label}</ControlLabel>
-                    <Input disabled={true} value={this.props[name]} />
-                  </FormGroup>
-                </Div>
-              ))}
-            </Div>
-          </Form>
-        </PanelStyled>
+const Print = ({ patient }) => {
+  const [view] = useGlobalState('activeView');
 
-        <h4>Diagnosis & Treatment</h4>
-        <PanelStyled bordered>
-          <Form>
-            {mainFields.map(({ label }, idx) => (
-              <FormGroup key={idx}>
-                <ControlLabel>{label}</ControlLabel>
-                <Input componentClass="textarea" rows={3} disabled={true} />
-              </FormGroup>
+  return (
+    <ContainerStyled>
+      
+      <H5 mb={2}>Personal Info</H5>
+      <PanelStyled bordered style={{ marginBottom: '2rem' }}>
+        <Form>
+          <Div display="flex">
+            {personalInfo.map(({ name, label }, idx) => (
+              <CRTextInput
+                key={idx}
+                label={label}
+                value={patient[name]}
+                disabled
+              />
             ))}
-          </Form>
-        </PanelStyled>
-      </ContainerStyled>
-    );
+          </Div>
+        </Form>
+      </PanelStyled>
+      {view.fieldGroups.map(g => (
+        <Div key={g.id}>
+          <H5 mb={2}>{g.name}</H5>
+          <PanelStyled bordered>
+            <Form>
+              {g.fields.map((field, idx) => (
+                <Div key={field.id}>{renderField(field)}</Div>
+              ))}
+            </Form>
+          </PanelStyled>
+        </Div>
+      ))}
+    </ContainerStyled>
+  );
+};
+
+class AppointmentTemplatePrintout extends React.Component {
+  static defaultProps = {
+    appointment: {},
+    patient: {},
+  };
+  render() {
+    return <Print {...this.props} />;
   }
 }
 
-export default Print;
+export default AppointmentTemplatePrintout;

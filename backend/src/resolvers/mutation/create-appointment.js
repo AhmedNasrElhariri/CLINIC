@@ -1,8 +1,11 @@
 import { prisma } from '@';
+
 import moment from 'moment';
 import { getStartOfDay, getEndOfDay } from '@/services/date.service';
 import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
+import { getClinicDoctoryByUserId } from '@/services/clinic';
+import { onAppointmentCreate } from '@/services/notification.service';
 
 const getDayAppointments = day => {
   const start = getStartOfDay(day);
@@ -28,6 +31,7 @@ const createAppointment = async (
   { userId }
 ) => {
   const appointments = await getDayAppointments(appointment.date);
+  const doctor = await getClinicDoctoryByUserId(clinicId);
 
   if (appointment.type !== 'Urgent') {
     if (!validDate(appointment.date, appointments)) {
@@ -39,7 +43,7 @@ const createAppointment = async (
     }
   }
 
-  return prisma.appointment.create({
+  const createdAppointment = await prisma.appointment.create({
     data: {
       ...appointment,
       specialty: 'Dentistry',
@@ -56,11 +60,20 @@ const createAppointment = async (
       },
       doctor: {
         connect: {
-          id: userId,
+          id: doctor.id,
         },
       },
     },
   });
+
+  onAppointmentCreate({
+    userId: doctor.id,
+    notifierId: userId,
+    clinicId,
+    appointment: createdAppointment,
+  });
+
+  return createdAppointment;
 };
 
 export default createAppointment;

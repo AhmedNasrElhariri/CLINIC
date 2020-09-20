@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { CRButtonGroup, Div, CRButton, CRDateRangePicker } from 'components';
-import PdfView from './pdf';
+import { CRButtonGroup, Div, CRDateRangePicker } from 'components';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import { Form } from 'rsuite';
 

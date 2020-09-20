@@ -11,7 +11,7 @@ cd ..
 cd backend
 
 echo 'start backend build'
-npm run build
+yarn build
 echo 'backend built successfullty'
 
 #scp -rp dist/ root@167.71.42.148:/root/clinicr/

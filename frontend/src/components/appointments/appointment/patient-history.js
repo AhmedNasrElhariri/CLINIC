@@ -27,6 +27,7 @@ const getProps = (type, h) => {
         title: h.medicineName,
         subtitle: h.frequency,
         body: h.dose,
+        date: h.fromDate
       };
     case MEDICAL_HISTORY_TYPES.family:
       return {

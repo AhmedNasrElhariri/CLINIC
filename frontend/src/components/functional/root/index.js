@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
-import { useLazyQuery } from '@apollo/client';
-import { ACTIVE_VIEW, MY_CLINICS } from 'apollo-client/queries';
-import { ACCESS_TOKEN } from 'utils/constants';
 import * as R from 'ramda';
 
 import { AppRouter, Login } from 'components';
@@ -14,81 +11,35 @@ import {
 } from './style';
 import Sidebar from 'components/layout/sidebar';
 import Navbar from 'components/layout/navbar';
-import useAuth from 'hooks/auth';
-import useGlobalState from 'state';
 import NewAppointment from 'components/appointments/new-appointment';
 import { Can } from 'components/user/can';
 import { Form, AutoComplete, Icon, InputGroup } from 'rsuite';
-import useFetchPatients from 'hooks/fetch-patients';
 
 import { filterPatientBy } from 'utils/patient';
+import useUserProfile from './fetch-user';
 
 function Root() {
   const history = useHistory();
-  const [clinics, setClinics] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
-  const [getClinics, { data: clinicsList }] = useLazyQuery(MY_CLINICS);
-  const { patients } = useFetchPatients();
   const {
+    clinics,
+    currentClinic,
+    patients,
+    onLoginFailed,
+    onLoginSucceeded,
+    logout,
+    onSelectClinic,
+    user,
     isVerified,
     isAuthenticated,
-    setAuthenticated,
-    updatePermissions,
-  } = useAuth();
-
-  const [_, setActiveView] = useGlobalState('activeView');
-  const [user, setUser] = useGlobalState('user');
-  const [currentClinic, setCurrentClinic] = useGlobalState('currentClinic');
-
-  useEffect(() => {
-    if (isVerified && isAuthenticated) {
-      getView();
-      getClinics();
-    }
-  }, [data, getClinics, getView, isAuthenticated, isVerified]);
-
-  useEffect(() => {
-    const activeView = R.prop('activeView')(data);
-    const clinics = R.prop('myClinics')(clinicsList);
-    if (activeView) {
-      setActiveView(activeView);
-    }
-    if (clinics) {
-      setClinics(clinics);
-      setCurrentClinic(R.path(['0'])(clinics));
-    }
-  }, [clinicsList, data, setActiveView, setCurrentClinic]);
-
-  const onLoginSucceeded = useCallback(
-    ({ token, user }) => {
-      localStorage.setItem(ACCESS_TOKEN, token);
-      setAuthenticated(true);
-      setUser(user);
-      updatePermissions(user.permissions);
-    },
-    [setAuthenticated, setUser, updatePermissions]
-  );
-
-  const onLoginFailed = useCallback(() => {
-    localStorage.removeItem(ACCESS_TOKEN);
-    setAuthenticated(false);
-  }, [setAuthenticated]);
-
-  const logout = useCallback(() => {
-    localStorage.removeItem(ACCESS_TOKEN);
-    setAuthenticated(false);
-    window.location.reload();
-  }, [setAuthenticated]);
+    notifications,
+    clearNotifications,
+  } = useUserProfile();
 
   if (!isVerified) {
     return <div>Loading ...</div>;
   }
 
-  const onSelectClinic = clinic => {
-    setCurrentClinic(clinic);
-    history.push('/');
-  };
   return (
     <ContainerStyled>
       {isAuthenticated ? (
@@ -102,6 +53,8 @@ function Root() {
               currentClinic={currentClinic}
               onClickAvatar={() => history.push('/me')}
               avatar={R.prop('avatar')(user)}
+              notifications={notifications}
+              onClear={clearNotifications}
               renderSearch={() => (
                 <Form style={{ width: 276 }}>
                   <InputGroup>

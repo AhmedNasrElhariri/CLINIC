@@ -1,10 +1,6 @@
-import { useMemo, useState, useCallback } from 'react';
-import { useQuery } from '@apollo/client';
-import * as R from 'ramda';
+import { useState, useCallback } from 'react';
 
-import { LIST_PATIENTS } from 'apollo-client/queries';
 import useGlobalState from 'state';
-import client from 'apollo-client/client';
 
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
@@ -35,8 +31,8 @@ function useUpload({ onCompleted, onError }) {
         .then(res => {
           onCompleted(res);
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(err => {
+          console.log(err);
           onError();
         })
         .finally(() => setLoading(false));

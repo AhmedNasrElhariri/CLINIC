@@ -4,11 +4,22 @@ import { Div, CRModal, CRCard, H6, CRDatePicker } from 'components';
 import { Form, DatePicker } from 'rsuite';
 import { formatDate, isBeforeToday } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
+import useAppointmentForm from 'hooks/appointment-form';
+import useFetchAppointments from 'hooks/fetch-appointments';
 
 const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
   const [formValue, setFormValue] = useState({
     date: null,
     time: null,
+  });
+
+  const { appointments } = useFetchAppointments();
+
+  const { disabledMinutes, hideHours } = useAppointmentForm({
+    date: formValue.data,
+    type: formValue.type,
+    selectedHour: formValue.time,
+    appointments,
   });
 
   if (!appointment) {
@@ -57,7 +68,8 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
                 hideMinutes={minute => minute % 5 !== 0}
                 name="time"
                 accepter={DatePicker}
-                disabledDate={isBeforeToday}
+                disabledMinutes={disabledMinutes}
+                hideHours={hideHours}
                 placement="top"
                 block
               />

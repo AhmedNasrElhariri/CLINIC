@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Div, H5, H7, P2 } from 'components';
+import { formatDate } from 'utils/date';
 
 const HistroyBoxStyled = styled.div`
   border-radius: 10px;
@@ -13,7 +14,7 @@ const HistroyBoxStyled = styled.div`
   margin-bottom: 15px;
 `;
 
-export default function HistoryBox({ title, subtitle, body }) {
+export default function HistoryBox({ title, subtitle, body, date }) {
   return (
     <HistroyBoxStyled>
       <Div>
@@ -24,6 +25,7 @@ export default function HistoryBox({ title, subtitle, body }) {
           {subtitle}
         </P2>
         <H7 fontWeigh={400}>{body}</H7>
+        <H7 fontWeigh={400}>{date ? formatDate(date) : null}</H7>
       </Div>
     </HistroyBoxStyled>
   );

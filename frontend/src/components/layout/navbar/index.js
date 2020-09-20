@@ -18,6 +18,8 @@ const Navbar = ({
   onClickAvatar,
   renderSearch,
   avatar,
+  notifications,
+  onClear
 }) => {
   const notificationsRef = useRef();
   const settingsRef = useRef();
@@ -52,6 +54,8 @@ const Navbar = ({
             speaker={
               <Popover full>
                 <Notifications
+                  notifications={notifications}
+                  onClear={onClear}
                   onClose={() => notificationsRef.current.close()}
                 />
               </Popover>

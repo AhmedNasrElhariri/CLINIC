@@ -4,3 +4,9 @@
 20200911102154-set-appt-date-not-unique
 20200915161934-add-avatar
 20200915213331-add-urgent-appt-price
+20200918195347-create-notification-table
+20200918203317-add-viewed-to-notification
+20200918213535-set-notification-date-default-value
+20200918232329-add-position
+20200919220845-events
+20200919225321-add-user-id-to-events

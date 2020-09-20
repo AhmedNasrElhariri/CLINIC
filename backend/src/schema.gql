@@ -57,6 +57,8 @@ type Query {
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   clinicUsers(clinicId: ID!): [User!]
   user(id: ID!): User
+  myNotifications: [Notification!]
+  myEvents: [Event!]
 }
 
 ########################### Mutation ##################################
@@ -89,6 +91,8 @@ type Mutation {
   updateRevenue(revenue: RevenueUpdateInput!): Revenue
   setAvatar(url: String!): Boolean
   updateUserPermissions(userId: ID!, permissions: [PermissionInput!]!): Boolean
+  clearNotifications: Boolean
+  createEvent(event: EventInput!): Event
 }
 
 ########################### Auth ##################################
@@ -414,4 +418,30 @@ input RevenueUpdateInput {
   amount: Int!
   date: Date!
   invoiceNo: String
+}
+
+########################### Notification ##################################
+
+type Subscription {
+  notifications: Notification!
+}
+
+type Notification {
+  message: String!
+  viewed: Boolean!
+}
+
+########################### Event ##################################
+
+type Event {
+  id: ID!
+  name: String!
+  start: Date!
+  end: Date!
+}
+
+input EventInput {
+  name: String!
+  start: Date!
+  end: Date!
 }

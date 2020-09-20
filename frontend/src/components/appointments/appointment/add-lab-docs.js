@@ -8,7 +8,7 @@ import labs from './lab-tests';
 import AddLabImages from './add-lab-images';
 import { ADD_LAB_DOCS } from 'apollo-client/queries';
 
-const AddLabDocs = ({ show, onCancel, patient }) => {
+const AddLabDocs = ({ show, onCancel, onAdded, patient }) => {
   const [formValue, setFormValue] = useState({
     name: '',
     images: [],
@@ -16,6 +16,7 @@ const AddLabDocs = ({ show, onCancel, patient }) => {
   const [addLabDocs] = useMutation(ADD_LAB_DOCS, {
     onCompleted: () => {
       Alert.success('Lab Document has been uploaded successfully');
+      onAdded(formValue);
     },
   });
 

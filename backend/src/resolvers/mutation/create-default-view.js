@@ -81,8 +81,6 @@ const view = {
 const createView = async (_, __, { userId }) => {
   const { name, fieldGroups } = view;
 
-  console.log('on')
-
   const { id } = await prisma.view.create({
     data: {
       name,
@@ -99,8 +97,6 @@ const createView = async (_, __, { userId }) => {
       },
     },
   });
-
-  console.log('ss')
 
   return prisma.viewStatus
     .create({

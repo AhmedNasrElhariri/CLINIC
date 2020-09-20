@@ -25,3 +25,5 @@ export { default as updateExpense } from './update-expense';
 export { default as updateRevenue } from './update-revenue';
 export { default as setAvatar } from './set-avatar';
 export { default as updateUserPermissions } from './update-user-permissions';
+export { default as clearNotifications } from './clear-notifications';
+export { default as createEvent } from './create-event';

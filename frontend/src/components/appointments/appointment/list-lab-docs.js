@@ -24,7 +24,7 @@ function ListLabDocs({ labDocs }) {
         <Div display="flex">
           <Div width={300}>
             <CRNav vertical onSelect={setActiveLab}>
-              {labDocs.map((lab, idx) => (
+              {labDocs.map(lab => (
                 <CRNav.CRVItem
                   eventKey={lab}
                   key={lab.id}

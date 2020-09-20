@@ -1,8 +1,15 @@
 import React from 'react';
 
-import { CRModal, Div, CRTextInput, CRTimePicker } from 'components';
+import {
+  CRModal,
+  Div,
+  CRTextInput,
+  CRTimePicker,
+  CRDatePicker,
+} from 'components';
 import { Form } from 'rsuite';
 import { MIN_EVENT_DURATION } from 'utils/constants';
+import { isDateBefore } from 'utils/date';
 
 function NewEvent({ show, onOk, onCancel, formValue, onChange }) {
   return (
@@ -16,17 +23,25 @@ function NewEvent({ show, onOk, onCancel, formValue, onChange }) {
       <Form formValue={formValue} onChange={onChange} fluid>
         <Div my={3}>
           <CRTextInput label="Name" name="name" />
+          <CRDatePicker label="Start" name="startDate" placement="top" block />
           <CRTimePicker
             label="Start"
             block
-            name="start"
+            name="startTime"
             placement="top"
             minInterval={MIN_EVENT_DURATION}
+          />
+          <CRDatePicker
+            label="End"
+            name="endDate"
+            placement="top"
+            disabledDate={date => isDateBefore(date, formValue.startDate)}
+            block
           />
           <CRTimePicker
             label="End"
             block
-            name="end"
+            name="endTime"
             placement="top"
             minInterval={MIN_EVENT_DURATION}
           />

@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useQuery } from '@apollo/client';
+import { useMemo, useEffect, useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import * as R from 'ramda';
 import moment from 'moment';
 
@@ -11,21 +11,33 @@ import { sortAppointmentsByDate } from 'services/appointment';
 
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
-  if (!currentClinic) {
-    return {};
-  }
-  return {
-    input: {
-      clinicIds: [currentClinic.id],
-    },
-  };
+  return useMemo(
+    () =>
+      !currentClinic || !currentClinic.id
+        ? null
+        : {
+            input: {
+              clinicIds: [currentClinic.id],
+            },
+          },
+    [currentClinic]
+  );
 }
 
 function useFetchAppointments() {
   const variables = useVariables();
-  const { data } = useQuery(LIST_APPOINTMENTS, {
+  const [fetched, setFetched] = useState(false);
+  const [getAppointments, { data }] = useLazyQuery(LIST_APPOINTMENTS, {
     variables,
+    onCompleted: () => setFetched(true),
   });
+
+  useEffect(() => {
+    if (variables && !fetched) {
+      getAppointments();
+    }
+  }, [data, fetched, getAppointments, variables]);
+
   const appointments = useMemo(
     () =>
       R.pipe(

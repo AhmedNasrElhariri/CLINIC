@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import { GraphQLServer } from 'graphql-yoga';
+import { GraphQLServer, PubSub } from 'graphql-yoga';
 import fileUpload from 'express-fileupload';
 
 import moment from 'moment';
@@ -25,6 +25,8 @@ const options = {
   playground: '/playground',
 };
 
+export const pubsub = new PubSub();
+
 moment.tz.setDefault('Africa/Cairo');
 moment.updateLocale('en', {
   week: {
@@ -39,6 +41,7 @@ const server = new GraphQLServer({
   middlewares,
   context: async ctx => ({
     ...ctx,
+    pubsub,
     ...(await getContextData(ctx)),
   }),
 });

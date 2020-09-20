@@ -26,7 +26,7 @@ function NewMedicalHistory({ onChange }) {
       <CRTextInput name="medicineName" label="Medicine" />
       <CRTextInput name="frequency" label="Frequency" />
       <CRTextInput name="dose" label="Dose" />
-      <CRDatePicker name="fromDate" label="From" block />
+      <CRDatePicker name="fromDate" label="From" placement="top" block />
     </Form>
   );
 }

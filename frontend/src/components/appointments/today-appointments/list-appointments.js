@@ -109,21 +109,24 @@ function ListAppointments({
                       </Can>
                     )}
 
-                    <ReactToPrint
-                      trigger={() => <PrintOLIcon ml={2} />}
-                      content={() => componentRef.current}
-                    />
-                    <Div display="none">
-                      <AppointmentPrintout
-                        ref={componentRef}
-                        name={appointment.patient.name}
-                        age={appointment.patient.age}
-                        sex={appointment.patient.sex}
+                    <Div onClick={e => e.stopPropagation()}>
+                      <ReactToPrint
+                        trigger={() => <PrintOLIcon ml={2} />}
+                        content={() => componentRef.current}
                       />
+                      <Div display="none">
+                        <AppointmentPrintout
+                          ref={componentRef}
+                          appointment={appointment}
+                          patient={appointment.patient}
+                        />
+                      </Div>
                     </Div>
-                    {canAjdust(appointment) && (
-                      <AdjustAppointment appointment={appointment} />
-                    )}
+                    <Div onClick={e => e.stopPropagation()}>
+                      {canAjdust(appointment) && (
+                        <AdjustAppointment appointment={appointment} />
+                      )}
+                    </Div>
                   </Div>
                 )}
               </CRTable.CRCell>
