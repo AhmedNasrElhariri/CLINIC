@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 import { Whisper, Popover } from 'rsuite';
-import { NavStyled } from './style';
+import { NavStyled, BadgeStyled } from './style';
 import { Div } from 'components';
 
 import SwitchClinic from './switch-clinic';
@@ -9,6 +9,18 @@ import { NotificationIcon, SettingsIcon } from 'components/icons/index';
 import Notifications from 'components/functional/notifications';
 import Settings from 'components/functional/settings';
 import Avatar from './avatar';
+import Button from '../../widgets/button/index';
+
+const NotificatinBadge = ({ alert }) => (
+  <Div position="relative">
+    {!!alert && <BadgeStyled></BadgeStyled>}
+    <NotificationIcon />
+  </Div>
+);
+
+NotificatinBadge.defaultProps = {
+  alert: false,
+};
 
 const Navbar = ({
   onSelectClinic,
@@ -19,7 +31,7 @@ const Navbar = ({
   renderSearch,
   avatar,
   notifications,
-  onClear
+  onClear,
 }) => {
   const notificationsRef = useRef();
   const settingsRef = useRef();
@@ -62,7 +74,9 @@ const Navbar = ({
             }
             full
           >
-            <NotificationIcon />
+            <Div>
+              <NotificatinBadge alert={notifications.length} />
+            </Div>
           </Whisper>
           <Whisper
             placement="bottomEnd"

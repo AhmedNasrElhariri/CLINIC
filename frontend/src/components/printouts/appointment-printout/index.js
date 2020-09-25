@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'rsuite';
+import * as R from 'ramda';
 
 import { Div, CRTextArea, CRTextInput } from 'components';
 import { ContainerStyled, PanelStyled } from './style';
@@ -24,9 +25,13 @@ const renderField = ({ type, name } = {}) => {
 const Print = ({ patient }) => {
   const [view] = useGlobalState('activeView');
 
+  if (R.isNil(view.fieldGroups)) {
+    return null;
+  }
+
+
   return (
     <ContainerStyled>
-      
       <H5 mb={2}>Personal Info</H5>
       <PanelStyled bordered style={{ marginBottom: '2rem' }}>
         <Form>
@@ -57,6 +62,8 @@ const Print = ({ patient }) => {
     </ContainerStyled>
   );
 };
+
+Print.defaultProps = {};
 
 class AppointmentTemplatePrintout extends React.Component {
   static defaultProps = {

@@ -69,7 +69,9 @@ const inputCss = css`
   ${typography}
   ${layout}
   ${border}
-  ${byTheme(fontTheme)}
+  ${byTheme(
+    fontTheme
+  )}
   &:focus,
   &:active,
   &:hover,
@@ -146,4 +148,14 @@ export const NumberButton = styled(CRButton)`
   ${stCss({
     minWidth: [20, 35, 50, 60, 98],
   })}
+`;
+
+export const ImportButtonStyled = styled.span`
+  background: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.text};
+  padding: 4px 6px;
+  font-weight: 600;
+  position: relative;
+  cursor: pointer;
+  top: 4px;
 `;

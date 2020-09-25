@@ -83,3 +83,24 @@ export const PrescriptionSyled = styled.div`
     border-radius: 4px;
   }
 `;
+
+export const PrescriptionContentSyled = styled(Div)`
+  white-space: pre-wrap;
+`;
+
+export const HeaderStyled = styled(Div)`
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0px;
+  transition: 0.3s;
+
+  &.sticky {
+    background: white;
+    padding: 20px;
+    height: 90px;
+
+    z-index: 100;
+    border-bottom: ${props => `1px solid ${props.theme.colors.grey100}`};
+  }
+`;

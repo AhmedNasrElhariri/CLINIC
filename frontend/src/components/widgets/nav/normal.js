@@ -4,6 +4,7 @@ import { Nav } from 'rsuite';
 import CRItem from './item';
 import CRVItem from './vertical-item';
 import CRScoll from './scroll-item';
+import { layout } from 'styled-system';
 
 const CRNav = styled(Nav)`
   & .rs-nav-waterline {
@@ -15,6 +16,7 @@ const CRNav = styled(Nav)`
     background: none;
     width: 0px !important;
   }
+  ${layout}
 `;
 
 CRNav.CRItem = CRItem;

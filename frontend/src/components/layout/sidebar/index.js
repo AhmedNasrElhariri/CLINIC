@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ContainerStyled, BodyStyled } from './style';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link as RouterLink } from 'react-router-dom';
 
 import Link from './link';
 import { Div, Img } from 'components';
@@ -20,8 +20,10 @@ export default function Sidebar({ onLogout }) {
 
   return (
     <ContainerStyled>
-      <Div position="absolute" left={35} top={-10}>
-        <Img src="/logo.svg" alt="" width={150} />
+      <Div position="absolute" left={35} top={40}>
+        <RouterLink to="/">
+          <Img src="/logo.svg" alt="" width={150} />
+        </RouterLink>
       </Div>
       <BodyStyled>
         {items.map(({ to, name }, idx) => (

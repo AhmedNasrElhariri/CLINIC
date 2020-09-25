@@ -5,7 +5,6 @@ import { Container, NotificationStyled } from './style';
 import { H6 } from 'components/widgets';
 
 const NotificationBody = ({ body, date }) => {
-
   return (
     <NotificationStyled>
       <H7 mx={15}>{body}</H7>
@@ -18,29 +17,31 @@ const NotificationBody = ({ body, date }) => {
 const Notifications = ({ onClose, onClear, notifications, ...props }) => {
   return (
     <Container>
-      <Div
-        display="flex"
-        justifyContent="space-between"
-        alignItems="baseline"
-        p={4}
-      >
-        <H4>Notifications</H4>
-        <H6
-          onClick={onClear}
-          variant="primary"
-          fontWeight={600}
-          cursor="pointer"
+      <Div overflow="scroll">
+        <Div
+          display="flex"
+          justifyContent="space-between"
+          alignItems="baseline"
+          p={4}
         >
-          Clear
-        </H6>
+          <H4>Notifications</H4>
+          <H6
+            onClick={onClear}
+            variant="primary"
+            fontWeight={600}
+            cursor="pointer"
+          >
+            Clear
+          </H6>
+        </Div>
+        {notifications.map((item, idx) => (
+          <NotificationBody
+            key={idx}
+            body={item.message}
+            onClick={props[item.action]}
+          />
+        ))}
       </Div>
-      {notifications.map((item, idx) => (
-        <NotificationBody
-          key={idx}
-          body={item.message}
-          onClick={props[item.action]}
-        />
-      ))}
     </Container>
   );
 };

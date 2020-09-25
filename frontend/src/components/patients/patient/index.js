@@ -57,19 +57,18 @@ function Appointment() {
       ></MainContainer>
       <Div display="flex">
         <Div flexGrow={1}>
-          <Div display="flex" justifyContent="space-between">
-            <CRNav
-              appearance="tabs"
-              activeKey={activeTab}
-              onSelect={setActiveTab}
-            >
-              {tabs.map((t, idx) => (
-                <CRNav.CRItem eventKey={idx + ''} key={idx}>
-                  {t}
-                </CRNav.CRItem>
-              ))}
-            </CRNav>
-          </Div>
+          <CRNav
+            appearance="tabs"
+            activeKey={activeTab}
+            onSelect={setActiveTab}
+            justified
+          >
+            {tabs.map((t, idx) => (
+              <CRNav.CRItem eventKey={idx + ''} key={idx}>
+                {t}
+              </CRNav.CRItem>
+            ))}
+          </CRNav>
           <Div py={3} bg="white">
             {showComp('0') && (
               <PatientSummary
@@ -84,8 +83,8 @@ function Appointment() {
                 viewFields={viewFields}
               />
             )}
-            {showComp('2') && <PatientLabs patient={patient} noAdd />}
-            {showComp('3') && <History patient={patient} noAdd />}
+            {showComp('2') && <PatientLabs patient={patient} />}
+            {showComp('3') && <History patient={patient} />}
           </Div>
         </Div>
         <Div width={325} ml={64}>

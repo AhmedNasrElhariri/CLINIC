@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { layout } from 'styled-system';
 
 import { Div } from 'components/widgets';
 
@@ -11,9 +12,9 @@ const activeStyles = css`
 `;
 
 export const ItemStyled = styled(Div)`
-  width: 150px;
+  /* width: 150px; */
   height: 80px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
   font-stretch: normal;
   font-style: normal;
@@ -31,4 +32,5 @@ export const ItemStyled = styled(Div)`
   cursor: pointer;
 
   ${props => (props.active ? activeStyles : '')}
+  ${layout}
 `;

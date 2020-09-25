@@ -14,7 +14,8 @@ const ReportsContainer = () => {
         appearance="tabs"
         activeKey={activeTab}
         onSelect={setActiveTab}
-        style={{ width: 780 }}
+        width={300}
+        justified
       >
         <CRNav.CRItem eventKey="accounting">Accounting</CRNav.CRItem>
         <CRNav.CRItem eventKey="statistics">Statistics</CRNav.CRItem>

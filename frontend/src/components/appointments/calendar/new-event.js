@@ -23,23 +23,28 @@ function NewEvent({ show, onOk, onCancel, formValue, onChange }) {
       <Form formValue={formValue} onChange={onChange} fluid>
         <Div my={3}>
           <CRTextInput label="Name" name="name" />
-          <CRDatePicker label="Start" name="startDate" placement="top" block />
+          <CRDatePicker
+            label="Start Date"
+            name="startDate"
+            placement="top"
+            block
+          />
           <CRTimePicker
-            label="Start"
+            label="Start Time"
             block
             name="startTime"
             placement="top"
             minInterval={MIN_EVENT_DURATION}
           />
           <CRDatePicker
-            label="End"
+            label="End Date"
             name="endDate"
             placement="top"
             disabledDate={date => isDateBefore(date, formValue.startDate)}
             block
           />
           <CRTimePicker
-            label="End"
+            label="End Time"
             block
             name="endTime"
             placement="top"

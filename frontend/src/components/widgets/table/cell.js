@@ -11,6 +11,7 @@ export const CRCellStyled = styled(H6).attrs(({ bold, semiBold }) => ({
   display: flex;
   align-items: center;
   color: ${props => props.theme.colors.texts[0]};
+  white-space: break-spaces;
 `;
 
 export default ({ children, bold, semiBold, dataKey, ...props }) => (

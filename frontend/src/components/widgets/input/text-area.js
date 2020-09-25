@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 import { FormGroup, FormControl } from 'rsuite';
 import Label from '../label';
-import { TextAreaStyled, InputGroupStyled } from './style';
+import { TextAreaStyled, InputGroupStyled, ImportButtonStyled } from './style';
+import { Div } from 'components';
 
 import SnippetsModal from './import-snippet';
 
@@ -11,15 +12,14 @@ const CustomInput = ({ onChange, importable, ...props }) => {
 
   return (
     <>
-      {importable && (
-        <span
-          onClick={() => setVisible(true)}
-          style={{ cursor: 'pointer', marginLeft: 10 }}
-        >
-          import
-        </span>
-      )}
       <TextAreaStyled onChange={e => onChange(e.target.value)} {...props} />
+      {importable && (
+        <Div textAlign="right" pr={2}>
+          <ImportButtonStyled onClick={() => setVisible(true)}>
+            import
+          </ImportButtonStyled>
+        </Div>
+      )}
       <SnippetsModal
         show={visible}
         onOk={text => {

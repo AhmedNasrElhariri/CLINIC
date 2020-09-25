@@ -1,14 +1,22 @@
 import { prisma } from '@';
 
 const getAppointmentprice = (type, clinic) => {
-  switch (type) {
-    case 'Examination':
-      return clinic.examinationPrice;
-    case 'Followup':
-      return clinic.followupPrice;
-    case 'Urgent':
-      return clinic.urgentPrice;
-  }
+  const mapVsPrice = {
+    Examination: clinic.examinationPrice,
+    Followup: clinic.followupPrice,
+    Urgent: clinic.urgentPrice,
+  };
+
+  return mapVsPrice[type] || 0;
+};
+
+const getAppointmentName = (type, clinic) => {
+  const shortcuts = {
+    Examination: 'E',
+    Followup: 'F',
+    Urgent: 'U',
+  };
+  return shortcuts[type];
 };
 
 export const createAppointmentRevenue = async ({ id }) => {
@@ -34,7 +42,7 @@ export const createAppointmentRevenue = async ({ id }) => {
   const { clinic, type, patient } = appointment;
 
   const revenue = {
-    name: type + ' - ' + patient.name,
+    name: getAppointmentName(type) + ' - ' + patient.name,
     date: new Date(),
     amount: getAppointmentprice(type, clinic),
   };

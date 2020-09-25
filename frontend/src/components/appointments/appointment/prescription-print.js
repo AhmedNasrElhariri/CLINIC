@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import { formatDate } from 'utils/date';
 import { Div } from 'components/widgets/html';
 
-import { PrescriptionSyled } from './style';
+import { PrescriptionSyled, PrescriptionContentSyled } from './style';
 
 const Info = ({ name, value }) => (
   <div className="info">
@@ -24,11 +24,11 @@ const PrescriptionPrint = React.forwardRef(
       <Div height={0} overflow="hidden">
         <PrescriptionSyled ref={ref}>
           <Div display="flex" justifyContent="space-between">
-            <div className="header">
+            <Div className="header">
               <Info name="Date" value={formatDate(new Date())} />
               <Info name="Name" value={name} />
               <Info name="Age" value={age} />
-            </div>
+            </Div>
             {logoURL && (
               <img
                 src={logoURL}
@@ -39,12 +39,12 @@ const PrescriptionPrint = React.forwardRef(
               />
             )}
           </Div>
-          <div className="content-container">
-            <div className="body">
+          <PrescriptionContentSyled className="content-container">
+            <Div className="body">
               <img src="/rx.png" alt="rx" className="rx" />
               <p>{content}</p>
-            </div>
-            <div className="footer">
+            </Div>
+            <Div className="footer">
               <p>
                 <b>Tel: </b> {clinicInfo.phoneNo}
               </p>
@@ -52,8 +52,8 @@ const PrescriptionPrint = React.forwardRef(
                 <b>Address: </b>
                 {clinicInfo.address}
               </p>
-            </div>
-          </div>
+            </Div>
+          </PrescriptionContentSyled>
         </PrescriptionSyled>
       </Div>
     );

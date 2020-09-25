@@ -96,7 +96,7 @@ export default function NewAppointment() {
     createAppointment({
       variables: { input: { patient, type, clinicId: currentClinic.id, date } },
     });
-  }, [createAppointment, currentClinic.id, formValue]);
+  }, [createAppointment, currentClinic, formValue]);
 
   return (
     <>

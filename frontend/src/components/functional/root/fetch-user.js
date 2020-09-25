@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLazyQuery, useSubscription, useMutation } from '@apollo/client';
+import * as ls from 'services/local-storage';
 import {
   ACTIVE_VIEW,
   MY_CLINICS,
@@ -54,6 +55,10 @@ function useUserProfile() {
   }, [notificationsData]);
 
   useEffect(() => {
+    setCurrentClinic(ls.getCurrentClinic());
+  }, [setCurrentClinic]);
+
+  useEffect(() => {
     if (isVerified && isAuthenticated) {
       getView();
       getClinics();
@@ -76,13 +81,17 @@ function useUserProfile() {
     }
     if (clinics) {
       setClinics(clinics);
-      setCurrentClinic(R.path(['0'])(clinics));
+      if (R.isEmpty(currentClinic)) {
+        const clinic = R.path(['0'])(clinics);
+        setCurrentClinic(clinic);
+        ls.setCurrentClinic(clinic);
+      }
     }
-  }, [clinicsList, data, setActiveView, setCurrentClinic]);
+  }, [clinicsList, currentClinic, data, setActiveView, setCurrentClinic]);
 
   const onLoginSucceeded = useCallback(
     ({ token, user }) => {
-      localStorage.setItem(ACCESS_TOKEN, token);
+      ls.setUserToken(token);
       setAuthenticated(true);
       setUser(user);
       updatePermissions(user.permissions);
@@ -91,18 +100,19 @@ function useUserProfile() {
   );
 
   const onLoginFailed = useCallback(() => {
-    localStorage.removeItem(ACCESS_TOKEN);
+    ls.removeUserToken(ACCESS_TOKEN);
     setAuthenticated(false);
   }, [setAuthenticated]);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(ACCESS_TOKEN);
+    ls.removeUserToken(ACCESS_TOKEN);
     setAuthenticated(false);
     window.location.reload();
   }, [setAuthenticated]);
 
   const onSelectClinic = clinic => {
     setCurrentClinic(clinic);
+    ls.setCurrentClinic(clinic);
     history.push('/');
   };
 

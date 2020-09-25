@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
-import { Modal } from 'rsuite';
+import { Modal, Whisper, Tooltip } from 'rsuite';
 
 import { Div, H6, CRNav, CRVDivider, H3, CRButton } from 'components';
 import { formatDate } from 'utils/date';
 import { useModal } from 'components/widgets/modal';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
+import { KeyStyled, ValueStyled } from './style';
 
 const renderProp = (key, value) => {
   return (
-    <Div display="flex" alignItems="center" height={60}>
-      <H6 width="250px" color="texts.2">
-        {capitalize(key)}
-      </H6>
-      <CRVDivider vertical height="40%" />
-      <H6 fontWeight="bold">{value}</H6>
+    <Div display="flex" alignItems="center" minHeight={60}>
+      <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
+        <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
+      </Whisper>
+      <CRVDivider vertical />
+      <ValueStyled>{value}</ValueStyled>
     </Div>
   );
 };
@@ -54,7 +55,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
 
   return (
     <Div display="flex" position="relative">
-      <CRNav vertical width={300} onSelect={setActiveSession}>
+      <CRNav vertical minWidth={180} onSelect={setActiveSession}>
         {summary.map((session, idx) => (
           <CRNav.CRVItem
             key={session.id}

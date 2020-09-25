@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Toggle } from 'rsuite';
 import * as R from 'ramda';
 
@@ -20,11 +20,16 @@ const mapToPropValue = (appointments, field) =>
 
 function Progress({ history, viewFields }) {
   const [showChart, setShowChart] = useState(false);
-  const [activeField, setActiveField] = useState(null);
+  const [activeField, setActiveField] = useState({});
 
   useEffect(() => {
     setActiveField(R.propOr({}, '0')(viewFields));
   }, [viewFields]);
+
+  const values = useMemo(() => mapToPropValue(history, activeField), [
+    activeField,
+    history,
+  ]);
 
   if (!activeField) {
     return <H6>Loading</H6>;
@@ -32,7 +37,7 @@ function Progress({ history, viewFields }) {
 
   return (
     <Div display="flex">
-      <CRNav vertical width={300} onSelect={setActiveField}>
+      <CRNav vertical width={180} onSelect={setActiveField}>
         {viewFields.map(field => (
           <CRNav.CRVItem
             key={field.id}
@@ -44,12 +49,24 @@ function Progress({ history, viewFields }) {
         ))}
       </CRNav>
       <Div flexGrow={1} p={4}>
-        <H3 mb={4}>{activeField.name}</H3>
+        <Div display="flex" justifyContent="space-between">
+          <H3 mb={4}>{activeField.name}</H3>
+          <Div display="flex" mt="12px">
+            {activeField.type === NUMBER_FIELD_TYPE && (
+              <>
+                <H6 color="texts.2" mr={2}>
+                  Chart
+                </H6>
+                <Toggle checked={showChart} onChange={setShowChart} />
+              </>
+            )}
+          </Div>
+        </Div>
         {showChart && activeField.type === NUMBER_FIELD_TYPE ? (
-          <Chart values={mapToPropValue(history, activeField)} />
+          <Chart values={values} />
         ) : (
           <Div>
-            <CRTable autoHeight data={mapToPropValue(history, activeField)}>
+            <CRTable autoHeight wordWrap data={values}>
               <CRTable.CRColumn flexGrow={1}>
                 <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
                 <CRTable.CRCell dataKey="date" />
@@ -57,20 +74,16 @@ function Progress({ history, viewFields }) {
 
               <CRTable.CRColumn flexGrow={1}>
                 <CRTable.CRHeaderCell>Value</CRTable.CRHeaderCell>
-                <CRTable.CRCell dataKey="value" bold />
+                <CRTable.CRCell>
+                  {data => (
+                    <CRTable.CRCellStyled bold>
+                      {data.value}
+                    </CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
               </CRTable.CRColumn>
             </CRTable>
           </Div>
-        )}
-      </Div>
-      <Div width={120} display="flex" mt="12px">
-        {activeField.type === NUMBER_FIELD_TYPE && (
-          <>
-            <H6 color="texts.2" mr={2}>
-              Chart
-            </H6>
-            <Toggle checked={showChart} onChange={setShowChart} />
-          </>
         )}
       </Div>
     </Div>

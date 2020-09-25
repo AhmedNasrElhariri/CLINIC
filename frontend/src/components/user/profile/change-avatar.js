@@ -36,7 +36,7 @@ const ChangePassword = () => {
     <Div mb={20}>
       <CRCard borderless>
         <Div mb={30} display="flex" justifyContent="space-between">
-          <H6 fontWeight="bold">Change Avatar</H6>
+          <H6 fontWeight="bold">Change Profile Picture</H6>
           <CRButton
             small
             primary

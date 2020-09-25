@@ -5,7 +5,13 @@ import { CRNav } from 'components';
 
 const Tabs = ({ activeTab, onSelect }) => {
   return (
-    <CRNav appearance="tabs" activeKey={activeTab} onSelect={onSelect}>
+    <CRNav
+      appearance="tabs"
+      activeKey={activeTab}
+      onSelect={onSelect}
+      width={300}
+      justified
+    >
       <CRNav.CRItem eventKey="0">Summary</CRNav.CRItem>
       <CRNav.CRItem eventKey="1">Details</CRNav.CRItem>
     </CRNav>

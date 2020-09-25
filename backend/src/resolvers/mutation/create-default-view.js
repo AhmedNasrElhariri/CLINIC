@@ -78,7 +78,7 @@ const view = {
   ],
 };
 
-const createView = async (_, __, { userId }) => {
+const createDefaultView = async (_, __, { userId }) => {
   const { name, fieldGroups } = view;
 
   const { id } = await prisma.view.create({
@@ -116,4 +116,4 @@ const createView = async (_, __, { userId }) => {
     .catch(() => false);
 };
 
-export default createView;
+export default createDefaultView;

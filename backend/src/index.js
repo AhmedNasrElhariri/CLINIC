@@ -14,6 +14,7 @@ import resolvers from './resolvers';
 import middlewares from './middlewares';
 import { upload } from './services/upload.service';
 import { getContextData } from './services/auth.service';
+import seed from './seed';
 
 export const UPLOAD_DIR = '/uploads';
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
@@ -75,4 +76,10 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
 }
-server.start(options, () => console.log('Server is running on localhost:4000'));
+server.start(options, () => {
+  console.log('Server is running on localhost:4000');
+  if (process.env.init) {
+    console.log('Init Database');
+    seed();
+  }
+});

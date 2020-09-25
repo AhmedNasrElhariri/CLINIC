@@ -6,10 +6,10 @@ import { createUploadLink } from 'apollo-upload-client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
-import { ACCESS_TOKEN } from 'utils/constants';
+import * as ls from 'services/local-storage';
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem(ACCESS_TOKEN);
+  const token = ls.getToken();
   return {
     headers: {
       ...headers,
@@ -31,7 +31,7 @@ const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
     connectionParams: async () => {
-      const token = localStorage.getItem(ACCESS_TOKEN);
+      const token = ls.getToken();
       return {
         headers: {
           authorization: token ? `Bearer ${token}` : '',

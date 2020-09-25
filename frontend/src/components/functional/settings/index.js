@@ -1,9 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Img, H6 } from 'components';
+import { Img, H6, Div } from 'components';
 import { Container, LinkStyled } from './style';
 import { Can } from 'components/user/can';
+import { indexBy } from 'ramda';
 
 const items = [
   {
@@ -48,11 +49,21 @@ export default function Settings({ onClose, ...props }) {
 
   return (
     <Container>
-      {items.map(({ path, action, permission, ...item }, idx) =>
-        permission ? (
-          <Can>
+      {items.map(({ path, action, permission, ...item }, idx) => (
+        <Div key={idx}>
+          {permission ? (
+            <Can>
+              <Item
+                path={path}
+                {...item}
+                onClick={() => {
+                  action ? props[action]() : history.push(path);
+                  onClose();
+                }}
+              />
+            </Can>
+          ) : (
             <Item
-              key={idx}
               path={path}
               {...item}
               onClick={() => {
@@ -60,19 +71,9 @@ export default function Settings({ onClose, ...props }) {
                 onClose();
               }}
             />
-          </Can>
-        ) : (
-          <Item
-            key={idx}
-            path={path}
-            {...item}
-            onClick={() => {
-              action ? props[action]() : history.push(path);
-              onClose();
-            }}
-          />
-        )
-      )}
+          )}
+        </Div>
+      ))}
     </Container>
   );
 }

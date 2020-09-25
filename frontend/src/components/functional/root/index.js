@@ -24,16 +24,16 @@ function Root() {
   const {
     clinics,
     currentClinic,
-    patients,
+    clearNotifications,
     onLoginFailed,
     onLoginSucceeded,
     logout,
-    onSelectClinic,
-    user,
     isVerified,
     isAuthenticated,
+    onSelectClinic,
     notifications,
-    clearNotifications,
+    patients,
+    user,
   } = useUserProfile();
 
   if (!isVerified) {

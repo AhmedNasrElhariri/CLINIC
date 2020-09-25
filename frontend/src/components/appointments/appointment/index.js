@@ -17,6 +17,7 @@ import {
   H3,
   CRButton,
   PatientInfo,
+  CRNav,
 } from 'components';
 import AppointmentData from './appointment-data';
 import Prescription from './prescription';
@@ -32,9 +33,11 @@ import {
 
 import useAppointmentHistory from './fetch-appointment-history';
 import History from './patient-history';
-import CRNav from '../../widgets/nav/normal';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
 import { Can } from 'components/user/can';
+import useSticky from 'hooks/sticky';
+
+import { HeaderStyled } from './style';
 
 const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
 
@@ -119,6 +122,8 @@ function Appointment() {
     return formValue[R.propOr('', 'id')(prescriptionField)];
   }, [formValue, prescriptionField]);
 
+  const { ref } = useSticky();
+
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
   }, [normalizedFields]);
@@ -126,7 +131,7 @@ function Appointment() {
   return (
     <Div display="flex">
       <Div flexGrow={1}>
-        <Div display="flex" justifyContent="space-between">
+        <HeaderStyled ref={ref}>
           <H3 mb={64}>Appointment</H3>
           <ButtonToolbar>
             <CRButton
@@ -150,23 +155,21 @@ function Appointment() {
               </Can>
             )}
           </ButtonToolbar>
-        </Div>
+        </HeaderStyled>
         <Div display="flex">
           <Div flexGrow={1}>
-            <Div display="flex" justifyContent="space-between">
-              <CRNav
-                appearance="tabs"
-                activeKey={activeTab}
-                onSelect={setActiveTab}
-                style={{ width: 780 }}
-              >
-                {tabs.map((t, idx) => (
-                  <CRNav.CRItem eventKey={idx + ''} key={idx}>
-                    {t}
-                  </CRNav.CRItem>
-                ))}
-              </CRNav>
-            </Div>
+            <CRNav
+              appearance="tabs"
+              activeKey={activeTab}
+              onSelect={setActiveTab}
+              justified
+            >
+              {tabs.map((t, idx) => (
+                <CRNav.CRItem eventKey={idx + ''} key={idx} width="20%">
+                  {t}
+                </CRNav.CRItem>
+              ))}
+            </CRNav>
             <Div py={3} bg="white">
               {showComp('0') && (
                 <AppointmentData
