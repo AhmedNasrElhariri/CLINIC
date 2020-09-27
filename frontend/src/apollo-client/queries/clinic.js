@@ -11,10 +11,15 @@ export const MY_CLINICS = gql`
       duration
       appointmentsCount
       doctorName
+      doctorNameAr
       doctorTitle
+      doctorTitleAr
       doctorJobDescription
-      address
+      doctorJobDescriptionAr
       phoneNo
+      phoneNo1
+      address
+      address1
       logo {
         id
         url

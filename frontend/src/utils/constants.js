@@ -136,6 +136,21 @@ export const RAW_PERMISSIONS = new Map([
       },
     ],
   ],
+  [
+    'Calendar',
+    [
+      {
+        name: 'View',
+        action: 'view',
+        subject: 'Calendar',
+      },
+      {
+        name: 'Create Event',
+        action: 'create_event',
+        subject: 'Calendar',
+      },
+    ],
+  ],
   ['Statistical Report', [{ name: 'View', action: 'view', subject: 'Report' }]],
 ]);
 

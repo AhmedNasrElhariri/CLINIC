@@ -267,28 +267,43 @@ input FieldInput {
 
 type Clinic {
   id: ID
+
+  doctorName: String
+  doctorNameAr: String
+  doctorTitle: String
+  doctorTitleAr: String
+  doctorJobDescription: String
+  doctorJobDescriptionAr: String
+  phoneNo: String
+  phoneNo1: String
+  address: String
+  address1: String
+
   name: String!
   examinationPrice: Int
   followupPrice: Int
   urgentPrice: Int
   duration: Int
   appointmentsCount: Int
-  doctorName: String
-  doctorTitle: String
-  doctorJobDescription: String
-  address: String
-  phoneNo: String
+
   logo: File
 }
 
 input ClinicInput {
   id: ID
+
   doctorName: String
+  doctorNameAr: String
   doctorTitle: String
+  doctorTitleAr: String
   doctorJobDescription: String
-  address: String
+  doctorJobDescriptionAr: String
   phoneNo: String
+  phoneNo1: String
+  address: String
+  address1: String
   logoId: ID
+
   examinationPrice: Int
   followupPrice: Int
   urgentPrice: Int

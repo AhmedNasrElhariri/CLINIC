@@ -9,7 +9,6 @@ import { NotificationIcon, SettingsIcon } from 'components/icons/index';
 import Notifications from 'components/functional/notifications';
 import Settings from 'components/functional/settings';
 import Avatar from './avatar';
-import Button from '../../widgets/button/index';
 
 const NotificatinBadge = ({ alert }) => (
   <Div position="relative">

@@ -21,6 +21,7 @@ import { Div } from 'components';
 import { formatDate } from 'utils/date';
 import { Whisper } from 'rsuite';
 import { canAjdust } from 'services/appointment';
+import { Can } from 'components/user/can';
 
 const EventDetails = ({
   patient,
@@ -41,8 +42,12 @@ const EventDetails = ({
         <Div>
           {canAjdust && (
             <>
-              <ActionIconStyled icon="edit" onClick={() => onAdjust(id)} />
-              <ActionIconStyled icon="trash-o" onClick={() => onCancel(id)} />
+              <Can I="reschedule" an="Appointment">
+                <ActionIconStyled icon="edit" onClick={() => onAdjust(id)} />
+              </Can>
+              <Can I="cancel" an="Appointment">
+                <ActionIconStyled icon="trash-o" onClick={() => onCancel(id)} />
+              </Can>
             </>
           )}
         </Div>
@@ -68,7 +73,7 @@ export default {
             trigger="click"
             speaker={
               <PopoverStyled {...event}>
-                <EventDetails {...event} canAjdust={canAjdust(event)}/>
+                <EventDetails {...event} canAjdust={canAjdust(event)} />
               </PopoverStyled>
             }
           >

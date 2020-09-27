@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { GraphQLServer, PubSub } from 'graphql-yoga';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 import fileUpload from 'express-fileupload';
 
 import moment from 'moment';
@@ -26,7 +27,8 @@ const options = {
   playground: '/playground',
 };
 
-export const pubsub = new PubSub();
+// export const pubsub = new PubSub();
+export const pubsub = new RedisPubSub();
 
 moment.tz.setDefault('Africa/Cairo');
 moment.updateLocale('en', {

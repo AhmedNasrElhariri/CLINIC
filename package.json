@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "graphql-redis-subscriptions": "^2.3.1"
+  }
+}

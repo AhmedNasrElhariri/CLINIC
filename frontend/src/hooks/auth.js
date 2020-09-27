@@ -7,7 +7,7 @@ import { ACCESS_TOKEN } from '../utils/constants';
 import useGlobalState from 'state';
 import { AbilityContext } from 'components/user/can';
 
-export default () => {
+const useAuth = () => {
   const [isAuthenticated, setAuthenticated] = useGlobalState('isAuthenticated');
   const [isVerified, setVerified] = useGlobalState('isVerified');
   const [user, setUser] = useGlobalState('user');
@@ -43,3 +43,5 @@ export default () => {
     can: (action, subject) => ability.can(action, subject),
   };
 };
+
+export default useAuth;

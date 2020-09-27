@@ -16,6 +16,8 @@ import EditAppointment from '../edit-appointment/index';
 import CancelAppointment from '../cancel-appointment/index';
 import { MIN_EVENT_DURATION } from 'utils/constants';
 import useFetchEvents from 'hooks/fetch-evets';
+import { Can } from 'components/user/can';
+import useAuth from 'hooks/auth';
 
 const localizer = momentLocalizer(moment);
 
@@ -52,6 +54,7 @@ const calculateNewEventDates = ({ startDate, startTime, endDate, endTime }) => {
 function AppointmentCalendar() {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState(initialValue);
+  const { can } = useAuth();
   const { events, createEvent } = useFetchEvents({
     onCreated: () => {
       setFormValue(initialValue);
@@ -128,6 +131,9 @@ function AppointmentCalendar() {
   ]);
 
   const handleSelect = ({ start, end }) => {
+    if (!can('create_event', 'Calendar')) {
+      return;
+    }
     setVisible(true);
     setFormValue({
       ...formValue,
@@ -157,47 +163,49 @@ function AppointmentCalendar() {
   };
 
   return (
-    <CalendarContext.Provider
-      value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
-    >
-      <Div bg="white" p={30}>
-        <div style={{ height: 753 }}>
-          <CalendarStyled
-            events={allEvents}
-            views={allViews}
-            showMultiDayTimes
-            localizer={localizer}
-            components={components}
-            step={15}
-            timeslots={1}
-            onSelectSlot={handleSelect}
-            longPressThreshold={2000}
-            defaultView={Views.MONTH}
-            selectable
-            popup
+    <Can I="view" a="Calendar">
+      <CalendarContext.Provider
+        value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
+      >
+        <Div bg="white" p={30}>
+          <div style={{ height: 753 }}>
+            <CalendarStyled
+              events={allEvents}
+              views={allViews}
+              showMultiDayTimes
+              localizer={localizer}
+              components={components}
+              step={15}
+              timeslots={1}
+              onSelectSlot={handleSelect}
+              longPressThreshold={2000}
+              defaultView={Views.MONTH}
+              selectable
+              popup
+            />
+          </div>
+          <NewEvent
+            show={visible}
+            onOk={onCreateEvent}
+            onCancel={() => setVisible(false)}
+            formValue={formValue}
+            onChange={setFormValue}
           />
-        </div>
-        <NewEvent
-          show={visible}
-          onOk={onCreateEvent}
-          onCancel={() => setVisible(false)}
-          formValue={formValue}
-          onChange={setFormValue}
+        </Div>
+        <EditAppointment
+          onOk={edit}
+          visible={adjustVisible.edit}
+          appointment={appointment}
+          onClose={() => onClose('edit')}
         />
-      </Div>
-      <EditAppointment
-        onOk={edit}
-        visible={adjustVisible.edit}
-        appointment={appointment}
-        onClose={() => onClose('edit')}
-      />
-      <CancelAppointment
-        visible={adjustVisible.cancel}
-        appointment={appointment}
-        onOk={cancel}
-        onClose={() => onClose('cancel')}
-      />
-    </CalendarContext.Provider>
+        <CancelAppointment
+          visible={adjustVisible.cancel}
+          appointment={appointment}
+          onOk={cancel}
+          onClose={() => onClose('cancel')}
+        />
+      </CalendarContext.Provider>
+    </Can>
   );
 }
 

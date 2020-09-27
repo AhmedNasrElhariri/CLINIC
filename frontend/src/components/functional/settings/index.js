@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { Img, H6, Div } from 'components';
 import { Container, LinkStyled } from './style';
 import { Can } from 'components/user/can';
-import { indexBy } from 'ramda';
 
 const items = [
   {
