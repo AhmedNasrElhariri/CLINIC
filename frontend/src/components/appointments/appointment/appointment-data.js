@@ -10,7 +10,7 @@ import {
   CRTextArea,
   CRNav,
 } from 'components';
-
+import { isSession } from 'services/appointment';
 import { convertGroupFieldsToNavs } from 'services/appointment';
 import {
   NUMBER_FIELD_TYPE,
@@ -41,29 +41,39 @@ const renderItem = ({ type, id, name, ...props }) => {
   }
 };
 
-function AppointmentData({ formValue, groups, onChange, disabled }) {
+function AppointmentData({
+  formValue,
+  groups,
+  onChange,
+  disabled,
+  appointment,
+  appointmentFormValue,
+  onChangeAppointment,
+}) {
   const [activeSection, setActiveSection] = useState('');
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
 
   return (
     <>
       <Div display="flex">
-        <HomeSidebarStyled>
-          <CRNav vertical onSelect={setActiveSection}>
-            {navs.map((v, idx) => (
-              <ScrollNavLink
-                eventKey={v.to}
-                {...v}
-                key={idx}
-                active={activeSection === v.to}
-              >
-                {v.title}
-              </ScrollNavLink>
-            ))}
-          </CRNav>
-        </HomeSidebarStyled>
+        {!isSession(appointment) && (
+          <HomeSidebarStyled>
+            <CRNav vertical onSelect={setActiveSection}>
+              {navs.map((v, idx) => (
+                <ScrollNavLink
+                  eventKey={v.to}
+                  {...v}
+                  key={idx}
+                  active={activeSection === v.to}
+                >
+                  {v.title}
+                </ScrollNavLink>
+              ))}
+            </CRNav>
+          </HomeSidebarStyled>
+        )}
         <Div id="clinic-scroll-id" flexGrow={1}>
-          {Object.keys(formValue).length > 0 && (
+          {!isSession(appointment) && Object.keys(formValue).length > 0 && (
             <Form formValue={formValue} onChange={onChange} fluid>
               {navs.map((v, idx) => (
                 <Div as={Element} key={idx} name={v.to} pt={idx === 0 ? 0 : 4}>
@@ -79,8 +89,17 @@ function AppointmentData({ formValue, groups, onChange, disabled }) {
               ))}
             </Form>
           )}
+          <Div p={4}>
+            <Form
+              formValue={appointmentFormValue}
+              onChange={onChangeAppointment}
+            >
+              <CRTextArea label="Notes" name="notes" />
+            </Form>
+          </Div>
         </Div>
       </Div>
+      {/* )} */}
     </>
   );
 }

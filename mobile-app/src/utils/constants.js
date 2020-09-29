@@ -16,4 +16,6 @@ export const NAVIGATIONS = {
   HISTORY_SUMMARY: 'PatientSummary',
   HISTORY_PROGRESS: 'HistoryProgress',
   PATIENT_LABS: 'PatientLabs',
+  NOTIFICATIONS: 'Notifications',
+  PROFILE: 'Profile',
 };

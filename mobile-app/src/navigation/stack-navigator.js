@@ -15,6 +15,8 @@ import Patient from '@/screens/patient.screen';
 import PatientInfo from '@/screens/patient-info.screen';
 import HistoryProgressScreen from '@/screens/history-progress.screen';
 import HistorySummaryScreen from '@/screens/history-summary.screen';
+import NotificationsScreen from '@/screens/notifications.screen';
+import ProfileScreen from '@/screens/profile.screen';
 
 import useGlobalState from '@/state';
 
@@ -71,6 +73,14 @@ const MainStackScreen = () => {
           <MainStack.Screen
             name={NAVIGATIONS.HISTORY_SUMMARY}
             component={HistorySummaryScreen}
+          />
+          <MainStack.Screen
+            name={NAVIGATIONS.NOTIFICATIONS}
+            component={NotificationsScreen}
+          />
+          <MainStack.Screen
+            name={NAVIGATIONS.PROFILE}
+            component={ProfileScreen}
           />
         </>
       )}

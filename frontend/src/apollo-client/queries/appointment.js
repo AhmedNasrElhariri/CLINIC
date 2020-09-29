@@ -44,6 +44,7 @@ export const GET_APPOINTMENT = gql`
       type
       date
       status
+      notes
       data {
         id
         value
@@ -91,8 +92,8 @@ export const UPDATE_APPOINTMENT = gql`
 `;
 
 export const SET_APPOINTMENT_DONE = gql`
-  mutation setAppointmentDone($id: ID!) {
-    setAppointmentDone(id: $id) {
+  mutation setAppointmentDone($id: ID!, $sessions: [SessionInput!]) {
+    setAppointmentDone(id: $id, sessions: $sessions) {
       id
       status
     }

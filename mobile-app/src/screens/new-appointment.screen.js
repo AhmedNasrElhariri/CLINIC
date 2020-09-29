@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Toast, Icon, View } from 'native-base';
+import { Form, Toast, Icon, View, Text } from 'native-base';
 import { Formik, Field } from 'formik';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import * as Yup from 'yup';
@@ -11,6 +11,7 @@ import { CREATE_APPOINTMENT, LIST_PATIENTS } from '../apollo-client/queries';
 import { NAVIGATIONS } from '@/utils/constants';
 import { CRPickerInput, CRMainLayout, CRPrimaryButton } from '@/components';
 import useGlobalState from '@/state';
+import crVariables from '@/utils/cr-variables';
 
 const ValidationSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
@@ -56,24 +57,28 @@ const NewAppointmentScreen = ({ navigation }) => {
         >
           {form => (
             <Form>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Field
-                  name="patient"
-                  placeholder="Select patient"
-                  component={CRPickerInput}
-                  choices={patients}
-                  labelKey="name"
-                  valueKey="id"
-                />
-                <View
-                  style={{ alignItems: 'center', height: 70, marginLeft: 10 }}
+              <Field
+                name="patient"
+                placeholder="Select patient"
+                component={CRPickerInput}
+                choices={patients}
+                labelKey="name"
+                valueKey="id"
+                containerStyle={{ marginBottom: 0 }}
+              />
+              <View
+                style={{
+                  alignItems: 'flex-end',
+                  marginBottom: crVariables.fieldMarginBottom,
+                }}
+              >
+                <Text
+                  name="add"
+                  onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}
+                  style={{ color: crVariables.primaryColor }}
                 >
-                  <Icon
-                    name="add"
-                    style={{ color: 'red', fontSize: 40 }}
-                    onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}
-                  />
-                </View>
+                  Create new Patient
+                </Text>
               </View>
               <Field
                 name="type"

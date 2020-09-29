@@ -4,6 +4,7 @@ import * as RA from 'ramda-adjunct';
 const updateAppointment = (_, { appointment }) => {
   return prisma.appointment.update({
     data: {
+      notes: appointment.notes || '',
       data: {
         upsert: appointment.data.map(({ id, value, fieldId }) => ({
           create: {

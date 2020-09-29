@@ -24,6 +24,10 @@ export const MY_CLINICS = gql`
         id
         url
       }
+      sessions {
+        name
+        price
+      }
     }
   }
 `;

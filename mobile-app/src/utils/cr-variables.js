@@ -19,6 +19,7 @@ export default {
   fieldMarginBottom: 30,
   fieldPaddingLeft: 20,
   fieldPaddingRight: 20,
+  fieldHeight: 55,
   footerBg: '#ffffff',
   footerLogoColor: 'rgb(226, 226, 226)',
   fonts: {

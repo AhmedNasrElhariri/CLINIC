@@ -33,7 +33,7 @@ console.log(Platform.OS);
 const httpLink = new HttpLink({
   // uri: `http://localhost:4000/graphql`,
   // uri: `http://172.20.10.3:4000/graphql`,
-  uri: `http://192.168.2.42:4000/graphql`,
+  uri: `http://192.168.1.14:4000/graphql`,
   // uri: `http://167.71.42.148:4000/graphql`,
   // uri: `http://192.168.1.12:4000/graphql`,
   // headers: {

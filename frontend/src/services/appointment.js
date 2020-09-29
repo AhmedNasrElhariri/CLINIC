@@ -121,3 +121,7 @@ export const sortAppointmentsByDate = appointments => {
 export const isUrgent = appointment => {
   return R.propEq('type', APPT_TYPE.Urgent)(appointment);
 };
+
+export const isSession = appointment => {
+  return R.propEq('type', APPT_TYPE.Session)(appointment);
+};

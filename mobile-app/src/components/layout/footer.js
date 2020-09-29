@@ -4,16 +4,17 @@ import { NAVIGATIONS } from '@/utils/constants';
 
 import crVariables from '@/utils/cr-variables';
 
-const FooterItem = ({ title, icon, onPress, active }) => {
+const FooterItem = ({ title, icon, onPress, type, active }) => {
   return (
-    <Button onPress={onPress}>
+    <Button onPress={onPress} style={{ padding: 0 }}>
       <Icon
         name={icon}
+        type="FontAwesome"
         style={{
           color: active ? crVariables.textColor : crVariables.footerLogoColor,
         }}
       />
-      <Text style={{ textTransform: 'capitalize' }}>{title}</Text>
+      <Text style={{ textTransform: 'capitalize', fontSize: 6 }}>{title}</Text>
     </Button>
   );
 };
@@ -35,13 +36,20 @@ const items = [
     id: 3,
     route: NAVIGATIONS.PATIENTS,
     title: 'Patients',
-    icon: 'person',
+    icon: 'user-o',
   },
   {
     id: 4,
-    route: NAVIGATIONS.NEW_PATIENT,
+    route: NAVIGATIONS.NOTIFICATIONS,
+    title: 'Notifications',
+    icon: 'bell',
+    type: 'FontAwesome',
+  },
+  {
+    id: 5,
+    route: NAVIGATIONS.PROFILE,
     title: 'More',
-    icon: 'menu',
+    icon: 'navicon',
   },
 ];
 
@@ -58,13 +66,14 @@ const CRFooter = ({ navigation, route }) => {
       }}
     >
       <FooterTab>
-        {items.map(({ id, route, title, icon }) => (
+        {items.map(({ id, route, title, icon, type }) => (
           <FooterItem
             key={id}
             onPress={() => navigation.navigate(route)}
             title={title}
             icon={icon}
             active={path === route}
+            type={type}
           />
         ))}
       </FooterTab>

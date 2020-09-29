@@ -4,9 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '@/screens/home.screen';
 import NewAppointmentScreen from '@/screens/new-appointment.screen';
 import NewPatientScreen from '@/screens/new-patient.screen';
-import TodayAppointmentsScreen from '@/screens/today-appointments.screen';
-import CalendarScreen from '@/screens/calendar.screen';
-import AppointmentScreen from '@/screens/appointment.screen';
 import { NAVIGATIONS } from '@/utils/constants';
 
 const Tab = createBottomTabNavigator();

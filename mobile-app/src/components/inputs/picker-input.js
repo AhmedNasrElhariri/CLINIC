@@ -10,6 +10,7 @@ export default ({
   placeholder,
   labelKey = 'label',
   valueKey = 'value',
+  containerStyle,
   ...props
 }) => {
   const onValueChange = val => {
@@ -25,6 +26,7 @@ export default ({
         paddingLeft: crVariables.fieldPaddingLeft - 5,
         paddingRight: crVariables.fieldPaddingRight - 5,
         flexGrow: 1,
+        ...containerStyle,
       }}
     >
       <Picker

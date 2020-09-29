@@ -32,6 +32,7 @@ export const APPT_TYPE = Object.freeze({
   Examination: 'Examination',
   Followup: 'Followup',
   Urgent: 'Urgent',
+  Session: 'Session',
 });
 
 export const MIN_EVENT_DURATION = 15;

@@ -23,7 +23,7 @@ const items = [
   },
   {
     name: 'Permissions',
-    icon: '/icons/snippets.png',
+    icon: '/icons/permissions.png',
     path: '/permissions',
     permission: { actions: 'manage', subject: 'all' },
   },

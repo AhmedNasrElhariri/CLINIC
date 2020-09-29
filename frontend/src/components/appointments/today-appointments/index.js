@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
@@ -10,10 +10,24 @@ import ListAppointments from './list-appointments';
 import useFetchAppointments from 'hooks/fetch-appointments';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
 import { Can } from 'components/user/can';
+import { useModal } from 'components/widgets/modal';
+import FinishAppointment from '../finish-appointments';
+import useGlobalState from 'state';
+import {
+  getName,
+  getNameByType,
+  getAppointmentprice,
+} from 'services/accounting';
+import { isSession } from 'services/appointment';
 
 function TodayAppointments() {
-  const { todayAppointments: appointments } = useFetchAppointments();
+  const { todayAppointments: appointments, refetch } = useFetchAppointments();
   const { refetchRevenues } = useFetchAccountingData();
+  const { visible, close, open } = useModal({});
+  const [appointment, setAppointment] = useState(null);
+
+  const [clinic] = useGlobalState('currentClinic');
+
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
     refetchQueries: () => [refetchRevenues()],
     onCompleted: () => {
@@ -25,6 +39,11 @@ function TodayAppointments() {
     () => R.pipe(R.filter(R.propEq('status', 'Scheduled')))(appointments),
     [appointments]
   );
+
+  useEffect(() => {
+    console.log(refetch)
+    // refetch();
+  }, []);
 
   const completedAppointments = useMemo(
     () =>
@@ -40,8 +59,41 @@ function TodayAppointments() {
   );
 
   const onClickDone = useCallback(
-    appointment => setAppointmentDone({ variables: { id: appointment.id } }),
-    [setAppointmentDone]
+    appointment => {
+      setAppointment(appointment);
+      if (isSession(appointment)) {
+        open();
+      } else {
+        setAppointmentDone({
+          variables: {
+            id: appointment.id,
+            sessions: [
+              {
+                name: getNameByType(appointment),
+                price: getAppointmentprice(appointment.type, clinic),
+              },
+            ],
+          },
+        });
+      }
+    },
+    [clinic, open, setAppointmentDone]
+  );
+
+  const handleOk = useCallback(
+    sessions => {
+      close();
+      setAppointmentDone({
+        variables: {
+          id: appointment.id,
+          sessions: sessions.map(session => ({
+            name: getName({ session, appointment }),
+            price: session.price,
+          })),
+        },
+      });
+    },
+    [appointment, close, setAppointmentDone]
   );
 
   return (
@@ -63,6 +115,12 @@ function TodayAppointments() {
           defaultExpanded={true}
         />
       </Can>
+      <FinishAppointment
+        show={visible}
+        onCancel={close}
+        onOk={handleOk}
+        clinic={clinic}
+      />
     </>
   );
 }

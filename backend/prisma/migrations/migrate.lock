@@ -11,3 +11,6 @@
 20200919220845-events
 20200919225321-add-user-id-to-events
 20200926125753-add-more-info-to-static-info
+20200928005948-add-session-type-to-appointments
+20200928091751-add-notes-to-appointment
+20200928212447-add-sessions-to-clinic

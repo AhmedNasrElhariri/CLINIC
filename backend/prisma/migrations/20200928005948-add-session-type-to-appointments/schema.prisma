@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -100,7 +100,6 @@ model Appointment {
   data      AppointmentField[]
   clinic    Clinic             @relation(fields: [clinicId], references: [id])
   clinicId  String
-  notes     String?            @default("")
 }
 
 model View {
@@ -199,7 +198,6 @@ model Clinic {
   Expense        Expense[]
   Revenue        Revenue[]
   Appointment    Appointment[]
-  sessions       Json          @default("[]")
 }
 
 model Week {

@@ -8,6 +8,8 @@ import { Div, CRCard, H3, CRTextInput, CRButton } from 'components';
 import LogoUpload from './logo-upload';
 import useGlobalState from 'state';
 
+import * as ls from 'services/local-storage';
+
 const model = Schema.Model({});
 
 const initialValues = {
@@ -36,6 +38,7 @@ function StaticSettings() {
         ...formValue,
         logo,
       });
+      ls.setCurrentClinic({ ...clinic, ...formValue, logo });
     },
     onError: () => Alert.error('Invalid Input'),
   });
@@ -73,7 +76,7 @@ function StaticSettings() {
       </Div>
       <CRCard borderless>
         <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
-          <Div >
+          <Div>
             <Grid fluid>
               <Row gutter={30}>
                 <Col md={12}>
@@ -96,7 +99,7 @@ function StaticSettings() {
                   <CRTextInput label="Title (Arabic)" name="doctorTitleAr" />
                   <CRTextInput
                     label="Job Description (Arabic)"
-                    name="doctorJobDescription"
+                    name="doctorJobDescriptionAr"
                   />
                 </Col>
               </Row>

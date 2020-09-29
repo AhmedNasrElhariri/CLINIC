@@ -1,0 +1,27 @@
+{
+  "__typename": "Clinic",
+  "id": "ac9821c3-9a54-4dad-a0ef-dc3bb684d5e4",
+  "name": "Nasr City",
+  "examinationPrice": 200,
+  "followupPrice": 50,
+  "urgentPrice": 500,
+  "duration": 5,
+  "appointmentsCount": 20,
+  "doctorName": "ِِAhmed Gala",
+  "doctorNameAr": "أحمد جلال",
+  "doctorTitle": "Dr",
+  "doctorTitleAr": "دكتور",
+  "doctorJobDescription": "اخصائي تغذية",
+  "doctorJobDescriptionAr": "",
+  "phoneNo": "0103333333",
+  "phoneNo1": "2323232323",
+  "address": "مدينة نصر",
+  "address1": "",
+  "logo": null,
+  "sessions": [
+    {
+      "name": "sss",
+      "price": 14
+    }
+  ]
+}

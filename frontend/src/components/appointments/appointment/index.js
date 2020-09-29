@@ -44,6 +44,9 @@ const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
 function Appointment() {
   const history = useHistory();
   const [formValue, setFormValue] = useState({});
+  const [apptFormValue, setApptFormValue] = useState({
+    notes: '',
+  });
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
@@ -99,11 +102,12 @@ function Appointment() {
       variables: {
         appointment: {
           data: mapFormValueToAppointmentData(normalizedFields, formValue),
+          notes: apptFormValue.notes,
           id: appointmentId,
         },
       },
     });
-  }, [update, normalizedFields, formValue, appointmentId]);
+  }, [update, normalizedFields, formValue, apptFormValue, appointmentId]);
 
   const onArchive = useCallback(() => {
     archive({
@@ -127,6 +131,10 @@ function Appointment() {
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
   }, [normalizedFields]);
+
+  useEffect(() => {
+    setApptFormValue({ notes: R.propOr('', 'notes')(appointment) });
+  }, [appointment]);
 
   return (
     <Div display="flex">
@@ -175,8 +183,11 @@ function Appointment() {
                 <AppointmentData
                   disabled={disabled}
                   formValue={formValue}
+                  appointmentFormValue={apptFormValue}
+                  onChangeAppointment={setApptFormValue}
                   onChange={setFormValue}
                   groups={groups}
+                  appointment={appointment}
                 />
               )}
               {showComp('1') && (
