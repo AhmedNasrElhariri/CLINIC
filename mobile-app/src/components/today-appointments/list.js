@@ -5,7 +5,7 @@ import { format } from '@/services/date';
 import { CRText } from '@/components';
 import NoAppointments from './no-appointments';
 
-const ListAppointments = ({ appointments }) => {
+const ListAppointments = ({ appointments, onNew }) => {
   return appointments.length ? (
     <List>
       {appointments.map((appointment, idx) => (
@@ -27,7 +27,7 @@ const ListAppointments = ({ appointments }) => {
       ))}
     </List>
   ) : (
-    <NoAppointments />
+    <NoAppointments onNew={onNew} />
   );
 };
 

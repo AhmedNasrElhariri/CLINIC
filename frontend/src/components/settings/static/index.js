@@ -45,12 +45,16 @@ function StaticSettings() {
 
   useEffect(() => {
     if (!R.isEmpty(clinic)) {
-      const val = R.pick(Object.keys(initialValues))(clinic);
+      const val = R.pick(Object.keys(initialValues))(clinic || {});
       const logo = R.path(['logo'])(clinic);
       setLogo(logo);
       setFormValue(val);
     }
   }, [clinic]);
+
+  if (R.isNil(clinic)) {
+    return <H3>Please Select Clinic</H3>;
+  }
 
   return (
     <>

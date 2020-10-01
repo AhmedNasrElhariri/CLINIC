@@ -1,10 +1,10 @@
 import React from 'react';
-import { Form, Toast, Icon, View, Text } from 'native-base';
+import { Form, Toast, View, Text } from 'native-base';
 import { Formik, Field } from 'formik';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import * as Yup from 'yup';
+import moment from 'moment';
 
-import DateInput from '../components/inputs/date-input';
 import { mapArrToChoices } from '../utils/misc';
 import { APPOINTMENT_TYPES } from '../utils/constants';
 import { CREATE_APPOINTMENT, LIST_PATIENTS } from '../apollo-client/queries';
@@ -12,10 +12,24 @@ import { NAVIGATIONS } from '@/utils/constants';
 import { CRPickerInput, CRMainLayout, CRPrimaryButton } from '@/components';
 import useGlobalState from '@/state';
 import crVariables from '@/utils/cr-variables';
+import CRDateTimePicker from '../components/inputs/datetime-picker';
 
 const ValidationSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
 });
+
+const createAppointmentBody = ({ patient, type, date, time }) => {
+  return {
+    patient,
+    type,
+    date: moment(date).set({
+      hours: moment(time).hours(),
+      minutes: moment(time).minutes(),
+      seconds: 0,
+      milliseconds: 0,
+    }),
+  };
+};
 
 const NewAppointmentScreen = ({ navigation }) => {
   const [currentClinic] = useGlobalState('currentClinic');
@@ -27,6 +41,7 @@ const NewAppointmentScreen = ({ navigation }) => {
         type: 'success',
         duration: 3000,
       });
+      navigation.navigate(NAVIGATIONS.TODAY_APPOINTMENTS);
     },
     onError: () =>
       Toast.show({
@@ -39,13 +54,14 @@ const NewAppointmentScreen = ({ navigation }) => {
   const patients = (data && data.patients) || [];
 
   return (
-    <CRMainLayout header="New Appointment">
+    <CRMainLayout header="New Appointment" noBack closeIcon>
       <Form>
         <Formik
           initialValues={{
             patient: null,
             type: 'Examination',
             date: null,
+            time: null,
           }}
           validationSchema={ValidationSchema}
           onSubmit={(values, actions) => {
@@ -86,14 +102,28 @@ const NewAppointmentScreen = ({ navigation }) => {
                 component={CRPickerInput}
                 choices={mapArrToChoices(APPOINTMENT_TYPES)}
               />
-              <Field name="date" placeholder="date" component={DateInput} />
+              <Field
+                name="date"
+                placeholder="Date"
+                component={CRDateTimePicker}
+                mode="date"
+              />
+              <Field
+                name="time"
+                placeholder="Time"
+                component={CRDateTimePicker}
+                mode="time"
+              />
               <CRPrimaryButton
                 primary
                 full
                 onPress={() =>
                   createAppointment({
                     variables: {
-                      input: { ...form.values, clinicId: currentClinic.id },
+                      input: {
+                        ...createAppointmentBody(form.values),
+                        clinicId: currentClinic.id,
+                      },
                     },
                   })
                 }

@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, ListItem, Text, Body, Right, Icon } from 'native-base';
+import { View, Icon } from 'native-base';
 
-import { format } from '@/services/date';
 import { CRText, CRPrimaryButton } from '@/components';
 import { getFontColor } from '@/utils/cr-variables';
 
-const NoAppointments = ({ appointments }) => {
+const NoAppointments = ({ onNew }) => {
   return (
     <View style={{ justifyContent: 'center', height: 400 }}>
       <View
@@ -38,7 +37,9 @@ const NoAppointments = ({ appointments }) => {
         <CRText variant="light" size={12}>
           OR
         </CRText>
-        <CRPrimaryButton>Create New Appointment</CRPrimaryButton>
+        <CRPrimaryButton onPress={onNew}>
+          Create New Appointment
+        </CRPrimaryButton>
       </View>
     </View>
   );

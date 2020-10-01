@@ -49,7 +49,7 @@ function ClinicInfo() {
         'duration',
         'appointmentsCount',
         'sessions',
-      ])(clinic);
+      ])(clinic || {});
       setFormValue(val);
     }
   }, [clinic]);
@@ -86,6 +86,10 @@ function ClinicInfo() {
     },
     [formValue, sessions]
   );
+
+  if (R.isNil(clinic)) {
+    return <H3>Please Select Clinic</H3>;
+  }
 
   return (
     <>

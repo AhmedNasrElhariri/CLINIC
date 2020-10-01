@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
@@ -21,7 +21,7 @@ import {
 import { isSession } from 'services/appointment';
 
 function TodayAppointments() {
-  const { todayAppointments: appointments, refetch } = useFetchAppointments();
+  const { todayAppointments: appointments } = useFetchAppointments();
   const { refetchRevenues } = useFetchAccountingData();
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);
@@ -40,10 +40,10 @@ function TodayAppointments() {
     [appointments]
   );
 
-  useEffect(() => {
-    console.log(refetch)
-    // refetch();
-  }, []);
+  // useEffect(() => {
+  //   console.log(refetch)
+  //   // refetch();
+  // }, []);
 
   const completedAppointments = useMemo(
     () =>

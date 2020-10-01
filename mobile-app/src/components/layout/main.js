@@ -16,7 +16,6 @@ import Footer from './footer';
 import { CRText } from '@/components';
 import { NAVIGATIONS } from '@/utils/constants';
 import crVariables from '@/utils/cr-variables';
-import NewAppointmentFab from '../appointments/new-appointment-fab';
 
 const MainLayout = ({
   children,
@@ -26,6 +25,8 @@ const MainLayout = ({
   search,
   noBack,
   newAppointment,
+  refreshControl,
+  closeIcon,
 }) => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -38,6 +39,17 @@ const MainLayout = ({
               {!noBack && (
                 <Icon
                   name="ios-arrow-back"
+                  style={{
+                    color: crVariables.textColor,
+                    fontSize: 25,
+                    fontWeight: 'bold',
+                  }}
+                  onPress={() => navigation.goBack()}
+                />
+              )}
+              {closeIcon && (
+                <Icon
+                  name="close"
                   style={{
                     color: crVariables.textColor,
                     fontSize: 25,
@@ -70,7 +82,10 @@ const MainLayout = ({
           </Right>
         </Header>
       )}
-      <Content style={{ paddingHorizontal: 30, paddingVertical: 20 }}>
+      <Content
+        style={{ paddingHorizontal: 30, paddingVertical: 20 }}
+        refreshControl={refreshControl}
+      >
         {children}
       </Content>
       {newAppointment && (
@@ -107,6 +122,7 @@ MainLayout.defaultProps = {
   search: false,
   noBack: false,
   newAppointment: false,
+  closeIcon: false,
 };
 
 export default MainLayout;

@@ -23,7 +23,7 @@ export function useVariables() {
 
 function useFetchAppointments() {
   const variables = useVariables();
-  const { data } = useQuery(LIST_APPOINTMENTS, {
+  const { data, refetch, networkStatus } = useQuery(LIST_APPOINTMENTS, {
     variables,
   });
   const appointments = useMemo(
@@ -37,10 +37,14 @@ function useFetchAppointments() {
       ),
     [appointments]
   );
+
   return useMemo(
     () => ({
       appointments,
       todayAppointments,
+      refetch,
+      fetchDone: networkStatus === 7,
+      refetching: networkStatus === 4,
       updateCache: appointments => {
         client.writeQuery({
           query: LIST_APPOINTMENTS,
@@ -51,7 +55,7 @@ function useFetchAppointments() {
         });
       },
     }),
-    [appointments, todayAppointments, variables]
+    [appointments, todayAppointments, variables, refetch, networkStatus]
   );
 }
 

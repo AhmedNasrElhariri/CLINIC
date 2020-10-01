@@ -15,6 +15,7 @@ import * as R from 'ramda';
 import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
 import useFetchPatients from 'hooks/fetch-patients';
+import { filterUpdatapleFields } from 'services/clinic';
 
 function useUserProfile() {
   const {
@@ -83,7 +84,7 @@ function useUserProfile() {
       setClinics(clinics);
       if (R.isEmpty(currentClinic)) {
         const clinic = R.path(['0'])(clinics);
-        setCurrentClinic(clinic);
+        setCurrentClinic(filterUpdatapleFields(clinic));
         ls.setCurrentClinic(clinic);
       }
     }
@@ -111,7 +112,7 @@ function useUserProfile() {
   }, [setAuthenticated]);
 
   const onSelectClinic = clinic => {
-    setCurrentClinic(clinic);
+    setCurrentClinic(setCurrentClinic(clinic));
     ls.setCurrentClinic(clinic);
     history.push('/');
   };

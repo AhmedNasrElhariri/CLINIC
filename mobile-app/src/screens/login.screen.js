@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
   });
 
   return (
-    <CRMainLayout>
+    <CRMainLayout noBack>
       <Content style={{ marginTop: 135 }}>
         <Formik
           validateOnMount

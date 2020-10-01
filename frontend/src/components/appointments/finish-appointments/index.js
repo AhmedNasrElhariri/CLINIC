@@ -27,7 +27,7 @@ function FinishAppointment({ show, onCancel, onOk, clinic }) {
       'examinationPrice',
       'followupPrice',
       'urgentPrice',
-    ])(clinic);
+    ])(clinic || {});
 
     const allChoices = [
       ...sessions,
