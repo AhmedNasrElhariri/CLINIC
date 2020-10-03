@@ -69,11 +69,11 @@ const getBorderRadius = ({ round, midRound }) =>
     : byTheme(normalBorderRadius);
 
 const Button = styled.button.attrs(
-  ({ block, bold, semiBold, uppercase, primary, subtle }) => ({
+  ({ block, bold, semiBold, uppercase, primary, variant }) => ({
     width: block ? '100%' : 'initial',
     fontWeight: bold ? 800 : semiBold ? 600 : 400,
     textTransform: uppercase ? 'uppercase' : 'initial',
-    variant: primary ? 'primary' : 'subtle',
+    variant: variant ? variant : primary ? 'primary' : 'subtle',
   })
 )`
   background-color: ${props => props.theme.colors.dark};
@@ -102,6 +102,10 @@ const Button = styled.button.attrs(
     variants: {
       primary: {
         'background-color': theme => theme.colors.primary,
+        opacity: 1,
+      },
+      success: {
+        'background-color': theme => theme.colors.success,
         opacity: 1,
       },
       subtle: {

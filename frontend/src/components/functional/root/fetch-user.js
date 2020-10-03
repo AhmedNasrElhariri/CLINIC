@@ -112,7 +112,7 @@ function useUserProfile() {
   }, [setAuthenticated]);
 
   const onSelectClinic = clinic => {
-    setCurrentClinic(setCurrentClinic(clinic));
+    setCurrentClinic(filterUpdatapleFields(clinic));
     ls.setCurrentClinic(clinic);
     history.push('/');
   };

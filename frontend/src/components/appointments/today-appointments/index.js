@@ -36,25 +36,20 @@ function TodayAppointments() {
   });
 
   const upcomingAppointments = useMemo(
-    () => R.pipe(R.filter(R.propEq('status', 'Scheduled')))(appointments),
-    [appointments]
-  );
-
-  // useEffect(() => {
-  //   console.log(refetch)
-  //   // refetch();
-  // }, []);
-
-  const completedAppointments = useMemo(
     () =>
       R.pipe(
         R.filter(
           R.propSatisfies(
-            status => status === 'Done' || status === 'Archived',
+            status => status === 'Scheduled' || status === 'Archived',
             'status'
           )
         )
       )(appointments),
+    [appointments]
+  );
+
+  const completedAppointments = useMemo(
+    () => R.pipe(R.filter(R.propEq('status', 'Done')))(appointments),
     [appointments]
   );
 

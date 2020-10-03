@@ -47,20 +47,22 @@ function useFetchAppointments() {
       )(data),
     [data]
   );
-  const todayAppointments = useMemo(
-    () =>
-      appointments.filter(({ date }) => {
-        const from = moment({
-          hours: 6,
-          minutes: 0,
-          seconds: 0,
-          milliseconds: 0,
-        });
-        const to = from.clone().add(1, 'days');
-        return moment(date).isBetween(from, to, 'minutes', '[]');
-      }),
-    [appointments]
-  );
+  const todayAppointments = useMemo(() => {
+    const refDate =
+      moment().hours() >= 5 ? moment() : moment().subtract(1, 'days');
+
+    const from = refDate.set({
+      hours: 6,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    });
+
+    return appointments.filter(({ date }) => {
+      const to = from.clone().add(1, 'days');
+      return moment(date).isBetween(from, to, 'minutes', '[]');
+    });
+  }, [appointments]);
   return useMemo(
     () => ({
       appointments,

@@ -24,7 +24,8 @@ const localizer = momentLocalizer(moment);
 const variants = {
   Examination: 'one',
   Followup: 'two',
-  Urgent: 'three',
+  Session: 'three',
+  Urgent: 'four',
 };
 
 const initialValue = {
@@ -79,7 +80,7 @@ function AppointmentCalendar() {
         name: p.type,
         start: new Date(p.date),
         end: moment(p.date).add(15, 'minutes').toDate(),
-        variant: variants[p.type] || 'three',
+        variant: variants[p.type],
       })),
     [data]
   );
@@ -88,7 +89,7 @@ function AppointmentCalendar() {
     () =>
       events.map(p => ({
         ...p,
-        variant: 'four',
+        variant: 'five',
       })),
     [events]
   );

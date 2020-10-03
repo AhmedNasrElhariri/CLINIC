@@ -22,10 +22,14 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.seemsolutions.clinicR",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
-      "package": "net.clinicr.clinicr"
+      "package": "com.seemsolutions.clinicR",
+      "versionCode": 2,
+      "permissions": []
     },
     "description": ""
   }

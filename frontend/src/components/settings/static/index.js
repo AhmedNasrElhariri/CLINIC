@@ -52,6 +52,8 @@ function StaticSettings() {
     }
   }, [clinic]);
 
+  console.log(clinic);
+
   if (R.isNil(clinic)) {
     return <H3>Please Select Clinic</H3>;
   }

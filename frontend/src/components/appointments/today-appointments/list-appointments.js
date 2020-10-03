@@ -12,7 +12,7 @@ import {
   CRPanelGroup,
   CRTable,
 } from 'components';
-import { isScheduled } from 'services/appointment';
+import { isScheduledOrArchived, isScheduled } from 'services/appointment';
 import { canAjdust } from 'services/appointment';
 
 import { PrintOLIcon } from 'components/icons';
@@ -93,10 +93,12 @@ function ListAppointments({
               <CRTable.CRCell>
                 {appointment => (
                   <Div display="flex">
-                    {isScheduled(appointment) && (
+                    {isScheduledOrArchived(appointment) && (
                       <Can I="finish" an="Appointment">
                         <CRButton
-                          primary
+                          variant={
+                            isScheduled(appointment) ? 'primary' : 'success'
+                          }
                           round
                           small
                           onClick={e => {

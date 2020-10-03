@@ -1,16 +1,19 @@
 import { transparentize, setLightness } from 'polished';
 
 const textColor = '#283148';
+const successColor = '#40C173';
 const primaryColor = '#51C6F3';
 const eventColor1 = primaryColor;
-const eventColor2 = '#40C173';
+const eventColor2 = successColor;
+const eventColor4 = '#fe9f0b';
 const eventColor3 = '#d40000';
-const eventColor4 = textColor;
+const eventColor5 = textColor;
 
 export const scrollbarColor = transparentize(0.8, textColor);
 
 export const colors = {
   primary: primaryColor,
+  success: successColor,
   primaryLight: '#EDF9FE',
   primaryLighter: transparentize(0.9, primaryColor),
   red: '#E60303',
@@ -53,6 +56,11 @@ export const colors = {
       bg: setLightness(0.97, eventColor4),
       hover: setLightness(0.88, eventColor4),
     },
+    {
+      color: eventColor5,
+      bg: setLightness(0.97, eventColor5),
+      hover: setLightness(0.88, eventColor5),
+    },
   ],
 };
 
@@ -69,6 +77,9 @@ export default {
     },
     danger: {
       color: colors.red,
+    },
+    success: {
+      color: colors.success,
     },
   },
 
