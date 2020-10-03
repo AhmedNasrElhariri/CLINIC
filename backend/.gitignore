@@ -1,4 +1,4 @@
 dist
-server-dist
 .vscode/
 yarn.lock
+server-dist/
