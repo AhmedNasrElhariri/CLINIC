@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RefreshControl } from 'react-native';
+import { RefreshControl, TouchableOpacity } from 'react-native';
 
 import useFetchAppointments from '@/hooks/fetch-appointments';
 import { CRMainLayout } from '@/components';
@@ -36,8 +36,10 @@ const TodayAppointments = ({ navigation }) => {
         <RefreshControl onRefresh={() => refetch()} refreshing={refetching} />
       }
       extra={
-        <Button small transparent onPress={() => setFilterVisible(true)}>
-          <Icon name="ios-options" style={{ color: '#000000' }} />
+        <Button small transparent>
+          <TouchableOpacity onPress={() => setFilterVisible(true)}>
+            <Icon name="ios-options" style={{ color: '#000000' }} />
+          </TouchableOpacity>
         </Button>
       }
     >

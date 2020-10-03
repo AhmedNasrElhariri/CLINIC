@@ -462,6 +462,7 @@ type Subscription {
 type Notification {
   message: String!
   viewed: Boolean!
+  date: Date
 }
 
 ########################### Event ##################################

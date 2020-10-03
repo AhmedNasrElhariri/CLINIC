@@ -13,24 +13,27 @@ const ValidationSchema = Yup.object().shape({
   password: Yup.string().required('Required'),
 });
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
   const { onSignIn } = React.useContext(AuthContext);
 
   const [login] = useMutation(LOGIN, {
+    fetchPolicy: 'no-cache',
     onCompleted: async ({ login }) => {
       Toast.show({
         text: 'Patient Created Successfully!',
         type: 'success',
         duration: 3000,
       });
-      onSignIn(login.token);
+      onSignIn(login);
     },
-    onError: () =>
+    onError: error => {
+      console.log(error);
       Toast.show({
         text: 'Invalid Email or Password',
         type: 'danger',
         duration: 3000,
-      }),
+      });
+    },
   });
 
   return (
@@ -55,13 +58,14 @@ const LoginScreen = ({ navigation }) => {
               />
               <CRPrimaryButton
                 disabled={!form.isValid}
-                onPress={() =>
+                onPress={() => {
+                  console.log(form.values);
                   login({
                     variables: {
                       ...form.values,
                     },
-                  })
-                }
+                  });
+                }}
               >
                 Login
               </CRPrimaryButton>

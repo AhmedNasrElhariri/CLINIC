@@ -29,6 +29,7 @@ CRText.defaultProps = {
   size: 12,
   weight: 'normal',
   variant: 'normal',
+  style: {},
 };
 
 export default CRText;

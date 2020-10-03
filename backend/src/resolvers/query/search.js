@@ -1,13 +1,13 @@
 import { prisma } from '@';
 
 const getPatients = q => {
-  return prisma.raw(
+  return prisma.$queryRaw(
     `SELECT * FROM "Patient" WHERE "name" ILIKE '%${q}%' OR "phoneNo" ILIKE '%${q}%';`
   );
 };
 
 const getSnippets = q => {
-  return prisma.raw(
+  return prisma.$queryRaw(
     `SELECT * FROM "Snippet" WHERE title ILIKE '%${q}%' OR "body" ILIKE '%${q}%';`
   );
 };

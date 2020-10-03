@@ -1,26 +1,19 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text } from 'native-base';
 import * as R from 'ramda';
 
-import useFetchPatient from '@/hooks/fetch-patient';
+import useUserInfo from '@/hooks/fetch-user-info';
 import { CRMainLayout } from '@/components';
+import Notification from '@/components/notifications/notification';
 
 const NotificationScreen = ({ route }) => {
-  const id = R.path(['params', 'patient', 'id'])(route);
-  const { progress } = useFetchPatient(id);
-
-  const progressData = useMemo(
-    () =>
-      Object.entries(progress).map(([title, data]) => ({
-        title,
-        data,
-      })),
-    [progress]
-  );
+  const { notifications } = useUserInfo();
 
   return (
     <CRMainLayout header="Notifications">
-      <Text>notifications</Text>
+      {notifications.map((n, idx) => (
+        <Notification key={idx} {...n} />
+      ))}
     </CRMainLayout>
   );
 };

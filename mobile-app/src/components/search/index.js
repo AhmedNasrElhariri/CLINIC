@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Icon, Button, Item, Input, View } from 'native-base';
-import crVariables from '@/utils/cr-variables';
-import { CRText } from '@/components';
+import { View } from 'native-base';
+import { CRButton } from '@/components';
 import SearchInput from './input';
 
 const Search = ({ onChange, onClose }) => {
@@ -18,7 +16,9 @@ const Search = ({ onChange, onClose }) => {
       >
         <SearchInput onChange={onChange} />
         <View style={{ marginLeft: 10 }}>
-          <CRText onPress={onClose}>Cancel</CRText>
+          <CRButton onPress={onClose} transparent size={14}>
+            Cancel
+          </CRButton>
         </View>
       </View>
     </>

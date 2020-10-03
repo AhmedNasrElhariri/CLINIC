@@ -1,9 +1,7 @@
 import React, { useState, memo, useCallback } from 'react';
 import { Content, Header, Container, List, ListItem } from 'native-base';
 import * as R from 'ramda';
-import * as Yup from 'yup';
 import { useLazyQuery } from '@apollo/react-hooks';
-import Autocomplete from 'react-native-autocomplete-input';
 
 import { CRSearch, CRSearchTabs, CRText } from '@/components';
 import { SEARCH } from '@/apollo-client/queries';

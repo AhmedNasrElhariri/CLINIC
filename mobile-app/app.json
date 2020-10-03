@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "clinicr-mobile app",
-    "slug": "clinicr-mobile app",
+    "name": "clinic-R",
+    "slug": "clinicr-R",
     "platforms": [
       "ios",
       "android",

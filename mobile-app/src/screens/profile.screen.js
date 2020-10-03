@@ -1,26 +1,24 @@
-import React, { useMemo } from 'react';
-import { Text } from 'native-base';
-import * as R from 'ramda';
+import React from 'react';
 
-import useFetchPatient from '@/hooks/fetch-patient';
-import { CRMainLayout } from '@/components';
+import { CRMainLayout, CRText, CRButton } from '@/components';
+import useUserInfo from '@/hooks/fetch-user-info';
+import { NAVIGATIONS } from '@/utils/constants';
 
-const ProfileScreen = ({ route }) => {
-  const id = R.path(['params', 'patient', 'id'])(route);
-  const { progress } = useFetchPatient(id);
-
-  const progressData = useMemo(
-    () =>
-      Object.entries(progress).map(([title, data]) => ({
-        title,
-        data,
-      })),
-    [progress]
-  );
+const ProfileScreen = ({ navigation }) => {
+  const { logout } = useUserInfo({
+    onLogout: () => {
+      navigation.navigate(NAVIGATIONS.LOGIN);
+    },
+  });
 
   return (
     <CRMainLayout header="Profile">
-      <Text>profile screen</Text>
+      <CRText size={20} weight="bold">
+        Login Info
+      </CRText>
+      <CRButton transparent size={16} onPress={logout}>
+        Logout
+      </CRButton>
     </CRMainLayout>
   );
 };

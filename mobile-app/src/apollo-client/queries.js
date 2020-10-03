@@ -431,3 +431,27 @@ export const SEARCH = gql`
     # }
   }
 `;
+
+export const MY_NOTIFICATIONS = gql`
+  query myNotifications {
+    myNotifications {
+      message
+      viewed
+      date
+    }
+  }
+`;
+
+export const NOTIFICATION_SUBSCRIPTION = gql`
+  subscription notifications {
+    notifications {
+      message
+    }
+  }
+`;
+
+export const CLEAR_NOTIFICATIONS = gql`
+  mutation {
+    clearNotifications
+  }
+`;

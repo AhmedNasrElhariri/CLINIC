@@ -1,4 +1,5 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import {
   Container,
   Header,
@@ -36,46 +37,56 @@ const MainLayout = ({
         <Header transparent translucent searchBar>
           <Body style={{ marginLeft: 20 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              {!noBack && (
-                <Icon
-                  name="ios-arrow-back"
-                  style={{
-                    color: crVariables.textColor,
-                    fontSize: 25,
-                    fontWeight: 'bold',
-                  }}
-                  onPress={() => navigation.goBack()}
-                />
-              )}
-              {closeIcon && (
-                <Icon
-                  name="close"
-                  style={{
-                    color: crVariables.textColor,
-                    fontSize: 25,
-                    fontWeight: 'bold',
-                  }}
-                  onPress={() => navigation.goBack()}
-                />
-              )}
-              <Title
-                style={{ marginLeft: 15 }}
-                onPress={() => navigation.goBack()}
-              >
-                <CRText size={18} weight="bold">
-                  {header}
-                </CRText>
-              </Title>
+              <Button transparent>
+                <TouchableOpacity
+                  transparent
+                  onPress={
+                    noBack && !closeIcon ? null : () => navigation.goBack()
+                  }
+                  style={{ flexDirection: 'row' }}
+                >
+                  {!noBack && (
+                    <Icon
+                      name="ios-arrow-back"
+                      style={{
+                        color: crVariables.textColor,
+                        fontSize: 25,
+                        fontWeight: 'bold',
+                        marginLeft: 0,
+                      }}
+                    />
+                  )}
+                  {closeIcon && (
+                    <Icon
+                      name="close"
+                      style={{
+                        color: crVariables.textColor,
+                        fontSize: 25,
+                        fontWeight: 'bold',
+                        marginLeft: 0,
+                      }}
+                    />
+                  )}
+                  <Title>
+                    <CRText size={18} weight="bold">
+                      {header}
+                    </CRText>
+                  </Title>
+                </TouchableOpacity>
+              </Button>
             </View>
           </Body>
           <Right>
             {search && (
-              <Button
-                transparent
-                onPress={() => navigation.navigate(NAVIGATIONS.SEARCH)}
-                small
-              >
-                <Icon name="search" style={{ color: '#000000', padding: 0 }} />
+              <Button transparent small>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate(NAVIGATIONS.SEARCH)}
+                >
+                  <Icon
+                    name="search"
+                    style={{ color: '#000000', padding: 0 }}
+                  />
+                </TouchableOpacity>
               </Button>
             )}
             {extra}
@@ -89,7 +100,7 @@ const MainLayout = ({
         {children}
       </Content>
       {newAppointment && (
-        <View
+        <TouchableOpacity
           style={{
             position: 'absolute',
             zIndex: 999,
@@ -98,19 +109,19 @@ const MainLayout = ({
             bottom: 80,
             height: 60,
             borderRadius: 60,
-            backgroundColor: crVariables.primaryColor,
             alignSelf: 'center',
             justifyContent: 'center',
             alignItems: 'center',
+            backgroundColor: crVariables.primaryColor,
+            elevation: 4,
+            shadowOpacity: 0.05,
+            shadowRadius: 10,
+            shadowOffset: { width: 2, height: 2 },
           }}
+          onPress={() => navigation.navigate(NAVIGATIONS.NEW_APPOINTMENT)}
         >
-          <Icon
-            type="MaterialIcons"
-            name="edit"
-            style={{ color: '#ffffff' }}
-            onPress={() => navigation.navigate(NAVIGATIONS.NEW_APPOINTMENT)}
-          />
-        </View>
+          <Icon type="MaterialIcons" name="edit" style={{ color: '#ffffff' }} />
+        </TouchableOpacity>
       )}
       {!plain && <Footer navigation={navigation} route={route} />}
     </Container>

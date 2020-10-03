@@ -26,7 +26,7 @@ const RootStack = createStackNavigator();
 const initalRoute = NAVIGATIONS.TODAY_APPOINTMENTS;
 
 const MainStackScreen = () => {
-  const [isVerified] = useGlobalState('isVerified');
+  const [isVerified] = useGlobalState('isAuthenticated');
   return (
     <MainStack.Navigator
       initialRouteName={initalRoute}

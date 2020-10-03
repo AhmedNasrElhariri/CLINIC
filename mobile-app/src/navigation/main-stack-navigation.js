@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Footer, FooterTab, Button, Icon, Text } from 'native-base';
 
 import StackNavigator from './stack-navigator';
-import TabNavigator from './tab-navigator';
 
 const BottomNavigation = ({ state, descriptors, navigation }) => {
   return (

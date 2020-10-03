@@ -1,6 +1,7 @@
 const textColor = 'rgb(40, 49, 72)';
 const textColorLight = 'rgba(40, 49, 72, 0.5)';
 const textColorLighter = 'rgba(40, 49, 72, 0.25)';
+const textColorLightest = 'rgba(40, 49, 72, 0.1)';
 const primaryColor = '#51C6F3';
 const darkMent = 'rgb(64, 193, 115)';
 
@@ -9,6 +10,7 @@ export default {
   textColor,
   textColorLight,
   textColorLighter,
+  textColorLightest,
   borderColor: 'rgba(40, 49, 72, 0.2)',
   placeholderColor: 'rgba(40, 49, 72, 0.3)',
   disabledBgColor: 'rgb(233, 234, 236)',
