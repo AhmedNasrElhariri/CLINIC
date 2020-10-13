@@ -27,7 +27,7 @@ const errorLink = onError(({ graphQLErrors, operation }) => {
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/`,
+  uri: `wss://localhost:4000/`,
   options: {
     reconnect: true,
     connectionParams: async () => {

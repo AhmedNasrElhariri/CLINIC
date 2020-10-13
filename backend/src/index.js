@@ -81,6 +81,6 @@ server.start(options, () => {
   console.log('Server is running on localhost:4000');
   if (process.env.init) {
     console.log('Init Database');
-    seed();
+    // seed();
   }
 });

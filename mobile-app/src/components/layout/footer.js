@@ -20,7 +20,7 @@ const FooterItem = ({ title, icon, onPress, type, active, badgeCount }) => {
             zIndex: 100,
           }}
         >
-          <Text>2</Text>
+          <Text>{badgeCount}</Text>
         </Badge>
       )}
       <TouchableOpacity
@@ -91,6 +91,11 @@ const items = [
 const CRFooter = ({ navigation, route }) => {
   const { notifications } = useUserInfo();
   const path = route.name;
+
+  if (route.name === NAVIGATIONS.LOGIN) {
+    return null;
+  }
+
   return (
     <Footer
       style={{

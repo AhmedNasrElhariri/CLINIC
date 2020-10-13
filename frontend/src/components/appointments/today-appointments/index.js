@@ -4,7 +4,10 @@ import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 
 import { Div } from 'components';
-import { SET_APPOINTMENT_DONE } from 'apollo-client/queries';
+import {
+  ARCHIVE_APPOINTMENT,
+  SET_APPOINTMENT_DONE,
+} from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 
 import useFetchAppointments from 'hooks/fetch-appointments';
@@ -35,12 +38,21 @@ function TodayAppointments() {
     },
   });
 
+  const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
+    onCompleted: () => {
+      Alert.success('Appointment has been Archived successfully');
+    },
+  });
+
   const upcomingAppointments = useMemo(
     () =>
       R.pipe(
         R.filter(
           R.propSatisfies(
-            status => status === 'Scheduled' || status === 'Archived',
+            status =>
+              status === 'Scheduled' ||
+              status === 'Archived' ||
+              status === 'Done',
             'status'
           )
         )
@@ -49,7 +61,10 @@ function TodayAppointments() {
   );
 
   const completedAppointments = useMemo(
-    () => R.pipe(R.filter(R.propEq('status', 'Done')))(appointments),
+    () =>
+      R.pipe(
+        R.filter(R.propSatisfies(status => status === 'Closed', 'status'))
+      )(appointments),
     [appointments]
   );
 
@@ -91,6 +106,15 @@ function TodayAppointments() {
     [appointment, close, setAppointmentDone]
   );
 
+  const handleArchive = useCallback(
+    ({ id }) => {
+      archive({
+        variables: { id },
+      });
+    },
+    [archive]
+  );
+
   return (
     <>
       <Can I="list" an="Appointment">
@@ -98,6 +122,7 @@ function TodayAppointments() {
           title="Upcoming Appointments"
           appointments={upcomingAppointments}
           onDone={onClickDone}
+          onArchive={handleArchive}
           defaultExpanded={true}
         />
       </Can>

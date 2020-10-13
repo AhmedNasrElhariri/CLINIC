@@ -51,7 +51,6 @@ function Appointment() {
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
   const { appointmentId } = useParams();
-  const { refetchRevenues } = useFetchAccountingData();
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
       id: appointmentId,
@@ -74,7 +73,6 @@ function Appointment() {
   });
 
   const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
-    refetchQueries: () => [refetchRevenues()],
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
       setDisabled(true);

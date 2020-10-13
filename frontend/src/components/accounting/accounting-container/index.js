@@ -31,7 +31,7 @@ const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 
 const AccountingContainer = () => {
   const [clinic] = useGlobalState('currentClinic');
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState('0');
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const { can } = useAuth();
@@ -205,8 +205,6 @@ const AccountingContainer = () => {
 
           <Div>
             {activeTab === '0' ? (
-              <Summary expenses={totalExpenses} revenues={totalRevenues} />
-            ) : (
               <Div display="flex">
                 <Div flexGrow={1} mr={2}>
                   <ListData
@@ -236,6 +234,8 @@ const AccountingContainer = () => {
                   />
                 </Div>
               </Div>
+            ) : (
+              <Summary expenses={totalExpenses} revenues={totalRevenues} />
             )}
           </Div>
           <AccountingForm {...createRevenueForm} />

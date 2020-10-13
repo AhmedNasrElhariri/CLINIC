@@ -1,18 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Button,
-  ListItem,
-  Text,
-  Body,
-  Right,
-  Tabs,
-  Tab,
-} from 'native-base';
-
-import { format } from '@/services/date';
-import { CRText, CRPrimaryButton } from '@/components';
+import { View } from 'native-base';
+import { CRPrimaryButton } from '@/components';
 
 const TabButton = ({ disabled, children, onPress }) => (
   <CRPrimaryButton

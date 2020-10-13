@@ -12,6 +12,7 @@ const Notification = ({ message, date }) => {
         borderBottomWidth: 1,
         borderColor: crVariables.textColorLightest,
         paddingBottom: 20,
+        paddingTop: 10,
       }}
     >
       <View style={{ flexDirection: 'row' }}>

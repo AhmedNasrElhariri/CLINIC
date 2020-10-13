@@ -3,10 +3,18 @@ import Modal from 'react-native-modal';
 import { View, List } from 'native-base';
 
 import { CRText, CRButton } from '@/components';
-import AppointmentTypeFilter from './type-filter';
-import BranchFilter from './branches-filter';
+import PropFilter from './prop-filter';
 
-const Filter = ({ isVisible, onDone, onClear, filter, onChange }) => {
+const Filter = ({
+  clinics,
+  types,
+  isVisible,
+  onDone,
+  onClear,
+  onSwitch,
+  filter,
+  onSwitchAll,
+}) => {
   return (
     <View>
       <Modal
@@ -45,16 +53,29 @@ const Filter = ({ isVisible, onDone, onClear, filter, onChange }) => {
             </CRButton>
           </View>
           <List>
-            <AppointmentTypeFilter
-              filter={filter.type}
-              onChange={type => onChange({ ...filter, type })}
+            <PropFilter
+              name="Appointment Type"
+              filter={filter.types}
+              list={types}
+              onSwitch={onSwitch('types')}
+              onSwitchAll={onSwitchAll('types', types)}
             />
-            <BranchFilter />
+            <PropFilter
+              name="Branch"
+              filter={filter.clinics}
+              list={clinics}
+              onSwitch={onSwitch('clinics')}
+              onSwitchAll={onSwitchAll('clinics', clinics)}
+            />
           </List>
         </View>
       </Modal>
     </View>
   );
+};
+
+Filter.defaultProps = {
+  appointments: [],
 };
 
 export default Filter;

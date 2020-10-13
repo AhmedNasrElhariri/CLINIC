@@ -31,29 +31,13 @@ export const PrescriptionSyled = styled.div`
   height: 100vh;
   font-size: 18px;
 
-  & .info {
-    display: flex;
-    line-height: 35px;
-  }
-
-  & .name {
-    width: 80px;
-    text-align: right;
-    font-weight: bold;
-  }
-
-  & .value {
-    flex-grow: 1;
-    margin-left: 20px;
-  }
-
   & .content-container {
     flex-grow: 1;
     display: flex;
     border: 2px solid black;
     border-radius: 10px;
     margin-top: 15px;
-    padding-left: 14px;
+    padding: 0px 14px;
     display: flex;
     flex-direction: column;
   }
@@ -102,5 +86,27 @@ export const HeaderStyled = styled(Div)`
 
     z-index: 100;
     border-bottom: ${props => `1px solid ${props.theme.colors.grey100}`};
+  }
+`;
+
+export const PatientContainerStyled = styled(Div)`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid ${props => props.theme.colors.texts[2]};
+  padding: 10px 5px 20px 5px;
+`;
+
+export const PatientInfoStyled = styled(Div)`
+  display: flex;
+  line-height: 35px;
+
+  & .name {
+    width: 80px;
+    font-weight: bold;
+  }
+
+  & .value {
+    flex-grow: 1;
+    margin-left: 20px;
   }
 `;

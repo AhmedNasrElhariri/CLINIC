@@ -20,7 +20,6 @@ export default ({
   const onValueChange = val => {
     form.setFieldValue(name, val);
   };
-  console.log(placeholder);
 
   return (
     <>

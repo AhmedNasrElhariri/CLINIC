@@ -16,11 +16,19 @@ export const ItemStyled = styled(Div)`
 `;
 
 export const BadgeStyled = styled(Div)`
-  width: 10px;
-  height: 10px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: red;
   top: 10px;
-  left: 10px;
+  left: 7px;
   position: absolute;
+  display: flex;
+  align-items: center;
+  color: white;
+  justify-content: center;
+
+  & span {
+    font-size: 13px;
+  }
 `;

@@ -14,9 +14,9 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Footer from './footer';
-import { CRText } from '@/components';
 import { NAVIGATIONS } from '@/utils/constants';
 import crVariables from '@/utils/cr-variables';
+import CRText from '../text/index';
 
 const MainLayout = ({
   children,

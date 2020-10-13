@@ -26,7 +26,8 @@ const RootStack = createStackNavigator();
 const initalRoute = NAVIGATIONS.TODAY_APPOINTMENTS;
 
 const MainStackScreen = () => {
-  const [isVerified] = useGlobalState('isAuthenticated');
+  const [isAuthenticated] = useGlobalState('isAuthenticated');
+  const [isVerified] = useGlobalState('isVerified');
   return (
     <MainStack.Navigator
       initialRouteName={initalRoute}
@@ -34,7 +35,7 @@ const MainStackScreen = () => {
         headerShown: false,
       }}
     >
-      {!isVerified ? (
+      {!isAuthenticated ? (
         <MainStack.Screen name={NAVIGATIONS.LOGIN} component={LoginScreen} />
       ) : (
         <>

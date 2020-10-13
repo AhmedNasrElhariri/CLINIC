@@ -4,28 +4,31 @@ import * as R from 'ramda';
 import moment from 'moment';
 
 import { LIST_APPOINTMENTS } from '@/apollo-client/queries';
-import useGlobalState from '@/state';
 import client from '@/apollo-client/client';
 
 import { sortAppointmentsByDate } from '@/services/appointment';
+import useUserInfo from './fetch-user-info';
 
-export function useVariables() {
-  const [currentClinic] = useGlobalState('currentClinic');
-  if (!currentClinic) {
+export function useVariables(ids = []) {
+  const { clinics } = useUserInfo();
+  if (!clinics.length) {
     return {};
   }
   return {
     input: {
-      clinicIds: [currentClinic.id],
+      clinicIds: clinics.map(c => c.id),
     },
   };
 }
 
 function useFetchAppointments() {
   const variables = useVariables();
-  const { data, refetch, networkStatus } = useQuery(LIST_APPOINTMENTS, {
-    variables,
-  });
+  const { data, refetch, networkStatus, loading } = useQuery(
+    LIST_APPOINTMENTS,
+    {
+      variables,
+    }
+  );
   const appointments = useMemo(
     () => R.pipe(R.propOr([], 'appointments'), sortAppointmentsByDate)(data),
     [data]
@@ -42,6 +45,7 @@ function useFetchAppointments() {
     () => ({
       appointments,
       todayAppointments,
+      fetching: loading,
       refetch,
       fetchDone: networkStatus === 7,
       refetching: networkStatus === 4,
@@ -55,7 +59,14 @@ function useFetchAppointments() {
         });
       },
     }),
-    [appointments, todayAppointments, variables, refetch, networkStatus]
+    [
+      appointments,
+      todayAppointments,
+      variables,
+      refetch,
+      loading,
+      networkStatus,
+    ]
   );
 }
 

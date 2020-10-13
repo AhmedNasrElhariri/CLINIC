@@ -1,12 +1,15 @@
 import React from 'react';
-import { Form, Toast, Content } from 'native-base';
+import { Image } from 'react-native';
+import { Form, Toast, Content, View } from 'native-base';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { useMutation } from '@apollo/react-hooks';
 
 import { LOGIN } from '@/apollo-client/queries';
 import { CRMainLayout, CRPrimaryButton, CRTextInput } from '@/components';
-import { AuthContext } from '../../main';
+import { AuthContext } from '../../main-context';
+
+import logo from '@/../assets/logo.png';
 
 const ValidationSchema = Yup.object().shape({
   email: Yup.string().email().required('Required'),
@@ -38,7 +41,10 @@ const LoginScreen = () => {
 
   return (
     <CRMainLayout noBack>
-      <Content style={{ marginTop: 135 }}>
+      <Content style={{ marginTop: 90 }}>
+        <View style={{ alignItems: 'center', marginBottom: 30 }}>
+          <Image source={logo} style={{ marginHorizontal: 'auto' }} />
+        </View>
         <Formik
           validateOnMount
           initialValues={{
@@ -59,7 +65,6 @@ const LoginScreen = () => {
               <CRPrimaryButton
                 disabled={!form.isValid}
                 onPress={() => {
-                  console.log(form.values);
                   login({
                     variables: {
                       ...form.values,

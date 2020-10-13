@@ -94,12 +94,11 @@ function AppointmentData({
               formValue={appointmentFormValue}
               onChange={onChangeAppointment}
             >
-              <CRTextArea label="Notes" name="notes" />
+              <CRTextArea label="Notes" name="notes" disabled={disabled} />
             </Form>
           </Div>
         </Div>
       </Div>
-      {/* )} */}
     </>
   );
 }

@@ -20,7 +20,8 @@
         "Missed",
         "Changed",
         "Archived",
-        "Done"
+        "Done",
+        "Closed"
       ]
     },
     {
@@ -104,6 +105,17 @@
           "model": "Organization",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Organization",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -120,17 +132,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Organization",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -158,6 +159,17 @@
           "model": "User",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -174,17 +186,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "User",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -364,6 +365,17 @@
           "model": "Patient",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Patient",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -380,17 +392,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Patient",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -499,6 +500,17 @@
           "model": "Appointment",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Appointment",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -515,17 +527,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Appointment",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -829,6 +830,17 @@
           "model": "View",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -845,17 +857,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "View",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -1007,6 +1008,17 @@
           "model": "ViewStatus",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ViewStatus",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -1023,17 +1035,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "ViewStatus",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -1261,6 +1262,17 @@
           "model": "FieldGroup",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "FieldGroup",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -1277,17 +1289,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "FieldGroup",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -1402,6 +1403,17 @@
           "model": "Field",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Field",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -1418,17 +1430,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Field",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -1557,6 +1558,17 @@
           "model": "AppointmentField",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentField",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -1573,17 +1585,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "AppointmentField",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -1737,6 +1738,17 @@
           "model": "File",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "File",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -1753,17 +1765,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "File",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -1826,6 +1827,17 @@
           "model": "Clinic",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -1842,17 +1854,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -2505,6 +2506,17 @@
           "model": "Week",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Week",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -2521,17 +2533,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Week",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -2593,6 +2594,17 @@
           "model": "WorkingHours",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "WorkingHours",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -2609,17 +2621,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "WorkingHours",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -2760,6 +2761,17 @@
           "model": "Snippet",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Snippet",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -2776,17 +2788,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Snippet",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -2885,6 +2886,17 @@
           "model": "PatientLab",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientLab",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -2901,17 +2913,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "PatientLab",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -3019,6 +3020,17 @@
           "model": "LabDocument",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "LabDocument",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -3035,17 +3047,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -3172,6 +3173,17 @@
           "model": "MedicalHistory",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "MedicalHistory",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -3188,17 +3200,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "MedicalHistory",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -3300,6 +3301,17 @@
           "model": "FamilyHistory",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "FamilyHistory",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -3316,17 +3328,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "FamilyHistory",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -3414,6 +3415,17 @@
           "model": "Expense",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Expense",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -3430,17 +3442,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Expense",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -3542,6 +3543,17 @@
           "model": "Revenue",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Revenue",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -3558,17 +3570,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Revenue",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -3670,6 +3671,17 @@
           "model": "Notification",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Notification",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -3686,17 +3698,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Notification",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",
@@ -3809,6 +3810,17 @@
           "model": "Event",
           "field": "id"
         },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Event",
+          "field": "id"
+        },
         "directive": "default"
       }
     },
@@ -3825,17 +3837,6 @@
       },
       "argument": "",
       "value": "uuid()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Event",
-          "field": "id"
-        },
-        "directive": "id"
-      }
     },
     {
       "tag": "CreateField",

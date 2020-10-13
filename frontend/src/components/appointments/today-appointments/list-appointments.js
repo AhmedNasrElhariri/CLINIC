@@ -12,7 +12,11 @@ import {
   CRPanelGroup,
   CRTable,
 } from 'components';
-import { isScheduledOrArchived, isScheduled } from 'services/appointment';
+import {
+  isScheduledOrArchived,
+  isDone,
+  isScheduled,
+} from 'services/appointment';
 import { canAjdust } from 'services/appointment';
 
 import { PrintOLIcon } from 'components/icons';
@@ -23,6 +27,7 @@ import { Can } from 'components/user/can';
 function ListAppointments({
   appointments,
   onDone,
+  onArchive,
   title,
   defaultExpanded = false,
 }) {
@@ -107,6 +112,23 @@ function ListAppointments({
                           }}
                         >
                           Done
+                        </CRButton>
+                      </Can>
+                    )}
+                    {isDone(appointment) && (
+                      <Can I="archive" an="Appointment">
+                        <CRButton
+                          variant={
+                            isScheduled(appointment) ? 'primary' : 'success'
+                          }
+                          round
+                          small
+                          onClick={e => {
+                            e.stopPropagation();
+                            onArchive(appointment);
+                          }}
+                        >
+                          Archive
                         </CRButton>
                       </Can>
                     )}

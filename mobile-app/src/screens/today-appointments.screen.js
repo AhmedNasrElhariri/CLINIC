@@ -1,30 +1,46 @@
 import React, { useState, useMemo } from 'react';
 import { RefreshControl, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import useFetchAppointments from '@/hooks/fetch-appointments';
 import { CRMainLayout } from '@/components';
 import ListTodayAppointments from '@/components/today-appointments/list';
 import TodayAppointmentsTabs from '@/components/today-appointments/tabs';
-import { Button, Icon } from 'native-base';
+import { Button, Icon, Spinner } from 'native-base';
 import Filter from '@/components/today-appointments/filter';
 import { NAVIGATIONS } from '@/utils/constants';
+import crVariables from '@/utils/cr-variables';
+import useFilter from '@/components/today-appointments/use-filter';
 
 const TodayAppointments = ({ navigation }) => {
-  const { todayAppointments, refetch, refetching } = useFetchAppointments();
+  const {
+    todayAppointments,
+    refetch,
+    fetching,
+    refetching,
+  } = useFetchAppointments();
   const [active, setActive] = useState(0);
-  const [filter, setfilter] = useState({ type: ['All'] });
   const [filterVisible, setFilterVisible] = useState(false);
 
-  const activeAppointments = useMemo(() => {
-    const statuses = active === 0 ? ['Scheduled'] : ['Done', 'Archived'];
+  const appointments = useMemo(() => {
+    const statuses = active === 0 ? ['Scheduled'] : ['Closed'];
     return todayAppointments.filter(p => statuses.includes(p.status));
   }, [active, todayAppointments]);
 
-  const appointments = useMemo(() => {
-    return activeAppointments.filter(
-      p => filter.type.includes('All') || filter.type.includes(p.type)
-    );
-  }, [filter, activeAppointments]);
+  const {
+    filter,
+    clinicsNames,
+    types,
+    onSwitch,
+    onSwitchAll,
+    filteredAppointments,
+  } = useFilter(appointments);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   return (
     <CRMainLayout
@@ -43,27 +59,31 @@ const TodayAppointments = ({ navigation }) => {
         </Button>
       }
     >
-      <TodayAppointmentsTabs
-        onPress={active => setActive(active)}
-        active={active}
-      />
-      <ListTodayAppointments
-        appointments={appointments}
-        onNew={() => navigation.navigate(NAVIGATIONS.NEW_APPOINTMENT)}
-      />
-      <Filter
-        onDone={() => setFilterVisible(false)}
-        onClear={() =>
-          setfilter({
-            type: [],
-          })
-        }
-        isVisible={filterVisible}
-        onChange={filter => {
-          setfilter(filter);
-        }}
-        filter={filter}
-      />
+      {fetching ? (
+        <Spinner color={crVariables.primaryColor} />
+      ) : (
+        <>
+          <TodayAppointmentsTabs
+            onPress={active => setActive(active)}
+            active={active}
+          />
+          <ListTodayAppointments
+            appointments={filteredAppointments}
+            onNew={() => navigation.navigate(NAVIGATIONS.NEW_APPOINTMENT)}
+          />
+          <Filter
+            filter={filter}
+            clinics={clinicsNames}
+            types={types}
+            onSwitch={onSwitch}
+            onSwitchAll={onSwitchAll}
+            onDone={() => {
+              setFilterVisible(false);
+            }}
+            isVisible={filterVisible}
+          />
+        </>
+      )}
     </CRMainLayout>
   );
 };

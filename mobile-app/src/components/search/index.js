@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'native-base';
-import { CRButton } from '@/components';
 import SearchInput from './input';
+import CRButton from '../buttons/index';
 
 const Search = ({ onChange, onClose }) => {
   return (

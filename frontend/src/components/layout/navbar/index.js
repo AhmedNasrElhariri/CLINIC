@@ -10,9 +10,13 @@ import Notifications from 'components/functional/notifications';
 import Settings from 'components/functional/settings';
 import Avatar from './avatar';
 
-const NotificatinBadge = ({ alert }) => (
+const NotificatinBadge = ({ count }) => (
   <Div position="relative">
-    {!!alert && <BadgeStyled></BadgeStyled>}
+    {!!count && (
+      <BadgeStyled>
+        <span>{count}</span>
+      </BadgeStyled>
+    )}
     <NotificationIcon />
   </Div>
 );
@@ -74,7 +78,7 @@ const Navbar = ({
             full
           >
             <Div>
-              <NotificatinBadge alert={notifications.length} />
+              <NotificatinBadge count={notifications.length} />
             </Div>
           </Whisper>
           <Whisper

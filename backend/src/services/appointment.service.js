@@ -1,6 +1,10 @@
 import moment from 'moment';
 
-import { EXMAINTATION_LENGTH, EXMATION_STARTING_HOUR } from '@/utils/constants';
+import {
+  APPOINTMENTS_STATUS,
+  EXMAINTATION_LENGTH,
+  EXMATION_STARTING_HOUR,
+} from '@/utils/constants';
 
 export const getAppointmentLength = () => EXMAINTATION_LENGTH;
 export const getSessionsStartingHour = () => EXMATION_STARTING_HOUR;
@@ -20,4 +24,11 @@ export const validDate = (newDate, appointments) => {
     const endDate = moment(startDate).add(5, 'minutes');
     return !moment(newDate).isBetween(startDate, endDate, 'minutes', '[)');
   });
+};
+
+export const getAppointmentNextStatus = (status, defaultVal) => {
+  return status === APPOINTMENTS_STATUS.ARCHIVED ||
+    status === APPOINTMENTS_STATUS.DONE
+    ? APPOINTMENTS_STATUS.CLOSED
+    : defaultVal;
 };

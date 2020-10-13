@@ -108,6 +108,9 @@ export const isScheduled = appointment => appointment.status === 'Scheduled';
 export const isScheduledOrArchived = appointment =>
   isScheduled(appointment) || isArchived(appointment);
 
+export const isScheduledOrDone = appointment =>
+  isScheduled(appointment) || isDone(appointment);
+
 export const canAjdust = appointment => {
   return (
     appointment.status === 'Scheduled' &&

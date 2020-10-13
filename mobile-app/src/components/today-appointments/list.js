@@ -11,11 +11,14 @@ const ListAppointments = ({ appointments, onNew }) => {
       {appointments.map((appointment, idx) => (
         <ListItem key={idx} noBorder>
           <Body>
-            <CRText size={14} weight="bold">
+            <CRText size={14} weight="bold" style={{ textAlign: 'left' }}>
               {appointment.patient.name}
             </CRText>
             <CRText variant="primary" size={10} weight="semiBold">
               {appointment.type}
+            </CRText>
+            <CRText variant="lighter" size={10} weight="semiLight">
+              {appointment.clinic.name}
             </CRText>
           </Body>
           <Right>

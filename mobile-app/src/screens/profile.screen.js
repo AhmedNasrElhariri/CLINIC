@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { CRMainLayout, CRText, CRButton } from '@/components';
-import useUserInfo from '@/hooks/fetch-user-info';
+import useAuth from '@/hooks/auth';
 import { NAVIGATIONS } from '@/utils/constants';
 
 const ProfileScreen = ({ navigation }) => {
-  const { logout } = useUserInfo({
+  const { logout } = useAuth({
     onLogout: () => {
       navigation.navigate(NAVIGATIONS.LOGIN);
     },

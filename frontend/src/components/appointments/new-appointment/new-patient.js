@@ -7,7 +7,7 @@ import {
   NewPatientModalBody,
 } from './style';
 
-export default function NewAppointmentModal({ open, onHide }) {
+const NewAppointmentModal = ({ open, onHide }) => {
   return (
     <>
       <PatientModalBodyStyled show={open} onHide={onHide}>
@@ -24,4 +24,6 @@ export default function NewAppointmentModal({ open, onHide }) {
       </PatientModalBodyStyled>
     </>
   );
-}
+};
+
+export default NewAppointmentModal;

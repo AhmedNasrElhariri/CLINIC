@@ -27,6 +27,7 @@ export default function NewPatient({ show, onHide, onCreate }) {
     onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
       onCreate(patient);
+      setFormValue(initialValues);
     },
     onError: () => Alert.error('Invalid Input'),
   });
@@ -36,13 +37,13 @@ export default function NewPatient({ show, onHide, onCreate }) {
       onHide={onHide}
       header="New Patient"
       onCancel={onHide}
-      onOk={() =>
+      onOk={() => {
         createPatient({
           variables: {
             input: { ...formValue },
           },
-        })
-      }
+        });
+      }}
     >
       <Form onChange={setFormValue} formValue={formValue} />
     </CRModal>

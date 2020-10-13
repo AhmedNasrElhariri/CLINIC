@@ -1,18 +1,21 @@
 import { prisma } from '@';
-// import { createAppointmentRevenue } from '@/services/revenue.service';
+import { getAppointmentNextStatus } from '@/services/appointment.service';
+import { APPOINTMENTS_STATUS } from '@/utils/constants';
 
 const archiveAppointment = async (_, { id }) => {
-  // const persistedAppointment = await prisma.appointment.findOne({
-  //   where: {
-  //     id,
-  //   },
-  // });
-  // if (persistedAppointment.status != 'Done') {
-  //   await createAppointmentRevenue(appointment);
-  // }
+  const persistedAppointment = await prisma.appointment.findOne({
+    where: {
+      id,
+    },
+  });
+
+  const status = getAppointmentNextStatus(
+    persistedAppointment.status,
+    APPOINTMENTS_STATUS.ARCHIVED
+  );
 
   return prisma.appointment.update({
-    data: { status: 'Archived' },
+    data: { status },
     where: { id },
   });
 };

@@ -21,6 +21,7 @@ enum AppointmentStatus {
   Changed
   Archived
   Done
+  Closed
 }
 
 enum Position {
@@ -49,12 +50,12 @@ enum PatientMembershipType {
 }
 
 model Organization {
-  id   String @default(uuid()) @id
+  id   String @id @default(uuid())
   name String
 }
 
 model User {
-  id             String         @default(uuid()) @id
+  id             String         @id @default(uuid())
   name           String
   email          String         @unique
   password       String
@@ -72,7 +73,7 @@ model User {
 }
 
 model Patient {
-  id             String                @default(uuid()) @id
+  id             String                @id @default(uuid())
   name           String
   phoneNo        String                @unique
   type           PatientMembershipType
@@ -87,7 +88,7 @@ model Patient {
 }
 
 model Appointment {
-  id        String             @default(uuid()) @id
+  id        String             @id @default(uuid())
   date      DateTime           @default(now())
   type      AppointmentType
   patient   Patient            @relation(fields: [patientId], references: [id])
@@ -104,7 +105,7 @@ model Appointment {
 }
 
 model View {
-  id                   String       @default(uuid()) @id
+  id                   String       @id @default(uuid())
   name                 String
   user                 User         @relation(fields: [userId], references: [id])
   userId               String
@@ -114,7 +115,7 @@ model View {
 }
 
 model ViewStatus {
-  id            String @default(uuid()) @id
+  id            String @id @default(uuid())
   user          User   @relation(fields: [userId], references: [id])
   userId        String
   defaultView   View   @relation("defaultView", fields: [defaultViewId], references: [id])
@@ -126,7 +127,7 @@ model ViewStatus {
 }
 
 model FieldGroup {
-  id     String  @default(uuid()) @id
+  id     String  @id @default(uuid())
   name   String
   order  Int
   view   View    @relation(fields: [viewId], references: [id])
@@ -137,7 +138,7 @@ model FieldGroup {
 }
 
 model Field {
-  id                String             @default(uuid()) @id
+  id                String             @id @default(uuid())
   name              String
   order             Int
   type              FieldType
@@ -150,7 +151,7 @@ model Field {
 }
 
 model AppointmentField {
-  id            String      @default(uuid()) @id
+  id            String      @id @default(uuid())
   appointment   Appointment @relation(fields: [appointmentId], references: [id])
   appointmentId String
   field         Field       @relation(fields: [fieldId], references: [id])
@@ -161,7 +162,7 @@ model AppointmentField {
 }
 
 model File {
-  id          String        @default(uuid()) @id
+  id          String        @id @default(uuid())
   url         String
   filename    String
   mimetype    String?
@@ -171,7 +172,7 @@ model File {
 }
 
 model Clinic {
-  id                String  @default(uuid()) @id
+  id                String  @id @default(uuid())
   name              String?
   examinationPrice  Int     @default(0)
   followupPrice     Int     @default(0)
@@ -203,16 +204,16 @@ model Clinic {
 }
 
 model Week {
-  id     String @default(uuid()) @id
+  id     String @id @default(uuid())
   weekNo Int
   year   Int
 
-  @@unique([weekNo, year], name: "week_year_unique_constraint")
   WorkingHours WorkingHours[]
+  @@unique([weekNo, year], name: "week_year_unique_constraint")
 }
 
 model WorkingHours {
-  id       String   @default(uuid()) @id
+  id       String   @id @default(uuid())
   week     Week     @relation(fields: [weekId], references: [id])
   weekId   String
   doctor   User     @relation(fields: [doctorId], references: [id])
@@ -222,7 +223,7 @@ model WorkingHours {
 }
 
 model Snippet {
-  id     String @default(uuid()) @id
+  id     String @id @default(uuid())
   user   User   @relation(fields: [userId], references: [id])
   userId String
   title  String @unique
@@ -230,16 +231,17 @@ model Snippet {
 }
 
 model PatientLab {
-  id        String        @default(uuid()) @id
+  id        String        @id @default(uuid())
   patient   Patient       @relation(fields: [patientId], references: [id])
   patientId String
   name      String
   documents LabDocument[]
+
   @@unique([name, patientId], name: "name_patientId_unique_constraint")
 }
 
 model LabDocument {
-  id           String     @default(uuid()) @id
+  id           String     @id @default(uuid())
   file         File       @relation(fields: [fileId], references: [id])
   fileId       String
   patientLab   PatientLab @relation(fields: [patientLabId], references: [id])
@@ -247,7 +249,7 @@ model LabDocument {
 }
 
 model MedicalHistory {
-  id           String    @default(uuid()) @id
+  id           String    @id @default(uuid())
   medicineName String
   frequency    String?
   dose         String?
@@ -257,7 +259,7 @@ model MedicalHistory {
 }
 
 model FamilyHistory {
-  id        String  @default(uuid()) @id
+  id        String  @id @default(uuid())
   disease   String
   relative  String
   patient   Patient @relation(fields: [patientId], references: [id])
@@ -265,7 +267,7 @@ model FamilyHistory {
 }
 
 model Expense {
-  id        String   @default(uuid()) @id
+  id        String   @id @default(uuid())
   name      String
   date      DateTime
   amount    Int
@@ -275,7 +277,7 @@ model Expense {
 }
 
 model Revenue {
-  id        String   @default(uuid()) @id
+  id        String   @id @default(uuid())
   name      String
   date      DateTime
   amount    Int
@@ -285,7 +287,7 @@ model Revenue {
 }
 
 model Notification {
-  id         String   @default(uuid()) @id
+  id         String   @id @default(uuid())
   notifierId String
   userId     String
   type       String
@@ -295,7 +297,7 @@ model Notification {
 }
 
 model Event {
-  id     String   @default(uuid()) @id
+  id     String   @id @default(uuid())
   user   User     @relation(fields: [userId], references: [id])
   userId String
   name   String

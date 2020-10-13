@@ -1,4 +1,5 @@
 import { prisma } from '@';
+import { APPOINTMENTS_STATUS } from '@/utils/constants';
 import * as R from 'ramda';
 
 const appointmentHistory = async (_, { appointmentId, patientId }) => {
@@ -17,9 +18,10 @@ const appointmentHistory = async (_, { appointmentId, patientId }) => {
       .then(R.propOr({}, '0'));
     patientId = patient.id;
   }
+
   return prisma.appointment.findMany({
     where: {
-      status: 'Archived',
+      status: APPOINTMENTS_STATUS.CLOSED,
       patient: {
         id: patientId,
       },

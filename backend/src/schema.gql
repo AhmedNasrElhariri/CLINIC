@@ -33,6 +33,7 @@ enum AppointmentStatus {
   Changed
   Archived
   Done
+  Closed
 }
 
 ########################### Query ##################################
@@ -172,6 +173,7 @@ type Appointment {
   patient: Patient!
   data: [AppointmentField!]
   notes: String
+  clinic: Clinic
 }
 
 type AppointmentField {

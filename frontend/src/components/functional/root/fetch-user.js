@@ -82,7 +82,7 @@ function useUserProfile() {
     }
     if (clinics) {
       setClinics(clinics);
-      if (R.isEmpty(currentClinic)) {
+      if (R.isEmpty(currentClinic) || R.isNil(currentClinic)) {
         const clinic = R.path(['0'])(clinics);
         setCurrentClinic(filterUpdatapleFields(clinic));
         ls.setCurrentClinic(clinic);

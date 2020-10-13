@@ -6,9 +6,11 @@ import { CRMainLayout, CRSearchInput } from '@/components';
 import ListPatients from '@/components/patients/list-patients';
 import { NAVIGATIONS } from '@/utils/constants';
 import { SEARCH_SUBJECTS } from './search.screen';
+import { RefreshControl } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Patients = ({ navigation }) => {
-  const { patients } = useFetchPatients();
+  const { patients, refetch, refetching } = useFetchPatients();
 
   const navigate = useCallback(
     id =>
@@ -16,6 +18,12 @@ const Patients = ({ navigation }) => {
         id,
       }),
     [navigation]
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+    }, [refetch])
   );
 
   return (
@@ -29,6 +37,9 @@ const Patients = ({ navigation }) => {
         >
           <Icon name="add" style={{ color: '#000000' }} />
         </Button>
+      }
+      refreshControl={
+        <RefreshControl onRefresh={() => refetch()} refreshing={refetching} />
       }
     >
       <CRSearchInput

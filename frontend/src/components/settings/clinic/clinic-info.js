@@ -18,14 +18,14 @@ function AppointmentSettings({ formValue, onChange }) {
                 name="examinationPrice"
               />
               <CRNumberInput label="Urgent Appointment Price" name="urgentPrice" />
-              <CRNumberInput label="Duration (min)" name="duration" />
+              {/* <CRNumberInput label="Duration (min)" name="duration" /> */}
             </Div>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={12}>
             <Div maxWidth={447}>
               <CRNumberInput label="Followup Price" name="followupPrice" />
 
-              <CRNumberInput label="Counts per day" name="appointmentsCount" />
+              {/* <CRNumberInput label="Counts per day" name="appointmentsCount" /> */}
             </Div>
           </FlexboxGrid.Item>
         </FlexboxGrid>

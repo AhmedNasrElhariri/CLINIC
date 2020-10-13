@@ -4,16 +4,21 @@ import * as R from 'ramda';
 import { formatDate } from 'utils/date';
 import { Div, H6 } from 'components';
 
-import { PrescriptionSyled, PrescriptionContentSyled } from './style';
+import {
+  PrescriptionSyled,
+  PrescriptionContentSyled,
+  PatientInfoStyled,
+  PatientContainerStyled
+} from './style';
 
-const Info = ({ name, value }) => (
-  <div className="info">
+const PatientInfo = ({ name, value }) => (
+  <PatientInfoStyled>
     <div className="name">
       {name}
       {'  '}:
     </div>
     <div className="value">{value}</div>
-  </div>
+  </PatientInfoStyled>
 );
 
 const PrescriptionPrint = React.forwardRef(
@@ -48,11 +53,11 @@ const PrescriptionPrint = React.forwardRef(
             </Div>
           </Div>
           <PrescriptionContentSyled className="content-container">
-            <Div display="flex" justifyContent="space-between">
-              <Info name="Date" value={formatDate(new Date())} />
-              <Info name="Name" value={name} />
-              <Info name="Age" value={age} />
-            </Div>
+            <PatientContainerStyled>
+              <PatientInfo name="Date" value={formatDate(new Date())} />
+              <PatientInfo name="Name" value={name} />
+              <PatientInfo name="Age" value={age} />
+            </PatientContainerStyled>
             <Div className="body">
               <img src="/rx.png" alt="rx" className="rx" />
               <p>{content}</p>

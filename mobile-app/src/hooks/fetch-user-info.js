@@ -13,31 +13,22 @@ import {
   CLEAR_NOTIFICATIONS,
 } from '@/apollo-client/queries';
 
-import useAuth from '@/hooks/auth';
 import useGlobalState from '@/state';
 
-function useUserInfo({ onLogout } = {}) {
-  const {
-    isVerified,
-    isAuthenticated,
-    setAuthenticated,
-    onLoginSucceeded,
-    logout,
-  } = useAuth({
-    onLogout,
-  });
-
+function useUserInfo() {
+  const [isAuthenticated] = useGlobalState('isAuthenticated');
   const [clinics, setClinics] = useState([]);
   const [getClinics, { data: clinicsList }] = useLazyQuery(MY_CLINICS);
-  const [getNotifications, { data: notificationsData, refetch }] = useLazyQuery(
-    MY_NOTIFICATIONS
-  );
+  const [
+    getNotifications,
+    { data: notificationsData, refetch, networkStatus },
+  ] = useLazyQuery(MY_NOTIFICATIONS);
 
   useSubscription(NOTIFICATION_SUBSCRIPTION, {
     onSubscriptionData: () => refetch(),
   });
 
-  const [user, setUser] = useGlobalState('user');
+  const [user] = useGlobalState('user');
   const [currentClinic, setCurrentClinic] = useGlobalState('currentClinic');
   const [clearNotifications] = useMutation(CLEAR_NOTIFICATIONS, {
     update(cache, { data: { createRevenue: revenue } }) {
@@ -55,11 +46,11 @@ function useUserInfo({ onLogout } = {}) {
   }, [notificationsData]);
 
   useEffect(() => {
-    if (isVerified && isAuthenticated) {
+    if (isAuthenticated) {
       getClinics();
       getNotifications();
     }
-  }, [getClinics, getNotifications, isAuthenticated, isVerified]);
+  }, [getClinics, getNotifications, isAuthenticated]);
 
   useEffect(() => {
     const clinics = R.prop('myClinics')(clinicsList);
@@ -72,22 +63,27 @@ function useUserInfo({ onLogout } = {}) {
     }
   }, [clinicsList, currentClinic, setCurrentClinic]);
 
-  const onLoginFailed = useCallback(() => {
-    setAuthenticated(false);
-  }, [setAuthenticated]);
-
-  return {
-    clinics,
-    currentClinic,
-    onLoginFailed,
-    onLoginSucceeded,
-    logout,
-    clearNotifications,
-    user,
-    isVerified,
-    isAuthenticated,
-    notifications,
-  };
+  return useMemo(
+    () => ({
+      clinics,
+      currentClinic,
+      clearNotifications,
+      user,
+      notifications,
+      refetchNotfications: refetch,
+      fetchDone: networkStatus === 7,
+      refetching: networkStatus === 4,
+    }),
+    [
+      clinics,
+      currentClinic,
+      clearNotifications,
+      networkStatus,
+      user,
+      refetch,
+      notifications,
+    ]
+  );
 }
 
 export default useUserInfo;

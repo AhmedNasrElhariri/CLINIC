@@ -5,7 +5,15 @@ import { TouchableOpacity } from 'react-native';
 
 import { getFontWeight } from '@/utils/cr-variables';
 
-const CRButton = ({ children, onPress, disabled, weight, size, ...props }) => {
+const CRButton = ({
+  children,
+  onPress,
+  disabled,
+  weight,
+  size,
+  textStyle,
+  ...props
+}) => {
   return (
     <Button onPress={onPress} {...props}>
       <TouchableOpacity onPress={onPress}>
@@ -13,6 +21,7 @@ const CRButton = ({ children, onPress, disabled, weight, size, ...props }) => {
           style={{
             fontSize: size,
             fontFamily: getFontWeight(weight),
+            ...textStyle,
           }}
         >
           {children}
@@ -30,6 +39,7 @@ CRButton.propTypes = {
 CRButton.defaultProps = {
   rounded: false,
   weight: 'normal',
+  textStyle: {},
 };
 
 export default CRButton;

@@ -6,11 +6,14 @@ import { LIST_PATIENTS } from '@/apollo-client/queries';
 import client from '@/apollo-client/client';
 
 function useFetchPatients() {
-  const { data } = useQuery(LIST_PATIENTS);
+  const { data, refetch, networkStatus } = useQuery(LIST_PATIENTS);
   const patients = useMemo(() => R.propOr([], 'patients')(data), [data]);
   return useMemo(
     () => ({
       patients,
+      refetch,
+      fetchDone: networkStatus === 7,
+      refetching: networkStatus === 4,
       updateCache: patients => {
         client.writeQuery({
           query: LIST_PATIENTS,
@@ -21,7 +24,7 @@ function useFetchPatients() {
         });
       },
     }),
-    [patients]
+    [patients, refetch, networkStatus]
   );
 }
 

@@ -14,4 +14,3 @@ export { default as CRText } from './text';
 ////////////////////  Search  //////////////////////////
 export { default as CRSearch } from './search';
 export { default as CRSearchInput } from './search/input';
-export { default as CRSearchTabs } from './search/tabs';

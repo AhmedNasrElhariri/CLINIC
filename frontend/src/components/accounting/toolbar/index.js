@@ -4,14 +4,7 @@ import { CRButtonGroup, Div, CRDateRangePicker } from 'components';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import { Form } from 'rsuite';
 
-const Toolbar = ({
-  activeKey,
-  onAddExpense,
-  onAddRevenue,
-  onSelect,
-  onChangePeriod,
-  data,
-}) => {
+const Toolbar = ({ activeKey, onSelect, onChangePeriod }) => {
   return (
     <Div display="flex">
       <CRButtonGroup onSelect={onSelect} activeKey={activeKey}>

@@ -1,15 +1,17 @@
-import { useEffect, useCallback, useMemo } from 'react';
+import { useEffect, useCallback, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useMutation } from '@apollo/react-hooks';
 
 import { VERIFY } from '@/apollo-client/queries';
 import useGlobalState from '@/state';
 import { AUTH_TOKEN } from '@/utils/constants';
+import client from '@/apollo-client/client';
 
 const useAuth = ({ onLogout } = {}) => {
   const [userToken, setUserToken] = useGlobalState('userToken');
   const [isAuthenticated, setAuthenticated] = useGlobalState('isAuthenticated');
   const [isVerified, setVerified] = useGlobalState('isVerified');
+  const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useGlobalState('user');
 
   const [verify] = useMutation(VERIFY, {
@@ -17,14 +19,17 @@ const useAuth = ({ onLogout } = {}) => {
     onCompleted({ verify: user }) {
       setAuthenticated(true);
       setUser(user);
-      setVerified(true);
+      setInitializing(false);
     },
     onError() {
-      setVerified(true);
+      setInitializing(false);
     },
   });
 
   useEffect(() => {
+    if (isVerified) {
+      return;
+    }
     (async () => {
       let token = await AsyncStorage.getItem(AUTH_TOKEN);
 
@@ -33,15 +38,16 @@ const useAuth = ({ onLogout } = {}) => {
       } else {
         token = null;
       }
-
       setUserToken(token);
       verify({ variables: { token } });
+      setVerified(true);
     })();
-  }, [setUserToken, verify]);
+  }, [setUserToken, setVerified, isVerified, verify]);
 
   const logout = useCallback(async () => {
     await AsyncStorage.clear();
     setAuthenticated(false);
+    client.resetStore();
     if (onLogout) {
       onLogout();
     }
@@ -61,6 +67,7 @@ const useAuth = ({ onLogout } = {}) => {
     () => ({
       isAuthenticated,
       isVerified,
+      initializing,
       user,
       logout,
       onLogout,
@@ -70,6 +77,7 @@ const useAuth = ({ onLogout } = {}) => {
     }),
     [
       isVerified,
+      initializing,
       logout,
       user,
       onLogout,

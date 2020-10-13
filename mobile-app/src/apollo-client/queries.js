@@ -71,6 +71,10 @@ export const LIST_APPOINTMENTS = gql`
         sex
         phoneNo
       }
+      clinic {
+        id
+        name
+      }
     }
   }
 `;
