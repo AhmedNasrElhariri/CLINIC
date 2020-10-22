@@ -58,7 +58,7 @@ const ChangePassword = () => {
           action="/upload"
           onSuccess={(response, file) => {
             setUploading(false);
-            setURL(response.url);
+            setURL(response[0].url);
             previewFile(file.blobFile, value => {
               setFileInfo(value);
             });

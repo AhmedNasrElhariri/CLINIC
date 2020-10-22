@@ -88,20 +88,21 @@ model Patient {
 }
 
 model Appointment {
-  id        String             @id @default(uuid())
-  date      DateTime           @default(now())
-  type      AppointmentType
-  patient   Patient            @relation(fields: [patientId], references: [id])
-  patientId String
-  specialty Specialty
-  doctor    User               @relation(fields: [doctorId], references: [id])
-  doctorId  String
-  labs      String?            @default("[]")
-  status    AppointmentStatus
-  data      AppointmentField[]
-  clinic    Clinic             @relation(fields: [clinicId], references: [id])
-  clinicId  String
-  notes     String?            @default("")
+  id            String             @id @default(uuid())
+  date          DateTime           @default(now())
+  type          AppointmentType
+  patient       Patient            @relation(fields: [patientId], references: [id])
+  patientId     String
+  specialty     Specialty
+  doctor        User               @relation(fields: [doctorId], references: [id])
+  doctorId      String
+  labs          String?            @default("[]")
+  status        AppointmentStatus
+  data          AppointmentField[]
+  collections   Collection[]
+  clinic        Clinic             @relation(fields: [clinicId], references: [id])
+  clinicId      String
+  notes         String?            @default("")
 }
 
 model View {
@@ -162,13 +163,16 @@ model AppointmentField {
 }
 
 model File {
-  id          String        @id @default(uuid())
-  url         String
-  filename    String
-  mimetype    String?
-  encoding    String?
-  Clinic      Clinic[]
-  LabDocument LabDocument[]
+  id                String        @id @default(uuid())
+  url               String
+  filename          String
+  comment           String?
+  collection        Collection?     @relation(fields: [collectionId], references: [id])
+  collectionId      String?
+  mimetype          String?
+  encoding          String?
+  clinic            Clinic[]
+  labDocument       LabDocument[]
 }
 
 model Clinic {
@@ -197,9 +201,9 @@ model Clinic {
   logoId         String?
   users          User[]        @relation(references: [id])
   organizationId String
-  Expense        Expense[]
-  Revenue        Revenue[]
-  Appointment    Appointment[]
+  expense        Expense[]
+  revenue        Revenue[]
+  appointment    Appointment[]
   sessions       Json          @default("[]")
 }
 
@@ -297,10 +301,18 @@ model Notification {
 }
 
 model Event {
-  id     String   @id @default(uuid())
-  user   User     @relation(fields: [userId], references: [id])
-  userId String
-  name   String
-  start  DateTime
-  end    DateTime
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  name       String
+  start      DateTime
+  end        DateTime
+}
+
+model Collection {
+  id              String   @id @default(uuid())
+  appointment     Appointment     @relation(fields: [appointmentId], references: [id])
+  appointmentId   String
+  caption         String   @default("")
+  images          File[]
 }

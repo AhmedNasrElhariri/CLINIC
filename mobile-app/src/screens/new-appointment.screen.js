@@ -10,18 +10,23 @@ import { APPOINTMENT_TYPES } from '../utils/constants';
 import { CREATE_APPOINTMENT, LIST_PATIENTS } from '../apollo-client/queries';
 import { NAVIGATIONS } from '@/utils/constants';
 import { CRPickerInput, CRMainLayout, CRPrimaryButton } from '@/components';
-import useGlobalState from '@/state';
 import crVariables from '@/utils/cr-variables';
 import CRDateTimePicker from '../components/inputs/datetime-picker';
+import useUserInfo from '@/hooks/fetch-user-info';
 
 const ValidationSchema = Yup.object().shape({
-  firstName: Yup.string().required('Required'),
+  patient: Yup.string().required('Select Patient'),
+  type: Yup.string().required('Select Type'),
+  date: Yup.date().typeError('Date is required').required('Date is required'),
+  time: Yup.date().typeError('Time is required').required('Date is required'),
+  clinicId: Yup.string()
+    .typeError('Clinic is required')
+    .required('Clinic is required'),
 });
 
-const createAppointmentBody = ({ patient, type, date, time }) => {
+const createAppointmentBody = ({ date, time, ...rest }) => {
   return {
-    patient,
-    type,
+    ...rest,
     date: moment(date).set({
       hours: moment(time).hours(),
       minutes: moment(time).minutes(),
@@ -32,7 +37,7 @@ const createAppointmentBody = ({ patient, type, date, time }) => {
 };
 
 const NewAppointmentScreen = ({ navigation }) => {
-  const [currentClinic] = useGlobalState('currentClinic');
+  const { clinics } = useUserInfo();
   const { data } = useQuery(LIST_PATIENTS);
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: () => {
@@ -59,17 +64,11 @@ const NewAppointmentScreen = ({ navigation }) => {
         <Formik
           initialValues={{
             patient: null,
-            type: 'Examination',
+            type: APPOINTMENT_TYPES[0],
             date: null,
             time: null,
           }}
           validationSchema={ValidationSchema}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(false);
-            }, 1000);
-          }}
         >
           {form => (
             <Form>
@@ -90,7 +89,13 @@ const NewAppointmentScreen = ({ navigation }) => {
               >
                 <Text
                   name="add"
-                  onPress={() => navigation.navigate(NAVIGATIONS.NEW_PATIENT)}
+                  onPress={() =>
+                    navigation.navigate(NAVIGATIONS.NEW_PATIENT, {
+                      onGoBack: patient => {
+                        form.setFieldValue('patient', patient.id);
+                      },
+                    })
+                  }
                   style={{ color: crVariables.primaryColor }}
                 >
                   Create new Patient
@@ -114,16 +119,22 @@ const NewAppointmentScreen = ({ navigation }) => {
                 component={CRDateTimePicker}
                 mode="time"
               />
+              <Field
+                name="clinicId"
+                placeholder="Clinic"
+                component={CRPickerInput}
+                choices={clinics}
+                labelKey="name"
+                valueKey="id"
+              />
               <CRPrimaryButton
                 primary
                 full
+                disabled={!form.isValid}
                 onPress={() =>
                   createAppointment({
                     variables: {
-                      input: {
-                        ...createAppointmentBody(form.values),
-                        clinicId: currentClinic.id,
-                      },
+                      input: createAppointmentBody(form.values),
                     },
                   })
                 }

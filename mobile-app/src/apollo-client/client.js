@@ -16,8 +16,8 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: `http://192.168.1.14:4000/graphql`,
-  // uri: `https://clinicr.net/graphql`,
+  // uri: `http://192.168.1.14:4000/graphql`,
+  uri: `https://clinicr.net/graphql`,
 });
 
 const cache = new InMemoryCache();

@@ -1,8 +1,11 @@
 import * as R from 'ramda';
 
-export const filterUpdatapleFields = val => {
+export const getSessions = clinic =>
+  R.pipe(R.propOr([], 'sessions'), R.map(R.pick(['name', 'price'])))(clinic);
+
+export const filterUpdatapleFields = clinic => {
   return {
-    ...val,
-    sessions: R.map(R.pick(['name', 'price']))(val.sessions),
+    ...clinic,
+    sessions: getSessions(clinic),
   };
 };

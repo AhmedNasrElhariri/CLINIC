@@ -33,7 +33,7 @@ values
   ('b44d50d9-28cb-4625-a17e-20c7bf0976a7', 'Assistant One', 'assistant9@clinicr.net', '$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W', '46a7367b-728d-4a2b-9e06-8c6e90427399', 'Assistant', '[]'),
   ('fa8afa4c-f895-4192-880b-9c20f4a2e17a', 'Assistant Two', 'assistant10@clinicr.net', '$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W', '46a7367b-728d-4a2b-9e06-8c6e90427399', 'Assistant', '[]'),
   /* clinic two assistants */
-  ('afda3b3c-5c7d-4301-ab74-01b5794645a7', 'Assistant Three', 'assistant11@clinicr.net', '$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W', '446a7367b-728d-4a2b-9e06-8c6e90427399', 'Assistant', '[]'),
+  ('afda3b3c-5c7d-4301-ab74-01b5794645a7', 'Assistant Three', 'assistant11@clinicr.net', '$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W', '46a7367b-728d-4a2b-9e06-8c6e90427399', 'Assistant', '[]'),
   ('58116787-470c-4929-8763-0bdaf28acd14', 'Assistant Four', 'assistant12@clinicr.net', '$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W', '46a7367b-728d-4a2b-9e06-8c6e90427399', 'Assistant', '[]'),
 
   /* Mohga's */

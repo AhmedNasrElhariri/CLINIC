@@ -4,6 +4,7 @@ const textColorLighter = 'rgba(40, 49, 72, 0.25)';
 const textColorLightest = 'rgba(40, 49, 72, 0.1)';
 const primaryColor = '#51C6F3';
 const darkMent = 'rgb(64, 193, 115)';
+const danger = 'rgb(212, 0, 0)';
 
 export default {
   primaryColor,
@@ -23,7 +24,8 @@ export default {
   fieldPaddingRight: 20,
   fieldHeight: 55,
   footerBg: '#ffffff',
-  footerLogoColor: 'rgb(226, 226, 226)',
+  footerLogoColor: '#d5d5d5',
+  danger,
   fonts: {
     SegoeUI: 'SegoeUI',
     SegoeUIBold: 'SegoeUIBold',
@@ -45,6 +47,7 @@ const fontColor = {
   primary: primaryColor,
   light: textColorLight,
   lighter: textColorLighter,
+  danger,
 };
 
 const eventColor = {

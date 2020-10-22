@@ -7,6 +7,7 @@ import * as fromPatient from './patient';
 import * as fromAppointmentField from './appointment-field/';
 import * as fromClinic from './clinic';
 import * as fromSnippet from './snippet';
+import * as fromCollection from './collection';
 import * as fromCustomResolvers from './custom-resolvers';
 
 export default {
@@ -18,5 +19,6 @@ export default {
   AppointmentField: fromAppointmentField,
   Clinic: fromClinic,
   Snippet: fromSnippet,
+  Collection: fromCollection,
   ...fromCustomResolvers,
 };

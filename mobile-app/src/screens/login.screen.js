@@ -12,8 +12,8 @@ import { AuthContext } from '../../main-context';
 import logo from '@/../assets/logo.png';
 
 const ValidationSchema = Yup.object().shape({
-  email: Yup.string().email().required('Required'),
-  password: Yup.string().required('Required'),
+  email: Yup.string().email().required('Email is Required'),
+  password: Yup.string().required('Password is Required'),
 });
 
 const LoginScreen = () => {
@@ -46,7 +46,7 @@ const LoginScreen = () => {
           <Image source={logo} style={{ marginHorizontal: 'auto' }} />
         </View>
         <Formik
-          validateOnMount
+          // validateOnMount
           initialValues={{
             email: '',
             password: '',
@@ -63,7 +63,7 @@ const LoginScreen = () => {
                 component={CRTextInput}
               />
               <CRPrimaryButton
-                disabled={!form.isValid}
+                disabled={!form.dirty || !form.isValid}
                 onPress={() => {
                   login({
                     variables: {

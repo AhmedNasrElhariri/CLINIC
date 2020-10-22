@@ -75,18 +75,18 @@ export const PrescriptionContentSyled = styled(Div)`
 export const HeaderStyled = styled(Div)`
   display: flex;
   justify-content: space-between;
-  position: sticky;
   top: 0px;
   transition: 0.3s;
+  /* position: sticky; */
 
-  &.sticky {
+  /* &.sticky {
     background: white;
     padding: 20px;
     height: 90px;
 
     z-index: 100;
     border-bottom: ${props => `1px solid ${props.theme.colors.grey100}`};
-  }
+  } */
 `;
 
 export const PatientContainerStyled = styled(Div)`

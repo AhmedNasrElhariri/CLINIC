@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
 
@@ -17,6 +18,8 @@ import {
   TEXT_FIELD_TYPE,
   LONG_TEXT_FIELD_TYPE,
 } from 'utils/constants';
+
+import AppointmentImages from '../images';
 
 import { HomeSidebarStyled } from './style';
 
@@ -41,6 +44,22 @@ const renderItem = ({ type, id, name, ...props }) => {
   }
 };
 
+const SectionContainer = ({ title, children, name, ...props }) => {
+  return (
+    <Div as={Element} name={name} {...props}>
+      <Div p={4} minHeight={400}>
+        <H3 mb={43}>{title}</H3>
+        <Div mb={4}>{children}</Div>
+      </Div>
+    </Div>
+  );
+};
+
+SectionContainer.propTypes = {
+  title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
 function AppointmentData({
   formValue,
   groups,
@@ -52,6 +71,16 @@ function AppointmentData({
 }) {
   const [activeSection, setActiveSection] = useState('');
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
+
+  const handleCollectionsChange = useCallback(
+    collections => {
+      onChangeAppointment({
+        ...appointmentFormValue,
+        collections,
+      });
+    },
+    [appointmentFormValue, onChangeAppointment]
+  );
 
   return (
     <>
@@ -69,34 +98,58 @@ function AppointmentData({
                   {v.title}
                 </ScrollNavLink>
               ))}
+              <ScrollNavLink
+                eventKey="Notes"
+                active={activeSection === 'Notes'}
+                to="Notes"
+              >
+                Notes
+              </ScrollNavLink>
+              <ScrollNavLink
+                eventKey="Images"
+                active={activeSection === 'Images'}
+                to="Images"
+              >
+                Images
+              </ScrollNavLink>
             </CRNav>
           </HomeSidebarStyled>
         )}
         <Div id="clinic-scroll-id" flexGrow={1}>
           {!isSession(appointment) && Object.keys(formValue).length > 0 && (
-            <Form formValue={formValue} onChange={onChange} fluid>
-              {navs.map((v, idx) => (
-                <Div as={Element} key={idx} name={v.to} pt={idx === 0 ? 0 : 4}>
-                  <Div p={4} minHeight={400}>
-                    <H3 mb={43}>{v.title}</H3>
+            <>
+              <Form formValue={formValue} onChange={onChange} fluid>
+                {navs.map((v, idx) => (
+                  <SectionContainer
+                    key={idx}
+                    title={v.title}
+                    name={v.to}
+                    pt={idx === 0 ? 0 : 4}
+                  >
                     {v.fields.map(f => (
                       <Div mb={4} key={f.id}>
                         {renderItem({ ...f, disabled })}
                       </Div>
                     ))}
-                  </Div>
-                </Div>
-              ))}
-            </Form>
+                  </SectionContainer>
+                ))}
+              </Form>
+            </>
           )}
-          <Div p={4}>
+          <SectionContainer title="Notes" name="Notes">
             <Form
               formValue={appointmentFormValue}
               onChange={onChangeAppointment}
             >
-              <CRTextArea label="Notes" name="notes" disabled={disabled} />
+              <CRTextArea name="notes" disabled={disabled} />
             </Form>
-          </Div>
+          </SectionContainer>
+          <SectionContainer title="Images" name="Images">
+            <AppointmentImages
+              formValue={appointmentFormValue.collections}
+              onChange={handleCollectionsChange}
+            />
+          </SectionContainer>
         </Div>
       </Div>
     </>

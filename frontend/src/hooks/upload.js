@@ -14,14 +14,19 @@ export function useVariables() {
   };
 }
 
-function useUpload({ onCompleted, onError }) {
+export function useUpload({
+  onCompleted = () => {},
+  onError = () => {},
+} = {}) {
   const [loading, setLoading] = useState(false);
 
   const upload = useCallback(
-    file => {
+    files => {
       setLoading(true);
       const formData = new FormData();
-      formData.append('file', file);
+      files.forEach(f => {
+        formData.append('file', f);
+      });
 
       fetch('/upload', {
         method: 'POST',

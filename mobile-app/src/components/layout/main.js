@@ -93,11 +93,10 @@ const MainLayout = ({
           </Right>
         </Header>
       )}
-      <Content
-        style={{ paddingHorizontal: 30, paddingVertical: 20 }}
-        refreshControl={refreshControl}
-      >
-        {children}
+      <Content refreshControl={refreshControl}>
+        <View style={{ paddingHorizontal: 30, paddingVertical: 20 }}>
+          {children}
+        </View>
       </Content>
       {newAppointment && (
         <TouchableOpacity

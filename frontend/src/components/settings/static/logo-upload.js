@@ -20,7 +20,7 @@ const UploadIcon = () => (
 function LogoUpload({ onUpload, url }) {
   const { upload, loading } = useUpload({
     onCompleted(res) {
-      onUpload(res);
+      onUpload(res[0]);
       Alert.success('Uploaded successfully');
     },
     onError() {

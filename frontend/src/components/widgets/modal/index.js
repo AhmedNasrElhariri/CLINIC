@@ -39,7 +39,7 @@ const Modal = ({
   return (
     <CRContainer show={show} width={width} {...props}>
       <CRHeader {...headerStyle} title={header}></CRHeader>
-      <CRBody {...bodyStyle}>
+      <CRBody style={bodyStyle}>
         {children}
         <CRFooter
           okTitle={okTitle}

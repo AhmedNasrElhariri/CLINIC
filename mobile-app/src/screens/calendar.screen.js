@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import { View } from 'native-base';
 
 import MainLayout from '@/components/layout/main';
-import { CRText } from '@/components';
+import { CRText, CRMainLayout } from '@/components';
 import useFetchAppointments from '@/hooks/fetch-appointments';
 import { formatDate, getMonthDays } from '@/services/date';
 import { CALENDAR_DATE_FORMAT } from '@/services/constants';
@@ -32,7 +32,12 @@ const renderItem = (item, firstItem) => {
 };
 
 const CalendarScreen = props => {
-  const { appointments } = useFetchAppointments();
+  const {
+    appointments,
+    refetch,
+    fetching,
+    refetching,
+  } = useFetchAppointments();
 
   const items = useMemo(() => {
     const days = getMonthDays();
@@ -46,18 +51,19 @@ const CalendarScreen = props => {
   }, [appointments]);
 
   return (
-    <MainLayout {...props}>
-      <View>
-        <Agenda
-          theme={{ backgroundColor: 'white' }}
-          items={items}
-          selected={moment().format('YYYY-MM-DD')}
-          renderItem={(item, firstItemInDay) => {
-            return renderItem(item, firstItemInDay);
-          }}
-        />
-      </View>
-    </MainLayout>
+    <Agenda
+      theme={{
+        backgroundColor: 'white',
+        agendaKnobColor: 'blue',
+      }}
+      items={items}
+      selected={moment().format('YYYY-MM-DD')}
+      renderItem={(item, firstItemInDay) => {
+        return renderItem(item, firstItemInDay);
+      }}
+      onRefresh={refetch}
+      refreshing={fetching || refetching}
+    />
   );
 };
 

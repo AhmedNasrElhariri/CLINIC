@@ -111,7 +111,7 @@ function ListAppointments({
                             onDone(appointment);
                           }}
                         >
-                          Done
+                          Arrived
                         </CRButton>
                       </Can>
                     )}

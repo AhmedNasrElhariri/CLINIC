@@ -15,7 +15,6 @@ import resolvers from './resolvers';
 import middlewares from './middlewares';
 import { upload } from './services/upload.service';
 import { getContextData } from './services/auth.service';
-import seed from './seed';
 
 export const UPLOAD_DIR = '/uploads';
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
@@ -59,9 +58,13 @@ app.post('/upload', async function (req, res) {
     return res.status(400).send('No files were uploaded.');
   }
 
-  let file = req.files.file;
+  const areMultipleFiles = Array.isArray(req.files.file);
 
-  res.send(await upload(file));
+  let files = areMultipleFiles ? req.files.file : [req.files.file];
+
+  const response = await Promise.all(files.map(f => upload(f)));
+
+  res.send(response);
 });
 
 if (process.env.NODE_ENV === 'production') {

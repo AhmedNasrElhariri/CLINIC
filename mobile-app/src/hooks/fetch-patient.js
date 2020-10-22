@@ -6,7 +6,9 @@ import { GET_PATIENT, GET_APPOINTMENT_HISTORY } from '@/apollo-client/queries';
 
 function useFetchPatient(id) {
   const { data } = useQuery(GET_PATIENT, { variables: { id } });
-  const result = useQuery(GET_APPOINTMENT_HISTORY, { variables: { id } });
+  const result = useQuery(GET_APPOINTMENT_HISTORY, {
+    variables: { patientId: id },
+  });
   const patient = useMemo(() => R.propOr({}, 'patient')(data), [data]);
 
   const fields = useMemo(

@@ -28,7 +28,7 @@
     },
     "android": {
       "package": "com.seemsolutions.clinicR",
-      "versionCode": 4,
+      "versionCode": 9,
       "permissions": []
     },
     "description": ""

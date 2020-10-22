@@ -19,8 +19,6 @@ export const ModalStyled = styled(Modal)`
 
   & .rs-modal-body {
     margin-top: 0;
-    /* overflow: inherit; */
-    /* max-height: none !important; */
     margin-right: 20px;
     max-height: calc(100vh - 10rem) !important;
   }

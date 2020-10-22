@@ -13,7 +13,6 @@ const DateTimeLabel = ({ placeholder, onPress }) => {
           borderWidth: crVariables.borderWidth,
           borderColor: crVariables.borderColor,
           borderRadius: crVariables.borderRadius,
-          marginBottom: crVariables.fieldMarginBottom,
           paddingLeft: crVariables.fieldPaddingLeft,
           paddingRight: crVariables.fieldPaddingRight,
           height: crVariables.fieldHeight,

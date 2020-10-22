@@ -8,6 +8,7 @@ import client from './apollo-client/client';
 import 'rsuite/dist/styles/rsuite-default.css';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { Root } from 'components';
 import './state';
@@ -22,9 +23,7 @@ export default function App() {
   return (
     <>
       <GlobalStyle />
-      <AbilityContext.Provider
-        value={new Ability()}
-      >
+      <AbilityContext.Provider value={new Ability()}>
         <ApolloProvider client={client}>
           <ThemeProvider theme={lightTheme}>
             <BrowserRouter>

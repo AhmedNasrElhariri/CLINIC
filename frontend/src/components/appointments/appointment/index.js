@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { ButtonToolbar, Icon, Alert } from 'rsuite';
+import { ButtonToolbar, Icon, Alert, Loader } from 'rsuite';
 
 import {
   GET_APPOINTMENT,
@@ -33,7 +33,6 @@ import {
 
 import useAppointmentHistory from './fetch-appointment-history';
 import History from './patient-history';
-import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
 import { Can } from 'components/user/can';
 import useSticky from 'hooks/sticky';
 
@@ -46,12 +45,13 @@ function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [apptFormValue, setApptFormValue] = useState({
     notes: '',
+    collections: [],
   });
   const [disabled, setDisabled] = useState(false);
   const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
   const { appointmentId } = useParams();
-  const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
+  const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
     variables: {
       id: appointmentId,
     },
@@ -101,6 +101,10 @@ function Appointment() {
         appointment: {
           data: mapFormValueToAppointmentData(normalizedFields, formValue),
           notes: apptFormValue.notes,
+          collections: apptFormValue.collections.map(c => ({
+            ...R.pick(['id', 'caption'])(c),
+            images: R.map(R.pick(['id', 'comment']))(c.images),
+          })),
           id: appointmentId,
         },
       },
@@ -124,20 +128,27 @@ function Appointment() {
     return formValue[R.propOr('', 'id')(prescriptionField)];
   }, [formValue, prescriptionField]);
 
-  const { ref } = useSticky();
+  // const { ref } = useSticky();
 
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
   }, [normalizedFields]);
 
   useEffect(() => {
-    setApptFormValue({ notes: R.propOr('', 'notes')(appointment) });
+    setApptFormValue({
+      notes: R.propOr('', 'notes')(appointment),
+      collections: R.propOr([], 'collections')(appointment),
+    });
   }, [appointment]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Div display="flex">
       <Div flexGrow={1}>
-        <HeaderStyled ref={ref}>
+        <HeaderStyled>
           <H3 mb={64}>Appointment</H3>
           <ButtonToolbar>
             <CRButton

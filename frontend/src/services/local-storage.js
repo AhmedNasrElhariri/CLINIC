@@ -1,5 +1,6 @@
 import { ACCESS_TOKEN } from 'utils/constants';
 import * as R from 'ramda';
+import { getSessions } from './clinic';
 
 const CLINIC_KEY = 'current_clinic';
 
@@ -9,10 +10,10 @@ export const get = key => JSON.parse(localStorage.getItem(key));
 
 export const remove = key => localStorage.removeItem(key);
 
-export const setCurrentClinic = val => {
+export const setCurrentClinic = clinic => {
   set(CLINIC_KEY, {
-    ...val,
-    sessions: R.map(R.pick(['name', 'price']))(val.sessions),
+    ...clinic,
+    sessions: getSessions(clinic),
   });
 };
 

@@ -154,4 +154,5 @@ export const Img = styled.img`
   ${space}
   ${position}
   ${border}
+  ${color}
 `;

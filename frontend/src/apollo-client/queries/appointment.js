@@ -61,6 +61,15 @@ export const GET_APPOINTMENT = gql`
         type
         phoneNo
       }
+      collections {
+        id
+        caption
+        images {
+          id
+          url
+          comment
+        }
+      }
     }
   }
 `;
@@ -117,6 +126,7 @@ export const GET_APPOINTMENT_HISTORY = gql`
       date
       labs
       status
+      notes
       data {
         id
         value
@@ -130,6 +140,15 @@ export const GET_APPOINTMENT_HISTORY = gql`
         name
         age
         sex
+      }
+      collections {
+        id
+        caption
+        images {
+          id
+          url
+          comment
+        }
       }
     }
   }

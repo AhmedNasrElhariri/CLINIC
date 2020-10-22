@@ -12,7 +12,7 @@ const activeStyles = css`
   font-weight: 800;
 `;
 
-const Item = styled(ScrollLink).attrs(() => ({
+const ScrollLinkStyled = styled(ScrollLink).attrs(() => ({
   spy: true,
   smooth: true,
   duration: 500,
@@ -60,14 +60,9 @@ export default ({
   return (
     <Nav.Item
       renderItem={() => (
-        <Item
-          onClick={select}
-          active={active ? 1 : 0}
-          to={to}
-          containerId={containerId}
-        >
+        <ScrollLinkStyled onClick={select} active={active ? 1 : 0} to={to}>
           {children}
-        </Item>
+        </ScrollLinkStyled>
       )}
     />
   );

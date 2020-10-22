@@ -1,5 +1,4 @@
 import { prisma } from '@';
-import * as RA from 'ramda-adjunct';
 
 const updateAppointment = (_, { appointment }) => {
   return prisma.appointment.update({
@@ -8,14 +7,37 @@ const updateAppointment = (_, { appointment }) => {
       data: {
         upsert: appointment.data.map(({ id, value, fieldId }) => ({
           create: {
-            value: value,
+            value,
             field: { connect: { id: fieldId } },
           },
           update: {
-            value: value,
+            value,
             field: { connect: { id: fieldId } },
           },
           where: { id: id || fieldId },
+        })),
+      },
+      collections: {
+        upsert: appointment.collections.map(({ id, caption, images }) => ({
+          create: {
+            caption,
+            images: {
+              connect: images.map(({ id }) => ({ id })),
+            },
+          },
+          update: {
+            caption,
+            images: {
+              connect: images.map(({ id }) => ({ id })),
+              updateMany: images.map(i => ({
+                where: { id: i.id },
+                data: {
+                  comment: i.comment,
+                },
+              })),
+            },
+          },
+          where: { id: id || appointment.id },
         })),
       },
     },

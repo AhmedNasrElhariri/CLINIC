@@ -6,17 +6,21 @@ import moment from 'moment';
 import useDatePicker from './use-date-picker';
 import DateTimeLabel from './datetime-label';
 import { formatDate } from '@/services/date';
+import ErrorText from './error-text';
+import crVariables from '@/utils/cr-variables';
 
 export const DATE_TIME_MODE = Object.freeze({
   DATE: 'date',
   TIME: 'time',
 });
 
+function round(date, duration, method = 'round') {
+  return moment(Math[method](+date / +duration) * +duration).toDate();
+}
+
 const getValue = ({ value, mode }) => {
   return mode === DATE_TIME_MODE.TIME
-    ? moment(value)
-        .add(5 - (moment(value).minutes() % 5), 'minutes')
-        .toDate()
+    ? round(value, moment.duration(5, 'minutes'))
     : value;
 };
 
@@ -53,7 +57,7 @@ const CRDateTimePicker = ({
     [close, form, name, mode]
   );
   return (
-    <View>
+    <View style={{ marginBottom: crVariables.fieldMarginBottom }}>
       <DateTimeLabel
         placeholder={value ? getLabel({ value, mode }) : placeholder}
         onPress={open}
@@ -65,8 +69,10 @@ const CRDateTimePicker = ({
           is24Hour
           display="default"
           onChange={handleChange}
+          style={{ margin: 0 }}
         />
       )}
+      <ErrorText>{form.errors[name]}</ErrorText>
     </View>
   );
 };

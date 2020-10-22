@@ -8,6 +8,7 @@ import { useModal } from 'components/widgets/modal';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
 import { KeyStyled, ValueStyled } from './style';
+import AppointmentGallery from '../../appointments/images/gallery';
 
 const renderProp = (key, value) => {
   return (
@@ -49,6 +50,16 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
 
   const { visible, open, close } = useModal();
 
+  const images = useMemo(() => {
+    return R.pipe(
+      R.propOr([], 'collections'),
+      R.map(c =>
+        c.images.map(i => ({ ...i, caption: c.caption, original: i.url }))
+      ),
+      R.flatten
+    )(activeSession);
+  }, [activeSession]);
+
   if (!activeSession) {
     return '...No History';
   }
@@ -73,6 +84,8 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
             <Div>
               {renderProp('Date', formatDate(date))}
               {renderAppointment(data)}
+              {renderProp('Notes', activeSession.notes)}
+              {renderProp('Images', <AppointmentGallery images={images} />)}
             </Div>
           </>
         ) : (

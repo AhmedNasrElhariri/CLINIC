@@ -3,7 +3,7 @@ import React from 'react';
 import { H4, Div } from 'components';
 import { ModalHeaderStyled } from './style';
 
-export default ({ title }) => (
+const Header = ({ title }) => (
   <ModalHeaderStyled>
     <Div>
       <H4 fontWeight="bold" textTransform="uppercase" textAlign="center">
@@ -12,3 +12,5 @@ export default ({ title }) => (
     </Div>
   </ModalHeaderStyled>
 );
+
+export default Header;
