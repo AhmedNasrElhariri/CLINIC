@@ -49,6 +49,24 @@ enum PatientMembershipType {
   Secondary
 }
 
+enum UnitOfMeaure {
+  PerUnit
+  Milligram
+  Kilogram
+  Millimeter
+  Centimetre
+  Tablet
+  Stripe
+}
+
+enum InventoryOperation {
+  Add
+  Substract
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+
 model Organization {
   id   String @id @default(uuid())
   name String
@@ -315,4 +333,40 @@ model Collection {
   appointmentId   String
   caption         String   @default("")
   images          File[]
+}
+
+model Item {
+  id                String          @id @default(uuid())
+  name              String          @unique
+  unitOfMeasure     UnitOfMeaure   
+  quantity          Int
+  barcode           String?
+  notes             String?
+  organization      Organization     @relation(fields: [organizationId], references: [id])
+  organizationId    String
+}
+
+model InventoryItem {
+  quantity      Int
+  item          Item       @relation(fields: [itemId], references: [id])
+  itemId        String
+  clinic        Clinic     @relation(fields: [clinicId], references: [id])
+  clinicId      String
+  @@id([itemId,clinicId])
+}
+
+model InventoryHistory {
+  id              String     @id @default(uuid())
+  item            Item       @relation(fields: [itemId], references: [id])
+  itemId          String
+  clinic          Clinic     @relation(fields: [clinicId], references: [id])
+  clinicId        String
+  user            User       @relation(fields: [userId], references: [id])
+  userId          String
+  patient         Patient?   @relation(fields: [patientId], references: [id])
+  patientId       String?
+  operation       InventoryOperation
+  quantity        Int
+  price           Int?
+  date            DateTime
 }

@@ -6,6 +6,7 @@ export const LONG_TEXT_FIELD_TYPE = 'LongText';
 
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
 export const FULL_DATE_FORMAT = 'hh:mm a';
+export const FULL_DAY_FORMAT = 'DD-MM-YYYY hh:mm a';
 
 export const FIELD_TYPES = [
   { label: 'Number', value: NUMBER_FIELD_TYPE },
@@ -40,6 +41,16 @@ export const MIN_EVENT_DURATION = 15;
 export const MIN_EXAMINATION_DURATION = 5;
 
 export const DAYS = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI'];
+
+export const UNIT_OF_MEASURES = [
+  { label: 'Per unit', value: 'PerUnit', shortcut: 'unit' },
+  { label: 'Milligram', value: 'Milligram', shortcut: 'mg' },
+  { label: 'Kilogram', value: 'Kilogram', shortcut: 'kg' },
+  { label: 'Millimeter', value: 'Millimeter', shortcut: 'mm' },
+  { label: 'Centimetre', value: 'Centimetre', shortcut: 'cm' },
+  { label: 'Tablet', value: 'Tablet', shortcut: 'tablet' },
+  { label: 'Stripe', value: 'Stripe', shortcut: 'stripe' },
+];
 
 export const FORM_ACTIONS = Object.freeze({
   CREATE: 'CREATE',
@@ -149,6 +160,31 @@ export const RAW_PERMISSIONS = new Map([
         name: 'Create Event',
         action: 'create_event',
         subject: 'Calendar',
+      },
+    ],
+  ],
+  [
+    'Inventory',
+    [
+      {
+        name: 'View',
+        action: 'view',
+        subject: 'Inventory',
+      },
+      {
+        name: 'Add item',
+        action: 'add',
+        subject: 'Inventory',
+      },
+      {
+        name: 'View History',
+        action: 'view_history',
+        subject: 'Inventory',
+      },
+      {
+        name: 'Define item',
+        action: 'define',
+        subject: 'Inventory',
       },
     ],
   ],

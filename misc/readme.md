@@ -2,9 +2,12 @@ npx prisma migrate save --experimental
 npx prisma migrate up --experimental
 npx prisma generate
 
+ssh root@167.71.42.148
+prisma migrate up --experimental
 pm2 stop all
 pm2 start ecosystem.config.js
 ssh -L 63333:localhost:5432 root@167.71.42.148
+
 
 DATABASE_URL = postgresql://admin:admin@localhost:5432/clinicr?schema=public
 

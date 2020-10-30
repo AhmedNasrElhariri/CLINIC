@@ -1,0 +1,58 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "InventoryHistory",
+      "field": "patient",
+      "type": "Patient",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "InventoryHistory",
+          "field": "patient"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "InventoryHistory",
+          "field": "patient"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[patientId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "InventoryHistory",
+          "field": "patient"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "InventoryHistory",
+      "field": "patientId",
+      "type": "String",
+      "arity": "Optional"
+    }
+  ]
+}

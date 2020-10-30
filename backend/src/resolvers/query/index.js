@@ -19,3 +19,6 @@ export { default as clinicUsers } from './clinic-users';
 export { default as user } from './user';
 export { default as myNotifications } from './my-notifications';
 export { default as myEvents } from './my-events';
+export { default as items } from './items';
+export { default as inventory } from './inventory';
+export { default as inventoryHistory } from './inventory-history';

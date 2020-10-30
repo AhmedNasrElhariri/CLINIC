@@ -1,5 +1,4 @@
 import { ACCESS_TOKEN } from 'utils/constants';
-import * as R from 'ramda';
 import { getSessions } from './clinic';
 
 const CLINIC_KEY = 'current_clinic';

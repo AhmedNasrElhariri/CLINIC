@@ -28,6 +28,11 @@ const items = [
     permission: { actions: 'manage', subject: 'all' },
   },
   {
+    name: 'Inventory',
+    icon: '/icons/static.png',
+    path: '/inventory',
+  },
+  {
     name: 'Logout',
     icon: '/icons/logout.png',
     action: 'onLogout',

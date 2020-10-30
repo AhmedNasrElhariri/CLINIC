@@ -1,9 +1,11 @@
 import moment from 'moment';
 import * as R from 'ramda';
-import { STANDARD_DATE_FORMAT } from './constants';
+import { STANDARD_DATE_FORMAT, FULL_DAY_FORMAT } from './constants';
 
 export const formatDate = (date, format = STANDARD_DATE_FORMAT) =>
   moment(date).format(format);
+
+export const formatFullDay = date => formatDate(date, FULL_DAY_FORMAT);
 
 export const isAfterToday = date => moment(date).isAfter(moment(), 'days');
 export const isBeforeToday = date => moment(date).isBefore(moment(), 'days');

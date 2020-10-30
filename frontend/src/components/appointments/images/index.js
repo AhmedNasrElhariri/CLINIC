@@ -6,31 +6,18 @@ import React, {
   useEffect,
 } from 'react';
 import { Divider } from 'rsuite';
-import ImageGallery from 'react-image-gallery';
 import * as R from 'ramda';
 
 import { Div, CRModal, CRButton } from 'components';
 import Collection from './collection';
 import { useModal } from 'components/widgets/modal';
-import ListImagesThumbnails from './list-images-thumbnails';
 import CRUploader from './uploader';
 import AppointmentGallery from './gallery';
 
-const createGalleryImages = R.applySpec({
-  url: R.prop('url'),
-  caption: R.prop('caption'),
-  description: R.prop('comment'),
-});
-
-const createGalleryImages1 = R.applySpec({
-  url: R.prop('url'),
-  caption: R.prop('caption'),
-  description: R.prop('comment'),
-});
 
 const AppointmentImages = ({ formValue, onChange: setFormValue }) => {
   const { visible, open, close } = useModal();
-  const [galleryVisibility, setGalleryVisibility] = useState(false);
+  const [galleryVisibility] = useState(false);
 
   const ref = useRef();
 

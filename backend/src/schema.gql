@@ -36,6 +36,16 @@ enum AppointmentStatus {
   Closed
 }
 
+enum UnitOfMeaure {
+  PerUnit
+  Milligram
+  Kilogram
+  Millimeter
+  Centimetre
+  Tablet
+  Stripe
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -61,6 +71,9 @@ type Query {
   user(id: ID!): User
   myNotifications: [Notification!]
   myEvents: [Event!]
+  items: [Item!]
+  inventory(clinicId: ID!): [InventoryItem!]
+  inventoryHistory(clinicId: ID!): [InventoryHistory!]
 }
 
 ########################### Mutation ##################################
@@ -70,7 +83,11 @@ type Mutation {
   createAppointment(input: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
   archiveAppointment(id: ID!): Appointment!
-  setAppointmentDone(id: ID!, sessions: [SessionInput!]): Appointment!
+  setAppointmentDone(
+    id: ID!
+    sessions: [SessionInput!]
+    items: [FinishAppointmentItemInput!]
+  ): Appointment!
   createView(view: ViewInput!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
   login(email: String!, password: String!): AuthPayload
@@ -95,6 +112,8 @@ type Mutation {
   updateUserPermissions(userId: ID!, permissions: [PermissionInput!]!): Boolean
   clearNotifications: Boolean
   createEvent(event: EventInput!): Event
+  defineItem(item: ItemInput!): Item
+  addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
 }
 
 ########################### Auth ##################################
@@ -500,4 +519,45 @@ input EventInput {
   name: String!
   start: Date!
   end: Date!
+}
+
+########################### Inventory ##################################
+
+type Item {
+  id: ID!
+  name: String!
+  unitOfMeasure: UnitOfMeaure
+  quantity: Int!
+  barcode: String
+  notes: String
+}
+
+type InventoryItem {
+  itemId: ID!
+  clinicId: ID!
+  quantity: Int!
+}
+
+type InventoryHistory {
+  body: String!
+  date: Date!
+}
+
+input ItemInput {
+  name: String!
+  unitOfMeasure: UnitOfMeaure
+  quantity: Int!
+  barcode: String
+  notes: String
+}
+
+input AddToInventoryInput {
+  itemId: ID!
+  amount: Int!
+  price: Int!
+}
+
+input FinishAppointmentItemInput {
+  itemId: String!
+  quantity: Int!
 }

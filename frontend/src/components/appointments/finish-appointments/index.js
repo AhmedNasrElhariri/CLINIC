@@ -1,135 +1,66 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { Form, Divider } from 'rsuite';
-import NumberFormat from 'react-number-format';
-import * as R from 'ramda';
+import React, { useState, useRef, useCallback } from 'react';
 
-import { CRModal, CRSelectInput, H6, CRButton, Div, H5 } from 'components';
-import { SessionNameStyled, DeleteLinkStyled } from './style';
-import { CRNumberInput, CRTextInput } from 'components/widgets';
+import { CRModal, CRNav } from 'components';
+import InventoryUsage from 'components/inventory/usage';
+import AppointmentInvoice from '../appointment-invoice';
+import { CRCard } from 'components/widgets';
+import { Div } from '../../widgets/html/index';
 
-const OTHER = 'Other';
-
-const initValue = {
-  notes: '',
-  price: 1,
-};
+const tabs = [
+  { name: 'Invoice', key: '0' },
+  { name: 'Inventory', key: '1' },
+];
 
 function FinishAppointment({ show, onCancel, onOk, clinic }) {
-  const [session, setSession] = useState({});
-  const [formValue, setFormValue] = useState(initValue);
+  const [activeTab, setActiveTab] = useState('0');
 
-  const [selectedSessions, setSelectedSessions] = useState([]);
+  const value = useRef({
+    sessions: [],
+    items: [],
+  });
 
-  const sessions = useMemo(() => R.propOr([], 'sessions')(clinic), [clinic]);
-
-  const choices = useMemo(() => {
-    const { examinationPrice, followupPrice, urgentPrice } = R.pick([
-      'examinationPrice',
-      'followupPrice',
-      'urgentPrice',
-    ])(clinic || {});
-
-    const allChoices = [
-      ...sessions,
-      { name: 'Examination', price: examinationPrice },
-      { name: 'Followup', price: followupPrice },
-      { name: 'Urgent', price: urgentPrice },
-      { name: OTHER, price: 0 },
-    ];
-    return allChoices.map(s => ({ label: s.name, value: s }));
-  }, [clinic, sessions]);
-
-  const add = useCallback(() => {
-    if (!session) {
-      return;
-    }
-    setSelectedSessions([...selectedSessions, session]);
-    setSession({});
-  }, [selectedSessions, session]);
-
-  const handleDelete = useCallback(idx => {
-    setSelectedSessions(R.remove(idx, 1));
-    setSession({});
+  const handleInvoiceChange = useCallback(sessions => {
+    value.current = { ...value.current, sessions };
   }, []);
 
-  const total = useMemo(
-    () => selectedSessions.reduce((sum, { price }) => sum + price, 0),
-    [selectedSessions]
-  );
-
-  const isOtherType = useMemo(() => session.name === OTHER, [session]);
-
-  useEffect(() => {
-    if (isOtherType) {
-      setSession(value => ({ ...value, price: formValue.price }));
-    }
-  }, [formValue, isOtherType]);
+  const handleInventoryChange = useCallback(items => {
+    value.current = { ...value.current, items };
+  }, []);
 
   return (
     <CRModal
       show={show}
-      header="Session Payment"
-      onOk={() => onOk(selectedSessions)}
+      header="Finish Session"
+      onOk={() => onOk(value.current)}
       onHide={onCancel}
       onCancel={onCancel}
+      width={1000}
     >
-      <Form fluid>
-        <CRSelectInput
-          label="Session Type"
-          name="type"
-          placeholder="Select Type"
-          block
-          cleanable={false}
-          searchable={false}
-          value={session}
-          onChange={setSession}
-          data={choices}
-        />
-      </Form>
-      {isOtherType && (
-        <Div mt={4}>
-          <Form fluid formValue={formValue} onChange={setFormValue}>
-            <CRTextInput label="Notes" name="notes" />
-            <CRNumberInput label="Price" name="price" />
-          </Form>
-        </Div>
-      )}
-      <H6 mt={2} color="texts.2">
-        Price:{' '}
-        <NumberFormat
-          value={session.price}
-          displayType={'text'}
-          thousandSeparator
-        />
-      </H6>
-      <Div textAlign="center">
-        <CRButton primary small onClick={add}>
-          Add
-        </CRButton>
-      </Div>
-      {selectedSessions.length > 0 && <Divider />}
-      <Div my={3}>
-        {selectedSessions.map(({ name, price }, idx) => (
-          <Div display="flex" justifyContent="space-between" key={idx}>
-            <Div display="flex" alignItems="baseline">
-              <SessionNameStyled color="texts.1">{name}</SessionNameStyled>
-              <DeleteLinkStyled
-                cursor="pointer"
-                onClick={() => handleDelete(idx)}
-              >
-                Delete
-              </DeleteLinkStyled>
-            </Div>
-            <H6 color="texts.1">{price}</H6>
-          </Div>
+      <CRNav
+        appearance="tabs"
+        activeKey={activeTab}
+        onSelect={setActiveTab}
+        width={300}
+        justified
+      >
+        {tabs.map(({ key, name }) => (
+          <CRNav.CRItem key={key} eventKey={key}>
+            {name}
+          </CRNav.CRItem>
         ))}
-      </Div>
-      <Divider />
-      <Div mt={5} display="flex" justifyContent="space-between">
-        <H5 color="texts.1">Total</H5>
-        <H5 color="texts.1">
-          <NumberFormat value={total} displayType={'text'} thousandSeparator />
-        </H5>
+      </CRNav>
+      <Div mt={4}>
+        <CRCard>
+          {activeTab === '0' && (
+            <AppointmentInvoice
+              clinic={clinic}
+              onChange={handleInvoiceChange}
+            />
+          )}
+          {activeTab === '1' && (
+            <InventoryUsage onChange={handleInventoryChange} />
+          )}
+        </CRCard>
       </Div>
     </CRModal>
   );

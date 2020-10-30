@@ -27,3 +27,5 @@ export { default as setAvatar } from './set-avatar';
 export { default as updateUserPermissions } from './update-user-permissions';
 export { default as clearNotifications } from './clear-notifications';
 export { default as createEvent } from './create-event';
+export { default as defineItem } from './define-item';
+export { default as addItem } from './add-item';

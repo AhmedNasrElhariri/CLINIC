@@ -7,3 +7,4 @@ export * from './patient';
 export * from './snippet';
 export * from './user';
 export * from './view';
+export * from './inventory';

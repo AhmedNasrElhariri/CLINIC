@@ -26,3 +26,8 @@ export const ACTIONS = {
   UPDATE: 'update',
   DELETE: 'delete',
 };
+
+export const INVENTORY_OPERATION = {
+  ADD: 'Add',
+  SUBSTRACT: 'Substract',
+};

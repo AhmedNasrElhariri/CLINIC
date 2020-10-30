@@ -4,7 +4,6 @@ import { H5, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
 
-// import NumberFormat from 'react-number-format';
 const ListData = ({ title, data, onEdit, canEdit }) => {
   return (
     <div>
@@ -24,7 +23,7 @@ const ListData = ({ title, data, onEdit, canEdit }) => {
               <CRTable.CRCellStyled bold>
                 <NumberFormat
                   value={amount}
-                  displayType={'text'}
+                  displayType="text"
                   thousandSeparator
                 />
               </CRTable.CRCellStyled>

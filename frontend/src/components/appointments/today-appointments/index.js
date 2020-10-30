@@ -22,17 +22,23 @@ import {
   getAppointmentprice,
 } from 'services/accounting';
 import { isSession } from 'services/appointment';
+import useFetchInventory from 'hooks/fetch-inventory';
 
 function TodayAppointments() {
   const { todayAppointments: appointments } = useFetchAppointments();
   const { refetchRevenues } = useFetchAccountingData();
+  const { refetchInventory, refetchInventoryHistory } = useFetchInventory();
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);
 
   const [clinic] = useGlobalState('currentClinic');
 
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
-    refetchQueries: () => [refetchRevenues()],
+    refetchQueries: () => [
+      refetchRevenues,
+      refetchInventory,
+      refetchInventoryHistory,
+    ],
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
     },
@@ -91,7 +97,7 @@ function TodayAppointments() {
   );
 
   const handleOk = useCallback(
-    sessions => {
+    ({ sessions, items }) => {
       close();
       setAppointmentDone({
         variables: {
@@ -99,6 +105,10 @@ function TodayAppointments() {
           sessions: sessions.map(session => ({
             name: getName({ session, appointment }),
             price: session.price,
+          })),
+          items: items.map(({ itemId, quantity }) => ({
+            itemId,
+            quantity,
           })),
         },
       });

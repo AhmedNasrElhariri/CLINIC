@@ -1,0 +1,33 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "InventoryItem",
+      "field": "id"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "InventoryItem"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "InventoryItem"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[itemId, clinicId]"
+    }
+  ]
+}

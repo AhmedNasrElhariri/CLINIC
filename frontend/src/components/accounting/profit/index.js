@@ -8,7 +8,7 @@ const Box = ({ name, value }) => (
   <Div>
     <H6 fontWeight={800} color="white">
       {name} ={' '}
-      <NumberFormat value={value} displayType={'text'} thousandSeparator />
+      <NumberFormat value={value} displayType="text" thousandSeparator />
     </H6>
   </Div>
 );

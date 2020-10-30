@@ -34,7 +34,6 @@ import {
 import useAppointmentHistory from './fetch-appointment-history';
 import History from './patient-history';
 import { Can } from 'components/user/can';
-import useSticky from 'hooks/sticky';
 
 import { HeaderStyled } from './style';
 

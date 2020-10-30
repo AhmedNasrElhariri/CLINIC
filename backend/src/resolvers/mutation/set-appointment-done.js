@@ -2,8 +2,16 @@ import { prisma } from '@';
 import { getAppointmentNextStatus } from '@/services/appointment.service';
 import { createAppointmentRevenue } from '@/services/revenue.service';
 import { APPOINTMENTS_STATUS } from '@/utils/constants';
+import {
+  createSubstractHistoryForMultipleItems,
+  updatedUsedMaterials,
+} from '@/services/inventory.service';
 
-const setAppointmentDone = async (_, { id, sessions }) => {
+const setAppointmentDone = async (
+  _,
+  { id, sessions = [], items = [] },
+  { userId }
+) => {
   const persistedAppointment = await prisma.appointment.findOne({
     where: { id },
   });
@@ -18,7 +26,17 @@ const setAppointmentDone = async (_, { id, sessions }) => {
     where: { id },
   });
 
+  const clinicId = appointment.clinicId;
+
   await createAppointmentRevenue(id, sessions);
+  await updatedUsedMaterials(id, items);
+  await createSubstractHistoryForMultipleItems({
+    data: items,
+    clinicId,
+    userId,
+    patientId: appointment.patientId,
+  });
+
   return appointment;
 };
 

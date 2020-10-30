@@ -101,8 +101,12 @@ export const UPDATE_APPOINTMENT = gql`
 `;
 
 export const SET_APPOINTMENT_DONE = gql`
-  mutation setAppointmentDone($id: ID!, $sessions: [SessionInput!]) {
-    setAppointmentDone(id: $id, sessions: $sessions) {
+  mutation setAppointmentDone(
+    $id: ID!
+    $sessions: [SessionInput!]
+    $items: [FinishAppointmentItemInput!]
+  ) {
+    setAppointmentDone(id: $id, sessions: $sessions, items: $items) {
       id
       status
     }

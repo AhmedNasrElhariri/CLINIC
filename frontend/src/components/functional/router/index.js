@@ -18,6 +18,7 @@ import {
   ListUsers,
   UserPermissions,
   Profile,
+  InventoryPage
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 import ProtectedRoute from '../protected-route/index';
@@ -97,9 +98,14 @@ function AppRouter() {
         exact
       />
 
+      <Route path="/inventory">
+        <InventoryPage />
+      </Route>
+
       <Route path="/init-default-view">
         <CreateDefaultView />
       </Route>
+
       <Route path="/me">
         <Profile />
       </Route>

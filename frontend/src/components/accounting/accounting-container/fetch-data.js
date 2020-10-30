@@ -105,10 +105,14 @@ const useFetchAccountingData = ({ view, period } = {}) => {
           },
         });
       },
-      refetchRevenues: () => ({
+      refetchRevenues: {
         query: LIST_REVENUES,
         variables,
-      }),
+      },
+      refetchExpenses: {
+        query: LIST_EXPENSES,
+        variables,
+      },
     }),
     [expenses, revenues, timeFrame, totalExpenses, totalRevenues, variables]
   );

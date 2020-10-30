@@ -32,7 +32,7 @@ const Summary = ({ expenses, revenues }) => {
           value={
             <NumberFormat
               value={revenues}
-              displayType={'text'}
+              displayType="text"
               thousandSeparator
             />
           }
@@ -42,7 +42,7 @@ const Summary = ({ expenses, revenues }) => {
           value={
             <NumberFormat
               value={expenses}
-              displayType={'text'}
+              displayType="text"
               thousandSeparator
             />
           }
@@ -52,7 +52,7 @@ const Summary = ({ expenses, revenues }) => {
           value={
             <NumberFormat
               value={revenues - expenses}
-              displayType={'text'}
+              displayType="text"
               thousandSeparator
             />
           }
