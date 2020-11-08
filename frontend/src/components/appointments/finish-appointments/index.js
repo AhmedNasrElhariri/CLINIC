@@ -1,23 +1,19 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
+import { Steps } from 'rsuite';
 
-import { CRModal, CRNav } from 'components';
+import { CRModal, Div, CRCard } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
-import { CRCard } from 'components/widgets';
-import { Div } from '../../widgets/html/index';
 
-const tabs = [
-  { name: 'Invoice', key: '0' },
-  { name: 'Inventory', key: '1' },
-];
+const initValue = {
+  sessions: [],
+  items: [],
+};
 
 function FinishAppointment({ show, onCancel, onOk, clinic }) {
-  const [activeTab, setActiveTab] = useState('0');
+  const [activeStep, setActiveStep] = useState(0);
 
-  const value = useRef({
-    sessions: [],
-    items: [],
-  });
+  const value = useRef(initValue);
 
   const handleInvoiceChange = useCallback(sessions => {
     value.current = { ...value.current, sessions };
@@ -27,37 +23,46 @@ function FinishAppointment({ show, onCancel, onOk, clinic }) {
     value.current = { ...value.current, items };
   }, []);
 
+  const handleOk = useCallback(() => {
+    if (activeStep === 0) {
+      setActiveStep(1);
+    } else {
+      onOk(value.current);
+    }
+  }, [activeStep, onOk]);
+
+  const handleCancel = useCallback(() => {
+    value.current = initValue;
+    onCancel();
+  }, [onCancel]);
+
+  const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
+    activeStep,
+  ]);
+
   return (
     <CRModal
       show={show}
       header="Finish Session"
-      onOk={() => onOk(value.current)}
-      onHide={onCancel}
-      onCancel={onCancel}
+      okTitle={okTitle}
+      onOk={handleOk}
+      onHide={handleCancel}
+      onCancel={handleCancel}
       width={1000}
     >
-      <CRNav
-        appearance="tabs"
-        activeKey={activeTab}
-        onSelect={setActiveTab}
-        width={300}
-        justified
-      >
-        {tabs.map(({ key, name }) => (
-          <CRNav.CRItem key={key} eventKey={key}>
-            {name}
-          </CRNav.CRItem>
-        ))}
-      </CRNav>
+      <Steps current={activeStep}>
+        <Steps.Item title="Invoice" />
+        <Steps.Item title="Inventory" />
+      </Steps>
       <Div mt={4}>
         <CRCard>
-          {activeTab === '0' && (
+          {activeStep === 0 && (
             <AppointmentInvoice
               clinic={clinic}
               onChange={handleInvoiceChange}
             />
           )}
-          {activeTab === '1' && (
+          {activeStep === 1 && (
             <InventoryUsage onChange={handleInventoryChange} />
           )}
         </CRCard>
