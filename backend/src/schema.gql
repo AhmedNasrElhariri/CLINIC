@@ -192,6 +192,7 @@ type Appointment {
   patient: Patient!
   data: [AppointmentField!]
   notes: String
+  prescription: String
   clinic: Clinic
   collections: [Collection!]
 }
@@ -228,6 +229,7 @@ input UpdateAppointmentInput {
   labs: JSON
   data: [AppointmentFieldInput!]
   notes: String
+  prescription: String
   collections: [CollectionInput!]
 }
 

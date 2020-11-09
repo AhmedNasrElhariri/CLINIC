@@ -36,6 +36,7 @@ import History from './patient-history';
 import { Can } from 'components/user/can';
 
 import { HeaderStyled } from './style';
+import { useModal } from 'components/widgets/modal';
 
 const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
 
@@ -44,10 +45,11 @@ function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [apptFormValue, setApptFormValue] = useState({
     notes: '',
+    prescription: '',
     collections: [],
   });
   const [disabled, setDisabled] = useState(false);
-  const [isPrescriptionVisible, setPrescriptionVisible] = useState(false);
+  const { visible, open, close } = useModal();
   const [activeTab, setActiveTab] = useState('0');
   const { appointmentId } = useParams();
   const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
@@ -100,6 +102,7 @@ function Appointment() {
         appointment: {
           data: mapFormValueToAppointmentData(normalizedFields, formValue),
           notes: apptFormValue.notes,
+          prescription: apptFormValue.prescription,
           collections: apptFormValue.collections.map(c => ({
             ...R.pick(['id', 'caption'])(c),
             images: R.map(R.pick(['id', 'comment']))(c.images),
@@ -116,18 +119,15 @@ function Appointment() {
     });
   }, [archive, appointmentId]);
 
-  const prescriptionField = useMemo(() => {
-    const field = R.find(R.where({ field: R.propEq('name', 'Prescription') }))(
-      Object.values(normalizedFields)
-    );
-    return R.propOr({}, 'field')(field);
-  }, [normalizedFields]);
-
   const prescriptionBody = useMemo(() => {
-    return formValue[R.propOr('', 'id')(prescriptionField)];
-  }, [formValue, prescriptionField]);
+    return R.propOr('', 'prescription')(apptFormValue);
+  }, [apptFormValue]);
 
-  // const { ref } = useSticky();
+  const handlePrescriptionChange = useCallback(
+    prescription =>
+      setApptFormValue(R.mergeDeepRight(apptFormValue, { prescription })),
+    [apptFormValue]
+  );
 
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
@@ -136,6 +136,7 @@ function Appointment() {
   useEffect(() => {
     setApptFormValue({
       notes: R.propOr('', 'notes')(appointment),
+      prescription: R.propOr('', 'prescription')(appointment),
       collections: R.propOr([], 'collections')(appointment),
     });
   }, [appointment]);
@@ -153,7 +154,7 @@ function Appointment() {
             <CRButton
               small
               primary
-              onClick={() => setPrescriptionVisible(true)}
+              onClick={open}
             >
               Prescription
               <Icon icon="add" />
@@ -218,16 +219,11 @@ function Appointment() {
       </Div>
       <PatientInfo patient={patient} />
       <Prescription
-        visible={isPrescriptionVisible}
+        visible={visible}
         patient={patient}
-        onClose={() => setPrescriptionVisible(false)}
+        onClose={close}
         content={prescriptionBody}
-        clinicInfo={{}}
-        onChange={val => {
-          setFormValue(
-            R.mergeDeepRight(formValue, { [prescriptionField.id]: val })
-          );
-        }}
+        onChange={handlePrescriptionChange}
       />
     </Div>
   );

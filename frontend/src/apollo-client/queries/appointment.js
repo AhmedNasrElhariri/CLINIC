@@ -45,6 +45,7 @@ export const GET_APPOINTMENT = gql`
       date
       status
       notes
+      prescription
       data {
         id
         value
@@ -131,6 +132,7 @@ export const GET_APPOINTMENT_HISTORY = gql`
       labs
       status
       notes
+      prescription
       data {
         id
         value

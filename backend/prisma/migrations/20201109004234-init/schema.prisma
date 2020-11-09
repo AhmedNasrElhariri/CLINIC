@@ -64,63 +64,66 @@ enum InventoryOperation {
   Substract
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////// 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
   id   String @id @default(uuid())
   name String
+  Item Item[]
 }
 
 model User {
-  id             String         @id @default(uuid())
-  name           String
-  email          String         @unique
-  password       String
-  organizationId String
-  Appointment    Appointment[]
-  View           View[]
-  ViewStatus     ViewStatus[]
-  clinics        Clinic[]       @relation(references: [id])
-  WorkingHours   WorkingHours[]
-  Snippet        Snippet[]
-  permissions    Json           @default("[]")
-  avatar         String?
-  position       Position
-  events         Event[]
+  id               String             @id @default(uuid())
+  name             String
+  email            String             @unique
+  password         String
+  organizationId   String
+  Appointment      Appointment[]
+  View             View[]
+  ViewStatus       ViewStatus[]
+  clinics          Clinic[]           @relation(references: [id])
+  WorkingHours     WorkingHours[]
+  Snippet          Snippet[]
+  permissions      Json               @default("[]")
+  avatar           String?
+  position         Position
+  events           Event[]
+  InventoryHistory InventoryHistory[]
 }
 
 model Patient {
-  id             String                @id @default(uuid())
-  name           String
-  phoneNo        String                @unique
-  type           PatientMembershipType
-  appointments   Appointment[]
-  age            Int
-  sex            Sex
-  organizationId String
-  guardianName   String?
-  pateintLab     PatientLab[]
-  MedicalHistory MedicalHistory[]
-  FamilyHistory  FamilyHistory[]
+  id               String                @id @default(uuid())
+  name             String
+  phoneNo          String                @unique
+  type             PatientMembershipType
+  appointments     Appointment[]
+  age              Int
+  sex              Sex
+  organizationId   String
+  guardianName     String?
+  pateintLab       PatientLab[]
+  MedicalHistory   MedicalHistory[]
+  FamilyHistory    FamilyHistory[]
+  InventoryHistory InventoryHistory[]
 }
 
 model Appointment {
-  id            String             @id @default(uuid())
-  date          DateTime           @default(now())
-  type          AppointmentType
-  patient       Patient            @relation(fields: [patientId], references: [id])
-  patientId     String
-  specialty     Specialty
-  doctor        User               @relation(fields: [doctorId], references: [id])
-  doctorId      String
-  labs          String?            @default("[]")
-  status        AppointmentStatus
-  data          AppointmentField[]
-  collections   Collection[]
-  clinic        Clinic             @relation(fields: [clinicId], references: [id])
-  clinicId      String
-  notes         String?            @default("")
+  id           String             @id @default(uuid())
+  date         DateTime           @default(now())
+  type         AppointmentType
+  patient      Patient            @relation(fields: [patientId], references: [id])
+  patientId    String
+  specialty    Specialty
+  doctor       User               @relation(fields: [doctorId], references: [id])
+  doctorId     String
+  labs         String?            @default("[]")
+  status       AppointmentStatus
+  data         AppointmentField[]
+  collections  Collection[]
+  clinic       Clinic             @relation(fields: [clinicId], references: [id])
+  clinicId     String
+  notes        String?            @default("")
+  prescription String?            @default("")
 }
 
 model View {
@@ -181,16 +184,16 @@ model AppointmentField {
 }
 
 model File {
-  id                String        @id @default(uuid())
-  url               String
-  filename          String
-  comment           String?
-  collection        Collection?     @relation(fields: [collectionId], references: [id])
-  collectionId      String?
-  mimetype          String?
-  encoding          String?
-  clinic            Clinic[]
-  labDocument       LabDocument[]
+  id           String        @id @default(uuid())
+  url          String
+  filename     String
+  comment      String?
+  collection   Collection?   @relation(fields: [collectionId], references: [id])
+  collectionId String?
+  mimetype     String?
+  encoding     String?
+  clinic       Clinic[]
+  labDocument  LabDocument[]
 }
 
 model Clinic {
@@ -215,14 +218,16 @@ model Clinic {
   address                String? @default("")
   address1               String? @default("")
 
-  logo           File?         @relation(fields: [logoId], references: [id])
-  logoId         String?
-  users          User[]        @relation(references: [id])
-  organizationId String
-  expense        Expense[]
-  revenue        Revenue[]
-  appointment    Appointment[]
-  sessions       Json          @default("[]")
+  logo             File?              @relation(fields: [logoId], references: [id])
+  logoId           String?
+  users            User[]             @relation(references: [id])
+  organizationId   String
+  expense          Expense[]
+  revenue          Revenue[]
+  appointment      Appointment[]
+  sessions         Json               @default("[]")
+  InventoryItem    InventoryItem[]
+  InventoryHistory InventoryHistory[]
 }
 
 model Week {
@@ -319,54 +324,57 @@ model Notification {
 }
 
 model Event {
-  id         String   @id @default(uuid())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  name       String
-  start      DateTime
-  end        DateTime
+  id     String   @id @default(uuid())
+  user   User     @relation(fields: [userId], references: [id])
+  userId String
+  name   String
+  start  DateTime
+  end    DateTime
 }
 
 model Collection {
-  id              String   @id @default(uuid())
-  appointment     Appointment     @relation(fields: [appointmentId], references: [id])
-  appointmentId   String
-  caption         String   @default("")
-  images          File[]
+  id            String      @id @default(uuid())
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  appointmentId String
+  caption       String      @default("")
+  images        File[]
 }
 
 model Item {
-  id                String          @id @default(uuid())
-  name              String          @unique
-  unitOfMeasure     UnitOfMeaure   
-  quantity          Int
-  barcode           String?
-  notes             String?
-  organization      Organization     @relation(fields: [organizationId], references: [id])
-  organizationId    String
+  id               String             @id @default(uuid())
+  name             String             @unique
+  unitOfMeasure    UnitOfMeaure
+  quantity         Int
+  barcode          String?
+  notes            String?
+  organization     Organization       @relation(fields: [organizationId], references: [id])
+  organizationId   String
+  InventoryItem    InventoryItem[]
+  InventoryHistory InventoryHistory[]
 }
 
 model InventoryItem {
-  quantity      Int
-  item          Item       @relation(fields: [itemId], references: [id])
-  itemId        String
-  clinic        Clinic     @relation(fields: [clinicId], references: [id])
-  clinicId      String
-  @@id([itemId,clinicId])
+  quantity Int
+  item     Item   @relation(fields: [itemId], references: [id])
+  itemId   String
+  clinic   Clinic @relation(fields: [clinicId], references: [id])
+  clinicId String
+
+  @@id([itemId, clinicId])
 }
 
 model InventoryHistory {
-  id              String     @id @default(uuid())
-  item            Item       @relation(fields: [itemId], references: [id])
-  itemId          String
-  clinic          Clinic     @relation(fields: [clinicId], references: [id])
-  clinicId        String
-  user            User       @relation(fields: [userId], references: [id])
-  userId          String
-  patient         Patient?   @relation(fields: [patientId], references: [id])
-  patientId       String?
-  operation       InventoryOperation
-  quantity        Int
-  price           Int?
-  date            DateTime
+  id        String             @id @default(uuid())
+  item      Item               @relation(fields: [itemId], references: [id])
+  itemId    String
+  clinic    Clinic             @relation(fields: [clinicId], references: [id])
+  clinicId  String
+  user      User               @relation(fields: [userId], references: [id])
+  userId    String
+  patient   Patient?           @relation(fields: [patientId], references: [id])
+  patientId String?
+  operation InventoryOperation
+  quantity  Int
+  price     Int?
+  date      DateTime
 }

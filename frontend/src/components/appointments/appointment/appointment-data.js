@@ -112,6 +112,13 @@ function AppointmentData({
               >
                 Images
               </ScrollNavLink>
+              <ScrollNavLink
+                eventKey="Prescription"
+                active={activeSection === 'Prescription'}
+                to="Prescription"
+              >
+                Prescription
+              </ScrollNavLink>
             </CRNav>
           </HomeSidebarStyled>
         )}
@@ -149,6 +156,14 @@ function AppointmentData({
               formValue={appointmentFormValue.collections}
               onChange={handleCollectionsChange}
             />
+          </SectionContainer>
+          <SectionContainer title="Prescription" name="Prescription">
+            <Form
+              formValue={appointmentFormValue}
+              onChange={onChangeAppointment}
+            >
+              <CRTextArea name="prescription" disabled={disabled} />
+            </Form>
           </SectionContainer>
         </Div>
       </Div>

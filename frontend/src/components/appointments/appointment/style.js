@@ -20,13 +20,25 @@ export const HomeSidebarStyled = styled(Div)`
   })}
 `;
 
+export const ContentSyled = styled.div`
+  word-break: break-all;
+  white-space: pre;
+`;
+
 export const PrescriptionSyled = styled.div`
-  /* @media screen {
-    overflow: hidden; height: 0; 
+  padding: 130px 70px;
+
+  /* & .body {
+    flex-grow: 1;
+    & p {
+      padding-left: 40px;
+      padding-right: 20px;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
   } */
 
-  padding: 30px;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   height: 100vh;
   font-size: 18px;
@@ -65,7 +77,7 @@ export const PrescriptionSyled = styled.div`
 
   & .logo {
     border-radius: 4px;
-  }
+  } */
 `;
 
 export const PrescriptionContentSyled = styled(Div)`
