@@ -140,6 +140,8 @@ export const GET_APPOINTMENT_HISTORY = gql`
       date
       labs
       status
+      notes
+      prescription
       data {
         id
         value

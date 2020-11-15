@@ -8,7 +8,6 @@ import SessionSummary from '@/components/patient-history/session-summary';
 
 const HistorySummaryScreen = ({ route }) => {
   const id = R.path(['params', 'patient', 'id'])(route);
-  console.log(id);
   const { summary } = useFetchPatient(id);
 
   const sessionsSummary = useMemo(
@@ -26,7 +25,7 @@ const HistorySummaryScreen = ({ route }) => {
         dataArray={sessionsSummary}
         icon="add"
         expandedIcon="remove"
-        renderHeader={({ data, title }, expanded) => {
+        renderHeader={({ title }, expanded) => {
           return (
             <View
               style={{

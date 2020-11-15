@@ -1,5 +1,12 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+} from '@react-pdf/renderer';
+
 
 import {
   Table,
@@ -16,6 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 20,
     fontSize: 12,
+    fontFamily: 'Cairo'
   },
   header: {
     lineHeight: 2,

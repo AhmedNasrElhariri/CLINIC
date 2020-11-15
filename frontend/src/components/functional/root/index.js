@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 
@@ -36,6 +36,33 @@ function Root() {
     user,
   } = useUserProfile();
 
+  const renderSearch = useCallback(
+    () => (
+      <Form style={{ width: 276 }}>
+        <InputGroup>
+          <AutoComplete
+            data={patients}
+            value={searchValue}
+            onChange={setSearchValue}
+            filterBy={(val, item) => {
+              return filterPatientBy(val, item, true);
+            }}
+            renderItem={item => {
+              return item.name;
+            }}
+            onSelect={({ id }) => {
+              history.push(`/patients/${id}`);
+            }}
+          />
+          <InputGroup.Button>
+            <Icon icon="search" />
+          </InputGroup.Button>
+        </InputGroup>
+      </Form>
+    ),
+    [history, patients, searchValue]
+  );
+
   if (!isVerified) {
     return <div>Loading ...</div>;
   }
@@ -55,29 +82,7 @@ function Root() {
               avatar={R.prop('avatar')(user)}
               notifications={notifications}
               onClear={clearNotifications}
-              renderSearch={() => (
-                <Form style={{ width: 276 }}>
-                  <InputGroup>
-                    <AutoComplete
-                      data={patients}
-                      value={searchValue}
-                      onChange={setSearchValue}
-                      filterBy={(val, item) => {
-                        return filterPatientBy(val, item, true);
-                      }}
-                      renderItem={item => {
-                        return item.name;
-                      }}
-                      onSelect={({ id }) => {
-                        history.push(`/patients/${id}`);
-                      }}
-                    />
-                    <InputGroup.Button>
-                      <Icon icon="search" />
-                    </InputGroup.Button>
-                  </InputGroup>
-                </Form>
-              )}
+              renderSearch={renderSearch}
             />
             <ContentStyled>
               <AppRouter></AppRouter>

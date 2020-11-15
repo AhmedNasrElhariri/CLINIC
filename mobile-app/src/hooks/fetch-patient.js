@@ -4,6 +4,17 @@ import * as R from 'ramda';
 
 import { GET_PATIENT, GET_APPOINTMENT_HISTORY } from '@/apollo-client/queries';
 
+const getSummary = data =>
+  data.reduce(
+    (obj, { field: { name }, value }) => ({
+      ...obj,
+      [name]: value,
+    }),
+    {}
+  );
+
+const getAppointmentAdditionalValues = R.pipe(R.pick(['notes']));
+
 function useFetchPatient(id) {
   const { data } = useQuery(GET_PATIENT, { variables: { id } });
   const result = useQuery(GET_APPOINTMENT_HISTORY, {
@@ -23,20 +34,17 @@ function useFetchPatient(id) {
     [result]
   );
 
-  const summary = useMemo(
-    () =>
-      R.pipe(
-        R.pathOr([], ['data', 'appointmentHistory']),
-        R.map(R.prop('data')),
-        R.map(
-          R.pipe(
-            R.map(({ field: { name }, value }) => ({ [name]: value })),
-            R.mergeAll
-          )
-        )
-      )(result),
-    [result]
-  );
+  const summary = useMemo(() => {
+    const history = R.pathOr([], ['data', 'appointmentHistory'])(result);
+    return history.map(appt => {
+      const data = R.propOr([], 'data')(appt);
+
+      return {
+        ...getSummary(data),
+        ...getAppointmentAdditionalValues(appt),
+      };
+    });
+  }, [result]);
 
   const progress = useMemo(() => {
     const progressWithDate = R.pipe(
