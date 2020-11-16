@@ -35,7 +35,7 @@ export const updatedUsedMaterials = async (appointmentId, items) => {
 
 export const storeHistoryOfAddition = async ({
   clinicId,
-  patientId,
+  // patientId,
   itemId,
   userId,
   quantity,
@@ -51,11 +51,6 @@ export const storeHistoryOfAddition = async ({
       clinic: {
         connect: {
           id: clinicId,
-        },
-      },
-      patient: {
-        connect: {
-          id: patientId,
         },
       },
       user: {

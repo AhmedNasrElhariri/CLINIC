@@ -56,10 +56,6 @@ function useUserProfile() {
   }, [notificationsData]);
 
   useEffect(() => {
-    setCurrentClinic(ls.getCurrentClinic());
-  }, [setCurrentClinic]);
-
-  useEffect(() => {
     if (isVerified && isAuthenticated) {
       getView();
       getClinics();

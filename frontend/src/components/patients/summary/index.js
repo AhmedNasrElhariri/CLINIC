@@ -24,7 +24,9 @@ const renderProp = (key, value) => {
 
 const renderAppointment = data => {
   return data.map(({ value, field }, idx) => (
-    <React.Fragment key={idx}>{renderProp(field.name, value)}</React.Fragment>
+    <React.Fragment key={idx}>
+      {value && renderProp(field.name, value)}
+    </React.Fragment>
   ));
 };
 
@@ -84,8 +86,9 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
             <Div>
               {renderProp('Date', formatDate(date))}
               {renderAppointment(data)}
-              {renderProp('Notes', activeSession.notes)}
-              {renderProp('Images', <AppointmentGallery images={images} />)}
+              {activeSession.notes && renderProp('Notes', activeSession.notes)}
+              {images.length > 0 &&
+                renderProp('Images', <AppointmentGallery images={images} />)}
             </Div>
           </>
         ) : (

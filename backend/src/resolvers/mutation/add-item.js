@@ -4,18 +4,18 @@ import { storeHistoryOfAddition } from '@/services/inventory.service';
 import * as R from 'ramda';
 import { createInventoryExpense } from '../../services/expense.service';
 
-const addItem = async (_, { item, clinicId }, { userId }) => {
-  if (R.isNil(clinicId) || R.isNil(item.itemId)) {
+const addItem = async (_, { item: input, clinicId }, { userId }) => {
+  if (R.isNil(clinicId) || R.isNil(input.itemId)) {
     throw new APIExceptcion('invalid clinic or item');
   }
 
   const persistedItem = await prisma.item.findOne({
     where: {
-      id: item.itemId,
+      id: input.itemId,
     },
   });
 
-  const { itemId } = item;
+  const { itemId } = input;
 
   const persistedInventoryItem = await prisma.inventoryItem.findOne({
     where: {
@@ -26,14 +26,14 @@ const addItem = async (_, { item, clinicId }, { userId }) => {
     },
   });
 
-  const quantity = R.propOr(0, 'quantity')(persistedInventoryItem);
+  const inventoryItemQuantity = R.propOr(0, 'quantity')(persistedInventoryItem);
   const totalQuantity = R.propOr(0, 'quantity')(persistedItem);
 
-  const newtotalQuantity = totalQuantity + quantity * item.amount;
+  const newtotalQuantity = inventoryItemQuantity + totalQuantity * input.amount;
 
   await createInventoryExpense({
-    name: `${persistedItem.name} X ${item.amount}`,
-    price: item.amount * item.price,
+    name: `${persistedItem.name} X ${input.amount}`,
+    price: input.amount * input.price,
     clinicId,
   });
 
@@ -41,8 +41,8 @@ const addItem = async (_, { item, clinicId }, { userId }) => {
     clinicId,
     itemId,
     userId,
-    quantity: item.amount,
-    price: item.price,
+    quantity: input.amount,
+    price: input.price,
   });
 
   return prisma.inventoryItem.upsert({
@@ -64,7 +64,7 @@ const addItem = async (_, { item, clinicId }, { userId }) => {
     },
     where: {
       itemId_clinicId: {
-        itemId: item.itemId,
+        itemId: input.itemId,
         clinicId,
       },
     },
