@@ -20,13 +20,13 @@ export const UPLOAD_DIR = '/uploads';
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
 
 export const prisma = new PrismaClient();
+export const pubsub = new RedisPubSub();
 
 const options = {
+  port: process.env.APP_PORT || 4000,
   endpoint: '/graphql',
   playground: '/playground',
 };
-
-export const pubsub = new RedisPubSub();
 
 moment.tz.setDefault('Africa/Cairo');
 moment.updateLocale('en', {
@@ -80,8 +80,9 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
 }
-server.start(options, () => {
-  console.log('Server is running on localhost:4000');
+
+server.start(options, ({ port }) => {
+  console.log(`Server is running on localhost:${port}`);
   if (process.env.init) {
     console.log('Init Database');
     // seed();

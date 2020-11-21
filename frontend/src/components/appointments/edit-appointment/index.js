@@ -16,7 +16,7 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
   const { appointments } = useFetchAppointments();
 
   const { disabledMinutes, hideHours } = useAppointmentForm({
-    date: formValue.data,
+    date: formValue.date,
     type: formValue.type,
     selectedHour: formValue.time,
     appointments,

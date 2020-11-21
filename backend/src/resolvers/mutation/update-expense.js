@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const updateExpense = async (_, { expense: { id, ...expense } }) => {
-  return prisma.expense.create({
+  return prisma.expense.update({
     data: {
       ...expense,
     },

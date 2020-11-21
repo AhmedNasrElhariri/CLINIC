@@ -75,7 +75,7 @@ export default function NewAppointment() {
   const hideModal = useCallback(() => setPatientModal(false), []);
 
   const { disabledMinutes, hideHours } = useAppointmentForm({
-    date: formValue.data,
+    date: formValue.date,
     type: formValue.type,
     selectedHour,
     appointments,

@@ -1,7 +1,7 @@
 import { prisma } from '@';
 import { APIExceptcion } from './erros.service';
 
-export const getClinicDoctoryByUserId = async clinicId => {
+export const getClinicDoctoryByClinicId = async clinicId => {
   const doctors = await prisma.user.findMany({
     where: {
       position: 'Doctor',
