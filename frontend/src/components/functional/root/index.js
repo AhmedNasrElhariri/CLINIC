@@ -36,8 +36,6 @@ function Root() {
     user,
   } = useUserProfile();
 
-  console.log(currentClinic);
-
   const renderSearch = useCallback(
     () => (
       <Form style={{ width: 276 }}>

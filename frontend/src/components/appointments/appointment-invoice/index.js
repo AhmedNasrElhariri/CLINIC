@@ -3,9 +3,10 @@ import { Form, Divider } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as R from 'ramda';
 
-import { CRSelectInput, H6, CRButton, Div, H5 } from 'components';
+import { CRSelectInput, H6, CRButton, Div, H5, H7 } from 'components';
 import { CRNumberInput, CRTextInput } from 'components/widgets';
 import ListInvoiceItems from '../list-invoice-items';
+import PrintInvoice from '../print-invoice/index';
 
 const OTHER = 'Other';
 
@@ -14,9 +15,22 @@ const initValue = {
   price: 1,
 };
 
+const Price = ({ name, price, overriden = false }) => (
+  <Div display="flex" justifyContent="space-between">
+    <H6 color="texts.1">{name}</H6>
+    <H6 color="texts.1">
+      <NumberFormat value={price} displayType="text" thousandSeparator />
+    </H6>
+  </Div>
+);
+
 function AppointmentInvoice({ clinic, onChange }) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
+  const [discountForm, setDiscount] = useState({
+    amount: 0,
+    type: 0,
+  });
 
   const [selectedSessions, setSelectedSessions] = useState([]);
 
@@ -62,10 +76,15 @@ function AppointmentInvoice({ clinic, onChange }) {
     [handleOnChange]
   );
 
-  const total = useMemo(
+  const gross = useMemo(
     () => selectedSessions.reduce((sum, { price }) => sum + price, 0),
     [selectedSessions]
   );
+
+  const total = useMemo(() => gross - discountForm.amount, [
+    discountForm.amount,
+    gross,
+  ]);
 
   const isOtherType = useMemo(() => session.name === OTHER, [session]);
 
@@ -116,11 +135,19 @@ function AppointmentInvoice({ clinic, onChange }) {
         <ListInvoiceItems items={selectedSessions} onDelete={handleDelete} />
       </Div>
       <Divider />
-      <Div mt={5} display="flex" justifyContent="space-between">
-        <H5 color="texts.1">Total</H5>
-        <H5 color="texts.1">
-          <NumberFormat value={total} displayType="text" thousandSeparator />
-        </H5>
+
+      <Form fluid formValue={discountForm} onChange={setDiscount}>
+        <CRTextInput label="Discount" name="amount" />
+      </Form>
+      <Divider />
+
+      <Div>
+        <Price name="Gross " price={gross} overriden />
+        <Price name="Total" price={total} />
+      </Div>
+
+      <Div mt={3}>
+        <PrintInvoice items={selectedSessions} gross={gross} total={total} />
       </Div>
     </>
   );
