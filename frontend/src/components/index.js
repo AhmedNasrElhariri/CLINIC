@@ -1,3 +1,8 @@
+/******************       Admin    *********************************/
+export { default as Admin } from './admin/admin';
+export { default as NewUser } from './admin/new-user';
+export { default as Users } from './admin/list-users';
+
 /******************       Widgets    *********************************/
 export * from './widgets';
 

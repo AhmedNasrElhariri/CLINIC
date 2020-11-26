@@ -18,14 +18,20 @@ import {
   ListUsers,
   UserPermissions,
   Profile,
-  InventoryPage
+  InventoryPage,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 import ProtectedRoute from '../protected-route/index';
 
+import Admin from 'components/admin/admin';
+
 function AppRouter() {
   return (
     <Switch>
+      <Route path="/admin">
+        <Admin />
+      </Route>
+
       <Route path="/patients/new">
         <NewPatient />
       </Route>
