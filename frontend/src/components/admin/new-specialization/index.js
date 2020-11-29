@@ -13,13 +13,13 @@ const initialValues = {
   name: '',
 };
 
-export default function NewUser({ show, onCancel, onCreate }) {
+export default function NewSpecialization({ show, onCancel, onCreate }) {
   const [formValue, setFormValue] = useState(initialValues);
 
   return (
     <CRModal
       show={show}
-      header="New User"
+      header="New Specialization"
       onHide={onCancel}
       onCancel={onCancel}
       onOk={() => onCreate(formValue)}
@@ -31,6 +31,6 @@ export default function NewUser({ show, onCancel, onCreate }) {
   );
 }
 
-NewUser.propTypes = {};
+NewSpecialization.propTypes = {};
 
-NewUser.defaultProps = {};
+NewSpecialization.defaultProps = {};

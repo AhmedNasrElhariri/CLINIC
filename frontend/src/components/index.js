@@ -1,7 +1,9 @@
 /******************       Admin    *********************************/
-export { default as Admin } from './admin/admin';
-export { default as NewUser } from './admin/new-user';
-export { default as Users } from './admin/list-users';
+export { default as specializations } from './admin/specializations';
+export { default as NewSpecialization } from './admin/new-specialization';
+export { default as ListSpecializations } from './admin/list-specializations';
+export { default as AdminContainer } from './admin/admin-container';
+export { default as BranchesContainer } from './admin/branches-container';
 
 /******************       Widgets    *********************************/
 export * from './widgets';

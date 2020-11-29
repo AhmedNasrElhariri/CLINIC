@@ -10,6 +10,7 @@ import {
   ListPatients,
   Patient,
   ReportsContainer,
+  AdminContainer,
   ListViews,
   CreateView,
   ClinicInfo,
@@ -23,15 +24,9 @@ import {
 import CreateDefaultView from 'components/views/create-default-view';
 import ProtectedRoute from '../protected-route/index';
 
-import Admin from 'components/admin/admin';
-
 function AppRouter() {
   return (
     <Switch>
-      <Route path="/admin">
-        <Admin />
-      </Route>
-
       <Route path="/patients/new">
         <NewPatient />
       </Route>
@@ -68,6 +63,9 @@ function AppRouter() {
       </Route>
       <Route path="/reports">
         <ReportsContainer />
+      </Route>
+      <Route path="/admin">
+        <AdminContainer />
       </Route>
       <Route path="/views/new">
         <CreateView />

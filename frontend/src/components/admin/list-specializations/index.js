@@ -2,25 +2,32 @@ import React from 'react';
 import { CRCard, CRTable } from 'components';
 import { CheckboxGroup, Checkbox } from 'rsuite';
 
-export default function Users({ users }) {
+export default function ListSpecializations({ specializations }) {
   const handleChange = (value, event, checked) => {
-    const userId = event.target.name;
+    const specializationId = event.target.name;
     const permissions = value;
 
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(user => user.id === userId);
+    let specializations =
+      JSON.parse(localStorage.getItem('specializations')) || [];
+    const specialization = specializations.find(
+      specialization => specialization.id === specializationId
+    );
 
-    const editedUser = { ...user, permissions };
-    users = users.map(user => (user.id !== editedUser.id ? user : editedUser));
+    const editedSpecialization = { ...specialization, permissions };
+    specializations = specializations.map(specialization =>
+      specialization.id !== editedSpecialization.id
+        ? specialization
+        : editedSpecialization
+    );
 
-    users = JSON.stringify(users);
-    localStorage.setItem('users', users);
+    specializations = JSON.stringify(specializations);
+    localStorage.setItem('specializations', specializations);
   };
 
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={users} bordered={false}>
+        <CRTable autoHeight data={specializations} bordered={false}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="name">
@@ -58,8 +65,8 @@ export default function Users({ users }) {
   );
 }
 
-Users.propTypes = {};
+ListSpecializations.propTypes = {};
 
-Users.defaultProps = {
-  users: [],
+ListSpecializations.defaultProps = {
+  specializations: [],
 };
