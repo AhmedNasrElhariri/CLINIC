@@ -1,9 +1,15 @@
 /******************       Admin    *********************************/
-export { default as specializations } from './admin/specializations';
-export { default as NewSpecialization } from './admin/new-specialization';
-export { default as ListSpecializations } from './admin/list-specializations';
 export { default as AdminContainer } from './admin/admin-container';
-export { default as BranchesContainer } from './admin/branches-container';
+/******************       Branches    *********************************/
+// export { default as Branches } from './admin/branches/branches';
+/******************       Specializations    *********************************/
+export { default as SpecializationsContainer } from './admin/specializations/specializations-container';
+export { default as NewSpecialization } from './admin/specializations/new-specialization';
+export { default as ListSpecializations } from './admin/specializations/list-specializations';
+/******************       Users    *********************************/
+export { default as UsersContainer } from './admin/users/users-container';
+export { default as NewUser } from './admin/users/new-user';
+export { default as Users } from './admin/users/list-users';
 
 /******************       Widgets    *********************************/
 export * from './widgets';

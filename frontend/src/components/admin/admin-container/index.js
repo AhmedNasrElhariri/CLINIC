@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { MainContainer, BranchesContainer, CRCard, CRNav } from 'components';
+import { MainContainer, CRCard, CRNav } from 'components';
 
-import Specializations from '../specializations';
+import SpecializationsContainer from '../specializations/specializations-container';
+import UsersContainer from '../users/users-container';
 
 const AdminContainer = () => {
   const [activeTab, setActiveTab] = useState('branches');
@@ -14,7 +15,7 @@ const AdminContainer = () => {
         appearance="tabs"
         activeKey={activeTab}
         onSelect={setActiveTab}
-        width={300}
+        width={600}
         justified
       >
         <CRNav.CRItem eventKey="branches">Branches</CRNav.CRItem>
@@ -22,8 +23,8 @@ const AdminContainer = () => {
         <CRNav.CRItem eventKey="users">Users</CRNav.CRItem>
       </CRNav>
       <CRCard borderless>
-        {activeTab === 'branches' && <BranchesContainer />}
-        {activeTab === 'specializations' && <Specializations />}
+        {activeTab === 'specializations' && <SpecializationsContainer />}
+        {activeTab === 'users' && <UsersContainer />}
       </CRCard>
     </>
   );
