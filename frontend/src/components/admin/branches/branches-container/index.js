@@ -120,7 +120,7 @@ export default function Branches() {
         onHide={hideBranchModal}
         onCancel={hideBranchModal}
       />
-      {/* <ListBranches branches={branches} /> */}
+      <ListBranches branches={branches} />
     </>
   );
 }

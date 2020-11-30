@@ -11,7 +11,8 @@ import {
 
 export default function SpecializationsContainer() {
   const [visible, setVisible] = useState(false);
-  const data = JSON.parse(localStorage.getItem('specializations')) || [];
+  const data =
+    JSON.parse(localStorage.getItem('specializationsInBranch')) || [];
 
   const create = specialization => {
     let specializations = [

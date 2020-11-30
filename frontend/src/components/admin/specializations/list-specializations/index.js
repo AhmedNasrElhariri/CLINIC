@@ -3,60 +3,37 @@ import { CRCard, CRTable } from 'components';
 import { CheckboxGroup, Checkbox } from 'rsuite';
 
 export default function ListSpecializations({ specializations }) {
-  const handleChange = (value, event, checked) => {
-    const specializationId = event.target.name;
-    const permissions = value;
-
-    let specializations =
-      JSON.parse(localStorage.getItem('specializations')) || [];
-    const specialization = specializations.find(
-      specialization => specialization.id === specializationId
-    );
-
-    const editedSpecialization = { ...specialization, permissions };
-    specializations = specializations.map(specialization =>
-      specialization.id !== editedSpecialization.id
-        ? specialization
-        : editedSpecialization
-    );
-
-    specializations = JSON.stringify(specializations);
-    localStorage.setItem('specializations', specializations);
-  };
+  const specializationsResult = Object.values(
+    specializations.reduce((c, { branch, specializations }) => {
+      c[branch] = c[branch] || { branch, specializations: [] };
+      c[branch].specializations = c[branch].specializations.concat(
+        Array.isArray(specializations) ? specializations : [specializations]
+      );
+      return c;
+    }, {})
+  );
 
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={specializations} bordered={false}>
+        <CRTable autoHeight data={specializationsResult} bordered={false}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name">
-              {({ name }) => (
-                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+            <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="branch">
+              {({ branch }) => (
+                <CRTable.CRCellStyled bold>{branch}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Permissions</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="permissions">
-              {({ permissions, id }) => {
-                return (
-                  <CRTable.CRCellStyled>
-                    <CheckboxGroup
-                      inline
-                      onChange={handleChange}
-                      defaultValue={permissions}
-                      name={id}
-                    >
-                      <Checkbox value={'list'}>List</Checkbox>
-                      <Checkbox value={'view'}>View</Checkbox>
-                      <Checkbox value={'create'}>Create</Checkbox>
-                      <Checkbox value={'delete'}>Delete</Checkbox>
-                    </CheckboxGroup>
-                  </CRTable.CRCellStyled>
-                );
-              }}
+            <CRTable.CRHeaderCell>Specializations</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="specializations">
+              {({ specializations }) => (
+                <CRTable.CRCellStyled bold>
+                  {specializations.join(', ')}
+                </CRTable.CRCellStyled>
+              )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>

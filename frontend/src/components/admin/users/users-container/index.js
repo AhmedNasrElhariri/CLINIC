@@ -55,7 +55,7 @@ export default function UsersContainer() {
         onHide={hideModal}
         onCancel={hideModal}
       />
-      {/* <Users users={users} /> */}
+      <Users users={users} />
     </>
   );
 }
