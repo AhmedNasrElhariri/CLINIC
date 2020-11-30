@@ -19,7 +19,7 @@ export default function ListBranches({ branches }) {
             <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="phone">
               {({ phone }) => (
-                <CRTable.CRCellStyled bold>phone</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>{phone}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

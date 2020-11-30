@@ -5,6 +5,7 @@ export { default as BranchesContainer } from './admin/branches/branches-containe
 export { default as NewBranch } from './admin/branches/new-branch';
 export { default as ListBranches } from './admin/branches/list-branches';
 export { default as AddSpecialization } from './admin/branches/add-specialization';
+export { default as AddDoctor } from './admin/branches/add-doctor';
 /******************       Specializations    *********************************/
 export { default as SpecializationsContainer } from './admin/specializations/specializations-container';
 export { default as NewSpecialization } from './admin/specializations/new-specialization';

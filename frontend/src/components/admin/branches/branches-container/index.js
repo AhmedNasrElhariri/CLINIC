@@ -8,6 +8,7 @@ import {
   CRButton,
   ListBranches,
   AddSpecialization,
+  AddDoctor,
 } from 'components';
 
 export default function Branches() {
@@ -81,6 +82,23 @@ export default function Branches() {
     [createSpecialization]
   );
 
+  // Doctors
+  const [doctorVisible, setDoctorVisible] = useState(false);
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  const createDoctor = doctors => {
+    console.log(doctors);
+    Alert.success('Doctor has been added to branch successfully');
+    setDoctorVisible(false);
+  };
+
+  const showDoctorModal = useCallback(() => setDoctorVisible(true), []);
+  const hideDoctorModal = useCallback(() => setDoctorVisible(false), []);
+
+  const onCreateDoctor = useCallback(doctor => createDoctor(doctor), [
+    createDoctor,
+  ]);
+
   return (
     <>
       <MainContainer
@@ -104,9 +122,24 @@ export default function Branches() {
             >
               Add Specialization
             </CRButton>
+            <CRButton
+              onClick={showDoctorModal}
+              primary
+              small
+              style={{ margin: '0 10px' }}
+            >
+              Add Doctor
+            </CRButton>
           </div>
         }
       ></MainContainer>
+      <AddDoctor
+        onCreate={onCreateDoctor}
+        show={doctorVisible}
+        onHide={hideDoctorModal}
+        onCancel={hideDoctorModal}
+        branches={branches}
+      />
       <AddSpecialization
         onCreate={onCreateSpecialization}
         show={specializationVisible}
