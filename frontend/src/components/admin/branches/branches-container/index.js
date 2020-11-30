@@ -2,67 +2,62 @@ import React, { useState, useCallback } from 'react';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
 
-import {
-  NewSpecialization,
-  MainContainer,
-  CRButton,
-  ListSpecializations,
-} from 'components';
+import { NewBranch, MainContainer, CRButton, ListBranches } from 'components';
 
-export default function Specializations() {
+export default function Branches() {
   const [visible, setVisible] = useState(false);
-  const data = JSON.parse(localStorage.getItem('specializations')) || [];
+  const data = JSON.parse(localStorage.getItem('branches')) || [];
 
-  const create = specialization => {
-    let specializations = [
+  const create = branch => {
+    let branches = [
       ...data,
       {
         id: Math.random().toString(36).substr(2, 9),
-        name: specialization.name,
-        permissions: [],
+        name: branch.name,
+        address: branch.address,
+        phone: branch.phone,
+        notes: branch.notes,
       },
     ];
-    specializations = JSON.stringify(specializations);
-    localStorage.setItem('specializations', specializations);
-    Alert.success('Specialization has been created successfully');
+    branches = JSON.stringify(branches);
+    localStorage.setItem('branches', branches);
+    Alert.success('Branch has been created successfully');
     setVisible(false);
   };
 
   const showModal = useCallback(() => setVisible(true), []);
   const hideModal = useCallback(() => setVisible(false), []);
-  const onCreate = useCallback(specialization => create(specialization), [
-    create,
-  ]);
+  const onCreate = useCallback(branch => create(branch), [create]);
 
-  const specializations = R.propOr(
+  const branches = R.propOr(
     [],
-    'specializations'
+    'branches'
   )({
-    specializations: data,
+    branches: data,
   });
 
   return (
     <>
       <MainContainer
-        title="Specializations"
+        title="branches"
         nobody
         more={
           <CRButton onClick={showModal} primary small>
-            New Specialization
+            New Branch
           </CRButton>
         }
       ></MainContainer>
-      <NewSpecialization
+      <NewBranch
         onCreate={onCreate}
         show={visible}
         onHide={hideModal}
         onCancel={hideModal}
       />
-      <ListSpecializations specializations={specializations} />
+      {/* <ListBranches branches={branches} /> */}
     </>
   );
 }
 
-Specializations.propTypes = {};
+Branches.propTypes = {};
 
-Specializations.defaultProps = {};
+Branches.defaultProps = {};

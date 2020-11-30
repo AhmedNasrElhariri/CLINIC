@@ -24,7 +24,6 @@ const initialValues = {
   password: '',
   type: '',
   specialization: '',
-  notes: '',
 };
 
 export default function NewUser({ show, onCancel, onCreate }) {
