@@ -82,6 +82,14 @@ export default function NewAppointment() {
     if (branchesTypes.length === 1) {
       setHideBranchSelect(true);
     }
+    if (getSpecializationsByBranchName(formValue.branch).length === 1) {
+      setFormValue(pre => ({
+        ...pre,
+        specialization: getSpecializationsByBranchName(formValue.branch)[0],
+      }));
+      setHideBranchSelect(true);
+      setHideSpecializationSelect(true);
+    }
   }, [formValue.branch]);
   useEffect(() => {
     if (getSpecializationsByBranchName(formValue.branch).length === 1) {
@@ -104,7 +112,6 @@ export default function NewAppointment() {
       setFormValue(initialValues);
     };
   }, []);
-  console.log(formValue.branch, formValue.specialization, formValue.doctor);
 
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: ({ createAppointment }) => {
@@ -134,7 +141,14 @@ export default function NewAppointment() {
       return;
     }
     const { patient, type, branch, specialization, doctor } = formValue;
-    console.log('handleCreate', branch, specialization, doctor);
+    console.log(
+      'branch',
+      branch,
+      'specialization',
+      specialization,
+      'doctor',
+      doctor
+    );
 
     const timeDate = moment(formValue.time);
     const date = moment(formValue.date).set({

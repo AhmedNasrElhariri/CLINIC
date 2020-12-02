@@ -89,8 +89,11 @@ export const branches = {
 export const branchesNames = branches.branches.map(branch => branch.name);
 export const branchesTypes = mapArrToChoices(branchesNames);
 export const getSpecializationsByBranchName = branchName => {
-  const branchId = branches.branches.find(branch => branch.name === branchName)
-    .id;
+  const branch = branches.branches.find(branch => branch.name === branchName);
+  if (!branch) {
+    return [];
+  }
+  const branchId = branch.id;
   if (!branchId) {
     return [];
   }
@@ -100,10 +103,17 @@ export const getSpecializationsByBranchName = branchName => {
 };
 export const specializationsTypes = branchName =>
   mapArrToChoices(getSpecializationsByBranchName(branchName));
+
 export const getDoctorsBySpecialization = specializationName => {
-  const specializationId = branches.specializations.find(
+  const specialization = branches.specializations.find(
     specialization => specialization.name === specializationName
-  ).id;
+  );
+
+  if (!specialization) {
+    return [];
+  }
+
+  const specializationId = specialization.id;
 
   if (!specializationId) {
     return [];
@@ -118,5 +128,6 @@ export const getDoctorsBySpecialization = specializationName => {
   }
   return doctors;
 };
+
 export const doctorsTypes = specializationName =>
   mapArrToChoices(getDoctorsBySpecialization(specializationName));
