@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import * as moment from 'moment';
 import { useMutation } from '@apollo/client';
 import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
@@ -25,6 +25,14 @@ import { filterPatientBy } from 'utils/patient';
 import { APPT_TYPE } from 'utils/constants';
 import useAppointmentForm from 'hooks/appointment-form';
 
+import {
+  branchesTypes,
+  specializationsTypes,
+  doctorsTypes,
+  branchesNames,
+  getSpecializationsByBranchName,
+} from './branch-data';
+
 const { StringType } = Schema.Types;
 
 const appointmentTypes = Object.entries(APPT_TYPE).map(([label, value]) => ({
@@ -35,11 +43,17 @@ const appointmentTypes = Object.entries(APPT_TYPE).map(([label, value]) => ({
 const model = Schema.Model({
   type: StringType().isRequired('Appointment Type is required'),
   patient: StringType().isRequired('Patient Type is required'),
+  branch: StringType().isRequired('Branch Type is required'),
+  specialization: StringType().isRequired('Specialization Type is required'),
+  doctor: StringType().isRequired('Doctor Type is required'),
 });
 
 const initialValues = {
   type: 'Examination',
   patient: '',
+  branch: branchesNames[0] || '',
+  specialization: '',
+  doctor: '',
   date: new Date(),
   time: null,
 };
@@ -58,6 +72,46 @@ export default function NewAppointment() {
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
   const { patients, appointments, updateAppointments } = useFetchData();
+
+  const [hideBranchSelect, setHideBranchSelect] = useState(false);
+  const [hideSpecializationSelect, setHideSpecializationSelect] = useState(
+    false
+  );
+  useEffect(() => {
+    setFormValue(pre => ({ ...pre, specialization: '', doctor: '' }));
+    if (branchesTypes.length === 1) {
+      setHideBranchSelect(true);
+    }
+  }, [formValue.branch]);
+  useEffect(() => {
+    if (getSpecializationsByBranchName(formValue.branch).length === 1) {
+      setHideBranchSelect(true);
+      setHideSpecializationSelect(true);
+    }
+    setFormValue(pre => ({ ...pre, doctor: '' }));
+
+    return () => {
+      setHideBranchSelect(false);
+      setHideSpecializationSelect(false);
+    };
+  }, [formValue.specialization]);
+  useEffect(() => {
+    return () => {
+      setFormValue(initialValues);
+    };
+  }, []);
+  // useEffect(() => {
+  //   if (specializationsTypes(formValue.branch).length === 1) {
+  //     setFormValue(pre => ({
+  //       ...pre,
+  //       specialization: specializationsTypes(formValue.branch).map(
+  //         el => el.value
+  //       )[0],
+  //     }));
+  //     setHideSpecializationSelect(true);
+  //   }
+  // }, []);
+  console.log(formValue.branch, formValue.specialization, formValue.doctor);
 
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: ({ createAppointment }) => {
@@ -86,7 +140,8 @@ export default function NewAppointment() {
       Alert.error('Complete Required Fields');
       return;
     }
-    const { patient, type } = formValue;
+    const { patient, type, branch, specialization, doctor } = formValue;
+    console.log('handleCreate', branch, specialization, doctor);
 
     const timeDate = moment(formValue.time);
     const date = moment(formValue.date).set({
@@ -141,7 +196,6 @@ export default function NewAppointment() {
               searchable={false}
               data={appointmentTypes}
             />
-
             <CRSelectInput
               label="Patient"
               name="patient"
@@ -168,7 +222,42 @@ export default function NewAppointment() {
                 </H5>
               </Div>
             </CRSelectInput>
-
+            {!hideBranchSelect && (
+              <CRSelectInput
+                label="Branch"
+                name="branch"
+                placeholder="Select Branch"
+                block
+                cleanable={false}
+                searchable={false}
+                accepter={SelectPicker}
+                data={branchesTypes}
+              />
+            )}
+            {formValue.branch !== '' && (
+              <CRSelectInput
+                label="Specialization"
+                name="specialization"
+                placeholder="Select Specialization"
+                block
+                cleanable={false}
+                searchable={false}
+                accepter={SelectPicker}
+                data={specializationsTypes(formValue.branch)}
+              />
+            )}
+            {formValue.specialization !== '' && (
+              <CRSelectInput
+                label="Doctor"
+                name="doctor"
+                placeholder="Select Doctor"
+                block
+                cleanable={false}
+                searchable={false}
+                accepter={SelectPicker}
+                data={doctorsTypes(formValue.specialization)}
+              />
+            )}
             <CRDatePicker
               label="Date"
               block
@@ -177,7 +266,6 @@ export default function NewAppointment() {
               disabledDate={isBeforeToday}
               placement="top"
             />
-
             <CRTimePicker
               label="Time"
               block
