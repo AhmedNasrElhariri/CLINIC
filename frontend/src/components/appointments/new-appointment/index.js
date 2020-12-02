@@ -77,7 +77,6 @@ export default function NewAppointment() {
   const [hideSpecializationSelect, setHideSpecializationSelect] = useState(
     false
   );
-  console.log(hideSpecializationSelect);
   useEffect(() => {
     setFormValue(pre => ({ ...pre, specialization: '', doctor: '' }));
     if (branchesTypes.length === 1) {
@@ -86,6 +85,10 @@ export default function NewAppointment() {
   }, [formValue.branch]);
   useEffect(() => {
     if (getSpecializationsByBranchName(formValue.branch).length === 1) {
+      setFormValue(pre => ({
+        ...pre,
+        specialization: getSpecializationsByBranchName(formValue.branch)[0],
+      }));
       setHideBranchSelect(true);
       setHideSpecializationSelect(true);
     }
@@ -101,17 +104,6 @@ export default function NewAppointment() {
       setFormValue(initialValues);
     };
   }, []);
-  // useEffect(() => {
-  //   if (specializationsTypes(formValue.branch).length === 1) {
-  //     setFormValue(pre => ({
-  //       ...pre,
-  //       specialization: specializationsTypes(formValue.branch).map(
-  //         el => el.value
-  //       )[0],
-  //     }));
-  //     setHideSpecializationSelect(true);
-  //   }
-  // }, []);
   console.log(formValue.branch, formValue.specialization, formValue.doctor);
 
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
