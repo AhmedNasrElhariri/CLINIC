@@ -73,6 +73,16 @@ export const branches = {
       name: 'zizo',
       specializations: [4],
     },
+    {
+      id: 7,
+      name: 'samy',
+      specializations: [5],
+    },
+    {
+      id: 8,
+      name: 'omr',
+      specializations: [5],
+    },
   ],
 };
 

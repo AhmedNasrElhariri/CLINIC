@@ -77,6 +77,7 @@ export default function NewAppointment() {
   const [hideSpecializationSelect, setHideSpecializationSelect] = useState(
     false
   );
+  console.log(hideSpecializationSelect);
   useEffect(() => {
     setFormValue(pre => ({ ...pre, specialization: '', doctor: '' }));
     if (branchesTypes.length === 1) {
@@ -234,7 +235,7 @@ export default function NewAppointment() {
                 data={branchesTypes}
               />
             )}
-            {formValue.branch !== '' && (
+            {formValue.branch !== '' && !hideSpecializationSelect && (
               <CRSelectInput
                 label="Specialization"
                 name="specialization"
