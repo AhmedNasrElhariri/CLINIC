@@ -95,6 +95,37 @@ export const filterAppointments = (appointments = [], filter) => {
   return filters.reduce((app, fn) => fn(app, filter), appointments);
 };
 
+const filterByDoctor = (appointments, filter) => {
+  const doctor = R.prop('doctor')(filter);
+
+  return !doctor
+    ? appointments
+    : appointments.filter(app => app.doctor_name === doctor);
+};
+
+const filterBySpecialization = (appointments, filter) => {
+  const specialization = R.prop('specialization')(filter);
+
+  return !specialization
+    ? appointments
+    : appointments.filter(app => app.specialization_name === specialization);
+};
+
+export const filterTodayAppointments = (appointments = [], filter) => {
+  const filters = [filterByDoctor, filterBySpecialization];
+  return filters.reduce((app, fn) => fn(app, filter), appointments);
+};
+
+export const getSpecializationsTypes = specializations => specializations;
+
+export const specializationsTypes = specializations =>
+  mapArrToChoices(getSpecializationsTypes(specializations));
+
+export const getDoctorsTypes = doctors => doctors;
+
+export const doctorsTypes = doctors =>
+  mapArrToChoices(getDoctorsTypes(doctors));
+
 export const getAppointmentTypes = () => ['Examination', 'Followup'];
 
 export const appointmentTypes = mapArrToChoices(getAppointmentTypes());
