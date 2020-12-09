@@ -25,13 +25,13 @@ const dummyData = {
   doctors: [
     {
       id: '1',
-      name: 'Ahmed',
+      name: 'Fatima',
       specialization: '1',
       branches: ['1'],
     },
     {
       id: '2',
-      name: 'khaled',
+      name: 'Asmaa',
       specialization: '2',
       branches: ['2'],
     },
