@@ -24,8 +24,108 @@ import {
 import { isSession } from 'services/appointment';
 import useFetchInventory from 'hooks/fetch-inventory';
 
+import ToolBar from './toolbar';
+import {
+  filterTodayAppointments,
+  sortAppointments,
+} from 'services/appointment';
+
+const appointments_dummy = [
+  {
+    doctor_id: '123',
+    doctor_name: 'Hana',
+    specialization_id: '321',
+    specialization_name: 'surgery',
+    date: '2020-12-02T14:10:52.945Z',
+    id: '6a4fb887-5c61-48c8-aa4b-280179dbf8eq',
+    status: 'Archived',
+    type: 'Examination',
+    __typename: 'Appointment',
+    patient: {
+      branch: 'Giza',
+      age: 21,
+      id: '8f7231b1-5755-4c33-8448-820376c473eq',
+      name: 'Ahmed',
+      phoneNo: '01065093577',
+      sex: 'Male',
+      __typename: 'Patient',
+    },
+  },
+  {
+    doctor_id: '124',
+    doctor_name: 'Fatima',
+    specialization_id: '421',
+    specialization_name: 'bones',
+    date: '2020-12-02T18:10:52.945Z',
+    id: '6a4fb887-5c61-48c8-aa4b-280179dbf8ew',
+    status: 'Done',
+    type: 'Examination',
+    __typename: 'Appointment',
+    patient: {
+      branch: 'Cairo',
+      age: 21,
+      id: '8f7231b1-5755-4c33-8448-820376c473ew',
+      name: 'Khaled',
+      phoneNo: '01065093577',
+      sex: 'Male',
+      __typename: 'Patient',
+    },
+  },
+  {
+    doctor_id: '125',
+    doctor_name: 'Asmaa',
+    specialization_id: '521',
+    specialization_name: 'child',
+    date: '2020-12-02T13:15:52.945Z',
+    id: '6a4fb887-5c61-48c8-aa4b-280179dbf8er',
+    status: 'Archived',
+    type: 'Examination',
+    __typename: 'Appointment',
+    patient: {
+      branch: 'Giza',
+      age: 21,
+      id: '8f7231b1-5755-4c33-8448-820376c473er',
+      name: 'Mido',
+      phoneNo: '01065093577',
+      sex: 'Male',
+      __typename: 'Patient',
+    },
+  },
+  {
+    doctor_id: '126',
+    doctor_name: 'Nady',
+    specialization_id: '621',
+    specialization_name: 'heart',
+    date: '2020-12-02T13:15:52.945Z',
+    id: '6a4fb887-5c61-48c8-aa4b-280179dbf8et',
+    status: 'Done',
+    type: 'Examination',
+    __typename: 'Appointment',
+    patient: {
+      branch: 'Cairo',
+      age: 21,
+      id: '8f7231b1-5755-4c33-8448-820376c473et',
+      name: 'Amira',
+      phoneNo: '01065093577',
+      sex: 'Male',
+      __typename: 'Patient',
+    },
+  },
+];
+const doctors = ['Hana', 'Fatima', 'Asmaa', 'Nady'];
+const specializations = ['surgery', 'bones', 'child', 'heart'];
+
 function TodayAppointments() {
   const { todayAppointments: appointments } = useFetchAppointments();
+
+  const [formValue, setFormValue] = useState({});
+
+  const filteredAppointments = useMemo(
+    () =>
+      sortAppointments(filterTodayAppointments(appointments_dummy, formValue)),
+    [appointments_dummy, formValue]
+  );
+
   const { refetchRevenues } = useFetchAccountingData();
   const { refetchInventory, refetchInventoryHistory } = useFetchInventory();
   const { visible, close, open } = useModal({});
@@ -62,16 +162,16 @@ function TodayAppointments() {
             'status'
           )
         )
-      )(appointments),
-    [appointments]
+      )(filteredAppointments),
+    [filteredAppointments]
   );
 
   const completedAppointments = useMemo(
     () =>
       R.pipe(
         R.filter(R.propSatisfies(status => status === 'Closed', 'status'))
-      )(appointments),
-    [appointments]
+      )(filteredAppointments),
+    [filteredAppointments]
   );
 
   const onClickDone = useCallback(
@@ -124,10 +224,15 @@ function TodayAppointments() {
     },
     [archive]
   );
-
   return (
     <>
       <Can I="list" an="Appointment">
+        <ToolBar
+          formValue={formValue}
+          onChange={setFormValue}
+          doctors={doctors}
+          specializations={specializations}
+        />
         <ListAppointments
           title="Upcoming Appointments"
           appointments={upcomingAppointments}

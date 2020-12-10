@@ -8,7 +8,7 @@ function AppointmentsFilter({ formValue, onChange, doctors, specializations }) {
   return (
     <Form formValue={formValue} onChange={onChange} fluid>
       <Row gutter={16}>
-        <Col xs={10}>
+        <Col xs={12}>
           <CRSelectInput
             name="doctor"
             label="Doctor"
@@ -18,7 +18,7 @@ function AppointmentsFilter({ formValue, onChange, doctors, specializations }) {
             data={doctorsTypes(doctors)}
           />
         </Col>
-        <Col xs={10}>
+        <Col xs={12}>
           <CRSelectInput
             name="specialization"
             label="Specialization"
