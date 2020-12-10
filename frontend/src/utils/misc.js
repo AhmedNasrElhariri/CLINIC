@@ -3,3 +3,9 @@ export const mapArrToChoices = arr =>
     label: i,
     value: i,
   }));
+
+export const mapArrWithIdsToChoices = arr =>
+  arr.map(currentValue => ({
+    label: currentValue.name,
+    value: currentValue.id,
+  }));

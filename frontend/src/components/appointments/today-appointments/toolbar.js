@@ -1,11 +1,12 @@
-import { Div } from 'components/widgets';
 import React from 'react';
+import { Div } from 'components/widgets';
 
 import Filter from './filter';
 
 export default function toolbar({
   formValue,
   onChange,
+  branches,
   doctors,
   specializations,
 }) {
@@ -15,6 +16,7 @@ export default function toolbar({
         <Filter
           formValue={formValue}
           onChange={onChange}
+          branches={branches}
           doctors={doctors}
           specializations={specializations}
         />

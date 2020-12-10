@@ -18,20 +18,19 @@ import { isValid } from 'services/form';
 import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import useGlobalState from 'state';
-import { sortAppointmentsByDate } from 'services/appointment';
+import {
+  sortAppointmentsByDate,
+  getSpecializationsByBranchId,
+  specializationsTypes,
+  doctorsTypes,
+} from 'services/appointment';
 
 import useFetchData from './fetch-data';
 import { filterPatientBy } from 'utils/patient';
 import { APPT_TYPE } from 'utils/constants';
 import useAppointmentForm from 'hooks/appointment-form';
 
-import {
-  branchesTypes,
-  specializationsTypes,
-  doctorsTypes,
-  branchesNames,
-  getSpecializationsByBranchName,
-} from './branch-data';
+import { mapArrWithIdsToChoices } from 'utils/misc';
 
 const { StringType } = Schema.Types;
 
@@ -51,7 +50,7 @@ const model = Schema.Model({
 const initialValues = {
   type: 'Examination',
   patient: '',
-  branch: branchesNames[0] || '',
+  branch: '',
   specialization: '',
   doctor: '',
   date: new Date(),
@@ -71,7 +70,14 @@ export default function NewAppointment() {
   const [formValue, setFormValue] = useState(initialValues);
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
-  const { patients, appointments, updateAppointments } = useFetchData();
+  const {
+    patients,
+    appointments,
+    updateAppointments,
+    branches,
+    specializations,
+    doctors,
+  } = useFetchData();
 
   const [hideBranchSelect, setHideBranchSelect] = useState(false);
   const [hideSpecializationSelect, setHideSpecializationSelect] = useState(
@@ -79,23 +85,35 @@ export default function NewAppointment() {
   );
   useEffect(() => {
     setFormValue(pre => ({ ...pre, specialization: '', doctor: '' }));
-    if (branchesTypes.length === 1) {
+    if (branches.length === 1) {
       setHideBranchSelect(true);
     }
-    if (getSpecializationsByBranchName(formValue.branch).length === 1) {
+    if (
+      getSpecializationsByBranchId(specializations, formValue.branch).length ===
+      1
+    ) {
       setFormValue(pre => ({
         ...pre,
-        specialization: getSpecializationsByBranchName(formValue.branch)[0],
+        specialization: getSpecializationsByBranchId(
+          specializations,
+          formValue.branch
+        )[0].id,
       }));
       setHideBranchSelect(true);
       setHideSpecializationSelect(true);
     }
   }, [formValue.branch]);
   useEffect(() => {
-    if (getSpecializationsByBranchName(formValue.branch).length === 1) {
+    if (
+      getSpecializationsByBranchId(specializations, formValue.branch).length ===
+      1
+    ) {
       setFormValue(pre => ({
         ...pre,
-        specialization: getSpecializationsByBranchName(formValue.branch)[0],
+        specialization: getSpecializationsByBranchId(
+          specializations,
+          formValue.branch
+        )[0],
       }));
       setHideBranchSelect(true);
       setHideSpecializationSelect(true);
@@ -238,7 +256,7 @@ export default function NewAppointment() {
                 cleanable={false}
                 searchable={false}
                 accepter={SelectPicker}
-                data={branchesTypes}
+                data={mapArrWithIdsToChoices(branches)}
               />
             )}
             {formValue.branch !== '' && !hideSpecializationSelect && (
@@ -250,7 +268,7 @@ export default function NewAppointment() {
                 cleanable={false}
                 searchable={false}
                 accepter={SelectPicker}
-                data={specializationsTypes(formValue.branch)}
+                data={specializationsTypes(specializations, formValue.branch)}
               />
             )}
             {formValue.specialization !== '' && (
@@ -262,7 +280,7 @@ export default function NewAppointment() {
                 cleanable={false}
                 searchable={false}
                 accepter={SelectPicker}
-                data={doctorsTypes(formValue.specialization)}
+                data={doctorsTypes(doctors, formValue.specialization)}
               />
             )}
             <CRDatePicker

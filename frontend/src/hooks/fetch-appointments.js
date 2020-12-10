@@ -9,6 +9,8 @@ import client from 'apollo-client/client';
 
 import { sortAppointmentsByDate } from 'services/appointment';
 
+import jsonData from './data.json';
+
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
   return useMemo(
@@ -27,16 +29,18 @@ export function useVariables() {
 function useFetchAppointments() {
   const variables = useVariables();
   const [fetched, setFetched] = useState(false);
-  const [getAppointments, { data }] = useLazyQuery(LIST_APPOINTMENTS, {
-    variables,
-    onCompleted: () => setFetched(true),
-  });
+  // const [getAppointments, { data }] = useLazyQuery(LIST_APPOINTMENTS, {
+  //   variables,
+  //   onCompleted: () => setFetched(true),
+  // });
 
-  useEffect(() => {
-    if (variables && !fetched) {
-      getAppointments();
-    }
-  }, [data, fetched, getAppointments, variables]);
+  // useEffect(() => {
+  //   if (variables && !fetched) {
+  //     getAppointments();
+  //   }
+  // }, [data, fetched, getAppointments, variables]);
+
+  const data = jsonData;
 
   const appointments = useMemo(
     () =>
@@ -47,6 +51,18 @@ function useFetchAppointments() {
       )(data),
     [data]
   );
+
+  const branches = useMemo(() => R.pipe(R.propOr([], 'branches'))(data), [
+    data,
+  ]);
+
+  const specializations = useMemo(
+    () => R.pipe(R.propOr([], 'specializations'))(data),
+    [data]
+  );
+
+  const doctors = useMemo(() => R.pipe(R.propOr([], 'doctors'))(data), [data]);
+
   const todayAppointments = useMemo(() => {
     const refDate =
       moment().hours() >= 5 ? moment() : moment().subtract(1, 'days');
@@ -67,17 +83,27 @@ function useFetchAppointments() {
     () => ({
       appointments,
       todayAppointments,
-      updateCache: appointments => {
-        client.writeQuery({
-          query: LIST_APPOINTMENTS,
-          variables,
-          data: {
-            appointments,
-          },
-        });
-      },
+      branches,
+      specializations,
+      doctors,
+      // updateCache: appointments => {
+      //   client.writeQuery({
+      //     query: LIST_APPOINTMENTS,
+      //     variables,
+      //     data: {
+      //       appointments,
+      //     },
+      //   });
+      // },
     }),
-    [appointments, todayAppointments, variables]
+    [
+      appointments,
+      todayAppointments,
+      variables,
+      branches,
+      specializations,
+      doctors,
+    ]
   );
 }
 

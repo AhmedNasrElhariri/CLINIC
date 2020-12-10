@@ -30,100 +30,19 @@ import {
   sortAppointments,
 } from 'services/appointment';
 
-const appointments_dummy = [
-  {
-    doctor_id: '123',
-    doctor_name: 'Hana',
-    specialization_id: '321',
-    specialization_name: 'surgery',
-    date: '2020-12-02T14:10:52.945Z',
-    id: '6a4fb887-5c61-48c8-aa4b-280179dbf8eq',
-    status: 'Archived',
-    type: 'Examination',
-    __typename: 'Appointment',
-    patient: {
-      branch: 'Giza',
-      age: 21,
-      id: '8f7231b1-5755-4c33-8448-820376c473eq',
-      name: 'Ahmed',
-      phoneNo: '01065093577',
-      sex: 'Male',
-      __typename: 'Patient',
-    },
-  },
-  {
-    doctor_id: '124',
-    doctor_name: 'Fatima',
-    specialization_id: '421',
-    specialization_name: 'bones',
-    date: '2020-12-02T18:10:52.945Z',
-    id: '6a4fb887-5c61-48c8-aa4b-280179dbf8ew',
-    status: 'Done',
-    type: 'Examination',
-    __typename: 'Appointment',
-    patient: {
-      branch: 'Cairo',
-      age: 21,
-      id: '8f7231b1-5755-4c33-8448-820376c473ew',
-      name: 'Khaled',
-      phoneNo: '01065093577',
-      sex: 'Male',
-      __typename: 'Patient',
-    },
-  },
-  {
-    doctor_id: '125',
-    doctor_name: 'Asmaa',
-    specialization_id: '521',
-    specialization_name: 'child',
-    date: '2020-12-02T13:15:52.945Z',
-    id: '6a4fb887-5c61-48c8-aa4b-280179dbf8er',
-    status: 'Archived',
-    type: 'Examination',
-    __typename: 'Appointment',
-    patient: {
-      branch: 'Giza',
-      age: 21,
-      id: '8f7231b1-5755-4c33-8448-820376c473er',
-      name: 'Mido',
-      phoneNo: '01065093577',
-      sex: 'Male',
-      __typename: 'Patient',
-    },
-  },
-  {
-    doctor_id: '126',
-    doctor_name: 'Nady',
-    specialization_id: '621',
-    specialization_name: 'heart',
-    date: '2020-12-02T13:15:52.945Z',
-    id: '6a4fb887-5c61-48c8-aa4b-280179dbf8et',
-    status: 'Done',
-    type: 'Examination',
-    __typename: 'Appointment',
-    patient: {
-      branch: 'Cairo',
-      age: 21,
-      id: '8f7231b1-5755-4c33-8448-820376c473et',
-      name: 'Amira',
-      phoneNo: '01065093577',
-      sex: 'Male',
-      __typename: 'Patient',
-    },
-  },
-];
-const doctors = ['Hana', 'Fatima', 'Asmaa', 'Nady'];
-const specializations = ['surgery', 'bones', 'child', 'heart'];
-
 function TodayAppointments() {
-  const { todayAppointments: appointments } = useFetchAppointments();
+  const {
+    todayAppointments: appointments,
+    branches,
+    doctors,
+    specializations,
+  } = useFetchAppointments();
 
   const [formValue, setFormValue] = useState({});
 
   const filteredAppointments = useMemo(
-    () =>
-      sortAppointments(filterTodayAppointments(appointments_dummy, formValue)),
-    [appointments_dummy, formValue]
+    () => sortAppointments(filterTodayAppointments(appointments, formValue)),
+    [appointments, formValue]
   );
 
   const { refetchRevenues } = useFetchAccountingData();
@@ -230,6 +149,7 @@ function TodayAppointments() {
         <ToolBar
           formValue={formValue}
           onChange={setFormValue}
+          branches={branches}
           doctors={doctors}
           specializations={specializations}
         />
