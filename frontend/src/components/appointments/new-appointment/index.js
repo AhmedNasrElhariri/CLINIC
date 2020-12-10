@@ -68,7 +68,6 @@ export default function NewAppointment() {
   const [patientModal, setPatientModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [formValue, setFormValue] = useState(initialValues);
-  console.log(formValue);
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
   const {

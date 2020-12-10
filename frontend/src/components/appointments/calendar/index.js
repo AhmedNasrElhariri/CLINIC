@@ -19,6 +19,9 @@ import useFetchEvents from 'hooks/fetch-evets';
 import { Can } from 'components/user/can';
 import useAuth from 'hooks/auth';
 
+import Filter from './filter';
+import { filterTodayAppointments } from 'services/appointment';
+
 const localizer = momentLocalizer(moment);
 
 const variants = {
@@ -63,7 +66,8 @@ function AppointmentCalendar() {
     },
   });
 
-  const { appointments: data } = useFetchAppointments();
+  const { appointments: data, patientsDoctors } = useFetchAppointments();
+
   const {
     edit,
     cancel,
@@ -83,6 +87,11 @@ function AppointmentCalendar() {
         variant: variants[p.type],
       })),
     [data]
+  );
+
+  const filteredAppointments = useMemo(
+    () => filterTodayAppointments(appointments, formValue),
+    [appointments, formValue]
   );
 
   const mappedEvents = useMemo(
@@ -110,24 +119,24 @@ function AppointmentCalendar() {
 
   const handleAdjust = useCallback(
     id => {
-      const appointment = appointments.find(a => a.id === id);
+      const appointment = filteredAppointments.find(a => a.id === id);
       setAppointment(appointment);
       onOpen('edit');
     },
-    [appointments, onOpen, setAppointment]
+    [filteredAppointments, onOpen, setAppointment]
   );
 
   const handleCancel = useCallback(
     id => {
-      const appointment = appointments.find(a => a.id === id);
+      const appointment = filteredAppointments.find(a => a.id === id);
       setAppointment(appointment);
       onOpen('cancel');
     },
-    [appointments, onOpen, setAppointment]
+    [filteredAppointments, onOpen, setAppointment]
   );
 
-  const allEvents = useMemo(() => [...appointments, ...mappedEvents], [
-    appointments,
+  const allEvents = useMemo(() => [...filteredAppointments, ...mappedEvents], [
+    filteredAppointments,
     mappedEvents,
   ]);
 
@@ -168,6 +177,11 @@ function AppointmentCalendar() {
       <CalendarContext.Provider
         value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
       >
+        <Filter
+          formValue={formValue}
+          onChange={setFormValue}
+          doctors={patientsDoctors}
+        />
         <Div bg="white" p={30}>
           <div style={{ height: 753 }}>
             <CalendarStyled

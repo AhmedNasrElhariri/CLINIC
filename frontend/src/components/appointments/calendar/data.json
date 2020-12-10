@@ -48,7 +48,7 @@
       "branches": [{ "id": "2", "name": "Giza" }]
     }
   ],
-  "appointments": [
+  "events": [
     {
       "date": "2020-12-08T16:06:31.985Z",
       "id": "7434593a-954a-433d-9ae6-0538774b99d1",

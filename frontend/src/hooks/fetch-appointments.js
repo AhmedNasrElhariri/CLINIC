@@ -79,6 +79,17 @@ function useFetchAppointments() {
       return moment(date).isBetween(from, to, 'minutes', '[]');
     });
   }, [appointments]);
+
+  const patientsDoctors = useMemo(() => {
+    const doctors = appointments.map(({ doctor }) => {
+      return doctor;
+    });
+    const uniqueDoctors = [
+      ...new Map(doctors.map(item => [item['id'], item])).values(),
+    ];
+    return uniqueDoctors;
+  }, [appointments]);
+
   return useMemo(
     () => ({
       appointments,
@@ -86,6 +97,7 @@ function useFetchAppointments() {
       branches,
       specializations,
       doctors,
+      patientsDoctors,
       // updateCache: appointments => {
       //   client.writeQuery({
       //     query: LIST_APPOINTMENTS,
@@ -103,6 +115,7 @@ function useFetchAppointments() {
       branches,
       specializations,
       doctors,
+      patientsDoctors,
     ]
   );
 }

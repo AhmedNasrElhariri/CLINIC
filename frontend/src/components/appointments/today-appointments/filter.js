@@ -11,7 +11,6 @@ function AppointmentsFilter({
   doctors,
   specializations,
 }) {
-  console.log(formValue);
   return (
     <Form formValue={formValue} onChange={onChange} fluid>
       <Row gutter={16}>
