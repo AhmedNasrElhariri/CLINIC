@@ -68,6 +68,7 @@ export default function NewAppointment() {
   const [patientModal, setPatientModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [formValue, setFormValue] = useState(initialValues);
+  console.log(formValue);
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
   const {
@@ -83,10 +84,12 @@ export default function NewAppointment() {
   const [hideSpecializationSelect, setHideSpecializationSelect] = useState(
     false
   );
+
   useEffect(() => {
     setFormValue(pre => ({ ...pre, specialization: '', doctor: '' }));
     if (branches.length === 1) {
       setHideBranchSelect(true);
+      setFormValue(pre => ({ ...pre, branch: branches[0].id }));
     }
     if (
       getSpecializationsByBranchId(specializations, formValue.branch).length ===
@@ -103,6 +106,7 @@ export default function NewAppointment() {
       setHideSpecializationSelect(true);
     }
   }, [formValue.branch]);
+
   useEffect(() => {
     if (
       getSpecializationsByBranchId(specializations, formValue.branch).length ===
@@ -113,7 +117,7 @@ export default function NewAppointment() {
         specialization: getSpecializationsByBranchId(
           specializations,
           formValue.branch
-        )[0],
+        )[0].id,
       }));
       setHideBranchSelect(true);
       setHideSpecializationSelect(true);
@@ -125,6 +129,7 @@ export default function NewAppointment() {
       setHideSpecializationSelect(false);
     };
   }, [formValue.specialization]);
+
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
@@ -159,14 +164,6 @@ export default function NewAppointment() {
       return;
     }
     const { patient, type, branch, specialization, doctor } = formValue;
-    console.log(
-      'branch',
-      branch,
-      'specialization',
-      specialization,
-      'doctor',
-      doctor
-    );
 
     const timeDate = moment(formValue.time);
     const date = moment(formValue.date).set({
