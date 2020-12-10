@@ -81,13 +81,11 @@ function useFetchAppointments() {
   }, [appointments]);
 
   const patientsDoctors = useMemo(() => {
-    const doctors = appointments.map(({ doctor }) => {
-      return doctor;
-    });
-    const uniqueDoctors = [
-      ...new Map(doctors.map(item => [item['id'], item])).values(),
+    return [
+      ...new Map(
+        appointments.map(({ doctor }) => doctor).map(item => [item['id'], item])
+      ).values(),
     ];
-    return uniqueDoctors;
   }, [appointments]);
 
   return useMemo(

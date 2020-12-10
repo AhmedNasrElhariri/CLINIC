@@ -185,7 +185,7 @@ function AppointmentCalendar() {
         <Div bg="white" p={30}>
           <div style={{ height: 753 }}>
             <CalendarStyled
-              events={allEvents}
+              events={formValue.doctor ? allEvents : []}
               views={allViews}
               showMultiDayTimes
               localizer={localizer}

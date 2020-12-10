@@ -65,8 +65,8 @@
       "doctor": { "id": "2", "name": "Eslam" },
       "specialization": { "id": "2", "name": "قلب" },
       "branch": { "id": "2", "name": "Giza" },
-      "from": "ISO Date",
-      "to": "ISO Date"
+      "from": "",
+      "to": ""
     },
     {
       "date": "2020-12-08T16:15:31.985Z",
@@ -84,8 +84,8 @@
       "doctor": { "id": "3", "name": "Amin" },
       "specialization": { "id": "2", "name": "قلب" },
       "branch": { "id": "2", "name": "Giza" },
-      "from": "ISO Date",
-      "to": "ISO Date"
+      "from": "",
+      "to": ""
     },
     {
       "date": "2020-12-08T16:30:13.127Z",
@@ -103,8 +103,8 @@
       "doctor": { "id": "1", "name": "Qasem" },
       "specialization": { "id": "1", "name": "اطفال" },
       "branch": { "id": "1", "name": "Cairo" },
-      "from": "ISO Date",
-      "to": "ISO Date"
+      "from": "",
+      "to": ""
     },
     {
       "date": "2020-12-08T14:30:13.127Z",
@@ -122,8 +122,8 @@
       "doctor": { "id": "1", "name": "Qasem" },
       "specialization": { "id": "1", "name": "اطفال" },
       "branch": { "id": "1", "name": "Cairo" },
-      "from": "ISO Date",
-      "to": "ISO Date"
+      "from": "",
+      "to": ""
     }
   ]
 }
