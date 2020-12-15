@@ -87,6 +87,7 @@ type Mutation {
     id: ID!
     sessions: [SessionInput!]
     items: [FinishAppointmentItemInput!]
+    discount: Int
   ): Appointment!
   createView(view: ViewInput!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean

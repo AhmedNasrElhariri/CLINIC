@@ -12,6 +12,7 @@ const initValue = {
 
 function FinishAppointment({ show, onCancel, onOk, clinic }) {
   const [activeStep, setActiveStep] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   const value = useRef(initValue);
 
@@ -27,13 +28,14 @@ function FinishAppointment({ show, onCancel, onOk, clinic }) {
     if (activeStep === 0) {
       setActiveStep(1);
     } else {
-      onOk(value.current);
+      onOk({ ...value.current, discount });
     }
-  }, [activeStep, onOk]);
+  }, [activeStep, onOk, discount]);
 
   const handleCancel = useCallback(() => {
     value.current = initValue;
     onCancel();
+    setActiveStep(0);
   }, [onCancel]);
 
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
@@ -60,6 +62,8 @@ function FinishAppointment({ show, onCancel, onOk, clinic }) {
             <AppointmentInvoice
               clinic={clinic}
               onChange={handleInvoiceChange}
+              discount={discount}
+              onDiscountChange={setDiscount}
             />
           )}
           {activeStep === 1 && (

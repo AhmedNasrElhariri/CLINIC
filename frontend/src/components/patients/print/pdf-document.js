@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 20,
     fontSize: 12,
-    fontFamily: 'Cairo'
+    // fontFamily: 'Cairo'
   },
   header: {
     lineHeight: 2,

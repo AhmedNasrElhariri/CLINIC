@@ -106,8 +106,14 @@ export const SET_APPOINTMENT_DONE = gql`
     $id: ID!
     $sessions: [SessionInput!]
     $items: [FinishAppointmentItemInput!]
+    $discount: Int
   ) {
-    setAppointmentDone(id: $id, sessions: $sessions, items: $items) {
+    setAppointmentDone(
+      id: $id
+      sessions: $sessions
+      items: $items
+      discount: $discount
+    ) {
       id
       status
     }

@@ -26,7 +26,7 @@ import useFetchInventory from 'hooks/fetch-inventory';
 
 function TodayAppointments() {
   const { todayAppointments: appointments } = useFetchAppointments();
-  const { refetchRevenues } = useFetchAccountingData();
+  const { refetchRevenues, refetchExpenses } = useFetchAccountingData();
   const { refetchInventory, refetchInventoryHistory } = useFetchInventory();
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);
@@ -36,6 +36,7 @@ function TodayAppointments() {
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
     refetchQueries: () => [
       refetchRevenues,
+      refetchExpenses,
       refetchInventory,
       refetchInventoryHistory,
     ],
@@ -97,7 +98,7 @@ function TodayAppointments() {
   );
 
   const handleOk = useCallback(
-    ({ sessions, items }) => {
+    ({ sessions, items, discount }) => {
       close();
       setAppointmentDone({
         variables: {
@@ -110,6 +111,7 @@ function TodayAppointments() {
             itemId,
             quantity,
           })),
+          discount,
         },
       });
     },
