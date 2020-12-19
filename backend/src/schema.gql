@@ -76,7 +76,7 @@ type Query {
   inventoryHistory(clinicId: ID!): [InventoryHistory!]
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
-  myPatientsSurgeries: [PatientSurgery!]
+  myPatientSurgeries: [PatientSurgery!]
 }
 
 ########################### Mutation ##################################
@@ -119,9 +119,9 @@ type Mutation {
   defineItem(item: ItemInput!): Item
   addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
-  editHospital(hospital: HospitalInput!): Hospital
+  editHospital(id: ID!, hospital: HospitalInput!): Hospital
   defineSurgery(surgery: SurgeryInput!): Surgery
-  createSurgery(input: PatientSurgeryInput!): PatientSurgery
+  createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
 }
 
 ########################### Auth ##################################
@@ -602,12 +602,15 @@ input SurgeryInput {
 
 type PatientSurgery {
   id: ID!
-  patient: Patient!
-  surgery: Surgery!
+  patient: Patient
+  surgery: Surgery
+  hospital: Hospital
+  date: Date
 }
 
 input PatientSurgeryInput {
-  id: ID!
   patientId: ID!
   surgeryId: ID!
+  hospitalId: ID!
+  date: Date
 }

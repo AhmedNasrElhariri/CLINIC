@@ -1,8 +1,9 @@
 import React from 'react';
+import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListHospitals({ hospitals }) {
+function ListHospitals({ hospitals, onEdit }) {
   return (
     <>
       <CRCard borderless>
@@ -21,6 +22,14 @@ function ListHospitals({ hospitals }) {
             <CRTable.CRHeaderCell>Address</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="address" />
           </CRTable.CRColumn>
+
+          {/* <CRTable.CRColumn width={35}>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
+            </CRTable.CRCell>
+          </CRTable.CRColumn> */}
+          
         </CRTable>
       </CRCard>
     </>

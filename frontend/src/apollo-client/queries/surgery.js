@@ -11,15 +11,36 @@ export const LIST_SURGERIES = gql`
 
 export const DEFINE_SURGERY = gql`
   mutation defineSurgery($surgery: SurgeryInput!) {
-    defineSurgery(surgery: $hospital) {
+    defineSurgery(surgery: $surgery) {
       name
     }
   }
 `;
 
-export const CREATE_SURGERY = gql`
-  mutation createSurgery($input: PatientSurgeryInput!) {
-    createSurgery(input: $input) {
+export const LIST_PATIENT_SURGERIES = gql`
+  {
+    myPatientSurgeries {
+      id
+      date
+      patient {
+        id
+        name
+      }
+      surgery {
+        id
+        name
+      }
+      hospital {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const CREATE_PATIENT_SURGERY = gql`
+  mutation createPatientSurgery($patientSurgery: PatientSurgeryInput!) {
+    createPatientSurgery(patientSurgery: $patientSurgery) {
       id
     }
   }

@@ -9,6 +9,7 @@ import * as fromClinic from './clinic';
 import * as fromSnippet from './snippet';
 import * as fromCollection from './collection';
 import * as fromCustomResolvers from './custom-resolvers';
+import * as formPatientSurgery from './patient-surgery';
 
 export default {
   Query: fromQuery,
@@ -20,5 +21,6 @@ export default {
   Clinic: fromClinic,
   Snippet: fromSnippet,
   Collection: fromCollection,
+  PatientSurgery: formPatientSurgery,
   ...fromCustomResolvers,
 };

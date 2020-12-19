@@ -30,3 +30,5 @@ export { default as createEvent } from './create-event';
 export { default as defineItem } from './define-item';
 export { default as addItem } from './add-item';
 export { default as addHospital } from './add-hospital';
+export { default as defineSurgery } from './define-surgery';
+export { default as createPatientSurgery } from './create-patient-surgery';

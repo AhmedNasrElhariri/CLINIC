@@ -18,7 +18,8 @@ import {
   ListUsers,
   UserPermissions,
   Profile,
-  InventoryPage
+  InventoryPage,
+  PatientSurgeriesContainer,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 import ProtectedRoute from '../protected-route/index';
@@ -98,6 +99,13 @@ function AppRouter() {
         exact
       />
 
+      <Route
+        path="/surgeries"
+        component={PatientSurgeriesContainer}
+        action="manage"
+        subject="all"
+      />
+
       <Route path="/inventory">
         <InventoryPage />
       </Route>
@@ -111,7 +119,8 @@ function AppRouter() {
       </Route>
 
       <Route path="" exact>
-        <Redirect to="/appointments/today" />
+        <Redirect to="/surgeries" />
+        {/* <Redirect to="/appointments/today" /> */}
       </Route>
     </Switch>
   );

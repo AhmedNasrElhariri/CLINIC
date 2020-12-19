@@ -15,7 +15,7 @@ const updateCache = mySurgeries => {
   });
 };
 
-function useSurgeries({ onCreate }) {
+function useSurgeries({ onCreate } = {}) {
   const { data } = useQuery(LIST_SURGERIES);
   const surgeries = useMemo(() => R.propOr([], 'mySurgeries')(data), [data]);
 
@@ -28,7 +28,7 @@ function useSurgeries({ onCreate }) {
       updateCache([...surgeries, surgery]);
     },
     onError() {
-      Alert.error('Failed to add new Hospital');
+      Alert.error('Failed to define new Surgery');
     },
   });
 

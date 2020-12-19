@@ -23,12 +23,12 @@ export const ADD_HOSPITAL = gql`
 `;
 
 export const EDIT_HOSPITAL = gql`
-  mutation editHospital($hospital: HospitalInput!) {
-    editHospital(hospital: $hospital) {
+  mutation editHospital($id: ID!, $hospital: HospitalInput!) {
+    editHospital(id: $id, hospital: $hospital) {
       id
       name
-      type
       phoneNo
+      address
     }
   }
 `;

@@ -3,9 +3,9 @@ import React, { useCallback } from 'react';
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import { useModal } from 'components/widgets/modal';
-import NewHospital from './new-hospital';
-import useHospitals from 'hooks/fetch-hospitals';
+import useSurgeries from 'hooks/fetch-surgeries';
 import ListSurgeries from './list-surgeries';
+import NewSurgery from './new-surgery';
 
 const initValue = { name: '' };
 
@@ -14,7 +14,7 @@ function Surgeries() {
   const { formValue, setFormValue } = useFrom({
     initValue,
   });
-  const { defineSurgery, surgeries } = useHospitals({
+  const { defineSurgery, surgeries } = useSurgeries({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -40,11 +40,12 @@ function Surgeries() {
           Surgery +
         </CRButton>
       </Div>
-      <NewHospital
+      <NewSurgery
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}
+        onClose={close}
       />
       <ListSurgeries surgeries={surgeries} />
     </>

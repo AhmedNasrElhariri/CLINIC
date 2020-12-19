@@ -23,3 +23,5 @@ export { default as items } from './items';
 export { default as inventory } from './inventory';
 export { default as inventoryHistory } from './inventory-history';
 export { default as myHospitals } from './my-hospitals';
+export { default as mySurgeries } from './my-surgeries';
+export { default as myPatientSurgeries } from './my-patient-surgeries';

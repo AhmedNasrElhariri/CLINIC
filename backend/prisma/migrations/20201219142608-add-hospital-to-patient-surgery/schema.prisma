@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -67,12 +67,11 @@ enum InventoryOperation {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id             String           @id @default(uuid())
-  name           String
-  Item           Item[]
-  Hospital       Hospital[]
-  Surgery        Surgery[]
-  PatientSurgery PatientSurgery[]
+  id       String     @id @default(uuid())
+  name     String
+  Item     Item[]
+  Hospital Hospital[]
+  Surgery  Surgery[]
 }
 
 model User {
@@ -402,14 +401,11 @@ model Surgery {
 }
 
 model PatientSurgery {
-  id             String       @id @default(uuid())
-  patient        Patient      @relation(fields: [patientId], references: [id])
-  patientId      String
-  surgery        Surgery      @relation(fields: [surgeryId], references: [id])
-  surgeryId      String
-  hospital       Hospital     @relation(fields: [hospitalId], references: [id])
-  hospitalId     String
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  date           DateTime
+  id         String   @id @default(uuid())
+  patient    Patient  @relation(fields: [patientId], references: [id])
+  patientId  String
+  surgery    Surgery  @relation(fields: [surgeryId], references: [id])
+  surgeryId  String
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+  hospitalId String
 }

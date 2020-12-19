@@ -14,7 +14,7 @@ function Hospitals() {
   const { formValue, setFormValue } = useFrom({
     initValue,
   });
-  const { addHospital, hospitals } = useHospitals({
+  const { addHospital, hospitals, editHospital } = useHospitals({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -33,6 +33,19 @@ function Hospitals() {
     });
   }, [addHospital, formValue]);
 
+  const handleEdit = useCallback(
+    data => {
+      const { id, ...hospital } = data;
+      editHospital({
+        variables: {
+          id,
+          hospital: hospital,
+        },
+      });
+    },
+    [editHospital]
+  );
+
   return (
     <>
       <Div textAlign="right">
@@ -45,8 +58,9 @@ function Hospitals() {
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}
+        onClose={close}
       />
-      <ListHospitals hospitals={hospitals} />
+      <ListHospitals hospitals={hospitals} onEdit={handleEdit} />
     </>
   );
 }
