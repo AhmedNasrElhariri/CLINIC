@@ -29,3 +29,4 @@ export { default as clearNotifications } from './clear-notifications';
 export { default as createEvent } from './create-event';
 export { default as defineItem } from './define-item';
 export { default as addItem } from './add-item';
+export { default as addHospital } from './add-hospital';

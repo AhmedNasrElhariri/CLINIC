@@ -74,6 +74,9 @@ type Query {
   items: [Item!]
   inventory(clinicId: ID!): [InventoryItem!]
   inventoryHistory(clinicId: ID!): [InventoryHistory!]
+  myHospitals: [Hospital!]
+  mySurgeries: [Surgery!]
+  myPatientsSurgeries: [PatientSurgery!]
 }
 
 ########################### Mutation ##################################
@@ -115,6 +118,10 @@ type Mutation {
   createEvent(event: EventInput!): Event
   defineItem(item: ItemInput!): Item
   addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
+  addHospital(hospital: HospitalInput!): Hospital
+  editHospital(hospital: HospitalInput!): Hospital
+  defineSurgery(surgery: SurgeryInput!): Surgery
+  createSurgery(input: PatientSurgeryInput!): PatientSurgery
 }
 
 ########################### Auth ##################################
@@ -563,4 +570,44 @@ input AddToInventoryInput {
 input FinishAppointmentItemInput {
   itemId: String!
   quantity: Int!
+}
+
+########################### Hospitals ##################################
+
+type Hospital {
+  id: ID!
+  name: String!
+  phoneNo: String
+  address: Date
+}
+
+input HospitalInput {
+  name: String!
+  phoneNo: String
+  address: Date
+}
+
+########################### Surgeries ##################################
+
+type Surgery {
+  id: ID!
+  name: String!
+}
+
+input SurgeryInput {
+  name: String!
+}
+
+########################### Patient Surgeries ##################################
+
+type PatientSurgery {
+  id: ID!
+  patient: Patient!
+  surgery: Surgery!
+}
+
+input PatientSurgeryInput {
+  id: ID!
+  patientId: ID!
+  surgeryId: ID!
 }

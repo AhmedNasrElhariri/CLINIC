@@ -22,3 +22,4 @@ export { default as myEvents } from './my-events';
 export { default as items } from './items';
 export { default as inventory } from './inventory';
 export { default as inventoryHistory } from './inventory-history';
+export { default as myHospitals } from './my-hospitals';

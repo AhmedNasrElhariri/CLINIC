@@ -169,6 +169,20 @@
       "arity": "List"
     },
     {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "Hospital",
+      "type": "Hospital",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "Surgery",
+      "type": "Surgery",
+      "arity": "List"
+    },
+    {
       "tag": "CreateModel",
       "model": "User"
     },
@@ -521,6 +535,13 @@
       "model": "Patient",
       "field": "InventoryHistory",
       "type": "InventoryHistory",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Patient",
+      "field": "PatientSurgery",
+      "type": "PatientSurgery",
       "arity": "List"
     },
     {
@@ -4791,6 +4812,394 @@
       "model": "InventoryHistory",
       "field": "date",
       "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Hospital"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Hospital",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Hospital",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Hospital",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Hospital",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Hospital",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Hospital",
+      "field": "phoneNo",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Hospital",
+      "field": "address",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Hospital",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Hospital",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Hospital",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Hospital",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Hospital",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Surgery"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Surgery",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Surgery",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Surgery",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Surgery",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Surgery",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Surgery",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Surgery",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Surgery",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Surgery",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Surgery",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Surgery",
+      "field": "PatientSurgery",
+      "type": "PatientSurgery",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "PatientSurgery"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "patient",
+      "type": "Patient",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "patient"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "patient"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[patientId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "patient"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "patientId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "surgery",
+      "type": "Surgery",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "surgery"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "surgery"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[surgeryId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "surgery"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "surgeryId",
+      "type": "String",
       "arity": "Required"
     }
   ]
