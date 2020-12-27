@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
   page: {
     backgroundColor: '#ffffff',
     padding: 20,
-    fontFamily: 'Cairo'
   },
   header: {
     fontSize: 14,
