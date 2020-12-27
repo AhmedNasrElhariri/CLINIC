@@ -4,6 +4,7 @@ import * as R from 'ramda';
 
 import {
   CREATE_ITEM,
+  UPDATE_ITEM,
   ADD_ITEM,
   LIST_ITEMS,
   LIST_INVENTORY,
@@ -93,6 +94,21 @@ function useFetchInventory({ onCreateCompleted, onAddCompleted } = {}) {
     },
   });
 
+  const [update] = useMutation(UPDATE_ITEM, {
+    onCompleted: ({ updateItem }) => {
+      onCreateCompleted && onCreateCompleted(updateItem);
+    },
+    // update(cache, { data: { defineItem } }) {
+    //   const { items } = cache.readQuery({
+    //     query: LIST_ITEMS,
+    //   });
+    //   cache.writeQuery({
+    //     query: LIST_ITEMS,
+    //     data: { items: [...items, defineItem] },
+    //   });
+    // },
+  });
+
   const [addItem] = useMutation(ADD_ITEM, {
     onCompleted: ({ addItem }) => {
       onAddCompleted && onAddCompleted(addItem);
@@ -141,6 +157,12 @@ function useFetchInventory({ onCreateCompleted, onAddCompleted } = {}) {
             clinicId: clinic.id,
           },
         }),
+      update: item =>
+        update({
+          variables: {
+            item,
+          },
+        }),
       items,
       inventoryWithAmount,
       history,
@@ -151,6 +173,7 @@ function useFetchInventory({ onCreateCompleted, onAddCompleted } = {}) {
       addItem,
       clinic,
       create,
+      update,
       history,
       inventoryWithAmount,
       items,

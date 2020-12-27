@@ -3,7 +3,7 @@ import { Form, Divider } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as R from 'ramda';
 
-import { CRSelectInput, H6, CRButton, Div } from 'components';
+import { CRSelectInput, H6, H7, CRButton, Div } from 'components';
 import { CRNumberInput, CRTextInput } from 'components/widgets';
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
@@ -16,11 +16,11 @@ const initValue = {
 };
 
 const Price = ({ name, price }) => (
-  <Div display="flex" justifyContent="space-between">
-    <H6 color="texts.1">{name}</H6>
-    <H6 color="texts.1">
+  <Div display="flex" justifyContent="space-between" mb={1}>
+    <H7 color="texts.1">{name}</H7>
+    <H7 color="texts.1">
       <NumberFormat value={price} displayType="text" thousandSeparator />
-    </H6>
+    </H7>
   </Div>
 );
 
@@ -76,12 +76,12 @@ function AppointmentInvoice({ clinic, onChange, discount, onDiscountChange }) {
     [handleOnChange]
   );
 
-  const gross = useMemo(
+  const subtotal = useMemo(
     () => selectedSessions.reduce((sum, { price }) => sum + price, 0),
     [selectedSessions]
   );
 
-  const total = useMemo(() => gross - discount, [discount, gross]);
+  const total = useMemo(() => subtotal - discount, [discount, subtotal]);
 
   return (
     <>
@@ -136,12 +136,18 @@ function AppointmentInvoice({ clinic, onChange, discount, onDiscountChange }) {
       <Divider />
 
       <Div>
-        <Price name="Gross " price={gross} overriden />
+        <Price name="Subtotal " price={subtotal} overriden />
+        <Price name="Discount " price={discount} overriden />
         <Price name="Total" price={total} />
       </Div>
 
       <Div mt={3}>
-        <PrintInvoice items={selectedSessions} gross={gross} total={total} />
+        <PrintInvoice
+          items={selectedSessions}
+          subtotal={subtotal}
+          total={total}
+          discount={discount}
+        />
       </Div>
     </>
   );

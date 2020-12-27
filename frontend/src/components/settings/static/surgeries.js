@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
@@ -11,27 +12,51 @@ const initValue = { name: '' };
 
 function Surgeries() {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue } = useFrom({
+  const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  const { defineSurgery, surgeries } = useSurgeries({
+  const { defineSurgery,editSurgery, surgeries } = useSurgeries({
     onCreate: () => {
+      close();
+      setFormValue(initValue);
+    },
+    onEdit: () => {
       close();
       setFormValue(initValue);
     },
   });
 
   const handleonClickCreate = useCallback(() => {
+    setType('create');
+    setFormValue(initValue);
     open();
-  }, [open]);
+  }, [open, setFormValue, setType]);
+
+  const handleClickEdit = useCallback(
+    data => {
+      const surgery = R.pick(['id', 'name'])(data);
+      setType('edit');
+      setFormValue(surgery);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
 
   const handleAdd = useCallback(() => {
-    defineSurgery({
-      variables: {
-        surgery: formValue,
-      },
-    });
-  }, [defineSurgery, formValue]);
+    if (type === 'create') {
+      defineSurgery({
+        variables: {
+          surgery: formValue,
+        },
+      });
+    } else {
+      editSurgery({
+        variables: {
+          surgery: formValue,
+        },
+      });
+    }
+  }, [defineSurgery, editSurgery, formValue, type]);
 
   return (
     <>
@@ -47,7 +72,7 @@ function Surgeries() {
         onOk={handleAdd}
         onClose={close}
       />
-      <ListSurgeries surgeries={surgeries} />
+      <ListSurgeries surgeries={surgeries} onEdit={handleClickEdit} />
     </>
   );
 }

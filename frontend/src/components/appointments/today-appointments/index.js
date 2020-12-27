@@ -78,23 +78,9 @@ function TodayAppointments() {
   const onClickDone = useCallback(
     appointment => {
       setAppointment(appointment);
-      if (isSession(appointment)) {
-        open();
-      } else {
-        setAppointmentDone({
-          variables: {
-            id: appointment.id,
-            sessions: [
-              {
-                name: getNameByType(appointment),
-                price: getAppointmentprice(appointment.type, clinic),
-              },
-            ],
-          },
-        });
-      }
+      open();
     },
-    [clinic, open, setAppointmentDone]
+    [open]
   );
 
   const handleOk = useCallback(

@@ -4,6 +4,7 @@ import { Alert } from 'rsuite';
 
 function useFrom({ initValue, model }) {
   const [formValue, setFormValue] = useState(initValue);
+  const [type, setType] = useState('create');
 
   const reset = useCallback(() => {
     setFormValue(initValue);
@@ -21,9 +22,11 @@ function useFrom({ initValue, model }) {
       setFormValue,
       formValue,
       reset,
-      validate
+      validate,
+      type,
+      setType
     }),
-    [formValue, reset, validate]
+    [formValue, reset, type, validate]
   );
 }
 

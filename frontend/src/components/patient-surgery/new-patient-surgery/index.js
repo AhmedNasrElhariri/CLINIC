@@ -1,21 +1,26 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRSelectInput, CRDatePicker } from 'components';
+import {
+  CRModal,
+  CRSelectInput,
+  CRDatePicker,
+  CRNumberInput,
+} from 'components';
 import useFetchPatients from 'hooks/fetch-patients';
 import useSurgeries from 'hooks/fetch-surgeries';
 import useHospitals from 'hooks/fetch-hospitals';
 
 const model = Schema.Model({});
 
-function NewPatientSurgery({
+const NewPatientSurgery = ({
   formValue,
   onChange,
   type,
   visible,
   onOk,
   onClose,
-}) {
+}) => {
   const { patients } = useFetchPatients();
   const { surgeries } = useSurgeries();
   const { hospitals } = useHospitals();
@@ -58,10 +63,11 @@ function NewPatientSurgery({
           block
         />
         <CRDatePicker name="date" label="Date" placement="top" block />
+        <CRNumberInput label="Fees" name="fees" block />
       </Form>
     </CRModal>
   );
-}
+};
 
 NewPatientSurgery.defaultProps = {
   type: 'create',

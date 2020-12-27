@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
@@ -9,9 +10,9 @@ import useHospitals from 'hooks/fetch-hospitals';
 
 const initValue = { name: '', phoneNo: '', address: '' };
 
-function Hospitals() {
+const Hospitals = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue } = useFrom({
+  const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
   const { addHospital, hospitals, editHospital } = useHospitals({
@@ -19,37 +20,48 @@ function Hospitals() {
       close();
       setFormValue(initValue);
     },
+    onEdit: () => {
+      close();
+      setFormValue(initValue);
+    },
   });
 
-  const handleonClickCreate = useCallback(() => {
+  const handleClickCreate = useCallback(() => {
+    setType('create');
+    setFormValue(initValue);
     open();
-  }, [open]);
+  }, [open, setFormValue, setType]);
+
+  const handleClickEdit = useCallback(
+    data => {
+      const hospital = R.pick(['id', 'name', 'phoneNo', 'address'])(data);
+      setType('edit');
+      setFormValue(hospital);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
 
   const handleAdd = useCallback(() => {
-    addHospital({
-      variables: {
-        hospital: formValue,
-      },
-    });
-  }, [addHospital, formValue]);
-
-  const handleEdit = useCallback(
-    data => {
-      const { id, ...hospital } = data;
-      editHospital({
+    if (type === 'create') {
+      addHospital({
         variables: {
-          id,
-          hospital: hospital,
+          hospital: formValue,
         },
       });
-    },
-    [editHospital]
-  );
+    } else {
+      editHospital({
+        variables: {
+          hospital: formValue,
+        },
+      });
+    }
+  }, [addHospital, editHospital, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleonClickCreate}>
+        <CRButton primary small onClick={handleClickCreate}>
           Hospital +
         </CRButton>
       </Div>
@@ -60,9 +72,9 @@ function Hospitals() {
         onOk={handleAdd}
         onClose={close}
       />
-      <ListHospitals hospitals={hospitals} onEdit={handleEdit} />
+      <ListHospitals hospitals={hospitals} onEdit={handleClickEdit} />
     </>
   );
-}
+};
 
 export default Hospitals;

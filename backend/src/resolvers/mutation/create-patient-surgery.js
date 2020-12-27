@@ -5,10 +5,10 @@ const createPatientSurgery = async (
   { patientSurgery },
   { organizationId }
 ) => {
-  const { date, patientId, surgeryId, hospitalId } = patientSurgery;
+  const { patientId, surgeryId, hospitalId, ...data } = patientSurgery;
   return prisma.patientSurgery.create({
     data: {
-      date,
+      ...data,
       patient: {
         connect: {
           id: patientId,

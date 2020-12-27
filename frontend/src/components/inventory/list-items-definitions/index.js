@@ -2,7 +2,9 @@ import React from 'react';
 
 import { CRTable } from 'components';
 
-const ListItemsDefinitions = ({ items }) => {
+import EditItem from '../edit-item';
+
+const ListItemsDefinitions = ({ items, onEdit }) => {
   return (
     <CRTable autoHeight data={items}>
       <CRTable.CRColumn flexGrow={1}>
@@ -23,6 +25,11 @@ const ListItemsDefinitions = ({ items }) => {
       <CRTable.CRColumn flexGrow={1}>
         <CRTable.CRHeaderCell>Barcode</CRTable.CRHeaderCell>
         <CRTable.CRCell dataKey="barcode" semiBold />
+      </CRTable.CRColumn>
+
+      <CRTable.CRColumn width={35}>
+        <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+        <CRTable.CRCell>{data => <EditItem defaultValue={data}/>}</CRTable.CRCell>
       </CRTable.CRColumn>
     </CRTable>
   );

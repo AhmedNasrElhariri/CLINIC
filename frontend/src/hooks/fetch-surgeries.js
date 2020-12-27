@@ -4,7 +4,11 @@ import * as R from 'ramda';
 import { Alert } from 'rsuite';
 
 import client from 'apollo-client/client';
-import { DEFINE_SURGERY, LIST_SURGERIES } from 'apollo-client/queries/surgery';
+import {
+  DEFINE_SURGERY,
+  LIST_SURGERIES,
+  EDIT_SURGERY,
+} from 'apollo-client/queries/surgery';
 
 const updateCache = mySurgeries => {
   client.writeQuery({
@@ -15,7 +19,7 @@ const updateCache = mySurgeries => {
   });
 };
 
-function useSurgeries({ onCreate } = {}) {
+function useSurgeries({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_SURGERIES);
   const surgeries = useMemo(() => R.propOr([], 'mySurgeries')(data), [data]);
 
@@ -32,13 +36,24 @@ function useSurgeries({ onCreate } = {}) {
     },
   });
 
+  const [editSurgery] = useMutation(EDIT_SURGERY, {
+    onCompleted() {
+      Alert.success('the Surgery has been Edited Successfully');
+      onEdit && onEdit();
+    },
+    onError() {
+      Alert.error('Failed to edit the surgery');
+    },
+  });
+
   return useMemo(
     () => ({
       surgeries,
       defineSurgery,
       updateCache,
+      editSurgery
     }),
-    [defineSurgery, surgeries]
+    [defineSurgery, editSurgery, surgeries]
   );
 }
 

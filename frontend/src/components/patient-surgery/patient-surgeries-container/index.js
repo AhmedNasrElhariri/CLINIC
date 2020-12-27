@@ -13,6 +13,8 @@ const initValue = {
   patientId: null,
   surgeryId: null,
   hospitalId: null,
+  date: null,
+  fees: 0,
 };
 
 function PatientSurgeriesContainer() {

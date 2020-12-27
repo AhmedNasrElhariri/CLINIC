@@ -119,8 +119,7 @@ function AppRouter() {
       </Route>
 
       <Route path="" exact>
-        <Redirect to="/surgeries" />
-        {/* <Redirect to="/appointments/today" /> */}
+        <Redirect to="/appointments/today" />
       </Route>
     </Switch>
   );

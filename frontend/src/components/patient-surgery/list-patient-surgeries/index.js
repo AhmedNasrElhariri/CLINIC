@@ -1,4 +1,5 @@
 import React from 'react';
+import NumberFormat from 'react-number-format';
 
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
@@ -47,8 +48,23 @@ function ListPatientSurgeries({ patientSurgeries }) {
               }
             </CRTable.CRCell>
           </CRTable.CRColumn>
+
+          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>Fees</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ fees }) => (
+              <CRTable.CRCellStyled bold>
+                <NumberFormat
+                  value={fees}
+                  displayType="text"
+                  thousandSeparator
+                />
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+          </CRTable.CRColumn>
+          
         </CRTable>
-        ``
       </CRCard>
     </>
   );

@@ -41,11 +41,8 @@ function useHospitals({ onCreate, onEdit } = {}) {
       Alert.success('the Hospital has been Edited Successfully');
       onEdit && onEdit();
     },
-    // update(cache, { data: { addHospital: hospital } }) {
-    //   // updateCache([...hospitals, hospital]);
-    // },
     onError() {
-      Alert.error('Failed to edit new Hospital');
+      Alert.error('Failed to edit the Hospital');
     },
   });
 

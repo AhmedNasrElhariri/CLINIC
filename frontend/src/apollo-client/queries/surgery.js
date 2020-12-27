@@ -17,11 +17,21 @@ export const DEFINE_SURGERY = gql`
   }
 `;
 
+export const EDIT_SURGERY = gql`
+  mutation editSurgery($surgery: SurgeryInput!) {
+    editSurgery(surgery: $surgery) {
+      id
+      name
+    }
+  }
+`;
+
 export const LIST_PATIENT_SURGERIES = gql`
   {
     myPatientSurgeries {
       id
       date
+      fees
       patient {
         id
         name

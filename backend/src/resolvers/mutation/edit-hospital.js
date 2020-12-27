@@ -1,8 +1,10 @@
 import { prisma } from '@';
 
-const editHospital = async (_, { id, hospital }) => {
+const editHospital = async (_, { hospital }) => {
+  const { id, ...rest } = hospital;
+
   return prisma.hospital.update({
-    data: hospital,
+    data: rest,
     where: {
       id,
     },

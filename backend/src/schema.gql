@@ -117,10 +117,12 @@ type Mutation {
   clearNotifications: Boolean
   createEvent(event: EventInput!): Event
   defineItem(item: ItemInput!): Item
+  editItem(item: ItemUpdateInput!): Item
   addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
-  editHospital(id: ID!, hospital: HospitalInput!): Hospital
+  editHospital(hospital: HospitalInput!): Hospital
   defineSurgery(surgery: SurgeryInput!): Surgery
+  editSurgery(surgery: SurgeryInput!): Surgery
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
 }
 
@@ -554,11 +556,17 @@ type InventoryHistory {
 }
 
 input ItemInput {
+  id: ID
   name: String!
   unitOfMeasure: UnitOfMeaure
   quantity: Int!
   barcode: String
   notes: String
+}
+
+input ItemUpdateInput {
+  id: ID!
+  name: String!
 }
 
 input AddToInventoryInput {
@@ -582,6 +590,7 @@ type Hospital {
 }
 
 input HospitalInput {
+  id: ID
   name: String!
   phoneNo: String
   address: Date
@@ -595,6 +604,7 @@ type Surgery {
 }
 
 input SurgeryInput {
+  id: ID
   name: String!
 }
 
@@ -606,6 +616,7 @@ type PatientSurgery {
   surgery: Surgery
   hospital: Hospital
   date: Date
+  fees: Int
 }
 
 input PatientSurgeryInput {
@@ -613,4 +624,5 @@ input PatientSurgeryInput {
   surgeryId: ID!
   hospitalId: ID!
   date: Date
+  fees: Int
 }

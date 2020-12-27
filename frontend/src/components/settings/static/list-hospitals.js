@@ -23,12 +23,12 @@ function ListHospitals({ hospitals, onEdit }) {
             <CRTable.CRCell dataKey="address" />
           </CRTable.CRColumn>
 
-          {/* <CRTable.CRColumn width={35}>
+          <CRTable.CRColumn width={35}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
             </CRTable.CRCell>
-          </CRTable.CRColumn> */}
+          </CRTable.CRColumn>
           
         </CRTable>
       </CRCard>
