@@ -32,7 +32,7 @@ const SessionDefinitions = ({ sessions, onChange, onDelete }) => {
     <Div mt={4}>
       <CRCard borderless>
         <Div display="flex" justifyContent="space-between" mb={3}>
-          <H4>Sessions Definations</H4>
+          <H4>Sessions Definitions</H4>
           <CRButton onClick={open} primary small>
             Add Session Type
           </CRButton>

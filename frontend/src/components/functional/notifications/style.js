@@ -6,7 +6,7 @@ export const Container = styled.div`
   width: 517px;
   -webkit-backdrop-filter: blur(30px);
   max-height: 500px;
-  /* overflow: scroll; */
+  overflow: scroll;
   padding: 32px;
   border: solid 1px rgba(40, 49, 72, 0.1);
   background-color: #ffffff;
