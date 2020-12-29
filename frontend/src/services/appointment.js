@@ -91,7 +91,7 @@ const filterByType = (appointments, filter) => {
 export const sortAppointments = R.sort(R.descend(R.prop('date')));
 
 export const filterAppointments = (appointments = [], filter) => {
-  const filters = [filterByDate, filterByPatientNameOrPhoneNo, filterByType];
+  const filters = [filterByDate, filterByPatientNameOrPhoneNo, filterByType,filterByBranch,filterByDoctor,filterBySpecialization];
   return filters.reduce((app, fn) => fn(app, filter), appointments);
 };
 
@@ -100,7 +100,7 @@ const filterByBranch = (appointments, filter) => {
 
   return !branch
     ? appointments
-    : appointments.filter(app => app.branch.id === branch);
+    : appointments.filter(app => app.branchId === branch);
 };
 
 const filterByDoctor = (appointments, filter) => {
@@ -108,7 +108,7 @@ const filterByDoctor = (appointments, filter) => {
 
   return !doctor
     ? appointments
-    : appointments.filter(app => app.doctor.id === doctor);
+    : appointments.filter(app => app.userId === doctor);
 };
 
 const filterBySpecialization = (appointments, filter) => {
@@ -116,7 +116,7 @@ const filterBySpecialization = (appointments, filter) => {
 
   return !specialization
     ? appointments
-    : appointments.filter(app => app.specialization.id === specialization);
+    : appointments.filter(app => app.specializationId === specialization);
 };
 
 export const filterTodayAppointments = (appointments = [], filter) => {
