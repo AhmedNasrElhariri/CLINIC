@@ -2,3 +2,5 @@ dist
 .vscode/
 yarn.lock
 server-dist/
+
+.env
