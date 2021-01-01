@@ -126,6 +126,7 @@ const CustomSelect = ({ value, onChange, ...props }) => {
       value={value}
       onChange={onChange}
       menuClassName='cr-picker'
+      virtualized={false}
       renderValue={(_, __, label) => <ValueStyled>{label}</ValueStyled>}
       renderMenuItem={(label, { value: val }) => (
         <ItemStyled active={value === val}>{label}</ItemStyled>

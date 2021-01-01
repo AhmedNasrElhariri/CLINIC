@@ -16,12 +16,7 @@ import { Can } from 'components/user/can';
 import { useModal } from 'components/widgets/modal';
 import FinishAppointment from '../finish-appointments';
 import useGlobalState from 'state';
-import {
-  getName,
-  getNameByType,
-  getAppointmentprice,
-} from 'services/accounting';
-import { isSession } from 'services/appointment';
+import { getName } from 'services/accounting';
 import useFetchInventory from 'hooks/fetch-inventory';
 
 import ToolBar from './toolbar';
@@ -45,7 +40,7 @@ function TodayAppointments() {
     [appointments, formValue]
   );
 
-  const { refetchRevenues } = useFetchAccountingData();
+  const { refetchRevenues, refetchExpenses } = useFetchAccountingData();
   const { refetchInventory, refetchInventoryHistory } = useFetchInventory();
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);
@@ -55,6 +50,7 @@ function TodayAppointments() {
   const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
     refetchQueries: () => [
       refetchRevenues,
+      refetchExpenses,
       refetchInventory,
       refetchInventoryHistory,
     ],
@@ -96,27 +92,13 @@ function TodayAppointments() {
   const onClickDone = useCallback(
     appointment => {
       setAppointment(appointment);
-      if (isSession(appointment)) {
-        open();
-      } else {
-        setAppointmentDone({
-          variables: {
-            id: appointment.id,
-            sessions: [
-              {
-                name: getNameByType(appointment),
-                price: getAppointmentprice(appointment.type, clinic),
-              },
-            ],
-          },
-        });
-      }
+      open();
     },
-    [clinic, open, setAppointmentDone]
+    [open]
   );
 
   const handleOk = useCallback(
-    ({ sessions, items }) => {
+    ({ sessions, items, discount }) => {
       close();
       setAppointmentDone({
         variables: {
@@ -129,6 +111,7 @@ function TodayAppointments() {
             itemId,
             quantity,
           })),
+          discount,
         },
       });
     },

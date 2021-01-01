@@ -1,9 +1,9 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { Form, Divider } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as R from 'ramda';
 
-import { CRSelectInput, H6, CRButton, Div, H5, H7 } from 'components';
+import { CRSelectInput, H6, H7, CRButton, Div } from 'components';
 import { CRNumberInput, CRTextInput } from 'components/widgets';
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
@@ -11,26 +11,24 @@ import PrintInvoice from '../print-invoice/index';
 const OTHER = 'Other';
 
 const initValue = {
-  notes: '',
+  name: '',
   price: 1,
 };
 
-const Price = ({ name, price, overriden = false }) => (
-  <Div display="flex" justifyContent="space-between">
-    <H6 color="texts.1">{name}</H6>
-    <H6 color="texts.1">
+const Price = ({ name, price }) => (
+  <Div display="flex" justifyContent="space-between" mb={1}>
+    <H7 color="texts.1">{name}</H7>
+    <H7 color="texts.1">
       <NumberFormat value={price} displayType="text" thousandSeparator />
-    </H6>
+    </H7>
   </Div>
 );
 
-function AppointmentInvoice({ clinic, onChange }) {
+const isOtherType = session => session.name === OTHER;
+
+function AppointmentInvoice({ clinic, onChange, discount, onDiscountChange }) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
-  const [discountForm, setDiscount] = useState({
-    amount: 0,
-    type: 0,
-  });
 
   const [selectedSessions, setSelectedSessions] = useState([]);
 
@@ -57,17 +55,19 @@ function AppointmentInvoice({ clinic, onChange }) {
     sessions => {
       setSelectedSessions(sessions);
       onChange(sessions);
+      setFormValue(initValue);
       setSession({});
     },
     [onChange]
   );
 
   const add = useCallback(() => {
-    if (!session) {
+    if (R.isNil(session) || R.isEmpty(session)) {
       return;
     }
-    handleOnChange([...selectedSessions, session]);
-  }, [handleOnChange, selectedSessions, session]);
+    const sessionData = isOtherType(session) ? { ...formValue } : session;
+    handleOnChange([...selectedSessions, sessionData]);
+  }, [formValue, handleOnChange, selectedSessions, session]);
 
   const handleDelete = useCallback(
     idx => {
@@ -76,23 +76,12 @@ function AppointmentInvoice({ clinic, onChange }) {
     [handleOnChange]
   );
 
-  const gross = useMemo(
+  const subtotal = useMemo(
     () => selectedSessions.reduce((sum, { price }) => sum + price, 0),
     [selectedSessions]
   );
 
-  const total = useMemo(() => gross - discountForm.amount, [
-    discountForm.amount,
-    gross,
-  ]);
-
-  const isOtherType = useMemo(() => session.name === OTHER, [session]);
-
-  useEffect(() => {
-    if (isOtherType) {
-      setSession(value => ({ ...value, price: formValue.price }));
-    }
-  }, [formValue, isOtherType]);
+  const total = useMemo(() => subtotal - discount, [discount, subtotal]);
 
   return (
     <>
@@ -109,10 +98,10 @@ function AppointmentInvoice({ clinic, onChange }) {
           data={choices}
         />
       </Form>
-      {isOtherType && (
+      {isOtherType(session) && (
         <Div mt={4}>
           <Form fluid formValue={formValue} onChange={setFormValue}>
-            <CRTextInput label="Notes" name="notes" />
+            <CRTextInput label="Name" name="name" />
             <CRNumberInput label="Price" name="price" />
           </Form>
         </Div>
@@ -136,18 +125,29 @@ function AppointmentInvoice({ clinic, onChange }) {
       </Div>
       <Divider />
 
-      <Form fluid formValue={discountForm} onChange={setDiscount}>
-        <CRTextInput label="Discount" name="amount" />
+      <Form>
+        <CRNumberInput
+          label="Discount"
+          name="amount"
+          value={discount}
+          onChange={onDiscountChange}
+        />
       </Form>
       <Divider />
 
       <Div>
-        <Price name="Gross " price={gross} overriden />
+        <Price name="Subtotal " price={subtotal} overriden />
+        <Price name="Discount " price={discount} overriden />
         <Price name="Total" price={total} />
       </Div>
 
       <Div mt={3}>
-        <PrintInvoice items={selectedSessions} gross={gross} total={total} />
+        <PrintInvoice
+          items={selectedSessions}
+          subtotal={subtotal}
+          total={total}
+          discount={discount}
+        />
       </Div>
     </>
   );

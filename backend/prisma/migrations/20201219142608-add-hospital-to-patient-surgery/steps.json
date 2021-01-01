@@ -1,0 +1,65 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Hospital",
+      "field": "PatientSurgery",
+      "type": "PatientSurgery",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "hospital",
+      "type": "Hospital",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "hospital"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "hospital"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[hospitalId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "hospital"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "hospitalId",
+      "type": "String",
+      "arity": "Required"
+    }
+  ]
+}

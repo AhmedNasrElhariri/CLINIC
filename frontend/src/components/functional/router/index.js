@@ -20,6 +20,7 @@ import {
   UserPermissions,
   Profile,
   InventoryPage,
+  PatientSurgeriesContainer,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 import ProtectedRoute from '../protected-route/index';
@@ -100,6 +101,13 @@ function AppRouter() {
         action="manage"
         subject="all"
         exact
+      />
+
+      <Route
+        path="/surgeries"
+        component={PatientSurgeriesContainer}
+        action="manage"
+        subject="all"
       />
 
       <Route path="/inventory">

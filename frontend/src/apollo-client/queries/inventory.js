@@ -43,6 +43,15 @@ export const CREATE_ITEM = gql`
   }
 `;
 
+export const UPDATE_ITEM = gql`
+  mutation editItem($item: ItemUpdateInput!) {
+    editItem(item: $item) {
+      id
+      name
+    }
+  }
+`;
+
 export const ADD_ITEM = gql`
   mutation addItem($item: AddToInventoryInput!, $clinicId: ID!) {
     addItem(item: $item, clinicId: $clinicId) {

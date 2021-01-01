@@ -74,6 +74,9 @@ type Query {
   items: [Item!]
   inventory(clinicId: ID!): [InventoryItem!]
   inventoryHistory(clinicId: ID!): [InventoryHistory!]
+  myHospitals: [Hospital!]
+  mySurgeries: [Surgery!]
+  myPatientSurgeries: [PatientSurgery!]
 }
 
 ########################### Mutation ##################################
@@ -87,6 +90,7 @@ type Mutation {
     id: ID!
     sessions: [SessionInput!]
     items: [FinishAppointmentItemInput!]
+    discount: Int
   ): Appointment!
   createView(view: ViewInput!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
@@ -113,7 +117,13 @@ type Mutation {
   clearNotifications: Boolean
   createEvent(event: EventInput!): Event
   defineItem(item: ItemInput!): Item
+  editItem(item: ItemUpdateInput!): Item
   addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
+  addHospital(hospital: HospitalInput!): Hospital
+  editHospital(hospital: HospitalInput!): Hospital
+  defineSurgery(surgery: SurgeryInput!): Surgery
+  editSurgery(surgery: SurgeryInput!): Surgery
+  createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
 }
 
 ########################### Auth ##################################
@@ -546,11 +556,17 @@ type InventoryHistory {
 }
 
 input ItemInput {
+  id: ID
   name: String!
   unitOfMeasure: UnitOfMeaure
   quantity: Int!
   barcode: String
   notes: String
+}
+
+input ItemUpdateInput {
+  id: ID!
+  name: String!
 }
 
 input AddToInventoryInput {
@@ -562,4 +578,51 @@ input AddToInventoryInput {
 input FinishAppointmentItemInput {
   itemId: String!
   quantity: Int!
+}
+
+########################### Hospitals ##################################
+
+type Hospital {
+  id: ID!
+  name: String!
+  phoneNo: String
+  address: Date
+}
+
+input HospitalInput {
+  id: ID
+  name: String!
+  phoneNo: String
+  address: Date
+}
+
+########################### Surgeries ##################################
+
+type Surgery {
+  id: ID!
+  name: String!
+}
+
+input SurgeryInput {
+  id: ID
+  name: String!
+}
+
+########################### Patient Surgeries ##################################
+
+type PatientSurgery {
+  id: ID!
+  patient: Patient
+  surgery: Surgery
+  hospital: Hospital
+  date: Date
+  fees: Int
+}
+
+input PatientSurgeryInput {
+  patientId: ID!
+  surgeryId: ID!
+  hospitalId: ID!
+  date: Date
+  fees: Int
 }

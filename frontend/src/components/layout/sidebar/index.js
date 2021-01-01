@@ -12,8 +12,7 @@ const items = [
   { to: '/appointments', name: 'Appointments' },
   { to: '/patients', name: 'Patients' },
   { to: '/reports', name: 'Reports' },
-  { to: '/admin', name: 'Admin' },
-  // { to: '/views', name: 'Views' },
+  { to: '/surgeries', name: 'Surgeries' },
 ];
 
 export default function Sidebar({ onLogout }) {

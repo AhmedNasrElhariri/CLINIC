@@ -79,3 +79,6 @@ export { default as UserPermissions } from './permissions/user-permissions';
 
 /******************     Inventory    *******************************/
 export { default as InventoryPage } from './inventory/inventory-page';
+
+/******************     Paitient Surgeries    *****************************/
+export { default as PatientSurgeriesContainer } from './patient-surgery/patient-surgeries-container';

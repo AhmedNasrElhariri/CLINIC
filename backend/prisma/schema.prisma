@@ -67,9 +67,12 @@ enum InventoryOperation {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id   String @id @default(uuid())
-  name String
-  Item Item[]
+  id             String           @id @default(uuid())
+  name           String
+  Item           Item[]
+  Hospital       Hospital[]
+  Surgery        Surgery[]
+  PatientSurgery PatientSurgery[]
 }
 
 model User {
@@ -105,6 +108,7 @@ model Patient {
   MedicalHistory   MedicalHistory[]
   FamilyHistory    FamilyHistory[]
   InventoryHistory InventoryHistory[]
+  PatientSurgery   PatientSurgery[]
 }
 
 model Appointment {
@@ -377,4 +381,36 @@ model InventoryHistory {
   quantity  Int
   price     Int?
   date      DateTime
+}
+
+model Hospital {
+  id             String           @id @default(uuid())
+  name           String
+  phoneNo        String?
+  address        String?
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+  organizationId String
+  PatientSurgery PatientSurgery[]
+}
+
+model Surgery {
+  id             String           @id @default(uuid())
+  name           String
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+  organizationId String
+  PatientSurgery PatientSurgery[]
+}
+
+model PatientSurgery {
+  id             String       @id @default(uuid())
+  patient        Patient      @relation(fields: [patientId], references: [id])
+  patientId      String
+  surgery        Surgery      @relation(fields: [surgeryId], references: [id])
+  surgeryId      String
+  hospital       Hospital     @relation(fields: [hospitalId], references: [id])
+  hospitalId     String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  date           DateTime
+  fees           Int?
 }
