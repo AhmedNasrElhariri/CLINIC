@@ -70,9 +70,10 @@ export const REMOVE_DEFINITION = gql`
 `;
 
 export const REMOVE_ITEM = gql`
-  mutation removeItem($id: ID!) {
-    removeItem(id: $id) {
-      id
+  mutation removeItem($itemId: ID!, $clinicId: ID!) {
+    removeItem(itemId: $itemId, clinicId: $clinicId) {
+      itemId
+      clinicId
     }
   }
 `;

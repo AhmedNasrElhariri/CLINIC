@@ -136,13 +136,15 @@ function useFetchInventory({
     onError: err => {
       onRemoveItemError && onRemoveItemError(err);
     },
-    update(cache, { data: { removeItemDefinition: item } }) {
+    update(cache, { data: { removeItem: item } }) {
       cache.modify({
         fields: {
-          items(existingItemsRefs, { readField }) {
-            return existingItemsRefs.filter(
-              ItemRef => item.id !== readField('id', ItemRef)
-            );
+          inventory(existingItemsRefs, { readField }) {
+            return existingItemsRefs.filter(ItemRef => {
+              const itemId = readField('itemId', ItemRef);
+              const clinicId = readField('clinicId', ItemRef);
+              return !(item.itemId === itemId && item.clinicId === clinicId);
+            });
           },
         },
       });
@@ -209,12 +211,14 @@ function useFetchInventory({
             id: item.id,
           },
         }),
-      removeItem: item =>
+      removeItem: itemInventory => {
         removeItem({
           variables: {
-            id: item.id,
+            itemId: itemInventory.item.id,
+            clinicId: clinic.id,
           },
-        }),
+        });
+      },
       items,
       inventoryWithAmount,
       history,
@@ -232,6 +236,7 @@ function useFetchInventory({
       clinic.id,
       update,
       removeDefinition,
+      removeItem,
     ]
   );
 }

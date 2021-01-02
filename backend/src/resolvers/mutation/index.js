@@ -31,6 +31,7 @@ export { default as defineItem } from './define-item';
 export { default as removeItemDefinition } from './remove-item-definition';
 export { default as editItem } from './edit-item';
 export { default as addItem } from './add-item';
+export { default as removeItem } from './remove-item';
 export { default as addHospital } from './add-hospital';
 export { default as defineSurgery } from './define-surgery';
 export { default as createPatientSurgery } from './create-patient-surgery';

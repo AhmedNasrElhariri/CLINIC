@@ -120,6 +120,7 @@ type Mutation {
   removeItemDefinition(id: ID!): Item
   editItem(item: ItemUpdateInput!): Item
   addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
+  removeItem(itemId: ID!, clinicId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
   editHospital(hospital: HospitalInput!): Hospital
   defineSurgery(surgery: SurgeryInput!): Surgery
