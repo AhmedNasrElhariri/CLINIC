@@ -68,3 +68,11 @@ export const REMOVE_DEFINITION = gql`
     }
   }
 `;
+
+export const REMOVE_ITEM = gql`
+  mutation removeItem($id: ID!) {
+    removeItem(id: $id) {
+      id
+    }
+  }
+`;

@@ -5,15 +5,15 @@ import { CRModal, H6 } from 'components';
 import { useModal } from '../../widgets/modal';
 import useFetctchInventory from 'hooks/fetch-inventory';
 
-const RemoveItem = ({ item }) => {
+const RemoveItemDefinition = ({ item }) => {
   const { visible, open, close } = useModal();
 
-  const { removeItem } = useFetctchInventory({
-    onRemoveItem: () => {
+  const { removeDefinition } = useFetctchInventory({
+    onRemoveDefinition: () => {
       Alert.success('Item has been removed successfully');
       close();
     },
-    onRemoveDefinition: err => {
+    onRemoveDefinitionError: err => {
       Alert.error(err.message);
     },
   });
@@ -23,8 +23,8 @@ const RemoveItem = ({ item }) => {
   }, [close]);
 
   const handleOk = useCallback(() => {
-    removeItem(item);
-  }, [item, removeItem]);
+    removeDefinition(item);
+  }, [item, removeDefinition]);
 
   return (
     <>
@@ -32,7 +32,7 @@ const RemoveItem = ({ item }) => {
 
       <CRModal
         show={visible}
-        header="Remove Item"
+        header="Remove Item Definition"
         onOk={handleOk}
         onHide={handleClose}
         onCancel={handleClose}
@@ -43,6 +43,6 @@ const RemoveItem = ({ item }) => {
   );
 };
 
-RemoveItem.propTypes = {};
+RemoveItemDefinition.propTypes = {};
 
-export default memo(RemoveItem);
+export default memo(RemoveItemDefinition);

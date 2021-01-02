@@ -3,7 +3,7 @@ import React from 'react';
 import { CRTable, Div } from 'components';
 
 import EditItem from '../edit-item';
-import RemoveItem from '../remove-item';
+import RemoveItemDefinition from '../remove-item-definition';
 
 const ListItemsDefinitions = ({ items, onRemove }) => {
   return (
@@ -39,7 +39,7 @@ const ListItemsDefinitions = ({ items, onRemove }) => {
               height="100%"
             >
               <EditItem defaultValue={data} />
-              <RemoveItem item={data} />
+              <RemoveItemDefinition item={data} />
             </Div>
           )}
         </CRTable.CRCell>

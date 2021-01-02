@@ -10,6 +10,7 @@ import {
   LIST_INVENTORY,
   LIST_INVENTORY_HISTORY,
   REMOVE_DEFINITION,
+  REMOVE_ITEM,
 } from 'apollo-client/queries';
 import useGlobalState from '../state';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
@@ -29,6 +30,8 @@ function useFetchInventory({
   onAddCompleted,
   onRemoveDefinition,
   onRemoveDefinitionError,
+  onRemoveItem,
+  onRemoveItemError,
 } = {}) {
   const { refetchExpenses } = useFetchAccountingData();
   const [clinic] = useGlobalState('currentClinic');
@@ -126,6 +129,26 @@ function useFetchInventory({
     },
   });
 
+  const [removeItem] = useMutation(REMOVE_ITEM, {
+    onCompleted: () => {
+      onRemoveItem && onRemoveItem();
+    },
+    onError: err => {
+      onRemoveItemError && onRemoveItemError(err);
+    },
+    update(cache, { data: { removeItemDefinition: item } }) {
+      cache.modify({
+        fields: {
+          items(existingItemsRefs, { readField }) {
+            return existingItemsRefs.filter(
+              ItemRef => item.id !== readField('id', ItemRef)
+            );
+          },
+        },
+      });
+    },
+  });
+
   const [addItem] = useMutation(ADD_ITEM, {
     onCompleted: ({ addItem }) => {
       onAddCompleted && onAddCompleted(addItem);
@@ -182,6 +205,12 @@ function useFetchInventory({
         }),
       removeDefinition: item =>
         removeDefinition({
+          variables: {
+            id: item.id,
+          },
+        }),
+      removeItem: item =>
+        removeItem({
           variables: {
             id: item.id,
           },
