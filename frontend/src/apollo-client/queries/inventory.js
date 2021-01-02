@@ -60,3 +60,11 @@ export const ADD_ITEM = gql`
     }
   }
 `;
+
+export const REMOVE_DEFINITION = gql`
+  mutation removeItemDefinition($id: ID!) {
+    removeItemDefinition(id: $id) {
+      id
+    }
+  }
+`;

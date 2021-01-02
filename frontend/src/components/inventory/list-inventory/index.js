@@ -37,9 +37,9 @@ const ListInventory = ({ items }) => {
                 displayType="text"
                 thousandSeparator
               />
-              <H7 display="inline" ml={2}>
+              <span display="inline" ml={2}>
                 {getUnitOfMeasureShortCut(item.unitOfMeasure)}
-              </H7>
+              </span>
             </CRTable.CRCellStyled>
           )}
         </CRTable.CRCell>

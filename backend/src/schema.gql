@@ -117,6 +117,7 @@ type Mutation {
   clearNotifications: Boolean
   createEvent(event: EventInput!): Event
   defineItem(item: ItemInput!): Item
+  removeItemDefinition(id: ID!): Item
   editItem(item: ItemUpdateInput!): Item
   addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital

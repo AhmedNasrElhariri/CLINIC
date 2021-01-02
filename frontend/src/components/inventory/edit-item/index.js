@@ -50,7 +50,6 @@ const EditItem = ({ defaultValue }) => {
             Alert.error('Complete Required Fields');
             return;
           }
-          console.log({ formValue });
           update(formValue);
         }}
         onHide={handleClose}

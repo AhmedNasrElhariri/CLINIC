@@ -69,10 +69,10 @@ enum InventoryOperation {
 model Organization {
   id             String           @id @default(uuid())
   name           String
-  Item           Item[]
-  Hospital       Hospital[]
-  Surgery        Surgery[]
-  PatientSurgery PatientSurgery[]
+  item           Item[]
+  hospital       Hospital[]
+  surgery        Surgery[]
+  patientSurgery PatientSurgery[]
 }
 
 model User {
@@ -81,17 +81,17 @@ model User {
   email            String             @unique
   password         String
   organizationId   String
-  Appointment      Appointment[]
-  View             View[]
-  ViewStatus       ViewStatus[]
+  appointment      Appointment[]
+  view             View[]
+  viewStatus       ViewStatus[]
   clinics          Clinic[]           @relation(references: [id])
-  WorkingHours     WorkingHours[]
-  Snippet          Snippet[]
+  workingHours     WorkingHours[]
+  snippet          Snippet[]
   permissions      Json               @default("[]")
   avatar           String?
   position         Position
   events           Event[]
-  InventoryHistory InventoryHistory[]
+  inventoryHistory InventoryHistory[]
 }
 
 model Patient {
@@ -105,10 +105,10 @@ model Patient {
   organizationId   String
   guardianName     String?
   pateintLab       PatientLab[]
-  MedicalHistory   MedicalHistory[]
-  FamilyHistory    FamilyHistory[]
-  InventoryHistory InventoryHistory[]
-  PatientSurgery   PatientSurgery[]
+  medicalHistory   MedicalHistory[]
+  familyHistory    FamilyHistory[]
+  inventoryHistory InventoryHistory[]
+  patientSurgery   PatientSurgery[]
 }
 
 model Appointment {
@@ -230,8 +230,8 @@ model Clinic {
   revenue          Revenue[]
   appointment      Appointment[]
   sessions         Json               @default("[]")
-  InventoryItem    InventoryItem[]
-  InventoryHistory InventoryHistory[]
+  inventoryItem    InventoryItem[]
+  inventoryHistory InventoryHistory[]
 }
 
 model Week {
@@ -353,8 +353,8 @@ model Item {
   notes            String?
   organization     Organization       @relation(fields: [organizationId], references: [id])
   organizationId   String
-  InventoryItem    InventoryItem[]
-  InventoryHistory InventoryHistory[]
+  inventoryItems    InventoryItem[]
+  inventoryHistory InventoryHistory[]
 }
 
 model InventoryItem {

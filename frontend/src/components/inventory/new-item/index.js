@@ -31,6 +31,7 @@ const NewItem = () => {
   const { create } = useFetctchInventory({
     onCreateCompleted: () => {
       Alert.success('Item has been created successfully');
+      reset();
       close();
     },
   });

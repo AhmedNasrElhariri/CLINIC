@@ -9,6 +9,7 @@ import {
   LIST_ITEMS,
   LIST_INVENTORY,
   LIST_INVENTORY_HISTORY,
+  REMOVE_DEFINITION,
 } from 'apollo-client/queries';
 import useGlobalState from '../state';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
@@ -23,7 +24,12 @@ export function useVariables() {
   };
 }
 
-function useFetchInventory({ onCreateCompleted, onAddCompleted } = {}) {
+function useFetchInventory({
+  onCreateCompleted,
+  onAddCompleted,
+  onRemoveDefinition,
+  onRemoveDefinitionError,
+} = {}) {
   const { refetchExpenses } = useFetchAccountingData();
   const [clinic] = useGlobalState('currentClinic');
   const variables = useVariables();
@@ -98,15 +104,26 @@ function useFetchInventory({ onCreateCompleted, onAddCompleted } = {}) {
     onCompleted: ({ updateItem }) => {
       onCreateCompleted && onCreateCompleted(updateItem);
     },
-    // update(cache, { data: { defineItem } }) {
-    //   const { items } = cache.readQuery({
-    //     query: LIST_ITEMS,
-    //   });
-    //   cache.writeQuery({
-    //     query: LIST_ITEMS,
-    //     data: { items: [...items, defineItem] },
-    //   });
-    // },
+  });
+
+  const [removeDefinition] = useMutation(REMOVE_DEFINITION, {
+    onCompleted: () => {
+      onRemoveDefinition && onRemoveDefinition();
+    },
+    onError: err => {
+      onRemoveDefinitionError && onRemoveDefinitionError(err);
+    },
+    update(cache, { data: { removeItemDefinition: item } }) {
+      cache.modify({
+        fields: {
+          items(existingItemsRefs, { readField }) {
+            return existingItemsRefs.filter(
+              ItemRef => item.id !== readField('id', ItemRef)
+            );
+          },
+        },
+      });
+    },
   });
 
   const [addItem] = useMutation(ADD_ITEM, {
@@ -163,6 +180,12 @@ function useFetchInventory({ onCreateCompleted, onAddCompleted } = {}) {
             item,
           },
         }),
+      removeDefinition: item =>
+        removeDefinition({
+          variables: {
+            id: item.id,
+          },
+        }),
       items,
       inventoryWithAmount,
       history,
@@ -170,15 +193,16 @@ function useFetchInventory({ onCreateCompleted, onAddCompleted } = {}) {
       refetchInventoryHistory,
     }),
     [
-      addItem,
-      clinic,
-      create,
-      update,
-      history,
-      inventoryWithAmount,
       items,
+      inventoryWithAmount,
+      history,
       refetchInventory,
       refetchInventoryHistory,
+      create,
+      addItem,
+      clinic.id,
+      update,
+      removeDefinition,
     ]
   );
 }
