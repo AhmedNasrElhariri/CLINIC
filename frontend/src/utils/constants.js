@@ -75,7 +75,7 @@ export const RAW_PERMISSIONS = new Map([
         action: 'list',
         subject: 'Appointment',
       },
-      {
+    /*   {
         name: 'View',
         action: 'view',
         subject: 'Appointment',
@@ -104,10 +104,10 @@ export const RAW_PERMISSIONS = new Map([
         name: 'Archive',
         action: 'archive',
         subject: 'Appointment',
-      },
+      }, */
     ],
   ],
-  [
+ /*  [
     'Patients',
     [
       {
@@ -187,8 +187,8 @@ export const RAW_PERMISSIONS = new Map([
         subject: 'Inventory',
       },
     ],
-  ],
-  ['Statistical Report', [{ name: 'View', action: 'view', subject: 'Report' }]],
+  ], */
+ /*  ['Statistical Report', [{ name: 'View', action: 'view', subject: 'Report' }]], */
 ]);
 
 export const PERMISSIONS = new Map(

@@ -119,7 +119,7 @@ const SelectPickerStyled = styled(SelectPicker)`
   `}
 `;
 
-const CustomSelect = ({ value, onChange, ...props }) => {
+const CustomSelect = ({ value,label, onChange, ...props }) => {
   return (
     <SelectPickerStyled
       {...props}

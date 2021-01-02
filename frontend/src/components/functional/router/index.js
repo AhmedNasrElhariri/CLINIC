@@ -18,6 +18,7 @@ import {
   Snippets,
   ListUsers,
   UserPermissions,
+  RolePermissions,
   Profile,
   InventoryPage,
 } from 'components';
@@ -93,7 +94,13 @@ function AppRouter() {
         subject="all"
         exact
       />
-
+      <ProtectedRoute
+        path="/permissions/role"
+        component={RolePermissions}
+        action="manage"
+        subject="all"
+        exact
+      />
       <ProtectedRoute
         path="/permissions/:userId"
         component={UserPermissions}

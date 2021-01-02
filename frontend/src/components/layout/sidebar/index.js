@@ -13,6 +13,8 @@ const items = [
   { to: '/patients', name: 'Patients' },
   { to: '/reports', name: 'Reports' },
   { to: '/admin', name: 'Admin' },
+  { to: '/permissions/role', name: 'Role Permission' },
+
   // { to: '/views', name: 'Views' },
 ];
 
