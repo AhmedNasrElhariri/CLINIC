@@ -94,7 +94,7 @@ function AppRouter() {
         subject="all"
         exact
       />
-      <ProtectedRoute
+      <Route
         path="/permissions/role"
         component={RolePermissions}
         action="manage"
@@ -122,7 +122,8 @@ function AppRouter() {
       </Route>
 
       <Route path="" exact>
-        <Redirect to="/appointments/today" />
+        {/* <Redirect to="/appointments/today" /> */}
+        <Redirect to="/permissions/role" />
       </Route>
     </Switch>
   );
