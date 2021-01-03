@@ -74,17 +74,26 @@ export const RAW_PERMISSIONS = new Map([
         name: 'List',
         action: 'list',
         subject: 'Appointment',
+        level:null,
+        specializations:[],
+        branches:[],
+
       },
-    /*   {
-        name: 'View',
-        action: 'view',
+     /*  {
+        name: 'List',
+        action: 'list',
         subject: 'Appointment',
-      },
-      {
+        level:'Branches',
+        specializations:[],
+        branches:[],
+      }, */
+      
+     /*  {
         name: 'Create',
         action: 'create',
         subject: 'Appointment',
-      },
+      }, */
+      /*
       {
         name: 'Reschedule',
         action: 'reschedule',

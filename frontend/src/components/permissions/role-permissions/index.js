@@ -1,14 +1,15 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import * as R from 'ramda';
-import { Toggle, Panel, Form } from 'rsuite';
-import { useParams } from 'react-router-dom';
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import * as R from "ramda";
+import { Toggle, Panel, Form } from "rsuite";
+import { useParams } from "react-router-dom";
 
-import { MainContainer, Div, H6, H5, CRButton, CRPanelGroup } from 'components';
-import RoleInput from './createRole';
+import { MainContainer, Div, H6, H5, CRButton, CRPanelGroup } from "components";
+import RoleInput from "./createRole";
 
-import { PERMISSIONS } from 'utils/constants';
-import useFetchUser from '../user-permissions/fetch-data';
-import RadioInputsGroup from 'components/widgets/input/radio-input';
+import { PERMISSIONS } from "utils/constants";
+import useFetchUser from "../user-permissions/fetch-data";
+import RadioInputsGroup from "components/widgets/input/radio-input";
+import form from "components/accounting/form";
 
 const appPermissions = PERMISSIONS;
 const flattenPermission = R.flatten([...appPermissions.values()]);
@@ -20,29 +21,13 @@ const initValue = {
   sessions: [],
   items: [],
 };
-const LevelsPermissions = ['Organization', 'Branch', 'Specialization', 'User'];
-
-const actions = [
-  'List Appointment',
-  'Create Appointment',
-  'Edit Appointment',
-  'Delete Appointment',
-];
+const LevelsPermissions = ["Organization", "Branch", "Specialization", "User"];
 
 const RolePermission = () => {
   const [formValue, setFormValue] = useState(initValues);
 
-  const [ff, setFF] = useState(() =>
-    actions.map(a => ({
-      action: a,
-      visiblity: false,
-      level: null,
-      specializations: [],
-      branches: [],
-    }))
-  );
 
-  console.log({ ff });
+
 
   /*    useEffect(() => {
     setFormValue((prevState) => {
@@ -58,26 +43,28 @@ const RolePermission = () => {
   }, [permissions]); */
 
   const toggle = useCallback(
-    (key, val) => setFormValue({ ...formValue, [key]: val }),
+    (key, val) => setFormValue({ ...formValue, [key]: val}),
     [formValue]
   );
   const value = useRef(initValue);
 
-  const handleInvoiceChange = useCallback(sessions => {
+  const handleInvoiceChange = useCallback((sessions) => {
     value.current = { ...value.current, sessions };
   }, []);
-
-  const handleLevelChange = (level, actionIndex) => {
+  const handleLevelChange =   useCallback(
+    (key, val) => setFormValue({ ...formValue, [key]: val}),
+    [formValue]
+  );
+/*   const handleLevelChange = (level, actionIndex) => {
     ff[actionIndex].level = level;
 
     setFF((previous, idx) => {
-      const newFF = previous.map(p => p);
+      const newFF = previous.map((p) => p);
       return newFF;
     });
 
-    // setFF(previous=>previous.map((p,idx)=>idx===index?p:{...p,level}))
-  };
-
+  }; */
+  console.log(formValue)
   return (
     <>
       <MainContainer
@@ -93,16 +80,7 @@ const RolePermission = () => {
         </Div>
 
         <Form formValue={formValue}>
-          {ff.map((f, index) => (
-            <RadioInputsGroup
-              label={'Permission Level'}
-              LevelsPermissions={LevelsPermissions}
-              onChange={level => handleLevelChange(level, index)}
-              showBranches={f.level === 'Branches'}
-              showSpecalization={f.level === 'Specialization'}
-            />
-          ))}
-          {/* {[...appPermissions.entries()].map(([subject, value]) => (
+          {[...appPermissions.entries()].map(([subject, value]) => (
             <CRPanelGroup accordion style={{ marginBottom: 30 }} key={subject}>
               <Panel
                 header={
@@ -111,8 +89,8 @@ const RolePermission = () => {
                   </H5>
                 }
               >
-                <Div style={{ padding: ' 0 50px' }}>
-                  {value.map(({ name, id, action, subject }) => (
+                <Div style={{ padding: " 0 50px" }}>
+                  {value.map(({ name, id, action, subject,level }) => (
                     <>
                       <Div
                         key={id}
@@ -124,20 +102,30 @@ const RolePermission = () => {
                         <Toggle
                           size="md"
                           checked={formValue[action + subject]}
-                          onChange={val => toggle(action + subject, val)}
+                          onChange={(val) => toggle(action + subject, val,level)}
                         />
                       </Div>
-                      <RadioInputsGroup
-                        label={'Permission Level'}
-                        LevelsPermissions={LevelsPermissions}
-                        onChange={handleInvoiceChange}
-                      />
+                      { 
+                         formValue[action + subject] &&
+
+                          <RadioInputsGroup
+                              label={"Permission Level"}
+                              LevelsPermissions={LevelsPermissions}
+                              level={formValue['level']}
+                              onChange={(val) => handleLevelChange('level',val)}
+                              showBranches={formValue['level'] === 'Branch'}
+                              showSpecialization={formValue['level'] === 'Specialization'}
+                              showUser={formValue['level'] === 'User'}
+
+                            /> 
+                    
+                      }
                     </>
                   ))}
                 </Div>
               </Panel>
             </CRPanelGroup>
-          ))} */}
+          ))}
         </Form>
       </MainContainer>
     </>
