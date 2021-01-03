@@ -13,7 +13,7 @@ const RemoveItem = ({ item }) => {
       Alert.success('Item has been removed successfully');
       close();
     },
-    onRemoveDefinition: err => {
+    onRemoveItemError: err => {
       Alert.error(err.message);
     },
   });
