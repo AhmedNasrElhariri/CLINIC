@@ -10,6 +10,8 @@ import {
   FormControl,
   InputGroup,
   Icon,
+  Col,
+  FlexboxGrid,
 } from "rsuite";
 import Label from "../label";
 import { InputStyled, InputGroupStyled } from "./style";
@@ -18,15 +20,15 @@ import ListSelectionItems from "../../permissions/list-selections-items/index";
 import useFetchAppointments from "../../../hooks/fetch-appointments";
 import { mapArrWithLabelsToChoices } from "utils/misc";
 
-
 const RadioInputsGroup = ({
   label,
   LevelsPermissions,
-  onChange,
+  handleSelect,
   level,
+  onChange,
   showBranches,
   showSpecialization,
-  showUser
+  showUser,
 }) => {
   const [session, setSession] = useState({});
   const { branches, doctors, specializations } = useFetchAppointments();
@@ -35,10 +37,10 @@ const RadioInputsGroup = ({
   const handleOnChange = useCallback(
     (sessions) => {
       setSelectedSessions(sessions);
-      onChange(sessions);
+      handleSelect(sessions);
       setSession({});
     },
-    [onChange]
+    [handleSelect]
   );
   const add = useCallback(() => {
     if (!session) {
@@ -57,71 +59,71 @@ const RadioInputsGroup = ({
     <FormGroup>
       <Label>{label}</Label>
       <RadioGroup name="radioList">
-        {LevelsPermissions.map((levelName, i) => (
-          <Div key={i}>
-            <Radio value={levelName} onChange={onChange}>
-              {levelName}
-            </Radio>
-            {(level !== null && showBranches) ? 
-              <Form fluid>
-                <CRSelectInput
-                  name="type"
-                  placeholder="Select Type"
-                  block
-                  cleanable={false}
-                  searchable={false}
-                  value={session}
-                  onChange={setSession}
-                  data={mapArrWithLabelsToChoices(branches)}
-                />
-             
-                {
-                showSpecialization &&(
-                    <CRSelectInput
-                      name="type"
-                      placeholder="Select Type"
-                      block
-                      cleanable={false}
-                      searchable={false}
-                      value={session}
-                      onChange={setSession}
-                      data={mapArrWithLabelsToChoices(specializations)}
-                    />
-                    )
-                }
-                 
-                  {
-                showUser &&(
-                    <CRSelectInput
-                      name="type"
-                      placeholder="Select Type"
-                      block
-                      cleanable={false}
-                      searchable={false}
-                      value={session}
-                      onChange={setSession}
-                      data={mapArrWithLabelsToChoices(doctors)}
-                    />
-                    )
-                }   
-                
-
-                <Div textAlign="right">
-                  <CRButton primary small onClick={add}>
-                    + Add New
-                  </CRButton>
-                  {selectedSessions.length > 0 && <Divider />}
-                  <Div my={3}>
-                    <ListSelectionItems
-                      items={selectedSessions}
-                      onDelete={handleDelete}
-                    />
-                  </Div>
-                  <Divider />
-                </Div>
-              </Form> : <></>
-            }
-          </Div>
+        <div className="show-grid"></div>
+        {LevelsPermissions.map((element, i) => (
+          <FlexboxGrid  align="middle" justify="space-between" key={i}>
+            <FlexboxGrid.Item colspan={4}>
+              {" "}
+              <Radio value={element.name} onChange={onChange}>
+                {element.name}
+              </Radio>
+            </FlexboxGrid.Item>
+            {(level !== null && level !== 'Organization' ) && (
+              <>
+              {
+                showBranches && (
+                  <FlexboxGrid.Item colspan={6}>
+                  {" "}
+                  <CRSelectInput
+                    name="type"
+                    placeholder="Select Type"
+                    block
+                    cleanable={false}
+                    searchable={false}
+                    value={session}
+                    onChange={setSession}
+                    data={mapArrWithLabelsToChoices(branches)}
+                  />
+                  
+                </FlexboxGrid.Item>
+                )
+              }
+              {
+                showSpecialization && (
+                  <FlexboxGrid.Item colspan={6}>
+                  {" "}
+                  <CRSelectInput
+                    name="type"
+                    placeholder="Select Type"
+                    block
+                    cleanable={false}
+                    searchable={false}
+                    value={session}
+                    onChange={setSession}
+                    data={mapArrWithLabelsToChoices(specializations)}
+                  />
+                  
+                </FlexboxGrid.Item>
+                )
+              }
+           
+            <FlexboxGrid.Item colspan={14}>
+              {" "}
+              <CRButton primary small onClick={add}>
+                + Add New
+              </CRButton>
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={22}>
+              {" "}
+              <ListSelectionItems
+                items={selectedSessions}
+                onDelete={handleDelete}
+              />
+            </FlexboxGrid.Item>
+            </> 
+            )}
+           
+          </FlexboxGrid>
         ))}
       </RadioGroup>
     </FormGroup>

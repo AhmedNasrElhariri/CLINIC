@@ -21,13 +21,41 @@ const initValue = {
   sessions: [],
   items: [],
 };
-const LevelsPermissions = ["Organization", "Branch", "Specialization", "User"];
+const LevelsPermissions = [
+  {
+    name:"Organization",
+    haveBranch: false,
+    haveSpecialization:false,
+    haveUser: false
+
+  },
+  {
+    name:"Branch",
+    haveBranch: true,
+    haveSpecialization:false,
+    haveUser: false
+
+  },
+  {
+    name:"Specialization",
+    haveBranch: true,
+    haveSpecialization:true,
+    haveUser: false
+
+  },
+  {
+    name:"User",
+    haveBranch: true,
+    haveSpecialization:false,
+    haveUser: true
+
+  }
+]
 
 const RolePermission = () => {
   const [formValue, setFormValue] = useState(initValues);
 
-
-
+  const [ff, setFF] = useState(flattenPermission);
 
   /*    useEffect(() => {
     setFormValue((prevState) => {
@@ -42,29 +70,34 @@ const RolePermission = () => {
     });
   }, [permissions]); */
 
-  const toggle = useCallback(
-    (key, val) => setFormValue({ ...formValue, [key]: val}),
-    [formValue]
-  );
+  const toggle = (visibility, actionIndex) => {
+    ff[actionIndex].visibility = !visibility;
+
+    setFF((previous, idx) => {
+      const newFF = previous.map((p) => p);
+      return newFF;
+    });
+  };
+ const handleSelectChange = (specializations,actionIndex) => {
+  ff[actionIndex].specializations = specializations;
+
+  setFF((previous, idx) => {
+    const newFF = previous.map((p) => p);
+    return newFF;
+  });
+};
   const value = useRef(initValue);
 
-  const handleInvoiceChange = useCallback((sessions) => {
-    value.current = { ...value.current, sessions };
-  }, []);
-  const handleLevelChange =   useCallback(
-    (key, val) => setFormValue({ ...formValue, [key]: val}),
-    [formValue]
-  );
-/*   const handleLevelChange = (level, actionIndex) => {
+
+  const handleLevelChange = (level, actionIndex) => {
     ff[actionIndex].level = level;
 
     setFF((previous, idx) => {
       const newFF = previous.map((p) => p);
       return newFF;
     });
-
-  }; */
-  console.log(formValue)
+  };
+  console.log(ff);
   return (
     <>
       <MainContainer
@@ -90,7 +123,7 @@ const RolePermission = () => {
                 }
               >
                 <Div style={{ padding: " 0 50px" }}>
-                  {value.map(({ name, id, action, subject,level }) => (
+                  {value.map(({ name, id, visibility }, index) => (
                     <>
                       <Div
                         key={id}
@@ -101,25 +134,27 @@ const RolePermission = () => {
                         <H6>{name}</H6>
                         <Toggle
                           size="md"
-                          checked={formValue[action + subject]}
-                          onChange={(val) => toggle(action + subject, val,level)}
+                          checked={ff[visibility]}
+                          onChange={(val) => toggle(visibility, index)}
                         />
                       </Div>
-                      { 
-                         formValue[action + subject] &&
-
-                          <RadioInputsGroup
+                      {visibility &&
+                        ff
+                          .filter((item, index) => item.name === name)
+                          .map((f) => (
+                            <RadioInputsGroup
                               label={"Permission Level"}
                               LevelsPermissions={LevelsPermissions}
-                              level={formValue['level']}
-                              onChange={(val) => handleLevelChange('level',val)}
-                              showBranches={formValue['level'] === 'Branch'}
-                              showSpecialization={formValue['level'] === 'Specialization'}
-                              showUser={formValue['level'] === 'User'}
-
-                            /> 
-                    
-                      }
+                              onChange={(level) =>
+                                handleLevelChange(level, index)
+                              }
+                              handleSelect = {(specializations) =>handleSelectChange(specializations, index)}
+                              level = {f.level}
+                              showBranches={f.level === "Branch"}
+                              showSpecialization={f.level === "Specialization"}
+                              showUser={f.level === "User"}
+                            />
+                          ))}
                     </>
                   ))}
                 </Div>

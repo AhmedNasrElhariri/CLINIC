@@ -41,7 +41,6 @@ const ValueStyled = styled.div`
   line-height: 1.35;
   letter-spacing: normal;
   text-align: left;
-
   display: flex;
   align-items: center;
 
@@ -82,6 +81,7 @@ const SelectPickerStyled = styled(SelectPicker)`
     ${paddingLeft}
     display: flex;
     align-items: center;
+    width:100%
     ${byTheme(theme)}
     &:focus,
     &:active,
@@ -140,7 +140,7 @@ const CustomSelect = ({ value,label, onChange, ...props }) => {
 
 export default ({ label, children, ...rest }) => {
   return (
-    <FormGroup>
+    <FormGroup >
       <Label>{label}</Label>
       <FormControl {...rest} accepter={CustomSelect} />
       {children}
