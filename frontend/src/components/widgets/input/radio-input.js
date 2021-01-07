@@ -18,7 +18,7 @@ import { InputStyled, InputGroupStyled } from "./style";
 import { CRSelectInput, H6, CRButton, Div, H5, H7 } from "components";
 import ListSelectionItems from "../../permissions/list-selections-items/index";
 import useFetchAppointments from "../../../hooks/fetch-appointments";
-import { mapArrWithLabelsToChoices } from "utils/misc";
+import { mapArrWithLabelsToChoices, mapArrWithIdsToChoices } from "utils/misc";
 
 const RadioInputsGroup = ({
   label,
@@ -26,6 +26,9 @@ const RadioInputsGroup = ({
   handleSelect,
   level,
   onChange,
+  onBranchChange,
+  onSpecializationChange,
+  onUserChange,
   showBranches,
   showSpecialization,
   showUser,
@@ -59,72 +62,149 @@ const RadioInputsGroup = ({
     <FormGroup>
       <Label>{label}</Label>
       <RadioGroup name="radioList">
-        <div className="show-grid"></div>
-        {LevelsPermissions.map((element, i) => (
-          <FlexboxGrid  align="middle" justify="space-between" key={i}>
-            <FlexboxGrid.Item colspan={4}>
-              {" "}
-              <Radio value={element.name} onChange={onChange}>
-                {element.name}
-              </Radio>
+        <FlexboxGrid align="middle" justify="space-between">
+          <FlexboxGrid.Item colspan={4}>
+            {" "}
+            <Radio value={"organization"} onChange={onChange}>
+              Organization
+            </Radio>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
+        <FlexboxGrid align="middle" justify="space-between">
+          <FlexboxGrid.Item colspan={4}>
+            {" "}
+            <Radio value={"branch"} onChange={onChange}>
+              branch
+            </Radio>
             </FlexboxGrid.Item>
-            {(level !== null && level !== 'Organization' ) && (
+            {showBranches && (
               <>
-              {
-                showBranches && (
-                  <FlexboxGrid.Item colspan={6}>
-                  {" "}
-                  <CRSelectInput
-                    name="type"
-                    placeholder="Select Type"
-                    block
-                    cleanable={false}
-                    searchable={false}
-                    value={session}
-                    onChange={setSession}
-                    data={mapArrWithLabelsToChoices(branches)}
-                  />
-                  
-                </FlexboxGrid.Item>
-                )
-              }
-              {
-                showSpecialization && (
-                  <FlexboxGrid.Item colspan={6}>
-                  {" "}
-                  <CRSelectInput
-                    name="type"
-                    placeholder="Select Type"
-                    block
-                    cleanable={false}
-                    searchable={false}
-                    value={session}
-                    onChange={setSession}
-                    data={mapArrWithLabelsToChoices(specializations)}
-                  />
-                  
-                </FlexboxGrid.Item>
-                )
-              }
-           
-            <FlexboxGrid.Item colspan={14}>
+              <FlexboxGrid.Item colspan={6}>
               {" "}
-              <CRButton primary small onClick={add}>
-                + Add New
-              </CRButton>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={22}>
-              {" "}
-              <ListSelectionItems
-                items={selectedSessions}
-                onDelete={handleDelete}
+              <CRSelectInput
+                placeholder="Select Branch"
+                block
+                cleanable={false}
+                searchable={false}
+                value={session}
+                onChange={onBranchChange}
+                data={mapArrWithIdsToChoices(branches)}
               />
             </FlexboxGrid.Item>
-            </> 
+                <FlexboxGrid.Item colspan={4}>
+                {" "}
+                <CRButton primary small onClick={add}>
+                  + Add New
+                </CRButton>
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item colspan={22}>
+                {" "}
+                <ListSelectionItems
+                  items={selectedSessions}
+                  onDelete={handleDelete}
+                />
+              </FlexboxGrid.Item>
+              </>
             )}
-           
-          </FlexboxGrid>
-        ))}
+        
+      
+        </FlexboxGrid>
+        <FlexboxGrid align="middle" justify="space-between">
+          <FlexboxGrid.Item colspan={4}>
+            {" "}
+            <Radio value={"specialization"} onChange={onChange}>
+              Specialization
+            </Radio>
+            </FlexboxGrid.Item>
+            {showSpecialization && (
+              <>
+              <FlexboxGrid.Item colspan={6}>
+              {" "}
+              <CRSelectInput
+                placeholder="Select Specialization"
+                block
+                cleanable={false}
+                searchable={false}
+                value={session}
+                onChange={onSpecializationChange}
+                data={mapArrWithIdsToChoices(specializations)}
+              />
+               <CRSelectInput
+                placeholder="Select Branch"
+                block
+                cleanable={false}
+                searchable={false}
+                value={session}
+                onChange={onBranchChange}
+                data={mapArrWithIdsToChoices(branches)}
+              />
+            </FlexboxGrid.Item>
+                <FlexboxGrid.Item colspan={4}>
+                {" "}
+                <CRButton primary small onClick={add}>
+                  + Add New
+                </CRButton>
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item colspan={22}>
+                {" "}
+                <ListSelectionItems
+                  items={selectedSessions}
+                  onDelete={handleDelete}
+                />
+              </FlexboxGrid.Item>
+              </>
+            )}
+        
+      
+        </FlexboxGrid>
+        <FlexboxGrid align="middle" justify="space-between">
+          <FlexboxGrid.Item colspan={4}>
+            {" "}
+            <Radio value={"user"} onChange={onChange}>
+              User
+            </Radio>
+            </FlexboxGrid.Item>
+            {showUser && (
+              <>
+              <FlexboxGrid.Item colspan={6}>
+              {" "}
+              <CRSelectInput
+                placeholder="Select User"
+                block
+                cleanable={false}
+                searchable={false}
+                value={session}
+                onChange={onUserChange}
+                data={mapArrWithIdsToChoices(doctors)}
+              />
+                <CRSelectInput
+                placeholder="Select Branch"
+                block
+                cleanable={false}
+                searchable={false}
+                value={session}
+                onChange={onBranchChange}
+                data={mapArrWithIdsToChoices(branches)}
+              />
+            </FlexboxGrid.Item>
+                <FlexboxGrid.Item colspan={4}>
+                {" "}
+                <CRButton primary small onClick={add}>
+                  + Add New
+                </CRButton>
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item colspan={22}>
+                {" "}
+                <ListSelectionItems
+                  items={selectedSessions}
+                  onDelete={handleDelete}
+                />
+              </FlexboxGrid.Item>
+              </>
+            )}
+        
+      
+        </FlexboxGrid>
       </RadioGroup>
     </FormGroup>
   );

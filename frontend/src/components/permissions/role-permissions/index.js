@@ -97,6 +97,19 @@ const RolePermission = () => {
       return newFF;
     });
   };
+  const handleSelectBranch = (branchId,index)=>{
+    let mappings = ff[index].mappings
+
+    if(ff[index].mappings.length !== 1){
+      mappings = [{branchIds:[]}]
+    }
+    const branchIds = [...mappings[0].branchIds,branchId]
+    mappings = [{branchIds}]
+    setFF((previous) => {
+      const newFF = previous.map((p,i) => i === index ? ({...p,mappings}) : p);
+      return newFF;
+    });
+  }
   console.log(ff);
   return (
     <>
@@ -145,14 +158,15 @@ const RolePermission = () => {
                             <RadioInputsGroup
                               label={"Permission Level"}
                               LevelsPermissions={LevelsPermissions}
-                              onChange={(level) =>
-                                handleLevelChange(level, index)
-                              }
+                              onChange={(level) =>handleLevelChange(level, index)}
+                              onBranchChange={(branch)=>handleSelectBranch(branch,index)}
+                              onSpecializationChange={(specialization)=>handleSelectSpecialization(specialization,index)}
+                              onUserChange={(user)=>handleSelectUser(user,index)}
                               handleSelect = {(specializations) =>handleSelectChange(specializations, index)}
                               level = {f.level}
-                              showBranches={f.level === "Branch"}
-                              showSpecialization={f.level === "Specialization"}
-                              showUser={f.level === "User"}
+                              showBranches={f.level === "branch"}
+                              showSpecialization={f.level === "specialization"}
+                              showUser={f.level === "user"}
                             />
                           ))}
                     </>
