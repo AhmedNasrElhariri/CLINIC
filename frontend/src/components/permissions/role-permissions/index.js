@@ -10,6 +10,7 @@ import { PERMISSIONS } from "utils/constants";
 import useFetchUser from "../user-permissions/fetch-data";
 import RadioInputsGroup from "components/widgets/input/radio-input";
 import form from "components/accounting/form";
+import useFetchAppointments from "../../../hooks/fetch-appointments";
 
 const appPermissions = PERMISSIONS;
 const flattenPermission = R.flatten([...appPermissions.values()]);
@@ -23,37 +24,34 @@ const initValue = {
 };
 const LevelsPermissions = [
   {
-    name:"Organization",
+    name: "Organization",
     haveBranch: false,
-    haveSpecialization:false,
-    haveUser: false
-
+    haveSpecialization: false,
+    haveUser: false,
   },
   {
-    name:"Branch",
+    name: "Branch",
     haveBranch: true,
-    haveSpecialization:false,
-    haveUser: false
-
+    haveSpecialization: false,
+    haveUser: false,
   },
   {
-    name:"Specialization",
+    name: "Specialization",
     haveBranch: true,
-    haveSpecialization:true,
-    haveUser: false
-
+    haveSpecialization: true,
+    haveUser: false,
   },
   {
-    name:"User",
+    name: "User",
     haveBranch: true,
-    haveSpecialization:false,
-    haveUser: true
-
-  }
-]
+    haveSpecialization: false,
+    haveUser: true,
+  },
+];
 
 const RolePermission = () => {
   const [formValue, setFormValue] = useState(initValues);
+  const { branches, doctors, specializations } = useFetchAppointments();
 
   const [ff, setFF] = useState(flattenPermission);
 
@@ -78,38 +76,64 @@ const RolePermission = () => {
       return newFF;
     });
   };
- const handleSelectChange = (specializations,actionIndex) => {
-  ff[actionIndex].specializations = specializations;
 
-  setFF((previous, idx) => {
-    const newFF = previous.map((p) => p);
-    return newFF;
-  });
-};
   const value = useRef(initValue);
-
+  const handleSelect = useCallback((sessions) => {
+    value.current = { ...value.current, sessions };
+  }, []);
 
   const handleLevelChange = (level, actionIndex) => {
     ff[actionIndex].level = level;
+    ff[actionIndex].mappings = [];
 
     setFF((previous, idx) => {
       const newFF = previous.map((p) => p);
       return newFF;
     });
   };
-  const handleSelectBranch = (branchId,index)=>{
-    let mappings = ff[index].mappings
+  const handleSelectBranch = (branchId, index) => {
+    let mappings = ff[index].mappings;
 
-    if(ff[index].mappings.length !== 1){
-      mappings = [{branchIds:[]}]
+    if (ff[index].mappings.length !== 1) {
+      mappings = [{ branchIds: [] }];
     }
-    const branchIds = [...mappings[0].branchIds,branchId]
-    mappings = [{branchIds}]
+    const branchIds = [...mappings[0].branchIds, branchId];
+    mappings = [{ branchIds }];
     setFF((previous) => {
-      const newFF = previous.map((p,i) => i === index ? ({...p,mappings}) : p);
+      const newFF = previous.map((p, i) =>
+        i === index ? { ...p, mappings } : p
+      );
       return newFF;
     });
-  }
+  };
+
+  const handleAddSpecializtion = (value, index) => {
+    let mappings = ff[index].mappings;
+    if (ff[index].mappings.length !== 1) {
+      mappings = [];
+    }
+    mappings = [...mappings, value];
+    setFF((previous) => {
+      const newFF = previous.map((p, i) =>
+        i === index ? { ...p, mappings } : p
+      );
+      return newFF;
+    });
+  };
+  const handleAddUser = (value, index) => {
+    let mappings = ff[index].mappings;
+    if (ff[index].mappings.length !== 1) {
+      mappings = [];
+    }
+    mappings = [...mappings, value];
+    setFF((previous) => {
+      const newFF = previous.map((p, i) =>
+        i === index ? { ...p, mappings } : p
+      );
+      return newFF;
+    });
+  };
+
   console.log(ff);
   return (
     <>
@@ -156,15 +180,22 @@ const RolePermission = () => {
                           .filter((item, index) => item.name === name)
                           .map((f) => (
                             <RadioInputsGroup
+                              handleSelect={handleSelect}
                               label={"Permission Level"}
                               LevelsPermissions={LevelsPermissions}
-                              onChange={(level) =>handleLevelChange(level, index)}
-                              onBranchChange={(branch)=>handleSelectBranch(branch,index)}
-                              onSpecializationChange={(specialization)=>handleSelectSpecialization(specialization,index)}
-                              onUserChange={(user)=>handleSelectUser(user,index)}
-                              handleSelect = {(specializations) =>handleSelectChange(specializations, index)}
-                              level = {f.level}
+                              onChange={(level) =>
+                                handleLevelChange(level, index)
+                              }
+                              onBranchChange={(branch) =>
+                                handleSelectBranch(branch, index)
+                              }
+                              onAddUser={(value) => handleAddUser(value, index)}
+                              onAddSpecailization={(value) =>
+                                handleAddSpecializtion(value, index)
+                              }
+                              level={f.level}
                               showBranches={f.level === "branch"}
+                              branches={branches}
                               showSpecialization={f.level === "specialization"}
                               showUser={f.level === "user"}
                             />
