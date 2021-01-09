@@ -33,10 +33,14 @@ const AddUserPermissions = ({ onAdd, branches }) => {
     },
     [handleOnChange]
   ); */
-  const selectedUser = useMemo(() => {
+  const selectedBranch = useMemo(() => {
     return branches.find((p) => p.id === formValue.branchId) || {};
   }, [formValue, branches]);
-  console.log(selectedUser.specializations)
+
+  const usersPermissions = selectedBranch.specializations;
+  const flattenUsers = R.flatten(usersPermissions || []);
+  const Users = R.pipe(R.mergeAll)(flattenUsers);
+
   return (
     <Form formValue={formValue} onChange={setFormValue}>
       <FlexboxGrid.Item colspan={20}>
@@ -63,7 +67,7 @@ const AddUserPermissions = ({ onAdd, branches }) => {
               labelKey="name"
               valueKey="id"
               name="userId"
-              data={selectedUser.specializations || []}
+              data={Users.users}
             />
           </FlexboxGrid.Item>
 

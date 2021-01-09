@@ -15,11 +15,10 @@ import {
 } from "rsuite";
 import { CRSelectInput, H6, CRButton, Div, H5, H7 } from "components";
 import ListSelectionItems from "../../permissions/list-selections-items/index";
-import { mapArrWithLabelsToChoices, mapArrWithIdsToChoices } from "utils/misc";
 
 const AddSpecializtionPermissions = ({ onAdd, branches }) => {
   const [formValue, setFormValue] = useState({
-    branchId: null,
+    branchId: [],
     specializationId: null,
   });
 
@@ -34,7 +33,9 @@ const AddSpecializtionPermissions = ({ onAdd, branches }) => {
     [handleOnChange]
   ); */
   const selectedBranch = useMemo(() => {
-    return branches.find((p) => p.id === formValue.branchId) || {};
+    let branchIds =formValue.branchId
+    console.log(branchIds)
+    return branches.find((p) => p.id === branchIds ? { ...p,branchIds } : p) || {};
   }, [formValue, branches]);
   return (
     <Form formValue={formValue} onChange={setFormValue}>

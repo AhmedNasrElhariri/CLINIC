@@ -13,7 +13,10 @@ import form from "components/accounting/form";
 import useFetchAppointments from "../../../hooks/fetch-appointments";
 
 const appPermissions = PERMISSIONS;
+console.log(R)
 const flattenPermission = R.flatten([...appPermissions.values()]);
+console.log(flattenPermission)
+
 const initValues = R.pipe(
   R.map(({ id }) => ({ [id]: false })),
   R.mergeAll

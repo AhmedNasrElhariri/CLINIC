@@ -79,7 +79,7 @@ const RadioInputsGroup = ({
           {showBranches && (
             <>
               <FlexboxGrid.Item colspan={20}>
-                <FlexboxGrid align="middle" justify="">
+                <FlexboxGrid align="middle" >
                   <FlexboxGrid.Item colspan={6}>
                     {" "}
                     <CRSelectInput
@@ -130,7 +130,7 @@ const RadioInputsGroup = ({
             </>
           )}
         </FlexboxGrid>
-        <FlexboxGrid align="middle" justify="">
+        <FlexboxGrid align="middle" >
           <FlexboxGrid.Item colspan={4}>
             {" "}
             <Radio value={"user"} onChange={onChange}>
