@@ -37,9 +37,8 @@ const AddUserPermissions = ({ onAdd, branches }) => {
     return branches.find((p) => p.id === formValue.branchId) || {};
   }, [formValue, branches]);
 
-  const usersPermissions = selectedBranch.specializations;
-  const flattenUsers = R.flatten(usersPermissions || []);
-  const Users = R.pipe(R.mergeAll)(flattenUsers);
+  const usersPermissions = (selectedBranch.specializations || []).map(p=> p.users);
+  const users = R.flatten(usersPermissions) || [];
 
   return (
     <Form formValue={formValue} onChange={setFormValue}>
@@ -67,11 +66,11 @@ const AddUserPermissions = ({ onAdd, branches }) => {
               labelKey="name"
               valueKey="id"
               name="userId"
-              data={Users.users}
+              data={users}
             />
           </FlexboxGrid.Item>
 
-          <FlexboxGrid.Item colspan={4}>
+          <FlexboxGrid.Item colspan={6}>
             {" "}
             <CRButton primary small onClick={add}>
               + Add New

@@ -29,6 +29,7 @@ const RadioInputsGroup = ({
   showSpecialization,
   showUser,
   branches,
+  selectSpecializations,
   onAddSpecailization,
   onAddUser,
 }) => {
@@ -124,6 +125,7 @@ const RadioInputsGroup = ({
               <FlexboxGrid.Item colspan={20}>
                 <AddSpecializtionPermissions
                   branches={branches}
+                  selectSpecializations={selectSpecializations}
                   onAdd={onAddSpecailization}
                 />
               </FlexboxGrid.Item>

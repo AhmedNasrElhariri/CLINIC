@@ -16,7 +16,14 @@
         },
         {
           "id": 2,
-          "name": "قلب"
+          "name": "قلب",
+          "users": [
+            {
+              "id": 2,
+              "name": " Hassan"
+            }
+          ]
+          
         }
       ]
     },
@@ -26,11 +33,14 @@
       "specializations": [
         {
           "id": 1,
-          "name": "عظام"
+          "name": "عظام",
+          "users":[]
         },
         {
           "id": 3,
-          "name": "تجميل"
+          "name": "تجميل",
+          "users":[]
+
         }
       ]
     }

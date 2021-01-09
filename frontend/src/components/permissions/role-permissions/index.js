@@ -200,6 +200,7 @@ const RolePermission = () => {
                               showBranches={f.level === "branch"}
                               branches={branches}
                               showSpecialization={f.level === "specialization"}
+                              selectSpecializations={f.mappings}
                               showUser={f.level === "user"}
                             />
                           ))}

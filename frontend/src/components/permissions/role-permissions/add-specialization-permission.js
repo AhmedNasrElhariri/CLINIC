@@ -13,10 +13,11 @@ import {
   Col,
   FlexboxGrid,
 } from "rsuite";
+
 import { CRSelectInput, H6, CRButton, Div, H5, H7 } from "components";
 import ListSelectionItems from "../../permissions/list-selections-items/index";
 
-const AddSpecializtionPermissions = ({ onAdd, branches }) => {
+const AddSpecializtionPermissions = ({ branches, selectSpecializations, onAdd}) => {
   const [formValue, setFormValue] = useState({
     branchId: [],
     specializationId: null,
@@ -26,17 +27,30 @@ const AddSpecializtionPermissions = ({ onAdd, branches }) => {
     onAdd(formValue);
   });
 
-  /*  const handleDelete = useCallback(
+  const handleDelete = useCallback(
     (idx) => {
-      handleOnChange(R.remove(idx, 1));
+    //   handleOnChange(R.remove(idx, 1));
     },
-    [handleOnChange]
-  ); */
+    []
+  ); 
+
   const selectedBranch = useMemo(() => {
     let branchIds =formValue.branchId
-    console.log(branchIds)
-    return branches.find((p) => p.id === branchIds ? { ...p,branchIds } : p) || {};
+    return branches.find((p) => p.id === branchIds) || {};
   }, [formValue, branches]);
+
+  const branchesNames = branches.reduce((obj, {id, name}) =>({
+      ...obj,
+      [id]: name
+  }),{});
+
+  const specializationsNames = R.flatten(branches.map(b=> b.specializations)).reduce((obj, {id, name}) =>({
+    ...obj,
+    [id]: name
+  }));
+
+const items = selectSpecializations.map(({branchId, specializationId})=> `${branchesNames[branchId]} - ${specializationsNames[specializationId]}`)
+
   return (
     <Form formValue={formValue} onChange={setFormValue}>
       <FlexboxGrid.Item colspan={20}>
@@ -67,23 +81,27 @@ const AddSpecializtionPermissions = ({ onAdd, branches }) => {
             />
           </FlexboxGrid.Item>
 
-          <FlexboxGrid.Item colspan={4}>
+          <FlexboxGrid.Item colspan={6}>
             {" "}
             <CRButton primary small onClick={add}>
               + Add New
             </CRButton>
           </FlexboxGrid.Item>
-          {/*    <FlexboxGrid.Item colspan={22}>
+            <FlexboxGrid.Item colspan={22}>
             {" "}
             <ListSelectionItems
-              items={selectedSessions}
+              items={items}
               onDelete={handleDelete}
             />
-          </FlexboxGrid.Item> */}
+          </FlexboxGrid.Item>
         </FlexboxGrid>
       </FlexboxGrid.Item>
     </Form>
   );
 };
+
+AddSpecializtionPermissions.defaultProps = {
+    selectSpecializations : []
+}
 
 export default memo(AddSpecializtionPermissions);
