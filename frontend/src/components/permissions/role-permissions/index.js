@@ -13,9 +13,9 @@ import form from "components/accounting/form";
 import useFetchAppointments from "../../../hooks/fetch-appointments";
 
 const appPermissions = PERMISSIONS;
-console.log(R)
+console.log(R);
 const flattenPermission = R.flatten([...appPermissions.values()]);
-console.log(flattenPermission)
+console.log(flattenPermission);
 
 const initValues = R.pipe(
   R.map(({ id }) => ({ [id]: false })),
@@ -54,22 +54,10 @@ const LevelsPermissions = [
 
 const RolePermission = () => {
   const [formValue, setFormValue] = useState(initValues);
-  const { branches, doctors, specializations } = useFetchAppointments();
+  const { branches } = useFetchAppointments();
 
   const [ff, setFF] = useState(flattenPermission);
-
-  /*    useEffect(() => {
-    setFormValue((prevState) => {
-      const updatePermissions = R.pipe(
-        R.filter((key) => {
-          return !!permissions.find((p) => p.action + p.subject === key);
-        }),
-        R.map((key) => ({ [key]: true })),
-        R.mergeAll
-      )(Object.keys(prevState));
-      return { ...prevState, ...updatePermissions };
-    });
-  }, [permissions]); */
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const toggle = (visibility, actionIndex) => {
     ff[actionIndex].visibility = !visibility;
@@ -88,24 +76,25 @@ const RolePermission = () => {
   const handleLevelChange = (level, actionIndex) => {
     ff[actionIndex].level = level;
     ff[actionIndex].mappings = [];
+    setSelectedItems([])
 
     setFF((previous, idx) => {
       const newFF = previous.map((p) => p);
       return newFF;
     });
   };
-  const handleSelectBranch = (branchId, index) => {
+  const handleAddBranch = (branchId, index) => {
     let mappings = ff[index].mappings;
 
     if (ff[index].mappings.length !== 1) {
-      mappings = [{ branchIds: [] }];
+      mappings = [];
     }
-    const branchIds = [...mappings[0].branchIds, branchId];
-    mappings = [{ branchIds }];
+    mappings = [...mappings, branchId];
     setFF((previous) => {
       const newFF = previous.map((p, i) =>
         i === index ? { ...p, mappings } : p
       );
+      setSelectedItems(mappings);
       return newFF;
     });
   };
@@ -120,6 +109,7 @@ const RolePermission = () => {
       const newFF = previous.map((p, i) =>
         i === index ? { ...p, mappings } : p
       );
+      setSelectedItems(mappings);
       return newFF;
     });
   };
@@ -133,10 +123,13 @@ const RolePermission = () => {
       const newFF = previous.map((p, i) =>
         i === index ? { ...p, mappings } : p
       );
+      setSelectedItems(mappings);
+
       return newFF;
     });
   };
-
+  const handleDeleteSelected = useCallback((idx) => {
+  });
   console.log(ff);
   return (
     <>
@@ -189,18 +182,19 @@ const RolePermission = () => {
                               onChange={(level) =>
                                 handleLevelChange(level, index)
                               }
-                              onBranchChange={(branch) =>
-                                handleSelectBranch(branch, index)
+                              onAddBranch={(value) =>
+                                handleAddBranch(value, index)
                               }
                               onAddUser={(value) => handleAddUser(value, index)}
                               onAddSpecailization={(value) =>
                                 handleAddSpecializtion(value, index)
                               }
+                              handleDeleteSelected={handleDeleteSelected(index)}
                               level={f.level}
-                              showBranches={f.level === "branch"}
                               branches={branches}
+                              selectedItems={selectedItems}
+                              showBranches={f.level === "branch"}
                               showSpecialization={f.level === "specialization"}
-                              selectSpecializations={f.mappings}
                               showUser={f.level === "user"}
                             />
                           ))}
