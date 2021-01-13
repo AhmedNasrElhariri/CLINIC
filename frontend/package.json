@@ -42,7 +42,7 @@
     "yup": "^0.28.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3003 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -59,7 +59,7 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 safari version"  
     ]
   },
   "proxy": "http://localhost:4000"

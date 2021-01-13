@@ -95,7 +95,7 @@ export const filterAppointments = (appointments = [], filter) => {
   return filters.reduce((app, fn) => fn(app, filter), appointments);
 };
 
-export const getAppointmentTypes = () => ['Examination', 'Followup'];
+export const getAppointmentTypes = () => Object.values(APPT_TYPE);
 
 export const appointmentTypes = mapArrToChoices(getAppointmentTypes());
 

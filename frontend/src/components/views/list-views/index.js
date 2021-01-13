@@ -46,7 +46,7 @@ export default function ListViews() {
   return (
     <>
       <Link to="/views/new">
-        <Button>New</Button>
+        <Button appearance="primary">New</Button>
       </Link>
       <Row>
         {views.map(v => (

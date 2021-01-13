@@ -298,6 +298,7 @@ type ViewStatus {
 input ViewInput {
   id: ID
   name: String!
+  type: AppointmentType!
   fieldGroups: [FieldGroupInput!]
 }
 
