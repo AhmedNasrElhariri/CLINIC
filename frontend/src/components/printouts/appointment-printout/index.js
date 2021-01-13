@@ -23,12 +23,11 @@ const renderField = ({ type, name } = {}) => {
 };
 
 const Print = ({ patient }) => {
-  const [view] = useGlobalState('activeView');
+  const views = useGlobalState('activeViews');
 
-  if (R.isNil(view.fieldGroups)) {
+  if (R.isNil(views.fieldGroups)) {
     return null;
   }
-
 
   return (
     <ContainerStyled>
@@ -47,7 +46,7 @@ const Print = ({ patient }) => {
           </Div>
         </Form>
       </PanelStyled>
-      {view.fieldGroups.map(g => (
+      {views.fieldGroups.map(g => (
         <Div key={g.id}>
           <H5 mb={2}>{g.name}</H5>
           <PanelStyled bordered>

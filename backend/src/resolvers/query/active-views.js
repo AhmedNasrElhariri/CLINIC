@@ -1,15 +1,13 @@
 import { prisma } from '@';
 
 const activeView = async (_, __, { userId }) => {
-  const viewStatus = await prisma.viewStatus
-    .findMany({
-      where: {
-        userId,
-      },
-    })
-    .then(results => results[0]);
+  const viewStatus = await prisma.viewStatus.findMany({
+    where: {
+      userId,
+    },
+  });
 
-  return prisma.view.findOne({
+  return prisma.view.findMany({
     include: {
       fieldGroups: {
         orderBy: {
@@ -25,7 +23,9 @@ const activeView = async (_, __, { userId }) => {
       },
     },
     where: {
-      id: viewStatus.activeViewId,
+      id: {
+        in: viewStatus.map(v => v.activeViewId),
+      },
     },
   });
 };

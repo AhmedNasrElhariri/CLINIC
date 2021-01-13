@@ -13,6 +13,7 @@ enum AppointmentType {
   Followup
   Urgent
   Session
+  Surgery
 }
 
 enum Sex {
@@ -57,8 +58,8 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
-  activeView: View!
-  listMyViewsStatus: ViewStatus
+  activeViews: [View!]
+  listMyViewsStatus: [ViewStatus!]
   myClinics: [Clinic!]
   mySnippets: [Snippet!]
   patientLabs(patientId: ID!): [PatientLab!]
@@ -264,6 +265,7 @@ input AppointmentFieldInput {
 type View {
   id: ID!
   name: String
+  type: AppointmentType
   default: Boolean
   user: User
   userId: String

@@ -1,16 +1,17 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLazyQuery, useSubscription, useMutation } from '@apollo/client';
+import * as R from 'ramda';
+
 import * as ls from 'services/local-storage';
 import {
-  ACTIVE_VIEW,
+  ACTIVE_VIEWS,
   MY_CLINICS,
   NOTIFICATION_SUBSCRIPTION,
   MY_NOTIFICATIONS,
   CLEAR_NOTIFICATIONS,
 } from 'apollo-client/queries';
 import { ACCESS_TOKEN } from 'utils/constants';
-import * as R from 'ramda';
 
 import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
@@ -27,7 +28,7 @@ function useUserProfile() {
 
   const history = useHistory();
   const [clinics, setClinics] = useState([]);
-  const [getView, { data }] = useLazyQuery(ACTIVE_VIEW);
+  const [getViews, { data }] = useLazyQuery(ACTIVE_VIEWS);
   const [getClinics, { data: clinicsList }] = useLazyQuery(MY_CLINICS);
   const [getNotifications, { data: notificationsData, refetch }] = useLazyQuery(
     MY_NOTIFICATIONS
@@ -37,7 +38,7 @@ function useUserProfile() {
   });
   const { patients } = useFetchPatients();
 
-  const [_, setActiveView] = useGlobalState('activeView');
+  const [_, setActiveViews] = useGlobalState('activeViews');
   const [user, setUser] = useGlobalState('user');
   const [currentClinic, setCurrentClinic] = useGlobalState('currentClinic');
   const [clearNotifications] = useMutation(CLEAR_NOTIFICATIONS, {
@@ -57,7 +58,7 @@ function useUserProfile() {
 
   useEffect(() => {
     if (isVerified && isAuthenticated) {
-      getView();
+      getViews();
       getClinics();
       getNotifications();
     }
@@ -65,16 +66,20 @@ function useUserProfile() {
     data,
     getClinics,
     getNotifications,
-    getView,
+    getViews,
     isAuthenticated,
     isVerified,
   ]);
 
   useEffect(() => {
-    const activeView = R.prop('activeView')(data);
+    const views = R.prop('activeViews')(data);
     const clinics = R.prop('myClinics')(clinicsList);
-    if (activeView) {
-      setActiveView(activeView);
+    if (views) {
+      const normalizedView = R.pipe(
+        R.groupBy(R.prop('type')),
+        R.map(R.prop('0'))
+      )(views);
+      setActiveViews(normalizedView);
     }
     if (clinics) {
       setClinics(clinics);
@@ -84,7 +89,7 @@ function useUserProfile() {
         ls.setCurrentClinic(clinic);
       }
     }
-  }, [clinicsList, currentClinic, data, setActiveView, setCurrentClinic]);
+  }, [clinicsList, currentClinic, data, setActiveViews, setCurrentClinic]);
 
   const onLoginSucceeded = useCallback(
     ({ token, user }) => {

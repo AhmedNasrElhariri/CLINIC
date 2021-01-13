@@ -17,7 +17,8 @@ export default ({ appointmentId, appointment }) => {
     };
   }
 
-  const [view] = useGlobalState('activeView');
+  const [views] = useGlobalState('activeViews');
+  const view = useMemo(() => views[appointment.type], [appointment, views]);
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {
       appointmentId,

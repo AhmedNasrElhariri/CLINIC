@@ -1,0 +1,25 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "ViewStatus",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[userId, defaultViewId, activeViewId]"
+            },
+            {
+              "name": "name",
+              "value": "\"userId_defaultViewId_activeViewId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

@@ -5,3 +5,6 @@
 20201219152558-add-date-to-surgery
 20201227130649-add-fees
 20210113002351-add-type-to-view
+20210113005128-remove-unique-constraints-inew-view-status
+20210113015807-remove-default-view
+20210113021229-remove-unused
