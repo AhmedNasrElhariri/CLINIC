@@ -29,6 +29,11 @@ const variants = props =>
         border: `1px solid ${props.theme.colors.events[3].color}`,
         background: props.theme.colors.events[3].bg,
       },
+      five: {
+        color: props.theme.colors.events[4].color,
+        border: `1px solid ${props.theme.colors.events[4].color}`,
+        background: props.theme.colors.events[4].bg,
+      },
     },
   });
 
@@ -135,9 +140,9 @@ export const WeekEventStyled = styled.div`
 export const DayWrapper = styled.div`
   & .rbc-event {
     background: transparent !important;
-    border: 1px solid ${props => props.theme.colors.primary};
     border-radius: 8px;
     max-width: 200px;
+    ${variants}
     &:focus,
     &:visited {
       outline: none;
@@ -151,8 +156,7 @@ export const DayWrapper = styled.div`
 
 export const DayEventStyled = styled.div`
   height: 100%;
-  background: #f6fcff;
-  color: ${props => props.theme.colors.primary};
+  ${variants}
 `;
 
 export const TodayButtonStyled = styled(CRButtonGroup.CRButton)`
@@ -202,6 +206,12 @@ export const ActionIconStyled = styled(Icon).attrs(({ variant }) => ({
           },
           three: {
             background: props.theme.colors.events[2].hover,
+          },
+          four: {
+            background: props.theme.colors.events[3].hover,
+          },
+          five: {
+            background: props.theme.colors.events[4].hover,
           },
         },
       })}

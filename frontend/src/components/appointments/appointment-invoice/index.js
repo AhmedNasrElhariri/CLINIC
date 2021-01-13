@@ -26,7 +26,13 @@ const Price = ({ name, price }) => (
 
 const isOtherType = session => session.name === OTHER;
 
-function AppointmentInvoice({ clinic, onChange, discount, onDiscountChange }) {
+function AppointmentInvoice({
+  appointment,
+  clinic,
+  onChange,
+  discount,
+  onDiscountChange,
+}) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
 
@@ -43,9 +49,9 @@ function AppointmentInvoice({ clinic, onChange, discount, onDiscountChange }) {
 
     const allChoices = [
       ...sessions,
-      { name: 'Examination', price: examinationPrice },
-      { name: 'Followup', price: followupPrice },
-      { name: 'Urgent', price: urgentPrice },
+      { name: 'Examination', price: examinationPrice || 0 },
+      { name: 'Followup', price: followupPrice || 0 },
+      { name: 'Urgent', price: urgentPrice || 0 },
       { name: OTHER, price: 0 },
     ];
     return allChoices.map(s => ({ label: s.name, value: s }));

@@ -26,6 +26,6 @@ export const ContentStyled = styled.div`
   border: solid 1px rgb(112, 112, 112, 0.03);
   background-color: ${props => props.theme.colors.background};
   ${css({
-    padding: [20, 35, 50, 55, 64],
+    padding: [10, 10, 10, 10, 32],
   })}
 `;

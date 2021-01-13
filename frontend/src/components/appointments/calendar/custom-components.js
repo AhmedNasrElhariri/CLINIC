@@ -119,9 +119,9 @@ export default {
     ),
   },
   day: {
-    eventWrapper: ({ children, ...props }) => (
-      <DayWrapper {...props}>{children}</DayWrapper>
-    ),
+    eventWrapper: ({ children, event }) => {
+      return <DayWrapper {...event}>{children}</DayWrapper>;
+    },
     event: ({ event: { name, start } }) => (
       <DayEventStyled>
         <Div height="100%" display="flex" alignItems="center">

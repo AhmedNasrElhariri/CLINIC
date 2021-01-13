@@ -129,6 +129,7 @@ function TodayAppointments() {
         />
       </Can>
       <FinishAppointment
+        appointment={appointment}
         show={visible}
         onCancel={close}
         onOk={handleOk}
