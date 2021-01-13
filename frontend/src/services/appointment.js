@@ -131,3 +131,11 @@ export const isUrgent = appointment => {
 export const isSession = appointment => {
   return R.propEq('type', APPT_TYPE.Session)(appointment);
 };
+
+export const listable = appointment => {
+  return !R.propEq('type', APPT_TYPE.Surgery)(appointment);
+};
+
+export const getCreatableApptTypes = () => {
+  return Object.values(APPT_TYPE).filter(type => type !== APPT_TYPE.Surgery);
+};

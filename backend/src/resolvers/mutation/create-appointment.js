@@ -35,7 +35,7 @@ const createAppointment = async (
   const doctor = await getClinicDoctoryByClinicId(clinicId);
   const appointments = await getDayAppointments(appointment.date, doctor.id);
 
-  if (appointment.type !== 'Urgent') {
+  if (!(appointment.type === 'Urgent' || appointment.type === 'Surgery')) {
     if (!validDate(appointment.date, appointments)) {
       throw new APIExceptcion('Time slot already reversed');
     }
@@ -68,12 +68,14 @@ const createAppointment = async (
     },
   });
 
-  onAppointmentCreate({
-    userId: doctor.id,
-    notifierId: userId,
-    clinicId,
-    appointment: createdAppointment,
-  });
+  if (appointment.type !== 'Surgery') {
+    onAppointmentCreate({
+      userId: doctor.id,
+      notifierId: userId,
+      clinicId,
+      appointment: createdAppointment,
+    });
+  }
 
   return createdAppointment;
 };

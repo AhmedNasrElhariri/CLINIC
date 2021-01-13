@@ -8,6 +8,7 @@ import useGlobalState from 'state';
 import client from 'apollo-client/client';
 
 import { sortAppointmentsByDate } from 'services/appointment';
+import { APPT_TYPE } from 'utils/constants';
 
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
@@ -43,6 +44,7 @@ function useFetchAppointments() {
       R.pipe(
         R.propOr([], 'appointments'),
         R.reject(R.propEq('status', 'Cancelled')),
+        R.reject(R.propEq('type', APPT_TYPE.Surgery)),
         sortAppointmentsByDate
       )(data),
     [data]

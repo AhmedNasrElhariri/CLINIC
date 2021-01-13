@@ -16,12 +16,7 @@ import { Can } from 'components/user/can';
 import { useModal } from 'components/widgets/modal';
 import FinishAppointment from '../finish-appointments';
 import useGlobalState from 'state';
-import {
-  getName,
-  getNameByType,
-  getAppointmentprice,
-} from 'services/accounting';
-import { isSession } from 'services/appointment';
+import { getName } from 'services/accounting';
 import useFetchInventory from 'hooks/fetch-inventory';
 
 function TodayAppointments() {

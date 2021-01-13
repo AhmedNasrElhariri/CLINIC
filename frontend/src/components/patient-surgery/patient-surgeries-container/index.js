@@ -29,7 +29,11 @@ function PatientSurgeriesContainer() {
     surgery: null,
     hospital: null,
   });
-  const { createPatientSurgery, patientSurgeries } = usePatientSurgeries({
+  const {
+    createPatientSurgery,
+    patientSurgeries,
+    createAppointment,
+  } = usePatientSurgeries({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -51,6 +55,13 @@ function PatientSurgeriesContainer() {
   const filteredList = useMemo(
     () => filterPatientSurgery(patientSurgeries, filterFormValue),
     [filterFormValue, patientSurgeries]
+  );
+
+  const handleSurgeryClick = useCallback(
+    ({ patient }) => {
+      createAppointment(patient.id);
+    },
+    [createAppointment]
   );
 
   return (
@@ -76,7 +87,10 @@ function PatientSurgeriesContainer() {
           formValue={filterFormValue}
           onChange={setFilterFormValue}
         />
-        <ListPatientSurgeries patientSurgeries={filteredList} />
+        <ListPatientSurgeries
+          patientSurgeries={filteredList}
+          onSurgeryClick={handleSurgeryClick}
+        />
       </MainContainer>
     </>
   );
