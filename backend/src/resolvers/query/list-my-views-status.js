@@ -1,13 +1,11 @@
 import { prisma } from '@';
 
 const listViewStatus = (_, __, { userId }) => {
-  return prisma.viewStatus
-    .findMany({
-      where: {
-        userId,
-      },
-    })
-    .then(result => (result.length ? result[0] : null));
+  return prisma.viewStatus.findMany({
+    where: {
+      userId,
+    },
+  });
 };
 
 export default listViewStatus;

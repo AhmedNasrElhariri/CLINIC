@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react';
-import { Button, Col, Row, Toggle, Divider } from 'rsuite';
+import React, { useCallback, useMemo } from 'react';
+import { Button, Col, Row, Toggle, Divider, Alert } from 'rsuite';
+import { useQuery, useMutation } from '@apollo/client';
+import { Link } from 'react-router-dom';
+import { Panel } from 'rsuite';
 import * as R from 'ramda';
 
-import { useQuery, useMutation } from '@apollo/client';
-import { Panel } from 'rsuite';
+import { Div } from 'components';
 
-import { Link } from 'react-router-dom';
 import {
   LIST_MY_VIEWS_SUMMARY,
   LIST_MY_VIEWS_STATUS,
@@ -25,13 +26,32 @@ const Card = ({ name, active, onClick }) => (
 export default function ListViews() {
   const { data } = useQuery(LIST_MY_VIEWS_SUMMARY);
   const { data: viewStatusData } = useQuery(LIST_MY_VIEWS_STATUS);
-  const [activateView] = useMutation(ACTIVATE_VIEW);
+  const [activateView] = useMutation(ACTIVATE_VIEW, {
+    onCompleted: () => Alert.success('Default view updated'),
+    update(cache, { data: { activateView } }) {
+      const viewStatusDataList = viewStatusData.listMyViewsStatus;
+      if (!viewStatusDataList.find(v => v.id === activateView.id)) {
+        cache.writeQuery({
+          query: LIST_MY_VIEWS_STATUS,
+          data: {
+            listMyViewsStatus: [...viewStatusDataList, activateView],
+          },
+        });
+      }
+    },
+  });
 
-  const views = R.propOr([], 'listMyViews')(data);
-  const { activeViewId, defaultViewId } = R.propOr(
-    {},
-    'listMyViewsStatus'
-  )(viewStatusData);
+  const views = useMemo(() => {
+    return R.pipe(R.propOr([], 'listMyViews'), R.groupBy(R.prop('type')))(data);
+  }, [data]);
+  const activeViewIds = useMemo(
+    () =>
+      R.pipe(
+        R.propOr([], 'listMyViewsStatus'),
+        R.map(R.prop('activeViewId'))
+      )(viewStatusData),
+    [viewStatusData]
+  );
 
   const onClick = useCallback(
     viewId =>
@@ -45,21 +65,33 @@ export default function ListViews() {
 
   return (
     <>
-      <Link to="/views/new">
-        <Button>New</Button>
-      </Link>
-      <Row>
-        {views.map(v => (
-          <Col md={6} sm={12} key={v.id}>
-            <Card
-              {...v}
-              active={v.id === activeViewId}
-              default={v.id === defaultViewId}
-              onClick={() => onClick(v.id)}
-            />
-          </Col>
-        ))}
-      </Row>
+      <Div>
+        <Link to="/views/new">
+          <Button appearance="primary">New</Button>
+        </Link>
+      </Div>
+      <Div>
+        {Object.entries(views).map(([type, userViews]) => {
+          return (
+            <Div mt={5}>
+              <h4>{type}</h4>
+              <Div>
+                <Row>
+                  {userViews.map(v => (
+                    <Col md={6} sm={12} key={v.id}>
+                      <Card
+                        {...v}
+                        active={activeViewIds.includes(v.id)}
+                        onClick={() => onClick(v.id)}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              </Div>
+            </Div>
+          );
+        })}
+      </Div>
     </>
   );
 }

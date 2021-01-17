@@ -12,6 +12,14 @@ export const APPOINTMENTS_STATUS = Object.freeze({
   CLOSED: 'Closed',
 });
 
+export const APPOINTMENTS_TYPES = Object.freeze({
+  Examination: 'Examination',
+  Followup: 'Followup',
+  Urgent: 'Urgent',
+  Session: 'Session',
+  Surgery: 'Surgery',
+});
+
 export const SUBJECTS = {
   ALL: 'all',
   APPOINTMENT: 'Appointment',

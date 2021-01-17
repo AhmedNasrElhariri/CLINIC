@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { CRTable } from 'components';
+import { CRTable, Div } from 'components';
 
 import EditItem from '../edit-item';
+import RemoveItemDefinition from '../remove-item-definition';
 
-const ListItemsDefinitions = ({ items, onEdit }) => {
+const ListItemsDefinitions = ({ items, onRemove }) => {
   return (
     <CRTable autoHeight data={items}>
       <CRTable.CRColumn flexGrow={1}>
@@ -27,9 +28,21 @@ const ListItemsDefinitions = ({ items, onEdit }) => {
         <CRTable.CRCell dataKey="barcode" semiBold />
       </CRTable.CRColumn>
 
-      <CRTable.CRColumn width={35}>
+      <CRTable.CRColumn width={60}>
         <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-        <CRTable.CRCell>{data => <EditItem defaultValue={data}/>}</CRTable.CRCell>
+        <CRTable.CRCell>
+          {data => (
+            <Div
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              height="100%"
+            >
+              <EditItem defaultValue={data} />
+              <RemoveItemDefinition item={data} />
+            </Div>
+          )}
+        </CRTable.CRCell>
       </CRTable.CRColumn>
     </CRTable>
   );

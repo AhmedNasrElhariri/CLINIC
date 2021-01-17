@@ -5,6 +5,7 @@ import moment from 'moment';
 import useGlobalState from 'state';
 
 import { sortAppointmentsByDate } from 'services/appointment';
+import { APPT_TYPE } from 'utils/constants';
 
 import jsonData from './data.json';
 
@@ -43,6 +44,7 @@ function useFetchAppointments() {
       R.pipe(
         R.propOr([], 'appointments'),
         R.reject(R.propEq('status', 'Cancelled')),
+        R.reject(R.propEq('type', APPT_TYPE.Surgery)),
         sortAppointmentsByDate
       )(data),
     [data]

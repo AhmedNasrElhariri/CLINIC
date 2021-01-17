@@ -6,7 +6,7 @@ import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
 import { getClinicDoctoryByClinicId } from '@/services/clinic';
 import { onAppointmentCreate } from '@/services/notification.service';
-import { APPOINTMENTS_STATUS } from '@/utils/constants';
+import { APPOINTMENTS_STATUS, APPOINTMENTS_TYPES } from '@/utils/constants';
 
 const getDayAppointments = (day, doctorId) => {
   const start = getStartOfDay(day);
@@ -19,6 +19,9 @@ const getDayAppointments = (day, doctorId) => {
       },
       status: {
         not: APPOINTMENTS_STATUS.CANCELLED,
+      },
+      type: {
+        not: APPOINTMENTS_TYPES.Urgent,
       },
       doctorId,
     },
@@ -35,7 +38,12 @@ const createAppointment = async (
   const doctor = await getClinicDoctoryByClinicId(clinicId);
   const appointments = await getDayAppointments(appointment.date, doctor.id);
 
-  if (appointment.type !== 'Urgent') {
+  if (
+    !(
+      appointment.type === APPOINTMENTS_TYPES.Urgent ||
+      appointment.type === APPOINTMENTS_TYPES.Surgery
+    )
+  ) {
     if (!validDate(appointment.date, appointments)) {
       throw new APIExceptcion('Time slot already reversed');
     }
@@ -68,12 +76,14 @@ const createAppointment = async (
     },
   });
 
-  onAppointmentCreate({
-    userId: doctor.id,
-    notifierId: userId,
-    clinicId,
-    appointment: createdAppointment,
-  });
+  if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {
+    onAppointmentCreate({
+      userId: doctor.id,
+      notifierId: userId,
+      clinicId,
+      appointment: createdAppointment,
+    });
+  }
 
   return createdAppointment;
 };

@@ -1,5 +1,3 @@
-import { hospital } from '../patient-surgery';
-
 export { default as createPatient } from './create-patient';
 export { default as createAppointment } from './create-appointment';
 export { default as updateAppointment } from './update-appointment';
@@ -30,8 +28,10 @@ export { default as updateUserPermissions } from './update-user-permissions';
 export { default as clearNotifications } from './clear-notifications';
 export { default as createEvent } from './create-event';
 export { default as defineItem } from './define-item';
+export { default as removeItemDefinition } from './remove-item-definition';
 export { default as editItem } from './edit-item';
 export { default as addItem } from './add-item';
+export { default as removeItem } from './remove-item';
 export { default as addHospital } from './add-hospital';
 export { default as defineSurgery } from './define-surgery';
 export { default as createPatientSurgery } from './create-patient-surgery';

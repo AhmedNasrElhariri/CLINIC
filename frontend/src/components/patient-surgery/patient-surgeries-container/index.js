@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 
-import { Div, CRButton, MainContainer } from 'components';
+import { Div, CRButton, MainContainer, CRModal } from 'components';
 import useFrom from 'hooks/form';
 import { useModal } from 'components/widgets/modal';
 import usePatientSurgeries from 'hooks/fetch-patient-surgeries';
@@ -19,6 +19,8 @@ const initValue = {
 
 function PatientSurgeriesContainer() {
   const { visible, open, close } = useModal();
+  const [selectedPatientSurgery, setSelectedPatientSurgery] = useState({});
+  const confirmationModal = useModal();
   const { formValue, setFormValue } = useFrom({
     initValue,
   });
@@ -29,7 +31,11 @@ function PatientSurgeriesContainer() {
     surgery: null,
     hospital: null,
   });
-  const { createPatientSurgery, patientSurgeries } = usePatientSurgeries({
+  const {
+    createPatientSurgery,
+    patientSurgeries,
+    createAppointment,
+  } = usePatientSurgeries({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -52,6 +58,16 @@ function PatientSurgeriesContainer() {
     () => filterPatientSurgery(patientSurgeries, filterFormValue),
     [filterFormValue, patientSurgeries]
   );
+
+  const handleSurgeryClick = useCallback(patientSurgery => {
+    confirmationModal.open()
+    setSelectedPatientSurgery(patientSurgery);
+  }, [confirmationModal]);
+
+  const handleConfirmAction = useCallback(() => {
+    confirmationModal.close();
+    createAppointment(selectedPatientSurgery.patient.id);
+  }, [confirmationModal, createAppointment, selectedPatientSurgery.patient]);
 
   return (
     <>
@@ -76,8 +92,23 @@ function PatientSurgeriesContainer() {
           formValue={filterFormValue}
           onChange={setFilterFormValue}
         />
-        <ListPatientSurgeries patientSurgeries={filteredList} />
+        <ListPatientSurgeries
+          patientSurgeries={filteredList}
+          onSurgeryClick={handleSurgeryClick}
+        />
       </MainContainer>
+
+      <CRModal
+        onOk={handleConfirmAction}
+        onCancel={confirmationModal.close}
+        onHide={confirmationModal.close}
+        show={confirmationModal.visible}
+        header="Cancel Appointment"
+      >
+        <Div textAlign="center">
+          Are you Sure you want to Insert Surgery Data?
+        </Div>
+      </CRModal>
     </>
   );
 }

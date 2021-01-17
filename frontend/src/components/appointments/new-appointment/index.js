@@ -27,16 +27,16 @@ import {
 
 import useFetchData from './fetch-data';
 import { filterPatientBy } from 'utils/patient';
-import { APPT_TYPE } from 'utils/constants';
+import { getCreatableApptTypes } from 'services/appointment';
 import useAppointmentForm from 'hooks/appointment-form';
 
 import { mapArrWithIdsToChoices } from 'utils/misc';
 
 const { StringType } = Schema.Types;
 
-const appointmentTypes = Object.entries(APPT_TYPE).map(([label, value]) => ({
-  label,
-  value,
+const appointmentTypes = getCreatableApptTypes().map(type => ({
+  label: type,
+  value: type,
 }));
 
 const model = Schema.Model({

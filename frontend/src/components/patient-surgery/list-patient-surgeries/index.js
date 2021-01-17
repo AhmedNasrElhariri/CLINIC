@@ -4,11 +4,11 @@ import NumberFormat from 'react-number-format';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 
-function ListPatientSurgeries({ patientSurgeries }) {
+function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={patientSurgeries}>
+        <CRTable autoHeight data={patientSurgeries} onRowClick={onSurgeryClick}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Patient</CRTable.CRHeaderCell>
             <CRTable.CRCell>
@@ -50,20 +50,19 @@ function ListPatientSurgeries({ patientSurgeries }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Fees</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ fees }) => (
-              <CRTable.CRCellStyled bold>
-                <NumberFormat
-                  value={fees}
-                  displayType="text"
-                  thousandSeparator
-                />
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
+            <CRTable.CRHeaderCell>Fees</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ fees }) => (
+                <CRTable.CRCellStyled bold>
+                  <NumberFormat
+                    value={fees}
+                    displayType="text"
+                    thousandSeparator
+                  />
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
           </CRTable.CRColumn>
-          
         </CRTable>
       </CRCard>
     </>

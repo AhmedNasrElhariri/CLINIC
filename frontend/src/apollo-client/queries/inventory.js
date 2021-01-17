@@ -60,3 +60,20 @@ export const ADD_ITEM = gql`
     }
   }
 `;
+
+export const REMOVE_DEFINITION = gql`
+  mutation removeItemDefinition($id: ID!) {
+    removeItemDefinition(id: $id) {
+      id
+    }
+  }
+`;
+
+export const REMOVE_ITEM = gql`
+  mutation removeItem($itemId: ID!, $clinicId: ID!) {
+    removeItem(itemId: $itemId, clinicId: $clinicId) {
+      itemId
+      clinicId
+    }
+  }
+`;

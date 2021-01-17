@@ -13,6 +13,7 @@ enum AppointmentType {
   Followup
   Urgent
   Session
+  Surgery
 }
 
 enum Sex {
@@ -57,8 +58,8 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
-  activeView: View!
-  listMyViewsStatus: ViewStatus
+  activeViews: [View!]
+  listMyViewsStatus: [ViewStatus!]
   myClinics: [Clinic!]
   mySnippets: [Snippet!]
   patientLabs(patientId: ID!): [PatientLab!]
@@ -117,8 +118,10 @@ type Mutation {
   clearNotifications: Boolean
   createEvent(event: EventInput!): Event
   defineItem(item: ItemInput!): Item
+  removeItemDefinition(id: ID!): Item
   editItem(item: ItemUpdateInput!): Item
   addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
+  removeItem(itemId: ID!, clinicId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
   editHospital(hospital: HospitalInput!): Hospital
   defineSurgery(surgery: SurgeryInput!): Surgery
@@ -262,6 +265,7 @@ input AppointmentFieldInput {
 type View {
   id: ID!
   name: String
+  type: AppointmentType
   default: Boolean
   user: User
   userId: String
@@ -296,6 +300,7 @@ type ViewStatus {
 input ViewInput {
   id: ID
   name: String!
+  type: AppointmentType!
   fieldGroups: [FieldGroupInput!]
 }
 

@@ -138,20 +138,16 @@ export const getSpecialtiesByBranchId = (specialties, branchId) => {
 };
 
 export const specialtiesTypes = (specialties, branchId) =>
-  mapArrWithIdsToChoices(
-    getSpecialtiesByBranchId(specialties, branchId)
-  );
+  mapArrWithIdsToChoices(getSpecialtiesByBranchId(specialties, branchId));
 
 export const getDoctorsBySpecialtyId = (doctors, specialtyId) => {
   return doctors.filter(d => d.specialty.id === specialtyId);
 };
 
 export const doctorsTypes = (doctors, specialtyId) =>
-  mapArrWithIdsToChoices(
-    getDoctorsBySpecialtyId(doctors, specialtyId)
-  );
+  mapArrWithIdsToChoices(getDoctorsBySpecialtyId(doctors, specialtyId));
 
-export const getAppointmentTypes = () => ['Examination', 'Followup'];
+export const getAppointmentTypes = () => Object.values(APPT_TYPE);
 
 export const appointmentTypes = mapArrToChoices(getAppointmentTypes());
 
@@ -186,4 +182,12 @@ export const isUrgent = appointment => {
 
 export const isSession = appointment => {
   return R.propEq('type', APPT_TYPE.Session)(appointment);
+};
+
+export const listable = appointment => {
+  return !R.propEq('type', APPT_TYPE.Surgery)(appointment);
+};
+
+export const getCreatableApptTypes = () => {
+  return Object.values(APPT_TYPE).filter(type => type !== APPT_TYPE.Surgery);
 };

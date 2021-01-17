@@ -1,8 +1,9 @@
 import React from 'react';
 import NumberFormat from 'react-number-format';
 
-import { CRTable, H7 } from 'components';
+import { CRTable } from 'components';
 import { getUnitOfMeasureShortCut } from 'services/inventory';
+import RemoveItem from '../remove-item';
 
 const ListInventory = ({ items }) => {
   return (
@@ -37,12 +38,17 @@ const ListInventory = ({ items }) => {
                 displayType="text"
                 thousandSeparator
               />
-              <H7 display="inline" ml={2}>
+              <span display="inline" ml={2}>
                 {getUnitOfMeasureShortCut(item.unitOfMeasure)}
-              </H7>
+              </span>
             </CRTable.CRCellStyled>
           )}
         </CRTable.CRCell>
+      </CRTable.CRColumn>
+
+      <CRTable.CRColumn width={35}>
+        <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+        <CRTable.CRCell>{data => <RemoveItem item={data} />}</CRTable.CRCell>
       </CRTable.CRColumn>
     </CRTable>
   );

@@ -33,7 +33,7 @@ module.exports = merge(common, {
           to: 'migrations',
         },
         {
-          from: './prisma/.env',
+          from: './.env',
           to: '',
         },
       ],

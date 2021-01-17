@@ -1,10 +1,11 @@
 import gql from 'graphql-tag';
 
-export const ACTIVE_VIEW = gql`
-  query activeView {
-    activeView {
+export const ACTIVE_VIEWS = gql`
+  query activeViews {
+    activeViews {
       id
       name
+      type
       fieldGroups {
         id
         name
@@ -38,6 +39,7 @@ export const LIST_MY_VIEWS_SUMMARY = gql`
     listMyViews {
       id
       name
+      type
     }
   }
 `;
@@ -46,7 +48,6 @@ export const LIST_MY_VIEWS_STATUS = gql`
     listMyViewsStatus {
       id
       activeViewId
-      defaultViewId
     }
   }
 `;

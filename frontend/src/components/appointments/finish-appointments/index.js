@@ -10,7 +10,7 @@ const initValue = {
   items: [],
 };
 
-function FinishAppointment({ show, onCancel, onOk, clinic }) {
+function FinishAppointment({ appointment, show, onCancel, onOk, clinic }) {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
 
@@ -64,6 +64,7 @@ function FinishAppointment({ show, onCancel, onOk, clinic }) {
               onChange={handleInvoiceChange}
               discount={discount}
               onDiscountChange={setDiscount}
+              appointment={appointment}
             />
           )}
           {activeStep === 1 && (

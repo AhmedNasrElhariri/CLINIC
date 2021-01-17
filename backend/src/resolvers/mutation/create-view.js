@@ -1,12 +1,13 @@
 import { prisma } from '@';
 
 const createView = async (_, { view }, { userId }) => {
-  const { name, fieldGroups } = view;
+  const { name, type, fieldGroups } = view;
 
   return prisma.view
     .create({
       data: {
         name,
+        type,
         user: {
           connect: { id: userId },
         },

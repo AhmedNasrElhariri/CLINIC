@@ -5,7 +5,7 @@ const initialState = {
   isVerified: false,
   user: null,
   lanes: [],
-  activeView: {},
+  activeViews: {},
   currentClinic: {},
 };
 

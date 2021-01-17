@@ -5,12 +5,6 @@ import { useQuery, useMutation } from '@apollo/client';
 import { ButtonToolbar, Icon, Alert, Loader } from 'rsuite';
 
 import {
-  GET_APPOINTMENT,
-  UPDATE_APPOINTMENT,
-  ARCHIVE_APPOINTMENT,
-} from 'apollo-client/queries';
-
-import {
   Div,
   PatientProgress,
   PatientSummary,
@@ -22,6 +16,7 @@ import {
 import AppointmentData from './appointment-data';
 import Prescription from './prescription';
 import PatientLabs from './patient-labs';
+import { Can } from 'components/user/can';
 
 import {
   getFormInitValues,
@@ -31,9 +26,14 @@ import {
   isDone,
 } from 'services/appointment';
 
+import {
+  GET_APPOINTMENT,
+  UPDATE_APPOINTMENT,
+  ARCHIVE_APPOINTMENT,
+} from 'apollo-client/queries';
+
 import useAppointmentHistory from './fetch-appointment-history';
 import History from './patient-history';
-import { Can } from 'components/user/can';
 
 import { HeaderStyled } from './style';
 import { useModal } from 'components/widgets/modal';
@@ -56,7 +56,6 @@ function Appointment() {
     variables: {
       id: appointmentId,
     },
-    // fetchPolicy: 'no-cache',
     onCompleted: ({ appointment }) => {
       setDisabled(isArchived(appointment));
     },
@@ -151,11 +150,7 @@ function Appointment() {
         <HeaderStyled>
           <H3 mb={64}>Appointment</H3>
           <ButtonToolbar>
-            <CRButton
-              small
-              primary
-              onClick={open}
-            >
+            <CRButton small primary onClick={open}>
               Prescription
               <Icon icon="add" />
             </CRButton>

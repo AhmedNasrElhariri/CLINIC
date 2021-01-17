@@ -27,8 +27,8 @@ const localizer = momentLocalizer(moment);
 const variants = {
   Examination: 'one',
   Followup: 'two',
-  Session: 'three',
-  Urgent: 'four',
+  Urgent: 'three',
+  Session: 'four',
 };
 
 const initialValue = {
@@ -98,6 +98,8 @@ function AppointmentCalendar() {
     () =>
       events.map(p => ({
         ...p,
+        start: moment(p.start).toDate(),
+        end: moment(p.end).toDate(),
         variant: 'five',
       })),
     [events]
@@ -187,7 +189,6 @@ function AppointmentCalendar() {
             <CalendarStyled
               events={formValue.doctor ? allEvents : []}
               views={allViews}
-              showMultiDayTimes
               localizer={localizer}
               components={components}
               step={15}
@@ -195,6 +196,7 @@ function AppointmentCalendar() {
               onSelectSlot={handleSelect}
               longPressThreshold={2000}
               defaultView={Views.MONTH}
+              showMultiDayTimes
               selectable
               popup
             />
