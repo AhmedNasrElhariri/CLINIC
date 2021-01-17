@@ -8,7 +8,8 @@
         "Examination",
         "Followup",
         "Urgent",
-        "Session"
+        "Session",
+        "Surgery"
       ]
     },
     {
@@ -164,22 +165,29 @@
     {
       "tag": "CreateField",
       "model": "Organization",
-      "field": "Item",
+      "field": "item",
       "type": "Item",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Organization",
-      "field": "Hospital",
+      "field": "hospital",
       "type": "Hospital",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Organization",
-      "field": "Surgery",
+      "field": "surgery",
       "type": "Surgery",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "patientSurgery",
+      "type": "PatientSurgery",
       "arity": "List"
     },
     {
@@ -271,21 +279,21 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "Appointment",
+      "field": "appointment",
       "type": "Appointment",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "View",
+      "field": "view",
       "type": "View",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "ViewStatus",
+      "field": "viewStatus",
       "type": "ViewStatus",
       "arity": "List"
     },
@@ -324,14 +332,14 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "WorkingHours",
+      "field": "workingHours",
       "type": "WorkingHours",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "Snippet",
+      "field": "snippet",
       "type": "Snippet",
       "arity": "List"
     },
@@ -391,7 +399,7 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "InventoryHistory",
+      "field": "inventoryHistory",
       "type": "InventoryHistory",
       "arity": "List"
     },
@@ -519,28 +527,28 @@
     {
       "tag": "CreateField",
       "model": "Patient",
-      "field": "MedicalHistory",
+      "field": "medicalHistory",
       "type": "MedicalHistory",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Patient",
-      "field": "FamilyHistory",
+      "field": "familyHistory",
       "type": "FamilyHistory",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Patient",
-      "field": "InventoryHistory",
+      "field": "inventoryHistory",
       "type": "InventoryHistory",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Patient",
-      "field": "PatientSurgery",
+      "field": "patientSurgery",
       "type": "PatientSurgery",
       "arity": "List"
     },
@@ -970,6 +978,38 @@
     {
       "tag": "CreateField",
       "model": "View",
+      "field": "type",
+      "type": "AppointmentType",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "type"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "View",
+          "field": "type"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "Examination"
+    },
+    {
+      "tag": "CreateField",
+      "model": "View",
       "field": "user",
       "type": "User",
       "arity": "Required"
@@ -1030,66 +1070,9 @@
     {
       "tag": "CreateField",
       "model": "View",
-      "field": "defaultViewsStatuses",
-      "type": "ViewStatus",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "View",
-          "field": "defaultViewsStatuses"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "View",
-          "field": "defaultViewsStatuses"
-        },
-        "directive": "relation"
-      },
-      "argument": "",
-      "value": "\"defaultView\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "View",
       "field": "activeViewsStatuses",
       "type": "ViewStatus",
       "arity": "List"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "View",
-          "field": "activeViewsStatuses"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "View",
-          "field": "activeViewsStatuses"
-        },
-        "directive": "relation"
-      },
-      "argument": "",
-      "value": "\"activeView\""
     },
     {
       "tag": "CreateModel",
@@ -1194,73 +1177,6 @@
     {
       "tag": "CreateField",
       "model": "ViewStatus",
-      "field": "defaultView",
-      "type": "View",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "ViewStatus",
-          "field": "defaultView"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ViewStatus",
-          "field": "defaultView"
-        },
-        "directive": "relation"
-      },
-      "argument": "",
-      "value": "\"defaultView\""
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ViewStatus",
-          "field": "defaultView"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[defaultViewId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ViewStatus",
-          "field": "defaultView"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "ViewStatus",
-      "field": "defaultViewId",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "ViewStatus",
       "field": "activeView",
       "type": "View",
       "arity": "Required"
@@ -1275,20 +1191,6 @@
         },
         "directive": "relation"
       }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ViewStatus",
-          "field": "activeView"
-        },
-        "directive": "relation"
-      },
-      "argument": "",
-      "value": "\"activeView\""
     },
     {
       "tag": "CreateArgument",
@@ -1324,26 +1226,6 @@
       "field": "activeViewId",
       "type": "String",
       "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Model",
-          "model": "ViewStatus",
-          "arguments": [
-            {
-              "name": "",
-              "value": "[userId, defaultViewId, activeViewId]"
-            },
-            {
-              "name": "name",
-              "value": "\"userId_defaultViewId_activeViewId_unique_constraint\""
-            }
-          ]
-        },
-        "directive": "unique"
-      }
     },
     {
       "tag": "CreateModel",
@@ -2652,14 +2534,14 @@
     {
       "tag": "CreateField",
       "model": "Clinic",
-      "field": "InventoryItem",
+      "field": "inventoryItem",
       "type": "InventoryItem",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Clinic",
-      "field": "InventoryHistory",
+      "field": "inventoryHistory",
       "type": "InventoryHistory",
       "arity": "List"
     },
@@ -4376,14 +4258,14 @@
     {
       "tag": "CreateField",
       "model": "Item",
-      "field": "InventoryItem",
+      "field": "inventoryItems",
       "type": "InventoryItem",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Item",
-      "field": "InventoryHistory",
+      "field": "inventoryHistory",
       "type": "InventoryHistory",
       "arity": "List"
     },
@@ -4936,6 +4818,13 @@
       "arity": "Required"
     },
     {
+      "tag": "CreateField",
+      "model": "Hospital",
+      "field": "PatientSurgery",
+      "type": "PatientSurgery",
+      "arity": "List"
+    },
+    {
       "tag": "CreateModel",
       "model": "Surgery"
     },
@@ -5045,7 +4934,7 @@
     {
       "tag": "CreateField",
       "model": "Surgery",
-      "field": "PatientSurgery",
+      "field": "patientSurgery",
       "type": "PatientSurgery",
       "arity": "List"
     },
@@ -5201,6 +5090,126 @@
       "field": "surgeryId",
       "type": "String",
       "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "hospital",
+      "type": "Hospital",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "hospital"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "hospital"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[hospitalId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "hospital"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "hospitalId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "date",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "fees",
+      "type": "Int",
+      "arity": "Optional"
     }
   ]
 }

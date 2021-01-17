@@ -11,6 +11,7 @@
     "@rsuite/charts": "^3.2.4",
     "@rsuite/responsive-nav": "^0.0.10",
     "apollo-upload-client": "^13.0.0",
+    "compressorjs": "^1.0.7",
     "echarts": "^4.7.0",
     "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
@@ -59,7 +60,7 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"  
+      "last 1 safari version"
     ]
   },
   "proxy": "http://localhost:4000"
