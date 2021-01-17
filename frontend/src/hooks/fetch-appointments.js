@@ -80,7 +80,7 @@ function useFetchAppointments() {
     });
   }, [appointments]);
 
- /*  const patientsDoctors = useMemo(() => {
+  /*  const patientsDoctors = useMemo(() => {
     return [
       ...new Map(appointments.map(({ doctorId }) => doctorId)).values(),
     ];
@@ -111,7 +111,7 @@ function useFetchAppointments() {
       branches,
       specializations,
       doctors,
-     // patientsDoctors,
+      // patientsDoctors,
     ]
   );
 }

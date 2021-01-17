@@ -76,6 +76,8 @@ export { default as AccountingContainer } from './accounting/accounting-containe
 /******************     Permissions    *******************************/
 export { default as ListUsers } from './permissions/list-users';
 export { default as UserPermissions } from './permissions/user-permissions';
+export { default as RolePermissions } from './permissions/role-permissions';
+
 
 /******************     Inventory    *******************************/
 export { default as InventoryPage } from './inventory/inventory-page';

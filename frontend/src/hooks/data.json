@@ -1,51 +1,94 @@
 {
   "branches": [
-    { "id": "1", "name": "Cairo" },
-    { "id": "2", "name": "Giza" },
-    { "id": "3", "name": "Nasr" },
-    { "id": "4", "name": "Mahla" }
-  ],
-  "specializations": [
     {
-      "id": "1",
-      "name": "اطفال",
-      "branches": [
-        { "id": "1", "name": "Cairo" },
-        { "id": "4", "name": "Mahla" }
+      "id": 1,
+      "name": "Nasr City",
+      "specializations": [
+        {
+          "id": 1,
+          "name": "عظام",
+          "users": [
+            {
+              "id": 1,
+              "name": "Shady Hassan"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "قلب",
+          "users": [
+            {
+              "id": 2,
+              "name": " Hassan"
+            }
+          ]
+        }
       ]
     },
-    { "id": "2", "name": "قلب", "branches": [{ "id": "2", "name": "Giza" }] },
     {
-      "id": "3",
-      "name": "عظام",
-      "branches": [
-        { "id": "1", "name": "Cairo" },
-        { "id": "2", "name": "Giza" }
+      "id": 2,
+      "name": "Giza",
+      "specializations": [
+        {
+          "id": 1,
+          "name": "عظام",
+          "users": []
+        },
+        {
+          "id": 3,
+          "name": "تجميل",
+          "users": []
+        }
       ]
-    },
-    { "id": "4", "name": "اسنان", "branches": [{ "id": "3", "name": "Nasr" }] }
+    }
   ],
-  "doctors": [
+  "users": [
     {
       "id": "1",
       "name": "Qasem",
-      "specialization": { "id": "1", "name": "اطفال" },
+      "specialization": {
+        "id": "1",
+        "name": "اطفال"
+      },
       "branches": [
-        { "id": "1", "name": "Cairo" },
-        { "id": "4", "name": "Mahla" }
+        {
+          "id": "1",
+          "name": "Cairo"
+        },
+        {
+          "id": "4",
+          "name": "Mahla"
+        }
       ]
     },
     {
       "id": "2",
       "name": "Eslam",
-      "specialization": { "id": "2", "name": "قلب" },
-      "branches": [{ "id": "2", "name": "Giza" }]
+      "specialization": {
+        "id": "2",
+        "name": "قلب"
+      },
+      "branches": [
+        {
+          "id": "2",
+          "name": "Giza"
+        }
+      ]
     },
     {
       "id": "3",
       "name": "Amin",
-      "specialization": { "id": "2", "name": "قلب" },
-      "branches": [{ "id": "2", "name": "Giza" }]
+      "specialization": {
+        "id": "2",
+        "name": "قلب"
+      },
+      "branches": [
+        {
+          "id": "2",
+          "name": "Giza"
+        }
+      ]
     }
   ],
   "appointments": [
@@ -62,9 +105,18 @@
       "status": "Closed",
       "type": "Exmaintaion",
       "__typename": "Appointment",
-      "userId": "2",
-      "specializationId": "2",
-      "branchId": "2",
+      "doctor": {
+        "id": "2",
+        "name": "Eslam"
+      },
+      "specialization": {
+        "id": "2",
+        "name": "قلب"
+      },
+      "branch": {
+        "id": "2",
+        "name": "Giza"
+      },
       "from": "",
       "to": ""
     },
@@ -81,9 +133,18 @@
       "status": "Scheduled",
       "type": "Followup",
       "__typename": "Appointment",
-      "userId": "3",
-      "specializationId": "2",
-      "branchId": "2",
+      "doctor": {
+        "id": "3",
+        "name": "Amin"
+      },
+      "specialization": {
+        "id": "2",
+        "name": "قلب"
+      },
+      "branch": {
+        "id": "2",
+        "name": "Giza"
+      },
       "from": "",
       "to": ""
     },
@@ -100,9 +161,18 @@
       "status": "Closed",
       "type": "Urgent",
       "__typename": "Appointment",
-      "userId": "1",
-      "specializationId": "1",
-      "branchId": "1",
+      "doctor": {
+        "id": "1",
+        "name": "Qasem"
+      },
+      "specialization": {
+        "id": "1",
+        "name": "اطفال"
+      },
+      "branch": {
+        "id": "1",
+        "name": "Cairo"
+      },
       "from": "",
       "to": ""
     },
@@ -119,9 +189,18 @@
       "status": "Closed",
       "type": "Urgent",
       "__typename": "Appointment",
-      "userId": "1",
-      "specializationId": "1",
-      "branchId": "1",
+      "doctor": {
+        "id": "1",
+        "name": "Qasem"
+      },
+      "specialization": {
+        "id": "1",
+        "name": "اطفال"
+      },
+      "branch": {
+        "id": "1",
+        "name": "Cairo"
+      },
       "from": "",
       "to": ""
     }

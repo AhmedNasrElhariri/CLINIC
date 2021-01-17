@@ -6,7 +6,7 @@ import { filterAppointments, sortAppointments } from 'services/appointment';
 import { Div, CRCard, H3, CRTable } from 'components';
 import Filter from './filter';
 import useFetchAppointments from 'hooks/fetch-appointments';
-import ToolBar from '../today-appointments/toolbar'
+import ToolBar from '../today-appointments/toolbar';
 
 function Appointments() {
   const history = useHistory();
@@ -16,7 +16,8 @@ function Appointments() {
     branches,
     doctors,
     specializations,
-    appointments } = useFetchAppointments();
+    appointments,
+  } = useFetchAppointments();
 
   const filteredAppointments = useMemo(
     () => sortAppointments(filterAppointments(appointments, formValue)),
@@ -27,13 +28,12 @@ function Appointments() {
     <>
       <H3 mb={64}>Appointments</H3>
       <ToolBar
-          formValue={formValue}
-          onChange={setFormValue}
-          branches={branches}
-          specializations={specializations}
-          doctors={doctors}
-         
-        />
+        formValue={formValue}
+        onChange={setFormValue}
+        branches={branches}
+        specializations={specializations}
+        doctors={doctors}
+      />
       <Div mb={4}>
         <Filter formValue={formValue} onChange={setFormValue} />
       </Div>

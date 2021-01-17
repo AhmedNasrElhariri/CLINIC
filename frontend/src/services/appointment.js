@@ -91,7 +91,14 @@ const filterByType = (appointments, filter) => {
 export const sortAppointments = R.sort(R.descend(R.prop('date')));
 
 export const filterAppointments = (appointments = [], filter) => {
-  const filters = [filterByDate, filterByPatientNameOrPhoneNo, filterByType,filterByBranch,filterByDoctor,filterBySpecialization];
+  const filters = [
+    filterByDate,
+    filterByPatientNameOrPhoneNo,
+    filterByType,
+    filterByBranch,
+    filterByDoctor,
+    filterBySpecialization,
+  ];
   return filters.reduce((app, fn) => fn(app, filter), appointments);
 };
 

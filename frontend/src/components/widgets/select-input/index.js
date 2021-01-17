@@ -29,7 +29,7 @@ const paddingLeft = css`
 `;
 
 const borderCss = css`
-  border: solid 1px ${(props) => props.theme.colors.primary} !important;
+  border: solid 1px ${props => props.theme.colors.primary} !important;
 `;
 
 const ValueStyled = styled.div`
@@ -41,11 +41,10 @@ const ValueStyled = styled.div`
   line-height: 1.35;
   letter-spacing: normal;
   text-align: left;
-
   display: flex;
   align-items: center;
 
-  color: ${(props) => props.theme.colors.primary};
+  color: ${props => props.theme.colors.primary};
 
   ${byTheme(theme)}
 `;
@@ -61,10 +60,10 @@ const ItemStyled = styled.div`
     padding: 0;
   }
 
-  color: ${(props) =>
+  color: ${props =>
     props.active ? props.theme.colors.primary : props.theme.colors.texts[1]};
 
-  font-weight: ${(props) => (props.active ? 600 : 400)};
+  font-weight: ${props => (props.active ? 600 : 400)};
 
   & input.rs-picker-search-bar-input {
     ${borderCss}
@@ -82,6 +81,7 @@ const SelectPickerStyled = styled(SelectPicker)`
     ${paddingLeft}
     display: flex;
     align-items: center;
+    width:100%
     ${byTheme(theme)}
     &:focus,
     &:active,
@@ -101,14 +101,14 @@ const SelectPickerStyled = styled(SelectPicker)`
         height: 45px;
         border-radius: 10px !important;
         font-size: 18px !important;
-        color: ${(props) => props.theme.colors.text} !important;
+        color: ${props => props.theme.colors.text} !important;
 
         &:focus,
         &:active,
         &:hover,
         &:visited {
           outline: none;
-          border: solid 1px ${(props) => props.theme.colors.primary} !important;
+          border: solid 1px ${props => props.theme.colors.primary} !important;
         }
       }
 
@@ -119,13 +119,13 @@ const SelectPickerStyled = styled(SelectPicker)`
   `}
 `;
 
-const CustomSelect = ({ value, onChange, ...props }) => {
+const CustomSelect = ({ value, label, onChange, ...props }) => {
   return (
     <SelectPickerStyled
       {...props}
       value={value}
       onChange={onChange}
-      menuClassName='cr-picker'
+      menuClassName="cr-picker"
       virtualized={false}
       renderValue={(_, __, label) => <ValueStyled>{label}</ValueStyled>}
       renderMenuItem={(label, { value: val }) => (
@@ -135,7 +135,8 @@ const CustomSelect = ({ value, onChange, ...props }) => {
         padding: 0,
         margin: 0,
         borderRadius: 10,
-      }}></SelectPickerStyled>
+      }}
+    ></SelectPickerStyled>
   );
 };
 
