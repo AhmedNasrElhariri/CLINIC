@@ -7,13 +7,13 @@ const { StringType } = Schema.Types;
 
 const model = Schema.Model({
   branchName: StringType().isRequired('Branch name is required'),
-  specializations: StringType().isRequired('Specializations is required'),
+  specialties: StringType().isRequired('Specialties is required'),
   doctors: StringType().isRequired('Doctors is required'),
 });
 
 const initialValues = {
   branchName: '',
-  specializations: '',
+  specialties: '',
   doctors: '',
 };
 
@@ -39,7 +39,7 @@ export default function AddDoctor({ show, onCancel, onCreate, branches }) {
           searchable={true}
           data={branchesName}
         />
-        <CRTextInput label="Specializations" name="specializations" />
+        <CRTextInput label="Specialties" name="specialties" />
         <CRTextInput label="Doctors" name="doctors" />
       </Form>
     </CRModal>

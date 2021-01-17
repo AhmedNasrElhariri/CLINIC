@@ -4,7 +4,7 @@ import { Div, CRNav } from 'components';
 
 const navs = [
   { id: 0, title: 'Branches' },
-  { id: 1, title: 'Specializations' },
+  { id: 1, title: 'Specialties' },
   { id: 2, title: 'Users' },
 ];
 

@@ -11,10 +11,10 @@ const model = Schema.Model({
 
 const initialValues = {
   branch: '',
-  specialization: '',
+  specialty: '',
 };
 
-export default function AddSpecialization({
+export default function AddSpecialty({
   show,
   onCancel,
   onCreate,
@@ -27,7 +27,7 @@ export default function AddSpecialization({
   return (
     <CRModal
       show={show}
-      header="Add Specialization"
+      header="Add Specialty"
       onHide={onCancel}
       onCancel={onCancel}
       onOk={() => onCreate(formValue)}
@@ -41,12 +41,12 @@ export default function AddSpecialization({
           searchable={true}
           data={branchesName}
         />
-        <CRTextInput name="specialization" label="Specialization" block />
+        <CRTextInput name="specialty" label="Specialty" block />
       </Form>
     </CRModal>
   );
 }
 
-AddSpecialization.propTypes = {};
+AddSpecialty.propTypes = {};
 
-AddSpecialization.defaultProps = {};
+AddSpecialty.defaultProps = {};

@@ -9,7 +9,7 @@ function AppointmentsFilter({
   onChange,
   branches,
   doctors,
-  specializations,
+  specialties,
 }) {
   return (
     <Form formValue={formValue} onChange={onChange} fluid>
@@ -36,12 +36,12 @@ function AppointmentsFilter({
         </Col>
         <Col xs={8}>
           <CRSelectInput
-            name="specialization"
-            label="Specialization"
+            name="specialty"
+            label="Specialty"
             block
             cleanable={true}
             searchable={true}
-            data={mapArrWithIdsToChoices(specializations)}
+            data={mapArrWithIdsToChoices(specialties)}
           />
         </Col>
       </Row>

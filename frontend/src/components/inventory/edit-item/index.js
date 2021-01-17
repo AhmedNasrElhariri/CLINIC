@@ -25,7 +25,7 @@ const EditItem = ({ defaultValue }) => {
   useEffect(() => {
     const item = R.pick(['id', 'name'])(defaultValue);
     setFormValue(item);
-  }, []);
+  }, [defaultValue, setFormValue]);
 
   const { update } = useFetctchInventory({
     onCreateCompleted: () => {

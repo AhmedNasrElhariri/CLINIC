@@ -8,7 +8,7 @@ export default function UsersContainer() {
   const [visible, setVisible] = useState(false);
   const data = JSON.parse(localStorage.getItem('users')) || [];
 
-  const create = user => {
+  const create = useCallback(user => {
     let users = [
       ...data,
       {
@@ -17,7 +17,7 @@ export default function UsersContainer() {
         password: user.password,
         email: user.email,
         type: user.type,
-        specialization: user.specialization,
+        specialty: user.specialty,
         notes: user.notes,
       },
     ];
@@ -25,7 +25,7 @@ export default function UsersContainer() {
     localStorage.setItem('users', users);
     Alert.success('User has been created successfully');
     setVisible(false);
-  };
+  },[data]);
 
   const showModal = useCallback(() => setVisible(true), []);
   const hideModal = useCallback(() => setVisible(false), []);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { H6, Div } from 'components';
+import { Div } from 'components';
 import { SessionNameStyled, DeleteLinkStyled } from './style';
 
 function ListSelectionItems({ items, onDelete }) {

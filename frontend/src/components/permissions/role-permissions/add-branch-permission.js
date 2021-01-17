@@ -1,21 +1,9 @@
-import React, { useState, memo, useMemo, useCallback } from "react";
-import * as R from "ramda";
+import React, { useState, memo, useCallback } from 'react';
 
-import {
-  FormGroup,
-  RadioGroup,
-  Radio,
-  Form,
-  Divider,
-  FormControl,
-  InputGroup,
-  Icon,
-  Col,
-  FlexboxGrid,
-} from "rsuite";
+import { Form, FlexboxGrid } from 'rsuite';
 
-import { CRSelectInput, H6, CRButton, Div, H5, H7 } from "components";
-import ListSelectionItems from "../../permissions/list-selections-items/index";
+import { CRSelectInput, CRButton } from 'components';
+import ListSelectionItems from '../../permissions/list-selections-items/index';
 
 const AddBranchPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
@@ -24,7 +12,7 @@ const AddBranchPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
 
   const add = useCallback(() => {
     onAdd(formValue);
-  });
+  }, [formValue, onAdd]);
 
   const branchesNames = branches.reduce(
     (obj, { id, name }) => ({
@@ -56,13 +44,13 @@ const AddBranchPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
           </FlexboxGrid.Item>
 
           <FlexboxGrid.Item colspan={6}>
-            {" "}
+            {' '}
             <CRButton primary small onClick={add}>
               + Add New
             </CRButton>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={22}>
-            {" "}
+            {' '}
             <ListSelectionItems items={items} onDelete={onDelete} />
           </FlexboxGrid.Item>
         </FlexboxGrid>

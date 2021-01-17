@@ -1,10 +1,10 @@
-import React, { forwardRef, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Schema } from 'rsuite';
 
 import { CRTextInput, CRModal } from 'components';
 import { CRSelectInput, CRTextArea } from 'components/widgets';
 
-import { userTypes, specializationTypes } from 'services/admin';
+import { userTypes, specialtyTypes } from 'services/admin';
 
 const { StringType } = Schema.Types;
 
@@ -15,7 +15,7 @@ const model = Schema.Model({
     .isRequired('Email is required'),
   password: StringType().isRequired('Password is required'),
   type: StringType().isRequired('Type is required'),
-  specialization: StringType().isRequired('Specialization is required'),
+  specialty: StringType().isRequired('Specialty is required'),
 });
 
 const initialValues = {
@@ -23,7 +23,7 @@ const initialValues = {
   email: '',
   password: '',
   type: '',
-  specialization: '',
+  specialty: '',
 };
 
 export default function NewUser({ show, onCancel, onCreate }) {
@@ -34,7 +34,7 @@ export default function NewUser({ show, onCancel, onCreate }) {
     if (event === 'Doctor') {
       setDisable(false);
     } else {
-      setFormValue(pre => ({ ...pre, specialization: '' }));
+      setFormValue(pre => ({ ...pre, specialty: '' }));
       setDisable(true);
     }
   };
@@ -61,12 +61,12 @@ export default function NewUser({ show, onCancel, onCreate }) {
           onChange={handleChange}
         />
         <CRSelectInput
-          name="specialization"
-          label="Specialization"
+          name="specialty"
+          label="Specialty"
           block
           cleanable={true}
           searchable={true}
-          data={specializationTypes}
+          data={specialtyTypes}
           disabled={disable}
         />
         <CRTextArea label="Notes" name="notes"></CRTextArea>

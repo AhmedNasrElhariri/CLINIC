@@ -30,7 +30,7 @@ function TodayAppointments() {
     todayAppointments: appointments,
     branches,
     doctors,
-    specializations,
+    specialties,
   } = useFetchAppointments();
 
   const [formValue, setFormValue] = useState({});
@@ -134,7 +134,7 @@ function TodayAppointments() {
           onChange={setFormValue}
           branches={branches}
           doctors={doctors}
-          specializations={specializations}
+          specialties={specialties}
         />
         <ListAppointments
           title="Upcoming Appointments"

@@ -97,7 +97,7 @@ export const filterAppointments = (appointments = [], filter) => {
     filterByType,
     filterByBranch,
     filterByDoctor,
-    filterBySpecialization,
+    filterBySpecialty,
   ];
   return filters.reduce((app, fn) => fn(app, filter), appointments);
 };
@@ -118,37 +118,37 @@ const filterByDoctor = (appointments, filter) => {
     : appointments.filter(app => app.userId === doctor);
 };
 
-const filterBySpecialization = (appointments, filter) => {
-  const specialization = R.prop('specialization')(filter);
+const filterBySpecialty = (appointments, filter) => {
+  const specialty = R.prop('specialty')(filter);
 
-  return !specialization
+  return !specialty
     ? appointments
-    : appointments.filter(app => app.specializationId === specialization);
+    : appointments.filter(app => app.specialtyId === specialty);
 };
 
 export const filterTodayAppointments = (appointments = [], filter) => {
-  const filters = [filterByBranch, filterByDoctor, filterBySpecialization];
+  const filters = [filterByBranch, filterByDoctor, filterBySpecialty];
   return filters.reduce((app, fn) => fn(app, filter), appointments);
 };
 
-export const getSpecializationsByBranchId = (specializations, branchId) => {
-  return specializations.filter(s =>
+export const getSpecialtiesByBranchId = (specialties, branchId) => {
+  return specialties.filter(s =>
     s.branches.some(b => [branchId].includes(b.id))
   );
 };
 
-export const specializationsTypes = (specializations, branchId) =>
+export const specialtiesTypes = (specialties, branchId) =>
   mapArrWithIdsToChoices(
-    getSpecializationsByBranchId(specializations, branchId)
+    getSpecialtiesByBranchId(specialties, branchId)
   );
 
-export const getDoctorsBySpecializationId = (doctors, specializationId) => {
-  return doctors.filter(d => d.specialization.id === specializationId);
+export const getDoctorsBySpecialtyId = (doctors, specialtyId) => {
+  return doctors.filter(d => d.specialty.id === specialtyId);
 };
 
-export const doctorsTypes = (doctors, specializationId) =>
+export const doctorsTypes = (doctors, specialtyId) =>
   mapArrWithIdsToChoices(
-    getDoctorsBySpecializationId(doctors, specializationId)
+    getDoctorsBySpecialtyId(doctors, specialtyId)
   );
 
 export const getAppointmentTypes = () => ['Examination', 'Followup'];

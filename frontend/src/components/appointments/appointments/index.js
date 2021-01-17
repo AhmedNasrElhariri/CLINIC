@@ -15,7 +15,7 @@ function Appointments() {
   const {
     branches,
     doctors,
-    specializations,
+    specialties,
     appointments,
   } = useFetchAppointments();
 
@@ -31,7 +31,7 @@ function Appointments() {
         formValue={formValue}
         onChange={setFormValue}
         branches={branches}
-        specializations={specializations}
+        specialties={specialties}
         doctors={doctors}
       />
       <Div mb={4}>

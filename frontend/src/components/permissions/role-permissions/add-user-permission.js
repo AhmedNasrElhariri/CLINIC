@@ -1,21 +1,9 @@
-import React, { useState, memo, useMemo, useCallback } from "react";
-import * as R from "ramda";
+import React, { useState, memo, useMemo, useCallback } from 'react';
+import * as R from 'ramda';
 
-import {
-  FormGroup,
-  RadioGroup,
-  Radio,
-  Form,
-  Divider,
-  FormControl,
-  InputGroup,
-  Icon,
-  Col,
-  FlexboxGrid,
-} from "rsuite";
-import { CRSelectInput, H6, CRButton, Div, H5, H7 } from "components";
-import ListSelectionItems from "../../permissions/list-selections-items/index";
-import { mapArrWithLabelsToChoices, mapArrWithIdsToChoices } from "utils/misc";
+import { Form, FlexboxGrid } from 'rsuite';
+import { CRSelectInput, CRButton } from 'components';
+import ListSelectionItems from '../../permissions/list-selections-items/index';
 
 const AddUserPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
@@ -25,14 +13,14 @@ const AddUserPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
 
   const add = useCallback(() => {
     onAdd(formValue);
-  });
+  }, [formValue, onAdd]);
 
   const selectedBranch = useMemo(() => {
-    return branches.find((p) => p.id === formValue.branchId) || {};
+    return branches.find(p => p.id === formValue.branchId) || {};
   }, [formValue, branches]);
 
-  const usersPermissions = (selectedBranch.specializations || []).map(
-    (p) => p.users
+  const usersPermissions = (selectedBranch.specialties || []).map(
+    p => p.users
   );
   const users = R.flatten(usersPermissions);
 
@@ -71,7 +59,7 @@ const AddUserPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
             />
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={6}>
-            {" "}
+            {' '}
             <CRSelectInput
               placeholder="Select User"
               block
@@ -85,13 +73,13 @@ const AddUserPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
           </FlexboxGrid.Item>
 
           <FlexboxGrid.Item colspan={6}>
-            {" "}
+            {' '}
             <CRButton primary small onClick={add}>
               + Add New
             </CRButton>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={22}>
-            {" "}
+            {' '}
             <ListSelectionItems items={items} onDelete={onDelete} />
           </FlexboxGrid.Item>
         </FlexboxGrid>

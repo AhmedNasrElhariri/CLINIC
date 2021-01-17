@@ -84,7 +84,7 @@ export const RAW_PERMISSIONS = new Map([
         action: 'list',
         subject: 'Appointment',
         level:'Branches',
-        specializations:[],
+        specialties:[],
         branches:[],
       }, */
       

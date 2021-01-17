@@ -1,11 +1,8 @@
-import { useMemo, useEffect, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { useMemo } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 
-import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import useGlobalState from 'state';
-import client from 'apollo-client/client';
 
 import { sortAppointmentsByDate } from 'services/appointment';
 
@@ -27,8 +24,7 @@ export function useVariables() {
 }
 
 function useFetchAppointments() {
-  const variables = useVariables();
-  const [fetched, setFetched] = useState(false);
+  // const variables = useVariables();
   // const [getAppointments, { data }] = useLazyQuery(LIST_APPOINTMENTS, {
   //   variables,
   //   onCompleted: () => setFetched(true),
@@ -56,8 +52,8 @@ function useFetchAppointments() {
     data,
   ]);
 
-  const specializations = useMemo(
-    () => R.pipe(R.propOr([], 'specializations'))(data),
+  const specialties = useMemo(
+    () => R.pipe(R.propOr([], 'specialties'))(data),
     [data]
   );
 
@@ -91,7 +87,7 @@ function useFetchAppointments() {
       appointments,
       todayAppointments,
       branches,
-      specializations,
+      specialties,
       doctors,
       //patientsDoctors,
       // updateCache: appointments => {
@@ -104,15 +100,7 @@ function useFetchAppointments() {
       //   });
       // },
     }),
-    [
-      appointments,
-      todayAppointments,
-      variables,
-      branches,
-      specializations,
-      doctors,
-      // patientsDoctors,
-    ]
+    [appointments, todayAppointments, branches, specialties, doctors]
   );
 }
 

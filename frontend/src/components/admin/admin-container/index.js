@@ -6,7 +6,7 @@ import {
   CRNav,
   BranchesContainer,
   UsersContainer,
-  SpecializationsContainer,
+  SpecialtiesContainer,
 } from 'components';
 
 const AdminContainer = () => {
@@ -23,12 +23,12 @@ const AdminContainer = () => {
         justified
       >
         <CRNav.CRItem eventKey="branches">Branches</CRNav.CRItem>
-        <CRNav.CRItem eventKey="specializations">Specializations</CRNav.CRItem>
+        <CRNav.CRItem eventKey="specialties">Specialties</CRNav.CRItem>
         <CRNav.CRItem eventKey="users">Users</CRNav.CRItem>
       </CRNav>
       <CRCard borderless>
         {activeTab === 'branches' && <BranchesContainer />}
-        {activeTab === 'specializations' && <SpecializationsContainer />}
+        {activeTab === 'specialties' && <SpecialtiesContainer />}
         {activeTab === 'users' && <UsersContainer />}
       </CRCard>
     </>

@@ -7,7 +7,7 @@ import {
   MainContainer,
   CRButton,
   ListBranches,
-  AddSpecialization,
+  AddSpecialty,
   AddDoctor,
 } from 'components';
 
@@ -17,22 +17,25 @@ export default function Branches() {
 
   const data = JSON.parse(localStorage.getItem('branches')) || [];
 
-  const createBranch = branch => {
-    let branches = [
-      ...data,
-      {
-        id: Math.random().toString(36).substr(2, 9),
-        name: branch.name,
-        address: branch.address,
-        phone: branch.phone,
-        notes: branch.notes,
-      },
-    ];
-    branches = JSON.stringify(branches);
-    localStorage.setItem('branches', branches);
-    Alert.success('Branch has been created successfully');
-    setBranchVisible(false);
-  };
+  const createBranch = useCallback(
+    branch => {
+      let branches = [
+        ...data,
+        {
+          id: Math.random().toString(36).substr(2, 9),
+          name: branch.name,
+          address: branch.address,
+          phone: branch.phone,
+          notes: branch.notes,
+        },
+      ];
+      branches = JSON.stringify(branches);
+      localStorage.setItem('branches', branches);
+      Alert.success('Branch has been created successfully');
+      setBranchVisible(false);
+    },
+    [data]
+  );
 
   const showBranchModal = useCallback(() => setBranchVisible(true), []);
   const hideBranchModal = useCallback(() => setBranchVisible(false), []);
@@ -48,49 +51,51 @@ export default function Branches() {
     branches: data,
   });
 
-  // Specialization
-  const [specializationVisible, setSpecializationVisible] = useState(false);
-  const specializationsInBranchData =
-    JSON.parse(localStorage.getItem('specializationsInBranch')) || [];
+  // Specialty
+  const [specialtyVisible, setSpecialtyVisible] = useState(false);
+  const specialtiesInBranchData =
+    JSON.parse(localStorage.getItem('specialtiesInBranch')) || [];
 
-  const createSpecialization = specializationsInBranches => {
-    let specializationsInBranch = [
-      ...specializationsInBranchData,
-      {
-        id: Math.random().toString(36).substr(2, 9),
-        branch: specializationsInBranches.branch,
-        specializations: [specializationsInBranches.specialization],
-      },
-    ];
-    specializationsInBranch = JSON.stringify(specializationsInBranch);
-    localStorage.setItem('specializationsInBranch', specializationsInBranch);
-    Alert.success('Specialization has been added to branch successfully');
-    setSpecializationVisible(false);
-  };
-
-  const showSpecializationModal = useCallback(
-    () => setSpecializationVisible(true),
-    []
-  );
-  const hideSpecializationModal = useCallback(
-    () => setSpecializationVisible(false),
-    []
+  const createSpecialty = useCallback(
+    specialtiesInBranches => {
+      let specialtiesInBranch = [
+        ...specialtiesInBranchData,
+        {
+          id: Math.random().toString(36).substr(2, 9),
+          branch: specialtiesInBranches.branch,
+          specialties: [specialtiesInBranches.specialty],
+        },
+      ];
+      specialtiesInBranch = JSON.stringify(specialtiesInBranch);
+      localStorage.setItem('specialtiesInBranch', specialtiesInBranch);
+      Alert.success('Specialty has been added to branch successfully');
+      setSpecialtyVisible(false);
+    },
+    [specialtiesInBranchData]
   );
 
-  const onCreateSpecialization = useCallback(
-    specialization => createSpecialization(specialization),
-    [createSpecialization]
+  const showSpecialtyModal = useCallback(
+    () => setSpecialtyVisible(true),
+    []
+  );
+  const hideSpecialtyModal = useCallback(
+    () => setSpecialtyVisible(false),
+    []
+  );
+
+  const onCreateSpecialty = useCallback(
+    specialty => createSpecialty(specialty),
+    [createSpecialty]
   );
 
   // Doctors
   const [doctorVisible, setDoctorVisible] = useState(false);
-  const users = JSON.parse(localStorage.getItem('users')) || [];
 
-  const createDoctor = doctors => {
+  const createDoctor = useCallback(doctors => {
     console.log(doctors);
     Alert.success('Doctor has been added to branch successfully');
     setDoctorVisible(false);
-  };
+  }, []);
 
   const showDoctorModal = useCallback(() => setDoctorVisible(true), []);
   const hideDoctorModal = useCallback(() => setDoctorVisible(false), []);
@@ -115,12 +120,12 @@ export default function Branches() {
               New Branch
             </CRButton>
             <CRButton
-              onClick={showSpecializationModal}
+              onClick={showSpecialtyModal}
               primary
               small
               style={{ margin: '0 10px' }}
             >
-              Add Specialization
+              Add Specialty
             </CRButton>
             <CRButton
               onClick={showDoctorModal}
@@ -140,11 +145,11 @@ export default function Branches() {
         onCancel={hideDoctorModal}
         branches={branches}
       />
-      <AddSpecialization
-        onCreate={onCreateSpecialization}
-        show={specializationVisible}
-        onHide={hideSpecializationModal}
-        onCancel={hideSpecializationModal}
+      <AddSpecialty
+        onCreate={onCreateSpecialty}
+        show={specialtyVisible}
+        onHide={hideSpecialtyModal}
+        onCancel={hideSpecialtyModal}
         branches={branches}
       />
       <NewBranch

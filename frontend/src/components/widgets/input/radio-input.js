@@ -1,33 +1,16 @@
-import React, { useState, memo, useCallback } from "react";
-import * as R from "ramda";
+import React, { memo } from 'react';
 
-import {
-  FormGroup,
-  RadioGroup,
-  Radio,
-  Form,
-  Divider,
-  FormControl,
-  InputGroup,
-  Icon,
-  Col,
-  FlexboxGrid,
-} from "rsuite";
-import Label from "../label";
-import { InputStyled, InputGroupStyled } from "./style";
-import { CRSelectInput, H6, CRButton, Div, H5, H7 } from "components";
-import ListSelectionItems from "../../permissions/list-selections-items/index";
-import AddSpecializtionPermissions from "../../permissions/role-permissions/add-specialization-permission";
-import AddUserPermissions from "../../permissions/role-permissions/add-user-permission";
-import AddBranchPermissions from "../../permissions/role-permissions/add-branch-permission";
+import { FormGroup, RadioGroup, Radio, FlexboxGrid } from 'rsuite';
+import Label from '../label';
+import AddSpecializtionPermissions from '../../permissions/role-permissions/add-specialty-permission';
+import AddUserPermissions from '../../permissions/role-permissions/add-user-permission';
+import AddBranchPermissions from '../../permissions/role-permissions/add-branch-permission';
 
 const RadioInputsGroup = ({
   label,
-  handleSelect,
-  level,
   onChange,
   showBranches,
-  showSpecialization,
+  showSpecialty,
   showUser,
   branches,
   selectedItems,
@@ -42,16 +25,16 @@ const RadioInputsGroup = ({
       <RadioGroup name="radioList">
         <FlexboxGrid align="middle" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
-            {" "}
-            <Radio value={"organization"} onChange={onChange}>
+            {' '}
+            <Radio value={'organization'} onChange={onChange}>
               Organization
             </Radio>
           </FlexboxGrid.Item>
         </FlexboxGrid>
         <FlexboxGrid align="middle" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
-            {" "}
-            <Radio value={"branch"} onChange={onChange}>
+            {' '}
+            <Radio value={'branch'} onChange={onChange}>
               branch
             </Radio>
           </FlexboxGrid.Item>
@@ -70,12 +53,12 @@ const RadioInputsGroup = ({
         </FlexboxGrid>
         <FlexboxGrid align="middle" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
-            {" "}
-            <Radio value={"specialization"} onChange={onChange}>
-              Specialization
+            {' '}
+            <Radio value={'specialty'} onChange={onChange}>
+              Specialty
             </Radio>
           </FlexboxGrid.Item>
-          {showSpecialization && (
+          {showSpecialty && (
             <>
               <FlexboxGrid.Item colspan={20}>
                 <AddSpecializtionPermissions
@@ -89,8 +72,8 @@ const RadioInputsGroup = ({
         </FlexboxGrid>
         <FlexboxGrid align="middle">
           <FlexboxGrid.Item colspan={4}>
-            {" "}
-            <Radio value={"user"} onChange={onChange}>
+            {' '}
+            <Radio value={'user'} onChange={onChange}>
               User
             </Radio>
           </FlexboxGrid.Item>

@@ -1,21 +1,16 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import * as R from "ramda";
-import { Toggle, Panel, Form } from "rsuite";
-import { useParams } from "react-router-dom";
+import React, { useState, useRef, useCallback } from 'react';
+import * as R from 'ramda';
+import { Toggle, Panel, Form } from 'rsuite';
 
-import { MainContainer, Div, H6, H5, CRButton, CRPanelGroup } from "components";
-import RoleInput from "./createRole";
+import { MainContainer, Div, H6, H5, CRButton, CRPanelGroup } from 'components';
+import RoleInput from './createRole';
 
-import { PERMISSIONS } from "utils/constants";
-import useFetchUser from "../user-permissions/fetch-data";
-import RadioInputsGroup from "components/widgets/input/radio-input";
-import form from "components/accounting/form";
-import useFetchAppointments from "../../../hooks/fetch-appointments";
+import { PERMISSIONS } from 'utils/constants';
+import RadioInputsGroup from 'components/widgets/input/radio-input';
+import useFetchAppointments from '../../../hooks/fetch-appointments';
 
 const appPermissions = PERMISSIONS;
-console.log(R);
 const flattenPermission = R.flatten([...appPermissions.values()]);
-console.log(flattenPermission);
 
 const initValues = R.pipe(
   R.map(({ id }) => ({ [id]: false })),
@@ -27,27 +22,27 @@ const initValue = {
 };
 const LevelsPermissions = [
   {
-    name: "Organization",
+    name: 'Organization',
     haveBranch: false,
-    haveSpecialization: false,
+    haveSpecialty: false,
     haveUser: false,
   },
   {
-    name: "Branch",
+    name: 'Branch',
     haveBranch: true,
-    haveSpecialization: false,
+    haveSpecialty: false,
     haveUser: false,
   },
   {
-    name: "Specialization",
+    name: 'Specialty',
     haveBranch: true,
-    haveSpecialization: true,
+    haveSpecialty: true,
     haveUser: false,
   },
   {
-    name: "User",
+    name: 'User',
     haveBranch: true,
-    haveSpecialization: false,
+    haveSpecialty: false,
     haveUser: true,
   },
 ];
@@ -63,23 +58,23 @@ const RolePermission = () => {
     ff[actionIndex].visibility = !visibility;
 
     setFF((previous, idx) => {
-      const newFF = previous.map((p) => p);
+      const newFF = previous.map(p => p);
       return newFF;
     });
   };
 
   const value = useRef(initValue);
-  const handleSelect = useCallback((sessions) => {
+  const handleSelect = useCallback(sessions => {
     value.current = { ...value.current, sessions };
   }, []);
 
   const handleLevelChange = (level, actionIndex) => {
     ff[actionIndex].level = level;
     ff[actionIndex].mappings = [];
-    setSelectedItems([])
+    setSelectedItems([]);
 
     setFF((previous, idx) => {
-      const newFF = previous.map((p) => p);
+      const newFF = previous.map(p => p);
       return newFF;
     });
   };
@@ -90,7 +85,7 @@ const RolePermission = () => {
       mappings = [];
     }
     mappings = [...mappings, branchId];
-    setFF((previous) => {
+    setFF(previous => {
       const newFF = previous.map((p, i) =>
         i === index ? { ...p, mappings } : p
       );
@@ -105,7 +100,7 @@ const RolePermission = () => {
       mappings = [];
     }
     mappings = [...mappings, value];
-    setFF((previous) => {
+    setFF(previous => {
       const newFF = previous.map((p, i) =>
         i === index ? { ...p, mappings } : p
       );
@@ -119,7 +114,7 @@ const RolePermission = () => {
       mappings = [];
     }
     mappings = [...mappings, value];
-    setFF((previous) => {
+    setFF(previous => {
       const newFF = previous.map((p, i) =>
         i === index ? { ...p, mappings } : p
       );
@@ -128,9 +123,7 @@ const RolePermission = () => {
       return newFF;
     });
   };
-  const handleDeleteSelected = useCallback((idx) => {
-  });
-  console.log(ff);
+  const handleDeleteSelected = useCallback(idx => {}, []);
   return (
     <>
       <MainContainer
@@ -155,7 +148,7 @@ const RolePermission = () => {
                   </H5>
                 }
               >
-                <Div style={{ padding: " 0 50px" }}>
+                <Div style={{ padding: ' 0 50px' }}>
                   {value.map(({ name, id, visibility }, index) => (
                     <>
                       <Div
@@ -168,34 +161,34 @@ const RolePermission = () => {
                         <Toggle
                           size="md"
                           checked={ff[visibility]}
-                          onChange={(val) => toggle(visibility, index)}
+                          onChange={val => toggle(visibility, index)}
                         />
                       </Div>
                       {visibility &&
                         ff
                           .filter((item, index) => item.name === name)
-                          .map((f) => (
+                          .map(f => (
                             <RadioInputsGroup
                               handleSelect={handleSelect}
-                              label={"Permission Level"}
+                              label={'Permission Level'}
                               LevelsPermissions={LevelsPermissions}
-                              onChange={(level) =>
+                              onChange={level =>
                                 handleLevelChange(level, index)
                               }
-                              onAddBranch={(value) =>
+                              onAddBranch={value =>
                                 handleAddBranch(value, index)
                               }
-                              onAddUser={(value) => handleAddUser(value, index)}
-                              onAddSpecailization={(value) =>
+                              onAddUser={value => handleAddUser(value, index)}
+                              onAddSpecailization={value =>
                                 handleAddSpecializtion(value, index)
                               }
                               handleDeleteSelected={handleDeleteSelected(index)}
                               level={f.level}
                               branches={branches}
                               selectedItems={selectedItems}
-                              showBranches={f.level === "branch"}
-                              showSpecialization={f.level === "specialization"}
-                              showUser={f.level === "user"}
+                              showBranches={f.level === 'branch'}
+                              showSpecialty={f.level === 'specialty'}
+                              showUser={f.level === 'user'}
                             />
                           ))}
                     </>

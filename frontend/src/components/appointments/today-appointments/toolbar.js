@@ -8,7 +8,7 @@ export default function toolbar({
   onChange,
   branches,
   doctors,
-  specializations,
+  specialties,
 }) {
   return (
     <Div padding={20} wd>
@@ -18,7 +18,7 @@ export default function toolbar({
           onChange={onChange}
           branches={branches}
           doctors={doctors}
-          specializations={specializations}
+          specialties={specialties}
         />
       </Div>
     </Div>

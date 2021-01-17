@@ -7,7 +7,7 @@ export default function NewAppointment() {
     appointments,
     updateCache,
     branches,
-    specializations,
+    specialties,
     doctors,
   } = useFetchAppointments();
   const { patients } = useFetchPatients(LIST_PATIENTS);
@@ -17,7 +17,7 @@ export default function NewAppointment() {
     appointments,
     updateAppointments: updateCache,
     branches,
-    specializations,
+    specialties,
     doctors,
   };
 }

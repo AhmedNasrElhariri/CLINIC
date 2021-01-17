@@ -13,13 +13,13 @@ const initialValues = {
   name: '',
 };
 
-export default function NewSpecialization({ show, onCancel, onCreate }) {
+export default function NewSpecialty({ show, onCancel, onCreate }) {
   const [formValue, setFormValue] = useState(initialValues);
 
   return (
     <CRModal
       show={show}
-      header="New Specialization"
+      header="New Specialty"
       onHide={onCancel}
       onCancel={onCancel}
       onOk={() => onCreate(formValue)}
@@ -31,6 +31,6 @@ export default function NewSpecialization({ show, onCancel, onCreate }) {
   );
 }
 
-NewSpecialization.propTypes = {};
+NewSpecialty.propTypes = {};
 
-NewSpecialization.defaultProps = {};
+NewSpecialty.defaultProps = {};

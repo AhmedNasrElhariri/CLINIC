@@ -1,35 +1,24 @@
-import React, { useState, memo, useMemo, useCallback } from "react";
-import * as R from "ramda";
+import React, { useState, memo, useMemo, useCallback } from 'react';
+import * as R from 'ramda';
 
-import {
-  FormGroup,
-  RadioGroup,
-  Radio,
-  Form,
-  Divider,
-  FormControl,
-  InputGroup,
-  Icon,
-  Col,
-  FlexboxGrid,
-} from "rsuite";
+import { Form, FlexboxGrid } from 'rsuite';
 
-import { CRSelectInput, H6, CRButton, Div, H5, H7 } from "components";
-import ListSelectionItems from "../../permissions/list-selections-items/index";
+import { CRSelectInput, CRButton } from 'components';
+import ListSelectionItems from '../list-selections-items/index';
 
 const AddSpecializtionPermissions = ({ branches, selectedItems, onAdd }) => {
   const [formValue, setFormValue] = useState({
     branchId: [],
-    specializationId: null,
+    specialtyId: null,
   });
 
   const add = useCallback(() => {
     onAdd(formValue);
-  });
+  }, [formValue, onAdd]);
 
   const selectedBranch = useMemo(() => {
     let branchIds = formValue.branchId;
-    return branches.find((p) => p.id === branchIds) || {};
+    return branches.find(p => p.id === branchIds) || {};
   }, [formValue, branches]);
 
   const branchesNames = branches.reduce(
@@ -40,16 +29,16 @@ const AddSpecializtionPermissions = ({ branches, selectedItems, onAdd }) => {
     {}
   );
 
-  const specializationsNames = R.flatten(
-    branches.map((b) => b.specializations)
+  const specialtiesNames = R.flatten(
+    branches.map(b => b.specialties)
   ).reduce((obj, { id, name }) => ({
     ...obj,
     [id]: name,
   }));
 
   const items = selectedItems.map(
-    ({ branchId, specializationId }) =>
-      `${branchesNames[branchId]} - ${specializationsNames[specializationId]}`
+    ({ branchId, specialtyId }) =>
+      `${branchesNames[branchId]} - ${specialtiesNames[specialtyId]}`
   );
 
   return (
@@ -69,27 +58,27 @@ const AddSpecializtionPermissions = ({ branches, selectedItems, onAdd }) => {
             />
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={6}>
-            {" "}
+            {' '}
             <CRSelectInput
-              placeholder="Select Specialization"
+              placeholder="Select Specialty"
               block
               cleanable={false}
               searchable={false}
               labelKey="name"
               valueKey="id"
-              name="specializationId"
-              data={selectedBranch.specializations || []}
+              name="specialtyId"
+              data={selectedBranch.specialties || []}
             />
           </FlexboxGrid.Item>
 
           <FlexboxGrid.Item colspan={6}>
-            {" "}
+            {' '}
             <CRButton primary small onClick={add}>
               + Add New
             </CRButton>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={22}>
-            {" "}
+            {' '}
             <ListSelectionItems items={items} />
           </FlexboxGrid.Item>
         </FlexboxGrid>

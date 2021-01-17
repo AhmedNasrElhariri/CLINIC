@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Nasr City",
-      "specializations": [
+      "specialties": [
         {
           "id": 1,
           "name": "عظام",
@@ -29,7 +29,7 @@
     {
       "id": 2,
       "name": "Giza",
-      "specializations": [
+      "specialties": [
         {
           "id": 1,
           "name": "عظام",
@@ -47,7 +47,7 @@
     {
       "id": "1",
       "name": "Qasem",
-      "specialization": {
+      "specialty": {
         "id": "1",
         "name": "اطفال"
       },
@@ -65,7 +65,7 @@
     {
       "id": "2",
       "name": "Eslam",
-      "specialization": {
+      "specialty": {
         "id": "2",
         "name": "قلب"
       },
@@ -79,7 +79,7 @@
     {
       "id": "3",
       "name": "Amin",
-      "specialization": {
+      "specialty": {
         "id": "2",
         "name": "قلب"
       },
@@ -109,7 +109,7 @@
         "id": "2",
         "name": "Eslam"
       },
-      "specialization": {
+      "specialty": {
         "id": "2",
         "name": "قلب"
       },
@@ -137,7 +137,7 @@
         "id": "3",
         "name": "Amin"
       },
-      "specialization": {
+      "specialty": {
         "id": "2",
         "name": "قلب"
       },
@@ -165,7 +165,7 @@
         "id": "1",
         "name": "Qasem"
       },
-      "specialization": {
+      "specialty": {
         "id": "1",
         "name": "اطفال"
       },
@@ -193,7 +193,7 @@
         "id": "1",
         "name": "Qasem"
       },
-      "specialization": {
+      "specialty": {
         "id": "1",
         "name": "اطفال"
       },
