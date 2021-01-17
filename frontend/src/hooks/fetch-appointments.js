@@ -80,13 +80,11 @@ function useFetchAppointments() {
     });
   }, [appointments]);
 
-  const patientsDoctors = useMemo(() => {
+ /*  const patientsDoctors = useMemo(() => {
     return [
-      ...new Map(
-        appointments.map(({ doctor }) => doctor).map(item => [item['id'], item])
-      ).values(),
+      ...new Map(appointments.map(({ doctorId }) => doctorId)).values(),
     ];
-  }, [appointments]);
+  }, [appointments]); */
 
   return useMemo(
     () => ({
@@ -95,7 +93,7 @@ function useFetchAppointments() {
       branches,
       specializations,
       doctors,
-      patientsDoctors,
+      //patientsDoctors,
       // updateCache: appointments => {
       //   client.writeQuery({
       //     query: LIST_APPOINTMENTS,
@@ -113,7 +111,7 @@ function useFetchAppointments() {
       branches,
       specializations,
       doctors,
-      patientsDoctors,
+     // patientsDoctors,
     ]
   );
 }
