@@ -18,3 +18,4 @@ export { default as CRVDivider } from './vertical-divider';
 export { default as CRPanelGroup } from './panel-group';
 export { default as CRPanel } from './panel';
 export { default as CRButtonGroup } from './button-group';
+export { default as CRRadioButton } from './radio-button';
