@@ -1,13 +1,29 @@
 import React from 'react';
 import { Icon } from 'rsuite';
 
-import { CRCard, CRTable } from 'components';
+import { CRCard, CRTable ,CRButton } from 'components';
 
-function ListMedicines() {
+
+function ListMedicines({ medicines, onEdit }) {
+  const data = [
+    {
+      id: "1",
+      medicineName:"sss",
+      concentration: "10000",
+      medicineForm:"power"
+    },
+    {
+      id: "1",
+      medicineName:"sss",
+      concentration: "93939",
+      medicineForm:"power"
+    }
+
+  ]
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight >
+        <CRTable autoHeight data={data}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Medicine Name</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="medicineName" semiBold />
@@ -23,10 +39,16 @@ function ListMedicines() {
             <CRTable.CRCell dataKey="medicineForm" />
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn width={35}>
+          <CRTable.CRColumn >
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {/* {data => <Icon icon="edit" onClick={() => onEdit(data)} />} */}
+            {data => <Icon icon="edit"  onClick={() => onEdit(data)} style={{fontSize:17, padding:5 ,borderRadius:"5px", backgroundColor:"rgb(224, 224, 222)"}}> Edit</Icon>}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn >
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => <Icon icon="trash" onClick={() => onEdit(data)} style={{fontSize:17 , padding:5, borderRadius:5, backgroundColor:"rgb(224, 224, 222)" }} > Delete</Icon>}
             </CRTable.CRCell>
           </CRTable.CRColumn>
           

@@ -3,9 +3,9 @@ import React , {memo} from 'react';
 import { Radio } from 'rsuite';
 
 
-const RadioButton =  ({ value, label}) => {
+const RadioButton =  ({ value, label,...rest}) => {
     return (
-      <Radio value={value}>{label}</Radio>
+      <Radio value={value} {...rest}>{label}</Radio>
     );
 };
 

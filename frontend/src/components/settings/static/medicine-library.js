@@ -7,7 +7,7 @@ import { useModal } from 'components/widgets/modal';
 import NewMedicine from './new-medicine';
 import ListMedicines from './list-medicine';
 
-const initValue = { medicineName: '', concentration: '', medicineForm:'drops'};
+const initValue = { medicineName: '', concentration: '', medicineForm:''};
 
 const MedicineLibrary = () => {
   const { visible, open, close } = useModal();
@@ -21,7 +21,15 @@ const MedicineLibrary = () => {
     open();
   }, [open, setFormValue, setType]);
 
-  
+  const handleClickEdit = useCallback(
+    data => {
+      const medicine = R.pick(['id', 'medicineName', 'concentration', 'medicineForm'])(data);
+      setType('edit');
+      setFormValue(medicine);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
 
   const handleAdd = useCallback(() => {
     
@@ -40,8 +48,9 @@ const MedicineLibrary = () => {
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
+        type={type}
       />
-      <ListMedicines />
+      <ListMedicines onEdit={handleClickEdit}/>
     </>
   );
 };
