@@ -42,6 +42,8 @@ export const MIN_EVENT_DURATION = 15;
 export const MIN_EXAMINATION_DURATION = 5;
 
 export const DAYS = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI'];
+export const Allergies = ['Check1', 'Check2', 'Check3', 'Check4', 'Check5', 'Check6', 'Check7'];
+
 
 export const UNIT_OF_MEASURES = [
   { label: 'Per unit', value: 'PerUnit', shortcut: 'unit' },
