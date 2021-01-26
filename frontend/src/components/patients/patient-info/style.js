@@ -1,12 +1,7 @@
-import styled from 'styled-components';
-import css from '@styled-system/css';
-
+import styled from 'styled-components'
 import { Div } from 'components';
 
 export const PatientInfoStyled = styled(Div)`
-  width: 310px;
+  width: 100%;
   min-width: 310px;
-  ${css({
-    marginLeft: [20, 35, 50, 55, 64],
-  })}
 `;

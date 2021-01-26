@@ -11,14 +11,14 @@ import {
   CRNav,
   MainContainer,
 } from 'components';
-
+import AvatarWithName from '../patient-avatar-with-name/index'
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import History from 'components/appointments/appointment/patient-history';
 import Print from '../print';
 
-const tabs = ['Summary', 'Progress', 'Labs', 'History'];
+const tabs = ['Patient Info','Sessions', 'Progress', 'Labs', 'History'];
 
 function Appointment() {
   let { patientId } = useParams();
@@ -43,18 +43,9 @@ function Appointment() {
 
   return (
     <>
-      <MainContainer
-        nobody
-        title={patient.name}
-        more={
-          <Print
-            appoitnments={normalizedAppointments}
-            appoitnmentsWithGroups={appointmentsWithGroups}
-            patient={patient}
-            fields={tabularFields}
-          />
-        }
-      ></MainContainer>
+
+      <AvatarWithName patient={patient}/>
+
       <Div display="flex">
         <Div flexGrow={1}>
           <CRNav
@@ -71,6 +62,11 @@ function Appointment() {
           </CRNav>
           <Div py={3} bg="white">
             {showComp('0') && (
+              <PatientInfo
+               patient={patient}
+              />
+            )}
+            {showComp('1') && (
               <PatientSummary
                 summary={appointmentHistory}
                 tabularFields={tabularFields}
@@ -86,9 +82,6 @@ function Appointment() {
             {showComp('2') && <PatientLabs patient={patient} />}
             {showComp('3') && <History patient={patient} />}
           </Div>
-        </Div>
-        <Div width={325} ml={64}>
-          <PatientInfo patient={patient} />
         </Div>
       </Div>
     </>

@@ -149,6 +149,10 @@ export const P2 = styled.p`
 export const Div = styled.div`
   ${styles}
 `;
+export const Small = styled.small`
+  ${styles}
+`;
+
 
 export const Img = styled.img`
   ${space}
