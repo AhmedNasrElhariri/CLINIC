@@ -1,25 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
 import { CRCard,H2, H3, H5, P, Div,Img } from 'components';
-import { PatientInfoStyled } from './style';
-import { Avatar,Button } from 'rsuite';
+import { PatientInfoStyled,PatientAvatarStyled,AvatarImg,SmallText,SubText,SpanTitle } from './style';
+import { Button } from 'rsuite';
 
 
 
 const AvatarBox = ({ patient }) => (
-    <Div display="flex">
-        <Avatar size="lg" src="https://avatars2.githubusercontent.com/u/12592949?s=460&v=4" />
-    </Div>
+    <PatientAvatarStyled>
+      <AvatarImg src="https://avatars2.githubusercontent.com/u/12592949?s=460&v=4"></AvatarImg>
+    </PatientAvatarStyled>
 );
 
 const Detail = ({ patient }) => (
-  <Div display="flex" flexDirection="column" ml={3}>
+  <Div display="flex" flexDirection="column" ml={4}>
     <Div display="flex" alignItems="center" mt={3}>
       <H2>{patient.name}</H2>
-      <Button color="cyan">Primary</Button>
+     <SpanTitle>Primary</SpanTitle>
     </Div>
     <Div display="flex" alignItems="center" mt={3}>
-      <P>{patient.name}</P> - <small color="gray">Primary</small>
+      <SubText>{patient.name}</SubText> - <SmallText>latest diagnosis</SmallText>
     </Div>
   </Div>
 );
