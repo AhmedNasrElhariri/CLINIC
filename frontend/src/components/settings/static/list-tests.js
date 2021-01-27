@@ -1,18 +1,29 @@
 import React from 'react';
 import { Icon } from 'rsuite';
 
-import { CRCard, CRTable } from 'components';
+import { CRCard, CRTable  } from 'components';
 
-function ListSurgeries({ surgeries,onEdit }) {
+
+function ListTests({ tests, onEdit }) {
+  const data = [
+    {
+      id: "1",
+      testName:"sss",
+    },
+    {
+      id: "1",
+      testName:"sss",
+    }
+
+  ]
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={surgeries}>
+        <CRTable autoHeight data={data}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name" semiBold />
+            <CRTable.CRHeaderCell>Test Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="testName" semiBold />
           </CRTable.CRColumn>
-
           <CRTable.CRColumn >
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
@@ -25,15 +36,13 @@ function ListSurgeries({ surgeries,onEdit }) {
               {data => <Icon icon="trash" onClick={() => onEdit(data)} style={{fontSize:17 , padding:5, borderRadius:5, backgroundColor:"rgb(224, 224, 222)" }} > Delete</Icon>}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-
+          
         </CRTable>
       </CRCard>
     </>
   );
 }
 
-ListSurgeries.defaultProps = {
-  surgeries: [],
-};
 
-export default ListSurgeries;
+
+export default ListTests;
