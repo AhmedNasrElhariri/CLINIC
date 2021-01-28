@@ -44,6 +44,7 @@ const Hospitals = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
+      console.log(formValue);
       addHospital({
         variables: {
           hospital: formValue,

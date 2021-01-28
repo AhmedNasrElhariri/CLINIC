@@ -6,6 +6,7 @@ import useFrom from 'hooks/form';
 import { useModal } from 'components/widgets/modal';
 import NewTest from './new-test';
 import ListTests from './list-tests';
+import useTests from 'hooks/fetch-tests';
 
 const initValue = { testName: ''};
 
@@ -13,6 +14,16 @@ const TestLibrary = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
+  });
+  const { addTest , tests , editTest } = useTests({
+    onCreate: () => {
+      close();
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setFormValue(initValue);
+    },
   });
   
   const handleClickCreate = useCallback(() => {
@@ -32,8 +43,21 @@ const TestLibrary = () => {
   );
 
   const handleAdd = useCallback(() => {
-    
-  }, [formValue, type]);
+    if (type === 'create') {
+      addTest({
+        variables: {
+          test: formValue,
+        },
+      });
+    } 
+    else {
+      editTest({
+        variables: {
+          test: formValue,
+        },
+      });
+    }
+  }, [addTest, formValue, type]);
 
   return (
     <>
@@ -50,7 +74,7 @@ const TestLibrary = () => {
         onClose={close}
         type={type}
       />
-      <ListTests onEdit={handleClickEdit}/>
+      <ListTests tests={tests} onEdit={handleClickEdit} />
     </>
   );
 };

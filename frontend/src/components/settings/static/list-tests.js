@@ -5,21 +5,10 @@ import { CRCard, CRTable  } from 'components';
 
 
 function ListTests({ tests, onEdit }) {
-  const data = [
-    {
-      id: "1",
-      testName:"sss",
-    },
-    {
-      id: "1",
-      testName:"sss",
-    }
-
-  ]
-  return (
+    return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={data}>
+        <CRTable autoHeight data={tests}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Test Name</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="testName" semiBold />
