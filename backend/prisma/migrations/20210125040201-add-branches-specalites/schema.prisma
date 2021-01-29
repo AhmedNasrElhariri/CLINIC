@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -414,6 +414,10 @@ model PatientSurgery {
 
 // permissions
 
+enum PermissionAction {
+  Appointment_Create
+}
+
 enum PermissionLevel {
   Organization
   Branch
@@ -430,17 +434,16 @@ model Role {
 }
 
 model Permission {
-  id             String          @id @default(uuid())
-  role           Role            @relation(fields: [roleId], references: [id])
+  id             String           @id @default(uuid())
+  role           Role             @relation(fields: [roleId], references: [id])
   roleId         String
-  action         Action          @relation(fields: [actionId], references: [id])
-  actionId       String
+  action         PermissionAction
   level          PermissionLevel
   rules          Rule[]
-  organization   Organization    @relation(fields: [organizationId], references: [id])
+  organization   Organization     @relation(fields: [organizationId], references: [id])
   organizationId String
 
-  @@unique([actionId, roleId], name: "actionId_roleId_unique_constraint")
+  @@unique([action, roleId], name: "action_roleId_unique_constraint")
 }
 
 model Rule {
@@ -473,13 +476,6 @@ model Specialty {
   organizationId String
   rules          Rule[]
   branches       Branch[]
-}
-
-model Action {
-  id         String       @id @default(uuid())
-  name       String
-  subject    String
-  Permission Permission[]
 }
 
 // end permission

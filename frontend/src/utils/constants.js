@@ -67,147 +67,117 @@ export const ACCOUNTING_VIEWS = {
   TIME_SLOT: 'TIME_SLOT',
 };
 
-export const RAW_PERMISSIONS = new Map([
-  [
-    'Appointment',
-    [
-      {
-        name: 'List',
-        action: 'list',
-        subject: 'Appointment',
-        visibility: false,
-        level:null,
-        mappings:[],
-      
-      },
-     /*  {
-        name: 'List',
-        action: 'list',
-        subject: 'Appointment',
-        level:'Branches',
-        specialties:[],
-        branches:[],
-      }, */
-      
-       {
-        name: 'Create',
-        action: 'create',
-        subject: 'Appointment',
-        visibility: false,
-        level:null,
-        mappings:[],
-      
-      },
-      /*
-      {
-        name: 'Reschedule',
-        action: 'reschedule',
-        subject: 'Appointment',
-      },
-      {
-        name: 'Finish',
-        action: 'finish',
-        subject: 'Appointment',
-      },
-      {
-        name: 'Cancel',
-        action: 'cancel',
-        subject: 'Appointment',
-      },
-      {
-        name: 'Archive',
-        action: 'archive',
-        subject: 'Appointment',
-      }, */
-    ],
-  ],
- /*  [
-    'Patients',
-    [
-      {
-        name: 'View',
-        action: 'view',
-        subject: 'Patient',
-      },
-    ],
-  ],
-  [
-    'Accounting',
-    [
-      { name: 'View', action: 'view', subject: 'Accounting' },
-      {
-        name: 'Add Revenue',
-        action: 'add_revenue',
-        subject: 'Accounting',
-      },
-      {
-        name: 'Add Expense',
-        action: 'add_expense',
-        subject: 'Accounting',
-      },
-      {
-        name: 'Edit Revenue',
-        action: 'edit_revenue',
-        subject: 'Accounting',
-      },
-      {
-        name: 'Edit Expense',
-        action: 'edit_expense',
-        subject: 'Accounting',
-      },
-      {
-        name: 'Print',
-        action: 'print',
-        subject: 'Accounting',
-      },
-    ],
-  ],
-  [
-    'Calendar',
-    [
-      {
-        name: 'View',
-        action: 'view',
-        subject: 'Calendar',
-      },
-      {
-        name: 'Create Event',
-        action: 'create_event',
-        subject: 'Calendar',
-      },
-    ],
-  ],
-  [
-    'Inventory',
-    [
-      {
-        name: 'View',
-        action: 'view',
-        subject: 'Inventory',
-      },
-      {
-        name: 'Add item',
-        action: 'add',
-        subject: 'Inventory',
-      },
-      {
-        name: 'View History',
-        action: 'view_history',
-        subject: 'Inventory',
-      },
-      {
-        name: 'Define item',
-        action: 'define',
-        subject: 'Inventory',
-      },
-    ],
-  ], */
- /*  ['Statistical Report', [{ name: 'View', action: 'view', subject: 'Report' }]], */
-]);
+export const RAW_PERMISSIONS = [
+  {
+    id: 1,
+    subject: 'Appointment',
+    name: 'List',
+  },
+  {
+    id: 2,
+    subject: 'Appointment',
+    name: 'Create',
+  },
+  {
+    id: 3,
+    subject: 'Appointment',
+    name: 'Reschedule',
+  },
+  {
+    id: 4,
+    subject: 'Appointment',
+    name: 'Finish',
+  },
+  {
+    id: 5,
+    subject: 'Appointment',
+    name: 'Cancel',
+  },
+  {
+    id: 6,
+    subject: 'Appointment',
+    name: 'Archive',
+  },
+  {
+    id: 7,
+    subject: 'Patient',
+    name: 'View',
+  },
+  {
+    id: 8,
+    subject: 'Accounting',
+    name: 'View',
+  },
+  {
+    id: 9,
+    subject: 'Accounting',
+    name: 'Add Revenue',
+  },
+  {
+    id: 10,
+    subject: 'Accounting',
+    name: 'Add Expense',
+  },
+  {
+    id: 11,
+    subject: 'Accounting',
+    name: 'Edit Revenue',
+  },
+  {
+    id: 12,
+    subject: 'Accounting',
+    name: 'Edit Expense',
+  },
+  {
+    id: 13,
+    subject: 'Accounting',
+    name: 'Print',
+  },
+  {
+    id: 14,
+    subject: 'Calendar',
+    name: 'View',
+  },
+  {
+    id: 15,
+    subject: 'Calendar',
+    name: 'Create Event',
+  },
 
-export const PERMISSIONS = new Map(
-  [...RAW_PERMISSIONS.entries()].map(([key, value]) => [
-    key,
-    value.map(v => ({ ...v, id: v.action + v.subject })),
-  ])
-);
+  {
+    id: 16,
+    subject: 'Inventory',
+    name: 'View',
+  },
+  {
+    id: 17,
+    subject: 'Inventory',
+    name: 'Add item',
+  },
+  {
+    id: 18,
+    subject: 'Inventory',
+    name: 'View History',
+  },
+  {
+    id: 19,
+    subject: 'Inventory',
+    name: 'Define item',
+  },
+];
+
+// name: 'Create',
+// action: 'create',
+// subject: 'Appointment',
+// visibility: false,
+// level:null,
+//   mappings: [],
+
+// export const PERMISSIONS = new Map(
+//   [...RAW_PERMISSIONS.entries()].map(([key, value]) => [
+//     key,
+//     value.map(v => ({ ...v, id: v.action + v.subject })),
+//   ])
+// );
+
+export const PERMISSIONS = [];

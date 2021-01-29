@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -34,6 +34,10 @@ enum Sex {
   Female
   Male
 }
+
+// enum Specialty {
+//   Dentistry
+// }
 
 enum FieldType {
   Text
@@ -115,20 +119,25 @@ model Patient {
 }
 
 model Appointment {
-  id          String             @id @default(uuid())
-  date        DateTime           @default(now())
-  type        AppointmentType
-  patient     Patient            @relation(fields: [patientId], references: [id])
-  patientId   String
-  doctor      User               @relation(fields: [doctorId], references: [id])
-  doctorId    String
-  labs        String?            @default("[]")
-  status      AppointmentStatus
-  data        AppointmentField[]
-  collections Collection[]
-  clinic      Clinic             @relation(fields: [clinicId], references: [id])
-  clinicId    String
-  notes       String?            @default("")
+  id           String             @id @default(uuid())
+  date         DateTime           @default(now())
+  type         AppointmentType
+  patient      Patient            @relation(fields: [patientId], references: [id])
+  patientId    String
+  doctor       User               @relation(fields: [doctorId], references: [id])
+  doctorId     String
+  labs         String?            @default("[]")
+  status       AppointmentStatus
+  data         AppointmentField[]
+  collections  Collection[]
+  clinic       Clinic             @relation(fields: [clinicId], references: [id])
+  clinicId     String
+  notes        String?            @default("")
+  prescription String?            @default("")
+  // specialty    Specialty          @relation(fields: [specialtyId], references: [id])
+  // specialtyId  String
+  // Specialty    Specialty?         @relation(fields: [specialtyId], references: [id])
+  // specialtyId  String?
 }
 
 model View {
@@ -414,6 +423,10 @@ model PatientSurgery {
 
 // permissions
 
+enum PermissionAction {
+  Appointment_Create
+}
+
 enum PermissionLevel {
   Organization
   Branch
@@ -430,17 +443,14 @@ model Role {
 }
 
 model Permission {
-  id             String          @id @default(uuid())
-  role           Role            @relation(fields: [roleId], references: [id])
+  id             String           @id @default(uuid())
+  role           Role             @relation(fields: [roleId], references: [id])
   roleId         String
-  action         Action          @relation(fields: [actionId], references: [id])
-  actionId       String
+  action         PermissionAction
   level          PermissionLevel
   rules          Rule[]
-  organization   Organization    @relation(fields: [organizationId], references: [id])
+  organization   Organization     @relation(fields: [organizationId], references: [id])
   organizationId String
-
-  @@unique([actionId, roleId], name: "actionId_roleId_unique_constraint")
 }
 
 model Rule {
@@ -463,7 +473,6 @@ model Branch {
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   rules          Rule[]
-  Specialties    Specialty[]
 }
 
 model Specialty {
@@ -472,14 +481,6 @@ model Specialty {
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   rules          Rule[]
-  branches       Branch[]
-}
-
-model Action {
-  id         String       @id @default(uuid())
-  name       String
-  subject    String
-  Permission Permission[]
 }
 
 // end permission

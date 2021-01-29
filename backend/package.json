@@ -5,11 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js -e js,graphql --exec babel-node src/index.js",
-    "dev": "dotenv -e .env.dev -- webpack --config ./webpack.dev.js --watch",
-    "dev:prod-db": "dotenv -e .env -- webpack --config ./webpack.dev.js --watch",
+    "dev": "npm run db-source:dev && dotenv -e .env.dev -- webpack --config ./webpack.dev.js --watch",
+    "dev:prod-db": "npm run db-source:dev-prod && dotenv -e .env -- webpack --config ./webpack.dev.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "dotenv -e .env -- webpack --config=webpack.prod.js",
+    "build": "npm run db-source:prod && dotenv -e .env -- webpack --config=webpack.prod.js",
     "build-server": "webpack --config=webpack.server.js",
+    "db-source": "node database-connection",
+    "db-source:dev": "ENV_FILE=./.env.dev npm run db-source",
+    "db-source:dev-prod": "ENV_FILE=./.env db-source",
+    "db-source:prod": "ENV_FILE=./.env db-source",
     "debug": "babel src -d lib -s"
   },
   "author": "",

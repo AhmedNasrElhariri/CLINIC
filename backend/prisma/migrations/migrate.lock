@@ -1,3 +1,6 @@
 # Prisma Migrate lockfile v1
 
 20210113170540-init
+20210125032709-init
+20210125040201-add-branches-specalites
+20210129025436-add-actions-table

@@ -1,0 +1,44 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "Appointment",
+      "field": "prescription"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Permission",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[action, roleId]"
+            },
+            {
+              "name": "name",
+              "value": "\"action_roleId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "Specialties",
+      "type": "Specialty",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Specialty",
+      "field": "branches",
+      "type": "Branch",
+      "arity": "List"
+    }
+  ]
+}

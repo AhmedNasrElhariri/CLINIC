@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { FormGroup, RadioGroup, Radio, FlexboxGrid } from 'rsuite';
 import Label from '../label';
-import AddSpecializtionPermissions from '../../permissions/role-permissions/add-specialty-permission';
+import AddSpecialityPermissions from '../../permissions/role-permissions/add-specialty-permission';
 import AddUserPermissions from '../../permissions/role-permissions/add-user-permission';
 import AddBranchPermissions from '../../permissions/role-permissions/add-branch-permission';
 
@@ -13,11 +13,9 @@ const RadioInputsGroup = ({
   showSpecialty,
   showUser,
   branches,
-  selectedItems,
-  onAddBranch,
-  onAddSpecailization,
-  onAddUser,
-  handleDeleteSelected,
+  mappings,
+  onAdd,
+  onDelete,
 }) => {
   return (
     <FormGroup>
@@ -43,9 +41,9 @@ const RadioInputsGroup = ({
               <FlexboxGrid.Item colspan={20}>
                 <AddBranchPermissions
                   branches={branches}
-                  selectedItems={selectedItems}
-                  onAdd={onAddBranch}
-                  onDelete={handleDeleteSelected}
+                  mappings={mappings}
+                  onAdd={onAdd}
+                  onDelete={onDelete}
                 />
               </FlexboxGrid.Item>
             </>
@@ -61,10 +59,11 @@ const RadioInputsGroup = ({
           {showSpecialty && (
             <>
               <FlexboxGrid.Item colspan={20}>
-                <AddSpecializtionPermissions
+                <AddSpecialityPermissions
                   branches={branches}
-                  selectedItems={selectedItems}
-                  onAdd={onAddSpecailization}
+                  mappings={mappings}
+                  onAdd={onAdd}
+                  onDelete={onDelete}
                 />
               </FlexboxGrid.Item>
             </>
@@ -83,8 +82,9 @@ const RadioInputsGroup = ({
                 <FlexboxGrid.Item colspan={20}>
                   <AddUserPermissions
                     branches={branches}
-                    selectedItems={selectedItems}
-                    onAdd={onAddUser}
+                    mappings={mappings}
+                    onAdd={onAdd}
+                    onDelete={onDelete}
                   />
                 </FlexboxGrid.Item>
               </>
