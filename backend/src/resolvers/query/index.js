@@ -25,4 +25,4 @@ export { default as inventoryHistory } from './inventory-history';
 export { default as myHospitals } from './my-hospitals';
 export { default as mySurgeries } from './my-surgeries';
 export { default as myPatientSurgeries } from './my-patient-surgeries';
-export { default as myTests } from './my-tests';
+export { default as myTestsDefinition } from './my-tests-definition';

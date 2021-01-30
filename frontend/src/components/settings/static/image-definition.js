@@ -4,26 +4,15 @@ import * as R from 'ramda';
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import { useModal } from 'components/widgets/modal';
-import NewTest from './new-test';
-import ListTests from './list-tests';
-import useTests from 'hooks/fetch-tests';
+import NewImageDefinition from './new-image-definition';
+import ListImagesDefinition from './list-images-definition';
 
-const initValue = { testName: ''};
+const initValue = { imageName: ''};
 
-const TestLibrary = () => {
+const ImageDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
-  });
-  const { addTest , tests , editTest } = useTests({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
   });
   
   const handleClickCreate = useCallback(() => {
@@ -34,7 +23,7 @@ const TestLibrary = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const test = R.pick(['id', 'testName'])(data);
+      const test = R.pick(['id', 'imageName'])(data);
       setType('edit');
       setFormValue(test);
       open();
@@ -43,30 +32,17 @@ const TestLibrary = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
-      addTest({
-        variables: {
-          test: formValue,
-        },
-      });
-    } 
-    else {
-      editTest({
-        variables: {
-          test: formValue,
-        },
-      });
-    }
-  }, [addTest, formValue, type]);
+    
+  }, [formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
         <CRButton primary small onClick={handleClickCreate}>
-          Add New Test +
+          Add New Image +
         </CRButton>
       </Div>
-      <NewTest
+      <NewImageDefinition
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
@@ -74,9 +50,9 @@ const TestLibrary = () => {
         onClose={close}
         type={type}
       />
-      <ListTests tests={tests} onEdit={handleClickEdit} />
+      <ListImagesDefinition onEdit={handleClickEdit}/>
     </>
   );
 };
 
-export default TestLibrary;
+export default ImageDefinition;

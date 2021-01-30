@@ -32,7 +32,7 @@ function useHospitals({ onCreate, onEdit } = {}) {
       updateCache([...hospitals, hospital]);
     },
     onError() {
-      Alert.error('Failed to add new Hospitall');
+      Alert.error('Failed to add new Hospital');
     },
   });
 
@@ -53,7 +53,7 @@ function useHospitals({ onCreate, onEdit } = {}) {
       editHospital,
       updateCache,
     }),
-    [addHospital, editHospital, hospitals]
+    [addHospital, editHospital, hospitals,updateCache]
   );
 }
 

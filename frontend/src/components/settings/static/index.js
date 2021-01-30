@@ -4,8 +4,8 @@ import { MainContainer, CRNav } from 'components';
 import Hospitals from './hospitals';
 import Surgeries from './surgeries';
 import MedicineLibrary from './medicine-library';
-import TestLibrary from './test-library';
-import ImageLibrary from './image-library';
+import TestDefinition from './test-definition';
+import ImageDefinition from './image-definition';
 
 function StaticSettings() {
   const [activeTab, setActiveTab] = useState('0');
@@ -23,7 +23,7 @@ function StaticSettings() {
           <CRNav.CRItem eventKey="0">Hospitals</CRNav.CRItem>
           <CRNav.CRItem eventKey="1">Surgeries</CRNav.CRItem>
           <CRNav.CRItem eventKey="2">Medicine Library</CRNav.CRItem>
-          <CRNav.CRItem eventKey="3">Test Library</CRNav.CRItem>
+          <CRNav.CRItem eventKey="3">Test Definition</CRNav.CRItem>
           <CRNav.CRItem eventKey="4">Image Library</CRNav.CRItem>
         </CRNav>
         {/* {activeTab === '0' ? <Hospitals /> :
@@ -46,11 +46,11 @@ function StaticSettings() {
                   )
               case "3":
                   return (
-                    <TestLibrary />
+                    <TestDefinition />
                   )
               default:
                   return (
-                    <ImageLibrary />
+                    <ImageDefinition />
                   )
         }
 

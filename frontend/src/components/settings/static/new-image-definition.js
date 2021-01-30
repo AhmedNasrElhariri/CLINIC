@@ -6,7 +6,7 @@ import { CRModal, CRTextInput  } from 'components';
 
 const model = Schema.Model({});
 
-function NewImage({ formValue, onChange, type, visible, onOk, onClose }) {
+function NewImageDefinition({ formValue, onChange, type, visible, onOk, onClose }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Image' : 'Edit Image '),
     [type]
@@ -27,8 +27,8 @@ function NewImage({ formValue, onChange, type, visible, onOk, onClose }) {
   );
 }
 
-NewImage.defaultProps = {
+NewImageDefinition.defaultProps = {
   type: 'create',
 };
 
-export default NewImage;
+export default NewImageDefinition;

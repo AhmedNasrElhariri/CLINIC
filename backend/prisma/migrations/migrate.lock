@@ -1,4 +1,3 @@
 # Prisma Migrate lockfile v1
 
-20210113170540-init
-20210128122535-test-model
+20210130152729-create-db

@@ -389,9 +389,11 @@ model Hospital {
   organizationId String
   PatientSurgery PatientSurgery[]
 }
-model Test{
+model TestDefinition {
   id             String           @id @default(uuid())
   testName       String
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
 }
 
 model Surgery {

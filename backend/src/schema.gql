@@ -78,7 +78,7 @@ type Query {
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
   myPatientSurgeries: [PatientSurgery!]
-  myTests: [Test!]
+  myTestsDefinition: [TestDefinition!]
 }
 
 ########################### Mutation ##################################
@@ -128,8 +128,8 @@ type Mutation {
   defineSurgery(surgery: SurgeryInput!): Surgery
   editSurgery(surgery: SurgeryInput!): Surgery
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
-  addTest(test: TestInput!): Test
-  editTest(test: TestInput!): Test
+  addTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
+  editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
 }
 
 ########################### Auth ##################################
@@ -617,12 +617,12 @@ input SurgeryInput {
 }
 ########################### Tests ##################################
 
-type Test {
+type TestDefinition {
   id: ID!
   testName: String!
 }
 
-input TestInput {
+input TestInputDefinition {
   id: ID
   testName: String!
 }

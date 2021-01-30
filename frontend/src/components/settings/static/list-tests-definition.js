@@ -4,25 +4,14 @@ import { Icon } from 'rsuite';
 import { CRCard, CRTable  } from 'components';
 
 
-function ListImages({ images, onEdit }) {
-  const data = [
-    {
-      id: "1",
-      imageName:"sss",
-    },
-    {
-      id: "1",
-      imageName:"xxx",
-    }
-
-  ]
-  return (
+function ListTestsDefinition({ tests, onEdit }) {
+    return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={data}>
+        <CRTable autoHeight data={tests}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Image Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="imageName" semiBold />
+            <CRTable.CRHeaderCell>Test Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="testName" semiBold />
           </CRTable.CRColumn>
           <CRTable.CRColumn >
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
@@ -45,4 +34,4 @@ function ListImages({ images, onEdit }) {
 
 
 
-export default ListImages;
+export default ListTestsDefinition;

@@ -6,7 +6,7 @@ import { CRModal, CRTextInput  } from 'components';
 
 const model = Schema.Model({});
 
-function NewTest({ formValue, onChange, type, visible, onOk, onClose }) {
+function NewTestDefinition({ formValue, onChange, type, visible, onOk, onClose }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Test' : 'Edit Test '),
     [type]
@@ -27,8 +27,8 @@ function NewTest({ formValue, onChange, type, visible, onOk, onClose }) {
   );
 }
 
-NewTest.defaultProps = {
+NewTestDefinition.defaultProps = {
   type: 'create',
 };
 
-export default NewTest;
+export default NewTestDefinition;

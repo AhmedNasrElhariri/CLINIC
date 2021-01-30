@@ -37,5 +37,5 @@ export { default as defineSurgery } from './define-surgery';
 export { default as createPatientSurgery } from './create-patient-surgery';
 export { default as editHospital } from './edit-hospital';
 export { default as editSurgery } from './edit-surgery';
-export { default as addTest } from './add-test';
-export { default as editTest } from './edit-test';
+export { default as addTestDefinition } from './add-test-definition';
+export { default as editTestDefinition } from './edit-test-definition';
