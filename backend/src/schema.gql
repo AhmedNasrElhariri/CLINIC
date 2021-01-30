@@ -3,6 +3,13 @@ scalar VitalData
 scalar JSON
 scalar Upload
 
+enum PermissionLevel {
+  Organization
+  Branch
+  Specialty
+  User
+}
+
 enum PatientMembershipType {
   Primary
   Secondary
@@ -78,6 +85,7 @@ type Query {
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
   myPatientSurgeries: [PatientSurgery!]
+  getActions: [Action!]
 }
 
 ########################### Mutation ##################################
@@ -127,6 +135,7 @@ type Mutation {
   defineSurgery(surgery: SurgeryInput!): Surgery
   editSurgery(surgery: SurgeryInput!): Surgery
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
+  createRole(role: RoleInput!): Boolean
 }
 
 ########################### Auth ##################################
@@ -156,9 +165,28 @@ type Permission {
   subject: String
 }
 
+input RoleInput {
+  name: String!
+  permissions: [PermissionInput!]!
+}
+
 input PermissionInput {
-  action: String
-  subject: String
+  actionId: ID!
+  level: PermissionLevel!
+  rules: [PermissionRuleInput!]
+}
+
+input PermissionRuleInput {
+  organizationId: ID
+  branchId: ID
+  specialtyId: ID
+  userId: ID
+}
+
+type Action {
+  id: ID!
+  name: String!
+  subject: String!
 }
 
 ########################### Search ##################################

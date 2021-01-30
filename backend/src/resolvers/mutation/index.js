@@ -37,3 +37,4 @@ export { default as defineSurgery } from './define-surgery';
 export { default as createPatientSurgery } from './create-patient-surgery';
 export { default as editHospital } from './edit-hospital';
 export { default as editSurgery } from './edit-surgery';
+export { default as createRole } from './create-role';

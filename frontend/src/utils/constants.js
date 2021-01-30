@@ -67,6 +67,13 @@ export const ACCOUNTING_VIEWS = {
   TIME_SLOT: 'TIME_SLOT',
 };
 
+export const PERMISSION_LEVELS = Object.freeze({
+  ORGNIZATION: 'Organization',
+  BRANCH: 'Branch',
+  SPECIALTY: 'Specialty',
+  USER: 'User',
+});
+
 export const RAW_PERMISSIONS = [
   {
     id: 1,

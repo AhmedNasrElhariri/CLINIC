@@ -5,7 +5,7 @@ import { FlexboxGrid } from 'rsuite';
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../../permissions/list-selections-items/index';
 
-const AddUserPermissions = ({ branches, mappings, onAdd, onDelete }) => {
+const AddUserPermissions = ({ branches, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
     branchId: null,
     userId: null,
@@ -15,15 +15,16 @@ const AddUserPermissions = ({ branches, mappings, onAdd, onDelete }) => {
     onAdd(formValue);
   }, [formValue, onAdd]);
 
-  const selectedBranch = useMemo(() => {
-    return branches.find(p => p.id === formValue.branchId) || {};
-  }, [formValue, branches]);
-
-  const usersPermissions = useMemo(
-    () => (selectedBranch.specialties || []).map(p => p.users),
-    [selectedBranch.specialties]
+  const users = useMemo(
+    () =>
+      R.pipe(
+        R.map(R.prop('specialties')),
+        R.flatten,
+        R.map(R.prop('users')),
+        R.flatten
+      )(branches),
+    [branches]
   );
-  const users = useMemo(() => R.flatten(usersPermissions), [usersPermissions]);
 
   const branchesNames = useMemo(
     () =>
@@ -51,11 +52,11 @@ const AddUserPermissions = ({ branches, mappings, onAdd, onDelete }) => {
 
   const items = useMemo(
     () =>
-      mappings.map(
+      rules.map(
         ({ branchId, userId }) =>
           `${branchesNames[branchId]} - ${usersNames[userId]}`
       ),
-    [branchesNames, mappings, usersNames]
+    [branchesNames, rules, usersNames]
   );
 
   const updateFormField = useCallback(
@@ -96,7 +97,7 @@ const AddUserPermissions = ({ branches, mappings, onAdd, onDelete }) => {
 
       <FlexboxGrid.Item colspan={5}>
         <CRButton primary small onClick={add}>
-          + Add New
+          + Add
         </CRButton>
       </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={22}>
@@ -104,9 +105,6 @@ const AddUserPermissions = ({ branches, mappings, onAdd, onDelete }) => {
       </FlexboxGrid.Item>
     </FlexboxGrid>
   );
-};
-AddUserPermissions.defaultProps = {
-  selectedItems: [],
 };
 
 export default memo(AddUserPermissions);

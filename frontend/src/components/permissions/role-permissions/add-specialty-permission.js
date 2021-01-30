@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../list-selections-items/index';
 
-const AddSpecialityPermissions = ({ branches, mappings, onAdd, onDelete }) => {
+const AddSpecialityPermissions = ({ branches, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
     branchId: [],
     specialtyId: null,
@@ -45,11 +45,11 @@ const AddSpecialityPermissions = ({ branches, mappings, onAdd, onDelete }) => {
 
   const items = useMemo(
     () =>
-      mappings.map(
+      rules.map(
         ({ branchId, specialtyId }) =>
           `${branchesNames[branchId]} - ${specialtiesNames[specialtyId]}`
       ),
-    [branchesNames, mappings, specialtiesNames]
+    [branchesNames, rules, specialtiesNames]
   );
 
   const updateFormField = useCallback(
@@ -89,7 +89,7 @@ const AddSpecialityPermissions = ({ branches, mappings, onAdd, onDelete }) => {
       </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={5}>
         <CRButton primary small onClick={add}>
-          + Add New
+          + Add
         </CRButton>
       </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={24}>
@@ -97,10 +97,6 @@ const AddSpecialityPermissions = ({ branches, mappings, onAdd, onDelete }) => {
       </FlexboxGrid.Item>
     </FlexboxGrid>
   );
-};
-
-AddSpecialityPermissions.defaultProps = {
-  selectedItems: [],
 };
 
 export default memo(AddSpecialityPermissions);

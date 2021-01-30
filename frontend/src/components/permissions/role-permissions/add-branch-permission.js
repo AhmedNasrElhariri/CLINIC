@@ -1,14 +1,14 @@
 import React, { useState, memo, useMemo, useCallback } from 'react';
 import { FlexboxGrid } from 'rsuite';
 
-import { CRSelectInput, CRButton, Div } from 'components';
+import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../../permissions/list-selections-items/index';
 
 const initValue = {
   branchId: null,
 };
 
-const AddBranchPermissions = ({ branches, mappings, onAdd, onDelete }) => {
+const AddBranchPermissions = ({ branches, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState(initValue);
 
   const add = useCallback(() => {
@@ -29,8 +29,8 @@ const AddBranchPermissions = ({ branches, mappings, onAdd, onDelete }) => {
   );
 
   const items = useMemo(
-    () => mappings.map(({ branchId }) => `${branchesNames[branchId]}`),
-    [branchesNames, mappings]
+    () => rules.map(({ branchId }) => `${branchesNames[branchId]}`),
+    [branchesNames, rules]
   );
 
   const handelChange = useCallback(
@@ -57,7 +57,7 @@ const AddBranchPermissions = ({ branches, mappings, onAdd, onDelete }) => {
       <FlexboxGrid.Item colspan={9}></FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={5}>
         <CRButton primary small onClick={add}>
-          + Add New
+          + Add
         </CRButton>
       </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={24}>
@@ -65,10 +65,6 @@ const AddBranchPermissions = ({ branches, mappings, onAdd, onDelete }) => {
       </FlexboxGrid.Item>
     </FlexboxGrid>
   );
-};
-
-AddBranchPermissions.defaultProps = {
-  selectedItems: [],
 };
 
 export default memo(AddBranchPermissions);
