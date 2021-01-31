@@ -2,7 +2,7 @@ import React, { useCallback, useState, useMemo } from 'react';
 
 import { Div, CRButton, MainContainer, CRModal } from 'components';
 import useFrom from 'hooks/form';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import usePatientSurgeries from 'hooks/fetch-patient-surgeries';
 import ListPatientSurgeries from '../list-patient-surgeries';
 import NewPatientSurgery from '../new-patient-surgery';

@@ -10,6 +10,8 @@ import * as fromSnippet from './snippet';
 import * as fromCollection from './collection';
 import * as fromCustomResolvers from './custom-resolvers';
 import * as formPatientSurgery from './patient-surgery';
+import * as formBranch from './branch';
+import * as formSpecialty from './specialty';
 
 export default {
   Query: fromQuery,
@@ -22,5 +24,7 @@ export default {
   Snippet: fromSnippet,
   Collection: fromCollection,
   PatientSurgery: formPatientSurgery,
+  Branch: formBranch,
+  Specialty: formSpecialty,
   ...fromCustomResolvers,
 };

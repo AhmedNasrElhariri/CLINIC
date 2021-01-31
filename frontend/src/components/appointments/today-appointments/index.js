@@ -13,7 +13,7 @@ import ListAppointments from './list-appointments';
 import useFetchAppointments from 'hooks/fetch-appointments';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
 import { Can } from 'components/user/can';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import FinishAppointment from '../finish-appointments';
 import useGlobalState from 'state';
 import { getName } from 'services/accounting';

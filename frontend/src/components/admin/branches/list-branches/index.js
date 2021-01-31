@@ -1,6 +1,7 @@
 import React from 'react';
-import { CRCard, CRTable } from 'components';
+import { Tag } from 'rsuite';
 
+import { CRCard, CRTable } from 'components';
 export default function ListBranches({ branches }) {
   return (
     <>
@@ -8,18 +9,23 @@ export default function ListBranches({ branches }) {
         <CRTable autoHeight data={branches} bordered={false}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name">
-              {({ name }) => (
-                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
+            <CRTable.CRCell dataKey="name" bold />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="phone">
-              {({ phone }) => (
-                <CRTable.CRCellStyled bold>{phone}</CRTable.CRCellStyled>
+            <CRTable.CRCell dataKey="phoneNo" />
+          </CRTable.CRColumn>
+
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Specialties</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ specialties }) => (
+                <div>
+                  {specialties.map(({ name }, index) => (
+                    <Tag key={index}>{name}</Tag>
+                  ))}
+                </div>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

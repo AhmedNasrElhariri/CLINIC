@@ -10,6 +10,12 @@ enum PermissionLevel {
   User
 }
 
+enum Position {
+  Admin
+  Doctor
+  Assistant
+}
+
 enum PatientMembershipType {
   Primary
   Secondary
@@ -86,6 +92,9 @@ type Query {
   mySurgeries: [Surgery!]
   myPatientSurgeries: [PatientSurgery!]
   getActions: [Action!]
+  listBranches: [Branch!]
+  listSpecialties: [Specialty!]
+  listUsers: [User!]
 }
 
 ########################### Mutation ##################################
@@ -135,7 +144,12 @@ type Mutation {
   defineSurgery(surgery: SurgeryInput!): Surgery
   editSurgery(surgery: SurgeryInput!): Surgery
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
-  createRole(role: RoleInput!): Boolean
+  createRole(role: RoleInput!): Role!
+  createBranch(branch: BranchInput!): Branch!
+  createSpecialty(specialty: SpecialtyInput!): Specialty!
+  createUser(user: UserInput!): User!
+  addSpecialty(branchId: ID!, specialtyId: ID!): Branch!
+  addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
 }
 
 ########################### Auth ##################################
@@ -156,6 +170,7 @@ type User {
   id: ID!
   name: String!
   email: String!
+  position: Position
   permissions: [Permission!]
   avatar: String
 }
@@ -163,6 +178,33 @@ type User {
 type Permission {
   action: String
   subject: String
+}
+
+type Role {
+  id: ID!
+  name: String!
+}
+
+type Branch {
+  id: ID!
+  name: String!
+  address: String
+  phoneNo: String
+  notes: String
+  specialties: [Specialty!]
+}
+
+type Specialty {
+  id: ID!
+  name: String!
+  branches: [Branch!]
+  doctors: [User!]
+}
+
+type Action {
+  id: ID!
+  name: String!
+  subject: String!
 }
 
 input RoleInput {
@@ -183,10 +225,25 @@ input PermissionRuleInput {
   userId: ID
 }
 
-type Action {
-  id: ID!
+input BranchInput {
+  id: ID
   name: String!
-  subject: String!
+  address: String
+  phoneNo: String
+  notes: String
+}
+
+input SpecialtyInput {
+  id: ID
+  name: String!
+}
+
+input UserInput {
+  specialtyId: ID
+  name: String!
+  email: String!
+  password: String!
+  position: Position!
 }
 
 ########################### Search ##################################

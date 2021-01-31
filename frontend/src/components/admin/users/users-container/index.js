@@ -1,42 +1,21 @@
-import React, { useState, useCallback } from 'react';
-import * as R from 'ramda';
-import { Alert } from 'rsuite';
+import React, { useCallback } from 'react';
 
 import { NewUser, MainContainer, CRButton, Users } from 'components';
-
+import usePermissions from 'hooks/use-permissions';
+import useModal from 'hooks/use-model';
 export default function UsersContainer() {
-  const [visible, setVisible] = useState(false);
-  const data = JSON.parse(localStorage.getItem('users')) || [];
+  const { visible, open, close } = useModal();
 
-  const create = useCallback(user => {
-    let users = [
-      ...data,
-      {
-        id: Math.random().toString(36).substr(2, 9),
-        name: user.name,
-        password: user.password,
-        email: user.email,
-        type: user.type,
-        specialty: user.specialty,
-        notes: user.notes,
-      },
-    ];
-    users = JSON.stringify(users);
-    localStorage.setItem('users', users);
-    Alert.success('User has been created successfully');
-    setVisible(false);
-  },[data]);
-
-  const showModal = useCallback(() => setVisible(true), []);
-  const hideModal = useCallback(() => setVisible(false), []);
-  const onCreate = useCallback(user => create(user), [create]);
-
-  const users = R.propOr(
-    [],
-    'users'
-  )({
-    users: data,
+  const { users, createUser } = usePermissions({
+    onCreateUser: close,
   });
+
+  const handleCreate = useCallback(
+    user => {
+      createUser(user);
+    },
+    [createUser]
+  );
 
   return (
     <>
@@ -44,16 +23,16 @@ export default function UsersContainer() {
         title="Users"
         nobody
         more={
-          <CRButton onClick={showModal} primary small>
+          <CRButton onClick={open} primary small>
             New User
           </CRButton>
         }
       ></MainContainer>
       <NewUser
-        onCreate={onCreate}
+        onCreate={handleCreate}
         show={visible}
-        onHide={hideModal}
-        onCancel={hideModal}
+        onHide={close}
+        onCancel={close}
       />
       <Users users={users} />
     </>

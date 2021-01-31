@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import ListHospitals from './list-hospitals';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import NewHospital from './new-hospital';
 import useHospitals from 'hooks/fetch-hospitals';
 

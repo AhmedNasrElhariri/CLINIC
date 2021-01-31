@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../list-selections-items/index';
 
-const AddSpecialityPermissions = ({ branches, rules, onAdd, onDelete }) => {
+const AddSpecialtyPermissions = ({ branches, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
     branchId: [],
     specialtyId: null,
@@ -99,4 +99,4 @@ const AddSpecialityPermissions = ({ branches, rules, onAdd, onDelete }) => {
   );
 };
 
-export default memo(AddSpecialityPermissions);
+export default memo(AddSpecialtyPermissions);

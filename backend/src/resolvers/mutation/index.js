@@ -38,3 +38,8 @@ export { default as createPatientSurgery } from './create-patient-surgery';
 export { default as editHospital } from './edit-hospital';
 export { default as editSurgery } from './edit-surgery';
 export { default as createRole } from './create-role';
+export { default as createBranch } from './create-branch';
+export { default as createSpecialty } from './create-specialty';
+export { default as createUser } from './create-user';
+export { default as addSpecialty } from './add-specialty';
+export { default as addDoctor } from './add-doctor';

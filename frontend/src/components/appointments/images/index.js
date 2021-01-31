@@ -10,7 +10,7 @@ import * as R from 'ramda';
 
 import { Div, CRModal, CRButton } from 'components';
 import Collection from './collection';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import CRUploader from './uploader';
 import AppointmentGallery from './gallery';
 

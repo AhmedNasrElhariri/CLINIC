@@ -36,7 +36,7 @@ import useAppointmentHistory from './fetch-appointment-history';
 import History from './patient-history';
 
 import { HeaderStyled } from './style';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 
 const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
 

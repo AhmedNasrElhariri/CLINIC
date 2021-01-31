@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Schema } from 'rsuite';
 
 import { CRButton, CRCard, H4, Div } from 'components';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import DefineSession from '../define-session';
 import ListSessionDefinations from '../list-session-definations';
 

@@ -39,3 +39,9 @@ export const INVENTORY_OPERATION = {
   ADD: 'Add',
   SUBSTRACT: 'Substract',
 };
+
+export const POSITION = {
+  Admin: 'Admin',
+  Doctor: 'Doctor',
+  Assistant: 'Assistant',
+};

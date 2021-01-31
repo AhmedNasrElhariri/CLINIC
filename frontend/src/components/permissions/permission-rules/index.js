@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { FormGroup, RadioGroup, FlexboxGrid } from 'rsuite';
 import { CRLabel } from 'components';
-import AddSpecialityPermissions from '../role-permissions/add-specialty-permission';
+import AddSpecialtyPermissions from '../role-permissions/add-specialty-permission';
 import AddUserPermissions from '../role-permissions/add-user-permission';
 import AddBranchPermissions from '../role-permissions/add-branch-permission';
 import { PERMISSION_LEVELS } from 'utils/constants';
@@ -52,7 +52,7 @@ const PermissionRules = ({
           </FlexboxGrid.Item>
           {level === PERMISSION_LEVELS.SPECIALTY && (
             <FlexboxGrid.Item colspan={20}>
-              <AddSpecialityPermissions
+              <AddSpecialtyPermissions
                 branches={branches}
                 rules={rules}
                 onAdd={onAdd}

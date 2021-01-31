@@ -26,3 +26,6 @@ export { default as myHospitals } from './my-hospitals';
 export { default as mySurgeries } from './my-surgeries';
 export { default as myPatientSurgeries } from './my-patient-surgeries';
 export { default as getActions } from './get-actions';
+export { default as listBranches } from './list-branches';
+export { default as listSpecialties } from './list-specialties';
+export { default as listUsers } from './list-users';

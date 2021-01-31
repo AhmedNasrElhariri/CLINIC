@@ -3,7 +3,7 @@ import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import useSurgeries from 'hooks/fetch-surgeries';
 import ListSurgeries from './list-surgeries';
 import NewSurgery from './new-surgery';

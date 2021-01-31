@@ -1,3 +1,9 @@
+export const mapObjValuesToChoices = obj =>
+  Object.values(obj).map(i => ({
+    label: i,
+    value: i,
+  }));
+
 export const mapArrToChoices = arr =>
   arr.map(i => ({
     label: i,
@@ -10,9 +16,8 @@ export const mapArrWithIdsToChoices = arr =>
     value: currentValue.id,
   }));
 
-  
 export const mapArrWithLabelsToChoices = arr =>
-arr.map(currentValue => ({
-  value: currentValue.name,
-  label: currentValue.name,
-}));
+  arr.map(currentValue => ({
+    value: currentValue.name,
+    label: currentValue.name,
+  }));

@@ -26,6 +26,7 @@ enum AppointmentStatus {
 }
 
 enum Position {
+  Admin
   Doctor
   Assistant
 }
@@ -64,17 +65,19 @@ enum InventoryOperation {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id             String           @id @default(uuid())
-  name           String
-  item           Item[]
-  hospital       Hospital[]
-  surgery        Surgery[]
-  patientSurgery PatientSurgery[]
-  roles          Role[]
-  permissions    Permission[]
-  rules          Rule[]
-  branchs        Branch[]
-  specialties    Specialty[]
+  id              String           @id @default(uuid())
+  name            String
+  item            Item[]
+  hospital        Hospital[]
+  surgery         Surgery[]
+  patientSurgery  PatientSurgery[]
+  roles           PermissionRole[]
+  permissions     Permission[]
+  rules           Rule[]
+  branchs         Branch[]
+  specialties     Specialty[]
+  users           User[]
+  userSpecialties UserSpecialty[]
 }
 
 model User {
@@ -82,19 +85,21 @@ model User {
   name             String
   email            String             @unique
   password         String
+  organization     Organization       @relation(fields: [organizationId], references: [id])
   organizationId   String
-  appointment      Appointment[]
-  view             View[]
+  appointments     Appointment[]
+  views            View[]
   viewStatus       ViewStatus[]
   clinics          Clinic[]           @relation(references: [id])
   workingHours     WorkingHours[]
-  snippet          Snippet[]
+  snippets         Snippet[]
   permissions      Json               @default("[]")
   avatar           String?
   position         Position
   events           Event[]
   inventoryHistory InventoryHistory[]
-  Rule             Rule[]
+  rules            Rule[]
+  userSpecialties  UserSpecialty[]
 }
 
 model Patient {
@@ -421,7 +426,7 @@ enum PermissionLevel {
   User
 }
 
-model Role {
+model PermissionRole {
   id             String       @id @default(uuid())
   name           String
   organization   Organization @relation(fields: [organizationId], references: [id])
@@ -431,7 +436,7 @@ model Role {
 
 model Permission {
   id             String          @id @default(uuid())
-  role           Role            @relation(fields: [roleId], references: [id])
+  role           PermissionRole  @relation(fields: [roleId], references: [id])
   roleId         String
   action         Action          @relation(fields: [actionId], references: [id])
   actionId       String
@@ -458,28 +463,47 @@ model Rule {
 }
 
 model Branch {
-  id             String       @id @default(uuid())
-  name           String
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  rules          Rule[]
-  Specialties    Specialty[]
+  id              String          @id @default(uuid())
+  name            String
+  address         String?
+  phoneNo         String?
+  notes           String?
+  organization    Organization    @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  rules           Rule[]
+  specialties     Specialty[]
+  userSpecialties UserSpecialty[]
 }
 
 model Specialty {
+  id              String          @id @default(uuid())
+  name            String
+  organization    Organization    @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  rules           Rule[]
+  branches        Branch[]
+  userSpecialties UserSpecialty[]
+}
+
+model UserSpecialty {
   id             String       @id @default(uuid())
-  name           String
+  branch         Branch       @relation(fields: [branchId], references: [id])
+  branchId       String
+  specialty      Specialty    @relation(fields: [specialtyId], references: [id])
+  specialtyId    String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  rules          Rule[]
-  branches       Branch[]
+
+  @@unique([userId, branchId], name: "userId_branchId_unique_constraint")
 }
 
 model Action {
-  id         String       @id @default(uuid())
-  name       String
-  subject    String
-  Permission Permission[]
+  id          String       @id @default(uuid())
+  name        String
+  subject     String
+  permissions Permission[]
 }
 
 // end permission
