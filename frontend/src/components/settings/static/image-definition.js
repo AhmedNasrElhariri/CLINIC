@@ -6,6 +6,7 @@ import useFrom from 'hooks/form';
 import { useModal } from 'components/widgets/modal';
 import NewImageDefinition from './new-image-definition';
 import ListImagesDefinition from './list-images-definition';
+import useImagesDefinition from 'hooks/fetch-images-definition';
 
 const initValue = { imageName: ''};
 
@@ -13,6 +14,16 @@ const ImageDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
+  });
+  const { addImageDefinition , imagesDefinition , editImageDefinition } = useImagesDefinition({
+    onCreate: () => {
+      close();
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setFormValue(initValue);
+    },
   });
   
   const handleClickCreate = useCallback(() => {
@@ -23,23 +34,36 @@ const ImageDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const test = R.pick(['id', 'imageName'])(data);
+      const image = R.pick(['id', 'imageName'])(data);
       setType('edit');
-      setFormValue(test);
+      setFormValue(image);
       open();
     },
     [open, setFormValue, setType]
   );
 
   const handleAdd = useCallback(() => {
-    
-  }, [formValue, type]);
+    if (type === 'create') {
+      addImageDefinition({
+        variables: {
+          imageDefinition: formValue,
+        },
+      });
+    } 
+    else {
+      editImageDefinition({
+        variables: {
+          imageDefinition: formValue,
+        },
+      });
+    }
+  }, [addImageDefinition, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate}>
-          Add New Image +
+        <CRButton primary small onClick={handleClickCreate} style={{marginTop:4}}>
+          Add New Image+
         </CRButton>
       </Div>
       <NewImageDefinition
@@ -50,7 +74,7 @@ const ImageDefinition = () => {
         onClose={close}
         type={type}
       />
-      <ListImagesDefinition onEdit={handleClickEdit}/>
+      <ListImagesDefinition images={imagesDefinition} onEdit={handleClickEdit}/>
     </>
   );
 };

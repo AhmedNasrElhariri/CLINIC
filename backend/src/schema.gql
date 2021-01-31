@@ -79,6 +79,8 @@ type Query {
   mySurgeries: [Surgery!]
   myPatientSurgeries: [PatientSurgery!]
   myTestsDefinition: [TestDefinition!]
+  myImagesDefinition: [ImageDefinition!]
+  myMedicinesDefinition: [MedicineDefinition!]
 }
 
 ########################### Mutation ##################################
@@ -130,6 +132,10 @@ type Mutation {
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
   addTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
   editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
+  addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  addMedicineDefinition(medicineDefinition: MedicineInputDefinition!): MedicineDefinition
+  editMedicineDefinition(medicineDefinition: MedicineInputDefinition!): MedicineDefinition
 }
 
 ########################### Auth ##################################
@@ -615,7 +621,7 @@ input SurgeryInput {
   id: ID
   name: String!
 }
-########################### Tests ##################################
+########################### Tests Definition ##################################
 
 type TestDefinition {
   id: ID!
@@ -626,6 +632,35 @@ input TestInputDefinition {
   id: ID
   testName: String!
 }
+
+########################### Images Definition ##################################
+
+type ImageDefinition {
+  id: ID!
+  imageName: String!
+}
+
+input ImageInputDefinition {
+  id: ID
+  imageName: String!
+}
+
+########################### Medicine Definition ##################################
+
+type MedicineDefinition {
+  id: ID!
+  medicineName: String!
+  concentration: String!
+  medicineForm: String
+}
+
+input MedicineInputDefinition {
+  id: ID
+  medicineName: String!
+  concentration: String!
+  medicineForm: String
+}
+
 ########################### Patient Surgeries ##################################
 
 type PatientSurgery {

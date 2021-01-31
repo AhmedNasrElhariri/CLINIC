@@ -4,17 +4,29 @@ import * as R from 'ramda';
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import { useModal } from 'components/widgets/modal';
-import NewMedicine from './new-medicine';
-import ListMedicines from './list-medicine';
+import NewMedicineDefinition from './new-medicine-definition';
+import ListMedicinesDefinition from './list-medicine-definition';
+import useMedicinesDefinition from 'hooks/fetch-medicines-definition';
 
-const initValue = { medicineName: '', concentration: '', medicineForm:''};
+const initValue = { medicineName: '', concentration: '', medicineForm:'tablets'};
 
-const MedicineLibrary = () => {
+const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
   
+  const { addMedicineDefinition , medicinesDefinition , editMedicineDefinition } = useMedicinesDefinition({
+    onCreate: () => {
+      close();
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setFormValue(initValue);
+    },
+  });
+
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -32,8 +44,21 @@ const MedicineLibrary = () => {
   );
 
   const handleAdd = useCallback(() => {
-    
-  }, [formValue, type]);
+    if (type === 'create') {
+      addMedicineDefinition({
+        variables: {
+          medicineDefinition: formValue,
+        },
+      });
+    } 
+    else {
+      editMedicineDefinition({
+        variables: {
+          medicineDefinition: formValue,
+        },
+      });
+    }
+  }, [addMedicineDefinition, formValue, type]);
 
   return (
     <>
@@ -42,7 +67,7 @@ const MedicineLibrary = () => {
           New Medicine +
         </CRButton>
       </Div>
-      <NewMedicine
+      <NewMedicineDefinition
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
@@ -50,9 +75,9 @@ const MedicineLibrary = () => {
         onClose={close}
         type={type}
       />
-      <ListMedicines onEdit={handleClickEdit}/>
+      <ListMedicinesDefinition medicines={medicinesDefinition} onEdit={handleClickEdit}/>
     </>
   );
 };
 
-export default MedicineLibrary;
+export default MedicineDefinition;

@@ -39,3 +39,8 @@ export { default as editHospital } from './edit-hospital';
 export { default as editSurgery } from './edit-surgery';
 export { default as addTestDefinition } from './add-test-definition';
 export { default as editTestDefinition } from './edit-test-definition';
+export { default as addImageDefinition } from './add-image-definition';
+export { default as editImageDefinition } from './edit-image-definition';
+export { default as addMedicineDefinition } from './add-medicine-definition';
+export { default as editMedicineDefinition } from './edit-medicine-definition';
+

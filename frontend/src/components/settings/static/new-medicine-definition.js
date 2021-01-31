@@ -24,12 +24,12 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
         <CRTextInput label="Medicine Name" name="medicineName" placeholder="Type Name" block/>
         <CRTextInput label="Concentration" name="concentration" placeholder="Type Concentration" block />
         <Label >Medicine Form</Label>
-        <FormGroup controlId="medicineForm" style={{marginTop:10}}>
+        <FormGroup style={{marginTop:10}}>
           <RadioGroup inline name="medicineForm">
               <CRRadioButton value="tablets" label="Tablets" />
               <CRRadioButton value="capsules" label="Capsules"/>
               <CRRadioButton value="syrup" label="Syrup"/>
-              <CRRadioButton value="drops" label="Drops" checked/>
+              <CRRadioButton value="drops" label="Drops"/>
               <CRRadioButton value="cream" label="Cream/ointment"/>
               <CRRadioButton value="power" label="Power"/>
               <CRRadioButton value="amp" label="AMP"/>

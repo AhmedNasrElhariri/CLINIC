@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { MainContainer, CRNav } from 'components';
 import Hospitals from './hospitals';
 import Surgeries from './surgeries';
-import MedicineLibrary from './medicine-library';
+import MedicineDefinition from './medicine-definition';
 import TestDefinition from './test-definition';
 import ImageDefinition from './image-definition';
 
@@ -22,9 +22,9 @@ function StaticSettings() {
         >
           <CRNav.CRItem eventKey="0">Hospitals</CRNav.CRItem>
           <CRNav.CRItem eventKey="1">Surgeries</CRNav.CRItem>
-          <CRNav.CRItem eventKey="2">Medicine Library</CRNav.CRItem>
+          <CRNav.CRItem eventKey="2">Medicine Definition</CRNav.CRItem>
           <CRNav.CRItem eventKey="3">Test Definition</CRNav.CRItem>
-          <CRNav.CRItem eventKey="4">Image Library</CRNav.CRItem>
+          <CRNav.CRItem eventKey="4">Image Definition</CRNav.CRItem>
         </CRNav>
         {/* {activeTab === '0' ? <Hospitals /> :
           activeTab === '1' ? <Surgeries /> :
@@ -42,7 +42,7 @@ function StaticSettings() {
                   )
               case "2":
                   return (
-                    <MedicineLibrary />
+                    <MedicineDefinition />
                   )
               case "3":
                   return (

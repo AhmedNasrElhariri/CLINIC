@@ -5,25 +5,10 @@ import { CRCard, CRTable ,CRButton } from 'components';
 
 
 function ListMedicines({ medicines, onEdit }) {
-  const data = [
-    {
-      id: "1",
-      medicineName:"sss",
-      concentration: "10000",
-      medicineForm:"power"
-    },
-    {
-      id: "1",
-      medicineName:"sss",
-      concentration: "93939",
-      medicineForm:"power"
-    }
-
-  ]
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={data}>
+        <CRTable autoHeight data={medicines}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Medicine Name</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="medicineName" semiBold />

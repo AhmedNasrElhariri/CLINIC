@@ -5,21 +5,10 @@ import { CRCard, CRTable  } from 'components';
 
 
 function ListImagesDefinition({ images, onEdit }) {
-  const data = [
-    {
-      id: "1",
-      imageName:"sss",
-    },
-    {
-      id: "1",
-      imageName:"xxx",
-    }
-
-  ]
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={data}>
+        <CRTable autoHeight data={images}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Image Name</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="imageName" semiBold />

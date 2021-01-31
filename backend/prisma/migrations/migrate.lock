@@ -1,3 +1,5 @@
 # Prisma Migrate lockfile v1
 
 20210130152729-create-db
+20210131070836-add-image-definition-table
+20210131094036-add-medicine-table
