@@ -16,20 +16,21 @@ const PermissionRules = ({
   branches,
   rules,
   onAdd,
+  doctors,
   onDelete,
 }) => {
   return (
     <FormGroup>
       <CRLabel>{label}</CRLabel>
       <RadioGroup name="radioList" value={level} onChange={onChange}>
-        <FlexboxGrid align="middle" justify="space-between">
+        <FlexboxGrid align="baseline" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
             <RadioStyled value={PERMISSION_LEVELS.ORGNIZATION}>
               <span>Organization</span>
             </RadioStyled>
           </FlexboxGrid.Item>
         </FlexboxGrid>
-        <FlexboxGrid align="middle" justify="space-between">
+        <FlexboxGrid align="baseline" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
             <RadioStyled value={PERMISSION_LEVELS.BRANCH}>branch</RadioStyled>
           </FlexboxGrid.Item>
@@ -44,7 +45,7 @@ const PermissionRules = ({
             </FlexboxGrid.Item>
           )}
         </FlexboxGrid>
-        <FlexboxGrid align="middle" justify="space-between">
+        <FlexboxGrid align="baseline" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
             <RadioStyled value={PERMISSION_LEVELS.SPECIALTY}>
               Specialty
@@ -61,13 +62,14 @@ const PermissionRules = ({
             </FlexboxGrid.Item>
           )}
         </FlexboxGrid>
-        <FlexboxGrid align="middle">
+        <FlexboxGrid align="baseline">
           <FlexboxGrid.Item colspan={4}>
             <RadioStyled value={PERMISSION_LEVELS.USER}>User</RadioStyled>
           </FlexboxGrid.Item>
           {level === PERMISSION_LEVELS.USER && (
             <FlexboxGrid.Item colspan={20}>
               <AddUserPermissions
+                doctors={doctors}
                 branches={branches}
                 rules={rules}
                 onAdd={onAdd}

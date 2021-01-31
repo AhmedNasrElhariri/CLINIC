@@ -3,6 +3,7 @@ import { FlexboxGrid } from 'rsuite';
 
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../../permissions/list-selections-items/index';
+import { ALL_CHOICE } from 'utils/constants';
 
 const initValue = {
   branchId: null,
@@ -29,13 +30,27 @@ const AddBranchPermissions = ({ branches, rules, onAdd, onDelete }) => {
   );
 
   const items = useMemo(
-    () => rules.map(({ branchId }) => `${branchesNames[branchId]}`),
+    () =>
+      rules.map(({ branchId }) => `${branchesNames[branchId] || ALL_CHOICE}`),
     [branchesNames, rules]
   );
 
   const handelChange = useCallback(
     branchId => setFormValue({ ...formValue, branchId }),
     [formValue]
+  );
+
+  const branchChoices = useMemo(
+    () =>
+      rules.length
+        ? branches
+        : [{ id: ALL_CHOICE, name: ALL_CHOICE }, ...branches],
+    [branches, rules.length]
+  );
+
+  const selectedAll = useMemo(
+    () => rules.some(({ branchId }) => branchId === ALL_CHOICE),
+    [rules]
   );
 
   return (
@@ -51,12 +66,13 @@ const AddBranchPermissions = ({ branches, rules, onAdd, onDelete }) => {
           name="branchId"
           value={formValue.branchId}
           onChange={handelChange}
-          data={branches}
+          disabled={selectedAll}
+          data={branchChoices}
         />
       </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={9}></FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={5}>
-        <CRButton primary small onClick={add}>
+        <CRButton primary small onClick={add} disabled={selectedAll}>
           + Add
         </CRButton>
       </FlexboxGrid.Item>

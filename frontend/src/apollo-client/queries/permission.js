@@ -19,6 +19,10 @@ export const LIST_BRANCHES = gql`
       specialties {
         id
         name
+        doctors {
+          id
+          name
+        }
       }
     }
   }
@@ -48,6 +52,10 @@ export const LIST_USERS = gql`
       name
       email
       position
+      specialty {
+        id
+        name
+      }
     }
   }
 `;

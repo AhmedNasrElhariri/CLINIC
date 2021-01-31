@@ -4,8 +4,9 @@ import { FlexboxGrid } from 'rsuite';
 
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../../permissions/list-selections-items/index';
+import { ALL_CHOICE } from 'utils/constants';
 
-const AddUserPermissions = ({ branches, rules, onAdd, onDelete }) => {
+const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
     branchId: null,
     userId: null,
@@ -20,8 +21,9 @@ const AddUserPermissions = ({ branches, rules, onAdd, onDelete }) => {
       R.pipe(
         R.map(R.prop('specialties')),
         R.flatten,
-        R.map(R.prop('users')),
-        R.flatten
+        R.map(R.prop('doctors')),
+        R.flatten,
+        R.uniqBy(R.prop('id'))
       )(branches),
     [branches]
   );
@@ -64,22 +66,30 @@ const AddUserPermissions = ({ branches, rules, onAdd, onDelete }) => {
     [formValue]
   );
 
+  const selectedAll = useMemo(
+    () => rules.some(({ branchId }) => branchId === ALL_CHOICE),
+    [rules]
+  );
+
+  const branchChoices = useMemo(() => {
+    const userId = formValue.userId;
+    if (!userId) {
+      return [];
+    }
+
+    const specialtyId = doctors.find(d => d.id === userId)?.specialty?.id;
+
+    const filteredBranches = branches.filter(b =>
+      b.specialties.some(s => s.id === specialtyId)
+    );
+
+    return rules.length || !filteredBranches.length
+      ? filteredBranches
+      : [{ id: ALL_CHOICE, name: ALL_CHOICE }, ...filteredBranches];
+  }, [branches, doctors, formValue.userId, rules.length]);
+
   return (
     <FlexboxGrid align="middle" justify="space-between">
-      <FlexboxGrid.Item colspan={9}>
-        <CRSelectInput
-          placeholder="Select Branch"
-          block
-          cleanable={false}
-          searchable={false}
-          labelKey="name"
-          valueKey="id"
-          name="branchId"
-          data={branches}
-          value={formValue.branchId}
-          onChange={updateFormField('branchId')}
-        />
-      </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={9}>
         <CRSelectInput
           placeholder="Select User"
@@ -89,14 +99,30 @@ const AddUserPermissions = ({ branches, rules, onAdd, onDelete }) => {
           labelKey="name"
           valueKey="id"
           name="userId"
-          data={users}
+          data={doctors}
           value={formValue.userId}
+          disabled={selectedAll}
           onChange={updateFormField('userId')}
+        />
+      </FlexboxGrid.Item>
+      <FlexboxGrid.Item colspan={9}>
+        <CRSelectInput
+          placeholder="Select Branch"
+          block
+          cleanable={false}
+          searchable={false}
+          labelKey="name"
+          valueKey="id"
+          name="branchId"
+          data={branchChoices}
+          value={formValue.branchId}
+          disabled={selectedAll}
+          onChange={updateFormField('branchId')}
         />
       </FlexboxGrid.Item>
 
       <FlexboxGrid.Item colspan={5}>
-        <CRButton primary small onClick={add}>
+        <CRButton primary small onClick={add} disabled={selectedAll}>
           + Add
         </CRButton>
       </FlexboxGrid.Item>

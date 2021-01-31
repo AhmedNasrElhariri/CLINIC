@@ -18,18 +18,16 @@ export default function Users({ users }) {
             <CRTable.CRCell dataKey="email" />
           </CRTable.CRColumn>
 
-          {/* <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Doctors</CRTable.CRHeaderCell>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ doctors }) => (
+              {({ specialty }) => (
                 <div>
-                  {doctors.map(({ name }, index) => (
-                    <Tag key={index}>{name}</Tag>
-                  ))}
+                  <Tag>{specialty?.name}</Tag>
                 </div>
               )}
             </CRTable.CRCell>
-          </CRTable.CRColumn> */}
+          </CRTable.CRColumn>
         </CRTable>
       </CRCard>
     </>

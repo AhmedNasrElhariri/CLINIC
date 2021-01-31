@@ -79,3 +79,5 @@ export const POSITIONS = Object.freeze({
   DOCTOR: 'Doctor',
   ASSISTANT: 'Assistant',
 });
+
+export const ALL_CHOICE = 'All';

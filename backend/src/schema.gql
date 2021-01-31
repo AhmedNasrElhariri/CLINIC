@@ -173,6 +173,7 @@ type User {
   position: Position
   permissions: [Permission!]
   avatar: String
+  specialty: Specialty
 }
 
 type Permission {

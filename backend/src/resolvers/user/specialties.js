@@ -1,18 +1,18 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 
-const doctors = async ({ id }) => {
+const specialties = ({ id }) => {
   return prisma.userSpecialty
     .findMany({
       where: {
-        specialtyId: id,
+        userId: id,
       },
-      include: { user: true },
+      include: { specialty: true },
       distinct: ['userId'],
     })
     .then(uSpecialties =>
-      uSpecialties.map(({ user }) => R.pick(['id', 'name'])(user))
+      uSpecialties.map(({ specialty }) => R.pick(['id', 'name'])(specialty))
     );
 };
 
-export default doctors;
+export default specialties;

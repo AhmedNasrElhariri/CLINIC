@@ -207,7 +207,7 @@ const data = {
 const RolePermission = () => {
   const [ff, setFF] = useState({});
   const [roleForm, setRoleForm] = useState({ name: '' });
-  const { branches } = useFetchAppointments();
+  const { branches, doctors } = usePermissions();
   const {
     createRole,
     indexePermissions,
@@ -240,6 +240,7 @@ const RolePermission = () => {
     const newActions = {
       ...oldAction,
       level,
+      rules: [],
     };
 
     setFF({
@@ -334,7 +335,9 @@ const RolePermission = () => {
                               key={id}
                               display="flex"
                               justifyContent="space-between"
-                              height={70}
+                              height={60}
+                              cursor="pointer"
+                              onClick={() => toggle(id)}
                             >
                               <H6>{name}</H6>
                               <Toggle
@@ -348,6 +351,7 @@ const RolePermission = () => {
                                 label="Permission Level"
                                 level={f.level}
                                 branches={branches}
+                                doctors={doctors}
                                 rules={f.rules}
                                 onChange={level => handleLevelChange(id, level)}
                                 onAdd={value => handleAddMapping(id, value)}

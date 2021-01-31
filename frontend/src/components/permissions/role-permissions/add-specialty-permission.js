@@ -4,21 +4,17 @@ import * as R from 'ramda';
 
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../list-selections-items/index';
+import { ALL_CHOICE } from 'utils/constants';
 
 const AddSpecialtyPermissions = ({ branches, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
-    branchId: [],
+    branchId: null,
     specialtyId: null,
   });
 
   const add = useCallback(() => {
     onAdd(formValue);
   }, [formValue, onAdd]);
-
-  const selectedBranch = useMemo(() => {
-    let branchIds = formValue.branchId;
-    return branches.find(p => p.id === branchIds) || {};
-  }, [formValue, branches]);
 
   const branchesNames = useMemo(
     () =>
@@ -47,9 +43,14 @@ const AddSpecialtyPermissions = ({ branches, rules, onAdd, onDelete }) => {
     () =>
       rules.map(
         ({ branchId, specialtyId }) =>
-          `${branchesNames[branchId]} - ${specialtiesNames[specialtyId]}`
+          `${specialtiesNames[specialtyId]} - ${branchesNames[branchId] || ''}`
       ),
     [branchesNames, rules, specialtiesNames]
+  );
+
+  const selectedAll = useMemo(
+    () => rules.some(({ branchId }) => branchId === ALL_CHOICE),
+    [rules]
   );
 
   const updateFormField = useCallback(
@@ -57,8 +58,43 @@ const AddSpecialtyPermissions = ({ branches, rules, onAdd, onDelete }) => {
     [formValue]
   );
 
+  const specialties = useMemo(() => {
+    return (
+      R.pipe(
+        R.map(R.prop('specialties')),
+        R.flatten,
+        R.uniqBy(R.prop('id'))
+      )(branches) || []
+    );
+  }, [branches]);
+
+  const branchChoices = useMemo(() => {
+    const specialtyId = formValue.specialtyId;
+    const filteredBranches = branches.filter(b =>
+      b.specialties.some(s => s.id === specialtyId)
+    );
+    return rules.length
+      ? filteredBranches
+      : [{ id: ALL_CHOICE, name: ALL_CHOICE }, ...filteredBranches];
+  }, [branches, formValue.specialtyId, rules.length]);
+
   return (
     <FlexboxGrid align="middle" justify="space-between">
+      <FlexboxGrid.Item colspan={9}>
+        <CRSelectInput
+          placeholder="Select Specialty"
+          block
+          cleanable={false}
+          searchable={false}
+          labelKey="name"
+          valueKey="id"
+          name="specialtyId"
+          value={formValue.specialtyId}
+          disabled={selectedAll}
+          onChange={updateFormField('specialtyId')}
+          data={specialties || []}
+        />
+      </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={9}>
         <CRSelectInput
           placeholder="Select Branch"
@@ -70,25 +106,12 @@ const AddSpecialtyPermissions = ({ branches, rules, onAdd, onDelete }) => {
           name="branchId"
           value={formValue.branchId}
           onChange={updateFormField('branchId')}
-          data={branches}
-        />
-      </FlexboxGrid.Item>
-      <FlexboxGrid.Item colspan={9}>
-        <CRSelectInput
-          placeholder="Select Specialty"
-          block
-          cleanable={false}
-          searchable={false}
-          labelKey="name"
-          valueKey="id"
-          name="specialtyId"
-          value={formValue.specialtyId}
-          onChange={updateFormField('specialtyId')}
-          data={selectedBranch.specialties || []}
+          disabled={selectedAll}
+          data={branchChoices}
         />
       </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={5}>
-        <CRButton primary small onClick={add}>
+        <CRButton primary small onClick={add} disabled={selectedAll}>
           + Add
         </CRButton>
       </FlexboxGrid.Item>

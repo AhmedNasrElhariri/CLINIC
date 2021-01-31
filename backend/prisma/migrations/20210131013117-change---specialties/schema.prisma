@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -436,7 +436,6 @@ model PermissionRole {
 
 model Permission {
   id             String          @id @default(uuid())
-  all            Boolean         @default(false)
   role           PermissionRole  @relation(fields: [roleId], references: [id])
   roleId         String
   action         Action          @relation(fields: [actionId], references: [id])
