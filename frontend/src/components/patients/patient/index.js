@@ -1,14 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import * as R from 'ramda';
-import { useParams } from 'react-router-dom';
+import { useParams,useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { GET_PATIENT } from 'apollo-client/queries';
+import { GET_PATIENT,GET_APPOINTMENT } from 'apollo-client/queries';
 import {
   Div,
   PatientSummary,
   PatientProgress,
   CRNav,
+  CRButton,
   MainContainer,
 } from 'components';
 import AvatarWithName from '../patient-avatar-with-name/index'
@@ -21,13 +22,14 @@ import Print from '../print';
 const tabs = ['Patient Info','Sessions', 'Progress', 'Labs', 'History'];
 
 function Appointment() {
+  const history = useHistory();
   let { patientId } = useParams();
-  const { data } = useQuery(GET_PATIENT, {
+  const { data } = useQuery(GET_PATIENT,{
     variables: {
       id: patientId,
+
     },
   });
-
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);
@@ -40,11 +42,19 @@ function Appointment() {
     normalizedAppointments,
     appointmentsWithGroups,
   } = usePatientHistory({ patientId });
+  console.log(appointmentHistory)
 
   return (
     <>
-
-      <AvatarWithName patient={patient}/>
+       <MainContainer
+        nobody
+        more={
+          <>
+          <AvatarWithName patient={patient}/>
+          <CRButton  onClick={() =>  history.push(`/appointments/`)} small>Add New Sessions</CRButton>
+          </>
+        }
+      ></MainContainer>
 
       <Div display="flex">
         <Div flexGrow={1}>

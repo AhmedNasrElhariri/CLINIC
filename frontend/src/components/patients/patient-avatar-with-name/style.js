@@ -2,12 +2,10 @@ import styled from "styled-components";
 import { Div,P } from "components";
 
 export const PatientInfoStyled = styled(Div)`
-  width: 100%;
-  background: #fff;
+  width: 70%;
   padding: 30px 10px;
   display: flex;
   align-items: center;
-  margin: 20px auto;
 `;
 export const PatientAvatarStyled = styled(Div)`
   width: 120px;

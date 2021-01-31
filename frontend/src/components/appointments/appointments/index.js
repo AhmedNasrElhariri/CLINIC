@@ -29,8 +29,8 @@ function Appointments() {
         <CRTable
           autoHeight
           data={filteredAppointments}
-          onRowClick={({ id }) => {
-            history.push(`/appointments/${id}`);
+          onRowClick={({ patient }) => {
+            history.push(`/patients/${patient.id}`);
           }}
           bordered={false}
         >
