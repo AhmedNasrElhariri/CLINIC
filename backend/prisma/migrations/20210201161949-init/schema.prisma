@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -106,7 +106,7 @@ model Patient {
   organizationId   String
   guardianName     String?
   pateintLab       PatientLab[]
-  medicineHistory  MedicineHistory[]
+  medicalHistory   MedicalHistory[]
   familyHistory    FamilyHistory[]
   inventoryHistory InventoryHistory[]
   patientSurgery   PatientSurgery[]
@@ -276,7 +276,7 @@ model LabDocument {
   patientLabId String
 }
 
-model MedicineHistory {
+model MedicalHistory {
   id           String    @id @default(uuid())
   medicineName String
   frequency    String?

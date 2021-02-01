@@ -10,7 +10,7 @@ export { default as activeViews } from './active-views';
 export { default as myClinics } from './my-clinics';
 export { default as mySnippets } from './my-snippets';
 export { default as patientLabs } from './patient-labs';
-export { default as medicalHistory } from './medical-history';
+export { default as medicineHistory } from './medicine-history';
 export { default as familyHistory } from './family-history';
 export { default as expenses } from './expenses';
 export { default as revenues } from './revenues';

@@ -2,12 +2,21 @@ import { prisma } from '@';
 
 const createPatientSurgery = async (
   _,
-  { patientSurgery },
+  { clinicId, patientSurgery },
   { organizationId }
 ) => {
-  const { patientId, surgeryId, hospitalId, ...data } = patientSurgery;
-  return prisma.patientSurgery.create({
+  const {
+    patientId,
+    surgeryId,
+    hospitalId,
+    fees,
+    date,
+    ...data
+  } = patientSurgery;
+  const persistedPatientSurgery = await prisma.patientSurgery.create({
     data: {
+      fees,
+      date,
       ...data,
       patient: {
         connect: {
@@ -31,6 +40,23 @@ const createPatientSurgery = async (
       },
     },
   });
+
+  if (fees > 0) {
+    await prisma.revenue.create({
+      data: {
+        date,
+        name: 'Surgery fees',
+        amount: fees,
+        clinic: {
+          connect: {
+            id: clinicId,
+          },
+        },
+      },
+    });
+  }
+
+  return persistedPatientSurgery;
 };
 
 export default createPatientSurgery;

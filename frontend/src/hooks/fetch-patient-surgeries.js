@@ -53,7 +53,14 @@ const usePatientSurgeries = ({ onCreate } = {}) => {
   return useMemo(
     () => ({
       patientSurgeries,
-      createPatientSurgery,
+      createPatientSurgery: patientSurgery => {
+        createPatientSurgery({
+          variables: {
+            patientSurgery,
+            clinicId: clinic.id,
+          },
+        });
+      },
       updateCache,
       createAppointment: patientId =>
         createAppointment({

@@ -58,9 +58,9 @@ export const LIST_PATIENT_LABS = gql`
   }
 `;
 
-export const CREATE_MEDICAL_HISTORY = gql`
-  mutation createMedicalHistory($medicalHistory: MedicalHistoryInput!) {
-    createMedicalHistory(medicalHistory: $medicalHistory) {
+export const CREATE_MEDICINE_HISTORY = gql`
+  mutation createMedicineHistory($medicineHistory: MedicineHistoryInput!) {
+    createMedicineHistory(medicineHistory: $medicineHistory) {
       id
       medicineName
       frequency
@@ -79,9 +79,9 @@ export const CREATE_FAMILY_HISTORY = gql`
   }
 `;
 
-export const LIST_MEDICAL_HISTORY = gql`
-  query medicalHistory($patientId: ID!) {
-    medicalHistory(patientId: $patientId) {
+export const LIST_MEDICINE_HISTORY = gql`
+  query medicineHistory($patientId: ID!) {
+    medicineHistory(patientId: $patientId) {
       id
       medicineName
       frequency

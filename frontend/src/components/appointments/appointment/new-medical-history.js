@@ -10,7 +10,7 @@ const initValue = {
   fromDate: null,
 };
 
-function NewMedicalHistory({ onChange }) {
+function NewMedicineHistory({ onChange }) {
   const [formValue, setFormValue] = useState(initValue);
 
   const handleChange = useCallback(
@@ -31,8 +31,8 @@ function NewMedicalHistory({ onChange }) {
   );
 }
 
-NewMedicalHistory.propTypes = {
+NewMedicineHistory.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default memo(NewMedicalHistory);
+export default memo(NewMedicineHistory);

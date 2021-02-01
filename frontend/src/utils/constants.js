@@ -15,7 +15,7 @@ export const FIELD_TYPES = [
 ];
 
 export const MEDICAL_HISTORY_TYPES = Object.freeze({
-  medical: 'Medical',
+  medicine: 'Medicine',
   family: 'Family',
   social: 'Social',
 });

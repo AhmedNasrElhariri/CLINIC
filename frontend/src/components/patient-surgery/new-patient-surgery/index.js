@@ -64,6 +64,7 @@ const NewPatientSurgery = ({
         />
         <CRDatePicker name="date" label="Date" placement="top" block />
         <CRNumberInput label="Fees" name="fees" block />
+        <CRNumberInput label="Hospital fees" name="hospitalFees" block />
       </Form>
     </CRModal>
   );

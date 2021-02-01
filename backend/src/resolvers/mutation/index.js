@@ -17,7 +17,7 @@ export { default as multipleUpload } from './multiple-upload';
 export { default as updateClinic } from './update-clinic';
 export { default as createSnippet } from './create-snippet';
 export { default as addLabDocs } from './add-lab-docs';
-export { default as createMedicalHistory } from './create-medical-history';
+export { default as createMedicineHistory } from './create-medicine-history';
 export { default as createFamilyHistory } from './create-family-history';
 export { default as createExpense } from './create-expense';
 export { default as createRevenue } from './create-revenue';

@@ -15,9 +15,10 @@ const initValue = {
   hospitalId: null,
   date: null,
   fees: 0,
+  hospitalFees: 0,
 };
 
-function PatientSurgeriesContainer() {
+const PatientSurgeriesContainer = () => {
   const { visible, open, close } = useModal();
   const [selectedPatientSurgery, setSelectedPatientSurgery] = useState({});
   const confirmationModal = useModal();
@@ -38,7 +39,7 @@ function PatientSurgeriesContainer() {
   } = usePatientSurgeries({
     onCreate: () => {
       close();
-      setFormValue(initValue);
+      // setFormValue(initValue);
     },
   });
 
@@ -47,11 +48,7 @@ function PatientSurgeriesContainer() {
   }, [open]);
 
   const handleAdd = useCallback(() => {
-    createPatientSurgery({
-      variables: {
-        patientSurgery: formValue,
-      },
-    });
+    createPatientSurgery(formValue);
   }, [createPatientSurgery, formValue]);
 
   const filteredList = useMemo(
@@ -59,10 +56,13 @@ function PatientSurgeriesContainer() {
     [filterFormValue, patientSurgeries]
   );
 
-  const handleSurgeryClick = useCallback(patientSurgery => {
-    confirmationModal.open()
-    setSelectedPatientSurgery(patientSurgery);
-  }, [confirmationModal]);
+  const handleSurgeryClick = useCallback(
+    patientSurgery => {
+      confirmationModal.open();
+      setSelectedPatientSurgery(patientSurgery);
+    },
+    [confirmationModal]
+  );
 
   const handleConfirmAction = useCallback(() => {
     confirmationModal.close();
@@ -103,7 +103,7 @@ function PatientSurgeriesContainer() {
         onCancel={confirmationModal.close}
         onHide={confirmationModal.close}
         show={confirmationModal.visible}
-        header="Cancel Appointment"
+        header="Insert Surgery Data"
       >
         <Div textAlign="center">
           Are you Sure you want to Insert Surgery Data?
@@ -111,7 +111,7 @@ function PatientSurgeriesContainer() {
       </CRModal>
     </>
   );
-}
+};
 
 PatientSurgeriesContainer.defaultProps = {
   surgeries: [],

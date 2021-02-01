@@ -2,7 +2,7 @@ import React, { useState, memo } from 'react';
 import { CRModal, Div } from 'components';
 import { CRButton } from 'components';
 
-import NewMedicalHistory from './new-medical-history';
+import NewMedicineHistory from './new-medical-history';
 import NewFamilyHistory from './new-family-history';
 import { MEDICAL_HISTORY_TYPES } from 'utils/constants';
 
@@ -16,8 +16,8 @@ const titles = Object.entries(MEDICAL_HISTORY_TYPES).reduce(
 
 const HistoryForm = memo(({ type, ...props }) => (
   <>
-    {type === MEDICAL_HISTORY_TYPES.medical ? (
-      <NewMedicalHistory {...props} />
+    {type === MEDICAL_HISTORY_TYPES.medicine ? (
+      <NewMedicineHistory {...props} />
     ) : type === MEDICAL_HISTORY_TYPES.family ? (
       <NewFamilyHistory {...props} />
     ) : null}

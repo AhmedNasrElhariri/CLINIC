@@ -7,22 +7,22 @@ import { Div, CRNav } from 'components';
 import NewHistory from './new-history';
 import { MEDICAL_HISTORY_TYPES } from 'utils/constants';
 import {
-  CREATE_MEDICAL_HISTORY,
+  CREATE_MEDICINE_HISTORY,
   CREATE_FAMILY_HISTORY,
-  LIST_MEDICAL_HISTORY,
+  LIST_MEDICINE_HISTORY,
   LIST_FAMILY_HISTORY,
 } from 'apollo-client/queries';
 import HistoryBox from './history-box';
 
 const navs = [
-  { name: 'Medical', value: MEDICAL_HISTORY_TYPES.medical },
+  { name: 'Medicine', value: MEDICAL_HISTORY_TYPES.medicine },
   { name: 'Family', value: MEDICAL_HISTORY_TYPES.family },
   // { name: 'Social', value: MEDICAL_HISTORY_TYPES.social },
 ];
 
 const getProps = (type, h) => {
   switch (type) {
-    case MEDICAL_HISTORY_TYPES.medical:
+    case MEDICAL_HISTORY_TYPES.medicine:
       return {
         title: h.medicineName,
         subtitle: h.frequency,
@@ -54,7 +54,7 @@ const ListHistory = memo(({ type, history }) => (
 function PatientHistory({ patient, noAdd }) {
   const [activeNav, setActiveNav] = useState('');
   const [history, setHistory] = useState([]);
-  const { data: medicalHistoryData } = useQuery(LIST_MEDICAL_HISTORY, {
+  const { data: medicineHistoryData } = useQuery(LIST_MEDICINE_HISTORY, {
     variables: {
       patientId: patient.id,
     },
@@ -64,23 +64,23 @@ function PatientHistory({ patient, noAdd }) {
       patientId: patient.id,
     },
   });
-  const [createMedicalHistory] = useMutation(CREATE_MEDICAL_HISTORY, {
+  const [createMedicineHistory] = useMutation(CREATE_MEDICINE_HISTORY, {
     onCompleted() {
       Alert.success('History has been created');
     },
-    update(cache, { data: { createMedicalHistory: history } }) {
-      const { medicalHistory } = cache.readQuery({
-        query: LIST_MEDICAL_HISTORY,
+    update(cache, { data: { createMedicineHistory: history } }) {
+      const { medicineHistory } = cache.readQuery({
+        query: LIST_MEDICINE_HISTORY,
         variables: {
           patientId: patient.id,
         },
       });
       cache.writeQuery({
-        query: LIST_MEDICAL_HISTORY,
+        query: LIST_MEDICINE_HISTORY,
         variables: {
           patientId: patient.id,
         },
-        data: { medicalHistory: [history].concat(medicalHistory) },
+        data: { medicineHistory: [history].concat(medicineHistory) },
       });
     },
   });
@@ -112,9 +112,9 @@ function PatientHistory({ patient, noAdd }) {
     }
   }, [activeNav]);
 
-  const medicalHistory = useMemo(
-    () => R.propOr([], 'medicalHistory')(medicalHistoryData),
-    [medicalHistoryData]
+  const medicineHistory = useMemo(
+    () => R.propOr([], 'medicineHistory')(medicineHistoryData),
+    [medicineHistoryData]
   );
   const familyHistory = useMemo(
     () => R.propOr([], 'familyHistory')(familyHistoryData),
@@ -123,21 +123,21 @@ function PatientHistory({ patient, noAdd }) {
 
   useEffect(() => {
     const history =
-      activeNav.value === MEDICAL_HISTORY_TYPES.medical
-        ? medicalHistory
+      activeNav.value === MEDICAL_HISTORY_TYPES.medicine
+        ? medicineHistory
         : activeNav.value === MEDICAL_HISTORY_TYPES.family
         ? familyHistory
         : [];
     setHistory(history);
-  }, [activeNav, familyHistory, medicalHistory]);
+  }, [activeNav, familyHistory, medicineHistory]);
 
   const handleCreate = useCallback(
     formValue => {
       switch (activeNav.value) {
-        case MEDICAL_HISTORY_TYPES.medical:
-          createMedicalHistory({
+        case MEDICAL_HISTORY_TYPES.medicine:
+          createMedicineHistory({
             variables: {
-              medicalHistory: {
+              medicineHistory: {
                 ...formValue,
                 patientId: patient.id,
               },
@@ -158,7 +158,7 @@ function PatientHistory({ patient, noAdd }) {
           throw new Error('not exisit');
       }
     },
-    [activeNav, createFamilyHistory, createMedicalHistory, patient]
+    [activeNav, createFamilyHistory, createMedicineHistory, patient]
   );
 
   return (

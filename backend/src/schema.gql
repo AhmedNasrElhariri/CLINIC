@@ -63,7 +63,7 @@ type Query {
   myClinics: [Clinic!]
   mySnippets: [Snippet!]
   patientLabs(patientId: ID!): [PatientLab!]
-  medicalHistory(patientId: ID!): [MedicalHistory!]
+  medicineHistory(patientId: ID!): [MedicineHistory!]
   familyHistory(patientId: ID!): [FamilyHistory!]
   expenses(clinicId: ID!): [Expense!]
   revenues(clinicId: ID!): [Revenue!]
@@ -107,7 +107,9 @@ type Mutation {
   updateClinic(clinic: ClinicInput!): Clinic
   createSnippet(snippet: SnippetInput!): Snippet!
   addLabDocs(patientLab: PatientLabInput!): PatientLab!
-  createMedicalHistory(medicalHistory: MedicalHistoryInput!): MedicalHistory!
+  createMedicineHistory(
+    medicineHistory: MedicineHistoryInput!
+  ): MedicineHistory!
   createFamilyHistory(familyHistory: FamilyHistoryInput!): FamilyHistory!
   createExpense(expense: ExpenseInput!): Expense
   createRevenue(revenue: RevenueInput!): Revenue
@@ -126,7 +128,10 @@ type Mutation {
   editHospital(hospital: HospitalInput!): Hospital
   defineSurgery(surgery: SurgeryInput!): Surgery
   editSurgery(surgery: SurgeryInput!): Surgery
-  createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
+  createPatientSurgery(
+    clinicId: ID!
+    patientSurgery: PatientSurgeryInput!
+  ): PatientSurgery
 }
 
 ########################### Auth ##################################
@@ -431,7 +436,7 @@ input PatientLabInput {
 
 ########################### History ##################################
 
-type MedicalHistory {
+type MedicineHistory {
   id: ID!
   medicineName: String!
   frequency: String
@@ -445,7 +450,7 @@ type FamilyHistory {
   relative: String!
 }
 
-input MedicalHistoryInput {
+input MedicineHistoryInput {
   medicineName: String!
   frequency: String
   dose: String
@@ -622,6 +627,7 @@ type PatientSurgery {
   hospital: Hospital
   date: Date
   fees: Int
+  hospitalFees: Int
 }
 
 input PatientSurgeryInput {
@@ -630,4 +636,5 @@ input PatientSurgeryInput {
   hospitalId: ID!
   date: Date
   fees: Int
+  hospitalFees: Int
 }
