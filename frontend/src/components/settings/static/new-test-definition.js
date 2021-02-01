@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput  } from 'components';
+import { CRModal, CRTextInput ,CRTextArea } from 'components';
 
 
 const model = Schema.Model({});
@@ -22,6 +22,7 @@ function NewTestDefinition({ formValue, onChange, type, visible, onOk, onClose }
     >
         <Form formValue={formValue} model={model} onChange={onChange} fluid>
             <CRTextInput label="Test Name" name="testName" placeholder="Type Test" block />  
+            <CRTextArea  label="Test Name" name="ahmed" block />
         </Form>
     </CRModal>
   );

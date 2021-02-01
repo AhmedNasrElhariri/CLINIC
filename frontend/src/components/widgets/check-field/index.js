@@ -3,6 +3,7 @@ import { FormGroup, Checkbox } from 'rsuite';
 
 export default ({
   label,
+  value,
   inline = true,
   block = false,
   formValue,
@@ -14,6 +15,7 @@ export default ({
     <FormGroup style={{ marginBottom: 12 }}>
       <Checkbox
         name={name}
+        value={value}
         {...rest}
         style={{ width: '100%' }}
         checked={formValue[name]}

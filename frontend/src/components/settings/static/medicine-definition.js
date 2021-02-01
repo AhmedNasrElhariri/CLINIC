@@ -8,7 +8,7 @@ import NewMedicineDefinition from './new-medicine-definition';
 import ListMedicinesDefinition from './list-medicine-definition';
 import useMedicinesDefinition from 'hooks/fetch-medicines-definition';
 
-const initValue = { medicineName: '', concentration: '', medicineForm:'tablets'};
+const initValue = { medicineName: '', concentration: '', medicineForm:''};
 
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
