@@ -215,6 +215,7 @@ input RoleInput {
 
 input PermissionInput {
   actionId: ID!
+  all: Boolean
   level: PermissionLevel!
   rules: [PermissionRuleInput!]
 }

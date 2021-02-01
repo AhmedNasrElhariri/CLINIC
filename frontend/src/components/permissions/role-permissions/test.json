@@ -72,27 +72,41 @@
     "id": "fa9cabfb-625b-434b-bf1a-2a076d6efc4a",
     "name": "View",
     "subject": "Patient",
-    "visibility": false,
-    "level": null,
-    "rules": []
+    "visibility": true,
+    "level": "Branch",
+    "rules": [
+      {
+        "branchId": "All"
+      }
+    ]
   },
   "a692d8e6-72bc-4341-9bf4-d4b7cffbbe4b": {
     "__typename": "Action",
     "id": "a692d8e6-72bc-4341-9bf4-d4b7cffbbe4b",
     "name": "View",
     "subject": "Accounting",
-    "visibility": false,
-    "level": null,
-    "rules": []
+    "visibility": true,
+    "level": "Specialty",
+    "rules": [
+      {
+        "branchId": "All",
+        "specialtyId": "0f4cca5a-eb26-49e7-b0f0-df7d77ac0ecc"
+      }
+    ]
   },
   "5a644b8d-eeea-46ad-957d-c143f8731a98": {
     "__typename": "Action",
     "id": "5a644b8d-eeea-46ad-957d-c143f8731a98",
     "name": "Add Revenue",
     "subject": "Accounting",
-    "visibility": false,
-    "level": null,
-    "rules": []
+    "visibility": true,
+    "level": "User",
+    "rules": [
+      {
+        "branchId": "All",
+        "userId": "ce2e9cd3-5d58-4866-b0b3-a9c03fcd4fbc"
+      }
+    ]
   },
   "bbb60d29-d29f-4f3b-a291-0af979f42848": {
     "__typename": "Action",
