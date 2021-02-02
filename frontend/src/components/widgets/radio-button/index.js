@@ -2,17 +2,17 @@ import React ,{memo} from 'react';
 import { FormGroup, RadioGroup ,Radio, FormControl} from 'rsuite';
 import Label from '../label';
 
-const CRRadio = ({ label, medicineFormValues, formValue, onChange, name}) => {
+const CRRadio = ({ label, options,...rest}) => {
   return (
     <FormGroup>
       <Label>{label}</Label>
         <RadioGroup
           inline
           style={{ width: '100%' }}
-          onChange={value => onChange(formValue,formValue[name]=value)}
+          {...rest}
         >
-          {medicineFormValues.map(radioButto => (
-              <Radio value={radioButto.value}>{radioButto.name}</Radio>
+          {options.map(o => (
+              <Radio value={o.value}>{o.name}</Radio>
           ))}
         </RadioGroup>
     </FormGroup>
