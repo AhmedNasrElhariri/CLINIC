@@ -1,9 +1,11 @@
 import React, { useMemo } from "react";
 import { Form, Schema } from "rsuite";
 import ReactQuill from "react-quill";
+import Label from "../../widgets/label";
 
 import { CRModal, CRTextInput } from "components";
 import "react-quill/dist/quill.snow.css";
+import { marginBottom } from "styled-system";
 
 const model = Schema.Model({});
 
@@ -33,9 +35,12 @@ function NewPatientReport({
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput label="Name" name="name" block />
+        <Label>Body</Label>
         <ReactQuill
           theme="snow"
           name="body"
+          style={{ marginTop: 10 }}
+          value={formValue.body}
           onChange={(value) => onChange(formValue, (formValue["body"] = value))}
         />
       </Form>

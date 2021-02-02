@@ -1,4 +1,5 @@
 import { prisma } from '@';
+import sanitizeHtml from 'sanitize-html';
 
 const editPatientReport = async (_, { patientReport }) => {
   sanitizeHtml(patientReport.body);
