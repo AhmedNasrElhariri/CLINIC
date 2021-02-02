@@ -43,6 +43,11 @@ export default createGlobalStyle`
       -moz-osx-font-smoothing: grayscale;
     }
 
+    button:focus{
+      border:unset;
+      outline: none;
+    }
+
     code {
       font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;

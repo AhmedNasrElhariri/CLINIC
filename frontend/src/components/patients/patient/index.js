@@ -18,7 +18,8 @@ import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import History from 'components/appointments/appointment/patient-history';
 import Print from '../print';
-
+import Sessions from '../sessions'
+import {appointmentHistory} from '../../../utils/constants'
 const tabs = ['Patient Info','Sessions', 'Progress', 'Labs', 'History'];
 
 function Appointment() {
@@ -35,14 +36,13 @@ function Appointment() {
   const patient = R.propOr({}, 'patient')(data);
 
   const {
-    appointmentHistory,
+    
     viewFields,
     tabularFields,
     tabularData,
     normalizedAppointments,
     appointmentsWithGroups,
   } = usePatientHistory({ patientId });
-  console.log(appointmentHistory)
 
   return (
     <>
@@ -77,20 +77,17 @@ function Appointment() {
               />
             )}
             {showComp('1') && (
-              <PatientSummary
-                summary={appointmentHistory}
-                tabularFields={tabularFields}
-                tabularData={tabularData}
-              />
+            
+              <Sessions summary={appointmentHistory} />
             )}
-            {showComp('1') && (
+            {showComp('2') && (
               <PatientProgress
                 history={appointmentHistory}
                 viewFields={viewFields}
               />
             )}
-            {showComp('2') && <PatientLabs patient={patient} />}
-            {showComp('3') && <History patient={patient} />}
+            {showComp('3') && <PatientLabs patient={patient} />}
+            {showComp('4') && <History patient={patient} />}
           </Div>
         </Div>
       </Div>
