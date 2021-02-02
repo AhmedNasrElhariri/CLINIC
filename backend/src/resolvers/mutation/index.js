@@ -43,4 +43,6 @@ export { default as addImageDefinition } from './add-image-definition';
 export { default as editImageDefinition } from './edit-image-definition';
 export { default as addMedicineDefinition } from './add-medicine-definition';
 export { default as editMedicineDefinition } from './edit-medicine-definition';
+export { default as addPatientReport } from './add-patient-report';
+export { default as editPatientReport } from './edit-patient-report';
 

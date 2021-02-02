@@ -1,55 +1,68 @@
-import React, { useMemo } from 'react';
-import { Form, Schema , FormGroup, RadioGroup, Radio ,FormControl,Checkbox} from 'rsuite';
+import React, { useMemo } from "react";
+import {
+  Form,
+  Schema,
+  FormGroup,
+  RadioGroup,
+  Radio,
+  FormControl,
+  Checkbox,
+} from "rsuite";
 
-import { CRModal, CRTextInput , CRRadio ,CRCheckBox ,CRNestedSelector,H6} from 'components';
+import {
+  CRModal,
+  CRTextInput,
+  CRRadio,
+  CRCheckBox,
+  CRNestedSelector,
+  H6,
+} from "components";
 const model = Schema.Model({});
 const options = [
   {
     value: "tablets",
-    name: "Tablets"
+    name: "Tablets",
   },
   {
     value: "capsules",
-    name: "Capsules"
+    name: "Capsules",
   },
   {
     value: "syrup",
-    name: "Syrup"
+    name: "Syrup",
   },
   {
     value: "drops",
-    name: "Drops"
+    name: "Drops",
   },
   {
     value: "cream/ointment",
-    name: "Cream/ointment"
+    name: "Cream/ointment",
   },
   {
     value: "power",
-    name: "Power"
+    name: "Power",
   },
   {
     value: "amp",
-    name: "AMP"
+    name: "AMP",
   },
   {
     value: "sachets",
-    name: "Sachets"
+    name: "Sachets",
   },
   {
     value: "vial",
-    name: "Vial"
-  }
+    name: "Vial",
+  },
 ];
-
-
 
 function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Medicine' : 'Edit Medicine '),
+    () => (type === "create" ? "Add New Medicine" : "Edit Medicine "),
     [type]
   );
- console.log(formValue);
+  console.log(formValue);
   return (
     <CRModal
       show={visible}
@@ -59,8 +72,18 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
       onCancel={onClose}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput label="Medicine Name" name="medicineName" placeholder="Type Name" block/>
-        <CRTextInput label="Concentration" name="concentration" placeholder="Type Concentration" block />
+        <CRTextInput
+          label="Medicine Name"
+          name="medicineName"
+          placeholder="Type Name"
+          block
+        />
+        <CRTextInput
+          label="Concentration"
+          name="concentration"
+          placeholder="Type Concentration"
+          block
+        />
         <CRRadio label="Medicine Form" name="medicineForm" options={options} />
       </Form>
     </CRModal>
@@ -68,7 +91,7 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
 }
 
 NewMedicine.defaultProps = {
-  type: 'create',
+  type: "create",
 };
 
 export default NewMedicine;

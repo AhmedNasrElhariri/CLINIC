@@ -4,23 +4,23 @@ import * as R from "ramda";
 import { Div, CRButton } from "components";
 import useFrom from "hooks/form";
 import { useModal } from "components/widgets/modal";
-import NewMedicineDefinition from "./new-medicine-definition";
-import ListMedicinesDefinition from "./list-medicine-definition";
-import useMedicinesDefinition from "hooks/fetch-medicines-definition";
+import NewPatientReport from "./new-patient-report";
+import ListPatientReports from "./list-patient-report";
+import usePatientReports from "hooks/fetch-patient-reports";
 
-const initValue = { medicineName: "", concentration: "", medicineForm: "" };
+const initValue = { name: "", body: "" };
 
-const MedicineDefinition = () => {
+const PatientReport = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
 
   const {
-    addMedicineDefinition,
-    medicinesDefinition,
-    editMedicineDefinition,
-  } = useMedicinesDefinition({
+    addPatientReport,
+    patientReports,
+    editPatientReport,
+  } = usePatientReports({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -30,7 +30,6 @@ const MedicineDefinition = () => {
       setFormValue(initValue);
     },
   });
-
   const handleClickCreate = useCallback(() => {
     setType("create");
     setFormValue(initValue);
@@ -39,14 +38,9 @@ const MedicineDefinition = () => {
 
   const handleClickEdit = useCallback(
     (data) => {
-      const medicine = R.pick([
-        "id",
-        "medicineName",
-        "concentration",
-        "medicineForm",
-      ])(data);
+      const report = R.pick(["id", "name", "body"])(data);
       setType("edit");
-      setFormValue(medicine);
+      setFormValue(report);
       open();
     },
     [open, setFormValue, setType]
@@ -54,28 +48,28 @@ const MedicineDefinition = () => {
 
   const handleAdd = useCallback(() => {
     if (type === "create") {
-      addMedicineDefinition({
+      addPatientReport({
         variables: {
-          medicineDefinition: formValue,
+          patientReport: formValue,
         },
       });
     } else {
-      editMedicineDefinition({
+      editPatientReport({
         variables: {
-          medicineDefinition: formValue,
+          patientReport: formValue,
         },
       });
     }
-  }, [addMedicineDefinition, formValue, type]);
+  }, [addPatientReport, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
         <CRButton primary small onClick={handleClickCreate}>
-          New Medicine +
+          New Patient Report +
         </CRButton>
       </Div>
-      <NewMedicineDefinition
+      <NewPatientReport
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
@@ -83,12 +77,9 @@ const MedicineDefinition = () => {
         onClose={close}
         type={type}
       />
-      <ListMedicinesDefinition
-        medicines={medicinesDefinition}
-        onEdit={handleClickEdit}
-      />
+      <ListPatientReports reports={patientReports} onEdit={handleClickEdit} />
     </>
   );
 };
 
-export default MedicineDefinition;
+export default PatientReport;

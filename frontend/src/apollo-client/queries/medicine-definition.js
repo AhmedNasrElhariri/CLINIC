@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const LIST_MEDICINES_DEFINITION = gql`
   {
@@ -12,7 +12,9 @@ export const LIST_MEDICINES_DEFINITION = gql`
 `;
 
 export const ADD_MEDICINE_DEFINITION = gql`
-  mutation addMedicineDefinition($medicineDefinition: MedicineInputDefinition!) {
+  mutation addMedicineDefinition(
+    $medicineDefinition: MedicineInputDefinition!
+  ) {
     addMedicineDefinition(medicineDefinition: $medicineDefinition) {
       id
       medicineName
@@ -23,7 +25,9 @@ export const ADD_MEDICINE_DEFINITION = gql`
 `;
 
 export const EDIT_MEDICINE_DEFINITION = gql`
-  mutation editMedicineDefinition($medicineDefinition: MedicineInputDefinition!) {
+  mutation editMedicineDefinition(
+    $medicineDefinition: MedicineInputDefinition!
+  ) {
     editMedicineDefinition(medicineDefinition: $medicineDefinition) {
       id
       medicineName

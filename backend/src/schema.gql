@@ -81,6 +81,7 @@ type Query {
   myTestsDefinition: [TestDefinition!]
   myImagesDefinition: [ImageDefinition!]
   myMedicinesDefinition: [MedicineDefinition!]
+  myPatientReports: [PatientReport!]
 }
 
 ########################### Mutation ##################################
@@ -134,8 +135,14 @@ type Mutation {
   editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
-  addMedicineDefinition(medicineDefinition: MedicineInputDefinition!): MedicineDefinition
-  editMedicineDefinition(medicineDefinition: MedicineInputDefinition!): MedicineDefinition
+  addMedicineDefinition(
+    medicineDefinition: MedicineInputDefinition!
+  ): MedicineDefinition
+  editMedicineDefinition(
+    medicineDefinition: MedicineInputDefinition!
+  ): MedicineDefinition
+  addPatientReport(patientReport: PatientReportInput!): PatientReport
+  editPatientReport(patientReport: PatientReportInput!): PatientReport
 }
 
 ########################### Auth ##################################
@@ -661,6 +668,20 @@ input MedicineInputDefinition {
   medicineForm: String
 }
 
+########################### Patient Report ##################################
+
+type PatientReport {
+  id: ID!
+  name: String!
+  body: String!
+}
+
+input PatientReportInput {
+  id: ID
+  name: String!
+  body: String!
+}
+
 ########################### Patient Surgeries ##################################
 
 type PatientSurgery {
@@ -679,4 +700,3 @@ input PatientSurgeryInput {
   date: Date
   fees: Int
 }
-

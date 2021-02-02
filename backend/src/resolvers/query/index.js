@@ -28,3 +28,4 @@ export { default as myPatientSurgeries } from './my-patient-surgeries';
 export { default as myTestsDefinition } from './my-tests-definition';
 export { default as myImagesDefinition } from './my-images-definition';
 export { default as myMedicinesDefinition } from './my-medicines-definition';
+export { default as myPatientReports } from './my-patient-reports';

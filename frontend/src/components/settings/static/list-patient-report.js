@@ -1,16 +1,21 @@
 import React from "react";
 import { Icon } from "rsuite";
+import Label from "components/widgets/label";
 
 import { CRCard, CRTable } from "components";
 
-function ListTestsDefinition({ tests, onEdit }) {
+function ListPatientReports({ reports, onEdit }) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={tests}>
+        <CRTable autoHeight data={reports}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Test Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="testName" semiBold />
+            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="name" semiBold />
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Body</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="body" semiBold />
           </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
@@ -58,4 +63,8 @@ function ListTestsDefinition({ tests, onEdit }) {
   );
 }
 
-export default ListTestsDefinition;
+ListPatientReports.defaultProps = {
+  reports: [],
+};
+
+export default ListPatientReports;

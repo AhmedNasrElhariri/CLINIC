@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { MainContainer, CRNav } from 'components';
-import Hospitals from './hospitals';
-import Surgeries from './surgeries';
-import MedicineDefinition from './medicine-definition';
-import TestDefinition from './test-definition';
-import ImageDefinition from './image-definition';
+import { MainContainer, CRNav } from "components";
+import Hospitals from "./hospitals";
+import Surgeries from "./surgeries";
+import MedicineDefinition from "./medicine-definition";
+import TestDefinition from "./test-definition";
+import ImageDefinition from "./image-definition";
+import PatientReport from "./patient-report";
 
 function StaticSettings() {
-  const [activeTab, setActiveTab] = useState('0');
+  const [activeTab, setActiveTab] = useState("0");
 
   return (
     <>
@@ -25,35 +26,23 @@ function StaticSettings() {
           <CRNav.CRItem eventKey="2">Medicine Definition</CRNav.CRItem>
           <CRNav.CRItem eventKey="3">Test Definition</CRNav.CRItem>
           <CRNav.CRItem eventKey="4">Image Definition</CRNav.CRItem>
+          <CRNav.CRItem eventKey="5">Patient Report</CRNav.CRItem>
         </CRNav>
-        {/* {activeTab === '0' ? <Hospitals /> :
-          activeTab === '1' ? <Surgeries /> :
-          <MedicineLibrary />
-        } */}
         {(() => {
           switch (activeTab) {
-              case "0":
-                  return (
-                    <Hospitals />
-                  )
-              case "1":
-                  return (
-                    <Surgeries />
-                  )
-              case "2":
-                  return (
-                    <MedicineDefinition />
-                  )
-              case "3":
-                  return (
-                    <TestDefinition />
-                  )
-              default:
-                  return (
-                    <ImageDefinition />
-                  )
-        }
-
+            case "0":
+              return <Hospitals />;
+            case "1":
+              return <Surgeries />;
+            case "2":
+              return <MedicineDefinition />;
+            case "3":
+              return <TestDefinition />;
+            case "4":
+              return <ImageDefinition />;
+            default:
+              return <PatientReport />;
+          }
         })()}
       </MainContainer>
     </>
