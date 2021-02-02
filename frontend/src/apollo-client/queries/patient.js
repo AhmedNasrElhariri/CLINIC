@@ -11,6 +11,19 @@ export const CREATE_PATIENT = gql`
   }
 `;
 
+export const EDIT_PATIENT = gql`
+  mutation editPatient($patient: PatientInput!) {
+    editPatient(patient: $patient) {
+      id
+      name
+      type
+      phoneNo
+      sex
+      age
+    }
+  }
+`;
+
 export const LIST_PATIENTS = gql`
   {
     patients {
@@ -18,6 +31,8 @@ export const LIST_PATIENTS = gql`
       name
       type
       phoneNo
+      sex
+      age
     }
   }
 `;

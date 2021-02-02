@@ -84,6 +84,7 @@ type Query {
 
 type Mutation {
   createPatient(input: PatientInput!): Patient!
+  editPatient(patient: PatientInput!): Patient!
   createAppointment(input: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
   archiveAppointment(id: ID!): Appointment!
@@ -191,6 +192,7 @@ type Patient implements Searchable {
 }
 
 input PatientInput {
+  id: ID
   name: String!
   phoneNo: String!
   age: Int!

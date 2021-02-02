@@ -26,6 +26,9 @@ const appointmentHistory = async (_, { appointmentId, patientId }) => {
         id: patientId,
       },
     },
+    orderBy: {
+      date: 'desc',
+    },
   });
 };
 

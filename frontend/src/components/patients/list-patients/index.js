@@ -1,38 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 
-import { LIST_PATIENTS } from 'apollo-client/queries';
 import { MainContainer, CRTable } from 'components';
 import PatientsFilter from '../filter/index';
 import { Can } from 'components/user/can';
+import EditPatient from '../edit-patient';
+import useFetchPatients from 'hooks/fetch-patients';
 
 function Patients() {
   const history = useHistory();
-  const [patients, setPatients] = useState([]);
+  const [filter, setFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const { patients } = useFetchPatients();
 
-  const { data } = useQuery(LIST_PATIENTS, {
-    variables: {},
-    onCompleted: ({ patients }) => setPatients(patients),
-  });
-
-  const onNameChange = value => {
-    setPatients(
-      data.patients.filter(p =>
-        p.name.toLowerCase().includes(value.toLowerCase())
-      )
-    );
-  };
+  const filteredPatients = useMemo(
+    () =>
+      patients.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())),
+    [filter, patients]
+  );
 
   return (
     <>
       <MainContainer title="Patients">
         <Can I="view" a="Patient">
-          <PatientsFilter onNameChange={onNameChange}></PatientsFilter>
+          <PatientsFilter onNameChange={setFilter}></PatientsFilter>
           <CRTable
             autoHeight
-            data={patients}
+            data={filteredPatients}
             onRowClick={({ id }) => {
               history.push(`/patients/${id}`);
             }}
@@ -52,6 +46,13 @@ function Patients() {
               <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
               <CRTable.CRCell dataKey="phoneNo" />
             </CRTable.CRColumn>
+
+            <CRTable.CRColumn width={35}>
+              <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {data => <EditPatient patient={data} />}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
           </CRTable>
 
           <CRTable.CRPagination
@@ -66,7 +67,7 @@ function Patients() {
               },
             ]}
             activePage={currentPage}
-            total={data && data.patients.length}
+            total={patients && patients.length}
             onChangePage={p => setCurrentPage(p)}
           />
         </Can>

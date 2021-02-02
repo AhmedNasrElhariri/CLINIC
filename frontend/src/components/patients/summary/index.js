@@ -75,14 +75,14 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
             eventKey={session}
             active={activeSession.id === session.id}
           >
-            Session {idx + 1}
+            Session {summary.length - idx}
           </CRNav.CRVItem>
         ))}
       </CRNav>
       <Div m={4} flexGrow={1}>
         {summary.length ? (
           <>
-            <H3 mb={4}>Session {sessionId + 1}</H3>
+            <H3 mb={4}>Session {summary.length - sessionId}</H3>
             <Div>
               {renderProp('Date', formatDate(date))}
               {renderAppointment(data)}
