@@ -3,10 +3,10 @@ import React from 'react';
 import { Div, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 
-const ListSurgries = ({ surgeries }) => {
+const ListSurgries = ({ surgeries, onClick }) => {
   return (
     <Div>
-      <CRTable autoHeight data={surgeries} onRowClick={() => {}}>
+      <CRTable autoHeight data={surgeries} onRowClick={onClick}>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Surgery</CRTable.CRHeaderCell>
           <CRTable.CRCell>

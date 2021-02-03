@@ -1,11 +1,8 @@
 import { useMemo } from 'react';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 
-import {
-  LIST_PATIENT_SURGERIES,
-  GET_SURGRIES_APPOINTMENT,
-} from 'apollo-client/queries';
+import { LIST_PATIENT_SURGERIES, GET_APPOINTMENT } from 'apollo-client/queries';
 
 function useSuergriesAppointments({ patientId }) {
   const { data: patientSurgeries } = useQuery(LIST_PATIENT_SURGERIES, {
@@ -15,32 +12,23 @@ function useSuergriesAppointments({ patientId }) {
     () => R.propOr([], 'patientSurgeries')(patientSurgeries),
     [patientSurgeries]
   );
-  // const { data } = useQuery(GET_SURGRIES_APPOINTMENT, {
-  //   variables: {
-  //     patientId,
-  //   },
-  //   // onCompleted: () => setFetched(true),
-  // });
-  // const surgires = useMemo(() => R.propOr([], 'surgriesAppointments')(data), [
-  //   data,
-  // ]);
-
-  // const appointments = useMemo(
-  //   () =>
-  //     R.pipe(
-  //       R.propOr([], 'appointments'),
-  //       R.reject(R.propEq('status', 'Cancelled')),
-  //       R.reject(R.propEq('type', APPT_TYPE.Surgery)),
-  //       sortAppointmentsByDate
-  //     )(data),
-  //   [data]
-  // );
+  const [
+    fetchAppointment,
+    { data: appointmentData },
+  ] = useLazyQuery(GET_APPOINTMENT, { fetchPolicy: 'no-cache' });
+  const appointment = useMemo(
+    () => R.propOr([], 'appointment')(appointmentData),
+    [appointmentData]
+  );
 
   return useMemo(
     () => ({
       surgeries,
+      fetchAppointment: surgeryId =>
+        fetchAppointment({ variables: { surgeryId } }),
+      appointment,
     }),
-    [surgeries]
+    [appointment, fetchAppointment, surgeries]
   );
 }
 

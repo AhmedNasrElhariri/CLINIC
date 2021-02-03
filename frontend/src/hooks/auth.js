@@ -19,8 +19,8 @@ const useAuth = () => {
     onCompleted({ verify: user }) {
       setAuthenticated(true);
       setUser(user);
-      setVerified(true);
       ability.update(user.permissions);
+      setVerified(true);
     },
     onError() {
       setVerified(true);

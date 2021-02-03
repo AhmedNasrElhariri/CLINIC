@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const appointment = (_, { id }) => {
+const appointment = async (_, { id }) => {
   return prisma.appointment.findOne({ where: { id } });
 };
 

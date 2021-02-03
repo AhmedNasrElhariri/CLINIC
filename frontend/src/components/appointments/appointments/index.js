@@ -11,7 +11,7 @@ function Appointments() {
   const history = useHistory();
   const [formValue, setFormValue] = useState({ date: [], patient: '' });
 
-  const { appointments } = useFetchAppointments();
+  const { appointments } = useFetchAppointments({ includeSurgery: true });
 
   const filteredAppointments = useMemo(
     () => sortAppointments(filterAppointments(appointments, formValue)),

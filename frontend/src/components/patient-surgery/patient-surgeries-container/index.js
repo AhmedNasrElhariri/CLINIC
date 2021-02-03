@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { Div, CRButton, MainContainer, CRModal } from 'components';
+import { Div, CRButton, MainContainer } from 'components';
 import useFrom from 'hooks/form';
 import { useModal } from 'components/widgets/modal';
 import usePatientSurgeries from 'hooks/fetch-patient-surgeries';
@@ -20,8 +21,7 @@ const initValue = {
 
 const PatientSurgeriesContainer = () => {
   const { visible, open, close } = useModal();
-  const [selectedPatientSurgery, setSelectedPatientSurgery] = useState({});
-  const confirmationModal = useModal();
+  const history = useHistory();
   const { formValue, setFormValue } = useFrom({
     initValue,
   });
@@ -32,14 +32,9 @@ const PatientSurgeriesContainer = () => {
     surgery: null,
     hospital: null,
   });
-  const {
-    createPatientSurgery,
-    patientSurgeries,
-    createAppointment,
-  } = usePatientSurgeries({
+  const { createPatientSurgery, patientSurgeries } = usePatientSurgeries({
     onCreate: () => {
       close();
-      // setFormValue(initValue);
     },
   });
 
@@ -57,17 +52,11 @@ const PatientSurgeriesContainer = () => {
   );
 
   const handleSurgeryClick = useCallback(
-    patientSurgery => {
-      confirmationModal.open();
-      setSelectedPatientSurgery(patientSurgery);
+    ({ appointment }) => {
+      history.push(`/appointments/${appointment.id}`);
     },
-    [confirmationModal]
+    [history]
   );
-
-  const handleConfirmAction = useCallback(() => {
-    confirmationModal.close();
-    createAppointment(selectedPatientSurgery.patient.id);
-  }, [confirmationModal, createAppointment, selectedPatientSurgery.patient]);
 
   return (
     <>
@@ -98,17 +87,6 @@ const PatientSurgeriesContainer = () => {
         />
       </MainContainer>
 
-      <CRModal
-        onOk={handleConfirmAction}
-        onCancel={confirmationModal.close}
-        onHide={confirmationModal.close}
-        show={confirmationModal.visible}
-        header="Insert Surgery Data"
-      >
-        <Div textAlign="center">
-          Are you Sure you want to Insert Surgery Data?
-        </Div>
-      </CRModal>
     </>
   );
 };

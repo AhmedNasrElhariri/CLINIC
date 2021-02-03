@@ -25,7 +25,7 @@ export function useVariables() {
   );
 }
 
-function useFetchAppointments() {
+function useFetchAppointments({ includeSurgery } = {}) {
   const variables = useVariables();
   const [fetched, setFetched] = useState(false);
   const [getAppointments, { data }] = useLazyQuery(LIST_APPOINTMENTS, {
@@ -44,10 +44,12 @@ function useFetchAppointments() {
       R.pipe(
         R.propOr([], 'appointments'),
         R.reject(R.propEq('status', 'Cancelled')),
-        R.reject(R.propEq('type', APPT_TYPE.Surgery)),
+        includeSurgery
+          ? R.identity
+          : R.reject(R.propEq('type', APPT_TYPE.Surgery)),
         sortAppointmentsByDate
       )(data),
-    [data]
+    [data, includeSurgery]
   );
   const todayAppointments = useMemo(() => {
     const refDate =

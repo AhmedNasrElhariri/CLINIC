@@ -631,6 +631,7 @@ type PatientSurgery {
   date: Date
   fees: Int
   hospitalFees: Int
+  appointment: Appointment
 }
 
 input PatientSurgeryInput {
