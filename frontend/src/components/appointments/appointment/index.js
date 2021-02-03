@@ -6,7 +6,6 @@ import { ButtonToolbar, Icon, Alert, Loader } from 'rsuite';
 
 import {
   Div,
-  PatientProgress,
   PatientSummary,
   H3,
   CRButton,
@@ -39,7 +38,8 @@ import { HeaderStyled } from './style';
 import { useModal } from 'components/widgets/modal';
 import PatientSurgries from './surgries';
 
-const tabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
+const normalTabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
+const surgeryTabs = ['Home'];
 
 function Appointment() {
   const history = useHistory();
@@ -83,6 +83,10 @@ function Appointment() {
   const appointment = useMemo(
     () => R.prop('appointment')(appointmentRes) || {},
     [appointmentRes]
+  );
+  const tabs = useMemo(
+    () => (appointment.type === 'Surgery' ? surgeryTabs : normalTabs),
+    [appointment.type]
   );
   const patient = useMemo(() => R.propOr({}, 'patient')(appointment), [
     appointment,
@@ -195,21 +199,25 @@ function Appointment() {
                   appointment={appointment}
                 />
               )}
-              {showComp('1') && (
+              {appointment.type !== 'Surgery' && showComp('1') && (
                 <PatientSummary
                   summary={appointmentHistory}
                   fields={viewFields}
                 />
               )}
-              {showComp('2') && (
+              {appointment.type !== 'Surgery' && showComp('2') && (
                 <PatientSurgries
                   history={appointmentHistory}
                   viewFields={viewFields}
                   patientId={appointment?.patient?.id}
                 />
               )}
-              {showComp('3') && <PatientLabs patient={patient} />}
-              {showComp('4') && <History patient={patient} />}
+              {appointment.type !== 'Surgery' && showComp('3') && (
+                <PatientLabs patient={patient} />
+              )}
+              {appointment.type !== 'Surgery' && showComp('4') && (
+                <History patient={patient} />
+              )}
             </Div>
           </Div>
         </Div>

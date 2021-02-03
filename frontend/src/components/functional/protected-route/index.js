@@ -10,8 +10,6 @@ const ProtectedRoute = ({ component: Component, action, subject, ...rest }) => {
     subject,
   ]);
 
-  console.log('inside', isAuthenticated);
-
   return (
     <Route
       {...rest}
