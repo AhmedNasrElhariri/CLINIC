@@ -13,11 +13,11 @@ import { APPT_TYPE } from 'utils/constants';
 import useGlobalState from 'state';
 import { useHistory } from 'react-router-dom';
 
-const updateCache = myPatientSurgeries => {
+const updateCache = patientSurgeries => {
   client.writeQuery({
     query: LIST_PATIENT_SURGERIES,
     data: {
-      myPatientSurgeries,
+      patientSurgeries,
     },
   });
 };
@@ -27,7 +27,7 @@ const usePatientSurgeries = ({ onCreate } = {}) => {
   const { data } = useQuery(LIST_PATIENT_SURGERIES);
   const [clinic] = useGlobalState('currentClinic');
   const patientSurgeries = useMemo(
-    () => R.propOr([], 'myPatientSurgeries')(data),
+    () => R.propOr([], 'patientSurgeries')(data),
     [data]
   );
 

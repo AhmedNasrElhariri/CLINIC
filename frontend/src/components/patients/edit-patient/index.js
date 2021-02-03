@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import * as R from 'ramda';
 import PropTypes from 'prop-types';
-import { Alert, Icon } from 'rsuite';
+import {  Icon } from 'rsuite';
 
 import { CRModal, Div } from 'components';
-import { useMutation } from '@apollo/client';
 
 import Form from './form';
-import { CREATE_PATIENT } from 'apollo-client/queries';
 import useFetchPatients from 'hooks/fetch-patients';
 import { useModal } from 'components/widgets/modal';
 

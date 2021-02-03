@@ -8,3 +8,4 @@ export * from './snippet';
 export * from './user';
 export * from './view';
 export * from './inventory';
+export * from './surgery';

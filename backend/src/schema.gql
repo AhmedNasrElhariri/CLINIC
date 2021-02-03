@@ -77,7 +77,8 @@ type Query {
   inventoryHistory(clinicId: ID!): [InventoryHistory!]
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
-  myPatientSurgeries: [PatientSurgery!]
+  patientSurgeries(patientId: ID): [PatientSurgery!]
+  # myPatientSurgeries: [PatientSurgery!]
 }
 
 ########################### Mutation ##################################

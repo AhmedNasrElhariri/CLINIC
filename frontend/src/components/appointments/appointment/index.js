@@ -37,8 +37,9 @@ import History from './patient-history';
 
 import { HeaderStyled } from './style';
 import { useModal } from 'components/widgets/modal';
+import PatientSurgries from './surgries';
 
-const tabs = ['Home', 'Summary', 'Progress', 'Labs', 'History'];
+const tabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
 
 function Appointment() {
   const history = useHistory();
@@ -201,9 +202,10 @@ function Appointment() {
                 />
               )}
               {showComp('2') && (
-                <PatientProgress
+                <PatientSurgries
                   history={appointmentHistory}
                   viewFields={viewFields}
+                  patientId={appointment?.patient?.id}
                 />
               )}
               {showComp('3') && <PatientLabs patient={patient} />}

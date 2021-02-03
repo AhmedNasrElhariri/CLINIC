@@ -75,6 +75,43 @@ export const GET_APPOINTMENT = gql`
   }
 `;
 
+export const GET_SURGRIES_APPOINTMENT = gql`
+  query($id: ID!) {
+    surgriesAppointments(id: $id) {
+      id
+      type
+      date
+      status
+      notes
+      data {
+        id
+        value
+        field {
+          id
+          name
+        }
+      }
+      patient {
+        id
+        name
+        age
+        sex
+        type
+        phoneNo
+      }
+      collections {
+        id
+        caption
+        images {
+          id
+          url
+          comment
+        }
+      }
+    }
+  }
+`;
+
 export const ADJUST_APPOINTMENT = gql`
   mutation adjustAppointment($id: ID!, $date: Date!) {
     adjustAppointment(id: $id, date: $date) {

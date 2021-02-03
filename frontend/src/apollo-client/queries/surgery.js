@@ -26,9 +26,31 @@ export const EDIT_SURGERY = gql`
   }
 `;
 
+// export const LIST_PATIENT_SURGERIES = gql`
+//   {
+//     myPatientSurgeries {
+//       id
+//       date
+//       fees
+//       patient {
+//         id
+//         name
+//       }
+//       surgery {
+//         id
+//         name
+//       }
+//       hospital {
+//         id
+//         name
+//       }
+//     }
+//   }
+// `;
+
 export const LIST_PATIENT_SURGERIES = gql`
-  {
-    myPatientSurgeries {
+  query patientSurgeries($patientId: ID) {
+    patientSurgeries(patientId: $patientId) {
       id
       date
       fees
