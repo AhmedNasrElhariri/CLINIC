@@ -65,3 +65,6 @@ export { default as InventoryPage } from './inventory/inventory-page';
 
 /******************     Paitient Surgeries    *****************************/
 export { default as PatientSurgeriesContainer } from './patient-surgery/patient-surgeries-container';
+
+/******************     Report Printouts    *********************************/
+export { default as ReportPrintout } from './report-printouts';
