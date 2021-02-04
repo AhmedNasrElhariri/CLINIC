@@ -17,11 +17,13 @@ import {
   NUMBER_FIELD_TYPE,
   TEXT_FIELD_TYPE,
   LONG_TEXT_FIELD_TYPE,
+  Labs
 } from 'utils/constants';
 
 import AppointmentImages from '../images';
 
 import { HomeSidebarStyled } from './style';
+import ListLabs from './list-labs';
 
 const ScrollNavLink = ({ element, children, ...props }) => {
   return (
@@ -157,13 +159,15 @@ function AppointmentData({
               onChange={handleCollectionsChange}
             />
           </SectionContainer>
-          <SectionContainer title="Prescription" name="Prescription">
+          <SectionContainer title="Lab" name="Lab">
             <Form
               formValue={appointmentFormValue}
               onChange={onChangeAppointment}
             >
-              <CRTextArea name="prescription" disabled={disabled} />
+              {/* <CRTextArea name="prescription" disabled={disabled} /> */}
+              <ListLabs data={Labs}/>
             </Form>
+
           </SectionContainer>
         </Div>
       </Div>

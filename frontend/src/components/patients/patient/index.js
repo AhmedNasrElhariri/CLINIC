@@ -43,7 +43,7 @@ function Appointment() {
     normalizedAppointments,
     appointmentsWithGroups,
   } = usePatientHistory({ patientId });
-
+const appoinmentId = '0a63eaa1-1cfc-40a2-9fe0-4ed2269a4397'
   return (
     <>
        <MainContainer
@@ -51,7 +51,7 @@ function Appointment() {
         more={
           <>
           <AvatarWithName patient={patient}/>
-          <CRButton  onClick={() =>  history.push(`/appointments/`)} small>Add New Sessions</CRButton>
+          <CRButton  onClick={() =>  history.push(`/appointments/${appoinmentId}`)} small>Add New Sessions</CRButton>
           </>
         }
       ></MainContainer>

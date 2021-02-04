@@ -200,6 +200,8 @@ export const PERMISSIONS = new Map(
     value.map(v => ({ ...v, id: v.action + v.subject })),
   ])
 );
+export const Labs = ['SGPT(ALT)','SGOT(ALT)','HDL','LIQUID PROFILE','SGPT'];
+
 export const appointmentHistory =[
   {
     "id": "bc3b7bd3-aec2-40f9-94f2-e762ace316a3",
