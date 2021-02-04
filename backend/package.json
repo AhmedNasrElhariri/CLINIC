@@ -12,6 +12,7 @@
     "build1": "npm run db-source:test1 && APP_PORT=8000 dotenv -e .test1.env -- webpack --config=webpack.prod.js",
     "build-server": "webpack --config=webpack.server.js",
     "debug": "babel src -d lib -s",
+    "db-source": "node database-connection",
     "db-source:test1": "ENV_FILE=./.test1.env db-source"
   },
   "author": "",
