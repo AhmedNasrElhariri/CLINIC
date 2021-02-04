@@ -28,10 +28,33 @@ const ListLabs = ({ data }) => {
       setAdd(!add)
     }
   } */
+  const ToggleableImage =()=> {
+    const [isVisible, setVisibility] = useState(false);
+  
+    const toggleVisibility= ()=> {
+      console.log('add')
+      setVisibility(!isVisible);
+    }
+  
+    return (
+     isVisible ? (
+        <button onClick={toggleVisibility} style={btnAdd}>
+          Added
+        </button>
+      ) : (
+        <button
+          onClick={toggleVisibility}
+          style={{ ...btnAdd, background: "rgb(81 198 243)" }}
+        >
+          Add
+        </button>
+      )
+    );
+  }
   return (
-    <List >
+    <List>
       {data.map((item, index) => (
-        <List.Item key={item} index={index}>
+        <List.Item key={item} index={item.id}>
           <FlexboxGrid>
             {/*base info*/}
             <FlexboxGrid.Item
@@ -43,7 +66,7 @@ const ListLabs = ({ data }) => {
                 overflow: "hidden",
               }}
             >
-              <H4 style={titleStyle}>{item}</H4>
+              <H4 style={titleStyle}>{item.title}</H4>
             </FlexboxGrid.Item>
 
             <FlexboxGrid.Item
@@ -53,11 +76,7 @@ const ListLabs = ({ data }) => {
                 justifyContent: "flex-end",
               }}
             >
-              {add ? (
-                <button onClick={(e)=>setAdd(!add)} style={{...btnAdd,background: "rgb(81 198 243)"}}>Add</button>
-              ) : (
-                <button  onClick={(e)=>setAdd(!add)} style={btnAdd} >Added</button>
-              )}
+              {ToggleableImage() }
             </FlexboxGrid.Item>
           </FlexboxGrid>
         </List.Item>

@@ -169,6 +169,16 @@ function AppointmentData({
             </Form>
 
           </SectionContainer>
+          <SectionContainer title="Images" name="Images">
+            <Form
+              formValue={appointmentFormValue}
+              onChange={onChangeAppointment}
+            >
+              {/* <CRTextArea name="prescription" disabled={disabled} /> */}
+              <ListLabs data={Labs}/>
+            </Form>
+
+          </SectionContainer>
         </Div>
       </Div>
     </>

@@ -200,7 +200,13 @@ export const PERMISSIONS = new Map(
     value.map(v => ({ ...v, id: v.action + v.subject })),
   ])
 );
-export const Labs = ['SGPT(ALT)','SGOT(ALT)','HDL','LIQUID PROFILE','SGPT'];
+export const Labs = [
+  { id: "1", title: "SGPT(ALT)" },
+  { id: "2", title: "SGOT(ALT)" },
+  { id: "3", title: "HDL" },
+  { id: "4", title: "LIQUID PROFILE" },
+  { id: "4", title: "SGPT" },
+];
 
 export const appointmentHistory =[
   {
