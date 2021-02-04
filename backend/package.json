@@ -9,9 +9,10 @@
     "dev:prod-db": "dotenv -e .env -- webpack --config ./webpack.dev.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "dotenv -e .env -- webpack --config=webpack.prod.js",
-    "build1": "APP_PORT=8000 dotenv -e .test1.env -- webpack --config=webpack.prod.js",
+    "build1": "npm run db-source:test1 && APP_PORT=8000 dotenv -e .test1.env -- webpack --config=webpack.prod.js",
     "build-server": "webpack --config=webpack.server.js",
-    "debug": "babel src -d lib -s"
+    "debug": "babel src -d lib -s",
+    "db-source:test1": "ENV_FILE=./.test1.env db-source"
   },
   "author": "",
   "license": "ISC",
