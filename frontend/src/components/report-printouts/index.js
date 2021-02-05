@@ -19,7 +19,6 @@ function ReportPrintout() {
     onCreate: () => {},
     onEdit: () => {},
   });
-  console.log(formValue);
   const handlePrint = useReactToPrint({
     content: () => ref.current,
   });
@@ -29,9 +28,8 @@ function ReportPrintout() {
   `;
   const CustomCRSelector = styled(CRSelectInput)`
     width: 40%;
-    margin: auto;
+    float: left;
   `;
-  console.log(formValue);
 
   return (
     <>
@@ -64,8 +62,9 @@ function ReportPrintout() {
           onChange={(value) => setFormValue({ body: value })}
         />
       </Form>
-
-      <div ref={ref} dangerouslySetInnerHTML={{ __html: formValue.body }} />
+      <div style={{ visibility: "hidden" }}>
+        <div ref={ref} dangerouslySetInnerHTML={{ __html: formValue.body }} />
+      </div>
     </>
   );
 }

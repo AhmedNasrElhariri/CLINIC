@@ -1,8 +1,11 @@
+
 export const ACCESS_TOKEN = 'access-token';
 
 export const NUMBER_FIELD_TYPE = 'Number';
 export const TEXT_FIELD_TYPE = 'Text';
 export const LONG_TEXT_FIELD_TYPE = 'LongText';
+export const RADIO_FIELD_TYPE = 'Radio';
+export const CHECK_FIELD_TYPE = 'Check';
 
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
 export const FULL_DATE_FORMAT = 'hh:mm a';
@@ -12,6 +15,8 @@ export const FIELD_TYPES = [
   { label: 'Number', value: NUMBER_FIELD_TYPE },
   { label: 'Text', value: TEXT_FIELD_TYPE },
   { label: 'Text Area', value: LONG_TEXT_FIELD_TYPE },
+  { label: 'Radio', value:  RADIO_FIELD_TYPE},
+  { label: 'Check', value:  CHECK_FIELD_TYPE}, 
 ];
 
 export const MEDICAL_HISTORY_TYPES = Object.freeze({
