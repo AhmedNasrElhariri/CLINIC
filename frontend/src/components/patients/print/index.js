@@ -63,9 +63,9 @@ const Print = ({ appoitnments, patient, fields, appoitnmentsWithGroups }) => {
 
   return (
     <>
-      <CRButton primary small ml={1} onClick={handleClick}>
+      {/* <CRButton primary small ml={1} onClick={handleClick}>
         Print
-      </CRButton>
+      </CRButton> */}
       <CRModal
         header="Print Patient History"
         show={visible}

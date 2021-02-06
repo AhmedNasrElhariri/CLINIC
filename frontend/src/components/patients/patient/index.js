@@ -4,21 +4,16 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import { GET_PATIENT } from 'apollo-client/queries';
-import {
-  Div,
-  PatientSummary,
-  PatientProgress,
-  CRNav,
-  MainContainer,
-} from 'components';
+import { Div, PatientSummary, CRNav, MainContainer } from 'components';
 
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import History from 'components/appointments/appointment/patient-history';
+import PatientSurgries from 'components/appointments/appointment/surgries';
 import Print from '../print';
 
-const tabs = ['Summary', 'Progress', 'Labs', 'History'];
+const tabs = ['Summary', 'Surgeries', 'Labs', 'History'];
 
 function Appointment() {
   let { patientId } = useParams();
@@ -40,6 +35,8 @@ function Appointment() {
     normalizedAppointments,
     appointmentsWithGroups,
   } = usePatientHistory({ patientId });
+
+  console.log('normalizedAppointments', normalizedAppointments);
 
   return (
     <>
@@ -78,9 +75,10 @@ function Appointment() {
               />
             )}
             {showComp('1') && (
-              <PatientProgress
+              <PatientSurgries
                 history={appointmentHistory}
                 viewFields={viewFields}
+                patientId={patient?.id}
               />
             )}
             {showComp('2') && <PatientLabs patient={patient} />}
