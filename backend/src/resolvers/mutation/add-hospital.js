@@ -1,8 +1,6 @@
 import { prisma } from '@';
 
 const addHospital = async (_, { hospital }, { organizationId }) => {
-  console.log({ hospital });
-  console.log({ organizationId });
   return prisma.hospital
     .create({
       data: {
