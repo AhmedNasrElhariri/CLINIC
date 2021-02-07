@@ -15,7 +15,7 @@ const filterByView = (data, { view } = {}) => {
 };
 
 const filterByPeriod = (data, { period: [start, end] }) => {
-  return data.filter(i => moment(i.date).isBetween(start, end, 'days','[]'));
+  return data.filter(i => moment(i.date).isBetween(start, end, 'days', '[]'));
 };
 
 export const filterAccountingList = (data, view, period) => {

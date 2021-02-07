@@ -44,7 +44,6 @@ const LinkStyled = styled(Link)`
   }
   position: relative;
   padding-right: 10px;
-
 `;
 
 const VBorder = styled.span`

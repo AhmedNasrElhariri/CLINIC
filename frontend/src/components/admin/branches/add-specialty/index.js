@@ -14,12 +14,7 @@ const initialValues = {
   specialty: '',
 };
 
-export default function AddSpecialty({
-  show,
-  onCancel,
-  onCreate,
-  branches,
-}) {
+export default function AddSpecialty({ show, onCancel, onCreate, branches }) {
   const [formValue, setFormValue] = useState(initialValues);
 
   const branchesName = mapArrToChoices(branches.map(branch => branch.name));

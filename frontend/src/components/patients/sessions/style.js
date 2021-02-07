@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { Panel } from "rsuite";
-import { H3 } from "components";
+import styled from 'styled-components';
+import { Panel } from 'rsuite';
+import { H3 } from 'components';
 export const SessionsPanel = styled(Panel)`
   > {
     color: red;

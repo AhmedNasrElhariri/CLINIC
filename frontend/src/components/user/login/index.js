@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { Alert, Form, Schema } from "rsuite";
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { Alert, Form, Schema } from 'rsuite';
 
-import { Div, CRTextInput, CRButton, H1 } from "components";
-import { LOGIN } from "apollo-client/queries";
-import { CoverStyled } from "./style";
+import { Div, CRTextInput, CRButton, H1 } from 'components';
+import { LOGIN } from 'apollo-client/queries';
+import { CoverStyled } from './style';
 
 const { StringType } = Schema.Types;
 
 const model = Schema.Model({
-  type: StringType().isRequired("Appointment Type is required"),
-  patient: StringType().isRequired("Patient Type is required"),
+  type: StringType().isRequired('Appointment Type is required'),
+  patient: StringType().isRequired('Patient Type is required'),
 });
 
 const initialValues = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 };
 
 function Login({ onLoginSucceeded, onLoginFailed }) {
@@ -23,11 +23,11 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
 
   const [login] = useMutation(LOGIN, {
     onCompleted: ({ login: { token, user } }) => {
-      Alert.success("Your Logged Successfully");
+      Alert.success('Your Logged Successfully');
       onLoginSucceeded({ token, user });
     },
     onError: () => {
-      Alert.error("Invalid Input");
+      Alert.error('Invalid Input');
       onLoginFailed();
     },
   });
@@ -63,7 +63,7 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
             fluid
             model={model}
             formValue={formValue}
-            onChange={(value) => setFormValue(value)}
+            onChange={value => setFormValue(value)}
           >
             <CRTextInput placeholder="Email" name="email" />
             <CRTextInput

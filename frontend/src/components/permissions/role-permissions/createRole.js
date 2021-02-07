@@ -9,7 +9,6 @@ function RoleInput({ formValue, onChange }) {
         <Col xs={8}>
           <CRTextInput name="role" label="Role Name" />
         </Col>
-        
       </Row>
     </Form>
   );

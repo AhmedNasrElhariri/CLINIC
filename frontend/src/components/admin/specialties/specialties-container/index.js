@@ -11,8 +11,7 @@ import {
 
 export default function SpecialtiesContainer() {
   const [visible, setVisible] = useState(false);
-  const data =
-    JSON.parse(localStorage.getItem('specialtiesInBranch')) || [];
+  const data = JSON.parse(localStorage.getItem('specialtiesInBranch')) || [];
 
   const create = useCallback(
     specialty => {
@@ -34,9 +33,7 @@ export default function SpecialtiesContainer() {
 
   const showModal = useCallback(() => setVisible(true), []);
   const hideModal = useCallback(() => setVisible(false), []);
-  const onCreate = useCallback(specialty => create(specialty), [
-    create,
-  ]);
+  const onCreate = useCallback(specialty => create(specialty), [create]);
 
   const specialties = R.propOr(
     [],

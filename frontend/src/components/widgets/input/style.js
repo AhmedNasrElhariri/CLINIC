@@ -69,9 +69,7 @@ const inputCss = css`
   ${typography}
   ${layout}
   ${border}
-  ${byTheme(
-    fontTheme
-  )}
+  ${byTheme(fontTheme)}
   &:focus,
   &:active,
   &:hover,

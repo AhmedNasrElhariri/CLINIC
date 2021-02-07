@@ -17,7 +17,10 @@ function AppointmentSettings({ formValue, onChange }) {
                 label="Examination Price"
                 name="examinationPrice"
               />
-              <CRNumberInput label="Urgent Appointment Price" name="urgentPrice" />
+              <CRNumberInput
+                label="Urgent Appointment Price"
+                name="urgentPrice"
+              />
               {/* <CRNumberInput label="Duration (min)" name="duration" /> */}
             </Div>
           </FlexboxGrid.Item>

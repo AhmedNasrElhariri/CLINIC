@@ -51,7 +51,7 @@ function useSurgeries({ onCreate, onEdit } = {}) {
       surgeries,
       defineSurgery,
       updateCache,
-      editSurgery
+      editSurgery,
     }),
     [defineSurgery, editSurgery, surgeries]
   );

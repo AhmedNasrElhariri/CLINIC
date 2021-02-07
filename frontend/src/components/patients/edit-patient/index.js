@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import * as R from 'ramda';
 import PropTypes from 'prop-types';
-import {  Icon } from 'rsuite';
+import { Icon } from 'rsuite';
 
 import { CRModal, Div } from 'components';
 

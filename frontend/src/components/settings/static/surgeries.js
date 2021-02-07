@@ -15,7 +15,7 @@ function Surgeries() {
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  const { defineSurgery,editSurgery, surgeries } = useSurgeries({
+  const { defineSurgery, editSurgery, surgeries } = useSurgeries({
     onCreate: () => {
       close();
       setFormValue(initValue);

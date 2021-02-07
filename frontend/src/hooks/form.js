@@ -24,7 +24,7 @@ function useFrom({ initValue, model }) {
       reset,
       validate,
       type,
-      setType
+      setType,
     }),
     [formValue, reset, type, validate]
   );

@@ -1,14 +1,14 @@
-import React, { useRef } from "react";
-import { Form, SelectPicker } from "rsuite";
-import { CRSelectInput, CRButton, Div } from "components";
-import useFrom from "hooks/form";
-import usePatientReports from "hooks/fetch-patient-reports";
-import ReactQuill from "react-quill";
-import { useReactToPrint } from "react-to-print";
-import Label from "../widgets/label";
-import styled from "styled-components";
+import React, { useRef } from 'react';
+import { Form, SelectPicker } from 'rsuite';
+import { CRSelectInput, CRButton, Div } from 'components';
+import useFrom from 'hooks/form';
+import usePatientReports from 'hooks/fetch-patient-reports';
+import ReactQuill from 'react-quill';
+import { useReactToPrint } from 'react-to-print';
+import Label from '../widgets/label';
+import styled from 'styled-components';
 
-const initValue = { patientReport: "", body: "" };
+const initValue = { patientReport: '', body: '' };
 
 function ReportPrintout() {
   const { formValue, setFormValue } = useFrom({
@@ -59,10 +59,10 @@ function ReportPrintout() {
           value={
             formValue.patientReport ? formValue.patientReport : formValue.body
           }
-          onChange={(value) => setFormValue({ body: value })}
+          onChange={value => setFormValue({ body: value })}
         />
       </Form>
-      <div style={{ visibility: "hidden" }}>
+      <div style={{ visibility: 'hidden' }}>
         <div ref={ref} dangerouslySetInnerHTML={{ __html: formValue.body }} />
       </div>
     </>

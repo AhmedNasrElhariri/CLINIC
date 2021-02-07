@@ -1,14 +1,14 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { Form, Schema, Input, Icon } from "rsuite";
+import React, { useCallback, useMemo, useState } from 'react';
+import { Form, Schema, Input, Icon } from 'rsuite';
 
-import { CRModal, CRTextInput, CRTextArea, CRButton } from "components";
-import item from "components/widgets/nav/item";
+import { CRModal, CRTextInput, CRTextArea, CRButton } from 'components';
+import item from 'components/widgets/nav/item';
 
 const model = Schema.Model({});
 
 function NewValues({ type, visible, onOk, onClose, onChange }) {
   const header = useMemo(
-    () => (type === "create" ? "Add New Values" : "Edit Values "),
+    () => (type === 'create' ? 'Add New Values' : 'Edit Values '),
     [type]
   );
   const [formValue, setFormValue] = useState([]);
@@ -17,7 +17,7 @@ function NewValues({ type, visible, onOk, onClose, onChange }) {
   }, [formValue]);
 
   const handleOnDelete = useCallback(
-    (indx) => {
+    indx => {
       let formVal2 = formValue.filter((item, index) => index !== indx);
       setFormValue(formVal2);
     },
@@ -46,7 +46,7 @@ function NewValues({ type, visible, onOk, onClose, onChange }) {
         primary
         small
         block
-        style={{ float: "left", width: "20%" }}
+        style={{ float: 'left', width: '20%' }}
         onClick={handleOnClick}
       >
         ADD
@@ -56,16 +56,16 @@ function NewValues({ type, visible, onOk, onClose, onChange }) {
           <Input
             key={index}
             value={val}
-            style={{ display: "inline", width: "90%", margin: "5px" }}
-            onChange={(val) => handleOnChange(val, index)}
+            style={{ display: 'inline', width: '90%', margin: '5px' }}
+            onChange={val => handleOnChange(val, index)}
           ></Input>
           <Icon
             icon="trash"
             size="2x"
             style={{
-              color: "#f44336",
-              float: "right",
-              padding: "7px",
+              color: '#f44336',
+              float: 'right',
+              padding: '7px',
             }}
             onClick={() => handleOnDelete(index)}
           ></Icon>
@@ -76,7 +76,7 @@ function NewValues({ type, visible, onOk, onClose, onChange }) {
 }
 
 NewValues.defaultProps = {
-  type: "create",
+  type: 'create',
 };
 
 export default NewValues;

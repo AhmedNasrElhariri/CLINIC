@@ -8,7 +8,7 @@ import {
   PrescriptionSyled,
   PrescriptionContentSyled,
   PatientInfoStyled,
-  PatientContainerStyled
+  PatientContainerStyled,
 } from './style';
 
 const PatientInfo = ({ name, value }) => (

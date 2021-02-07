@@ -1,7 +1,7 @@
-import React from "react";
-import { Icon } from "rsuite";
+import React from 'react';
+import { Icon } from 'rsuite';
 
-import { CRCard, CRTable } from "components";
+import { CRCard, CRTable } from 'components';
 
 function ListTestsDefinition({ tests, onEdit }) {
   return (
@@ -15,18 +15,18 @@ function ListTestsDefinition({ tests, onEdit }) {
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {(data) => (
+              {data => (
                 <Icon
                   icon="edit"
                   onClick={() => onEdit(data)}
                   style={{
                     fontSize: 17,
                     padding: 5,
-                    borderRadius: "5px",
-                    backgroundColor: "rgb(224, 224, 222)",
+                    borderRadius: '5px',
+                    backgroundColor: 'rgb(224, 224, 222)',
                   }}
                 >
-                  {" "}
+                  {' '}
                   Edit
                 </Icon>
               )}
@@ -35,7 +35,7 @@ function ListTestsDefinition({ tests, onEdit }) {
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {(data) => (
+              {data => (
                 <Icon
                   icon="trash"
                   onClick={() => onEdit(data)}
@@ -43,10 +43,10 @@ function ListTestsDefinition({ tests, onEdit }) {
                     fontSize: 17,
                     padding: 5,
                     borderRadius: 5,
-                    backgroundColor: "rgb(224, 224, 222)",
+                    backgroundColor: 'rgb(224, 224, 222)',
                   }}
                 >
-                  {" "}
+                  {' '}
                   Delete
                 </Icon>
               )}

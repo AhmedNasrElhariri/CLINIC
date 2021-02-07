@@ -1,7 +1,13 @@
 import React, { memo, useCallback } from 'react';
 import { Form, Schema, Alert } from 'rsuite';
 
-import { CRModal, CRTextInput, CRTextArea, CRButton, CRNumberInput } from 'components';
+import {
+  CRModal,
+  CRTextInput,
+  CRTextArea,
+  CRButton,
+  CRNumberInput,
+} from 'components';
 import { isValid } from 'services/form';
 import { useModal } from '../../widgets/modal';
 import useFetctchInventory from 'hooks/fetch-inventory';

@@ -14,7 +14,6 @@ import { useModal } from 'components/widgets/modal';
 import CRUploader from './uploader';
 import AppointmentGallery from './gallery';
 
-
 const AppointmentImages = ({ formValue, onChange: setFormValue }) => {
   const { visible, open, close } = useModal();
   const [galleryVisibility] = useState(false);

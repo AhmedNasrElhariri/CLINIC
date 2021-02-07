@@ -29,12 +29,12 @@ const AddSpecializtionPermissions = ({ branches, selectedItems, onAdd }) => {
     {}
   );
 
-  const specialtiesNames = R.flatten(
-    branches.map(b => b.specialties)
-  ).reduce((obj, { id, name }) => ({
-    ...obj,
-    [id]: name,
-  }));
+  const specialtiesNames = R.flatten(branches.map(b => b.specialties)).reduce(
+    (obj, { id, name }) => ({
+      ...obj,
+      [id]: name,
+    })
+  );
 
   const items = selectedItems.map(
     ({ branchId, specialtyId }) =>

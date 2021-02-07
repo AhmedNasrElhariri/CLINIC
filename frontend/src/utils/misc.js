@@ -10,9 +10,8 @@ export const mapArrWithIdsToChoices = arr =>
     value: currentValue.id,
   }));
 
-  
 export const mapArrWithLabelsToChoices = arr =>
-arr.map(currentValue => ({
-  value: currentValue.name,
-  label: currentValue.name,
-}));
+  arr.map(currentValue => ({
+    value: currentValue.name,
+    label: currentValue.name,
+  }));

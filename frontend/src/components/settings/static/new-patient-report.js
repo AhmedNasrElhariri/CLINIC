@@ -1,11 +1,11 @@
-import React, { useMemo } from "react";
-import { Form, Schema } from "rsuite";
-import ReactQuill from "react-quill";
-import Label from "../../widgets/label";
+import React, { useMemo } from 'react';
+import { Form, Schema } from 'rsuite';
+import ReactQuill from 'react-quill';
+import Label from '../../widgets/label';
 
-import { CRModal, CRTextInput } from "components";
-import "react-quill/dist/quill.snow.css";
-import { marginBottom } from "styled-system";
+import { CRModal, CRTextInput } from 'components';
+import 'react-quill/dist/quill.snow.css';
+import { marginBottom } from 'styled-system';
 
 const model = Schema.Model({});
 
@@ -19,7 +19,7 @@ function NewPatientReport({
 }) {
   const header = useMemo(
     () =>
-      type === "create" ? "Add New Patient Report" : "Edit Patient Report",
+      type === 'create' ? 'Add New Patient Report' : 'Edit Patient Report',
     [type]
   );
 
@@ -41,7 +41,7 @@ function NewPatientReport({
           name="body"
           style={{ marginTop: 10 }}
           value={formValue.body}
-          onChange={(value) => onChange(formValue, (formValue["body"] = value))}
+          onChange={value => onChange(formValue, (formValue['body'] = value))}
         />
       </Form>
     </CRModal>
@@ -49,7 +49,7 @@ function NewPatientReport({
 }
 
 NewPatientReport.defaultProps = {
-  type: "create",
+  type: 'create',
 };
 
 export default NewPatientReport;

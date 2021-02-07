@@ -1,20 +1,20 @@
-import React, { useCallback, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import Board from "react-trello";
+import React, { useCallback, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import Board from 'react-trello';
 import {
   AddCardLink as DAddCardLink,
   NewLaneSection as DNewLaneSection,
-} from "react-trello/dist/styles/Base";
-import { AddLaneLink as DAddLaneLink } from "react-trello/dist/styles/Elements";
+} from 'react-trello/dist/styles/Base';
+import { AddLaneLink as DAddLaneLink } from 'react-trello/dist/styles/Elements';
 
-import Card from "./card";
-import useGlobalState from "state";
+import Card from './card';
+import useGlobalState from 'state';
 
 const addCard = ({ onAdd }) => {
   onAdd({
     id: uuidv4(),
-    name: "",
-    type: "",
+    name: '',
+    type: '',
     isNew: true,
     required: false,
   });
@@ -23,19 +23,19 @@ const addCard = ({ onAdd }) => {
 const addLane = ({ onAdd }) => {
   onAdd({
     id: uuidv4(),
-    title: "Untitled",
+    title: 'Untitled',
     isNew: true,
   });
 };
 
-const NewCardForm = (props) => {
+const NewCardForm = props => {
   useEffect(() => {
     addCard(props);
   }, [props]);
   return null;
 };
 
-const NewLaneForm = (props) => {
+const NewLaneForm = props => {
   useEffect(() => {
     addLane(props);
   }, [props]);
@@ -61,13 +61,13 @@ const components = {
 };
 
 export default function ViewForm() {
-  const [lanes, setLanes] = useGlobalState("lanes");
+  const [lanes, setLanes] = useGlobalState('lanes');
   const onDataChange = useCallback(({ lanes }) => setLanes(lanes), [setLanes]);
 
   return (
     <>
       <Board
-        laneStyle={{ cursor: "pointer" }}
+        laneStyle={{ cursor: 'pointer' }}
         data={{ lanes }}
         draggable
         editable

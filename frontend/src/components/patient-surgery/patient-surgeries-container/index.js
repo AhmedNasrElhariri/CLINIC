@@ -86,7 +86,6 @@ const PatientSurgeriesContainer = () => {
           onSurgeryClick={handleSurgeryClick}
         />
       </MainContainer>
-
     </>
   );
 };

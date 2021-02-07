@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { CRCard, H3, H6, Div } from "components";
-import { PatientInfoStyled,Cell,CellTitle,AddressStyled,StrongStyled } from "./style";
-import { Allergies } from "utils/constants";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { CRCard, H3, H6, Div } from 'components';
+import {
+  PatientInfoStyled,
+  Cell,
+  CellTitle,
+  AddressStyled,
+  StrongStyled,
+} from './style';
+import { Allergies } from 'utils/constants';
 
-import { Button, Checkbox } from "rsuite";
+import { Button, Checkbox } from 'rsuite';
 
-const initValue = Allergies.map((d) => ({
+const initValue = Allergies.map(d => ({
   checked: false,
 }));
 
@@ -44,7 +50,7 @@ export default function PatientInfo({ patient }) {
           alignItems="center"
         >
           <H3 mb={4}>Information</H3>
-          <Button  color="cyan">Edit</Button>
+          <Button color="cyan">Edit</Button>
         </Cell>
         <Cell
           ml={3}
@@ -54,7 +60,7 @@ export default function PatientInfo({ patient }) {
         >
           <CellTitle mb={4}>Date Of Birth</CellTitle>
           <StrongStyled>
-            {" "}
+            {' '}
             {patient.sex} . {patient.age} yrs
           </StrongStyled>
         </Cell>
@@ -65,9 +71,7 @@ export default function PatientInfo({ patient }) {
           alignItems="center"
         >
           <CellTitle mb={4}>Email</CellTitle>
-          <AddressStyled>
-            {" johun@gmail.com "}
-          </AddressStyled>
+          <AddressStyled>{' johun@gmail.com '}</AddressStyled>
         </Cell>
         <Cell
           ml={3}

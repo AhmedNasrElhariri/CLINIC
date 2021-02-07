@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { Form, Schema } from "rsuite";
+import React, { useMemo } from 'react';
+import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput } from "components";
+import { CRModal, CRTextInput } from 'components';
 
 const model = Schema.Model({});
 
@@ -14,7 +14,7 @@ function NewImageDefinition({
   onClose,
 }) {
   const header = useMemo(
-    () => (type === "create" ? "Add New Image" : "Edit Image "),
+    () => (type === 'create' ? 'Add New Image' : 'Edit Image '),
     [type]
   );
 
@@ -39,7 +39,7 @@ function NewImageDefinition({
 }
 
 NewImageDefinition.defaultProps = {
-  type: "create",
+  type: 'create',
 };
 
 export default NewImageDefinition;

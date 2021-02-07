@@ -1,8 +1,8 @@
-import React from "react";
-import { Icon } from "rsuite";
-import Label from "components/widgets/label";
+import React from 'react';
+import { Icon } from 'rsuite';
+import Label from 'components/widgets/label';
 
-import { CRCard, CRTable } from "components";
+import { CRCard, CRTable } from 'components';
 
 function ListPatientReports({ reports, onEdit }) {
   return (
@@ -20,18 +20,18 @@ function ListPatientReports({ reports, onEdit }) {
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {(data) => (
+              {data => (
                 <Icon
                   icon="edit"
                   onClick={() => onEdit(data)}
                   style={{
                     fontSize: 17,
                     padding: 5,
-                    borderRadius: "5px",
-                    backgroundColor: "rgb(224, 224, 222)",
+                    borderRadius: '5px',
+                    backgroundColor: 'rgb(224, 224, 222)',
                   }}
                 >
-                  {" "}
+                  {' '}
                   Edit
                 </Icon>
               )}
@@ -40,7 +40,7 @@ function ListPatientReports({ reports, onEdit }) {
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {(data) => (
+              {data => (
                 <Icon
                   icon="trash"
                   onClick={() => onEdit(data)}
@@ -48,10 +48,10 @@ function ListPatientReports({ reports, onEdit }) {
                     fontSize: 17,
                     padding: 5,
                     borderRadius: 5,
-                    backgroundColor: "rgb(224, 224, 222)",
+                    backgroundColor: 'rgb(224, 224, 222)',
                   }}
                 >
-                  {" "}
+                  {' '}
                   Delete
                 </Icon>
               )}

@@ -118,7 +118,7 @@ function AppRouter() {
         subject="all"
       />
       <Route path="/report-printouts">
-            <ReportPrintout />
+        <ReportPrintout />
       </Route>
       <Route path="/inventory">
         <InventoryPage />
@@ -136,7 +136,6 @@ function AppRouter() {
         {/* <Redirect to="/appointments/today" /> */}
         <Redirect to="/permissions/role" />
       </Route>
-      
     </Switch>
   );
 }

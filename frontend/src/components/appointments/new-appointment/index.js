@@ -80,9 +80,7 @@ export default function NewAppointment() {
   } = useFetchData();
 
   const [hideBranchSelect, setHideBranchSelect] = useState(false);
-  const [hideSpecialtySelect, setHideSpecialtySelect] = useState(
-    false
-  );
+  const [hideSpecialtySelect, setHideSpecialtySelect] = useState(false);
 
   useEffect(() => {
     setFormValue(pre => ({ ...pre, specialty: '', doctor: '' }));
@@ -90,16 +88,11 @@ export default function NewAppointment() {
       setHideBranchSelect(true);
       setFormValue(pre => ({ ...pre, branch: branches[0].id }));
     }
-    if (
-      getSpecialtiesByBranchId(specialties, formValue.branch).length ===
-      1
-    ) {
+    if (getSpecialtiesByBranchId(specialties, formValue.branch).length === 1) {
       setFormValue(pre => ({
         ...pre,
-        specialty: getSpecialtiesByBranchId(
-          specialties,
-          formValue.branch
-        )[0].id,
+        specialty: getSpecialtiesByBranchId(specialties, formValue.branch)[0]
+          .id,
       }));
       setHideBranchSelect(true);
       setHideSpecialtySelect(true);
@@ -107,16 +100,11 @@ export default function NewAppointment() {
   }, [branches, formValue.branch, specialties]);
 
   useEffect(() => {
-    if (
-      getSpecialtiesByBranchId(specialties, formValue.branch).length ===
-      1
-    ) {
+    if (getSpecialtiesByBranchId(specialties, formValue.branch).length === 1) {
       setFormValue(pre => ({
         ...pre,
-        specialty: getSpecialtiesByBranchId(
-          specialties,
-          formValue.branch
-        )[0].id,
+        specialty: getSpecialtiesByBranchId(specialties, formValue.branch)[0]
+          .id,
       }));
       setHideBranchSelect(true);
       setHideSpecialtySelect(true);

@@ -3,7 +3,6 @@ import React from 'react';
 import { Div, CRModal } from 'components';
 
 const CancelAppointment = ({ visible, onOk, onClose }) => {
-  
   return (
     <CRModal
       onOk={onOk}

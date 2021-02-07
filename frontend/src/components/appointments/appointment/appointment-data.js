@@ -17,7 +17,7 @@ import {
   NUMBER_FIELD_TYPE,
   TEXT_FIELD_TYPE,
   LONG_TEXT_FIELD_TYPE,
-  Labs
+  Labs,
 } from 'utils/constants';
 
 import AppointmentImages from '../images';
@@ -165,9 +165,8 @@ function AppointmentData({
               onChange={onChangeAppointment}
             >
               {/* <CRTextArea name="prescription" disabled={disabled} /> */}
-              <ListLabs data={Labs}/>
+              <ListLabs data={Labs} />
             </Form>
-
           </SectionContainer>
           <SectionContainer title="Images" name="Images">
             <Form
@@ -175,9 +174,8 @@ function AppointmentData({
               onChange={onChangeAppointment}
             >
               {/* <CRTextArea name="prescription" disabled={disabled} /> */}
-              <ListLabs data={Labs}/>
+              <ListLabs data={Labs} />
             </Form>
-
           </SectionContainer>
         </Div>
       </Div>

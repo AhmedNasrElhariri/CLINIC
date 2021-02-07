@@ -5,7 +5,7 @@ import useFetchInventory from 'hooks/fetch-inventory';
 import ListInventory from '../list-inventory/index';
 
 const InventoryStatus = () => {
-  const { items,inventoryWithAmount } = useFetchInventory();
+  const { items, inventoryWithAmount } = useFetchInventory();
   return (
     <>
       <MainContainer

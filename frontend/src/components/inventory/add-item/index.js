@@ -70,7 +70,9 @@ const AddItem = ({ items }) => {
           <CRNumberInput label="Unit Price" name="price" block></CRNumberInput>
         </Form>
         <Div mt={3} display="flex">
-          <H5 color="texts.2" fontWeight={400}>Total : </H5>
+          <H5 color="texts.2" fontWeight={400}>
+            Total :{' '}
+          </H5>
           <H5 ml={3}>
             <NumberFormat
               value={formValue.price * formValue.amount}

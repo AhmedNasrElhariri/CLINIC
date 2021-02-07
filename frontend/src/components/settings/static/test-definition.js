@@ -8,14 +8,18 @@ import NewTestDefinition from './new-test-definition';
 import ListTestsDefinition from './list-tests-definition';
 import useTestsDefinition from 'hooks/fetch-tests-definition';
 
-const initValue = { testName: ''};
+const initValue = { testName: '' };
 
 const TestDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  const { addTestDefinition , testsDefinition , editTestDefinition } = useTestsDefinition({
+  const {
+    addTestDefinition,
+    testsDefinition,
+    editTestDefinition,
+  } = useTestsDefinition({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -25,7 +29,7 @@ const TestDefinition = () => {
       setFormValue(initValue);
     },
   });
-  
+
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -49,8 +53,7 @@ const TestDefinition = () => {
           testDefinition: formValue,
         },
       });
-    } 
-    else {
+    } else {
       editTestDefinition({
         variables: {
           testDefinition: formValue,

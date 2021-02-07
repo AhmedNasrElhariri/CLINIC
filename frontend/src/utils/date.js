@@ -32,14 +32,27 @@ export const getCurrentMonthDays = () => {
   );
 };
 
-var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-export const getNameMonthDaysYears = (date) => {
+var months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+export const getNameMonthDaysYears = date => {
   var d = new Date(date);
-  var day = d.getUTCDate()
-  var year = d.getUTCFullYear()
-  var month = d.getMonth()
-  var result = months[month] + day +','+ year
-  return result
+  var day = d.getUTCDate();
+  var year = d.getUTCFullYear();
+  var month = d.getMonth();
+  var result = months[month] + day + ',' + year;
+  return result;
 };
 export const getCurrentWeekDays = () => {
   return Array.from({ length: 7 }, (x, i) =>

@@ -11,4 +11,3 @@ export default styled(Divider).attrs(() => ({
   background-color: ${props => props.theme.colors.texts[2]};
   ${layout}
 `;
-

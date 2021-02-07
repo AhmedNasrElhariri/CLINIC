@@ -153,7 +153,6 @@ export const Small = styled.small`
   ${styles}
 `;
 
-
 export const Img = styled.img`
   ${space}
   ${position}

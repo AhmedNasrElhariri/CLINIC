@@ -17,7 +17,9 @@ const theme = {
 };
 
 const getBorder = ({ borderless, theme }) => {
-  return { border: borderless ? 'none' : `1px solid ${theme.colors.borders[0]}` };
+  return {
+    border: borderless ? 'none' : `1px solid ${theme.colors.borders[0]}`,
+  };
 };
 
 export default styled.div`

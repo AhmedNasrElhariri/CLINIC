@@ -24,7 +24,11 @@ function Range({ disabled, value, onChange }) {
               millisecond: 0,
             })
             .format('HH:mm');
-          return <H6 as="span" fontWeight={600}>{label}</H6>;
+          return (
+            <H6 as="span" fontWeight={600}>
+              {label}
+            </H6>
+          );
         }
         return null;
       }}

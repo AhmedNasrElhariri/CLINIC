@@ -19,9 +19,7 @@ const AddUserPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
     return branches.find(p => p.id === formValue.branchId) || {};
   }, [formValue, branches]);
 
-  const usersPermissions = (selectedBranch.specialties || []).map(
-    p => p.users
-  );
+  const usersPermissions = (selectedBranch.specialties || []).map(p => p.users);
   const users = R.flatten(usersPermissions);
 
   const branchesNames = branches.reduce(

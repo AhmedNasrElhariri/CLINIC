@@ -1,14 +1,14 @@
-import React, { useCallback } from "react";
-import * as R from "ramda";
+import React, { useCallback } from 'react';
+import * as R from 'ramda';
 
-import { Div, CRButton } from "components";
-import useFrom from "hooks/form";
-import { useModal } from "components/widgets/modal";
-import NewPatientReport from "./new-patient-report";
-import ListPatientReports from "./list-patient-report";
-import usePatientReports from "hooks/fetch-patient-reports";
+import { Div, CRButton } from 'components';
+import useFrom from 'hooks/form';
+import { useModal } from 'components/widgets/modal';
+import NewPatientReport from './new-patient-report';
+import ListPatientReports from './list-patient-report';
+import usePatientReports from 'hooks/fetch-patient-reports';
 
-const initValue = { name: "", body: "" };
+const initValue = { name: '', body: '' };
 
 const PatientReport = () => {
   const { visible, open, close } = useModal();
@@ -31,15 +31,15 @@ const PatientReport = () => {
     },
   });
   const handleClickCreate = useCallback(() => {
-    setType("create");
+    setType('create');
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
 
   const handleClickEdit = useCallback(
-    (data) => {
-      const report = R.pick(["id", "name", "body"])(data);
-      setType("edit");
+    data => {
+      const report = R.pick(['id', 'name', 'body'])(data);
+      setType('edit');
       setFormValue(report);
       open();
     },
@@ -47,7 +47,7 @@ const PatientReport = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === "create") {
+    if (type === 'create') {
       addPatientReport({
         variables: {
           patientReport: formValue,

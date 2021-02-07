@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { Form, Schema } from "rsuite";
+import React, { useMemo } from 'react';
+import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput, CRTextArea } from "components";
+import { CRModal, CRTextInput, CRTextArea } from 'components';
 
 const model = Schema.Model({});
 
@@ -14,7 +14,7 @@ function NewTestDefinition({
   onClose,
 }) {
   const header = useMemo(
-    () => (type === "create" ? "Add New Test" : "Edit Test "),
+    () => (type === 'create' ? 'Add New Test' : 'Edit Test '),
     [type]
   );
 
@@ -39,7 +39,7 @@ function NewTestDefinition({
 }
 
 NewTestDefinition.defaultProps = {
-  type: "create",
+  type: 'create',
 };
 
 export default NewTestDefinition;

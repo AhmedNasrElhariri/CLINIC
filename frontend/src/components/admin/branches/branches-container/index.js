@@ -74,14 +74,8 @@ export default function Branches() {
     [specialtiesInBranchData]
   );
 
-  const showSpecialtyModal = useCallback(
-    () => setSpecialtyVisible(true),
-    []
-  );
-  const hideSpecialtyModal = useCallback(
-    () => setSpecialtyVisible(false),
-    []
-  );
+  const showSpecialtyModal = useCallback(() => setSpecialtyVisible(true), []);
+  const hideSpecialtyModal = useCallback(() => setSpecialtyVisible(false), []);
 
   const onCreateSpecialty = useCallback(
     specialty => createSpecialty(specialty),

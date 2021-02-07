@@ -8,14 +8,18 @@ import NewImageDefinition from './new-image-definition';
 import ListImagesDefinition from './list-images-definition';
 import useImagesDefinition from 'hooks/fetch-images-definition';
 
-const initValue = { imageName: ''};
+const initValue = { imageName: '' };
 
 const ImageDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  const { addImageDefinition , imagesDefinition , editImageDefinition } = useImagesDefinition({
+  const {
+    addImageDefinition,
+    imagesDefinition,
+    editImageDefinition,
+  } = useImagesDefinition({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -25,7 +29,7 @@ const ImageDefinition = () => {
       setFormValue(initValue);
     },
   });
-  
+
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -49,8 +53,7 @@ const ImageDefinition = () => {
           imageDefinition: formValue,
         },
       });
-    } 
-    else {
+    } else {
       editImageDefinition({
         variables: {
           imageDefinition: formValue,
@@ -62,7 +65,12 @@ const ImageDefinition = () => {
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate} style={{marginTop:4}}>
+        <CRButton
+          primary
+          small
+          onClick={handleClickCreate}
+          style={{ marginTop: 4 }}
+        >
           Add New Image+
         </CRButton>
       </Div>
@@ -74,7 +82,10 @@ const ImageDefinition = () => {
         onClose={close}
         type={type}
       />
-      <ListImagesDefinition images={imagesDefinition} onEdit={handleClickEdit}/>
+      <ListImagesDefinition
+        images={imagesDefinition}
+        onEdit={handleClickEdit}
+      />
     </>
   );
 };

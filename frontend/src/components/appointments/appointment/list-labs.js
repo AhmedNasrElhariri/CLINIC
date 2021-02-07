@@ -1,56 +1,53 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { FlexboxGrid, List } from "rsuite";
-import { H4 } from "components";
+import React, { useState, useEffect, useMemo } from 'react';
+import { FlexboxGrid, List } from 'rsuite';
+import { H4 } from 'components';
 const ListLabs = ({ data }) => {
   const [add, setAdd] = useState(false);
 
   const styleCenter = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "60px",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '60px',
   };
 
   const btnAdd = {
-    fontSize: "1rem",
-    color: "#fff",
-    borderRadius:"5px",
-    
+    fontSize: '1rem',
+    color: '#fff',
+    borderRadius: '5px',
   };
 
   const titleStyle = {
     paddingBottom: 5,
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
     fontWeight: 500,
   };
- /*  const handelAdd = (idx)=>{
+  /*  const handelAdd = (idx)=>{
     if(id === idx){
       setAdd(!add)
     }
   } */
-  const ToggleableImage =()=> {
+  const ToggleableImage = () => {
     const [isVisible, setVisibility] = useState(false);
-  
-    const toggleVisibility= ()=> {
-      console.log('add')
+
+    const toggleVisibility = () => {
+      console.log('add');
       setVisibility(!isVisible);
-    }
-  
-    return (
-     isVisible ? (
-        <button onClick={toggleVisibility} style={btnAdd}>
-          Added
-        </button>
-      ) : (
-        <button
-          onClick={toggleVisibility}
-          style={{ ...btnAdd, background: "rgb(81 198 243)" }}
-        >
-          Add
-        </button>
-      )
+    };
+
+    return isVisible ? (
+      <button onClick={toggleVisibility} style={btnAdd}>
+        Added
+      </button>
+    ) : (
+      <button
+        onClick={toggleVisibility}
+        style={{ ...btnAdd, background: 'rgb(81 198 243)' }}
+      >
+        Add
+      </button>
     );
-  }
+  };
   return (
     <List>
       {data.map((item, index) => (
@@ -61,9 +58,9 @@ const ListLabs = ({ data }) => {
               colspan={20}
               style={{
                 ...styleCenter,
-                flexDirection: "column",
-                alignItems: "flex-start",
-                overflow: "hidden",
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                overflow: 'hidden',
               }}
             >
               <H4 style={titleStyle}>{item.title}</H4>
@@ -73,10 +70,10 @@ const ListLabs = ({ data }) => {
               colspan={4}
               style={{
                 ...styleCenter,
-                justifyContent: "flex-end",
+                justifyContent: 'flex-end',
               }}
             >
-              {ToggleableImage() }
+              {ToggleableImage()}
             </FlexboxGrid.Item>
           </FlexboxGrid>
         </List.Item>

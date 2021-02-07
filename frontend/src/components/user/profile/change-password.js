@@ -45,8 +45,18 @@ const ChangePassword = () => {
         </CRButton>
       </Div>
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
-        <CRTextInput type="password" label="Current Password" name="currentPassword" block />
-        <CRTextInput type="password" label="New Password" name="newPassword" block />
+        <CRTextInput
+          type="password"
+          label="Current Password"
+          name="currentPassword"
+          block
+        />
+        <CRTextInput
+          type="password"
+          label="New Password"
+          name="newPassword"
+          block
+        />
       </Form>
     </CRCard>
   );
