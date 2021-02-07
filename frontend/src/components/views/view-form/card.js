@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Panel,
   Form,
@@ -12,11 +12,14 @@ import { InputField, CRButton, Div, H6 } from "components";
 import useGlobalState from "state";
 import { FIELD_TYPES } from "utils/constants";
 import NewValues from "./new-values";
+import TreeValues from './tree-values';
 import useFrom from "hooks/form";
 import { useModal } from "components/widgets/modal";
 
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState("lanes");
+
+  const [popup, setPopup] = useState(0);
 
   const lane = lanes.find((l) => l.id === laneId);
   const cards = lane.cards;
@@ -43,6 +46,12 @@ const Card = ({ laneId, index }) => {
   }, [formValue, lanes, setLanes]);
   const handleClickCreate = useCallback(() => {
     setType("create");
+    setPopup(1);
+    open();
+  }, [open, setType]);
+  const handleClickCreateTree = useCallback(() => {
+    setType("create");
+    setPopup(2);
     open();
   }, [open, setType]);
   const handleAdd = () => {};
@@ -72,11 +81,11 @@ const Card = ({ laneId, index }) => {
               data={FIELD_TYPES}
             />
           </Form>
-          {formValue.type == "Radio" || formValue.type == "Check" ? (
+          {formValue.type == "Radio" || formValue.type == "Check" || formValue.type == "Tree" ? (
             <H6
               primary
               small
-              onClick={handleClickCreate}
+              onClick={ formValue.type == "Tree" ? handleClickCreateTree : handleClickCreate }
               style={{
                 fontSize: "10px",
                 color: "blue",
@@ -100,12 +109,26 @@ const Card = ({ laneId, index }) => {
           }}
         />
 
-        <NewValues
-          visible={visible}
-          onOk={handleAdd}
-          onClose={close}
-          type={type}
-        />
+        {popup == 1 ? (
+          <NewValues
+            visible={visible}
+            onOk={handleAdd}
+            onClose={close}
+            type={type}
+          />
+        ) : (
+          <></>
+        )}
+         {popup == 2 ? (
+          <TreeValues
+            visible={visible}
+            onOk={handleAdd}
+            onClose={close}
+            type={type}
+          />
+        ) : (
+          <></>
+        )}
       </Panel>
     </>
   );
