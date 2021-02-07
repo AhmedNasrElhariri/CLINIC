@@ -106,47 +106,48 @@ model Patient {
   organizationId   String
   guardianName     String?
   pateintLab       PatientLab[]
-  medicalHistory   MedicalHistory[]
+  medicineHistory  MedicineHistory[]
   familyHistory    FamilyHistory[]
   inventoryHistory InventoryHistory[]
   patientSurgery   PatientSurgery[]
 }
 
 model Appointment {
-  id           String             @id @default(uuid())
-  date         DateTime           @default(now())
-  type         AppointmentType
-  patient      Patient            @relation(fields: [patientId], references: [id])
-  patientId    String
-  specialty    Specialty
-  doctor       User               @relation(fields: [doctorId], references: [id])
-  doctorId     String
-  labs         String?            @default("[]")
-  status       AppointmentStatus
-  data         AppointmentField[]
-  collections  Collection[]
-  clinic       Clinic             @relation(fields: [clinicId], references: [id])
-  clinicId     String
-  notes        String?            @default("")
-  prescription String?            @default("")
+  id               String             @id @default(uuid())
+  date             DateTime           @default(now())
+  type             AppointmentType
+  patient          Patient            @relation(fields: [patientId], references: [id])
+  patientId        String
+  specialty        Specialty
+  doctor           User               @relation(fields: [doctorId], references: [id])
+  doctorId         String
+  labs             String?            @default("[]")
+  status           AppointmentStatus
+  data             AppointmentField[]
+  collections      Collection[]
+  clinic           Clinic             @relation(fields: [clinicId], references: [id])
+  clinicId         String
+  notes            String?            @default("")
+  prescription     String?            @default("")
+  patientSurgeries PatientSurgery[]
 }
 
 model View {
-  id                   String           @id @default(uuid())
-  name                 String
-  type                 AppointmentType  @default(Examination)
-  user                 User             @relation(fields: [userId], references: [id])
-  userId               String
-  fieldGroups          FieldGroup[]
-  activeViewsStatuses  ViewStatus[]      
+  id                  String          @id @default(uuid())
+  name                String
+  type                AppointmentType @default(Examination)
+  user                User            @relation(fields: [userId], references: [id])
+  userId              String
+  fieldGroups         FieldGroup[]
+  activeViewsStatuses ViewStatus[]
 }
 
 model ViewStatus {
-  id            String @id @default(uuid())
-  user          User   @relation(fields: [userId], references: [id])
-  userId        String
-  activeView    View   @relation(fields: [activeViewId], references: [id])
-  activeViewId  String
+  id           String @id @default(uuid())
+  user         User   @relation(fields: [userId], references: [id])
+  userId       String
+  activeView   View   @relation(fields: [activeViewId], references: [id])
+  activeViewId String
 }
 
 model FieldGroup {
@@ -276,7 +277,7 @@ model LabDocument {
   patientLabId String
 }
 
-model MedicalHistory {
+model MedicineHistory {
   id           String    @id @default(uuid())
   medicineName String
   frequency    String?
@@ -350,7 +351,7 @@ model Item {
   notes            String?
   organization     Organization       @relation(fields: [organizationId], references: [id])
   organizationId   String
-  inventoryItems    InventoryItem[]
+  inventoryItems   InventoryItem[]
   inventoryHistory InventoryHistory[]
 }
 
@@ -411,6 +412,14 @@ model MedicineDefinition {
   userId         String
 }
 
+model PatientReport {
+  id             String           @id @default(uuid())
+  name           String
+  body           String
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+  
+}
 
 model Surgery {
   id             String           @id @default(uuid())
@@ -428,8 +437,11 @@ model PatientSurgery {
   surgeryId      String
   hospital       Hospital     @relation(fields: [hospitalId], references: [id])
   hospitalId     String
+  appointment    Appointment? @relation(fields: [appointmentId], references: [id])
+  appointmentId  String?
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   date           DateTime
   fees           Int?
+  hospitalFees   Int?
 }

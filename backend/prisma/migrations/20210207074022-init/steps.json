@@ -527,8 +527,8 @@
     {
       "tag": "CreateField",
       "model": "Patient",
-      "field": "medicalHistory",
-      "type": "MedicalHistory",
+      "field": "medicineHistory",
+      "type": "MedicineHistory",
       "arity": "List"
     },
     {
@@ -920,6 +920,13 @@
       },
       "argument": "",
       "value": "\"\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Appointment",
+      "field": "patientSurgeries",
+      "type": "PatientSurgery",
+      "arity": "List"
     },
     {
       "tag": "CreateModel",
@@ -3214,11 +3221,11 @@
     },
     {
       "tag": "CreateModel",
-      "model": "MedicalHistory"
+      "model": "MedicineHistory"
     },
     {
       "tag": "CreateField",
-      "model": "MedicalHistory",
+      "model": "MedicineHistory",
       "field": "id",
       "type": "String",
       "arity": "Required"
@@ -3228,7 +3235,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "MedicalHistory",
+          "model": "MedicineHistory",
           "field": "id"
         },
         "directive": "id"
@@ -3239,7 +3246,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "MedicalHistory",
+          "model": "MedicineHistory",
           "field": "id"
         },
         "directive": "default"
@@ -3251,7 +3258,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "MedicalHistory",
+          "model": "MedicineHistory",
           "field": "id"
         },
         "directive": "default"
@@ -3261,35 +3268,35 @@
     },
     {
       "tag": "CreateField",
-      "model": "MedicalHistory",
+      "model": "MedicineHistory",
       "field": "medicineName",
       "type": "String",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "MedicalHistory",
+      "model": "MedicineHistory",
       "field": "frequency",
       "type": "String",
       "arity": "Optional"
     },
     {
       "tag": "CreateField",
-      "model": "MedicalHistory",
+      "model": "MedicineHistory",
       "field": "dose",
       "type": "String",
       "arity": "Optional"
     },
     {
       "tag": "CreateField",
-      "model": "MedicalHistory",
+      "model": "MedicineHistory",
       "field": "fromDate",
       "type": "DateTime",
       "arity": "Optional"
     },
     {
       "tag": "CreateField",
-      "model": "MedicalHistory",
+      "model": "MedicineHistory",
       "field": "patient",
       "type": "Patient",
       "arity": "Required"
@@ -3299,7 +3306,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "MedicalHistory",
+          "model": "MedicineHistory",
           "field": "patient"
         },
         "directive": "relation"
@@ -3311,7 +3318,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "MedicalHistory",
+          "model": "MedicineHistory",
           "field": "patient"
         },
         "directive": "relation"
@@ -3325,7 +3332,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "MedicalHistory",
+          "model": "MedicineHistory",
           "field": "patient"
         },
         "directive": "relation"
@@ -3335,7 +3342,7 @@
     },
     {
       "tag": "CreateField",
-      "model": "MedicalHistory",
+      "model": "MedicineHistory",
       "field": "patientId",
       "type": "String",
       "arity": "Required"
@@ -4933,6 +4940,348 @@
     },
     {
       "tag": "CreateModel",
+      "model": "ImageDefinition"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ImageDefinition",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ImageDefinition",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ImageDefinition",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ImageDefinition",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ImageDefinition",
+      "field": "imageName",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ImageDefinition",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ImageDefinition",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ImageDefinition",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "ImageDefinition",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ImageDefinition",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "MedicineDefinition"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MedicineDefinition",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "MedicineDefinition",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "MedicineDefinition",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MedicineDefinition",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MedicineDefinition",
+      "field": "medicineName",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MedicineDefinition",
+      "field": "concentration",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MedicineDefinition",
+      "field": "medicineForm",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MedicineDefinition",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "MedicineDefinition",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MedicineDefinition",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MedicineDefinition",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MedicineDefinition",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "PatientReport"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientReport",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientReport",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientReport",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientReport",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientReport",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientReport",
+      "field": "body",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientReport",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientReport",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientReport",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientReport",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientReport",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
       "model": "Surgery"
     },
     {
@@ -5254,6 +5603,59 @@
     {
       "tag": "CreateField",
       "model": "PatientSurgery",
+      "field": "appointment",
+      "type": "Appointment",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[appointmentId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PatientSurgery",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "appointmentId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
       "field": "organization",
       "type": "Organization",
       "arity": "Required"
@@ -5315,6 +5717,13 @@
       "tag": "CreateField",
       "model": "PatientSurgery",
       "field": "fees",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PatientSurgery",
+      "field": "hospitalFees",
       "type": "Int",
       "arity": "Optional"
     }

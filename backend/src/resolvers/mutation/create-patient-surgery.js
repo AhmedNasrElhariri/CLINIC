@@ -14,45 +14,6 @@ const createPatientSurgery = async (
     ...data
   } = patientSurgery;
 
-  // prisma.patientSurgery.create({
-  //   data: {
-  //     // fees,
-  //     // date,
-  //     // ...data,
-  //     patient: {
-  //       connect: {
-  //         id: patientId,
-  //       },
-  //     },
-  //     surgery: {
-  //       connect: {
-  //         id: surgeryId,
-  //       },
-  //     },
-  //     hospital: {
-  //       connect: {
-  //         id: hospitalId,
-  //       },
-  //     },
-  //     organization: {
-  //       connect: {
-  //         id: organizationId,
-  //       },
-  //     },
-  //     appointment: {
-  //       create: {
-  //         type: 'Surgery',
-
-  //         status: 'Scheduled',
-  //         specialty: 'Dentistry',
-  //         doctor: {
-  //           connect: { id: userId },
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
-
   const persistedPatientSurgery = await prisma.patientSurgery.create({
     data: {
       fees,

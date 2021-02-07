@@ -138,7 +138,6 @@ type Mutation {
     clinicId: ID!
     patientSurgery: PatientSurgeryInput!
   ): PatientSurgery
-  createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
   addTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
   editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
