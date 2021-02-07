@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CRCard, H3, Div } from 'components';
 
-export default ({ title, children, nobody, more = null }) => (
+export default ({ title=null, children, nobody, more = null }) => (
   <>
     <Div
       display="flex"
@@ -10,7 +10,7 @@ export default ({ title, children, nobody, more = null }) => (
       alignItems="center"
       mb={64}
     >
-      <H3>{title}</H3>
+       {title ? <H3>{title}</H3> : ''}
       {more}
     </Div>
     {!nobody && <CRCard borderless>{children}</CRCard>}

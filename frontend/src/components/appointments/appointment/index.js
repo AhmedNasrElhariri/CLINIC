@@ -154,7 +154,7 @@ function Appointment() {
       <Div flexGrow={1}>
         <HeaderStyled>
           <H3 mb={64}>Appointment</H3>
-          <ButtonToolbar>
+          {/*      <ButtonToolbar>
             <CRButton small primary onClick={open}>
               Prescription
               <Icon icon="add" />
@@ -171,34 +171,20 @@ function Appointment() {
                 </CRButton>
               </Can>
             )}
-          </ButtonToolbar>
+          </ButtonToolbar> */}
         </HeaderStyled>
         <Div display="flex">
           <Div flexGrow={1}>
-            <CRNav
-              appearance="tabs"
-              activeKey={activeTab}
-              onSelect={setActiveTab}
-              justified
-            >
-              {tabs.map((t, idx) => (
-                <CRNav.CRItem eventKey={idx + ''} key={idx} width="20%">
-                  {t}
-                </CRNav.CRItem>
-              ))}
-            </CRNav>
             <Div py={3} bg="white">
-              {showComp('0') && (
-                <AppointmentData
-                  disabled={disabled}
-                  formValue={formValue}
-                  appointmentFormValue={apptFormValue}
-                  onChangeAppointment={setApptFormValue}
-                  onChange={setFormValue}
-                  groups={groups}
-                  appointment={appointment}
-                />
-              )}
+              <AppointmentData
+                disabled={disabled}
+                formValue={formValue}
+                appointmentFormValue={apptFormValue}
+                onChangeAppointment={setApptFormValue}
+                onChange={setFormValue}
+                groups={groups}
+                appointment={appointment}
+              />
               {appointment.type !== 'Surgery' && showComp('1') && (
                 <PatientSummary
                   summary={appointmentHistory}
@@ -222,14 +208,13 @@ function Appointment() {
           </Div>
         </Div>
       </Div>
-      <PatientInfo patient={patient} />
-      <Prescription
+      {/*   <Prescription
         visible={visible}
         patient={patient}
         onClose={close}
         content={prescriptionBody}
         onChange={handlePrescriptionChange}
-      />
+      /> */}
     </Div>
   );
 }

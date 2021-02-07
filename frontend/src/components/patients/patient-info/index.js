@@ -1,56 +1,86 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { CRCard, H3, H6, Div } from "components";
+import { PatientInfoStyled,Cell,CellTitle,AddressStyled,StrongStyled } from "./style";
+import { Allergies } from "utils/constants";
 
-import { CRCard, H3, H5, P, Div, Img } from 'components';
-import { PatientInfoStyled } from './style';
-import { getInitials } from 'services/patient';
+import { Button, Checkbox } from "rsuite";
 
-const PatientIntials = styled.div`
-  border-radius: ${props => props.theme.radius}px;
-  background-color: ${props => props.theme.colors.primaryLighter};
-  width: 76px;
-  height: 76px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const initValue = Allergies.map((d) => ({
+  checked: false,
+}));
 
-const Summary = ({ patient }) => (
-  <>
-    <Div display="flex">
-      <PatientIntials>
-        <H5>{getInitials(patient.name)}</H5>
-      </PatientIntials>
-      <Div ml={3} display="flex" alignItems="center">
-        <Div>
-          <H5 fontWeight={600}>{patient.name}</H5>
-          <P variant="primary" fontWeight={600}>
-            {patient.type}
-          </P>
+const AllergiesBox = () => {
+  const [formValue, setFormValue] = useState(initValue);
+
+  const onChange = (value, idx) => {
+    formValue[idx].checked = value;
+    setFormValue([...formValue]);
+  };
+  return (
+    <Div>
+      {Allergies.map((d, idx) => (
+        <Div display="flex" my={5} key={idx} mt={idx === 0 ? 0 : 5}>
+          <Checkbox
+            checked={formValue[idx].checked}
+            onChange={(_, val) => onChange(val, idx)}
+          >
+            {d}
+          </Checkbox>
         </Div>
-      </Div>
+      ))}
     </Div>
-    <P mt={3}>
-      {patient.sex} . {patient.age} yrs
-    </P>
-  </>
-);
-
-const Detail = ({ img, children }) => (
-  <Div display="flex" alignItems="center" mt={3}>
-    <Img src={img} alt="" width={25} height={25} />
-    <P ml={25}>{children}</P>
-  </Div>
-);
+  );
+};
 
 export default function PatientInfo({ patient }) {
   return (
     <PatientInfoStyled>
       <CRCard borderless>
-        <H3 mb={4}>Patient Info</H3>
-        <Summary patient={patient} />
-        <Detail img="/icons/phone.svg">{patient.phoneNo}</Detail>
+        <Cell
+          ml={3}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <H3 mb={4}>Information</H3>
+          <Button  color="cyan">Edit</Button>
+        </Cell>
+        <Cell
+          ml={3}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <CellTitle mb={4}>Date Of Birth</CellTitle>
+          <StrongStyled>
+            {" "}
+            {patient.sex} . {patient.age} yrs
+          </StrongStyled>
+        </Cell>
+        <Cell
+          ml={3}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <CellTitle mb={4}>Email</CellTitle>
+          <AddressStyled>
+            {" johun@gmail.com "}
+          </AddressStyled>
+        </Cell>
+        <Cell
+          ml={3}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <CellTitle mb={4}>Phone Number</CellTitle>
+          <AddressStyled>{patient.phoneNo}</AddressStyled>
+        </Cell>
+      </CRCard>
+      <CRCard>
+        <AllergiesBox />
       </CRCard>
     </PatientInfoStyled>
   );

@@ -1,57 +1,65 @@
 import React, { useState, useCallback } from 'react';
 import * as R from 'ramda';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { GET_PATIENT } from 'apollo-client/queries';
-import { Div, PatientSummary, CRNav, MainContainer } from 'components';
-
+import { GET_PATIENT, GET_APPOINTMENT } from 'apollo-client/queries';
+import {
+  Div,
+  PatientSummary,
+  PatientProgress,
+  CRNav,
+  CRButton,
+  MainContainer,
+} from 'components';
+import AvatarWithName from '../patient-avatar-with-name/index';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import History from 'components/appointments/appointment/patient-history';
 import PatientSurgries from 'components/appointments/appointment/surgries';
 import Print from '../print';
-
-const tabs = ['Summary', 'Surgeries', 'Labs', 'History'];
+import Sessions from '../sessions';
+import { appointmentHistory } from '../../../utils/constants';
+const tabs = ['Patient Info', 'Sessions', 'Progress', 'Labs', 'History'];
 
 function Appointment() {
+  const history = useHistory();
   let { patientId } = useParams();
   const { data } = useQuery(GET_PATIENT, {
     variables: {
       id: patientId,
     },
   });
-
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);
 
   const {
-    appointmentHistory,
     viewFields,
     tabularFields,
     tabularData,
     normalizedAppointments,
     appointmentsWithGroups,
   } = usePatientHistory({ patientId });
-
-  console.log('normalizedAppointments', normalizedAppointments);
-
+  const appoinmentId = '0a63eaa1-1cfc-40a2-9fe0-4ed2269a4397';
   return (
     <>
       <MainContainer
         nobody
-        title={patient.name}
         more={
-          <Print
-            appoitnments={normalizedAppointments}
-            appoitnmentsWithGroups={appointmentsWithGroups}
-            patient={patient}
-            fields={tabularFields}
-          />
+          <>
+            <AvatarWithName patient={patient} />
+            <CRButton
+              onClick={() => history.push(`/appointments/${appoinmentId}`)}
+              small
+            >
+              Add New Sessions
+            </CRButton>
+          </>
         }
       ></MainContainer>
+
       <Div display="flex">
         <Div flexGrow={1}>
           <CRNav
@@ -67,13 +75,7 @@ function Appointment() {
             ))}
           </CRNav>
           <Div py={3} bg="white">
-            {showComp('0') && (
-              <PatientSummary
-                summary={appointmentHistory}
-                tabularFields={tabularFields}
-                tabularData={tabularData}
-              />
-            )}
+            {showComp('0') && <PatientInfo patient={patient} />}
             {showComp('1') && (
               <PatientSurgries
                 history={appointmentHistory}
@@ -81,12 +83,9 @@ function Appointment() {
                 patientId={patient?.id}
               />
             )}
-            {showComp('2') && <PatientLabs patient={patient} />}
-            {showComp('3') && <History patient={patient} />}
+            {showComp('3') && <PatientLabs patient={patient} />}
+            {showComp('4') && <History patient={patient} />}
           </Div>
-        </Div>
-        <Div width={325} ml={64}>
-          <PatientInfo patient={patient} />
         </Div>
       </Div>
     </>
