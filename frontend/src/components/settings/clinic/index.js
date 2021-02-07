@@ -78,7 +78,6 @@ function ClinicInfo() {
 
   const handleDelete = useCallback(
     idx => {
-      console.log(idx);
       setFormValue({
         ...formValue,
         sessions: R.remove(idx, 1)(sessions),

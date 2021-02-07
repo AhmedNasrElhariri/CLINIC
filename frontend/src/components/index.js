@@ -1,3 +1,20 @@
+/******************       Admin    *********************************/
+export { default as AdminContainer } from './admin/admin-container';
+/******************       Branches    *********************************/
+export { default as BranchesContainer } from './admin/branches/branches-container';
+export { default as NewBranch } from './admin/branches/new-branch';
+export { default as ListBranches } from './admin/branches/list-branches';
+export { default as AddSpecialty } from './admin/branches/add-specialty';
+export { default as AddDoctor } from './admin/branches/add-doctor';
+/******************       Specialties    *********************************/
+export { default as SpecialtiesContainer } from './admin/specialties/specialties-container';
+export { default as NewSpecialty } from './admin/specialties/new-specialty';
+export { default as ListSpecialties } from './admin/specialties/list-specialties';
+/******************       Users    *********************************/
+export { default as UsersContainer } from './admin/users/users-container';
+export { default as NewUser } from './admin/users/new-user';
+export { default as Users } from './admin/users/list-users';
+
 /******************       Widgets    *********************************/
 export * from './widgets';
 
@@ -59,6 +76,7 @@ export { default as AccountingContainer } from './accounting/accounting-containe
 /******************     Permissions    *******************************/
 export { default as ListUsers } from './permissions/list-users';
 export { default as UserPermissions } from './permissions/user-permissions';
+export { default as RolePermissions } from './permissions/role-permissions';
 
 /******************     Inventory    *******************************/
 export { default as InventoryPage } from './inventory/inventory-page';

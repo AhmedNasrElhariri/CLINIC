@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import moment from 'moment';
-import { mapArrToChoices } from 'utils/misc';
+import { mapArrToChoices, mapArrWithIdsToChoices } from 'utils/misc';
 import { isDateBefore } from 'utils/date';
 import { filterPatientBy } from 'utils/patient';
 import { APPT_TYPE } from '../utils/constants';
@@ -91,9 +91,61 @@ const filterByType = (appointments, filter) => {
 export const sortAppointments = R.sort(R.descend(R.prop('date')));
 
 export const filterAppointments = (appointments = [], filter) => {
-  const filters = [filterByDate, filterByPatientNameOrPhoneNo, filterByType];
+  const filters = [
+    filterByDate,
+    filterByPatientNameOrPhoneNo,
+    filterByType,
+    filterByBranch,
+    filterByDoctor,
+    filterBySpecialty,
+  ];
   return filters.reduce((app, fn) => fn(app, filter), appointments);
 };
+
+const filterByBranch = (appointments, filter) => {
+  const branch = R.prop('branch')(filter);
+
+  return !branch
+    ? appointments
+    : appointments.filter(app => app.branchId === branch);
+};
+
+const filterByDoctor = (appointments, filter) => {
+  const doctor = R.prop('doctor')(filter);
+
+  return !doctor
+    ? appointments
+    : appointments.filter(app => app.userId === doctor);
+};
+
+const filterBySpecialty = (appointments, filter) => {
+  const specialty = R.prop('specialty')(filter);
+
+  return !specialty
+    ? appointments
+    : appointments.filter(app => app.specialtyId === specialty);
+};
+
+export const filterTodayAppointments = (appointments = [], filter) => {
+  const filters = [filterByBranch, filterByDoctor, filterBySpecialty];
+  return filters.reduce((app, fn) => fn(app, filter), appointments);
+};
+
+export const getSpecialtiesByBranchId = (specialties, branchId) => {
+  return specialties.filter(s =>
+    s.branches.some(b => [branchId].includes(b.id))
+  );
+};
+
+export const specialtiesTypes = (specialties, branchId) =>
+  mapArrWithIdsToChoices(getSpecialtiesByBranchId(specialties, branchId));
+
+export const getDoctorsBySpecialtyId = (doctors, specialtyId) => {
+  return doctors.filter(d => d.specialty.id === specialtyId);
+};
+
+export const doctorsTypes = (doctors, specialtyId) =>
+  mapArrWithIdsToChoices(getDoctorsBySpecialtyId(doctors, specialtyId));
 
 export const getAppointmentTypes = () => Object.values(APPT_TYPE);
 

@@ -7,6 +7,11 @@ import { Can } from 'components/user/can';
 
 const items = [
   {
+    name: 'Admin',
+    icon: '/icons/clinic.png',
+    path: '/admin',
+  },
+  {
     name: 'Clinic Information',
     icon: '/icons/clinic.png',
     path: '/settings/clinic',

@@ -14,6 +14,8 @@ const items = [
   { to: '/reports', name: 'Reports' },
   { to: '/surgeries', name: 'Surgeries' },
   { to: '/report-printouts', name: 'Report Printouts' },
+  { to: '/admin', name: 'Admin' },
+  { to: '/permissions/role', name: 'Role Permission' },
 ];
 
 export default function Sidebar({ onLogout }) {

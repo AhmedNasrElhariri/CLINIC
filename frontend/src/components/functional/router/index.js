@@ -10,6 +10,7 @@ import {
   ListPatients,
   Patient,
   ReportsContainer,
+  AdminContainer,
   ListViews,
   CreateView,
   ClinicInfo,
@@ -17,6 +18,7 @@ import {
   Snippets,
   ListUsers,
   UserPermissions,
+  RolePermissions,
   Profile,
   InventoryPage,
   PatientSurgeriesContainer,
@@ -65,6 +67,9 @@ function AppRouter() {
       <Route path="/reports">
         <ReportsContainer />
       </Route>
+      <Route path="/admin">
+        <AdminContainer />
+      </Route>
       <Route path="/views/new">
         <CreateView />
       </Route>
@@ -91,7 +96,13 @@ function AppRouter() {
         subject="all"
         exact
       />
-
+      <Route
+        path="/permissions/role"
+        component={RolePermissions}
+        action="manage"
+        subject="all"
+        exact
+      />
       <ProtectedRoute
         path="/permissions/:userId"
         component={UserPermissions}
@@ -122,7 +133,8 @@ function AppRouter() {
       </Route>
 
       <Route path="" exact>
-        <Redirect to="/appointments/today" />
+        {/* <Redirect to="/appointments/today" /> */}
+        <Redirect to="/permissions/role" />
       </Route>
       
     </Switch>

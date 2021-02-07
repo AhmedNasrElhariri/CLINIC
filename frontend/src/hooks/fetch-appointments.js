@@ -1,14 +1,13 @@
-import { useMemo, useEffect, useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { useMemo, useState, useEffect } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
+import { useLazyQuery } from '@apollo/client';
 
-import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 import useGlobalState from 'state';
-import client from 'apollo-client/client';
 
 import { sortAppointmentsByDate } from 'services/appointment';
 import { APPT_TYPE } from 'utils/constants';
+import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 
 export function useVariables() {
   const [currentClinic] = useGlobalState('currentClinic');
@@ -51,6 +50,17 @@ function useFetchAppointments({ includeSurgery } = {}) {
       )(data),
     [data, includeSurgery]
   );
+
+  const branches = useMemo(() => R.pipe(R.propOr([], 'branches'))(data), [
+    data,
+  ]);
+
+  const specialties = useMemo(() => R.pipe(R.propOr([], 'specialties'))(data), [
+    data,
+  ]);
+
+  const doctors = useMemo(() => R.pipe(R.propOr([], 'doctors'))(data), [data]);
+
   const todayAppointments = useMemo(() => {
     const refDate =
       moment().hours() >= 5 ? moment() : moment().subtract(1, 'days');
@@ -67,21 +77,32 @@ function useFetchAppointments({ includeSurgery } = {}) {
       return moment(date).isBetween(from, to, 'minutes', '[]');
     });
   }, [appointments]);
+
+  /*  const patientsDoctors = useMemo(() => {
+    return [
+      ...new Map(appointments.map(({ doctorId }) => doctorId)).values(),
+    ];
+  }, [appointments]); */
+
   return useMemo(
     () => ({
       appointments,
       todayAppointments,
-      updateCache: appointments => {
-        client.writeQuery({
-          query: LIST_APPOINTMENTS,
-          variables,
-          data: {
-            appointments,
-          },
-        });
-      },
+      branches,
+      specialties,
+      doctors,
+      //patientsDoctors,
+      // updateCache: appointments => {
+      //   client.writeQuery({
+      //     query: LIST_APPOINTMENTS,
+      //     variables,
+      //     data: {
+      //       appointments,
+      //     },
+      //   });
+      // },
     }),
-    [appointments, todayAppointments, variables]
+    [appointments, todayAppointments, branches, specialties, doctors]
   );
 }
 

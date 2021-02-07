@@ -21,7 +21,12 @@ const sameDate = date => moment(date).isSame(new Date(), 'day');
 
 function Toolbar({ date, view, onNavigate, onView }) {
   return (
-    <Div display="flex" justifyContent="space-between" mb={4}>
+    <Div
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      mb={4}
+    >
       <Div display="flex" alignItems="center">
         <H4>{renderDate(date, view)}</H4>
         <Div mx={4} cursor="pointer">
@@ -31,6 +36,7 @@ function Toolbar({ date, view, onNavigate, onView }) {
           <RightArrowIcon onClick={() => onNavigate('NEXT')} />
         </Div>
       </Div>
+
       <Div display="flex">
         <TodayButtonStyled
           onClick={() => onNavigate('TODAY')}

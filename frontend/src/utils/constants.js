@@ -75,17 +75,30 @@ export const RAW_PERMISSIONS = new Map([
         name: 'List',
         action: 'list',
         subject: 'Appointment',
+        visibility: false,
+        level:null,
+        mappings:[],
+      
       },
-      {
-        name: 'View',
-        action: 'view',
+     /*  {
+        name: 'List',
+        action: 'list',
         subject: 'Appointment',
-      },
-      {
+        level:'Branches',
+        specialties:[],
+        branches:[],
+      }, */
+      
+       {
         name: 'Create',
         action: 'create',
         subject: 'Appointment',
+        visibility: false,
+        level:null,
+        mappings:[],
+      
       },
+      /*
       {
         name: 'Reschedule',
         action: 'reschedule',
@@ -105,10 +118,10 @@ export const RAW_PERMISSIONS = new Map([
         name: 'Archive',
         action: 'archive',
         subject: 'Appointment',
-      },
+      }, */
     ],
   ],
-  [
+ /*  [
     'Patients',
     [
       {
@@ -188,8 +201,8 @@ export const RAW_PERMISSIONS = new Map([
         subject: 'Inventory',
       },
     ],
-  ],
-  ['Statistical Report', [{ name: 'View', action: 'view', subject: 'Report' }]],
+  ], */
+ /*  ['Statistical Report', [{ name: 'View', action: 'view', subject: 'Report' }]], */
 ]);
 
 export const PERMISSIONS = new Map(

@@ -19,8 +19,27 @@ import useGlobalState from 'state';
 import { getName } from 'services/accounting';
 import useFetchInventory from 'hooks/fetch-inventory';
 
+import ToolBar from './toolbar';
+import {
+  filterTodayAppointments,
+  sortAppointments,
+} from 'services/appointment';
+
 function TodayAppointments() {
-  const { todayAppointments: appointments } = useFetchAppointments();
+  const {
+    todayAppointments: appointments,
+    branches,
+    doctors,
+    specialties,
+  } = useFetchAppointments();
+
+  const [formValue, setFormValue] = useState({});
+
+  const filteredAppointments = useMemo(
+    () => sortAppointments(filterTodayAppointments(appointments, formValue)),
+    [appointments, formValue]
+  );
+
   const { refetchRevenues, refetchExpenses } = useFetchAccountingData();
   const { refetchInventory, refetchInventoryHistory } = useFetchInventory();
   const { visible, close, open } = useModal({});
@@ -58,16 +77,16 @@ function TodayAppointments() {
             'status'
           )
         )
-      )(appointments),
-    [appointments]
+      )(filteredAppointments),
+    [filteredAppointments]
   );
 
   const completedAppointments = useMemo(
     () =>
       R.pipe(
         R.filter(R.propSatisfies(status => status === 'Closed', 'status'))
-      )(appointments),
-    [appointments]
+      )(filteredAppointments),
+    [filteredAppointments]
   );
 
   const onClickDone = useCallback(
@@ -107,10 +126,16 @@ function TodayAppointments() {
     },
     [archive]
   );
-
   return (
     <>
       <Can I="list" an="Appointment">
+        <ToolBar
+          formValue={formValue}
+          onChange={setFormValue}
+          branches={branches}
+          doctors={doctors}
+          specialties={specialties}
+        />
         <ListAppointments
           title="Upcoming Appointments"
           appointments={upcomingAppointments}
