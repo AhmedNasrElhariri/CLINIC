@@ -1,30 +1,18 @@
 import React from 'react';
 import { Icon } from 'rsuite';
-import Label from 'components/widgets/label';
+
+import { CRCard, CRTable  } from 'components';
 
 
-import { CRCard, CRTable } from 'components';
-
-function ListHospitals({ hospitals, onEdit }) {
+function ListImagesDefinition({ images, onEdit }) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={hospitals}>
+        <CRTable autoHeight data={images}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name" semiBold />
+            <CRTable.CRHeaderCell>Image Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="imageName" semiBold />
           </CRTable.CRColumn>
-
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="phoneNo" semiBold />
-          </CRTable.CRColumn>
-
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Address</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="address" />
-          </CRTable.CRColumn>
-
           <CRTable.CRColumn >
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
@@ -44,8 +32,6 @@ function ListHospitals({ hospitals, onEdit }) {
   );
 }
 
-ListHospitals.defaultProps = {
-  hospitals: [],
-};
 
-export default ListHospitals;
+
+export default ListImagesDefinition;

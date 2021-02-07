@@ -78,7 +78,11 @@ type Query {
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
   patientSurgeries(patientId: ID): [PatientSurgery!]
-  # myPatientSurgeries: [PatientSurgery!]
+  myPatientSurgeries: [PatientSurgery!]
+  myTestsDefinition: [TestDefinition!]
+  myImagesDefinition: [ImageDefinition!]
+  myMedicinesDefinition: [MedicineDefinition!]
+  myPatientReports: [PatientReport!]
 }
 
 ########################### Mutation ##################################
@@ -134,6 +138,19 @@ type Mutation {
     clinicId: ID!
     patientSurgery: PatientSurgeryInput!
   ): PatientSurgery
+  createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
+  addTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
+  editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
+  addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  addMedicineDefinition(
+    medicineDefinition: MedicineInputDefinition!
+  ): MedicineDefinition
+  editMedicineDefinition(
+    medicineDefinition: MedicineInputDefinition!
+  ): MedicineDefinition
+  addPatientReport(patientReport: PatientReportInput!): PatientReport
+  editPatientReport(patientReport: PatientReportInput!): PatientReport
 }
 
 ########################### Auth ##################################
@@ -619,6 +636,59 @@ type Surgery {
 input SurgeryInput {
   id: ID
   name: String!
+}
+########################### Tests Definition ##################################
+
+type TestDefinition {
+  id: ID!
+  testName: String!
+}
+
+input TestInputDefinition {
+  id: ID
+  testName: String!
+}
+
+########################### Images Definition ##################################
+
+type ImageDefinition {
+  id: ID!
+  imageName: String!
+}
+
+input ImageInputDefinition {
+  id: ID
+  imageName: String!
+}
+
+########################### Medicine Definition ##################################
+
+type MedicineDefinition {
+  id: ID!
+  medicineName: String!
+  concentration: String!
+  medicineForm: String
+}
+
+input MedicineInputDefinition {
+  id: ID
+  medicineName: String!
+  concentration: String!
+  medicineForm: String
+}
+
+########################### Patient Report ##################################
+
+type PatientReport {
+  id: ID!
+  name: String!
+  body: String!
+}
+
+input PatientReportInput {
+  id: ID
+  name: String!
+  body: String!
 }
 
 ########################### Patient Surgeries ##################################

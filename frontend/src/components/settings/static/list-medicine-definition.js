@@ -1,28 +1,27 @@
 import React from 'react';
 import { Icon } from 'rsuite';
-import Label from 'components/widgets/label';
+
+import { CRCard, CRTable ,CRButton } from 'components';
 
 
-import { CRCard, CRTable } from 'components';
-
-function ListHospitals({ hospitals, onEdit }) {
+function ListMedicines({ medicines, onEdit }) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={hospitals}>
+        <CRTable autoHeight data={medicines}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name" semiBold />
+            <CRTable.CRHeaderCell>Medicine Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="medicineName" semiBold />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="phoneNo" semiBold />
+            <CRTable.CRHeaderCell>Concentration</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="concentration" semiBold />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Address</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="address" />
+            <CRTable.CRHeaderCell>Medicine Form</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="medicineForm" />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn >
@@ -44,8 +43,6 @@ function ListHospitals({ hospitals, onEdit }) {
   );
 }
 
-ListHospitals.defaultProps = {
-  hospitals: [],
-};
 
-export default ListHospitals;
+
+export default ListMedicines;

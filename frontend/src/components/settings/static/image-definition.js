@@ -3,19 +3,19 @@ import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import ListHospitals from './list-hospitals';
 import { useModal } from 'components/widgets/modal';
-import NewHospital from './new-hospital';
-import useHospitals from 'hooks/fetch-hospitals';
+import NewImageDefinition from './new-image-definition';
+import ListImagesDefinition from './list-images-definition';
+import useImagesDefinition from 'hooks/fetch-images-definition';
 
-const initValue = { name: '', phoneNo: '', address: '' };
+const initValue = { imageName: ''};
 
-const Hospitals = () => {
+const ImageDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  const { addHospital, hospitals, editHospital } = useHospitals({
+  const { addImageDefinition , imagesDefinition , editImageDefinition } = useImagesDefinition({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -25,7 +25,7 @@ const Hospitals = () => {
       setFormValue(initValue);
     },
   });
-
+  
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -34,9 +34,9 @@ const Hospitals = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const hospital = R.pick(['id', 'name', 'phoneNo', 'address'])(data);
+      const image = R.pick(['id', 'imageName'])(data);
       setType('edit');
-      setFormValue(hospital);
+      setFormValue(image);
       open();
     },
     [open, setFormValue, setType]
@@ -44,38 +44,39 @@ const Hospitals = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      console.log(formValue);
-      addHospital({
+      addImageDefinition({
         variables: {
-          hospital: formValue,
+          imageDefinition: formValue,
         },
       });
-    } else {
-      editHospital({
+    } 
+    else {
+      editImageDefinition({
         variables: {
-          hospital: formValue,
+          imageDefinition: formValue,
         },
       });
     }
-  }, [addHospital, editHospital, formValue, type]);
+  }, [addImageDefinition, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate}>
-          Hospital +
+        <CRButton primary small onClick={handleClickCreate} style={{marginTop:4}}>
+          Add New Image+
         </CRButton>
       </Div>
-      <NewHospital
+      <NewImageDefinition
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
+        type={type}
       />
-      <ListHospitals hospitals={hospitals} onEdit={handleClickEdit} />
+      <ListImagesDefinition images={imagesDefinition} onEdit={handleClickEdit}/>
     </>
   );
 };
 
-export default Hospitals;
+export default ImageDefinition;

@@ -3,19 +3,19 @@ import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import ListHospitals from './list-hospitals';
 import { useModal } from 'components/widgets/modal';
-import NewHospital from './new-hospital';
-import useHospitals from 'hooks/fetch-hospitals';
+import NewTestDefinition from './new-test-definition';
+import ListTestsDefinition from './list-tests-definition';
+import useTestsDefinition from 'hooks/fetch-tests-definition';
 
-const initValue = { name: '', phoneNo: '', address: '' };
+const initValue = { testName: ''};
 
-const Hospitals = () => {
+const TestDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  const { addHospital, hospitals, editHospital } = useHospitals({
+  const { addTestDefinition , testsDefinition , editTestDefinition } = useTestsDefinition({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -25,7 +25,7 @@ const Hospitals = () => {
       setFormValue(initValue);
     },
   });
-
+  
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -34,9 +34,9 @@ const Hospitals = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const hospital = R.pick(['id', 'name', 'phoneNo', 'address'])(data);
+      const testDefinition = R.pick(['id', 'testName'])(data);
       setType('edit');
-      setFormValue(hospital);
+      setFormValue(testDefinition);
       open();
     },
     [open, setFormValue, setType]
@@ -44,38 +44,39 @@ const Hospitals = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      console.log(formValue);
-      addHospital({
+      addTestDefinition({
         variables: {
-          hospital: formValue,
+          testDefinition: formValue,
         },
       });
-    } else {
-      editHospital({
+    } 
+    else {
+      editTestDefinition({
         variables: {
-          hospital: formValue,
+          testDefinition: formValue,
         },
       });
     }
-  }, [addHospital, editHospital, formValue, type]);
+  }, [addTestDefinition, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
         <CRButton primary small onClick={handleClickCreate}>
-          Hospital +
+          Add New Test +
         </CRButton>
       </Div>
-      <NewHospital
+      <NewTestDefinition
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
+        type={type}
       />
-      <ListHospitals hospitals={hospitals} onEdit={handleClickEdit} />
+      <ListTestsDefinition tests={testsDefinition} onEdit={handleClickEdit} />
     </>
   );
 };
 
-export default Hospitals;
+export default TestDefinition;

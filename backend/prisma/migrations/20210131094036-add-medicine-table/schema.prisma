@@ -389,6 +389,28 @@ model Hospital {
   organizationId String
   PatientSurgery PatientSurgery[]
 }
+model TestDefinition {
+  id             String           @id @default(uuid())
+  testName       String
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+}
+model ImageDefinition {
+  id             String           @id @default(uuid())
+  imageName       String
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+}
+
+model MedicineDefinition {
+  id             String           @id @default(uuid())
+  medicineName   String
+  concentration  String
+  medicineForm   String
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+}
+
 
 model Surgery {
   id             String           @id @default(uuid())
