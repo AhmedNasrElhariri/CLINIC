@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const addImageDefinition = async (_, { imageDefinition },{ userId }) => {
+const addImageDefinition = async (_, { imageDefinition }, { userId }) => {
   return prisma.imageDefinition.create({
     data: {
       ...imageDefinition,

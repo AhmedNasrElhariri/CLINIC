@@ -1,7 +1,6 @@
-
 const AppointmentBaseInput = `
 
-`
+`;
 
 export default `
   scalar Date

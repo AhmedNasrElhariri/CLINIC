@@ -46,4 +46,3 @@ export { default as addMedicineDefinition } from './add-medicine-definition';
 export { default as editMedicineDefinition } from './edit-medicine-definition';
 export { default as addPatientReport } from './add-patient-report';
 export { default as editPatientReport } from './edit-patient-report';
-

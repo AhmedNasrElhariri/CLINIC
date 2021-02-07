@@ -1,10 +1,10 @@
 import { prisma } from '@';
 
-const myMedicinesDefinition = (_, __,{ userId }) => {
+const myMedicinesDefinition = (_, __, { userId }) => {
   return prisma.medicineDefinition.findMany({
-    where:{
-      userId
-    }
+    where: {
+      userId,
+    },
   });
 };
 

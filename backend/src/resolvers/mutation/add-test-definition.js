@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const addTestDefinition = async (_, { testDefinition },{ userId }) => {
+const addTestDefinition = async (_, { testDefinition }, { userId }) => {
   return prisma.testDefinition.create({
     data: {
       ...testDefinition,
