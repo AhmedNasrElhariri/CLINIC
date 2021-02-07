@@ -13,6 +13,7 @@ const items = [
   { to: '/patients', name: 'Patients' },
   { to: '/reports', name: 'Reports' },
   { to: '/surgeries', name: 'Surgeries' },
+  { to: '/report-printouts', name: 'Report Printouts' },
 ];
 
 export default function Sidebar({ onLogout }) {
