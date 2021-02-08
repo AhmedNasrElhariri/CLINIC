@@ -53,7 +53,7 @@ function useHospitals({ onCreate, onEdit } = {}) {
       editHospital,
       updateCache,
     }),
-    [addHospital, editHospital, hospitals, updateCache]
+    [addHospital, editHospital, hospitals]
   );
 }
 

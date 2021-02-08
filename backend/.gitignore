@@ -3,4 +3,7 @@ dist
 yarn.lock
 server-dist/
 
+
+package-lock.json
+
 .env
