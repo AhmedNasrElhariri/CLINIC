@@ -29,6 +29,7 @@
       "tag": "CreateEnum",
       "enum": "Position",
       "values": [
+        "Admin",
         "Doctor",
         "Assistant"
       ]
@@ -39,13 +40,6 @@
       "values": [
         "Female",
         "Male"
-      ]
-    },
-    {
-      "tag": "CreateEnum",
-      "enum": "Specialty",
-      "values": [
-        "Dentistry"
       ]
     },
     {
@@ -84,6 +78,16 @@
       "values": [
         "Add",
         "Substract"
+      ]
+    },
+    {
+      "tag": "CreateEnum",
+      "enum": "PermissionLevel",
+      "values": [
+        "Organization",
+        "Branch",
+        "Specialty",
+        "User"
       ]
     },
     {
@@ -179,15 +183,64 @@
     {
       "tag": "CreateField",
       "model": "Organization",
-      "field": "surgery",
+      "field": "surgeries",
       "type": "Surgery",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Organization",
-      "field": "patientSurgery",
+      "field": "patientSurgeries",
       "type": "PatientSurgery",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "roles",
+      "type": "PermissionRole",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "permissions",
+      "type": "Permission",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "rules",
+      "type": "Rule",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "branches",
+      "type": "Branch",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "specialties",
+      "type": "Specialty",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "users",
+      "type": "User",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Organization",
+      "field": "userSpecialties",
+      "type": "UserSpecialty",
       "arity": "List"
     },
     {
@@ -272,6 +325,52 @@
     {
       "tag": "CreateField",
       "model": "User",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
       "field": "organizationId",
       "type": "String",
       "arity": "Required"
@@ -279,14 +378,14 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "appointment",
+      "field": "appointments",
       "type": "Appointment",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "view",
+      "field": "views",
       "type": "View",
       "arity": "List"
     },
@@ -339,7 +438,7 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "snippet",
+      "field": "snippets",
       "type": "Snippet",
       "arity": "List"
     },
@@ -401,6 +500,48 @@
       "model": "User",
       "field": "inventoryHistory",
       "type": "InventoryHistory",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "rules",
+      "type": "Rule",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "specialties",
+      "type": "UserSpecialty",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "testDefinitions",
+      "type": "TestDefinition",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "imageDefinitions",
+      "type": "ImageDefinition",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "medicineDefinitions",
+      "type": "MedicineDefinition",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "patientReports",
+      "type": "PatientReport",
       "arity": "List"
     },
     {
@@ -520,7 +661,7 @@
     {
       "tag": "CreateField",
       "model": "Patient",
-      "field": "pateintLab",
+      "field": "pateintLabs",
       "type": "PatientLab",
       "arity": "List"
     },
@@ -548,7 +689,7 @@
     {
       "tag": "CreateField",
       "model": "Patient",
-      "field": "patientSurgery",
+      "field": "patientSurgeries",
       "type": "PatientSurgery",
       "arity": "List"
     },
@@ -689,13 +830,6 @@
       "model": "Appointment",
       "field": "patientId",
       "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Appointment",
-      "field": "specialty",
-      "type": "Specialty",
       "arity": "Required"
     },
     {
@@ -883,38 +1017,6 @@
           "tag": "Field",
           "model": "Appointment",
           "field": "notes"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Appointment",
-      "field": "prescription",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Appointment",
-          "field": "prescription"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Appointment",
-          "field": "prescription"
         },
         "directive": "default"
       },
@@ -2076,379 +2178,6 @@
     {
       "tag": "CreateField",
       "model": "Clinic",
-      "field": "doctorName",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorName"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorName"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "doctorNameAr",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorNameAr"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorNameAr"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "doctorTitle",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorTitle"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorTitle"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "doctorTitleAr",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorTitleAr"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorTitleAr"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "doctorJobDescription",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorJobDescription"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorJobDescription"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "doctorJobDescriptionAr",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorJobDescriptionAr"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "doctorJobDescriptionAr"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "phoneNo",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "phoneNo"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "phoneNo"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "phoneNo1",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "phoneNo1"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "phoneNo1"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "address",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "address"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "address"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "address1",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "address1"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "address1"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "logo",
-      "type": "File",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "logo"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "logo"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[logoId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Clinic",
-          "field": "logo"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
-      "field": "logoId",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Clinic",
       "field": "users",
       "type": "User",
       "arity": "List"
@@ -2551,6 +2280,59 @@
       "field": "inventoryHistory",
       "type": "InventoryHistory",
       "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Clinic",
+      "field": "File",
+      "type": "File",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "File"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "File"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[fileId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Clinic",
+          "field": "File"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Clinic",
+      "field": "fileId",
+      "type": "String",
+      "arity": "Optional"
     },
     {
       "tag": "CreateModel",
@@ -5726,6 +5508,1328 @@
       "field": "hospitalFees",
       "type": "Int",
       "arity": "Optional"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "PermissionRole"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PermissionRole",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PermissionRole",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PermissionRole",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PermissionRole",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PermissionRole",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PermissionRole",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PermissionRole",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PermissionRole",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PermissionRole",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PermissionRole",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PermissionRole",
+      "field": "permissions",
+      "type": "Permission",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Permission"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "all",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "all"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "all"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "role",
+      "type": "PermissionRole",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "role"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "role"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[roleId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "role"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "roleId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "action",
+      "type": "Action",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "action"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "action"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[actionId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "action"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "actionId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "level",
+      "type": "PermissionLevel",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "rules",
+      "type": "Rule",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Permission",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[actionId, roleId]"
+            },
+            {
+              "name": "name",
+              "value": "\"actionId_roleId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Rule"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "branch",
+      "type": "Branch",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "branch"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "branch"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[branchId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "branch"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "branchId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "specialty",
+      "type": "Specialty",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "specialty"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "specialty"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[specialtyId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "specialty"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "specialtyId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "user",
+      "type": "User",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "userId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "permission",
+      "type": "Permission",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "permission"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "permission"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[permissionId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Rule",
+          "field": "permission"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Rule",
+      "field": "permissionId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Branch"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Branch",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Branch",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Branch",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "address",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "phoneNo",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "notes",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Branch",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Branch",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Branch",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "rules",
+      "type": "Rule",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "specialties",
+      "type": "Specialty",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Branch",
+      "field": "userSpecialties",
+      "type": "UserSpecialty",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Specialty"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Specialty",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Specialty",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Specialty",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Specialty",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Specialty",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Specialty",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Specialty",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Specialty",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Specialty",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Specialty",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Specialty",
+      "field": "rules",
+      "type": "Rule",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Specialty",
+      "field": "branches",
+      "type": "Branch",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Specialty",
+      "field": "userSpecialties",
+      "type": "UserSpecialty",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "UserSpecialty"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "branch",
+      "type": "Branch",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "branch"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "branch"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[branchId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "branch"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "branchId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "specialty",
+      "type": "Specialty",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "specialty"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "specialty"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[specialtyId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "specialty"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "specialtyId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "organization",
+      "type": "Organization",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "organization"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[organizationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "UserSpecialty",
+          "field": "organization"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "UserSpecialty",
+      "field": "organizationId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "UserSpecialty",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[userId, branchId]"
+            },
+            {
+              "name": "name",
+              "value": "\"userId_branchId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Action"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Action",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Action",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Action",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Action",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Action",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Action",
+      "field": "subject",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Action",
+      "field": "permissions",
+      "type": "Permission",
+      "arity": "List"
     }
   ]
 }

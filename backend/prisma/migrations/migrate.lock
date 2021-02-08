@@ -1,20 +1,3 @@
 # Prisma Migrate lockfile v1
 
-<<<<<<< HEAD
-20210207074022-init
-=======
-20210113170540-init
-20210125032709-init
-20210125040201-add-branches-specalites
-20210129025436-add-actions-table
-20210130092402-add-admin-position
-20210130092914-add-more-fields-to-branch
-20210130093120-change-address-to-address-in-branch
-20210130122353-change-name
-20210130122520-change-user-organization-realtionships
-20210130233049-add-user-to-speciality
-20210131001655-speciality
-20210131003621-uniqu-user-specialty
-20210131013117-change---specialties
-20210131044835-add-all-to-permission
->>>>>>> 7ab6cf96ba380dc7f5558d81cf2404adfaf35e5d
+20210208024531-init
