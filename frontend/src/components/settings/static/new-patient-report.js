@@ -5,7 +5,6 @@ import Label from '../../widgets/label';
 
 import { CRModal, CRTextInput } from 'components';
 import 'react-quill/dist/quill.snow.css';
-import { marginBottom } from 'styled-system';
 
 const model = Schema.Model({});
 
@@ -23,7 +22,6 @@ function NewPatientReport({
     [type]
   );
 
-  console.log(formValue);
   return (
     <CRModal
       show={visible}

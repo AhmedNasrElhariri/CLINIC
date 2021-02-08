@@ -1,6 +1,5 @@
 import React from 'react';
 import { Icon } from 'rsuite';
-import Label from 'components/widgets/label';
 
 import { CRCard, CRTable } from 'components';
 

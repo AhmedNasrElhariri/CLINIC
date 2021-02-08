@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { CRCard, H3, H6, Div } from 'components';
+import { CRCard, H3, Div } from 'components';
 import {
   PatientInfoStyled,
   Cell,

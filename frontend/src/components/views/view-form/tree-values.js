@@ -1,11 +1,10 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { Schema, Input, Tree } from "rsuite";
-import { nanoid } from "nanoid";
-import { CRModal, CRButton } from "components";
+import React, { useCallback, useMemo, useState } from 'react';
+import { Input, Tree } from 'rsuite';
+import { nanoid } from 'nanoid';
+import { CRModal, CRButton } from 'components';
 
-const model = Schema.Model({});
 const findNode = (nodeId, DataItemType, node) => {
-  if (node.value == nodeId) {
+  if (node.value === nodeId) {
     if (!node.children) {
       node.children = [];
     }
@@ -21,10 +20,10 @@ const findNode = (nodeId, DataItemType, node) => {
 
 function NewTree({ type, visible, onOk, onClose, onChange }) {
   const header = useMemo(
-    () => (type === "create" ? "Add New Tree Values" : "Edit Tree Values"),
+    () => (type === 'create' ? 'Add New Tree Values' : 'Edit Tree Values'),
     [type]
   );
-  const [label, setLabel] = useState("");
+  const [label, setLabel] = useState('');
   const [activeNode, setActiveNode] = useState({});
   const DataItemType = {
     value: nanoid(),
@@ -34,7 +33,7 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
   };
   const [data, setData] = useState([
     {
-      label: "Root",
+      label: 'Root',
       value: 0,
       children: [],
     },
@@ -44,8 +43,8 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
     setData([data[0]]);
     console.log(data);
     setActiveNode({});
-    setLabel("");
-  }, [activeNode]);
+    setLabel('');
+  }, [DataItemType, activeNode.value, data]);
   return (
     <CRModal
       show={visible}
@@ -57,14 +56,14 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
       <Input
         lable="input"
         value={label}
-        onChange={(value) => setLabel(value)}
-        style={{ display: "inline", width: "75%", margin: 5 }}
+        onChange={value => setLabel(value)}
+        style={{ display: 'inline', width: '75%', margin: 5 }}
       ></Input>
       <CRButton
         primary
         small
         block
-        style={{ float: "right", width: "20%" }}
+        style={{ float: 'right', width: '20%' }}
         onClick={addNode}
       >
         ADD
@@ -79,7 +78,7 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
 }
 
 NewTree.defaultProps = {
-  type: "create",
+  type: 'create',
 };
 
 export default NewTree;

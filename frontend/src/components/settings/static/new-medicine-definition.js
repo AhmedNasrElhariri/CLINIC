@@ -1,22 +1,7 @@
 import React, { useMemo } from 'react';
-import {
-  Form,
-  Schema,
-  FormGroup,
-  RadioGroup,
-  Radio,
-  FormControl,
-  Checkbox,
-} from 'rsuite';
+import { Form, Schema } from 'rsuite';
 
-import {
-  CRModal,
-  CRTextInput,
-  CRRadio,
-  CRCheckBox,
-  CRNestedSelector,
-  H6,
-} from 'components';
+import { CRModal, CRTextInput, CRRadio } from 'components';
 const model = Schema.Model({});
 const options = [
   {

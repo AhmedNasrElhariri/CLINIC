@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import { FlexboxGrid, List } from 'rsuite';
 import { H4 } from 'components';
 const ListLabs = ({ data }) => {
-  const [add, setAdd] = useState(false);
-
   const styleCenter = {
     display: 'flex',
     justifyContent: 'center',
@@ -22,11 +20,7 @@ const ListLabs = ({ data }) => {
     whiteSpace: 'nowrap',
     fontWeight: 500,
   };
-  /*  const handelAdd = (idx)=>{
-    if(id === idx){
-      setAdd(!add)
-    }
-  } */
+
   const ToggleableImage = () => {
     const [isVisible, setVisibility] = useState(false);
 

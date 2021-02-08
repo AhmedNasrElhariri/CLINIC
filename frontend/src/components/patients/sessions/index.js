@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { FlexboxGrid, PanelGroup } from 'rsuite';
 import { formatDate, getNameMonthDaysYears } from 'utils/date';
 import AppointmentGallery from '../../appointments/images/gallery';
 
 import { Div, CRVDivider, H3 } from 'components';
-import { Modal, Whisper, Tooltip } from 'rsuite';
+import { Whisper, Tooltip } from 'rsuite';
 import { KeyStyled, ValueStyled } from '../summary/style';
 import { capitalize } from 'utils/text';
 import { TitleStyle, SlimText, BtnClick, SessionsPanel } from './style';
@@ -35,11 +35,7 @@ const Sessions = ({ summary }) => {
 
   useEffect(() => {
     setActiveSession(R.propOr({}, '0')(summary));
-  }, []);
-
-  const date = useMemo(() => R.propOr(new Date(), 'date')(activeSession), [
-    activeSession,
-  ]);
+  }, [summary]);
 
   const data = useMemo(() => R.propOr([], 'data')(activeSession), [
     activeSession,

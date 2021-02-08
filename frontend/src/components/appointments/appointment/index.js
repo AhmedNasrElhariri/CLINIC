@@ -2,27 +2,16 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { ButtonToolbar, Icon, Alert, Loader } from 'rsuite';
+import { Alert, Loader } from 'rsuite';
 
-import {
-  Div,
-  PatientSummary,
-  H3,
-  CRButton,
-  PatientInfo,
-  CRNav,
-} from 'components';
+import { Div, PatientSummary, H3 } from 'components';
 import AppointmentData from './appointment-data';
-import Prescription from './prescription';
 import PatientLabs from './patient-labs';
-import { Can } from 'components/user/can';
 
 import {
   getFormInitValues,
   mapFormValueToAppointmentData,
   isArchived,
-  isScheduled,
-  isDone,
 } from 'services/appointment';
 
 import {
@@ -35,7 +24,6 @@ import useAppointmentHistory from './fetch-appointment-history';
 import History from './patient-history';
 
 import { HeaderStyled } from './style';
-import { useModal } from 'components/widgets/modal';
 import PatientSurgries from './surgries';
 
 const normalTabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
@@ -50,7 +38,6 @@ function Appointment() {
     collections: [],
   });
   const [disabled, setDisabled] = useState(false);
-  const { visible, open, close } = useModal();
   const [activeTab, setActiveTab] = useState('0');
   const { appointmentId } = useParams();
   const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {

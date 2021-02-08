@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'rsuite';
 
-import { CRCard, CRTable, CRButton } from 'components';
+import { CRCard, CRTable } from 'components';
 
 function ListMedicines({ medicines, onEdit }) {
   return (

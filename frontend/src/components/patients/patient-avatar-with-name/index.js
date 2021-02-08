@@ -1,5 +1,5 @@
 import React from 'react';
-import { CRCard, H2, H3, H5, P, Div, Img } from 'components';
+import { H2, Div } from 'components';
 import {
   PatientInfoStyled,
   PatientAvatarStyled,
@@ -8,7 +8,6 @@ import {
   SubText,
   SpanTitle,
 } from './style';
-import { Button } from 'rsuite';
 
 const AvatarBox = ({ patient }) => (
   <PatientAvatarStyled>

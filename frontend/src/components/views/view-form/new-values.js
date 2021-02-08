@@ -1,10 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Form, Schema, Input, Icon } from 'rsuite';
+import { Input, Icon } from 'rsuite';
 
-import { CRModal, CRTextInput, CRTextArea, CRButton } from 'components';
-import item from 'components/widgets/nav/item';
-
-const model = Schema.Model({});
+import { CRModal, CRButton } from 'components';
 
 function NewValues({ type, visible, onOk, onClose, onChange }) {
   const header = useMemo(

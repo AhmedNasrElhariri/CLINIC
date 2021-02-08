@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput, CRTextArea } from 'components';
+import { CRModal, CRTextInput } from 'components';
 
 const model = Schema.Model({});
 
