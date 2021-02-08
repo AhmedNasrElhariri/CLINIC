@@ -1,6 +1,4 @@
-import React, { useState, useCallback } from 'react';
-import * as R from 'ramda';
-import { Alert } from 'rsuite';
+import React, { useCallback } from 'react';
 
 import {
   NewBranch,
@@ -8,149 +6,68 @@ import {
   CRButton,
   ListBranches,
   AddSpecialty,
-  AddDoctor,
+  Div,
 } from 'components';
+import usePermissions from 'hooks/use-permissions';
+import useModal from 'hooks/use-model';
 
 export default function Branches() {
-  // Branch
-  const [branchVisible, setBranchVisible] = useState(false);
+  const {
+    visible: branchVisible,
+    open: openBranch,
+    close: closeBranch,
+  } = useModal();
+  const {
+    visible: specialtyVisible,
+    open: openSpecialty,
+    close: closeSpecialty,
+  } = useModal();
 
-  const data = JSON.parse(localStorage.getItem('branches')) || [];
-
-  const createBranch = useCallback(
-    branch => {
-      let branches = [
-        ...data,
-        {
-          id: Math.random().toString(36).substr(2, 9),
-          name: branch.name,
-          address: branch.address,
-          phone: branch.phone,
-          notes: branch.notes,
-        },
-      ];
-      branches = JSON.stringify(branches);
-      localStorage.setItem('branches', branches);
-      Alert.success('Branch has been created successfully');
-      setBranchVisible(false);
-    },
-    [data]
-  );
-
-  const showBranchModal = useCallback(() => setBranchVisible(true), []);
-  const hideBranchModal = useCallback(() => setBranchVisible(false), []);
-
-  const onCreateBranch = useCallback(branch => createBranch(branch), [
-    createBranch,
-  ]);
-
-  const branches = R.propOr(
-    [],
-    'branches'
-  )({
-    branches: data,
+  const { branches, specialties, createBranch, addSpecialty } = usePermissions({
+    onCreateBranch: closeBranch,
+    onAddSpecialty: closeSpecialty,
   });
 
-  // Specialty
-  const [specialtyVisible, setSpecialtyVisible] = useState(false);
-  const specialtiesInBranchData =
-    JSON.parse(localStorage.getItem('specialtiesInBranch')) || [];
-
-  const createSpecialty = useCallback(
-    specialtiesInBranches => {
-      let specialtiesInBranch = [
-        ...specialtiesInBranchData,
-        {
-          id: Math.random().toString(36).substr(2, 9),
-          branch: specialtiesInBranches.branch,
-          specialties: [specialtiesInBranches.specialty],
-        },
-      ];
-      specialtiesInBranch = JSON.stringify(specialtiesInBranch);
-      localStorage.setItem('specialtiesInBranch', specialtiesInBranch);
-      Alert.success('Specialty has been added to branch successfully');
-      setSpecialtyVisible(false);
+  const handleCreate = useCallback(
+    branch => {
+      createBranch(branch);
     },
-    [specialtiesInBranchData]
+    [createBranch]
   );
 
-  const showSpecialtyModal = useCallback(() => setSpecialtyVisible(true), []);
-  const hideSpecialtyModal = useCallback(() => setSpecialtyVisible(false), []);
-
-  const onCreateSpecialty = useCallback(
-    specialty => createSpecialty(specialty),
-    [createSpecialty]
-  );
-
-  // Doctors
-  const [doctorVisible, setDoctorVisible] = useState(false);
-
-  const createDoctor = useCallback(doctors => {
-    console.log(doctors);
-    Alert.success('Doctor has been added to branch successfully');
-    setDoctorVisible(false);
-  }, []);
-
-  const showDoctorModal = useCallback(() => setDoctorVisible(true), []);
-  const hideDoctorModal = useCallback(() => setDoctorVisible(false), []);
-
-  const onCreateDoctor = useCallback(doctor => createDoctor(doctor), [
-    createDoctor,
+  const handleAddSpecialty = useCallback(value => addSpecialty(value), [
+    addSpecialty,
   ]);
 
   return (
     <>
       <MainContainer
-        title="branches"
+        title="Branches"
         nobody
         more={
-          <div>
-            <CRButton
-              onClick={showBranchModal}
-              primary
-              small
-              style={{ margin: '0 10px' }}
-            >
+          <Div>
+            <CRButton onClick={openBranch} primary small>
               New Branch
             </CRButton>
-            <CRButton
-              onClick={showSpecialtyModal}
-              primary
-              small
-              style={{ margin: '0 10px' }}
-            >
+            <CRButton onClick={openSpecialty} primary small ml={2}>
               Add Specialty
             </CRButton>
-            <CRButton
-              onClick={showDoctorModal}
-              primary
-              small
-              style={{ margin: '0 10px' }}
-            >
-              Add Doctor
-            </CRButton>
-          </div>
+          </Div>
         }
       ></MainContainer>
-      <AddDoctor
-        onCreate={onCreateDoctor}
-        show={doctorVisible}
-        onHide={hideDoctorModal}
-        onCancel={hideDoctorModal}
-        branches={branches}
+      <NewBranch
+        onCreate={handleCreate}
+        show={branchVisible}
+        onHide={closeBranch}
+        onCancel={closeBranch}
       />
       <AddSpecialty
-        onCreate={onCreateSpecialty}
+        onAdd={handleAddSpecialty}
         show={specialtyVisible}
-        onHide={hideSpecialtyModal}
-        onCancel={hideSpecialtyModal}
+        onHide={closeSpecialty}
+        onCancel={closeSpecialty}
         branches={branches}
-      />
-      <NewBranch
-        onCreate={onCreateBranch}
-        show={branchVisible}
-        onHide={hideBranchModal}
-        onCancel={hideBranchModal}
+        specialties={specialties}
       />
       <ListBranches branches={branches} />
     </>

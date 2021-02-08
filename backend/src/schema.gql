@@ -3,6 +3,19 @@ scalar VitalData
 scalar JSON
 scalar Upload
 
+enum PermissionLevel {
+  Organization
+  Branch
+  Specialty
+  User
+}
+
+enum Position {
+  Admin
+  Doctor
+  Assistant
+}
+
 enum PatientMembershipType {
   Primary
   Secondary
@@ -83,6 +96,10 @@ type Query {
   myImagesDefinition: [ImageDefinition!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
+  getActions: [Action!]
+  listBranches: [Branch!]
+  listSpecialties: [Specialty!]
+  listUsers: [User!]
 }
 
 ########################### Mutation ##################################
@@ -150,6 +167,13 @@ type Mutation {
   ): MedicineDefinition
   addPatientReport(patientReport: PatientReportInput!): PatientReport
   editPatientReport(patientReport: PatientReportInput!): PatientReport
+  createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
+  createRole(role: RoleInput!): Role!
+  createBranch(branch: BranchInput!): Branch!
+  createSpecialty(specialty: SpecialtyInput!): Specialty!
+  createUser(user: UserInput!): User!
+  addSpecialty(branchId: ID!, specialtyId: ID!): Branch!
+  addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
 }
 
 ########################### Auth ##################################
@@ -170,8 +194,10 @@ type User {
   id: ID!
   name: String!
   email: String!
+  position: Position
   permissions: [Permission!]
   avatar: String
+  specialty: Specialty
 }
 
 type Permission {
@@ -179,9 +205,71 @@ type Permission {
   subject: String
 }
 
+type Role {
+  id: ID!
+  name: String!
+}
+
+type Branch {
+  id: ID!
+  name: String!
+  address: String
+  phoneNo: String
+  notes: String
+  specialties: [Specialty!]
+}
+
+type Specialty {
+  id: ID!
+  name: String!
+  branches: [Branch!]
+  doctors: [User!]
+}
+
+type Action {
+  id: ID!
+  name: String!
+  subject: String!
+}
+
+input RoleInput {
+  name: String!
+  permissions: [PermissionInput!]!
+}
+
 input PermissionInput {
-  action: String
-  subject: String
+  actionId: ID!
+  all: Boolean
+  level: PermissionLevel!
+  rules: [PermissionRuleInput!]
+}
+
+input PermissionRuleInput {
+  organizationId: ID
+  branchId: ID
+  specialtyId: ID
+  userId: ID
+}
+
+input BranchInput {
+  id: ID
+  name: String!
+  address: String
+  phoneNo: String
+  notes: String
+}
+
+input SpecialtyInput {
+  id: ID
+  name: String!
+}
+
+input UserInput {
+  specialtyId: ID
+  name: String!
+  email: String!
+  password: String!
+  position: Position!
 }
 
 ########################### Search ##################################

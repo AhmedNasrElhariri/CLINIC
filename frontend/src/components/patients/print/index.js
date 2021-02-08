@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver';
 
 import { CRButton, CRModal, Div, H7 } from 'components';
 import PdfDocument from './pdf-document';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import { Checkbox } from 'rsuite';
 import { formatDate } from 'utils/date';
 

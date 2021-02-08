@@ -30,3 +30,7 @@ export { default as myTestsDefinition } from './my-tests-definition';
 export { default as myImagesDefinition } from './my-images-definition';
 export { default as myMedicinesDefinition } from './my-medicines-definition';
 export { default as myPatientReports } from './my-patient-reports';
+export { default as getActions } from './get-actions';
+export { default as listBranches } from './list-branches';
+export { default as listSpecialties } from './list-specialties';
+export { default as listUsers } from './list-users';

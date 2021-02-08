@@ -1,11 +1,12 @@
 import React, { useState, memo, useMemo, useCallback } from 'react';
 import * as R from 'ramda';
+import { FlexboxGrid } from 'rsuite';
 
-import { Form, FlexboxGrid } from 'rsuite';
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../../permissions/list-selections-items/index';
+import { ALL_CHOICE } from 'utils/constants';
 
-const AddUserPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
+const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
     branchId: null,
     userId: null,
@@ -15,78 +16,121 @@ const AddUserPermissions = ({ branches, selectedItems, onAdd, onDelete }) => {
     onAdd(formValue);
   }, [formValue, onAdd]);
 
-  const selectedBranch = useMemo(() => {
-    return branches.find(p => p.id === formValue.branchId) || {};
-  }, [formValue, branches]);
+  const users = useMemo(
+    () =>
+      R.pipe(
+        R.map(R.prop('specialties')),
+        R.flatten,
+        R.map(R.prop('doctors')),
+        R.flatten,
+        R.uniqBy(R.prop('id'))
+      )(branches),
+    [branches]
+  );
 
-  const usersPermissions = (selectedBranch.specialties || []).map(p => p.users);
-  const users = R.flatten(usersPermissions);
+  const branchesNames = useMemo(
+    () =>
+      branches.reduce(
+        (obj, { id, name }) => ({
+          ...obj,
+          [id]: name,
+        }),
+        {}
+      ),
+    [branches]
+  );
 
-  const branchesNames = branches.reduce(
-    (obj, { id, name }) => ({
-      ...obj,
-      [id]: name,
-    }),
-    {}
+  const usersNames = useMemo(
+    () =>
+      users.reduce(
+        (obj, { id, name }) => ({
+          ...obj,
+          [id]: name,
+        }),
+        {}
+      ),
+    [users]
   );
-  const usersNames = users.reduce(
-    (obj, { id, name }) => ({
-      ...obj,
-      [id]: name,
-    }),
-    {}
+
+  const items = useMemo(
+    () =>
+      rules.map(
+        ({ branchId, userId }) =>
+          `${branchesNames[branchId]} - ${usersNames[userId]}`
+      ),
+    [branchesNames, rules, usersNames]
   );
-  const items = selectedItems.map(
-    ({ branchId, userId }) =>
-      `${branchesNames[branchId]} - ${usersNames[userId]}`
+
+  const updateFormField = useCallback(
+    fieldName => val => setFormValue({ ...formValue, [fieldName]: val }),
+    [formValue]
   );
+
+  const selectedAll = useMemo(
+    () => rules.some(({ branchId }) => branchId === ALL_CHOICE),
+    [rules]
+  );
+
+  const branchChoices = useMemo(() => {
+    const userId = formValue.userId;
+    if (!userId) {
+      return [];
+    }
+
+    const specialtyId = doctors.find(d => d.id === userId)?.specialty?.id;
+
+    const filteredBranches = branches.filter(b =>
+      b.specialties.some(s => s.id === specialtyId)
+    );
+
+    return rules.length || !filteredBranches.length
+      ? filteredBranches
+      : [{ id: ALL_CHOICE, name: ALL_CHOICE }, ...filteredBranches];
+  }, [branches, doctors, formValue.userId, rules.length]);
+
   return (
-    <Form formValue={formValue} onChange={setFormValue}>
-      <FlexboxGrid.Item colspan={20}>
-        <FlexboxGrid align="middle" justify="space-between">
-          <FlexboxGrid.Item colspan={6}>
-            <CRSelectInput
-              placeholder="Select Branch"
-              block
-              cleanable={false}
-              searchable={false}
-              labelKey="name"
-              valueKey="id"
-              name="branchId"
-              data={branches}
-            />
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={6}>
-            {' '}
-            <CRSelectInput
-              placeholder="Select User"
-              block
-              cleanable={false}
-              searchable={false}
-              labelKey="name"
-              valueKey="id"
-              name="userId"
-              data={users}
-            />
-          </FlexboxGrid.Item>
-
-          <FlexboxGrid.Item colspan={6}>
-            {' '}
-            <CRButton primary small onClick={add}>
-              + Add New
-            </CRButton>
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={22}>
-            {' '}
-            <ListSelectionItems items={items} onDelete={onDelete} />
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
+    <FlexboxGrid align="middle" justify="space-between">
+      <FlexboxGrid.Item colspan={9}>
+        <CRSelectInput
+          placeholder="Select User"
+          block
+          cleanable={false}
+          searchable={false}
+          labelKey="name"
+          valueKey="id"
+          name="userId"
+          data={doctors}
+          value={formValue.userId}
+          disabled={selectedAll}
+          onChange={updateFormField('userId')}
+        />
       </FlexboxGrid.Item>
-    </Form>
+      <FlexboxGrid.Item colspan={9}>
+        <CRSelectInput
+          placeholder="Select Branch"
+          block
+          cleanable={false}
+          searchable={false}
+          labelKey="name"
+          valueKey="id"
+          name="branchId"
+          data={branchChoices}
+          value={formValue.branchId}
+          disabled={selectedAll}
+          onChange={updateFormField('branchId')}
+        />
+      </FlexboxGrid.Item>
+
+      <FlexboxGrid.Item colspan={5}>
+        <CRButton primary small onClick={add} disabled={selectedAll}>
+          + Add
+        </CRButton>
+      </FlexboxGrid.Item>
+      <FlexboxGrid.Item colspan={22}>
+        <ListSelectionItems items={items} onDelete={onDelete} />
+      </FlexboxGrid.Item>
+    </FlexboxGrid>
   );
-};
-AddUserPermissions.defaultProps = {
-  selectedItems: [],
 };
 
 export default memo(AddUserPermissions);

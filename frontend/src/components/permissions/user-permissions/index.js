@@ -7,7 +7,7 @@ import { MainContainer, Div, H6, H5, CRButton, CRPanelGroup } from 'components';
 import { PERMISSIONS } from 'utils/constants';
 import useFetchUser from './fetch-data';
 
-const appPermissions = PERMISSIONS;
+const appPermissions = [];
 const flattenPermission = R.flatten([...appPermissions.values()]);
 const initValues = R.pipe(
   R.map(({ id }) => ({ [id]: false })),

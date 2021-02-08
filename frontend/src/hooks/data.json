@@ -1,208 +1,187 @@
 {
-  "branches": [
-    {
-      "id": 1,
-      "name": "Nasr City",
-      "specialties": [
-        {
-          "id": 1,
-          "name": "عظام",
-          "users": [
-            {
-              "id": 1,
-              "name": "Shady Hassan"
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "name": "قلب",
-          "users": [
-            {
-              "id": 2,
-              "name": " Hassan"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Giza",
-      "specialties": [
-        {
-          "id": 1,
-          "name": "عظام",
-          "users": []
-        },
-        {
-          "id": 3,
-          "name": "تجميل",
-          "users": []
-        }
-      ]
-    }
-  ],
-  "users": [
-    {
-      "id": "1",
-      "name": "Qasem",
-      "specialty": {
-        "id": "1",
-        "name": "اطفال"
-      },
-      "branches": [
-        {
-          "id": "1",
-          "name": "Cairo"
-        },
-        {
-          "id": "4",
-          "name": "Mahla"
-        }
-      ]
-    },
-    {
-      "id": "2",
-      "name": "Eslam",
-      "specialty": {
-        "id": "2",
-        "name": "قلب"
-      },
-      "branches": [
-        {
-          "id": "2",
-          "name": "Giza"
-        }
-      ]
-    },
-    {
-      "id": "3",
-      "name": "Amin",
-      "specialty": {
-        "id": "2",
-        "name": "قلب"
-      },
-      "branches": [
-        {
-          "id": "2",
-          "name": "Giza"
-        }
-      ]
-    }
-  ],
-  "appointments": [
-    {
-      "date": "2020-12-08T16:06:31.985Z",
-      "id": "7434593a-954a-433d-9ae6-0538774b99d1",
-      "patient": {
-        "id": "8f7231b1-5755-4c33-8448-820376c473e5",
-        "name": "Alex",
-        "age": 21,
-        "phoneNo": "01065093577",
-        "sex": "Male"
-      },
-      "status": "Closed",
-      "type": "Exmaintaion",
-      "__typename": "Appointment",
-      "doctor": {
-        "id": "2",
-        "name": "Eslam"
-      },
-      "specialty": {
-        "id": "2",
-        "name": "قلب"
-      },
-      "branch": {
-        "id": "2",
-        "name": "Giza"
-      },
-      "from": "",
-      "to": ""
-    },
-    {
-      "date": "2020-12-08T16:15:31.985Z",
-      "id": "97c6fa5c-98ee-45ee-921d-7331ff30c6d0",
-      "patient": {
-        "id": "c0026957-c85e-4b41-9b86-e5b030915c5e",
-        "name": "Ali",
-        "age": 22,
-        "phoneNo": "01065093573",
-        "sex": "Male"
-      },
-      "status": "Scheduled",
-      "type": "Followup",
-      "__typename": "Appointment",
-      "doctor": {
-        "id": "3",
-        "name": "Amin"
-      },
-      "specialty": {
-        "id": "2",
-        "name": "قلب"
-      },
-      "branch": {
-        "id": "2",
-        "name": "Giza"
-      },
-      "from": "",
-      "to": ""
-    },
-    {
-      "date": "2020-12-08T16:30:13.127Z",
-      "id": "9ebb27e6-2c33-457f-a3f7-fd099bf25404",
-      "patient": {
-        "id": "e4e303a2-3b56-4940-980b-8fb01af582ee",
-        "name": "Ebrahim",
-        "age": 34,
-        "phoneNo": "01065093571",
-        "sex": "Male"
-      },
-      "status": "Closed",
-      "type": "Urgent",
-      "__typename": "Appointment",
-      "doctor": {
-        "id": "1",
-        "name": "Qasem"
-      },
-      "specialty": {
-        "id": "1",
-        "name": "اطفال"
-      },
-      "branch": {
-        "id": "1",
-        "name": "Cairo"
-      },
-      "from": "",
-      "to": ""
-    },
-    {
-      "date": "2020-12-08T14:30:13.127Z",
-      "id": "9ebb27e6-2c33-357f-a3f7-fd099bf25404",
-      "patient": {
-        "id": "e4e303a2-3b56-4940-980b-8fb41af582ee",
-        "name": "Ammar",
-        "age": 41,
-        "phoneNo": "01065393571",
-        "sex": "Male"
-      },
-      "status": "Closed",
-      "type": "Urgent",
-      "__typename": "Appointment",
-      "doctor": {
-        "id": "1",
-        "name": "Qasem"
-      },
-      "specialty": {
-        "id": "1",
-        "name": "اطفال"
-      },
-      "branch": {
-        "id": "1",
-        "name": "Cairo"
-      },
-      "from": "",
-      "to": ""
-    }
-  ]
+  "5ac3e9e0-cbbc-49ae-a6ae-e4fc499b5201": {
+    "__typename": "Action",
+    "id": "5ac3e9e0-cbbc-49ae-a6ae-e4fc499b5201",
+    "name": "List",
+    "subject": "Appointment",
+    "visibility": true,
+    "level": "Organization",
+    "rules": []
+  },
+  "b0a173c7-141d-4177-8a1a-509d4536a0f3": {
+    "__typename": "Action",
+    "id": "b0a173c7-141d-4177-8a1a-509d4536a0f3",
+    "name": "Create",
+    "subject": "Appointment",
+    "visibility": true,
+    "level": "Branch",
+    "rules": [
+      {
+        "branchId": "a8e121bf-72d5-408d-9c95-e81ab0e15081"
+      }
+    ]
+  },
+  "4a8e98f5-dc6d-4c43-8f25-7317f0cce11a": {
+    "__typename": "Action",
+    "id": "4a8e98f5-dc6d-4c43-8f25-7317f0cce11a",
+    "name": "Reschedule",
+    "subject": "Appointment",
+    "visibility": true,
+    "level": "Specialty",
+    "rules": [
+      {
+        "branchId": "1829f79c-ab4c-4a3c-b4d7-b50f0b911b4f",
+        "specialtyId": "0f4cca5a-eb26-49e7-b0f0-df7d77ac0ecc"
+      }
+    ]
+  },
+  "9a2c8e0b-eb3e-41cd-a07b-1aa6f0de6f9f": {
+    "__typename": "Action",
+    "id": "9a2c8e0b-eb3e-41cd-a07b-1aa6f0de6f9f",
+    "name": "Finish",
+    "subject": "Appointment",
+    "visibility": true,
+    "level": "User",
+    "rules": [
+      {
+        "branchId": "a8e121bf-72d5-408d-9c95-e81ab0e15081",
+        "userId": "ce2e9cd3-5d58-4866-b0b3-a9c03fcd4fbc"
+      }
+    ]
+  },
+  "a5594daa-832c-4da5-af68-210579858966": {
+    "__typename": "Action",
+    "id": "a5594daa-832c-4da5-af68-210579858966",
+    "name": "Cancel",
+    "subject": "Appointment",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "6588eaf4-bc00-42a1-b60e-b226b59a093e": {
+    "__typename": "Action",
+    "id": "6588eaf4-bc00-42a1-b60e-b226b59a093e",
+    "name": "Archive",
+    "subject": "Appointment",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "fa9cabfb-625b-434b-bf1a-2a076d6efc4a": {
+    "__typename": "Action",
+    "id": "fa9cabfb-625b-434b-bf1a-2a076d6efc4a",
+    "name": "View",
+    "subject": "Patient",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "a692d8e6-72bc-4341-9bf4-d4b7cffbbe4b": {
+    "__typename": "Action",
+    "id": "a692d8e6-72bc-4341-9bf4-d4b7cffbbe4b",
+    "name": "View",
+    "subject": "Accounting",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "5a644b8d-eeea-46ad-957d-c143f8731a98": {
+    "__typename": "Action",
+    "id": "5a644b8d-eeea-46ad-957d-c143f8731a98",
+    "name": "Add Revenue",
+    "subject": "Accounting",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "bbb60d29-d29f-4f3b-a291-0af979f42848": {
+    "__typename": "Action",
+    "id": "bbb60d29-d29f-4f3b-a291-0af979f42848",
+    "name": "Add Expense",
+    "subject": "Accounting",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "bfb95762-3c28-40e3-9f5c-9fa23627ad09": {
+    "__typename": "Action",
+    "id": "bfb95762-3c28-40e3-9f5c-9fa23627ad09",
+    "name": "Edit Revenue",
+    "subject": "Accounting",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "e395fba8-c666-4282-b870-cf2aa2d36148": {
+    "__typename": "Action",
+    "id": "e395fba8-c666-4282-b870-cf2aa2d36148",
+    "name": "Edit Expense",
+    "subject": "Accounting",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "5b8e3303-a198-40cf-b87d-e61079873da4": {
+    "__typename": "Action",
+    "id": "5b8e3303-a198-40cf-b87d-e61079873da4",
+    "name": "Print",
+    "subject": "Accounting",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "fb90df08-3b7a-4356-a983-eb152536f294": {
+    "__typename": "Action",
+    "id": "fb90df08-3b7a-4356-a983-eb152536f294",
+    "name": "View",
+    "subject": "Calendar",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "cf38ce84-a61f-4e69-b64b-c5b6bbee5ecb": {
+    "__typename": "Action",
+    "id": "cf38ce84-a61f-4e69-b64b-c5b6bbee5ecb",
+    "name": "Create Event",
+    "subject": "Calendar",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "549fc751-5006-4829-8676-4153efeba80c": {
+    "__typename": "Action",
+    "id": "549fc751-5006-4829-8676-4153efeba80c",
+    "name": "View",
+    "subject": "Inventory",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "706b38cf-95ac-451c-ba05-80f34a2fdc4b": {
+    "__typename": "Action",
+    "id": "706b38cf-95ac-451c-ba05-80f34a2fdc4b",
+    "name": "Add Item",
+    "subject": "Inventory",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "cbe0a364-8f4c-47c5-b0f4-145f60a492c1": {
+    "__typename": "Action",
+    "id": "cbe0a364-8f4c-47c5-b0f4-145f60a492c1",
+    "name": "View History",
+    "subject": "Inventory",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  },
+  "d84c1d68-e757-4ebe-9655-23fc97355044": {
+    "__typename": "Action",
+    "id": "d84c1d68-e757-4ebe-9655-23fc97355044",
+    "name": "Define Item",
+    "subject": "Inventory",
+    "visibility": false,
+    "level": null,
+    "rules": []
+  }
 }

@@ -4,7 +4,6 @@ import { prisma } from '@';
 import { APP_SECRET } from '../../utils/constants';
 
 const login = async (_, { email = '', password }) => {
-  console.log('login');
   const user = await prisma.user.findOne({
     where: { email: email.toLowerCase() },
   });

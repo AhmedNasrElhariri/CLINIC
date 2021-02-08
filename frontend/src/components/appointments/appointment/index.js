@@ -25,6 +25,7 @@ import History from './patient-history';
 
 import { HeaderStyled } from './style';
 import PatientSurgries from './surgries';
+import useModal from 'hooks/use-model';
 
 const normalTabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
 const surgeryTabs = ['Home'];

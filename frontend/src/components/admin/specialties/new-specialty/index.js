@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Schema } from 'rsuite';
 
 import { CRTextInput, CRModal } from 'components';
@@ -15,6 +15,12 @@ const initialValues = {
 
 export default function NewSpecialty({ show, onCancel, onCreate }) {
   const [formValue, setFormValue] = useState(initialValues);
+
+  useEffect(() => {
+    if (!show) {
+      setFormValue(initialValues);
+    }
+  }, [show]);
 
   return (
     <CRModal

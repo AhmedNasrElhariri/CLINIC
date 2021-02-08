@@ -1,203 +1,199 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as R from 'ramda';
 import { Toggle, Panel, Form } from 'rsuite';
 
-import { MainContainer, Div, H6, H5, CRButton, CRPanelGroup } from 'components';
-import RoleInput from './createRole';
+import {
+  MainContainer,
+  Div,
+  H6,
+  H5,
+  CRButton,
+  CRTextInput,
+  CRPanelGroup,
+} from 'components';
 
-import { PERMISSIONS } from 'utils/constants';
-import RadioInputsGroup from 'components/widgets/input/radio-input';
-import useFetchAppointments from '../../../hooks/fetch-appointments';
+import PermissionRules from '../permission-rules';
+import usePermissions from 'hooks/use-permissions';
+import { ALL_CHOICE } from 'utils/constants';
 
-const appPermissions = PERMISSIONS;
-const flattenPermission = R.flatten([...appPermissions.values()]);
-
-const initValues = R.pipe(
-  R.map(({ id }) => ({ [id]: false })),
-  R.mergeAll
-)(flattenPermission);
-const initValue = {
-  sessions: [],
-  items: [],
-};
-const LevelsPermissions = [
-  {
-    name: 'Organization',
-    haveBranch: false,
-    haveSpecialty: false,
-    haveUser: false,
-  },
-  {
-    name: 'Branch',
-    haveBranch: true,
-    haveSpecialty: false,
-    haveUser: false,
-  },
-  {
-    name: 'Specialty',
-    haveBranch: true,
-    haveSpecialty: true,
-    haveUser: false,
-  },
-  {
-    name: 'User',
-    haveBranch: true,
-    haveSpecialty: false,
-    haveUser: true,
-  },
-];
+import data from './test.json';
 
 const RolePermission = () => {
-  const [formValue, setFormValue] = useState(initValues);
-  const { branches } = useFetchAppointments();
+  const [ff, setFF] = useState({});
+  const [roleForm, setRoleForm] = useState({ name: '' });
+  const { branches, doctors } = usePermissions();
+  const {
+    createRole,
+    indexePermissions,
+    groupedPermissions,
+  } = usePermissions();
 
-  const [ff, setFF] = useState(flattenPermission);
-  const [selectedItems, setSelectedItems] = useState([]);
+  useEffect(() => {
+    setFF(indexePermissions);
+  }, [indexePermissions]);
 
-  const toggle = (visibility, actionIndex) => {
-    ff[actionIndex].visibility = !visibility;
-
-    setFF((previous, idx) => {
-      const newFF = previous.map(p => p);
-      return newFF;
-    });
-  };
-
-  const value = useRef(initValue);
-  const handleSelect = useCallback(sessions => {
-    value.current = { ...value.current, sessions };
+  useEffect(() => {
+    setRoleForm({ name: 'test role' });
   }, []);
 
-  const handleLevelChange = (level, actionIndex) => {
-    ff[actionIndex].level = level;
-    ff[actionIndex].mappings = [];
-    setSelectedItems([]);
+  useEffect(() => {
+    setTimeout(() => setFF(data), 2000);
+  }, []);
 
-    setFF((previous, idx) => {
-      const newFF = previous.map(p => p);
-      return newFF;
+  const toggle = useCallback(
+    id => {
+      const action = ff[id];
+      const newForm = { ...action, visibility: !action.visibility };
+      setFF({ ...ff, [id]: newForm });
+    },
+    [ff]
+  );
+
+  const handleLevelChange = (actionId, level) => {
+    const oldAction = ff[actionId];
+    const newActions = {
+      ...oldAction,
+      level,
+      rules: [],
+    };
+
+    setFF({
+      ...ff,
+      [actionId]: newActions,
     });
   };
-  const handleAddBranch = (branchId, index) => {
-    let mappings = ff[index].mappings;
 
-    if (ff[index].mappings.length !== 1) {
-      mappings = [];
-    }
-    mappings = [...mappings, branchId];
-    setFF(previous => {
-      const newFF = previous.map((p, i) =>
-        i === index ? { ...p, mappings } : p
+  // console.log(JSON.stringify(ff));
+
+  const handleAddMapping = useCallback(
+    (actionId, value) => {
+      const oldAction = ff[actionId];
+      const rules = [...oldAction.rules, value];
+      const newActions = {
+        ...oldAction,
+        rules,
+      };
+
+      setFF({
+        ...ff,
+        [actionId]: newActions,
+      });
+    },
+    [ff]
+  );
+
+  const handleDeleteMapping = useCallback(
+    (actionId, index) => {
+      const oldAction = ff[actionId];
+      const rules = R.remove(index, 1)(oldAction.rules);
+      const newActions = {
+        ...oldAction,
+        rules,
+      };
+
+      setFF({
+        ...ff,
+        [actionId]: newActions,
+      });
+    },
+    [ff]
+  );
+
+  const handleCreateRole = useCallback(() => {
+    const permissions = R.values(ff)
+      .filter(ff => ff.visibility)
+      .map(({ id, rules, level }) =>
+        Object.assign(
+          { actionId: id, level },
+          rules.some(({ branchId }) => branchId === ALL_CHOICE)
+            ? { all: true }
+            : { rules }
+        )
       );
-      setSelectedItems(mappings);
-      return newFF;
-    });
-  };
+    const role = {
+      name: roleForm.name,
+      permissions,
+    };
+    console.log(role);
+    createRole(role);
+  }, [createRole, ff, roleForm.name]);
 
-  const handleAddSpecializtion = (value, index) => {
-    let mappings = ff[index].mappings;
-    if (ff[index].mappings.length !== 1) {
-      mappings = [];
-    }
-    mappings = [...mappings, value];
-    setFF(previous => {
-      const newFF = previous.map((p, i) =>
-        i === index ? { ...p, mappings } : p
-      );
-      setSelectedItems(mappings);
-      return newFF;
-    });
-  };
-  const handleAddUser = (value, index) => {
-    let mappings = ff[index].mappings;
-    if (ff[index].mappings.length !== 1) {
-      mappings = [];
-    }
-    mappings = [...mappings, value];
-    setFF(previous => {
-      const newFF = previous.map((p, i) =>
-        i === index ? { ...p, mappings } : p
-      );
-      setSelectedItems(mappings);
-
-      return newFF;
-    });
-  };
-  const handleDeleteSelected = useCallback(idx => {}, []);
   return (
     <>
       <MainContainer
-        title={`Role Permissions`}
+        title="Role Permissions"
         more={
-          <CRButton small primary>
+          <CRButton small primary onClick={handleCreateRole}>
             Save
           </CRButton>
         }
       >
         <Div mb={4}>
-          <RoleInput />
+          <Form formValue={roleForm} onChange={setRoleForm}>
+            <CRTextInput name="name" label="Role Name" />
+          </Form>
         </Div>
 
-        <Form formValue={formValue}>
-          {[...appPermissions.entries()].map(([subject, value]) => (
-            <CRPanelGroup accordion style={{ marginBottom: 30 }} key={subject}>
-              <Panel
-                header={
-                  <H5 fontWeight={600} px={4} py={3}>
-                    {subject}
-                  </H5>
-                }
-              >
-                <Div style={{ padding: ' 0 50px' }}>
-                  {value.map(({ name, id, visibility }, index) => (
-                    <>
-                      <Div
-                        key={id}
-                        display="flex"
-                        justifyContent="space-between"
-                        height={70}
-                      >
-                        <H6>{name}</H6>
-                        <Toggle
-                          size="md"
-                          checked={ff[visibility]}
-                          onChange={val => toggle(visibility, index)}
-                        />
-                      </Div>
-                      {visibility &&
-                        ff
-                          .filter((item, index) => item.name === name)
-                          .map(f => (
-                            <RadioInputsGroup
-                              handleSelect={handleSelect}
-                              label={'Permission Level'}
-                              LevelsPermissions={LevelsPermissions}
-                              onChange={level =>
-                                handleLevelChange(level, index)
-                              }
-                              onAddBranch={value =>
-                                handleAddBranch(value, index)
-                              }
-                              onAddUser={value => handleAddUser(value, index)}
-                              onAddSpecailization={value =>
-                                handleAddSpecializtion(value, index)
-                              }
-                              handleDeleteSelected={handleDeleteSelected(index)}
-                              level={f.level}
-                              branches={branches}
-                              selectedItems={selectedItems}
-                              showBranches={f.level === 'branch'}
-                              showSpecialty={f.level === 'specialty'}
-                              showUser={f.level === 'user'}
-                            />
-                          ))}
-                    </>
-                  ))}
-                </Div>
-              </Panel>
-            </CRPanelGroup>
-          ))}
-        </Form>
+        {Object.keys(ff).length > 1 && (
+          <Form formValue={ff} fluid>
+            {Object.entries(groupedPermissions).map(
+              ([subject, actions], index) => (
+                <CRPanelGroup
+                  accordion
+                  style={{ marginBottom: 30 }}
+                  key={index}
+                >
+                  <Panel
+                    header={
+                      <H5 fontWeight={600} px={4} py={3}>
+                        {subject}
+                      </H5>
+                    }
+                  >
+                    <Div pl={50}>
+                      {actions.map(({ id, name }) => {
+                        const f = ff[id];
+                        return (
+                          <React.Fragment key={id}>
+                            <Div
+                              key={id}
+                              display="flex"
+                              justifyContent="space-between"
+                              height={60}
+                              cursor="pointer"
+                              onClick={() => toggle(id)}
+                            >
+                              <H6>{name}</H6>
+                              <Toggle
+                                size="md"
+                                checked={f.visibility}
+                                onChange={() => toggle(id)}
+                              />
+                            </Div>
+                            {f.visibility && (
+                              <PermissionRules
+                                label="Permission Level"
+                                level={f.level}
+                                branches={branches}
+                                doctors={doctors}
+                                rules={f.rules}
+                                onChange={level => handleLevelChange(id, level)}
+                                onAdd={value => handleAddMapping(id, value)}
+                                onDelete={mappingIndex =>
+                                  handleDeleteMapping(id, mappingIndex)
+                                }
+                              />
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                    </Div>
+                  </Panel>
+                </CRPanelGroup>
+              )
+            )}
+          </Form>
+        )}
       </MainContainer>
     </>
   );

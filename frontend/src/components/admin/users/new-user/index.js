@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Schema } from 'rsuite';
 
 import { CRTextInput, CRModal } from 'components';
-import { CRSelectInput, CRTextArea } from 'components/widgets';
-
-import { userTypes, specialtyTypes } from 'services/admin';
+import { CRSelectInput } from 'components/widgets';
+import { POSITIONS } from 'utils/constants';
+import { mapObjValuesToChoices } from 'utils/misc';
 
 const { StringType } = Schema.Types;
+
+const positions = mapObjValuesToChoices(POSITIONS);
 
 const model = Schema.Model({
   name: StringType().isRequired('Name is required'),
@@ -14,30 +16,26 @@ const model = Schema.Model({
     .isEmail('Please enter a valid email address.')
     .isRequired('Email is required'),
   password: StringType().isRequired('Password is required'),
-  type: StringType().isRequired('Type is required'),
-  specialty: StringType().isRequired('Specialty is required'),
+  position: StringType().isRequired('Type is required'),
+  specialtyId: StringType().isRequired('Specialty is required'),
 });
 
 const initialValues = {
   name: '',
   email: '',
   password: '',
-  type: '',
-  specialty: '',
+  position: '',
+  specialtyId: '',
 };
 
-export default function NewUser({ show, onCancel, onCreate }) {
+export default function NewUser({ show, onCancel, onCreate, specialties }) {
   const [formValue, setFormValue] = useState(initialValues);
-  const [disable, setDisable] = useState(true);
 
-  const handleChange = event => {
-    if (event === 'Doctor') {
-      setDisable(false);
-    } else {
-      setFormValue(pre => ({ ...pre, specialty: '' }));
-      setDisable(true);
+  useEffect(() => {
+    if (!show) {
+      setFormValue(initialValues);
     }
-  };
+  }, [show]);
 
   return (
     <CRModal
@@ -52,24 +50,25 @@ export default function NewUser({ show, onCancel, onCreate }) {
         <CRTextInput label="Email" name="email" type="email" />
         <CRTextInput label="Password" name="password" type="password" />
         <CRSelectInput
-          name="type"
-          label="Type"
+          name="position"
+          label="Position"
           block
           cleanable={true}
           searchable={true}
-          data={userTypes}
-          onChange={handleChange}
+          data={positions}
         />
-        <CRSelectInput
-          name="specialty"
-          label="Specialty"
-          block
-          cleanable={true}
-          searchable={true}
-          data={specialtyTypes}
-          disabled={disable}
-        />
-        <CRTextArea label="Notes" name="notes"></CRTextArea>
+        {formValue.position === POSITIONS.DOCTOR && (
+          <CRSelectInput
+            name="specialtyId"
+            label="Specialty"
+            labelKey="name"
+            valueKey="id"
+            block
+            cleanable={true}
+            searchable={true}
+            data={specialties}
+          />
+        )}
       </Form>
     </CRModal>
   );
@@ -77,4 +76,6 @@ export default function NewUser({ show, onCancel, onCreate }) {
 
 NewUser.propTypes = {};
 
-NewUser.defaultProps = {};
+NewUser.defaultProps = {
+  specialties: [],
+};

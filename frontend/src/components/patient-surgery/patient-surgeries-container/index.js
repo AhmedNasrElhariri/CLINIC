@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Div, CRButton, MainContainer } from 'components';
 import useFrom from 'hooks/form';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import usePatientSurgeries from 'hooks/fetch-patient-surgeries';
 import ListPatientSurgeries from '../list-patient-surgeries';
 import NewPatientSurgery from '../new-patient-surgery';

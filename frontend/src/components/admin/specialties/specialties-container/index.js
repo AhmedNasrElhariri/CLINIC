@@ -1,46 +1,48 @@
-import React, { useState, useCallback } from 'react';
-import * as R from 'ramda';
-import { Alert } from 'rsuite';
+import React, { useCallback } from 'react';
 
 import {
   NewSpecialty,
   MainContainer,
   CRButton,
   ListSpecialties,
+  AddDoctor,
+  Div,
 } from 'components';
+import usePermissions from 'hooks/use-permissions';
+import useModal from 'hooks/use-model';
 
 export default function SpecialtiesContainer() {
-  const [visible, setVisible] = useState(false);
-  const data = JSON.parse(localStorage.getItem('specialtiesInBranch')) || [];
+  const { visible, open, close } = useModal();
+  const {
+    visible: userVisible,
+    open: openUser,
+    close: closeDoctor,
+  } = useModal();
 
-  const create = useCallback(
+  const {
+    branches,
+    specialties,
+    doctors,
+    createSpecialty,
+    addDoctor,
+  } = usePermissions({
+    onCreateSpecialty: close,
+    onAddDoctor: closeDoctor,
+  });
+
+  const handleCreate = useCallback(
     specialty => {
-      let specialties = [
-        ...data,
-        {
-          id: Math.random().toString(36).substr(2, 9),
-          name: specialty.name,
-          permissions: [],
-        },
-      ];
-      specialties = JSON.stringify(specialties);
-      localStorage.setItem('specialties', specialties);
-      Alert.success('Specialty has been created successfully');
-      setVisible(false);
+      createSpecialty(specialty);
     },
-    [data]
+    [createSpecialty]
   );
 
-  const showModal = useCallback(() => setVisible(true), []);
-  const hideModal = useCallback(() => setVisible(false), []);
-  const onCreate = useCallback(specialty => create(specialty), [create]);
-
-  const specialties = R.propOr(
-    [],
-    'specialties'
-  )({
-    specialties: data,
-  });
+  const handleAddDoctor = useCallback(
+    specialty => {
+      addDoctor(specialty);
+    },
+    [addDoctor]
+  );
 
   return (
     <>
@@ -48,18 +50,31 @@ export default function SpecialtiesContainer() {
         title="Specialties"
         nobody
         more={
-          <CRButton onClick={showModal} primary small>
-            New Specialty
-          </CRButton>
+          <Div>
+            <CRButton onClick={open} primary small>
+              New Specialty
+            </CRButton>
+            <CRButton onClick={openUser} primary small ml={2}>
+              Add Doctor
+            </CRButton>
+          </Div>
         }
       ></MainContainer>
       <NewSpecialty
-        onCreate={onCreate}
+        onCreate={handleCreate}
         show={visible}
-        onHide={hideModal}
-        onCancel={hideModal}
+        onHide={close}
+        onCancel={close}
       />
-      <ListSpecialties specialties={specialties} />
+      <AddDoctor
+        onCreate={handleAddDoctor}
+        show={userVisible}
+        onHide={closeDoctor}
+        onCancel={closeDoctor}
+        specialties={specialties}
+        doctors={doctors}
+      />
+      <ListSpecialties specialties={specialties} branches={branches} />
     </>
   );
 }

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Schema } from 'rsuite';
-import { CRTextInput, CRModal, CRSelectInput } from 'components';
-import { mapArrToChoices } from 'utils/misc';
+import { CRModal, CRSelectInput } from 'components';
 
 const { StringType } = Schema.Types;
 
@@ -10,14 +9,24 @@ const model = Schema.Model({
 });
 
 const initialValues = {
-  branch: '',
-  specialty: '',
+  branchId: null,
+  specialtyId: null,
 };
 
-export default function AddSpecialty({ show, onCancel, onCreate, branches }) {
+export default function AddSpecialty({
+  show,
+  onAdd,
+  onCancel,
+  branches,
+  specialties,
+}) {
   const [formValue, setFormValue] = useState(initialValues);
 
-  const branchesName = mapArrToChoices(branches.map(branch => branch.name));
+  useEffect(() => {
+    if (!show) {
+      setFormValue(initialValues);
+    }
+  }, [show]);
 
   return (
     <CRModal
@@ -25,18 +34,29 @@ export default function AddSpecialty({ show, onCancel, onCreate, branches }) {
       header="Add Specialty"
       onHide={onCancel}
       onCancel={onCancel}
-      onOk={() => onCreate(formValue)}
+      onOk={() => onAdd(formValue)}
     >
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
         <CRSelectInput
-          name="branch"
+          name="branchId"
           label="Branch"
+          valueKey="id"
+          labelKey="name"
+          data={branches}
           block
-          cleanable={true}
-          searchable={true}
-          data={branchesName}
+          cleanable
+          searchable
         />
-        <CRTextInput name="specialty" label="Specialty" block />
+        <CRSelectInput
+          name="specialtyId"
+          label="Specialty"
+          valueKey="id"
+          labelKey="name"
+          data={specialties}
+          block
+          cleanable
+          searchable
+        />
       </Form>
     </CRModal>
   );
@@ -44,4 +64,7 @@ export default function AddSpecialty({ show, onCancel, onCreate, branches }) {
 
 AddSpecialty.propTypes = {};
 
-AddSpecialty.defaultProps = {};
+AddSpecialty.defaultProps = {
+  branches: [],
+  specialties: [],
+};

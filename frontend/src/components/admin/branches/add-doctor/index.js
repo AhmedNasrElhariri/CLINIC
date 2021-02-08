@@ -1,26 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
-import { CRTextInput, CRModal, CRSelectInput } from 'components';
-import { mapArrToChoices } from 'utils/misc';
+import { CRModal, CRSelectInput } from 'components';
 
 const { StringType } = Schema.Types;
 
 const model = Schema.Model({
-  branchName: StringType().isRequired('Branch name is required'),
-  specialties: StringType().isRequired('Specialties is required'),
-  doctors: StringType().isRequired('Doctors is required'),
+  branchId: StringType().isRequired('Branch is required'),
+  specialtyId: StringType().isRequired('Specialty is required'),
+  userId: StringType().isRequired('Specialties is required'),
 });
 
 const initialValues = {
-  branchName: '',
-  specialties: '',
-  doctors: '',
+  branchId: null,
+  specialtyId: null,
+  userId: null,
 };
 
-export default function AddDoctor({ show, onCancel, onCreate, branches }) {
+export default function AddDoctor({
+  show,
+  onCancel,
+  onCreate,
+  specialties,
+  doctors,
+}) {
   const [formValue, setFormValue] = useState(initialValues);
 
-  const branchesName = mapArrToChoices(branches.map(branch => branch.name));
+  useEffect(() => {
+    if (!show) {
+      setFormValue(initialValues);
+    }
+  }, [show]);
+
+  const branches = useMemo(() => {
+    const specialty = specialties.find(sp => sp.id === formValue.specialtyId);
+    return !!specialty ? specialty.branches : [];
+  }, [formValue.specialtyId, specialties]);
 
   return (
     <CRModal
@@ -32,15 +46,36 @@ export default function AddDoctor({ show, onCancel, onCreate, branches }) {
     >
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
         <CRSelectInput
-          name="branchName"
-          label="Branch Name"
+          name="specialtyId"
+          label="Specialty"
+          valueKey="id"
+          labelKey="name"
+          data={specialties}
           block
-          cleanable={true}
-          searchable={true}
-          data={branchesName}
+          cleanable
+          searchable
         />
-        <CRTextInput label="Specialties" name="specialties" />
-        <CRTextInput label="Doctors" name="doctors" />
+        <CRSelectInput
+          name="branchId"
+          label="Branch"
+          valueKey="id"
+          labelKey="name"
+          data={branches}
+          disabled={!formValue.specialtyId}
+          block
+          cleanable
+          searchable
+        />
+        <CRSelectInput
+          name="userId"
+          label="Doctor"
+          valueKey="id"
+          labelKey="name"
+          data={doctors}
+          block
+          cleanable
+          searchable
+        />
       </Form>
     </CRModal>
   );
@@ -48,4 +83,7 @@ export default function AddDoctor({ show, onCancel, onCreate, branches }) {
 
 AddDoctor.propTypes = {};
 
-AddDoctor.defaultProps = {};
+AddDoctor.defaultProps = {
+  specialties: [],
+  doctors: [],
+};

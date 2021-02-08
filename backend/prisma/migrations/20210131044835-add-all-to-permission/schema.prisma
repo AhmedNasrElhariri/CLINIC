@@ -1,0 +1,510 @@
+datasource postgresql {
+  provider = "postgresql"
+  url = "***"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum AppointmentType {
+  Examination
+  Followup
+  Urgent
+  Session
+  Surgery
+}
+
+enum AppointmentStatus {
+  Scheduled
+  Cancelled
+  Missed
+  Changed
+  Archived
+  Done
+  Closed
+}
+
+enum Position {
+  Admin
+  Doctor
+  Assistant
+}
+
+enum Sex {
+  Female
+  Male
+}
+
+enum FieldType {
+  Text
+  Number
+  LongText
+}
+
+enum PatientMembershipType {
+  Primary
+  Secondary
+}
+
+enum UnitOfMeaure {
+  PerUnit
+  Milligram
+  Kilogram
+  Millimeter
+  Centimetre
+  Tablet
+  Stripe
+}
+
+enum InventoryOperation {
+  Add
+  Substract
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+model Organization {
+  id              String           @id @default(uuid())
+  name            String
+  item            Item[]
+  hospital        Hospital[]
+  surgery         Surgery[]
+  patientSurgery  PatientSurgery[]
+  roles           PermissionRole[]
+  permissions     Permission[]
+  rules           Rule[]
+  branchs         Branch[]
+  specialties     Specialty[]
+  users           User[]
+  userSpecialties UserSpecialty[]
+}
+
+model User {
+  id               String             @id @default(uuid())
+  name             String
+  email            String             @unique
+  password         String
+  organization     Organization       @relation(fields: [organizationId], references: [id])
+  organizationId   String
+  appointments     Appointment[]
+  views            View[]
+  viewStatus       ViewStatus[]
+  clinics          Clinic[]           @relation(references: [id])
+  workingHours     WorkingHours[]
+  snippets         Snippet[]
+  permissions      Json               @default("[]")
+  avatar           String?
+  position         Position
+  events           Event[]
+  inventoryHistory InventoryHistory[]
+  rules            Rule[]
+  specialties      UserSpecialty[]
+}
+
+model Patient {
+  id               String                @id @default(uuid())
+  name             String
+  phoneNo          String                @unique
+  type             PatientMembershipType
+  appointments     Appointment[]
+  age              Int
+  sex              Sex
+  organizationId   String
+  guardianName     String?
+  pateintLab       PatientLab[]
+  medicalHistory   MedicalHistory[]
+  familyHistory    FamilyHistory[]
+  inventoryHistory InventoryHistory[]
+  patientSurgery   PatientSurgery[]
+}
+
+model Appointment {
+  id          String             @id @default(uuid())
+  date        DateTime           @default(now())
+  type        AppointmentType
+  patient     Patient            @relation(fields: [patientId], references: [id])
+  patientId   String
+  doctor      User               @relation(fields: [doctorId], references: [id])
+  doctorId    String
+  labs        String?            @default("[]")
+  status      AppointmentStatus
+  data        AppointmentField[]
+  collections Collection[]
+  clinic      Clinic             @relation(fields: [clinicId], references: [id])
+  clinicId    String
+  notes       String?            @default("")
+}
+
+model View {
+  id                  String          @id @default(uuid())
+  name                String
+  type                AppointmentType @default(Examination)
+  user                User            @relation(fields: [userId], references: [id])
+  userId              String
+  fieldGroups         FieldGroup[]
+  activeViewsStatuses ViewStatus[]
+}
+
+model ViewStatus {
+  id           String @id @default(uuid())
+  user         User   @relation(fields: [userId], references: [id])
+  userId       String
+  activeView   View   @relation(fields: [activeViewId], references: [id])
+  activeViewId String
+}
+
+model FieldGroup {
+  id     String  @id @default(uuid())
+  name   String
+  order  Int
+  view   View    @relation(fields: [viewId], references: [id])
+  viewId String
+  fields Field[]
+
+  @@unique([order, viewId], name: "order_viewId_unique_constraint")
+}
+
+model Field {
+  id                String             @id @default(uuid())
+  name              String
+  order             Int
+  type              FieldType
+  required          Boolean
+  fieldGroup        FieldGroup?        @relation(fields: [fieldGroupId], references: [id])
+  fieldGroupId      String?
+  appointmentFields AppointmentField[]
+
+  @@unique([order, fieldGroupId], name: "order_fieldGroupId_unique_constraint")
+}
+
+model AppointmentField {
+  id            String      @id @default(uuid())
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  appointmentId String
+  field         Field       @relation(fields: [fieldId], references: [id])
+  fieldId       String
+  value         String
+
+  @@unique([appointmentId, fieldId], name: "appointment_fieldId_unique_constraint")
+}
+
+model File {
+  id           String        @id @default(uuid())
+  url          String
+  filename     String
+  comment      String?
+  collection   Collection?   @relation(fields: [collectionId], references: [id])
+  collectionId String?
+  mimetype     String?
+  encoding     String?
+  clinic       Clinic[]
+  labDocument  LabDocument[]
+}
+
+model Clinic {
+  id                String  @id @default(uuid())
+  name              String?
+  examinationPrice  Int     @default(0)
+  followupPrice     Int     @default(0)
+  urgentPrice       Int     @default(0)
+  duration          Int     @default(5)
+  appointmentsCount Int     @default(20)
+
+
+  // shown in prescription
+  doctorName             String? @default("")
+  doctorNameAr           String? @default("")
+  doctorTitle            String? @default("")
+  doctorTitleAr          String? @default("")
+  doctorJobDescription   String? @default("")
+  doctorJobDescriptionAr String? @default("")
+  phoneNo                String? @default("")
+  phoneNo1               String? @default("")
+  address                String? @default("")
+  address1               String? @default("")
+
+  logo             File?              @relation(fields: [logoId], references: [id])
+  logoId           String?
+  users            User[]             @relation(references: [id])
+  organizationId   String
+  expense          Expense[]
+  revenue          Revenue[]
+  appointment      Appointment[]
+  sessions         Json               @default("[]")
+  inventoryItem    InventoryItem[]
+  inventoryHistory InventoryHistory[]
+}
+
+model Week {
+  id     String @id @default(uuid())
+  weekNo Int
+  year   Int
+
+  WorkingHours WorkingHours[]
+  @@unique([weekNo, year], name: "week_year_unique_constraint")
+}
+
+model WorkingHours {
+  id       String   @id @default(uuid())
+  week     Week     @relation(fields: [weekId], references: [id])
+  weekId   String
+  doctor   User     @relation(fields: [doctorId], references: [id])
+  doctorId String
+  start    DateTime
+  end      DateTime
+}
+
+model Snippet {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  title  String @unique
+  body   String
+}
+
+model PatientLab {
+  id        String        @id @default(uuid())
+  patient   Patient       @relation(fields: [patientId], references: [id])
+  patientId String
+  name      String
+  documents LabDocument[]
+
+  @@unique([name, patientId], name: "name_patientId_unique_constraint")
+}
+
+model LabDocument {
+  id           String     @id @default(uuid())
+  file         File       @relation(fields: [fileId], references: [id])
+  fileId       String
+  patientLab   PatientLab @relation(fields: [patientLabId], references: [id])
+  patientLabId String
+}
+
+model MedicalHistory {
+  id           String    @id @default(uuid())
+  medicineName String
+  frequency    String?
+  dose         String?
+  fromDate     DateTime?
+  patient      Patient   @relation(fields: [patientId], references: [id])
+  patientId    String
+}
+
+model FamilyHistory {
+  id        String  @id @default(uuid())
+  disease   String
+  relative  String
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
+}
+
+model Expense {
+  id        String   @id @default(uuid())
+  name      String
+  date      DateTime
+  amount    Int
+  invoiceNo String?
+  clinic    Clinic   @relation(fields: [clinicId], references: [id])
+  clinicId  String
+}
+
+model Revenue {
+  id        String   @id @default(uuid())
+  name      String
+  date      DateTime
+  amount    Int
+  invoiceNo String?
+  clinic    Clinic   @relation(fields: [clinicId], references: [id])
+  clinicId  String
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  notifierId String
+  userId     String
+  type       String
+  message    String
+  viewed     Boolean  @default(false)
+  date       DateTime @default(now())
+}
+
+model Event {
+  id     String   @id @default(uuid())
+  user   User     @relation(fields: [userId], references: [id])
+  userId String
+  name   String
+  start  DateTime
+  end    DateTime
+}
+
+model Collection {
+  id            String      @id @default(uuid())
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  appointmentId String
+  caption       String      @default("")
+  images        File[]
+}
+
+model Item {
+  id               String             @id @default(uuid())
+  name             String             @unique
+  unitOfMeasure    UnitOfMeaure
+  quantity         Int
+  barcode          String?
+  notes            String?
+  organization     Organization       @relation(fields: [organizationId], references: [id])
+  organizationId   String
+  inventoryItems   InventoryItem[]
+  inventoryHistory InventoryHistory[]
+}
+
+model InventoryItem {
+  quantity Int
+  item     Item   @relation(fields: [itemId], references: [id])
+  itemId   String
+  clinic   Clinic @relation(fields: [clinicId], references: [id])
+  clinicId String
+
+  @@id([itemId, clinicId])
+}
+
+model InventoryHistory {
+  id        String             @id @default(uuid())
+  item      Item               @relation(fields: [itemId], references: [id])
+  itemId    String
+  clinic    Clinic             @relation(fields: [clinicId], references: [id])
+  clinicId  String
+  user      User               @relation(fields: [userId], references: [id])
+  userId    String
+  patient   Patient?           @relation(fields: [patientId], references: [id])
+  patientId String?
+  operation InventoryOperation
+  quantity  Int
+  price     Int?
+  date      DateTime
+}
+
+model Hospital {
+  id             String           @id @default(uuid())
+  name           String
+  phoneNo        String?
+  address        String?
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+  organizationId String
+  PatientSurgery PatientSurgery[]
+}
+
+model Surgery {
+  id             String           @id @default(uuid())
+  name           String
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+  organizationId String
+  patientSurgery PatientSurgery[]
+}
+
+model PatientSurgery {
+  id             String       @id @default(uuid())
+  patient        Patient      @relation(fields: [patientId], references: [id])
+  patientId      String
+  surgery        Surgery      @relation(fields: [surgeryId], references: [id])
+  surgeryId      String
+  hospital       Hospital     @relation(fields: [hospitalId], references: [id])
+  hospitalId     String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  date           DateTime
+  fees           Int?
+}
+
+// permissions
+
+enum PermissionLevel {
+  Organization
+  Branch
+  Specialty
+  User
+}
+
+model PermissionRole {
+  id             String       @id @default(uuid())
+  name           String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  permissions    Permission[]
+}
+
+model Permission {
+  id             String          @id @default(uuid())
+  all            Boolean         @default(false)
+  role           PermissionRole  @relation(fields: [roleId], references: [id])
+  roleId         String
+  action         Action          @relation(fields: [actionId], references: [id])
+  actionId       String
+  level          PermissionLevel
+  rules          Rule[]
+  organization   Organization    @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  @@unique([actionId, roleId], name: "actionId_roleId_unique_constraint")
+}
+
+model Rule {
+  id             String       @id @default(uuid())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  branch         Branch?      @relation(fields: [branchId], references: [id])
+  branchId       String?
+  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  user           User?        @relation(fields: [userId], references: [id])
+  userId         String?
+  permission     Permission   @relation(fields: [permissionId], references: [id])
+  permissionId   String
+}
+
+model Branch {
+  id              String          @id @default(uuid())
+  name            String
+  address         String?
+  phoneNo         String?
+  notes           String?
+  organization    Organization    @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  rules           Rule[]
+  specialties     Specialty[]
+  userSpecialties UserSpecialty[]
+}
+
+model Specialty {
+  id              String          @id @default(uuid())
+  name            String
+  organization    Organization    @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  rules           Rule[]
+  branches        Branch[]
+  userSpecialties UserSpecialty[]
+}
+
+model UserSpecialty {
+  id             String       @id @default(uuid())
+  branch         Branch       @relation(fields: [branchId], references: [id])
+  branchId       String
+  specialty      Specialty    @relation(fields: [specialtyId], references: [id])
+  specialtyId    String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  @@unique([userId, branchId], name: "userId_branchId_unique_constraint")
+}
+
+model Action {
+  id          String       @id @default(uuid())
+  name        String
+  subject     String
+  permissions Permission[]
+}
+
+// end permission

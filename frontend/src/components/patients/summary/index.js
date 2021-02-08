@@ -4,7 +4,7 @@ import { Modal, Whisper, Tooltip } from 'rsuite';
 
 import { Div, H6, CRNav, CRVDivider, H3, CRButton } from 'components';
 import { formatDate } from 'utils/date';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
 import { KeyStyled, ValueStyled } from './style';
