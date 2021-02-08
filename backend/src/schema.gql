@@ -167,7 +167,6 @@ type Mutation {
   ): MedicineDefinition
   addPatientReport(patientReport: PatientReportInput!): PatientReport
   editPatientReport(patientReport: PatientReportInput!): PatientReport
-  createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
   createRole(role: RoleInput!): Role!
   createBranch(branch: BranchInput!): Branch!
   createSpecialty(specialty: SpecialtyInput!): Specialty!

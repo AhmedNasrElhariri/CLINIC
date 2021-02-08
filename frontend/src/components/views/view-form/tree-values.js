@@ -3,16 +3,16 @@ import { Input, Tree } from 'rsuite';
 import { nanoid } from 'nanoid';
 import { CRModal, CRButton } from 'components';
 
-const findNode = (nodeId, DataItemType, node) => {
+const findNode = (nodeId, dataItemType, node) => {
   if (node.value === nodeId) {
     if (!node.children) {
       node.children = [];
     }
-    node.children.push(DataItemType);
+    node.children = [...node.children, dataItemType];
   } else {
     if (node.children) {
       for (let i = 0; i < node.children.length; i++) {
-        findNode(nodeId, DataItemType, node.children[i]);
+        findNode(nodeId, dataItemType, node.children[i]);
       }
     }
   }
@@ -25,7 +25,7 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
   );
   const [label, setLabel] = useState('');
   const [activeNode, setActiveNode] = useState({});
-  const DataItemType = {
+  const dataItemType = {
     value: nanoid(),
     label: label,
     refKey: activeNode.refKey,
@@ -39,12 +39,11 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
     },
   ]);
   const addNode = useCallback(() => {
-    findNode(activeNode.value, DataItemType, data[0]);
+    findNode(activeNode.value, dataItemType, data[0]);
     setData([data[0]]);
-    console.log(data);
-    setActiveNode({});
     setLabel('');
-  }, [DataItemType, activeNode.value, data]);
+  }, [activeNode.value, data, dataItemType]);
+
   return (
     <CRModal
       show={visible}

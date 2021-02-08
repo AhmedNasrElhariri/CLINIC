@@ -33,10 +33,6 @@ const RolePermission = () => {
   }, [indexePermissions]);
 
   useEffect(() => {
-    setRoleForm({ name: 'test role' });
-  }, []);
-
-  useEffect(() => {
     setTimeout(() => setFF(data), 2000);
   }, []);
 
