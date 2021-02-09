@@ -169,6 +169,12 @@ function usePermissions({
     () => R.indexBy(R.prop('id'))(formPermissions),
     [formPermissions]
   );
+  const fetchRoles = [
+    { id: 1, name: 'Role1',users:[{id:1,name:"ahmed"},{id:2,name:"taher"},{id:3,name:"eslam"}]},
+    { id: 2, name: 'Role2',users:[{id:1,name:"aaa"},{id:2,name:"bbb"},{id:3,name:"cc"}] },
+    { id: 3, name: 'Role3',users:[{id:1,name:"www"},{id:2,name:"eee"},{id:3,name:"mmm"}] },
+    { id: 4, name: 'Role4',users:[{id:1,name:"ooo"},{id:2,name:"uuu"},{id:3,name:"uuu"}] },
+  ];
 
   return useMemo(
     () => ({
@@ -186,6 +192,7 @@ function usePermissions({
       addDoctor: data => addDoctor({ variables: data }),
       indexePermissions,
       groupedPermissions,
+      fetchRoles,
     }),
     [
       actions,
@@ -201,6 +208,7 @@ function usePermissions({
       createUser,
       addSpecialty,
       addDoctor,
+      fetchRoles,
     ]
   );
 }

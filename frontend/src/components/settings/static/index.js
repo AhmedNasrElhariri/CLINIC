@@ -18,7 +18,7 @@ function StaticSettings() {
           appearance="tabs"
           activeKey={activeTab}
           onSelect={setActiveTab}
-          width={1000}
+          width={'100%'}
           justified
         >
           <CRNav.CRItem eventKey="0">Hospitals</CRNav.CRItem>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Table } from 'rsuite';
 import { H6 } from '../html/index';
 
-export const CRCellStyled = styled(H6).attrs(({ bold, semiBold }) => ({
+export const CRCellStyled = styled(H6).attrs(({ bold, semiBold, block}) => ({
   fontWeight: bold ? 800 : semiBold ? 600 : 400,
 }))`
   height: 100%;

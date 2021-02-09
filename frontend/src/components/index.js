@@ -1,5 +1,5 @@
 /******************       Admin    *********************************/
-export { default as AdminContainer } from './admin/admin-container';
+export { default as PermissionContainer } from './admin/admin-container';
 /******************       Branches    *********************************/
 export { default as BranchesContainer } from './admin/branches/branches-container';
 export { default as NewBranch } from './admin/branches/new-branch';
@@ -77,6 +77,7 @@ export { default as AccountingContainer } from './accounting/accounting-containe
 export { default as ListUsers } from './permissions/list-users';
 export { default as UserPermissions } from './permissions/user-permissions';
 export { default as RolePermissions } from './permissions/role-permissions';
+export { default as Assign } from './permissions/assign';
 
 /******************     Inventory    *******************************/
 export { default as InventoryPage } from './inventory/inventory-page';

@@ -29,7 +29,7 @@ import useFetchData from './fetch-data';
 import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
 import useAppointmentForm from 'hooks/appointment-form';
-
+import useFetchBranches from 'hooks/fetch-branches';
 import { mapArrWithIdsToChoices } from 'utils/misc';
 
 const { StringType } = Schema.Types;
@@ -56,7 +56,8 @@ const initialValues = {
   date: new Date(),
   time: null,
 };
-
+let specialties = [];
+let doctors = [];
 const canAddPatient = formValue =>
   formValue.type === 'Examination' ? true : false;
 
@@ -70,59 +71,42 @@ export default function NewAppointment() {
   const [formValue, setFormValue] = useState(initialValues);
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
-  const {
-    patients,
-    appointments,
-    updateAppointments,
-    branches,
-    specialties,
-    doctors,
-  } = useFetchData();
-
+  const { patients, appointments, updateAppointments } = useFetchData();
+  const { branches } = useFetchBranches();
   const [hideBranchSelect, setHideBranchSelect] = useState(false);
   const [hideSpecialtySelect, setHideSpecialtySelect] = useState(false);
-
+  console.log(formValue);
   useEffect(() => {
-    setFormValue(pre => ({ ...pre, specialty: '', doctor: '' }));
-    if (branches.length === 1) {
-      setHideBranchSelect(true);
-      setFormValue(pre => ({ ...pre, branch: branches[0].id }));
+    if (formValue.branch != '') {
+      specialties = branches[formValue.branch - 1].specialties;
     }
-    if (getSpecialtiesByBranchId(specialties, formValue.branch).length === 1) {
-      setFormValue(pre => ({
-        ...pre,
-        specialty: getSpecialtiesByBranchId(specialties, formValue.branch)[0]
-          .id,
-      }));
-      setHideBranchSelect(true);
-      setHideSpecialtySelect(true);
+    if (formValue.specialty != '') {
+      doctors = specialties[formValue.specialty - 1].doctors;
     }
-  }, [branches, formValue.branch, specialties]);
+  }, [formValue]);
+  // useEffect(() => {
+  //   if (getSpecialtiesByBranchId(specialties, formValue.branch).length === 1) {
+  //     setFormValue(pre => ({
+  //       ...pre,
+  //       specialty: getSpecialtiesByBranchId(specialties, formValue.branch)[0]
+  //         .id,
+  //     }));
+  //     setHideBranchSelect(true);
+  //     setHideSpecialtySelect(true);
+  //   }
+  //   setFormValue(pre => ({ ...pre, doctor: '' }));
 
-  useEffect(() => {
-    if (getSpecialtiesByBranchId(specialties, formValue.branch).length === 1) {
-      setFormValue(pre => ({
-        ...pre,
-        specialty: getSpecialtiesByBranchId(specialties, formValue.branch)[0]
-          .id,
-      }));
-      setHideBranchSelect(true);
-      setHideSpecialtySelect(true);
-    }
-    setFormValue(pre => ({ ...pre, doctor: '' }));
-
-    return () => {
-      setHideBranchSelect(false);
-      setHideSpecialtySelect(false);
-    };
-  }, [formValue.branch, formValue.specialty, specialties]);
+  //   return () => {
+  //     setHideBranchSelect(false);
+  //     setHideSpecialtySelect(false);
+  //   };
+  // }, [formValue.branch, formValue.specialty, specialties]);
 
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
     };
   }, []);
-
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: ({ createAppointment }) => {
       setFormValue(initialValues);
@@ -252,7 +236,7 @@ export default function NewAppointment() {
                 cleanable={false}
                 searchable={false}
                 accepter={SelectPicker}
-                data={specialtiesTypes(specialties, formValue.branch)}
+                data={mapArrWithIdsToChoices(specialties)}
               />
             )}
             {formValue.specialty !== '' && (
@@ -264,7 +248,7 @@ export default function NewAppointment() {
                 cleanable={false}
                 searchable={false}
                 accepter={SelectPicker}
-                data={doctorsTypes(doctors, formValue.specialty)}
+                data={mapArrWithIdsToChoices(doctors)}
               />
             )}
             <CRDatePicker

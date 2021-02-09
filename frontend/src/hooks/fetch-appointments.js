@@ -51,9 +51,60 @@ function useFetchAppointments({ includeSurgery } = {}) {
     [data, includeSurgery]
   );
 
-  const branches = useMemo(() => R.pipe(R.propOr([], 'branches'))(data), [
-    data,
-  ]);
+  const branches = [
+    {
+        id: 1,
+        name: "Cairo",
+        specialties:[
+          {
+              id:1,
+              name: "عظام",
+          },
+          {
+              id:2,
+              name: "اسنان",
+          }
+        ]
+    },
+    {
+      id: 2,
+      name: "Giza",
+      specialties:[
+        {
+            id:1,
+            name: "عظام",
+            doctors:[
+              {
+                  id:1,
+                  name:"Ahmed",
+          
+              },
+              {
+                  id:2,
+                  name:"mona"
+              }
+            ]
+        },
+        {
+            id:2,
+            name: "اسنان",
+            doctors:[
+              {
+                  id:1,
+                  name:"Ahmed",
+          
+              },
+              {
+                  id:2,
+                  name:"mona"
+              }
+            ]
+        }
+      ],
+
+    },
+
+];
 
   const specialties = useMemo(() => R.pipe(R.propOr([], 'specialties'))(data), [
     data,

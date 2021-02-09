@@ -10,7 +10,7 @@ import {
   ListPatients,
   Patient,
   ReportsContainer,
-  AdminContainer,
+  PermissionContainer,
   ListViews,
   CreateView,
   ClinicInfo,
@@ -18,7 +18,6 @@ import {
   Snippets,
   ListUsers,
   UserPermissions,
-  RolePermissions,
   Profile,
   InventoryPage,
   PatientSurgeriesContainer,
@@ -67,8 +66,8 @@ function AppRouter() {
       <Route path="/reports">
         <ReportsContainer />
       </Route>
-      <Route path="/admin">
-        <AdminContainer />
+      <Route path="/permission">
+        <PermissionContainer />
       </Route>
       <Route path="/views/new">
         <CreateView />
@@ -92,13 +91,6 @@ function AppRouter() {
       <ProtectedRoute
         path="/permissions"
         component={ListUsers}
-        action="manage"
-        subject="all"
-        exact
-      />
-      <Route
-        path="/permissions/role"
-        component={RolePermissions}
         action="manage"
         subject="all"
         exact

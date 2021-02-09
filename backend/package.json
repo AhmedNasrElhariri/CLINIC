@@ -9,7 +9,7 @@
     "build": "dotenv -e .env -- webpack --config=webpack.prod.js",
     "build1": "npm run db-source:test1 && dotenv -e .test1.env -- webpack --config=webpack.prod.js",
     "db-source:test1": "ENV_FILE=./.test1.env npm run db-source",
-    "dev": "npm run db-source:dev && dotenv -e .env.dev -- webpack --config ./webpack.dev.js --watch",
+    "dev": "dotenv -e .env.dev -- webpack --config ./webpack.dev.js --watch",
     "dev:prod-db": "npm run db-source:dev-prod && dotenv -e .env -- webpack --config ./webpack.dev.js --watch",
     "build-server": "webpack --config=webpack.server.js",
     "db-source": "node database-connection",

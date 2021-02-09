@@ -106,6 +106,7 @@ const RolePermission = () => {
             : { rules }
         )
       );
+    console.log(permissions);
     const role = {
       name: roleForm.name,
       permissions,
