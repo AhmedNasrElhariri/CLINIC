@@ -3,6 +3,7 @@ export { default as InputField } from './input-field';
 export { default as CRCheckField } from './check-field';
 export { default as CRTextInput } from './input/text-input';
 export { default as CRTextArea } from './input/text-area';
+export { default as CRCascader } from './cascader';
 export { default as CRNumberInput } from './input/number-input';
 export { default as CRSelectInput } from './select-input';
 export { default as CRButton } from './button/';
