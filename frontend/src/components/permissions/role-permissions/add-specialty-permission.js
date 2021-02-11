@@ -5,8 +5,10 @@ import * as R from 'ramda';
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../list-selections-items/index';
 import { ALL_CHOICE } from 'utils/constants';
+import useFetchBranches from 'hooks/fetch-branches';
 
-const AddSpecialtyPermissions = ({ branches, rules, onAdd, onDelete }) => {
+const AddSpecialtyPermissions = ({rules, onAdd, onDelete }) => {
+  const { branches } = useFetchBranches();
   const [formValue, setFormValue] = useState({
     branchId: null,
     specialtyId: null,
@@ -27,7 +29,6 @@ const AddSpecialtyPermissions = ({ branches, rules, onAdd, onDelete }) => {
       ),
     [branches]
   );
-
   const specialtiesNames = useMemo(
     () =>
       R.flatten(branches.map(b => b.specialties)).reduce(

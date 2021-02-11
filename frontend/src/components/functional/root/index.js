@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
-
+import Fab from 'components/appointments/new-appointment/fab';
 import { AppRouter, Login } from 'components';
 import {
   ContainerStyled,
@@ -19,6 +19,9 @@ import { filterPatientBy } from 'utils/patient';
 import useUserProfile from './fetch-user';
 
 function Root() {
+  const[ open , setOpen] = useState(false);
+  const [patientModal, setPatientModal] = useState(false);
+  const [type, setType] = useState(0);
   const history = useHistory();
   const [searchValue, setSearchValue] = useState('');
   const {
@@ -66,12 +69,23 @@ function Root() {
   if (!isVerified) {
     return <div>Loading ...</div>;
   }
+  const items = [
+    { to: '/appointments/today', name: `Today's Appointments` },
+    { to: '/calendar', name: 'Calendar' },
+    { to: '/appointments', name: 'Appointments' , extra:  <Fab obj={1} open={open} setOpen={setOpen}/>},
+    { to: '/patients', name: 'Patients', extra:  <Fab obj={2} patientModal={patientModal} setPatientModal={setPatientModal} /> },
+    { to: '/reports', name: 'Reports' },
+    { to: '/surgeries', name: 'Surgeries' },
+    { to: '/report-printouts', name: 'Report Printouts' },
+    { to: '/permissions', name: 'Permissions' },
+  
+  ];
 
   return (
     <ContainerStyled>
       {isAuthenticated ? (
         <>
-          <Sidebar />
+          <Sidebar items={items} />
           <MainStyled>
             <Navbar
               onLogout={logout}
@@ -89,7 +103,7 @@ function Root() {
             </ContentStyled>
           </MainStyled>
           <Can I="create" a="Appointment">
-            <NewAppointment />
+            <NewAppointment open={open} setOpen={setOpen} patientModal={patientModal} setPatientModal={setPatientModal} />
           </Can>
         </>
       ) : (

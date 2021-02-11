@@ -66,7 +66,7 @@ function AppRouter() {
       <Route path="/reports">
         <ReportsContainer />
       </Route>
-      <Route path="/permission">
+      <Route path="/permissions">
         <PermissionContainer />
       </Route>
       <Route path="/views/new">

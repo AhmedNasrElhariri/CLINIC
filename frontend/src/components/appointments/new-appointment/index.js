@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import * as moment from 'moment';
 import { useMutation } from '@apollo/client';
 import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
-
+import { AddOLIcon, ExitOLIcon } from 'components/icons/index';
 import {
   CRSelectInput,
   CRTimePicker,
@@ -65,9 +65,7 @@ const searchBy = (text, _, patient) => {
   return filterPatientBy(text, patient);
 };
 
-export default function NewAppointment() {
-  const [patientModal, setPatientModal] = useState(false);
-  const [open, setOpen] = useState(false);
+export default function NewAppointment({open,setOpen,patientModal,setPatientModal}) {
   const [formValue, setFormValue] = useState(initialValues);
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
@@ -75,7 +73,6 @@ export default function NewAppointment() {
   const { branches } = useFetchBranches();
   const [hideBranchSelect, setHideBranchSelect] = useState(false);
   const [hideSpecialtySelect, setHideSpecialtySelect] = useState(false);
-  console.log(formValue);
   useEffect(() => {
     if (formValue.branch != '') {
       specialties = branches[formValue.branch - 1].specialties;
@@ -97,6 +94,7 @@ export default function NewAppointment() {
   //   setFormValue(pre => ({ ...pre, doctor: '' }));
 
   //   return () => {
+
   //     setHideBranchSelect(false);
   //     setHideSpecialtySelect(false);
   //   };
@@ -156,9 +154,18 @@ export default function NewAppointment() {
         show={patientModal}
         onHide={hideModal}
       />
-      <Div position="fixed" right={64} bottom={64} zIndex={99999}>
+      {/* <Div position="fixed" left={320} bottom={502} zIndex={99999}>
         <Fab open={open} setOpen={setOpen} />
-      </Div>
+      </Div> */}
+      {/* <Div position="fixed" left={320} bottom={425} zIndex={99999}>
+          <Div cursor="pointer" >
+            {patientModal ? (
+              <ExitOLIcon style={{height:'30px',width:'30px',borderRadius:'30px'}} onClick={() => setPatientModal(false)} />
+            ) : (
+              <AddOLIcon style={{height:'30px',width:'30px',borderRadius:'30px'}} onClick={() => setPatientModal(true)} />
+            )}
+          </Div>
+      </Div> */}
       <CRModal
         show={open}
         header="New Appointment"

@@ -3,7 +3,8 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 import Users from 'components/admin/users/list-users';
-import { flexGrow,styled } from 'styled-system';
+
+
 function ListAssigns({ data }) {
   return (
     <>
@@ -15,11 +16,11 @@ function ListAssigns({ data }) {
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Users</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
+            <CRTable.CRCell >
               {({ users }) => (
-                <CRTable.CRCellStyled>
+                <CRTable.CRCellStyled style={{display:'block'}}>
                   {users.map(u => (
-                    <div style={{ width: '100%',display:'inline-block' }}>{u.name},  </div>
+                    <div>{u.name}</div>
                   ))}
                 </CRTable.CRCellStyled>
               )}
