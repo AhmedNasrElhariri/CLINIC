@@ -17,7 +17,7 @@ const initialValues = {
   guardianName: '',
 };
 
-export default function NewPatient({ show, onHide, onCreate }) {
+export default function NewPatient({ show, onHide }) {
   const [formValue, setFormValue] = useState(initialValues);
   const { patients, updateCache } = useFetchPatients();
   const [createPatient] = useMutation(CREATE_PATIENT, {
@@ -26,7 +26,7 @@ export default function NewPatient({ show, onHide, onCreate }) {
     },
     onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
-      onCreate(patient);
+      onHide();
       setFormValue(initialValues);
     },
     onError: () => Alert.error('Invalid Input'),

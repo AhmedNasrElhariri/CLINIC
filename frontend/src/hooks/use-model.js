@@ -11,7 +11,12 @@ const useModal = () => {
     setVisible(false);
   }, [setVisible]);
 
-  return { visible, setVisible, open, close };
+  const toggle = useCallback(() => {
+    console.log(!visible);
+    setVisible(!visible);
+  }, [visible]);
+
+  return { visible, setVisible, open, close, toggle };
 };
 
 export default useModal;

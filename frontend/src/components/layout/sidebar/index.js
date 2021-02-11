@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React from 'react';
 
 import { ContainerStyled, BodyStyled } from './style';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
@@ -6,9 +6,7 @@ import { useLocation, Link as RouterLink } from 'react-router-dom';
 import Link from './link';
 import { Div, Img } from 'components';
 
-
-
-export default function Sidebar({ onLogout ,items}) {
+export default function Sidebar({ items }) {
   const { pathname } = useLocation();
   return (
     <ContainerStyled>
@@ -18,9 +16,12 @@ export default function Sidebar({ onLogout ,items}) {
         </RouterLink>
       </Div>
       <BodyStyled>
-        {items.map(({ to, name ,extra}, idx) => (
+        {items.map(({ to, name, extra }, idx) => (
           <Link key={idx} to={to} active={pathname === to}>
-            <div>{name}{extra}</div>
+            <Div>
+              {name}
+              <Div display="inline" ml={3}>{extra}</Div>
+            </Div>
           </Link>
         ))}
       </BodyStyled>

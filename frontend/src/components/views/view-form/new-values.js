@@ -30,7 +30,6 @@ function NewValues({ type, visible, onOk, onClose, onChange }) {
     },
     [formValue]
   );
-  console.log(formValue);
   return (
     <CRModal
       show={visible}

@@ -15,7 +15,7 @@ export const ContainerStyled = styled.div`
 
 export const BodyStyled = styled.div`
   ${css({
-    paddingLeft: [20, 35, 50, 50, 100],
+    paddingLeft: [20, 20, 20, 30, 50],
   })}
   padding-top: ${props => props.theme.navbar.height};
 `;

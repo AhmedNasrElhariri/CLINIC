@@ -47,7 +47,6 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
     () => (type === 'create' ? 'Add New Medicine' : 'Edit Medicine '),
     [type]
   );
-  console.log(formValue);
   return (
     <CRModal
       show={visible}
