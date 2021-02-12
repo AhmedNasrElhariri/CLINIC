@@ -100,6 +100,8 @@ type Query {
   listBranches: [Branch!]
   listSpecialties: [Specialty!]
   listUsers: [User!]
+  listRoles: [Role!]
+  listBranchesTree(Subject: String!, Actions: String!): [Branch!]
 }
 
 ########################### Mutation ##################################
@@ -173,6 +175,7 @@ type Mutation {
   createUser(user: UserInput!): User!
   addSpecialty(branchId: ID!, specialtyId: ID!): Branch!
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
+  assignRoleToUser(userId: ID!, roleId: ID!): Boolean
 }
 
 ########################### Auth ##################################
@@ -197,16 +200,29 @@ type User {
   permissions: [Permission!]
   avatar: String
   specialty: Specialty
+  role: Role
 }
 
 type Permission {
+  id: ID!
   action: String
   subject: String
+  level: PermissionLevel!
+  rules: [Rule!]
+}
+
+type Rule {
+  organizationId: ID
+  branchId: ID
+  specialtyId: ID
+  userId: ID
 }
 
 type Role {
   id: ID!
   name: String!
+  users: [User!]
+  permissions: [Permission!]
 }
 
 type Branch {

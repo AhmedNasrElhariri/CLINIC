@@ -1,3 +1,4 @@
 # Prisma Migrate lockfile v1
 
-20210208090345-create-new
+20210211022727-init
+20210212052332-appointment--doctor-id-to-user-id

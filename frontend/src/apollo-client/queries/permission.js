@@ -56,6 +56,35 @@ export const LIST_USERS = gql`
         id
         name
       }
+      role {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const LIST_ROLES = gql`
+  {
+    listRoles {
+      id
+      name
+      users {
+        id
+        name
+      }
+      permissions {
+        id
+        level
+        action
+        subject
+        rules {
+          organizationId
+          branchId
+          specialtyId
+          userId
+        }
+      }
     }
   }
 `;
@@ -105,5 +134,11 @@ export const ADD_DOCTOR = gql`
     addDoctor(branchId: $branchId, specialtyId: $specialtyId, userId: $userId) {
       id
     }
+  }
+`;
+
+export const ASSIGN_ROLE_TO_DOCOTR = gql`
+  mutation assignRoleToUser($userId: ID!, $roleId: ID!) {
+    assignRoleToUser(userId: $userId, roleId: $roleId)
   }
 `;

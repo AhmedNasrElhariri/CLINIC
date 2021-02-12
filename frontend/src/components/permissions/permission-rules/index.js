@@ -23,14 +23,14 @@ const PermissionRules = ({
     <FormGroup>
       <CRLabel>{label}</CRLabel>
       <RadioGroup name="radioList" value={level} onChange={onChange}>
-        <FlexboxGrid align="baseline" justify="space-between">
+        <FlexboxGrid align="middle" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
             <RadioStyled value={PERMISSION_LEVELS.ORGNIZATION}>
               <span>Organization</span>
             </RadioStyled>
           </FlexboxGrid.Item>
         </FlexboxGrid>
-        <FlexboxGrid align="baseline" justify="space-between">
+        <FlexboxGrid align="middle" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
             <RadioStyled value={PERMISSION_LEVELS.BRANCH}>branch</RadioStyled>
           </FlexboxGrid.Item>
@@ -45,7 +45,7 @@ const PermissionRules = ({
             </FlexboxGrid.Item>
           )}
         </FlexboxGrid>
-        <FlexboxGrid align="baseline" justify="space-between">
+        <FlexboxGrid align="middle" justify="space-between">
           <FlexboxGrid.Item colspan={4}>
             <RadioStyled value={PERMISSION_LEVELS.SPECIALTY}>
               Specialty
@@ -62,7 +62,7 @@ const PermissionRules = ({
             </FlexboxGrid.Item>
           )}
         </FlexboxGrid>
-        <FlexboxGrid align="baseline">
+        <FlexboxGrid align="middle">
           <FlexboxGrid.Item colspan={4}>
             <RadioStyled value={PERMISSION_LEVELS.USER}>User</RadioStyled>
           </FlexboxGrid.Item>

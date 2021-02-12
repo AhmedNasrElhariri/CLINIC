@@ -1,9 +1,7 @@
 import React from 'react';
-import { Icon } from 'rsuite';
+import { Tag } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
-import Users from 'components/admin/users/list-users';
-
 
 function ListAssigns({ data }) {
   return (
@@ -16,11 +14,11 @@ function ListAssigns({ data }) {
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Users</CRTable.CRHeaderCell>
-            <CRTable.CRCell >
+            <CRTable.CRCell>
               {({ users }) => (
-                <CRTable.CRCellStyled style={{display:'block'}}>
-                  {users.map(u => (
-                    <div>{u.name}</div>
+                <CRTable.CRCellStyled style={{ display: 'block' }}>
+                  {users.map((u, index) => (
+                    <Tag key={index}>{u.name}</Tag>
                   ))}
                 </CRTable.CRCellStyled>
               )}

@@ -21,9 +21,6 @@ export const FIELD_TYPES = [
   { label: 'Radio', value: RADIO_FIELD_TYPE },
   { label: 'Check', value: CHECK_FIELD_TYPE },
   { label: 'Tree', value: TREE_FIELD_TYPE },
-  { label: 'Check Box', value: CHECK_BOX_FIELD_TYPE },
-  { label: 'Radio Box', value: RADIO__BOX_FIELD_TYPE },
-  { label: 'Select ', value: SELECT_FIELD_TYPE },
 ];
 
 export const MEDICAL_HISTORY_TYPES = Object.freeze({

@@ -45,3 +45,10 @@ export const POSITION = {
   Doctor: 'Doctor',
   Assistant: 'Assistant',
 };
+
+export const PERMISSION_LEVEL = Object.freeze({
+  ORGANIZATION: 'Organization',
+  BRANCH: 'Branch',
+  SPECIALTY: 'Specialty',
+  USER: 'User',
+});

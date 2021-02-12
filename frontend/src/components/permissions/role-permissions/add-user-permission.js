@@ -1,16 +1,28 @@
-import React, { useState, memo, useMemo, useCallback } from 'react';
+import React, { useState, memo, useMemo, useCallback, useEffect } from 'react';
 import * as R from 'ramda';
 import { FlexboxGrid } from 'rsuite';
 
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../../permissions/list-selections-items/index';
 import { ALL_CHOICE } from 'utils/constants';
+import form from 'components/accounting/form';
 
 const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({
     branchId: null,
+    specialtyId: null,
     userId: null,
   });
+
+  useEffect(() => {
+    const doctor = doctors.find(d => d.id === formValue.userId);
+    if (!doctor) {
+      return;
+    }
+    setFormValue(f => ({ ...f, specialtyId: doctor.specialty.id }));
+  }, [doctors, formValue.userId]);
+
+  console.log(formValue);
 
   const add = useCallback(() => {
     onAdd(formValue);

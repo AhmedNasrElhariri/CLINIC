@@ -3,10 +3,18 @@ import { Form, SelectPicker, Schema } from 'rsuite';
 
 import { CRModal, CRSelectInput } from 'components';
 
-
 const model = Schema.Model({});
 
-function NewAssign({ formValue, onChange, type, visible, onOk, onClose,users,fetchRoles }) {
+function NewAssign({
+  formValue,
+  onChange,
+  type,
+  visible,
+  onOk,
+  onClose,
+  users,
+  roles,
+}) {
   const header = useMemo(() => (type === 'create' ? 'New Assign' : ''), [type]);
   return (
     <CRModal
@@ -18,23 +26,23 @@ function NewAssign({ formValue, onChange, type, visible, onOk, onClose,users,fet
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRSelectInput
-          name="role"
+          name="roleId"
           placeholder="Permission Roles"
           cleanable={true}
           accepter={SelectPicker}
-          data={fetchRoles}
+          data={roles}
           labelKey="name"
-          valueKey="name"
+          valueKey="id"
           virtualized={false}
           block
         />
         <CRSelectInput
-          name="user"
+          name="userId"
           placeholder="Users"
           cleanable={true}
           accepter={SelectPicker}
           labelKey="name"
-          valueKey="name"
+          valueKey="id"
           data={users}
           virtualized={false}
           block
@@ -46,6 +54,7 @@ function NewAssign({ formValue, onChange, type, visible, onOk, onClose,users,fet
 
 NewAssign.defaultProps = {
   type: 'create',
+  roles: [],
 };
 
 export default NewAssign;

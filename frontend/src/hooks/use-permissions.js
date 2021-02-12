@@ -9,11 +9,13 @@ import {
   LIST_BRANCHES,
   LIST_SPECIALTIES,
   LIST_USERS,
+  LIST_ROLES,
   CREATE_BRANCH,
   CREATE_SPECIALITY,
   CREATE_USER,
   ADD_SPECIALITY,
   ADD_DOCTOR,
+  ASSIGN_ROLE_TO_DOCOTR,
 } from 'apollo-client/queries/permission';
 import { POSITIONS } from 'utils/constants';
 
@@ -51,6 +53,7 @@ function usePermissions({
   onCreateUser,
   onAddSpecialty,
   onAddDoctor,
+  onAssignRoleToUser,
 } = {}) {
   /* queries */
   const { data: actionsData } = useQuery(GET_ACTIONS);
@@ -77,21 +80,26 @@ function usePermissions({
     () => users.filter(u => u.position === POSITIONS.DOCTOR),
     [users]
   );
+  const { data: rolesData } = useQuery(LIST_ROLES);
+  const roles = useMemo(() => R.propOr([], 'listRoles')(rolesData), [
+    rolesData,
+  ]);
 
   /* mutations */
   const [createRole] = useMutation(CREATE_ROLE, {
     onCompleted() {
-      Alert.success('the role has been created Successfully');
+      Alert.success('The role has been created Successfully');
       onCreateRole && onCreateRole();
     },
     onError() {
       Alert.error('Failed to create new role');
     },
+    refetchQueries: [{ query: LIST_ROLES }],
   });
 
   const [createBranch] = useMutation(CREATE_BRANCH, {
     onCompleted() {
-      Alert.success('the branch has been created Successfully');
+      Alert.success('The branch has been created Successfully');
       onCreateBranch && onCreateBranch();
     },
     update(cache, { data: { createBranch: branch } }) {
@@ -104,7 +112,7 @@ function usePermissions({
 
   const [createSpecialty] = useMutation(CREATE_SPECIALITY, {
     onCompleted() {
-      Alert.success('the specialty has been created Successfully');
+      Alert.success('The specialty has been created Successfully');
       onCreateSpecialty && onCreateSpecialty();
     },
     update(cache, { data: { createSpecialty: specialty } }) {
@@ -117,7 +125,7 @@ function usePermissions({
 
   const [createUser] = useMutation(CREATE_USER, {
     onCompleted() {
-      Alert.success('the user has been created Successfully');
+      Alert.success('The user has been created Successfully');
       onCreateUser && onCreateUser();
     },
     update(cache, { data: { createUser: user } }) {
@@ -130,7 +138,7 @@ function usePermissions({
 
   const [addSpecialty] = useMutation(ADD_SPECIALITY, {
     onCompleted() {
-      Alert.success('the specialty has been added Successfully');
+      Alert.success('The specialty has been added Successfully');
       onAddSpecialty && onAddSpecialty();
     },
     onError(err) {
@@ -141,13 +149,24 @@ function usePermissions({
 
   const [addDoctor] = useMutation(ADD_DOCTOR, {
     onCompleted() {
-      Alert.success('the doctory has been added Successfully');
+      Alert.success('The doctor has been added Successfully');
       onAddDoctor && onAddDoctor();
     },
     onError(err) {
       Alert.error(err.message);
     },
     refetchQueries: [{ query: LIST_SPECIALTIES }],
+  });
+
+  const [assignRoleToUser] = useMutation(ASSIGN_ROLE_TO_DOCOTR, {
+    onCompleted() {
+      Alert.success('Assigning role to user has been completed Successfully');
+      onAssignRoleToUser && onAssignRoleToUser();
+    },
+    onError(err) {
+      Alert.error(err.message);
+    },
+    refetchQueries: [{ query: LIST_ROLES }],
   });
 
   /* compound */
@@ -169,12 +188,6 @@ function usePermissions({
     () => R.indexBy(R.prop('id'))(formPermissions),
     [formPermissions]
   );
-  const fetchRoles = [
-    { id: 1, name: 'Role1',users:[{id:1,name:"ahmed"},{id:2,name:"taher"},{id:3,name:"eslam"}]},
-    { id: 2, name: 'Role2',users:[{id:1,name:"aaa"},{id:2,name:"bbb"},{id:3,name:"cc"}] },
-    { id: 3, name: 'Role3',users:[{id:1,name:"www"},{id:2,name:"eee"},{id:3,name:"mmm"}] },
-    { id: 4, name: 'Role4',users:[{id:1,name:"ooo"},{id:2,name:"uuu"},{id:3,name:"uuu"}] },
-  ];
 
   return useMemo(
     () => ({
@@ -190,9 +203,10 @@ function usePermissions({
       createUser: user => createUser({ variables: { user } }),
       addSpecialty: data => addSpecialty({ variables: data }),
       addDoctor: data => addDoctor({ variables: data }),
+      assignRoleToUser: data => assignRoleToUser({ variables: data }),
       indexePermissions,
       groupedPermissions,
-      fetchRoles,
+      roles,
     }),
     [
       actions,
@@ -202,13 +216,14 @@ function usePermissions({
       doctors,
       indexePermissions,
       groupedPermissions,
+      roles,
       createRole,
       createBranch,
       createSpecialty,
       createUser,
       addSpecialty,
       addDoctor,
-      fetchRoles,
+      assignRoleToUser,
     ]
   );
 }

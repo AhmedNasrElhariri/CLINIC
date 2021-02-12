@@ -7,7 +7,6 @@ import {
   BranchesContainer,
   UsersContainer,
   SpecialtiesContainer,
-  RolePermissions,
   Assign,
 } from 'components';
 
@@ -28,14 +27,12 @@ const AdminContainer = () => {
         <CRNav.CRItem eventKey="specialties">Specialties</CRNav.CRItem>
         <CRNav.CRItem eventKey="users">Users</CRNav.CRItem>
         <CRNav.CRItem eventKey="rolePermission">Role Permission</CRNav.CRItem>
-        <CRNav.CRItem eventKey="assign">Assign</CRNav.CRItem>
       </CRNav>
       <CRCard borderless>
         {activeTab === 'branches' && <BranchesContainer />}
         {activeTab === 'specialties' && <SpecialtiesContainer />}
         {activeTab === 'users' && <UsersContainer />}
-        {activeTab === 'rolePermission' && <RolePermissions />}
-        {activeTab === 'assign' && <Assign />}
+        {activeTab === 'rolePermission' && <Assign />}
       </CRCard>
     </>
   );

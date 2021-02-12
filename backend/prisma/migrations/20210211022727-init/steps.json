@@ -385,6 +385,59 @@
     {
       "tag": "CreateField",
       "model": "User",
+      "field": "role",
+      "type": "PermissionRole",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "role"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "role"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[roleId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "role"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "roleId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
       "field": "appointments",
       "type": "Appointment",
       "arity": "List"
@@ -5674,6 +5727,13 @@
       "model": "PermissionRole",
       "field": "permissions",
       "type": "Permission",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PermissionRole",
+      "field": "users",
+      "type": "User",
       "arity": "List"
     },
     {

@@ -29,8 +29,8 @@ import useFetchData from './fetch-data';
 import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
 import useAppointmentForm from 'hooks/appointment-form';
-import useFetchBranches from 'hooks/fetch-branches';
 import { mapArrWithIdsToChoices } from 'utils/misc';
+import usePermissions from 'hooks/use-permissions';
 
 const { StringType } = Schema.Types;
 
@@ -72,10 +72,9 @@ export default function NewAppointment({ show, onHide }) {
   const [selectedHour, setSelectedHour] = useState(null);
   const [currentClinic] = useGlobalState('currentClinic');
   const { patients, appointments, updateAppointments } = useFetchData();
-  const { branches } = useFetchBranches();
+  const { branches } = usePermissions();
   const [hideBranchSelect, setHideBranchSelect] = useState(false);
   const [hideSpecialtySelect, setHideSpecialtySelect] = useState(false);
-  console.log(formValue);
   useEffect(() => {
     if (formValue.branch !== '') {
       specialties = branches[formValue.branch - 1].specialties;

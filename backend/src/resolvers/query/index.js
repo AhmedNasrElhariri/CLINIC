@@ -34,3 +34,5 @@ export { default as getActions } from './get-actions';
 export { default as listBranches } from './list-branches';
 export { default as listSpecialties } from './list-specialties';
 export { default as listUsers } from './list-users';
+export { default as listRoles } from './list-roles';
+export { default as listBranchesTree } from './list-branches-tree';

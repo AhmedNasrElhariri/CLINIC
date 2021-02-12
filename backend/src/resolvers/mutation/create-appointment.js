@@ -8,7 +8,7 @@ import { getClinicDoctoryByClinicId } from '@/services/clinic';
 import { onAppointmentCreate } from '@/services/notification.service';
 import { APPOINTMENTS_STATUS, APPOINTMENTS_TYPES } from '@/utils/constants';
 
-const getDayAppointments = (day, doctorId) => {
+const getDayAppointments = (day, userId) => {
   const start = getStartOfDay(day);
   const end = getEndOfDay(day);
   return prisma.appointment.findMany({
@@ -23,7 +23,7 @@ const getDayAppointments = (day, doctorId) => {
       type: {
         not: APPOINTMENTS_TYPES.Urgent,
       },
-      doctorId,
+      userId,
     },
   });
 };

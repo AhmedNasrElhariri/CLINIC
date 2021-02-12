@@ -12,7 +12,6 @@ const useModal = () => {
   }, [setVisible]);
 
   const toggle = useCallback(() => {
-    console.log(!visible);
     setVisible(!visible);
   }, [visible]);
 

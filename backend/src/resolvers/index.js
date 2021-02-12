@@ -13,6 +13,7 @@ import * as formPatientSurgery from './patient-surgery';
 import * as formBranch from './branch';
 import * as formSpecialty from './specialty';
 import * as fromUser from './user';
+import * as fromRole from './role';
 
 export default {
   Query: fromQuery,
@@ -28,5 +29,6 @@ export default {
   Branch: formBranch,
   Specialty: formSpecialty,
   User: fromUser,
+  Role: fromRole,
   ...fromCustomResolvers,
 };

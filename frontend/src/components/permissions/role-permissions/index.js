@@ -1,40 +1,37 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import * as R from 'ramda';
 import { Toggle, Panel, Form } from 'rsuite';
 
-import {
-  MainContainer,
-  Div,
-  H6,
-  H5,
-  CRButton,
-  CRTextInput,
-  CRPanelGroup,
-} from 'components';
+import { Div, H6, H5, CRTextInput, CRPanelGroup, CRModal } from 'components';
 
 import PermissionRules from '../permission-rules';
 import usePermissions from 'hooks/use-permissions';
 import { ALL_CHOICE } from 'utils/constants';
 
-import data from './test.json';
+const RolePermissions = ({ show, onClose, onCreate }) => {
+  const [formValue, setFormValue] = useState({ name: '', permissions: {} });
 
-const RolePermission = () => {
-  const [ff, setFF] = useState({});
-  const [roleForm, setRoleForm] = useState({ name: '' });
-  const { branches, doctors } = usePermissions();
+  const setFF = useCallback(permissions => {
+    setFormValue(f => ({ ...f, permissions }));
+  }, []);
   const {
+    branches,
+    doctors,
     createRole,
     indexePermissions,
     groupedPermissions,
-  } = usePermissions();
+  } = usePermissions({
+    onCreateRole: () => {
+      setFF(indexePermissions);
+      onCreate();
+    },
+  });
+
+  const ff = useMemo(() => formValue.permissions, [formValue.permissions]);
 
   useEffect(() => {
-    setFF(indexePermissions);
+    setFormValue(f => ({ ...f, permissions: indexePermissions }));
   }, [indexePermissions]);
-
-  useEffect(() => {
-    setTimeout(() => setFF(data), 2000);
-  }, []);
 
   const toggle = useCallback(
     id => {
@@ -42,7 +39,7 @@ const RolePermission = () => {
       const newForm = { ...action, visibility: !action.visibility };
       setFF({ ...ff, [id]: newForm });
     },
-    [ff]
+    [ff, setFF]
   );
 
   const handleLevelChange = (actionId, level) => {
@@ -59,8 +56,6 @@ const RolePermission = () => {
     });
   };
 
-  // console.log(JSON.stringify(ff));
-
   const handleAddMapping = useCallback(
     (actionId, value) => {
       const oldAction = ff[actionId];
@@ -75,7 +70,7 @@ const RolePermission = () => {
         [actionId]: newActions,
       });
     },
-    [ff]
+    [ff, setFF]
   );
 
   const handleDeleteMapping = useCallback(
@@ -92,7 +87,7 @@ const RolePermission = () => {
         [actionId]: newActions,
       });
     },
-    [ff]
+    [ff, setFF]
   );
 
   const handleCreateRole = useCallback(() => {
@@ -106,95 +101,82 @@ const RolePermission = () => {
             : { rules }
         )
       );
-    console.log(permissions);
     const role = {
-      name: roleForm.name,
+      name: formValue.name,
       permissions,
     };
-    console.log(role);
     createRole(role);
-  }, [createRole, ff, roleForm.name]);
+  }, [createRole, ff, formValue.name]);
 
   return (
-    <>
-      <MainContainer
-        title="Role Permissions"
-        more={
-          <CRButton small primary onClick={handleCreateRole}>
-            Save
-          </CRButton>
-        }
-      >
-        <Div mb={4}>
-          <Form formValue={roleForm} onChange={setRoleForm}>
-            <CRTextInput name="name" label="Role Name" />
-          </Form>
-        </Div>
-
-        {Object.keys(ff).length > 1 && (
-          <Form formValue={ff} fluid>
-            {Object.entries(groupedPermissions).map(
-              ([subject, actions], index) => (
-                <CRPanelGroup
-                  accordion
-                  style={{ marginBottom: 30 }}
-                  key={index}
+    <CRModal
+      header="Role Permissions"
+      onOk={handleCreateRole}
+      onHide={onClose}
+      onCancel={onClose}
+      width={1200}
+      show={show}
+      bodyStyle={{ padding: '50px 80px' }}
+    >
+      <Form formValue={formValue} onChange={setFormValue} fluid>
+        <CRTextInput name="name" label="Role Name" />
+        {Object.keys(ff).length > 1 &&
+          Object.entries(groupedPermissions).map(
+            ([subject, actions], index) => (
+              <CRPanelGroup accordion style={{ marginBottom: 30 }} key={index}>
+                <Panel
+                  header={
+                    <H5 fontWeight={600} px={4} py={3}>
+                      {subject}
+                    </H5>
+                  }
                 >
-                  <Panel
-                    header={
-                      <H5 fontWeight={600} px={4} py={3}>
-                        {subject}
-                      </H5>
-                    }
-                  >
-                    <Div pl={50}>
-                      {actions.map(({ id, name }) => {
-                        const f = ff[id];
-                        return (
-                          <React.Fragment key={id}>
-                            <Div
-                              key={id}
-                              display="flex"
-                              justifyContent="space-between"
-                              height={60}
-                              cursor="pointer"
-                              onClick={() => toggle(id)}
-                            >
-                              <H6>{name}</H6>
-                              <Toggle
-                                size="md"
-                                checked={f.visibility}
-                                onChange={() => toggle(id)}
-                              />
-                            </Div>
-                            {f.visibility && (
-                              <PermissionRules
-                                label="Permission Level"
-                                level={f.level}
-                                branches={branches}
-                                doctors={doctors}
-                                rules={f.rules}
-                                onChange={level => handleLevelChange(id, level)}
-                                onAdd={value => handleAddMapping(id, value)}
-                                onDelete={mappingIndex =>
-                                  handleDeleteMapping(id, mappingIndex)
-                                }
-                              />
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                    </Div>
-                  </Panel>
-                </CRPanelGroup>
-              )
-            )}
-          </Form>
-        )}
-      </MainContainer>
-    </>
+                  <Div pl={50}>
+                    {actions.map(({ id, name }) => {
+                      const f = ff[id];
+                      return (
+                        <React.Fragment key={id}>
+                          <Div
+                            key={id}
+                            display="flex"
+                            justifyContent="space-between"
+                            height={60}
+                            cursor="pointer"
+                            onClick={() => toggle(id)}
+                          >
+                            <H6>{name}</H6>
+                            <Toggle
+                              size="md"
+                              checked={f.visibility}
+                              onChange={() => toggle(id)}
+                            />
+                          </Div>
+                          {f.visibility && (
+                            <PermissionRules
+                              label="Permission Level"
+                              level={f.level}
+                              branches={branches}
+                              doctors={doctors}
+                              rules={f.rules}
+                              onChange={level => handleLevelChange(id, level)}
+                              onAdd={value => handleAddMapping(id, value)}
+                              onDelete={mappingIndex =>
+                                handleDeleteMapping(id, mappingIndex)
+                              }
+                            />
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </Div>
+                </Panel>
+              </CRPanelGroup>
+            )
+          )}
+      </Form>
+    </CRModal>
   );
 };
-RolePermission.propTypes = {};
+RolePermissions.propTypes = {};
 
-export default RolePermission;
+export default RolePermissions;

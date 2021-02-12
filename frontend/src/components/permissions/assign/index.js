@@ -1,36 +1,52 @@
 import React, { useCallback } from 'react';
-import { Div, CRButton } from 'components';
+
+import { Div, CRButton, RolePermissions } from 'components';
 import useFrom from 'hooks/form';
 import { useModal } from 'components/widgets/modal';
 import NewAssign from './new-assign';
 import ListAssigns from './list-assign';
 import usersPermission from 'hooks/use-permissions';
-const initValue = { name: '' };
 
-function Assign(){
+const initValue = { roleId: null, userId: null };
+
+function Assign() {
   const { visible, open, close } = useModal();
+  const {
+    visible: assignPermissions,
+    open: openPermissions,
+    close: closePermissions,
+  } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  const { users, fetchRoles } = usersPermission();
+  const { users, roles, assignRoleToUser } = usersPermission({
+    onAssignRoleToUser: close,
+  });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
 
-
   const handleAdd = useCallback(() => {
-    
-  }, );
+    assignRoleToUser(formValue);
+  }, [assignRoleToUser, formValue]);
 
   return (
     <>
       <Div textAlign="right">
+        <CRButton primary small onClick={openPermissions}>
+          Create
+        </CRButton>
         <CRButton primary small onClick={handleClickCreate}>
           Assign
         </CRButton>
       </Div>
+      <RolePermissions
+        show={assignPermissions}
+        onClose={closePermissions}
+        onCreate={closePermissions}
+      />
       <NewAssign
         visible={visible}
         formValue={formValue}
@@ -39,12 +55,11 @@ function Assign(){
         onClose={close}
         type={type}
         users={users}
-        fetchRoles={fetchRoles}
+        roles={roles}
       />
-      <ListAssigns data={fetchRoles}/>
-      
+      <ListAssigns data={roles} />
     </>
   );
-};
+}
 
 export default Assign;

@@ -7,9 +7,23 @@ export default ({ open, onClick }) => {
   return (
     <Div cursor="pointer" display="inline">
       {open ? (
-        <ExitOLIcon onClick={onClick} width={35} />
+        <ExitOLIcon
+          onClick={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            onClick();
+          }}
+          width={35}
+        />
       ) : (
-        <AddOLIcon onClick={onClick} width={35}/>
+        <AddOLIcon
+          onClick={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            onClick();
+          }}
+          width={35}
+        />
       )}
     </Div>
   );
