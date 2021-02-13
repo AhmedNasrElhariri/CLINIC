@@ -42,12 +42,13 @@ function AppRouter() {
         <Appointments />
       </Route>
 
-      <ProtectedRoute
+      <Route path="/appointments/:appointmentId" component={Appointment} />
+      {/* <ProtectedRoute
         path="/appointments/:appointmentId"
         component={Appointment}
         action="view"
         subject="Appointment"
-      />
+      /> */}
 
       <Route path="/patients" exact>
         <ListPatients />

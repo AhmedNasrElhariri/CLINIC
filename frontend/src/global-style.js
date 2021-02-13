@@ -75,7 +75,7 @@ export default createGlobalStyle`
       border-radius: 10px;
     }
 
-    .rs-picker-select-menu-item{
+    .cr-picker .rs-picker-select-menu-item{
       padding: 0 !important;
     }
 

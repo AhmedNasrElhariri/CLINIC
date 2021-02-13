@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -40,9 +40,6 @@ enum FieldType {
   Text
   Number
   LongText
-  Radio
-  Check
-  NestedSelector
 }
 
 enum PatientMembershipType {

@@ -10,7 +10,6 @@
     "@react-pdf/renderer": "^1.6.11",
     "@rsuite/charts": "^3.2.4",
     "@rsuite/responsive-nav": "^0.0.10",
-    "@types/shortid": "0.0.29",
     "apollo-upload-client": "^13.0.0",
     "compressorjs": "^1.0.7",
     "echarts": "^4.7.0",

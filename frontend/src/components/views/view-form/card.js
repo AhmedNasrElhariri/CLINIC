@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { Panel, Form, Input, SelectPicker, Icon } from 'rsuite';
 import { InputField, Div, H6 } from 'components';
 import useGlobalState from 'state';
-import { FIELD_TYPES } from 'utils/constants';
-import NewValues from './new-values';
-import TreeValues from './tree-values';
-import useFrom from 'hooks/form';
+import { FIELD_TYPES, FIELDS } from 'utils/constants';
+import Choices from './choices';
+import NestedChoices from './nested-choices';
 import useModal from 'hooks/use-model';
 
 const Card = ({ laneId, index }) => {
@@ -17,7 +16,7 @@ const Card = ({ laneId, index }) => {
   const cards = lane.cards;
   const formValue = cards[index];
   const { visible, open, close } = useModal();
-  const { type, setType } = useFrom({});
+
   const update = useCallback(
     data => {
       const newLanes = lanes.map(l => ({
@@ -36,18 +35,34 @@ const Card = ({ laneId, index }) => {
     }));
     setLanes(newLanes);
   }, [formValue, lanes, setLanes]);
+
   const handleClickCreate = useCallback(() => {
-    setType('create');
     setPopup(1);
     open();
-  }, [open, setType]);
+  }, [open]);
 
   const handleClickCreateTree = useCallback(() => {
-    setType('create');
     setPopup(2);
     open();
-  }, [open, setType]);
-  const handleAdd = () => {};
+  }, [open]);
+
+  const handleSetChoices = choices => {
+    console.log(choices);
+    update({ ...formValue, choices });
+    close();
+  };
+
+  const handleClose = useCallback(() => {
+    close();
+  }, [close]);
+
+  const fieldType = useMemo(() => formValue.type, [formValue.type]);
+  const hasChoices = useMemo(() => {
+    return [FIELDS.Radio, FIELDS.Check, FIELDS.NestedSelector].includes(
+      fieldType
+    );
+  }, [fieldType]);
+
   return (
     <>
       <Panel
@@ -57,14 +72,12 @@ const Card = ({ laneId, index }) => {
         <Div>
           <Form fluid onChange={update} formValue={formValue}>
             <InputField
-              size="xs"
               label="Name"
               name="name"
               accepter={Input}
               placeholder="Name"
             />
             <InputField
-              size="xs"
               label="Type"
               name="type"
               accepter={SelectPicker}
@@ -74,14 +87,12 @@ const Card = ({ laneId, index }) => {
               data={FIELD_TYPES}
             />
           </Form>
-          {formValue.type === 'Radio' ||
-          formValue.type === 'Check' ||
-          formValue.type === 'Tree' ? (
+          {hasChoices && (
             <H6
               primary
               small
               onClick={
-                formValue.type === 'Tree'
+                fieldType === FIELDS.NestedSelector
                   ? handleClickCreateTree
                   : handleClickCreate
               }
@@ -92,10 +103,8 @@ const Card = ({ laneId, index }) => {
                 float: 'left',
               }}
             >
-              Add New Values +
+              Choices +
             </H6>
-          ) : (
-            <></>
           )}
         </Div>
         <Icon
@@ -109,19 +118,17 @@ const Card = ({ laneId, index }) => {
         />
 
         {popup === 1 && (
-          <NewValues
+          <Choices
             visible={visible}
-            onOk={handleAdd}
-            onClose={close}
-            type={type}
+            onOk={handleSetChoices}
+            onClose={handleClose}
           />
         )}
         {popup === 2 && (
-          <TreeValues
+          <NestedChoices
             visible={visible}
-            onOk={handleAdd}
-            onClose={close}
-            type={type}
+            onOk={handleSetChoices}
+            onClose={handleClose}
           />
         )}
       </Panel>

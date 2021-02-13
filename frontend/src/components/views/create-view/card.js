@@ -1,13 +1,5 @@
 import React, { useCallback } from 'react';
-import {
-  Panel,
-  Form,
-  Input,
-  SelectPicker,
-  RadioGroup,
-  Radio,
-  Icon,
-} from 'rsuite';
+import { Panel, Form, Input, SelectPicker, Icon } from 'rsuite';
 import { InputField } from 'components';
 import useGlobalState from 'state';
 import { FIELD_TYPES } from 'utils/constants';
@@ -35,7 +27,6 @@ const Card = ({ laneId, index }) => {
       ...l,
       cards: l.cards.filter(c => c.id !== formValue.id),
     }));
-    console.log(newLanes);
     setLanes(newLanes);
   }, [formValue, lanes, setLanes]);
 
@@ -46,14 +37,12 @@ const Card = ({ laneId, index }) => {
     >
       <Form fluid onChange={update} formValue={formValue}>
         <InputField
-          size="xs"
           label="Name"
           name="name"
           accepter={Input}
           placeholder="Name"
         />
         <InputField
-          size="xs"
           label="Type"
           name="type"
           accepter={SelectPicker}
@@ -62,15 +51,6 @@ const Card = ({ laneId, index }) => {
           placeholder="Select type"
           data={FIELD_TYPES}
         />
-        <InputField
-          name="required"
-          label="Required"
-          accepter={RadioGroup}
-          inline
-        >
-          <Radio value={true}>Yes</Radio>
-          <Radio value={false}>No</Radio>
-        </InputField>
       </Form>
       <Icon
         icon="trash"

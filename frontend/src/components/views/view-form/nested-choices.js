@@ -1,7 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { Input, Tree } from 'rsuite';
+import React, { useCallback, useState } from 'react';
+import { Input, Tree, Button } from 'rsuite';
 import { nanoid } from 'nanoid';
-import { CRModal, CRButton } from 'components';
+import { CRModal } from 'components';
 
 const findNode = (nodeId, dataItemType, node) => {
   if (node.value === nodeId) {
@@ -18,11 +18,19 @@ const findNode = (nodeId, dataItemType, node) => {
   }
 };
 
-function NewTree({ type, visible, onOk, onClose, onChange }) {
-  const header = useMemo(
-    () => (type === 'create' ? 'Add New Tree Values' : 'Edit Tree Values'),
-    [type]
-  );
+const toChoices = arr => {
+  if (!arr || !arr.length) {
+    return [];
+  }
+  return arr.map(({ label, children }) => {
+    return {
+      name: label,
+      choices: toChoices(children),
+    };
+  });
+};
+
+function NestedChoices({ visible, onOk, onClose }) {
   const [label, setLabel] = useState('');
   const [activeNode, setActiveNode] = useState({});
   const dataItemType = {
@@ -44,11 +52,15 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
     setLabel('');
   }, [activeNode.value, data, dataItemType]);
 
+  const handleOnOk = useCallback(() => {
+    onOk(toChoices(data[0].children));
+  }, [data, onOk]);
+
   return (
     <CRModal
       show={visible}
-      header={header}
-      onOk={onOk}
+      header="Choices"
+      onOk={handleOnOk}
       onHide={onClose}
       onCancel={onClose}
     >
@@ -58,7 +70,7 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
         onChange={value => setLabel(value)}
         style={{ display: 'inline', width: '75%', margin: 5 }}
       ></Input>
-      <CRButton
+      <Button
         primary
         small
         block
@@ -66,7 +78,7 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
         onClick={addNode}
       >
         ADD
-      </CRButton>
+      </Button>
       <Tree
         data={data}
         defaultExpandAll
@@ -76,8 +88,4 @@ function NewTree({ type, visible, onOk, onClose, onChange }) {
   );
 }
 
-NewTree.defaultProps = {
-  type: 'create',
-};
-
-export default NewTree;
+export default NestedChoices;

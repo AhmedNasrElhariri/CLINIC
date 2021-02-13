@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import Board from 'react-trello';
 import {
   AddCardLink as DAddCardLink,
@@ -12,17 +12,17 @@ import useGlobalState from 'state';
 
 const addCard = ({ onAdd }) => {
   onAdd({
-    id: uuidv4(),
+    id: nanoid(),
     name: '',
     type: '',
     isNew: true,
-    required: false,
+    choices: [],
   });
 };
 
 const addLane = ({ onAdd }) => {
   onAdd({
-    id: uuidv4(),
+    id: nanoid(),
     title: 'Untitled',
     isNew: true,
   });

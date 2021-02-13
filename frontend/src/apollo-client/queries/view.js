@@ -15,7 +15,6 @@ export const ACTIVE_VIEWS = gql`
           name
           order
           type
-          required
         }
       }
     }

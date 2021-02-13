@@ -5,7 +5,7 @@ export const TEXT_FIELD_TYPE = 'Text';
 export const LONG_TEXT_FIELD_TYPE = 'LongText';
 export const RADIO_FIELD_TYPE = 'Radio';
 export const CHECK_FIELD_TYPE = 'Check';
-export const TREE_FIELD_TYPE = 'Tree';
+export const NESTED_SELECTOR_FIELD_TYPE = 'NestedSelector';
 export const CHECK_BOX_FIELD_TYPE = 'CheckBox';
 export const RADIO__BOX_FIELD_TYPE = 'RadioBox';
 export const SELECT_FIELD_TYPE = 'SelectBox';
@@ -14,13 +14,22 @@ export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
 export const FULL_DATE_FORMAT = 'hh:mm a';
 export const FULL_DAY_FORMAT = 'DD-MM-YYYY hh:mm a';
 
+export const FIELDS = Object.freeze({
+  [NUMBER_FIELD_TYPE]: NUMBER_FIELD_TYPE,
+  [TEXT_FIELD_TYPE]: TEXT_FIELD_TYPE,
+  [LONG_TEXT_FIELD_TYPE]: LONG_TEXT_FIELD_TYPE,
+  [RADIO_FIELD_TYPE]: RADIO_FIELD_TYPE,
+  [CHECK_FIELD_TYPE]: CHECK_FIELD_TYPE,
+  [NESTED_SELECTOR_FIELD_TYPE]: NESTED_SELECTOR_FIELD_TYPE,
+});
+
 export const FIELD_TYPES = [
   { label: 'Number', value: NUMBER_FIELD_TYPE },
   { label: 'Text', value: TEXT_FIELD_TYPE },
   { label: 'Text Area', value: LONG_TEXT_FIELD_TYPE },
   { label: 'Radio', value: RADIO_FIELD_TYPE },
   { label: 'Check', value: CHECK_FIELD_TYPE },
-  { label: 'Tree', value: TREE_FIELD_TYPE },
+  { label: 'Nested Selector', value: NESTED_SELECTOR_FIELD_TYPE },
 ];
 
 export const MEDICAL_HISTORY_TYPES = Object.freeze({

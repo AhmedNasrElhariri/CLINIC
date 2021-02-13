@@ -38,6 +38,9 @@ enum FieldType {
   Text
   Number
   LongText
+  Radio
+  Check
+  NestedSelector
 }
 
 enum AppointmentStatus {
@@ -404,7 +407,6 @@ type Field {
   name: String!
   order: Int!
   type: FieldType!
-  required: Boolean!
 }
 
 type ViewStatus {
@@ -436,7 +438,7 @@ input FieldInput {
   name: String!
   order: Int!
   type: FieldType!
-  required: Boolean!
+  choices: JSON
 }
 
 ########################### File ##################################
