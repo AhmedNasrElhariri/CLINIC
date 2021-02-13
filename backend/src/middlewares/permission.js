@@ -48,7 +48,6 @@ export default shield(
   },
   {
     fallbackError: thrownThing => {
-      console.log(thrownThing);
       return thrownThing;
       // if (thrownThing instanceof APIExceptcion) {
       //   return thrownThing;

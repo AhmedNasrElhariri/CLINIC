@@ -1,17 +1,17 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 
-const appointments = async (_, { input }, { userId }) => {
-  let { clinicIds } = input;
+import { listFlattenUsersTree } from '@/services/permission.service';
+import { ACTIONS } from '@/utils/constants';
 
-  if (!clinicIds.length) {
-    clinicIds = await prisma.clinic
-      .findMany({
-        where: { users: { some: { id: userId } } },
-        select: { id: true },
-      })
-      .then(clinics => clinics.map(({ id }) => id));
-  }
+const appointments = async (_, { input }, { userId, organizationId }) => {
+  console.log(userId, organizationId);
+  const users = await listFlattenUsersTree({
+    userId,
+    organizationId,
+    action: ACTIONS.List_Appointment,
+  });
+  const ids = R.map(R.prop('id'))(users);
 
   return prisma.appointment.findMany({
     where: {
@@ -19,7 +19,9 @@ const appointments = async (_, { input }, { userId }) => {
         gte: R.prop('fromDate')(input),
         lte: R.prop('toDate')(input),
       },
-      clinicId: { in: clinicIds },
+      userId: {
+        in: ids,
+      },
     },
   });
 };

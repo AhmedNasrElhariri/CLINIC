@@ -2,11 +2,7 @@ import gql from 'graphql-tag';
 
 export const GET_ACTIONS = gql`
   {
-    getActions {
-      id
-      name
-      subject
-    }
+    getActions
   }
 `;
 
@@ -140,5 +136,22 @@ export const ADD_DOCTOR = gql`
 export const ASSIGN_ROLE_TO_DOCOTR = gql`
   mutation assignRoleToUser($userId: ID!, $roleId: ID!) {
     assignRoleToUser(userId: $userId, roleId: $roleId)
+  }
+`;
+
+export const LIST_BRANCHES_TREE = gql`
+  query listBranchesTree($action: String!) {
+    listBranchesTree(action: $action) {
+      id
+      name
+      specialties {
+        id
+        name
+        doctors {
+          id
+          name
+        }
+      }
+    }
   }
 `;

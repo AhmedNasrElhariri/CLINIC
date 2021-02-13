@@ -6,7 +6,7 @@ import { FIELD_TYPES } from 'utils/constants';
 import NewValues from './new-values';
 import TreeValues from './tree-values';
 import useFrom from 'hooks/form';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState('lanes');

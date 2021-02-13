@@ -4,7 +4,6 @@ import moment from 'moment';
 import { getStartOfDay, getEndOfDay } from '@/services/date.service';
 import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
-import { getClinicDoctoryByClinicId } from '@/services/clinic';
 import { onAppointmentCreate } from '@/services/notification.service';
 import { APPOINTMENTS_STATUS, APPOINTMENTS_TYPES } from '@/utils/constants';
 
@@ -30,13 +29,10 @@ const getDayAppointments = (day, userId) => {
 
 const isBeforeNow = date => moment(date).isBefore(moment(), 'minute');
 
-const createAppointment = async (
-  _,
-  { input: { patient, clinicId, ...appointment } },
-  { userId }
-) => {
-  const doctor = await getClinicDoctoryByClinicId(clinicId);
-  const appointments = await getDayAppointments(appointment.date, doctor.id);
+const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
+
+  const { patientId, userId, ...rest } = appointment;
+  const appointments = await getDayAppointments(appointment.date, userId);
 
   if (
     !(
@@ -55,22 +51,16 @@ const createAppointment = async (
 
   const createdAppointment = await prisma.appointment.create({
     data: {
-      ...appointment,
-      specialty: 'Dentistry',
-      status: 'Scheduled',
+      ...rest,
+      status: APPOINTMENTS_STATUS.SCHEDULED,
       patient: {
         connect: {
-          id: patient,
+          id: patientId,
         },
       },
-      clinic: {
+      user: {
         connect: {
-          id: clinicId,
-        },
-      },
-      doctor: {
-        connect: {
-          id: doctor.id,
+          id: userId,
         },
       },
     },
@@ -78,9 +68,9 @@ const createAppointment = async (
 
   if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {
     onAppointmentCreate({
-      userId: doctor.id,
-      notifierId: userId,
-      clinicId,
+      userId,
+      notifierId: creatorId,
+      clinicId: null,
       appointment: createdAppointment,
     });
   }

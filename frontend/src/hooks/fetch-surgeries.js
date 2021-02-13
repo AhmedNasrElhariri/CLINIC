@@ -8,7 +8,7 @@ import {
   DEFINE_SURGERY,
   LIST_SURGERIES,
   EDIT_SURGERY,
-} from 'apollo-client/queries/surgery';
+} from 'apollo-client/queries';
 
 const updateCache = mySurgeries => {
   client.writeQuery({

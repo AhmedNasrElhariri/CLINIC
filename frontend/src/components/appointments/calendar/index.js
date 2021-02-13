@@ -6,7 +6,7 @@ import { momentLocalizer, Views } from 'react-big-calendar';
 import { Div } from 'components';
 import NewEvent from './new-event';
 
-import useFetchAppointments from 'hooks/fetch-appointments';
+import useFetchAppointments from 'hooks/use-appointments';
 import components from './custom-components';
 import CalendarContext from './context';
 

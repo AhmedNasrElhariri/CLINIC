@@ -16,8 +16,9 @@ import {
   ADD_SPECIALITY,
   ADD_DOCTOR,
   ASSIGN_ROLE_TO_DOCOTR,
-} from 'apollo-client/queries/permission';
+} from 'apollo-client/queries';
 import { POSITIONS } from 'utils/constants';
+import { convertActionsToEntities } from 'utils/misc';
 
 const updateBranchesCache = (client, listBranches) => {
   client.writeQuery({
@@ -57,9 +58,10 @@ function usePermissions({
 } = {}) {
   /* queries */
   const { data: actionsData } = useQuery(GET_ACTIONS);
-  const actions = useMemo(() => R.propOr([], 'getActions')(actionsData), [
-    actionsData,
-  ]);
+  const actions = useMemo(
+    () => convertActionsToEntities(R.propOr([], 'getActions')(actionsData)),
+    [actionsData]
+  );
 
   const { data: branchesData } = useQuery(LIST_BRANCHES);
   const branches = useMemo(() => R.propOr([], 'listBranches')(branchesData), [

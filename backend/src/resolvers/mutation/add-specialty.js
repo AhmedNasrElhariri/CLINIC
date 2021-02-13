@@ -17,8 +17,6 @@ const addSpecialty = async (_, { branchId, specialtyId }) => {
     throw new APIExceptcion('Already existed');
   }
 
-  console.log(R.map(R.pick(['id']))([...specialties, specialty]));
-
   return prisma.branch.update({
     data: {
       specialties: {

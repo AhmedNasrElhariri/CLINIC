@@ -63,7 +63,7 @@ enum UnitOfMeaure {
 ########################### Query ##################################
 
 type Query {
-  hello(name: String): String!
+  hello(name: String): Boolean
   patients: [Patient!]
   clinicPatients(clinicId: ID!): [Patient!]
   appointments(input: AppointmentQueryInput): [Appointment!]
@@ -96,12 +96,12 @@ type Query {
   myImagesDefinition: [ImageDefinition!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
-  getActions: [Action!]
+  getActions: [String!]
   listBranches: [Branch!]
   listSpecialties: [Specialty!]
   listUsers: [User!]
   listRoles: [Role!]
-  listBranchesTree(Subject: String!, Actions: String!): [Branch!]
+  listBranchesTree(action: String!): [Branch!]
 }
 
 ########################### Mutation ##################################
@@ -109,7 +109,7 @@ type Query {
 type Mutation {
   createPatient(input: PatientInput!): Patient!
   editPatient(patient: PatientInput!): Patient!
-  createAppointment(input: AppointmentInput!): Appointment!
+  createAppointment(appointment: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
   archiveAppointment(id: ID!): Appointment!
   setAppointmentDone(
@@ -241,19 +241,13 @@ type Specialty {
   doctors: [User!]
 }
 
-type Action {
-  id: ID!
-  name: String!
-  subject: String!
-}
-
 input RoleInput {
   name: String!
   permissions: [PermissionInput!]!
 }
 
 input PermissionInput {
-  actionId: ID!
+  action: String!
   all: Boolean
   level: PermissionLevel!
   rules: [PermissionRuleInput!]
@@ -350,10 +344,10 @@ type AppointmentField {
 }
 
 input AppointmentInput {
-  patient: ID!
+  patientId: ID!
   date: Date!
   type: AppointmentType!
-  clinicId: ID!
+  userId: ID!
   labs: JSON
   notes: String
 }
@@ -374,7 +368,6 @@ input UpdateAppointmentInput {
 }
 
 input AppointmentQueryInput {
-  clinicIds: [ID!]!
   patients: [ID]
   fromDate: Date
   toDate: Date

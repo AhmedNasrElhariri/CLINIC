@@ -108,6 +108,27 @@ export const Labs = [
   { id: '4', title: 'SGPT' },
 ];
 
+export const ACTIONS = Object.freeze({
+  Create_Appointment: 'Create_Appointment',
+  List_Appointment: 'List_Appointment',
+  Reschedule_Appointment: 'Reschedule_Appointment',
+  Finish_Appointment: 'Finish_Appointment',
+  Cancel_Appointment: 'Cancel_Appointment',
+  Archive_Appointment: 'Archive_Appointment',
+  View_Patient: 'View_Patient',
+  View_Accounting: 'View_Accounting',
+  AddRevenue_Accounting: 'AddRevenue_Accounting',
+  AddExpense_Accounting: 'AddExpense_Accounting',
+  EditRevenue_Accounting: 'EditRevenue_Accounting',
+  EditExpense_Accounting: 'EditExpense_Accounting',
+  Print_Accounting: 'Print_Accounting',
+  View_Calendar: 'View_Calendar',
+  CreateEvent_Calendar: 'CreateEvent_Calendar',
+  View_Inventory: 'View_Inventory',
+  AddItem_Inventory: 'AddItem_Inventory',
+  ViewHistory_Inventory: 'ViewHistory_Inventory',
+  DefineItem_Inventory: 'DefineItem_Inventory',
+});
 
 export const appointmentHistory = [
   {

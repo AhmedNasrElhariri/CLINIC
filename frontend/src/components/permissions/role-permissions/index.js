@@ -95,7 +95,7 @@ const RolePermissions = ({ show, onClose, onCreate }) => {
       .filter(ff => ff.visibility)
       .map(({ id, rules, level }) =>
         Object.assign(
-          { actionId: id, level },
+          { action: id, level },
           rules.some(({ branchId }) => branchId === ALL_CHOICE)
             ? { all: true }
             : { rules }

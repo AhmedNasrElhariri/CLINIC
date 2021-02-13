@@ -1,0 +1,17 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateEnum",
+      "enum": "PermissionAction",
+      "createdValues": [
+        "Print_Accounting",
+        "View_Calendar"
+      ],
+      "deletedValues": [
+        "PrintAccounting",
+        "ViewCalendar"
+      ]
+    }
+  ]
+}

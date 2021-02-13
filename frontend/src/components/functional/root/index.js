@@ -20,24 +20,18 @@ import useUserProfile from './fetch-user';
 import useModal from 'hooks/use-model';
 
 function Root() {
-  // const [open, setOpen] = useState(false);
-  // const [patientModal, setPatientModal] = useState(false);
-
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
 
   const history = useHistory();
   const [searchValue, setSearchValue] = useState('');
   const {
-    clinics,
-    currentClinic,
     clearNotifications,
     onLoginFailed,
     onLoginSucceeded,
     logout,
     isVerified,
     isAuthenticated,
-    onSelectClinic,
     notifications,
     patients,
     user,
@@ -100,9 +94,6 @@ function Root() {
           <MainStyled>
             <Navbar
               onLogout={logout}
-              clinics={clinics}
-              onSelectClinic={onSelectClinic}
-              currentClinic={currentClinic}
               onClickAvatar={() => history.push('/me')}
               avatar={R.prop('avatar')(user)}
               notifications={notifications}
@@ -113,16 +104,10 @@ function Root() {
               <AppRouter></AppRouter>
             </ContentStyled>
           </MainStyled>
-          <Can I="create" a="Appointment">
-            <NewAppointment
-              show={visbleAppointment}
-              onHide={toggleAppointment}
-            />
-          </Can>
-          <NewPatient
-            show={visblePatient}
-            onHide={togglePatient}
-          />
+          {/* <Can I="create" a="Appointment"> */}
+          <NewAppointment show={visbleAppointment} onHide={toggleAppointment} />
+          {/* </Can> */}
+          <NewPatient show={visblePatient} onHide={togglePatient} />
         </>
       ) : (
         <>

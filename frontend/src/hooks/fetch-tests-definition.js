@@ -7,7 +7,7 @@ import {
   ADD_TEST_DEFINITION,
   EDIT_TEST_DEFINITION,
   LIST_TESTS_DEFINITION,
-} from 'apollo-client/queries/test-definition';
+} from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
 const updateCache = myTestsDefinition => {

@@ -12,7 +12,7 @@ const createPermissionRule = ({
 const createRole = async (_, { role }, { organizationId }) => {
   const { name, permissions } = role;
 
-  const permissionsArgs = permissions.map(({ level, all, actionId, rules }) =>
+  const permissionsArgs = permissions.map(({ level, all, action, rules }) =>
     Object.assign(
       {
         organization: {
@@ -20,11 +20,7 @@ const createRole = async (_, { role }, { organizationId }) => {
             id: organizationId,
           },
         },
-        action: {
-          connect: {
-            id: actionId,
-          },
-        },
+        action,
         level: level,
       },
       all

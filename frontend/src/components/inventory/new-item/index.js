@@ -9,11 +9,11 @@ import {
   CRNumberInput,
 } from 'components';
 import { isValid } from 'services/form';
-import { useModal } from '../../widgets/modal';
 import useFetctchInventory from 'hooks/fetch-inventory';
 import useFrom from 'hooks/form';
 import { CRSelectInput } from 'components/widgets';
 import { UNIT_OF_MEASURES } from 'utils/constants';
+import useModal from 'hooks/use-model';
 
 const { StringType } = Schema.Types;
 

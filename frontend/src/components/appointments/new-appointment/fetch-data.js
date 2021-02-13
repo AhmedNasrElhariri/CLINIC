@@ -1,5 +1,5 @@
 import { LIST_PATIENTS } from 'apollo-client/queries';
-import useFetchAppointments from 'hooks/fetch-appointments';
+import useFetchAppointments from 'hooks/use-appointments';
 import useFetchPatients from 'hooks/fetch-patients';
 
 export default function NewAppointment() {

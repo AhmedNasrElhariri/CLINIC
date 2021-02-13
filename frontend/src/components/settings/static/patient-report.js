@@ -3,10 +3,10 @@ import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import { useModal } from 'components/widgets/modal';
 import NewPatientReport from './new-patient-report';
 import ListPatientReports from './list-patient-report';
 import usePatientReports from 'hooks/fetch-patient-reports';
+import useModal from 'hooks/use-model';
 
 const initValue = { name: '', body: '' };
 

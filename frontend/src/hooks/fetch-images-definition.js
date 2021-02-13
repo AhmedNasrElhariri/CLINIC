@@ -7,7 +7,7 @@ import {
   ADD_IMAGE_DEFINITION,
   EDIT_IMAGE_DEFINITION,
   LIST_IMAGES_DEFINITION,
-} from 'apollo-client/queries/image-definition';
+} from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
 const updateCache = myImagesDefinition => {

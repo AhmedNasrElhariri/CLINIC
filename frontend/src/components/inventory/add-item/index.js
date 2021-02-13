@@ -4,10 +4,10 @@ import { Form, Schema, Alert } from 'rsuite';
 
 import { CRModal, CRButton, CRNumberInput, Div, H5 } from 'components';
 import { isValid } from 'services/form';
-import { useModal } from '../../widgets/modal';
 import useFetchInventory from 'hooks/fetch-inventory';
 import useFrom from 'hooks/form';
 import { CRSelectInput } from 'components/widgets';
+import useModal from 'hooks/use-model';
 
 const { StringType, NumberType } = Schema.Types;
 

@@ -1,4 +1,6 @@
 import { prisma } from '@';
+import * as R from 'ramda';
+
 import { PERMISSION_LEVEL } from '@/utils/constants';
 
 const byOrganization = organizationId =>
@@ -39,11 +41,6 @@ const bySpecialties = rules => {
 };
 
 const byUser = rules => {
-  // const userIds = rules.map(r => r.userId);
-  // const users = prisma.user.findMany({
-  //   where: { id: { in: userIds } },
-  //   include: { specialties: { include: { specialty: id } } },
-  // });
   const orArg = rules.map(({ userId, branchId, specialtyId }) => ({
     id: branchId,
     specialties: {
@@ -65,11 +62,34 @@ const byUser = rules => {
   });
 };
 
-const listBranchesTree = async (_, { id }, { userId, organizationId }) => {
-  const permission = await prisma.permission.findOne({
-    where: { id },
-    include: { rules: true },
-  });
+const listBranchesTree = async (_, { action }, { userId, organizationId }) => {
+  const role = await prisma.permissionRole
+    .findMany({
+      where: {
+        users: {
+          every: {
+            id: userId,
+          },
+        },
+      },
+      include: {
+        permissions: {
+          where: {
+            action,
+          },
+          include: {
+            rules: true,
+          },
+        },
+      },
+    })
+    .then(res => (res.length ? res[0] : null));
+
+  const permission = R.pathOr(null, ['permissions', '0'])(role);
+
+  if (!permission) {
+    return [];
+  }
 
   const { level, all, rules } = permission;
 

@@ -5,7 +5,7 @@ import { formatDate } from 'utils/date';
 import { filterAppointments, sortAppointments } from 'services/appointment';
 import { Div, CRCard, H3, CRTable } from 'components';
 import Filter from './filter';
-import useFetchAppointments from 'hooks/fetch-appointments';
+import useFetchAppointments from 'hooks/use-appointments';
 import ToolBar from '../today-appointments/toolbar';
 
 function Appointments() {

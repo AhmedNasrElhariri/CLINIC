@@ -1,38 +1,29 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import * as moment from 'moment';
-import { useMutation } from '@apollo/client';
 import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
 
 import {
   CRSelectInput,
   CRTimePicker,
   CRDatePicker,
-  Div,
   H5,
+  Div,
   CRModal,
   NewPatient,
 } from 'components';
-import { CREATE_APPOINTMENT } from 'apollo-client/queries';
 import { isBeforeToday } from 'utils/date';
 import { isValid } from 'services/form';
-import Fab from './fab';
 import { ModalBodyStyled, ContainerStyled } from './style';
-import useGlobalState from 'state';
-import {
-  sortAppointmentsByDate,
-  getSpecialtiesByBranchId,
-  specialtiesTypes,
-  doctorsTypes,
-} from 'services/appointment';
 
 import useFetchData from './fetch-data';
 import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
 import useAppointmentForm from 'hooks/appointment-form';
 import { mapArrWithIdsToChoices } from 'utils/misc';
-import usePermissions from 'hooks/use-permissions';
+import useNewAppointments from 'hooks/use-new-appointments';
+import useModal from 'hooks/use-model';
 
-const { StringType } = Schema.Types;
+const { StringType, DateType } = Schema.Types;
 
 const appointmentTypes = getCreatableApptTypes().map(type => ({
   label: type,
@@ -41,23 +32,21 @@ const appointmentTypes = getCreatableApptTypes().map(type => ({
 
 const model = Schema.Model({
   type: StringType().isRequired('Appointment Type is required'),
-  patient: StringType().isRequired('Patient Type is required'),
-  branch: StringType().isRequired('Branch Type is required'),
-  specialty: StringType().isRequired('Specialty Type is required'),
-  doctor: StringType().isRequired('Doctor Type is required'),
+  patientId: StringType().isRequired('Patient Type is required'),
+  userId: StringType().isRequired('Doctor Type is required'),
+  date: DateType().isRequired('Day Type is required'),
+  time: DateType().isRequired('Time Type is required'),
 });
 
 const initialValues = {
   type: 'Examination',
-  patient: '',
-  branch: '',
-  specialty: '',
-  doctor: '',
+  patientId: '',
+  branchId: null,
+  specialtyId: null,
+  userId: null,
   date: new Date(),
   time: null,
 };
-let specialties = [];
-let doctors = [];
 const canAddPatient = formValue =>
   formValue.type === 'Examination' ? true : false;
 
@@ -66,60 +55,25 @@ const searchBy = (text, _, patient) => {
 };
 
 export default function NewAppointment({ show, onHide }) {
-  const [patientModal, setPatientModal] = useState(false);
-  // const [open, setOpen] = useState(false);
-  const [formValue, setFormValue] = useState(initialValues);
-  const [selectedHour, setSelectedHour] = useState(null);
-  const [currentClinic] = useGlobalState('currentClinic');
-  const { patients, appointments, updateAppointments } = useFetchData();
-  const { branches } = usePermissions();
-  const [hideBranchSelect, setHideBranchSelect] = useState(false);
-  const [hideSpecialtySelect, setHideSpecialtySelect] = useState(false);
-  useEffect(() => {
-    if (formValue.branch !== '') {
-      specialties = branches[formValue.branch - 1].specialties;
-    }
-    if (formValue.specialty !== '') {
-      doctors = specialties[formValue.specialty - 1].doctors;
-    }
-  }, [branches, formValue]);
-  // useEffect(() => {
-  //   if (getSpecialtiesByBranchId(specialties, formValue.branch).length === 1) {
-  //     setFormValue(pre => ({
-  //       ...pre,
-  //       specialty: getSpecialtiesByBranchId(specialties, formValue.branch)[0]
-  //         .id,
-  //     }));
-  //     setHideBranchSelect(true);
-  //     setHideSpecialtySelect(true);
-  //   }
-  //   setFormValue(pre => ({ ...pre, doctor: '' }));
+  const { visible, open, close } = useModal();
 
-  //   return () => {
-  //     setHideBranchSelect(false);
-  //     setHideSpecialtySelect(false);
-  //   };
-  // }, [formValue.branch, formValue.specialty, specialties]);
+  const {
+    branches,
+    specialties,
+    doctors,
+    formValue,
+    setFormValue,
+    createAppointment,
+  } = useNewAppointments({ onCreate: onHide });
+
+  const [selectedHour, setSelectedHour] = useState(null);
+  const { patients, appointments } = useFetchData();
 
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
     };
-  }, []);
-  const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
-    onCompleted: ({ createAppointment }) => {
-      setFormValue(initialValues);
-      Alert.success('Reservation Created Successfully');
-      updateAppointments(
-        sortAppointmentsByDate([createAppointment, ...appointments])
-      );
-      onHide();
-    },
-    onError: ({ message }) => Alert.error(message),
-  });
-
-  const showModal = useCallback(() => setPatientModal(true), []);
-  const hideModal = useCallback(() => setPatientModal(false), []);
+  }, [setFormValue]);
 
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
@@ -133,31 +87,26 @@ export default function NewAppointment({ show, onHide }) {
       Alert.error('Complete Required Fields');
       return;
     }
-    const { patient, type } = formValue;
+    const { patientId, userId, type } = formValue;
 
     const timeDate = moment(formValue.time);
     const date = moment(formValue.date).set({
       hours: timeDate.hours(),
       minute: timeDate.minutes(),
     });
-    createAppointment({
-      variables: { input: { patient, type, clinicId: currentClinic.id, date } },
-    });
-  }, [createAppointment, currentClinic, formValue]);
+    createAppointment({ patientId, type, date, userId });
+  }, [createAppointment, formValue]);
 
   return (
     <>
       <NewPatient
         onCreate={({ id }) => {
           setFormValue({ ...formValue, patient: id });
-          hideModal();
+          close();
         }}
-        show={patientModal}
-        onHide={hideModal}
+        show={visible}
+        onHide={close}
       />
-      {/* <Div position="fixed" right={64} bottom={64} zIndex={99999}>
-        <Fab open={open} setOpen={setOpen} />
-      </Div> */}
       <CRModal
         show={show}
         header="New Appointment"
@@ -190,7 +139,7 @@ export default function NewAppointment({ show, onHide }) {
             />
             <CRSelectInput
               label="Patient"
-              name="patient"
+              name="patientId"
               placeholder="Name / Phone no"
               accepter={SelectPicker}
               cleanable={true}
@@ -203,7 +152,7 @@ export default function NewAppointment({ show, onHide }) {
             >
               <Div display="flex" justifyContent="flex-end">
                 <H5
-                  onClick={showModal}
+                  onClick={open}
                   disabled={!canAddPatient(formValue)}
                   variant="primary"
                   fontWeight={600}
@@ -214,22 +163,20 @@ export default function NewAppointment({ show, onHide }) {
                 </H5>
               </Div>
             </CRSelectInput>
-            {!hideBranchSelect && (
-              <CRSelectInput
-                label="Branch"
-                name="branch"
-                placeholder="Select Branch"
-                block
-                cleanable={false}
-                searchable={false}
-                accepter={SelectPicker}
-                data={mapArrWithIdsToChoices(branches)}
-              />
-            )}
-            {formValue.branch !== '' && !hideSpecialtySelect && (
+            <CRSelectInput
+              label="Branch"
+              name="branchId"
+              placeholder="Select Branch"
+              block
+              cleanable={false}
+              searchable={false}
+              accepter={SelectPicker}
+              data={mapArrWithIdsToChoices(branches)}
+            />
+            {formValue.branchId && (
               <CRSelectInput
                 label="Specialty"
-                name="specialty"
+                name="specialtyId"
                 placeholder="Select Specialty"
                 block
                 cleanable={false}
@@ -238,10 +185,10 @@ export default function NewAppointment({ show, onHide }) {
                 data={mapArrWithIdsToChoices(specialties)}
               />
             )}
-            {formValue.specialty !== '' && (
+            {formValue.specialtyId && (
               <CRSelectInput
                 label="Doctor"
-                name="doctor"
+                name="userId"
                 placeholder="Select Doctor"
                 block
                 cleanable={false}

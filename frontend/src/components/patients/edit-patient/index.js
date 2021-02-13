@@ -7,7 +7,7 @@ import { CRModal, Div } from 'components';
 
 import Form from './form';
 import useFetchPatients from 'hooks/fetch-patients';
-import { useModal } from 'components/widgets/modal';
+import useModal from 'hooks/use-model';
 
 const initialValues = {
   name: '',

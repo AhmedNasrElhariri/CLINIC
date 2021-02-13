@@ -7,7 +7,7 @@ import {
   ADD_PATIENT_REPORT,
   EDIT_PATIENT_REPORT,
   LIST_PATIENT_REPORTS,
-} from 'apollo-client/queries/patient-report';
+} from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
 const updateCache = myPatientReports => {

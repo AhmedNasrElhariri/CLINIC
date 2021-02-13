@@ -10,7 +10,7 @@ import {
 } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 
-import useFetchAppointments from 'hooks/fetch-appointments';
+import useAppointments from 'hooks/use-appointments';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
 import { Can } from 'components/user/can';
 import useModal from 'hooks/use-model';
@@ -31,9 +31,11 @@ function TodayAppointments() {
     branches,
     doctors,
     specialties,
-  } = useFetchAppointments();
+  } = useAppointments();
 
   const [formValue, setFormValue] = useState({});
+
+  console.log(appointments);
 
   const filteredAppointments = useMemo(
     () => sortAppointments(filterTodayAppointments(appointments, formValue)),
@@ -128,31 +130,31 @@ function TodayAppointments() {
   );
   return (
     <>
-      <Can I="list" an="Appointment">
-        <ToolBar
-          formValue={formValue}
-          onChange={setFormValue}
-          branches={branches}
-          doctors={doctors}
-          specialties={specialties}
-        />
-        <ListAppointments
-          title="Upcoming Appointments"
-          appointments={upcomingAppointments}
-          onDone={onClickDone}
-          onArchive={handleArchive}
-          defaultExpanded={true}
-        />
-      </Can>
+      {/* <Can I="list" an="Appointment"> */}
+      {/* <ToolBar
+        formValue={formValue}
+        onChange={setFormValue}
+        branches={branches}
+        doctors={doctors}
+        specialties={specialties}
+      /> */}
+      <ListAppointments
+        title="Upcoming Appointments"
+        appointments={upcomingAppointments}
+        onDone={onClickDone}
+        onArchive={handleArchive}
+        defaultExpanded={true}
+      />
+      {/* </Can> */}
       <Div my={5} />
-      <Can I="list" an="Appointment">
-        <ListAppointments
-          title="Completed Appointments"
-          appointments={completedAppointments}
-          onDone={onClickDone}
-          defaultExpanded={true}
-        />
-      </Can>
+      {/* <Can I="list" an="Appointment"> */}
+      <ListAppointments
+        title="Completed Appointments"
+        appointments={completedAppointments}
+        onDone={onClickDone}
+        defaultExpanded={true}
+      />
+      {/* </Can> */}
       <FinishAppointment
         appointment={appointment}
         show={visible}

@@ -3,10 +3,10 @@ import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import { useModal } from 'components/widgets/modal';
 import NewTestDefinition from './new-test-definition';
 import ListTestsDefinition from './list-tests-definition';
 import useTestsDefinition from 'hooks/fetch-tests-definition';
+import useModal from 'hooks/use-model';
 
 const initValue = { testName: '' };
 

@@ -5,7 +5,7 @@ import { Form, DatePicker } from 'rsuite';
 import { formatDate, isBeforeToday } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import useAppointmentForm from 'hooks/appointment-form';
-import useFetchAppointments from 'hooks/fetch-appointments';
+import useFetchAppointments from 'hooks/use-appointments';
 
 const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
   const [formValue, setFormValue] = useState({

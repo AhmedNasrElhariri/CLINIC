@@ -7,7 +7,7 @@ import {
   ADD_MEDICINE_DEFINITION,
   EDIT_MEDICINE_DEFINITION,
   LIST_MEDICINES_DEFINITION,
-} from 'apollo-client/queries/medicine-definition';
+} from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
 const updateCache = myMedicinesDefinition => {

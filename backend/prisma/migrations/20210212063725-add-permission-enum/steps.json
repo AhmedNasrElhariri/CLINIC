@@ -1,0 +1,96 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "PermissionAction",
+      "values": [
+        "List_Appointment",
+        "Create_Appointment",
+        "Reschedule_Appointment",
+        "Finish_Appointment",
+        "Cancel_Appointment",
+        "Archive_Appointment",
+        "View_Patient",
+        "View_Accounting",
+        "AddRevenue_Accounting",
+        "AddExpense_Accounting",
+        "EditRevenue_Accounting",
+        "EditExpense_Accounting",
+        "PrintAccounting",
+        "ViewCalendar",
+        "CreateEvent_Calendar",
+        "View_Inventory",
+        "AddItem_Inventory",
+        "ViewHistory_Inventory",
+        "DefineItem_Inventory"
+      ]
+    },
+    {
+      "tag": "DeleteModel",
+      "model": "Action"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Permission",
+      "field": "actionId"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Permission",
+      "field": "action",
+      "type": "PermissionAction"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Permission",
+          "field": "action"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Permission",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[action, roleId]"
+            },
+            {
+              "name": "name",
+              "value": "\"action_roleId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Permission",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[actionId, roleId]"
+            },
+            {
+              "name": "name",
+              "value": "\"actionId_roleId_unique_constraint\""
+            }
+          ]
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

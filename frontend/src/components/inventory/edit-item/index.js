@@ -4,9 +4,9 @@ import * as R from 'ramda';
 
 import { CRModal, CRTextInput } from 'components';
 import { isValid } from 'services/form';
-import { useModal } from '../../widgets/modal';
 import useFetctchInventory from 'hooks/fetch-inventory';
 import useFrom from 'hooks/form';
+import useModal from 'hooks/use-model';
 
 const { StringType } = Schema.Types;
 

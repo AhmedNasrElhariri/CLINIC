@@ -1,7 +1,7 @@
-import { prisma } from '@';
+import { ACTIONS } from '@/utils/constants';
 
 const getActions = () => {
-  return prisma.action.findMany({});
+  return ACTIONS;
 };
 
 export default getActions;

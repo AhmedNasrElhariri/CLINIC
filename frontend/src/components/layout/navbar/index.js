@@ -4,7 +4,6 @@ import { Whisper, Popover } from 'rsuite';
 import { NavStyled, BadgeStyled } from './style';
 import { Div } from 'components';
 
-import SwitchClinic from './switch-clinic';
 import { NotificationIcon, SettingsIcon } from 'components/icons/index';
 import Notifications from 'components/functional/notifications';
 import Settings from 'components/functional/settings';
@@ -26,9 +25,6 @@ NotificatinBadge.defaultProps = {
 };
 
 const Navbar = ({
-  onSelectClinic,
-  clinics,
-  currentClinic,
   onLogout,
   onClickAvatar,
   renderSearch,
@@ -57,11 +53,6 @@ const Navbar = ({
           width="100%"
           maxWidth={530}
         >
-          <SwitchClinic
-            onSelectClinic={onSelectClinic}
-            clinics={clinics}
-            currentClinic={currentClinic}
-          />
           <Whisper
             placement="bottomEnd"
             trigger="click"

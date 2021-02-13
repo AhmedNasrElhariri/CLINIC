@@ -2,10 +2,10 @@ import React, { useCallback } from 'react';
 
 import { Div, CRButton, RolePermissions } from 'components';
 import useFrom from 'hooks/form';
-import { useModal } from 'components/widgets/modal';
 import NewAssign from './new-assign';
 import ListAssigns from './list-assign';
 import usersPermission from 'hooks/use-permissions';
+import useModal from 'hooks/use-model';
 
 const initValue = { roleId: null, userId: null };
 

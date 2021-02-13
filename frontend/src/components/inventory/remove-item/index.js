@@ -2,8 +2,8 @@ import React, { memo, useCallback } from 'react';
 import { Alert, Icon } from 'rsuite';
 
 import { CRModal, H6 } from 'components';
-import { useModal } from '../../widgets/modal';
 import useFetctchInventory from 'hooks/fetch-inventory';
+import useModal from 'hooks/use-model';
 
 const RemoveItem = ({ item }) => {
   const { visible, open, close } = useModal();

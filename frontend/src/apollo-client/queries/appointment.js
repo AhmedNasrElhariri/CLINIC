@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const CREATE_APPOINTMENT = gql`
-  mutation createAppointment($input: AppointmentInput!) {
-    createAppointment(input: $input) {
+  mutation createAppointment($appointment: AppointmentInput!) {
+    createAppointment(appointment: $appointment) {
       id
       type
       date

@@ -1,7 +1,6 @@
 import { prisma } from '@';
 
 const getPatients = (q, { organizationId }) => {
-  console.log(organizationId);
   return prisma.$queryRaw(
     `SELECT * FROM "Patient" WHERE "organizationId" = '${organizationId}' AND ("name" ILIKE '%${q}%' OR "phoneNo" ILIKE '%${q}%');`
   );

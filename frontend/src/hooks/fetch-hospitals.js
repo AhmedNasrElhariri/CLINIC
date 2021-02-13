@@ -7,7 +7,7 @@ import {
   ADD_HOSPITAL,
   EDIT_HOSPITAL,
   LIST_HOSPITALS,
-} from 'apollo-client/queries/hospital';
+} from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
 const updateCache = myHospitals => {

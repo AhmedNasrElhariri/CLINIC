@@ -2,3 +2,9 @@
 
 20210211022727-init
 20210212052332-appointment--doctor-id-to-user-id
+20210212063725-add-permission-enum
+20210212092907-update-actions
+20210212130117-add-user-id-and-appointment-id
+20210212160926-restore-appointments
+20210212172129-remove-clinic-from-appt
+20210212173852-add-user-to-patient
