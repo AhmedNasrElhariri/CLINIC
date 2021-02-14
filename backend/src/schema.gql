@@ -407,6 +407,7 @@ type Field {
   name: String!
   order: Int!
   type: FieldType!
+  choices: JSON
 }
 
 type ViewStatus {

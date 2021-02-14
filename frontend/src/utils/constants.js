@@ -6,22 +6,10 @@ export const LONG_TEXT_FIELD_TYPE = 'LongText';
 export const RADIO_FIELD_TYPE = 'Radio';
 export const CHECK_FIELD_TYPE = 'Check';
 export const NESTED_SELECTOR_FIELD_TYPE = 'NestedSelector';
-export const CHECK_BOX_FIELD_TYPE = 'CheckBox';
-export const RADIO__BOX_FIELD_TYPE = 'RadioBox';
-export const SELECT_FIELD_TYPE = 'SelectBox';
 
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
 export const FULL_DATE_FORMAT = 'hh:mm a';
 export const FULL_DAY_FORMAT = 'DD-MM-YYYY hh:mm a';
-
-export const FIELDS = Object.freeze({
-  [NUMBER_FIELD_TYPE]: NUMBER_FIELD_TYPE,
-  [TEXT_FIELD_TYPE]: TEXT_FIELD_TYPE,
-  [LONG_TEXT_FIELD_TYPE]: LONG_TEXT_FIELD_TYPE,
-  [RADIO_FIELD_TYPE]: RADIO_FIELD_TYPE,
-  [CHECK_FIELD_TYPE]: CHECK_FIELD_TYPE,
-  [NESTED_SELECTOR_FIELD_TYPE]: NESTED_SELECTOR_FIELD_TYPE,
-});
 
 export const FIELD_TYPES = [
   { label: 'Number', value: NUMBER_FIELD_TYPE },

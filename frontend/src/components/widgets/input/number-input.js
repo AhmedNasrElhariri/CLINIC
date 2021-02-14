@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 
 import { FormGroup, FormControl } from 'rsuite';
 import Label from '../label';
@@ -9,7 +9,7 @@ import {
   NumberButton,
 } from './style';
 
-const CustomInput = ({ value, onChange, ...props }) => {
+const CustomInput = memo(({ value, onChange, ...props }) => {
   const setValue = useCallback(val => onChange(val), [onChange]);
 
   const onChangeValue = useCallback(
@@ -45,9 +45,9 @@ const CustomInput = ({ value, onChange, ...props }) => {
       </NumberButton>
     </NumberContainerStyled>
   );
-};
+});
 
-export default ({ label, ...rest }) => {
+const NumberInput = ({ label, ...rest }) => {
   return (
     <FormGroup>
       <Label>{label}</Label>
@@ -55,3 +55,5 @@ export default ({ label, ...rest }) => {
     </FormGroup>
   );
 };
+
+export default memo(NumberInput);

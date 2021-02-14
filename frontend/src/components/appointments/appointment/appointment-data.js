@@ -10,6 +10,9 @@ import {
   CRTextInput,
   CRTextArea,
   CRNav,
+  CRRadio,
+  CRCheckBox,
+  CRNestedSelector,
 } from 'components';
 import { isSession } from 'services/appointment';
 import { convertGroupFieldsToNavs } from 'services/appointment';
@@ -17,6 +20,9 @@ import {
   NUMBER_FIELD_TYPE,
   TEXT_FIELD_TYPE,
   LONG_TEXT_FIELD_TYPE,
+  RADIO_FIELD_TYPE,
+  CHECK_FIELD_TYPE,
+  NESTED_SELECTOR_FIELD_TYPE,
   Labs,
 } from 'utils/constants';
 
@@ -33,7 +39,7 @@ const ScrollNavLink = ({ element, children, ...props }) => {
   );
 };
 
-const renderItem = ({ type, id, name, ...props }) => {
+const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
     case NUMBER_FIELD_TYPE:
       return <CRNumberInput label={name} name={id} {...props} />;
@@ -41,6 +47,24 @@ const renderItem = ({ type, id, name, ...props }) => {
       return <CRTextInput label={name} name={id} {...props} />;
     case LONG_TEXT_FIELD_TYPE:
       return <CRTextArea label={name} name={id} {...props} importable />;
+    case RADIO_FIELD_TYPE:
+      return (
+        <CRRadio label={name} name={id} options={choices} {...props} inline />
+      );
+    case CHECK_FIELD_TYPE:
+      return (
+        <CRCheckBox
+          label={name}
+          options={choices}
+          name={id}
+          {...props}
+          inline
+        />
+      );
+    case NESTED_SELECTOR_FIELD_TYPE:
+      return (
+        <CRNestedSelector label={name} name={id} choices={choices} {...props} />
+      );
     default:
       return null;
   }
@@ -165,7 +189,7 @@ function AppointmentData({
               onChange={onChangeAppointment}
             >
               {/* <CRTextArea name="prescription" disabled={disabled} /> */}
-              <ListLabs data={Labs} />
+              {/* <ListLabs data={Labs} /> */}
             </Form>
           </SectionContainer>
           <SectionContainer title="Images" name="Images">
@@ -174,7 +198,7 @@ function AppointmentData({
               onChange={onChangeAppointment}
             >
               {/* <CRTextArea name="prescription" disabled={disabled} /> */}
-              <ListLabs data={Labs} />
+              {/* <ListLabs data={Labs} /> */}
             </Form>
           </SectionContainer>
         </Div>

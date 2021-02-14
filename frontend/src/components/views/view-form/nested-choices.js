@@ -22,11 +22,14 @@ const toChoices = arr => {
   if (!arr || !arr.length) {
     return [];
   }
-  return arr.map(({ label, children }) => {
-    return {
-      name: label,
-      choices: toChoices(children),
-    };
+  return arr.map(({ value, label, children }) => {
+    return Object.assign(
+      {
+        id: value,
+        name: label,
+      },
+      children && children.length && { choices: toChoices(children) }
+    );
   });
 };
 

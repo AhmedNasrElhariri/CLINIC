@@ -2,7 +2,12 @@ import React, { useCallback, useState, useMemo } from 'react';
 import { Panel, Form, Input, SelectPicker, Icon } from 'rsuite';
 import { InputField, Div, H6 } from 'components';
 import useGlobalState from 'state';
-import { FIELD_TYPES, FIELDS } from 'utils/constants';
+import {
+  FIELD_TYPES,
+  RADIO_FIELD_TYPE,
+  CHECK_FIELD_TYPE,
+  NESTED_SELECTOR_FIELD_TYPE,
+} from 'utils/constants';
 import Choices from './choices';
 import NestedChoices from './nested-choices';
 import useModal from 'hooks/use-model';
@@ -58,9 +63,11 @@ const Card = ({ laneId, index }) => {
 
   const fieldType = useMemo(() => formValue.type, [formValue.type]);
   const hasChoices = useMemo(() => {
-    return [FIELDS.Radio, FIELDS.Check, FIELDS.NestedSelector].includes(
-      fieldType
-    );
+    return [
+      RADIO_FIELD_TYPE,
+      CHECK_FIELD_TYPE,
+      NESTED_SELECTOR_FIELD_TYPE,
+    ].includes(fieldType);
   }, [fieldType]);
 
   return (
@@ -92,7 +99,7 @@ const Card = ({ laneId, index }) => {
               primary
               small
               onClick={
-                fieldType === FIELDS.NestedSelector
+                fieldType === NESTED_SELECTOR_FIELD_TYPE
                   ? handleClickCreateTree
                   : handleClickCreate
               }

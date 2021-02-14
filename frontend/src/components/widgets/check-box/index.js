@@ -1,21 +1,25 @@
 import React, { memo } from 'react';
-import { FormGroup } from 'rsuite';
+import { FormGroup, FormControl } from 'rsuite';
 import { CheckboxGroup, Checkbox } from 'rsuite';
 import Label from '../label';
 
-const CRCheckBox = ({ label, checkBoxValues, formValue, onChange, name }) => {
+const CustomInput = memo(({ value, onChange, options, ...props }) => {
+  return (
+    <CheckboxGroup value={value || []} onChange={onChange} {...props}>
+      {options.map((o, index) => (
+        <Checkbox key={index} value={o.value || o}>
+          {o.name || o}
+        </Checkbox>
+      ))}
+    </CheckboxGroup>
+  );
+});
+
+const CRCheckBox = ({ label, ...rest }) => {
   return (
     <FormGroup>
       <Label>{label}</Label>
-      <CheckboxGroup
-        inline
-        style={{ width: '100%' }}
-        onChange={value => onChange(formValue, (formValue[name] = value))}
-      >
-        {checkBoxValues.map(checkbox => (
-          <Checkbox value={checkbox.value}>{checkbox.name}</Checkbox>
-        ))}
-      </CheckboxGroup>
+      <FormControl {...rest} accepter={CustomInput} />
     </FormGroup>
   );
 };

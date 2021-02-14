@@ -41,70 +41,15 @@ function Appointment() {
   const [disabled, setDisabled] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
   const { appointmentId } = useParams();
-  // const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
-  //   variables: {
-  //     id: appointmentId,
-  //   },
-  //   onCompleted: ({ appointment }) => {
-  //     setDisabled(isArchived(appointment));
-  //   },
-  // });
-  const loading = false;
-  const appointmentRes = {
-    data: {
-      appointment: {
-        id: 'a1a1a36d-6a24-4483-ab75-c59f00d09165',
-        type: 'Examination',
-        date: '2021-02-04T17:25:02.557Z',
-        status: 'Scheduled',
-        notes: '',
-        prescription: '',
-        data: [
-          {
-            id: '4a34ad6e-8e6e-4ecd-a8c3-13412f167f9e',
-            value: '',
-            field: {
-              id: '784b6815-9ddd-4bf5-9202-e460d8dad64d',
-              name: 'et13',
-              __typename: 'Field',
-            },
-            __typename: 'AppointmentField',
-          },
-          {
-            id: 'c0a1a1e9-9e23-4264-a486-cc67db319ccd',
-            value: 23232,
-            field: {
-              id: '8985d310-59be-4e78-9460-cf4cc534afee',
-              name: 'et11',
-              __typename: 'Field',
-            },
-            __typename: 'AppointmentField',
-          },
-          {
-            id: 'df3bae25-9758-40b2-be4d-5f43fd662756',
-            value: '',
-            field: {
-              id: 'd829ab5b-f183-4740-bf48-3e90fe31d65a',
-              name: 'et12',
-              __typename: 'Field',
-            },
-            __typename: 'AppointmentField',
-          },
-        ],
-        patient: {
-          id: '251c4faa-2e69-4ea0-a194-75376b6a5a0f',
-          name: 'pateint one',
-          age: 37,
-          sex: 'Male',
-          type: 'Primary',
-          phoneNo: '01000000001',
-          __typename: 'Patient',
-        },
-        collections: [],
-        __typename: 'Appointment',
-      },
+  const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
+    variables: {
+      id: appointmentId,
     },
-  };
+    onCompleted: ({ appointment }) => {
+      setDisabled(isArchived(appointment));
+    },
+  });
+
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -225,11 +170,14 @@ function Appointment() {
                 formValue={formValue}
                 appointmentFormValue={apptFormValue}
                 onChangeAppointment={setApptFormValue}
-                onChange={setFormValue}
+                onChange={ch => {
+                  console.log(ch);
+                  setFormValue(ch);
+                }}
                 groups={groups}
                 appointment={appointment}
               />
-              {appointment.type !== 'Surgery' && showComp('1') && (
+              {/* {appointment.type !== 'Surgery' && showComp('1') && (
                 <PatientSummary
                   summary={appointmentHistory}
                   fields={viewFields}
@@ -241,13 +189,13 @@ function Appointment() {
                   viewFields={viewFields}
                   patientId={appointment?.patient?.id}
                 />
-              )}
-              {appointment.type !== 'Surgery' && showComp('3') && (
+              )} */}
+              {/* {appointment.type !== 'Surgery' && showComp('3') && (
                 <PatientLabs patient={patient} />
               )}
               {appointment.type !== 'Surgery' && showComp('4') && (
                 <History patient={patient} />
-              )}
+              )} */}
             </Div>
           </Div>
         </Div>

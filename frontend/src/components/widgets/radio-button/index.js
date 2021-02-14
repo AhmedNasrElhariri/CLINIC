@@ -7,8 +7,10 @@ const CRRadio = ({ label, options, ...rest }) => {
     <FormGroup>
       <Label>{label}</Label>
       <FormControl accepter={RadioGroup} {...rest}>
-        {options.map(o => (
-          <Radio value={o.value}>{o.name}</Radio>
+        {options.map((o, index) => (
+          <Radio key={index} value={o.value || o}>
+            {o.name || o}
+          </Radio>
         ))}
       </FormControl>
     </FormGroup>
