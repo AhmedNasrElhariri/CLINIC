@@ -7,7 +7,7 @@ import {
   CRDatePicker,
   CRNumberInput,
 } from 'components';
-import useFetchPatients from 'hooks/fetch-patients';
+import useFetchPatients from 'hooks/use-patients';
 import useSurgeries from 'hooks/fetch-surgeries';
 import useHospitals from 'hooks/fetch-hospitals';
 

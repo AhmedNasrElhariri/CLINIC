@@ -6,7 +6,6 @@ import * as R from 'ramda';
 import * as ls from 'services/local-storage';
 import {
   ACTIVE_VIEWS,
-  MY_CLINICS,
   NOTIFICATION_SUBSCRIPTION,
   MY_NOTIFICATIONS,
   CLEAR_NOTIFICATIONS,
@@ -15,7 +14,7 @@ import { ACCESS_TOKEN } from 'utils/constants';
 
 import useAuth from 'hooks/auth';
 import useGlobalState from 'state';
-import useFetchPatients from 'hooks/fetch-patients';
+import useFetchPatients from 'hooks/use-patients';
 import { filterUpdatapleFields } from 'services/clinic';
 
 function useUserProfile() {
@@ -29,7 +28,6 @@ function useUserProfile() {
   const history = useHistory();
   const [clinics, setClinics] = useState([]);
   const [getViews, { data }] = useLazyQuery(ACTIVE_VIEWS);
-  const [getClinics, { data: clinicsList }] = useLazyQuery(MY_CLINICS);
   const [getNotifications, { data: notificationsData, refetch }] = useLazyQuery(
     MY_NOTIFICATIONS
   );
@@ -59,21 +57,12 @@ function useUserProfile() {
   useEffect(() => {
     if (isVerified && isAuthenticated) {
       getViews();
-      getClinics();
       getNotifications();
     }
-  }, [
-    data,
-    getClinics,
-    getNotifications,
-    getViews,
-    isAuthenticated,
-    isVerified,
-  ]);
+  }, [data, getNotifications, getViews, isAuthenticated, isVerified]);
 
   useEffect(() => {
     const views = R.prop('activeViews')(data);
-    const clinics = R.prop('myClinics')(clinicsList);
     if (views) {
       const normalizedView = R.pipe(
         R.groupBy(R.prop('type')),
@@ -89,7 +78,7 @@ function useUserProfile() {
         ls.setCurrentClinic(clinic);
       }
     }
-  }, [clinicsList, currentClinic, data, setActiveViews, setCurrentClinic]);
+  }, [clinics, currentClinic, data, setActiveViews, setCurrentClinic]);
 
   const onLoginSucceeded = useCallback(
     ({ token, user }) => {

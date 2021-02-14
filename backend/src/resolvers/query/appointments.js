@@ -1,17 +1,15 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 
-import { listFlattenUsersTree } from '@/services/permission.service';
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
 const appointments = async (_, { input }, { userId, organizationId }) => {
-  console.log(userId, organizationId);
-  const users = await listFlattenUsersTree({
+  const ids = await listFlattenUsersTreeIds({
     userId,
     organizationId,
     action: ACTIONS.List_Appointment,
   });
-  const ids = R.map(R.prop('id'))(users);
 
   return prisma.appointment.findMany({
     where: {

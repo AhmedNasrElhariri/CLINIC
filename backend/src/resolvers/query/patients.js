@@ -1,14 +1,26 @@
 import { prisma } from '@';
-import { APIExceptcion } from '@/services/erros.service';
-import * as R from 'ramda';
+// import { APIExceptcion } from '@/services/erros.service';
 
-const patients = async (_, __, { organizationId }) => {
-  if (R.isNil(organizationId)) {
-    throw new APIExceptcion('Not authroized');
-  }
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { ACTIONS } from '@/utils/constants';
+
+const patients = async (_, __, { userId, organizationId }) => {
+  const ids = await listFlattenUsersTreeIds(
+    {
+      userId,
+      organizationId,
+      action: ACTIONS.View_Patient,
+    },
+    true
+  );
+
+  console.log('ids', ids);
+
   return prisma.patient.findMany({
     where: {
-      organizationId,
+      userId: {
+        in: ids,
+      },
     },
   });
 };

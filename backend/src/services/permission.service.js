@@ -3,7 +3,15 @@ import * as R from 'ramda';
 
 import { PERMISSION_LEVEL } from '@/utils/constants';
 
-const byOrganization = async organizationId => {
+const byOrganization = async (organizationId, allUsers = false) => {
+  if (allUsers) {
+    return prisma.user.findMany({
+      where: {
+        organizationId,
+      },
+    });
+  }
+
   const branches = await prisma.branch.findMany({
     where: { organizationId },
     include: {
@@ -73,11 +81,10 @@ const byUser = rules => {
   });
 };
 
-export const listFlattenUsersTree = async ({
-  action,
-  userId,
-  organizationId,
-}) => {
+export const listFlattenUsersTree = async (
+  { action, userId, organizationId },
+  allUsers
+) => {
   const role = await prisma.permissionRole
     .findMany({
       where: {
@@ -106,11 +113,13 @@ export const listFlattenUsersTree = async ({
     return [];
   }
 
+  console.dir(permission);
+
   const { level, all, rules } = permission;
 
   switch (level) {
     case PERMISSION_LEVEL.ORGANIZATION:
-      return byOrganization(organizationId);
+      return byOrganization(organizationId, allUsers);
     case PERMISSION_LEVEL.BRANCH:
       return all
         ? byOrganization(organizationId)
@@ -120,4 +129,20 @@ export const listFlattenUsersTree = async ({
     case PERMISSION_LEVEL.USER:
       return byUser(rules);
   }
+};
+
+export const listFlattenUsersTreeIds = async (
+  { action, userId, organizationId },
+  allUsers
+) => {
+  const users = await listFlattenUsersTree(
+    {
+      action,
+      userId,
+      organizationId,
+    },
+    allUsers
+  );
+
+  return R.map(R.prop('id'))(users);
 };

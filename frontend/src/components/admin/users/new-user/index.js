@@ -25,7 +25,6 @@ const initialValues = {
   email: '',
   password: '',
   position: '',
-  specialtyId: '',
 };
 
 export default function NewUser({ show, onCancel, onCreate, specialties }) {
@@ -57,18 +56,6 @@ export default function NewUser({ show, onCancel, onCreate, specialties }) {
           searchable={true}
           data={positions}
         />
-        {formValue.position === POSITIONS.DOCTOR && (
-          <CRSelectInput
-            name="specialtyId"
-            label="Specialty"
-            labelKey="name"
-            valueKey="id"
-            block
-            cleanable={true}
-            searchable={true}
-            data={specialties}
-          />
-        )}
       </Form>
     </CRModal>
   );

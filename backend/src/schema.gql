@@ -76,7 +76,6 @@ type Query {
   listMyViews: [View!]
   activeViews: [View!]
   listMyViewsStatus: [ViewStatus!]
-  myClinics: [Clinic!]
   mySnippets: [Snippet!]
   patientLabs(patientId: ID!): [PatientLab!]
   medicineHistory(patientId: ID!): [MedicineHistory!]

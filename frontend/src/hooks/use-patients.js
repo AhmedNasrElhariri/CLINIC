@@ -4,7 +4,6 @@ import * as R from 'ramda';
 import { Alert } from 'rsuite';
 
 import { LIST_PATIENTS, EDIT_PATIENT } from 'apollo-client/queries';
-import useGlobalState from 'state';
 import client from 'apollo-client/client';
 
 const updateCache = patients => {
@@ -16,19 +15,7 @@ const updateCache = patients => {
   });
 };
 
-export function useVariables() {
-  const [currentClinic] = useGlobalState('currentClinic');
-  if (!currentClinic) {
-    return {};
-  }
-  return {
-    input: {
-      clinicIds: [currentClinic.id],
-    },
-  };
-}
-
-function useFetchPatients({ onEdit } = {}) {
+function usePatients({ onEdit } = {}) {
   const { data } = useQuery(LIST_PATIENTS, {
     variables: {},
   });
@@ -71,4 +58,4 @@ function useFetchPatients({ onEdit } = {}) {
   );
 }
 
-export default useFetchPatients;
+export default usePatients;

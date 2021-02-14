@@ -6,7 +6,7 @@ import { Icon } from 'rsuite';
 import { CRModal, Div } from 'components';
 
 import Form from './form';
-import useFetchPatients from 'hooks/fetch-patients';
+import useFetchPatients from 'hooks/use-patients';
 import useModal from 'hooks/use-model';
 
 const initialValues = {

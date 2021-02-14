@@ -43,15 +43,13 @@ const Navbar = ({
         display="flex"
         justifyContent="flex-end"
         alignItems="center"
-        ml={[1, 4, 4, 4, 0]}
       >
         <Div
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           cursor="pointer"
-          width="100%"
-          maxWidth={530}
+          width={180}
         >
           <Whisper
             placement="bottomEnd"

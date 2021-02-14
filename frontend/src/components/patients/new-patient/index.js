@@ -7,7 +7,7 @@ import { useMutation } from '@apollo/client';
 
 import Form from './form';
 import { CREATE_PATIENT } from 'apollo-client/queries';
-import useFetchPatients from 'hooks/fetch-patients';
+import useFetchPatients from 'hooks/use-patients';
 
 const initialValues = {
   name: '',

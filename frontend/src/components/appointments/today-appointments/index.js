@@ -35,8 +35,6 @@ function TodayAppointments() {
 
   const [formValue, setFormValue] = useState({});
 
-  console.log(appointments);
-
   const filteredAppointments = useMemo(
     () => sortAppointments(filterTodayAppointments(appointments, formValue)),
     [appointments, formValue]
