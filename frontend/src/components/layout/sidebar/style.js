@@ -12,7 +12,17 @@ export const ContainerStyled = styled.div`
     maxWidth: [100, 200, 200, 240, 400],
   })}
 `;
-
+export const IconDiv = styled.div`
+  display: inline;
+`;
+export const LinkName = styled.div`
+  display: inline;
+`;
+export const Fab = styled.div`
+  display: inline;
+  position: absolute;
+  right: 20px;
+`;
 export const BodyStyled = styled.div`
   ${css({
     paddingLeft: [20, 20, 20, 30, 50],

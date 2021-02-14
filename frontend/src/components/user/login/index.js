@@ -65,9 +65,9 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
             formValue={formValue}
             onChange={value => setFormValue(value)}
           >
-            <CRTextInput placeholder="Email" name="email" />
+            <CRTextInput placeholder="Enter Email" name="email" />
             <CRTextInput
-              placeholder="Password"
+              placeholder="Enter Password"
               name="password"
               type="password"
             />
@@ -77,7 +77,7 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
               uppercase
               onClick={() => login({ variables: { ...formValue } })}
             >
-              Login
+              LOG IN
             </CRButton>
           </Form>
         </Div>

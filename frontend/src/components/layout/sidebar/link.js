@@ -10,8 +10,8 @@ const theme = {
     large: '24px',
   },
   height: {
-    normal: 67,
-    large: 80,
+    normal: 57,
+    large: 60,
   },
 };
 
@@ -25,13 +25,11 @@ const LinkStyled = styled(Link)`
   text-align: left;
   display: flex;
   align-items: center;
-
   opacity: ${props => (props.active ? 1 : 0.4)};
   color: ${props =>
     props.active ? props.theme.colors.primary : props.theme.colors.text};
   font-weight: ${props => (props.active ? 'bold' : 'normal')};
-
-  border-radius: 18px;
+  border-radius: 2px;
 
   ${byTheme(theme)}
 
@@ -39,11 +37,12 @@ const LinkStyled = styled(Link)`
   &:active,
   &:hover {
     text-decoration: none;
-    color: ${props => props.theme.colors.primary};
+    color: #1b253a;
+    background: #eef1f1;
     opacity: 1;
   }
   position: relative;
-  padding-right: 10px;
+  margin-right: 10px;
 `;
 
 const VBorder = styled.span`

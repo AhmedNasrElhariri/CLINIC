@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { ContainerStyled, BodyStyled } from './style';
+import { ContainerStyled, BodyStyled, IconDiv, LinkName, Fab } from './style';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
 
 import Link from './link';
 import { Div, Img } from 'components';
+import { marginRight } from 'styled-system';
 
-export default function Sidebar({ items }) {
+export default function Sidebar({ onLogout, items }) {
   const { pathname } = useLocation();
   return (
     <ContainerStyled>
@@ -16,12 +17,16 @@ export default function Sidebar({ items }) {
         </RouterLink>
       </Div>
       <BodyStyled>
-        {items.map(({ to, name, extra }, idx) => (
-          <Link key={idx} to={to} active={pathname === to}>
-            <Div>
-              {name}
-              <Div display="inline" ml={3}>{extra}</Div>
-            </Div>
+        {items.map(({ to, name, extra, icon }, idx) => (
+          <Link
+            key={idx}
+            to={to}
+            active={pathname === to}
+            style={{ position: 'relative' }}
+          >
+            <IconDiv>{icon}</IconDiv>
+            <LinkName>{name}</LinkName>
+            <Fab>{extra}</Fab>
           </Link>
         ))}
       </BodyStyled>

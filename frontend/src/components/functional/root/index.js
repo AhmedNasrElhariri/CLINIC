@@ -68,22 +68,48 @@ function Root() {
     return <div>Loading ...</div>;
   }
   const items = [
-    { to: '/appointments/today', name: `Today's Appointments` },
-    { to: '/calendar', name: 'Calendar' },
+    {
+      to: '/appointments/today',
+      name: `Today's Appointments`,
+      icon: <Icon icon="file" size="lg" fixedWidth />,
+    },
+    {
+      to: '/calendar',
+      name: 'Calendar',
+      icon: <Icon icon="calendar" size="lg" fixedWidth />,
+    },
     {
       to: '/appointments',
       name: 'Appointments',
       extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
+      icon: <Icon icon="user" size="lg" fixedWidth />,
     },
     {
       to: '/patients',
       name: 'Patients',
       extra: <Fab open={visblePatient} onClick={togglePatient} />,
+      icon: <Icon icon="user" size="lg" fixedWidth />,
     },
-    { to: '/reports', name: 'Reports' },
-    { to: '/surgeries', name: 'Surgeries' },
-    { to: '/report-printouts', name: 'Report Printouts' },
-    { to: '/permissions', name: 'Permissions' },
+    {
+      to: '/reports',
+      name: 'Reports',
+      icon: <Icon icon="bar-chart" size="lg" fixedWidth />,
+    },
+    {
+      to: '/surgeries',
+      name: 'Surgeries',
+      icon: <Icon icon="bar-chart" size="lg" fixedWidth />,
+    },
+    {
+      to: '/report-printouts',
+      name: 'Report Printouts',
+      icon: <Icon icon="bar-chart" size="lg" fixedWidth />,
+    },
+    {
+      to: '/permissions',
+      name: 'Permissions',
+      icon: <Icon icon="bar-chart" size="lg" fixedWidth />,
+    },
   ];
 
   return (
