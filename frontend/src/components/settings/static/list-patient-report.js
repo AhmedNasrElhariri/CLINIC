@@ -12,10 +12,6 @@ function ListPatientReports({ reports, onEdit }) {
             <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="name" semiBold />
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Body</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="body" semiBold />
-          </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>

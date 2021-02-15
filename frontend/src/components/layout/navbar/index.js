@@ -37,7 +37,7 @@ const Navbar = ({
 
   return (
     <NavStyled>
-      {renderSearch()}
+      {/* {renderSearch()} */}
       <Div
         flexGrow={1}
         display="flex"

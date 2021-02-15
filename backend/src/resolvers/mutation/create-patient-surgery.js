@@ -1,8 +1,9 @@
 import { prisma } from '@';
+import { APPOINTMENTS_TYPES, APPOINTMENTS_STATUS } from '@/utils/constants';
 
 const createPatientSurgery = async (
   _,
-  { clinicId, patientSurgery },
+  { patientSurgery },
   { userId, organizationId }
 ) => {
   const {
@@ -13,6 +14,8 @@ const createPatientSurgery = async (
     date,
     ...data
   } = patientSurgery;
+
+  console.log(userId);
 
   const persistedPatientSurgery = await prisma.patientSurgery.create({
     data: {
@@ -41,11 +44,10 @@ const createPatientSurgery = async (
       },
       appointment: {
         create: {
-          type: 'Surgery',
-          status: 'Scheduled',
+          type: APPOINTMENTS_TYPES.Surgery,
+          status: APPOINTMENTS_STATUS.SCHEDULED,
           date,
-          specialty: 'Dentistry',
-          doctor: {
+          user: {
             connect: { id: userId },
           },
           patient: {
@@ -53,11 +55,11 @@ const createPatientSurgery = async (
               id: patientId,
             },
           },
-          clinic: {
-            connect: { id: clinicId },
-          },
         },
       },
+      // user: {
+      //   connect: { id: userId },
+      // },
     },
   });
 
@@ -67,10 +69,8 @@ const createPatientSurgery = async (
         date,
         name: 'Surgery fees',
         amount: fees,
-        clinic: {
-          connect: {
-            id: clinicId,
-          },
+        user: {
+          connect: { id: userId },
         },
       },
     });

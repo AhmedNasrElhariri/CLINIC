@@ -10,7 +10,7 @@ import Tabs from '../tabs';
 
 import Profit from '../profit';
 
-import useFetch from './fetch-data';
+import useAccountig from 'hooks/use-accounting';
 
 import {
   CREATE_EXPENSE,
@@ -157,94 +157,88 @@ const AccountingContainer = () => {
     updateExpensesCache,
     updateRevenuesCache,
     timeFrame,
-  } = useFetch({ view, period });
+  } = useAccountig({ view, period });
 
   return (
     <>
-      <Can I="view" an="Accounting">
-        <MainContainer
-          title="Accounting"
-          more={
+      <MainContainer
+        title="Accounting"
+        more={
+          <Div display="flex">
+            <Can I="add_revenue" an="Accounting">
+              <CRButton primary small onClick={createRevenueForm.show}>
+                Reveneue +
+              </CRButton>
+            </Can>
+            <Can I="add_expense" an="Accounting">
+              <CRButton primary small onClick={createExpenseForm.show} ml={1}>
+                Expense +
+              </CRButton>
+            </Can>
+            <Div ml={1}>
+              <Can I="print" an="Accounting">
+                <PdfView data={{ revenues, expenses }} period={timeFrame} />
+              </Can>
+            </Div>
+          </Div>
+        }
+        nobody
+      ></MainContainer>
+      <Tabs onSelect={setActiveTab} activeTab={activeTab} />
+      <CRCard borderless>
+        <Toolbar
+          onAddRevenue={createRevenueForm.show}
+          onAddExpense={createExpenseForm.show}
+          activeKey={view}
+          onSelect={setView}
+          data={{ revenues, expenses }}
+          onChangePeriod={setPeriod}
+        />
+
+        <Div display="flex" my={4}>
+          <H6>Showing for :</H6>
+          <H6 color="primary" ml={2} fontWeight="bold">
+            {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
+          </H6>
+        </Div>
+
+        <Div>
+          {activeTab === '0' ? (
             <Div display="flex">
-              <Can I="add_revenue" an="Accounting">
-                <CRButton primary small onClick={createRevenueForm.show}>
-                  Reveneue +
-                </CRButton>
-              </Can>
-              <Can I="add_expense" an="Accounting">
-                <CRButton primary small onClick={createExpenseForm.show} ml={1}>
-                  Expense +
-                </CRButton>
-              </Can>
-              <Div ml={1}>
-                <Can I="print" an="Accounting">
-                  <PdfView data={{ revenues, expenses }} period={timeFrame} />
-                </Can>
+              <Div flexGrow={1} mr={2}>
+                <ListData
+                  title="Revenue"
+                  data={revenues}
+                  canEdit={can('edit_revenue', 'Accounting')}
+                  onEdit={revenue => {
+                    editRevenueForm.setFormValue(R.pick(ENTITY_PROPS)(revenue));
+                    editRevenueForm.show();
+                  }}
+                />
+              </Div>
+
+              <Div flexGrow={1} ml={2}>
+                <ListData
+                  title="Expenses"
+                  data={expenses}
+                  canEdit={can('edit_expense', 'Accounting')}
+                  onEdit={expense => {
+                    editExpenseForm.setFormValue(R.pick(ENTITY_PROPS)(expense));
+                    editExpenseForm.show();
+                  }}
+                />
               </Div>
             </Div>
-          }
-          nobody
-        ></MainContainer>
-        <Tabs onSelect={setActiveTab} activeTab={activeTab} />
-        <CRCard borderless>
-          <Toolbar
-            onAddRevenue={createRevenueForm.show}
-            onAddExpense={createExpenseForm.show}
-            activeKey={view}
-            onSelect={setView}
-            data={{ revenues, expenses }}
-            onChangePeriod={setPeriod}
-          />
-
-          <Div display="flex" my={4}>
-            <H6>Showing for :</H6>
-            <H6 color="primary" ml={2} fontWeight="bold">
-              {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
-            </H6>
-          </Div>
-
-          <Div>
-            {activeTab === '0' ? (
-              <Div display="flex">
-                <Div flexGrow={1} mr={2}>
-                  <ListData
-                    title="Revenue"
-                    data={revenues}
-                    canEdit={can('edit_revenue', 'Accounting')}
-                    onEdit={revenue => {
-                      editRevenueForm.setFormValue(
-                        R.pick(ENTITY_PROPS)(revenue)
-                      );
-                      editRevenueForm.show();
-                    }}
-                  />
-                </Div>
-
-                <Div flexGrow={1} ml={2}>
-                  <ListData
-                    title="Expenses"
-                    data={expenses}
-                    canEdit={can('edit_expense', 'Accounting')}
-                    onEdit={expense => {
-                      editExpenseForm.setFormValue(
-                        R.pick(ENTITY_PROPS)(expense)
-                      );
-                      editExpenseForm.show();
-                    }}
-                  />
-                </Div>
-              </Div>
-            ) : (
-              <Summary expenses={totalExpenses} revenues={totalRevenues} />
-            )}
-          </Div>
-          <AccountingForm {...createRevenueForm} />
-          <AccountingForm {...createExpenseForm} />
-          <AccountingForm {...editRevenueForm} />
-          <AccountingForm {...editExpenseForm} />
-          <Profit expenses={totalExpenses} revenues={totalRevenues} />
-        </CRCard>
-      </Can>
+          ) : (
+            <Summary expenses={totalExpenses} revenues={totalRevenues} />
+          )}
+        </Div>
+        <AccountingForm {...createRevenueForm} />
+        <AccountingForm {...createExpenseForm} />
+        <AccountingForm {...editRevenueForm} />
+        <AccountingForm {...editExpenseForm} />
+        <Profit expenses={totalExpenses} revenues={totalRevenues} />
+      </CRCard>
     </>
   );
 };

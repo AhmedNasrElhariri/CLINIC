@@ -60,7 +60,7 @@ const PatientReport = () => {
         },
       });
     }
-  }, [addPatientReport, formValue, type]);
+  }, [addPatientReport, editPatientReport, formValue, type]);
 
   return (
     <>

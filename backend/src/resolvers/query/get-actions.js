@@ -1,7 +1,7 @@
 import { ACTIONS } from '@/utils/constants';
 
 const getActions = () => {
-  return ACTIONS;
+  return Object.keys(ACTIONS);
 };
 
 export default getActions;

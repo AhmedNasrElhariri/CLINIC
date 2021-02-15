@@ -15,7 +15,6 @@ import { isBeforeToday } from 'utils/date';
 import { isValid } from 'services/form';
 import { ModalBodyStyled, ContainerStyled } from './style';
 
-import useFetchData from './fetch-data';
 import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
 import useAppointmentForm from 'hooks/appointment-form';
@@ -64,10 +63,11 @@ export default function NewAppointment({ show, onHide }) {
     formValue,
     setFormValue,
     createAppointment,
+    appointments,
+    patients,
   } = useNewAppointments({ onCreate: onHide });
 
   const [selectedHour, setSelectedHour] = useState(null);
-  const { patients, appointments } = useFetchData();
 
   useEffect(() => {
     return () => {

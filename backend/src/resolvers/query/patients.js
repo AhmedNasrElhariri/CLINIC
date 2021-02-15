@@ -1,5 +1,4 @@
 import { prisma } from '@';
-// import { APIExceptcion } from '@/services/erros.service';
 
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
@@ -13,8 +12,6 @@ const patients = async (_, __, { userId, organizationId }) => {
     },
     true
   );
-
-  console.log('ids', ids);
 
   return prisma.patient.findMany({
     where: {

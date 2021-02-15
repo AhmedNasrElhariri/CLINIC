@@ -12,7 +12,6 @@ import {
 import Sidebar from 'components/layout/sidebar';
 import Navbar from 'components/layout/navbar';
 import NewAppointment from 'components/appointments/new-appointment';
-import { Can } from 'components/user/can';
 import { Form, AutoComplete, Icon, InputGroup } from 'rsuite';
 
 import { filterPatientBy } from 'utils/patient';
@@ -37,32 +36,32 @@ function Root() {
     user,
   } = useUserProfile();
 
-  const renderSearch = useCallback(
-    () => (
-      <Form style={{ width: 276 }}>
-        <InputGroup>
-          <AutoComplete
-            data={patients}
-            value={searchValue}
-            onChange={setSearchValue}
-            filterBy={(val, item) => {
-              return filterPatientBy(val, item, true);
-            }}
-            renderItem={item => {
-              return item.name;
-            }}
-            onSelect={({ id }) => {
-              history.push(`/patients/${id}`);
-            }}
-          />
-          <InputGroup.Button>
-            <Icon icon="search" />
-          </InputGroup.Button>
-        </InputGroup>
-      </Form>
-    ),
-    [history, patients, searchValue]
-  );
+  // const renderSearch = useCallback(
+  //   () => (
+  //     <Form style={{ width: 276 }}>
+  //       <InputGroup>
+  //         <AutoComplete
+  //           data={patients}
+  //           value={searchValue}
+  //           onChange={setSearchValue}
+  //           filterBy={(val, item) => {
+  //             return filterPatientBy(val, item, true);
+  //           }}
+  //           renderItem={item => {
+  //             return item.name;
+  //           }}
+  //           onSelect={({ id }) => {
+  //             history.push(`/patients/${id}`);
+  //           }}
+  //         />
+  //         <InputGroup.Button>
+  //           <Icon icon="search" />
+  //         </InputGroup.Button>
+  //       </InputGroup>
+  //     </Form>
+  //   ),
+  //   [history, patients, searchValue]
+  // );
 
   if (!isVerified) {
     return <div>Loading ...</div>;
@@ -98,15 +97,12 @@ function Root() {
               avatar={R.prop('avatar')(user)}
               notifications={notifications}
               onClear={clearNotifications}
-              renderSearch={renderSearch}
             />
             <ContentStyled>
               <AppRouter></AppRouter>
             </ContentStyled>
           </MainStyled>
-          {/* <Can I="create" a="Appointment"> */}
           <NewAppointment show={visbleAppointment} onHide={toggleAppointment} />
-          {/* </Can> */}
           <NewPatient show={visblePatient} onHide={togglePatient} />
         </>
       ) : (

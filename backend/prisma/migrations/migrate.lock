@@ -11,3 +11,5 @@
 20210213102256-remove-is-rqureid
 20210213113236-add-choices
 20210213113759-add-new-types
+20210215023123-remove-clinic-to-expense-and-revenue-relationship
+20210215023350-add-user-to-revenues-and-expenses

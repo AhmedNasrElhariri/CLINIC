@@ -3,23 +3,14 @@ import * as R from 'ramda';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import { GET_PATIENT, GET_APPOINTMENT } from 'apollo-client/queries';
-import {
-  Div,
-  PatientSummary,
-  PatientProgress,
-  CRNav,
-  CRButton,
-  MainContainer,
-} from 'components';
+import { GET_PATIENT } from 'apollo-client/queries';
+import { Div, CRNav, CRButton, MainContainer } from 'components';
 import AvatarWithName from '../patient-avatar-with-name/index';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import History from 'components/appointments/appointment/patient-history';
 import PatientSurgries from 'components/appointments/appointment/surgries';
-import Print from '../print';
-import Sessions from '../sessions';
 import { appointmentHistory } from '../../../utils/constants';
 const tabs = ['Patient Info', 'Sessions', 'Progress', 'Labs', 'History'];
 

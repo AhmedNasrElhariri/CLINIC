@@ -17,7 +17,8 @@ import {
   ADD_DOCTOR,
   ASSIGN_ROLE_TO_DOCOTR,
 } from 'apollo-client/queries';
-import { POSITIONS } from 'utils/constants';
+import { POSITIONS, ACTIONS } from 'utils/constants';
+
 import { convertActionsToEntities } from 'utils/misc';
 
 const updateBranchesCache = (client, listBranches) => {
@@ -47,6 +48,8 @@ const updateUsersCache = (client, listUsers) => {
   });
 };
 
+const actions = convertActionsToEntities(Object.keys(ACTIONS));
+
 function usePermissions({
   onCreateRole,
   onCreateBranch,
@@ -57,11 +60,11 @@ function usePermissions({
   onAssignRoleToUser,
 } = {}) {
   /* queries */
-  const { data: actionsData } = useQuery(GET_ACTIONS);
-  const actions = useMemo(
-    () => convertActionsToEntities(R.propOr([], 'getActions')(actionsData)),
-    [actionsData]
-  );
+  // const { data: actionsData } = useQuery(GET_ACTIONS);
+  // const actions = useMemo(
+  //   () => convertActionsToEntities(R.propOr([], 'getActions')(actionsData)),
+  //   [actionsData]
+  // );
 
   const { data: branchesData } = useQuery(LIST_BRANCHES);
   const branches = useMemo(() => R.propOr([], 'listBranches')(branchesData), [
@@ -174,7 +177,7 @@ function usePermissions({
   /* compound */
   const groupedPermissions = useMemo(
     () => R.groupBy(R.prop('subject'))(actions),
-    [actions]
+    []
   );
   const formPermissions = useMemo(
     () =>
@@ -184,7 +187,7 @@ function usePermissions({
         level: null,
         rules: [],
       })),
-    [actions]
+    []
   );
   const indexePermissions = useMemo(
     () => R.indexBy(R.prop('id'))(formPermissions),
@@ -211,7 +214,6 @@ function usePermissions({
       roles,
     }),
     [
-      actions,
       branches,
       specialties,
       users,

@@ -52,11 +52,8 @@ export const LIST_PATIENT_SURGERIES = gql`
 `;
 
 export const CREATE_PATIENT_SURGERY = gql`
-  mutation createPatientSurgery(
-    $clinicId: ID!
-    $patientSurgery: PatientSurgeryInput!
-  ) {
-    createPatientSurgery(clinicId: $clinicId, patientSurgery: $patientSurgery) {
+  mutation createPatientSurgery($patientSurgery: PatientSurgeryInput!) {
+    createPatientSurgery(patientSurgery: $patientSurgery) {
       id
     }
   }

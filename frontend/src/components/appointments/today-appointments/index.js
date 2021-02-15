@@ -128,7 +128,6 @@ function TodayAppointments() {
   );
   return (
     <>
-      {/* <Can I="list" an="Appointment"> */}
       {/* <ToolBar
         formValue={formValue}
         onChange={setFormValue}
@@ -143,16 +142,13 @@ function TodayAppointments() {
         onArchive={handleArchive}
         defaultExpanded={true}
       />
-      {/* </Can> */}
       <Div my={5} />
-      {/* <Can I="list" an="Appointment"> */}
       <ListAppointments
         title="Completed Appointments"
         appointments={completedAppointments}
         onDone={onClickDone}
         defaultExpanded={true}
       />
-      {/* </Can> */}
       <FinishAppointment
         appointment={appointment}
         show={visible}

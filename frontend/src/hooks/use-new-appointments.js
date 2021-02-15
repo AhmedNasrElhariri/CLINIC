@@ -5,6 +5,8 @@ import * as R from 'ramda';
 
 import { ACTIONS } from 'utils/constants';
 import { CREATE_APPOINTMENT, LIST_BRANCHES_TREE } from 'apollo-client/queries';
+import useAppointments from './use-appointments';
+import usePatients from './use-patients';
 
 const initialValues = {
   type: 'Examination',
@@ -18,6 +20,10 @@ const initialValues = {
 
 const useNewAppointments = ({ onCreate } = {}) => {
   const [formValue, setFormValue] = useState(initialValues);
+
+  const { appointments } = useAppointments();
+  const { patients } = usePatients();
+  // useFetchPatient(LIST_PATIENTS);
 
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Appointment },
@@ -60,13 +66,23 @@ const useNewAppointments = ({ onCreate } = {}) => {
     () => ({
       branches,
       specialties,
+      patients,
       doctors,
       formValue,
       setFormValue,
+      appointments,
       createAppointment: appointment =>
         createAppointment({ variables: { appointment } }),
     }),
-    [branches, createAppointment, doctors, formValue, specialties]
+    [
+      appointments,
+      branches,
+      createAppointment,
+      doctors,
+      formValue,
+      patients,
+      specialties,
+    ]
   );
 };
 

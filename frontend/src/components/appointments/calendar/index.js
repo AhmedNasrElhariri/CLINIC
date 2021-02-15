@@ -16,7 +16,6 @@ import EditAppointment from '../edit-appointment/index';
 import CancelAppointment from '../cancel-appointment/index';
 import { MIN_EVENT_DURATION } from 'utils/constants';
 import useFetchEvents from 'hooks/fetch-evets';
-import { Can } from 'components/user/can';
 import useAuth from 'hooks/auth';
 
 import Filter from './filter';
@@ -175,54 +174,52 @@ function AppointmentCalendar() {
   };
 
   return (
-    <Can I="view" a="Calendar">
-      <CalendarContext.Provider
-        value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
-      >
-        <Filter
+    <CalendarContext.Provider
+      value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
+    >
+      <Filter
+        formValue={formValue}
+        onChange={setFormValue}
+        doctors={patientsDoctors}
+      />
+      <Div bg="white" p={30}>
+        <div style={{ height: 753 }}>
+          <CalendarStyled
+            events={formValue.doctor ? allEvents : []}
+            views={allViews}
+            localizer={localizer}
+            components={components}
+            step={15}
+            timeslots={1}
+            onSelectSlot={handleSelect}
+            longPressThreshold={2000}
+            defaultView={Views.MONTH}
+            showMultiDayTimes
+            selectable
+            popup
+          />
+        </div>
+        <NewEvent
+          show={visible}
+          onOk={onCreateEvent}
+          onCancel={() => setVisible(false)}
           formValue={formValue}
           onChange={setFormValue}
-          doctors={patientsDoctors}
         />
-        <Div bg="white" p={30}>
-          <div style={{ height: 753 }}>
-            <CalendarStyled
-              events={formValue.doctor ? allEvents : []}
-              views={allViews}
-              localizer={localizer}
-              components={components}
-              step={15}
-              timeslots={1}
-              onSelectSlot={handleSelect}
-              longPressThreshold={2000}
-              defaultView={Views.MONTH}
-              showMultiDayTimes
-              selectable
-              popup
-            />
-          </div>
-          <NewEvent
-            show={visible}
-            onOk={onCreateEvent}
-            onCancel={() => setVisible(false)}
-            formValue={formValue}
-            onChange={setFormValue}
-          />
-        </Div>
-        <EditAppointment
-          onOk={edit}
-          visible={adjustVisible.edit}
-          appointment={appointment}
-          onClose={() => onClose('edit')}
-        />
-        <CancelAppointment
-          visible={adjustVisible.cancel}
-          appointment={appointment}
-          onOk={cancel}
-          onClose={() => onClose('cancel')}
-        />
-      </CalendarContext.Provider>
-    </Can>
+      </Div>
+      <EditAppointment
+        onOk={edit}
+        visible={adjustVisible.edit}
+        appointment={appointment}
+        onClose={() => onClose('edit')}
+      />
+      <CancelAppointment
+        visible={adjustVisible.cancel}
+        appointment={appointment}
+        onOk={cancel}
+        onClose={() => onClose('cancel')}
+      />
+    </CalendarContext.Provider>
   );
 }
 

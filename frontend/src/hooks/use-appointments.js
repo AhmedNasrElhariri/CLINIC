@@ -7,7 +7,7 @@ import { sortAppointmentsByDate } from 'services/appointment';
 import { APPT_TYPE } from 'utils/constants';
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 
-function useFetchAppointments({ includeSurgery } = {}) {
+function useAppointments({ includeSurgery } = {}) {
   const [fetched, setFetched] = useState(false);
   const { data } = useQuery(LIST_APPOINTMENTS, {
     onCompleted: () => setFetched(true),
@@ -67,4 +67,4 @@ function useFetchAppointments({ includeSurgery } = {}) {
   );
 }
 
-export default useFetchAppointments;
+export default useAppointments;

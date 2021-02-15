@@ -1,9 +1,23 @@
 import { prisma } from '@';
 
-const revenues = (_, { clinicId }) => {
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { ACTIONS } from '@/utils/constants';
+
+const revenues = async (_, __, { userId, organizationId }) => {
+  const ids = await listFlattenUsersTreeIds(
+    {
+      userId,
+      organizationId,
+      action: ACTIONS.View_Accounting,
+    },
+    true
+  );
+
   return prisma.revenue.findMany({
     where: {
-      clinicId,
+      userId: {
+        in: ids,
+      },
     },
   });
 };

@@ -85,35 +85,24 @@ export const listFlattenUsersTree = async (
   { action, userId, organizationId },
   allUsers
 ) => {
-  const role = await prisma.permissionRole
-    .findMany({
-      where: {
-        users: {
-          every: {
-            id: userId,
-          },
+  const role = await prisma.user.findOne({ where: { id: userId } }).role({
+    include: {
+      permissions: {
+        where: {
+          action,
+        },
+        include: {
+          rules: true,
         },
       },
-      include: {
-        permissions: {
-          where: {
-            action,
-          },
-          include: {
-            rules: true,
-          },
-        },
-      },
-    })
-    .then(res => (res.length ? res[0] : null));
+    },
+  });
 
   const permission = R.pathOr(null, ['permissions', '0'])(role);
 
   if (!permission) {
     return [];
   }
-
-  console.dir(permission);
 
   const { level, all, rules } = permission;
 

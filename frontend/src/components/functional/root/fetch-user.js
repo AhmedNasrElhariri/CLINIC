@@ -34,7 +34,7 @@ function useUserProfile() {
   useSubscription(NOTIFICATION_SUBSCRIPTION, {
     onSubscriptionData: () => refetch(),
   });
-  const { patients } = useFetchPatients();
+  // const { patients } = useFetchPatients();
 
   const [_, setActiveViews] = useGlobalState('activeViews');
   const [user, setUser] = useGlobalState('user');
@@ -110,7 +110,7 @@ function useUserProfile() {
   return {
     clinics,
     currentClinic,
-    patients,
+    // patients,
     onLoginFailed,
     onLoginSucceeded,
     logout,

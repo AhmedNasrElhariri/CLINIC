@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const LIST_EXPENSES = gql`
-  query expenses($clinicId: ID!) {
-    expenses(clinicId: $clinicId) {
+  query expenses {
+    expenses {
       id
       name
       amount
@@ -13,8 +13,8 @@ export const LIST_EXPENSES = gql`
 `;
 
 export const LIST_REVENUES = gql`
-  query revenues($clinicId: ID!) {
-    revenues(clinicId: $clinicId) {
+  query revenues {
+    revenues {
       id
       name
       amount

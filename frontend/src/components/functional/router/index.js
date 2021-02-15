@@ -54,12 +54,13 @@ function AppRouter() {
         <ListPatients />
       </Route>
 
-      <ProtectedRoute
+      <Route path="/patients/:patientId" component={Patient} />
+      {/* <ProtectedRoute
         path="/patients/:patientId"
         component={Patient}
         action="view"
         subject="Patient"
-      />
+      /> */}
 
       <Route path="/calendar">
         <Calendar />
