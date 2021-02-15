@@ -11,11 +11,11 @@ export default function Sidebar({ onLogout, items }) {
   const { pathname } = useLocation();
   return (
     <ContainerStyled>
-      <Div position="absolute" left={35} top={40}>
+      {/* <Div position="absolute" left={35} top={40}>
         <RouterLink to="/">
           <Img src="/logo.svg" alt="" width={150} />
         </RouterLink>
-      </Div>
+      </Div> */}
       <BodyStyled>
         {items.map(({ to, name, extra, icon }, idx) => (
           <Link

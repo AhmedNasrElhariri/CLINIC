@@ -75,6 +75,8 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
               block
               bold
               uppercase
+              small
+              primary
               onClick={() => login({ variables: { ...formValue } })}
             >
               LOG IN

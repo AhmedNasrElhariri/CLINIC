@@ -67,7 +67,7 @@ export const colors = {
 export default {
   colors: { ...colors },
   // mode: 'normal',
-  mode: 'large',
+  mode: 'normal',
   buttons: {
     primary: {
       color: colors.primary,
@@ -85,7 +85,7 @@ export default {
 
   // common will be extracted
   navbar: {
-    height: '130px',
+    height: '50px',
   },
 
   breakpoints: ['40em', '52em', '64em', '100em'],

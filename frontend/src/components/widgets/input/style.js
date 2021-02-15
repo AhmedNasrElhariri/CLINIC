@@ -106,7 +106,6 @@ Input.defaultProps = {
 
 export const InputGroupStyled = styled(InputGroup)`
   &.rs-input-group {
-    ${getBorderRadius}
     ${getBorder}
     width:100% !important;
   }

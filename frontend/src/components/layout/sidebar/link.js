@@ -1,16 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import css from '@styled-system/css';
 import { byTheme } from 'services/theme';
 
 const theme = {
   fontSize: {
-    normal: '18px',
+    normal: '12px',
     large: '24px',
   },
   height: {
-    normal: 57,
+    normal: '40px',
     large: 60,
   },
 };
@@ -19,20 +19,16 @@ const LinkStyled = styled(Link)`
   display: block;
   font-family: 'SegoeUI';
   font-stretch: normal;
+  font-weight: 600;
   font-style: normal;
   line-height: 1.33;
   letter-spacing: normal;
   text-align: left;
   display: flex;
   align-items: center;
-  opacity: ${props => (props.active ? 1 : 0.4)};
-  color: ${props =>
-    props.active ? props.theme.colors.primary : props.theme.colors.text};
-  font-weight: ${props => (props.active ? 'bold' : 'normal')};
+  color: #1b253a;
   border-radius: 2px;
-
   ${byTheme(theme)}
-
   &:focus,
   &:active,
   &:hover {
@@ -42,7 +38,10 @@ const LinkStyled = styled(Link)`
     opacity: 1;
   }
   position: relative;
-  margin-right: 10px;
+  ${css({
+    marginLeft: ['7px', '7px', '7px', '7px', '7px'],
+    marginRight: ['6px', '6px', '6px', '6px', '6px'],
+  })}
 `;
 
 const VBorder = styled.span`

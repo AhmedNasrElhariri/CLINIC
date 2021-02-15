@@ -3,6 +3,7 @@ import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 import Fab from 'components/appointments/new-appointment/fab';
 import { AppRouter, Login, NewPatient } from 'components';
+import { UserIcon, CalendarIcon} from 'components/icons/index';
 import {
   ContainerStyled,
   MainStyled,
@@ -71,44 +72,44 @@ function Root() {
     {
       to: '/appointments/today',
       name: `Today's Appointments`,
-      icon: <Icon icon="file" size="lg" fixedWidth />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/calendar',
       name: 'Calendar',
-      icon: <Icon icon="calendar" size="lg" fixedWidth />,
+      icon: <CalendarIcon width={11.8} height={14.1} />,
     },
     {
       to: '/appointments',
       name: 'Appointments',
       extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
-      icon: <Icon icon="user" size="lg" fixedWidth />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/patients',
       name: 'Patients',
       extra: <Fab open={visblePatient} onClick={togglePatient} />,
-      icon: <Icon icon="user" size="lg" fixedWidth />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/reports',
       name: 'Reports',
-      icon: <Icon icon="bar-chart" size="lg" fixedWidth />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/surgeries',
       name: 'Surgeries',
-      icon: <Icon icon="bar-chart" size="lg" fixedWidth />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/report-printouts',
       name: 'Report Printouts',
-      icon: <Icon icon="bar-chart" size="lg" fixedWidth />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/permissions',
       name: 'Permissions',
-      icon: <Icon icon="bar-chart" size="lg" fixedWidth />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
   ];
 
