@@ -14,7 +14,7 @@ const theme = {
 
 const smallHeight = {
   height: {
-    normal: 10,
+    normal: 38,
     large: 43,
   },
 };
@@ -28,7 +28,7 @@ const largeHeight = {
 
 const normalHeight = {
   height: {
-    normal: 16,
+    normal: 38,
     large: 59,
   },
 };
@@ -87,7 +87,6 @@ const Button = styled.button.attrs(
   cursor: pointer;
   padding: 0px 26px;
 
-  ${getBorderRadius}
   ${getHeight}
 
   ${byTheme(theme)};
