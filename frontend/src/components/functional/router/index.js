@@ -22,6 +22,7 @@ import {
   InventoryPage,
   PatientSurgeriesContainer,
   ReportPrintout,
+  Example,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 import ProtectedRoute from '../protected-route/index';
@@ -124,7 +125,9 @@ function AppRouter() {
       <Route path="/me">
         <Profile />
       </Route>
-
+      <Route path="/example">
+        <Example />
+      </Route>
       <Route path="" exact>
         <Redirect to="/appointments/today" />
         {/* <Redirect to="/admin" /> */}

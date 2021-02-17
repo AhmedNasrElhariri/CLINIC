@@ -3,20 +3,29 @@ import { Table } from 'rsuite';
 
 import CRHeaderCell from './header-cell';
 import CRCell, { CRCellStyled } from './cell';
+import { props } from 'ramda';
 
-const CRTable = styled(Table).attrs(() => ({
-  rowHeight: 75,
-  headerHeight: 75,
+const CRTable = styled(Table).attrs(props => ({
+  rowHeight: props.rowHeight ,
+  minHeight: props.minHeight, 
   bordered: false,
 }))`
   cursor: pointer;
   & .rs-table-row {
-    border-bottom: none;
-    padding-bottom: 30px;
+    border-left:${props => props.border};
   }
-
   & .rs-table-row-header {
-    border-bottom: 2px solid ${props => props.theme.colors.primaryLighter} !important;
+    border-left:none;
+  }
+  & .rs-table-cell-content {
+    padding: 0px ;
+    border-bottom: 2px solid white;
+  }
+  }
+  & .rs-table-cell-content > * {
+    height: 35px;
+    text-align: center;
+    vertical-align: center;
   }
 `;
 

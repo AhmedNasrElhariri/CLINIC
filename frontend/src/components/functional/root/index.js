@@ -111,6 +111,11 @@ function Root() {
       name: 'Permissions',
       icon: <UserIcon width={11.8} height={14.1} />,
     },
+    {
+      to: '/example',
+      name: 'Example',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
   ];
 
   return (

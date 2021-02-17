@@ -79,46 +79,12 @@ const getBorderRadius = ({ round, midRound }) =>
 //   })
 // )`
 const CRColumn = styled(Table.Column)`
-  /* background-color: ${props => props.theme.colors.dark};
+ background-color: ${props => props.theme.colors.dark};
   opacity: 0.2;
-  font-stretch: normal;
   font-style: normal;
-  line-height: 0;
   letter-spacing: normal;
   text-align: center;
-  color: #ffffff;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0px 26px;
-
-  ${getBorderRadius}
-  ${getHeight}
-
-  ${byTheme(theme)};
-  ${space}
-  ${typography}
-  ${layout}
-  ${textTransform}
-  ${border}
-
-
-  ${variant({
-    variants: {
-      primary: {
-        'background-color': theme => theme.colors.primary,
-        opacity: 1,
-      },
-    },
-  })}
-
-  &:focus,
-  &:active,
-  &:hover,
-  &:visited {
-    background-color: ${props => props.theme.colors.primary};
-    opacity: 1;
-    outline: none;
-  } */
+  
 `;
 
 // Button.propTypes = {

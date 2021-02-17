@@ -31,7 +31,7 @@ export const colors = {
     transparentize(0.5, textColor),
     transparentize(0.75, textColor),
   ],
-  background: 'rgba(40, 49, 72, 0.03)',
+  background: 'rgba(255,255,255,1)',
   cardBorder: transparentize(0.9, textColor),
   border: transparentize(0.85, primaryColor),
   borders: [transparentize(0.8, textColor)],

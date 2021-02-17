@@ -1,5 +1,6 @@
 /******************       Admin    *********************************/
 export { default as PermissionContainer } from './admin/admin-container';
+export { default as Example } from './example';
 /******************       Branches    *********************************/
 export { default as BranchesContainer } from './admin/branches/branches-container';
 export { default as NewBranch } from './admin/branches/new-branch';
