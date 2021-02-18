@@ -5,54 +5,56 @@ import { Table } from 'rsuite';
 import { H6 } from '../html/index';
 
 import { variant } from 'styled-system';
-
+import lightTheme from 'styles/light';
 
 export const CRCell = styled(H6)(
   variant({
-    variants: {
-      primary: {
-        bg: '#51C6F3',
-      },
-      primaryTwo: {
-        bg: '#019ae7',
-        color: '#ffffff',
-      },
-      secondary: {
-        bg: '#eef1f1',
-        color: '#1b253a',
-      },
-      danger: {
-        bg: '#bc3254',
-        color: '#ffffff',
-      },
-      green: {
-        bg: '#037f4b',
-        color: '#ffffff',
-      },
-      yello: {
-        bg: '#ffcc03',
-      },
-      different: {
-        bg: '#794bd1',
-      },
-    },
+    variants: lightTheme.variantBackgroundColors,
   }),
+  variant({
+    prop: 'coloring',
+    variants: lightTheme.variantColors,
+  })
 )
 export const CRCellStyled = styled(CRCell).attrs(({ bold, semiBold, block }) => ({
   fontWeight: bold ? 800 : semiBold ? 600 : 400,
 }))`
   
 `;
-const handleColor = (data, dataKey) => {
-  let variant = 'secondary';
+const handleBackgroundColor = (data, dataKey) => {
+  let coloring = 'secondary';
   if (dataKey == 'status') {
     if (data[dataKey] == 'Waiting') {
-      variant = 'danger';
+      coloring = 'danger';
     } else if (data[dataKey] == 'Finished') {
-      variant = 'primaryTwo';
+      coloring = 'primary100';
     } else {
-      variant = 'green';
+      coloring = 'green';
     }
+  }
+  return coloring;
+};
+const handleColor =  (data, dataKey) => {
+  let variant = 'default';
+  if (dataKey == 'status') {
+    if (data[dataKey] == 'Waiting' || 'Finished' || 'Arrived') {
+      variant = 'white';
+    }
+  }
+  if (dataKey == 'type' && data[dataKey] == 'examination') {
+     variant= 'primary100';
+  }
+  else if (dataKey == 'type' && data[dataKey] == 'Follow-up') {
+    variant= 'green';
+  }
+  else if (dataKey == 'type' && data[dataKey] == 'Session') {
+    variant= 'yello';
+  }
+  else if (dataKey == 'type' && data[dataKey] == 'Surgery') {
+    variant= 'color100';
+  }
+  else if (dataKey == 'type' && data[dataKey] == 'Urgent') {
+    variant= 'color200';
   }
   return variant;
 };
@@ -65,7 +67,8 @@ export default ({ children, bold, semiBold, dataKey, ...props }) => (
           <CRCellStyled
             bold={bold}
             semiBold={semiBold}
-            variant={handleColor(data, dataKey)}
+            variant={handleBackgroundColor(data, dataKey)}
+            coloring={handleColor(data, dataKey)}
           >
             {data[dataKey]}
           </CRCellStyled>

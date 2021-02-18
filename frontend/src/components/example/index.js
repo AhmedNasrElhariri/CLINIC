@@ -1,8 +1,6 @@
 import React from 'react';
-import { Icon } from 'rsuite';
-import { Header, Type } from './styles';
-
-import { CRCard, CRTable, H2 } from 'components';
+import { Header, StyledPanel } from './styles';
+import Table from './table';
 const examination = [
   {
     patientName: 'ahmed',
@@ -55,256 +53,134 @@ const Follow = [
     doctor: 'ahmed',
   },
 ];
+const Session = [
+  {
+    patientName: 'ahmed',
+    status: 'Waiting',
+    type: 'Session',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+  {
+    patientName: 'ahmed',
+    status: 'Finished',
+    type: 'Session',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+  {
+    patientName: 'ahmed',
+    status: 'Arrived',
+    type: 'Session',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+];
+const Surgery = [
+  {
+    patientName: 'ahmed',
+    status: 'Waiting',
+    type: 'Surgery',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+  {
+    patientName: 'ahmed',
+    status: 'Finished',
+    type: 'Surgery',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+  {
+    patientName: 'ahmed',
+    status: 'Arrived',
+    type: 'Surgery',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+];
+const Urgent = [
+  {
+    patientName: 'ahmed',
+    status: 'Waiting',
+    type: 'Urgent',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+  {
+    patientName: 'ahmed',
+    status: 'Finished',
+    type: 'Urgent',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+  {
+    patientName: 'ahmed',
+    status: 'Arrived',
+    type: 'Urgent',
+    timeline: '22/2/2020',
+    date: '08:30 PM - 08:45 PM',
+    doctor: 'ahmed',
+  },
+];
 
 function Example({}) {
   return (
     <>
       <Header>Appoinments</Header>
-      <Type margin="100px 772px 11px 4px" color="#019ae7">
-        Examination
-      </Type>
-      <CRCard borderless>
-        <CRTable autoHeight  data={examination}  rowHeight={35} minHeight={35} border='6px solid #037f4b'>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="patientName" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Status</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="status" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="type" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Timeline</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="timeline" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="date" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="doctor" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="print"> Print</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="close"> Edit</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="edit"> Cancel</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        </CRTable>
-      </CRCard>
-      <Type margin="29px 791px 11px 4px" color="#037f4b">
-        Follow-up
-      </Type>
-      <CRCard borderless>
-        <CRTable autoHeight data={Follow} rowHeight={35} minHeight={35} border='6px solid #037f4b'>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="patientName" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Status</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="status" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="type" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Timeline</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="timeline" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="date" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="doctor" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="print"> Print</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="close"> Edit</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="edit"> Cancel</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        </CRTable>
-      </CRCard>
-      <Type margin="60px 805px 9px 4px" color="#ffcc03">
-        Session
-      </Type>
-      <CRCard borderless>
-        <CRTable autoHeight data={examination} rowHeight={35} minHeight={35}  headerHeight={35} border='6px solid #ffcc03'>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="patientName" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Status</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="status" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="type" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Timeline</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="timeline" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="date" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="doctor" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="print"> Print</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="close"> Edit</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="edit"> Cancel</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        </CRTable>
-      </CRCard>
-      <Type margin="31.5px 804px 9px 4px" color="#794bd1">
-        Surgery
-      </Type>
-      <CRCard borderless>
-        <CRTable autoHeight data={examination} rowHeight={35} minHeight={35}  headerHeight={35} border='6px solid #794bd1'>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="patientName" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Status</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="status" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="type" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Timeline</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="timeline" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="date" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="doctor" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="print"> Print</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="close"> Edit</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="edit"> Cancel</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        </CRTable>
-      </CRCard>
-      <Type margin="39px 808px 26px 4px" color="#bc3254">
-        Urgent
-      </Type>
-      <CRCard borderless>
-        <CRTable autoHeight data={examination} rowHeight={35} minHeight={35} headerHeight={35} border='6px solid #bc3254'>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="patientName" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Status</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="status" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="type" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Timeline</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="timeline" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="date" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="doctor" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="print"> Print</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="close"> Edit</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              <Icon icon="edit"> Cancel</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        </CRTable>
-      </CRCard>  
+      <StyledPanel
+        header="Examination"
+        collapsible
+        bodyFill
+        defaultExpanded
+        color="#019ae7"
+      >
+        <Table data={examination} borderLeft="6px solid #019ae7" />
+      </StyledPanel>
+      <StyledPanel
+        header="Follow-up"
+        collapsible
+        bodyFill
+        defaultExpanded
+        color="#037f4b"
+      >
+        <Table data={Follow} borderLeft="6px solid #037f4b" />
+      </StyledPanel>
+      <StyledPanel
+        header="Session"
+        collapsible
+        bodyFill
+        defaultExpanded
+        color="#ffcc03"
+      >
+        <Table data={Session} borderLeft="6px solid #ffcc03" />
+      </StyledPanel>
+      <StyledPanel
+        header="Surgery"
+        collapsible
+        bodyFill
+        defaultExpanded
+        color="#794bd1"
+      >
+        <Table data={Surgery} borderLeft="6px solid #794bd1" />
+      </StyledPanel>
+      <StyledPanel
+        header="Urgent"
+        collapsible
+        bodyFill
+        defaultExpanded
+        color="#bc3254"
+      >
+        <Table data={Urgent} borderLeft="6px solid #bc3254" />
+      </StyledPanel>
     </>
   );
 }

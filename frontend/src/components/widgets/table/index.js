@@ -4,12 +4,9 @@ import { Table } from 'rsuite';
 import CRHeaderCell from './header-cell';
 import CRCell, { CRCellStyled } from './cell';
 import { props } from 'ramda';
+import { minHeight } from 'styled-system';
 
-const CRTable = styled(Table).attrs(props => ({
-  rowHeight: props.rowHeight ,
-  minHeight: props.minHeight, 
-  bordered: false,
-}))`
+const CRTable = styled(Table)`
   cursor: pointer;
   & .rs-table-row {
     border-left:${props => props.border};
@@ -19,13 +16,12 @@ const CRTable = styled(Table).attrs(props => ({
   }
   & .rs-table-cell-content {
     padding: 0px ;
-    border-bottom: 2px solid white;
+    border-bottom: 3px solid white;
   }
   }
   & .rs-table-cell-content > * {
-    height: 35px;
+    height: ${props => props.height};
     text-align: center;
-    vertical-align: center;
   }
 `;
 

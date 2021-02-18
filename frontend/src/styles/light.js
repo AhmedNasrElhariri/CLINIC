@@ -1,4 +1,5 @@
 import { transparentize, setLightness } from 'polished';
+import { variant } from 'styled-system';
 
 const textColor = '#283148';
 const successColor = '#40C173';
@@ -10,7 +11,64 @@ const eventColor3 = '#d40000';
 const eventColor5 = textColor;
 
 export const scrollbarColor = transparentize(0.8, textColor);
-
+export const variantColors = {
+  primary: {
+    color: '#51C6F3',
+  },
+  primary100: {
+    color: '#019ae7',
+  },
+  secondary: {
+    color: '#eef1f1',
+  },
+  white: {
+    color: '#ffffff',
+  },
+  danger: {
+    color: '#bc3254',
+  },
+  green: {
+    color: '#037f4b',
+  },
+  yello: {
+    color: '#ffcc03',
+  },
+  color100: {
+    color: '#794bd1',
+  },
+  color200:{
+    color: '#bc3254'
+  },
+  default: {
+    color: '#1b253a',
+  },
+};
+export const variantBackgroundColors = {
+  primary: {
+    bg: '#51C6F3',
+  },
+  primary100: {
+    bg: '#019ae7',
+  },
+  secondary: {
+    bg: '#eef1f1',
+  },
+  danger: {
+    bg: '#bc3254',
+  },
+  green: {
+    bg: '#037f4b',
+  },
+  yello: {
+    bg: '#ffcc03',
+  },
+  color100: {
+    bg: '#794bd1',
+  },
+  color200:{
+    bg: '#bc3254'
+  }
+}
 export const colors = {
   primary: primaryColor,
   success: successColor,
@@ -64,6 +122,8 @@ export const colors = {
   ],
 };
 
+
+
 export default {
   colors: { ...colors },
   // mode: 'normal',
@@ -91,4 +151,6 @@ export default {
   breakpoints: ['40em', '52em', '64em', '100em'],
 
   radius: 17,
+  variantColors,
+  variantBackgroundColors
 };
