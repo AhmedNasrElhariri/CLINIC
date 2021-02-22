@@ -7,6 +7,7 @@ import {
   NumberContainerStyled,
   NumberInputStyled,
   NumberButton,
+  StyledLabel,
 } from './style';
 
 const CustomInput = memo(({ value, onChange, ...props }) => {
@@ -24,9 +25,9 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
 
   return (
     <NumberContainerStyled>
+      {props.title ? <StyledLabel>{props.title}</StyledLabel> : ''}
       <NumberButton
-        borderTopRightRadius={0}
-        borderBottomRightRadius={0}
+        borderRadius={'50%'}
         onClick={() => setValue(Number(value || 0) - 1)}
       >
         <MinusIcon />
@@ -37,8 +38,7 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
         {...props}
       ></NumberInputStyled>
       <NumberButton
-        borderTopLeftRadius={0}
-        borderBottomLeftRadius={0}
+       borderRadius={'50%'}
         onClick={() => setValue(Number(value || 0) + 1)}
       >
         <AddIcon />

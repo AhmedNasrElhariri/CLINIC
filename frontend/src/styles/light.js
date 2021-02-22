@@ -3,7 +3,7 @@ import { variant } from 'styled-system';
 
 const textColor = '#283148';
 const successColor = '#40C173';
-const primaryColor = '#51C6F3';
+const primaryColor = '#51C6F3';// i changed the primary color from #51C6F3 to #1b253a
 const eventColor1 = primaryColor;
 const eventColor2 = successColor;
 const eventColor4 = '#fe9f0b';
@@ -13,7 +13,7 @@ const eventColor5 = textColor;
 export const scrollbarColor = transparentize(0.8, textColor);
 export const variantColors = {
   primary: {
-    color: '#51C6F3',
+    color: '#1b253a',
   },
   primary100: {
     color: '#019ae7',

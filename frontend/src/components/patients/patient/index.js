@@ -33,8 +33,13 @@ function Appointment() {
   });
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
-  const patient = R.propOr({}, 'patient')(data);
-
+  //const patient = R.propOr({}, 'patient')(data);
+  const patient = {
+    id: 1,
+    name: 'ahmed nasr',
+    type: 'primary',
+    age: 9,
+  }
   const { viewFields } = usePatientHistory({ patientId });
   const appoinmentId = '0a63eaa1-1cfc-40a2-9fe0-4ed2269a4397';
   return (

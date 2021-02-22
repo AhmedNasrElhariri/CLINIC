@@ -44,25 +44,25 @@ const LinkStyled = styled(Link)`
   })}
 `;
 
-const VBorder = styled.span`
-  position: absolute;
-  ${byTheme({
-    width: {
-      normal: 10,
-      large: 12,
-    },
-  })}
-  right: 0;
-  top: 0;
-  height: 100%;
-  background-color: ${props => props.theme.colors.primary};
-  display: ${props => (props.active ? 'block' : 'none')};
-  border-radius: 50px 0px 0px 50px;
-`;
+// const VBorder = styled.span`
+//   position: absolute;
+//   ${byTheme({
+//     width: {
+//       normal: 10,
+//       large: 12,
+//     },
+//   })}
+//   right: 0;
+//   top: 0;
+//   height: 100%;
+//   background-color: ${props => props.theme.colors.primary};
+//   display: ${props => (props.active ? 'block' : 'none')};
+//   border-radius: 50px 0px 0px 50px;
+// `;
 
 export default ({ to, active, children, ...props }) => (
   <LinkStyled to={to} active={active ? 1 : 0} {...props}>
     <span>{children}</span>
-    <VBorder active={active} />
+    {/* <VBorder active={active} /> */}
   </LinkStyled>
 );

@@ -7,6 +7,7 @@ import {
   CellTitle,
   AddressStyled,
   StrongStyled,
+  EditButton,
 } from './style';
 import { Allergies } from 'utils/constants';
 
@@ -46,28 +47,27 @@ export default function PatientInfo({ patient }) {
         <Cell
           ml={3}
           display="flex"
-          justifyContent="space-between"
           alignItems="center"
+          height={64}
+          
         >
           <H3 mb={4}>Information</H3>
-          <Button color="cyan">Edit</Button>
+          <EditButton margin='15px'>Edit</EditButton>
+          <EditButton margin='925px'>Expand</EditButton>
         </Cell>
         <Cell
           ml={3}
           display="flex"
-          justifyContent="space-between"
           alignItems="center"
         >
-          <CellTitle mb={4}>Date Of Birth</CellTitle>
+          <CellTitle mb={4}>Date of Birth</CellTitle>
           <StrongStyled>
-            {' '}
             {patient.sex} . {patient.age} yrs
           </StrongStyled>
         </Cell>
         <Cell
           ml={3}
           display="flex"
-          justifyContent="space-between"
           alignItems="center"
         >
           <CellTitle mb={4}>Email</CellTitle>
@@ -76,16 +76,15 @@ export default function PatientInfo({ patient }) {
         <Cell
           ml={3}
           display="flex"
-          justifyContent="space-between"
           alignItems="center"
         >
           <CellTitle mb={4}>Phone Number</CellTitle>
-          <AddressStyled>{patient.phoneNo}</AddressStyled>
+          <AddressStyled>{'01028130554'}</AddressStyled>
         </Cell>
       </CRCard>
-      <CRCard>
+      {/* <CRCard>
         <AllergiesBox />
-      </CRCard>
+      </CRCard> */}
     </PatientInfoStyled>
   );
 }

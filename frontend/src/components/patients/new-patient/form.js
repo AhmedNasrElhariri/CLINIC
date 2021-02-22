@@ -53,10 +53,11 @@ const NewPatient = ({ formValue, onChange }) => {
         <CRTextInput label="Guardian's Phone No" name="phoneNo" />
       </ShowIf>
 
-      <CRNumberInput label="Age" name="age" />
+      <CRNumberInput label="Age" name="age"  title="Age"/>
 
       <CRSelectInput
         label="Sex"
+        title="Sex"
         name="sex"
         searchable={false}
         data={SEX}

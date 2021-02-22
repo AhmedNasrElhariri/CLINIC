@@ -116,6 +116,16 @@ function Root() {
       name: 'Example',
       icon: <UserIcon width={11.8} height={14.1} />,
     },
+    {
+      to: '/labs',
+      name: 'Labs',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/test',
+      name: 'Test',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
   ];
 
   return (

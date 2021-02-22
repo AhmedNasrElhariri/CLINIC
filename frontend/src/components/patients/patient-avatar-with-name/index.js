@@ -7,6 +7,7 @@ import {
   SmallText,
   SubText,
   SpanTitle,
+  PatientDetails,
 } from './style';
 
 const AvatarBox = ({ patient }) => (
@@ -18,12 +19,8 @@ const AvatarBox = ({ patient }) => (
 const Detail = ({ patient }) => (
   <Div display="flex" flexDirection="column" ml={4}>
     <Div display="flex" alignItems="center" mt={3}>
-      <H2>{patient.name}</H2>
+      <PatientDetails>{patient.name}</PatientDetails>
       <SpanTitle>Primary</SpanTitle>
-    </Div>
-    <Div display="flex" alignItems="center" mt={3}>
-      <SubText>{patient.name}</SubText> -{' '}
-      <SmallText>latest diagnosis</SmallText>
     </Div>
   </Div>
 );

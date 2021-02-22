@@ -69,6 +69,7 @@ export default ({ children, bold, semiBold, dataKey, ...props }) => (
             semiBold={semiBold}
             variant={handleBackgroundColor(data, dataKey)}
             coloring={handleColor(data, dataKey)}
+            {...props}
           >
             {data[dataKey]}
           </CRCellStyled>

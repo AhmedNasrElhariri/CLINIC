@@ -23,6 +23,7 @@ import {
   PatientSurgeriesContainer,
   ReportPrintout,
   Example,
+  Labs,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 import ProtectedRoute from '../protected-route/index';
@@ -127,6 +128,12 @@ function AppRouter() {
       </Route>
       <Route path="/example">
         <Example />
+      </Route>
+      <Route path="/labs">
+        <Labs />
+      </Route>
+      <Route path="/test">
+        <Patient />
       </Route>
       <Route path="" exact>
         <Redirect to="/appointments/today" />
