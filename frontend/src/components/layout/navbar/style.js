@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import css from '@styled-system/css';
 
 import { Div } from 'components';
 
@@ -8,6 +9,9 @@ export const NavStyled = styled.nav`
   height: ${props => props.theme.navbar.height};
   min-height: ${props => props.theme.navbar.height};
   padding: 0px 64px;
+  ${css({
+    paddingLeft: [10, 10, 10, 10, 32],
+  })}
 `;
 
 export const ItemStyled = styled(Div)`

@@ -23,13 +23,12 @@ import {
   RADIO_FIELD_TYPE,
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
-  Labs,
 } from 'utils/constants';
 
 import AppointmentImages from '../images';
 
 import { HomeSidebarStyled } from './style';
-import ListLabs from './list-labs';
+import Prescription from '../prescription';
 
 const ScrollNavLink = ({ element, children, ...props }) => {
   return (
@@ -111,7 +110,7 @@ function AppointmentData({
   return (
     <>
       <Div display="flex">
-        {!isSession(appointment) && (
+        {/* {!isSession(appointment) && (
           <HomeSidebarStyled>
             <CRNav vertical onSelect={setActiveSection}>
               {navs.map((v, idx) => (
@@ -147,7 +146,7 @@ function AppointmentData({
               </ScrollNavLink>
             </CRNav>
           </HomeSidebarStyled>
-        )}
+        )} */}
         <Div id="clinic-scroll-id" flexGrow={1}>
           {!isSession(appointment) && Object.keys(formValue).length > 0 && (
             <>
@@ -183,13 +182,19 @@ function AppointmentData({
               onChange={handleCollectionsChange}
             />
           </SectionContainer>
-          <SectionContainer title="Lab" name="Lab">
+          <SectionContainer title="Prescription" name="prescription">
+            <Prescription
+              formValue={appointmentFormValue.collections}
+              onChange={handleCollectionsChange}
+            />
+          </SectionContainer>
+          {/* <SectionContainer title="Lab" name="Lab">
             <Form
               formValue={appointmentFormValue}
               onChange={onChangeAppointment}
             >
-              {/* <CRTextArea name="prescription" disabled={disabled} /> */}
-              {/* <ListLabs data={Labs} /> */}
+              <CRTextArea name="prescription" disabled={disabled} />
+              <ListLabs data={Labs} />
             </Form>
           </SectionContainer>
           <SectionContainer title="Images" name="Images">
@@ -197,10 +202,10 @@ function AppointmentData({
               formValue={appointmentFormValue}
               onChange={onChangeAppointment}
             >
-              {/* <CRTextArea name="prescription" disabled={disabled} /> */}
-              {/* <ListLabs data={Labs} /> */}
+              <CRTextArea name="prescription" disabled={disabled} />
+              <ListLabs data={Labs} />
             </Form>
-          </SectionContainer>
+          </SectionContainer> */}
         </Div>
       </Div>
     </>

@@ -18,7 +18,7 @@ const MedicineDefinition = () => {
 
   const {
     addMedicineDefinition,
-    medicinesDefinition,
+    medicines,
     editMedicineDefinition,
   } = useMedicinesDefinition({
     onCreate: () => {
@@ -66,7 +66,7 @@ const MedicineDefinition = () => {
         },
       });
     }
-  }, [addMedicineDefinition, formValue, type]);
+  }, [addMedicineDefinition, editMedicineDefinition, formValue, type]);
 
   return (
     <>
@@ -84,7 +84,7 @@ const MedicineDefinition = () => {
         type={type}
       />
       <ListMedicinesDefinition
-        medicines={medicinesDefinition}
+        medicines={medicines}
         onEdit={handleClickEdit}
       />
     </>

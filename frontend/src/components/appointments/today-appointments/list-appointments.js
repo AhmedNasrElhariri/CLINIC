@@ -50,7 +50,9 @@ function ListAppointments({
             autoHeight
             data={appointments}
             onRowClick={appointment => {
-              history.push(`/appointments/${appointment.id}`);
+              history.push(
+                `/patients/${appointment.patient.id}?appointmentId=${appointment.id}`
+              );
             }}
           >
             <CRTable.CRColumn flexGrow={1}>
@@ -99,38 +101,34 @@ function ListAppointments({
                 {appointment => (
                   <Div display="flex">
                     {isScheduledOrArchived(appointment) && (
-                      <Can I="finish" an="Appointment">
-                        <CRButton
-                          variant={
-                            isScheduled(appointment) ? 'primary' : 'success'
-                          }
-                          round
-                          small
-                          onClick={e => {
-                            e.stopPropagation();
-                            onDone(appointment);
-                          }}
-                        >
-                          Arrived
-                        </CRButton>
-                      </Can>
+                      <CRButton
+                        variant={
+                          isScheduled(appointment) ? 'primary' : 'success'
+                        }
+                        round
+                        small
+                        onClick={e => {
+                          e.stopPropagation();
+                          onDone(appointment);
+                        }}
+                      >
+                        Arrived
+                      </CRButton>
                     )}
                     {isDone(appointment) && (
-                      <Can I="archive" an="Appointment">
-                        <CRButton
-                          variant={
-                            isScheduled(appointment) ? 'primary' : 'success'
-                          }
-                          round
-                          small
-                          onClick={e => {
-                            e.stopPropagation();
-                            onArchive(appointment);
-                          }}
-                        >
-                          Archive
-                        </CRButton>
-                      </Can>
+                      <CRButton
+                        variant={
+                          isScheduled(appointment) ? 'primary' : 'success'
+                        }
+                        round
+                        small
+                        onClick={e => {
+                          e.stopPropagation();
+                          onArchive(appointment);
+                        }}
+                      >
+                        Archive
+                      </CRButton>
                     )}
 
                     <Div onClick={e => e.stopPropagation()}>

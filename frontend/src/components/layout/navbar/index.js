@@ -8,6 +8,7 @@ import { NotificationIcon, SettingsIcon } from 'components/icons/index';
 import Notifications from 'components/functional/notifications';
 import Settings from 'components/functional/settings';
 import Avatar from './avatar';
+import Navigator from './navigator';
 
 const NotificatinBadge = ({ count }) => (
   <Div position="relative">
@@ -27,7 +28,6 @@ NotificatinBadge.defaultProps = {
 const Navbar = ({
   onLogout,
   onClickAvatar,
-  renderSearch,
   avatar,
   notifications,
   onClear,
@@ -37,6 +37,7 @@ const Navbar = ({
 
   return (
     <NavStyled>
+      <Navigator />
       {/* {renderSearch()} */}
       <Div
         flexGrow={1}

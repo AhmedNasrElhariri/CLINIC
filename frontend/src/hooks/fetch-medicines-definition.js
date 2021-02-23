@@ -21,11 +21,9 @@ const updateCache = myMedicinesDefinition => {
 
 function useMedicinesDefinition({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_MEDICINES_DEFINITION);
-  const medicinesDefinition = useMemo(
-    () => R.propOr([], 'myMedicinesDefinition')(data),
-    [data]
-  );
-  console.log(data);
+  const medicines = useMemo(() => R.propOr([], 'myMedicinesDefinition')(data), [
+    data,
+  ]);
 
   const [addMedicineDefinition] = useMutation(ADD_MEDICINE_DEFINITION, {
     onCompleted() {
@@ -33,7 +31,7 @@ function useMedicinesDefinition({ onCreate, onEdit } = {}) {
       onCreate && onCreate();
     },
     update(cache, { data: { addMedicineDefinition: medicineDefinition } }) {
-      updateCache([...medicinesDefinition, medicineDefinition]);
+      updateCache([...medicines, medicineDefinition]);
     },
     onError() {
       Alert.error('Failed to add new Medicine');
@@ -51,12 +49,12 @@ function useMedicinesDefinition({ onCreate, onEdit } = {}) {
 
   return useMemo(
     () => ({
-      medicinesDefinition,
+      medicines,
       addMedicineDefinition,
       editMedicineDefinition,
       updateCache,
     }),
-    [medicinesDefinition, addMedicineDefinition, editMedicineDefinition]
+    [addMedicineDefinition, editMedicineDefinition, medicines]
   );
 }
 
