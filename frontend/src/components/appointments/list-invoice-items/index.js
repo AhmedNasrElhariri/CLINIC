@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { H6, Div } from 'components';
-import { SessionNameStyled, DeleteLinkStyled } from './style';
+import { SessionNameStyled, DeleteLinkStyled ,Item} from './style';
 
 function ListInvoiceItems({ items, priceKey, onDelete }) {
   return (
     <Div>
       {items.map((item, idx) => (
-        <Div display="flex" justifyContent="space-between" key={idx}>
+        <Item key={idx}>
           <Div display="flex" alignItems="baseline">
             <SessionNameStyled color="texts.1">{item.name}</SessionNameStyled>
             <DeleteLinkStyled cursor="pointer" onClick={() => onDelete(idx)}>
@@ -15,7 +15,7 @@ function ListInvoiceItems({ items, priceKey, onDelete }) {
             </DeleteLinkStyled>
           </Div>
           {item[priceKey] && <H6 color="texts.1">{item[priceKey]}</H6>}
-        </Div>
+        </Item>
       ))}
     </Div>
   );

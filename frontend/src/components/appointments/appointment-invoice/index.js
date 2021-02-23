@@ -2,7 +2,7 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { Form, Divider } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as R from 'ramda';
-
+import { StyledSeesion, StyledDiscount ,Container,AppliedButton} from './style';
 import { CRSelectInput, H6, H7, CRButton, Div } from 'components';
 import { CRNumberInput, CRTextInput } from 'components/widgets';
 import ListInvoiceItems from '../list-invoice-items';
@@ -91,62 +91,68 @@ function AppointmentInvoice({
 
   return (
     <>
-      <Form fluid>
-        <CRSelectInput
-          label="Session Type"
-          name="type"
-          placeholder="Select Type"
-          block
-          cleanable={false}
-          searchable={false}
-          value={session}
-          onChange={setSession}
-          data={choices}
-        />
-      </Form>
-      {isOtherType(session) && (
-        <Div mt={4}>
-          <Form fluid formValue={formValue} onChange={setFormValue}>
-            <CRTextInput label="Name" name="name" />
-            <CRNumberInput label="Price" name="price" />
+      <Container>
+        <StyledSeesion>
+          <Form fluid>
+            <CRSelectInput
+              label="Session Type"
+              name="type"
+              placeholder="Select Type"
+              block
+              cleanable={false}
+              searchable={false}
+              value={session}
+              onChange={setSession}
+              data={choices}
+            />
           </Form>
-        </Div>
-      )}
-      <H6 mt={2} color="texts.2">
-        Price:{' '}
-        <NumberFormat
-          value={session.price}
-          displayType="text"
-          thousandSeparator
-        />
-      </H6>
-      <Div textAlign="right">
-        <CRButton primary small onClick={add}>
-          Add
-        </CRButton>
-      </Div>
-      {selectedSessions.length > 0 && <Divider />}
-      <Div my={3}>
-        <ListInvoiceItems items={selectedSessions} onDelete={handleDelete} />
-      </Div>
-      <Divider />
-
-      <Form>
-        <CRNumberInput
-          label="Discount"
-          name="amount"
-          value={discount}
-          onChange={onDiscountChange}
-        />
-      </Form>
-      <Divider />
-
-      <Div>
-        <Price name="Subtotal " price={subtotal} overriden />
-        <Price name="Discount " price={discount} overriden />
-        <Price name="Total" price={total} />
-      </Div>
-
+          {isOtherType(session) && (
+            <Div mt={4}>
+              <Form fluid formValue={formValue} onChange={setFormValue}>
+                <CRTextInput label="Name" name="name" />
+                <CRNumberInput label="Price" name="price" />
+              </Form>
+            </Div>
+          )}
+          <H6 mt={2} color="texts.2">
+            Price:{' '}
+            <NumberFormat
+              value={session.price}
+              displayType="text"
+              thousandSeparator
+            />
+          </H6>
+          <Div textAlign="right">
+            <CRButton primary small onClick={add}>
+              Add
+            </CRButton>
+          </Div>
+          {selectedSessions.length > 0 && <Divider />}
+          <Div my={3}>
+            <ListInvoiceItems
+              items={selectedSessions}
+              onDelete={handleDelete}
+            />
+          </Div>
+        </StyledSeesion>
+        <StyledDiscount>
+          <Form>
+            <CRTextInput
+              label="Discount"
+              name="amount"
+              value={discount}
+              onChange={onDiscountChange}  
+              style={{width:'249px',display:'inline'}}
+            />
+             <AppliedButton>Applied</AppliedButton>
+          </Form>
+          <Div>
+            <Price name="Subtotal " price={subtotal} overriden />
+            <Price name="Discount " price={discount} overriden />
+            <Price name="Total" price={total} />
+          </Div>
+        </StyledDiscount>
+      </Container>
       <Div mt={3}>
         <PrintInvoice
           items={selectedSessions}

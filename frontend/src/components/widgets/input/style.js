@@ -16,7 +16,7 @@ const fontTheme = {
 
 const heightTheme = {
   height: {
-    normal: 55,
+    normal: 35,
     large: 59,
   },
 };
@@ -45,12 +45,12 @@ const getBorder = ({ borderless, theme }) => {
   };
 };
 
-const getBorderRadius = ({ noRadius, round }) =>
-  noRadius
-    ? noBorderRadius
-    : round
-    ? byTheme(roundBorderRadius)
-    : byTheme(normalBorderRadius);
+// const getBorderRadius = ({ noRadius, round }) =>
+//   noRadius
+//     ? noBorderRadius
+//     : round
+//     ? byTheme(roundBorderRadius)
+//     : byTheme(normalBorderRadius);
 
 const inputCss = css`
   background-color: #ffffff;

@@ -25,8 +25,7 @@ export const ModalStyled = styled(Modal)`
 `;
 
 export const ModalHeaderStyled = styled(Modal.Header)`
-  padding: 35px;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  padding: 27px;
 `;
 
 export const ModalBodyStyled = styled(Modal.Body)`
