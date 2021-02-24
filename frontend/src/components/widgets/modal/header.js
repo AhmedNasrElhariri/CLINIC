@@ -6,7 +6,7 @@ import { ModalHeaderStyled } from './style';
 const Header = ({ title }) => (
   <ModalHeaderStyled>
     <Div>
-      <H4 fontWeight="bold" textTransform="uppercase" textAlign="center">
+      <H4 fontWeight="bold" opacity={1} textTransform="uppercase" textAlign="center">
         {title}
       </H4>
     </Div>

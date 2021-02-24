@@ -107,7 +107,7 @@ export const H6 = styled.h6`
 `;
 
 H6.defaultProps = {
-  fontWeight: 'normal',
+  fontWeight: 'bold',
 };
 
 export const H7 = styled.h6`

@@ -24,6 +24,7 @@ import {
   ReportPrintout,
   Example,
   Labs,
+  UploadImage,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 import ProtectedRoute from '../protected-route/index';
@@ -134,6 +135,9 @@ function AppRouter() {
       </Route>
       <Route path="/test">
         <Patient />
+      </Route>
+      <Route path="/uploadimage">
+        <UploadImage />
       </Route>
       <Route path="" exact>
         <Redirect to="/appointments/today" />
