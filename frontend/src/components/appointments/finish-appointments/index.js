@@ -36,10 +36,17 @@ function FinishAppointment({ appointment, show, onCancel, onOk, clinic }) {
   }, [activeStep, onOk, discount]);
 
   const handleCancel = useCallback(() => {
-    value.current = initValue;
-    onCancel();
-    setActiveStep(0);
-  }, [onCancel]);
+    if (activeStep === 1) {
+      value.current = { ...value.current, discount };
+      setActiveStep(0);
+    } 
+    // else {
+    //   onOk({ ...value.current, discount });
+    // }
+    // value.current = initValue;
+    // onCancel();
+    // setActiveStep(0);
+  }, [onCancel,activeStep]);
 
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
     activeStep,
@@ -71,9 +78,10 @@ function FinishAppointment({ appointment, show, onCancel, onOk, clinic }) {
           discount={discount}
           onDiscountChange={setDiscount}
           appointment={appointment}
+          handleOk={handleOk}
         />
       )}
-      {activeStep === 1 && <InventoryUsage onChange={handleInventoryChange} />}
+      {activeStep === 1 && <InventoryUsage onChange={handleInventoryChange} handleCancel={handleCancel}/>}
     </CRModal>
   );
 }

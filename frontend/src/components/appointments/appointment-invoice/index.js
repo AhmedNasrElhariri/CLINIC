@@ -41,6 +41,7 @@ function AppointmentInvoice({
   onChange,
   discount,
   onDiscountChange,
+  handleOk
 }) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
@@ -97,7 +98,7 @@ function AppointmentInvoice({
   );
 
   const total = useMemo(() => subtotal - discount, [discount, subtotal]);
-
+console.log(choices);
   return (
     <>
       <Container>
@@ -205,6 +206,7 @@ function AppointmentInvoice({
           color="#ffffff"
           marginLeft="26px"
           height="35px"
+          onClick={handleOk}
         >
           Next
         </Button>

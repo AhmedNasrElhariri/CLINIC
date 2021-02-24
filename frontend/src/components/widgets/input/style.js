@@ -124,7 +124,6 @@ export const InputGroupStyled = styled(InputGroup)`
 
 export const NumberContainerStyled = styled.div`
   display: flex;
-  border: 1px solid ${props => props.theme.colors.borders[0]};
   ${byTheme(heightTheme)}
   box-sizing: content-box;
 `;
@@ -133,7 +132,6 @@ export const NumberInputStyled = styled.input`
   ${inputCss};
   width: 35px;
   height: 35px;
-  margin: 10px auto;
   padding: 7px 13px 7px 14px;
   object-fit: contain;
   border: solid 1px #eef1f1;
@@ -164,7 +162,7 @@ export const NumberButton = styled(CRButton)`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto 14px;
+  margin: auto;
   padding: 7px 6.4px 6.4px 6.9px;
   ${stCss({
     width: 27,
