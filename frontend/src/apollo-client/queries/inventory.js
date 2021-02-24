@@ -14,18 +14,18 @@ export const LIST_ITEMS = gql`
 `;
 
 export const LIST_INVENTORY = gql`
-  query inventory($clinicId: ID!) {
-    inventory(clinicId: $clinicId) {
+  query inventory {
+    inventory {
       itemId
-      clinicId
+      userId
       quantity
     }
   }
 `;
 
 export const LIST_INVENTORY_HISTORY = gql`
-  query inventoryHistory($clinicId: ID!) {
-    inventoryHistory(clinicId: $clinicId) {
+  query inventoryHistory {
+    inventoryHistory {
       body
       date
     }
@@ -53,8 +53,8 @@ export const UPDATE_ITEM = gql`
 `;
 
 export const ADD_ITEM = gql`
-  mutation addItem($item: AddToInventoryInput!, $clinicId: ID!) {
-    addItem(item: $item, clinicId: $clinicId) {
+  mutation addItem($item: AddToInventoryInput!) {
+    addItem(item: $item) {
       itemId
       quantity
     }
@@ -70,10 +70,10 @@ export const REMOVE_DEFINITION = gql`
 `;
 
 export const REMOVE_ITEM = gql`
-  mutation removeItem($itemId: ID!, $clinicId: ID!) {
-    removeItem(itemId: $itemId, clinicId: $clinicId) {
+  mutation removeItem($itemId: ID!) {
+    removeItem(itemId: $itemId) {
       itemId
-      clinicId
+      userId
     }
   }
 `;

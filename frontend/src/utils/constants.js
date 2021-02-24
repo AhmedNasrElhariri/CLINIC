@@ -27,11 +27,10 @@ export const MEDICAL_HISTORY_TYPES = Object.freeze({
 });
 
 export const APPT_STATUS = Object.freeze({
-  SCHEDUlEd: 'Scheduled',
+  SCHEDULED: 'Scheduled',
   CANCELLED: 'Cancelled',
   MISSED: 'Missed',
   CHANGED: 'Changed',
-  DONE: 'Done',
   ARCHIVED: 'Archived',
 });
 

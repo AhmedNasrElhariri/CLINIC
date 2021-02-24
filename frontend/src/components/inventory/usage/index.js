@@ -4,7 +4,7 @@ import * as R from 'ramda';
 
 import { Div, CRSelectInput, CRNumberInput, H6, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import useFetchInventory from 'hooks/fetch-inventory';
+import useFetchInventory from 'hooks/use-inventory';
 import ListInvoiceItems from 'components/appointments/list-invoice-items';
 
 const { StringType, NumberType } = Schema.Types;

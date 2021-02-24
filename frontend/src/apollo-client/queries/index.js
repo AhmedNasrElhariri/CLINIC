@@ -1,6 +1,5 @@
 export * from './accounting';
 export * from './appointment';
-export * from './clinic';
 export * from './event';
 export * from './misc';
 export * from './patient';

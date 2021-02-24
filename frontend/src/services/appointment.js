@@ -3,7 +3,7 @@ import moment from 'moment';
 import { mapArrToChoices, mapArrWithIdsToChoices } from 'utils/misc';
 import { isDateBefore } from 'utils/date';
 import { filterPatientBy } from 'utils/patient';
-import { APPT_TYPE } from '../utils/constants';
+import { APPT_STATUS, APPT_TYPE } from 'utils/constants';
 
 const MAX_TIMESTAMP = 8640000000000000;
 
@@ -151,17 +151,14 @@ export const getAppointmentTypes = () => Object.values(APPT_TYPE);
 
 export const appointmentTypes = mapArrToChoices(getAppointmentTypes());
 
-export const isDone = appointment => appointment.status === 'Done';
+export const isArchived = appointment =>
+  appointment.status === APPT_STATUS.ARCHIVED;
 
-export const isArchived = appointment => appointment.status === 'Archived';
-
-export const isScheduled = appointment => appointment.status === 'Scheduled';
+export const isScheduled = appointment =>
+  appointment.status === APPT_STATUS.SCHEDULED;
 
 export const isScheduledOrArchived = appointment =>
   isScheduled(appointment) || isArchived(appointment);
-
-export const isScheduledOrDone = appointment =>
-  isScheduled(appointment) || isDone(appointment);
 
 export const canAjdust = appointment => {
   return (

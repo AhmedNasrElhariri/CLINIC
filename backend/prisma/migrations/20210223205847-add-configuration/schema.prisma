@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -21,6 +21,8 @@ enum AppointmentStatus {
   Missed
   Changed
   Archived
+  Done
+  Closed
 }
 
 enum Position {
@@ -88,7 +90,7 @@ enum PermissionAction {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id               String             @id @default(uuid())
+  id               String           @id @default(uuid())
   name             String
   item             Item[]
   hospital         Hospital[]
@@ -102,8 +104,6 @@ model Organization {
   users            User[]
   userSpecialties  UserSpecialty[]
   patients         Patient[]
-  InventoryItem    InventoryItem[]
-  InventoryHistory InventoryHistory[]
 }
 
 model User {
@@ -135,8 +135,6 @@ model User {
   expenses            Expense[]
   revenues            Revenue[]
   configurations      Configuration?
-  InventoryItem       InventoryItem[]
-  Item                Item[]
 }
 
 model Patient {
@@ -250,10 +248,12 @@ model Clinic {
   duration          Int     @default(5)
   appointmentsCount Int     @default(20)
 
-  organizationId String
-  sessions       Json    @default("[]")
-  File           File?   @relation(fields: [fileId], references: [id])
-  fileId         String?
+  organizationId   String
+  sessions         Json               @default("[]")
+  inventoryItem    InventoryItem[]
+  inventoryHistory InventoryHistory[]
+  File             File?              @relation(fields: [fileId], references: [id])
+  fileId           String?
 }
 
 model Configuration {
@@ -384,38 +384,34 @@ model Item {
   notes            String?
   organization     Organization       @relation(fields: [organizationId], references: [id])
   organizationId   String
-  user             User               @relation(fields: [userId], references: [id])
-  userId           String
   inventoryItems   InventoryItem[]
   inventoryHistory InventoryHistory[]
 }
 
 model InventoryItem {
-  quantity       Int
-  item           Item         @relation(fields: [itemId], references: [id])
-  itemId         String
-  user           User         @relation(fields: [userId], references: [id])
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  userId         String
+  quantity Int
+  item     Item   @relation(fields: [itemId], references: [id])
+  itemId   String
+  clinic   Clinic @relation(fields: [clinicId], references: [id])
+  clinicId String
 
-  @@id([itemId, userId])
+  @@id([itemId, clinicId])
 }
 
 model InventoryHistory {
-  id             String             @id @default(uuid())
-  item           Item               @relation(fields: [itemId], references: [id])
-  itemId         String
-  user           User               @relation(fields: [userId], references: [id])
-  userId         String
-  patient        Patient?           @relation(fields: [patientId], references: [id])
-  patientId      String?
-  operation      InventoryOperation
-  quantity       Int
-  price          Int?
-  date           DateTime
-  organization   Organization       @relation(fields: [organizationId], references: [id])
-  organizationId String
+  id        String             @id @default(uuid())
+  item      Item               @relation(fields: [itemId], references: [id])
+  itemId    String
+  clinic    Clinic             @relation(fields: [clinicId], references: [id])
+  clinicId  String
+  user      User               @relation(fields: [userId], references: [id])
+  userId    String
+  patient   Patient?           @relation(fields: [patientId], references: [id])
+  patientId String?
+  operation InventoryOperation
+  quantity  Int
+  price     Int?
+  date      DateTime
 }
 
 model Hospital {

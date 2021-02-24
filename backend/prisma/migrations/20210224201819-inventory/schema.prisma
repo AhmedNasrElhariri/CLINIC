@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -21,6 +21,8 @@ enum AppointmentStatus {
   Missed
   Changed
   Archived
+  Done
+  Closed
 }
 
 enum Position {

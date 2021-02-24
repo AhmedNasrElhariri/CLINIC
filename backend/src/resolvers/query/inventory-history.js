@@ -1,11 +1,11 @@
 import { prisma } from '@';
 import { mapHistoryToMessage } from '@/services/inventory.service';
 
-const inventoryHistory = (_, { clinicId }) => {
+const inventoryHistory = (_, __, { userId }) => {
   return prisma.inventoryHistory
     .findMany({
       where: {
-        clinicId,
+        userId,
       },
       orderBy: {
         date: 'desc',

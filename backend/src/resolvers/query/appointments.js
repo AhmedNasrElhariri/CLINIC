@@ -4,9 +4,9 @@ import * as R from 'ramda';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
-const appointments = async (_, { input }, { userId, organizationId }) => {
+const appointments = async (_, { input }, { user, organizationId }) => {
   const ids = await listFlattenUsersTreeIds({
-    userId,
+    user,
     organizationId,
     action: ACTIONS.List_Appointment,
   });

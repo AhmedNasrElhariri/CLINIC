@@ -4,9 +4,9 @@ import { storeHistoryOfAddition } from '@/services/inventory.service';
 import * as R from 'ramda';
 import { createInventoryExpense } from '../../services/expense.service';
 
-const addItem = async (_, { item: input, clinicId }, { userId }) => {
-  if (R.isNil(clinicId) || R.isNil(input.itemId)) {
-    throw new APIExceptcion('invalid clinic or item');
+const addItem = async (_, { item: input }, { userId, organizationId }) => {
+  if (R.isNil(userId) || R.isNil(input.itemId)) {
+    throw new APIExceptcion('invalid user');
   }
 
   const persistedItem = await prisma.item.findOne({
@@ -19,9 +19,9 @@ const addItem = async (_, { item: input, clinicId }, { userId }) => {
 
   const persistedInventoryItem = await prisma.inventoryItem.findOne({
     where: {
-      itemId_clinicId: {
+      itemId_userId: {
         itemId,
-        clinicId,
+        userId,
       },
     },
   });
@@ -34,13 +34,13 @@ const addItem = async (_, { item: input, clinicId }, { userId }) => {
   await createInventoryExpense({
     name: `${persistedItem.name} X ${input.amount}`,
     price: input.amount * input.price,
-    clinicId,
+    userId,
   });
 
   await storeHistoryOfAddition({
-    clinicId,
     itemId,
     userId,
+    organizationId,
     quantity: input.amount,
     price: input.price,
   });
@@ -52,20 +52,25 @@ const addItem = async (_, { item: input, clinicId }, { userId }) => {
           id: itemId,
         },
       },
-      clinic: {
+      user: {
         connect: {
-          id: clinicId,
+          id: userId,
         },
       },
       quantity: newtotalQuantity,
+      organization: {
+        connect: {
+          id: organizationId,
+        },
+      },
     },
     update: {
       quantity: newtotalQuantity,
     },
     where: {
-      itemId_clinicId: {
+      itemId_userId: {
         itemId: input.itemId,
-        clinicId,
+        userId,
       },
     },
   });

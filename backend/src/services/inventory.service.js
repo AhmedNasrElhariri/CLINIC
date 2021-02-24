@@ -2,14 +2,10 @@ import { prisma } from '@';
 import * as R from 'ramda';
 import { INVENTORY_OPERATION } from '@/utils/constants';
 
-export const updatedUsedMaterials = async (appointmentId, items) => {
-  const { clinicId } = await prisma.appointment.findOne({
-    where: { id: appointmentId },
-  });
-
+export const updatedUsedMaterials = async (userId, items) => {
   const persistedItems = await prisma.inventoryItem.findMany({
     where: {
-      clinicId,
+      userId,
       itemId: {
         in: R.map(R.prop('itemId'))(items),
       },
@@ -23,7 +19,7 @@ export const updatedUsedMaterials = async (appointmentId, items) => {
         quantity: persistedItem.quantity - quantity,
       },
       where: {
-        clinicId,
+        userId,
         itemId,
       },
     };
@@ -34,9 +30,8 @@ export const updatedUsedMaterials = async (appointmentId, items) => {
 };
 
 export const storeHistoryOfAddition = async ({
-  clinicId,
-  // patientId,
   itemId,
+  organizationId,
   userId,
   quantity,
   price,
@@ -48,14 +43,14 @@ export const storeHistoryOfAddition = async ({
           id: itemId,
         },
       },
-      clinic: {
-        connect: {
-          id: clinicId,
-        },
-      },
       user: {
         connect: {
           id: userId,
+        },
+      },
+      organization: {
+        connect: {
+          id: organizationId,
         },
       },
       operation: INVENTORY_OPERATION.ADD,
@@ -86,7 +81,6 @@ export const mapHistoryToMessage = async history => {
 };
 
 export const createSubstractHistoryForMultipleItems = async ({
-  clinicId,
   patientId,
   userId,
   data,
@@ -97,11 +91,6 @@ export const createSubstractHistoryForMultipleItems = async ({
         item: {
           connect: {
             id: i.itemId,
-          },
-        },
-        clinic: {
-          connect: {
-            id: clinicId,
           },
         },
         user: {

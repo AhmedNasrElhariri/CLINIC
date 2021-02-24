@@ -4,7 +4,11 @@ import { Alert } from 'rsuite';
 import * as R from 'ramda';
 
 import { ACTIONS } from 'utils/constants';
-import { CREATE_APPOINTMENT, LIST_BRANCHES_TREE } from 'apollo-client/queries';
+import {
+  CREATE_APPOINTMENT,
+  LIST_APPOINTMENTS,
+  LIST_BRANCHES_TREE,
+} from 'apollo-client/queries';
 import useAppointments from './use-appointments';
 import usePatients from './use-patients';
 
@@ -23,7 +27,6 @@ const useNewAppointments = ({ onCreate } = {}) => {
 
   const { appointments } = useAppointments();
   const { patients } = usePatients();
-  // useFetchPatient(LIST_PATIENTS);
 
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Appointment },
@@ -32,14 +35,11 @@ const useNewAppointments = ({ onCreate } = {}) => {
   const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: ({ createAppointment }) => {
       setFormValue(initialValues);
-      Alert.success('Reservation Created Successfully');
-      // updateAppointments(
-      //   sortAppointmentsByDate([createAppointment, ...appointments])
-      // );
-      // onHide();
+      Alert.success('Appointment Created Successfully');
       onCreate && onCreate();
     },
     onError: ({ message }) => Alert.error(message),
+    refetchQueries: [{ query: LIST_APPOINTMENTS }],
   });
 
   const branches = R.propOr([], 'listBranchesTree')(data);

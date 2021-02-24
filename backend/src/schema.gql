@@ -49,8 +49,6 @@ enum AppointmentStatus {
   Missed
   Changed
   Archived
-  Done
-  Closed
 }
 
 enum UnitOfMeaure {
@@ -68,7 +66,6 @@ enum UnitOfMeaure {
 type Query {
   hello(name: String): Boolean
   patients: [Patient!]
-  clinicPatients(clinicId: ID!): [Patient!]
   appointments(input: AppointmentQueryInput): [Appointment!]
   appointment(id: ID!): Appointment
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
@@ -83,13 +80,12 @@ type Query {
   expenses: [Expense!]
   revenues: [Revenue!]
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
-  clinicUsers(clinicId: ID!): [User!]
   user(id: ID!): User
   myNotifications: [Notification!]
   myEvents: [Event!]
   items: [Item!]
-  inventory(clinicId: ID!): [InventoryItem!]
-  inventoryHistory(clinicId: ID!): [InventoryHistory!]
+  inventory: [InventoryItem!]
+  inventoryHistory: [InventoryHistory!]
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
   patientSurgeries(patientId: ID): [PatientSurgery!]
@@ -104,6 +100,7 @@ type Query {
   listUsers: [User!]
   listRoles: [Role!]
   listBranchesTree(action: String!): [Branch!]
+  configuration: Configuration
 }
 
 ########################### Mutation ##################################
@@ -113,8 +110,7 @@ type Mutation {
   editPatient(patient: PatientInput!): Patient!
   createAppointment(appointment: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
-  archiveAppointment(id: ID!): Appointment!
-  setAppointmentDone(
+  archiveAppointment(
     id: ID!
     sessions: [SessionInput!]
     items: [FinishAppointmentItemInput!]
@@ -131,7 +127,6 @@ type Mutation {
   cancelAppointment(id: ID!): Appointment!
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
-  updateClinic(clinic: ClinicInput!): Clinic
   createSnippet(snippet: SnippetInput!): Snippet!
   addLabDocs(patientLab: PatientLabInput!): PatientLab!
   createMedicineHistory(
@@ -149,8 +144,8 @@ type Mutation {
   defineItem(item: ItemInput!): Item
   removeItemDefinition(id: ID!): Item
   editItem(item: ItemUpdateInput!): Item
-  addItem(item: AddToInventoryInput!, clinicId: ID!): InventoryItem
-  removeItem(itemId: ID!, clinicId: ID!): InventoryItem
+  addItem(item: AddToInventoryInput!): InventoryItem
+  removeItem(itemId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
   editHospital(hospital: HospitalInput!): Hospital
   defineSurgery(surgery: SurgeryInput!): Surgery
@@ -175,6 +170,7 @@ type Mutation {
   addSpecialty(branchId: ID!, specialtyId: ID!): Branch!
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
+  updateConfiguration(configuration: ConfigurationInput): Configuration!
 }
 
 ########################### Auth ##################################
@@ -280,6 +276,16 @@ input UserInput {
   position: Position!
 }
 
+type Configuration {
+  id: ID!
+  sessions: [Session!]
+}
+
+input ConfigurationInput {
+  id: ID
+  sessions: [SessionInput!]
+}
+
 ########################### Search ##################################
 
 interface Searchable {
@@ -326,7 +332,6 @@ type Appointment {
   data: [AppointmentField!]
   notes: String
   prescription: String
-  clinic: Clinic
   collections: [Collection!]
 }
 
@@ -440,56 +445,6 @@ input FieldInput {
 
 ########################### File ##################################
 
-type Clinic {
-  id: ID
-
-  doctorName: String
-  doctorNameAr: String
-  doctorTitle: String
-  doctorTitleAr: String
-  doctorJobDescription: String
-  doctorJobDescriptionAr: String
-  phoneNo: String
-  phoneNo1: String
-  address: String
-  address1: String
-
-  name: String!
-  examinationPrice: Int
-  followupPrice: Int
-  urgentPrice: Int
-  duration: Int
-  appointmentsCount: Int
-
-  logo: File
-
-  sessions: [Session]
-}
-
-input ClinicInput {
-  id: ID
-
-  doctorName: String
-  doctorNameAr: String
-  doctorTitle: String
-  doctorTitleAr: String
-  doctorJobDescription: String
-  doctorJobDescriptionAr: String
-  phoneNo: String
-  phoneNo1: String
-  address: String
-  address1: String
-  logoId: ID
-
-  examinationPrice: Int
-  followupPrice: Int
-  urgentPrice: Int
-  duration: Int
-  appointmentsCount: Int
-
-  sessions: [SessionInput!]
-}
-
 type File {
   id: ID!
   filename: String!
@@ -593,7 +548,6 @@ input ExpenseInput {
   amount: Int!
   date: Date!
   invoiceNo: String
-  clinicId: ID!
 }
 
 input ExpenseUpdateInput {
@@ -619,7 +573,6 @@ input RevenueInput {
   amount: Int!
   date: Date!
   invoiceNo: String
-  clinicId: ID!
 }
 
 input RevenueUpdateInput {
@@ -670,7 +623,7 @@ type Item {
 
 type InventoryItem {
   itemId: ID!
-  clinicId: ID!
+  userId: ID!
   quantity: Int!
 }
 

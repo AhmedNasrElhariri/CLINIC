@@ -4,9 +4,6 @@ import { onAppointmentEdit } from '@/services/notification.service';
 const adjustAppointment = async (_, { id, date }, { userId }) => {
   const persistedAppt = await prisma.appointment.findOne({
     where: { id },
-    include: {
-      clinic: true,
-    },
   });
 
   const newAppointment = await prisma.appointment.update({
@@ -15,9 +12,8 @@ const adjustAppointment = async (_, { id, date }, { userId }) => {
   });
 
   onAppointmentEdit({
-    userId: persistedAppt.doctorId,
+    userId: persistedAppt.userId,
     notifierId: userId,
-    clinic: persistedAppt.clinic,
     oldDate: persistedAppt.date,
     newDate: newAppointment.date,
   });

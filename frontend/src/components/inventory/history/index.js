@@ -1,5 +1,5 @@
 import React from 'react';
-import useFetchInventory from 'hooks/fetch-inventory';
+import useFetchInventory from 'hooks/use-inventory';
 import { CRTable, MainContainer } from 'components';
 import { formatFullDay } from 'utils/date';
 import Print from '../print';

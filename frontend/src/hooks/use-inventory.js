@@ -12,18 +12,7 @@ import {
   REMOVE_DEFINITION,
   REMOVE_ITEM,
 } from 'apollo-client/queries';
-import useGlobalState from '../state';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
-
-export function useVariables() {
-  const [clinic] = useGlobalState('currentClinic');
-  if (!clinic) {
-    return {};
-  }
-  return {
-    clinicId: clinic.id,
-  };
-}
 
 function useFetchInventory({
   onCreateCompleted,
@@ -34,16 +23,10 @@ function useFetchInventory({
   onRemoveItemError,
 } = {}) {
   const { refetchExpenses } = useFetchAccountingData();
-  const [clinic] = useGlobalState('currentClinic');
-  const variables = useVariables();
 
   const { data: ItemData } = useQuery(LIST_ITEMS);
-  const { data: InventoryData } = useQuery(LIST_INVENTORY, {
-    variables,
-  });
-  const { data: InventoryHistoryData } = useQuery(LIST_INVENTORY_HISTORY, {
-    variables,
-  });
+  const { data: InventoryData } = useQuery(LIST_INVENTORY);
+  const { data: InventoryHistoryData } = useQuery(LIST_INVENTORY_HISTORY);
 
   const items = useMemo(() => R.propOr([], 'items')(ItemData), [ItemData]);
   const inventory = useMemo(() => R.propOr([], 'inventory')(InventoryData), [
@@ -57,17 +40,15 @@ function useFetchInventory({
   const refetchInventoryHistory = useMemo(
     () => ({
       query: LIST_INVENTORY_HISTORY,
-      variables,
     }),
-    [variables]
+    []
   );
 
   const refetchInventory = useMemo(
     () => ({
       query: LIST_INVENTORY,
-      variables,
     }),
-    [variables]
+    []
   );
 
   const inventoryWithAmount = useMemo(
@@ -142,8 +123,8 @@ function useFetchInventory({
           inventory(existingItemsRefs, { readField }) {
             return existingItemsRefs.filter(ItemRef => {
               const itemId = readField('itemId', ItemRef);
-              const clinicId = readField('clinicId', ItemRef);
-              return !(item.itemId === itemId && item.clinicId === clinicId);
+              const userId = readField('userId', ItemRef);
+              return !(item.itemId === itemId && item.userId === userId);
             });
           },
         },
@@ -170,11 +151,9 @@ function useFetchInventory({
     ) {
       const { inventory } = cache.readQuery({
         query: LIST_INVENTORY,
-        variables,
       });
       cache.writeQuery({
         query: LIST_INVENTORY,
-        variables,
         data: {
           inventory: inventory.map(i =>
             Object.assign({}, i, i.itemId === itemId && { quantity })
@@ -196,7 +175,6 @@ function useFetchInventory({
         addItem({
           variables: {
             item,
-            clinicId: clinic.id,
           },
         }),
       update: item =>
@@ -215,7 +193,6 @@ function useFetchInventory({
         removeItem({
           variables: {
             itemId: itemInventory.item.id,
-            clinicId: clinic.id,
           },
         });
       },
@@ -233,7 +210,6 @@ function useFetchInventory({
       refetchInventoryHistory,
       create,
       addItem,
-      clinic.id,
       update,
       removeDefinition,
       removeItem,

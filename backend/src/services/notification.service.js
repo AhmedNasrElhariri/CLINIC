@@ -42,13 +42,12 @@ export const onAppointmentCreate = async ({
 export const onAppointmentEdit = async ({
   userId,
   notifierId,
-  clinic,
   oldDate,
   newDate,
 }) => {
   const message = `An appointment has been edited from ${formatDateFull(
     oldDate
-  )} to be ${formatDateFull(newDate)} - ${clinic.name} clinic`;
+  )} to be ${formatDateFull(newDate)}`;
 
   const notification = await prisma.notification.create({
     data: {

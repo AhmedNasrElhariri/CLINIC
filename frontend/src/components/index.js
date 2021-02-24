@@ -64,8 +64,8 @@ export { default as ViewForm } from './views/view-form';
 export { default as CreateDefaultView } from './views/create-default-view';
 
 /******************     Settings    *********************************/
-export { default as ClinicInfo } from './settings/clinic';
 export { default as StaticSettings } from './settings/static';
+export { default as Configurations } from './settings/configurations';
 
 /******************     Layout    *********************************/
 export { default as MainContainer } from './layout/main-container';
@@ -74,7 +74,6 @@ export { default as MainContainer } from './layout/main-container';
 export { default as AccountingContainer } from './accounting/accounting-container';
 
 /******************     Permissions    *******************************/
-export { default as ListUsers } from './permissions/list-users';
 export { default as UserPermissions } from './permissions/user-permissions';
 export { default as RolePermissions } from './permissions/role-permissions';
 export { default as Assign } from './permissions/assign';

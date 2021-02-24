@@ -22,11 +22,9 @@ import { canAjdust } from 'services/appointment';
 import { PrintOLIcon } from 'components/icons';
 import { formatDate } from 'utils/date';
 import { FULL_DATE_FORMAT } from 'utils/constants';
-import { Can } from 'components/user/can';
 
 function ListAppointments({
   appointments,
-  onDone,
   onArchive,
   title,
   defaultExpanded = false,
@@ -100,26 +98,9 @@ function ListAppointments({
               <CRTable.CRCell>
                 {appointment => (
                   <Div display="flex">
-                    {isScheduledOrArchived(appointment) && (
+                    {isScheduled(appointment) && (
                       <CRButton
-                        variant={
-                          isScheduled(appointment) ? 'primary' : 'success'
-                        }
-                        round
-                        small
-                        onClick={e => {
-                          e.stopPropagation();
-                          onDone(appointment);
-                        }}
-                      >
-                        Arrived
-                      </CRButton>
-                    )}
-                    {isDone(appointment) && (
-                      <CRButton
-                        variant={
-                          isScheduled(appointment) ? 'primary' : 'success'
-                        }
+                        variant="primary"
                         round
                         small
                         onClick={e => {

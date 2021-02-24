@@ -1,7 +1,7 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 
-import { PERMISSION_LEVEL } from '@/utils/constants';
+import { PERMISSION_LEVEL, POSITION } from '@/utils/constants';
 
 const byOrganization = async (organizationId, allUsers = false) => {
   if (allUsers) {
@@ -82,10 +82,13 @@ const byUser = rules => {
 };
 
 export const listFlattenUsersTree = async (
-  { action, userId, organizationId },
+  { action, user, organizationId },
   allUsers
 ) => {
-  const role = await prisma.user.findOne({ where: { id: userId } }).role({
+  if (user.position === POSITION.Admin) {
+    return byOrganization(organizationId, allUsers);
+  }
+  const role = await prisma.user.findOne({ where: { id: user.id } }).role({
     include: {
       permissions: {
         where: {
@@ -121,13 +124,13 @@ export const listFlattenUsersTree = async (
 };
 
 export const listFlattenUsersTreeIds = async (
-  { action, userId, organizationId },
+  { action, user, organizationId },
   allUsers
 ) => {
   const users = await listFlattenUsersTree(
     {
       action,
-      userId,
+      user,
       organizationId,
     },
     allUsers

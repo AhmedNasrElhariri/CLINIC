@@ -13,10 +13,9 @@ import {
   PermissionContainer,
   ListViews,
   CreateView,
-  ClinicInfo,
+  Configurations,
   StaticSettings,
   Snippets,
-  ListUsers,
   UserPermissions,
   Profile,
   InventoryPage,
@@ -43,24 +42,11 @@ function AppRouter() {
       </Route>
 
       <Route path="/appointments/:appointmentId" component={Appointment} />
-      {/* <ProtectedRoute
-        path="/appointments/:appointmentId"
-        component={Appointment}
-        action="view"
-        subject="Appointment"
-      /> */}
-
       <Route path="/patients" exact>
         <ListPatients />
       </Route>
 
       <Route path="/patients/:patientId" component={Patient} />
-      {/* <ProtectedRoute
-        path="/patients/:patientId"
-        component={Patient}
-        action="view"
-        subject="Patient"
-      /> */}
 
       <Route path="/calendar">
         <Calendar />
@@ -80,8 +66,8 @@ function AppRouter() {
       <Route path="/login">
         <Redirect to="/" />
       </Route>
-      <Route path="/settings/clinic">
-        <ClinicInfo />
+      <Route path="/settings/configurations">
+        <Configurations />
       </Route>
       <Route path="/settings/static">
         <StaticSettings />
@@ -90,13 +76,6 @@ function AppRouter() {
         <Snippets />
       </Route>
 
-      <ProtectedRoute
-        path="/permissions"
-        component={ListUsers}
-        action="manage"
-        subject="all"
-        exact
-      />
       <ProtectedRoute
         path="/permissions/:userId"
         component={UserPermissions}

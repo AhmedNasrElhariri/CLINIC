@@ -3,11 +3,11 @@ import { APIExceptcion } from '@/services/erros.service';
 
 import { INVENTORY_OPERATION } from '@/utils/constants';
 
-const removeItem = async (_, { itemId, clinicId }) => {
+const removeItem = async (_, { itemId }, { userId }) => {
   const history = await prisma.inventoryHistory.findMany({
     where: {
       itemId,
-      clinicId,
+      userId,
       operation: INVENTORY_OPERATION.SUBSTRACT,
     },
   });
@@ -21,9 +21,9 @@ const removeItem = async (_, { itemId, clinicId }) => {
 
   return prisma.inventoryItem.delete({
     where: {
-      itemId_clinicId: {
+      itemId_userId: {
         itemId,
-        clinicId,
+        userId,
       },
     },
   });

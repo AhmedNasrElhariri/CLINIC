@@ -7,9 +7,9 @@ import { Can } from 'components/user/can';
 
 const items = [
   {
-    name: 'Clinic Information',
+    name: 'Configurations',
     icon: '/icons/clinic.png',
-    path: '/settings/clinic',
+    path: '/settings/configurations',
   },
   {
     name: 'Static Info',

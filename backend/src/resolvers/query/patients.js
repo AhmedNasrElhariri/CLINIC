@@ -3,10 +3,10 @@ import { prisma } from '@';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
-const patients = async (_, __, { userId, organizationId }) => {
+const patients = async (_, __, { user, organizationId }) => {
   const ids = await listFlattenUsersTreeIds(
     {
-      userId,
+      user,
       organizationId,
       action: ACTIONS.View_Patient,
     },

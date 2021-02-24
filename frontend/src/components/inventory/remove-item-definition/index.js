@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { Alert, Icon } from 'rsuite';
 
 import { CRModal, H6 } from 'components';
-import useFetctchInventory from 'hooks/fetch-inventory';
+import useFetctchInventory from 'hooks/use-inventory';
 import useModal from 'hooks/use-model';
 
 const RemoveItemDefinition = ({ item }) => {

@@ -27,35 +27,20 @@ const Price = ({ name, price }) => (
 const isOtherType = session => session.name === OTHER;
 
 function AppointmentInvoice({
-  appointment,
-  clinic,
   onChange,
   discount,
   onDiscountChange,
+  sessions,
 }) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
 
   const [selectedSessions, setSelectedSessions] = useState([]);
 
-  const sessions = useMemo(() => R.propOr([], 'sessions')(clinic), [clinic]);
-
   const choices = useMemo(() => {
-    const { examinationPrice, followupPrice, urgentPrice } = R.pick([
-      'examinationPrice',
-      'followupPrice',
-      'urgentPrice',
-    ])(clinic || {});
-
-    const allChoices = [
-      ...sessions,
-      { name: 'Examination', price: examinationPrice || 0 },
-      { name: 'Followup', price: followupPrice || 0 },
-      { name: 'Urgent', price: urgentPrice || 0 },
-      { name: OTHER, price: 0 },
-    ];
+    const allChoices = [...sessions, { name: OTHER, price: 0 }];
     return allChoices.map(s => ({ label: s.name, value: s }));
-  }, [clinic, sessions]);
+  }, [sessions]);
 
   const handleOnChange = useCallback(
     sessions => {

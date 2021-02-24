@@ -4,17 +4,20 @@ import { Steps } from 'rsuite';
 import { CRModal, Div, CRCard } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
+import useConfigurations from 'hooks/configurations';
 
 const initValue = {
   sessions: [],
   items: [],
 };
 
-function FinishAppointment({ appointment, show, onCancel, onOk, clinic }) {
+function FinishAppointment({ appointment, show, onCancel, onOk }) {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
 
   const value = useRef(initValue);
+
+  const { sessions } = useConfigurations();
 
   const handleInvoiceChange = useCallback(sessions => {
     value.current = { ...value.current, sessions };
@@ -60,11 +63,11 @@ function FinishAppointment({ appointment, show, onCancel, onOk, clinic }) {
         <CRCard>
           {activeStep === 0 && (
             <AppointmentInvoice
-              clinic={clinic}
               onChange={handleInvoiceChange}
               discount={discount}
               onDiscountChange={setDiscount}
               appointment={appointment}
+              sessions={sessions}
             />
           )}
           {activeStep === 1 && (
@@ -78,7 +81,6 @@ function FinishAppointment({ appointment, show, onCancel, onOk, clinic }) {
 
 FinishAppointment.defaultProps = {
   sessions: [],
-  clinic: {},
 };
 
 export default FinishAppointment;

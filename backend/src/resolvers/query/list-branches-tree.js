@@ -1,7 +1,7 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 
-import { PERMISSION_LEVEL } from '@/utils/constants';
+import { PERMISSION_LEVEL, POSITION } from '@/utils/constants';
 
 const byOrganization = organizationId =>
   prisma.branch.findMany({
@@ -62,13 +62,17 @@ const byUser = rules => {
   });
 };
 
-const listBranchesTree = async (_, { action }, { userId, organizationId }) => {
+const listBranchesTree = async (_, { action }, { user, organizationId }) => {
+  if (user.position === POSITION.Admin) {
+    return byOrganization(organizationId);
+  }
+
   const role = await prisma.permissionRole
     .findMany({
       where: {
         users: {
           every: {
-            id: userId,
+            id: user.id,
           },
         },
       },

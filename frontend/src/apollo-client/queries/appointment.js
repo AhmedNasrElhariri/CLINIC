@@ -138,28 +138,19 @@ export const UPDATE_APPOINTMENT = gql`
   }
 `;
 
-export const SET_APPOINTMENT_DONE = gql`
-  mutation setAppointmentDone(
+export const ARCHIVE_APPOINTMENT = gql`
+  mutation archiveAppointment(
     $id: ID!
     $sessions: [SessionInput!]
     $items: [FinishAppointmentItemInput!]
     $discount: Int
   ) {
-    setAppointmentDone(
+    archiveAppointment(
       id: $id
       sessions: $sessions
       items: $items
       discount: $discount
     ) {
-      id
-      status
-    }
-  }
-`;
-
-export const ARCHIVE_APPOINTMENT = gql`
-  mutation archiveAppointment($id: ID!) {
-    archiveAppointment(id: $id) {
       id
       status
     }

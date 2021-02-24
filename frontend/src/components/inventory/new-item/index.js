@@ -9,7 +9,7 @@ import {
   CRNumberInput,
 } from 'components';
 import { isValid } from 'services/form';
-import useFetctchInventory from 'hooks/fetch-inventory';
+import useFetctchInventory from 'hooks/use-inventory';
 import useFrom from 'hooks/form';
 import { CRSelectInput } from 'components/widgets';
 import { UNIT_OF_MEASURES } from 'utils/constants';

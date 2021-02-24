@@ -91,3 +91,26 @@ export const CLEAR_NOTIFICATIONS = gql`
     clearNotifications
   }
 `;
+
+export const LIST_CONFIGURATIONS = gql`
+  query configuration {
+    configuration {
+      sessions {
+        name
+        price
+      }
+    }
+  }
+`;
+
+export const UPDATE_CONFIGURATION = gql`
+  mutation updateConfiguration($configuration: ConfigurationInput!) {
+    updateConfiguration(configuration: $configuration) {
+      id
+      sessions {
+        name
+        price
+      }
+    }
+  }
+`;

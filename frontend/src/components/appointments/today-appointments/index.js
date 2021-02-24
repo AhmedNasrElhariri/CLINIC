@@ -4,34 +4,25 @@ import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 
 import { Div } from 'components';
-import {
-  ARCHIVE_APPOINTMENT,
-  SET_APPOINTMENT_DONE,
-} from 'apollo-client/queries';
+import { ARCHIVE_APPOINTMENT } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 
 import useAppointments from 'hooks/use-appointments';
 import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
-import { Can } from 'components/user/can';
 import useModal from 'hooks/use-model';
 import FinishAppointment from '../finish-appointments';
-import useGlobalState from 'state';
 import { getName } from 'services/accounting';
-import useFetchInventory from 'hooks/fetch-inventory';
+import useFetchInventory from 'hooks/use-inventory';
 
 import ToolBar from './toolbar';
 import {
   filterTodayAppointments,
   sortAppointments,
 } from 'services/appointment';
+import { APPT_STATUS } from 'utils/constants';
 
 function TodayAppointments() {
-  const {
-    todayAppointments: appointments,
-    branches,
-    doctors,
-    specialties,
-  } = useAppointments();
+  const { todayAppointments: appointments } = useAppointments();
 
   const [formValue, setFormValue] = useState({});
 
@@ -45,9 +36,7 @@ function TodayAppointments() {
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);
 
-  const [clinic] = useGlobalState('currentClinic');
-
-  const [setAppointmentDone] = useMutation(SET_APPOINTMENT_DONE, {
+  const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
     refetchQueries: () => [
       refetchRevenues,
       refetchExpenses,
@@ -59,33 +48,19 @@ function TodayAppointments() {
     },
   });
 
-  const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
-    onCompleted: () => {
-      Alert.success('Appointment has been Archived successfully');
-    },
-  });
-
   const upcomingAppointments = useMemo(
     () =>
-      R.pipe(
-        R.filter(
-          R.propSatisfies(
-            status =>
-              status === 'Scheduled' ||
-              status === 'Archived' ||
-              status === 'Done',
-            'status'
-          )
-        )
-      )(filteredAppointments),
+      R.pipe(R.filter(R.propEq('status', APPT_STATUS.SCHEDULED)))(
+        filteredAppointments
+      ),
     [filteredAppointments]
   );
 
   const completedAppointments = useMemo(
     () =>
-      R.pipe(
-        R.filter(R.propSatisfies(status => status === 'Closed', 'status'))
-      )(filteredAppointments),
+      R.pipe(R.filter(R.propEq('status', APPT_STATUS.ARCHIVED)))(
+        filteredAppointments
+      ),
     [filteredAppointments]
   );
 
@@ -97,10 +72,10 @@ function TodayAppointments() {
     [open]
   );
 
-  const handleOk = useCallback(
+  const handleArchive = useCallback(
     ({ sessions, items, discount }) => {
       close();
-      setAppointmentDone({
+      archive({
         variables: {
           id: appointment.id,
           sessions: sessions.map(session => ({
@@ -115,17 +90,9 @@ function TodayAppointments() {
         },
       });
     },
-    [appointment, close, setAppointmentDone]
+    [appointment, archive, close]
   );
 
-  const handleArchive = useCallback(
-    ({ id }) => {
-      archive({
-        variables: { id },
-      });
-    },
-    [archive]
-  );
   return (
     <>
       {/* <ToolBar
@@ -138,23 +105,20 @@ function TodayAppointments() {
       <ListAppointments
         title="Upcoming Appointments"
         appointments={upcomingAppointments}
-        onDone={onClickDone}
-        onArchive={handleArchive}
+        onArchive={onClickDone}
         defaultExpanded={true}
       />
       <Div my={5} />
       <ListAppointments
         title="Completed Appointments"
         appointments={completedAppointments}
-        onDone={onClickDone}
         defaultExpanded={true}
       />
       <FinishAppointment
         appointment={appointment}
         show={visible}
         onCancel={close}
-        onOk={handleOk}
-        clinic={clinic}
+        onOk={handleArchive}
       />
     </>
   );

@@ -4,7 +4,7 @@ import { MainContainer, CRCard } from 'components';
 
 import ListItemsDefinitions from '../list-items-definitions/index';
 import NewItem from '../new-item';
-import useFetchInventory from 'hooks/fetch-inventory';
+import useFetchInventory from 'hooks/use-inventory';
 
 const ItemsDefinitions = () => {
   const { items } = useFetchInventory();
