@@ -14,7 +14,7 @@ function ListInvoiceItems({ items, priceKey, onDelete }) {
               Delete
             </DeleteLinkStyled>
           </Div>
-          {item[priceKey] && <H6 color="texts.1">{item[priceKey]}</H6>}
+          EGP {item[priceKey] && <H6 color="texts.1">{item[priceKey]}</H6>}
         </Item>
       ))}
     </Div>

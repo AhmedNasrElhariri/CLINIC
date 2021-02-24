@@ -2,7 +2,16 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { Form, Divider } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as R from 'ramda';
-import { StyledSeesion, StyledDiscount ,Container,AppliedButton} from './style';
+import {
+  StyledSeesion,
+  StyledDiscount,
+  Container,
+  Button,
+  SummaryStyled,
+  StyledInput,
+  PriceStyled,
+  ButtonsDiv,
+} from './style';
 import { CRSelectInput, H6, H7, CRButton, Div } from 'components';
 import { CRNumberInput, CRTextInput } from 'components/widgets';
 import ListInvoiceItems from '../list-invoice-items';
@@ -15,11 +24,11 @@ const initValue = {
   price: 1,
 };
 
-const Price = ({ name, price }) => (
+const Price = ({ name, price, Color }) => (
   <Div display="flex" justifyContent="space-between" mb={1}>
-    <H7 color="texts.1">{name}</H7>
-    <H7 color="texts.1">
-      <NumberFormat value={price} displayType="text" thousandSeparator />
+    <H7 color={Color ? Color : 'texts.1'}>{name}</H7>
+    <H7 color={Color ? Color : 'texts.1'}>
+      EGP <NumberFormat value={price} displayType="text" thousandSeparator />
     </H7>
   </Div>
 );
@@ -104,6 +113,7 @@ function AppointmentInvoice({
               value={session}
               onChange={setSession}
               data={choices}
+              onSelect={add()}
             />
           </Form>
           {isOtherType(session) && (
@@ -122,12 +132,6 @@ function AppointmentInvoice({
               thousandSeparator
             />
           </H6>
-          <Div textAlign="right">
-            <CRButton primary small onClick={add}>
-              Add
-            </CRButton>
-          </Div>
-          {selectedSessions.length > 0 && <Divider />}
           <Div my={3}>
             <ListInvoiceItems
               items={selectedSessions}
@@ -137,30 +141,74 @@ function AppointmentInvoice({
         </StyledSeesion>
         <StyledDiscount>
           <Form>
-            <CRTextInput
-              label="Discount"
-              name="amount"
-              value={discount}
-              onChange={onDiscountChange}  
-              style={{width:'249px',display:'inline'}}
-            />
-             <AppliedButton>Applied</AppliedButton>
+            <StyledInput>
+              <CRTextInput
+                label="Discount"
+                name="amount"
+                value={discount}
+                onChange={onDiscountChange}
+                width={244}
+              ></CRTextInput>
+              <Button
+                width="61px"
+                padding="9.5px 9px 9.5px 10px"
+                bgColor="#e50124"
+                color="#ffffff"
+                height="38px"
+                marginTop="41px"
+              >
+                Applied
+              </Button>
+            </StyledInput>
           </Form>
-          <Div>
-            <Price name="Subtotal " price={subtotal} overriden />
-            <Price name="Discount " price={discount} overriden />
-            <Price name="Total" price={total} />
-          </Div>
+          <SummaryStyled>Session Summary</SummaryStyled>
+          <PriceStyled>
+            <Price
+              name="Subtotal "
+              price={subtotal}
+              overriden
+              Color="#283148"
+            />
+            <Price
+              name="Discount "
+              price={discount}
+              overriden
+              Color="#e50124"
+            />
+          </PriceStyled>
+          <Price name="Total" price={total} Color="#283148" />
         </StyledDiscount>
       </Container>
-      <Div mt={3}>
-        <PrintInvoice
-          items={selectedSessions}
-          subtotal={subtotal}
-          total={total}
-          discount={discount}
-        />
-      </Div>
+      <ButtonsDiv>
+        <Div>
+          <PrintInvoice
+            items={selectedSessions}
+            subtotal={subtotal}
+            total={total}
+            discount={discount}
+          />
+        </Div>
+        <Button
+          width="81px"
+          padding="9px 24px 10px 25px"
+          bgColor="#b6b7b7"
+          color="#283148"
+          marginLeft="370px"
+          height="35px"
+        >
+          Cancel
+        </Button>
+        <Button
+          width="106px"
+          padding="9px 40px"
+          bgColor="#50c7f2"
+          color="#ffffff"
+          marginLeft="26px"
+          height="35px"
+        >
+          Next
+        </Button>
+      </ButtonsDiv>
     </>
   );
 }

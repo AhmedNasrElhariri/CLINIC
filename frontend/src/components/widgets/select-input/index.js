@@ -94,7 +94,7 @@ const ItemStyled = styled.div`
   ${byTheme(fontTheme200)}
   color: ${props =>
     props.active ? props.theme.colors.primary : props.theme.colors.texts[1]};
-    
+
   & input.rs-picker-search-bar-input {
     ${borderCss}
     &:focus,
@@ -111,9 +111,6 @@ const SelectPickerStyled = styled(SelectPicker)`
     ${paddingLeft}
     display: flex;
     align-items: center;
-    width: 60%;
-    margin-right: 10px;
-    margin-top: 10px;
     border-radius: 0px;
     float: right;
     ${byTheme(heightTheme)}
@@ -159,22 +156,19 @@ const SelectorContainer = styled.div`
 
 const CustomSelect = ({ value, label, onChange, ...props }) => {
   return (
-    <SelectorContainer>
-      <SelectPickerStyled
-        {...props}
-        value={value}
-        onChange={onChange}
-        menuClassName="cr-picker"
-        virtualized={false}
-        renderMenuItem={(label, { value: val }) => (
-          <ItemStyled active={value === val}>{label}</ItemStyled>
-        )}
-        menuStyle={{
-          borderRadius: 10,
-        }}
-      ></SelectPickerStyled>
-      {props.title ? <StyledLabel>{props.title}</StyledLabel> : ''}
-    </SelectorContainer>
+    <SelectPickerStyled
+      {...props}
+      value={value}
+      onChange={onChange}
+      menuClassName="cr-picker"
+      virtualized={false}
+      renderMenuItem={(label, { value: val }) => (
+        <ItemStyled active={value === val}>{label}</ItemStyled>
+      )}
+      menuStyle={{
+        borderRadius: 10,
+      }}
+    />
   );
 };
 

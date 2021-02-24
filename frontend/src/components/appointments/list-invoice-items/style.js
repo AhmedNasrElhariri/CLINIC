@@ -15,7 +15,7 @@ export const Item = styled.div`
   justify-content: space-between;
   width: 396px;
   height: 53px;
-  padding: 8px 5px 8px 10px;
+  padding: 8px 10px 8px 10px;
   background-color: #f0f1f1;
   margin-bottom: 10px;
 `;
