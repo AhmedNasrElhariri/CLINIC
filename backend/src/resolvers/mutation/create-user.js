@@ -4,8 +4,9 @@ import bcrypt from 'bcryptjs';
 import { APIExceptcion } from '@/services/erros.service';
 import { POSITION } from '@/utils/constants';
 
-const createUser = async (_, { user }, { organizationId }) => {
-  if (user.position !== POSITION.Admin) {
+const createUser = async (_, { user }, { userId, organizationId }) => {
+  const currentUser = await prisma.user.findOne({ where: { id: userId } });
+  if (currentUser.position !== POSITION.Admin) {
     throw new APIExceptcion('not authorized user');
   }
   const { password, ...rest } = user;
