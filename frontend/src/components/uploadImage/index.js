@@ -19,7 +19,7 @@ function UploadImage({}) {
             ></CRSelectInput>
           </StyledSelector>
           <StyledTextArea>
-            <CRTextArea placeholder="Add Caption" />
+            <CRTextArea placeholder="Add Caption"/>
           </StyledTextArea>
         </Form>
       </StyledContainer>
