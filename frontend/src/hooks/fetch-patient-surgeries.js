@@ -21,7 +21,6 @@ const updateCache = patientSurgeries => {
 
 const usePatientSurgeries = ({ onCreate } = {}) => {
   const { data } = useQuery(LIST_PATIENT_SURGERIES);
-  const [clinic] = useGlobalState('currentClinic');
   const patientSurgeries = useMemo(
     () => R.propOr([], 'patientSurgeries')(data),
     [data]
@@ -47,13 +46,12 @@ const usePatientSurgeries = ({ onCreate } = {}) => {
         createPatientSurgery({
           variables: {
             patientSurgery,
-            clinicId: clinic.id,
           },
         });
       },
       updateCache,
     }),
-    [clinic.id, createPatientSurgery, patientSurgeries]
+    [createPatientSurgery, patientSurgeries]
   );
 };
 

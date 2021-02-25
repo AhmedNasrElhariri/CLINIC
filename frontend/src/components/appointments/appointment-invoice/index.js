@@ -146,7 +146,6 @@ function AppointmentInvoice({
 
 AppointmentInvoice.defaultProps = {
   sessions: [],
-  clinic: {},
 };
 
 export default AppointmentInvoice;

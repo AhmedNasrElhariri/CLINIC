@@ -15,17 +15,13 @@ const publish = message => {
 export const onAppointmentCreate = async ({
   userId,
   notifierId,
-  clinicId,
   appointment,
 }) => {
   if (userId === notifierId) {
     return;
   }
-  const clinic = await prisma.clinic.findOne({ where: { id: clinicId } });
 
-  const message = `New appointment at ${formatDateFull(appointment.date)} - ${
-    clinic.name
-  } clinic`;
+  const message = `New appointment at ${formatDateFull(appointment.date)}`;
 
   const notification = await await prisma.notification.create({
     data: {

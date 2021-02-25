@@ -9,7 +9,6 @@ import ListData from '../list-data';
 import Tabs from '../tabs';
 
 import Profit from '../profit';
-
 import useAccountig from 'hooks/use-accounting';
 
 import {
@@ -18,23 +17,20 @@ import {
   UPDATE_EXPENSE,
   UPDATE_REVENUE,
 } from 'apollo-client/queries';
-import useGlobalState from 'state';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
+
 import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
-import { Can } from 'components/user/can';
 import useAuth from 'hooks/auth';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 
 const AccountingContainer = () => {
-  const [clinic] = useGlobalState('currentClinic');
   const [activeTab, setActiveTab] = useState('0');
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
-  const { can } = useAuth();
 
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
@@ -83,31 +79,25 @@ const AccountingContainer = () => {
   });
 
   const handleCreateRevenue = useCallback(
-    val => {
+    revenue => {
       createRevenue({
         variables: {
-          revenue: {
-            ...val,
-            clinicId: clinic.id,
-          },
+          revenue,
         },
       });
     },
-    [clinic, createRevenue]
+    [createRevenue]
   );
 
   const handleCreateExpense = useCallback(
-    val => {
+    expense => {
       createExpense({
         variables: {
-          expense: {
-            ...val,
-            clinicId: clinic.id,
-          },
+          expense,
         },
       });
     },
-    [clinic, createExpense]
+    [createExpense]
   );
 
   const handleUpdateRevenue = useCallback(
@@ -165,20 +155,14 @@ const AccountingContainer = () => {
         title="Accounting"
         more={
           <Div display="flex">
-            <Can I="add_revenue" an="Accounting">
-              <CRButton primary small onClick={createRevenueForm.show}>
-                Reveneue +
-              </CRButton>
-            </Can>
-            <Can I="add_expense" an="Accounting">
-              <CRButton primary small onClick={createExpenseForm.show} ml={1}>
-                Expense +
-              </CRButton>
-            </Can>
+            <CRButton primary small onClick={createRevenueForm.show}>
+              Reveneue +
+            </CRButton>
+            <CRButton primary small onClick={createExpenseForm.show} ml={1}>
+              Expense +
+            </CRButton>
             <Div ml={1}>
-              <Can I="print" an="Accounting">
-                <PdfView data={{ revenues, expenses }} period={timeFrame} />
-              </Can>
+              <PdfView data={{ revenues, expenses }} period={timeFrame} />
             </Div>
           </Div>
         }
@@ -209,7 +193,6 @@ const AccountingContainer = () => {
                 <ListData
                   title="Revenue"
                   data={revenues}
-                  canEdit={can('edit_revenue', 'Accounting')}
                   onEdit={revenue => {
                     editRevenueForm.setFormValue(R.pick(ENTITY_PROPS)(revenue));
                     editRevenueForm.show();
@@ -221,7 +204,6 @@ const AccountingContainer = () => {
                 <ListData
                   title="Expenses"
                   data={expenses}
-                  canEdit={can('edit_expense', 'Accounting')}
                   onEdit={expense => {
                     editExpenseForm.setFormValue(R.pick(ENTITY_PROPS)(expense));
                     editExpenseForm.show();

@@ -15,24 +15,9 @@ import {
   getYearStartAndEnd,
 } from 'utils/date';
 
-export function useVariables() {
-  const [currentClinic] = useGlobalState('currentClinic');
-  if (!currentClinic) {
-    return {};
-  }
-  return {
-    clinicId: currentClinic.id,
-  };
-}
-
 const useFetchAccountingData = ({ view, period } = {}) => {
-  const variables = useVariables();
-  const { data: expensesData } = useQuery(LIST_EXPENSES, {
-    variables,
-  });
-  const { data: revenueData } = useQuery(LIST_REVENUES, {
-    variables,
-  });
+  const { data: expensesData } = useQuery(LIST_EXPENSES);
+  const { data: revenueData } = useQuery(LIST_REVENUES);
 
   const allExpenses = useMemo(() => R.propOr([], 'expenses')(expensesData), [
     expensesData,
@@ -90,7 +75,6 @@ const useFetchAccountingData = ({ view, period } = {}) => {
       updateExpensesCache: expenses => {
         client.writeQuery({
           query: LIST_EXPENSES,
-          variables,
           data: {
             expenses,
           },
@@ -99,7 +83,6 @@ const useFetchAccountingData = ({ view, period } = {}) => {
       updateRevenuesCache: revenues => {
         client.writeQuery({
           query: LIST_REVENUES,
-          variables,
           data: {
             revenues,
           },
@@ -107,14 +90,12 @@ const useFetchAccountingData = ({ view, period } = {}) => {
       },
       refetchRevenues: {
         query: LIST_REVENUES,
-        variables,
       },
       refetchExpenses: {
         query: LIST_EXPENSES,
-        variables,
       },
     }),
-    [expenses, revenues, timeFrame, totalExpenses, totalRevenues, variables]
+    [expenses, revenues, timeFrame, totalExpenses, totalRevenues]
   );
 };
 

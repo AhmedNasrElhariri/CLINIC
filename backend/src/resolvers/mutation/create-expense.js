@@ -1,11 +1,12 @@
 import { prisma } from '@';
 
-const createExpense = async (_, { expense: { clinicId, ...expense } }) => {
+const createExpense = async (_, { expense }, { userId }) => {
   return prisma.expense.create({
     data: {
-      clinic: {
+      ...expense,
+      user: {
         connect: {
-          id: clinicId,
+          id: userId,
         },
       },
       ...expense,

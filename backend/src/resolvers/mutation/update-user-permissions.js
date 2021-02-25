@@ -6,7 +6,6 @@ const updateUserPermissions = async (
   { userId, permissions },
   { isAdmin }
 ) => {
-  // FIXME also check if user belongs to same clinic of admin
   if (!isAdmin) {
     throw new APIExceptcion('not authroized');
   }

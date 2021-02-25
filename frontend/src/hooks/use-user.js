@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { USER, UPDATE_USER_PERMISSIONS } from 'apollo-client/queries';
 import { Alert } from 'rsuite';
 
-const useFetchUser = id => {
+const useUser = id => {
   const variables = { id };
   const { data } = useQuery(USER, {
     variables,
@@ -32,4 +32,4 @@ const useFetchUser = id => {
   );
 };
 
-export default useFetchUser;
+export default useUser;

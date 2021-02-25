@@ -92,7 +92,6 @@ function InventoryUsage({ onChange }) {
 
 InventoryUsage.defaultProps = {
   sessions: [],
-  clinic: {},
 };
 
 export default InventoryUsage;

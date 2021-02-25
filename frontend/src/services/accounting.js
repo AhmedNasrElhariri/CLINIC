@@ -16,12 +16,3 @@ export const getNameShortcut = name => {
   return shortcuts[name] || name;
 };
 
-export const getAppointmentprice = (type, clinic) => {
-  const mapVsPrice = {
-    Examination: clinic.examinationPrice,
-    Followup: clinic.followupPrice,
-    Urgent: clinic.urgentPrice,
-  };
-
-  return mapVsPrice[type] || 0;
-};

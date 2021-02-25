@@ -12,7 +12,7 @@ import {
   REMOVE_DEFINITION,
   REMOVE_ITEM,
 } from 'apollo-client/queries';
-import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
+import useAccounting from 'hooks/use-accounting';
 
 function useFetchInventory({
   onCreateCompleted,
@@ -22,7 +22,7 @@ function useFetchInventory({
   onRemoveItem,
   onRemoveItemError,
 } = {}) {
-  const { refetchExpenses } = useFetchAccountingData();
+  const { refetchExpenses } = useAccounting();
 
   const { data: ItemData } = useQuery(LIST_ITEMS);
   const { data: InventoryData } = useQuery(LIST_INVENTORY);

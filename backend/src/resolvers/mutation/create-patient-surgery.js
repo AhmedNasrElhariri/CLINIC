@@ -57,9 +57,6 @@ const createPatientSurgery = async (
           },
         },
       },
-      // user: {
-      //   connect: { id: userId },
-      // },
     },
   });
 

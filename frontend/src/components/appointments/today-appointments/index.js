@@ -8,7 +8,7 @@ import { ARCHIVE_APPOINTMENT } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 
 import useAppointments from 'hooks/use-appointments';
-import useFetchAccountingData from 'components/accounting/accounting-container/fetch-data';
+import useAccounting from 'hooks/use-accounting';
 import useModal from 'hooks/use-model';
 import FinishAppointment from '../finish-appointments';
 import { getName } from 'services/accounting';
@@ -31,7 +31,7 @@ function TodayAppointments() {
     [appointments, formValue]
   );
 
-  const { refetchRevenues, refetchExpenses } = useFetchAccountingData();
+  const { refetchRevenues, refetchExpenses } = useAccounting();
   const { refetchInventory, refetchInventoryHistory } = useFetchInventory();
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);

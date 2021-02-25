@@ -16,14 +16,12 @@ import {
   Configurations,
   StaticSettings,
   Snippets,
-  UserPermissions,
   Profile,
   InventoryPage,
   PatientSurgeriesContainer,
   ReportPrintout,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
-import ProtectedRoute from '../protected-route/index';
 
 function AppRouter() {
   return (
@@ -75,14 +73,6 @@ function AppRouter() {
       <Route path="/snippets">
         <Snippets />
       </Route>
-
-      <ProtectedRoute
-        path="/permissions/:userId"
-        component={UserPermissions}
-        action="manage"
-        subject="all"
-        exact
-      />
 
       <Route
         path="/surgeries"

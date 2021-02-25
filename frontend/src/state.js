@@ -6,7 +6,6 @@ const initialState = {
   user: null,
   lanes: [],
   activeViews: {},
-  currentClinic: {},
 };
 
 const { useGlobalState } = createGlobalState(initialState);

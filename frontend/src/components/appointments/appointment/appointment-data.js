@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
@@ -9,7 +9,6 @@ import {
   CRNumberInput,
   CRTextInput,
   CRTextArea,
-  CRNav,
   CRRadio,
   CRCheckBox,
   CRNestedSelector,
@@ -27,16 +26,7 @@ import {
 
 import AppointmentImages from '../images';
 
-import { HomeSidebarStyled } from './style';
 import Prescription from '../prescription';
-
-const ScrollNavLink = ({ element, children, ...props }) => {
-  return (
-    <CRNav.CRScoll {...props} containerId="clinic-scroll-id">
-      {children}
-    </CRNav.CRScoll>
-  );
-};
 
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
@@ -94,7 +84,6 @@ function AppointmentData({
   appointmentFormValue,
   onChangeAppointment,
 }) {
-  const [activeSection, setActiveSection] = useState('');
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
 
   const handleCollectionsChange = useCallback(
@@ -110,44 +99,7 @@ function AppointmentData({
   return (
     <>
       <Div display="flex">
-        {/* {!isSession(appointment) && (
-          <HomeSidebarStyled>
-            <CRNav vertical onSelect={setActiveSection}>
-              {navs.map((v, idx) => (
-                <ScrollNavLink
-                  eventKey={v.to}
-                  {...v}
-                  key={idx}
-                  active={activeSection === v.to}
-                >
-                  {v.title}
-                </ScrollNavLink>
-              ))}
-              <ScrollNavLink
-                eventKey="Notes"
-                active={activeSection === 'Notes'}
-                to="Notes"
-              >
-                Notes
-              </ScrollNavLink>
-              <ScrollNavLink
-                eventKey="Images"
-                active={activeSection === 'Images'}
-                to="Images"
-              >
-                Images
-              </ScrollNavLink>
-              <ScrollNavLink
-                eventKey="Prescription"
-                active={activeSection === 'Prescription'}
-                to="Prescription"
-              >
-                Prescription
-              </ScrollNavLink>
-            </CRNav>
-          </HomeSidebarStyled>
-        )} */}
-        <Div id="clinic-scroll-id" flexGrow={1}>
+        <Div flexGrow={1}>
           {!isSession(appointment) && Object.keys(formValue).length > 0 && (
             <>
               <Form formValue={formValue} onChange={onChange} fluid>
@@ -188,24 +140,6 @@ function AppointmentData({
               onChange={handleCollectionsChange}
             />
           </SectionContainer>
-          {/* <SectionContainer title="Lab" name="Lab">
-            <Form
-              formValue={appointmentFormValue}
-              onChange={onChangeAppointment}
-            >
-              <CRTextArea name="prescription" disabled={disabled} />
-              <ListLabs data={Labs} />
-            </Form>
-          </SectionContainer>
-          <SectionContainer title="Images" name="Images">
-            <Form
-              formValue={appointmentFormValue}
-              onChange={onChangeAppointment}
-            >
-              <CRTextArea name="prescription" disabled={disabled} />
-              <ListLabs data={Labs} />
-            </Form>
-          </SectionContainer> */}
         </Div>
       </Div>
     </>

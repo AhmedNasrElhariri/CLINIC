@@ -1,20 +1,6 @@
 import { useState, useCallback } from 'react';
 import Compressor from 'compressorjs';
 
-import useGlobalState from 'state';
-
-export function useVariables() {
-  const [currentClinic] = useGlobalState('currentClinic');
-  if (!currentClinic) {
-    return {};
-  }
-  return {
-    input: {
-      clinicIds: [currentClinic.id],
-    },
-  };
-}
-
 export function useUpload({ onCompleted = () => {}, onError = () => {} } = {}) {
   const [loading, setLoading] = useState(false);
 
