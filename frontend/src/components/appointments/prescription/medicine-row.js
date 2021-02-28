@@ -55,14 +55,14 @@ const MedicineRow = ({
           <FlexboxGrid.Item colspan={5}>
             <BoxStyled>
               <FormControl
-                placeholder="NumDuration"
+                placeholder="Number"
                 name="name"
                 style={{ marginRight: '2px' }}
                 accepter={InputNumber}
                 block
               />
               <FormControl
-                placeholder="PeriodDuration"
+                placeholder="Duration"
                 name="periodDuration"
                 style={{ marginLeft: '2px' }}
                 accepter={InputPicker}

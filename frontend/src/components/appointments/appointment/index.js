@@ -2,9 +2,9 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader } from 'rsuite';
+import { Alert, Loader,Icon } from 'rsuite';
 
-import { Div, PatientSummary, H3 } from 'components';
+import { Div, PatientSummary, H3,CRButton } from 'components';
 import AppointmentData from './appointment-data';
 import PatientLabs from './patient-labs';
 
@@ -35,7 +35,7 @@ function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [apptFormValue, setApptFormValue] = useState({
     notes: '',
-    prescription: '',
+    prescription: '', //add medicine []
     collections: [],
   });
   const [disabled, setDisabled] = useState(false);
@@ -143,24 +143,27 @@ function Appointment() {
       <Div flexGrow={1}>
         <HeaderStyled>
           <H3 mb={64}>Appointment</H3>
-          {/*      <ButtonToolbar>
-            <CRButton small primary onClick={open}>
+          {/* <ButtonToolbar> */}
+            {/* <CRButton small primary onClick={open}>
               Prescription
               <Icon icon="add" />
-            </CRButton>
-            {isScheduled(appointment) && (
+            </CRButton> */}
+            {/* {isScheduled(appointment) && ( */}
+              <CRButton small primary onClick={onUpdate} disabled={disabled}>
+                Print <Icon icon="print" />
+              </CRButton>
               <CRButton small primary onClick={onUpdate} disabled={disabled}>
                 Save <Icon icon="save" />
               </CRButton>
-            )}
-            {(isScheduled(appointment) || isDone(appointment)) && (
+            {/* )} */}
+            {/* {(isScheduled(appointment) || isDone(appointment)) && (
               <Can I="archive" an="Appointment">
                 <CRButton small primary onClick={onArchive} disabled={disabled}>
                   Archive <Icon icon="archive" />
                 </CRButton>
               </Can>
-            )}
-          </ButtonToolbar> */}
+            )} */}
+          {/* </ButtonToolbar> */}
         </HeaderStyled>
         <Div display="flex">
           <Div flexGrow={1}>

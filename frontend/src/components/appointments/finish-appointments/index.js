@@ -23,7 +23,6 @@ function FinishAppointment({ appointment, show, onCancel, onOk}) {
   const organization = useMemo(
     () => R.propOr([], 'myInvoiceCounter')(data),
     [data],
-    [data]
   );
   const handleInvoiceChange = useCallback(sessions => {
     value.current = { ...value.current, sessions };
