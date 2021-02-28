@@ -83,22 +83,22 @@ const TestDefinition = () => {
           Prescription
         </CRButton>
       </Div>
-      {/* <Prescription
+      <Prescription
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
         type={type}
-      /> */}
-      <Invoice
+      />
+      {/* <Invoice
         show={visible}
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
         type={type}
-      />
+      /> */}
       <ListTestsDefinition tests={testsDefinition} onEdit={handleClickEdit} />
     </>
   );
