@@ -96,6 +96,16 @@ function AppointmentData({
     [appointmentFormValue, onChangeAppointment]
   );
 
+  const handleMedicineChange = useCallback(
+    medicine => {
+      onChangeAppointment({
+        ...appointmentFormValue,
+        medicine,
+      });
+    },
+    [appointmentFormValue, onChangeAppointment]
+  );
+
   return (
     <>
       <Div display="flex">
@@ -136,8 +146,8 @@ function AppointmentData({
           </SectionContainer>
           <SectionContainer title="Prescription" name="prescription">
             <Prescription
-              formValue={appointmentFormValue.collections}
-              onChange={handleCollectionsChange}
+              formValue={appointmentFormValue.medicine}
+              onChange={handleMedicineChange}
             />
           </SectionContainer>
         </Div>

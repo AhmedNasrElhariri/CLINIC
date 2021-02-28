@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   FlexboxGrid,
   Form,
@@ -17,11 +17,27 @@ const MedicineRow = ({
   concentration,
   medicineForm,
   timings,
+  medicineValue,
+  onChange: setFormValue2,
 }) => {
-  
+  const initialValue = {
+    dose: '',
+    medicine: medicineName,
+    timing: '',
+    numDuration: '',
+    periodDuration: '',
+  };
+  const [formValue, setFormValue] = useState(initialValue);
+
+  const handleClicked = useCallback(() => {
+    console.log(formValue,"fom");
+    const newMedicine = [...medicineValue, formValue];
+    setFormValue2(newMedicine);
+    setFormValue(initialValue);
+  }, [formValue, setFormValue2]);
   return (
     <MedicineContainerStyled>
-      <Form fluid>
+      <Form fluid formValue={formValue} onChange={setFormValue}>
         <FlexboxGrid>
           <FlexboxGrid.Item colspan={6}>
             <Div display="flex" alignItems="center" height={55}>
@@ -33,7 +49,7 @@ const MedicineRow = ({
           <FlexboxGrid.Item colspan={5}>
             <BoxStyled>
               <FormControl
-                name="name"
+                name="dose"
                 placeholder="Dose"
                 style={{ margin: 0 }}
                 accepter={InputNumber}
@@ -44,7 +60,7 @@ const MedicineRow = ({
             <BoxStyled>
               <FormControl
                 placeholder="Timing"
-                name="name"
+                name="timing"
                 style={{ margin: 0 }}
                 accepter={InputPicker}
                 data={timings}
@@ -56,7 +72,7 @@ const MedicineRow = ({
             <BoxStyled>
               <FormControl
                 placeholder="Number"
-                name="name"
+                name="numDuration"
                 style={{ marginRight: '2px' }}
                 accepter={InputNumber}
                 block
@@ -83,7 +99,13 @@ const MedicineRow = ({
               alignItems="center"
               justifyContent="center"
             >
-              <CRButton primary small m="auto" style={{ padding: '10px' }}>
+              <CRButton
+                primary
+                small
+                m="auto"
+                onClick={handleClicked}
+                style={{ padding: '10px' }}
+              >
                 Prescribe
               </CRButton>
             </Div>

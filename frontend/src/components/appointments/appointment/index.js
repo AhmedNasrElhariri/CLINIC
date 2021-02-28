@@ -2,9 +2,11 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader,Icon } from 'rsuite';
+import { Alert, Loader, Icon } from 'rsuite';
 
-import { Div, PatientSummary, H3,CRButton } from 'components';
+import Prescription from './prescription/index.js';
+
+import { Div, PatientSummary, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
 import PatientLabs from './patient-labs';
 
@@ -25,6 +27,8 @@ import History from './patient-history';
 
 import { HeaderStyled } from './style';
 import PatientSurgries from './surgries';
+
+import useFrom from 'hooks/form';
 import useModal from 'hooks/use-model';
 
 const normalTabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
@@ -32,10 +36,15 @@ const surgeryTabs = ['Home'];
 
 function Appointment() {
   const history = useHistory();
+
+  const { visible, open, close } = useModal();
+  const { type, setType } = useFrom({});
+
   const [formValue, setFormValue] = useState({});
   const [apptFormValue, setApptFormValue] = useState({
     notes: '',
-    prescription: '', //add medicine []
+    prescription: '',
+    medicine: [],
     collections: [],
   });
   const [disabled, setDisabled] = useState(false);
@@ -106,6 +115,11 @@ function Appointment() {
     });
   }, [update, normalizedFields, formValue, apptFormValue, appointmentId]);
 
+  const handleClickCreate = useCallback(() => {
+    setType('create');
+    open();
+  }, [open, setType]);
+
   const onArchive = useCallback(() => {
     archive({
       variables: { id: appointmentId },
@@ -116,11 +130,11 @@ function Appointment() {
     return R.propOr('', 'prescription')(apptFormValue);
   }, [apptFormValue]);
 
-  const handlePrescriptionChange = useCallback(
-    prescription =>
-      setApptFormValue(R.mergeDeepRight(apptFormValue, { prescription })),
-    [apptFormValue]
-  );
+  // const handlePrescriptionChange = useCallback(
+  //   prescription =>
+  //     setApptFormValue(R.mergeDeepRight(apptFormValue, { prescription })),
+  //   [apptFormValue]
+  // );
 
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
@@ -131,32 +145,37 @@ function Appointment() {
       notes: R.propOr('', 'notes')(appointment),
       prescription: R.propOr('', 'prescription')(appointment),
       collections: R.propOr([], 'collections')(appointment),
+      medicine: R.propOr([], 'medicine')(appointment),
     });
   }, [appointment]);
 
   if (loading) {
     return <Loader />;
   }
-
   return (
     <Div display="flex">
       <Div flexGrow={1}>
         <HeaderStyled>
           <H3 mb={64}>Appointment</H3>
           {/* <ButtonToolbar> */}
-            {/* <CRButton small primary onClick={open}>
+          {/* <CRButton small primary onClick={open}>
               Prescription
               <Icon icon="add" />
             </CRButton> */}
-            {/* {isScheduled(appointment) && ( */}
-              <CRButton small primary onClick={onUpdate} disabled={disabled}>
-                Print <Icon icon="print" />
-              </CRButton>
-              <CRButton small primary onClick={onUpdate} disabled={disabled}>
-                Save <Icon icon="save" />
-              </CRButton>
-            {/* )} */}
-            {/* {(isScheduled(appointment) || isDone(appointment)) && (
+          {/* {isScheduled(appointment) && ( */}
+          <CRButton
+            small
+            primary
+            onClick={handleClickCreate}
+            disabled={disabled}
+          >
+            Print <Icon icon="print" />
+          </CRButton>
+          <CRButton small primary onClick={onUpdate} disabled={disabled}>
+            Save <Icon icon="save" />
+          </CRButton>
+          {/* )} */}
+          {/* {(isScheduled(appointment) || isDone(appointment)) && (
               <Can I="archive" an="Appointment">
                 <CRButton small primary onClick={onArchive} disabled={disabled}>
                   Archive <Icon icon="archive" />
@@ -179,6 +198,12 @@ function Appointment() {
                 }}
                 groups={groups}
                 appointment={appointment}
+              />
+              <Prescription
+                visible={visible}
+                onClose={close}
+                type={type}
+                medicine={apptFormValue.medicine}
               />
               {/* {appointment.type !== 'Surgery' && showComp('1') && (
                 <PatientSummary
