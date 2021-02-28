@@ -31,6 +31,7 @@ function AppointmentInvoice({
   discount,
   onDiscountChange,
   sessions,
+  organization,
 }) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
@@ -73,7 +74,7 @@ function AppointmentInvoice({
   );
 
   const total = useMemo(() => subtotal - discount, [discount, subtotal]);
-
+ 
   return (
     <>
       <Form fluid>
@@ -138,6 +139,7 @@ function AppointmentInvoice({
           subtotal={subtotal}
           total={total}
           discount={discount}
+          organization={organization}
         />
       </Div>
     </>

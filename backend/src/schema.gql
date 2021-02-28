@@ -101,6 +101,7 @@ type Query {
   listRoles: [Role!]
   listBranchesTree(action: String!): [Branch!]
   configuration: Configuration
+  myInvoiceCounter: Organization!
 }
 
 ########################### Mutation ##################################
@@ -656,7 +657,13 @@ input FinishAppointmentItemInput {
   itemId: String!
   quantity: Int!
 }
+########################### Organization ##################################
 
+type Organization {
+  id: ID!
+  name: String!
+  invoiceCounter: Int!
+}
 ########################### Hospitals ##################################
 
 type Hospital {

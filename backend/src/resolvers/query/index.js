@@ -35,3 +35,4 @@ export { default as listUsers } from './list-users';
 export { default as listRoles } from './list-roles';
 export { default as listBranchesTree } from './list-branches-tree';
 export { default as configuration } from './configuration';
+export { default as myInvoiceCounter } from './invoice-counter';

@@ -48,7 +48,7 @@ const MedicineRow = ({ medicineName, concentration, medicineForm }) => {
           <FlexboxGrid.Item colspan={5}>
             <BoxStyled>
               <FormControl
-                placeholder="Duration"
+                placeholder="Durationn"
                 name="name"
                 style={{ margin: 0 }}
                 accepter={InputPicker}

@@ -1,12 +1,10 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import * as R from 'ramda';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from 'rsuite';
-
 import { Div } from 'components';
 import { ARCHIVE_APPOINTMENT } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
-
 import useAppointments from 'hooks/use-appointments';
 import useAccounting from 'hooks/use-accounting';
 import useModal from 'hooks/use-model';

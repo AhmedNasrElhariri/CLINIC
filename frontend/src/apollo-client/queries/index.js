@@ -15,3 +15,4 @@ export * from './image';
 export * from './medicine';
 export * from './test';
 export * from './surgery';
+export * from './invoice-counter';

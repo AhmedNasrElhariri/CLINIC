@@ -74,7 +74,7 @@ export { default as MainContainer } from './layout/main-container';
 export { default as AccountingContainer } from './accounting/accounting-container';
 
 /******************     Permissions    *******************************/
-export { default as UserPermissions } from './permissions/user-permissions';
+// export { default as UserPermissions } from './permissions/user-permissions';
 export { default as RolePermissions } from './permissions/role-permissions';
 export { default as Assign } from './permissions/assign';
 
