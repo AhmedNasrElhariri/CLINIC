@@ -91,6 +91,7 @@ type Query {
   patientSurgeries(patientId: ID): [PatientSurgery!]
   myPatientSurgeries: [PatientSurgery!]
   myTestsDefinition: [TestDefinition!]
+  myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
@@ -154,6 +155,8 @@ type Mutation {
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
   addTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
   editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
+  addTiming(timing: TimingInput!): Timing
+  editTiming(timing: TimingInput!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   addMedicineDefinition(
@@ -701,6 +704,20 @@ type TestDefinition {
 input TestInputDefinition {
   id: ID
   testName: String!
+}
+
+########################### Timing ##################################
+
+type Timing {
+  id: ID!
+  name: String!
+  printValue: String!
+}
+
+input TimingInput {
+  id: ID
+  name: String!
+  printValue: String!
 }
 
 ########################### Images Definition ##################################

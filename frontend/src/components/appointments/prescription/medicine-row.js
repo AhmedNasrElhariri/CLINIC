@@ -12,7 +12,13 @@ import { MedicineContainerStyled, BoxStyled } from './style';
 import { CRButton, Div, H6, H7 } from 'components';
 
 // 'rgb(81 198 243)'
-const MedicineRow = ({ medicineName, concentration, medicineForm }) => {
+const MedicineRow = ({
+  medicineName,
+  concentration,
+  medicineForm,
+  timings,
+}) => {
+  
   return (
     <MedicineContainerStyled>
       <Form fluid>
@@ -41,6 +47,7 @@ const MedicineRow = ({ medicineName, concentration, medicineForm }) => {
                 name="name"
                 style={{ margin: 0 }}
                 accepter={InputPicker}
+                data={timings}
                 block
               />
             </BoxStyled>
@@ -48,11 +55,24 @@ const MedicineRow = ({ medicineName, concentration, medicineForm }) => {
           <FlexboxGrid.Item colspan={5}>
             <BoxStyled>
               <FormControl
-                placeholder="Durationn"
+                placeholder="NumDuration"
                 name="name"
-                style={{ margin: 0 }}
+                style={{ marginRight: '2px' }}
+                accepter={InputNumber}
+                block
+              />
+              <FormControl
+                placeholder="PeriodDuration"
+                name="periodDuration"
+                style={{ marginLeft: '2px' }}
                 accepter={InputPicker}
                 block
+                data={[
+                  { label: 'Year', value: 'year' },
+                  { label: 'Month', value: 'month' },
+                  { label: 'Week', value: 'week' },
+                  { label: 'Day', value: 'day' },
+                ]}
               />
             </BoxStyled>
           </FlexboxGrid.Item>
