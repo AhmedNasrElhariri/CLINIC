@@ -17,14 +17,14 @@ import {
   Content,
 } from './style';
 const model = Schema.Model({});
-let newPrescription = [];
-function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
-  const header = useMemo(() => 'Prescription');
+let newLabs = [];
+function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
+  const header = useMemo(() => 'Labs');
   const removeItem = indx => {
-    newPrescription = medicine.filter((element, index) => {
+    newLabs = labs.filter((element, index) => {
       return index != indx;
     });
-    setFormValue2(newPrescription);
+    setFormValue2(newLabs);
   };
   const ref = useRef();
   return (
@@ -38,16 +38,12 @@ function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
       bodyStyle={{ padding: '0px' }}
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
-      <Title>Medicine</Title>
-      {medicine.map((element, indx) => (
+      <Title>Labs</Title>
+      {labs.map((element, indx) => (
         <Container>
           <Medicine>
             <Ul>
-              <Li>{element.medicine}</Li>
-              <li>
-                {element.timing} - {element.numDuration} -{' '}
-                {element.periodDuration}
-              </li>
+              <Li>{element.testName}</Li>
             </Ul>
           </Medicine>
           <Button onClick={() => removeItem(indx)}>Delete</Button>
@@ -76,26 +72,12 @@ function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
       />
 
       <PrescriptionPrintout ref={ref}>
-        {medicine.length == '0' ? (
-          <Div>No Medicines</Div>
+        {labs.length == '0' ? (
+          <Div>No Labs</Div>
         ) : (
-          medicine.map(medicine => (
+          labs.map(lab => (
             <Div>
-              <MedicineName>Medicine: {medicine.medicine}</MedicineName>
-              <Row>
-                <SubTitle>Dose: </SubTitle>
-                <Content>{medicine.dose}</Content>
-              </Row>
-              <Row>
-                <SubTitle>Timing: </SubTitle>
-                <Content>{medicine.timing}</Content>
-              </Row>
-              <Row>
-                <SubTitle>Duration: </SubTitle>
-                <Content>
-                  {medicine.numDuration} {'  '} {medicine.periodDuration}
-                </Content>
-              </Row>
+              <MedicineName>Lab: {lab.testName}</MedicineName>
             </Div>
           ))
         )}
@@ -104,8 +86,8 @@ function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
   );
 }
 
-Prescription.defaultProps = {
+Labs.defaultProps = {
   type: 'create',
 };
 
-export default Prescription;
+export default Labs;

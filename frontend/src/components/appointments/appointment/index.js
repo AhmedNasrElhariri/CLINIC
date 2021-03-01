@@ -5,6 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { Alert, Loader, Icon } from 'rsuite';
 
 import Prescription from './prescription/index.js';
+import Labs from './labs/index';
 
 import { Div, PatientSummary, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
@@ -45,6 +46,7 @@ function Appointment() {
     notes: '',
     prescription: '',
     medicine: [],
+    labs:[],
     collections: [],
   });
   const [disabled, setDisabled] = useState(false);
@@ -114,10 +116,17 @@ function Appointment() {
       },
     });
   }, [update, normalizedFields, formValue, apptFormValue, appointmentId]);
-
+  const [popup,setPopup] = useState(false);
+  const [popup2,setPopup2] = useState(false);
   const handleClickCreate = useCallback(() => {
     setType('create');
     open();
+    setPopup(true);
+  }, [open, setType]);
+  const handleClickCreate2 = useCallback(() => {
+    setType('create');
+    open();
+    setPopup2(true);
   }, [open, setType]);
 
   const onArchive = useCallback(() => {
@@ -146,6 +155,7 @@ function Appointment() {
       prescription: R.propOr('', 'prescription')(appointment),
       collections: R.propOr([], 'collections')(appointment),
       medicine: R.propOr([], 'medicine')(appointment),
+      labs: R.propOr([], 'medicine')(appointment),
     });
   }, [appointment]);
   const handleMedicineChange = useCallback(
@@ -153,6 +163,15 @@ function Appointment() {
       setApptFormValue({
         ...apptFormValue,
         medicine,
+      });
+    },
+    [apptFormValue, setApptFormValue]
+  );
+  const handleLabsChange = useCallback(
+    labs => {
+      setApptFormValue({
+        ...apptFormValue,
+        labs,
       });
     },
     [apptFormValue, setApptFormValue]
@@ -177,7 +196,15 @@ function Appointment() {
             onClick={handleClickCreate}
             disabled={disabled}
           >
-            Print <Icon icon="print" />
+            PrintMedicines <Icon icon="print" />
+          </CRButton>
+          <CRButton
+            small
+            primary
+            onClick={handleClickCreate2}
+            disabled={disabled}
+          >
+            PrintLabs <Icon icon="print" />
           </CRButton>
           <CRButton small primary onClick={onUpdate} disabled={disabled}>
             Save <Icon icon="save" />
@@ -207,13 +234,22 @@ function Appointment() {
                 groups={groups}
                 appointment={appointment}
               />
+              {popup ? 
               <Prescription
                 visible={visible}
                 onClose={close}
                 type={type}
                 medicine={apptFormValue.medicine}
                 onChange={handleMedicineChange}
-              />
+              /> : <></>}
+              {popup2 ?
+              <Labs
+                visible={visible}
+                onClose={close}
+                type={type}
+                labs={apptFormValue.labs}
+                onChange={handleLabsChange}
+              /> :<></> }
               {/* {appointment.type !== 'Surgery' && showComp('1') && (
                 <PatientSummary
                   summary={appointmentHistory}

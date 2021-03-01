@@ -28,12 +28,12 @@ const MedicineRow = ({
     periodDuration: '',
   };
   const [formValue, setFormValue] = useState(initialValue);
-
+  const [prescribe, setPrescribe] = useState('Prescribe');
   const handleClicked = useCallback(() => {
-    console.log(formValue,"fom");
     const newMedicine = [...medicineValue, formValue];
     setFormValue2(newMedicine);
     setFormValue(initialValue);
+    setPrescribe('Prescribed')
   }, [formValue, setFormValue2]);
   return (
     <MedicineContainerStyled>
@@ -106,7 +106,7 @@ const MedicineRow = ({
                 onClick={handleClicked}
                 style={{ padding: '10px' }}
               >
-                Prescribe
+                {prescribe}
               </CRButton>
             </Div>
           </FlexboxGrid.Item>

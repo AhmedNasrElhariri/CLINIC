@@ -27,6 +27,7 @@ import {
 import AppointmentImages from '../images';
 
 import Prescription from '../prescription';
+import Labs from '../labs';
 
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
@@ -105,7 +106,16 @@ function AppointmentData({
     },
     [appointmentFormValue, onChangeAppointment]
   );
-
+  const handleLabsChange = useCallback(
+    labs => {
+      onChangeAppointment({
+        ...appointmentFormValue,
+        labs,
+      });
+    },
+    [appointmentFormValue, onChangeAppointment]
+  );
+  
   return (
     <>
       <Div display="flex">
@@ -148,6 +158,12 @@ function AppointmentData({
             <Prescription
               formValue={appointmentFormValue.medicine}
               onChange={handleMedicineChange}
+            />
+          </SectionContainer>
+          <SectionContainer title="Labs" name="labs">
+            <Labs
+               formValue={appointmentFormValue.labs}
+               onChange={handleLabsChange}
             />
           </SectionContainer>
         </Div>
