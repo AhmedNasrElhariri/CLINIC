@@ -13,16 +13,14 @@ import {
 } from './style';
 const model = Schema.Model({});
 let newPrescription = [];
-function Prescription({ visible, onClose, medicine }) {
-  const [prescription, setPrescription] = useState(medicine);
+function Prescription({ visible, onClose, medicine ,onChange:setFormValue2 }) {
   const header = useMemo(() => 'Prescription');
   const removeItem = indx => {
-    newPrescription = prescription.filter((element, index) => {
+    newPrescription = medicine.filter((element, index) => {
       return index != indx;
     });
-    setPrescription(newPrescription);
+    setFormValue2(newPrescription);
   };
-  console.log(prescription)
   return (
     <CRModal
       show={visible}
@@ -35,7 +33,7 @@ function Prescription({ visible, onClose, medicine }) {
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
       <Title>Medicine</Title>
-      {prescription.map((element, indx) => (
+      {medicine.map((element, indx) => (
         <Container>
           <Medicine>
             <Ul>

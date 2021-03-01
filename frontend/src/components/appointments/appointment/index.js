@@ -148,7 +148,15 @@ function Appointment() {
       medicine: R.propOr([], 'medicine')(appointment),
     });
   }, [appointment]);
-
+  const handleMedicineChange = useCallback(
+    medicine => {
+      setApptFormValue({
+        ...apptFormValue,
+        medicine,
+      });
+    },
+    [apptFormValue, setApptFormValue]
+  );
   if (loading) {
     return <Loader />;
   }
@@ -204,6 +212,7 @@ function Appointment() {
                 onClose={close}
                 type={type}
                 medicine={apptFormValue.medicine}
+                onChange={handleMedicineChange}
               />
               {/* {appointment.type !== 'Surgery' && showComp('1') && (
                 <PatientSummary
