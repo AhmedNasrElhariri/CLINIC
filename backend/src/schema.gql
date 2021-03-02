@@ -283,11 +283,13 @@ input UserInput {
 type Configuration {
   id: ID!
   sessions: [Session!]
+  enableInvoiceCounter: Boolean!
 }
 
 input ConfigurationInput {
   id: ID
   sessions: [SessionInput!]
+  enableInvoiceCounter: Boolean!
 }
 
 ########################### Search ##################################
@@ -337,6 +339,7 @@ type Appointment {
   notes: String
   prescription: String
   collections: [Collection!]
+  userId: String
 }
 
 type Collection {

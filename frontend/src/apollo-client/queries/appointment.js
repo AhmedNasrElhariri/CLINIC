@@ -71,6 +71,7 @@ export const GET_APPOINTMENT = gql`
           comment
         }
       }
+      userId
     }
   }
 `;

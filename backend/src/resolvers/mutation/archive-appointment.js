@@ -11,7 +11,7 @@ import {
 const archiveAppointment = async (
   _,
   { id, sessions = [], items = [], discount = 0 },
-  { userId ,organizationId}
+  { userId, organizationId }
 ) => {
   const persistedAppointment = await prisma.appointment.findOne({
     where: { id },
@@ -36,16 +36,22 @@ const archiveAppointment = async (
     userId,
     patientId: appointment.patientId,
   });
-  const existedOrganization =   await prisma.organization.findOne({
-    where: { id : organizationId },
+  const configuration = await prisma.configuration.findOne({
+    where: { userId: userId },
   });
-  const newInvoiceCounter = existedOrganization.invoiceCounter + 1; 
-  await prisma.organization.update({
-    where: { id : organizationId },
-    data: { 
-      invoiceCounter: newInvoiceCounter,
-     },
-  });
+  const enable = configuration.enableInvoiceCounter;
+  if (enable) {
+    const existedOrganization = await prisma.organization.findOne({
+      where: { id: organizationId },
+    });
+    const newInvoiceCounter = existedOrganization.invoiceCounter + 1;
+    await prisma.organization.update({
+      where: { id: organizationId },
+      data: {
+        invoiceCounter: newInvoiceCounter,
+      },
+    });
+  }
   return appointment;
 };
 

@@ -6,6 +6,8 @@ import { Alert, Loader, Icon } from 'rsuite';
 
 import Prescription from './prescription/index.js';
 import Labs from './labs/index';
+import NewAppointment from './new-appointment';
+
 
 import { Div, PatientSummary, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
@@ -40,6 +42,8 @@ function Appointment() {
 
   const { visible, open, close } = useModal();
   const { type, setType } = useFrom({});
+  
+  const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
 
   const [formValue, setFormValue] = useState({});
   const [apptFormValue, setApptFormValue] = useState({
@@ -60,7 +64,6 @@ function Appointment() {
       setDisabled(isArchived(appointment));
     },
   });
-
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -91,7 +94,6 @@ function Appointment() {
   const patient = useMemo(() => R.propOr({}, 'patient')(appointment), [
     appointment,
   ]);
-
   const {
     normalizedFields,
     appointmentHistory,
@@ -211,6 +213,9 @@ function Appointment() {
           <CRButton small primary onClick={onUpdate} disabled={disabled}>
             Save <Icon icon="save" />
           </CRButton>
+          <CRButton small primary open={visbleAppointment} onClick={toggleAppointment}>
+            Reverse Appoinment <Icon icon="save" />
+          </CRButton>
           {/* )} */}
           {/* {(isScheduled(appointment) || isDone(appointment)) && (
               <Can I="archive" an="Appointment">
@@ -252,6 +257,7 @@ function Appointment() {
                 labs={apptFormValue.labs}
                 onChange={handleLabsChange}
               /> :<></> }
+              <NewAppointment show={visbleAppointment} onHide={toggleAppointment} patientid={patient.id} userid={appointment.userId}/>
               {/* {appointment.type !== 'Surgery' && showComp('1') && (
                 <PatientSummary
                   summary={appointmentHistory}

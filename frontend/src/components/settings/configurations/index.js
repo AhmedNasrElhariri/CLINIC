@@ -3,18 +3,18 @@ import * as R from 'ramda';
 
 import { H3, Div, CRButton } from 'components';
 import SessionDefinitions from '../session-definations';
-
+import EnableInvoiceCounter from './enable-invoice-counter/index';
 import useConfigurations from 'hooks/configurations';
+import { boolean } from 'yup';
 
 const initialValues = {
   sessions: [],
+  enableInvoiceCounter: false,
 };
 
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
-
   const { configurations, update } = useConfigurations();
-
   useEffect(() => {
     const sessions = R.pipe(
       R.propOr([], 'sessions'),
@@ -24,7 +24,6 @@ const Configurations = () => {
       sessions,
     });
   }, [configurations]);
-
   const handleSave = useCallback(() => {
     update(formValue);
   }, [formValue, update]);
@@ -43,6 +42,16 @@ const Configurations = () => {
     [formValue, sessions]
   );
 
+  const updateEnable = useCallback(
+    enable => {
+      setFormValue({
+        ...formValue,
+        enableInvoiceCounter: enable,
+      });
+    },
+    [formValue]
+  );
+
   const handleDelete = useCallback(
     idx => {
       setFormValue({
@@ -52,7 +61,7 @@ const Configurations = () => {
     },
     [formValue, sessions]
   );
-
+  
   return (
     <>
       <Div display="flex" justifyContent="space-between">
@@ -68,6 +77,7 @@ const Configurations = () => {
         onChange={updateSession}
         onDelete={handleDelete}
       />
+      <EnableInvoiceCounter setEnable={updateEnable}/>
     </>
   );
 };
