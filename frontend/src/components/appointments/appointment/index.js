@@ -117,16 +117,18 @@ function Appointment() {
     });
   }, [update, normalizedFields, formValue, apptFormValue, appointmentId]);
   const [popup,setPopup] = useState(false);
-  const [popup2,setPopup2] = useState(false);
+  const [popupTwo,setPopupTwo] = useState(false);
   const handleClickCreate = useCallback(() => {
-    setType('create');
-    open();
+    setPopupTwo(false);
     setPopup(true);
-  }, [open, setType]);
-  const handleClickCreate2 = useCallback(() => {
     setType('create');
     open();
-    setPopup2(true);
+  }, [open, setType]);
+  const handleClickCreateTwo = useCallback(() => {
+    setPopup(false);
+    setPopupTwo(true);
+    setType('create');
+    open();
   }, [open, setType]);
 
   const onArchive = useCallback(() => {
@@ -201,7 +203,7 @@ function Appointment() {
           <CRButton
             small
             primary
-            onClick={handleClickCreate2}
+            onClick={handleClickCreateTwo}
             disabled={disabled}
           >
             PrintLabs <Icon icon="print" />
@@ -242,7 +244,7 @@ function Appointment() {
                 medicine={apptFormValue.medicine}
                 onChange={handleMedicineChange}
               /> : <></>}
-              {popup2 ?
+              {popupTwo ?
               <Labs
                 visible={visible}
                 onClose={close}
