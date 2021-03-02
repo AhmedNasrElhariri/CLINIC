@@ -8,7 +8,6 @@ import Prescription from './prescription/index.js';
 import Labs from './labs/index';
 import NewAppointment from './new-appointment';
 
-
 import { Div, PatientSummary, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
 import PatientLabs from './patient-labs';
@@ -23,6 +22,7 @@ import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
   ARCHIVE_APPOINTMENT,
+  LIST_PATIENT_APPOINTMENTS
 } from 'apollo-client/queries';
 
 import useAppointmentHistory from './fetch-appointment-history';
@@ -42,7 +42,7 @@ function Appointment() {
 
   const { visible, open, close } = useModal();
   const { type, setType } = useFrom({});
-  
+
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
 
   const [formValue, setFormValue] = useState({});
@@ -50,7 +50,7 @@ function Appointment() {
     notes: '',
     prescription: '',
     medicine: [],
-    labs:[],
+    labs: [],
     collections: [],
   });
   const [disabled, setDisabled] = useState(false);
@@ -64,6 +64,8 @@ function Appointment() {
       setDisabled(isArchived(appointment));
     },
   });
+
+  
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -118,8 +120,8 @@ function Appointment() {
       },
     });
   }, [update, normalizedFields, formValue, apptFormValue, appointmentId]);
-  const [popup,setPopup] = useState(false);
-  const [popupTwo,setPopupTwo] = useState(false);
+  const [popup, setPopup] = useState(false);
+  const [popupTwo, setPopupTwo] = useState(false);
   const handleClickCreate = useCallback(() => {
     setPopupTwo(false);
     setPopup(true);
@@ -213,7 +215,12 @@ function Appointment() {
           <CRButton small primary onClick={onUpdate} disabled={disabled}>
             Save <Icon icon="save" />
           </CRButton>
-          <CRButton small primary open={visbleAppointment} onClick={toggleAppointment}>
+          <CRButton
+            small
+            primary
+            open={visbleAppointment}
+            onClick={toggleAppointment}
+          >
             Reverse Appoinment <Icon icon="save" />
           </CRButton>
           {/* )} */}
@@ -241,23 +248,34 @@ function Appointment() {
                 groups={groups}
                 appointment={appointment}
               />
-              {popup ? 
-              <Prescription
-                visible={visible}
-                onClose={close}
-                type={type}
-                medicine={apptFormValue.medicine}
-                onChange={handleMedicineChange}
-              /> : <></>}
-              {popupTwo ?
-              <Labs
-                visible={visible}
-                onClose={close}
-                type={type}
-                labs={apptFormValue.labs}
-                onChange={handleLabsChange}
-              /> :<></> }
-              <NewAppointment show={visbleAppointment} onHide={toggleAppointment} patientid={patient.id} userid={appointment.userId}/>
+              {popup ? (
+                <Prescription
+                  visible={visible}
+                  onClose={close}
+                  type={type}
+                  medicine={apptFormValue.medicine}
+                  onChange={handleMedicineChange}
+                />
+              ) : (
+                <></>
+              )}
+              {popupTwo ? (
+                <Labs
+                  visible={visible}
+                  onClose={close}
+                  type={type}
+                  labs={apptFormValue.labs}
+                  onChange={handleLabsChange}
+                />
+              ) : (
+                <></>
+              )}
+              <NewAppointment
+                show={visbleAppointment}
+                onHide={toggleAppointment}
+                patientid={patient.id}
+                userid={appointment.userId}
+              />
               {/* {appointment.type !== 'Surgery' && showComp('1') && (
                 <PatientSummary
                   summary={appointmentHistory}

@@ -37,6 +37,25 @@ export const LIST_APPOINTMENTS = gql`
   }
 `;
 
+export const LIST_PATIENT_APPOINTMENTS = gql`
+   query($patientId: ID!) {
+    patientAppointments(patientId: $patientId) {
+      id
+      type
+      date
+      status
+      date
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
+    }
+  }
+`;
+
 export const GET_APPOINTMENT = gql`
   query($id: ID!) {
     appointment(id: $id) {
