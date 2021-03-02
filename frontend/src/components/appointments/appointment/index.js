@@ -10,7 +10,6 @@ import NewAppointment from './new-appointment';
 
 import { Div, PatientSummary, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
-import PatientLabs from './patient-labs';
 
 import {
   getFormInitValues,
@@ -182,6 +181,13 @@ function Appointment() {
     },
     [apptFormValue, setApptFormValue]
   );
+  const { data } = useQuery(LIST_PATIENT_APPOINTMENTS, {
+    variables: {
+      patientId:patient.id,
+    },
+  });
+  const patientAppointments = R.propOr([], 'patientAppointments')(data);
+  const nextAppointment = patientAppointments[1];
   if (loading) {
     return <Loader />;
   }
@@ -255,6 +261,7 @@ function Appointment() {
                   type={type}
                   medicine={apptFormValue.medicine}
                   onChange={handleMedicineChange}
+                  nextAppointment = {nextAppointment}
                 />
               ) : (
                 <></>

@@ -75,7 +75,7 @@ function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
         content={() => ref.current}
       />
 
-      <PrescriptionPrintout ref={ref}>
+      {/* <PrescriptionPrintout ref={ref}>
         {medicine.length == '0' ? (
           <Div>No Medicines</Div>
         ) : (
@@ -99,7 +99,7 @@ function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
             </Div>
           ))
         )}
-      </PrescriptionPrintout>
+      </PrescriptionPrintout> */}
     </CRModal>
   );
 }
