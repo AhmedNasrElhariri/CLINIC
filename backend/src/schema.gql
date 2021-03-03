@@ -68,7 +68,7 @@ type Query {
   patients: [Patient!]
   appointments(input: AppointmentQueryInput): [Appointment!]
   appointment(id: ID!): Appointment
-  patientAppointments(patientId: ID!):[Appointment!]
+  patientAppointments(patientId: ID!): [Appointment!]
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
@@ -377,6 +377,13 @@ input UpdateAppointmentInput {
   notes: String
   prescription: String
   collections: [CollectionInput!]
+}
+
+input PrescriptionInput {
+  medicineId: ID!
+  timingId: ID!
+  durationLength: Int
+  durationType: String
 }
 
 input AppointmentQueryInput {

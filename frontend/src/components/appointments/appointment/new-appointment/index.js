@@ -15,9 +15,7 @@ import { isBeforeToday } from 'utils/date';
 import { isValid } from 'services/form';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import { useQuery } from '@apollo/client';
-import {
-  LIST_PATIENT_APPOINTMENTS
-} from 'apollo-client/queries';
+import { LIST_PATIENT_APPOINTMENTS } from 'apollo-client/queries';
 
 import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
@@ -98,13 +96,12 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
       minute: timeDate.minutes(),
     });
     createAppointment({ patientId, type, date, userId });
-  }, [createAppointment, formValue]);
+  }, [createAppointment, formValue, patientid, userid]);
   const { data } = useQuery(LIST_PATIENT_APPOINTMENTS, {
     variables: {
-      patientId:patientid,
+      patientId: patientid,
     },
   });
-  console.log(data, 'appPa');
   return (
     <>
       <CRModal

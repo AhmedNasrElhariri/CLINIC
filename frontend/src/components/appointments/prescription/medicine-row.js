@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import {
   FlexboxGrid,
   Form,
-  FormGroup,
   FormControl,
   InputNumber,
   InputPicker,
@@ -11,7 +10,6 @@ import {
 import { MedicineContainerStyled, BoxStyled } from './style';
 import { CRButton, Div, H6, H7 } from 'components';
 
-// 'rgb(81 198 243)'
 const MedicineRow = ({
   medicineName,
   concentration,
@@ -33,8 +31,8 @@ const MedicineRow = ({
     const newMedicine = [...medicineValue, formValue];
     setFormValue2(newMedicine);
     setFormValue(initialValue);
-    setPrescribe('Prescribed')
-  }, [formValue, setFormValue2]);
+    // setPrescribe('Prescribed');
+  }, [formValue, initialValue, medicineValue, setFormValue2]);
   return (
     <MedicineContainerStyled>
       <Form fluid formValue={formValue} onChange={setFormValue}>
