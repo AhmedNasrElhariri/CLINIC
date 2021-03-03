@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { CRModal } from 'components';
 export const Title = styled.div`
   font-family: SegoeUI;
   font-size: 14px;
@@ -16,6 +17,17 @@ export const Title = styled.div`
     border-bottom: none;
   }
 `;
+
+export const NextAppointment = styled.div`
+  display: flex;
+  justifycontent: space-between;
+  background-color: #f4f4f6;
+  margin-left: 12px;
+  width: 435px;
+  height: 63px;
+  padding: 20px 8px;
+`;
+
 export const Container = styled.div`
   flex-direction: row;
   width: 435px;
@@ -81,22 +93,49 @@ export const FooterButton = styled.button`
 export const PrescriptionPrintout = styled.div`
   width: 420px;
   height: 595px;
-  padding: 30px 15px;
+  padding: 80px 20px;
+  position: relative;
+`;
+export const StyledFooterData = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
 `;
 export const MedicineName = styled.h4`
-  color:blue;
+  color: blue;
   font-weight: bold;
 `;
 export const Row = styled.div`
-  color:black;
+  color: black;
   display: flex;
-  margin-left:10px;
-`;
-export const SubTitle = styled.h6`
-  
+  margin-left: 10px;
 `;
 export const Content = styled.p`
-adding-top: 2px;
-margin-left: 5px;
+  padding-top: 2px;
+  margin-left: 5px;
+`;
+export const DoesContent = styled.p`
+  padding-top: 10px;
+`;
+export const ContainerStyled = styled(CRModal.CRContainer)`
+  width: 420px;
+  z-index: 2;
+
+  & .rs-modal-content {
+    box-shadow: -6px 6px 20px 0 rgba(0, 0, 0, 0.05);
+    border: solid 1px rgba(40, 49, 72, 0.1);
+    border-radius: 17px;
+    padding: 0;
+  }
+
+  & .rs-modal-body {
+    margin-right: 20px;
+    max-height: calc(100vh - 20rem) !important;
+  }
 `;
 
+export const ModalBodyStyled = styled(CRModal.CRBody)`
+  padding: 36px;
+  margin-top: 0px;
+`;

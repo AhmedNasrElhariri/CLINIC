@@ -37,6 +37,7 @@ function Appointment() {
       id: patientId,
     },
   });
+  console.log(data);
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);

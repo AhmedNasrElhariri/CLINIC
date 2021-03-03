@@ -119,7 +119,6 @@ const Button = styled.button.attrs(
   &:active,
   &:hover,
   &:visited {
-    background-color: ${props => props.theme.colors.primary};
     opacity: 1;
     outline: none;
   }
