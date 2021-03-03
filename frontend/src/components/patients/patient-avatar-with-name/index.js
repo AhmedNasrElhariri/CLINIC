@@ -11,7 +11,7 @@ import {
 
 const AvatarBox = ({ patient }) => (
   <PatientAvatarStyled>
-    <AvatarImg src="https://avatars2.githubusercontent.com/u/12592949?s=460&v=4"></AvatarImg>
+    <AvatarImg src="https://cdn.icon-icons.com/icons2/1674/PNG/512/person_110935.png"></AvatarImg>
   </PatientAvatarStyled>
 );
 

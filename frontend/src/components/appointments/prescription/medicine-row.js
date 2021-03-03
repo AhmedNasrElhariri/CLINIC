@@ -7,7 +7,7 @@ import {
   InputPicker,
 } from 'rsuite';
 
-import { MedicineContainerStyled, BoxStyled } from './style';
+import { MedicineContainerStyled, BoxStyled, NumberBox } from './style';
 import { CRButton, Div, H6, H7 } from 'components';
 
 const MedicineRow = ({
@@ -27,11 +27,14 @@ const MedicineRow = ({
   };
   const [formValue, setFormValue] = useState(initialValue);
   const [prescribe, setPrescribe] = useState('Prescribe');
+  const [color, setColor] = useState('primary');
   const handleClicked = useCallback(() => {
     const newMedicine = [...medicineValue, formValue];
     setFormValue2(newMedicine);
     setFormValue(initialValue);
     // setPrescribe('Prescribed');
+    setColor('success');
+    setPrescribe('Prescribed');
   }, [formValue, initialValue, medicineValue, setFormValue2]);
   return (
     <MedicineContainerStyled>
@@ -68,13 +71,15 @@ const MedicineRow = ({
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={5}>
             <BoxStyled>
-              <FormControl
-                placeholder="Number"
-                name="numDuration"
-                style={{ marginRight: '2px' }}
-                accepter={InputNumber}
-                block
-              />
+              <NumberBox>
+                <FormControl
+                  placeholder="Number"
+                  name="numDuration"
+                  style={{ marginRight: '2px' }}
+                  accepter={InputNumber}
+                  block
+                />
+              </NumberBox>
               <FormControl
                 placeholder="Duration"
                 name="periodDuration"
@@ -98,7 +103,7 @@ const MedicineRow = ({
               justifyContent="center"
             >
               <CRButton
-                primary
+                variant={color}
                 small
                 m="auto"
                 onClick={handleClicked}

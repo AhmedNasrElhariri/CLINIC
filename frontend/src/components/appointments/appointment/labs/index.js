@@ -11,6 +11,7 @@ import {
   Li,
   FooterButton,
   MedicineName,
+  ContainerStyled,
   PrescriptionPrintout,
 } from './style';
 const model = Schema.Model({});
@@ -28,8 +29,7 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
     <CRModal
       show={visible}
       header={header}
-      width={489}
-      height={404}
+      CRContainer={ContainerStyled}
       onHide={onClose}
       CancelFooter={true}
       bodyStyle={{ padding: '0px' }}
@@ -46,14 +46,14 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
           <Button onClick={() => removeItem(indx)}>Delete</Button>
         </Container>
       ))}
-      <FooterButton
+      {/* <FooterButton
         marginLeft="231px"
         bkColor="#40c173"
         color="#fbfbfb"
         width="136px"
       >
         Send on WhatsApp
-      </FooterButton>
+      </FooterButton> */}
       <ReactToPrint
         trigger={() => (
           <FooterButton
@@ -74,7 +74,7 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
           ) : (
             labs.map(lab => (
               <Div>
-                <MedicineName>Lab: {lab.testName}</MedicineName>
+                <MedicineName>{lab.testName}</MedicineName>
               </Div>
             ))
           )}

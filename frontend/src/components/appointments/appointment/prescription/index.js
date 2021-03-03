@@ -1,5 +1,5 @@
-import React, { useMemo, useRef } from 'react';
-import { Schema } from 'rsuite';
+import React, { useMemo, useRef, useState } from 'react';
+import { Schema, Divider, Toggle } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 import { formatDate } from 'utils/date';
 import { CRModal, Div, H4, H6 } from 'components';
@@ -13,10 +13,14 @@ import {
   FooterButton,
   MedicineName,
   PrescriptionPrintout,
-  SubTitle,
+  DoesContent,
   Row,
+  ContainerStyled,
   Content,
+  NextAppointment,
+  StyledFooterData,
 } from './style';
+import { height, marginLeft } from 'styled-system';
 const model = Schema.Model({});
 let newPrescription = [];
 function Prescription({
@@ -26,6 +30,7 @@ function Prescription({
   onChange: setFormValue2,
   nextAppointment,
 }) {
+  const [enable, setEnable] = useState(false);
   const header = useMemo(() => 'Prescription');
   const removeItem = indx => {
     newPrescription = medicine.filter((element, index) => {
@@ -42,6 +47,7 @@ function Prescription({
       height={404}
       onHide={onClose}
       CancelFooter={true}
+      CRContainer={ContainerStyled}
       bodyStyle={{ padding: '0px' }}
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
@@ -60,19 +66,22 @@ function Prescription({
           <Button onClick={() => removeItem(indx)}>Delete</Button>
         </Container>
       ))}
-      <Div display="flex" justifyContent="space-between" mb={3}>
-        <H6>Next Appointment </H6>
-        <H6>{nextAppointment.type}</H6>
-        <H6>{formatDate(nextAppointment.date)}</H6>
-      </Div>
-      <FooterButton
+      <Divider />
+      <NextAppointment>
+        <H6 style={{ marginRight: '29px' }}>Next Appointment </H6>
+        <H6 style={{ marginRight: '31px' }}>
+          {formatDate(nextAppointment.date)}
+        </H6>
+        <Toggle onChange={setEnable} />
+      </NextAppointment>
+      {/* <FooterButton
         marginLeft="231px"
         bkColor="#40c173"
         color="#fbfbfb"
         width="136px"
       >
         Send on WhatsApp
-      </FooterButton>
+      </FooterButton> */}
       <ReactToPrint
         trigger={() => (
           <FooterButton
@@ -86,33 +95,39 @@ function Prescription({
         )}
         content={() => ref.current}
       />
-      <Div style={{ height: '0px', overflow: 'hidden' }}>
-        <PrescriptionPrintout
-          ref={ref}
-          
-        >
+      <Div style={{ overflow: 'hidden', height: '0px' }}>
+        <PrescriptionPrintout ref={ref}>
           {medicine.length == '0' ? (
             <Div>No Medicines</Div>
           ) : (
             medicine.map(medicine => (
-              <Div>
-                <MedicineName>Medicine: {medicine.medicine}</MedicineName>
+              <Div style={{ marginBottom: '15px' }}>
+                <MedicineName>{medicine.medicine}</MedicineName>
                 <Row>
-                  <SubTitle>Dose: </SubTitle>
-                  <Content>{medicine.dose}</Content>
-                </Row>
-                <Row>
-                  <SubTitle>Timing: </SubTitle>
-                  <Content>{medicine.timing}</Content>
-                </Row>
-                <Row>
-                  <SubTitle>Duration: </SubTitle>
+                  <DoesContent>
+                    {medicine.dose}
+                    {'  '}
+                  </DoesContent>
+                  <Content>
+                    {medicine.timing}
+                    {'  '}
+                  </Content>
                   <Content>
                     {medicine.numDuration} {'  '} {medicine.periodDuration}
                   </Content>
                 </Row>
               </Div>
             ))
+          )}
+          {enable ? (
+            <StyledFooterData>
+              <H6 style={{ marginRight: '50px' }}>
+                {formatDate(nextAppointment.date)}
+              </H6>
+              <H6>{'المعاد القادم'}</H6>
+            </StyledFooterData>
+          ) : (
+            <></>
           )}
         </PrescriptionPrintout>
       </Div>

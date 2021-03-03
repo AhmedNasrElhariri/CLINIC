@@ -65,7 +65,9 @@ const SectionContainer = ({ title, children, name, ...props }) => {
     <Div as={Element} name={name} {...props}>
       <Div p={4} minHeight={400}>
         <H3 mb={43}>{title}</H3>
-        <Div mb={4}>{children}</Div>
+        <Div mb={4} style={{ overflow: 'scroll', height: '330px' }}>
+          {children}
+        </Div>
       </Div>
     </Div>
   );

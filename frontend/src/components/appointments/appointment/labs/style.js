@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { CRModal } from 'components';
 export const Title = styled.div`
   font-family: SegoeUI;
   font-size: 14px;
@@ -79,24 +80,37 @@ export const FooterButton = styled.button`
   margin-bottom: 35px;
 `;
 export const PrescriptionPrintout = styled.div`
-  width: 420px;
-  height: 595px;
-  padding: 30px 15px;
+width: 420px;
+height: 595px;
+padding: 80px 20px;
 `;
 export const MedicineName = styled.h4`
   color:blue;
   font-weight: bold;
+  margin-bottom:5px;
 `;
-export const Row = styled.div`
-  color:black;
-  display: flex;
-  margin-left:10px;
+
+export const ContainerStyled = styled(CRModal.CRContainer)`
+  width: 420px;
+  height: 595px;
+  z-index: 2;
+
+  & .rs-modal-content {
+    box-shadow: -6px 6px 20px 0 rgba(0, 0, 0, 0.05);
+    border: solid 1px rgba(40, 49, 72, 0.1);
+    border-radius: 17px;
+    padding: 0;
+  }
+
+  & .rs-modal-body {
+    margin-right: 20px;
+    max-height: calc(100vh - 20rem) !important;
+  }
 `;
-export const SubTitle = styled.h6`
-  
+
+export const ModalBodyStyled = styled(CRModal.CRBody)`
+  padding: 36px;
+  margin-top: 0px;
 `;
-export const Content = styled.p`
-adding-top: 2px;
-margin-left: 5px;
-`;
+
 
