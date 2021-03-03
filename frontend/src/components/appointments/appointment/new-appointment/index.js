@@ -1,28 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import * as moment from 'moment';
-import { Alert, Form, SelectPicker, DatePicker, Schema } from 'rsuite';
+import { Alert, Form, DatePicker, Schema } from 'rsuite';
 
 import {
   CRSelectInput,
   CRTimePicker,
   CRDatePicker,
-  H5,
   Div,
   CRModal,
-  NewPatient,
 } from 'components';
 import { isBeforeToday } from 'utils/date';
 import { isValid } from 'services/form';
 import { ModalBodyStyled, ContainerStyled } from './style';
-import { useQuery } from '@apollo/client';
-import { LIST_PATIENT_APPOINTMENTS } from 'apollo-client/queries';
-
-import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
 import useAppointmentForm from 'hooks/appointment-form';
-import { mapArrWithIdsToChoices } from 'utils/misc';
 import useNewAppointments from 'hooks/use-new-appointments';
-import useModal from 'hooks/use-model';
 
 const { StringType, DateType } = Schema.Types;
 
@@ -46,25 +38,13 @@ const initialValues = {
   date: new Date(),
   time: null,
 };
-const canAddPatient = formValue =>
-  formValue.type === 'Examination' ? true : false;
-
-const searchBy = (text, _, patient) => {
-  return filterPatientBy(text, patient);
-};
 
 export default function NewAppointment({ show, onHide, patientid, userid }) {
-  const { visible, open, close } = useModal();
-
   const {
-    branches,
-    specialties,
-    doctors,
     formValue,
     setFormValue,
     createAppointment,
     appointments,
-    patients,
   } = useNewAppointments({ onCreate: onHide });
 
   const [selectedHour, setSelectedHour] = useState(null);
@@ -97,11 +77,7 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
     });
     createAppointment({ patientId, type, date, userId });
   }, [createAppointment, formValue, patientid, userid]);
-  const { data } = useQuery(LIST_PATIENT_APPOINTMENTS, {
-    variables: {
-      patientId: patientid,
-    },
-  });
+
   return (
     <>
       <CRModal

@@ -12,9 +12,6 @@ import {
   FooterButton,
   MedicineName,
   PrescriptionPrintout,
-  SubTitle,
-  Row,
-  Content,
 } from './style';
 const model = Schema.Model({});
 let newLabs = [];
@@ -70,18 +67,19 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
         )}
         content={() => ref.current}
       />
-
-      <PrescriptionPrintout ref={ref}>
-        {labs.length == '0' ? (
-          <Div>No Labs</Div>
-        ) : (
-          labs.map(lab => (
-            <Div>
-              <MedicineName>Lab: {lab.testName}</MedicineName>
-            </Div>
-          ))
-        )}
-      </PrescriptionPrintout>
+      <Div style={{ height: '0px', overflow: 'hidden' }}>
+        <PrescriptionPrintout ref={ref}>
+          {labs.length == '0' ? (
+            <Div>No Labs</Div>
+          ) : (
+            labs.map(lab => (
+              <Div>
+                <MedicineName>Lab: {lab.testName}</MedicineName>
+              </Div>
+            ))
+          )}
+        </PrescriptionPrintout>
+      </Div>
     </CRModal>
   );
 }

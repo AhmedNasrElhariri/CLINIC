@@ -1,7 +1,8 @@
 import React, { useMemo, useRef } from 'react';
 import { Schema } from 'rsuite';
 import ReactToPrint from 'react-to-print';
-import { CRModal, Div } from 'components';
+import { formatDate } from 'utils/date';
+import { CRModal, Div, H4, H6 } from 'components';
 import {
   Title,
   Container,
@@ -18,7 +19,13 @@ import {
 } from './style';
 const model = Schema.Model({});
 let newPrescription = [];
-function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
+function Prescription({
+  visible,
+  onClose,
+  medicine,
+  onChange: setFormValue2,
+  nextAppointment,
+}) {
   const header = useMemo(() => 'Prescription');
   const removeItem = indx => {
     newPrescription = medicine.filter((element, index) => {
@@ -53,6 +60,11 @@ function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
           <Button onClick={() => removeItem(indx)}>Delete</Button>
         </Container>
       ))}
+      <Div display="flex" justifyContent="space-between" mb={3}>
+        <H6>Next Appointment </H6>
+        <H6>{nextAppointment.type}</H6>
+        <H6>{formatDate(nextAppointment.date)}</H6>
+      </Div>
       <FooterButton
         marginLeft="231px"
         bkColor="#40c173"
@@ -74,32 +86,36 @@ function Prescription({ visible, onClose, medicine, onChange: setFormValue2 }) {
         )}
         content={() => ref.current}
       />
-
-      <PrescriptionPrintout ref={ref}>
-        {medicine.length == '0' ? (
-          <Div>No Medicines</Div>
-        ) : (
-          medicine.map(medicine => (
-            <Div>
-              <MedicineName>Medicine: {medicine.medicine}</MedicineName>
-              <Row>
-                <SubTitle>Dose: </SubTitle>
-                <Content>{medicine.dose}</Content>
-              </Row>
-              <Row>
-                <SubTitle>Timing: </SubTitle>
-                <Content>{medicine.timing}</Content>
-              </Row>
-              <Row>
-                <SubTitle>Duration: </SubTitle>
-                <Content>
-                  {medicine.numDuration} {'  '} {medicine.periodDuration}
-                </Content>
-              </Row>
-            </Div>
-          ))
-        )}
-      </PrescriptionPrintout>
+      <Div style={{ height: '0px', overflow: 'hidden' }}>
+        <PrescriptionPrintout
+          ref={ref}
+          
+        >
+          {medicine.length == '0' ? (
+            <Div>No Medicines</Div>
+          ) : (
+            medicine.map(medicine => (
+              <Div>
+                <MedicineName>Medicine: {medicine.medicine}</MedicineName>
+                <Row>
+                  <SubTitle>Dose: </SubTitle>
+                  <Content>{medicine.dose}</Content>
+                </Row>
+                <Row>
+                  <SubTitle>Timing: </SubTitle>
+                  <Content>{medicine.timing}</Content>
+                </Row>
+                <Row>
+                  <SubTitle>Duration: </SubTitle>
+                  <Content>
+                    {medicine.numDuration} {'  '} {medicine.periodDuration}
+                  </Content>
+                </Row>
+              </Div>
+            ))
+          )}
+        </PrescriptionPrintout>
+      </Div>
     </CRModal>
   );
 }

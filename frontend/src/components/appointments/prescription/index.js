@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Div } from 'components';
 import useMedicinesDefinition from 'hooks/fetch-medicines-definition';
 import MedicineRow from './medicine-row';
 import useTimings from 'hooks/fetch-timing';
+
 const Prescription = ({ formValue, onChange }) => {
   const { medicines } = useMedicinesDefinition();
   const { timings } = useTimings();
-  let timingValues = [];
-  timings.forEach(element => {
-    let timingRow = {
-      label: element.name,
-      value: element.printValue,
-    };
-    timingValues.push(timingRow);
-  });
+  const timingValues = useMemo(
+    () =>
+      timings.map(element => {
+        return {
+          label: element.name,
+          value: element.printValue,
+        };
+      }),
+    [timings]
+  );
   return (
     <Div>
       {medicines.map((m, idx) => (

@@ -4,7 +4,6 @@ const updateAppointment = (_, { appointment }) => {
   return prisma.appointment.update({
     data: {
       notes: appointment.notes || '',
-      // prescription: appointment.prescription || '',
       data: {
         upsert: appointment.data.map(({ id, value, fieldId }) => ({
           create: {

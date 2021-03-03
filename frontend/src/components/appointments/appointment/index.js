@@ -10,7 +10,6 @@ import NewAppointment from './new-appointment';
 
 import { Div, PatientSummary, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
-import PatientLabs from './patient-labs';
 
 import {
   getFormInitValues,
@@ -22,7 +21,7 @@ import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
   ARCHIVE_APPOINTMENT,
-  LIST_PATIENT_APPOINTMENTS
+  LIST_PATIENT_APPOINTMENTS,
 } from 'apollo-client/queries';
 
 import useAppointmentHistory from './fetch-appointment-history';
@@ -65,7 +64,6 @@ function Appointment() {
     },
   });
 
-  
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -182,6 +180,13 @@ function Appointment() {
     },
     [apptFormValue, setApptFormValue]
   );
+  const { data } = useQuery(LIST_PATIENT_APPOINTMENTS, {
+    variables: {
+      patientId: patient.id,
+    },
+  });
+  const patientAppointments = R.propOr([], 'patientAppointments')(data);
+  const nextAppointment = patientAppointments[1];
   if (loading) {
     return <Loader />;
   }
@@ -190,48 +195,35 @@ function Appointment() {
       <Div flexGrow={1}>
         <HeaderStyled>
           <H3 mb={64}>Appointment</H3>
-          {/* <ButtonToolbar> */}
-          {/* <CRButton small primary onClick={open}>
-              Prescription
-              <Icon icon="add" />
-            </CRButton> */}
-          {/* {isScheduled(appointment) && ( */}
-          <CRButton
-            small
-            primary
-            onClick={handleClickCreate}
-            disabled={disabled}
-          >
-            PrintMedicines <Icon icon="print" />
-          </CRButton>
-          <CRButton
-            small
-            primary
-            onClick={handleClickCreateTwo}
-            disabled={disabled}
-          >
-            PrintLabs <Icon icon="print" />
-          </CRButton>
-          <CRButton small primary onClick={onUpdate} disabled={disabled}>
-            Save <Icon icon="save" />
-          </CRButton>
-          <CRButton
-            small
-            primary
-            open={visbleAppointment}
-            onClick={toggleAppointment}
-          >
-            Reverse Appoinment <Icon icon="save" />
-          </CRButton>
-          {/* )} */}
-          {/* {(isScheduled(appointment) || isDone(appointment)) && (
-              <Can I="archive" an="Appointment">
-                <CRButton small primary onClick={onArchive} disabled={disabled}>
-                  Archive <Icon icon="archive" />
-                </CRButton>
-              </Can>
-            )} */}
-          {/* </ButtonToolbar> */}
+          <Div>
+            <CRButton
+              small
+              primary
+              onClick={handleClickCreate}
+              disabled={disabled}
+            >
+              PrintMedicines <Icon icon="print" />
+            </CRButton>
+            <CRButton
+              small
+              primary
+              onClick={handleClickCreateTwo}
+              disabled={disabled}
+            >
+              PrintLabs <Icon icon="print" />
+            </CRButton>
+            <CRButton small primary onClick={onUpdate} disabled={disabled}>
+              Save <Icon icon="save" />
+            </CRButton>
+            <CRButton
+              small
+              primary
+              open={visbleAppointment}
+              onClick={toggleAppointment}
+            >
+              Reverse Appoinment <Icon icon="save" />
+            </CRButton>
+          </Div>
         </HeaderStyled>
         <Div display="flex">
           <Div flexGrow={1}>
@@ -242,7 +234,6 @@ function Appointment() {
                 appointmentFormValue={apptFormValue}
                 onChangeAppointment={setApptFormValue}
                 onChange={ch => {
-                  console.log(ch);
                   setFormValue(ch);
                 }}
                 groups={groups}
@@ -255,6 +246,7 @@ function Appointment() {
                   type={type}
                   medicine={apptFormValue.medicine}
                   onChange={handleMedicineChange}
+                  nextAppointment={nextAppointment}
                 />
               ) : (
                 <></>
@@ -276,36 +268,10 @@ function Appointment() {
                 patientid={patient.id}
                 userid={appointment.userId}
               />
-              {/* {appointment.type !== 'Surgery' && showComp('1') && (
-                <PatientSummary
-                  summary={appointmentHistory}
-                  fields={viewFields}
-                />
-              )}
-              {appointment.type !== 'Surgery' && showComp('2') && (
-                <PatientSurgries
-                  history={appointmentHistory}
-                  viewFields={viewFields}
-                  patientId={appointment?.patient?.id}
-                />
-              )} */}
-              {/* {appointment.type !== 'Surgery' && showComp('3') && (
-                <PatientLabs patient={patient} />
-              )}
-              {appointment.type !== 'Surgery' && showComp('4') && (
-                <History patient={patient} />
-              )} */}
             </Div>
           </Div>
         </Div>
       </Div>
-      {/*   <Prescription
-        visible={visible}
-        patient={patient}
-        onClose={close}
-        content={prescriptionBody}
-        onChange={handlePrescriptionChange}
-      /> */}
     </Div>
   );
 }
