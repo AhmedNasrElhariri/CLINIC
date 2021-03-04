@@ -23,7 +23,6 @@ import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import History from 'components/appointments/appointment/patient-history';
 import PatientSurgries from 'components/appointments/appointment/surgries';
-import { appointmentHistory } from '../../../utils/constants';
 import useQueryParams from 'hooks/useQueryParams';
 
 const tabs = ['Patient Info', 'Sessions', 'Surgries', 'Labs', 'History'];
@@ -37,12 +36,11 @@ function Appointment() {
       id: patientId,
     },
   });
-  console.log(data);
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);
 
-  const { viewFields } = usePatientHistory({ patientId });
+  const { viewFields, appointmentHistory } = usePatientHistory({ patientId });
 
   return (
     <>

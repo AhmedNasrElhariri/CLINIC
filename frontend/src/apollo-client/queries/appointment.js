@@ -193,6 +193,8 @@ export const GET_APPOINTMENT_HISTORY = gql`
         field {
           id
           name
+          type
+          choices
         }
       }
       patient {
