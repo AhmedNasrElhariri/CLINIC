@@ -7,47 +7,79 @@ import { byTheme } from 'services/theme';
 
 import Label from '../label';
 
-const theme = {
-  fontSize: {
-    normal: 18,
-    large: 22,
-  },
-
+const heightTheme = {
   height: {
-    normal: 48,
+    normal: 35,
     large: 59,
   },
-
-  borderRadius: {
-    normal: 10,
-    large: 17,
+};
+const fontTheme100 = {
+  fontSize: {
+    normal: 14,
+    large: 22,
+  },
+  lineHeight: {
+    normal: 1.36,
+    large: 1.44,
+  },
+  color: {
+    normal: '#283148',
+    large: '#283148',
+  },
+};
+const fontTheme200 = {
+  fontSize: {
+    normal: 12,
+    large: 22,
+  },
+  lineHeight: {
+    normal: 1.33,
+    large: 1.44,
+  },
+  color: {
+    normal: '#a6abab',
+    large: '#a6abab',
+  },
+};
+const theme2 = {
+  height: {
+    normal: 55,
+    large: 59,
   },
 };
 
 const paddingLeft = css`
   padding-left: 22px;
 `;
+const StyledLabel = styled.p`
+  ${byTheme(fontTheme100)},
+  width: 42px;
+  height: 19px;
+  margin-top: 15px;
+  font-family: SegoeUI;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-left: 10px;
+`;
 
 const borderCss = css`
   border: solid 1px ${props => props.theme.colors.primary} !important;
 `;
 
-const ValueStyled = styled.div`
-  background-color: #ffffff;
-
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.35;
-  letter-spacing: normal;
-  text-align: left;
-  display: flex;
-  align-items: center;
-
-  color: ${props => props.theme.colors.primary};
-
-  ${byTheme(theme)}
-`;
+// const ValueStyled = styled.div`
+//   background-color: #ffffff;
+//   font-weight: normal;
+//   font-stretch: normal;
+//   font-style: normal;
+//   line-height: 1.35;
+//   letter-spacing: normal;
+//   text-align: left;
+//   display: flex;
+//   align-items: center;
+//   color: ${props => props.theme.colors.primary};
+//   ${byTheme(theme)}
+// `;
 
 const ItemStyled = styled.div`
   height: 70px;
@@ -55,15 +87,13 @@ const ItemStyled = styled.div`
   align-items: center;
   font-size: 18px;
   ${paddingLeft}
-
+  ${byTheme(fontTheme200)}
   & .rs-picker-select-menu-item {
     padding: 0;
   }
-
+  ${byTheme(fontTheme200)}
   color: ${props =>
     props.active ? props.theme.colors.primary : props.theme.colors.texts[1]};
-
-  font-weight: ${props => (props.active ? 600 : 400)};
 
   & input.rs-picker-search-bar-input {
     ${borderCss}
@@ -81,8 +111,9 @@ const SelectPickerStyled = styled(SelectPicker)`
     ${paddingLeft}
     display: flex;
     align-items: center;
-    width:100%
-    ${byTheme(theme)}
+    border-radius: 0px;
+    float: right;
+    ${byTheme(heightTheme)}
     &:focus,
     &:active,
     &:hover,
@@ -94,7 +125,6 @@ const SelectPickerStyled = styled(SelectPicker)`
   & a.rs-picker-toggle.active {
     ${borderCss}
   }
-
   ${createGlobalStyle`
     .cr-picker{
       & .rs-picker-search-bar-input{
@@ -115,8 +145,13 @@ const SelectPickerStyled = styled(SelectPicker)`
       & .rs-picker-search-bar::after{
         top: 20px !important;
       }
+      
     }
   `}
+`;
+const SelectorContainer = styled.div`
+  ${byTheme(theme2)};
+  border: 1px solid #eef1f1;
 `;
 
 const CustomSelect = ({ value, label, onChange, ...props }) => {
@@ -127,16 +162,13 @@ const CustomSelect = ({ value, label, onChange, ...props }) => {
       onChange={onChange}
       menuClassName="cr-picker"
       virtualized={false}
-      renderValue={(_, __, label) => <ValueStyled>{label}</ValueStyled>}
       renderMenuItem={(label, { value: val }) => (
         <ItemStyled active={value === val}>{label}</ItemStyled>
       )}
       menuStyle={{
-        padding: 0,
-        margin: 0,
         borderRadius: 10,
       }}
-    ></SelectPickerStyled>
+    />
   );
 };
 

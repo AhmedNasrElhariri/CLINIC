@@ -9,9 +9,7 @@ export const NavStyled = styled.nav`
   height: ${props => props.theme.navbar.height};
   min-height: ${props => props.theme.navbar.height};
   padding: 0px 64px;
-  ${css({
-    paddingLeft: [10, 10, 10, 10, 32],
-  })}
+  border-left: solid 1px rgb(112, 112, 112, 0.1);
 `;
 
 export const ItemStyled = styled(Div)`

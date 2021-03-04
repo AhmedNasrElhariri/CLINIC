@@ -7,16 +7,26 @@ export const ContainerStyled = styled.div`
   background-color: #ffffff;
 
   ${css({
-    width: [100, 200, 200, 240, 400],
-    minWidth: [100, 200, 200, 240, 400],
-    maxWidth: [100, 200, 200, 240, 400],
+    width: [100, 200, 200, 240, 300],
+    minWidth: [100, 200, 200, 240, 175],
+    maxWidth: [100, 200, 200, 240, 175],
   })}
 `;
-
+export const IconDiv = styled.div`
+  display: inline;
+  margin-left: 11px;
+  margin-right: 17px;
+`;
+export const LinkName = styled.div`
+  display: inline;
+`;
+export const Fab = styled.div`
+  display: inline;
+  position: absolute;
+  right: 13px;
+  bottom: 8px;
+`;
 export const BodyStyled = styled.div`
-  ${css({
-    paddingLeft: [20, 20, 20, 30, 50],
-  })}
   padding-top: ${props => props.theme.navbar.height};
 `;
 

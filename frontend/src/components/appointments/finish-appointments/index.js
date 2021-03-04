@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { Steps } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
+import styled from 'styled-components';
 import { CRModal, Div, CRCard } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
@@ -13,17 +14,22 @@ const initValue = {
   items: [],
 };
 
-function FinishAppointment({ appointment, show, onCancel, onOk}) {
+const StepsDev = styled.div`
+  margin-left: 200px;
+  margin-right: 200px;
+`;
+const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const value = useRef(initValue);
 
   const { sessions } = useConfigurations();
-  const { data } = useQuery(GET_INVOICE_COUNTER,{ fetchPolicy: "network-only" });
-  const organization = useMemo(
-    () => R.propOr([], 'myInvoiceCounter')(data),
-    [data],
-  );
+  const { data } = useQuery(GET_INVOICE_COUNTER, {
+    fetchPolicy: 'network-only',
+  });
+  const organization = useMemo(() => R.propOr([], 'myInvoiceCounter')(data), [
+    data,
+  ]);
   const handleInvoiceChange = useCallback(sessions => {
     value.current = { ...value.current, sessions };
   }, []);
@@ -41,10 +47,11 @@ function FinishAppointment({ appointment, show, onCancel, onOk}) {
   }, [activeStep, onOk, discount]);
 
   const handleCancel = useCallback(() => {
-    value.current = initValue;
-    onCancel();
-    setActiveStep(0);
-  }, [onCancel]);
+    if (activeStep === 1) {
+      value.current = { ...value.current, discount };
+      setActiveStep(0);
+    }
+  }, [activeStep, discount]);
 
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
     activeStep,
@@ -58,7 +65,10 @@ function FinishAppointment({ appointment, show, onCancel, onOk}) {
       onOk={handleOk}
       onHide={handleCancel}
       onCancel={handleCancel}
-      width={1000}
+      width={850}
+      height={480}
+      bodyStyle={{ padding: '0px' }}
+      CancelFooter={true}
     >
       <Steps current={activeStep}>
         <Steps.Item title="Invoice" />
@@ -81,9 +91,31 @@ function FinishAppointment({ appointment, show, onCancel, onOk}) {
           )}
         </CRCard>
       </Div>
+      <StepsDev>
+        <Steps current={activeStep}>
+          <Steps.Item title="Invoice" />
+          <Steps.Item title="Inventory" />
+        </Steps>
+      </StepsDev>
+      {activeStep === 0 && (
+        <AppointmentInvoice
+          clinic={clinic}
+          onChange={handleInvoiceChange}
+          discount={discount}
+          onDiscountChange={setDiscount}
+          appointment={appointment}
+          handleOk={handleOk}
+        />
+      )}
+      {activeStep === 1 && (
+        <InventoryUsage
+          onChange={handleInventoryChange}
+          handleCancel={handleCancel}
+        />
+      )}
     </CRModal>
   );
-}
+};
 
 FinishAppointment.defaultProps = {
   sessions: [],

@@ -9,14 +9,14 @@ import stCss from '@styled-system/css';
 
 const fontTheme = {
   fontSize: {
-    normal: 18,
+    normal: 14,
     large: 22,
   },
 };
 
 const heightTheme = {
   height: {
-    normal: 48,
+    normal: 35,
     large: 59,
   },
 };
@@ -45,12 +45,12 @@ const getBorder = ({ borderless, theme }) => {
   };
 };
 
-const getBorderRadius = ({ noRadius, round }) =>
-  noRadius
-    ? noBorderRadius
-    : round
-    ? byTheme(roundBorderRadius)
-    : byTheme(normalBorderRadius);
+// const getBorderRadius = ({ noRadius, round }) =>
+//   noRadius
+//     ? noBorderRadius
+//     : round
+//     ? byTheme(roundBorderRadius)
+//     : byTheme(normalBorderRadius);
 
 const inputCss = css`
   background-color: #ffffff;
@@ -106,12 +106,12 @@ Input.defaultProps = {
 
 export const InputGroupStyled = styled(InputGroup)`
   &.rs-input-group {
-    ${getBorderRadius}
     ${getBorder}
     width:100% !important;
   }
-
+  
   &.rs-input-group {
+    border-radius: 0px;
     &:focus,
     &:active,
     &:hover,
@@ -124,27 +124,49 @@ export const InputGroupStyled = styled(InputGroup)`
 
 export const NumberContainerStyled = styled.div`
   display: flex;
-  border-radius: 17px;
-  border: 1px solid ${props => props.theme.colors.borders[0]};
   ${byTheme(heightTheme)}
   box-sizing: content-box;
 `;
 
 export const NumberInputStyled = styled.input`
-  ${inputCss}
+  ${inputCss};
+  width: 35px;
+  height: 35px;
+  padding: 7px 13px 7px 14px;
+  object-fit: contain;
+  border: solid 1px #eef1f1;
+  background-color: #ffffff;
+  border-radius: 0px;
 `;
 
 export const TextAreaStyled = styled.textarea`
   ${inputCss}
   resize: none;
 `;
+export const StyledLabel = styled.p`
+  width: 31px;
+  height: 19px;
+  margin: auto 10px;
+  font-family: SegoeUI;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.36;
+  letter-spacing: normal;
+  text-align: left;
+  color: #283148;
+`;
 
 export const NumberButton = styled(CRButton)`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: auto;
+  padding: 7px 6.4px 6.4px 6.9px;
   ${stCss({
-    minWidth: [20, 35, 50, 60, 98],
+    width: 27,
+    height: 27,
   })}
 `;
 

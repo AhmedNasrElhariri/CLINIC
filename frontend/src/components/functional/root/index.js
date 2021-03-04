@@ -3,6 +3,7 @@ import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 import Fab from 'components/appointments/new-appointment/fab';
 import { AppRouter, Login, NewPatient } from 'components';
+import { UserIcon, CalendarIcon} from 'components/icons/index';
 import {
   ContainerStyled,
   MainStyled,
@@ -67,22 +68,68 @@ function Root() {
     return <div>Loading ...</div>;
   }
   const items = [
-    { to: '/appointments/today', name: `Today's Appointments` },
-    { to: '/calendar', name: 'Calendar' },
+    {
+      to: '/appointments/today',
+      name: `Today's Appointments`,
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/calendar',
+      name: 'Calendar',
+      icon: <CalendarIcon width={11.8} height={14.1} />,
+    },
     {
       to: '/appointments',
       name: 'Appointments',
       extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/patients',
       name: 'Patients',
       extra: <Fab open={visblePatient} onClick={togglePatient} />,
+      icon: <UserIcon width={11.8} height={14.1} />,
     },
-    { to: '/reports', name: 'Reports' },
-    { to: '/surgeries', name: 'Surgeries' },
-    { to: '/report-printouts', name: 'Report Printouts' },
-    { to: '/permissions', name: 'Permissions' },
+    {
+      to: '/reports',
+      name: 'Reports',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/surgeries',
+      name: 'Surgeries',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/report-printouts',
+      name: 'Report Printouts',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/permissions',
+      name: 'Permissions',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/example',
+      name: 'Example',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/labs',
+      name: 'Labs',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/test',
+      name: 'Test',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/uploadimage',
+      name: 'Uploadimage',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
   ];
 
   return (

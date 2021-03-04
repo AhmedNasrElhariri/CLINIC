@@ -1,12 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import * as R from 'ramda';
-import {
-  useParams,
-  useHistory,
-  useLocation,
-  Switch,
-  Route,
-} from 'react-router-dom';
+import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import { GET_PATIENT } from 'apollo-client/queries';

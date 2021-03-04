@@ -10,11 +10,14 @@ const CRNav = styled(Nav)`
   & .rs-nav-waterline {
     border: none !important;
   }
-
   & .rs-nav-subtle.rs-nav-vertical .rs-nav-waterline {
     border: none;
     background: none;
     width: 0px !important;
+  }
+  &.rs-nav-horizontal {
+    white-space: nowrap;
+    width: 1139px;
   }
   ${layout}
 `;

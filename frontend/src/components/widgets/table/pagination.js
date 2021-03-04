@@ -89,7 +89,6 @@ const CRPagination = styled(Table.Pagination)`
   color: #ffffff;
   font-weight: 600;
   cursor: pointer;
-  padding: 0px 26px;
 
   ${getBorderRadius}
   ${getHeight}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { CRCard, H3 } from 'components';
 import {
@@ -7,58 +7,39 @@ import {
   CellTitle,
   AddressStyled,
   StrongStyled,
+  EditButton,
 } from './style';
 
-import { Button } from 'rsuite';
-
-export default function PatientInfo({ patient }) {
+const PatientInfo = ({ patient }) => {
   return (
     <PatientInfoStyled>
       <CRCard borderless>
-        <Cell
-          ml={3}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Cell ml={3} display="flex" alignItems="center" height={64}>
           <H3 mb={4}>Information</H3>
-          <Button color="cyan">Edit</Button>
+          <EditButton margin="15px">Edit</EditButton>
+          <EditButton margin="925px">Expand</EditButton>
         </Cell>
-        <Cell
-          ml={3}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <CellTitle mb={4}>Date Of Birth</CellTitle>
+        <Cell ml={3} display="flex" alignItems="center">
+          <CellTitle mb={4}>Date of Birth</CellTitle>
           <StrongStyled>
-            {' '}
             {patient.sex} . {patient.age} yrs
           </StrongStyled>
         </Cell>
-        <Cell
-          ml={3}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Cell ml={3} display="flex" alignItems="center">
           <CellTitle mb={4}>Email</CellTitle>
           <AddressStyled>{' johun@gmail.com '}</AddressStyled>
         </Cell>
-        <Cell
-          ml={3}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Cell ml={3} display="flex" alignItems="center">
           <CellTitle mb={4}>Phone Number</CellTitle>
-          <AddressStyled>{patient.phoneNo}</AddressStyled>
+          <AddressStyled>{'01028130554'}</AddressStyled>
         </Cell>
       </CRCard>
     </PatientInfoStyled>
   );
-}
+};
 
 PatientInfo.propTypes = {
   patient: PropTypes.object.isRequired,
 };
+
+export default PatientInfo;

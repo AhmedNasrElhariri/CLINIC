@@ -7,7 +7,13 @@ function ListImagesDefinition({ images, onEdit }) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={images}>
+        <CRTable
+          autoHeight
+          data={images}
+          rowHeight={35}
+          minHeight={35}
+          height="35px"
+        >
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Image Name</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="imageName" semiBold />

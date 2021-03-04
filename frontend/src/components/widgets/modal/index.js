@@ -20,20 +20,30 @@ const Modal = ({
   cancelTitle,
   onOk,
   onCancel,
+  CancelFooter,
+  CancelHeader,
   ...props
 }) => {
   return (
     <CRContainer show={show} width={width} {...props}>
-      <CRHeader {...headerStyle} title={header}></CRHeader>
+      {CancelHeader ? (
+        ''
+      ) : (
+        <CRHeader {...headerStyle} title={header}></CRHeader>
+      )}
       <CRBody style={bodyStyle}>
         {children}
-        <CRFooter
-          okTitle={okTitle}
-          cancelTitle={cancelTitle}
-          onOk={onOk}
-          onCancel={onCancel}
-          {...footerStyle}
-        />
+        {CancelFooter ? (
+          ''
+        ) : (
+          <CRFooter
+            okTitle={okTitle}
+            cancelTitle={cancelTitle}
+            onOk={onOk}
+            onCancel={onCancel}
+            {...footerStyle}
+          />
+        )}
       </CRBody>
     </CRContainer>
   );

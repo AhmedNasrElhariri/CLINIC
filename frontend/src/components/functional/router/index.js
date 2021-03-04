@@ -20,6 +20,9 @@ import {
   InventoryPage,
   PatientSurgeriesContainer,
   ReportPrintout,
+  Example,
+  Labs,
+  UploadImage,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 
@@ -94,7 +97,18 @@ function AppRouter() {
       <Route path="/me">
         <Profile />
       </Route>
-
+      <Route path="/example">
+        <Example />
+      </Route>
+      <Route path="/labs">
+        <Labs />
+      </Route>
+      <Route path="/test">
+        <Patient />
+      </Route>
+      <Route path="/uploadimage">
+        <UploadImage />
+      </Route>
       <Route path="" exact>
         <Redirect to="/appointments/today" />
         {/* <Redirect to="/admin" /> */}

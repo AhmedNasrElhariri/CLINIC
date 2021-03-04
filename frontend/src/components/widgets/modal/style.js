@@ -12,8 +12,6 @@ export const ModalStyled = styled(Modal)`
 
   & .rs-modal-content {
     box-shadow: -6px 6px 20px 0 rgba(0, 0, 0, 0.05);
-    border: solid 1px rgba(40, 49, 72, 0.1);
-    border-radius: 17px;
     padding: 0;
   }
 
@@ -22,11 +20,25 @@ export const ModalStyled = styled(Modal)`
     margin-right: 20px;
     max-height: calc(100vh - 10rem) !important;
   }
+  & .rs-modal-header .rs-modal-header-close {
+    outline: 0;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 12px;
+    line-height: 1.66666667;
+    color: #575757;
+    width: 27px;
+    height: 27px;
+    padding: auto;
+    background: #eef1f1;
+    border-style: none;
+    border-radius: 50%;
+  }
 `;
 
 export const ModalHeaderStyled = styled(Modal.Header)`
-  padding: 35px;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  padding: 27px;
 `;
 
 export const ModalBodyStyled = styled(Modal.Body)`

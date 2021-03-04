@@ -18,9 +18,17 @@ export const IconStyled = styled.img.attrs(({ src }) => ({
 export const PrintOLIcon = props => (
   <IconStyled src="/icons/print-outline.png" {...props} />
 );
-
+export const CalenderIcon = props => (
+  <IconStyled src="/icons/calendarIcon.png" {...props} />
+);
+export const UserIcon = props => (
+  <IconStyled src="/icons/userIcon.png" {...props} />
+);
 export const EditOLIcon = props => (
   <IconStyled src="/icons/edit-outline.png" {...props} />
+);
+export const PlusIcon = props => (
+  <IconStyled src="/icons/plusIcon.png" {...props} />
 );
 
 export const DeleteOLIcon = props => (
