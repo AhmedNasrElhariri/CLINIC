@@ -22,7 +22,7 @@ export const NextAppointment = styled.div`
   display: flex;
   justifycontent: space-between;
   background-color: #f4f4f6;
-  margin-left: 12px;
+  margin-left: 26px;
   width: 435px;
   height: 63px;
   padding: 20px 8px;
@@ -119,7 +119,7 @@ export const DoesContent = styled.p`
   padding-top: 10px;
 `;
 export const ContainerStyled = styled(CRModal.CRContainer)`
-  width: 420px;
+  width: 500px;
   z-index: 2;
 
   & .rs-modal-content {

@@ -72,6 +72,7 @@ function Prescription({
         <H6 style={{ marginRight: '31px' }}>
           {formatDate(nextAppointment.date)}
         </H6>
+        <H6 style={{ marginRight: '75px' }}>{formatDate(nextAppointment.date)}</H6>
         <Toggle onChange={setEnable} />
       </NextAppointment>
       {/* <FooterButton

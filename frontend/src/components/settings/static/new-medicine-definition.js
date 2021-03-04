@@ -40,6 +40,14 @@ const options = [
     value: 'vial',
     name: 'Vial',
   },
+  {
+    value: 'Suppository',
+    name: 'Suppository',
+  },
+  {
+    value:'Gil',
+    name:'Gil'
+  }
 ];
 
 function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
