@@ -1,0 +1,25 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Organization",
+      "field": "invoiceCounter",
+      "type": "Int"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Organization",
+          "field": "invoiceCounter"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "1"
+    }
+  ]
+}

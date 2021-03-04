@@ -1,21 +1,44 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   FlexboxGrid,
   Form,
-  FormGroup,
   FormControl,
   InputNumber,
   InputPicker,
 } from 'rsuite';
 
-import { MedicineContainerStyled, BoxStyled } from './style';
+import { MedicineContainerStyled, BoxStyled, NumberBox } from './style';
 import { CRButton, Div, H6, H7 } from 'components';
 
-// 'rgb(81 198 243)'
-const MedicineRow = ({ medicineName, concentration, medicineForm }) => {
+const MedicineRow = ({
+  medicineName,
+  concentration,
+  medicineForm,
+  timings,
+  medicineValue,
+  onChange: setFormValue2,
+}) => {
+  const initialValue = {
+    dose: '',
+    medicine: medicineName,
+    timing: '',
+    numDuration: '',
+    periodDuration: '',
+  };
+  const [formValue, setFormValue] = useState(initialValue);
+  const [prescribe, setPrescribe] = useState('Prescribe');
+  const [color, setColor] = useState('primary');
+  const handleClicked = useCallback(() => {
+    const newMedicine = [...medicineValue, formValue];
+    setFormValue2(newMedicine);
+    setFormValue(initialValue);
+    // setPrescribe('Prescribed');
+    setColor('success');
+    setPrescribe('Prescribed');
+  }, [formValue, initialValue, medicineValue, setFormValue2]);
   return (
     <MedicineContainerStyled>
-      <Form fluid>
+      <Form fluid formValue={formValue} onChange={setFormValue}>
         <FlexboxGrid>
           <FlexboxGrid.Item colspan={6}>
             <Div display="flex" alignItems="center" height={55}>
@@ -27,7 +50,7 @@ const MedicineRow = ({ medicineName, concentration, medicineForm }) => {
           <FlexboxGrid.Item colspan={5}>
             <BoxStyled>
               <FormControl
-                name="name"
+                name="dose"
                 placeholder="Dose"
                 style={{ margin: 0 }}
                 accepter={InputNumber}
@@ -38,21 +61,37 @@ const MedicineRow = ({ medicineName, concentration, medicineForm }) => {
             <BoxStyled>
               <FormControl
                 placeholder="Timing"
-                name="name"
+                name="timing"
                 style={{ margin: 0 }}
                 accepter={InputPicker}
+                data={timings}
                 block
               />
             </BoxStyled>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={5}>
             <BoxStyled>
+              <NumberBox>
+                <FormControl
+                  placeholder="Number"
+                  name="numDuration"
+                  style={{ marginRight: '2px' }}
+                  accepter={InputNumber}
+                  block
+                />
+              </NumberBox>
               <FormControl
                 placeholder="Duration"
-                name="name"
-                style={{ margin: 0 }}
+                name="periodDuration"
+                style={{ marginLeft: '2px' }}
                 accepter={InputPicker}
                 block
+                data={[
+                  { label: 'Year', value: 'year' },
+                  { label: 'Month', value: 'month' },
+                  { label: 'Week', value: 'week' },
+                  { label: 'Day', value: 'day' },
+                ]}
               />
             </BoxStyled>
           </FlexboxGrid.Item>
@@ -63,8 +102,14 @@ const MedicineRow = ({ medicineName, concentration, medicineForm }) => {
               alignItems="center"
               justifyContent="center"
             >
-              <CRButton primary small m="auto" style={{ padding: '10px' }}>
-                Prescribe
+              <CRButton
+                variant={color}
+                small
+                m="auto"
+                onClick={handleClicked}
+                style={{ padding: '10px' }}
+              >
+                {prescribe}
               </CRButton>
             </Div>
           </FlexboxGrid.Item>

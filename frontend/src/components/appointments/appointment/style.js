@@ -87,8 +87,13 @@ export const PrescriptionContentSyled = styled(Div)`
 export const HeaderStyled = styled(Div)`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   top: 0px;
   transition: 0.3s;
+
+  button {
+    margin-left: 10px;
+  }
   /* position: sticky; */
 
   /* &.sticky {

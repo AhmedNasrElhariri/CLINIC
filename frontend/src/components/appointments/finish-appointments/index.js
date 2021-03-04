@@ -1,24 +1,29 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { Steps } from 'rsuite';
-
+import { useQuery } from '@apollo/client';
+import * as R from 'ramda';
 import { CRModal, Div, CRCard } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
 import useConfigurations from 'hooks/configurations';
+import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 
 const initValue = {
   sessions: [],
   items: [],
 };
 
-function FinishAppointment({ appointment, show, onCancel, onOk }) {
+function FinishAppointment({ appointment, show, onCancel, onOk}) {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
-
   const value = useRef(initValue);
 
   const { sessions } = useConfigurations();
-
+  const { data } = useQuery(GET_INVOICE_COUNTER,{ fetchPolicy: "network-only" });
+  const organization = useMemo(
+    () => R.propOr([], 'myInvoiceCounter')(data),
+    [data],
+  );
   const handleInvoiceChange = useCallback(sessions => {
     value.current = { ...value.current, sessions };
   }, []);
@@ -68,6 +73,7 @@ function FinishAppointment({ appointment, show, onCancel, onOk }) {
               onDiscountChange={setDiscount}
               appointment={appointment}
               sessions={sessions}
+              organization={organization}
             />
           )}
           {activeStep === 1 && (

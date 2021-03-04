@@ -10,6 +10,7 @@ export const PatientInfoStyled = styled(Div)`
 export const PatientAvatarStyled = styled(Div)`
   width: 120px;
   height: 120px;
+  border: 1px solid #d9d9d9;
 `;
 export const AvatarImg = styled.img`
   width: 100%;

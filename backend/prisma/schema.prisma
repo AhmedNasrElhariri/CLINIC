@@ -90,6 +90,7 @@ enum PermissionAction {
 model Organization {
   id               String             @id @default(uuid())
   name             String
+  invoiceCounter   Int                @default(1)
   item             Item[]
   hospital         Hospital[]
   surgeries        Surgery[]
@@ -137,6 +138,7 @@ model User {
   configurations      Configuration?
   InventoryItem       InventoryItem[]
   Item                Item[]
+  Timing              Timing[]
 }
 
 model Patient {
@@ -157,6 +159,7 @@ model Patient {
   familyHistory    FamilyHistory[]
   inventoryHistory InventoryHistory[]
   patientSurgeries PatientSurgery[]
+  Prescription     Prescription[]
 }
 
 model Appointment {
@@ -167,12 +170,42 @@ model Appointment {
   patientId        String
   user             User               @relation(fields: [userId], references: [id])
   userId           String
-  labs             String?            @default("[]")
+  // labs             String?            @default("[]")
   status           AppointmentStatus
   data             AppointmentField[]
   collections      Collection[]
   notes            String?            @default("")
   patientSurgeries PatientSurgery[]
+  prescription     Prescription?      @relation(fields: [prescriptionId], references: [id])
+  prescriptionId   String?
+  labs             AppointmentLab[]
+  appointmentLabId String?
+}
+
+model Prescription {
+  id String @id @default(uuid())
+
+  medicine   Patient @relation(fields: [medicineId], references: [id])
+  medicineId String
+
+  timing   Timing @relation(fields: [timingId], references: [id])
+  timingId String
+
+  durationLength Int
+  durationType   String
+
+  appointment Appointment[]
+}
+
+model AppointmentLab {
+  id String @id @default(uuid())
+
+  test   TestDefinition @relation(fields: [testId], references: [id])
+  testId String
+
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  appointmentId String
+
 }
 
 model View {
@@ -241,10 +274,12 @@ model File {
 }
 
 model Configuration {
-  id       String @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  sessions Json   @default("[]")
+  id                   String  @id @default(uuid())
+  user                 User    @relation(fields: [userId], references: [id])
+  userId               String
+  enableInvoiceCounter Boolean @default(false)
+  sessions             Json    @default("[]")
+
 
   @@unique([userId], name: "userid_unique_constraint")
 }
@@ -413,10 +448,20 @@ model Hospital {
 }
 
 model TestDefinition {
-  id       String @id @default(uuid())
-  testName String
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
+  id             String           @id @default(uuid())
+  testName       String
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+  AppointmentLab AppointmentLab[]
+}
+
+model Timing {
+  id           String         @id @default(uuid())
+  name         String
+  printValue   String
+  user         User           @relation(fields: [userId], references: [id])
+  userId       String
+  Prescription Prescription[]
 }
 
 model ImageDefinition {

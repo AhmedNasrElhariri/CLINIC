@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { StyledContainer } from './style';
+import { StyledContainer, StyledHeader } from './style';
 import { H5, H6, Div, H7 } from 'components';
 import { formatDate } from 'utils/date';
 import { Divider } from 'rsuite';
+import useConfigurations from 'hooks/configurations';
 
 const ItemPrice = ({ name, price }) => (
   <Div display="flex" justifyContent="space-between">
@@ -11,6 +12,7 @@ const ItemPrice = ({ name, price }) => (
     <H7>{price}</H7>
   </Div>
 );
+
 
 const TotalPrice = ({ name, price }) => (
   <Div display="flex" justifyContent="space-between" mb={1}>
@@ -20,11 +22,19 @@ const TotalPrice = ({ name, price }) => (
 );
 
 const InvoicePrintout = React.forwardRef(
-  ({ items, discount, subtotal, total }, ref) => {
+  ({ items, discount, subtotal, total ,organization}, ref) => {
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    const Count = year +''+ month +''+ day + '/'+ organization.invoiceCounter ;
+    const { configurations } = useConfigurations();
+    const enable = configurations.enableInvoiceCounter;
     return (
       <Div height={0} overflow="hidden">
         <StyledContainer ref={ref}>
-          <H5 mb={3}>Invoice</H5>
+          {enable ? <StyledHeader>{organization.name}</StyledHeader> : <></>}
+          <H5 mb={3}>Invoice {enable ? Count : ''}</H5>
           <H6 mb={50}>Date : {formatDate(new Date())}</H6>
           {items.map((item, idx) => (
             <ItemPrice {...item} key={idx} />

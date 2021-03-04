@@ -68,6 +68,7 @@ type Query {
   patients: [Patient!]
   appointments(input: AppointmentQueryInput): [Appointment!]
   appointment(id: ID!): Appointment
+  patientAppointments(patientId: ID!): [Appointment!]
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
@@ -91,6 +92,7 @@ type Query {
   patientSurgeries(patientId: ID): [PatientSurgery!]
   myPatientSurgeries: [PatientSurgery!]
   myTestsDefinition: [TestDefinition!]
+  myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
@@ -101,6 +103,7 @@ type Query {
   listRoles: [Role!]
   listBranchesTree(action: String!): [Branch!]
   configuration: Configuration
+  myInvoiceCounter: Organization!
 }
 
 ########################### Mutation ##################################
@@ -153,6 +156,8 @@ type Mutation {
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
   addTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
   editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
+  addTiming(timing: TimingInput!): Timing
+  editTiming(timing: TimingInput!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   addMedicineDefinition(
@@ -279,11 +284,13 @@ input UserInput {
 type Configuration {
   id: ID!
   sessions: [Session!]
+  enableInvoiceCounter: Boolean!
 }
 
 input ConfigurationInput {
   id: ID
   sessions: [SessionInput!]
+  enableInvoiceCounter: Boolean!
 }
 
 ########################### Search ##################################
@@ -333,6 +340,7 @@ type Appointment {
   notes: String
   prescription: String
   collections: [Collection!]
+  userId: String
 }
 
 type Collection {
@@ -369,6 +377,13 @@ input UpdateAppointmentInput {
   notes: String
   prescription: String
   collections: [CollectionInput!]
+}
+
+input PrescriptionInput {
+  medicineId: ID!
+  timingId: ID!
+  durationLength: Int
+  durationType: String
 }
 
 input AppointmentQueryInput {
@@ -656,7 +671,13 @@ input FinishAppointmentItemInput {
   itemId: String!
   quantity: Int!
 }
+########################### Organization ##################################
 
+type Organization {
+  id: ID!
+  name: String!
+  invoiceCounter: Int!
+}
 ########################### Hospitals ##################################
 
 type Hospital {
@@ -694,6 +715,20 @@ type TestDefinition {
 input TestInputDefinition {
   id: ID
   testName: String!
+}
+
+########################### Timing ##################################
+
+type Timing {
+  id: ID!
+  name: String!
+  printValue: String!
+}
+
+input TimingInput {
+  id: ID
+  name: String!
+  printValue: String!
 }
 
 ########################### Images Definition ##################################

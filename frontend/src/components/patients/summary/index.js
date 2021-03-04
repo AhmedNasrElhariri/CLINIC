@@ -1,8 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
-import { Modal, Whisper, Tooltip } from 'rsuite';
+import { Modal, Whisper, Tooltip, Form } from 'rsuite';
 
-import { Div, H6, CRNav, CRVDivider, H3, CRButton } from 'components';
+import {
+  Div,
+  H6,
+  CRNav,
+  CRVDivider,
+  H3,
+  CRButton,
+  CRNestedSelector,
+} from 'components';
 import { formatDate } from 'utils/date';
 import useModal from 'hooks/use-model';
 import SummaryTable from '../summary-table';
@@ -25,7 +33,18 @@ const renderProp = (key, value) => {
 const renderAppointment = data => {
   return data.map(({ value, field }, idx) => (
     <React.Fragment key={idx}>
-      {value && renderProp(field.name, value)}
+      {value && field.type === 'NestedSelector'
+        ? renderProp(
+            field.name,
+            <Form>
+              <CRNestedSelector
+                value={value}
+                choices={field.choices}
+                disabled
+              />
+            </Form>
+          )
+        : renderProp(field.name, value)}
     </React.Fragment>
   ));
 };
@@ -65,6 +84,8 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   if (!activeSession) {
     return '...No History';
   }
+
+  console.log(data);
 
   return (
     <Div display="flex" position="relative">

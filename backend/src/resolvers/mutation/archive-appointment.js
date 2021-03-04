@@ -11,12 +11,11 @@ import {
 const archiveAppointment = async (
   _,
   { id, sessions = [], items = [], discount = 0 },
-  { userId }
+  { userId, organizationId }
 ) => {
   const persistedAppointment = await prisma.appointment.findOne({
     where: { id },
   });
-
   const status = getAppointmentNextStatus(
     persistedAppointment.status,
     APPOINTMENTS_STATUS.ARCHIVED
@@ -37,7 +36,22 @@ const archiveAppointment = async (
     userId,
     patientId: appointment.patientId,
   });
-
+  const configuration = await prisma.configuration.findOne({
+    where: { userId: userId },
+  });
+  const enable = configuration.enableInvoiceCounter;
+  if (enable) {
+    const existedOrganization = await prisma.organization.findOne({
+      where: { id: organizationId },
+    });
+    const newInvoiceCounter = existedOrganization.invoiceCounter + 1;
+    await prisma.organization.update({
+      where: { id: organizationId },
+      data: {
+        invoiceCounter: newInvoiceCounter,
+      },
+    });
+  }
   return appointment;
 };
 

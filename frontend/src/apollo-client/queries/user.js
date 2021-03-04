@@ -99,6 +99,7 @@ export const LIST_CONFIGURATIONS = gql`
         name
         price
       }
+      enableInvoiceCounter
     }
   }
 `;
@@ -111,6 +112,8 @@ export const UPDATE_CONFIGURATION = gql`
         name
         price
       }
+      enableInvoiceCounter
     }
   }
 `;
+

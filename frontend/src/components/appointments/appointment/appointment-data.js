@@ -27,6 +27,7 @@ import {
 import AppointmentImages from '../images';
 
 import Prescription from '../prescription';
+import Labs from '../labs';
 
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
@@ -64,7 +65,9 @@ const SectionContainer = ({ title, children, name, ...props }) => {
     <Div as={Element} name={name} {...props}>
       <Div p={4} minHeight={400}>
         <H3 mb={43}>{title}</H3>
-        <Div mb={4}>{children}</Div>
+        <Div mb={4} style={{ overflow: 'scroll', height: '330px' }}>
+          {children}
+        </Div>
       </Div>
     </Div>
   );
@@ -91,6 +94,25 @@ function AppointmentData({
       onChangeAppointment({
         ...appointmentFormValue,
         collections,
+      });
+    },
+    [appointmentFormValue, onChangeAppointment]
+  );
+
+  const handlePrescriptionChange = useCallback(
+    medicine => {
+      onChangeAppointment({
+        ...appointmentFormValue,
+        medicine,
+      });
+    },
+    [appointmentFormValue, onChangeAppointment]
+  );
+  const handleLabsChange = useCallback(
+    labs => {
+      onChangeAppointment({
+        ...appointmentFormValue,
+        labs,
       });
     },
     [appointmentFormValue, onChangeAppointment]
@@ -136,8 +158,14 @@ function AppointmentData({
           </SectionContainer>
           <SectionContainer title="Prescription" name="prescription">
             <Prescription
-              formValue={appointmentFormValue.collections}
-              onChange={handleCollectionsChange}
+              formValue={appointmentFormValue.prescription}
+              onChange={handlePrescriptionChange}
+            />
+          </SectionContainer>
+          <SectionContainer title="Labs" name="labs">
+            <Labs
+              formValue={appointmentFormValue.labs}
+              onChange={handleLabsChange}
             />
           </SectionContainer>
         </Div>
