@@ -5,6 +5,7 @@ export const LIST_TESTS_DEFINITION = gql`
     myTestsDefinition {
       id
       testName
+      category
     }
   }
 `;
@@ -14,6 +15,7 @@ export const ADD_TEST_DEFINITION = gql`
     addTestDefinition(testDefinition: $testDefinition) {
       id
       testName
+      category
     }
   }
 `;
@@ -23,6 +25,33 @@ export const EDIT_TEST_DEFINITION = gql`
     editTestDefinition(testDefinition: $testDefinition) {
       id
       testName
+      category
+    }
+  }
+`;
+export const LIST_LABS_CATEGORY = gql`
+  {
+    myLabsCategory {
+      id
+      name
+    }
+  }
+`;
+
+export const ADD_LAB_CATEGORY = gql`
+  mutation addLabCategory($labCategory: LabCategoryInput!) {
+    addLabCategory(labCategory: $labCategory) {
+      id
+      name
+    }
+  }
+`;
+
+export const EDIT_LAB_CATEGORY = gql`
+  mutation editLabCategory($labCategory: LabCategoryInput!) {
+    editLabCategory(labCategory: $labCategory) {
+      id
+      name
     }
   }
 `;

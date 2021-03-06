@@ -3,18 +3,14 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListTestsDefinition({ tests, onEdit }) {
+function ListLabsCategory({ labsCategory, onEdit }) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={tests}>
+        <CRTable autoHeight data={labsCategory}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Test Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="testName" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Category Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="category" semiBold />
+            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="name" semiBold />
           </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
@@ -62,4 +58,4 @@ function ListTestsDefinition({ tests, onEdit }) {
   );
 }
 
-export default ListTestsDefinition;
+export default ListLabsCategory;

@@ -18,6 +18,10 @@ function ListImagesDefinition({ images, onEdit }) {
             <CRTable.CRHeaderCell>Image Name</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="imageName" semiBold />
           </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Category Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="category" semiBold />
+          </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>

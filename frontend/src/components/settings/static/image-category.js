@@ -3,24 +3,23 @@ import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import NewImageDefinition from './new-image-definition';
-import ListImagesDefinition from './list-images-definition';
-import useImagesDefinition from 'hooks/fetch-images-definition';
-
+import NewImageCategory from './new-image-category';
+import ListImagesCategory from './list-images-category';
+import useImagesCategory from 'hooks/fetch-images-category';
 import useModal from 'hooks/use-model';
 
-const initValue = { imageName: '', category: '' };
+const initValue = { name: '' };
 
-const ImageDefinition = () => {
+const ImageCategory = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
   const {
-    addImageDefinition,
-    imagesDefinition,
-    editImageDefinition,
-  } = useImagesDefinition({
+    addImageCategory,
+    imagesCategory,
+    editImageCategory,
+  } = useImagesCategory({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -30,7 +29,6 @@ const ImageDefinition = () => {
       setFormValue(initValue);
     },
   });
-
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -39,7 +37,7 @@ const ImageDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const image = R.pick(['id', 'imageName'])(data);
+      const image = R.pick(['id', 'name'])(data);
       setType('edit');
       setFormValue(image);
       open();
@@ -49,19 +47,19 @@ const ImageDefinition = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      addImageDefinition({
+      addImageCategory({
         variables: {
-          imageDefinition: formValue,
+          imageCategory: formValue,
         },
       });
     } else {
-      editImageDefinition({
+      editImageCategory({
         variables: {
-          imageDefinition: formValue,
+          imageCategory: formValue,
         },
       });
     }
-  }, [addImageDefinition, formValue, type]);
+  }, [addImageCategory, formValue, type]);
 
   return (
     <>
@@ -72,10 +70,10 @@ const ImageDefinition = () => {
           onClick={handleClickCreate}
           style={{ marginTop: 4 }}
         >
-          Add New Image+
+          Add New Image Category+
         </CRButton>
       </Div>
-      <NewImageDefinition
+      <NewImageCategory
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
@@ -83,12 +81,12 @@ const ImageDefinition = () => {
         onClose={close}
         type={type}
       />
-      <ListImagesDefinition
-        images={imagesDefinition}
+      <ListImagesCategory
+        imagesCategory={imagesCategory}
         onEdit={handleClickEdit}
       />
     </>
   );
 };
 
-export default ImageDefinition;
+export default ImageCategory;

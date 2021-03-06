@@ -65,9 +65,9 @@ const TestDefinition = () => {
 
   return (
     <>
-      {/* <Div textAlign="right">
+      <Div textAlign="right">
         <CRButton primary small onClick={handleClickCreate}>
-          Add New Test +
+          Add New Lab +
         </CRButton>
       </Div>
       <NewTestDefinition
@@ -77,20 +77,20 @@ const TestDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
-      /> */}
-      <Div textAlign="right">
+      />
+      {/* <Div textAlign="right">
         <CRButton primary small onClick={handleClickCreate}>
           Prescription
         </CRButton>
-      </Div>
-      <Prescription
+      </Div> */}
+      {/* <Prescription
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
         type={type}
-      />
+      /> */}
       {/* <Invoice
         show={visible}
         formValue={formValue}

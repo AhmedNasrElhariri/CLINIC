@@ -5,6 +5,7 @@ export const LIST_IMAGES_DEFINITION = gql`
     myImagesDefinition {
       id
       imageName
+      category
     }
   }
 `;
@@ -14,6 +15,7 @@ export const ADD_IMAGE_DEFINITION = gql`
     addImageDefinition(imageDefinition: $imageDefinition) {
       id
       imageName
+      category
     }
   }
 `;
@@ -23,6 +25,34 @@ export const EDIT_IMAGE_DEFINITION = gql`
     editImageDefinition(imageDefinition: $imageDefinition) {
       id
       imageName
+      category
+    }
+  }
+`;
+
+export const LIST_IMAGES_CATEGORY = gql`
+  {
+    myImagesCategory {
+      id
+      name
+    }
+  }
+`;
+
+export const ADD_IMAGE_CATEGORY = gql`
+  mutation addImageCategory($imageCategory: ImageInputCategory!) {
+    addImageCategory(imageCategory: $imageCategory) {
+      id
+      name
+    }
+  }
+`;
+
+export const EDIT_IMAGE_CATEGORY = gql`
+  mutation editImageCategory($imageCategory: ImageInputCategory!) {
+    editImageCategory(imageCategory: $imageCategory) {
+      id
+      name
     }
   }
 `;

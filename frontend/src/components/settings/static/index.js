@@ -8,7 +8,8 @@ import TestDefinition from './test-definition';
 import ImageDefinition from './image-definition';
 import PatientReport from './patient-report';
 import Timing from './timing';
-
+import LabCategory from './lab-category';
+import ImageCategory from './image-category'
 function StaticSettings() {
   const [activeTab, setActiveTab] = useState('0');
 
@@ -25,10 +26,12 @@ function StaticSettings() {
           <CRNav.CRItem eventKey="0">Hospitals</CRNav.CRItem>
           <CRNav.CRItem eventKey="1">Surgeries</CRNav.CRItem>
           <CRNav.CRItem eventKey="2">Medicine Definition</CRNav.CRItem>
-          <CRNav.CRItem eventKey="3">Test Definition</CRNav.CRItem>
-          <CRNav.CRItem eventKey="4">Image Definition</CRNav.CRItem>
-          <CRNav.CRItem eventKey="5">Timing</CRNav.CRItem>
-          <CRNav.CRItem eventKey="6">Patient Report</CRNav.CRItem>
+          <CRNav.CRItem eventKey="3">Lab Definition</CRNav.CRItem>
+          <CRNav.CRItem eventKey="4">Lab Category</CRNav.CRItem>
+          <CRNav.CRItem eventKey="5">Image Definition</CRNav.CRItem>
+          <CRNav.CRItem eventKey="6">Image Category</CRNav.CRItem>
+          <CRNav.CRItem eventKey="7">Timing</CRNav.CRItem>
+          <CRNav.CRItem eventKey="8">Patient Report</CRNav.CRItem>
         </CRNav>
         {(() => {
           switch (activeTab) {
@@ -41,8 +44,12 @@ function StaticSettings() {
             case '3':
               return <TestDefinition />;
             case '4':
-              return <ImageDefinition />;
+              return <LabCategory />;
             case '5':
+              return <ImageDefinition />;
+            case '6':
+              return <ImageCategory />;
+            case '7':
               return <Timing />;
             default:
               return <PatientReport />;

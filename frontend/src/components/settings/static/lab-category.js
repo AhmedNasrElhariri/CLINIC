@@ -3,24 +3,19 @@ import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import NewImageDefinition from './new-image-definition';
-import ListImagesDefinition from './list-images-definition';
-import useImagesDefinition from 'hooks/fetch-images-definition';
-
+import NewLabCategory from './new-lab-category';
+import ListLabsCategory from './list-labs-category';
+import useLabsCategory from 'hooks/fetch-labs-category';
 import useModal from 'hooks/use-model';
 
-const initValue = { imageName: '', category: '' };
+const initValue = { name: '' };
 
-const ImageDefinition = () => {
+const LabCategory = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  const {
-    addImageDefinition,
-    imagesDefinition,
-    editImageDefinition,
-  } = useImagesDefinition({
+  const { addLabCategory, labsCategory, editLabCategory } = useLabsCategory({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -39,9 +34,9 @@ const ImageDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const image = R.pick(['id', 'imageName'])(data);
+      const labCategory = R.pick(['id', 'name'])(data);
       setType('edit');
-      setFormValue(image);
+      setFormValue(labCategory);
       open();
     },
     [open, setFormValue, setType]
@@ -49,33 +44,28 @@ const ImageDefinition = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      addImageDefinition({
+      addLabCategory({
         variables: {
-          imageDefinition: formValue,
+          labCategory: formValue,
         },
       });
     } else {
-      editImageDefinition({
+      editLabCategory({
         variables: {
-          imageDefinition: formValue,
+          labCategory: formValue,
         },
       });
     }
-  }, [addImageDefinition, formValue, type]);
+  }, [addLabCategory, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
-        <CRButton
-          primary
-          small
-          onClick={handleClickCreate}
-          style={{ marginTop: 4 }}
-        >
-          Add New Image+
+        <CRButton primary small onClick={handleClickCreate}>
+          Add New Lab Category+
         </CRButton>
       </Div>
-      <NewImageDefinition
+      <NewLabCategory
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
@@ -83,12 +73,9 @@ const ImageDefinition = () => {
         onClose={close}
         type={type}
       />
-      <ListImagesDefinition
-        images={imagesDefinition}
-        onEdit={handleClickEdit}
-      />
+      <ListLabsCategory labsCategory={labsCategory} onEdit={handleClickEdit} />
     </>
   );
 };
 
-export default ImageDefinition;
+export default LabCategory;

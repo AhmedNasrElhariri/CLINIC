@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput } from 'components';
-
+import { CRModal, CRTextInput, CRSelectInput } from 'components';
+import useImagesCategory from 'hooks/fetch-images-category';
 const model = Schema.Model({});
 
 function NewImageDefinition({
@@ -17,7 +17,11 @@ function NewImageDefinition({
     () => (type === 'create' ? 'Add New Image' : 'Edit Image '),
     [type]
   );
-
+  const { imagesCategory } = useImagesCategory();
+  const categories = imagesCategory.map(category => ({
+    label: category.name,
+    value: category.name,
+  }));
   return (
     <CRModal
       show={visible}
@@ -32,6 +36,14 @@ function NewImageDefinition({
           name="imageName"
           placeholder="Type Image"
           block
+        />
+        <CRSelectInput
+          label="Image Category"
+          name="category"
+          block
+          cleanable={false}
+          searchable={false}
+          data={categories}
         />
       </Form>
     </CRModal>

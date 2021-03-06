@@ -92,8 +92,10 @@ type Query {
   patientSurgeries(patientId: ID): [PatientSurgery!]
   myPatientSurgeries: [PatientSurgery!]
   myTestsDefinition: [TestDefinition!]
+  myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
+  myImagesCategory: [ImageCategory!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
   getActions: [String!]
@@ -156,10 +158,14 @@ type Mutation {
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
   addTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
   editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
+  addLabCategory(labCategory: LabCategoryInput!): LabCategory
+  editLabCategory(labCategory: LabCategoryInput!): LabCategory
   addTiming(timing: TimingInput!): Timing
   editTiming(timing: TimingInput!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  addImageCategory(imageCategory: ImageInputCategory!): ImageCategory
+  editImageCategory(imageCategory: ImageInputCategory!): ImageCategory
   addMedicineDefinition(
     medicineDefinition: MedicineInputDefinition!
   ): MedicineDefinition
@@ -710,11 +716,23 @@ input SurgeryInput {
 type TestDefinition {
   id: ID!
   testName: String!
+  category: String!
 }
 
 input TestInputDefinition {
   id: ID
   testName: String!
+  category: String!
+}
+
+type LabCategory{
+  id: ID!
+  name: String!
+}
+
+input LabCategoryInput {
+  id: ID
+  name: String!
 }
 
 ########################### Timing ##################################
@@ -736,11 +754,23 @@ input TimingInput {
 type ImageDefinition {
   id: ID!
   imageName: String!
+  category: String!
 }
 
 input ImageInputDefinition {
   id: ID
   imageName: String!
+  category: String!
+}
+
+type ImageCategory {
+  id: ID!
+  name: String!
+}
+
+input ImageInputCategory {
+  id: ID
+  name: String!
 }
 
 ########################### Medicine Definition ##################################
