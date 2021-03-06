@@ -22,6 +22,5 @@ export const Container = styled(Div)`
   padding: 10px;
 `;
 export const LabName = styled.h6`
- margin-right: 1025px;
+  margin-right: 1025px;
 `;
-

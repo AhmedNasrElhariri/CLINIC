@@ -15,4 +15,3 @@ export const getNameShortcut = name => {
   };
   return shortcuts[name] || name;
 };
-

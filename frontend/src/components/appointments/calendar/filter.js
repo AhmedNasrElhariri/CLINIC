@@ -14,7 +14,7 @@ export default function CalendarFilter({ formValue, onChange }) {
       name: 'Mohamed',
     },
   ];
-  
+
   return (
     <Div my={2}>
       <Form formValue={formValue} onChange={onChange} fluid>

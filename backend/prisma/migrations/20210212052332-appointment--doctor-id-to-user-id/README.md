@@ -9,7 +9,7 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 ALTER TABLE "public"."Appointment" DROP CONSTRAINT "Appointment_doctorId_fkey"
 
 ALTER TABLE "public"."Appointment" DROP COLUMN "doctorId",
-ADD COLUMN "userId" text   NOT NULL 
+ADD COLUMN "userId" text   NOT NULL
 
 ALTER TABLE "public"."Appointment" ADD FOREIGN KEY ("userId")REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE
 ```
@@ -43,5 +43,3 @@ migration 20210211022727-init..20210212052332-appointment--doctor-id-to-user-id
    data             AppointmentField[]
    collections      Collection[]
 ```
-
-

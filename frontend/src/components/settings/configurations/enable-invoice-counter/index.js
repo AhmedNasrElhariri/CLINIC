@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { Toggle } from 'rsuite';
 import styled from 'styled-components';
-import {  CRCard, H4, Div } from 'components';
-const EnableInvoiceCounter = ({setEnable}) => {
-  
-  
+import { CRCard, H4, Div } from 'components';
+const EnableInvoiceCounter = ({ setEnable }) => {
   return (
-    <CRCard borderless style={{marginTop:'10px'}}>
+    <CRCard borderless style={{ marginTop: '10px' }}>
       <Div display="flex" justifyContent="space-between" mb={3}>
         <H4>Enable Invoice Counter</H4>
-        <Toggle  onChange={setEnable} />
+        <Toggle onChange={setEnable} />
       </Div>
     </CRCard>
-    
   );
 };
 

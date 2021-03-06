@@ -33,7 +33,7 @@ const Timing = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const timing = R.pick(['id', 'name','printValue'])(data);
+      const timing = R.pick(['id', 'name', 'printValue'])(data);
       setType('edit');
       setFormValue(timing);
       open();

@@ -5,7 +5,7 @@ import { PlusIcon } from 'components/icons/index';
 
 export default ({ open, onClick }) => {
   return (
-    <Div cursor="pointer" display="inline" >
+    <Div cursor="pointer" display="inline">
       {open ? (
         <PlusIcon
           onClick={e => {

@@ -43,5 +43,3 @@ migration 20210224201819-inventory..20210224231914-edit-appoitnment-data
  enum Position {
    Admin
 ```
-
-

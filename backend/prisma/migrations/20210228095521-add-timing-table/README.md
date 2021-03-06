@@ -58,5 +58,3 @@ migration 20210225164346-add..20210228095521-add-timing-table
    imageName String
    user      User   @relation(fields: [userId], references: [id])
 ```
-
-

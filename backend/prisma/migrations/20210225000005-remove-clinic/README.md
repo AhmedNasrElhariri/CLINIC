@@ -56,5 +56,3 @@ migration 20210224231914-edit-appoitnment-data..20210225000005-remove-clinic
    user     User   @relation(fields: [userId], references: [id])
    userId   String
 ```
-
-

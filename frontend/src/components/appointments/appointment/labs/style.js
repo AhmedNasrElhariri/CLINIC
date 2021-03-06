@@ -80,14 +80,14 @@ export const FooterButton = styled.button`
   margin-bottom: 35px;
 `;
 export const PrescriptionPrintout = styled.div`
-width: 420px;
-height: 595px;
-padding: 80px 20px;
+  width: 420px;
+  height: 595px;
+  padding: 80px 20px;
 `;
 export const MedicineName = styled.h4`
-  color:blue;
+  color: blue;
   font-weight: bold;
-  margin-bottom:5px;
+  margin-bottom: 5px;
 `;
 
 export const ContainerStyled = styled(CRModal.CRContainer)`
@@ -112,5 +112,3 @@ export const ModalBodyStyled = styled(CRModal.CRBody)`
   padding: 36px;
   margin-top: 0px;
 `;
-
-

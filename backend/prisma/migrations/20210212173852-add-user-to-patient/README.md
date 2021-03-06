@@ -6,7 +6,7 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 ## Database Steps
 
 ```sql
-ALTER TABLE "public"."Patient" ADD COLUMN "userId" text   NOT NULL 
+ALTER TABLE "public"."Patient" ADD COLUMN "userId" text   NOT NULL
 
 ALTER TABLE "public"."Patient" ADD FOREIGN KEY ("userId")REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE
 ```
@@ -47,5 +47,3 @@ migration 20210212172129-remove-clinic-from-appt..20210212173852-add-user-to-pat
    medicineHistory  MedicineHistory[]
    familyHistory    FamilyHistory[]
 ```
-
-

@@ -7,7 +7,7 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 
 ```sql
 ALTER TABLE "public"."Organization" ALTER COLUMN "invoiceCounter" SET DEFAULT E'1',
-ALTER COLUMN "invoiceCounter" SET DATA TYPE text 
+ALTER COLUMN "invoiceCounter" SET DATA TYPE text
 ```
 
 ## Changes
@@ -36,5 +36,3 @@ migration 20210225131204-add..20210225163917-add
    surgeries        Surgery[]
    patientSurgeries PatientSurgery[]
 ```
-
-

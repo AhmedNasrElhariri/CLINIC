@@ -35,5 +35,3 @@ migration 20210225122815-add-the-invoice-counter..20210225131204-add
    surgeries        Surgery[]
    patientSurgeries PatientSurgery[]
 ```
-
-

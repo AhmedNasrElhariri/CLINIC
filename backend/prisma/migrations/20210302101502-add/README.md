@@ -34,11 +34,9 @@ migration 20210228095521-add-timing-table..20210302101502-add
 -  sessions Json   @default("[]")
 +  id                   String  @id @default(uuid())
 +  user                 User    @relation(fields: [userId], references: [id])
-+  userId               String 
++  userId               String
 +  sessions             Json    @default("[]")
-+  enableInvoiceCounter Boolean  @default(false) 
++  enableInvoiceCounter Boolean  @default(false)
    @@unique([userId], name: "userid_unique_constraint")
  }
 ```
-
-

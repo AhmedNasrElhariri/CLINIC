@@ -53,5 +53,3 @@ migration 20210212130117-add-user-id-and-appointment-id..20210212160926-restore-
    data             AppointmentField[]
    collections      Collection[]
 ```
-
-

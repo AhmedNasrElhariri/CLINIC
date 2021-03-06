@@ -35,5 +35,3 @@ migration 20210225163917-add..20210225164346-add
    surgeries        Surgery[]
    patientSurgeries PatientSurgery[]
 ```
-
-

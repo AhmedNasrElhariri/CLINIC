@@ -83,10 +83,7 @@ const MedicineDefinition = () => {
         onClose={close}
         type={type}
       />
-      <ListMedicinesDefinition
-        medicines={medicines}
-        onEdit={handleClickEdit}
-      />
+      <ListMedicinesDefinition medicines={medicines} onEdit={handleClickEdit} />
     </>
   );
 };

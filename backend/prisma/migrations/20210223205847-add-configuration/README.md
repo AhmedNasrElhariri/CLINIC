@@ -60,5 +60,3 @@ migration 20210215023350-add-user-to-revenues-and-expenses..20210223205847-add-c
    weekNo Int
    year   Int
 ```
-
-

@@ -11,14 +11,14 @@ import { CRButton, Div, H6, H7 } from 'components';
 
 // 'rgb(81 198 243)'
 const MedicineRow = ({ labsValue, onChange: setFormValue, lab }) => {
-  const [prescribe,setPrescribe] = useState('Require');
+  const [prescribe, setPrescribe] = useState('Require');
   const [color, setColor] = useState('primary');
   const handleClicked = useCallback(() => {
     const newLabs = [...labsValue, lab];
     setFormValue(newLabs);
     setPrescribe('Required');
     setColor('success');
-  }, [setFormValue,setPrescribe]);
+  }, [setFormValue, setPrescribe]);
 
   return (
     <MedicineContainerStyled>

@@ -45,9 +45,9 @@ const options = [
     name: 'Suppository',
   },
   {
-    value:'Gil',
-    name:'Gil'
-  }
+    value: 'Gil',
+    name: 'Gil',
+  },
 ];
 
 function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {

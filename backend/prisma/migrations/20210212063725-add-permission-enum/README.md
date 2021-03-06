@@ -13,7 +13,7 @@ DROP INDEX "public"."actionId_roleId_unique_constraint"
 ALTER TABLE "public"."Permission" DROP CONSTRAINT "Permission_actionId_fkey"
 
 ALTER TABLE "public"."Permission" DROP COLUMN "actionId",
-ADD COLUMN "action" "PermissionAction"  NOT NULL 
+ADD COLUMN "action" "PermissionAction"  NOT NULL
 
 CREATE UNIQUE INDEX "action_roleId_unique_constraint" ON "public"."Permission"("action", "roleId")
 
@@ -101,5 +101,3 @@ migration 20210212052332-appointment--doctor-id-to-user-id..20210212063725-add-p
 -
  // end permission
 ```
-
-

@@ -38,7 +38,7 @@ export const LIST_APPOINTMENTS = gql`
 `;
 
 export const LIST_PATIENT_APPOINTMENTS = gql`
-   query($patientId: ID!) {
+  query($patientId: ID!) {
     patientAppointments(patientId: $patientId) {
       id
       type

@@ -34,5 +34,3 @@ migration 20210212173852-add-user-to-patient..20210213102256-remove-is-rqureid
    fieldGroupId      String?
    appointmentFields AppointmentField[]
 ```
-
-

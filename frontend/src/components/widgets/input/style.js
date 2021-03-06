@@ -109,7 +109,7 @@ export const InputGroupStyled = styled(InputGroup)`
     ${getBorder}
     width:100% !important;
   }
-  
+
   &.rs-input-group {
     border-radius: 0px;
     &:focus,

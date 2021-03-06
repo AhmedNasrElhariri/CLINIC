@@ -2,7 +2,7 @@ import { prisma } from '@';
 
 const updateConfiguration = async (_, { configuration }, { userId }) => {
   const sessions = configuration.sessions || [];
-  const enableInvoiceCounter  = configuration.enableInvoiceCounter || false;
+  const enableInvoiceCounter = configuration.enableInvoiceCounter || false;
   return prisma.configuration.upsert({
     create: {
       user: {

@@ -3,7 +3,7 @@ import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 import Fab from 'components/appointments/new-appointment/fab';
 import { AppRouter, Login, NewPatient } from 'components';
-import { UserIcon, CalendarIcon} from 'components/icons/index';
+import { UserIcon, CalendarIcon } from 'components/icons/index';
 import {
   ContainerStyled,
   MainStyled,

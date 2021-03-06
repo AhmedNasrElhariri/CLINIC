@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url = "***"
+  url      = "***"
 }
 
 generator client {
@@ -90,7 +90,7 @@ enum PermissionAction {
 model Organization {
   id               String             @id @default(uuid())
   name             String
-  invoiceCounter   String                @default("1")
+  invoiceCounter   String             @default("1")
   item             Item[]
   hospital         Hospital[]
   surgeries        Surgery[]

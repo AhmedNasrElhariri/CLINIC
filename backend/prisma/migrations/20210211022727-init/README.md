@@ -6,7 +6,7 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 ## Database Steps
 
 ```sql
-ALTER TABLE "public"."User" ADD COLUMN "roleId" text   
+ALTER TABLE "public"."User" ADD COLUMN "roleId" text
 
 ALTER TABLE "public"."User" ADD FOREIGN KEY ("roleId")REFERENCES "public"."PermissionRole"("id") ON DELETE SET NULL ON UPDATE CASCADE
 ```
@@ -562,5 +562,3 @@ migration ..20210211022727-init
 +
 +// end permission
 ```
-
-

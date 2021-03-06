@@ -6,7 +6,7 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 ## Database Steps
 
 ```sql
-ALTER TABLE "public"."Appointment" ADD COLUMN "doctorId" text   NOT NULL 
+ALTER TABLE "public"."Appointment" ADD COLUMN "doctorId" text   NOT NULL
 
 ALTER TABLE "public"."Permission" ALTER COLUMN "action" DROP DEFAULT
 
@@ -55,5 +55,3 @@ migration 20210212092907-update-actions..20210212130117-add-user-id-and-appointm
    data             AppointmentField[]
    collections      Collection[]
 ```
-
-

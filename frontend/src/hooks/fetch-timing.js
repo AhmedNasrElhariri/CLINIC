@@ -3,11 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
 
-import {
-  ADD_TIMING,
-  EDIT_TIMING,
-  LIST_TIMINGS,
-} from 'apollo-client/queries';
+import { ADD_TIMING, EDIT_TIMING, LIST_TIMINGS } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
 const updateCache = myTimings => {
@@ -21,10 +17,7 @@ const updateCache = myTimings => {
 
 function useTimings({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_TIMINGS);
-  const timings = useMemo(
-    () => R.propOr([], 'myTimings')(data),
-    [data]
-  );
+  const timings = useMemo(() => R.propOr([], 'myTimings')(data), [data]);
   const [addTiming] = useMutation(ADD_TIMING, {
     onCompleted() {
       Alert.success('the Timing has been Added Successfully');

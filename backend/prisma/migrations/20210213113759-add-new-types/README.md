@@ -38,5 +38,3 @@ migration 20210213113236-add-choices..20210213113759-add-new-types
  enum PatientMembershipType {
    Primary
 ```
-
-

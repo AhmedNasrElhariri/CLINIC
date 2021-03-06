@@ -13,7 +13,6 @@ const ItemPrice = ({ name, price }) => (
   </Div>
 );
 
-
 const TotalPrice = ({ name, price }) => (
   <Div display="flex" justifyContent="space-between" mb={1}>
     <H7>{name}</H7>
@@ -22,12 +21,13 @@ const TotalPrice = ({ name, price }) => (
 );
 
 const InvoicePrintout = React.forwardRef(
-  ({ items, discount, subtotal, total ,organization}, ref) => {
+  ({ items, discount, subtotal, total, organization }, ref) => {
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
-    const Count = year +''+ month +''+ day + '/'+ organization.invoiceCounter ;
+    const Count =
+      year + '' + month + '' + day + '/' + organization.invoiceCounter;
     const { configurations } = useConfigurations();
     const enable = configurations.enableInvoiceCounter;
     return (

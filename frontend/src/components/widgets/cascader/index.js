@@ -1,25 +1,25 @@
-import React, { useState, useCallback, useEffect } from "react";
-import * as R from "ramda";
-import { Cascader } from "rsuite";
-import { SelectItem, ItemSelect, Item, ItemsBox, DeleteBtn } from "./style";
+import React, { useState, useCallback, useEffect } from 'react';
+import * as R from 'ramda';
+import { Cascader } from 'rsuite';
+import { SelectItem, ItemSelect, Item, ItemsBox, DeleteBtn } from './style';
 
 const data = [
   {
-    value: "zhejiang",
-    label: "Zhejiang",
+    value: 'zhejiang',
+    label: 'Zhejiang',
     children: [
       {
-        value: "hangzhou",
-        label: "Hangzhou",
+        value: 'hangzhou',
+        label: 'Hangzhou',
         children: [
           {
-            value: "xihu",
-            label: "West Lake",
+            value: 'xihu',
+            label: 'West Lake',
             code: 752100,
           },
           {
-            value: "fgre",
-            label: "good help",
+            value: 'fgre',
+            label: 'good help',
             code: 752100,
           },
         ],
@@ -27,16 +27,16 @@ const data = [
     ],
   },
   {
-    value: "jiangsu",
-    label: "Jiangsu",
+    value: 'jiangsu',
+    label: 'Jiangsu',
     children: [
       {
-        value: "nanjing",
-        label: "Nanjing",
+        value: 'nanjing',
+        label: 'Nanjing',
         children: [
           {
-            value: "zhonghuamen",
-            label: "Zhong Hua Men",
+            value: 'zhonghuamen',
+            label: 'Zhong Hua Men',
             code: 453400,
           },
         ],
@@ -44,16 +44,16 @@ const data = [
     ],
   },
   {
-    value: "ششش",
-    label: "Jiangsu",
+    value: 'ششش',
+    label: 'Jiangsu',
     children: [
       {
-        value: "سس",
-        label: "Nanjing",
+        value: 'سس',
+        label: 'Nanjing',
         children: [
           {
-            value: "ؤؤؤ",
-            label: "Zhong Hua Men",
+            value: 'ؤؤؤ',
+            label: 'Zhong Hua Men',
             code: 453400,
           },
         ],
@@ -73,7 +73,7 @@ const CustomNestedSelect = ({ customItems }) => {
   return (
     <>
       <Cascader
-        style={{ width: "300px" }}
+        style={{ width: '300px' }}
         data={data}
         cleanable={false}
         searchable={false}
@@ -86,10 +86,10 @@ const CustomNestedSelect = ({ customItems }) => {
 
 const CustomizedCascader = () => {
   const [selected, setSelected] = useState([]);
-  const customSelect = (items) => {
+  const customSelect = items => {
     setSelected([...selected, items]);
   };
-  const handleDelete = (idx) => {
+  const handleDelete = idx => {
     setSelected(selected.filter((item, index) => index !== idx));
   };
   return (
@@ -106,9 +106,7 @@ const CustomizedCascader = () => {
                       <ItemSelect key={i}>{label}</ItemSelect>
                     ))}
                 </Item>
-                <DeleteBtn onClick={(e) => handleDelete(index)}>
-                  Delete
-                </DeleteBtn>
+                <DeleteBtn onClick={e => handleDelete(index)}>Delete</DeleteBtn>
               </SelectItem>
             );
           })}

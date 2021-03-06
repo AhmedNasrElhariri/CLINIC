@@ -53,14 +53,12 @@ function InventoryUsage({ onChange, handleCancel }) {
   //   },
   //   [handleOnChange]
   // );
-  const handleDelete = () => {
-
-  };
+  const handleDelete = () => {};
   const items = [
-    {  name: 'Examination', price: 0 } ,
-    {  name: 'Followup', price: 0 } ,
-    {  name: 'Urgent', price: 0  },
-    { name: 'Other', price: 0  },
+    { name: 'Examination', price: 0 },
+    { name: 'Followup', price: 0 },
+    { name: 'Urgent', price: 0 },
+    { name: 'Other', price: 0 },
   ];
 
   return (
@@ -77,10 +75,7 @@ function InventoryUsage({ onChange, handleCancel }) {
               block
             ></CRSelectInput>
             <Div my={3}>
-              <ListInvoiceItems
-                items={items}
-                onDelete={handleDelete}
-              />
+              <ListInvoiceItems items={items} onDelete={handleDelete} />
             </Div>
           </ItemDiv>
           <QualityDiv>

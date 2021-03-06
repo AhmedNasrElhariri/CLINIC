@@ -116,4 +116,3 @@ export const UPDATE_CONFIGURATION = gql`
     }
   }
 `;
-

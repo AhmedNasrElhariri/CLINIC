@@ -78,5 +78,3 @@ migration 20210213113759-add-new-types..20210215023123-remove-clinic-to-expense-
  model Notification {
    id         String   @id @default(uuid())
 ```
-
-

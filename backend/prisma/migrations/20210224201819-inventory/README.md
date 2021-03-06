@@ -11,7 +11,7 @@ ALTER TABLE "public"."InventoryHistory" DROP CONSTRAINT "InventoryHistory_clinic
 ALTER TABLE "public"."InventoryItem" DROP CONSTRAINT "InventoryItem_clinicId_fkey"
 
 ALTER TABLE "public"."InventoryHistory" DROP COLUMN "clinicId",
-ADD COLUMN "organizationId" text   NOT NULL 
+ADD COLUMN "organizationId" text   NOT NULL
 
 ALTER TABLE "public"."InventoryItem" DROP CONSTRAINT "InventoryItem_pkey",
 DROP COLUMN "clinicId",
@@ -19,7 +19,7 @@ ADD COLUMN "organizationId" text   NOT NULL ,
 ADD COLUMN "userId" text   NOT NULL ,
 ADD PRIMARY KEY ("itemId", "userId")
 
-ALTER TABLE "public"."Item" ADD COLUMN "userId" text   NOT NULL 
+ALTER TABLE "public"."Item" ADD COLUMN "userId" text   NOT NULL
 
 ALTER TABLE "public"."InventoryHistory" ADD FOREIGN KEY ("organizationId")REFERENCES "public"."Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE
 
@@ -148,5 +148,3 @@ migration 20210223205847-add-configuration..20210224201819-inventory
  model Hospital {
    id             String           @id @default(uuid())
 ```
-
-

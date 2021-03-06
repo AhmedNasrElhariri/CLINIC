@@ -47,5 +47,3 @@ migration 20210212160926-restore-appointments..20210212172129-remove-clinic-from
    inventoryHistory InventoryHistory[]
    File             File?              @relation(fields: [fileId], references: [id])
 ```
-
-

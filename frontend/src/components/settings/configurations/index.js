@@ -61,7 +61,7 @@ const Configurations = () => {
     },
     [formValue, sessions]
   );
-  
+
   return (
     <>
       <Div display="flex" justifyContent="space-between">
@@ -77,7 +77,7 @@ const Configurations = () => {
         onChange={updateSession}
         onDelete={handleDelete}
       />
-      <EnableInvoiceCounter setEnable={updateEnable}/>
+      <EnableInvoiceCounter setEnable={updateEnable} />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { H6, Div } from 'components';
-import { SessionNameStyled, DeleteLinkStyled ,Item} from './style';
+import { SessionNameStyled, DeleteLinkStyled, Item } from './style';
 
 function ListInvoiceItems({ items, priceKey, onDelete }) {
   return (

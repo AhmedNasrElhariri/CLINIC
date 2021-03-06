@@ -5,14 +5,7 @@ import { CRModal, CRTextInput } from 'components';
 
 const model = Schema.Model({});
 
-function NewTiming({
-  formValue,
-  onChange,
-  type,
-  visible,
-  onOk,
-  onClose,
-}) {
+function NewTiming({ formValue, onChange, type, visible, onOk, onClose }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Timing' : 'Edit Timing '),
     [type]
@@ -27,12 +20,7 @@ function NewTiming({
       onCancel={onClose}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput
-          label="Timing Name"
-          name="name"
-          placeholder="Name"
-          block
-        />
+        <CRTextInput label="Timing Name" name="name" placeholder="Name" block />
         <CRTextInput
           label="Print Value"
           name="printValue"

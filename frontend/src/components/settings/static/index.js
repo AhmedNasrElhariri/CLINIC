@@ -29,7 +29,6 @@ function StaticSettings() {
           <CRNav.CRItem eventKey="4">Image Definition</CRNav.CRItem>
           <CRNav.CRItem eventKey="5">Timing</CRNav.CRItem>
           <CRNav.CRItem eventKey="6">Patient Report</CRNav.CRItem>
-          
         </CRNav>
         {(() => {
           switch (activeTab) {

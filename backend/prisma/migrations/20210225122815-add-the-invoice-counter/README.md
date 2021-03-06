@@ -34,5 +34,3 @@ migration 20210225000005-remove-clinic..20210225122815-add-the-invoice-counter
    surgeries        Surgery[]
    patientSurgeries PatientSurgery[]
 ```
-
-

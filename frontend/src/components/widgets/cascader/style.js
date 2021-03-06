@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
-import { Div } from "components/widgets";
+import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
+import { Div } from 'components/widgets';
 
 export const ItemsBox = styled(Div)`
   padding: 4px 6px;
@@ -29,7 +29,7 @@ export const ItemSelect = styled(Div)`
   align-items: center;
   justify-content: space-between;
   &::after {
-    content: "";
+    content: '';
     width: 5px;
     height: 3px;
     background: gray;

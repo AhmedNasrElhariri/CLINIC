@@ -6,9 +6,9 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 ## Database Steps
 
 ```sql
-ALTER TABLE "public"."Expense" ADD COLUMN "userId" text   NOT NULL 
+ALTER TABLE "public"."Expense" ADD COLUMN "userId" text   NOT NULL
 
-ALTER TABLE "public"."Revenue" ADD COLUMN "userId" text   NOT NULL 
+ALTER TABLE "public"."Revenue" ADD COLUMN "userId" text   NOT NULL
 
 ALTER TABLE "public"."Expense" ADD FOREIGN KEY ("userId")REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE
 
@@ -60,5 +60,3 @@ migration 20210215023123-remove-clinic-to-expense-and-revenue-relationship..2021
  model Notification {
    id         String   @id @default(uuid())
 ```
-
-

@@ -6,7 +6,7 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 ## Database Steps
 
 ```sql
-ALTER TABLE "public"."Field" ADD COLUMN "choices" jsonb   NOT NULL 
+ALTER TABLE "public"."Field" ADD COLUMN "choices" jsonb   NOT NULL
 ```
 
 ## Changes
@@ -34,5 +34,3 @@ migration 20210213102256-remove-is-rqureid..20210213113236-add-choices
    fieldGroupId      String?
    appointmentFields AppointmentField[]
 ```
-
-

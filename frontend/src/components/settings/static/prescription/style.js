@@ -10,8 +10,8 @@ export const Title = styled.div`
   text-align: left;
   color: #283148;
   margin-bottom: 15px;
-  margin-left:30px;
-  &.rs-modal-header{
+  margin-left: 30px;
+  &.rs-modal-header {
     padding: 27px;
     border-bottom: none;
   }
@@ -23,7 +23,7 @@ export const Container = styled.div`
   background-color: #f4f4f6;
   position: relative;
   margin-bottom: 2px;
-  margin-left:26px;
+  margin-left: 26px;
 `;
 export const Medicine = styled.div`
   font-size: 12px;
@@ -69,7 +69,7 @@ export const Li = styled.li`
 `;
 export const FooterButton = styled.button`
   height: 34px;
-  background-color: ${props => props.bkColor};;
+  background-color: ${props => props.bkColor};
   margin-left: ${props => props.marginLeft};
   margin-top: 23px;
   margin-right: ${props => props.marginRight};

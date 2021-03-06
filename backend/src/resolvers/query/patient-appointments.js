@@ -4,7 +4,7 @@ const appointment = async (_, { patientId }) => {
   return prisma.appointment.findMany({
     where: {
       status: APPOINTMENTS_STATUS.SCHEDULED,
-      patientId:patientId
+      patientId: patientId,
     },
     orderBy: {
       date: 'asc',

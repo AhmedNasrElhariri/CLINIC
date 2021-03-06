@@ -10,15 +10,14 @@ import {
 
 const useConfigurations = ({ onUpdate } = {}) => {
   const { data } = useQuery(LIST_CONFIGURATIONS, {
-  fetchPolicy: 'network-only',
-});
+    fetchPolicy: 'network-only',
+  });
   const configurations = useMemo(() => R.propOr({}, 'configuration')(data), [
     data,
   ]);
   const sessions = useMemo(() => R.propOr([], 'sessions')(configurations), [
     configurations,
   ]);
-  
 
   const [updateConfiguration] = useMutation(UPDATE_CONFIGURATION, {
     onCompleted: () => {
@@ -26,7 +25,6 @@ const useConfigurations = ({ onUpdate } = {}) => {
       onUpdate && onUpdate();
     },
   });
- 
 
   const handleUpdateConfiguration = useCallback(
     configuration => updateConfiguration({ variables: { configuration } }),

@@ -38,7 +38,7 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
         {...props}
       ></NumberInputStyled>
       <NumberButton
-       borderRadius={'50%'}
+        borderRadius={'50%'}
         onClick={() => setValue(Number(value || 0) + 1)}
       >
         <AddIcon />

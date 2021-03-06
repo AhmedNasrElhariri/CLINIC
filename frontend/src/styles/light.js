@@ -3,7 +3,7 @@ import { variant } from 'styled-system';
 
 const textColor = '#283148';
 const successColor = '#40C173';
-const primaryColor = '#51C6F3';// i changed the primary color from #51C6F3 to #1b253a
+const primaryColor = '#51C6F3'; // i changed the primary color from #51C6F3 to #1b253a
 const eventColor1 = primaryColor;
 const eventColor2 = successColor;
 const eventColor4 = '#fe9f0b';
@@ -36,8 +36,8 @@ export const variantColors = {
   color100: {
     color: '#794bd1',
   },
-  color200:{
-    color: '#bc3254'
+  color200: {
+    color: '#bc3254',
   },
   default: {
     color: '#1b253a',
@@ -65,10 +65,10 @@ export const variantBackgroundColors = {
   color100: {
     bg: '#794bd1',
   },
-  color200:{
-    bg: '#bc3254'
-  }
-}
+  color200: {
+    bg: '#bc3254',
+  },
+};
 export const colors = {
   primary: primaryColor,
   success: successColor,
@@ -122,8 +122,6 @@ export const colors = {
   ],
 };
 
-
-
 export default {
   colors: { ...colors },
   // mode: 'normal',
@@ -152,5 +150,5 @@ export default {
 
   radius: 17,
   variantColors,
-  variantBackgroundColors
+  variantBackgroundColors,
 };

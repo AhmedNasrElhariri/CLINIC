@@ -7,7 +7,7 @@ import ListSelectionItems from '../list-selections-items/index';
 import { ALL_CHOICE } from 'utils/constants';
 import usePermissions from 'hooks/use-permissions';
 
-const AddSpecialtyPermissions = ({rules, onAdd, onDelete }) => {
+const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
   const { branches } = usePermissions();
   const [formValue, setFormValue] = useState({
     branchId: null,

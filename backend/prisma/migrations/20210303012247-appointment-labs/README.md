@@ -8,7 +8,7 @@ You can check out the [state of the schema](./schema.prisma) after the migration
 ```sql
 ALTER TABLE "public"."Appointment" DROP COLUMN "labs",
 ADD COLUMN "prescriptionId" text   ,
-ADD COLUMN "appointmentLabId" text   
+ADD COLUMN "appointmentLabId" text
 
 CREATE TABLE "public"."Prescription" (
 "id" text   NOT NULL ,
@@ -112,11 +112,11 @@ migration 20210302101502-add..20210303012247-appointment-labs
  model Configuration {
    id                   String  @id @default(uuid())
    user                 User    @relation(fields: [userId], references: [id])
--  userId               String 
+-  userId               String
 +  userId               String
 +  enableInvoiceCounter Boolean @default(false)
    sessions             Json    @default("[]")
--  enableInvoiceCounter Boolean  @default(false) 
+-  enableInvoiceCounter Boolean  @default(false)
 +
    @@unique([userId], name: "userid_unique_constraint")
  }
@@ -151,5 +151,3 @@ migration 20210302101502-add..20210303012247-appointment-labs
  model ImageDefinition {
    id        String @id @default(uuid())
 ```
-
-
