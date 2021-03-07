@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import { Icon } from 'rsuite';
 
 import { CRModal, Div } from 'components';
-
+import { Button } from 'rsuite';
 import Form from './form';
 import useFetchPatients from 'hooks/use-patients';
 import useModal from 'hooks/use-model';
+import styled from 'styled-components';
 
 const initialValues = {
   name: '',
@@ -15,7 +16,13 @@ const initialValues = {
   age: '',
   guardianName: '',
 };
-
+const EditButton = styled(Button)`
+  margin-left: ${props => props.margin};
+  margin-bottom: 30px;
+  background-color: white;
+  color: #50c7f2;
+  font-size: 18px;
+`;
 const EditPatient = ({ patient }) => {
   const [formValue, setFormValue] = useState(initialValues);
   const { visible, open, close } = useModal();
@@ -36,7 +43,7 @@ const EditPatient = ({ patient }) => {
   return (
     <>
       <Div onClick={handleOpen}>
-        <Icon icon="edit" onClick={open} />
+        <EditButton margin="15px" onClick={open}>Edit</EditButton>
         <CRModal
           show={visible}
           onHide={close}

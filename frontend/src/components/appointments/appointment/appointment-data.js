@@ -1,7 +1,9 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
+import useMedicinesDefinition from 'hooks/fetch-medicines-definition';
+import MedicinesFilter from '../prescription/medicine-filter';
 
 import {
   Div,
@@ -86,9 +88,30 @@ function AppointmentData({
   appointment,
   appointmentFormValue,
   onChangeAppointment,
+  arabicEnable,
+  setArabicEnable,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
 
+  const { medicines } = useMedicinesDefinition();
+  const [medKey, setMedKey] = useState(0);
+  const med = medicines[medKey];
+  // const updatedMedicines = medicines.filter((med, indx) => indx != medKey);
+  // updatedMedicines.unshift(med);
+  const [filter, setFilter] = useState('');
+  // const updatedMedicines = useMemo(() =>
+  //   medicines.filter((med, indx) => indx != medKey);
+  // ,[]);
+  // const updatedMedicines = useMemo(() => {
+  //   medicines.filter((m, indx) => indx != medKey);
+  // }, [medKey, medicines]);
+  const filteredMedicines = useMemo(
+    () =>
+      medicines.filter(m =>
+        m.medicineName.toLowerCase().includes(filter.toLowerCase())
+      ),
+    [filter, medicines]
+  );
   const handleCollectionsChange = useCallback(
     collections => {
       onChangeAppointment({
@@ -99,7 +122,7 @@ function AppointmentData({
     [appointmentFormValue, onChangeAppointment]
   );
 
-  const handlePrescriptionChange = useCallback(
+  const handleMedicineChange = useCallback(
     medicine => {
       onChangeAppointment({
         ...appointmentFormValue,
@@ -156,10 +179,13 @@ function AppointmentData({
               onChange={handleCollectionsChange}
             />
           </SectionContainer>
+          <MedicinesFilter onNameChange={setFilter}></MedicinesFilter>
           <SectionContainer title="Prescription" name="prescription">
             <Prescription
-              formValue={appointmentFormValue.prescription}
-              onChange={handlePrescriptionChange}
+              formValue={appointmentFormValue.medicine}
+              onChange={handleMedicineChange}
+              arabicEnable={arabicEnable}
+              medicines={filteredMedicines}
             />
           </SectionContainer>
           <SectionContainer title="Labs" name="labs">

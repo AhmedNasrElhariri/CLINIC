@@ -13,8 +13,12 @@ function ListTimings({ timings, onEdit }) {
             <CRTable.CRCell dataKey="name" semiBold />
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Print Value</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="printValue" semiBold />
+            <CRTable.CRHeaderCell>ُEnglish Print Value</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="englishPrintValue" semiBold />
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Arabic Print Value</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="arabicPrintValue" semiBold />
           </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>

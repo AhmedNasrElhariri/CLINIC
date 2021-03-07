@@ -8,7 +8,7 @@ import ListTiming from './list-timing';
 import useTimings from 'hooks/fetch-timing';
 import useModal from 'hooks/use-model';
 
-const initValue = { name: '', printValue: '' };
+const initValue = { name: '',englishPrintValue:'', arabicPrintValue: '' };
 
 const Timing = () => {
   const { visible, open, close } = useModal();
@@ -33,7 +33,7 @@ const Timing = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const timing = R.pick(['id', 'name', 'printValue'])(data);
+      const timing = R.pick(['id', 'name', 'englishPrintValue','arabicPrintValue'])(data);
       setType('edit');
       setFormValue(timing);
       open();

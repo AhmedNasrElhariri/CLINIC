@@ -725,7 +725,7 @@ input TestInputDefinition {
   category: String!
 }
 
-type LabCategory{
+type LabCategory {
   id: ID!
   name: String!
 }
@@ -740,13 +740,15 @@ input LabCategoryInput {
 type Timing {
   id: ID!
   name: String!
-  printValue: String!
+  englishPrintValue: String!
+  arabicPrintValue: String!
 }
 
 input TimingInput {
   id: ID
   name: String!
-  printValue: String!
+  englishPrintValue: String!
+  arabicPrintValue: String!
 }
 
 ########################### Images Definition ##################################

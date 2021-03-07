@@ -5,7 +5,8 @@ export const LIST_TIMINGS = gql`
     myTimings {
       id
       name
-      printValue
+      englishPrintValue
+      arabicPrintValue
     }
   }
 `;
@@ -15,7 +16,8 @@ export const ADD_TIMING = gql`
     addTiming(timing: $timing) {
       id
       name
-      printValue
+      englishPrintValue
+      arabicPrintValue
     }
   }
 `;
@@ -25,7 +27,8 @@ export const EDIT_TIMING = gql`
     editTiming(timing: $timing) {
       id
       name
-      printValue
+      englishPrintValue
+      arabicPrintValue
     }
   }
 `;

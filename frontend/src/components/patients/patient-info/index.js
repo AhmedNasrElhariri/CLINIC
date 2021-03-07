@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CRCard, H3 } from 'components';
+import EditPatient from '../edit-patient';
 import {
   PatientInfoStyled,
   Cell,
@@ -16,22 +17,22 @@ const PatientInfo = ({ patient }) => {
       <CRCard borderless>
         <Cell ml={3} display="flex" alignItems="center" height={64}>
           <H3 mb={4}>Information</H3>
-          <EditButton margin="15px">Edit</EditButton>
+          <EditPatient patient={patient}/>
           <EditButton margin="925px">Expand</EditButton>
         </Cell>
         <Cell ml={3} display="flex" alignItems="center">
-          <CellTitle mb={4}>Date of Birth</CellTitle>
+          <CellTitle mb={4}>Name</CellTitle>
           <StrongStyled>
-            {patient.sex} . {patient.age} yrs
+            {patient.name}
           </StrongStyled>
         </Cell>
         <Cell ml={3} display="flex" alignItems="center">
-          <CellTitle mb={4}>Email</CellTitle>
-          <AddressStyled>{' johun@gmail.com '}</AddressStyled>
+          <CellTitle mb={4}>Age</CellTitle>
+          <AddressStyled>{patient.age}</AddressStyled>
         </Cell>
         <Cell ml={3} display="flex" alignItems="center">
           <CellTitle mb={4}>Phone Number</CellTitle>
-          <AddressStyled>{'01028130554'}</AddressStyled>
+          <AddressStyled>{patient.phoneNo}</AddressStyled>
         </Cell>
       </CRCard>
     </PatientInfoStyled>

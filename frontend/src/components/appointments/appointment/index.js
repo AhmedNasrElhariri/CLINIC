@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader, Icon } from 'rsuite';
-
+import { Alert, Loader, Icon ,Toggle} from 'rsuite';
+import styled from 'styled-components';
 import Prescription from './prescription/index.js';
 import Labs from './labs/index';
 import NewAppointment from './new-appointment';
@@ -36,6 +36,10 @@ import useModal from 'hooks/use-model';
 const normalTabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
 const surgeryTabs = ['Home'];
 
+const StyledToggle = styled.div`
+margin: 17px 6px;
+`;
+
 function Appointment() {
   const history = useHistory();
 
@@ -54,6 +58,7 @@ function Appointment() {
   });
   const [disabled, setDisabled] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
+  const [arabicEnable, setArabicEnable] = useState(false);
   const { appointmentId } = useParams();
   const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
     variables: {
@@ -187,6 +192,7 @@ function Appointment() {
   });
   const patientAppointments = R.propOr([], 'patientAppointments')(data);
   const nextAppointment = patientAppointments[1];
+
   if (loading) {
     return <Loader />;
   }
@@ -223,6 +229,10 @@ function Appointment() {
             >
               Reverse Appoinment <Icon icon="save" />
             </CRButton>
+            <StyledToggle>
+              <Toggle onChange={setArabicEnable} />
+              Arabic
+            </StyledToggle>
           </Div>
         </HeaderStyled>
         <Div display="flex">
@@ -233,6 +243,7 @@ function Appointment() {
                 formValue={formValue}
                 appointmentFormValue={apptFormValue}
                 onChangeAppointment={setApptFormValue}
+                arabicEnable={arabicEnable}
                 onChange={ch => {
                   setFormValue(ch);
                 }}
@@ -247,6 +258,7 @@ function Appointment() {
                   medicine={apptFormValue.medicine}
                   onChange={handleMedicineChange}
                   nextAppointment={nextAppointment}
+                  arabicEnable={arabicEnable}
                 />
               ) : (
                 <></>

@@ -15,6 +15,7 @@ const MedicineRow = ({
   concentration,
   medicineForm,
   timings,
+  periodDuration,
   medicineValue,
   onChange: setFormValue2,
 }) => {
@@ -40,7 +41,7 @@ const MedicineRow = ({
     <MedicineContainerStyled>
       <Form fluid formValue={formValue} onChange={setFormValue}>
         <FlexboxGrid>
-          <FlexboxGrid.Item colspan={6}>
+          <FlexboxGrid.Item colspan={4}>
             <Div display="flex" alignItems="center" height={55}>
               <H6 fontWeight="bold">{medicineName}</H6>
               <H6 mx={1}>({medicineForm})</H6>
@@ -86,12 +87,7 @@ const MedicineRow = ({
                 style={{ marginLeft: '2px' }}
                 accepter={InputPicker}
                 block
-                data={[
-                  { label: 'Year', value: 'year' },
-                  { label: 'Month', value: 'month' },
-                  { label: 'Week', value: 'week' },
-                  { label: 'Day', value: 'day' },
-                ]}
+                data={periodDuration}
               />
             </BoxStyled>
           </FlexboxGrid.Item>

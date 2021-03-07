@@ -29,6 +29,7 @@ function Prescription({
   medicine,
   onChange: setFormValue2,
   nextAppointment,
+  arabicEnable,
 }) {
   const [enable, setEnable] = useState(false);
   const header = useMemo(() => 'Prescription');
@@ -57,10 +58,17 @@ function Prescription({
           <Medicine>
             <Ul>
               <Li>{element.medicine}</Li>
-              <li>
-                {element.timing} - {element.numDuration} -{' '}
-                {element.periodDuration}
-              </li>
+              {arabicEnable ? (
+                <li style={{direction: 'rtl'}}>
+                  {element.dose}  {element.timing} {' لمده '} {element.numDuration} {' '}
+                  {element.periodDuration}
+                </li>
+              ) : (
+                <li>
+                  {element.dose} - {element.timing} - {element.numDuration} -{' '}
+                  {element.periodDuration}
+                </li>
+              )}
             </Ul>
           </Medicine>
           <Button onClick={() => removeItem(indx)}>Delete</Button>
@@ -106,7 +114,7 @@ function Prescription({
             medicine.map(medicine => (
               <Div style={{ marginBottom: '15px' }}>
                 <MedicineName>{medicine.medicine}</MedicineName>
-                <Row>
+                <Row style={{direction: 'rtl'}}>
                   <DoesContent>
                     {medicine.dose}
                     {'  '}

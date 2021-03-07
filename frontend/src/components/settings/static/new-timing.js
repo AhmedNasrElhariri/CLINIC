@@ -22,8 +22,14 @@ function NewTiming({ formValue, onChange, type, visible, onOk, onClose }) {
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput label="Timing Name" name="name" placeholder="Name" block />
         <CRTextInput
-          label="Print Value"
-          name="printValue"
+          label="English Print Value"
+          name="englishPrintValue"
+          placeholder="Print Value"
+          block
+        />
+        <CRTextInput
+          label="Arabic Print Value"
+          name="arabicPrintValue"
           placeholder="Print Value"
           block
         />
