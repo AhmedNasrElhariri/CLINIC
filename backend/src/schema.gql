@@ -529,6 +529,7 @@ type LabDocument {
   resultDate: Date
   value: String
   patientId: ID!
+  labDefinition: LabDefinition
 }
 
 input PatientLabInput {
@@ -732,15 +733,15 @@ type LabDefinition {
   category: String!
 }
 
+type LabCategory {
+  id: ID!
+  name: String!
+}
+
 input LabInputDefinition {
   id: ID
   name: String!
   category: String!
-}
-
-type LabCategory {
-  id: ID!
-  name: String!
 }
 
 input LabCategoryInput {

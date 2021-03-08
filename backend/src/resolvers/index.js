@@ -29,6 +29,6 @@ export default {
   Specialty: formSpecialty,
   User: fromUser,
   Role: fromRole,
-  LabDocument: fromLabDocument, 
+  LabDocument: fromLabDocument,
   ...fromCustomResolvers,
 };
