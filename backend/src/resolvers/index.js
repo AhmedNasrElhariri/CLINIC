@@ -14,6 +14,7 @@ import * as formSpecialty from './specialty';
 import * as fromUser from './user';
 import * as fromRole from './role';
 
+
 export default {
   Query: fromQuery,
   Mutation: fromMutation,

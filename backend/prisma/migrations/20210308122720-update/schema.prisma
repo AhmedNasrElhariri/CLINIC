@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -161,6 +161,7 @@ model Patient {
   user             User                  @relation(fields: [userId], references: [id])
   userId           String
   guardianName     String?
+  pateintLabs      PatientLab[]
   medicineHistory  MedicineHistory[]
   familyHistory    FamilyHistory[]
   inventoryHistory InventoryHistory[]
@@ -317,17 +318,27 @@ model Snippet {
   body   String
 }
 
+model PatientLab {
+  id        String        @id @default(uuid())
+  patient   Patient       @relation(fields: [patientId], references: [id])
+  patientId String
+  name      String
+  documents LabDocument[]
+
+  @@unique([name, patientId], name: "name_patientId_unique_constraint")
+}
+
 model LabDocument {
-  id               String         @id @default(uuid())
-  testDefinition   TestDefinition @relation(fields: [testDefinitionId], references: [id])
-  file             File?          @relation(fields: [fileId], references: [id])
-  fileId           String?
-  status           LabDocStatus
-  requiredDate     DateTime       @default(now())
-  resultDate       DateTime?
-  value            String?
-  patientId        String
-  testDefinitionId String
+  id           String       @id @default(uuid())
+  file         File?        @relation(fields: [fileId], references: [id])
+  fileId       String?
+  status       LabDocStatus
+  requiredDate DateTime     @default(now())
+  resultDate   DateTime?
+  value        String?
+  patientId    String
+  PatientLab   PatientLab?  @relation(fields: [patientLabId], references: [id])
+  patientLabId String?
 }
 
 model MedicineHistory {
@@ -455,7 +466,6 @@ model TestDefinition {
   user           User             @relation(fields: [userId], references: [id])
   userId         String
   AppointmentLab AppointmentLab[]
-  LabDocument    LabDocument[]
 }
 
 model LabCategory {

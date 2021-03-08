@@ -10,6 +10,11 @@ enum PermissionLevel {
   User
 }
 
+enum LabDocStatus {
+  completed
+  pending
+}
+
 enum Position {
   Admin
   Doctor
@@ -106,6 +111,7 @@ type Query {
   listBranchesTree(action: String!): [Branch!]
   configuration: Configuration
   myInvoiceCounter: Organization!
+  patientLabDocs(status: String!, patientId: String!): [LabDocument!]
 }
 
 ########################### Mutation ##################################
@@ -514,8 +520,15 @@ type PatientLab {
 }
 
 type LabDocument {
-  id: ID
+  id: ID!
+  name: String!
   file: File
+  fileId: ID
+  status: LabDocStatus!
+  requiredDate: Date!
+  resultDate: Date
+  value: String
+  patientId: ID!
 }
 
 input PatientLabInput {

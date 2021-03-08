@@ -1,0 +1,77 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "LabDocument",
+      "field": "labDefinition",
+      "type": "TestDefinition",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "LabDocument",
+          "field": "labDefinition"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "LabDocument",
+          "field": "labDefinition"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[testDefinitionId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "LabDocument",
+          "field": "labDefinition"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "LabDocument",
+      "field": "labDefinitionId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "LabDocument",
+      "field": "testDefinitionId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "LabDocument",
+      "field": "name"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TestDefinition",
+      "field": "LabDocument",
+      "type": "LabDocument",
+      "arity": "List"
+    }
+  ]
+}

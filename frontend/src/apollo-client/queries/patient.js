@@ -57,6 +57,19 @@ export const ADD_LAB_DOCS = gql`
   }
 `;
 
+export const GET_PATIENT_LADDOC = gql`
+  query( $status: String!,$patientId:String!) {
+    patientLabDocs( status: $status,patientId:$patientId) {
+      id
+      name
+      testDefinition{
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const LIST_PATIENT_LABS = gql`
   query patientLabs($patientId: ID!) {
     patientLabs(patientId: $patientId) {

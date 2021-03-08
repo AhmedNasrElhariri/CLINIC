@@ -25,7 +25,6 @@ function useImagesDefinition({ onCreate, onEdit } = {}) {
     () => R.propOr([], 'myImagesDefinition')(data),
     [data]
   );
-  console.log(data);
 
   const [addImageDefinition] = useMutation(ADD_IMAGE_DEFINITION, {
     onCompleted() {

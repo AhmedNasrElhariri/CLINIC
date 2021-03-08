@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -319,7 +319,8 @@ model Snippet {
 
 model LabDocument {
   id               String         @id @default(uuid())
-  testDefinition   TestDefinition @relation(fields: [testDefinitionId], references: [id])
+  labDefinition    TestDefinition @relation(fields: [testDefinitionId], references: [id])
+  labDefinitionId  String?
   file             File?          @relation(fields: [fileId], references: [id])
   fileId           String?
   status           LabDocStatus
