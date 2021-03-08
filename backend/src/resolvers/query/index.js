@@ -24,7 +24,7 @@ export { default as myHospitals } from './my-hospitals';
 export { default as mySurgeries } from './my-surgeries';
 export { default as patientSurgeries } from './patient-surgeries';
 export { default as myPatientSurgeries } from './my-patient-surgeries';
-export { default as myTestsDefinition } from './my-tests-definition';
+export { default as myLabsDefinitions } from './my-labs-definitions';
 export { default as myLabsCategory } from './my-labs-category';
 export { default as myImagesDefinition } from './my-images-definition';
 export { default as myImagesCategory } from './my-images-category';

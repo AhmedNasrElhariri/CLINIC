@@ -1,9 +1,9 @@
 import { prisma } from '@';
 
-const addTestDefinition = async (_, { testDefinition }, { userId }) => {
-  return prisma.testDefinition.create({
+const addLabDefinition = async (_, { labDefinition }, { userId }) => {
+  return prisma.labDefinition.create({
     data: {
-      ...testDefinition,
+      ...labDefinition,
       user: {
         connect: {
           id: userId,
@@ -13,4 +13,4 @@ const addTestDefinition = async (_, { testDefinition }, { userId }) => {
   });
 };
 
-export default addTestDefinition;
+export default addLabDefinition;

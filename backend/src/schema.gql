@@ -96,7 +96,7 @@ type Query {
   mySurgeries: [Surgery!]
   patientSurgeries(patientId: ID): [PatientSurgery!]
   myPatientSurgeries: [PatientSurgery!]
-  myTestsDefinition: [TestDefinition!]
+  myLabsDefinitions: [LabDefinition!]
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
@@ -162,8 +162,8 @@ type Mutation {
   defineSurgery(surgery: SurgeryInput!): Surgery
   editSurgery(surgery: SurgeryInput!): Surgery
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
-  addTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
-  editTestDefinition(testDefinition: TestInputDefinition!): TestDefinition
+  addLabDefinition(labeDefinition: LabInputDefinition!): LabDefinition
+  editLabDefinition(labeDefinition: LabInputDefinition!): LabDefinition
   addLabCategory(labCategory: LabCategoryInput!): LabCategory
   editLabCategory(labCategory: LabCategoryInput!): LabCategory
   addTiming(timing: TimingInput!): Timing
@@ -724,17 +724,17 @@ input SurgeryInput {
   id: ID
   name: String!
 }
-########################### Tests Definition ##################################
+########################### Labs Definition ##################################
 
-type TestDefinition {
+type LabDefinition {
   id: ID!
-  testName: String!
+  name: String!
   category: String!
 }
 
-input TestInputDefinition {
+input LabInputDefinition {
   id: ID
-  testName: String!
+  name: String!
   category: String!
 }
 
@@ -799,9 +799,9 @@ type MedicineDefinition {
 
 input MedicineInputDefinition {
   id: ID
-  medicineName: String!
+  name: String!
   concentration: String!
-  medicineForm: String
+  form: String
 }
 
 ########################### Patient Report ##################################

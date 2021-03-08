@@ -1,9 +1,9 @@
 import { prisma } from '@';
 
-const editTestDefinition = async (_, { testDefinition }) => {
-  const { id, ...rest } = testDefinition;
+const editLabDefinition = async (_, { labDefinition }) => {
+  const { id, ...rest } = labDefinition;
 
-  return prisma.testDefinition.update({
+  return prisma.labDefinition.update({
     data: rest,
     where: {
       id,
@@ -11,4 +11,4 @@ const editTestDefinition = async (_, { testDefinition }) => {
   });
 };
 
-export default editTestDefinition;
+export default editLabDefinition;
