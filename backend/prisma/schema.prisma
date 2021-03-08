@@ -318,16 +318,16 @@ model Snippet {
 }
 
 model LabDocument {
-  id               String         @id @default(uuid())
-  testDefinition   TestDefinition @relation(fields: [testDefinitionId], references: [id])
-  file             File?          @relation(fields: [fileId], references: [id])
-  fileId           String?
-  status           LabDocStatus
-  requiredDate     DateTime       @default(now())
-  resultDate       DateTime?
-  value            String?
-  patientId        String
-  testDefinitionId String
+  id              String         @id @default(uuid())
+  labDefinition   TestDefinition @relation(fields: [labDefinitionId], references: [id])
+  labDefinitionId String
+  file            File?          @relation(fields: [fileId], references: [id])
+  fileId          String?
+  status          LabDocStatus
+  requiredDate    DateTime       @default(now())
+  resultDate      DateTime?
+  value           String?
+  patientId       String
 }
 
 model MedicineHistory {

@@ -13,7 +13,7 @@ import * as formBranch from './branch';
 import * as formSpecialty from './specialty';
 import * as fromUser from './user';
 import * as fromRole from './role';
-
+import * as fromLabDocument from './lab-document';
 
 export default {
   Query: fromQuery,
@@ -29,5 +29,6 @@ export default {
   Specialty: formSpecialty,
   User: fromUser,
   Role: fromRole,
+  LabDocument: fromLabDocument, 
   ...fromCustomResolvers,
 };
