@@ -5,7 +5,7 @@ import { CRNav } from 'components/widgets';
 import HistoryLabs from './history-labs';
 import PendingLabs from './pending-labs';
 
-const PatientLabs = ({ patient, noAdd = false }) => {
+const PatientLabs = ({ patient }) => {
   const [activeTab, setActiveTab] = useState('0');
   return (
     <>

@@ -74,7 +74,7 @@ export const GET_PATIENT_IMAGEDOC = gql`
     patientImageDocs( status: $status,patientId:$patientId) {
       id
       requiredDate
-      labDefinition{
+      imageDefinition{
         name
       }
     }

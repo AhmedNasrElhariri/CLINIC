@@ -112,6 +112,7 @@ type Query {
   configuration: Configuration
   myInvoiceCounter: Organization!
   patientLabDocs(status: String!, patientId: String!): [LabDocument!]
+  patientImageDocs(status: String!, patientId: String!): [ImageDocument!]
 }
 
 ########################### Mutation ##################################
@@ -139,7 +140,7 @@ type Mutation {
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
   createSnippet(snippet: SnippetInput!): Snippet!
-  addLabDocs(patientLab: PatientLabInput!): PatientLab!
+  addLabDocs(documentLab: DocumentLabInput!): LabDocument!
   createMedicineHistory(
     medicineHistory: MedicineHistoryInput!
   ): MedicineHistory!
@@ -162,8 +163,8 @@ type Mutation {
   defineSurgery(surgery: SurgeryInput!): Surgery
   editSurgery(surgery: SurgeryInput!): Surgery
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
-  addLabDefinition(labeDefinition: LabInputDefinition!): LabDefinition
-  editLabDefinition(labeDefinition: LabInputDefinition!): LabDefinition
+  addLabDefinition(labDefinition: LabInputDefinition!): LabDefinition
+  editLabDefinition(labDefinition: LabInputDefinition!): LabDefinition
   addLabCategory(labCategory: LabCategoryInput!): LabCategory
   editLabCategory(labCategory: LabCategoryInput!): LabCategory
   addTiming(timing: TimingInput!): Timing
@@ -519,17 +520,22 @@ type PatientLab {
   documents: [LabDocument!]
 }
 
+input DocumentLabInput{
+  labId: ID!
+  value: String
+  files: [FileInput]
+}
+
 type LabDocument {
   id: ID!
-  name: String!
   file: File
   fileId: ID
   status: LabDocStatus!
   requiredDate: Date!
   resultDate: Date
   value: String
-  patientId: ID!
   labDefinition: LabDefinition
+  labDefinitionId: ID!
 }
 
 input PatientLabInput {
@@ -537,6 +543,33 @@ input PatientLabInput {
   name: String!
   documents: [ID!]
 }
+
+########################### Patient Image ##################################
+
+input DocumentImageInput{
+  ImageId: ID!
+  value: String
+  files: [FileInput]
+}
+
+type ImageDocument {
+  id: ID!
+  file: File
+  fileId: ID
+  status: LabDocStatus!
+  requiredDate: Date!
+  resultDate: Date
+  value: String
+  imageDefinition: ImageDefinition
+  imageDefinitionId: ID!
+}
+
+input PatientImageInput {
+  patientId: ID!
+  name: String!
+  documents: [ID!]
+}
+
 
 ########################### History ##################################
 
@@ -769,13 +802,13 @@ input TimingInput {
 
 type ImageDefinition {
   id: ID!
-  imageName: String!
+  name: String!
   category: String!
 }
 
 input ImageInputDefinition {
   id: ID
-  imageName: String!
+  name: String!
   category: String!
 }
 

@@ -14,6 +14,7 @@ import * as formSpecialty from './specialty';
 import * as fromUser from './user';
 import * as fromRole from './role';
 import * as fromLabDocument from './lab-document';
+import * as fromImageDocument from './image-document';
 
 export default {
   Query: fromQuery,
@@ -30,5 +31,6 @@ export default {
   User: fromUser,
   Role: fromRole,
   LabDocument: fromLabDocument,
+  ImageDocument: fromImageDocument,
   ...fromCustomResolvers,
 };

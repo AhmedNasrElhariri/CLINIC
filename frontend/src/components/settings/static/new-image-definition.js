@@ -33,7 +33,7 @@ function NewImageDefinition({
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput
           label="Image Name"
-          name="imageName"
+          name="name"
           placeholder="Type Image"
           block
         />

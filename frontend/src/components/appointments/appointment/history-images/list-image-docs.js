@@ -3,9 +3,9 @@ import * as R from 'ramda';
 import { Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
 import { Div, CRNav, H6 } from 'components';
-import ListLabImages from './list-lab-images';
 
-function ListLabDocs({images}) {
+
+function ListImageDocs({images}) {
   return (
     <CRCard borderless>
       <CRTable autoHeight data={images}>
@@ -53,7 +53,7 @@ function ListLabDocs({images}) {
     </CRCard>
   );
 }
-ListLabDocs.defaultProps = {
+ListImageDocs.defaultProps = {
   labDocs: [],
 };
-export default ListLabDocs;
+export default ListImageDocs;

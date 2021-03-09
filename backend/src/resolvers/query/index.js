@@ -41,3 +41,4 @@ export { default as myInvoiceCounter } from './invoice-counter';
 export { default as myTimings } from './my-timings';
 export { default as patientAppointments } from './patient-appointments';
 export { default as patientLabDocs } from './patient-lab-docs';
+export { default as patientImageDocs } from './patient-image-docs';

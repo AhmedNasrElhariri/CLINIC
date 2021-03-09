@@ -4,7 +4,7 @@ import UpdateLab from './edit-lab';
 import { formatDate } from 'utils/date';
 import * as R from 'ramda';
 import useFrom from 'hooks/form';
-import { GET_PATIENT_LADDOC } from 'apollo-client/queries';
+import { GET_PATIENT_LABDOC } from 'apollo-client/queries';
 import { useQuery } from '@apollo/client';
 import useModal from 'hooks/use-model';
 const initValue = { labId: '', labDefinition: {}, value: '', files: [] };

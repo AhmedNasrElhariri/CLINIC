@@ -9,7 +9,7 @@ import useImagesDefinition from 'hooks/fetch-images-definition';
 
 import useModal from 'hooks/use-model';
 
-const initValue = { imageName: '', category: '' };
+const initValue = { name: '', category: '' };
 
 const ImageDefinition = () => {
   const { visible, open, close } = useModal();
@@ -39,7 +39,7 @@ const ImageDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const image = R.pick(['id', 'imageName'])(data);
+      const image = R.pick(['id', 'name'])(data);
       setType('edit');
       setFormValue(image);
       open();

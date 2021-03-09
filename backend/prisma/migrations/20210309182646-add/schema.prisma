@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -490,7 +490,7 @@ model Timing {
 
 model ImageDefinition {
   id        String @id @default(uuid())
-  name      String
+  imageName String
   category  String
   user      User   @relation(fields: [userId], references: [id])
   userId    String

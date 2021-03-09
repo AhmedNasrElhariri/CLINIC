@@ -1,52 +1,54 @@
 import React, { useCallback, useMemo } from 'react';
-import ListLabDocs from './list-labs';
-import UpdateLab from './edit-lab';
+import ListImageDocs from './list-images';
+import UpdateImage from './edit-image';
 import { formatDate } from 'utils/date';
 import * as R from 'ramda';
 import useFrom from 'hooks/form';
-import { GET_PATIENT_LADDOC } from 'apollo-client/queries';
+import { GET_PATIENT_IMAGEDOC } from 'apollo-client/queries';
 import { useQuery } from '@apollo/client';
 import useModal from 'hooks/use-model';
-const initValue = { labId: '', labDefinition: {}, value: '', files: [] };
-const PendingLabs = ({ patient }) => {
+const initValue = { imageId: '', imageDefinition: {}, value: '', files: [] };
+const PendingImages = ({ patient }) => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
   const status = 'pending';
   const patientId = patient.id;
-  const { data } = useQuery(GET_PATIENT_LADDOC, {
+  const { data } = useQuery(GET_PATIENT_IMAGEDOC, {
     variables: { status: status, patientId: patientId },
   });
-  const patientLabDocs = useMemo(() => R.propOr([], 'patientLabDocs')(data), [
+  console.log(data);
+  const patientImageDocs = useMemo(() => R.propOr([], 'patientImageDocs')(data), [
     data,
   ]);
-  const labs = useMemo(
+  console.log(patientImageDocs);
+  const images = useMemo(
     () =>
-      patientLabDocs.map(element => {
+      patientImageDocs.map(element => {
         return {
-          name: element.labDefinition.name,
+          name: element.imageDefinition.name,
           date: formatDate(element.requiredDate),
           id: element.id,
         };
       }),
-    [patientLabDocs]
+    [patientImageDocs]
   );
   const handleClickEdit = useCallback(
     data => {
       const id = data.id;
       const name = data.name;
-      const lab = { labId: id, name: name, value: '', files: [] };
+      const image = { imageId: id, name: name, value: '', files: [] };
       setType('edit');
-      setFormValue(lab);
+      setFormValue(image);
       open();
     },
     [open, setFormValue, setType]
   );
   return (
     <>
-      <ListLabDocs labs={labs} onEdit={handleClickEdit} />
-      <UpdateLab
+      <ListImageDocs images={images} onEdit={handleClickEdit} />
+      <UpdateImage
         visible={visible}
         onClose={close}
         formValue={formValue}
@@ -57,6 +59,6 @@ const PendingLabs = ({ patient }) => {
   );
 };
 
-PendingLabs.propTypes = {};
+PendingImages.propTypes = {};
 
-export default PendingLabs;
+export default PendingImages;

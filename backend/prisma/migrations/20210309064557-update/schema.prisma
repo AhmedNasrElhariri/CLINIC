@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -323,24 +323,12 @@ model LabDocument {
   requiredDate    DateTime      @default(now())
   resultDate      DateTime?
   value           String?
+  patinet         Patient       @relation(fields: [patientId], references: [id])
   patientId       String
   labDefinition   LabDefinition @relation(fields: [labDefinitionId], references: [id])
   labDefinitionId String
   file            File?         @relation(fields: [fileId], references: [id])
   fileId          String?
-}
-
-model ImageDocument {
-  id                 String        @id @default(uuid())
-  status             LabDocStatus
-  requiredDate       DateTime      @default(now())
-  resultDate         DateTime?
-  value              String?
-  patientId          String
-  imageDefinition    ImageDefinition @relation(fields: [imageDefinitionId], references: [id])
-  imageDefinitionId  String
-  file               File?         @relation(fields: [fileId], references: [id])
-  fileId             String?
 }
 
 model MedicineHistory {
@@ -490,7 +478,7 @@ model Timing {
 
 model ImageDefinition {
   id        String @id @default(uuid())
-  name      String
+  imageName String
   category  String
   user      User   @relation(fields: [userId], references: [id])
   userId    String

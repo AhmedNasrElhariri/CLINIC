@@ -1,5 +1,5 @@
 import { prisma } from '@';
-import patient from './patient';
+import labDefinition from '../lab-document';
 
 const patientLabDocs = (_, { status ,patientId}) => {
   return prisma.labDocument.findMany({
@@ -7,13 +7,6 @@ const patientLabDocs = (_, { status ,patientId}) => {
       status: status,
       patientId: patientId
     },
-    // include: {
-    //   documents: {
-    //     include: {
-    //       file: true,
-    //     },
-    //   },
-    // },
   });
 };
 

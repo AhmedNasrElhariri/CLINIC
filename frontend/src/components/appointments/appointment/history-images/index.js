@@ -104,7 +104,7 @@ const HistoryImages = ({ patient }) => {
         groupBy="category" 
         style={{ marginTop: '10px', width: '396px', marginLeft: '45px' }}
       />
-      <ListImageDocs labs={formValue} />
+      <ListImageDocs images={formValue} />
     </>
   );
 };
