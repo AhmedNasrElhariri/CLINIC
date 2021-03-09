@@ -3,24 +3,24 @@ import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
-import NewTestDefinition from './new-test-definition';
-import ListTestsDefinition from './list-tests-definition';
-import useTestsDefinition from 'hooks/fetch-tests-definition';
+import NewLabDefinition from './new-test-definition';
+import ListLabsDefinition from './list-tests-definition';
+import useLabsDefinition from 'hooks/fetch-tests-definition';
 import useModal from 'hooks/use-model';
 import Prescription from './prescription/index.js';
 import Invoice from 'components/appointments/finish-appointments';
-const initValue = { testName: '' };
+const initValue = { name: '' ,category:''};
 
-const TestDefinition = () => {
+const LabDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
   const {
-    addTestDefinition,
-    testsDefinition,
-    editTestDefinition,
-  } = useTestsDefinition({
+    addLabDefinition,
+    labsDefinition,
+    editLabDefinition,
+  } = useLabsDefinition({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -39,9 +39,9 @@ const TestDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const testDefinition = R.pick(['id', 'testName'])(data);
+      const labDefinition = R.pick(['id', 'name'])(data);
       setType('edit');
-      setFormValue(testDefinition);
+      setFormValue(labDefinition);
       open();
     },
     [open, setFormValue, setType]
@@ -49,19 +49,19 @@ const TestDefinition = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      addTestDefinition({
+      addLabDefinition({
         variables: {
-          testDefinition: formValue,
+          labDefinition: formValue,
         },
       });
     } else {
-      editTestDefinition({
+      editLabDefinition({
         variables: {
-          testDefinition: formValue,
+          labDefinition: formValue,
         },
       });
     }
-  }, [addTestDefinition, formValue, type]);
+  }, [addLabDefinition, formValue, type]);
 
   return (
     <>
@@ -70,7 +70,7 @@ const TestDefinition = () => {
           Add New Lab +
         </CRButton>
       </Div>
-      <NewTestDefinition
+      <NewLabDefinition
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
@@ -99,9 +99,9 @@ const TestDefinition = () => {
         onClose={close}
         type={type}
       /> */}
-      <ListTestsDefinition tests={testsDefinition} onEdit={handleClickEdit} />
+      <ListLabsDefinition labs={labsDefinition} onEdit={handleClickEdit} />
     </>
   );
 };
 
-export default TestDefinition;
+export default LabDefinition;

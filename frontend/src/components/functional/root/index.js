@@ -130,6 +130,11 @@ function Root() {
       name: 'Uploadimage',
       icon: <UserIcon width={11.8} height={14.1} />,
     },
+    {
+      to: '/csv',
+      name: 'csv',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
   ];
 
   return (

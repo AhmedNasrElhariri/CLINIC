@@ -3,17 +3,17 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListLabDocs({ labs ,onEdit}) {
+function ListLabDocs({ labs, onEdit }) {
   return (
     <CRCard borderless>
       <CRTable autoHeight data={labs}>
-        <CRTable.CRColumn flexGrow={0.5}>
+        <CRTable.CRColumn flexGrow={2}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRColumn flexGrow={2}>
           <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="requiredDate" semiBold />
+          <CRTable.CRCell dataKey="date" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
@@ -26,7 +26,8 @@ function ListLabDocs({ labs ,onEdit}) {
                   style={{
                     fontSize: 17,
                     padding: '15px',
-                    backgroundColor: 'rgb(224, 224, 222)',
+                    backgroundColor: '#eef1f1',
+                    paddingRight: '40px',
                   }}
                 >
                   {' '}
@@ -37,7 +38,8 @@ function ListLabDocs({ labs ,onEdit}) {
                   style={{
                     fontSize: 17,
                     padding: '15px',
-                    backgroundColor: 'rgb(224, 224, 222)',
+                    backgroundColor: '#eef1f1',
+                    paddingRight: '40px',
                   }}
                 >
                   {' '}

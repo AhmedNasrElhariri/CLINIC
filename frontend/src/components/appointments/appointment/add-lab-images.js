@@ -23,7 +23,6 @@ const LabFormInput = ({ value, onChange }) => {
   const [images, setImages] = useState([]);
   const onUpload = resp => {
     const newImages = value.concat(resp);
-    console.log(newImages);
     onChange(newImages);
   };
   return (

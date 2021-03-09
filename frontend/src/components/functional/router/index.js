@@ -23,6 +23,7 @@ import {
   Example,
   Labs,
   UploadImage,
+  Csv,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 
@@ -108,6 +109,9 @@ function AppRouter() {
       </Route>
       <Route path="/uploadimage">
         <UploadImage />
+      </Route>
+      <Route path="/csv">
+        <Csv />
       </Route>
       <Route path="" exact>
         <Redirect to="/appointments/today" />

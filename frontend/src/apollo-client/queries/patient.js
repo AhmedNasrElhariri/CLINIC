@@ -50,20 +50,31 @@ export const GET_PATIENT = gql`
 `;
 
 export const ADD_LAB_DOCS = gql`
-  mutation addLabDocs($patientLab: PatientLabInput!) {
-    addLabDocs(patientLab: $patientLab) {
+  mutation addLabDocs($documentLab: DocumentLabInput!) {
+    addLabDocs(documentLab: $documentLab) {
       id
     }
   }
 `;
 
-export const GET_PATIENT_LADDOC = gql`
+export const GET_PATIENT_LABDOC = gql`
   query( $status: String!,$patientId:String!) {
     patientLabDocs( status: $status,patientId:$patientId) {
       id
-      name
-      testDefinition{
-        id
+      requiredDate
+      labDefinition{
+        name
+      }
+    }
+  }
+`;
+
+export const GET_PATIENT_IMAGEDOC = gql`
+  query( $status: String!,$patientId:String!) {
+    patientImageDocs( status: $status,patientId:$patientId) {
+      id
+      requiredDate
+      labDefinition{
         name
       }
     }

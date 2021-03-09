@@ -10,54 +10,52 @@ import {
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
-const updateCache = myTestsDefinition => {
+const updateCache = myLabsDefinitions => {
   client.writeQuery({
     query: LIST_TESTS_DEFINITION,
     data: {
-      myTestsDefinition,
+      myLabsDefinitions,
     },
   });
 };
 
-function useTestsDefinition({ onCreate, onEdit } = {}) {
+function useLabsDefinition({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_TESTS_DEFINITION);
-  const testsDefinition = useMemo(
-    () => R.propOr([], 'myTestsDefinition')(data),
+  const labsDefinition = useMemo(
+    () => R.propOr([], 'myLabsDefinitions')(data),
     [data]
   );
-  console.log(data);
-
-  const [addTestDefinition] = useMutation(ADD_TEST_DEFINITION, {
+  const [addLabDefinition] = useMutation(ADD_TEST_DEFINITION, {
     onCompleted() {
-      Alert.success('the Test has been Added Successfully');
+      Alert.success('the Lab has been Added Successfully');
       onCreate && onCreate();
     },
-    update(cache, { data: { addTestDefinition: testDefinition } }) {
-      updateCache([...testsDefinition, testDefinition]);
+    update(cache, { data: { addLabDefinition: labDefinition } }) {
+      updateCache([...labsDefinition, labDefinition]);
     },
     onError() {
-      Alert.error('Failed to add new Test');
+      Alert.error('Failed to add new Lab');
     },
   });
-  const [editTestDefinition] = useMutation(EDIT_TEST_DEFINITION, {
+  const [editLabDefinition] = useMutation(EDIT_TEST_DEFINITION, {
     onCompleted() {
-      Alert.success('the Test has been Edited Successfully');
+      Alert.success('the Lab has been Edited Successfully');
       onEdit && onEdit();
     },
     onError() {
-      Alert.error('Failed to edit the Test');
+      Alert.error('Failed to edit the Lab');
     },
   });
 
   return useMemo(
     () => ({
-      testsDefinition,
-      addTestDefinition,
-      editTestDefinition,
+      labsDefinition,
+      addLabDefinition,
+      editLabDefinition,
       updateCache,
     }),
-    [testsDefinition, addTestDefinition, editTestDefinition]
+    [labsDefinition, addLabDefinition, editLabDefinition]
   );
 }
 
-export default useTestsDefinition;
+export default useLabsDefinition;

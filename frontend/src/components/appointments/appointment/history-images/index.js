@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import ListLabDocs from '../list-lab-docs';
+import ListImageDocs from './list-image-docs';
 import styled from 'styled-components';
 import { Form, SelectPicker } from 'rsuite';
 import { CRSelectInput } from 'components';
 // import useFetchLabDocs from 'hooks/fetch-lab-docs';
 
-let labDocs = [
+let imageDoc = [
   {
     label: 'lab1',
     value: {
@@ -84,7 +84,7 @@ let labDocs = [
     category: 'A'
   },
 ];
-const HistoryLabs = ({ patient }) => {
+const HistoryImages = ({ patient }) => {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState([]);
   const [lab, setLab] = useState({});
@@ -97,18 +97,18 @@ const HistoryLabs = ({ patient }) => {
     <>
       <SelectPicker
         virtualized={false}
-        name="lab"
+        name="image"
         onSelect={setLab}
-        data={labDocs}
+        data={imageDoc}
         block
         groupBy="category" 
         style={{ marginTop: '10px', width: '396px', marginLeft: '45px' }}
       />
-      <ListLabDocs labs={formValue} />
+      <ListImageDocs labs={formValue} />
     </>
   );
 };
 
-HistoryLabs.propTypes = {};
+HistoryImages.propTypes = {};
 
-export default HistoryLabs;
+export default HistoryImages;

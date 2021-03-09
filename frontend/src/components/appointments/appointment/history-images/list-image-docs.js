@@ -5,10 +5,10 @@ import { CRCard, CRTable } from 'components';
 import { Div, CRNav, H6 } from 'components';
 import ListLabImages from './list-lab-images';
 
-function ListLabDocs({labs}) {
+function ListLabDocs({images}) {
   return (
     <CRCard borderless>
-      <CRTable autoHeight data={labs}>
+      <CRTable autoHeight data={images}>
         <CRTable.CRColumn flexGrow={0.5}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name" semiBold />

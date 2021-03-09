@@ -1,6 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import * as R from 'ramda';
-import { useParams, useHistory, Switch, Route } from 'react-router-dom';
+import {
+  useParams,
+  useHistory,
+  useLocation,
+  Switch,
+  Route,
+} from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import { GET_PATIENT } from 'apollo-client/queries';
@@ -15,11 +21,13 @@ import AvatarWithName from '../patient-avatar-with-name/index';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
+import PatientImages from 'components/appointments/appointment/patient-images';
 import History from 'components/appointments/appointment/patient-history';
 import PatientSurgries from 'components/appointments/appointment/surgries';
+import { appointmentHistory } from '../../../utils/constants';
 import useQueryParams from 'hooks/useQueryParams';
 
-const tabs = ['Patient Info', 'Sessions', 'Surgries', 'Labs', 'History'];
+const tabs = ['Patient Info', 'Sessions', 'Surgries', 'Labs', 'History','Images'];
 
 function Appointment() {
   const history = useHistory();
@@ -34,7 +42,7 @@ function Appointment() {
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);
 
-  const { viewFields, appointmentHistory } = usePatientHistory({ patientId });
+  const { viewFields } = usePatientHistory({ patientId });
 
   return (
     <>
@@ -87,6 +95,7 @@ function Appointment() {
                   )}
                   {showComp('3') && <PatientLabs patient={patient} />}
                   {showComp('4') && <History patient={patient} />}
+                  {showComp('5') && <PatientImages patient={patient} />}
                 </Div>
               </Div>
             </Div>

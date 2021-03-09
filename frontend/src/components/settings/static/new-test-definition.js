@@ -6,7 +6,7 @@ import useLabsCategory from 'hooks/fetch-labs-category';
 
 const model = Schema.Model({});
 
-function NewTestDefinition({
+function NewLabDefinition({
   formValue,
   onChange,
   type,
@@ -34,8 +34,8 @@ function NewTestDefinition({
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput
           label="Lab Name"
-          name="testName"
-          placeholder="Type Test"
+          name="name"
+          placeholder="Type Lab"
           block
         />
         <CRSelectInput
@@ -51,8 +51,8 @@ function NewTestDefinition({
   );
 }
 
-NewTestDefinition.defaultProps = {
+NewLabDefinition.defaultProps = {
   type: 'create',
 };
 
-export default NewTestDefinition;
+export default NewLabDefinition;

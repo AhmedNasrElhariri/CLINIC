@@ -28,6 +28,7 @@
     "ramda-adjunct": "^2.26.0",
     "react": "^16.13.1",
     "react-big-calendar": "^0.26.0",
+    "react-data-table-component": "^6.11.7",
     "react-dom": "^16.13.1",
     "react-hooks-global-state": "^1.0.0",
     "react-image-gallery": "^1.0.8",
@@ -41,8 +42,10 @@
     "react-trello": "^2.2.5",
     "rsuite": "^4.8.1",
     "sanitize-html": "^2.3.2",
+    "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
     "subscriptions-transport-ws": "^0.9.18",
+    "xlsx": "^0.16.9",
     "yup": "^0.28.5"
   },
   "scripts": {

@@ -2,15 +2,17 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import Labs from 'components/labs';
+import labTests from 'components/appointments/appointment/lab-tests';
 
-function ListTestsDefinition({ tests, onEdit }) {
+function ListTestsDefinition({ labs, onEdit }) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={tests}>
+        <CRTable autoHeight data={labs}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Test Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="testName" semiBold />
+            <CRTable.CRCell dataKey="name" semiBold />
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Category Name</CRTable.CRHeaderCell>

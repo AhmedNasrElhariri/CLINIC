@@ -15,7 +15,7 @@ const PendingLabs = ({ patient }) => {
   });
   const status = 'pending';
   const patientId = patient.id;
-  const { data } = useQuery(GET_PATIENT_LABDOC, {
+  const { data } = useQuery(GET_PATIENT_LADDOC, {
     variables: { status: status, patientId: patientId },
   });
   const patientLabDocs = useMemo(() => R.propOr([], 'patientLabDocs')(data), [

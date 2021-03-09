@@ -2,29 +2,29 @@ import gql from 'graphql-tag';
 
 export const LIST_TESTS_DEFINITION = gql`
   {
-    myTestsDefinition {
+    myLabsDefinitions {
       id
-      testName
+      name
       category
     }
   }
 `;
 
 export const ADD_TEST_DEFINITION = gql`
-  mutation addTestDefinition($testDefinition: TestInputDefinition!) {
-    addTestDefinition(testDefinition: $testDefinition) {
+  mutation addLabDefinition($labDefinition: LabInputDefinition!) {
+    addLabDefinition(labDefinition: $labDefinition) {
       id
-      testName
+      name
       category
     }
   }
 `;
 
 export const EDIT_TEST_DEFINITION = gql`
-  mutation editTestDefinition($testDefinition: TestInputDefinition!) {
-    editTestDefinition(testDefinition: $testDefinition) {
+  mutation editLabDefinition($labDefinition: LabInputDefinition!) {
+    addLabDefinition(labDefinition: $labDefinition) {
       id
-      testName
+      name
       category
     }
   }

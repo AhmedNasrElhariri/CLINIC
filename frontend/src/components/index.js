@@ -3,6 +3,7 @@ export { default as PermissionContainer } from './admin/admin-container';
 export { default as Example } from './example';
 export { default as Labs } from './labs';
 export { default as UploadImage } from './uploadImage';
+export { default as Csv } from './csv';
 
 /******************       Branches    *********************************/
 export { default as BranchesContainer } from './admin/branches/branches-container';

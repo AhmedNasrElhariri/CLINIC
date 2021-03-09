@@ -1,46 +1,51 @@
-import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { Form, Alert } from 'rsuite';
+import * as R from 'ramda';
+
+import { CRModal, CRSelectInput } from 'components';
 import AddLabImages from '../add-lab-images';
-import { CRModal, CRTextInput,CRSelectInput } from 'components';
-import useLabsCategory from 'hooks/fetch-labs-category';
+import { ADD_LAB_DOCS } from 'apollo-client/queries';
+import { CRTextInput } from 'components/widgets';
 
-const model = Schema.Model({});
-
-function UpdateLab({
-  formValue,
-  onChange,
-  type,
-  visible,
-  onOk,
-  onClose,
-}) {
-  const header = useMemo(
-    () => (type === 'create' ? 'Add New Lab' : 'Insert Lab Values '),
-    [type]
-  );
+const AddLabDocs = ({ visible, onClose, formValue, setFormValue }) => {
+  const [addLabDocs] = useMutation(ADD_LAB_DOCS, {
+    onCompleted: () => {
+      Alert.success('Lab Document has been uploaded successfully');
+    },
+  });
+  console.log(formValue);
   return (
     <CRModal
+      header="Update Lab Docs"
       show={visible}
-      header={header}
-      onOk={onOk}
-      onHide={onClose}
+      onOk={() => {
+        const { labId, value, files } = formValue;
+        addLabDocs({
+          variables: {
+            documentLab: {
+              labId: labId,
+              value: value,
+              files: files,
+            },
+          },
+        });
+      }}
       onCancel={onClose}
+      onHide={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput
-          label="value"
-          name="value"
-          placeholder="Type value"
-          block
+      <Form fluid formValue={formValue} onChange={setFormValue}>
+        <CRTextInput virtualized={false} label="Value" name="value" block />
+        <AddLabImages
+          name="files"
+          onChange={setFormValue}
+          value={formValue.files}
         />
-        <AddLabImages name="images" />
       </Form>
     </CRModal>
   );
-}
-
-UpdateLab.defaultProps = {
-  type: 'create',
 };
 
-export default UpdateLab;
+AddLabDocs.propTypes = {};
+
+export default AddLabDocs;
