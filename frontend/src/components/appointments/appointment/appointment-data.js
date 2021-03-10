@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
 import useMedicinesDefinition from 'hooks/fetch-medicines-definition';
-import MedicinesFilter from '../prescription/medicine-filter';
+import MedicinesFilter from './appointment-prescription/medicine-filter';
 
 import {
   Div,
@@ -28,8 +28,10 @@ import {
 
 import AppointmentImages from '../images';
 
-import Prescription from '../prescription';
-import Labs from '../labs';
+import Prescription from './appointment-prescription';
+import Labs from './appointment-labs';
+import Images from './appointment-images';
+
 
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
@@ -89,7 +91,6 @@ function AppointmentData({
   appointmentFormValue,
   onChangeAppointment,
   arabicEnable,
-  setArabicEnable,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
 
@@ -108,7 +109,7 @@ function AppointmentData({
   const filteredMedicines = useMemo(
     () =>
       medicines.filter(m =>
-        m.medicineName.toLowerCase().includes(filter.toLowerCase())
+        m.name.toLowerCase().includes(filter.toLowerCase())
       ),
     [filter, medicines]
   );
@@ -136,6 +137,15 @@ function AppointmentData({
       onChangeAppointment({
         ...appointmentFormValue,
         labs,
+      });
+    },
+    [appointmentFormValue, onChangeAppointment]
+  );
+  const handleImagesChange = useCallback(
+    images => {
+      onChangeAppointment({
+        ...appointmentFormValue,
+        images,
       });
     },
     [appointmentFormValue, onChangeAppointment]
@@ -192,6 +202,12 @@ function AppointmentData({
             <Labs
               formValue={appointmentFormValue.labs}
               onChange={handleLabsChange}
+            />
+          </SectionContainer>
+          <SectionContainer title="Images" name="images">
+            <Images
+              formValue={appointmentFormValue.images}
+              onChange={handleImagesChange}
             />
           </SectionContainer>
         </Div>

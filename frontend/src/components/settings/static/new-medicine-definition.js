@@ -66,7 +66,7 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput
           label="Medicine Name"
-          name="medicineName"
+          name="name"
           placeholder="Type Name"
           block
         />
@@ -76,7 +76,7 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
           placeholder="Type Concentration"
           block
         />
-        <CRRadio label="Medicine Form" name="medicineForm" options={options} />
+        <CRRadio label="Medicine Form" name="form" options={options} />
       </Form>
     </CRModal>
   );

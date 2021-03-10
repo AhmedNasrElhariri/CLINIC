@@ -826,9 +826,9 @@ input ImageInputCategory {
 
 type MedicineDefinition {
   id: ID!
-  medicineName: String!
+  name: String!
   concentration: String!
-  medicineForm: String
+  form: String
 }
 
 input MedicineInputDefinition {

@@ -4,8 +4,7 @@ import { Div } from 'components';
 import MedicineRow from './medicine-row';
 import useTimings from 'hooks/fetch-timing';
 
-const Prescription = ({ formValue, onChange, arabicEnable,medicines }) => {
-  
+const Prescription = ({ formValue, onChange, arabicEnable, medicines }) => {
   const { timings } = useTimings();
   const arabicTimingValues = useMemo(
     () =>
@@ -40,7 +39,6 @@ const Prescription = ({ formValue, onChange, arabicEnable,medicines }) => {
     { label: 'Day', value: 'day' },
   ];
 
-  
   return (
     <>
       <Div>

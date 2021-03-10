@@ -4,7 +4,7 @@ import { Form } from 'rsuite';
 
 const MedicineFilter = ({ onNameChange }) => {
   return (
-    <Form style={{ width: 276, marginBottom: 64 }}>
+    <Form style={{ width: 276, marginBottom: 5, marginLeft: 30 }}>
       <CRTextInput
         name="name"
         placeholder="Search"

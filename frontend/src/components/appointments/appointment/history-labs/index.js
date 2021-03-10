@@ -1,9 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import ListLabDocs from '../list-lab-docs';
-import styled from 'styled-components';
+import ListLabDocs from './list-lab-docs';
 import { Form, SelectPicker } from 'rsuite';
-import { CRSelectInput } from 'components';
-// import useFetchLabDocs from 'hooks/fetch-lab-docs';
 
 let labDocs = [
   {
@@ -102,7 +99,7 @@ const HistoryLabs = ({ patient }) => {
         data={labDocs}
         block
         groupBy="category" 
-        style={{ marginTop: '10px', width: '396px', marginLeft: '45px' }}
+        style={{ marginTop: '10px', width: '310px', marginLeft: '0px' }}
       />
       <ListLabDocs labs={formValue} />
     </>

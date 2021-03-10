@@ -3,7 +3,7 @@ import { Form, FormGroup, FormControl } from 'rsuite';
 
 import {
   MedicineContainerStyled,
-  BoxStyled,
+  ButtonDiv,
   LabName,
   Container,
 } from './style';
@@ -24,16 +24,18 @@ const MedicineRow = ({ labsValue, onChange: setFormValue, lab }) => {
     <MedicineContainerStyled>
       <Form fluid>
         <Container>
-          <LabName>{lab.testName}</LabName>
-          <CRButton
-            variant={color}
-            small
-            m="auto"
-            onClick={handleClicked}
-            style={{ padding: '10px' }}
-          >
-            {prescribe}
-          </CRButton>
+          <LabName>{lab.name}</LabName>
+          <ButtonDiv>
+            <CRButton
+              variant={color}
+              small
+              m="auto"
+              onClick={handleClicked}
+              style={{ padding: '10px' }}
+            >
+              {prescribe}
+            </CRButton>
+          </ButtonDiv>
         </Container>
       </Form>
     </MedicineContainerStyled>

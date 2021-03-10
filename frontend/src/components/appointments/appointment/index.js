@@ -2,10 +2,11 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader, Icon ,Toggle} from 'rsuite';
+import { Alert, Loader, Icon, Toggle } from 'rsuite';
 import styled from 'styled-components';
 import Prescription from './prescription/index.js';
 import Labs from './labs/index';
+import Images from './images';
 import NewAppointment from './new-appointment';
 
 import { Div, PatientSummary, H3, CRButton } from 'components';
@@ -37,7 +38,7 @@ const normalTabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
 const surgeryTabs = ['Home'];
 
 const StyledToggle = styled.div`
-margin: 17px 6px;
+  margin: 10px 0px;
 `;
 
 function Appointment() {
@@ -55,6 +56,7 @@ function Appointment() {
     medicine: [],
     labs: [],
     collections: [],
+    images: [],
   });
   const [disabled, setDisabled] = useState(false);
   const [activeTab, setActiveTab] = useState('0');
@@ -125,15 +127,25 @@ function Appointment() {
   }, [update, normalizedFields, formValue, apptFormValue, appointmentId]);
   const [popup, setPopup] = useState(false);
   const [popupTwo, setPopupTwo] = useState(false);
+  const [popupThree, setPopupThree] = useState(false);
   const handleClickCreate = useCallback(() => {
     setPopupTwo(false);
+    setPopupThree(false);
     setPopup(true);
     setType('create');
     open();
   }, [open, setType]);
   const handleClickCreateTwo = useCallback(() => {
     setPopup(false);
+    setPopupThree(false);
     setPopupTwo(true);
+    setType('create');
+    open();
+  }, [open, setType]);
+  const handleClickCreateThree = useCallback(() => {
+    setPopupTwo(false);
+    setPopup(false);
+    setPopupThree(true);
     setType('create');
     open();
   }, [open, setType]);
@@ -148,12 +160,6 @@ function Appointment() {
     return R.propOr('', 'prescription')(apptFormValue);
   }, [apptFormValue]);
 
-  // const handlePrescriptionChange = useCallback(
-  //   prescription =>
-  //     setApptFormValue(R.mergeDeepRight(apptFormValue, { prescription })),
-  //   [apptFormValue]
-  // );
-
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
   }, [normalizedFields]);
@@ -164,7 +170,8 @@ function Appointment() {
       prescription: R.propOr('', 'prescription')(appointment),
       collections: R.propOr([], 'collections')(appointment),
       medicine: R.propOr([], 'medicine')(appointment),
-      labs: R.propOr([], 'medicine')(appointment),
+      labs: R.propOr([], 'lab')(appointment),
+      images: R.propOr([], 'image')(appointment),
     });
   }, [appointment]);
   const handleMedicineChange = useCallback(
@@ -185,6 +192,15 @@ function Appointment() {
     },
     [apptFormValue, setApptFormValue]
   );
+  const handleImagesChange = useCallback(
+    images => {
+      setApptFormValue({
+        ...apptFormValue,
+        images,
+      });
+    },
+    [apptFormValue, setApptFormValue]
+  );
   const { data } = useQuery(LIST_PATIENT_APPOINTMENTS, {
     variables: {
       patientId: patient.id,
@@ -201,6 +217,10 @@ function Appointment() {
       <Div flexGrow={1}>
         <HeaderStyled>
           <H3 mb={64}>Appointment</H3>
+          <StyledToggle>
+            <Toggle onChange={setArabicEnable} />
+            Arabic
+          </StyledToggle>
           <Div>
             <CRButton
               small
@@ -209,6 +229,14 @@ function Appointment() {
               disabled={disabled}
             >
               PrintMedicines <Icon icon="print" />
+            </CRButton>
+            <CRButton
+              small
+              primary
+              onClick={handleClickCreateThree}
+              disabled={disabled}
+            >
+              images <Icon icon="print" />
             </CRButton>
             <CRButton
               small
@@ -229,10 +257,6 @@ function Appointment() {
             >
               Reverse Appoinment <Icon icon="save" />
             </CRButton>
-            <StyledToggle>
-              <Toggle onChange={setArabicEnable} />
-              Arabic
-            </StyledToggle>
           </Div>
         </HeaderStyled>
         <Div display="flex">
@@ -270,6 +294,17 @@ function Appointment() {
                   type={type}
                   labs={apptFormValue.labs}
                   onChange={handleLabsChange}
+                />
+              ) : (
+                <></>
+              )}
+              {popupThree ? (
+                <Images
+                  visible={visible}
+                  onClose={close}
+                  type={type}
+                  images={apptFormValue.images}
+                  onChange={handleImagesChange}
                 />
               ) : (
                 <></>

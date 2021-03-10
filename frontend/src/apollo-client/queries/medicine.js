@@ -4,9 +4,9 @@ export const LIST_MEDICINES_DEFINITION = gql`
   {
     myMedicinesDefinition {
       id
-      medicineName
+      name
       concentration
-      medicineForm
+      form
     }
   }
 `;
@@ -17,9 +17,9 @@ export const ADD_MEDICINE_DEFINITION = gql`
   ) {
     addMedicineDefinition(medicineDefinition: $medicineDefinition) {
       id
-      medicineName
+      name
       concentration
-      medicineForm
+      form
     }
   }
 `;
@@ -30,9 +30,9 @@ export const EDIT_MEDICINE_DEFINITION = gql`
   ) {
     editMedicineDefinition(medicineDefinition: $medicineDefinition) {
       id
-      medicineName
+      name
       concentration
-      medicineForm
+      form
     }
   }
 `;

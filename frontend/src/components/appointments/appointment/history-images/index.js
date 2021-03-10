@@ -102,7 +102,7 @@ const HistoryImages = ({ patient }) => {
         data={imageDoc}
         block
         groupBy="category" 
-        style={{ marginTop: '10px', width: '396px', marginLeft: '45px' }}
+        style={{ marginTop: '10px', width: '310px', marginLeft: '0px' }}
       />
       <ListImageDocs images={formValue} />
     </>

@@ -5,11 +5,11 @@ import useTestsDefinition from 'hooks/fetch-tests-definition';
 import LabRow from './lab-row';
 import useTimings from 'hooks/fetch-timing';
 const Lab = ({ formValue, onChange }) => {
-  const { testsDefinition } = useTestsDefinition();
+  const { labsDefinition } = useTestsDefinition();
   return (
     <Div>
-      {testsDefinition.map((t, idx) => (
-        <LabRow key={idx} lab={t} labsValue={formValue} onChange={onChange} />
+      {labsDefinition.map((l, idx) => (
+        <LabRow key={idx} lab={l} labsValue={formValue} onChange={onChange} />
       ))}
     </Div>
   );

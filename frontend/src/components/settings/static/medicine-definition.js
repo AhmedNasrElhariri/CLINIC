@@ -8,7 +8,7 @@ import ListMedicinesDefinition from './list-medicine-definition';
 import useMedicinesDefinition from 'hooks/fetch-medicines-definition';
 import useModal from 'hooks/use-model';
 
-const initValue = { medicineName: '', concentration: '', medicineForm: '' };
+const initValue = { name: '', concentration: '', form: '' };
 
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
@@ -41,9 +41,9 @@ const MedicineDefinition = () => {
     data => {
       const medicine = R.pick([
         'id',
-        'medicineName',
+        'name',
         'concentration',
-        'medicineForm',
+        'form',
       ])(data);
       setType('edit');
       setFormValue(medicine);

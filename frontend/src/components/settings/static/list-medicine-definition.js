@@ -10,7 +10,7 @@ function ListMedicines({ medicines, onEdit }) {
         <CRTable autoHeight data={medicines}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="medicineName" semiBold />
+            <CRTable.CRCell dataKey="name" semiBold />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
@@ -20,7 +20,7 @@ function ListMedicines({ medicines, onEdit }) {
 
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Form</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="medicineForm" />
+            <CRTable.CRCell dataKey="form" />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn>

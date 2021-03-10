@@ -8,19 +8,15 @@ export const MedicineContainerStyled = styled(Div)`
   background-color: #eef1f1;
 `;
 
-export const BoxStyled = styled(Div)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ffffff;
-  height: 55px;
-  margin-left: 9px;
-  padding: 0 10px;
+export const ButtonDiv = styled.div`
+  position: absolute;
+  right:10px;
 `;
 export const Container = styled(Div)`
   display: flex;
   padding: 10px;
+  position: relative;
 `;
 export const LabName = styled.h6`
-  margin-right: 1025px;
+ 
 `;

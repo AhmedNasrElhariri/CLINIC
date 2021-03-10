@@ -1,11 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import * as R from 'ramda';
+import React from 'react';
 import { Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
-import { Div, CRNav, H6 } from 'components';
 
-
-function ListImageDocs({images}) {
+function ListImageDocs({ images }) {
   return (
     <CRCard borderless>
       <CRTable autoHeight data={images}>
@@ -27,7 +24,7 @@ function ListImageDocs({images}) {
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-          <CRTable.CRCell  semiBold />
+          <CRTable.CRCell semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
@@ -35,12 +32,12 @@ function ListImageDocs({images}) {
             {data => (
               <Icon
                 icon="edit"
-                
                 style={{
                   fontSize: 17,
-                  padding: 5,
-                  borderRadius: '5px',
-                  backgroundColor: 'rgb(224, 224, 222)',
+                  padding: '14px 46px 21px 22px',
+                  borderRadius: '0px',
+                  backgroundColor: '#eef1f1',
+                  marginLeft: '1px',
                 }}
               >
                 {' '}

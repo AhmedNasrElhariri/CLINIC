@@ -11,9 +11,9 @@ import { MedicineContainerStyled, BoxStyled, NumberBox } from './style';
 import { CRButton, Div, H6, H7 } from 'components';
 
 const MedicineRow = ({
-  medicineName,
+  name,
   concentration,
-  medicineForm,
+  form,
   timings,
   periodDuration,
   medicineValue,
@@ -21,7 +21,7 @@ const MedicineRow = ({
 }) => {
   const initialValue = {
     dose: '',
-    medicine: medicineName,
+    medicine: name,
     timing: '',
     numDuration: '',
     periodDuration: '',
@@ -33,7 +33,6 @@ const MedicineRow = ({
     const newMedicine = [...medicineValue, formValue];
     setFormValue2(newMedicine);
     setFormValue(initialValue);
-    // setPrescribe('Prescribed');
     setColor('success');
     setPrescribe('Prescribed');
   }, [formValue, initialValue, medicineValue, setFormValue2]);
@@ -43,8 +42,8 @@ const MedicineRow = ({
         <FlexboxGrid>
           <FlexboxGrid.Item colspan={4}>
             <Div display="flex" alignItems="center" height={55}>
-              <H6 fontWeight="bold">{medicineName}</H6>
-              <H6 mx={1}>({medicineForm})</H6>
+              <H6 fontWeight="bold">{name}</H6>
+              <H6 mx={1}>({form})</H6>
               <H7 fontStyle="italic">{concentration}</H7>
             </Div>
           </FlexboxGrid.Item>
@@ -70,7 +69,7 @@ const MedicineRow = ({
               />
             </BoxStyled>
           </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={5}>
+          <FlexboxGrid.Item colspan={7}>
             <BoxStyled>
               <NumberBox>
                 <FormControl
@@ -93,12 +92,14 @@ const MedicineRow = ({
           </FlexboxGrid.Item>
           <FlexboxGrid.Item colspan={3}>
             <Div
-              height={55}
               display="flex"
               alignItems="center"
               justifyContent="center"
+              mt={'3px'}
             >
               <CRButton
+                height={50}
+                width={100}
                 variant={color}
                 small
                 m="auto"

@@ -77,18 +77,21 @@ function App() {
         </a>
       </h3>
       <input type="file" accept=".csv,.xlsx,.xls" onChange={handleFileUpload} />
-      <DataTable pagination highlightOnHover columns={columns} data={data} />
-      {/* {columns.length != 0   ?  
-      <CRCard borderless>
-        <CRTable autoHeight data={data}>
-            <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{columns.name}</CRTable.CRHeaderCell>
-              <CRTable.CRCell dataKey={columns.selector} semiBold />
-            </CRTable.CRColumn>
-        </CRTable>
-      </CRCard>  : <></>
-      } */}
-      
+      {/* <DataTable pagination highlightOnHover columns={columns} data={data} /> */}
+      {(columns.length != 0 && data.length != 0) ? (
+        <CRCard borderless>
+          <CRTable autoHeight data={data}>
+            {columns.map((element,indx) => (
+              <CRTable.CRColumn flexGrow={1} >
+                <CRTable.CRHeaderCell>{element.name}</CRTable.CRHeaderCell>
+                <CRTable.CRCell dataKey={element.name} semiBold />
+              </CRTable.CRColumn>
+            ))}
+          </CRTable>
+        </CRCard>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
