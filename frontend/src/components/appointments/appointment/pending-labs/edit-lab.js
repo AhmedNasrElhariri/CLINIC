@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useMutation } from '@apollo/client';
 import { Form, Alert } from 'rsuite';
-import * as R from 'ramda';
 
-import { CRModal, CRSelectInput } from 'components';
+import { CRModal } from 'components';
 import AddLabImages from '../add-lab-images';
 import { ADD_LAB_DOCS } from 'apollo-client/queries';
 import { CRTextInput } from 'components/widgets';
@@ -14,7 +13,6 @@ const AddLabDocs = ({ visible, onClose, formValue, setFormValue }) => {
       Alert.success('Lab Document has been uploaded successfully');
     },
   });
-  console.log(formValue);
   return (
     <CRModal
       header="Update Lab Docs"

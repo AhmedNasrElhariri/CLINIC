@@ -14,9 +14,7 @@ export function useUpload({ onCompleted = () => {}, onError = () => {} } = {}) {
             new Compressor(f, {
               quality: 0.6,
               success: result => resolve(result),
-              error(err) {
-                console.log(err.message);
-              },
+              error(err) {},
             });
           })
       );
@@ -35,7 +33,6 @@ export function useUpload({ onCompleted = () => {}, onError = () => {} } = {}) {
             onCompleted(res);
           })
           .catch(err => {
-            console.log(err);
             onError();
           })
           .finally(() => setLoading(false));

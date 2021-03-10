@@ -24,7 +24,6 @@ const DateInput = ({ appointments, onChange }) => {
 
   const disabledMinutes = useCallback(
     minute => {
-      console.log(minute);
       const selectedDate = formValue.day;
 
       const newDate = moment(selectedDate).set({

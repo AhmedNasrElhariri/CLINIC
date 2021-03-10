@@ -1,11 +1,9 @@
 import React from 'react';
-import { H2, Div } from 'components';
+import { Div } from 'components';
 import {
   PatientInfoStyled,
   PatientAvatarStyled,
   AvatarImg,
-  SmallText,
-  SubText,
   SpanTitle,
   PatientDetails,
 } from './style';

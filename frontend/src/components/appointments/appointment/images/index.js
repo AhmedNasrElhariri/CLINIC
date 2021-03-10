@@ -14,13 +14,12 @@ import {
   ContainerStyled,
   PrescriptionPrintout,
 } from '../labs/style';
-const model = Schema.Model({});
 let newImages = [];
 function Images({ visible, onClose, images, onChange: setFormValue2 }) {
-  const header = useMemo(() => 'Images');
+  const header = useMemo(() => 'Images', []);
   const removeItem = indx => {
     newImages = images.filter((element, index) => {
-      return index != indx;
+      return index !== indx;
     });
     setFormValue2(newImages);
   };
@@ -69,7 +68,7 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
       />
       <Div style={{ height: '0px', overflow: 'hidden' }}>
         <PrescriptionPrintout ref={ref}>
-          {images.length == '0' ? (
+          {images.length === '0' ? (
             <Div>No Images</Div>
           ) : (
             images.map(image => (

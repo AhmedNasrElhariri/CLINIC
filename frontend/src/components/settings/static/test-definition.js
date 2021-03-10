@@ -7,8 +7,7 @@ import NewLabDefinition from './new-test-definition';
 import ListLabsDefinition from './list-tests-definition';
 import useLabsDefinition from 'hooks/fetch-tests-definition';
 import useModal from 'hooks/use-model';
-import Prescription from './prescription/index.js';
-import Invoice from 'components/appointments/finish-appointments';
+
 const initValue = { name: '' ,category:''};
 
 const LabDefinition = () => {

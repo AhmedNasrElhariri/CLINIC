@@ -9,7 +9,7 @@ import Labs from './labs/index';
 import Images from './images';
 import NewAppointment from './new-appointment';
 
-import { Div, PatientSummary, H3, CRButton } from 'components';
+import { Div, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
 
 import {

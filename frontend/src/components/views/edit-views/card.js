@@ -35,7 +35,6 @@ const Card = ({ laneId, index }) => {
       ...l,
       cards: l.cards.filter(c => c.id !== formValue.id),
     }));
-    console.log(newLanes);
     setLanes(newLanes);
   }, [formValue, lanes, setLanes]);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useMutation } from '@apollo/client';
 import { Form, Alert } from 'rsuite';
 
@@ -13,7 +13,6 @@ const AddImageDocs = ({ visible, onClose, formValue, setFormValue }) => {
       Alert.success('Image Document has been uploaded successfully');
     },
   });
-  console.log(formValue);
   return (
     <CRModal
       header="Update Image Docs"

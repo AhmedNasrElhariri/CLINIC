@@ -8,7 +8,6 @@ import {
   CREATE_PATIENT_SURGERY,
   LIST_PATIENT_SURGERIES,
 } from 'apollo-client/queries';
-import useGlobalState from 'state';
 
 const updateCache = patientSurgeries => {
   client.writeQuery({

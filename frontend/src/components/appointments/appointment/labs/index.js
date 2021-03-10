@@ -1,5 +1,4 @@
 import React, { useMemo, useRef } from 'react';
-import { Schema } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 import { CRModal, Div } from 'components';
 import {
@@ -14,13 +13,12 @@ import {
   ContainerStyled,
   PrescriptionPrintout,
 } from './style';
-const model = Schema.Model({});
 let newLabs = [];
 function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
-  const header = useMemo(() => 'Labs');
+  const header = useMemo(() => 'Labs', []);
   const removeItem = indx => {
     newLabs = labs.filter((element, index) => {
-      return index != indx;
+      return index !== indx;
     });
     setFormValue2(newLabs);
   };
@@ -69,7 +67,7 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
       />
       <Div style={{ height: '0px', overflow: 'hidden' }}>
         <PrescriptionPrintout ref={ref}>
-          {labs.length == '0' ? (
+          {labs.length === '0' ? (
             <Div>No Labs</Div>
           ) : (
             labs.map(lab => (

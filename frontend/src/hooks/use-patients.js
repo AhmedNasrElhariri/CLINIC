@@ -26,7 +26,6 @@ function usePatients({ onEdit } = {}) {
       const newPatients = patients.map(p =>
         p.id === patient.id ? patient : p
       );
-      console.log(newPatients);
       updateCache(newPatients);
       onEdit && onEdit();
     },

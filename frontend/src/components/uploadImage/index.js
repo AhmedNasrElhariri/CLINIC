@@ -8,7 +8,7 @@ import {
   StyledTextArea,
 } from './style';
 
-function UploadImage({}) {
+function UploadImage() {
   return (
     <>
       <StyledContainer>

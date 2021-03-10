@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Icon } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 
@@ -6,7 +6,6 @@ import { CRButton, Div } from 'components';
 import InvoicePrintout from './invoice-printout';
 
 const PrintInvoice = props => {
-  console.log(props.organization);
   const ref = useRef();
   return (
     <Div>

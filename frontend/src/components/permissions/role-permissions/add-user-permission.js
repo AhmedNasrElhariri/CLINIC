@@ -22,8 +22,6 @@ const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
     setFormValue(f => ({ ...f, specialtyId: doctor.specialty.id }));
   }, [doctors, formValue.userId]);
 
-  console.log(formValue);
-
   const add = useCallback(() => {
     onAdd(formValue);
   }, [formValue, onAdd]);

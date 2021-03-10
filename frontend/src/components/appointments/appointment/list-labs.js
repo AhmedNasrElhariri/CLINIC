@@ -25,7 +25,6 @@ const ListLabs = ({ data }) => {
     const [isVisible, setVisibility] = useState(false);
 
     const toggleVisibility = () => {
-      console.log('add');
       setVisibility(!isVisible);
     };
 

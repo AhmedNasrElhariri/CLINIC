@@ -62,7 +62,6 @@ function Prescription({ visible, onClose }) {
       <Title>Medicine</Title>
       {prescription.map((element, indx) => (
         <Container>
-          {console.log(indx)}
           <Medicine>
             <Ul>
               <Li>{element.name}</Li>

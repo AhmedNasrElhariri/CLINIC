@@ -12,11 +12,7 @@ import {
   CRPanelGroup,
   CRTable,
 } from 'components';
-import {
-  isScheduledOrArchived,
-  isDone,
-  isScheduled,
-} from 'services/appointment';
+import { isScheduled } from 'services/appointment';
 import { canAjdust } from 'services/appointment';
 
 import { PrintOLIcon } from 'components/icons';

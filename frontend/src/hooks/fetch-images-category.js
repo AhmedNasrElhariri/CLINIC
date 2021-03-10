@@ -21,11 +21,9 @@ const updateCache = myImagesCategory => {
 
 function useImagesCategory({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_IMAGES_CATEGORY);
-  const imagesCategory = useMemo(
-    () => R.propOr([], 'myImagesCategory')(data),
-    [data]
-  );
-  console.log(data);
+  const imagesCategory = useMemo(() => R.propOr([], 'myImagesCategory')(data), [
+    data,
+  ]);
 
   const [addImageCategory] = useMutation(ADD_IMAGE_CATEGORY, {
     onCompleted() {

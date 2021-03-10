@@ -52,7 +52,6 @@ const Card = ({ laneId, index }) => {
   }, [open]);
 
   const handleSetChoices = choices => {
-    console.log(choices);
     update({ ...formValue, choices });
     close();
   };

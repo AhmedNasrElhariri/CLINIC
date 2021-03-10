@@ -18,11 +18,12 @@ const PendingImages = ({ patient }) => {
   const { data } = useQuery(GET_PATIENT_IMAGEDOC, {
     variables: { status: status, patientId: patientId },
   });
-  console.log(data);
-  const patientImageDocs = useMemo(() => R.propOr([], 'patientImageDocs')(data), [
-    data,
-  ]);
-  console.log(patientImageDocs);
+
+  const patientImageDocs = useMemo(
+    () => R.propOr([], 'patientImageDocs')(data),
+    [data]
+  );
+
   const images = useMemo(
     () =>
       patientImageDocs.map(element => {

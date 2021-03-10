@@ -15,15 +15,13 @@ const PatientLabs = ({ patient }) => {
         onSelect={setActiveTab}
         width={'100%'}
       >
-        <CRNav.CRItem eventKey="0">Pending Labs</CRNav.CRItem>
-        <CRNav.CRItem eventKey="1">History Labs</CRNav.CRItem>
+        <CRNav.CRItem eventKey="0">Pending</CRNav.CRItem>
+        <CRNav.CRItem eventKey="1">History</CRNav.CRItem>
       </CRNav>
       {(() => {
         switch (activeTab) {
           case '0':
-            return (
-              <PendingLabs patient={patient} />
-            );
+            return <PendingLabs patient={patient} />;
           default:
             return <HistoryLabs patient={patient} />;
         }

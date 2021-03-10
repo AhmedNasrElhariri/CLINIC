@@ -6,11 +6,7 @@ export function useOutsiteClose(ref) {
      * Alert if clicked on outside of element
      */
     function handleClickOutside(event) {
-      console.log(ref.current);
-      console.log(event);
       if (ref.current && !ref.current.contains(event.target)) {
-        console.log('ddddddddddddddddddd');
-        // alert('You clicked outside of me!');
       }
     }
 

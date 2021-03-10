@@ -24,7 +24,6 @@ function usePatientReports({ onCreate, onEdit } = {}) {
   const patientReports = useMemo(() => R.propOr([], 'myPatientReports')(data), [
     data,
   ]);
-  console.log(patientReports);
 
   const [addPatientReport] = useMutation(ADD_PATIENT_REPORT, {
     onCompleted() {

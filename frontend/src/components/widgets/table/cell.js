@@ -23,10 +23,10 @@ export const CRCellStyled = styled(CRCell).attrs(
 )``;
 const handleBackgroundColor = (data, dataKey) => {
   let coloring = 'secondary';
-  if (dataKey == 'status') {
-    if (data[dataKey] == 'Waiting') {
+  if (dataKey === 'status') {
+    if (data[dataKey] === 'Waiting') {
       coloring = 'danger';
-    } else if (data[dataKey] == 'Finished') {
+    } else if (data[dataKey] === 'Finished') {
       coloring = 'primary100';
     } else {
       coloring = 'green';
@@ -36,20 +36,20 @@ const handleBackgroundColor = (data, dataKey) => {
 };
 const handleColor = (data, dataKey) => {
   let variant = 'default';
-  if (dataKey == 'status') {
-    if (data[dataKey] == 'Waiting' || 'Finished' || 'Arrived') {
+  if (dataKey === 'status') {
+    if (data[dataKey] === 'Waiting' || 'Finished' || 'Arrived') {
       variant = 'white';
     }
   }
-  if (dataKey == 'type' && data[dataKey] == 'examination') {
+  if (dataKey === 'type' && data[dataKey] === 'examination') {
     variant = 'primary100';
-  } else if (dataKey == 'type' && data[dataKey] == 'Follow-up') {
+  } else if (dataKey === 'type' && data[dataKey] === 'Follow-up') {
     variant = 'green';
-  } else if (dataKey == 'type' && data[dataKey] == 'Session') {
+  } else if (dataKey === 'type' && data[dataKey] === 'Session') {
     variant = 'yello';
-  } else if (dataKey == 'type' && data[dataKey] == 'Surgery') {
+  } else if (dataKey === 'type' && data[dataKey] === 'Surgery') {
     variant = 'color100';
-  } else if (dataKey == 'type' && data[dataKey] == 'Urgent') {
+  } else if (dataKey === 'type' && data[dataKey] === 'Urgent') {
     variant = 'color200';
   }
   return variant;

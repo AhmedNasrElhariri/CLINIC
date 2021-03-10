@@ -1,5 +1,4 @@
-import { ifElse } from 'ramda';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Nav } from 'rsuite';
 
 import { ItemStyled, Line } from './style';
@@ -17,7 +16,7 @@ export default ({ children, active, onSelect, eventKey, ...props }) => {
           {children}
           {active ? () => handleBefore(eventKey) : ''}
           {!(
-            eventKey == before ||
+            eventKey === before ||
             active ||
             eventKey === '0' ||
             eventKey === '4'

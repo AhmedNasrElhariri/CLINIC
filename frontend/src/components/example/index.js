@@ -132,7 +132,7 @@ const Urgent = [
   },
 ];
 
-function Example({}) {
+function Example() {
   return (
     <>
       <Header>Appoinments</Header>
