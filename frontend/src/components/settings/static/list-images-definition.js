@@ -10,9 +10,6 @@ function ListImagesDefinition({ images, onEdit }) {
         <CRTable
           autoHeight
           data={images}
-          rowHeight={35}
-          minHeight={35}
-          height="35px"
         >
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Image Name</CRTable.CRHeaderCell>
@@ -31,9 +28,10 @@ function ListImagesDefinition({ images, onEdit }) {
                   onClick={() => onEdit(data)}
                   style={{
                     fontSize: 17,
-                    padding: 5,
-                    borderRadius: '5px',
-                    backgroundColor: 'rgb(224, 224, 222)',
+                    padding: '15px',
+                    backgroundColor: '#eef1f1',
+                    paddingRight: '40px',
+                    marginLeft: '1px',
                   }}
                 >
                   {' '}
@@ -51,9 +49,10 @@ function ListImagesDefinition({ images, onEdit }) {
                   onClick={() => onEdit(data)}
                   style={{
                     fontSize: 17,
-                    padding: 5,
-                    borderRadius: 5,
-                    backgroundColor: 'rgb(224, 224, 222)',
+                    padding: '15px',
+                    backgroundColor: '#eef1f1',
+                    paddingRight: '40px',
+                    marginLeft: '1px',
                   }}
                 >
                   {' '}

@@ -175,14 +175,14 @@ function AppointmentData({
               </Form>
             </>
           )}
-          <SectionContainer title="Notes" name="Notes">
+          {/* <SectionContainer title="Notes" name="Notes">
             <Form
               formValue={appointmentFormValue}
               onChange={onChangeAppointment}
             >
               <CRTextArea name="notes" disabled={disabled} />
             </Form>
-          </SectionContainer>
+          </SectionContainer> */}
           <SectionContainer title="Images" name="Images">
             <AppointmentImages
               formValue={appointmentFormValue.collections}

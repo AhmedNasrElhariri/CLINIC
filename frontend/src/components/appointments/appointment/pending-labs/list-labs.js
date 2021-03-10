@@ -28,6 +28,7 @@ function ListLabDocs({ labs, onEdit }) {
                     padding: '15px',
                     backgroundColor: '#eef1f1',
                     paddingRight: '40px',
+                    marginLeft: '1px',
                   }}
                 >
                   {' '}
@@ -40,6 +41,7 @@ function ListLabDocs({ labs, onEdit }) {
                     padding: '15px',
                     backgroundColor: '#eef1f1',
                     paddingRight: '40px',
+                    marginLeft: '1px',
                   }}
                 >
                   {' '}

@@ -2,18 +2,11 @@ import React from 'react';
 import { Icon } from 'rsuite';
 import { CRCard, CRTable, H2 } from 'components';
 
-function Table({ data, borderLeft }) {
+function Table({ data, borderLeft ,onEdit}) {
   return (
     <>
       <CRCard borderless>
-        <CRTable
-          autoHeight
-          data={data}
-          rowHeight={35}
-          minHeight={35}
-          height="35px"
-          border={borderLeft}
-        >
+        <CRTable autoHeight data={data} border={borderLeft}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="patientName" semiBold />
@@ -39,21 +32,54 @@ function Table({ data, borderLeft }) {
             <CRTable.CRCell dataKey="doctor" semiBold />
           </CRTable.CRColumn>
           <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell style={{ backgroundColor: '#eef1f1' }}>
-              <Icon icon="print"> Print</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
             <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
-            <CRTable.CRCell style={{ backgroundColor: '#eef1f1' }}>
-              <Icon icon="close"> Edit</Icon>
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell style={{ backgroundColor: '#eef1f1' }}>
-              <Icon icon="edit"> Cancel</Icon>
+            <CRTable.CRCell>
+              {data => (
+                <>
+                  <Icon
+                    icon="edit"
+                    onClick={() => onEdit(data)}
+                    style={{
+                      fontSize: 17,
+                      padding: '15px',
+                      backgroundColor: '#eef1f1',
+                      paddingRight: '40px',
+                      marginLeft: '1px',
+                    }}
+                  >
+                    {' '}
+                    Print
+                  </Icon>
+                  <Icon
+                    icon="edit"
+                    onClick={() => onEdit(data)}
+                    style={{
+                      fontSize: 17,
+                      padding: '15px',
+                      backgroundColor: '#eef1f1',
+                      paddingRight: '40px',
+                      marginLeft: '1px',
+                    }}
+                  >
+                    {' '}
+                    Edit
+                  </Icon>
+                  <Icon
+                    icon="edit"
+                    onClick={() => onEdit(data)}
+                    style={{
+                      fontSize: 17,
+                      padding: '15px',
+                      backgroundColor: '#eef1f1',
+                      paddingRight: '40px',
+                      marginLeft: '1px',
+                    }}
+                  >
+                    {' '}
+                    Cancel
+                  </Icon>
+                </>
+              )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>

@@ -17,7 +17,7 @@ const CRNav = styled(Nav)`
   }
   &.rs-nav-horizontal {
     white-space: nowrap;
-    width: 1139px;
+    width: 1320px;
   }
   ${layout}
 `;

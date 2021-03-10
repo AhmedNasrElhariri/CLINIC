@@ -32,9 +32,10 @@ function ListHospitals({ hospitals, onEdit }) {
                   onClick={() => onEdit(data)}
                   style={{
                     fontSize: 17,
-                    padding: 5,
-                    borderRadius: '5px',
-                    backgroundColor: 'rgb(224, 224, 222)',
+                    padding: '15px',
+                    backgroundColor: '#eef1f1',
+                    paddingRight: '40px',
+                    marginLeft: '1px',
                   }}
                 >
                   {' '}
@@ -52,9 +53,10 @@ function ListHospitals({ hospitals, onEdit }) {
                   onClick={() => onEdit(data)}
                   style={{
                     fontSize: 17,
-                    padding: 5,
-                    borderRadius: 5,
-                    backgroundColor: 'rgb(224, 224, 222)',
+                    padding: '15px',
+                    backgroundColor: '#eef1f1',
+                    paddingRight: '40px',
+                    marginLeft: '1px',
                   }}
                 >
                   {' '}

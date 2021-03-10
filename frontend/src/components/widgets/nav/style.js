@@ -19,13 +19,10 @@ export const ItemStyled = styled(Div)`
   letter-spacing: normal;
   text-align: center;
   color: #283148;
-  display: flex;
   align-items: center;
-  justify-content: center;
   cursor: pointer;
-  width: 228px;
-  height: 50px;
-  padding: 15px 83px 14px;
+  width: 220px;
+  padding: 15px 0px 14px 0px;
   background-color: #eef1f1;
   position: relative;
   ${props => (props.active ? activeStyles : '')}
@@ -33,8 +30,9 @@ export const ItemStyled = styled(Div)`
 
 export const Line = styled.div`
   width: 0;
-  height: 27px;
+  height: 30px;
   border: solid 1px #a7abab;
   position: absolute;
   right: 0px;
+  bottom: 10px;
 `;
