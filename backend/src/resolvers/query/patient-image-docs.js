@@ -1,5 +1,5 @@
 import { prisma } from '@';
-import imageDefinition from '../image-document';
+import imageDefinition from '../image';
 
 const patientImageDocs = (_, { status ,patientId}) => {
   return prisma.imageDocument.findMany({

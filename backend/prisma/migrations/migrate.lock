@@ -1,3 +1,6 @@
 # Prisma Migrate lockfile v1
 
 20210310213732-init
+20210311000757-remove-appt-labs
+20210311001731-add-more-status-to-labs
+20210311005336-images-for-appts

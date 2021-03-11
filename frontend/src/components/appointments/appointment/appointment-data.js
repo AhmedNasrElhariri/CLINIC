@@ -32,7 +32,6 @@ import Prescription from './appointment-prescription';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
 
-
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
     case NUMBER_FIELD_TYPE:
@@ -67,11 +66,9 @@ const renderItem = ({ type, id, name, choices = [], ...props }) => {
 const SectionContainer = ({ title, children, name, ...props }) => {
   return (
     <Div as={Element} name={name} {...props}>
-      <Div p={4} minHeight={400}>
-        <H3 mb={43}>{title}</H3>
-        <Div mb={4} style={{ overflow: 'scroll', height: '330px' }}>
-          {children}
-        </Div>
+      <Div px={4}>
+        <H3 mb={10}>{title}</H3>
+        <Div mb={4}>{children}</Div>
       </Div>
     </Div>
   );
@@ -89,7 +86,6 @@ function AppointmentData({
   disabled,
   appointment,
   appointmentFormValue,
-  onChangeAppointment,
   arabicEnable,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
@@ -115,40 +111,40 @@ function AppointmentData({
   );
   const handleCollectionsChange = useCallback(
     collections => {
-      onChangeAppointment({
+      onChange({
         ...appointmentFormValue,
         collections,
       });
     },
-    [appointmentFormValue, onChangeAppointment]
+    [appointmentFormValue, onChange]
   );
 
   const handleMedicineChange = useCallback(
     medicine => {
-      onChangeAppointment({
+      onChange({
         ...appointmentFormValue,
         medicine,
       });
     },
-    [appointmentFormValue, onChangeAppointment]
+    [appointmentFormValue, onChange]
   );
   const handleLabsChange = useCallback(
-    labs => {
-      onChangeAppointment({
+    labIds => {
+      onChange({
         ...appointmentFormValue,
-        labs,
+        labIds,
       });
     },
-    [appointmentFormValue, onChangeAppointment]
+    [appointmentFormValue, onChange]
   );
   const handleImagesChange = useCallback(
-    images => {
-      onChangeAppointment({
+    imageIds => {
+      onChange({
         ...appointmentFormValue,
-        images,
+        imageIds,
       });
     },
-    [appointmentFormValue, onChangeAppointment]
+    [appointmentFormValue, onChange]
   );
 
   return (
@@ -200,13 +196,13 @@ function AppointmentData({
           </SectionContainer>
           <SectionContainer title="Labs" name="labs">
             <Labs
-              formValue={appointmentFormValue.labs}
+              selectedLabs={appointmentFormValue.labIds}
               onChange={handleLabsChange}
             />
           </SectionContainer>
           <SectionContainer title="Images" name="images">
             <Images
-              formValue={appointmentFormValue.images}
+              selectedImages={appointmentFormValue.imageIds}
               onChange={handleImagesChange}
             />
           </SectionContainer>

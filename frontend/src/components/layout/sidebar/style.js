@@ -7,7 +7,7 @@ export const ContainerStyled = styled.div`
   background-color: #ffffff;
 
   ${css({
-    width: [200],
+    minWidth: [200],
   })}
 `;
 export const IconDiv = styled.div`

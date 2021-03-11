@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { Div } from 'components';
 import useImagesDefinition from 'hooks/fetch-images-definition';
 import ImageRow from './image-row';
-const Lab = ({ formValue, onChange }) => {
+const Lab = ({ selectedImages, onChange }) => {
   const { imagesDefinition } = useImagesDefinition();
+  const [formValue, setFormValue] = useState([]);
+
+  useEffect(() => {
+    const newFormValue = imagesDefinition.map(l => ({
+      ...l,
+      required: selectedImages.includes(l.id),
+    }));
+    setFormValue(newFormValue);
+  }, [imagesDefinition, selectedImages]);
+
+  const handleOnClick = useCallback(
+    ({ id, required }) => {
+      const newState = !required;
+      const selectedImageIds = formValue
+        .filter(lf => (lf.id === id ? newState : lf.required))
+        .map(lf => lf.id);
+
+      onChange(selectedImageIds);
+    },
+    [formValue, onChange]
+  );
   return (
     <Div>
-      {imagesDefinition.map((i, idx) => (
-        <ImageRow
-          key={idx}
-          image={i}
-          imagesValue={formValue}
-          onChange={onChange}
-        />
+      {formValue.map((img, idx) => (
+        <ImageRow key={idx} image={img} onClick={() => handleOnClick(img)} />
       ))}
     </Div>
   );

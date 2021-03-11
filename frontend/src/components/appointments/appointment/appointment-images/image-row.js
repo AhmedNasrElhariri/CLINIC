@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { Form } from 'rsuite';
 import {
   MedicineContainerStyled,
@@ -6,18 +6,9 @@ import {
   LabName,
   Container,
 } from '../appointment-labs/style';
-import { CRButton, Div, H6, H7 } from 'components';
+import { CRButton } from 'components';
 
-const ImageRow = ({ imagesValue, onChange: setFormValue, image }) => {
-  const [prescribe, setPrescribe] = useState('Require');
-  const [color, setColor] = useState('primary');
-  const handleClicked = useCallback(() => {
-    const newImages = [...imagesValue, image];
-    setFormValue(newImages);
-    setPrescribe('Required');
-    setColor('success');
-  }, [setFormValue, setPrescribe]);
-
+const ImageRow = ({ image, onClick }) => {
   return (
     <MedicineContainerStyled>
       <Form fluid>
@@ -25,13 +16,13 @@ const ImageRow = ({ imagesValue, onChange: setFormValue, image }) => {
           <LabName>{image.name}</LabName>
           <ButtonDiv>
             <CRButton
-              variant={color}
+              variant={image.required ? 'dark' : 'primary'}
               small
               m="auto"
-              onClick={handleClicked}
+              onClick={onClick}
               style={{ padding: '10px' }}
             >
-              {prescribe}
+              {image.required ? 'Required' : 'Require'}
             </CRButton>
           </ButtonDiv>
         </Container>

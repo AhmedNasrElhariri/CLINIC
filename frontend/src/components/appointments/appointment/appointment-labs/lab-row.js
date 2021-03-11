@@ -1,25 +1,15 @@
-import React, { useCallback, useState } from 'react';
-import { Form, FormGroup, FormControl } from 'rsuite';
+import React from 'react';
+import { Form } from 'rsuite';
 
+import { CRButton } from 'components';
 import {
   MedicineContainerStyled,
   ButtonDiv,
   LabName,
   Container,
 } from './style';
-import { CRButton, Div, H6, H7 } from 'components';
 
-// 'rgb(81 198 243)'
-const MedicineRow = ({ labsValue, onChange: setFormValue, lab }) => {
-  const [prescribe, setPrescribe] = useState('Require');
-  const [color, setColor] = useState('primary');
-  const handleClicked = useCallback(() => {
-    const newLabs = [...labsValue, lab];
-    setFormValue(newLabs);
-    setPrescribe('Required');
-    setColor('success');
-  }, [setFormValue, setPrescribe]);
-
+const MedicineRow = ({ lab, onClick }) => {
   return (
     <MedicineContainerStyled>
       <Form fluid>
@@ -27,13 +17,13 @@ const MedicineRow = ({ labsValue, onChange: setFormValue, lab }) => {
           <LabName>{lab.name}</LabName>
           <ButtonDiv>
             <CRButton
-              variant={color}
+              variant={lab.required ? 'dark' : 'primary'}
               small
+              width={150}
               m="auto"
-              onClick={handleClicked}
-              style={{ padding: '10px' }}
+              onClick={onClick}
             >
-              {prescribe}
+              {lab.required ? 'Required' : 'Require'}
             </CRButton>
           </ButtonDiv>
         </Container>

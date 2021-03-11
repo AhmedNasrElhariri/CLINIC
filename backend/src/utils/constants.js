@@ -18,12 +18,18 @@ export const APPOINTMENTS_TYPES = Object.freeze({
   Surgery: 'Surgery',
 });
 
-export const SUBJECTS = {
+export const SUBJECTS = Object.freeze({
   ALL: 'all',
   APPOINTMENT: 'Appointment',
   PATIENT: 'Patient',
   REPORT: 'Report',
-};
+});
+
+export const LAB_STATUS = Object.freeze({
+  DRAFT: 'Draft',
+  PENDING: 'Pending',
+  COMPLETED: 'Completed',
+});
 
 export const INVENTORY_OPERATION = {
   ADD: 'Add',

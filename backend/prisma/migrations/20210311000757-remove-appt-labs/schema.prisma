@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -15,10 +15,9 @@ enum AppointmentType {
   Surgery
 }
 
-enum LabStatus {
-  Draft
-  Pending
-  Completed
+enum LabDocStatus {
+  completed
+  pending
 }
 
 enum AppointmentStatus {
@@ -188,7 +187,6 @@ model Appointment {
   prescriptionId   String?
   appointmentLabId String?
   labs             Lab[]
-  images           Image[]
 }
 
 model Prescription {
@@ -316,7 +314,7 @@ model LabDocument {
 
 model Lab {
   id              String        @id @default(uuid())
-  status          LabStatus
+  status          LabDocStatus
   requiredDate    DateTime      @default(now())
   resultDate      DateTime?
   value           String?
@@ -339,7 +337,7 @@ model ImageDocument {
 
 model Image {
   id                String          @id @default(uuid())
-  status            LabStatus
+  status            LabDocStatus
   requiredDate      DateTime        @default(now())
   resultDate        DateTime?
   value             String?
@@ -347,8 +345,6 @@ model Image {
   patientId         String
   imageDefinition   ImageDefinition @relation(fields: [imageDefinitionId], references: [id])
   imageDefinitionId String
-  appointment       Appointment     @relation(fields: [appointmentId], references: [id])
-  appointmentId     String
   documents         ImageDocument[]
 }
 

@@ -1,6 +1,11 @@
 import { prisma } from '@';
+import { LAB_STATUS } from '@/utils/constants';
 
-const updateAppointment = (_, { appointment }) => {
+const updateAppointment = async (_, { appointment }) => {
+  const persistedAppointment = await prisma.appointment.findOne({
+    where: { id: appointment.id },
+    include: { patient: true },
+  });
   return prisma.appointment.update({
     data: {
       notes: appointment.notes || '',
@@ -38,6 +43,38 @@ const updateAppointment = (_, { appointment }) => {
             },
           },
           where: { id: id || appointment.id },
+        })),
+      },
+      labs: {
+        deleteMany: {},
+        create: appointment.labIds.map(id => ({
+          status: LAB_STATUS.DRAFT,
+          patient: {
+            connect: {
+              id: persistedAppointment.patient.id,
+            },
+          },
+          labDefinition: {
+            connect: {
+              id,
+            },
+          },
+        })),
+      },
+      images: {
+        deleteMany: {},
+        create: appointment.imageIds.map(id => ({
+          status: LAB_STATUS.DRAFT,
+          patient: {
+            connect: {
+              id: persistedAppointment.patient.id,
+            },
+          },
+          imageDefinition: {
+            connect: {
+              id,
+            },
+          },
         })),
       },
     },

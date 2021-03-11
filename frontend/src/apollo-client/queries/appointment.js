@@ -65,6 +65,7 @@ export const GET_APPOINTMENT = gql`
       status
       notes
       prescription
+      userId
       data {
         id
         value
@@ -90,7 +91,16 @@ export const GET_APPOINTMENT = gql`
           comment
         }
       }
-      userId
+      labs {
+        labDefinition {
+          id
+        }
+      }
+      images {
+        imageDefinition {
+          id
+        }
+      }
     }
   }
 `;
@@ -183,7 +193,6 @@ export const GET_APPOINTMENT_HISTORY = gql`
       id
       type
       date
-      labs
       status
       notes
       prescription
@@ -211,6 +220,12 @@ export const GET_APPOINTMENT_HISTORY = gql`
           url
           comment
         }
+      }
+      labs {
+        id
+      }
+      images {
+        id
       }
     }
   }

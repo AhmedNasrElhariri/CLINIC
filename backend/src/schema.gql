@@ -10,9 +10,10 @@ enum PermissionLevel {
   User
 }
 
-enum LabDocStatus {
-  completed
-  pending
+enum LabStatus {
+  Draft
+  Pending
+  Completed
 }
 
 enum Position {
@@ -80,7 +81,7 @@ type Query {
   activeViews: [View!]
   listMyViewsStatus: [ViewStatus!]
   mySnippets: [Snippet!]
-  patientLabs(patientId: ID!): [PatientLab!]
+  patientLabs(patientId: ID!): [Lab!]
   medicineHistory(patientId: ID!): [MedicineHistory!]
   familyHistory(patientId: ID!): [FamilyHistory!]
   expenses: [Expense!]
@@ -111,8 +112,8 @@ type Query {
   listBranchesTree(action: String!): [Branch!]
   configuration: Configuration
   myInvoiceCounter: Organization!
-  patientLabDocs(status: String!, patientId: String!): [LabDocument!]
-  patientImageDocs(status: String!, patientId: String!): [ImageDocument!]
+  patientLabDocs(status: String!, patientId: String!): [Lab!]
+  patientImageDocs(status: String!, patientId: String!): [Image!]
 }
 
 ########################### Mutation ##################################
@@ -140,7 +141,7 @@ type Mutation {
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
   createSnippet(snippet: SnippetInput!): Snippet!
-  addLabDocs(documentLab: DocumentLabInput!): LabDocument!
+  addLabDocs(documentLab: DocumentLabInput!): Lab!
   createMedicineHistory(
     medicineHistory: MedicineHistoryInput!
   ): MedicineHistory!
@@ -347,13 +348,14 @@ type Appointment {
   date: Date
   type: AppointmentType!
   status: AppointmentStatus!
-  labs: JSON
   patient: Patient!
   data: [AppointmentField!]
   notes: String
   prescription: String
   collections: [Collection!]
   userId: String
+  labs: [Lab!]
+  images: [Image!]
 }
 
 type Collection {
@@ -373,7 +375,6 @@ input AppointmentInput {
   date: Date!
   type: AppointmentType!
   userId: ID!
-  labs: JSON
   notes: String
 }
 
@@ -385,7 +386,8 @@ input CollectionInput {
 
 input UpdateAppointmentInput {
   id: ID!
-  labs: JSON
+  labIds: [ID!]
+  imageIds: [ID!]
   data: [AppointmentFieldInput!]
   notes: String
   prescription: String
@@ -513,29 +515,19 @@ input SnippetInput {
 
 ########################### Labs ##################################
 
-type PatientLab {
-  id: ID
-  patient: Patient
-  name: String
-  documents: [LabDocument!]
-}
-
-input DocumentLabInput{
+input DocumentLabInput {
   labId: ID!
   value: String
   files: [FileInput]
 }
 
-type LabDocument {
+type Lab {
   id: ID!
-  file: File
-  fileId: ID
-  status: LabDocStatus!
+  status: LabStatus!
   requiredDate: Date!
   resultDate: Date
   value: String
   labDefinition: LabDefinition
-  labDefinitionId: ID!
 }
 
 input PatientLabInput {
@@ -546,22 +538,19 @@ input PatientLabInput {
 
 ########################### Patient Image ##################################
 
-input DocumentImageInput{
+input DocumentImageInput {
   ImageId: ID!
   value: String
   files: [FileInput]
 }
 
-type ImageDocument {
+type Image {
   id: ID!
-  file: File
-  fileId: ID
-  status: LabDocStatus!
+  status: LabStatus!
   requiredDate: Date!
   resultDate: Date
   value: String
   imageDefinition: ImageDefinition
-  imageDefinitionId: ID!
 }
 
 input PatientImageInput {
@@ -569,7 +558,6 @@ input PatientImageInput {
   name: String!
   documents: [ID!]
 }
-
 
 ########################### History ##################################
 

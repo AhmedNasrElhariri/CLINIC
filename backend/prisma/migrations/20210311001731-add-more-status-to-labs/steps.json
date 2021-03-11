@@ -1,0 +1,30 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "LabStatus",
+      "values": [
+        "Draft",
+        "Pending",
+        "Completed"
+      ]
+    },
+    {
+      "tag": "DeleteEnum",
+      "enum": "LabDocStatus"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Lab",
+      "field": "status",
+      "type": "LabStatus"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Image",
+      "field": "status",
+      "type": "LabStatus"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { Alert, Loader, Icon, Toggle } from 'rsuite';
 import styled from 'styled-components';
@@ -21,29 +21,21 @@ import {
 import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
-  ARCHIVE_APPOINTMENT,
   LIST_PATIENT_APPOINTMENTS,
 } from 'apollo-client/queries';
 
 import useAppointmentHistory from './fetch-appointment-history';
-import History from './patient-history';
 
 import { HeaderStyled } from './style';
-import PatientSurgries from './surgries';
 
 import useFrom from 'hooks/form';
 import useModal from 'hooks/use-model';
-
-const normalTabs = ['Home', 'Summary', 'Surgries', 'Labs', 'History'];
-const surgeryTabs = ['Home'];
 
 const StyledToggle = styled.div`
   margin: 10px 0px;
 `;
 
 function Appointment() {
-  const history = useHistory();
-
   const { visible, open, close } = useModal();
   const { type, setType } = useFrom({});
 
@@ -54,12 +46,11 @@ function Appointment() {
     notes: '',
     prescription: '',
     medicine: [],
-    labs: [],
+    labIds: [],
+    imageIds: [],
     collections: [],
-    images: [],
   });
   const [disabled, setDisabled] = useState(false);
-  const [activeTab, setActiveTab] = useState('0');
   const [arabicEnable, setArabicEnable] = useState(false);
   const { appointmentId } = useParams();
   const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
@@ -83,32 +74,18 @@ function Appointment() {
     ],
   });
 
-  const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
-    onCompleted: () => {
-      Alert.success('Appointment has been Archived successfully');
-      setDisabled(true);
-      history.push('/appointments/today');
-    },
-  });
   const appointment = useMemo(
     () => R.prop('appointment')(appointmentRes) || {},
     [appointmentRes]
   );
-  const tabs = useMemo(
-    () => (appointment.type === 'Surgery' ? surgeryTabs : normalTabs),
-    [appointment.type]
-  );
   const patient = useMemo(() => R.propOr({}, 'patient')(appointment), [
     appointment,
   ]);
-  const {
-    normalizedFields,
-    appointmentHistory,
-    viewFields,
-    groups,
-  } = useAppointmentHistory({ appointmentId, appointment });
+  const { normalizedFields, groups } = useAppointmentHistory({
+    appointmentId,
+    appointment,
+  });
 
-  const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const onUpdate = useCallback(() => {
     update({
       variables: {
@@ -116,6 +93,8 @@ function Appointment() {
           data: mapFormValueToAppointmentData(normalizedFields, formValue),
           notes: apptFormValue.notes,
           prescription: apptFormValue.prescription,
+          labIds: apptFormValue.labIds,
+          imageIds: apptFormValue.imageIds,
           collections: apptFormValue.collections.map(c => ({
             ...R.pick(['id', 'caption'])(c),
             images: R.map(R.pick(['id', 'comment']))(c.images),
@@ -150,29 +129,26 @@ function Appointment() {
     open();
   }, [open, setType]);
 
-  const onArchive = useCallback(() => {
-    archive({
-      variables: { id: appointmentId },
-    });
-  }, [archive, appointmentId]);
-
-  const prescriptionBody = useMemo(() => {
-    return R.propOr('', 'prescription')(apptFormValue);
-  }, [apptFormValue]);
-
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
   }, [normalizedFields]);
 
   useEffect(() => {
-    setApptFormValue({
+    setApptFormValue(val => ({
+      ...val,
       notes: R.propOr('', 'notes')(appointment),
       prescription: R.propOr('', 'prescription')(appointment),
       collections: R.propOr([], 'collections')(appointment),
       medicine: R.propOr([], 'medicine')(appointment),
-      labs: R.propOr([], 'lab')(appointment),
-      images: R.propOr([], 'image')(appointment),
-    });
+      labIds: R.pipe(
+        R.propOr([], 'labs'),
+        R.map(R.path(['labDefinition', 'id']))
+      )(appointment),
+      imageIds: R.pipe(
+        R.propOr([], 'images'),
+        R.map(R.path(['imageDefinition', 'id']))
+      )(appointment),
+    }));
   }, [appointment]);
   const handleMedicineChange = useCallback(
     medicine => {
@@ -266,11 +242,8 @@ function Appointment() {
                 disabled={disabled}
                 formValue={formValue}
                 appointmentFormValue={apptFormValue}
-                onChangeAppointment={setApptFormValue}
                 arabicEnable={arabicEnable}
-                onChange={ch => {
-                  setFormValue(ch);
-                }}
+                onChange={setApptFormValue}
                 groups={groups}
                 appointment={appointment}
               />
