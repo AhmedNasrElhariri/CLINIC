@@ -22,7 +22,6 @@ const PendingImages = ({ patient }) => {
   const patientImageDocs = useMemo(() => R.propOr([], 'patientImageDocs')(data), [
     data,
   ]);
-  console.log(patientImageDocs);
   const images = useMemo(
     () =>
       patientImageDocs.map(element => {

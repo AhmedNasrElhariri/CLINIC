@@ -13,6 +13,7 @@ export { default as CRModal } from './modal';
 export { default as CRCard } from './card';
 export { default as CRTable } from './table';
 export { default as CRNav } from './nav/normal';
+export { default as CRVNav } from './nav/vertical';
 export { default as CRResponsiveNav } from './nav/responsive';
 export { default as CRVDivider } from './vertical-divider';
 export { default as CRPanelGroup } from './panel-group';

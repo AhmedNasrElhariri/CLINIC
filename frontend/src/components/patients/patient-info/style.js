@@ -21,7 +21,7 @@ export const Cell = styled(Div)`
 export const CellTitle = styled(H6)`
   width: 107px;
   margin-left: 26px;
-  margin-right: 894px;
+  margin-right: 500px;
   font-family: SegoeUI;
   font-size: 16px;
   font-weight: normal;
