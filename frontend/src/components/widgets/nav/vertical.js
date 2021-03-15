@@ -4,7 +4,6 @@ import { Nav } from 'rsuite';
 import CRItem from './vertical-items';
 import CRVItem from './vertical-item';
 import CRScoll from './scroll-item';
-import { layout } from 'styled-system';
 
 const CRNav = styled(Nav)`
   &.rs-nav-tabs.rs-nav-vertical .rs-nav-waterline {

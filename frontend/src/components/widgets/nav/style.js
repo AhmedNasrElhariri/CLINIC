@@ -21,7 +21,7 @@ export const ItemStyled = styled(Div)`
   color: #283148;
   align-items: center;
   cursor: pointer;
-  padding: 15px 0px 14px 0px;
+  padding: 15px 83px;
   background-color: #eef1f1;
   position: relative;
   ${props => (props.active ? activeStyles : '')}

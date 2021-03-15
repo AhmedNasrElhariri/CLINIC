@@ -11,19 +11,19 @@ const activeStyles = css`
 `;
 
 const ItemStyled = styled(Div)`
-  font-family: SegoeUI;
-  font-size: 16px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.31;
-  letter-spacing: normal;
-  text-align: center;
+font-family: SegoeUI;
+font-size: 12px;
+font-weight: 600;
+font-stretch: normal;
+font-style: normal;
+line-height: 1.33;
+letter-spacing: normal;
+text-align: left;
   color: #283148;
   align-items: center;
   cursor: pointer;
   width: 151px;
-  padding: 15px 0px 14px 0px;
+  padding: 12px 25px;
   background-color: #ffffff;
   position: relative;
   ${props => (props.active ? activeStyles : '')}

@@ -14,7 +14,7 @@ import ImageCategory from './image-category';
 
 const CRVDivider = styled.div`
   width: 1px;
-  height: 484px;
+  height: 551px;
   background-color: #c5c6c7;
 `;
 const Container = styled.div`

@@ -1,86 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import * as R from 'ramda';
 import ListLabDocs from './list-lab-docs';
-import { Form, SelectPicker } from 'rsuite';
+import { SelectPicker } from 'rsuite';
+import { GET_PATIENT_LABS_History } from 'apollo-client/queries';
+import { useQuery } from '@apollo/client';
+import { formatDate } from 'utils/date';
 
-let labDocs = [
-  {
-    label: 'lab1',
-    value: {
-      id: '1',
-      name: 'lab1',
-      date: '22-10-2020',
-      resultValue: '12-1',
-      results: 'view Image',
-    },
-    category: 'A'
-  },
-  {
-    label: 'lab2',
-    value: {
-      id: '2',
-      name: 'lab2',
-      date: '22-10-2020',
-      resultValue: '12-1',
-      results: 'view Image',
-    },
-    category: 'B'
-  },
-  {
-    label: 'lab3',
-    value: {
-      id: '2',
-      name: 'lab2',
-      date: '22-10-2020',
-      resultValue: '12-1',
-      results: 'view Image',
-    },
-    category: 'A'
-  },
-  {
-    label: 'lab4',
-    value: {
-      id: '2',
-      name: 'lab2',
-      date: '22-10-2020',
-      resultValue: '12-1',
-      results: 'view Image',
-    },
-    category: 'A'
-  },
-  {
-    label: 'lab5',
-    value: {
-      id: '2',
-      name: 'lab2',
-      date: '22-10-2020',
-      resultValue: '12-1',
-      results: 'view Image',
-    },
-    category: 'B'
-  },
-  {
-    label: 'lab6',
-    value: {
-      id: '2',
-      name: 'lab2',
-      date: '22-10-2020',
-      resultValue: '12-1',
-      results: 'view Image',
-    },
-    category: 'B'
-  },
-  {
-    label: 'lab7',
-    value: {
-      id: '2',
-      name: 'lab2',
-      date: '22-10-2020',
-      resultValue: '12-1',
-      results: 'view Image',
-    },
-    category: 'A'
-  },
-];
 const HistoryLabs = ({ patient }) => {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState([]);
@@ -90,6 +15,26 @@ const HistoryLabs = ({ patient }) => {
       setFormValue([...formValue, lab]);
     }
   }, [lab]);
+  const status = 'completed';
+  const patientId = patient.id;
+  const { data } = useQuery(GET_PATIENT_LABS_History, {
+    variables: { status: status, patientId: patientId },
+  });
+  const patientLabDocs = useMemo(() => R.propOr([], 'patientLabDocs')(data), [
+    data,
+  ]);
+  const labDocs = patientLabDocs.map(element => {
+    return {
+      label: element.labDefinition.name,
+      value: {
+        name: element.labDefinition.name,
+        value: element.value,
+        date: formatDate(element.resultDate),
+        results: 'view Images',
+      },
+      category: element.labDefinition.name,
+    };
+  });
   return (
     <>
       <SelectPicker
@@ -98,7 +43,7 @@ const HistoryLabs = ({ patient }) => {
         onSelect={setLab}
         data={labDocs}
         block
-        groupBy="category" 
+        groupBy="category"
         style={{ marginTop: '10px', width: '310px', marginLeft: '0px' }}
       />
       <ListLabDocs labs={formValue} />
