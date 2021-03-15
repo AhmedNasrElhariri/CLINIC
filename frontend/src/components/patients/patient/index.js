@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import styled from 'styled-components';
 import * as R from 'ramda';
 import {
   useParams,
@@ -12,7 +13,7 @@ import { useQuery } from '@apollo/client';
 import { GET_PATIENT } from 'apollo-client/queries';
 import {
   Div,
-  CRNav,
+  CRVNav,
   CRButton,
   MainContainer,
   PatientSummary,
@@ -27,8 +28,26 @@ import PatientSurgries from 'components/appointments/appointment/surgries';
 import { appointmentHistory } from '../../../utils/constants';
 import useQueryParams from 'hooks/useQueryParams';
 
-const tabs = ['Patient Info', 'Sessions', 'Surgries', 'Labs', 'History','Images'];
-
+const tabs = [
+  'Patient Info',
+  'Sessions',
+  'Surgries',
+  'Labs',
+  'History',
+  'Images',
+];
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const TabContainer = styled.div`
+  width: 950px;
+`;
+const CRVDivider = styled.div`
+  width: 1px;
+  height: 360px;
+  background-color: #c5c6c7;
+`;
 function Appointment() {
   const history = useHistory();
   let { patientId } = useParams();
@@ -41,7 +60,6 @@ function Appointment() {
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);
-
   const { viewFields } = usePatientHistory({ patientId });
 
   return (
@@ -67,38 +85,38 @@ function Appointment() {
       <Switch>
         <Route exact path="/patients/:id">
           {() => (
-            <Div display="flex">
-              <Div flexGrow={1}>
-                <CRNav
-                  appearance="tabs"
-                  activeKey={activeTab}
-                  onSelect={setActiveTab}
-                  justified
-                >
-                  {tabs.map((t, idx) => (
-                    <CRNav.CRItem eventKey={idx + ''} key={idx}>
-                      {t}
-                    </CRNav.CRItem>
-                  ))}
-                </CRNav>
-                <Div py={3} bg="white">
-                  {showComp('0') && <PatientInfo patient={patient} />}
-                  {showComp('1') && (
-                    <PatientSummary summary={appointmentHistory} />
-                  )}
-                  {showComp('2') && (
-                    <PatientSurgries
-                      history={appointmentHistory}
-                      viewFields={viewFields}
-                      patientId={patient?.id}
-                    />
-                  )}
-                  {showComp('3') && <PatientLabs patient={patient} />}
-                  {showComp('4') && <History patient={patient} />}
-                  {showComp('5') && <PatientImages patient={patient} />}
-                </Div>
-              </Div>
-            </Div>
+            <Container>
+              <CRVNav
+                appearance="tabs"
+                activeKey={activeTab}
+                onSelect={setActiveTab}
+                justified
+                vertical
+              >
+                {tabs.map((t, idx) => (
+                  <CRVNav.CRItem eventKey={idx + ''} key={idx}>
+                    {t}
+                  </CRVNav.CRItem>
+                ))}
+              </CRVNav>
+              <CRVDivider />
+              <TabContainer bg="white">
+                {showComp('0') && <PatientInfo patient={patient} />}
+                {showComp('1') && (
+                  <PatientSummary summary={appointmentHistory} />
+                )}
+                {showComp('2') && (
+                  <PatientSurgries
+                    history={appointmentHistory}
+                    viewFields={viewFields}
+                    patientId={patient?.id}
+                  />
+                )}
+                {showComp('3') && <PatientLabs patient={patient} />}
+                {showComp('4') && <History patient={patient} />}
+                {showComp('5') && <PatientImages patient={patient} />}
+              </TabContainer>
+            </Container>
           )}
         </Route>
         <Route path="/patients/:id/:appointmentId">

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Uploader, FormControl } from 'rsuite';
+import { Uploader, FormControl, Icon } from 'rsuite';
 
 const UploaderStyled = styled(Uploader)`
   & .rs-uploader-file-item,
   & .rs-uploader-trigger-btn {
-    width: 150px;
-    height: 150px;
-    line-height: 150px !important;
+    width: 255px;
+    height: 255px;
   }
   & .rs-uploader-file-item-preview {
     height: 100%;
@@ -15,8 +14,24 @@ const UploaderStyled = styled(Uploader)`
   }
 `;
 
-const Content = styled.div`
-  line-height: 100px !important;
+const StyledContainer = styled.div``;
+
+const Content = styled.p`
+  margin: ${props => props.margin};
+  font-family: SegoeUI;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: #a6abab;
+  display: flex;
+  white-space: initial;
+`;
+const Focus = styled.div`
+  color: #283148;
 `;
 
 const LabFormInput = ({ value, onChange }) => {
@@ -35,7 +50,19 @@ const LabFormInput = ({ value, onChange }) => {
       onChange={setImages}
       onSuccess={onUpload}
     >
-      <Content>Click or Drag</Content>
+      <StyledContainer>
+        <Icon
+          icon="cloud-upload"
+          style={{
+            margin: '96.5px 112px 15px 112px',
+            width: '30px',
+          }}
+        ></Icon>
+        <Content margin='0px 59px 51px 59px'>
+          Drop files here or<Focus> browse</Focus>
+        </Content>
+        <Content margin='0px 59px 14px 59px'>Use high quality .jpg files less than 3 MB</Content>
+      </StyledContainer>
     </UploaderStyled>
   );
 };

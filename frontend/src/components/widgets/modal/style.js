@@ -13,6 +13,7 @@ export const ModalStyled = styled(Modal)`
   & .rs-modal-content {
     box-shadow: -6px 6px 20px 0 rgba(0, 0, 0, 0.05);
     padding: 0;
+    border-radius:0px;
   }
 
   & .rs-modal-body {

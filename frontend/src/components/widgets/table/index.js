@@ -15,12 +15,14 @@ const CRTable = styled(Table)`
   }
   & .rs-table-cell-content {
     padding: 0px ;
-    border-bottom: 1px solid white;
   }
   }
   & .rs-table-cell-content > * {
     text-align: center;
     padding-top: 11px;
+  }
+  & .rs-table-row {
+    border-bottom: 1px solid white;
   }
 `;
 

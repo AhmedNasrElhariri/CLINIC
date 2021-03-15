@@ -14,23 +14,23 @@ import {
 const PatientInfo = ({ patient }) => {
   return (
     <PatientInfoStyled>
-      <CRCard borderless>
-        <Cell ml={3} display="flex" alignItems="center" height={64}>
+      <CRCard padding='55px 10px' borderless>
+        <Cell display="flex" alignItems="center" height={64}>
           <H3 mb={4}>Information</H3>
           <EditPatient patient={patient}/>
-          <EditButton margin="925px">Expand</EditButton>
+          <EditButton margin="685px">Expand</EditButton>
         </Cell>
-        <Cell ml={3} display="flex" alignItems="center">
+        <Cell display="flex" alignItems="center">
           <CellTitle mb={4}>Name</CellTitle>
           <StrongStyled>
             {patient.name}
           </StrongStyled>
         </Cell>
-        <Cell ml={3} display="flex" alignItems="center">
+        <Cell display="flex" alignItems="center">
           <CellTitle mb={4}>Age</CellTitle>
           <AddressStyled>{patient.age}</AddressStyled>
         </Cell>
-        <Cell ml={3} display="flex" alignItems="center">
+        <Cell display="flex" alignItems="center">
           <CellTitle mb={4}>Phone Number</CellTitle>
           <AddressStyled>{patient.phoneNo}</AddressStyled>
         </Cell>

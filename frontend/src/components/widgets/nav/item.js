@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { Nav } from 'rsuite';
 
 import { ItemStyled, Line } from './style';
+
 let before = 0;
 let handleBefore = event => {
   before = event - 1;

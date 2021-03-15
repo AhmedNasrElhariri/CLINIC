@@ -40,6 +40,7 @@ export const StyledPanel = styled(Panel)`
     width: 17px;
     height: 17px;
     margin-right: 5px;
-    padding: 0px 4px 3px 3px;
+    padding: 0px 3px 12px 3px;
+    
   }
 `;

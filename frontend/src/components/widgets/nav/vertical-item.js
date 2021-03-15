@@ -23,19 +23,14 @@ const Item = styled(Div)`
   text-align: left;
   color: ${props => props.theme.colors.texts[2]};
   padding: 0px 35px;
-
   background-color: transparent;
-
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-
   justify-content: flex-start;
-
   ${props => (props.active ? activeStyles : '')}
-
   &:hover {
     text-decoration: none;
     color: ${props => props.theme.colors.primary};

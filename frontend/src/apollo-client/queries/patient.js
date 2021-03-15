@@ -58,11 +58,39 @@ export const ADD_LAB_DOCS = gql`
 `;
 
 export const GET_PATIENT_LABDOC = gql`
-  query( $status: String!,$patientId:String!) {
-    patientLabDocs( status: $status,patientId:$patientId) {
+  query($status: String!, $patientId: String!) {
+    patientLabDocs(status: $status, patientId: $patientId) {
       id
       requiredDate
-      labDefinition{
+      labDefinition {
+        name
+      }
+    }
+  }
+`;
+
+export const GET_PATIENT_LABS_History = gql`
+  query($status: String!, $patientId: String!) {
+    patientImageDocs(status: $status, patientId: $patientId) {
+      id
+      resultDate
+      value
+      fileId
+      labDefinition {
+        name
+      }
+    }
+  }
+`;
+
+export const GET_PATIENT_IMAGES_HISTORY = gql`
+  query($status: String!, $patientId: String!) {
+    patientImageDocs(status: $status, patientId: $patientId) {
+      id
+      resultDate
+      value
+      fileId
+      imageDefinition {
         name
       }
     }
@@ -70,11 +98,11 @@ export const GET_PATIENT_LABDOC = gql`
 `;
 
 export const GET_PATIENT_IMAGEDOC = gql`
-  query( $status: String!,$patientId:String!) {
-    patientImageDocs( status: $status,patientId:$patientId) {
+  query($status: String!, $patientId: String!) {
+    patientImageDocs(status: $status, patientId: $patientId) {
       id
       requiredDate
-      imageDefinition{
+      imageDefinition {
         name
       }
     }

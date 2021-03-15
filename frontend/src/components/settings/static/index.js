@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
-import { MainContainer, CRNav } from 'components';
+import styled from 'styled-components';
+import { MainContainer, CRVNav } from 'components';
 import { Icon, Dropdown } from 'rsuite';
 import Hospitals from './hospitals';
 import Surgeries from './surgeries';
@@ -11,34 +11,42 @@ import PatientReport from './patient-report';
 import Timing from './timing';
 import LabCategory from './lab-category';
 import ImageCategory from './image-category';
+
+const CRVDivider = styled.div`
+  width: 1px;
+  height: 551px;
+  background-color: #c5c6c7;
+`;
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const TabContainer = styled.div`
+  width: 970px;
+`;
 function StaticSettings() {
   const [activeTab, setActiveTab] = useState('0');
 
   return (
-    <>
-      <MainContainer title="Static Info">
-        <CRNav
-          appearance="tabs"
-          activeKey={activeTab}
-          onSelect={setActiveTab}
-          justified
-        >
-          <CRNav.CRItem eventKey="0">Hospitals</CRNav.CRItem>
-          <CRNav.CRItem eventKey="1">Surgeries</CRNav.CRItem>
-          <CRNav.CRItem eventKey="2">Medicine Definition</CRNav.CRItem>
-          <CRNav.CRItem eventKey="3">Lab Definition</CRNav.CRItem>
-          <CRNav.CRItem eventKey="4">Lab Category</CRNav.CRItem>
-          {/* <Dropdown icon={<Icon icon="ellipsis-h" />} title="more..." style={{backgroundColor: '#eef1f1',height:'50px'}}>
-            <Dropdown.Item eventKey="5">Image Definition</Dropdown.Item>
-            <Dropdown.Item eventKey="6">Image Category</Dropdown.Item>
-            <Dropdown.Item eventKey="7">Timing</Dropdown.Item>
-            <Dropdown.Item eventKey="8">Patient Report</Dropdown.Item>
-          </Dropdown> */}
-          <CRNav.CRItem eventKey="5">Image Definition</CRNav.CRItem>
-          <CRNav.CRItem eventKey="6">Image Category</CRNav.CRItem>
-          <CRNav.CRItem eventKey="7">Timing</CRNav.CRItem>
-          <CRNav.CRItem eventKey="8">Patient Report</CRNav.CRItem>
-        </CRNav>
+    <Container>
+      <CRVNav
+        appearance="tabs"
+        activeKey={activeTab}
+        onSelect={setActiveTab}
+        vertical
+      >
+        <CRVNav.CRItem eventKey="0">Hospitals</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="1">Surgeries</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="2">Medicine Definition</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="3">Lab Definition</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="4">Lab Category</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="5">Image Definition</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="6">Image Category</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="7">Timing</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="8">Patient Report</CRVNav.CRItem>
+      </CRVNav>
+      <CRVDivider />
+      <TabContainer>
         {(() => {
           switch (activeTab) {
             case '0':
@@ -61,8 +69,8 @@ function StaticSettings() {
               return <PatientReport />;
           }
         })()}
-      </MainContainer>
-    </>
+      </TabContainer>
+    </Container>
   );
 }
 

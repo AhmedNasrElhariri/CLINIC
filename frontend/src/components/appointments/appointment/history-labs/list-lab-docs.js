@@ -19,7 +19,7 @@ function ListLabDocs({ labs }) {
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Value</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="resultValue" semiBold />
+          <CRTable.CRCell dataKey="value" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Results</CRTable.CRHeaderCell>

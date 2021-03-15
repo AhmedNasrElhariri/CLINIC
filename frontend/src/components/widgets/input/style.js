@@ -130,13 +130,15 @@ export const NumberContainerStyled = styled.div`
 
 export const NumberInputStyled = styled.input`
   ${inputCss};
-  width: 35px;
+  width: 100%;
   height: 35px;
   padding: 7px 13px 7px 14px;
   object-fit: contain;
   border: solid 1px #eef1f1;
   background-color: #ffffff;
   border-radius: 0px;
+  text-align: center;
+  margin: 0px 2px;
 `;
 
 export const TextAreaStyled = styled.textarea`

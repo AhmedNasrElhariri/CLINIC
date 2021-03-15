@@ -93,7 +93,13 @@ function ListAppointments({
               <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {appointment => (
-                  <Div display="flex">
+                  <Div
+                    display="flex"
+                    style={{
+                      marginLeft: '40px',
+                      paddingTop:'4px',
+                    }}
+                  >
                     {isScheduled(appointment) && (
                       <CRButton
                         variant="primary"
