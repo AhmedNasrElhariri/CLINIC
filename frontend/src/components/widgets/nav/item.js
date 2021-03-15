@@ -7,6 +7,7 @@ let handleBefore = event => {
   before = event - 1;
 };
 export default ({ children, active, onSelect, eventKey, ...props }) => {
+  console.log(children);
   const select = useCallback(e => onSelect(eventKey, e), [eventKey, onSelect]);
   return (
     <Nav.Item

@@ -351,7 +351,7 @@ type Appointment {
   patient: Patient!
   data: [AppointmentField!]
   notes: String
-  prescription: String
+  prescription: [Prescription!]
   collections: [Collection!]
   userId: String
   labs: [Lab!]
@@ -390,15 +390,8 @@ input UpdateAppointmentInput {
   imageIds: [ID!]
   data: [AppointmentFieldInput!]
   notes: String
-  prescription: String
+  prescription: [PrescriptionInput!]
   collections: [CollectionInput!]
-}
-
-input PrescriptionInput {
-  medicineId: ID!
-  timingId: ID!
-  durationLength: Int
-  durationType: String
 }
 
 input AppointmentQueryInput {
@@ -412,6 +405,24 @@ input AppointmentFieldInput {
   id: ID
   value: JSON
   fieldId: ID!
+}
+
+########################### views ##################################
+
+type Prescription {
+  id: ID!
+  dose: Int!
+  timingId: ID
+  durationLength: Int
+  durationType: String
+}
+
+input PrescriptionInput {
+  medicineId: ID!
+  dose: Int!
+  timingId: ID
+  durationLength: Int
+  durationType: String
 }
 
 ########################### views ##################################

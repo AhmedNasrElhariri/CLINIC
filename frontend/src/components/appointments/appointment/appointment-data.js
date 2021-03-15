@@ -66,7 +66,7 @@ const renderItem = ({ type, id, name, choices = [], ...props }) => {
 const SectionContainer = ({ title, children, name, ...props }) => {
   return (
     <Div as={Element} name={name} {...props}>
-      <Div px={4}>
+      <Div px={4} my={2}>
         <H3 mb={10}>{title}</H3>
         <Div mb={4}>{children}</Div>
       </Div>
@@ -119,11 +119,11 @@ function AppointmentData({
     [appointmentFormValue, onChange]
   );
 
-  const handleMedicineChange = useCallback(
-    medicine => {
+  const handlePrescriptionChange = useCallback(
+    prescription => {
       onChange({
         ...appointmentFormValue,
-        medicine,
+        prescription,
       });
     },
     [appointmentFormValue, onChange]
@@ -189,7 +189,7 @@ function AppointmentData({
           <SectionContainer title="Prescription" name="prescription">
             <Prescription
               formValue={appointmentFormValue.medicine}
-              onChange={handleMedicineChange}
+              onChange={handlePrescriptionChange}
               arabicEnable={arabicEnable}
               medicines={filteredMedicines}
             />

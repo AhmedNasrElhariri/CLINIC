@@ -20,7 +20,7 @@ const AdminContainer = () => {
         appearance="tabs"
         activeKey={activeTab}
         onSelect={setActiveTab}
-        width={'100%'}
+        width="100%"
         justified
       >
         <CRNav.CRItem eventKey="branches">Branches</CRNav.CRItem>
