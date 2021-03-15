@@ -7,11 +7,11 @@ function ListLabDocs({ images, onEdit }) {
   return (
     <CRCard borderless>
       <CRTable autoHeight data={images}>
-        <CRTable.CRColumn flexGrow={2}>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={2}>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="date" semiBold />
         </CRTable.CRColumn>

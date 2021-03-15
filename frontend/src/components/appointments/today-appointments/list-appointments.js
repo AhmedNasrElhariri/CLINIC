@@ -93,18 +93,11 @@ function ListAppointments({
               <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {appointment => (
-                  <Div
-                    display="flex"
-                    style={{
-                      marginLeft: '40px',
-                      paddingTop:'4px',
-                    }}
-                  >
+                  <Div display="flex">
                     {isScheduled(appointment) && (
                       <CRButton
                         variant="primary"
                         round
-                        small
                         onClick={e => {
                           e.stopPropagation();
                           onArchive(appointment);

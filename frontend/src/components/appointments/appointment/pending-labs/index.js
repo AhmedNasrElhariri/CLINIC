@@ -32,6 +32,16 @@ const PendingLabs = ({ patient }) => {
       }),
     [patientLabDocs]
   );
+  const selectorLabs = useMemo(
+    () =>
+      patientLabDocs.map(element => {
+        return {
+          label: element.labDefinition.name,
+          value: element.id,
+        };
+      }),
+    [patientLabDocs]
+  );
   const handleClickEdit = useCallback(
     data => {
       const id = data.id;
@@ -52,6 +62,8 @@ const PendingLabs = ({ patient }) => {
         formValue={formValue}
         setFormValue={setFormValue}
         type={type}
+        labs={selectorLabs}
+        selectedLab={formValue.labId}
       />
     </>
   );
