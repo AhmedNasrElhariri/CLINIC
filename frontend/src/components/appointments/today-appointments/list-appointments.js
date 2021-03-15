@@ -101,14 +101,13 @@ function ListAppointments({
                     display="flex"
                     style={{
                       marginLeft: '40px',
-                      paddingTop:'4px',
+                      paddingTop: '5px',
                     }}
                   >
                     {isScheduled(appointment) && (
                       <CRButton
                         variant="primary"
                         round
-                        small
                         onClick={e => {
                           e.stopPropagation();
                           onArchive(appointment);
@@ -118,7 +117,12 @@ function ListAppointments({
                       </CRButton>
                     )}
 
-                    <Div onClick={e => e.stopPropagation()}>
+                    <Div
+                      onClick={e => e.stopPropagation()}
+                      style={{
+                        paddingBottom: '5px',
+                      }}
+                    >
                       <ReactToPrint
                         trigger={() => <PrintOLIcon ml={2} />}
                         content={() => componentRef.current}
