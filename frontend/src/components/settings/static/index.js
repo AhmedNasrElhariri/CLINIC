@@ -12,12 +12,17 @@ import Timing from './timing';
 import LabCategory from './lab-category';
 import ImageCategory from './image-category';
 
+const CRVDivider = styled.div`
+  width: 1px;
+  height: 484px;
+  background-color: #c5c6c7;
+`;
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 const TabContainer = styled.div`
-width: 970px;
+  width: 970px;
 `;
 function StaticSettings() {
   const [activeTab, setActiveTab] = useState('0');
@@ -40,6 +45,7 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="7">Timing</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="8">Patient Report</CRVNav.CRItem>
       </CRVNav>
+      <CRVDivider />
       <TabContainer>
         {(() => {
           switch (activeTab) {

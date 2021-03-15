@@ -45,8 +45,8 @@ const TabContainer = styled.div`
 `;
 const CRVDivider = styled.div`
   width: 1px;
-  height: 100%;
-  background-color: #eef1f1;
+  height: 360px;
+  background-color: #c5c6c7;
 `;
 function Appointment() {
   const history = useHistory();

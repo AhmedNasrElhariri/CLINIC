@@ -18,7 +18,7 @@ const PatientInfo = ({ patient }) => {
         <Cell display="flex" alignItems="center" height={64}>
           <H3 mb={4}>Information</H3>
           <EditPatient patient={patient}/>
-          <EditButton margin="480px">Expand</EditButton>
+          <EditButton margin="685px">Expand</EditButton>
         </Cell>
         <Cell display="flex" alignItems="center">
           <CellTitle mb={4}>Name</CellTitle>
