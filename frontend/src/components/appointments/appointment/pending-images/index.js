@@ -32,6 +32,16 @@ const PendingImages = ({ patient }) => {
       }),
     [patientImageDocs]
   );
+  const selectorImages = useMemo(
+    () =>
+      patientImageDocs.map(element => {
+        return {
+          label: element.imageDefinition.name,
+          value: element.id,
+        };
+      }),
+    [patientImageDocs]
+  );
   const handleClickEdit = useCallback(
     data => {
       const id = data.id;
@@ -52,6 +62,8 @@ const PendingImages = ({ patient }) => {
         formValue={formValue}
         setFormValue={setFormValue}
         type={type}
+        images={selectorImages}
+        selectedImage={formValue.imageId}
       />
     </>
   );

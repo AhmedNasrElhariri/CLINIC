@@ -7,10 +7,10 @@ import { ModalFooterStyled } from './style';
 const Footer = ({ okTitle, cancelTitle, onOk, onCancel }) => (
   <ModalFooterStyled>
     <Div display="flex" justifyContent="center">
-      <CRButton minWidth={120} mr={4} midRound large onClick={onOk} primary>
+      <CRButton minWidth={120} mr={4} midRound  onClick={onOk} primary>
         {okTitle}
       </CRButton>
-      <CRButton minWidth={120} ml={4} midRound large onClick={onCancel}>
+      <CRButton minWidth={120} ml={4} midRound  onClick={onCancel}>
         {cancelTitle}
       </CRButton>
     </Div>

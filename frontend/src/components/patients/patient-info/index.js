@@ -14,7 +14,7 @@ import {
 const PatientInfo = ({ patient }) => {
   return (
     <PatientInfoStyled>
-      <CRCard padding='55px 10px' borderless>
+      <CRCard padding='0px 10px' borderless>
         <Cell display="flex" alignItems="center" height={64}>
           <H3 mb={4}>Information</H3>
           <EditPatient patient={patient}/>

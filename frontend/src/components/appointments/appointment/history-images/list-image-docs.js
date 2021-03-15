@@ -6,7 +6,7 @@ function ListImageDocs({ images }) {
   return (
     <CRCard borderless>
       <CRTable autoHeight data={images}>
-        <CRTable.CRColumn flexGrow={0.5}>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>

@@ -4,7 +4,6 @@ import * as R from 'ramda';
 import {
   useParams,
   useHistory,
-  useLocation,
   Switch,
   Route,
 } from 'react-router-dom';
@@ -42,11 +41,7 @@ const Container = styled.div`
 `;
 const TabContainer = styled.div`
   width: 950px;
-`;
-const CRVDivider = styled.div`
-  width: 1px;
-  height: 360px;
-  background-color: #c5c6c7;
+  
 `;
 function Appointment() {
   const history = useHistory();
@@ -99,8 +94,7 @@ function Appointment() {
                   </CRVNav.CRItem>
                 ))}
               </CRVNav>
-              <CRVDivider />
-              <TabContainer bg="white">
+              <TabContainer>
                 {showComp('0') && <PatientInfo patient={patient} />}
                 {showComp('1') && (
                   <PatientSummary summary={appointmentHistory} />
