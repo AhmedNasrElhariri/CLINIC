@@ -12,7 +12,7 @@ export const ButtonGroupStyled = styled.div`
 
 const height = {
   height: {
-    normal: 10,
+    normal: 33,
     large: 43,
   },
 };
