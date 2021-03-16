@@ -11,16 +11,16 @@ const ReportNav = ({ active, onSelect }) => {
   return (
     <>
       <Div width={200}>
-        <CRNav vertical onSelect={onSelect}>
+        <CRNav onSelect={onSelect}>
           {navs.map(v => (
-            <CRNav.CRVItem
+            <CRNav.CRItem
               eventKey={v.id}
               key={v.id}
               active={active === v.id}
               {...v}
             >
               {v.title}
-            </CRNav.CRVItem>
+            </CRNav.CRItem>
           ))}
         </CRNav>
       </Div>

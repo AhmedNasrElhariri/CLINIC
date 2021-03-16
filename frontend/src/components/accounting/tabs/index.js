@@ -9,8 +9,6 @@ const Tabs = ({ activeTab, onSelect }) => {
       appearance="tabs"
       activeKey={activeTab}
       onSelect={onSelect}
-      width={300}
-      justified
     >
       <CRNav.CRItem eventKey="0">Details</CRNav.CRItem>
       <CRNav.CRItem eventKey="1">Summary</CRNav.CRItem>
