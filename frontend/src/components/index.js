@@ -91,3 +91,6 @@ export { default as PatientSurgeriesContainer } from './patient-surgery/patient-
 
 /******************     Report Printouts    *********************************/
 export { default as ReportPrintout } from './report-printouts';
+
+/******************     Report Printouts    *********************************/
+export { default as Test } from './test';
