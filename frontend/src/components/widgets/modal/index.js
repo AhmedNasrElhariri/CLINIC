@@ -22,6 +22,7 @@ const Modal = ({
   onCancel,
   CancelFooter,
   CancelHeader,
+  loading,
   ...props
 }) => {
   return (
@@ -40,6 +41,7 @@ const Modal = ({
             okTitle={okTitle}
             cancelTitle={cancelTitle}
             onOk={onOk}
+            loading={loading}
             onCancel={onCancel}
             {...footerStyle}
           />

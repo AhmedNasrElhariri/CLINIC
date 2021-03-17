@@ -10,34 +10,29 @@ function ListTimings({ timings, onEdit }) {
         <CRTable autoHeight data={timings}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name" semiBold />
+            <CRTable.CRCell>
+              {({ name }) => (
+                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>ُEnglish Print Value</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="englishPrintValue" semiBold />
+            <CRTable.CRHeaderCell>English Print Value</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ englishPrintValue }) => (
+                <CRTable.CRCellStyled bold>
+                  {englishPrintValue}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Arabic Print Value</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="arabicPrintValue" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {data => (
-                <Icon
-                  icon="edit"
-                  onClick={() => onEdit(data)}
-                  style={{
-                    fontSize: 17,
-                    padding: '15px',
-                    backgroundColor: '#eef1f1',
-                    paddingRight: '40px',
-                    marginLeft: '1px',
-                  }}
-                >
-                  {' '}
-                  Edit
-                </Icon>
+              {({ arabicPrintValue }) => (
+                <CRTable.CRCellStyled bold>
+                  {arabicPrintValue}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -45,17 +40,20 @@ function ListTimings({ timings, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon
-                  icon="trash"
-                  onClick={() => onEdit(data)}
-                  style={{
-                    fontSize: 17,
-                    padding: '15px',
-                    backgroundColor: '#eef1f1',
-                    paddingRight: '40px',
-                    marginLeft: '1px',
-                  }}
-                >
+                <CRTable.CRCellStyled bold>
+                  <Icon icon="edit" onClick={() => onEdit(data)}>
+                    {' '}
+                    Edit
+                  </Icon>
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <Icon icon="trash" onClick={() => onEdit(data)}>
                   {' '}
                   Delete
                 </Icon>

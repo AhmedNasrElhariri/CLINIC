@@ -94,19 +94,20 @@ function ListAppointments({
               <CRTable.CRCell>
                 {appointment => (
                   <Div display="flex">
-                    {isScheduled(appointment) && (
-                      <CRButton
-                        variant="primary"
-                        round
-                        onClick={e => {
-                          e.stopPropagation();
-                          onArchive(appointment);
-                        }}
-                      >
-                        Archive
-                      </CRButton>
-                    )}
-
+                    <CRTable.CRCellStyled>
+                      {isScheduled(appointment) && (
+                        <CRButton
+                          variant="primary"
+                          style={{marginTop:'8px'}}
+                          onClick={e => {
+                            e.stopPropagation();
+                            onArchive(appointment);
+                          }}
+                        >
+                          Archive
+                        </CRButton>
+                      )}
+                    </CRTable.CRCellStyled>
                     <Div onClick={e => e.stopPropagation()}>
                       <ReactToPrint
                         trigger={() => <PrintOLIcon ml={2} />}

@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { Form, Divider } from 'rsuite';
+import { Form } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as R from 'ramda';
 import {
@@ -12,7 +12,7 @@ import {
   PriceStyled,
   ButtonsDiv,
 } from './style';
-import { CRSelectInput, H6, H7, CRButton, Div } from 'components';
+import { CRSelectInput, H6, H7, Div } from 'components';
 import { CRNumberInput, CRTextInput } from 'components/widgets';
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
@@ -42,6 +42,7 @@ function AppointmentInvoice({
   sessions,
   organization,
   handleOk,
+  onCancel
 }) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
@@ -167,55 +168,13 @@ function AppointmentInvoice({
         </StyledDiscount>
       </Container>
       <ButtonsDiv>
-        <Div>
-          <PrintInvoice
-            items={selectedSessions}
-            subtotal={subtotal}
-            total={total}
-            discount={discount}
-          />
-        </Div>
-        <H6 mt={2} color="texts.2">
-          Price:{' '}
-          <NumberFormat
-            value={session.price}
-            displayType="text"
-            thousandSeparator
-          />
-        </H6>
-        <Div textAlign="right">
-          <CRButton primary small onClick={add}>
-            Add
-          </CRButton>
-        </Div>
-        {selectedSessions.length > 0 && <Divider />}
-        <Div my={3}>
-          <ListInvoiceItems items={selectedSessions} onDelete={handleDelete} />
-        </Div>
-        <Divider />
-        <Form>
-          <CRNumberInput
-            label="Discount"
-            name="amount"
-            value={discount}
-            onChange={onDiscountChange}
-          />
-        </Form>
-        <Divider />
-        <Div>
-          <Price name="Subtotal " price={subtotal} overriden />
-          <Price name="Discount " price={discount} overriden />
-          <Price name="Total" price={total} />
-        </Div>
-        <Div mt={3}>
-          <PrintInvoice
-            items={selectedSessions}
-            subtotal={subtotal}
-            total={total}
-            discount={discount}
-            organization={organization}
-          />
-        </Div>
+        <PrintInvoice
+          items={selectedSessions}
+          subtotal={subtotal}
+          total={total}
+          discount={discount}
+          organization={organization}
+        />
         <Button
           width="81px"
           padding="9px 24px 10px 25px"
@@ -223,6 +182,7 @@ function AppointmentInvoice({
           color="#283148"
           marginLeft="370px"
           height="35px"
+          onClick={onCancel}
         >
           Cancel
         </Button>

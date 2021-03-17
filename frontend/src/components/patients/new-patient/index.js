@@ -20,7 +20,7 @@ const initialValues = {
 export default function NewPatient({ show, onHide }) {
   const [formValue, setFormValue] = useState(initialValues);
   const { patients, updateCache } = useFetchPatients();
-  const [createPatient] = useMutation(CREATE_PATIENT, {
+  const [createPatient,{loading}] = useMutation(CREATE_PATIENT, {
     update(cache, { data: { createPatient: patient } }) {
       updateCache(patients.concat([patient]));
     },
@@ -44,6 +44,7 @@ export default function NewPatient({ show, onHide }) {
           },
         });
       }}
+      loading={loading}
     >
       <Form onChange={setFormValue} formValue={formValue} />
     </CRModal>

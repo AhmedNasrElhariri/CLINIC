@@ -12,30 +12,17 @@ function ListTestsDefinition({ labs, onEdit }) {
         <CRTable autoHeight data={labs}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Test Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name" semiBold />
+            <CRTable.CRCell>
+              {({ name }) => (
+                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Category Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="category" semiBold />
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {data => (
-                <Icon
-                  icon="edit"
-                  onClick={() => onEdit(data)}
-                  style={{
-                    fontSize: 17,
-                    padding: '15px',
-                    backgroundColor: '#eef1f1',
-                    paddingRight: '40px',
-                    marginLeft: '1px',
-                  }}
-                >
-                  {' '}
-                  Edit
-                </Icon>
+              {({ category }) => (
+                <CRTable.CRCellStyled bold>{category}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -43,17 +30,20 @@ function ListTestsDefinition({ labs, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon
-                  icon="trash"
-                  onClick={() => onEdit(data)}
-                  style={{
-                    fontSize: 17,
-                    padding: '15px',
-                    backgroundColor: '#eef1f1',
-                    paddingRight: '40px',
-                    marginLeft: '1px',
-                  }}
-                >
+                <CRTable.CRCellStyled bold>
+                  <Icon icon="edit" onClick={() => onEdit(data)}>
+                    {' '}
+                    Edit
+                  </Icon>
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <Icon icon="trash" onClick={() => onEdit(data)}>
                   {' '}
                   Delete
                 </Icon>

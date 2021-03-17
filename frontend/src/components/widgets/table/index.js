@@ -19,6 +19,7 @@ const CRTable = styled(Table)`
   }
   & .rs-table-row {
     border-bottom: 1px solid white;
+    text-aligh:center;
   }
 `;
 

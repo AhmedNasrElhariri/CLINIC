@@ -1,7 +1,6 @@
 import { space, typography, layout, variant, border } from 'styled-system';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
 import { byTheme } from 'services/theme';
 import { textTransform } from 'styles/props';
 
@@ -86,7 +85,8 @@ const Button = styled.button.attrs(
   font-weight: 600;
   cursor: pointer;
   padding: 0px 26px;
-
+  position: relative;
+  
   ${getHeight}
 
   ${byTheme(theme)};

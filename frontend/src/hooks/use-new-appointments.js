@@ -32,7 +32,7 @@ const useNewAppointments = ({ onCreate } = {}) => {
     variables: { action: ACTIONS.Create_Appointment },
   });
 
-  const [createAppointment] = useMutation(CREATE_APPOINTMENT, {
+  const [createAppointment, { loading }] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: ({ createAppointment }) => {
       setFormValue(initialValues);
       Alert.success('Appointment Created Successfully');
@@ -71,6 +71,7 @@ const useNewAppointments = ({ onCreate } = {}) => {
       formValue,
       setFormValue,
       appointments,
+      loading,
       createAppointment: appointment =>
         createAppointment({ variables: { appointment } }),
     }),
@@ -82,6 +83,7 @@ const useNewAppointments = ({ onCreate } = {}) => {
       formValue,
       patients,
       specialties,
+      loading,
     ]
   );
 };

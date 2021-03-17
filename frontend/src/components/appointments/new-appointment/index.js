@@ -65,8 +65,8 @@ export default function NewAppointment({ show, onHide }) {
     createAppointment,
     appointments,
     patients,
+    loading,
   } = useNewAppointments({ onCreate: onHide });
-
   const [selectedHour, setSelectedHour] = useState(null);
 
   useEffect(() => {
@@ -113,6 +113,7 @@ export default function NewAppointment({ show, onHide }) {
         CRContainer={ContainerStyled}
         CRBody={ModalBodyStyled}
         onOk={handleCreate}
+        loading={loading}
         onHide={() => {
           onHide();
           setFormValue(initialValues);

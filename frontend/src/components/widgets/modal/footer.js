@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { CRButton, Div } from 'components';
 import { ModalFooterStyled } from './style';
+import { Spinner } from 'components/widgets/button/spinner';
 
-const Footer = ({ okTitle, cancelTitle, onOk, onCancel }) => (
+const Footer = ({ okTitle, cancelTitle, onOk, onCancel, loading }) => (
   <ModalFooterStyled>
     <Div display="flex" justifyContent="center">
-      <CRButton minWidth={120} mr={4} midRound  onClick={onOk} primary>
-        {okTitle}
+      <CRButton minWidth={120} mr={4} midRound onClick={onOk} primary>
+        {loading ? <Spinner /> : okTitle}
       </CRButton>
-      <CRButton minWidth={120} ml={4} midRound  onClick={onCancel}>
+      <CRButton minWidth={120} ml={4} midRound onClick={onCancel}>
         {cancelTitle}
       </CRButton>
     </Div>

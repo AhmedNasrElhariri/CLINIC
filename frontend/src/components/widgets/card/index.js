@@ -26,7 +26,7 @@ export default styled.div`
   background-color: #ffffff;
 
   border: 1px solid ${props => props.theme.colors.cardBorder};
-  padding: ${props => props.padding ? props.padding: '25px 40px'};
+  padding: ${props => props.padding ? props.padding: '0px'};
 
   ${byTheme(theme)}
   ${getBorder}

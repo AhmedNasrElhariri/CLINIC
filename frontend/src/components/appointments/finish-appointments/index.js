@@ -52,67 +52,49 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
       setActiveStep(0);
     }
   }, [activeStep, discount]);
-
+  const handleHide = useCallback(() => {
+    
+  }, [activeStep, discount]);
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
     activeStep,
   ]);
-
+  console.log(organization);
   return (
     <CRModal
       show={show}
       header="Finish Session"
       okTitle={okTitle}
       onOk={handleOk}
-      onHide={handleCancel}
+      onHide={onCancel}
       onCancel={handleCancel}
       width={850}
       height={480}
       bodyStyle={{ padding: '0px' }}
       CancelFooter={true}
     >
-      <Steps current={activeStep}>
-        <Steps.Item title="Invoice" />
-        <Steps.Item title="Inventory" />
-      </Steps>
-      <Div mt={4}>
-        <CRCard>
-          {activeStep === 0 && (
-            <AppointmentInvoice
-              onChange={handleInvoiceChange}
-              discount={discount}
-              onDiscountChange={setDiscount}
-              appointment={appointment}
-              sessions={sessions}
-              organization={organization}
-            />
-          )}
-          {activeStep === 1 && (
-            <InventoryUsage onChange={handleInventoryChange} />
-          )}
-        </CRCard>
-      </Div>
       <StepsDev>
         <Steps current={activeStep}>
           <Steps.Item title="Invoice" />
           <Steps.Item title="Inventory" />
         </Steps>
       </StepsDev>
-      {activeStep === 0 && (
-        <AppointmentInvoice
-          clinic={clinic}
-          onChange={handleInvoiceChange}
-          discount={discount}
-          onDiscountChange={setDiscount}
-          appointment={appointment}
-          handleOk={handleOk}
-        />
-      )}
-      {activeStep === 1 && (
-        <InventoryUsage
-          onChange={handleInventoryChange}
-          handleCancel={handleCancel}
-        />
-      )}
+      <Div>
+        {activeStep === 0 && (
+          <AppointmentInvoice
+            onChange={handleInvoiceChange}
+            discount={discount}
+            onDiscountChange={setDiscount}
+            appointment={appointment}
+            sessions={sessions}
+            organization={organization}
+            handleOk={handleOk}
+            onCancel={handleCancel}
+          />
+        )}
+        {activeStep === 1 && (
+          <InventoryUsage onChange={handleInventoryChange} handleCancel={handleCancel} />
+        )}
+      </Div>
     </CRModal>
   );
 };

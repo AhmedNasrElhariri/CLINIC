@@ -143,7 +143,7 @@ export default {
 
   // common will be extracted
   navbar: {
-    height: '50px',
+    height: '55.5px',
   },
 
   breakpoints: ['40em', '52em', '64em', '100em'],

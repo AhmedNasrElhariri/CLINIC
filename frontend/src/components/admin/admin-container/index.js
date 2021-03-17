@@ -8,26 +8,35 @@ import {
   UsersContainer,
   SpecialtiesContainer,
   Assign,
+  CRTabs,
 } from 'components';
 
 const AdminContainer = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
   return (
     <>
       <MainContainer title="Admin" nobody></MainContainer>
-      <CRNav appearance="tabs" activeKey={activeTab} onSelect={setActiveTab}>
-        <CRNav.CRItem eventKey={0}>Branches</CRNav.CRItem>
-        <CRNav.CRItem eventKey={1}>Specialties</CRNav.CRItem>
-        <CRNav.CRItem eventKey={2}>Users</CRNav.CRItem>
-        <CRNav.CRItem eventKey={3}>Role Permission</CRNav.CRItem>
-      </CRNav>
-      <CRCard borderless>
-        {activeTab === 0 && <BranchesContainer />}
-        {activeTab === 1 && <SpecialtiesContainer />}
-        {activeTab === 2 && <UsersContainer />}
-        {activeTab === 3 && <Assign />}
-      </CRCard>
+      <CRTabs>
+        <CRTabs.CRTabsGroup>
+          <CRTabs.CRTab>Branches</CRTabs.CRTab>
+          <CRTabs.CRTab>Specialties</CRTabs.CRTab>
+          <CRTabs.CRTab>Users</CRTabs.CRTab>
+          <CRTabs.CRTab>Role Permission</CRTabs.CRTab>
+        </CRTabs.CRTabsGroup>
+        <CRTabs.CRContentGroup>
+          <CRTabs.CRContent>
+            <BranchesContainer />
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <SpecialtiesContainer />
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <UsersContainer />
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <Assign />
+          </CRTabs.CRContent>
+        </CRTabs.CRContentGroup>
+      </CRTabs>
     </>
   );
 };
