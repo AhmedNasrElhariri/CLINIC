@@ -12,7 +12,8 @@ const CRNav = styled(Nav)`
   &.rs-nav > ul {
     width: 152px;
   }
-  border-right: 1px solid #c5c6c7;
+  border-right: 2px solid #eef1f1;
+  margin-right: 2px;
 `;
 
 CRNav.CRItem = CRItem;

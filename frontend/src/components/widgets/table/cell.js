@@ -17,7 +17,7 @@ export const CRCell = styled(H6)(
   })
 );
 export const CRCellStyled = styled(CRCell).attrs(
-  ({ bold, semiBold, block }) => ({
+  ({ bold, semiBold, block}) => ({
     fontWeight: bold ? 800 : semiBold ? 600 : 400,
   })
 )``;
@@ -60,6 +60,7 @@ export default ({ children, bold, semiBold, dataKey, ...props }) => (
     {children
       ? children
       : data => (
+        
           <CRCellStyled
             bold={bold}
             semiBold={semiBold}

@@ -138,7 +138,7 @@ export const NumberInputStyled = styled.input`
   background-color: #ffffff;
   border-radius: 0px;
   text-align: center;
-  margin: 0px 2px;
+  margin: 0px 14px;
 `;
 
 export const TextAreaStyled = styled.textarea`

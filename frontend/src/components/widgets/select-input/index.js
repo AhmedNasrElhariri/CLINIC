@@ -147,6 +147,11 @@ const SelectPickerStyled = styled(SelectPicker)`
       }
       
     }
+    &.rs-picker-menu.rs-picker-select-menu{
+      margin-top: 35px;
+      padding-top:0px;
+      border-radius: 0px;
+    }
   `}
 `;
 const SelectorContainer = styled.div`

@@ -15,7 +15,7 @@ export default function Sidebar({ onLogout, items }) {
             key={idx}
             to={to}
             active={pathname === to}
-            style={{ position: 'relative' }}
+            style={{ display: 'flex',alignItems:'center' }}
           >
             <IconDiv>{icon}</IconDiv>
             <LinkName>{name}</LinkName>

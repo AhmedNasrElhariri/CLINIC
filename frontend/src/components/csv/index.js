@@ -67,17 +67,9 @@ function App() {
   return (
     <div>
       <h3>
-        Read CSV file in React -{' '}
-        <a
-          href="https://www.cluemediator.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Clue Mediator
-        </a>
+        Read The CSV File {' '}
       </h3>
       <input type="file" accept=".csv,.xlsx,.xls" onChange={handleFileUpload} />
-      {/* <DataTable pagination highlightOnHover columns={columns} data={data} /> */}
       {(columns.length != 0 && data.length != 0) ? (
         <CRCard borderless>
           <CRTable autoHeight data={data}>

@@ -1,138 +1,77 @@
 import React from 'react';
 import { Header, StyledPanel } from './styles';
 import Table from './table';
-const examination = [
-  {
-    patientName: 'ahmed',
-    status: 'Waiting',
-    type: 'examination',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Finished',
-    type: 'examination',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Arrived',
-    type: 'examination',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-];
-const Follow = [
-  {
-    patientName: 'ahmed',
-    status: 'Waiting',
-    type: 'Follow-up',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Finished',
-    type: 'Follow-up',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Arrived',
-    type: 'Follow-up',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-];
-const Session = [
-  {
-    patientName: 'ahmed',
-    status: 'Waiting',
-    type: 'Session',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Finished',
-    type: 'Session',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Arrived',
-    type: 'Session',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-];
-const Surgery = [
-  {
-    patientName: 'ahmed',
-    status: 'Waiting',
-    type: 'Surgery',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Finished',
-    type: 'Surgery',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Arrived',
-    type: 'Surgery',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-];
-const Urgent = [
-  {
-    patientName: 'ahmed',
-    status: 'Waiting',
-    type: 'Urgent',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Finished',
-    type: 'Urgent',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-  {
-    patientName: 'ahmed',
-    status: 'Arrived',
-    type: 'Urgent',
-    timeline: '22/2/2020',
-    date: '08:30 PM - 08:45 PM',
-    doctor: 'ahmed',
-  },
-];
+import { useHistory } from 'react-router-dom';
+
+import { formatDate, formatFullDay } from 'utils/date';
+// import { filterAppointments, sortAppointments } from 'services/appointment';
+// import { Div, CRCard, H3, CRTable } from 'components';
+// import Filter from './filter';
+import useFetchAppointments from 'hooks/use-appointments';
 
 function Example() {
+  const history = useHistory();
+  // const [formValue, setFormValue] = useState({ date: [], patient: '' });
+
+  const {
+    branches,
+    doctors,
+    specialties,
+    appointments,
+  } = useFetchAppointments();
+  console.log(appointments);
+  const ExaminationApp = appointments.filter(a => a.type == 'Examination');
+  const ExaminationAppointments = ExaminationApp.map(a => {
+    return {
+      id: a.id,
+      status: a.status,
+      patientName: a.patient.name,
+      type: a.type,
+      timeline: formatDate(a.date),
+      date: formatFullDay(a.date),
+      doctor: 'ahmed',
+    };
+  });
+  const FollowUp = appointments.filter(a => a.type == 'Followup');
+  const FollowUpAppointments = FollowUp.map(a => {
+    return {
+      id: a.id,
+      status: a.status,
+      patientName: a.patient.name,
+      type: a.type,
+      timeline: formatDate(a.date),
+      date: formatFullDay(a.date),
+      doctor: 'ahmed',
+    };
+  });
+  const Urgent = appointments.filter(a => a.type == 'Urgent');
+  const UrgentAppointments = Urgent.map(a => {
+    return {
+      id: a.id,
+      status: a.status,
+      patientName: a.patient.name,
+      type: a.type,
+      timeline: formatDate(a.date),
+      date: formatFullDay(a.date),
+      doctor: 'ahmed',
+    };
+  });
+  const Sessionapp = appointments.filter(a => a.type == 'Session');
+  const SessionAppointments = Sessionapp.map(a => {
+    return {
+      id: a.id,
+      status: a.status,
+      patientName: a.patient.name,
+      type: a.type,
+      timeline: formatDate(a.date),
+      date: formatFullDay(a.date),
+      doctor: 'ahmed',
+    };
+  });
+  // const filteredAppointments = useMemo(
+  //   () => sortAppointments(filterAppointments(appointments, formValue)),
+  //   [appointments, formValue]
+  // );
   return (
     <>
       <Header>Appoinments</Header>
@@ -143,7 +82,7 @@ function Example() {
         defaultExpanded
         color="#019ae7"
       >
-        <Table data={examination} borderLeft="6px solid #019ae7" />
+        <Table data={ExaminationAppointments} borderLeft="6px solid #019ae7" />
       </StyledPanel>
       <StyledPanel
         header="Follow-up"
@@ -152,8 +91,9 @@ function Example() {
         defaultExpanded
         color="#037f4b"
       >
-        <Table data={Follow} borderLeft="6px solid #037f4b" />
+        <Table data={FollowUpAppointments} borderLeft="6px solid #037f4b" />
       </StyledPanel>
+
       <StyledPanel
         header="Session"
         collapsible
@@ -161,17 +101,18 @@ function Example() {
         defaultExpanded
         color="#ffcc03"
       >
-        <Table data={Session} borderLeft="6px solid #ffcc03" />
+        <Table data={SessionAppointments} borderLeft="6px solid #ffcc03" />
       </StyledPanel>
-      <StyledPanel
+      {/* <StyledPanel
         header="Surgery"
         collapsible
         bodyFill
         defaultExpanded
         color="#794bd1"
       >
-        <Table data={Surgery} borderLeft="6px solid #794bd1" />
-      </StyledPanel>
+        <Table data={updateAppointments} borderLeft="6px solid #794bd1" />
+      </StyledPanel> */}
+
       <StyledPanel
         header="Urgent"
         collapsible
@@ -179,7 +120,7 @@ function Example() {
         defaultExpanded
         color="#bc3254"
       >
-        <Table data={Urgent} borderLeft="6px solid #bc3254" />
+        <Table data={UrgentAppointments} borderLeft="6px solid #bc3254" />
       </StyledPanel>
     </>
   );

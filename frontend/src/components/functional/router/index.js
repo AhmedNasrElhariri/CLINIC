@@ -102,18 +102,12 @@ function AppRouter() {
       <Route path="/example">
         <Example />
       </Route>
-      <Route path="/labs">
-        <Labs />
-      </Route>
-      <Route path="/test">
+      {/* <Route path="/test">
         <>
           <Patient />
           <Test />
         </>
-      </Route>
-      <Route path="/uploadimage">
-        <UploadImage />
-      </Route>
+      </Route> */}
       <Route path="/csv">
         <Csv />
       </Route>

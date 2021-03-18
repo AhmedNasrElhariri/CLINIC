@@ -11,15 +11,12 @@ export const ContainerStyled = styled.div`
   })}
 `;
 export const IconDiv = styled.div`
-  display: inline;
   margin-left: 11px;
   margin-right: 17px;
 `;
 export const LinkName = styled.div`
-  display: inline;
 `;
 export const Fab = styled.div`
-  display: inline;
   position: absolute;
   right: 13px;
   bottom: 8px;
@@ -33,4 +30,8 @@ export const ItemStyled = styled(Link)`
     paddingLeft: [20, 35, 50, 50, 100],
   })}
   padding-top: ${props => props.theme.navbar.height};
+`;
+export const LinkCounter = styled.div`
+  display: flex;
+  align-items: center;
 `;

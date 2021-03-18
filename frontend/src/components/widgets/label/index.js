@@ -4,7 +4,7 @@ import { byTheme } from 'services/theme';
 
 const labelTheme = {
   fontSize: {
-    normal: 10,
+    normal: 14,
     large: 24,
   },
 };

@@ -40,12 +40,12 @@ const LinkStyled = styled(Link)`
   position: relative;
   ${css({
     marginLeft: ['7px', '7px', '7px', '7px', '7px'],
-    marginRight: ['6px', '6px', '6px', '6px', '6px'],
+    marginRight: ['7px', '7px', '7px', '7px', '7px'],
   })}
 `;
 
 export default ({ to, active, children, ...props }) => (
   <LinkStyled to={to} active={active ? 1 : 0} {...props}>
-    <span>{children}</span>
+    {children}
   </LinkStyled>
 );
