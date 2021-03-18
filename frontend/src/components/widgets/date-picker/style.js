@@ -10,7 +10,7 @@ const theme = {
   },
 
   height: {
-    normal: 48,
+    normal: 35,
     large: 59,
   },
   borderRadius: {
@@ -29,6 +29,7 @@ export const DatePickerStyled = styled(DatePicker)`
     ${paddingLeft}
     display: flex;
     align-items: center;
+
     ${byTheme(theme)}
     &:focus,
     &:active,
@@ -42,5 +43,8 @@ export const DatePickerStyled = styled(DatePicker)`
   }
   & .rs-picker-toggle-caret {
     color: ${props => props.theme.colors.text} !important;
+  }
+  && a.rs-picker-toggle.rs-btn{
+    border-radius: 0px;
   }
 `;

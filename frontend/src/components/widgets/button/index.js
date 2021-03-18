@@ -27,7 +27,7 @@ const largeHeight = {
 
 const normalHeight = {
   height: {
-    normal: 33,
+    normal: 35,
     large: 59,
   },
 };

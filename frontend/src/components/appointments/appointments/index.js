@@ -18,7 +18,7 @@ function Appointments() {
     specialties,
     appointments,
   } = useFetchAppointments();
-
+  console.log(appointments);
   const filteredAppointments = useMemo(
     () => sortAppointments(filterAppointments(appointments, formValue)),
     [appointments, formValue]

@@ -17,7 +17,7 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 const TabContainer = styled.div`
-  width: 970px;
+  width: 100%;
 `;
 function StaticSettings() {
   const [activeTab, setActiveTab] = useState('0');

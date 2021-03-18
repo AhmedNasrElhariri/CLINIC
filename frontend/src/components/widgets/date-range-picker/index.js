@@ -12,8 +12,8 @@ const smallStyle = css`
 
 const largeStyle = css`
   font-size: 22px;
-  height: 59px;
-  border-radius: 17px;
+  height: 35px;
+  border-radius: 0px;
 `;
 
 const paddingLeft = css`

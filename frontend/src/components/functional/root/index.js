@@ -116,21 +116,6 @@ function Root() {
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
-      to: '/labs',
-      name: 'Labs',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/test',
-      name: 'Test',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/uploadimage',
-      name: 'Uploadimage',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
       to: '/csv',
       name: 'csv',
       icon: <UserIcon width={11.8} height={14.1} />,

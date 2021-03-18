@@ -23,9 +23,9 @@ export const LoginContainerStyled = styled.div`
 export const ContentStyled = styled.div`
   flex-grow: 1;
   width: 100%;
-  border: solid 1px rgb(112, 112, 112, 0.1);
+  border: solid 2px #eef1f1;
   background-color: ${props => props.theme.colors.background};
   ${css({
-    padding: [10, 10, 10, 10, 32],
+    padding: [20, 20, 20, 20, 20],
   })}
 `;
