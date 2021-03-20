@@ -44,7 +44,7 @@ function Appointment() {
   const [formValue, setFormValue] = useState({});
   const [apptFormValue, setApptFormValue] = useState({
     notes: '',
-    prescription: '',
+    prescription: [],
     medicine: [],
     labIds: [],
     imageIds: [],
@@ -92,7 +92,7 @@ function Appointment() {
         appointment: {
           data: mapFormValueToAppointmentData(normalizedFields, formValue),
           notes: apptFormValue.notes,
-          medicineIds: apptFormValue.medicineIds,
+          prescription: apptFormValue.prescription,
           labIds: apptFormValue.labIds,
           imageIds: apptFormValue.imageIds,
           collections: apptFormValue.collections.map(c => ({
@@ -137,12 +137,8 @@ function Appointment() {
     setApptFormValue(val => ({
       ...val,
       notes: R.propOr('', 'notes')(appointment),
-      prescription: R.propOr('', 'prescription')(appointment),
+      prescription: R.propOr([], 'prescription')(appointment),
       collections: R.propOr([], 'collections')(appointment),
-      medicineIds: R.pipe(
-        R.propOr([], 'medicines'),
-        R.map(R.path(['medicineDefinition', 'id']))
-      )(appointment),
       labIds: R.pipe(
         R.propOr([], 'labs'),
         R.map(R.path(['labDefinition', 'id']))

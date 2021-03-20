@@ -61,6 +61,26 @@ const updateAppointment = async (_, { appointment }) => {
           },
         })),
       },
+      prescription: {
+        deleteMany: {},
+        create: appointment.prescription.map(
+          ({ dose, duration, period, medicineId, timingId }) => ({
+            dose,
+            duration,
+            period,
+            medicine: {
+              connect: {
+                id: medicineId,
+              },
+            },
+            timing: {
+              connect: {
+                id: timingId,
+              },
+            },
+          })
+        ),
+      },
       images: {
         deleteMany: {},
         create: appointment.imageIds.map(id => ({

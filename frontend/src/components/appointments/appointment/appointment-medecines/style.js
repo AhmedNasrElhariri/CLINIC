@@ -19,6 +19,6 @@ export const BoxStyled = styled(Div)`
 `;
 
 export const NumberBox = styled.div`
-  width: 110px;
+  width: 140px;
   margin-right: 3px;
 `;

@@ -7,14 +7,13 @@ import { useQuery } from '@apollo/client';
 import { formatDate } from 'utils/date';
 
 const HistoryLabs = ({ patient }) => {
-  const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState([]);
   const [lab, setLab] = useState({});
   useEffect(() => {
-    if (Object.keys(lab).length != 0) {
+    if (Object.keys(lab).length !== 0) {
       setFormValue([...formValue, lab]);
     }
-  }, [lab]);
+  }, [formValue, lab]);
   const status = 'completed';
   const patientId = patient.id;
   const { data } = useQuery(GET_PATIENT_LABS_History, {

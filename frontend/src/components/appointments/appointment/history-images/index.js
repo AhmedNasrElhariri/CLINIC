@@ -7,14 +7,13 @@ import { useQuery } from '@apollo/client';
 import { formatDate } from 'utils/date';
 
 const HistoryImages = ({ patient }) => {
-  const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState([]);
   const [image, setImage] = useState({});
   useEffect(() => {
-    if (Object.keys(image).length != 0) {
+    if (Object.keys(image).length !== 0) {
       setFormValue([...formValue, image]);
     }
-  }, [image]);
+  }, [formValue, image]);
   const status = 'completed';
   const patientId = patient.id;
   const { data } = useQuery(GET_PATIENT_IMAGES_HISTORY, {

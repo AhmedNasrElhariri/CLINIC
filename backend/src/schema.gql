@@ -411,18 +411,19 @@ input AppointmentFieldInput {
 
 type Prescription {
   id: ID!
-  dose: Int!
+  medicineId: ID
   timingId: ID
-  durationLength: Int
-  durationType: String
+  dose: Int
+  duration: Int
+  period: String
 }
 
 input PrescriptionInput {
   medicineId: ID!
-  dose: Int!
+  dose: Int
   timingId: ID
-  durationLength: Int
-  durationType: String
+  duration: Int
+  period: String
 }
 
 ########################### views ##################################

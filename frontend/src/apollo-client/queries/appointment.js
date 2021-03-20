@@ -64,7 +64,13 @@ export const GET_APPOINTMENT = gql`
       date
       status
       notes
-      prescription
+      prescription {
+        medicineId
+        dose
+        timingId
+        duration
+        period
+      }
       userId
       data {
         id
@@ -195,7 +201,13 @@ export const GET_APPOINTMENT_HISTORY = gql`
       date
       status
       notes
-      prescription
+      prescription {
+        medicineId
+        dose
+        timingId
+        duration
+        period
+      }
       data {
         id
         value
