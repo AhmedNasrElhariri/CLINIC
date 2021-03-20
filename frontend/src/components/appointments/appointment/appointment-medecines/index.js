@@ -36,7 +36,6 @@ const AppointmentMedicines = ({ prescription, onChange }) => {
         .map(lf =>
           R.pick(['dose', 'timingId', 'medicineId', 'duration', 'period'])(lf)
         );
-      console.log(prescription);
       onChange(prescription);
     },
     [formValue, onChange]
