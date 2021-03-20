@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlexboxGrid,
   Form,
@@ -10,44 +10,49 @@ import {
 import { MedicineContainerStyled, BoxStyled, NumberBox } from './style';
 import { CRButton, Div, H6, H7 } from 'components';
 
+const initialValue = {
+  dose: null,
+  timingId: null,
+  duration: null,
+  period: null,
+};
+
+const peridos = [
+  { label: 'Year', value: 'year', arbiceValue: 'سنة', englishValue: 'year' },
+  { label: 'Month', value: 'month', arbiceValue: 'شهر', englishValue: 'month' },
+  { label: 'Week', value: 'week', arbiceValue: 'أسبوع', englishValue: 'week' },
+  { label: 'Day', value: 'day', arbiceValue: 'يوم', englishValue: 'day' },
+];
+
 const MedicineRow = ({
   name,
   concentration,
   form,
   timings,
-  periodDuration,
-  medicineValue,
-  onChange: setFormValue2,
+  medicine,
+  onClick,
 }) => {
-  const initialValue = {
-    dose: '',
-    medicine: name,
-    timing: '',
-    numDuration: '',
-    periodDuration: '',
-  };
   const [formValue, setFormValue] = useState(initialValue);
-  const [prescribe, setPrescribe] = useState('Prescribe');
-  const [color, setColor] = useState('primary');
-  const handleClicked = useCallback(() => {
-    const newMedicine = [...medicineValue, formValue];
-    setFormValue2(newMedicine);
-    setFormValue(initialValue);
-    setColor('success');
-    setPrescribe('Prescribed');
-  }, [formValue, initialValue, medicineValue, setFormValue2]);
+
+  useEffect(() => {}, []);
+
+  const handleClick = useCallback(() => {
+    setFormValue({ ...formValue, required: true });
+    onClick();
+  }, [formValue, onClick]);
+
   return (
     <MedicineContainerStyled>
       <Form fluid formValue={formValue} onChange={setFormValue}>
         <FlexboxGrid>
-          <FlexboxGrid.Item colspan={4}>
+          <FlexboxGrid.Item colspan={5}>
             <Div display="flex" alignItems="center" height={55}>
               <H6 fontWeight="bold">{name}</H6>
               <H6 mx={1}>({form})</H6>
               <H7 fontStyle="italic">{concentration}</H7>
             </Div>
           </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={5}>
+          <FlexboxGrid.Item colspan={4}>
             <BoxStyled>
               <FormControl
                 name="dose"
@@ -57,7 +62,7 @@ const MedicineRow = ({
               />
             </BoxStyled>
           </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={5}>
+          <FlexboxGrid.Item colspan={6}>
             <BoxStyled>
               <FormControl
                 placeholder="Timing"
@@ -65,28 +70,30 @@ const MedicineRow = ({
                 style={{ margin: 0 }}
                 accepter={InputPicker}
                 data={timings}
+                valueKey="id"
+                labelKey="name"
                 block
               />
             </BoxStyled>
           </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={7}>
+          <FlexboxGrid.Item colspan={6}>
             <BoxStyled>
               <NumberBox>
                 <FormControl
-                  placeholder="Number"
-                  name="numDuration"
+                  placeholder="Duration"
+                  name="duration"
                   style={{ marginRight: '2px' }}
                   accepter={InputNumber}
                   block
                 />
               </NumberBox>
               <FormControl
-                placeholder="Duration"
-                name="periodDuration"
+                placeholder="Period"
+                name="period"
                 style={{ marginLeft: '2px' }}
                 accepter={InputPicker}
                 block
-                data={periodDuration}
+                data={peridos}
               />
             </BoxStyled>
           </FlexboxGrid.Item>
@@ -100,13 +107,12 @@ const MedicineRow = ({
               <CRButton
                 height={50}
                 width={100}
-                variant={color}
+                variant={medicine.required ? 'dark' : 'primary'}
                 small
-                m="auto"
-                onClick={handleClicked}
-                style={{ padding: '10px' }}
+                p={10}
+                onClick={handleClick}
               >
-                {prescribe}
+                {medicine.required ? 'Required' : 'Require'}
               </CRButton>
             </Div>
           </FlexboxGrid.Item>

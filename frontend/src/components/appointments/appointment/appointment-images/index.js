@@ -3,7 +3,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Div } from 'components';
 import useImagesDefinition from 'hooks/fetch-images-definition';
 import ImageRow from './image-row';
-const Lab = ({ selectedImages, onChange }) => {
+
+const AppointmentImages = ({ selectedImages, onChange }) => {
   const { imagesDefinition } = useImagesDefinition();
   const [formValue, setFormValue] = useState([]);
 
@@ -35,4 +36,4 @@ const Lab = ({ selectedImages, onChange }) => {
   );
 };
 
-export default Lab;
+export default AppointmentImages;

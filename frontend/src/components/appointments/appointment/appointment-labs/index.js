@@ -4,7 +4,7 @@ import { Div } from 'components';
 import useTestsDefinition from 'hooks/fetch-tests-definition';
 import LabRow from './lab-row';
 
-const Labs = ({ selectedLabs, onChange }) => {
+const AppointmentLabs = ({ selectedLabs, onChange }) => {
   const { labsDefinition } = useTestsDefinition();
   const [formValue, setFormValue] = useState([]);
 
@@ -36,4 +36,4 @@ const Labs = ({ selectedLabs, onChange }) => {
   );
 };
 
-export default Labs;
+export default AppointmentLabs;

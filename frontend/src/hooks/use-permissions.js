@@ -5,7 +5,6 @@ import { Alert } from 'rsuite';
 
 import {
   CREATE_ROLE,
-  GET_ACTIONS,
   LIST_BRANCHES,
   LIST_SPECIALTIES,
   LIST_USERS,

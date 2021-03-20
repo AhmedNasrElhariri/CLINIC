@@ -187,19 +187,19 @@ model Appointment {
   appointmentLabId String?
   labs             Lab[]
   images           Image[]
-  prescription     Prescription[]
+  prescription     Medicine[]
 }
 
-model Prescription {
-  id             String       @id @default(uuid())
-  medicine       Patient      @relation(fields: [medicineId], references: [id])
-  medicineId     String
-  timing         Timing       @relation(fields: [timingId], references: [id])
-  timingId       String
-  durationLength Int
-  durationType   String
-  appointment    Appointment? @relation(fields: [appointmentId], references: [id])
-  appointmentId  String?
+model Medicine {
+  id            String       @id @default(uuid())
+  medicine      Patient      @relation(fields: [medicineId], references: [id])
+  medicineId    String
+  timing        Timing       @relation(fields: [timingId], references: [id])
+  timingId      String
+  duration      Int
+  period        String
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+  appointmentId String?
 }
 
 model View {

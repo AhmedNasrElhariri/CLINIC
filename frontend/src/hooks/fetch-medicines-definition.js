@@ -49,7 +49,7 @@ function useMedicinesDefinition({ onCreate, onEdit } = {}) {
 
   return useMemo(
     () => ({
-      medicines,
+      medicineDefinitions: medicines,
       addMedicineDefinition,
       editMedicineDefinition,
       updateCache,

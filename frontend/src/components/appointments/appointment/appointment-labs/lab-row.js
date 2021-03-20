@@ -9,7 +9,7 @@ import {
   Container,
 } from './style';
 
-const MedicineRow = ({ lab, onClick }) => {
+const LabRow = ({ lab, onClick }) => {
   return (
     <MedicineContainerStyled>
       <Form fluid>
@@ -32,4 +32,4 @@ const MedicineRow = ({ lab, onClick }) => {
   );
 };
 
-export default MedicineRow;
+export default LabRow;
