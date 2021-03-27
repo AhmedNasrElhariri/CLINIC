@@ -58,3 +58,5 @@ export { default as assignRoleToUser } from './assign-role-to-user';
 export { default as updateConfiguration } from './update-configuration';
 export { default as addTiming } from './add-timing';
 export { default as editTiming } from './edit-timing';
+export { default as addCourseDefinition } from './add-course-definition';
+export { default as editCourseDefinition } from './edit-course-definition';

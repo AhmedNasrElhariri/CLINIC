@@ -101,6 +101,7 @@ type Query {
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
+  myCoursesDefinition: [CourseDefinition!]
   myImagesCategory: [ImageCategory!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
@@ -190,6 +191,8 @@ type Mutation {
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
   updateConfiguration(configuration: ConfigurationInput): Configuration!
+  addCourseDefinition(courseDefinition: CourseInputDefinition!): CourseDefinition
+  editCourseDefinition(courseDefinition: CourseInputDefinition!): CourseDefinition
 }
 
 ########################### Auth ##################################
@@ -850,6 +853,24 @@ input PatientReportInput {
   id: ID
   name: String!
   body: String!
+}
+
+########################### Course Definition ##################################
+
+type CourseDefinition {
+  id: ID!
+  name: String!
+  type: String!
+  price: String!
+  units: String!
+}
+
+input CourseInputDefinition {
+  id: ID
+  name: String!
+  type: String!
+  price: String!
+  units: String!
 }
 
 ########################### Patient Surgeries ##################################
