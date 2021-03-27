@@ -20,7 +20,7 @@ const AppointmentMedicines = ({ prescription, onChange }) => {
         dose: dose || undefined,
         timingId: timingId || null,
         medicineId: medicineId || m.id || null,
-        duration: duration || undefined,
+        duration: duration || null,
         period: period || null,
         required: !R.isEmpty(formMedicine),
       };

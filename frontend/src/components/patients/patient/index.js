@@ -1,12 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import * as R from 'ramda';
-import {
-  useParams,
-  useHistory,
-  Switch,
-  Route,
-} from 'react-router-dom';
+import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import { GET_PATIENT } from 'apollo-client/queries';
@@ -41,7 +36,6 @@ const Container = styled.div`
 `;
 const TabContainer = styled.div`
   width: 950px;
-  
 `;
 function Appointment() {
   const history = useHistory();
@@ -67,8 +61,7 @@ function Appointment() {
             {appointmentId && (
               <CRButton
                 onClick={() => history.push(`/appointments/${appointmentId}`)}
-                small
-                primary
+                variant="primary"
               >
                 Current Appointment
               </CRButton>

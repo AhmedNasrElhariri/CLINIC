@@ -413,14 +413,14 @@ type Prescription {
   id: ID!
   medicineId: ID
   timingId: ID
-  dose: Int
+  dose: String
   duration: Int
   period: String
 }
 
 input PrescriptionInput {
   medicineId: ID!
-  dose: Int
+  dose: String
   timingId: ID
   duration: Int
   period: String

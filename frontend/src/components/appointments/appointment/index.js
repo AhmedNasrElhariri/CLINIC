@@ -2,8 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader, Icon, Toggle } from 'rsuite';
-import styled from 'styled-components';
+import { Alert, Loader, Icon } from 'rsuite';
 import Prescription from './prescription/index.js';
 import Labs from './labs/index';
 import Images from './images';
@@ -31,10 +30,6 @@ import { HeaderStyled } from './style';
 import useFrom from 'hooks/form';
 import useModal from 'hooks/use-model';
 
-const StyledToggle = styled.div`
-  margin: 10px 0px;
-`;
-
 function Appointment() {
   const { visible, open, close } = useModal();
   const { type, setType } = useFrom({});
@@ -51,7 +46,6 @@ function Appointment() {
     collections: [],
   });
   const [disabled, setDisabled] = useState(false);
-  const [arabicEnable, setArabicEnable] = useState(false);
   const { appointmentId } = useParams();
   const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
     variables: {
@@ -192,10 +186,6 @@ function Appointment() {
       <Div flexGrow={1}>
         <HeaderStyled>
           <H3 mb={64}>Appointment</H3>
-          <StyledToggle>
-            <Toggle onChange={setArabicEnable} />
-            Arabic
-          </StyledToggle>
           <Div>
             <CRButton
               small
@@ -241,7 +231,6 @@ function Appointment() {
                 disabled={disabled}
                 formValue={formValue}
                 appointmentFormValue={apptFormValue}
-                arabicEnable={arabicEnable}
                 onChange={setApptFormValue}
                 groups={groups}
                 appointment={appointment}
@@ -254,7 +243,6 @@ function Appointment() {
                   medicine={apptFormValue.medicine}
                   onChange={handleMedicineChange}
                   nextAppointment={nextAppointment}
-                  arabicEnable={arabicEnable}
                 />
               ) : (
                 <></>

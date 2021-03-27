@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+
 import styled, { css } from 'styled-components';
 import { space, typography, layout, border } from 'styled-system';
 
@@ -21,36 +22,11 @@ const heightTheme = {
   },
 };
 
-const roundBorderRadius = {
-  borderRadius: {
-    normal: 10,
-    large: 57,
-  },
-};
-
-const normalBorderRadius = {
-  borderRadius: {
-    normal: 10,
-    large: 17,
-  },
-};
-
-const noBorderRadius = {
-  borderRadius: 0,
-};
-
 const getBorder = ({ borderless, theme }) => {
   return {
     border: borderless ? 'none' : `1px solid ${theme.colors.borders[0]}`,
   };
 };
-
-// const getBorderRadius = ({ noRadius, round }) =>
-//   noRadius
-//     ? noBorderRadius
-//     : round
-//     ? byTheme(roundBorderRadius)
-//     : byTheme(normalBorderRadius);
 
 const inputCss = css`
   background-color: #ffffff;
@@ -139,6 +115,14 @@ export const NumberInputStyled = styled.input`
   border-radius: 0px;
   text-align: center;
   margin: 0px 14px;
+
+  &:focus,
+  &:active,
+  &:hover,
+  &:visited {
+    outline: none;
+    border: solid 1px ${props => props.theme.colors.primary} !important;
+  }
 `;
 
 export const TextAreaStyled = styled.textarea`

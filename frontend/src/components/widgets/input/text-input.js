@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 
-import { FormGroup, FormControl, InputGroup, Icon } from 'rsuite';
+import { FormControl, InputGroup, Icon } from 'rsuite';
+import { FormGroupStyled } from '../form-group';
 import Label from '../label';
 import { InputStyled, InputGroupStyled } from './style';
 
@@ -8,10 +9,16 @@ const CustomInput = memo(({ onChange, ...props }) => {
   return <InputStyled onChange={e => onChange(e.target.value)} {...props} />;
 });
 
-const TextInput = ({ label, children, borderless = false, ...rest }) => {
+const TextInput = ({
+  label,
+  layout,
+  children,
+  borderless = false,
+  ...rest
+}) => {
   return (
-    <FormGroup>
-      <Label>{label}</Label>
+    <FormGroupStyled>
+      <Label layout={layout}>{label}</Label>
       <InputGroupStyled borderless={borderless ? 1 : 0}>
         <FormControl {...rest} accepter={CustomInput} addonAfter={!!children} />
         {children && (
@@ -20,7 +27,7 @@ const TextInput = ({ label, children, borderless = false, ...rest }) => {
           </InputGroup.Addon>
         )}
       </InputGroupStyled>
-    </FormGroup>
+    </FormGroupStyled>
   );
 };
 

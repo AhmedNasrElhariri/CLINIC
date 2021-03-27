@@ -1,6 +1,6 @@
 import React, { useCallback, memo } from 'react';
+import {  FormControl } from 'rsuite';
 
-import { FormGroup, FormControl } from 'rsuite';
 import Label from '../label';
 import { AddIcon, MinusIcon } from 'components/icons';
 import {
@@ -9,6 +9,7 @@ import {
   NumberButton,
   StyledLabel,
 } from './style';
+import { FormGroupStyled } from '../form-group';
 
 const CustomInput = memo(({ value, onChange, ...props }) => {
   const setValue = useCallback(val => onChange(val), [onChange]);
@@ -47,13 +48,17 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
   );
 });
 
-const NumberInput = ({ label, ...rest }) => {
+const NumberInput = ({ label, layout, ...rest }) => {
   return (
-    <FormGroup>
-      <Label>{label}</Label>
+    <FormGroupStyled layout={layout}>
+      <Label layout={layout}>{label}</Label>
       <FormControl {...rest} accepter={CustomInput} />
-    </FormGroup>
+    </FormGroupStyled>
   );
+};
+
+NumberInput.defaultProps = {
+  layout: 'vertical',
 };
 
 export default memo(NumberInput);

@@ -79,4 +79,8 @@ export default createGlobalStyle`
       padding: 0 !important;
     }
 
+    .rs-form:not(.rs-form-inline) .rs-form-group:not(:last-child){
+      margin-bottom:0px;
+    }
+
 `;

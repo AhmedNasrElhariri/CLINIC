@@ -6,6 +6,7 @@ import { FormGroup, FormControl, SelectPicker } from 'rsuite';
 import { byTheme } from 'services/theme';
 
 import Label from '../label';
+import { FormGroupStyled } from '../form-group';
 
 const heightTheme = {
   height: {
@@ -52,7 +53,7 @@ const paddingLeft = css`
   padding-left: 22px;
 `;
 const StyledLabel = styled.p`
-  ${byTheme(fontTheme100)},
+  ${byTheme(fontTheme100)};
   width: 42px;
   height: 19px;
   margin-top: 15px;
@@ -177,12 +178,12 @@ const CustomSelect = ({ value, label, onChange, ...props }) => {
   );
 };
 
-export default ({ label, children, ...rest }) => {
+export default ({ label, layout, children, ...rest }) => {
   return (
-    <FormGroup>
+    <FormGroupStyled layout={layout}>
       <Label>{label}</Label>
       <FormControl {...rest} accepter={CustomSelect} />
       {children}
-    </FormGroup>
+    </FormGroupStyled>
   );
 };

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { ControlLabel } from 'rsuite';
 import { byTheme } from 'services/theme';
+import { variant } from 'styled-system';
 
 const labelTheme = {
   fontSize: {
@@ -15,6 +16,17 @@ const CRLabel = styled(ControlLabel)`
   color: ${props => props.theme.colors.text};
   margin: 0;
   margin-bottom: ${({ noLabel }) => (noLabel ? '0px' : '10px')};
+  ${variant({
+    prop: 'layout',
+    variants: {
+      inline: {
+        'margin-bottom': '0px',
+      },
+      vertical: {
+        'margin-bottom': '10px',
+      },
+    },
+  })}
 `;
 
 CRLabel.defaultProps = {
