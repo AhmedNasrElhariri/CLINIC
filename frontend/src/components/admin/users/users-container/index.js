@@ -23,7 +23,7 @@ export default function UsersContainer() {
         title="Users"
         nobody
         more={
-          <CRButton onClick={open} primary small>
+          <CRButton onClick={open} variant="primary">
             New User
           </CRButton>
         }

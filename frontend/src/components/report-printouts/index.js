@@ -35,7 +35,7 @@ function ReportPrintout() {
     <>
       <Div>
         <Label>Patient Reports </Label>
-        <CustomButton onClick={handlePrint} small primary>
+        <CustomButton onClick={handlePrint} variant="primary">
           Print
         </CustomButton>
       </Div>

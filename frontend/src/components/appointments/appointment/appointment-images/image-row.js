@@ -17,7 +17,6 @@ const ImageRow = ({ image, onClick }) => {
           <ButtonDiv>
             <CRButton
               variant={image.required ? 'dark' : 'primary'}
-              small
               m="auto"
               onClick={onClick}
               style={{ padding: '10px' }}

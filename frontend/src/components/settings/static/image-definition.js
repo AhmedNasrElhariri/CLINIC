@@ -61,14 +61,13 @@ const ImageDefinition = () => {
         },
       });
     }
-  }, [addImageDefinition, formValue, type]);
+  }, [addImageDefinition, editImageDefinition, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
         <CRButton
-          primary
-          small
+          variant="primary"
           onClick={handleClickCreate}
           style={{ marginTop: 4 }}
         >

@@ -155,10 +155,10 @@ const AccountingContainer = () => {
         title="Accounting"
         more={
           <Div display="flex">
-            <CRButton primary small onClick={createRevenueForm.show}>
+            <CRButton variant="primary" onClick={createRevenueForm.show}>
               Reveneue +
             </CRButton>
-            <CRButton primary small onClick={createExpenseForm.show} ml={1}>
+            <CRButton variant="primary" onClick={createExpenseForm.show} ml={1}>
               Expense +
             </CRButton>
             <Div ml={1}>
@@ -181,7 +181,7 @@ const AccountingContainer = () => {
 
         <Div display="flex" my={4}>
           <H6>Showing for :</H6>
-          <H6 color="primary" ml={2} fontWeight="bold">
+          <H6 variant="primary" ml={2} fontWeight="bold">
             {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
           </H6>
         </Div>

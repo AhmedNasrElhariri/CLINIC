@@ -49,7 +49,7 @@ const NewItem = () => {
 
   return (
     <>
-      <CRButton primary small onClick={open}>
+      <CRButton variant="primary"  onClick={open}>
         New +
       </CRButton>
 

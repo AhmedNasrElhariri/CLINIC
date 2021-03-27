@@ -61,7 +61,7 @@ function Surgeries() {
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleonClickCreate}>
+        <CRButton variant="primary" onClick={handleonClickCreate}>
           Surgery +
         </CRButton>
       </Div>

@@ -56,12 +56,12 @@ const LabCategory = () => {
         },
       });
     }
-  }, [addLabCategory, formValue, type]);
+  }, [addLabCategory, editLabCategory, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate}>
+        <CRButton variant="primary" onClick={handleClickCreate}>
           Add New Lab Category+
         </CRButton>
       </Div>

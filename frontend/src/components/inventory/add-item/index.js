@@ -40,7 +40,7 @@ const AddItem = ({ items }) => {
 
   return (
     <>
-      <CRButton primary small onClick={open}>
+      <CRButton variant="primary" onClick={open}>
         Add +
       </CRButton>
 

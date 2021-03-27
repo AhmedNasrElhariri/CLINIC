@@ -61,7 +61,7 @@ const Hospitals = () => {
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate}>
+        <CRButton variant="primary" onClick={handleClickCreate}>
           Hospital +
         </CRButton>
       </Div>

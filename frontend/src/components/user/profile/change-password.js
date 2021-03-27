@@ -33,8 +33,7 @@ const ChangePassword = () => {
       <Div mb={30} display="flex" justifyContent="space-between">
         <H6 fontWeight="bold">Change Password</H6>
         <CRButton
-          small
-          primary
+          variant="primary"
           onClick={() =>
             changePassword({
               variables: formValue,

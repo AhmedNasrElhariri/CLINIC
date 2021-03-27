@@ -10,13 +10,13 @@ const PrintInvoice = props => {
     <Div>
       <ReactToPrint
         trigger={() => (
-          <CRButton primary small data-trigger width={106} height={34}>
+          <CRButton variant="primary" data-trigger width={106} height={34}>
             Print <Icon icon="print" data-trigger />
           </CRButton>
         )}
         content={() => ref.current}
       />
-      <InvoicePrintout ref={ref} {...props}/>
+      <InvoicePrintout ref={ref} {...props} />
     </Div>
   );
 };

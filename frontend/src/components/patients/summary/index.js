@@ -122,7 +122,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
         )}
       </Div>
       <Div position="absolute" top={0} right={3}>
-        <CRButton onClick={open} primary small>
+        <CRButton onClick={open} variant="primary">
           Table View
         </CRButton>
         <Modal show={visible} full onHide={close}>

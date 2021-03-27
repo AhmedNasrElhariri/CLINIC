@@ -67,7 +67,7 @@ const Configurations = () => {
       <Div display="flex" justifyContent="space-between">
         <H3 mb={64}>Configurations</H3>
         <Div>
-          <CRButton onClick={handleSave} primary small>
+          <CRButton onClick={handleSave} variant="primary">
             Save
           </CRButton>
         </Div>

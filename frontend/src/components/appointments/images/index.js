@@ -100,7 +100,7 @@ const AppointmentImages = ({ formValue, onChange: setFormValue }) => {
   return (
     <Div>
       <Div textAlign="right">
-        <CRButton primary small onClick={open}>
+        <CRButton variant="primary" onClick={open}>
           Add / Edit
         </CRButton>
       </Div>

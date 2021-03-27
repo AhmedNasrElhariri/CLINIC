@@ -95,8 +95,7 @@ const Card = ({ laneId, index }) => {
           </Form>
           {hasChoices && (
             <H6
-              primary
-              small
+              variant="primary"
               onClick={
                 fieldType === NESTED_SELECTOR_FIELD_TYPE
                   ? handleClickCreateTree

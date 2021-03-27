@@ -18,7 +18,6 @@ const LabRow = ({ lab, onClick }) => {
           <ButtonDiv>
             <CRButton
               variant={lab.required ? 'dark' : 'primary'}
-              small
               width={150}
               m="auto"
               onClick={onClick}

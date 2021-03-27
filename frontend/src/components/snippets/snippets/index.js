@@ -43,7 +43,7 @@ export default function Snippets() {
         title="Snippets"
         nobody
         more={
-          <CRButton onClick={showModal} primary small>
+          <CRButton onClick={showModal} variant="primary">
             New Snippet
           </CRButton>
         }

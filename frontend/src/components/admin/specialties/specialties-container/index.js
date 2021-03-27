@@ -51,10 +51,10 @@ export default function SpecialtiesContainer() {
         nobody
         more={
           <Div>
-            <CRButton onClick={open} primary small>
+            <CRButton onClick={open} variant="primary">
               New Specialty
             </CRButton>
-            <CRButton onClick={openUser} primary small ml={2}>
+            <CRButton onClick={openUser} variant="primary" ml={2}>
               Add Doctor
             </CRButton>
           </Div>

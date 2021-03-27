@@ -31,7 +31,7 @@ function NewHistory({ onCreate, type }) {
   return (
     <>
       <Div textAlign="right">
-        <CRButton onClick={() => setVisible(true)} small primary>
+        <CRButton onClick={() => setVisible(true)} variant="primary">
           Add
         </CRButton>
       </Div>

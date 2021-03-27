@@ -27,7 +27,7 @@ const PdfView = ({ data, period }) => {
   ) : (
     <div>
       <a href={pdfData.url} download="accounting.pdf" type="application/pdf">
-        <CRButton primary small ml={1}>
+        <CRButton variant="primary" ml={1}>
           Print
         </CRButton>
       </a>

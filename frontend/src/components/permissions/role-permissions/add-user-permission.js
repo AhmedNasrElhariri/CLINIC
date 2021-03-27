@@ -132,7 +132,7 @@ const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
       </FlexboxGrid.Item>
 
       <FlexboxGrid.Item colspan={5}>
-        <CRButton primary small onClick={add} disabled={selectedAll}>
+        <CRButton variant="primary" onClick={add} disabled={selectedAll}>
           + Add
         </CRButton>
       </FlexboxGrid.Item>

@@ -7,8 +7,7 @@ import NewLabDefinition from './new-test-definition';
 import ListLabsDefinition from './list-tests-definition';
 import useLabsDefinition from 'hooks/fetch-tests-definition';
 import useModal from 'hooks/use-model';
-import Prescription from './prescription';
-const initValue = { name: '' ,category:''};
+const initValue = { name: '', category: '' };
 
 const LabDefinition = () => {
   const { visible, open, close } = useModal();
@@ -60,12 +59,12 @@ const LabDefinition = () => {
         },
       });
     }
-  }, [addLabDefinition, formValue, type]);
+  }, [addLabDefinition, editLabDefinition, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate}>
+        <CRButton variant="primary" onClick={handleClickCreate}>
           Add New Lab +
         </CRButton>
       </Div>
@@ -77,27 +76,6 @@ const LabDefinition = () => {
         onClose={close}
         type={type}
       />
-      {/* <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate}>
-          Prescription
-        </CRButton>
-      </Div> */}
-      {/* <Prescription
-        visible={visible}
-        formValue={formValue}
-        onChange={setFormValue}
-        onOk={handleAdd}
-        onClose={close}
-        type={type}
-      /> */}
-      {/* <Invoice
-        show={visible}
-        formValue={formValue}
-        onChange={setFormValue}
-        onOk={handleAdd}
-        onClose={close}
-        type={type}
-      /> */}
       <ListLabsDefinition labs={labsDefinition} onEdit={handleClickEdit} />
     </>
   );

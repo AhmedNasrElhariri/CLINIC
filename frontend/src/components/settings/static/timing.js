@@ -8,7 +8,7 @@ import ListTiming from './list-timing';
 import useTimings from 'hooks/fetch-timing';
 import useModal from 'hooks/use-model';
 
-const initValue = { name: '',englishPrintValue:'', arabicPrintValue: '' };
+const initValue = { name: '', englishPrintValue: '', arabicPrintValue: '' };
 
 const Timing = () => {
   const { visible, open, close } = useModal();
@@ -33,7 +33,12 @@ const Timing = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const timing = R.pick(['id', 'name', 'englishPrintValue','arabicPrintValue'])(data);
+      const timing = R.pick([
+        'id',
+        'name',
+        'englishPrintValue',
+        'arabicPrintValue',
+      ])(data);
       setType('edit');
       setFormValue(timing);
       open();
@@ -55,12 +60,12 @@ const Timing = () => {
         },
       });
     }
-  }, [addTiming, formValue, type]);
+  }, [addTiming, editTiming, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate}>
+        <CRButton variant="primary" onClick={handleClickCreate}>
           Add New Timing +
         </CRButton>
       </Div>

@@ -64,7 +64,7 @@ const PatientSurgeriesContainer = () => {
         title="Patients Surgeries"
         more={
           <Div display="flex">
-            <CRButton primary small onClick={handleOnClickCreate}>
+            <CRButton variant="primary" onClick={handleOnClickCreate}>
               Surgery +
             </CRButton>
           </Div>

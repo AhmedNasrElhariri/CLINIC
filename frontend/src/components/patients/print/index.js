@@ -63,7 +63,7 @@ const Print = ({ appoitnments, patient, fields, appoitnmentsWithGroups }) => {
 
   return (
     <>
-      {/* <CRButton primary small ml={1} onClick={handleClick}>
+      {/* <CRButton variant="primary"  ml={1} onClick={handleClick}>
         Print
       </CRButton> */}
       <CRModal

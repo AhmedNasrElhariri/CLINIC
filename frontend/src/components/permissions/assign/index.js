@@ -35,10 +35,10 @@ function Assign() {
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={openPermissions}>
+        <CRButton variant="primary" onClick={openPermissions}>
           Create
         </CRButton>
-        <CRButton primary small onClick={handleClickCreate}>
+        <CRButton variant="primary" onClick={handleClickCreate}>
           Assign
         </CRButton>
       </Div>

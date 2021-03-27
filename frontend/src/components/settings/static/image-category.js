@@ -59,14 +59,13 @@ const ImageCategory = () => {
         },
       });
     }
-  }, [addImageCategory, formValue, type]);
+  }, [addImageCategory, editImageCategory, formValue, type]);
 
   return (
     <>
       <Div textAlign="right">
         <CRButton
-          primary
-          small
+          variant="primary"
           onClick={handleClickCreate}
           style={{ marginTop: 4 }}
         >

@@ -10,10 +10,7 @@ const PdfFile = ({ history }) => {
     (async () => {
       const blob = await pdf(<PdfDocument data={history} />).toBlob();
       const url = URL.createObjectURL(blob);
-
       saveAs.saveAs(url, `history.pdf`);
-
-      // onDone();
     })();
   }, [history]);
 
@@ -34,19 +31,10 @@ const Print = ({ history }) => {
 
   return (
     <>
-      <CRButton primary small ml={1} onClick={handleClick}>
+      <CRButton variant="primary" ml={1} onClick={handleClick}>
         Print
       </CRButton>
-      {printable && (
-        <PdfFile
-          // onDone={() => {
-          //   setSelected(false);
-          //   setAllChecked(false);
-          //   setChecked({});
-          // }}
-          history={history}
-        />
-      )}
+      {printable && <PdfFile history={history} />}
     </>
   );
 };

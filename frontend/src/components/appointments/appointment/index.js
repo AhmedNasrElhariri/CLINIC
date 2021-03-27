@@ -188,35 +188,31 @@ function Appointment() {
           <H3 mb={64}>Appointment</H3>
           <Div>
             <CRButton
-              small
-              primary
+              variant="primary"
               onClick={handleClickCreate}
               disabled={disabled}
             >
               PrintMedicines <Icon icon="print" />
             </CRButton>
             <CRButton
-              small
-              primary
+              variant="primary"
               onClick={handleClickCreateThree}
               disabled={disabled}
             >
               images <Icon icon="print" />
             </CRButton>
             <CRButton
-              small
-              primary
+              variant="primary"
               onClick={handleClickCreateTwo}
               disabled={disabled}
             >
               PrintLabs <Icon icon="print" />
             </CRButton>
-            <CRButton small primary onClick={onUpdate} disabled={disabled}>
+            <CRButton variant="primary" onClick={onUpdate} disabled={disabled}>
               Save <Icon icon="save" />
             </CRButton>
             <CRButton
-              small
-              primary
+              variant="primary"
               open={visbleAppointment}
               onClick={toggleAppointment}
             >

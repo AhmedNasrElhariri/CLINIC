@@ -39,12 +39,7 @@ const MedicineDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const medicine = R.pick([
-        'id',
-        'name',
-        'concentration',
-        'form',
-      ])(data);
+      const medicine = R.pick(['id', 'name', 'concentration', 'form'])(data);
       setType('edit');
       setFormValue(medicine);
       open();
@@ -71,7 +66,7 @@ const MedicineDefinition = () => {
   return (
     <>
       <Div textAlign="right">
-        <CRButton primary small onClick={handleClickCreate}>
+        <CRButton variant="primary" onClick={handleClickCreate}>
           New Medicine +
         </CRButton>
       </Div>

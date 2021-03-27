@@ -46,10 +46,10 @@ export default function Branches() {
         nobody
         more={
           <Div>
-            <CRButton onClick={openBranch} primary small>
+            <CRButton onClick={openBranch} variant="primary">
               New Branch
             </CRButton>
-            <CRButton onClick={openSpecialty} primary small ml={2}>
+            <CRButton onClick={openSpecialty} variant="primary" ml={2}>
               Add Specialty
             </CRButton>
           </Div>
