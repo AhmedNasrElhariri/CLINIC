@@ -13,8 +13,7 @@ import { isBeforeToday } from 'utils/date';
 import { isValid } from 'services/form';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import { getCreatableApptTypes } from 'services/appointment';
-import useAppointmentForm from 'hooks/appointment-form';
-import useNewAppointments from 'hooks/use-new-appointments';
+import { useAppointmentForm, useNewAppointment } from 'hooks';
 
 const { StringType, DateType } = Schema.Types;
 
@@ -45,7 +44,7 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
     setFormValue,
     createAppointment,
     appointments,
-  } = useNewAppointments({ onCreate: onHide });
+  } = useNewAppointment({ onCreate: onHide });
 
   const [selectedHour, setSelectedHour] = useState(null);
 

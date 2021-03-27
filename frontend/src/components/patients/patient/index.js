@@ -5,13 +5,7 @@ import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import { GET_PATIENT } from 'apollo-client/queries';
-import {
-  Div,
-  CRVNav,
-  CRButton,
-  MainContainer,
-  PatientSummary,
-} from 'components';
+import { CRVNav, CRButton, MainContainer, PatientSummary } from 'components';
 import AvatarWithName from '../patient-avatar-with-name/index';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
@@ -20,15 +14,15 @@ import PatientImages from 'components/appointments/appointment/patient-images';
 import History from 'components/appointments/appointment/patient-history';
 import PatientSurgries from 'components/appointments/appointment/surgries';
 import { appointmentHistory } from '../../../utils/constants';
-import useQueryParams from 'hooks/useQueryParams';
+import { useQueryParams } from 'hooks';
 
 const tabs = [
   'Patient Info',
   'Sessions',
   'Surgries',
   'Labs',
-  'History',
   'Images',
+  'History',
 ];
 const Container = styled.div`
   display: flex;
@@ -100,8 +94,8 @@ function Appointment() {
                   />
                 )}
                 {showComp('3') && <PatientLabs patient={patient} />}
-                {showComp('4') && <History patient={patient} />}
-                {showComp('5') && <PatientImages patient={patient} />}
+                {showComp('4') && <PatientImages patient={patient} />}
+                {showComp('5') && <History patient={patient} />}
               </TabContainer>
             </Container>
           )}

@@ -1,8 +1,8 @@
-import { forEach } from 'ramda';
 import React, { useState } from 'react';
 import { CRCard, CRTable } from 'components';
-import DataTable from 'react-data-table-component';
+
 import * as XLSX from 'xlsx';
+
 function App() {
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);
@@ -18,13 +18,13 @@ function App() {
       const row = dataStringLines[i].split(
         /,(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)/
       );
-      if (headers && row.length == headers.length) {
+      if (headers && row.length === headers.length) {
         const obj = {};
         for (let j = 0; j < headers.length; j++) {
           let d = row[j];
           if (d.length > 0) {
-            if (d[0] == '"') d = d.substring(1, d.length - 1);
-            if (d[d.length - 1] == '"') d = d.substring(d.length - 2, 1);
+            if (d[0] === '"') d = d.substring(1, d.length - 1);
+            if (d[d.length - 1] === '"') d = d.substring(d.length - 2, 1);
           }
           if (headers[j]) {
             obj[headers[j]] = d;
@@ -66,15 +66,13 @@ function App() {
   };
   return (
     <div>
-      <h3>
-        Read The CSV File {' '}
-      </h3>
+      <h3>Read The CSV File </h3>
       <input type="file" accept=".csv,.xlsx,.xls" onChange={handleFileUpload} />
-      {(columns.length != 0 && data.length != 0) ? (
+      {columns.length !== 0 && data.length !== 0 ? (
         <CRCard borderless>
           <CRTable autoHeight data={data}>
-            {columns.map((element,indx) => (
-              <CRTable.CRColumn flexGrow={1} >
+            {columns.map((element, indx) => (
+              <CRTable.CRColumn flexGrow={1}>
                 <CRTable.CRHeaderCell>{element.name}</CRTable.CRHeaderCell>
                 <CRTable.CRCell dataKey={element.name} semiBold />
               </CRTable.CRColumn>

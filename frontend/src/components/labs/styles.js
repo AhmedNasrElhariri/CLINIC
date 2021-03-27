@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Table } from 'rsuite';
 export const StyledLab = styled.h1`
   width: 95px;
   height: 32px;

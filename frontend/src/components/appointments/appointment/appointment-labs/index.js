@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import { Div } from 'components';
-import useTestsDefinition from 'hooks/fetch-tests-definition';
+import { useLabDefinitions } from 'hooks';
 import LabRow from './lab-row';
 
 const AppointmentLabs = ({ selectedLabs, onChange }) => {
-  const { labsDefinition } = useTestsDefinition();
+  const { labsDefinition } = useLabDefinitions();
   const [formValue, setFormValue] = useState([]);
 
   useEffect(() => {

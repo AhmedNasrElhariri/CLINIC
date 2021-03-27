@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput ,CRSelectInput} from 'components';
+import { CRModal, CRTextInput } from 'components';
 
 const model = Schema.Model({});
-
 function NewImageCategory({
   formValue,
   onChange,
@@ -14,7 +13,8 @@ function NewImageCategory({
   onClose,
 }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Image Category' : 'Edit Image Category'),
+    () =>
+      type === 'create' ? 'Add New Image Category' : 'Edit Image Category',
     [type]
   );
   return (
@@ -26,12 +26,7 @@ function NewImageCategory({
       onCancel={onClose}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput
-          label="Name"
-          name="name"
-          placeholder="Type Name"
-          block
-        />
+        <CRTextInput label="Name" name="name" placeholder="Type Name" block />
       </Form>
     </CRModal>
   );

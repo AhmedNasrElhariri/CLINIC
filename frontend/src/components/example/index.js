@@ -1,26 +1,19 @@
 import React from 'react';
 import { Header, StyledPanel } from './styles';
 import Table from './table';
-import { useHistory } from 'react-router-dom';
 
 import { formatDate, formatFullDay } from 'utils/date';
 // import { filterAppointments, sortAppointments } from 'services/appointment';
 // import { Div, CRCard, H3, CRTable } from 'components';
 // import Filter from './filter';
-import useFetchAppointments from 'hooks/use-appointments';
+import { useAppointments } from 'hooks';
 
 function Example() {
-  const history = useHistory();
   // const [formValue, setFormValue] = useState({ date: [], patient: '' });
 
-  const {
-    branches,
-    doctors,
-    specialties,
-    appointments,
-  } = useFetchAppointments();
+  const { appointments } = useAppointments();
   console.log(appointments);
-  const ExaminationApp = appointments.filter(a => a.type == 'Examination');
+  const ExaminationApp = appointments.filter(a => a.type === 'Examination');
   const ExaminationAppointments = ExaminationApp.map(a => {
     return {
       id: a.id,
@@ -32,7 +25,7 @@ function Example() {
       doctor: 'ahmed',
     };
   });
-  const FollowUp = appointments.filter(a => a.type == 'Followup');
+  const FollowUp = appointments.filter(a => a.type === 'Followup');
   const FollowUpAppointments = FollowUp.map(a => {
     return {
       id: a.id,
@@ -44,7 +37,7 @@ function Example() {
       doctor: 'ahmed',
     };
   });
-  const Urgent = appointments.filter(a => a.type == 'Urgent');
+  const Urgent = appointments.filter(a => a.type === 'Urgent');
   const UrgentAppointments = Urgent.map(a => {
     return {
       id: a.id,
@@ -56,7 +49,7 @@ function Example() {
       doctor: 'ahmed',
     };
   });
-  const Sessionapp = appointments.filter(a => a.type == 'Session');
+  const Sessionapp = appointments.filter(a => a.type === 'Session');
   const SessionAppointments = Sessionapp.map(a => {
     return {
       id: a.id,

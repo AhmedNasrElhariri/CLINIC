@@ -12,11 +12,11 @@ import {
   CRNestedSelector,
 } from 'components';
 import { formatDate } from 'utils/date';
-import useModal from 'hooks/use-model';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
 import { KeyStyled, ValueStyled } from './style';
 import AppointmentGallery from '../../appointments/images/gallery';
+import { useModal } from 'hooks';
 
 const renderProp = (key, value) => {
   return (

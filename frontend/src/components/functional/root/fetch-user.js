@@ -11,7 +11,7 @@ import {
 } from 'apollo-client/queries';
 import { ACCESS_TOKEN } from 'utils/constants';
 
-import useAuth from 'hooks/auth';
+import { useAuth } from 'hooks';
 import useGlobalState from 'state';
 
 function useUserProfile() {

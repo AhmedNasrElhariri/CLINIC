@@ -8,9 +8,7 @@ import {
   AddSpecialty,
   Div,
 } from 'components';
-import usePermissions from 'hooks/use-permissions';
-import useModal from 'hooks/use-model';
-
+import { usePermissions, useModal } from 'hooks';
 export default function Branches() {
   const {
     visible: branchVisible,

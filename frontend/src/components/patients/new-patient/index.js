@@ -7,7 +7,7 @@ import { useMutation } from '@apollo/client';
 
 import Form from './form';
 import { CREATE_PATIENT } from 'apollo-client/queries';
-import useFetchPatients from 'hooks/use-patients';
+import { usePatients } from 'hooks';
 
 const initialValues = {
   name: '',
@@ -19,8 +19,8 @@ const initialValues = {
 
 export default function NewPatient({ show, onHide }) {
   const [formValue, setFormValue] = useState(initialValues);
-  const { patients, updateCache } = useFetchPatients();
-  const [createPatient,{loading}] = useMutation(CREATE_PATIENT, {
+  const { patients, updateCache } = usePatients();
+  const [createPatient, { loading }] = useMutation(CREATE_PATIENT, {
     update(cache, { data: { createPatient: patient } }) {
       updateCache(patients.concat([patient]));
     },

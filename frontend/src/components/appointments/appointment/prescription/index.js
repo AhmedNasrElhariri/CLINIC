@@ -1,8 +1,8 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { Schema, Divider, Toggle } from 'rsuite';
+import { Divider, Toggle } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 import { formatDate } from 'utils/date';
-import { CRModal, Div, H4, H6 } from 'components';
+import { CRModal, Div, H6 } from 'components';
 import {
   Title,
   Container,
@@ -20,8 +20,6 @@ import {
   NextAppointment,
   StyledFooterData,
 } from './style';
-import { height, marginLeft } from 'styled-system';
-const model = Schema.Model({});
 let newPrescription = [];
 function Prescription({
   visible,
@@ -32,10 +30,10 @@ function Prescription({
   arabicEnable,
 }) {
   const [enable, setEnable] = useState(false);
-  const header = useMemo(() => 'Prescription');
+  const header = useMemo(() => 'Prescription', []);
   const removeItem = indx => {
     newPrescription = medicine.filter((element, index) => {
-      return index != indx;
+      return index !== indx;
     });
     setFormValue2(newPrescription);
   };
@@ -59,9 +57,9 @@ function Prescription({
             <Ul>
               <Li>{element.medicine}</Li>
               {arabicEnable ? (
-                <li style={{direction: 'rtl'}}>
-                  {element.dose}  {element.timing} {' لمده '} {element.numDuration} {' '}
-                  {element.periodDuration}
+                <li style={{ direction: 'rtl' }}>
+                  {element.dose} {element.timing} {' لمده '}{' '}
+                  {element.numDuration} {element.periodDuration}
                 </li>
               ) : (
                 <li>
@@ -108,13 +106,13 @@ function Prescription({
       />
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <PrescriptionPrintout ref={ref}>
-          {medicine.length == '0' ? (
+          {medicine.length === '0' ? (
             <Div>No Medicines</Div>
           ) : (
             medicine.map(medicine => (
               <Div style={{ marginBottom: '15px' }}>
                 <MedicineName>{medicine.medicine}</MedicineName>
-                <Row style={{direction: 'rtl'}}>
+                <Row style={{ direction: 'rtl' }}>
                   <DoesContent>
                     {medicine.dose}
                     {'  '}

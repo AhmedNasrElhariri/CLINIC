@@ -1,16 +1,19 @@
 import React, { useCallback, useMemo } from 'react';
+import * as R from 'ramda';
+
 import ListImageDocs from './list-images';
 import UpdateImage from './edit-image';
 import { formatDate } from 'utils/date';
-import * as R from 'ramda';
-import useFrom from 'hooks/form';
+
+import { useForm, useModal } from 'hooks';
 import { GET_PATIENT_IMAGEDOC } from 'apollo-client/queries';
 import { useQuery } from '@apollo/client';
-import useModal from 'hooks/use-model';
+
 const initValue = { imageId: '', imageDefinition: {}, value: '', files: [] };
+
 const PendingImages = ({ patient }) => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
   const status = 'pending';

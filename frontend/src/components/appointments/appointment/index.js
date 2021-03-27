@@ -27,12 +27,11 @@ import useAppointmentHistory from './fetch-appointment-history';
 
 import { HeaderStyled } from './style';
 
-import useFrom from 'hooks/form';
-import useModal from 'hooks/use-model';
+import { useForm, useModal } from 'hooks';
 
 function Appointment() {
   const { visible, open, close } = useModal();
-  const { type, setType } = useFrom({});
+  const { type, setType } = useForm({});
 
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
 

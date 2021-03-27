@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import { useQuery } from '@apollo/client';
@@ -8,10 +8,7 @@ import { APPT_TYPE } from 'utils/constants';
 import { LIST_APPOINTMENTS } from 'apollo-client/queries';
 
 function useAppointments({ includeSurgery } = {}) {
-  const [fetched, setFetched] = useState(false);
-  const { data } = useQuery(LIST_APPOINTMENTS, {
-    onCompleted: () => setFetched(true),
-  });
+  const { data } = useQuery(LIST_APPOINTMENTS);
 
   const appointments = useMemo(
     () =>

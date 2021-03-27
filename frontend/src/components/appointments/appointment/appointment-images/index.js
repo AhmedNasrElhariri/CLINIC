@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import { Div } from 'components';
-import useImagesDefinition from 'hooks/fetch-images-definition';
+import { useImageDefinition } from 'hooks';
 import ImageRow from './image-row';
 
 const AppointmentImages = ({ selectedImages, onChange }) => {
-  const { imagesDefinition } = useImagesDefinition();
+  const { imagesDefinition } = useImageDefinition();
   const [formValue, setFormValue] = useState([]);
 
   useEffect(() => {

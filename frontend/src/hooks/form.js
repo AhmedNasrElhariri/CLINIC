@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { isValid } from 'services/form';
 import { Alert } from 'rsuite';
 
-function useFrom({ initValue, model }) {
+function useForm({ initValue, model }) {
   const [formValue, setFormValue] = useState(initValue);
   const [type, setType] = useState('create');
 
@@ -30,4 +30,4 @@ function useFrom({ initValue, model }) {
   );
 }
 
-export default useFrom;
+export default useForm;

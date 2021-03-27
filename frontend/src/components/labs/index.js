@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyledLab,
-  StyledSelect,
-  StyeldCell,
-  Container,
-  Lab,
-  Button,
-} from './styles';
+import { StyledLab, StyledSelect, Container, Lab, Button } from './styles';
 import { CRButton } from 'components';
 
 function Labs() {

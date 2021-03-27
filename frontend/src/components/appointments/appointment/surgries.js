@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { Div } from 'components';
-import useSuergriesAppointments from 'hooks/use-surgries-appoitnemtns';
+import { useSuergriesAppointments } from 'hooks';
 import ListSurgeries from './list-surgeries';
 
 const PatientSurgries = ({ patientId }) => {

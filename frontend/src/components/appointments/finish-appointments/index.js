@@ -3,10 +3,10 @@ import { Steps } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import styled from 'styled-components';
-import { CRModal, Div, CRCard } from 'components';
+import { CRModal, Div } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
-import useConfigurations from 'hooks/configurations';
+import { useConfigurations } from 'hooks';
 import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 
 const initValue = {
@@ -52,9 +52,6 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
       setActiveStep(0);
     }
   }, [activeStep, discount]);
-  const handleHide = useCallback(() => {
-    
-  }, [activeStep, discount]);
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
     activeStep,
   ]);
@@ -92,7 +89,10 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
           />
         )}
         {activeStep === 1 && (
-          <InventoryUsage onChange={handleInventoryChange} handleCancel={handleCancel} />
+          <InventoryUsage
+            onChange={handleInventoryChange}
+            handleCancel={handleCancel}
+          />
         )}
       </Div>
     </CRModal>

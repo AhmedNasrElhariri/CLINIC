@@ -3,9 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 import { MainContainer, CRTable } from 'components';
 import PatientsFilter from '../filter/index';
-import { Can } from 'components/user/can';
 import EditPatient from '../edit-patient';
-import usePatients from 'hooks/use-patients';
+import { usePatients } from 'hooks';
 
 function Patients() {
   const history = useHistory();

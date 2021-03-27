@@ -2,17 +2,16 @@ import React, { useCallback } from 'react';
 import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
-import useFrom from 'hooks/form';
-import useModal from 'hooks/use-model';
-import useSurgeries from 'hooks/fetch-surgeries';
 import ListSurgeries from './list-surgeries';
 import NewSurgery from './new-surgery';
+
+import { useForm, useModal, useSurgeries } from 'hooks';
 
 const initValue = { name: '' };
 
 function Surgeries() {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
   const { defineSurgery, editSurgery, surgeries } = useSurgeries({

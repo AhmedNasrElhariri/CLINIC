@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 import Fab from 'components/appointments/new-appointment/fab';
@@ -13,18 +13,15 @@ import {
 import Sidebar from 'components/layout/sidebar';
 import Navbar from 'components/layout/navbar';
 import NewAppointment from 'components/appointments/new-appointment';
-import { Form, AutoComplete, Icon, InputGroup } from 'rsuite';
 
-import { filterPatientBy } from 'utils/patient';
 import useUserProfile from './fetch-user';
-import useModal from 'hooks/use-model';
+import { useModal } from 'hooks';
 
 function Root() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
 
   const history = useHistory();
-  const [searchValue, setSearchValue] = useState('');
   const {
     clearNotifications,
     onLoginFailed,
@@ -33,7 +30,6 @@ function Root() {
     isVerified,
     isAuthenticated,
     notifications,
-    patients,
     user,
   } = useUserProfile();
 

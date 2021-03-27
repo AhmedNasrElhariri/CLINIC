@@ -7,9 +7,7 @@ import {
   CRDatePicker,
   CRNumberInput,
 } from 'components';
-import useFetchPatients from 'hooks/use-patients';
-import useSurgeries from 'hooks/fetch-surgeries';
-import useHospitals from 'hooks/fetch-hospitals';
+import { useHospitals, useSurgeries, usePatients } from 'hooks';
 
 const model = Schema.Model({});
 
@@ -21,7 +19,7 @@ const NewPatientSurgery = ({
   onOk,
   onClose,
 }) => {
-  const { patients } = useFetchPatients();
+  const { patients } = usePatients();
   const { surgeries } = useSurgeries();
   const { hospitals } = useHospitals();
   const header = useMemo(

@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { NewUser, MainContainer, CRButton, Users } from 'components';
-import usePermissions from 'hooks/use-permissions';
-import useModal from 'hooks/use-model';
+import { usePermissions, useModal } from 'hooks';
 export default function UsersContainer() {
   const { visible, open, close } = useModal();
 

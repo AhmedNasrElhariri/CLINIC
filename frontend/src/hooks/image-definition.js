@@ -19,7 +19,7 @@ const updateCache = myImagesDefinition => {
   });
 };
 
-function useImagesDefinition({ onCreate, onEdit } = {}) {
+function useImageDefinition({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_IMAGES_DEFINITION);
   const imagesDefinition = useMemo(
     () => R.propOr([], 'myImagesDefinition')(data),
@@ -59,4 +59,4 @@ function useImagesDefinition({ onCreate, onEdit } = {}) {
   );
 }
 
-export default useImagesDefinition;
+export default useImageDefinition;

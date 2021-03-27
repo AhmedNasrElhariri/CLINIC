@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import { LIST_PATIENT_LABS } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
-function useFetchLabDocs({ id } = {}) {
+function useLabDocs({ id } = {}) {
   const [variables, setVariables] = useState(null);
 
   const [fetch, { data }] = useLazyQuery(LIST_PATIENT_LABS);
@@ -42,4 +42,4 @@ function useFetchLabDocs({ id } = {}) {
   );
 }
 
-export default useFetchLabDocs;
+export default useLabDocs;

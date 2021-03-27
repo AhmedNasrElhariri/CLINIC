@@ -2,8 +2,7 @@ import React from 'react';
 import { Form, Row, Col } from 'rsuite';
 
 import { CRSelectInput } from 'components';
-import useHospitals from 'hooks/fetch-hospitals';
-import useSurgeries from 'hooks/fetch-surgeries';
+import { useHospitals, useSurgeries } from 'hooks';
 
 function PatientSurgeryFilter({ formValue, onChange }) {
   const { hospitals } = useHospitals();

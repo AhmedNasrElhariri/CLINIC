@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { MainContainer, CRVNav } from 'components';
-import { Icon, Dropdown } from 'rsuite';
+import { CRVNav } from 'components';
 import Hospitals from './hospitals';
 import Surgeries from './surgeries';
 import MedicineDefinition from './medicine-definition';

@@ -9,11 +9,9 @@ import {
   CRNumberInput,
 } from 'components';
 import { isValid } from 'services/form';
-import useFetctchInventory from 'hooks/use-inventory';
-import useFrom from 'hooks/form';
 import { CRSelectInput } from 'components/widgets';
 import { UNIT_OF_MEASURES } from 'utils/constants';
-import useModal from 'hooks/use-model';
+import { useForm, useInventory, useModal } from 'hooks';
 
 const { StringType } = Schema.Types;
 
@@ -24,7 +22,7 @@ const model = Schema.Model({
 
 const NewItem = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, reset } = useFrom({
+  const { formValue, setFormValue, reset } = useForm({
     initValue: {
       name: '',
       unitOfMeasure: '',
@@ -34,7 +32,7 @@ const NewItem = () => {
     },
   });
 
-  const { create } = useFetctchInventory({
+  const { create } = useInventory({
     onCreateCompleted: () => {
       Alert.success('Item has been created successfully');
       reset();
@@ -49,7 +47,7 @@ const NewItem = () => {
 
   return (
     <>
-      <CRButton variant="primary"  onClick={open}>
+      <CRButton variant="primary" onClick={open}>
         New +
       </CRButton>
 

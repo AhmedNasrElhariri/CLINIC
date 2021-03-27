@@ -14,7 +14,7 @@ import {
   getYearStartAndEnd,
 } from 'utils/date';
 
-const useFetchAccountingData = ({ view, period } = {}) => {
+const useAccounting = ({ view, period } = {}) => {
   const { data: expensesData } = useQuery(LIST_EXPENSES);
   const { data: revenueData } = useQuery(LIST_REVENUES);
 
@@ -98,4 +98,4 @@ const useFetchAccountingData = ({ view, period } = {}) => {
   );
 };
 
-export default useFetchAccountingData;
+export default useAccounting;

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { FormGroup, RadioGroup, Radio, FormControl } from 'rsuite';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import Label from '../label';
 const RadioStyled = styled(Radio)`
   &&.rs-radio-checked .rs-radio-wrapper .rs-radio-inner::before {

@@ -5,20 +5,13 @@ import { formatDate } from 'utils/date';
 import { filterAppointments, sortAppointments } from 'services/appointment';
 import { Div, CRCard, H3, CRTable } from 'components';
 import Filter from './filter';
-import useFetchAppointments from 'hooks/use-appointments';
-import ToolBar from '../today-appointments/toolbar';
+import { useAppointments } from 'hooks';
 
 function Appointments() {
   const history = useHistory();
   const [formValue, setFormValue] = useState({ date: [], patient: '' });
 
-  const {
-    branches,
-    doctors,
-    specialties,
-    appointments,
-  } = useFetchAppointments();
-  console.log(appointments);
+  const { appointments } = useAppointments();
   const filteredAppointments = useMemo(
     () => sortAppointments(filterAppointments(appointments, formValue)),
     [appointments, formValue]

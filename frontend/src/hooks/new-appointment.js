@@ -9,8 +9,8 @@ import {
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
 } from 'apollo-client/queries';
-import useAppointments from './use-appointments';
-import usePatients from './use-patients';
+import useAppointments from './appointments';
+import usePatients from './patients';
 
 const initialValues = {
   type: 'Examination',
@@ -22,7 +22,7 @@ const initialValues = {
   time: null,
 };
 
-const useNewAppointments = ({ onCreate } = {}) => {
+const useNewAppointment = ({ onCreate } = {}) => {
   const [formValue, setFormValue] = useState(initialValues);
 
   const { appointments } = useAppointments();
@@ -88,4 +88,4 @@ const useNewAppointments = ({ onCreate } = {}) => {
   );
 };
 
-export default useNewAppointments;
+export default useNewAppointment;

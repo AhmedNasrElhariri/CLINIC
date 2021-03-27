@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import * as R from 'ramda';
 import PropTypes from 'prop-types';
-import { Icon } from 'rsuite';
 
 import { CRModal, Div } from 'components';
 import { Button } from 'rsuite';
 import Form from './form';
-import useFetchPatients from 'hooks/use-patients';
-import useModal from 'hooks/use-model';
 import styled from 'styled-components';
+import { usePatients, useModal } from 'hooks';
 
 const initialValues = {
   name: '',
@@ -26,7 +24,7 @@ const EditButton = styled(Button)`
 const EditPatient = ({ patient }) => {
   const [formValue, setFormValue] = useState(initialValues);
   const { visible, open, close } = useModal();
-  const { edit } = useFetchPatients({ onEdit: close });
+  const { edit } = usePatients({ onEdit: close });
 
   useEffect(() => {
     setFormValue(R.omit(['__typename'])(patient));
@@ -43,7 +41,9 @@ const EditPatient = ({ patient }) => {
   return (
     <>
       <Div onClick={handleOpen}>
-        <EditButton margin="15px" onClick={open}>Edit</EditButton>
+        <EditButton margin="15px" onClick={open}>
+          Edit
+        </EditButton>
         <CRModal
           show={visible}
           onHide={close}

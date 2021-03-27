@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   MainContainer,
-  CRCard,
-  CRNav,
   BranchesContainer,
   UsersContainer,
   SpecialtiesContainer,

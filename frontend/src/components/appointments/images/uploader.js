@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Uploader, Alert, Loader } from 'rsuite';
 
-import useUpload from 'hooks/upload';
+import { useUpload } from 'hooks';
 import { Div, H6 } from 'components';
 
 const CRUploader = ({ onUpload }) => {

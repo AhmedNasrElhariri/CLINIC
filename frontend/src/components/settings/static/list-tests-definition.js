@@ -2,8 +2,6 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
-import Labs from 'components/labs';
-import labTests from 'components/appointments/appointment/lab-tests';
 
 function ListTestsDefinition({ labs, onEdit }) {
   return (

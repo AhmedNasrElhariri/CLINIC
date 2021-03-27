@@ -1,5 +1,4 @@
 import React, { useMemo, useRef } from 'react';
-import { Schema } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 import { CRModal, Div } from 'components';
 import {

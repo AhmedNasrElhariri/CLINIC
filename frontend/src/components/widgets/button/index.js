@@ -32,40 +32,12 @@ const normalHeight = {
   },
 };
 
-const roundBorderRadius = {
-  borderRadius: {
-    normal: 10,
-    large: 57,
-  },
-};
-
-const midBorderRadius = {
-  borderRadius: {
-    normal: 10,
-    large: 22,
-  },
-};
-
-const normalBorderRadius = {
-  borderRadius: {
-    normal: 10,
-    large: 17,
-  },
-};
-
 const getHeight = ({ small, large }) =>
   small
     ? byTheme(smallHeight)
     : large
     ? byTheme(largeHeight)
     : byTheme(normalHeight);
-
-const getBorderRadius = ({ round, midRound }) =>
-  round
-    ? byTheme(roundBorderRadius)
-    : midRound
-    ? byTheme(midBorderRadius)
-    : byTheme(normalBorderRadius);
 
 const Button = styled.button.attrs(
   ({ block, bold, semiBold, uppercase, primary, variant }) => ({
@@ -86,7 +58,7 @@ const Button = styled.button.attrs(
   cursor: pointer;
   padding: 0px 26px;
   position: relative;
-  
+
   ${getHeight}
 
   ${byTheme(theme)};

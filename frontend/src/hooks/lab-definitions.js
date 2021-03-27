@@ -19,7 +19,7 @@ const updateCache = myLabsDefinitions => {
   });
 };
 
-function useLabsDefinition({ onCreate, onEdit } = {}) {
+function useLabDefinition({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_TESTS_DEFINITION);
   const labsDefinition = useMemo(
     () => R.propOr([], 'myLabsDefinitions')(data),
@@ -58,4 +58,4 @@ function useLabsDefinition({ onCreate, onEdit } = {}) {
   );
 }
 
-export default useLabsDefinition;
+export default useLabDefinition;

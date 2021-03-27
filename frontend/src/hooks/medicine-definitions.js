@@ -19,7 +19,7 @@ const updateCache = myMedicinesDefinition => {
   });
 };
 
-function useMedicinesDefinition({ onCreate, onEdit } = {}) {
+function useMedicineDefinitions({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_MEDICINES_DEFINITION);
   const medicines = useMemo(() => R.propOr([], 'myMedicinesDefinition')(data), [
     data,
@@ -58,4 +58,4 @@ function useMedicinesDefinition({ onCreate, onEdit } = {}) {
   );
 }
 
-export default useMedicinesDefinition;
+export default useMedicineDefinitions;

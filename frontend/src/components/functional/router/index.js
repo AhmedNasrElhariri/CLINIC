@@ -21,10 +21,7 @@ import {
   PatientSurgeriesContainer,
   ReportPrintout,
   Example,
-  Labs,
-  UploadImage,
   Csv,
-  Test,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 

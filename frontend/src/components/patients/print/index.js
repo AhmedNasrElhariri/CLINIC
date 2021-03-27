@@ -3,11 +3,11 @@ import { pdf } from '@react-pdf/renderer';
 import * as R from 'ramda';
 import { saveAs } from 'file-saver';
 
-import { CRButton, CRModal, Div, H7 } from 'components';
+import { CRModal, Div, H7 } from 'components';
 import PdfDocument from './pdf-document';
-import useModal from 'hooks/use-model';
 import { Checkbox } from 'rsuite';
 import { formatDate } from 'utils/date';
+import { useModal } from 'hooks';
 
 const PdfFile = ({ fields, patient, data, details, period, onDone }) => {
   useEffect(() => {

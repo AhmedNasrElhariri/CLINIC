@@ -6,7 +6,6 @@ import { momentLocalizer, Views } from 'react-big-calendar';
 import { Div } from 'components';
 import NewEvent from './new-event';
 
-import useFetchAppointments from 'hooks/use-appointments';
 import components from './custom-components';
 import CalendarContext from './context';
 
@@ -15,8 +14,7 @@ import { useAdjustAppointment } from '../adjust-appointment/index';
 import EditAppointment from '../edit-appointment/index';
 import CancelAppointment from '../cancel-appointment/index';
 import { MIN_EVENT_DURATION } from 'utils/constants';
-import useFetchEvents from 'hooks/fetch-evets';
-import useAuth from 'hooks/auth';
+import { useAppointments, useEvents, useAuth } from 'hooks';
 
 import Filter from './filter';
 import { filterTodayAppointments } from 'services/appointment';
@@ -58,14 +56,14 @@ function AppointmentCalendar() {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState(initialValue);
   const { can } = useAuth();
-  const { events, createEvent } = useFetchEvents({
+  const { events, createEvent } = useEvents({
     onCreated: () => {
       setFormValue(initialValue);
       setVisible(false);
     },
   });
 
-  const { appointments: data, patientsDoctors } = useFetchAppointments();
+  const { appointments: data, patientsDoctors } = useAppointments();
 
   const {
     edit,

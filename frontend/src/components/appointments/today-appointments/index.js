@@ -1,18 +1,14 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import * as R from 'ramda';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import { Div } from 'components';
 import { ARCHIVE_APPOINTMENT } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
-import useAppointments from 'hooks/use-appointments';
-import useAccounting from 'hooks/use-accounting';
-import useModal from 'hooks/use-model';
 import FinishAppointment from '../finish-appointments';
 import { getName } from 'services/accounting';
-import useFetchInventory from 'hooks/use-inventory';
+import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 
-import ToolBar from './toolbar';
 import {
   filterTodayAppointments,
   sortAppointments,
@@ -22,7 +18,7 @@ import { APPT_STATUS } from 'utils/constants';
 function TodayAppointments() {
   const { todayAppointments: appointments } = useAppointments();
 
-  const [formValue, setFormValue] = useState({});
+  const [formValue] = useState({});
 
   const filteredAppointments = useMemo(
     () => sortAppointments(filterTodayAppointments(appointments, formValue)),
@@ -30,7 +26,7 @@ function TodayAppointments() {
   );
 
   const { refetchRevenues, refetchExpenses } = useAccounting();
-  const { refetchInventory, refetchInventoryHistory } = useFetchInventory();
+  const { refetchInventory, refetchInventoryHistory } = useInventory();
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);
 

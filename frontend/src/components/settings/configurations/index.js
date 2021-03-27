@@ -4,8 +4,7 @@ import * as R from 'ramda';
 import { H3, Div, CRButton } from 'components';
 import SessionDefinitions from '../session-definations';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
-import useConfigurations from 'hooks/configurations';
-import { boolean } from 'yup';
+import { useConfigurations } from 'hooks';
 
 const initialValues = {
   sessions: [],

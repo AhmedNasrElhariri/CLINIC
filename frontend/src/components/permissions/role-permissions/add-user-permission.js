@@ -5,7 +5,6 @@ import { FlexboxGrid } from 'rsuite';
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../../permissions/list-selections-items/index';
 import { ALL_CHOICE } from 'utils/constants';
-import form from 'components/accounting/form';
 
 const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState({

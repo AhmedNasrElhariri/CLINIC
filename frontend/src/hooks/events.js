@@ -6,7 +6,7 @@ import { CREATE_EVENT, LIST_EVENTS } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
 
-function useFetchEvents({ onCreated }) {
+function useEvents({ onCreated }) {
   const { data } = useQuery(LIST_EVENTS);
 
   const events = R.propOr([], 'myEvents')(data);
@@ -45,4 +45,4 @@ function useFetchEvents({ onCreated }) {
   );
 }
 
-export default useFetchEvents;
+export default useEvents;

@@ -3,7 +3,7 @@ import { Uploader, Loader, Alert, Icon } from 'rsuite';
 import { Div, Img } from 'components';
 import { BadgtStyled } from './style';
 import { CameraIcon } from 'components/icons';
-import useUpload from 'hooks/upload';
+import { useUpload } from 'hooks';
 
 const styles = {
   width: '100%',

@@ -1,12 +1,11 @@
-import React, { useState, useCallback } from 'react';
-import { Form, Divider, Schema } from 'rsuite';
-import * as R from 'ramda';
+import React from 'react';
+import { Form, Schema } from 'rsuite';
 
-import { Div, CRSelectInput, CRNumberInput, H6, CRButton } from 'components';
-import useFrom from 'hooks/form';
-import useFetchInventory from 'hooks/use-inventory';
+import { Div, CRSelectInput, CRNumberInput, H6 } from 'components';
 import ListInvoiceItems from 'components/appointments/list-invoice-items';
 import { ItemDiv, QualityDiv, Container, ButtonsDiv, Button } from './style';
+import { useForm } from 'hooks';
+
 const { StringType, NumberType } = Schema.Types;
 
 const model = Schema.Model({
@@ -20,39 +19,11 @@ const initValue = {
 };
 
 function InventoryUsage({ onChange, handleCancel }) {
-  //const { items } = useFetchInventory();
-  const [invoiceItems, setInvoiceItems] = useState([]);
-  const { formValue, setFormValue, reset, validate } = useFrom({
+  const { formValue, setFormValue } = useForm({
     initValue,
     model,
   });
 
-  // const handleOnChange = useCallback(
-  //   items => {
-  //     setInvoiceItems(items);
-  //     onChange(items);
-  //   },
-  //   [onChange]
-  // );
-
-  // const add = useCallback(() => {
-  //   try {
-  //     validate();
-  //   } catch (e) {
-  //     return;
-  //   }
-
-  //   const item = R.find(R.propEq('id', formValue.itemId))(items);
-  //   handleOnChange([...invoiceItems, { ...formValue, name: item.name }]);
-  //   reset();
-  // }, [formValue, handleOnChange, invoiceItems, items, reset, validate]);
-
-  // const handleDelete = useCallback(
-  //   idx => {
-  //     handleOnChange(R.remove(idx, 1));
-  //   },
-  //   [handleOnChange]
-  // );
   const handleDelete = () => {};
   const items = [
     { name: 'Examination', price: 0 },

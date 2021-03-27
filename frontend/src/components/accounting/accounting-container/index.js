@@ -9,7 +9,7 @@ import ListData from '../list-data';
 import Tabs from '../tabs';
 
 import Profit from '../profit';
-import useAccountig from 'hooks/use-accounting';
+import { useAccounting } from 'hooks';
 
 import {
   CREATE_EXPENSE,
@@ -23,7 +23,6 @@ import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
-import useAuth from 'hooks/auth';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 
@@ -147,7 +146,7 @@ const AccountingContainer = () => {
     updateExpensesCache,
     updateRevenuesCache,
     timeFrame,
-  } = useAccountig({ view, period });
+  } = useAccounting({ view, period });
 
   return (
     <>

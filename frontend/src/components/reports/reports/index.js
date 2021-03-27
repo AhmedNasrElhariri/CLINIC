@@ -8,7 +8,7 @@ import Bars from '@rsuite/charts/lib/series/Bars';
 import YAxis from '@rsuite/charts/lib/components/YAxis';
 
 import { Div, MainContainer } from 'components';
-import useFetchAppointments from 'hooks/use-appointments';
+import { useAppointments } from 'hooks';
 import { Can } from 'components/user/can';
 
 const groupByAge = R.groupBy(({ age }) =>
@@ -38,7 +38,7 @@ const groupByMoths = R.groupBy(appointment =>
 );
 
 function Reports() {
-  const { appointments } = useFetchAppointments();
+  const { appointments } = useAppointments();
 
   const appointmentsByMonth = R.pipe(
     R.sortBy(R.prop('date')),

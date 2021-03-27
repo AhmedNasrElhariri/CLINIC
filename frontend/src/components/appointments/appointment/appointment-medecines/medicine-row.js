@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlexboxGrid, Form } from 'rsuite';
 
-import { MedicineContainerStyled, BoxStyled, NumberBox } from './style';
+import { MedicineContainerStyled, BoxStyled } from './style';
 import { CRButton, Div, H6, H7 } from 'components';
 import { CRNumberInput, CRSelectInput, CRTextInput } from 'components/widgets';
 

@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../list-selections-items/index';
 import { ALL_CHOICE } from 'utils/constants';
-import usePermissions from 'hooks/use-permissions';
+import { usePermissions } from 'hooks';
 
 const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
   const { branches } = usePermissions();

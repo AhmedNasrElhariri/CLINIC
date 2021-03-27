@@ -114,6 +114,7 @@ type Query {
   myInvoiceCounter: Organization!
   patientLabDocs(status: String!, patientId: String!): [Lab!]
   patientImageDocs(status: String!, patientId: String!): [Image!]
+  pendingLabs(patientId: ID!): [Image!]
 }
 
 ########################### Mutation ##################################

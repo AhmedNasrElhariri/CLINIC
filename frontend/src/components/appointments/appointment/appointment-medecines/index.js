@@ -3,11 +3,11 @@ import * as R from 'ramda';
 
 import { Div } from 'components';
 import MedicineRow from './medicine-row';
-import useTimings from 'hooks/fetch-timing';
-import useMedicinesDefinition from 'hooks/fetch-medicines-definition';
+import { useTimings } from 'hooks';
+import { useMedicineDefinitions } from 'hooks';
 
 const AppointmentMedicines = ({ prescription, onChange }) => {
-  const { medicineDefinitions } = useMedicinesDefinition();
+  const { medicineDefinitions } = useMedicineDefinitions();
   const [formValue, setFormValue] = useState([]);
   const { timings } = useTimings();
 

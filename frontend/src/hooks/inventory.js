@@ -12,9 +12,9 @@ import {
   REMOVE_DEFINITION,
   REMOVE_ITEM,
 } from 'apollo-client/queries';
-import useAccounting from 'hooks/use-accounting';
+import { useAccounting } from 'hooks';
 
-function useFetchInventory({
+function useInventory({
   onCreateCompleted,
   onAddCompleted,
   onRemoveDefinition,
@@ -217,4 +217,4 @@ function useFetchInventory({
   );
 }
 
-export default useFetchInventory;
+export default useInventory;

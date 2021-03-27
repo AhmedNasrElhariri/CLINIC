@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
 import { CRModal, CRTextInput, CRSelectInput } from 'components';
-import useImagesCategory from 'hooks/fetch-images-category';
+import { useImageCategory } from 'hooks';
 const model = Schema.Model({});
 
 function NewImageDefinition({
@@ -17,7 +17,7 @@ function NewImageDefinition({
     () => (type === 'create' ? 'Add New Image' : 'Edit Image '),
     [type]
   );
-  const { imagesCategory } = useImagesCategory();
+  const { imagesCategory } = useImageCategory();
   const categories = imagesCategory.map(category => ({
     label: category.name,
     value: category.name,

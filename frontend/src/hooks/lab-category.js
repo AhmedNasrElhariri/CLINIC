@@ -19,7 +19,7 @@ const updateCache = myLabsCategory => {
   });
 };
 
-function useLabsCategory({ onCreate, onEdit } = {}) {
+function useLabCategory({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_LABS_CATEGORY);
   const labsCategory = useMemo(
     () => R.propOr([], 'myLabsCategory')(data),
@@ -58,4 +58,4 @@ function useLabsCategory({ onCreate, onEdit } = {}) {
   );
 }
 
-export default useLabsCategory;
+export default useLabCategory;

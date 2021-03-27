@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 
-import { FormGroup, FormControl, SelectPicker } from 'rsuite';
+import { FormControl, SelectPicker } from 'rsuite';
 import { byTheme } from 'services/theme';
 
 import Label from '../label';
@@ -14,20 +14,7 @@ const heightTheme = {
     large: 59,
   },
 };
-const fontTheme100 = {
-  fontSize: {
-    normal: 14,
-    large: 22,
-  },
-  lineHeight: {
-    normal: 1.36,
-    large: 1.44,
-  },
-  color: {
-    normal: '#283148',
-    large: '#283148',
-  },
-};
+
 const fontTheme200 = {
   fontSize: {
     normal: 12,
@@ -42,26 +29,9 @@ const fontTheme200 = {
     large: '#a6abab',
   },
 };
-const theme2 = {
-  height: {
-    normal: 55,
-    large: 59,
-  },
-};
 
 const paddingLeft = css`
   padding-left: 22px;
-`;
-const StyledLabel = styled.p`
-  ${byTheme(fontTheme100)};
-  width: 42px;
-  height: 19px;
-  margin-top: 15px;
-  font-family: SegoeUI;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  margin-left: 10px;
 `;
 
 const borderCss = css`
@@ -154,10 +124,6 @@ const SelectPickerStyled = styled(SelectPicker)`
       border-radius: 0px;
     }
   `}
-`;
-const SelectorContainer = styled.div`
-  ${byTheme(theme2)};
-  border: 1px solid #eef1f1;
 `;
 
 const CustomSelect = ({ value, label, onChange, ...props }) => {

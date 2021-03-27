@@ -1,5 +1,4 @@
 import { transparentize, setLightness } from 'polished';
-import { variant } from 'styled-system';
 
 const textColor = '#283148';
 const successColor = '#40C173';

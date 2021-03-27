@@ -2,13 +2,12 @@ import React, { memo, useCallback } from 'react';
 import { Alert, Icon } from 'rsuite';
 
 import { CRModal, H6 } from 'components';
-import useFetctchInventory from 'hooks/use-inventory';
-import useModal from 'hooks/use-model';
+import { useInventory, useModal } from 'hooks';
 
 const RemoveItemDefinition = ({ item }) => {
   const { visible, open, close } = useModal();
 
-  const { removeDefinition } = useFetctchInventory({
+  const { removeDefinition } = useInventory({
     onRemoveDefinition: () => {
       Alert.success('Item has been removed successfully');
       close();

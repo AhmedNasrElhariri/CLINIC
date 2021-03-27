@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 
 import { Div, CRButton, RolePermissions } from 'components';
-import useFrom from 'hooks/form';
 import NewAssign from './new-assign';
 import ListAssigns from './list-assign';
-import usersPermission from 'hooks/use-permissions';
-import useModal from 'hooks/use-model';
+
+import { useForm, usePermissions, useModal } from 'hooks';
 
 const initValue = { roleId: null, userId: null };
 
@@ -16,10 +15,10 @@ function Assign() {
     open: openPermissions,
     close: closePermissions,
   } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  const { users, roles, assignRoleToUser } = usersPermission({
+  const { users, roles, assignRoleToUser } = usePermissions({
     onAssignRoleToUser: close,
   });
   const handleClickCreate = useCallback(() => {

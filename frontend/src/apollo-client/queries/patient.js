@@ -69,7 +69,7 @@ export const GET_PATIENT_LABDOC = gql`
   }
 `;
 
-export const GET_PATIENT_LABS_History = gql`
+export const GET_PATIENT_LABS_HISTORY = gql`
   query($status: String!, $patientId: String!) {
     patientImageDocs(status: $status, patientId: $patientId) {
       id

@@ -1,17 +1,17 @@
 import React, { useRef } from 'react';
 import { Form, SelectPicker } from 'rsuite';
-import { CRSelectInput, CRButton, Div } from 'components';
-import useFrom from 'hooks/form';
-import usePatientReports from 'hooks/fetch-patient-reports';
 import ReactQuill from 'react-quill';
+
+import { CRSelectInput, CRButton, Div } from 'components';
 import { useReactToPrint } from 'react-to-print';
 import Label from '../widgets/label';
 import styled from 'styled-components';
+import { usePatientReports, useForm } from 'hooks';
 
 const initValue = { patientReport: '', body: '' };
 
 function ReportPrintout() {
-  const { formValue, setFormValue } = useFrom({
+  const { formValue, setFormValue } = useForm({
     initValue,
   });
   const ref = useRef();

@@ -4,10 +4,9 @@ import { Form, Schema, Alert } from 'rsuite';
 
 import { CRModal, CRButton, CRNumberInput, Div, H5 } from 'components';
 import { isValid } from 'services/form';
-import useFetchInventory from 'hooks/use-inventory';
-import useFrom from 'hooks/form';
+import { useInventory } from 'hooks';
 import { CRSelectInput } from 'components/widgets';
-import useModal from 'hooks/use-model';
+import { useForm, useModal } from 'hooks';
 
 const { StringType, NumberType } = Schema.Types;
 
@@ -18,7 +17,7 @@ const model = Schema.Model({
 
 const AddItem = ({ items }) => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, reset } = useFrom({
+  const { formValue, setFormValue, reset } = useForm({
     initValue: {
       itemId: null,
       amount: 1,
@@ -26,7 +25,7 @@ const AddItem = ({ items }) => {
     },
   });
 
-  const { addItem } = useFetchInventory({
+  const { addItem } = useInventory({
     onAddCompleted: () => {
       Alert.success('Item has been created successfully');
       close();

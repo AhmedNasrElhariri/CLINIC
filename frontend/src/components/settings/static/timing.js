@@ -2,17 +2,15 @@ import React, { useCallback } from 'react';
 import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
-import useFrom from 'hooks/form';
 import NewTiming from './new-timing';
 import ListTiming from './list-timing';
-import useTimings from 'hooks/fetch-timing';
-import useModal from 'hooks/use-model';
+import { useForm, useModal, useTimings } from 'hooks';
 
 const initValue = { name: '', englishPrintValue: '', arabicPrintValue: '' };
 
 const Timing = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
   const { addTiming, timings, editTiming } = useTimings({

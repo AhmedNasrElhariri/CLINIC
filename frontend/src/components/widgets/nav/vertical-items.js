@@ -1,4 +1,3 @@
-import { ifElse } from 'ramda';
 import React, { useCallback } from 'react';
 import { Nav } from 'rsuite';
 import styled, { css } from 'styled-components';

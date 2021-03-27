@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'rsuite';
-import { CRCard, CRTable, H2 } from 'components';
+import { CRCard, CRTable } from 'components';
 
 function Table({ data, borderLeft, onEdit }) {
   return (

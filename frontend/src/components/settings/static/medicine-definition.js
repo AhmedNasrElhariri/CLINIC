@@ -2,17 +2,16 @@ import React, { useCallback } from 'react';
 import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
-import useFrom from 'hooks/form';
 import NewMedicineDefinition from './new-medicine-definition';
 import ListMedicinesDefinition from './list-medicine-definition';
-import useMedicinesDefinition from 'hooks/fetch-medicines-definition';
-import useModal from 'hooks/use-model';
+import { useMedicineDefinitions } from 'hooks';
+import { useForm, useModal } from 'hooks';
 
 const initValue = { name: '', concentration: '', form: '' };
 
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
 
@@ -20,7 +19,7 @@ const MedicineDefinition = () => {
     addMedicineDefinition,
     medicines,
     editMedicineDefinition,
-  } = useMedicinesDefinition({
+  } = useMedicineDefinitions({
     onCreate: () => {
       close();
       setFormValue(initValue);

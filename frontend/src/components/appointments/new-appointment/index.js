@@ -17,10 +17,8 @@ import { ModalBodyStyled, ContainerStyled } from './style';
 
 import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
-import useAppointmentForm from 'hooks/appointment-form';
 import { mapArrWithIdsToChoices } from 'utils/misc';
-import useNewAppointments from 'hooks/use-new-appointments';
-import useModal from 'hooks/use-model';
+import { useAppointmentForm, useNewAppointment, useModal } from 'hooks';
 
 const { StringType, DateType } = Schema.Types;
 
@@ -66,7 +64,7 @@ export default function NewAppointment({ show, onHide }) {
     appointments,
     patients,
     loading,
-  } = useNewAppointments({ onCreate: onHide });
+  } = useNewAppointment({ onCreate: onHide });
   const [selectedHour, setSelectedHour] = useState(null);
 
   useEffect(() => {

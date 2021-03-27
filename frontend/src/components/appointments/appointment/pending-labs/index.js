@@ -1,16 +1,19 @@
 import React, { useCallback, useMemo } from 'react';
+import * as R from 'ramda';
+
 import ListLabDocs from './list-labs';
 import UpdateLab from './edit-lab';
 import { formatDate } from 'utils/date';
-import * as R from 'ramda';
-import useFrom from 'hooks/form';
 import { GET_PATIENT_LABDOC } from 'apollo-client/queries';
 import { useQuery } from '@apollo/client';
-import useModal from 'hooks/use-model';
+
+import { useModal, useForm } from 'hooks';
+
 const initValue = { labId: '', labDefinition: {}, value: '', files: [] };
+
 const PendingLabs = ({ patient }) => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
   const status = 'pending';

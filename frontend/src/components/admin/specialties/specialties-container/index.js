@@ -8,8 +8,7 @@ import {
   AddDoctor,
   Div,
 } from 'components';
-import usePermissions from 'hooks/use-permissions';
-import useModal from 'hooks/use-model';
+import { usePermissions, useModal } from 'hooks';
 
 export default function SpecialtiesContainer() {
   const { visible, open, close } = useModal();

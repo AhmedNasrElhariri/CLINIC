@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput,CRSelectInput } from 'components';
-import useLabsCategory from 'hooks/fetch-labs-category';
+import { CRModal, CRTextInput, CRSelectInput } from 'components';
+import { useLabCategory } from 'hooks';
 
 const model = Schema.Model({});
 
@@ -18,7 +18,7 @@ function NewLabDefinition({
     () => (type === 'create' ? 'Add New Lab' : 'Edit Lab '),
     [type]
   );
-  const { labsCategory } = useLabsCategory();
+  const { labsCategory } = useLabCategory();
   const categories = labsCategory.map(category => ({
     label: category.name,
     value: category.name,

@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { layout } from 'styled-system';
 
 import { Div } from 'components/widgets';
 

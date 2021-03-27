@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import * as R from 'ramda';
+import React, { useState } from 'react';
 import { Cascader } from 'rsuite';
 import { SelectItem, ItemSelect, Item, ItemsBox, DeleteBtn } from './style';
 

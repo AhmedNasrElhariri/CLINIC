@@ -4,7 +4,7 @@ import { StyledContainer, StyledHeader } from './style';
 import { H5, H6, Div, H7 } from 'components';
 import { formatDate } from 'utils/date';
 import { Divider } from 'rsuite';
-import useConfigurations from 'hooks/configurations';
+import { useConfigurations } from 'hooks';
 
 const ItemPrice = ({ name, price }) => (
   <Div display="flex" justifyContent="space-between">
@@ -21,8 +21,8 @@ const TotalPrice = ({ name, price }) => (
 );
 
 const InvoicePrintout = React.forwardRef(
-  ({ items, discount, subtotal, total , organization }, ref) => {
-    console.log(organization,"ii");
+  ({ items, discount, subtotal, total, organization }, ref) => {
+    console.log(organization, 'ii');
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();

@@ -10,9 +10,9 @@ import * as R from 'ramda';
 
 import { Div, CRModal, CRButton } from 'components';
 import Collection from './collection';
-import useModal from 'hooks/use-model';
 import CRUploader from './uploader';
 import AppointmentGallery from './gallery';
+import { useModal } from 'hooks';
 
 const AppointmentImages = ({ formValue, onChange: setFormValue }) => {
   const { visible, open, close } = useModal();

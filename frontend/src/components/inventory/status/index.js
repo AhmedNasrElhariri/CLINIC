@@ -1,11 +1,11 @@
 import React from 'react';
 import { MainContainer, CRCard } from 'components';
 import AddItem from '../add-item';
-import useFetchInventory from 'hooks/use-inventory';
-import ListInventory from '../list-inventory/index';
+import ListInventory from '../list-inventory';
+import { useInventory } from 'hooks';
 
 const InventoryStatus = () => {
-  const { items, inventoryWithAmount } = useFetchInventory();
+  const { items, inventoryWithAmount } = useInventory();
   return (
     <>
       <MainContainer

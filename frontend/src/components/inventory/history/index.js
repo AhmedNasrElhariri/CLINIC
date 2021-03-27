@@ -1,11 +1,11 @@
 import React from 'react';
-import useFetchInventory from 'hooks/use-inventory';
 import { CRTable, MainContainer } from 'components';
 import { formatFullDay } from 'utils/date';
 import Print from '../print';
+import { useInventory } from 'hooks';
 
 const InventoryHistory = () => {
-  const { history } = useFetchInventory();
+  const { history } = useInventory();
   return (
     <>
       <MainContainer

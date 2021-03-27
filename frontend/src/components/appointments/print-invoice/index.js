@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Icon } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 import { CRButton, Div } from 'components';

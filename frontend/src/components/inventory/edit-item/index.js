@@ -4,9 +4,7 @@ import * as R from 'ramda';
 
 import { CRModal, CRTextInput } from 'components';
 import { isValid } from 'services/form';
-import useFetctchInventory from 'hooks/use-inventory';
-import useFrom from 'hooks/form';
-import useModal from 'hooks/use-model';
+import { useInventory, useForm, useModal } from 'hooks';
 
 const { StringType } = Schema.Types;
 
@@ -16,7 +14,7 @@ const model = Schema.Model({
 
 const EditItem = ({ defaultValue }) => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue } = useFrom({
+  const { formValue, setFormValue } = useForm({
     initValue: {
       name: '',
     },
@@ -27,7 +25,7 @@ const EditItem = ({ defaultValue }) => {
     setFormValue(item);
   }, [defaultValue, setFormValue]);
 
-  const { update } = useFetctchInventory({
+  const { update } = useInventory({
     onCreateCompleted: () => {
       Alert.success('Item has been created successfully');
       close();

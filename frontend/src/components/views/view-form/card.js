@@ -10,7 +10,7 @@ import {
 } from 'utils/constants';
 import Choices from './choices';
 import NestedChoices from './nested-choices';
-import useModal from 'hooks/use-model';
+import { useModal } from 'hooks';
 
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState('lanes');

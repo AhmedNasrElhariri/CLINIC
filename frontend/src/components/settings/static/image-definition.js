@@ -2,25 +2,24 @@ import React, { useCallback } from 'react';
 import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
-import useFrom from 'hooks/form';
 import NewImageDefinition from './new-image-definition';
 import ListImagesDefinition from './list-images-definition';
-import useImagesDefinition from 'hooks/fetch-images-definition';
+import { useForm, useImageDefinition } from 'hooks';
 
-import useModal from 'hooks/use-model';
+import { useModal } from 'hooks';
 
 const initValue = { name: '', category: '' };
 
 const ImageDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
   const {
     addImageDefinition,
     imagesDefinition,
     editImageDefinition,
-  } = useImagesDefinition({
+  } = useImageDefinition({
     onCreate: () => {
       close();
       setFormValue(initValue);

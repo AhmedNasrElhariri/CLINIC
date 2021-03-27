@@ -5,7 +5,7 @@ import { Toggle, Panel, Form } from 'rsuite';
 import { Div, H6, H5, CRTextInput, CRPanelGroup, CRModal } from 'components';
 
 import PermissionRules from '../permission-rules';
-import usePermissions from 'hooks/use-permissions';
+import { usePermissions } from 'hooks';
 import { ALL_CHOICE } from 'utils/constants';
 
 const RolePermissions = ({ show, onClose, onCreate }) => {

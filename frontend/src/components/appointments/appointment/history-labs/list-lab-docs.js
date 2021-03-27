@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import * as R from 'ramda';
+import React from 'react';
 import { Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
-import { Div, CRNav, H6 } from 'components';
-import ListLabImages from '../list-lab-images';
-
 function ListLabDocs({ labs }) {
   return (
     <CRCard borderless>

@@ -2,13 +2,11 @@ import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Div, CRButton, MainContainer } from 'components';
-import useFrom from 'hooks/form';
-import useModal from 'hooks/use-model';
-import usePatientSurgeries from 'hooks/fetch-patient-surgeries';
 import ListPatientSurgeries from '../list-patient-surgeries';
 import NewPatientSurgery from '../new-patient-surgery';
 import PatientSurgeryFilter from './filter';
 import { filterPatientSurgery } from 'services/patient-surgery';
+import { useForm, usePatientSurgeries, useModal } from 'hooks';
 
 const initValue = {
   patientId: null,
@@ -22,13 +20,13 @@ const initValue = {
 const PatientSurgeriesContainer = () => {
   const { visible, open, close } = useModal();
   const history = useHistory();
-  const { formValue, setFormValue } = useFrom({
+  const { formValue, setFormValue } = useForm({
     initValue,
   });
   const {
     formValue: filterFormValue,
     setFormValue: setFilterFormValue,
-  } = useFrom({
+  } = useForm({
     surgery: null,
     hospital: null,
   });

@@ -2,23 +2,22 @@ import React, { useCallback } from 'react';
 import * as R from 'ramda';
 
 import { Div, CRButton } from 'components';
-import useFrom from 'hooks/form';
 import NewLabDefinition from './new-test-definition';
 import ListLabsDefinition from './list-tests-definition';
-import useLabsDefinition from 'hooks/fetch-tests-definition';
-import useModal from 'hooks/use-model';
+import { useForm, useModal, useLabDefinitions } from 'hooks';
+
 const initValue = { name: '', category: '' };
 
 const LabDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
   const {
     addLabDefinition,
     labsDefinition,
     editLabDefinition,
-  } = useLabsDefinition({
+  } = useLabDefinitions({
     onCreate: () => {
       close();
       setFormValue(initValue);
