@@ -3,14 +3,14 @@ import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { Alert, Loader, Icon } from 'rsuite';
-import Prescription from './prescription/index.js';
+
+import Prescription from './prescription';
+
 import Labs from './labs/index';
 import Images from './images';
 import NewAppointment from './new-appointment';
-
 import { Div, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
-
 import {
   getFormInitValues,
   mapFormValueToAppointmentData,
@@ -24,9 +24,7 @@ import {
 } from 'apollo-client/queries';
 
 import useAppointmentHistory from './fetch-appointment-history';
-
 import { HeaderStyled } from './style';
-
 import { useForm, useModal } from 'hooks';
 
 function Appointment() {

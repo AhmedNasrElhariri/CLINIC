@@ -3,11 +3,7 @@ import { LAB_STATUS } from '@/utils/constants';
 
 const insertLabResult = async (_, { lab }) => {
   const { id, documents, value } = lab;
-  console.log('documents', {
-    connect: documents.map(docId => ({
-      id: docId,
-    })),
-  });
+
   return prisma.lab.update({
     data: {
       id,

@@ -6,10 +6,13 @@ import * as R from 'ramda';
 import { LIST_PATIENT_LABS, INSRET_LAB_RESULT } from 'apollo-client/queries';
 import { LAB_STATUS } from 'utils/constants';
 
-function usePatientDetails({ patientId } = {}) {
-  const [getPendingLabs, { data, called }] = useLazyQuery(LIST_PATIENT_LABS, {
-    variables: { patientId },
-  });
+function usePatientDetails({ patientId, onInsert } = {}) {
+  const [getPendingLabs, { data, called, refetch }] = useLazyQuery(
+    LIST_PATIENT_LABS,
+    {
+      variables: { patientId },
+    }
+  );
 
   const labs = useMemo(
     () =>
@@ -32,6 +35,8 @@ function usePatientDetails({ patientId } = {}) {
   const [insertLabResult] = useMutation(INSRET_LAB_RESULT, {
     onCompleted: () => {
       Alert.success('Lab Document has been uploaded successfully');
+      onInsert && onInsert();
+      refetch();
     },
   });
 

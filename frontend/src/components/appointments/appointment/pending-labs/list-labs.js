@@ -4,7 +4,7 @@ import { Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 
-function ListLabDocs({ labs, onEdit }) {
+function ListLabs({ labs, onEdit }) {
   return (
     <CRCard borderless>
       <CRTable autoHeight data={labs}>
@@ -59,8 +59,8 @@ function ListLabDocs({ labs, onEdit }) {
   );
 }
 
-ListLabDocs.defaultProps = {
-  labDocs: [],
+ListLabs.defaultProps = {
+  labs: [],
 };
 
-export default ListLabDocs;
+export default ListLabs;

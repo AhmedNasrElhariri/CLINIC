@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { Form } from 'rsuite';
 
 import { CRModal, CRTextInput } from 'components';

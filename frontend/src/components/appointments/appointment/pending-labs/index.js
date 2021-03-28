@@ -11,6 +11,7 @@ const PendingLabs = ({ patient }) => {
 
   const { pendingLabs, insertLabResult } = usePatientDetails({
     patientId: patient.id,
+    onInsert: close,
   });
 
   const handleClickEdit = useCallback(
