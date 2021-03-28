@@ -6,7 +6,7 @@ import UpdateImage from './edit-image';
 import { formatDate } from 'utils/date';
 
 import { useForm, useModal } from 'hooks';
-import { GET_PATIENT_IMAGEDOC } from 'apollo-client/queries';
+import { LIST_PATIENT_IMAGES } from 'apollo-client/queries';
 import { useQuery } from '@apollo/client';
 
 const initValue = { imageId: '', imageDefinition: {}, value: '', files: [] };
@@ -18,7 +18,7 @@ const PendingImages = ({ patient }) => {
   });
   const status = 'pending';
   const patientId = patient.id;
-  const { data } = useQuery(GET_PATIENT_IMAGEDOC, {
+  const { data } = useQuery(LIST_PATIENT_IMAGES, {
     variables: { status: status, patientId: patientId },
   });
 

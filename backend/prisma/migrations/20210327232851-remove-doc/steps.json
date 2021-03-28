@@ -1,0 +1,49 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteModel",
+      "model": "LabDocument"
+    },
+    {
+      "tag": "DeleteModel",
+      "model": "ImageDocument"
+    },
+    {
+      "tag": "CreateField",
+      "model": "File",
+      "field": "labs",
+      "type": "Lab",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "File",
+      "field": "images",
+      "type": "Image",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "File",
+      "field": "labDocuments"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "File",
+      "field": "imageDocuments"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Lab",
+      "field": "documents",
+      "type": "File"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Image",
+      "field": "documents",
+      "type": "File"
+    }
+  ]
+}

@@ -17,6 +17,10 @@ function useForm({ initValue, model }) {
     }
   }, [formValue, model]);
 
+  const updateProp = useCallback((prop, val) => {
+    setFormValue(formValue => ({ ...formValue, [prop]: val }));
+  }, []);
+
   return useMemo(
     () => ({
       setFormValue,
@@ -25,8 +29,9 @@ function useForm({ initValue, model }) {
       validate,
       type,
       setType,
+      updateProp,
     }),
-    [formValue, reset, type, validate]
+    [formValue, reset, type, updateProp, validate]
   );
 }
 

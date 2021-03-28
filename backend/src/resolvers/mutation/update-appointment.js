@@ -45,22 +45,6 @@ const updateAppointment = async (_, { appointment }) => {
           where: { id: id || appointment.id },
         })),
       },
-      labs: {
-        deleteMany: {},
-        create: appointment.labIds.map(id => ({
-          status: LAB_STATUS.DRAFT,
-          patient: {
-            connect: {
-              id: persistedAppointment.patient.id,
-            },
-          },
-          labDefinition: {
-            connect: {
-              id,
-            },
-          },
-        })),
-      },
       prescription: {
         deleteMany: {},
         create: appointment.prescription.map(
@@ -80,6 +64,22 @@ const updateAppointment = async (_, { appointment }) => {
             },
           })
         ),
+      },
+      labs: {
+        deleteMany: {},
+        create: appointment.labIds.map(id => ({
+          status: LAB_STATUS.DRAFT,
+          patient: {
+            connect: {
+              id: persistedAppointment.patient.id,
+            },
+          },
+          labDefinition: {
+            connect: {
+              id,
+            },
+          },
+        })),
       },
       images: {
         deleteMany: {},

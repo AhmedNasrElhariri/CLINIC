@@ -1,17 +1,26 @@
 import React from 'react';
 import { Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
+import { formatDate } from 'utils/date';
 function ListLabDocs({ labs }) {
   return (
     <CRCard borderless>
       <CRTable autoHeight data={labs}>
         <CRTable.CRColumn flexGrow={0.5}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="name" semiBold />
+          <CRTable.CRCell>
+            {({ name }) => (
+              <CRTable.CRCellStyled semiBold>{name}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="date" semiBold />
+          <CRTable.CRCell>
+            {({ date }) => (
+              <CRTable.CRCellStyled>{formatDate(date)}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Value</CRTable.CRHeaderCell>

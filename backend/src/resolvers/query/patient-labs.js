@@ -1,18 +1,11 @@
 import { prisma } from '@';
 
-const patients = (_, { patientId }) => {
-  return prisma.patientLab.findMany({
+const patientLabs = (_, { patientId }) => {
+  return prisma.lab.findMany({
     where: {
       patientId,
-    },
-    include: {
-      documents: {
-        include: {
-          file: true,
-        },
-      },
     },
   });
 };
 
-export default patients;
+export default patientLabs;

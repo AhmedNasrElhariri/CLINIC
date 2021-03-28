@@ -1,51 +1,35 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import * as R from 'ramda';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Form } from 'rsuite';
+
 import ListLabDocs from './list-lab-docs';
-import { SelectPicker } from 'rsuite';
-import { GET_PATIENT_LABS_HISTORY } from 'apollo-client/queries';
-import { useQuery } from '@apollo/client';
-import { formatDate } from 'utils/date';
+import { CRSelectInput } from 'components';
+import { usePatientDetails } from 'hooks';
 
 const HistoryLabs = ({ patient }) => {
-  const [formValue, setFormValue] = useState([]);
-  const [lab, setLab] = useState({});
-  useEffect(() => {
-    if (Object.keys(lab).length !== 0) {
-      setFormValue([...formValue, lab]);
-    }
-  }, [formValue, lab]);
-  const status = 'completed';
-  const patientId = patient.id;
-  const { data } = useQuery(GET_PATIENT_LABS_HISTORY, {
-    variables: { status: status, patientId: patientId },
-  });
-  const patientLabDocs = useMemo(() => R.propOr([], 'patientLabDocs')(data), [
-    data,
-  ]);
-  const labDocs = patientLabDocs.map(element => {
-    return {
-      label: element.labDefinition.name,
-      value: {
-        name: element.labDefinition.name,
-        value: element.value,
-        date: formatDate(element.resultDate),
-        results: 'view Images',
-      },
-      category: element.labDefinition.name,
-    };
-  });
+  const [formValue, setFormValue] = useState({ labId: null });
+  const { historyLabs } = usePatientDetails({ patientId: patient.id });
+
+  const labs = useMemo(() => {
+    const lab = historyLabs.find(h => h.id === formValue.labId);
+    return (lab?.documents || []).map(d => ({
+      ...lab,
+      ...d,
+    }));
+  }, [formValue.labId, historyLabs]);
+
   return (
     <>
-      <SelectPicker
-        virtualized={false}
-        name="lab"
-        onSelect={setLab}
-        data={labDocs}
-        block
-        groupBy="category"
-        style={{ marginTop: '10px', width: '310px', marginLeft: '0px' }}
-      />
-      <ListLabDocs labs={formValue} />
+      <Form fluid formValue={formValue} onChange={setFormValue}>
+        <CRSelectInput
+          name="labId"
+          data={historyLabs}
+          valueKey="id"
+          labelKey="name"
+          block
+          // groupBy="category"
+        />
+      </Form>
+      <ListLabDocs labs={labs} />
     </>
   );
 };

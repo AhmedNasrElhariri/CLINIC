@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import { Form, Alert, SelectPicker } from 'rsuite';
 import { CRModal } from 'components';
 import AddLabImages from '../add-lab-images';
-import { ADD_LAB_DOCS } from 'apollo-client/queries';
+import { INSRET_IMAGE_RESULT } from 'apollo-client/queries';
 import { CRTextInput } from 'components/widgets';
 
 const AddImageDocs = ({
@@ -14,7 +14,7 @@ const AddImageDocs = ({
   images,
   selectedImage,
 }) => {
-  const [addLabDocs] = useMutation(ADD_LAB_DOCS, {
+  const [addLabDocs] = useMutation(INSRET_IMAGE_RESULT, {
     onCompleted: () => {
       Alert.success('Image Document has been uploaded successfully');
     },

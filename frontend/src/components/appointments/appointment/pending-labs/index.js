@@ -1,72 +1,34 @@
-import React, { useCallback, useMemo } from 'react';
-import * as R from 'ramda';
+import React, { useCallback, useState } from 'react';
 
 import ListLabDocs from './list-labs';
-import UpdateLab from './edit-lab';
-import { formatDate } from 'utils/date';
-import { GET_PATIENT_LABDOC } from 'apollo-client/queries';
-import { useQuery } from '@apollo/client';
+import InsertLabResult from './insert-lab';
 
-import { useModal, useForm } from 'hooks';
-
-const initValue = { labId: '', labDefinition: {}, value: '', files: [] };
+import { useModal, usePatientDetails } from 'hooks';
 
 const PendingLabs = ({ patient }) => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
-    initValue,
+  const [selectedLab, setSelectedLab] = useState({});
+
+  const { pendingLabs, insertLabResult } = usePatientDetails({
+    patientId: patient.id,
   });
-  const status = 'pending';
-  const patientId = patient.id;
-  const { data } = useQuery(GET_PATIENT_LABDOC, {
-    variables: { status: status, patientId: patientId },
-  });
-  const patientLabDocs = useMemo(() => R.propOr([], 'patientLabDocs')(data), [
-    data,
-  ]);
-  const labs = useMemo(
-    () =>
-      patientLabDocs.map(element => {
-        return {
-          name: element.labDefinition.name,
-          date: formatDate(element.requiredDate),
-          id: element.id,
-        };
-      }),
-    [patientLabDocs]
-  );
-  const selectorLabs = useMemo(
-    () =>
-      patientLabDocs.map(element => {
-        return {
-          label: element.labDefinition.name,
-          value: element.id,
-        };
-      }),
-    [patientLabDocs]
-  );
+
   const handleClickEdit = useCallback(
     data => {
-      const id = data.id;
-      const name = data.name;
-      const lab = { labId: id, name: name, value: '', files: [] };
-      setType('edit');
-      setFormValue(lab);
+      setSelectedLab(data);
       open();
     },
-    [open, setFormValue, setType]
+    [open, setSelectedLab]
   );
   return (
     <>
-      <ListLabDocs labs={labs} onEdit={handleClickEdit} />
-      <UpdateLab
+      <ListLabDocs labs={pendingLabs} onEdit={handleClickEdit} />
+      <InsertLabResult
         visible={visible}
         onClose={close}
-        formValue={formValue}
-        setFormValue={setFormValue}
-        type={type}
-        labs={selectorLabs}
-        selectedLab={formValue.labId}
+        labs={pendingLabs}
+        onCreate={insertLabResult}
+        id={selectedLab.id}
       />
     </>
   );

@@ -13,7 +13,6 @@ import PatientLabs from 'components/appointments/appointment/patient-labs';
 import PatientImages from 'components/appointments/appointment/patient-images';
 import History from 'components/appointments/appointment/patient-history';
 import PatientSurgries from 'components/appointments/appointment/surgries';
-import { appointmentHistory } from '../../../utils/constants';
 import { useQueryParams } from 'hooks';
 
 const tabs = [
@@ -83,12 +82,10 @@ function Appointment() {
               </CRVNav>
               <TabContainer>
                 {showComp('0') && <PatientInfo patient={patient} />}
-                {showComp('1') && (
-                  <PatientSummary summary={appointmentHistory} />
-                )}
+                {showComp('1') && <PatientSummary summary={[]} />}
                 {showComp('2') && (
                   <PatientSurgries
-                    history={appointmentHistory}
+                    history={[]}
                     viewFields={viewFields}
                     patientId={patient?.id}
                   />

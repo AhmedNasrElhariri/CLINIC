@@ -81,7 +81,6 @@ type Query {
   activeViews: [View!]
   listMyViewsStatus: [ViewStatus!]
   mySnippets: [Snippet!]
-  patientLabs(patientId: ID!): [Lab!]
   medicineHistory(patientId: ID!): [MedicineHistory!]
   familyHistory(patientId: ID!): [FamilyHistory!]
   expenses: [Expense!]
@@ -112,9 +111,8 @@ type Query {
   listBranchesTree(action: String!): [Branch!]
   configuration: Configuration
   myInvoiceCounter: Organization!
-  patientLabDocs(status: String!, patientId: String!): [Lab!]
   patientImageDocs(status: String!, patientId: String!): [Image!]
-  pendingLabs(patientId: ID!): [Image!]
+  patientLabs(patientId: ID!): [Lab!]
 }
 
 ########################### Mutation ##################################
@@ -142,7 +140,7 @@ type Mutation {
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
   createSnippet(snippet: SnippetInput!): Snippet!
-  addLabDocs(documentLab: DocumentLabInput!): Lab!
+  insertLabResult(lab: LabInput!): Lab!
   createMedicineHistory(
     medicineHistory: MedicineHistoryInput!
   ): MedicineHistory!
@@ -528,12 +526,6 @@ input SnippetInput {
 
 ########################### Labs ##################################
 
-input DocumentLabInput {
-  labId: ID!
-  value: String
-  files: [FileInput]
-}
-
 type Lab {
   id: ID!
   status: LabStatus!
@@ -541,11 +533,12 @@ type Lab {
   resultDate: Date
   value: String
   labDefinition: LabDefinition
+  documents: [File!]
 }
 
-input PatientLabInput {
-  patientId: ID!
-  name: String!
+input LabInput {
+  id: ID!
+  value: String
   documents: [ID!]
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import ListImageDocs from './list-image-docs';
 import * as R from 'ramda';
 import { SelectPicker } from 'rsuite';
-import { GET_PATIENT_IMAGES_HISTORY } from 'apollo-client/queries';
+import { LIST_PATIENT_IMAGES } from 'apollo-client/queries';
 import { useQuery } from '@apollo/client';
 import { formatDate } from 'utils/date';
 
@@ -16,7 +16,7 @@ const HistoryImages = ({ patient }) => {
   }, [formValue, image]);
   const status = 'completed';
   const patientId = patient.id;
-  const { data } = useQuery(GET_PATIENT_IMAGES_HISTORY, {
+  const { data } = useQuery(LIST_PATIENT_IMAGES, {
     variables: { status: status, patientId: patientId },
   });
   const patientImageDocs = useMemo(

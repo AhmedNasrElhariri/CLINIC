@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import { formatDate } from 'utils/date';
 
 function ListLabDocs({ labs, onEdit }) {
   return (
@@ -9,11 +10,19 @@ function ListLabDocs({ labs, onEdit }) {
       <CRTable autoHeight data={labs}>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="name" semiBold />
+          <CRTable.CRCell>
+            {({ labDefinition }) => (
+              <CRTable.CRCellStyled>{labDefinition.name}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="date" semiBold />
+          <CRTable.CRCell dataKey="name">
+            {({ date }) => (
+              <CRTable.CRCellStyled>{formatDate(date)}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
@@ -30,12 +39,9 @@ function ListLabDocs({ labs, onEdit }) {
                     paddingRight: '40px',
                     marginLeft: '1px',
                   }}
-                >
-                  {' '}
-                  insert Values
-                </Icon>
+                />
                 <Icon
-                  icon="edit"
+                  icon="trash"
                   style={{
                     fontSize: 17,
                     padding: '15px',
@@ -43,10 +49,7 @@ function ListLabDocs({ labs, onEdit }) {
                     paddingRight: '40px',
                     marginLeft: '1px',
                   }}
-                >
-                  {' '}
-                  Delete
-                </Icon>
+                />
               </>
             )}
           </CRTable.CRCell>

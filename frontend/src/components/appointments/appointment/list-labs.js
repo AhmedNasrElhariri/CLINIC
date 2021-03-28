@@ -62,7 +62,7 @@ const ListLabs = ({ data }) => {
             <FlexboxGrid.Item
               colspan={4}
               style={{
-                ...styleCenter,
+                // ...styleCenter,
                 justifyContent: 'flex-end',
               }}
             >

@@ -49,77 +49,49 @@ export const GET_PATIENT = gql`
   }
 `;
 
-export const ADD_LAB_DOCS = gql`
-  mutation addLabDocs($documentLab: DocumentLabInput!) {
-    addLabDocs(documentLab: $documentLab) {
+export const INSRET_LAB_RESULT = gql`
+  mutation insertLabResult($lab: LabInput!) {
+    insertLabResult(lab: $lab) {
       id
     }
   }
 `;
 
-export const GET_PATIENT_LABDOC = gql`
-  query($status: String!, $patientId: String!) {
-    patientLabDocs(status: $status, patientId: $patientId) {
+export const INSRET_IMAGE_RESULT = gql`
+  mutation insertImageResult($image: ImageInput!) {
+    insertImageResult(image: $image) {
       id
-      requiredDate
-      labDefinition {
-        name
-      }
-    }
-  }
-`;
-
-export const GET_PATIENT_LABS_HISTORY = gql`
-  query($status: String!, $patientId: String!) {
-    patientImageDocs(status: $status, patientId: $patientId) {
-      id
-      resultDate
-      value
-      fileId
-      labDefinition {
-        name
-      }
-    }
-  }
-`;
-
-export const GET_PATIENT_IMAGES_HISTORY = gql`
-  query($status: String!, $patientId: String!) {
-    patientImageDocs(status: $status, patientId: $patientId) {
-      id
-      resultDate
-      value
-      fileId
-      imageDefinition {
-        name
-      }
-    }
-  }
-`;
-
-export const GET_PATIENT_IMAGEDOC = gql`
-  query($status: String!, $patientId: String!) {
-    patientImageDocs(status: $status, patientId: $patientId) {
-      id
-      requiredDate
-      imageDefinition {
-        name
-      }
     }
   }
 `;
 
 export const LIST_PATIENT_LABS = gql`
-  query patientLabs($patientId: ID!) {
+  query($patientId: ID!) {
     patientLabs(patientId: $patientId) {
       id
-      name
+      status
+      value
+      labDefinition {
+        name
+      }
       documents {
         id
-        file {
-          id
-          url
-        }
+        url
+      }
+    }
+  }
+`;
+
+export const LIST_PATIENT_IMAGES = gql`
+  query($patientId: ID!) {
+    patientImages(patientId: $patientId) {
+      id
+      imageDefinition {
+        name
+      }
+      documents {
+        id
+        url
       }
     }
   }

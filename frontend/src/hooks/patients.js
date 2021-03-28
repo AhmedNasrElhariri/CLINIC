@@ -31,8 +31,6 @@ function usePatients({ onEdit } = {}) {
     },
     onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
-      // onCreate(patient);
-      // setFormValue(initialValues);
     },
     onError: () => Alert.error('Invalid Input'),
   });

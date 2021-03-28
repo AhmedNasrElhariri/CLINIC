@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Uploader, FormControl, Icon } from 'rsuite';
+import * as R from 'ramda';
+
+import { Div } from 'components';
+import { CRLabel } from 'components/widgets';
 
 const UploaderStyled = styled(Uploader)`
   & .rs-uploader-file-item,
   & .rs-uploader-trigger-btn {
-    width: 255px;
-    height: 255px;
+    border-radius: 0px;
   }
   & .rs-uploader-file-item-preview {
     height: 100%;
@@ -14,9 +17,7 @@ const UploaderStyled = styled(Uploader)`
   }
 `;
 
-const StyledContainer = styled.div``;
-
-const Content = styled.p`
+const Content = styled.div`
   margin: ${props => props.margin};
   font-family: SegoeUI;
   font-size: 12px;
@@ -34,36 +35,81 @@ const Focus = styled.div`
   color: #283148;
 `;
 
+const FileStyled = styled.div`
+  height: 35px;
+  background-color: #eef1f1;
+  padding: 7px;
+  margin-bottom: 4px;
+  font-family: SegoeUI;
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.36;
+  letter-spacing: normal;
+  text-align: left;
+  color: #1b253a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const LabFormInput = ({ value, onChange }) => {
-  const [images, setImages] = useState([]);
   const onUpload = resp => {
     const newImages = value.concat(resp);
     onChange(newImages);
   };
+
+  const handleRemove = idx => {
+    const newImages = R.remove(idx, 1)(value);
+    onChange(newImages);
+  };
+
   return (
-    <UploaderStyled
-      multiple
-      draggable
-      listType="picture"
-      fileList={images}
-      action="/upload"
-      onChange={setImages}
-      onSuccess={onUpload}
-    >
-      <StyledContainer>
-        <Icon
-          icon="cloud-upload"
-          style={{
-            margin: '96.5px 112px 15px 112px',
-            width: '30px',
-          }}
-        ></Icon>
-        <Content margin='0px 59px 51px 59px'>
-          Drop files here or<Focus> browse</Focus>
-        </Content>
-        <Content margin='0px 59px 14px 59px'>Use high quality .jpg files less than 3 MB</Content>
-      </StyledContainer>
-    </UploaderStyled>
+    <Div mt={3}>
+      <CRLabel>Images</CRLabel>
+      <UploaderStyled
+        multiple
+        draggable
+        action="/upload"
+        onSuccess={onUpload}
+        fileListVisible={false}
+        onRemove={handleRemove}
+      >
+        <Div>
+          <Div height="120px" display="flex" alignItems="center">
+            <Div
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+              height={80}
+              alignItems="center"
+              width="100%"
+            >
+              <Div>
+                <Icon icon="cloud-upload" />
+              </Div>
+              <Content>
+                Drop files here or<Focus>&nbsp; browse</Focus>
+              </Content>
+              <Content>Use high quality .jpg files less than 3 MB</Content>
+            </Div>
+          </Div>
+        </Div>
+      </UploaderStyled>
+      <Div mt={1}>
+        {value.map(({ filename }, index) => (
+          <FileStyled key={index}>
+            <span>{filename}</span>
+            <Icon
+              icon="close"
+              onClick={() => handleRemove(index)}
+              style={{ fontWeight: 900, cursor: 'pointer' }}
+            />
+          </FileStyled>
+        ))}
+      </Div>
+    </Div>
   );
 };
 
