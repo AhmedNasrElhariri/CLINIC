@@ -6,6 +6,9 @@ const updateAppointment = async (_, { appointment }) => {
     where: { id: appointment.id },
     include: { patient: true },
   });
+
+  console.log(appointment.pictures);
+
   return prisma.appointment.update({
     data: {
       notes: appointment.notes || '',
@@ -22,28 +25,52 @@ const updateAppointment = async (_, { appointment }) => {
           where: { id: id || fieldId },
         })),
       },
-      collections: {
-        upsert: appointment.collections.map(({ id, caption, images }) => ({
-          create: {
-            caption,
-            images: {
-              connect: images.map(({ id }) => ({ id })),
+      pictures: {
+        deleteMany: {},
+        create: appointment.pictures.map(({ id, comment }) => ({
+          comment,
+          file: {
+            connect: {
+              id,
             },
           },
-          update: {
-            caption,
-            images: {
-              connect: images.map(({ id }) => ({ id })),
-              updateMany: images.map(i => ({
-                where: { id: i.id },
-                data: {
-                  comment: i.comment,
-                },
-              })),
-            },
-          },
-          where: { id: id || appointment.id },
         })),
+        // create: appointment.labIds.map(id => ({
+        //   status: LAB_STATUS.DRAFT,
+        //   patient: {
+        //     connect: {
+        //       id: persistedAppointment.patient.id,
+        //     },
+        //   },
+        //   labDefinition: {
+        //     connect: {
+        //       id,
+        //     },
+        //   },
+        // })),
+        // upsert: appointment.pictures.map(({ id, comment }) => ({
+        //   create: {
+        //     comment,
+        //     file: {
+        //       connect: {
+        //         id,
+        //       },
+        //     },
+        //   },
+        //   update: {
+        //     comment,
+        //     images: {
+        //       connect: images.map(({ id }) => ({ id })),
+        //       updateMany: images.map(i => ({
+        //         where: { id: i.id },
+        //         data: {
+        //           comment: i.comment,
+        //         },
+        //       })),
+        //     },
+        //   },
+        //   where: { id: id || appointment.id },
+        // })),
       },
       prescription: {
         deleteMany: {},

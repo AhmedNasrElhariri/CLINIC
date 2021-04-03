@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -267,13 +267,12 @@ model File {
 }
 
 model AppointmentFile {
+  id            String      @id @default(uuid())
   comment       String?
   appointment   Appointment @relation(fields: [appointmentId], references: [id])
   appointmentId String
   file          File        @relation(fields: [fileId], references: [id])
   fileId        String
-
-  @@id(fileId)
 }
 
 model Configuration {

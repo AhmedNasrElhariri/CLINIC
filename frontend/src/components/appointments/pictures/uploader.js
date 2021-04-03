@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Uploader, Alert, Loader } from 'rsuite';
 
 import { useUpload } from 'hooks';
-import { Div, H6 } from 'components';
+import { Div, H7 } from 'components';
 
 const CRUploader = ({ onUpload }) => {
   const { upload, loading } = useUpload({
@@ -15,12 +15,18 @@ const CRUploader = ({ onUpload }) => {
     },
   });
 
+  const h = res => {
+    console.log(res);
+  };
+
   return (
     <Uploader
       multiple
       draggable
       autoUpload={false}
       fileListVisible={false}
+      onSuccess={h}
+      fileList={[]}
       onChange={files => {
         upload(files.map(f => f.blobFile));
       }}
@@ -37,7 +43,9 @@ const CRUploader = ({ onUpload }) => {
           >
             <Div>
               <Icon icon="plus-square-o" style={{ fontSize: 50 }} />
-              <H6 mt={3}>Click or Drag files to this area to upload</H6>
+              <H7 mt={3} fontWeigh={400}>
+                Click or Drag files here!
+              </H7>
             </Div>
           </Div>
         )}

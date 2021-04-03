@@ -60,10 +60,10 @@ const CustomDatePicker = ({
   );
 };
 
-export default ({ label, noLabel, children, ...rest }) => {
+export default ({ label, children, ...rest }) => {
   return (
     <FormGroup>
-      <Label noLabel={noLabel}>{label}</Label>
+      <Label >{label}</Label>
       <FormControl {...rest} accepter={CustomDatePicker} />
       {children}
     </FormGroup>

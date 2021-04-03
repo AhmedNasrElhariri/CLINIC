@@ -32,9 +32,10 @@ const CustomInput = ({ onChange, importable, ...props }) => {
   );
 };
 
-export default ({
+const CRTextArea = ({
   label,
   children,
+  rows,
   borderless = false,
   importable = false,
   ...rest
@@ -47,9 +48,15 @@ export default ({
           {...rest}
           accepter={CustomInput}
           importable={importable}
-          rows={5}
+          rows={rows}
         />
       </InputGroupStyled>
     </FormGroup>
   );
 };
+
+CRTextArea.defaultProps = {
+  rows: 5,
+};
+
+export default CRTextArea;

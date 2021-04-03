@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -256,24 +256,29 @@ model AppointmentField {
 }
 
 model File {
-  id               String            @id @default(uuid())
-  url              String
-  filename         String
-  mimetype         String?
-  encoding         String?
-  lab              Lab[]
-  image            Image[]
-  appointmentFiles AppointmentFile[]
+  id       String  @id @default(uuid())
+  url      String
+  filename String
+  mimetype String?
+  encoding String?
+}
+
+model LabFile {
+  id    String @id @default(uuid())
+  lab   Lab    @relation(fields: [labId], references: [id])
+  labId String
+}
+
+model ImageFile {
+  id      String @id @default(uuid())
+  image   Image  @relation(fields: [imageId], references: [id])
+  imageId String
 }
 
 model AppointmentFile {
-  comment       String?
+  id            String      @id @default(uuid())
   appointment   Appointment @relation(fields: [appointmentId], references: [id])
   appointmentId String
-  file          File        @relation(fields: [fileId], references: [id])
-  fileId        String
-
-  @@id(fileId)
 }
 
 model Configuration {
@@ -326,7 +331,7 @@ model Lab {
   labDefinitionId String
   appointment     Appointment   @relation(fields: [appointmentId], references: [id])
   appointmentId   String
-  documents       File[]
+  documents       LabFile[]
 }
 
 model Image {
@@ -341,7 +346,7 @@ model Image {
   imageDefinitionId String
   appointment       Appointment     @relation(fields: [appointmentId], references: [id])
   appointmentId     String
-  documents         File[]
+  documents         ImageFile[]
 }
 
 model MedicineHistory {

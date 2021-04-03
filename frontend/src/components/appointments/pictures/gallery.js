@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
 
 import { Div } from 'components';
-import ListImagesThumbnails from './list-images-thumbnails';
+import ListImagesThumbnails from './list-pictures-thumbnails';
 
-const AppointmentGallery = ({ images }) => {
+const AppointmentGallery = ({ pictures }) => {
   const [galleryVisibility, setGalleryVisibility] = useState(false);
 
   const ref = useRef();
@@ -18,12 +18,12 @@ const AppointmentGallery = ({ images }) => {
   return (
     <Div>
       <ListImagesThumbnails
-        images={images}
+        pictures={pictures}
         onClick={() => setGalleryVisibility(true)}
       />
       {galleryVisibility && (
         <ImageGallery
-          items={images}
+          items={pictures}
           ref={ref}
           useBrowserFullscreen={false}
           showPlayButton={false}
@@ -33,8 +33,7 @@ const AppointmentGallery = ({ images }) => {
             <Div>
               <img className="image-gallery-image" src={a.url} alt="" />
               <span className="image-gallery-description">
-                <h6>{a.caption}</h6>
-                <h6>{a.description}</h6>
+                <h6>{a.comment}</h6>
               </span>
             </Div>
           )}
@@ -47,6 +46,10 @@ const AppointmentGallery = ({ images }) => {
       )}
     </Div>
   );
+};
+
+AppointmentGallery.defaultProps = {
+  pictures: [],
 };
 
 export default AppointmentGallery;
