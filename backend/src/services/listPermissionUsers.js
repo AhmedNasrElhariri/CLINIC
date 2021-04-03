@@ -12,15 +12,6 @@ const byOrganization = organizationId => {
       },
     },
   });
-
-  const sdf = R.pipe(
-    R.map(R.prop('specialties')),
-    R.flatten,
-    R.pipe(R.map(R.path(['userSpecialties'])), R.map(R.prop('user'))),
-    // R.map(R.path(['userSpecialties'])),
-    R.flatten
-  );
-  console.log(sdf);
 };
 
 const byBranches = (organizationId, rules) =>

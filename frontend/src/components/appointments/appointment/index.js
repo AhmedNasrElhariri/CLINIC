@@ -177,6 +177,7 @@ function Appointment() {
   if (loading) {
     return <Loader />;
   }
+
   return (
     <Div display="flex">
       <Div flexGrow={1}>

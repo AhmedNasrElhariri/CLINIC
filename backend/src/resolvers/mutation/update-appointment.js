@@ -7,8 +7,6 @@ const updateAppointment = async (_, { appointment }) => {
     include: { patient: true },
   });
 
-  console.log(appointment.pictures);
-
   return prisma.appointment.update({
     data: {
       notes: appointment.notes || '',

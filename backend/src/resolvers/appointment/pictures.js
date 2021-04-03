@@ -1,5 +1,4 @@
 import { prisma } from '@';
-import * as R from 'ramda';
 
 const pictures = ({ id }) => {
   return prisma.appointment

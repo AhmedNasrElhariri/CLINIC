@@ -150,20 +150,6 @@ function AppointmentData({
               </Form>
             </>
           )}
-          {/* <SectionContainer title="Notes" name="Notes">
-            <Form
-              formValue={appointmentFormValue}
-              onChange={onChangeAppointment}
-            >
-              <CRTextArea name="notes" disabled={disabled} />
-            </Form>
-          </SectionContainer> */}
-          <SectionContainer title="Pictures" name="Pictures">
-            <AppointmentPictures
-              formValue={appointmentFormValue.pictures}
-              onChange={handlePicturesChange}
-            />
-          </SectionContainer>
           <SectionContainer title="Prescription" name="prescription">
             <Medicines
               prescription={appointmentFormValue.prescription}
@@ -180,6 +166,17 @@ function AppointmentData({
             <Images
               selectedImages={appointmentFormValue.imageIds}
               onChange={handleImagesChange}
+            />
+          </SectionContainer>
+          <SectionContainer title="Notes" name="Notes">
+            <Form formValue={appointmentFormValue} onChange={onChange}>
+              <CRTextArea name="notes" disabled={disabled} />
+            </Form>
+          </SectionContainer>
+          <SectionContainer title="Pictures" name="Pictures">
+            <AppointmentPictures
+              formValue={appointmentFormValue.pictures}
+              onChange={handlePicturesChange}
             />
           </SectionContainer>
         </Div>
