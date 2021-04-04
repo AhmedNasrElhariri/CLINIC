@@ -30,7 +30,3 @@ export const Button = styled.button`
   margin-left: ${props => props.marginLeft};
   margin-top: ${props => props.marginTop};
 `;
-export const ButtonsDiv = styled.div`
-  display: flex;
-  margin-bottom: 33px;
-`;

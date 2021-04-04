@@ -22,15 +22,6 @@ export const StyledSeesion = styled.div`
 export const StyledDiscount = styled.div`
   width: 307px;
 `;
-export const Button = styled.button`
-  width: ${props => props.width};
-  height: ${props => props.height};
-  padding: ${props => props.padding};
-  background-color: ${props => props.bgColor};
-  color: ${props => props.color};
-  margin-left: ${props => props.marginLeft};
-  margin-top: ${props => props.marginTop};
-`;
 export const SummaryStyled = styled.div`
   width: 109px;
   margin: 35px 191px 9px 7px;

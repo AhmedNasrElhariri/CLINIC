@@ -8,7 +8,7 @@ import { BarStyled, CRCellStyled } from './style';
 import CRDateCell from './date-cell';
 
 const CRTableStyled = styled(Table).attrs(() => ({
-  rowHeight: 35,
+  rowHeight: 37,
   autoHeight: true,
 }))`
   cursor: pointer;
@@ -26,15 +26,21 @@ const CRTableStyled = styled(Table).attrs(() => ({
   }
 `;
 
-const CRTable = ({ children, flag, ...props }) => (
+const CRTable = ({ children, flag, noFlag, ...props }) => (
   <CRTableStyled {...props}>
-    <CRTable.CRColumn width={7}>
-      <CRTable.CRHeaderCell/>
-      <CRTable.CRCell>{() => <BarStyled flag={flag} />}</CRTable.CRCell>
-    </CRTable.CRColumn>
+    {!noFlag && (
+      <CRTable.CRColumn width={7}>
+        <CRTable.CRHeaderCell />
+        <CRTable.CRCell>{() => <BarStyled flag={flag} />}</CRTable.CRCell>
+      </CRTable.CRColumn>
+    )}
     {children}
   </CRTableStyled>
 );
+
+CRTable.defaultProps = {
+  noFlag: false,
+};
 
 CRTable.CRColumn = Table.Column;
 CRTable.CRHeaderCell = CRHeaderCell;

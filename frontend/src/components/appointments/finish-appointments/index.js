@@ -3,11 +3,13 @@ import { Steps } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import styled from 'styled-components';
-import { CRModal, Div } from 'components';
+import { CRModal, Div, CRButton } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
 import { useConfigurations } from 'hooks';
 import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
+import { ButtonsDiv } from '../appointment-invoice/style';
+import PrintInvoice from '../print-invoice';
 
 const initValue = {
   sessions: [],
@@ -18,7 +20,7 @@ const StepsDev = styled.div`
   margin-left: 200px;
   margin-right: 200px;
 `;
-const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
+const FinishAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const value = useRef(initValue);
@@ -39,9 +41,10 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
   }, []);
 
   const handleOk = useCallback(() => {
-    if (activeStep === 0) {
-      setActiveStep(1);
+    if (activeStep !== 1) {
+      setActiveStep(activeStep + 1);
     } else {
+      console.log('hd');
       onOk({ ...value.current, discount });
     }
   }, [activeStep, onOk, discount]);
@@ -55,6 +58,7 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
     activeStep,
   ]);
+
   return (
     <CRModal
       show={show}
@@ -66,7 +70,39 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
       width={850}
       height={480}
       bodyStyle={{ padding: '0px' }}
-      CancelFooter={true}
+      // CRFooter={
+      //   <ButtonsDiv>
+      //     <PrintInvoice
+      //       items={selectedSessions}
+      //       subtotal={subtotal}
+      //       total={total}
+      //       discount={discount}
+      //       organization={organization}
+      //     />
+      //     <CRButton
+      //       width="81px"
+      //       padding="9px 24px 10px 25px"
+      //       bgColor="#b6b7b7"
+      //       color="#283148"
+      //       marginLeft="370px"
+      //       height="35px"
+      //       onClick={onCancel}
+      //     >
+      //       Cancel
+      //     </CRButton>
+      //     <CRButton
+      //       width="106px"
+      //       padding="9px 40px"
+      //       bgColor="#50c7f2"
+      //       color="#ffffff"
+      //       marginLeft="26px"
+      //       height="35px"
+      //       onClick={handleOk}
+      //     >
+      //       Next
+      //     </CRButton>
+      //   </ButtonsDiv>
+      // }
     >
       <StepsDev>
         <Steps current={activeStep}>
@@ -94,6 +130,44 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
           />
         )}
       </Div>
+      {/* <ButtonsDiv>
+        <PrintInvoice
+          items={selectedSessions}
+          subtotal={subtotal}
+          total={total}
+          discount={discount}
+          organization={organization}
+        />
+        <Button
+          width="81px"
+          padding="9px 24px 10px 25px"
+          bgColor="#b6b7b7"
+          color="#283148"
+          marginLeft="370px"
+          height="35px"
+          onClick={onCancel}
+        >
+          Cancel
+        </Button>
+        <Button
+          width="106px"
+          padding="9px 40px"
+          bgColor="#50c7f2"
+          color="#ffffff"
+          marginLeft="26px"
+          height="35px"
+          onClick={handleOk}
+        >
+          Next
+        </Button>
+      </ButtonsDiv> */}
+      {/* <PrintInvoice
+        items={selectedSessions}
+        subtotal={subtotal}
+        total={total}
+        discount={discount}
+        organization={organization}
+      /> */}
     </CRModal>
   );
 };

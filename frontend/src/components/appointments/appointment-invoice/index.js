@@ -6,14 +6,13 @@ import {
   StyledSeesion,
   StyledDiscount,
   Container,
-  Button,
   SummaryStyled,
   StyledInput,
   PriceStyled,
   ButtonsDiv,
 } from './style';
 import { CRSelectInput, H6, H7, Div } from 'components';
-import { CRNumberInput, CRTextInput } from 'components/widgets';
+import { CRButton, CRNumberInput, CRTextInput } from 'components/widgets';
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
 
@@ -42,7 +41,7 @@ function AppointmentInvoice({
   sessions,
   organization,
   handleOk,
-  onCancel
+  onCancel,
 }) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
@@ -137,7 +136,7 @@ function AppointmentInvoice({
                 onChange={onDiscountChange}
                 width={244}
               ></CRTextInput>
-              <Button
+              <CRButton
                 width="61px"
                 padding="9.5px 9px 9.5px 10px"
                 bgColor="#e50124"
@@ -146,7 +145,7 @@ function AppointmentInvoice({
                 marginTop="41px"
               >
                 Applied
-              </Button>
+              </CRButton>
             </StyledInput>
           </Form>
           <SummaryStyled>Session Summary</SummaryStyled>
@@ -167,37 +166,13 @@ function AppointmentInvoice({
           <Price name="Total" price={total} Color="#283148" />
         </StyledDiscount>
       </Container>
-      <ButtonsDiv>
-        <PrintInvoice
-          items={selectedSessions}
-          subtotal={subtotal}
-          total={total}
-          discount={discount}
-          organization={organization}
-        />
-        <Button
-          width="81px"
-          padding="9px 24px 10px 25px"
-          bgColor="#b6b7b7"
-          color="#283148"
-          marginLeft="370px"
-          height="35px"
-          onClick={onCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          width="106px"
-          padding="9px 40px"
-          bgColor="#50c7f2"
-          color="#ffffff"
-          marginLeft="26px"
-          height="35px"
-          onClick={handleOk}
-        >
-          Next
-        </Button>
-      </ButtonsDiv>
+      <PrintInvoice
+        items={selectedSessions}
+        subtotal={subtotal}
+        total={total}
+        discount={discount}
+        organization={organization}
+      />
     </>
   );
 }

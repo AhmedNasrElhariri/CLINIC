@@ -33,42 +33,6 @@ const updateAppointment = async (_, { appointment }) => {
             },
           },
         })),
-        // create: appointment.labIds.map(id => ({
-        //   status: LAB_STATUS.DRAFT,
-        //   patient: {
-        //     connect: {
-        //       id: persistedAppointment.patient.id,
-        //     },
-        //   },
-        //   labDefinition: {
-        //     connect: {
-        //       id,
-        //     },
-        //   },
-        // })),
-        // upsert: appointment.pictures.map(({ id, comment }) => ({
-        //   create: {
-        //     comment,
-        //     file: {
-        //       connect: {
-        //         id,
-        //       },
-        //     },
-        //   },
-        //   update: {
-        //     comment,
-        //     images: {
-        //       connect: images.map(({ id }) => ({ id })),
-        //       updateMany: images.map(i => ({
-        //         where: { id: i.id },
-        //         data: {
-        //           comment: i.comment,
-        //         },
-        //       })),
-        //     },
-        //   },
-        //   where: { id: id || appointment.id },
-        // })),
       },
       prescription: {
         deleteMany: {},

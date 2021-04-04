@@ -3,7 +3,7 @@ import { Form, Schema } from 'rsuite';
 
 import { Div, CRSelectInput, CRNumberInput, H6 } from 'components';
 import ListInvoiceItems from 'components/appointments/list-invoice-items';
-import { ItemDiv, QualityDiv, Container, ButtonsDiv, Button } from './style';
+import { ItemDiv, QualityDiv, Container } from './style';
 import { useForm } from 'hooks';
 
 const { StringType, NumberType } = Schema.Types;
@@ -18,7 +18,7 @@ const initValue = {
   quantity: 1,
 };
 
-function InventoryUsage({ onChange, handleCancel }) {
+function InventoryUsage() {
   const { formValue, setFormValue } = useForm({
     initValue,
     model,
@@ -33,61 +33,36 @@ function InventoryUsage({ onChange, handleCancel }) {
   ];
 
   return (
-    <>
-      <Form fluid formValue={formValue} onChange={setFormValue}>
-        <Container>
-          <ItemDiv>
-            <CRSelectInput
-              label="Item"
-              labelKey="name"
-              valueKey="id"
-              name="itemId"
-              data={items}
-              block
-            ></CRSelectInput>
-            <Div my={3}>
-              <ListInvoiceItems items={items} onDelete={handleDelete} />
-            </Div>
-          </ItemDiv>
-          <QualityDiv>
-            <CRNumberInput
-              label={
-                <Div display="flex" alignItems="center">
-                  Quantity
-                  <H6 ml={2} color="texts.1">
-                    {/* (remaining - {4}) */}
-                  </H6>
-                </Div>
-              }
-              name="quantity"
-            />
-          </QualityDiv>
-        </Container>
-      </Form>
-      <ButtonsDiv>
-        <Button
-          width="81px"
-          padding="9px 24px 10px 25px"
-          bgColor="#b6b7b7"
-          color="#283148"
-          marginLeft="319px"
-          height="35px"
-          onClick={handleCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          width="106px"
-          padding="9px 40px"
-          bgColor="#50c7f2"
-          color="#ffffff"
-          marginLeft="26px"
-          height="35px"
-        >
-          Done
-        </Button>
-      </ButtonsDiv>
-    </>
+    <Form fluid formValue={formValue} onChange={setFormValue}>
+      <Container>
+        <ItemDiv>
+          <CRSelectInput
+            label="Item"
+            labelKey="name"
+            valueKey="id"
+            name="itemId"
+            data={items}
+            block
+          ></CRSelectInput>
+          <Div my={3}>
+            <ListInvoiceItems items={items} onDelete={handleDelete} />
+          </Div>
+        </ItemDiv>
+        <QualityDiv>
+          <CRNumberInput
+            label={
+              <Div display="flex" alignItems="center">
+                Quantity
+                <H6 ml={2} color="texts.1">
+                  {/* (remaining - {4}) */}
+                </H6>
+              </Div>
+            }
+            name="quantity"
+          />
+        </QualityDiv>
+      </Container>
+    </Form>
   );
 }
 
