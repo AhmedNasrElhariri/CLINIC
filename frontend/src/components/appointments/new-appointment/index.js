@@ -66,7 +66,7 @@ export default function NewAppointment({ show, onHide }) {
     loading,
   } = useNewAppointment({ onCreate: onHide });
   const [selectedHour, setSelectedHour] = useState(null);
-
+  
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
@@ -94,7 +94,6 @@ export default function NewAppointment({ show, onHide }) {
     });
     createAppointment({ patientId, type, date, userId });
   }, [createAppointment, formValue]);
-
   return (
     <>
       <NewPatient

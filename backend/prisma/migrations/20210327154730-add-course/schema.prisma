@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -13,11 +13,6 @@ enum AppointmentType {
   Urgent
   Session
   Surgery
-}
-
-enum CourseType {
-  session
-  perunit
 }
 
 enum LabStatus {
@@ -153,8 +148,6 @@ model User {
   labCategories       LabCategory[]
   imageCategories     ImageCategory[]
   CourseDefinition    CourseDefinition[]
-  Course1             Course[]             @relation("user")
-  Course2             Course[]             @relation("doctor")
 }
 
 model Patient {
@@ -176,7 +169,6 @@ model Patient {
   patientSurgeries PatientSurgery[]
   labs             Lab[]
   images           Image[]
-  Course           Course[]
 }
 
 model Appointment {
@@ -265,16 +257,16 @@ model AppointmentField {
 }
 
 model File {
-  id           String      @id @default(uuid())
-  url          String
-  filename     String
-  comment      String?
-  collection   Collection? @relation(fields: [collectionId], references: [id])
-  collectionId String?
-  mimetype     String?
-  encoding     String?
-  labs         Lab[]
-  images       Image[]
+  id             String          @id @default(uuid())
+  url            String
+  filename       String
+  comment        String?
+  collection     Collection?     @relation(fields: [collectionId], references: [id])
+  collectionId   String?
+  mimetype       String?
+  encoding       String?
+  labDocuments   LabDocument[]
+  imageDocuments ImageDocument[]
 }
 
 model Configuration {
@@ -315,6 +307,14 @@ model Snippet {
   body   String
 }
 
+model LabDocument {
+  id     String @id @default(uuid())
+  file   File   @relation(fields: [fileId], references: [id])
+  fileId String
+  lab    Lab    @relation(fields: [labId], references: [id])
+  labId  String
+}
+
 model Lab {
   id              String        @id @default(uuid())
   status          LabStatus
@@ -327,7 +327,15 @@ model Lab {
   labDefinitionId String
   appointment     Appointment   @relation(fields: [appointmentId], references: [id])
   appointmentId   String
-  documents       File[]
+  documents       LabDocument[]
+}
+
+model ImageDocument {
+  id      String  @id @default(uuid())
+  file    File?   @relation(fields: [fileId], references: [id])
+  fileId  String?
+  image   Image   @relation(fields: [imageId], references: [id])
+  imageId String
 }
 
 model Image {
@@ -342,7 +350,7 @@ model Image {
   imageDefinitionId String
   appointment       Appointment     @relation(fields: [appointmentId], references: [id])
   appointmentId     String
-  documents         File[]
+  documents         ImageDocument[]
 }
 
 model MedicineHistory {
@@ -499,29 +507,13 @@ model ImageDefinition {
 }
 
 model CourseDefinition {
-  id             String     @id @default(uuid())
-  name           String
-  type           CourseType
-  price          Int
-  units          Int
-  messureOfUnits String
-  user           User       @relation(fields: [userId], references: [id])
-  userId         String
-  Course         Course[]
-}
-
-model Course {
-  id                 String           @id @default(uuid())
-  price              Int
-  paid               Int
-  patient            Patient          @relation(fields: [patientId], references: [id])
-  patientId          String
-  user               User             @relation("user", fields: [userId], references: [id])
-  userId             String
-  courseDefinition   CourseDefinition @relation(fields: [courseDefinitionId], references: [id])
-  courseDefinitionId String
-  doctor             User             @relation("doctor", fields: [doctorId], references: [id])
-  doctorId           String
+  id     String @id @default(uuid())
+  name   String
+  type   String
+  price  String
+  units  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model ImageCategory {

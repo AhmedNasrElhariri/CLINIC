@@ -58,3 +58,8 @@ export { default as updateConfiguration } from './update-configuration';
 export { default as addTiming } from './add-timing';
 export { default as editTiming } from './edit-timing';
 export { default as insertLabResult } from './insert-lab-result';
+export { default as addCourseDefinition } from './add-course-definition';
+export { default as editCourseDefinition } from './edit-course-definition';
+export { default as addCourse } from './add-course';
+export { default as editCourse } from './edit-course';
+export { default as editCourseDoctor } from './edit-course-doctor';

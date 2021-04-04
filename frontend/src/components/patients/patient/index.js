@@ -12,6 +12,7 @@ import PatientInfo from '../patient-info';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import PatientImages from 'components/appointments/appointment/patient-images';
 import History from 'components/appointments/appointment/patient-history';
+import PatientCourses from 'components/appointments/appointment/patient-courses';
 import PatientSurgries from 'components/appointments/appointment/surgries';
 import { useQueryParams } from 'hooks';
 
@@ -22,13 +23,14 @@ const tabs = [
   'Labs',
   'Images',
   'History',
+  'Courses'
 ];
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 const TabContainer = styled.div`
-  width: 950px;
+  width: 100%;
 `;
 function Appointment() {
   const history = useHistory();
@@ -93,6 +95,7 @@ function Appointment() {
                 {showComp('3') && <PatientLabs patient={patient} />}
                 {showComp('4') && <PatientImages patient={patient} />}
                 {showComp('5') && <History patient={patient} />}
+                {showComp('6') && <PatientCourses patient={patient} appointmentId={appointmentId}/>}
               </TabContainer>
             </Container>
           )}

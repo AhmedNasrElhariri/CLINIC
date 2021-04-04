@@ -29,6 +29,7 @@ import AppointmentImages from '../images';
 import Medicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
+import Courses from './appointment-courses';
 
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
@@ -125,7 +126,15 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-
+  const handleCoursesChange = useCallback(
+    courseIds => {
+      onChange({
+        ...appointmentFormValue,
+        courseIds,
+      });
+    },
+    [appointmentFormValue, onChange]
+  );
   return (
     <>
       <Div display="flex">
@@ -180,6 +189,12 @@ function AppointmentData({
             <Images
               selectedImages={appointmentFormValue.imageIds}
               onChange={handleImagesChange}
+            />
+          </SectionContainer>
+          <SectionContainer title="Courses" name="courses">
+            <Courses
+              selectedCourses={appointmentFormValue.courseIds}
+              onChange={handleCoursesChange}
             />
           </SectionContainer>
         </Div>

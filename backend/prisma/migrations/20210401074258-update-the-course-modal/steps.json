@@ -1,0 +1,26 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "CourseType",
+      "values": [
+        "session",
+        "perunit"
+      ]
+    },
+    {
+      "tag": "CreateField",
+      "model": "CourseDefinition",
+      "field": "messureOfUnits",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "CourseDefinition",
+      "field": "type",
+      "type": "CourseType"
+    }
+  ]
+}

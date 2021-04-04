@@ -26,6 +26,7 @@ import {
 import useAppointmentHistory from './fetch-appointment-history';
 import { HeaderStyled } from './style';
 import { useForm, useModal } from 'hooks';
+import NewMedicine from 'components/settings/static/new-medicine-definition';
 
 function Appointment() {
   const { visible, open, close } = useModal();
@@ -98,6 +99,7 @@ function Appointment() {
   const [popup, setPopup] = useState(false);
   const [popupTwo, setPopupTwo] = useState(false);
   const [popupThree, setPopupThree] = useState(false);
+  const [popupFour, setPopupFour] = useState(false);
   const handleClickCreate = useCallback(() => {
     setPopupTwo(false);
     setPopupThree(false);
@@ -116,6 +118,14 @@ function Appointment() {
     setPopupTwo(false);
     setPopup(false);
     setPopupThree(true);
+    setType('create');
+    open();
+  }, [open, setType]);
+  const handleClickCreateFour = useCallback(() => {
+    setPopupTwo(false);
+    setPopup(false);
+    setPopupThree(false);
+    setPopupFour(true);
     setType('create');
     open();
   }, [open, setType]);
@@ -174,7 +184,6 @@ function Appointment() {
   });
   const patientAppointments = R.propOr([], 'patientAppointments')(data);
   const nextAppointment = patientAppointments[1];
-
   if (loading) {
     return <Loader />;
   }
@@ -245,7 +254,7 @@ function Appointment() {
                   visible={visible}
                   onClose={close}
                   type={type}
-                  labs={apptFormValue.labs}
+                  labs={apptFormValue.labIds}
                   onChange={handleLabsChange}
                 />
               ) : (
@@ -256,7 +265,7 @@ function Appointment() {
                   visible={visible}
                   onClose={close}
                   type={type}
-                  images={apptFormValue.images}
+                  images={apptFormValue.imageIds}
                   onChange={handleImagesChange}
                 />
               ) : (

@@ -15,6 +15,7 @@ import * as fromUser from './user';
 import * as fromRole from './role';
 import * as fromLab from './lab';
 import * as fromImage from './image';
+import * as fromCourse from './course';
 
 export default {
   Query: fromQuery,
@@ -33,4 +34,5 @@ export default {
   Lab: fromLab,
   Image: fromImage,
   ...fromCustomResolvers,
+  Course: fromCourse,
 };

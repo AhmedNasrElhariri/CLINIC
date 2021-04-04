@@ -100,6 +100,9 @@ type Query {
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
+  myCoursesDefinition: [CourseDefinition!]
+  myCourses(patientId: ID): [Course!]
+  myDoctors(appointmentId: ID): [User!]
   myImagesCategory: [ImageCategory!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
@@ -189,6 +192,15 @@ type Mutation {
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
   updateConfiguration(configuration: ConfigurationInput): Configuration!
+  addCourseDefinition(
+    courseDefinition: CourseInputDefinition!
+  ): CourseDefinition
+  editCourseDefinition(
+    courseDefinition: CourseInputDefinition!
+  ): CourseDefinition
+  addCourse(course: CourseInput!): Course!
+  editCourse(courseId: ID!, paid: Int!): Course!
+  editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
 }
 
 ########################### Auth ##################################
@@ -844,6 +856,45 @@ input PatientReportInput {
   id: ID
   name: String!
   body: String!
+}
+
+########################### Course Definition ##################################
+
+type CourseDefinition {
+  id: ID!
+  name: String!
+  type: String!
+  price: Int!
+  units: Int!
+  messureOfUnits: String!
+}
+
+input CourseInputDefinition {
+  id: ID
+  name: String!
+  type: String!
+  price: Int!
+  units: Int!
+  messureOfUnits: String
+}
+
+########################### Course  ##################################
+
+type Course {
+  id: ID!
+  price: Int!
+  paid: Int!
+  patient: Patient!
+  doctor: User!
+  courseDefinition: CourseDefinition!
+}
+
+input CourseInput {
+  price: Int!
+  paid: Int
+  patientId: ID!
+  courseDefinitionId: ID!
+  doctorId: ID
 }
 
 ########################### Patient Surgeries ##################################

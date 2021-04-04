@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -15,7 +15,7 @@ enum AppointmentType {
   Surgery
 }
 
-enum CourseType {
+enum CourseType{
   session
   perunit
 }
@@ -153,8 +153,6 @@ model User {
   labCategories       LabCategory[]
   imageCategories     ImageCategory[]
   CourseDefinition    CourseDefinition[]
-  Course1             Course[]             @relation("user")
-  Course2             Course[]             @relation("doctor")
 }
 
 model Patient {
@@ -176,7 +174,6 @@ model Patient {
   patientSurgeries PatientSurgery[]
   labs             Lab[]
   images           Image[]
-  Course           Course[]
 }
 
 model Appointment {
@@ -499,29 +496,14 @@ model ImageDefinition {
 }
 
 model CourseDefinition {
-  id             String     @id @default(uuid())
+  id             String @id @default(uuid())
   name           String
   type           CourseType
   price          Int
   units          Int
   messureOfUnits String
-  user           User       @relation(fields: [userId], references: [id])
+  user           User   @relation(fields: [userId], references: [id])
   userId         String
-  Course         Course[]
-}
-
-model Course {
-  id                 String           @id @default(uuid())
-  price              Int
-  paid               Int
-  patient            Patient          @relation(fields: [patientId], references: [id])
-  patientId          String
-  user               User             @relation("user", fields: [userId], references: [id])
-  userId             String
-  courseDefinition   CourseDefinition @relation(fields: [courseDefinitionId], references: [id])
-  courseDefinitionId String
-  doctor             User             @relation("doctor", fields: [doctorId], references: [id])
-  doctorId           String
 }
 
 model ImageCategory {
@@ -583,6 +565,7 @@ enum PermissionLevel {
   Specialty
   User
 }
+
 
 model PermissionRole {
   id             String       @id @default(uuid())

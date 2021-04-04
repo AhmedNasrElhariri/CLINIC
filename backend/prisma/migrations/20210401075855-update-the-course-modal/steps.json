@@ -1,0 +1,17 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "CourseDefinition",
+      "field": "price",
+      "type": "Int"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "CourseDefinition",
+      "field": "units",
+      "type": "Int"
+    }
+  ]
+}

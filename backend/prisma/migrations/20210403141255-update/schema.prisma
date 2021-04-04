@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -153,8 +153,7 @@ model User {
   labCategories       LabCategory[]
   imageCategories     ImageCategory[]
   CourseDefinition    CourseDefinition[]
-  Course1             Course[]             @relation("user")
-  Course2             Course[]             @relation("doctor")
+  Course              Course[]
 }
 
 model Patient {
@@ -516,12 +515,10 @@ model Course {
   paid               Int
   patient            Patient          @relation(fields: [patientId], references: [id])
   patientId          String
-  user               User             @relation("user", fields: [userId], references: [id])
+  user               User             @relation(fields: [userId], references: [id])
   userId             String
   courseDefinition   CourseDefinition @relation(fields: [courseDefinitionId], references: [id])
   courseDefinitionId String
-  doctor             User             @relation("doctor", fields: [doctorId], references: [id])
-  doctorId           String
 }
 
 model ImageCategory {
