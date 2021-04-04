@@ -14,7 +14,14 @@ import {
 } from 'styled-system';
 
 import { byTheme } from 'services/theme';
-import { textTransform, cursor, zIndex } from 'styles/props';
+import { textTransform, textDecoration, cursor, zIndex } from 'styles/props';
+
+const weights = {
+  light: 200,
+  normal: 400,
+  semiBold: 600,
+  bold: 800,
+};
 
 const variants = variant({
   variants: {
@@ -31,7 +38,7 @@ const variants = variant({
       color: theme => theme.colors.successDarker,
     },
     danger: {
-      color: theme => theme.colors.dangerDarker,
+      color: theme => theme.colors.danger,
     },
   },
 });
@@ -48,12 +55,14 @@ export const styles = css`
   ${position}
   ${shadow}
   ${textTransform}
+  ${textDecoration}
   ${cursor}
   ${zIndex}
 `;
 
 const headerscss = css`
   color: ${props => props.theme.colors.text};
+  font-weight: ${props => weights[props.weight] || 800};
   ${styles}
   ${variants}
 `;
@@ -99,7 +108,7 @@ export const H5 = styled.h5`
   font-family: 'SegoeUI';
   ${byTheme({
     fontSize: {
-      normal: 18.7,
+      normal: 14,
       large: 22,
     },
   })};

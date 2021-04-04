@@ -6,7 +6,7 @@ import { textTransform } from 'styles/props';
 
 const theme = {
   fontSize: {
-    normal: 18,
+    normal: 12,
     large: 20,
   },
 };
@@ -39,25 +39,20 @@ const getHeight = ({ small, large }) =>
     ? byTheme(largeHeight)
     : byTheme(normalHeight);
 
-const Button = styled.button.attrs(
-  ({ block, bold, semiBold, uppercase, primary, variant }) => ({
-    width: block ? '100%' : 'initial',
-    fontWeight: bold ? 800 : semiBold ? 600 : 400,
-    textTransform: uppercase ? 'uppercase' : 'initial',
-    variant: variant ? variant : primary ? 'primary' : 'subtle',
-  })
-)`
-  background-color: ${props => props.theme.colors.dark};
+const Button = styled.button.attrs(({ block, semiBold, uppercase }) => ({
+  width: block ? '100%' : 'initial',
+  textTransform: uppercase ? 'uppercase' : 'initial',
+}))`
   font-stretch: normal;
   font-style: normal;
   line-height: 0;
   letter-spacing: normal;
   text-align: center;
   color: #ffffff;
-  font-weight: 600;
   cursor: pointer;
   padding: 0px 26px;
   position: relative;
+  font-weight: 600;
 
   ${getHeight}
 
@@ -72,16 +67,18 @@ const Button = styled.button.attrs(
   ${variant({
     variants: {
       primary: {
-        'background-color': theme => theme.colors.primary,
-        opacity: 1,
+        background: theme => theme.colors.primary,
       },
       success: {
-        'background-color': theme => theme.colors.success,
-        opacity: 1,
+        background: theme => theme.colors.success,
       },
-      subtle: {
-        'background-color': theme => theme.colors.subtle,
-        opacity: 1,
+      light: {
+        background: theme => theme.colors.light,
+        color: theme => theme.colors.text,
+      },
+      danger: {
+        background: theme => theme.colors.danger,
+        color: theme => theme.colors.white,
       },
     },
   })}
@@ -105,6 +102,7 @@ Button.propTypes = {
 Button.defaultProps = {
   round: false,
   block: false,
+  variant: 'primary',
 };
 
 export default Button;

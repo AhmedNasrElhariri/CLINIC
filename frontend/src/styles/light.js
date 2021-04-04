@@ -11,6 +11,7 @@ const eventColor5 = textColor;
 export const scrollbarColor = transparentize(0.8, textColor);
 export const colors = {
   white: '#ffffff',
+  light:'rgba(182, 183, 183, 0.1)',
   primary: primaryColor,
   primaryDarker: '#3abbf0',
   primaryLight: '#EDF9FE',
@@ -20,7 +21,7 @@ export const colors = {
   success: '#40C173',
   successDarker: '#037f4b',
   red: '#E60303',
-  danger: '#E60303',
+  danger: '#e50124',
   dangerDarker: '#bc3254',
   dark: '#283148',
   shadow: '#0000000D',

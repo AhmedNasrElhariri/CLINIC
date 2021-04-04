@@ -3,7 +3,6 @@ import { Form, Schema } from 'rsuite';
 
 import { Div, CRSelectInput, CRNumberInput, H6 } from 'components';
 import ListInvoiceItems from 'components/appointments/list-invoice-items';
-import { ItemDiv, QualityDiv, Container } from './style';
 import { useForm } from 'hooks';
 
 const { StringType, NumberType } = Schema.Types;
@@ -34,8 +33,8 @@ function InventoryUsage() {
 
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
-      <Container>
-        <ItemDiv>
+      <Div display="flex" padding={30}>
+        <Div width={396} mr={30}>
           <CRSelectInput
             label="Item"
             labelKey="name"
@@ -47,21 +46,11 @@ function InventoryUsage() {
           <Div my={3}>
             <ListInvoiceItems items={items} onDelete={handleDelete} />
           </Div>
-        </ItemDiv>
-        <QualityDiv>
-          <CRNumberInput
-            label={
-              <Div display="flex" alignItems="center">
-                Quantity
-                <H6 ml={2} color="texts.1">
-                  {/* (remaining - {4}) */}
-                </H6>
-              </Div>
-            }
-            name="quantity"
-          />
-        </QualityDiv>
-      </Container>
+        </Div>
+        <Div width={104}>
+          <CRNumberInput label="Quantity" name="quantity" />
+        </Div>
+      </Div>
     </Form>
   );
 }

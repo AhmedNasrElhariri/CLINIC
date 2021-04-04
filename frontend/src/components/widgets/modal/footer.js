@@ -6,12 +6,12 @@ import { Spinner } from 'components/widgets/button/spinner';
 
 const Footer = ({ okTitle, cancelTitle, onOk, onCancel, loading }) => (
   <ModalFooterStyled>
-    <Div display="flex" justifyContent="center">
-      <CRButton minWidth={120} mr={4} midRound onClick={onOk} primary>
-        {loading ? <Spinner /> : okTitle}
-      </CRButton>
-      <CRButton minWidth={120} ml={4} midRound onClick={onCancel}>
+    <Div display="flex" justifyContent="flex-end">
+      <CRButton minWidth={120} onClick={onCancel} variant="light">
         {cancelTitle}
+      </CRButton>
+      <CRButton minWidth={120} ml={4} onClick={onOk}>
+        {loading ? <Spinner /> : okTitle}
       </CRButton>
     </Div>
   </ModalFooterStyled>
