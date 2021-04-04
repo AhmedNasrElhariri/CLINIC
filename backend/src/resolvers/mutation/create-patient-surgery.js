@@ -15,8 +15,6 @@ const createPatientSurgery = async (
     ...data
   } = patientSurgery;
 
-  console.log(userId);
-
   const persistedPatientSurgery = await prisma.patientSurgery.create({
     data: {
       fees,

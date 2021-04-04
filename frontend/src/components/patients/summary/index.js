@@ -15,7 +15,7 @@ import { formatDate } from 'utils/date';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
 import { KeyStyled, ValueStyled } from './style';
-import AppointmentGallery from '../../appointments/images/gallery';
+import AppointmentGallery from 'components/appointments/pictures/gallery';
 import { useModal } from 'hooks';
 
 const renderProp = (key, value) => {

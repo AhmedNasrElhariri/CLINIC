@@ -56,14 +56,7 @@ const inputCss = css`
 
 export const InputStyled = styled.input`
   ${inputCss}
-  ${byTheme(heightTheme)}
-  ${({ addonAfter }) =>
-    addonAfter
-      ? {
-          borderTopRightRadius: '0px',
-          borderBottomRightRadius: '0px',
-        }
-      : {}}
+  height: 100%;
 `;
 
 Input.propTypes = {
@@ -81,6 +74,7 @@ Input.defaultProps = {
 };
 
 export const InputGroupStyled = styled(InputGroup)`
+  height: 35px;
   &.rs-input-group {
     ${getBorder}
     width:100% !important;
@@ -96,6 +90,11 @@ export const InputGroupStyled = styled(InputGroup)`
       border: solid 1px ${props => props.theme.colors.primary} !important;
     }
   }
+`;
+
+export const AddOnStyle = styled(InputGroup.Addon)`
+  padding: 0;
+  margin: 0;
 `;
 
 export const NumberContainerStyled = styled.div`
@@ -128,20 +127,6 @@ export const NumberInputStyled = styled.input`
 export const TextAreaStyled = styled.textarea`
   ${inputCss}
   resize: none;
-`;
-export const StyledLabel = styled.p`
-  width: 31px;
-  height: 19px;
-  margin: auto 10px;
-  font-family: SegoeUI;
-  font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.36;
-  letter-spacing: normal;
-  text-align: left;
-  color: #283148;
 `;
 
 export const NumberButton = styled(CRButton)`

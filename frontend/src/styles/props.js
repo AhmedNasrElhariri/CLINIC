@@ -11,3 +11,7 @@ export const cursor = system({
 export const zIndex = system({
   zIndex: true,
 });
+
+export const textDecoration = system({
+  textDecoration: true,
+});

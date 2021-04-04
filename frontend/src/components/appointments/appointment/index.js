@@ -41,7 +41,7 @@ function Appointment() {
     medicine: [],
     labIds: [],
     imageIds: [],
-    collections: [],
+    pictures: [],
   });
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
@@ -78,7 +78,7 @@ function Appointment() {
     appointment,
   });
 
-  const onUpdate = useCallback(() => {
+  const handleUpdate = useCallback(() => {
     update({
       variables: {
         appointment: {
@@ -87,9 +87,8 @@ function Appointment() {
           prescription: apptFormValue.prescription,
           labIds: apptFormValue.labIds,
           imageIds: apptFormValue.imageIds,
-          collections: apptFormValue.collections.map(c => ({
-            ...R.pick(['id', 'caption'])(c),
-            images: R.map(R.pick(['id', 'comment']))(c.images),
+          pictures: apptFormValue.pictures.map(c => ({
+            ...R.pick(['id', 'comment'])(c),
           })),
           id: appointmentId,
         },
@@ -139,7 +138,7 @@ function Appointment() {
       ...val,
       notes: R.propOr('', 'notes')(appointment),
       prescription: R.propOr([], 'prescription')(appointment),
-      collections: R.propOr([], 'collections')(appointment),
+      pictures: R.propOr([], 'pictures')(appointment),
       labIds: R.pipe(
         R.propOr([], 'labs'),
         R.map(R.path(['labDefinition', 'id']))
@@ -187,6 +186,7 @@ function Appointment() {
   if (loading) {
     return <Loader />;
   }
+
   return (
     <Div display="flex">
       <Div flexGrow={1}>
@@ -214,7 +214,11 @@ function Appointment() {
             >
               PrintLabs <Icon icon="print" />
             </CRButton>
-            <CRButton variant="primary" onClick={onUpdate} disabled={disabled}>
+            <CRButton
+              variant="primary"
+              onClick={handleUpdate}
+              disabled={disabled}
+            >
               Save <Icon icon="save" />
             </CRButton>
             <CRButton
@@ -233,6 +237,7 @@ function Appointment() {
                 disabled={disabled}
                 formValue={formValue}
                 appointmentFormValue={apptFormValue}
+                onDataChange={setFormValue}
                 onChange={setApptFormValue}
                 groups={groups}
                 appointment={appointment}

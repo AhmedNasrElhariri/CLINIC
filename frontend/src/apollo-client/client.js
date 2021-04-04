@@ -1,6 +1,6 @@
 import { onError } from '@apollo/client/link/error';
 import { InMemoryCache } from '@apollo/client/cache';
-import { ApolloClient, split } from '@apollo/client';
+import { ApolloClient, ApolloLink, split } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { createUploadLink } from 'apollo-upload-client';
 import { WebSocketLink } from '@apollo/client/link/ws';
@@ -41,6 +41,20 @@ const wsLink = new WebSocketLink({
   },
 });
 
+const cleanTypeName = new ApolloLink((operation, forward) => {
+  if (operation.variables) {
+    const omitTypename = (key, value) =>
+      key === '__typename' ? undefined : value;
+    operation.variables = JSON.parse(
+      JSON.stringify(operation.variables),
+      omitTypename
+    );
+  }
+  return forward(operation).map(data => {
+    return data;
+  });
+});
+
 const link = split(
   // split based on operation type
   ({ query }) => {
@@ -48,8 +62,16 @@ const link = split(
     return kind === 'OperationDefinition' && operation === 'subscription';
   },
   wsLink,
-
-  errorLink.concat(authLink.concat(createUploadLink({ uri: '/graphql' })))
+  ApolloLink.from([
+    errorLink,
+    authLink,
+    cleanTypeName,
+    createUploadLink({ uri: '/graphql' }),
+  ])
+  // errorLink.concat(
+  //   cleanTypeName.concat(authLink.concat(createUploadLink({ uri: '/graphql' })))
+  // )
+  // errorLink.concat(authLink.concat(createUploadLink({ uri: '/graphql' })))
   // .concat(httpLink)
 );
 

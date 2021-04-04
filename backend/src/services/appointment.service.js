@@ -25,10 +25,3 @@ export const validDate = (newDate, appointments) => {
     return !moment(newDate).isBetween(startDate, endDate, 'minutes', '[)');
   });
 };
-
-export const getAppointmentNextStatus = (status, defaultVal) => {
-  return status === APPOINTMENTS_STATUS.ARCHIVED ||
-    status === APPOINTMENTS_STATUS.DONE
-    ? APPOINTMENTS_STATUS.CLOSED
-    : defaultVal;
-};

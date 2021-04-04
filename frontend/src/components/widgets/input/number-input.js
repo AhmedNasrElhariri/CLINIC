@@ -1,5 +1,5 @@
 import React, { useCallback, memo } from 'react';
-import {  FormControl } from 'rsuite';
+import { FormControl } from 'rsuite';
 
 import Label from '../label';
 import { AddIcon, MinusIcon } from 'components/icons';
@@ -7,7 +7,6 @@ import {
   NumberContainerStyled,
   NumberInputStyled,
   NumberButton,
-  StyledLabel,
 } from './style';
 import { FormGroupStyled } from '../form-group';
 
@@ -26,10 +25,11 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
 
   return (
     <NumberContainerStyled>
-      {props.title ? <StyledLabel>{props.title}</StyledLabel> : ''}
+      <Label>{props.title}</Label>
       <NumberButton
         borderRadius={'50%'}
         onClick={() => setValue(Number(value || 0) - 1)}
+        variant="light"
       >
         <MinusIcon style={{ width: '25px' }} />
       </NumberButton>
@@ -41,6 +41,7 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
       <NumberButton
         borderRadius={'50%'}
         onClick={() => setValue(Number(value || 0) + 1)}
+        variant="light"
       >
         <AddIcon style={{ width: '25px' }} />
       </NumberButton>

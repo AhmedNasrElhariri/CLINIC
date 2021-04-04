@@ -6,6 +6,7 @@ const updateAppointment = async (_, { appointment }) => {
     where: { id: appointment.id },
     include: { patient: true },
   });
+
   return prisma.appointment.update({
     data: {
       notes: appointment.notes || '',
@@ -22,27 +23,15 @@ const updateAppointment = async (_, { appointment }) => {
           where: { id: id || fieldId },
         })),
       },
-      collections: {
-        upsert: appointment.collections.map(({ id, caption, images }) => ({
-          create: {
-            caption,
-            images: {
-              connect: images.map(({ id }) => ({ id })),
+      pictures: {
+        deleteMany: {},
+        create: appointment.pictures.map(({ id, comment }) => ({
+          comment,
+          file: {
+            connect: {
+              id,
             },
           },
-          update: {
-            caption,
-            images: {
-              connect: images.map(({ id }) => ({ id })),
-              updateMany: images.map(i => ({
-                where: { id: i.id },
-                data: {
-                  comment: i.comment,
-                },
-              })),
-            },
-          },
-          where: { id: id || appointment.id },
         })),
       },
       prescription: {

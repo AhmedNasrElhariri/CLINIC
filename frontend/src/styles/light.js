@@ -1,79 +1,28 @@
 import { transparentize, setLightness } from 'polished';
 
 const textColor = '#283148';
-const successColor = '#40C173';
 const primaryColor = '#51C6F3'; // i changed the primary color from #51C6F3 to #1b253a
 const eventColor1 = primaryColor;
-const eventColor2 = successColor;
+const eventColor2 = '#40C173';
 const eventColor4 = '#fe9f0b';
 const eventColor3 = '#d40000';
 const eventColor5 = textColor;
 
 export const scrollbarColor = transparentize(0.8, textColor);
-export const variantColors = {
-  primary: {
-    color: '#1b253a',
-  },
-  primary100: {
-    color: '#019ae7',
-  },
-  secondary: {
-    color: '#eef1f1',
-  },
-  white: {
-    color: '#ffffff',
-  },
-  danger: {
-    color: '#bc3254',
-  },
-  green: {
-    color: '#037f4b',
-  },
-  yello: {
-    color: '#ffcc03',
-  },
-  color100: {
-    color: '#794bd1',
-  },
-  color200: {
-    color: '#bc3254',
-  },
-  default: {
-    color: '#1b253a',
-  },
-};
-export const variantBackgroundColors = {
-  primary: {
-    bg: '#51C6F3',
-  },
-  primary100: {
-    bg: '#019ae7',
-  },
-  secondary: {
-    bg: '#eef1f1',
-  },
-  danger: {
-    bg: '#bc3254',
-  },
-  green: {
-    bg: '#037f4b',
-  },
-  yello: {
-    bg: '#ffcc03',
-  },
-  color100: {
-    bg: '#794bd1',
-  },
-  color200: {
-    bg: '#bc3254',
-  },
-};
 export const colors = {
+  white: '#ffffff',
+  light:'rgba(182, 183, 183, 0.1)',
   primary: primaryColor,
-  success: successColor,
+  primaryDarker: '#3abbf0',
   primaryLight: '#EDF9FE',
   primaryLighter: transparentize(0.9, primaryColor),
+  warning: '#ffcc03',
+  warningDarker: '#fe9f0b',
+  success: '#40C173',
+  successDarker: '#037f4b',
   red: '#E60303',
+  danger: '#e50124',
+  dangerDarker: '#bc3254',
   dark: '#283148',
   shadow: '#0000000D',
   grey: '#707070',
@@ -144,10 +93,6 @@ export default {
   navbar: {
     height: '55.5px',
   },
-
   breakpoints: ['40em', '52em', '64em', '100em'],
-
   radius: 17,
-  variantColors,
-  variantBackgroundColors,
 };

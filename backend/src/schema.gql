@@ -363,16 +363,16 @@ type Appointment {
   data: [AppointmentField!]
   notes: String
   prescription: [Prescription!]
-  collections: [Collection!]
+  pictures: [AppointmentFile!]
   userId: String
   labs: [Lab!]
   images: [Image!]
 }
 
-type Collection {
+type AppointmentFile {
   id: ID!
-  caption: String
-  images: [File!]
+  comment: String
+  url: String
 }
 
 type AppointmentField {
@@ -389,10 +389,9 @@ input AppointmentInput {
   notes: String
 }
 
-input CollectionInput {
+input AppointmentPictureInput {
   id: ID
-  caption: String
-  images: [FileInput!]
+  comment: String
 }
 
 input UpdateAppointmentInput {
@@ -402,7 +401,7 @@ input UpdateAppointmentInput {
   data: [AppointmentFieldInput!]
   notes: String
   prescription: [PrescriptionInput!]
-  collections: [CollectionInput!]
+  pictures: [AppointmentPictureInput!]
 }
 
 input AppointmentQueryInput {
@@ -517,11 +516,6 @@ input SessionInput {
   price: Int!
 }
 
-input FileInput {
-  id: ID!
-  comment: String
-}
-
 ########################### Snippet ##################################
 
 type Snippet implements Searchable {
@@ -556,12 +550,6 @@ input LabInput {
 
 ########################### Patient Image ##################################
 
-input DocumentImageInput {
-  ImageId: ID!
-  value: String
-  files: [FileInput]
-}
-
 type Image {
   id: ID!
   status: LabStatus!
@@ -569,12 +557,6 @@ type Image {
   resultDate: Date
   value: String
   imageDefinition: ImageDefinition
-}
-
-input PatientImageInput {
-  patientId: ID!
-  name: String!
-  documents: [ID!]
 }
 
 ########################### History ##################################

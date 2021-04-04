@@ -20,23 +20,17 @@ const Modal = ({
   cancelTitle,
   onOk,
   onCancel,
-  CancelFooter,
-  CancelHeader,
+  noFooter,
+  noHeader,
   loading,
   ...props
 }) => {
   return (
     <CRContainer show={show} width={width} {...props}>
-      {CancelHeader ? (
-        ''
-      ) : (
-        <CRHeader {...headerStyle} title={header}></CRHeader>
-      )}
+      {!noHeader && <CRHeader {...headerStyle} title={header}></CRHeader>}
       <CRBody style={bodyStyle}>
         {children}
-        {CancelFooter ? (
-          ''
-        ) : (
+        {!noFooter && (
           <CRFooter
             okTitle={okTitle}
             cancelTitle={cancelTitle}
@@ -65,6 +59,8 @@ Modal.defaultProps = {
   headerStyle: {},
   footerStyle: {},
   show: false,
+  noFooter: false,
+  noHeader: false,
 };
 
 export default Modal;

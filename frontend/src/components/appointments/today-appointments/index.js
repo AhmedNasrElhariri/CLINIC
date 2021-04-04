@@ -5,7 +5,7 @@ import { Alert } from 'rsuite';
 import { Div } from 'components';
 import { ARCHIVE_APPOINTMENT } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
-import FinishAppointment from '../finish-appointments';
+import ArchiveAppointment from '../archive-appointments';
 import { getName } from 'services/accounting';
 import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 
@@ -108,7 +108,7 @@ function TodayAppointments() {
         appointments={completedAppointments}
         defaultExpanded={true}
       />
-      <FinishAppointment
+      <ArchiveAppointment
         appointment={appointment}
         show={visible}
         onCancel={close}

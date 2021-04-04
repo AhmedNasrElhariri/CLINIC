@@ -68,7 +68,7 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
       <Div style={{ height: '0px', overflow: 'hidden' }}>
         <PrescriptionPrintout ref={ref}>
           {images.length === '0' ? (
-            <Div>No Images</Div>
+            <Div>No Pictures</Div>
           ) : (
             images.map(image => (
               <Div>

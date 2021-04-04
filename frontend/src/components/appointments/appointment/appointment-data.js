@@ -24,7 +24,7 @@ import {
   NESTED_SELECTOR_FIELD_TYPE,
 } from 'utils/constants';
 
-import AppointmentImages from '../images';
+import AppointmentPictures from '../pictures';
 
 import Medicines from './appointment-medecines';
 import Labs from './appointment-labs';
@@ -82,18 +82,18 @@ function AppointmentData({
   formValue,
   groups,
   onChange,
+  onDataChange,
   disabled,
   appointment,
   appointmentFormValue,
-  arabicEnable,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
 
-  const handleCollectionsChange = useCallback(
-    collections => {
+  const handlePicturesChange = useCallback(
+    pictures => {
       onChange({
         ...appointmentFormValue,
-        collections,
+        pictures,
       });
     },
     [appointmentFormValue, onChange]
@@ -141,7 +141,7 @@ function AppointmentData({
         <Div flexGrow={1}>
           {!isSession(appointment) && Object.keys(formValue).length > 0 && (
             <>
-              <Form formValue={formValue} onChange={onChange} fluid>
+              <Form formValue={formValue} onChange={onDataChange} fluid>
                 {navs.map((v, idx) => (
                   <SectionContainer
                     key={idx}
@@ -159,20 +159,6 @@ function AppointmentData({
               </Form>
             </>
           )}
-          {/* <SectionContainer title="Notes" name="Notes">
-            <Form
-              formValue={appointmentFormValue}
-              onChange={onChangeAppointment}
-            >
-              <CRTextArea name="notes" disabled={disabled} />
-            </Form>
-          </SectionContainer> */}
-          <SectionContainer title="Images" name="Images">
-            <AppointmentImages
-              formValue={appointmentFormValue.collections}
-              onChange={handleCollectionsChange}
-            />
-          </SectionContainer>
           <SectionContainer title="Prescription" name="prescription">
             <Medicines
               prescription={appointmentFormValue.prescription}
@@ -191,10 +177,16 @@ function AppointmentData({
               onChange={handleImagesChange}
             />
           </SectionContainer>
-          <SectionContainer title="Courses" name="courses">
-            <Courses
-              selectedCourses={appointmentFormValue.courseIds}
-              onChange={handleCoursesChange}
+
+          <SectionContainer title="Notes" name="Notes">
+            <Form formValue={appointmentFormValue} onChange={onChange}>
+              <CRTextArea name="notes" disabled={disabled} />
+            </Form>
+          </SectionContainer>
+          <SectionContainer title="Pictures" name="Pictures">
+            <AppointmentPictures
+              formValue={appointmentFormValue.pictures}
+              onChange={handlePicturesChange}
             />
           </SectionContainer>
         </Div>

@@ -88,14 +88,10 @@ export const GET_APPOINTMENT = gql`
         type
         phoneNo
       }
-      collections {
+      pictures {
         id
-        caption
-        images {
-          id
-          url
-          comment
-        }
+        comment
+        url
       }
       labs {
         labDefinition {
@@ -135,14 +131,10 @@ export const GET_SURGRIES_APPOINTMENT = gql`
         type
         phoneNo
       }
-      collections {
+      pictures {
         id
-        caption
-        images {
-          id
-          url
-          comment
-        }
+        comment
+        url
       }
     }
   }
@@ -224,14 +216,10 @@ export const GET_APPOINTMENT_HISTORY = gql`
         age
         sex
       }
-      collections {
+      pictures {
         id
-        caption
-        images {
-          id
-          url
-          comment
-        }
+        comment
+        url
       }
       labs {
         id

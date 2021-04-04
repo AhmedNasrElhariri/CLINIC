@@ -3,19 +3,17 @@ import { Form } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as R from 'ramda';
 import {
-  StyledSeesion,
-  StyledDiscount,
-  Container,
-  Button,
-  SummaryStyled,
-  StyledInput,
-  PriceStyled,
-  ButtonsDiv,
-} from './style';
-import { CRSelectInput, H6, H7, Div } from 'components';
-import { CRNumberInput, CRTextInput } from 'components/widgets';
+  CRSelectInput,
+  H5,
+  H6,
+  Div,
+  CRButton,
+  CRNumberInput,
+  CRTextInput,
+} from 'components';
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
+import { CRDivider } from 'components';
 
 const OTHER = 'Other';
 
@@ -24,12 +22,14 @@ const initValue = {
   price: 1,
 };
 
-const Price = ({ name, price, Color }) => (
+const Price = ({ name, price, variant }) => (
   <Div display="flex" justifyContent="space-between" mb={1}>
-    <H7 color={Color ? Color : 'texts.1'}>{name}</H7>
-    <H7 color={Color ? Color : 'texts.1'}>
+    <H5 variant={variant} weight="semiBold">
+      {name}
+    </H5>
+    <H5 variant={variant} weight="semiBold">
       EGP <NumberFormat value={price} displayType="text" thousandSeparator />
-    </H7>
+    </H5>
   </Div>
 );
 
@@ -41,8 +41,6 @@ function AppointmentInvoice({
   onDiscountChange,
   sessions,
   organization,
-  handleOk,
-  onCancel
 }) {
   const [session, setSession] = useState({});
   const [formValue, setFormValue] = useState(initValue);
@@ -88,8 +86,8 @@ function AppointmentInvoice({
 
   return (
     <>
-      <Container>
-        <StyledSeesion>
+      <Div display="flex" mt={40}>
+        <Div width={500} mr={50}>
           <Form fluid>
             <CRSelectInput
               label="Session Type"
@@ -113,7 +111,6 @@ function AppointmentInvoice({
             </Div>
           )}
           <H6 mt={2} color="texts.2">
-            Price:{' '}
             <NumberFormat
               value={session.price}
               displayType="text"
@@ -126,78 +123,43 @@ function AppointmentInvoice({
               onDelete={handleDelete}
             />
           </Div>
-        </StyledSeesion>
-        <StyledDiscount>
-          <Form>
-            <StyledInput>
+        </Div>
+        <Div>
+          <Div mb={4}>
+            <Form>
               <CRTextInput
                 label="Discount"
                 name="amount"
                 value={discount}
                 onChange={onDiscountChange}
-                width={244}
-              ></CRTextInput>
-              <Button
-                width="61px"
-                padding="9.5px 9px 9.5px 10px"
-                bgColor="#e50124"
-                color="#ffffff"
-                height="38px"
-                marginTop="41px"
-              >
-                Applied
-              </Button>
-            </StyledInput>
-          </Form>
-          <SummaryStyled>Session Summary</SummaryStyled>
-          <PriceStyled>
-            <Price
-              name="Subtotal "
-              price={subtotal}
-              overriden
-              Color="#283148"
-            />
+                width={210}
+                addOn={<CRButton variant="danger">Applied</CRButton>}
+              />
+            </Form>
+          </Div>
+          <H5 fontWeight={400}>Session Summary</H5>
+          <Div background="#f0f1f1" p="6px 8px">
+            <Price name="Subtotal " price={subtotal} overriden />
             <Price
               name="Discount "
               price={discount}
               overriden
-              Color="#e50124"
+              variant="danger"
             />
-          </PriceStyled>
-          <Price name="Total" price={total} Color="#283148" />
-        </StyledDiscount>
-      </Container>
-      <ButtonsDiv>
-        <PrintInvoice
-          items={selectedSessions}
-          subtotal={subtotal}
-          total={total}
-          discount={discount}
-          organization={organization}
-        />
-        <Button
-          width="81px"
-          padding="9px 24px 10px 25px"
-          bgColor="#b6b7b7"
-          color="#283148"
-          marginLeft="370px"
-          height="35px"
-          onClick={onCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          width="106px"
-          padding="9px 40px"
-          bgColor="#50c7f2"
-          color="#ffffff"
-          marginLeft="26px"
-          height="35px"
-          onClick={handleOk}
-        >
-          Next
-        </Button>
-      </ButtonsDiv>
+          </Div>
+          <CRDivider />
+          <Div pr="8px">
+            <Price name="Total" price={total} />
+          </Div>
+        </Div>
+      </Div>
+      <PrintInvoice
+        items={selectedSessions}
+        subtotal={subtotal}
+        total={total}
+        discount={discount}
+        organization={organization}
+      />
     </>
   );
 }

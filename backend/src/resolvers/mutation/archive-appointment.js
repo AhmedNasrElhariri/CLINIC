@@ -1,5 +1,6 @@
 import { prisma } from '@';
-import { getAppointmentNextStatus } from '@/services/appointment.service';
+import * as R from 'ramda';
+
 import { createAppointmentRevenue } from '@/services/revenue.service';
 import { createAppointmentExpense } from '@/services/expense.service';
 import { APPOINTMENTS_STATUS } from '@/utils/constants';
@@ -7,23 +8,31 @@ import {
   createSubstractHistoryForMultipleItems,
   updatedUsedMaterials,
 } from '@/services/inventory.service';
+import { updateLabsAfterArchiveAppointment } from '@/services/lab.service';
+import { updateImagesAfterArchiveAppointment } from '@/services/image.service';
 
 const archiveAppointment = async (
   _,
   { id, sessions = [], items = [], discount = 0 },
   { userId, organizationId }
 ) => {
-  const persistedAppointment = await prisma.appointment.findOne({
-    where: { id },
-  });
-  const status = getAppointmentNextStatus(
-    persistedAppointment.status,
-    APPOINTMENTS_STATUS.ARCHIVED
-  );
+  // const persistedAppointment = await prisma.appointment.findOne({
+  //   where: { id },
+  //   include: true,
+  //   images: true,
+  // });
+  // const status = getAppointmentNextStatus(
+  //   persistedAppointment.status,
+  //   APPOINTMENTS_STATUS.ARCHIVED
+  // );
 
   const appointment = await prisma.appointment.update({
-    data: { status },
+    data: { status: APPOINTMENTS_STATUS.ARCHIVED },
     where: { id },
+    include: {
+      labs: true,
+      images: true,
+    },
   });
 
   await createAppointmentRevenue(id, sessions);
@@ -36,6 +45,14 @@ const archiveAppointment = async (
     userId,
     patientId: appointment.patientId,
   });
+
+  const { labs, images } = appointment;
+
+  await Promise.all([
+    updateLabsAfterArchiveAppointment(R.map(R.prop('id'))(labs)),
+    updateImagesAfterArchiveAppointment(R.map(R.prop('id'))(images)),
+  ]);
+
   const configuration = await prisma.configuration.findOne({
     where: { userId: userId },
   });

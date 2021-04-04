@@ -1,20 +1,24 @@
 import React from 'react';
 
-import { H6, Div } from 'components';
-import { SessionNameStyled, DeleteLinkStyled, Item } from './style';
+import { H7, Div } from 'components';
+import { DeleteLinkStyled, Item } from './style';
 
 function ListInvoiceItems({ items, priceKey, onDelete }) {
   return (
     <Div>
       {items.map((item, idx) => (
         <Item key={idx}>
-          <Div display="flex" alignItems="baseline">
-            <SessionNameStyled color="texts.1">{item.name}</SessionNameStyled>
+          <Div display="flex" alignItems="center">
+            <H7 color="texts.1" textDecoration="underline">
+              {item.name}
+            </H7>
             <DeleteLinkStyled cursor="pointer" onClick={() => onDelete(idx)}>
               Delete
             </DeleteLinkStyled>
           </Div>
-          EGP {item[priceKey] && <H6 color="texts.1">{item[priceKey]}</H6>}
+          <Div display="flex" alignItems="center">
+            <H7 color="texts.1">EGP {item[priceKey]}</H7>
+          </Div>
         </Item>
       ))}
     </Div>
