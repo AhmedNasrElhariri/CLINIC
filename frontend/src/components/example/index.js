@@ -12,19 +12,8 @@ function Example() {
   // const [formValue, setFormValue] = useState({ date: [], patient: '' });
 
   const { appointments } = useAppointments();
-  console.log(appointments);
   const ExaminationApp = appointments.filter(a => a.type === 'Examination');
-  const ExaminationAppointments = ExaminationApp.map(a => {
-    return {
-      id: a.id,
-      status: a.status,
-      patientName: a.patient.name,
-      type: a.type,
-      timeline: formatDate(a.date),
-      date: formatFullDay(a.date),
-      doctor: 'ahmed',
-    };
-  });
+  const ExaminationAppointments = ExaminationApp;
   const FollowUp = appointments.filter(a => a.type === 'Followup');
   const FollowUpAppointments = FollowUp.map(a => {
     return {
@@ -68,7 +57,12 @@ function Example() {
   return (
     <>
       <Header>Appoinments</Header>
-      <StyledPanel
+      <Table
+        rowHeight={35}
+        data={ExaminationAppointments}
+        borderLeft="6px solid #019ae7"
+      />
+      {/* <StyledPanel
         header="Examination"
         collapsible
         bodyFill
@@ -76,8 +70,8 @@ function Example() {
         color="#019ae7"
       >
         <Table data={ExaminationAppointments} borderLeft="6px solid #019ae7" />
-      </StyledPanel>
-      <StyledPanel
+      </StyledPanel> */}
+      {/* <StyledPanel
         header="Follow-up"
         collapsible
         bodyFill
@@ -95,7 +89,7 @@ function Example() {
         color="#ffcc03"
       >
         <Table data={SessionAppointments} borderLeft="6px solid #ffcc03" />
-      </StyledPanel>
+      </StyledPanel> */}
       {/* <StyledPanel
         header="Surgery"
         collapsible
@@ -106,7 +100,7 @@ function Example() {
         <Table data={updateAppointments} borderLeft="6px solid #794bd1" />
       </StyledPanel> */}
 
-      <StyledPanel
+      {/* <StyledPanel
         header="Urgent"
         collapsible
         bodyFill
@@ -114,7 +108,7 @@ function Example() {
         color="#bc3254"
       >
         <Table data={UrgentAppointments} borderLeft="6px solid #bc3254" />
-      </StyledPanel>
+      </StyledPanel> */}
     </>
   );
 }

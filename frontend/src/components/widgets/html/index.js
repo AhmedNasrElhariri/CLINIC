@@ -21,6 +21,18 @@ const variants = variant({
     primary: {
       color: theme => theme.colors.primary,
     },
+    normal: {
+      color: theme => theme.colors.text,
+    },
+    white: {
+      color: theme => theme.colors.text,
+    },
+    success: {
+      color: theme => theme.colors.successDarker,
+    },
+    danger: {
+      color: theme => theme.colors.dangerDarker,
+    },
   },
 });
 
@@ -100,7 +112,7 @@ export const H6 = styled.h6`
   font-family: 'SegoeUI';
   ${byTheme({
     fontSize: {
-      normal: 16,
+      normal: 12,
       large: 20,
     },
   })};

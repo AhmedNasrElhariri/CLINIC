@@ -55,7 +55,6 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk, clinic }) => {
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
     activeStep,
   ]);
-  console.log(organization);
   return (
     <CRModal
       show={show}
