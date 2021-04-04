@@ -18,7 +18,7 @@ const StepsDev = styled.div`
   width: 450px;
   margin: auto;
 `;
-const FinishAppointment = ({ appointment, show, onCancel, onOk }) => {
+const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const value = useRef(initValue);
@@ -59,8 +59,8 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk }) => {
 
   return (
     <CRModal
-      show={true}
-      header="Finish Session"
+      show={show}
+      header="Archive Appointment"
       okTitle={okTitle}
       onOk={handleOk}
       onHide={onCancel}
@@ -99,8 +99,8 @@ const FinishAppointment = ({ appointment, show, onCancel, onOk }) => {
   );
 };
 
-FinishAppointment.defaultProps = {
+ArchiveAppointment.defaultProps = {
   sessions: [],
 };
 
-export default FinishAppointment;
+export default ArchiveAppointment;
