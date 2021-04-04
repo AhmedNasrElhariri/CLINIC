@@ -14,10 +14,11 @@
     },
     {
       "tag": "CreateEnum",
-      "enum": "LabDocStatus",
+      "enum": "LabStatus",
       "values": [
-        "completed",
-        "pending"
+        "Draft",
+        "Pending",
+        "Completed"
       ]
     },
     {
@@ -959,13 +960,6 @@
     {
       "tag": "CreateField",
       "model": "Patient",
-      "field": "prescriptions",
-      "type": "Prescription",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Patient",
       "field": "labs",
       "type": "Lab",
       "arity": "List"
@@ -1186,13 +1180,6 @@
     {
       "tag": "CreateField",
       "model": "Appointment",
-      "field": "collections",
-      "type": "Collection",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Appointment",
       "field": "notes",
       "type": "String",
       "arity": "Optional"
@@ -1234,67 +1221,28 @@
       "model": "Appointment",
       "field": "prescription",
       "type": "Prescription",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Appointment",
-          "field": "prescription"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Appointment",
-          "field": "prescription"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[prescriptionId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Appointment",
-          "field": "prescription"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Appointment",
-      "field": "prescriptionId",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Appointment",
-      "field": "labs",
-      "type": "AppointmentLab",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Appointment",
-      "field": "appointmentLabId",
-      "type": "String",
-      "arity": "Optional"
+      "field": "labs",
+      "type": "Lab",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Appointment",
+      "field": "images",
+      "type": "Image",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Appointment",
+      "field": "pictures",
+      "type": "AppointmentFile",
+      "arity": "List"
     },
     {
       "tag": "CreateModel",
@@ -1346,8 +1294,15 @@
     {
       "tag": "CreateField",
       "model": "Prescription",
+      "field": "dose",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Prescription",
       "field": "medicine",
-      "type": "Patient",
+      "type": "MedicineDefinition",
       "arity": "Required"
     },
     {
@@ -1452,137 +1407,30 @@
     {
       "tag": "CreateField",
       "model": "Prescription",
-      "field": "durationLength",
+      "field": "duration",
       "type": "Int",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "Prescription",
-      "field": "durationType",
+      "field": "period",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "Prescription",
-      "field": "appointments",
-      "type": "Appointment",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateModel",
-      "model": "AppointmentLab"
-    },
-    {
-      "tag": "CreateField",
-      "model": "AppointmentLab",
-      "field": "id",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "AppointmentLab",
-          "field": "id"
-        },
-        "directive": "id"
-      }
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "AppointmentLab",
-          "field": "id"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "AppointmentLab",
-          "field": "id"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "uuid()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "AppointmentLab",
-      "field": "labDefinition",
-      "type": "LabDefinition",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "AppointmentLab",
-          "field": "labDefinition"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "AppointmentLab",
-          "field": "labDefinition"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[labDefinitionId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "AppointmentLab",
-          "field": "labDefinition"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "AppointmentLab",
-      "field": "labDefinitionId",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "AppointmentLab",
       "field": "appointment",
       "type": "Appointment",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateDirective",
       "location": {
         "path": {
           "tag": "Field",
-          "model": "AppointmentLab",
+          "model": "Prescription",
           "field": "appointment"
         },
         "directive": "relation"
@@ -1594,7 +1442,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "AppointmentLab",
+          "model": "Prescription",
           "field": "appointment"
         },
         "directive": "relation"
@@ -1608,7 +1456,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "AppointmentLab",
+          "model": "Prescription",
           "field": "appointment"
         },
         "directive": "relation"
@@ -1618,10 +1466,10 @@
     },
     {
       "tag": "CreateField",
-      "model": "AppointmentLab",
+      "model": "Prescription",
       "field": "appointmentId",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateModel",
@@ -2469,66 +2317,6 @@
     {
       "tag": "CreateField",
       "model": "File",
-      "field": "comment",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "File",
-      "field": "collection",
-      "type": "Collection",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "File",
-          "field": "collection"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "File",
-          "field": "collection"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[collectionId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "File",
-          "field": "collection"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "File",
-      "field": "collectionId",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "File",
       "field": "mimetype",
       "type": "String",
       "arity": "Optional"
@@ -2543,16 +2331,163 @@
     {
       "tag": "CreateField",
       "model": "File",
-      "field": "labDocuments",
-      "type": "LabDocument",
+      "field": "lab",
+      "type": "Lab",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "File",
-      "field": "imageDocuments",
-      "type": "ImageDocument",
+      "field": "image",
+      "type": "Image",
       "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "File",
+      "field": "appointmentFiles",
+      "type": "AppointmentFile",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "AppointmentFile"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentFile",
+      "field": "comment",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentFile",
+      "field": "appointment",
+      "type": "Appointment",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentFile",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentFile",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[appointmentId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentFile",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentFile",
+      "field": "appointmentId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentFile",
+      "field": "file",
+      "type": "File",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentFile",
+          "field": "file"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentFile",
+          "field": "file"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[fileId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentFile",
+          "field": "file"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentFile",
+      "field": "fileId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "AppointmentFile"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "AppointmentFile"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "fileId"
     },
     {
       "tag": "CreateModel",
@@ -3120,159 +3055,6 @@
     },
     {
       "tag": "CreateModel",
-      "model": "LabDocument"
-    },
-    {
-      "tag": "CreateField",
-      "model": "LabDocument",
-      "field": "id",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "id"
-        },
-        "directive": "id"
-      }
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "id"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "id"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "uuid()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "LabDocument",
-      "field": "file",
-      "type": "File",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "file"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "file"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[fileId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "file"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "LabDocument",
-      "field": "fileId",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "LabDocument",
-      "field": "lab",
-      "type": "Lab",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "lab"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "lab"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[labId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "LabDocument",
-          "field": "lab"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "LabDocument",
-      "field": "labId",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateModel",
       "model": "Lab"
     },
     {
@@ -3322,7 +3104,7 @@
       "tag": "CreateField",
       "model": "Lab",
       "field": "status",
-      "type": "LabDocStatus",
+      "type": "LabStatus",
       "arity": "Required"
     },
     {
@@ -3480,162 +3262,62 @@
     {
       "tag": "CreateField",
       "model": "Lab",
+      "field": "appointment",
+      "type": "Appointment",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Lab",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Lab",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[appointmentId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Lab",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Lab",
+      "field": "appointmentId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Lab",
       "field": "documents",
-      "type": "LabDocument",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateModel",
-      "model": "ImageDocument"
-    },
-    {
-      "tag": "CreateField",
-      "model": "ImageDocument",
-      "field": "id",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "id"
-        },
-        "directive": "id"
-      }
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "id"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "id"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "uuid()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "ImageDocument",
-      "field": "file",
       "type": "File",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "file"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "file"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[fileId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "file"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "ImageDocument",
-      "field": "fileId",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "ImageDocument",
-      "field": "image",
-      "type": "Image",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "image"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "image"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[imageId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "ImageDocument",
-          "field": "image"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "ImageDocument",
-      "field": "imageId",
-      "type": "String",
-      "arity": "Required"
+      "arity": "List"
     },
     {
       "tag": "CreateModel",
@@ -3688,7 +3370,7 @@
       "tag": "CreateField",
       "model": "Image",
       "field": "status",
-      "type": "LabDocStatus",
+      "type": "LabStatus",
       "arity": "Required"
     },
     {
@@ -3846,8 +3528,61 @@
     {
       "tag": "CreateField",
       "model": "Image",
+      "field": "appointment",
+      "type": "Appointment",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Image",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Image",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[appointmentId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Image",
+          "field": "appointment"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Image",
+      "field": "appointmentId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Image",
       "field": "documents",
-      "type": "ImageDocument",
+      "type": "File",
       "arity": "List"
     },
     {
@@ -4607,145 +4342,6 @@
       "field": "end",
       "type": "DateTime",
       "arity": "Required"
-    },
-    {
-      "tag": "CreateModel",
-      "model": "Collection"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Collection",
-      "field": "id",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Collection",
-          "field": "id"
-        },
-        "directive": "id"
-      }
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Collection",
-          "field": "id"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Collection",
-          "field": "id"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "uuid()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Collection",
-      "field": "appointment",
-      "type": "Appointment",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Collection",
-          "field": "appointment"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Collection",
-          "field": "appointment"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[appointmentId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Collection",
-          "field": "appointment"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Collection",
-      "field": "appointmentId",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Collection",
-      "field": "caption",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Collection",
-          "field": "caption"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Collection",
-          "field": "caption"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "\"\""
-    },
-    {
-      "tag": "CreateField",
-      "model": "Collection",
-      "field": "images",
-      "type": "File",
-      "arity": "List"
     },
     {
       "tag": "CreateModel",
@@ -5686,13 +5282,6 @@
       "tag": "CreateField",
       "model": "LabDefinition",
       "field": "labs",
-      "type": "AppointmentLab",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "LabDefinition",
-      "field": "Lab",
       "type": "Lab",
       "arity": "List"
     },
@@ -6279,6 +5868,13 @@
       "field": "userId",
       "type": "String",
       "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MedicineDefinition",
+      "field": "prescriptions",
+      "type": "Prescription",
+      "arity": "List"
     },
     {
       "tag": "CreateModel",

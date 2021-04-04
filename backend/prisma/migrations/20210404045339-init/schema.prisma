@@ -15,9 +15,10 @@ enum AppointmentType {
   Surgery
 }
 
-enum LabDocStatus {
-  completed
-  pending
+enum LabStatus {
+  Draft
+  Pending
+  Completed
 }
 
 enum AppointmentStatus {
@@ -165,7 +166,6 @@ model Patient {
   familyHistory    FamilyHistory[]
   inventoryHistory InventoryHistory[]
   patientSurgeries PatientSurgery[]
-  prescriptions    Prescription[]
   labs             Lab[]
   images           Image[]
 }
@@ -180,35 +180,25 @@ model Appointment {
   userId           String
   status           AppointmentStatus
   data             AppointmentField[]
-  collections      Collection[]
   notes            String?            @default("")
   patientSurgeries PatientSurgery[]
-  prescription     Prescription?      @relation(fields: [prescriptionId], references: [id])
-  prescriptionId   String?
-  labs             AppointmentLab[]
-  appointmentLabId String?
+  prescription     Prescription[]
+  labs             Lab[]
+  images           Image[]
+  pictures         AppointmentFile[]
 }
 
 model Prescription {
-  id             String        @id @default(uuid())
-  medicine       Patient       @relation(fields: [medicineId], references: [id])
-  medicineId     String
-  timing         Timing        @relation(fields: [timingId], references: [id])
-  timingId       String
-  durationLength Int
-  durationType   String
-  appointments   Appointment[]
-}
-
-model AppointmentLab {
-  id String @id @default(uuid())
-
-  labDefinition   LabDefinition @relation(fields: [labDefinitionId], references: [id])
-  labDefinitionId String
-
-  appointment   Appointment @relation(fields: [appointmentId], references: [id])
-  appointmentId String
-
+  id            String             @id @default(uuid())
+  dose          String?
+  medicine      MedicineDefinition @relation(fields: [medicineId], references: [id])
+  medicineId    String
+  timing        Timing             @relation(fields: [timingId], references: [id])
+  timingId      String
+  duration      Int?
+  period        String?
+  appointment   Appointment?       @relation(fields: [appointmentId], references: [id])
+  appointmentId String?
 }
 
 model View {
@@ -265,16 +255,24 @@ model AppointmentField {
 }
 
 model File {
-  id             String          @id @default(uuid())
-  url            String
-  filename       String
-  comment        String?
-  collection     Collection?     @relation(fields: [collectionId], references: [id])
-  collectionId   String?
-  mimetype       String?
-  encoding       String?
-  labDocuments   LabDocument[]
-  imageDocuments ImageDocument[]
+  id               String            @id @default(uuid())
+  url              String
+  filename         String
+  mimetype         String?
+  encoding         String?
+  lab              Lab[]
+  image            Image[]
+  appointmentFiles AppointmentFile[]
+}
+
+model AppointmentFile {
+  comment       String?
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  appointmentId String
+  file          File        @relation(fields: [fileId], references: [id])
+  fileId        String
+
+  @@id(fileId)
 }
 
 model Configuration {
@@ -315,17 +313,9 @@ model Snippet {
   body   String
 }
 
-model LabDocument {
-  id     String @id @default(uuid())
-  file   File   @relation(fields: [fileId], references: [id])
-  fileId String
-  lab    Lab    @relation(fields: [labId], references: [id])
-  labId  String
-}
-
 model Lab {
   id              String        @id @default(uuid())
-  status          LabDocStatus
+  status          LabStatus
   requiredDate    DateTime      @default(now())
   resultDate      DateTime?
   value           String?
@@ -333,20 +323,14 @@ model Lab {
   patientId       String
   labDefinition   LabDefinition @relation(fields: [labDefinitionId], references: [id])
   labDefinitionId String
-  documents       LabDocument[]
-}
-
-model ImageDocument {
-  id      String  @id @default(uuid())
-  file    File?   @relation(fields: [fileId], references: [id])
-  fileId  String?
-  image   Image   @relation(fields: [imageId], references: [id])
-  imageId String
+  appointment     Appointment   @relation(fields: [appointmentId], references: [id])
+  appointmentId   String
+  documents       File[]
 }
 
 model Image {
   id                String          @id @default(uuid())
-  status            LabDocStatus
+  status            LabStatus
   requiredDate      DateTime        @default(now())
   resultDate        DateTime?
   value             String?
@@ -354,7 +338,9 @@ model Image {
   patientId         String
   imageDefinition   ImageDefinition @relation(fields: [imageDefinitionId], references: [id])
   imageDefinitionId String
-  documents         ImageDocument[]
+  appointment       Appointment     @relation(fields: [appointmentId], references: [id])
+  appointmentId     String
+  documents         File[]
 }
 
 model MedicineHistory {
@@ -414,14 +400,6 @@ model Event {
   end    DateTime
 }
 
-model Collection {
-  id            String      @id @default(uuid())
-  appointment   Appointment @relation(fields: [appointmentId], references: [id])
-  appointmentId String
-  caption       String      @default("")
-  images        File[]
-}
-
 model Item {
   id               String             @id @default(uuid())
   name             String             @unique
@@ -476,13 +454,12 @@ model Hospital {
 }
 
 model LabDefinition {
-  id       String           @id @default(uuid())
+  id       String @id @default(uuid())
   name     String
   category String
-  user     User             @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
   userId   String
-  labs     AppointmentLab[]
-  Lab      Lab[]
+  labs     Lab[]
 }
 
 model LabCategory {
@@ -519,12 +496,13 @@ model ImageCategory {
 }
 
 model MedicineDefinition {
-  id            String @id @default(uuid())
+  id            String         @id @default(uuid())
   name          String
   concentration String
   form          String
-  user          User   @relation(fields: [userId], references: [id])
+  user          User           @relation(fields: [userId], references: [id])
   userId        String
+  prescriptions Prescription[]
 }
 
 model PatientReport {

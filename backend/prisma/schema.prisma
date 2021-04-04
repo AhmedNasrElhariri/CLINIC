@@ -182,7 +182,6 @@ model Appointment {
   data             AppointmentField[]
   notes            String?            @default("")
   patientSurgeries PatientSurgery[]
-  appointmentLabId String?
   prescription     Prescription[]
   labs             Lab[]
   images           Image[]

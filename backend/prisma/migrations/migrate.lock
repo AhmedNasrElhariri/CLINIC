@@ -1,15 +1,3 @@
 # Prisma Migrate lockfile v1
 
-20210310213732-init
-20210311000757-remove-appt-labs
-20210311001731-add-more-status-to-labs
-20210311005336-images-for-appts
-20210313104045-add-prescription
-20210320223443-udpate-perscription
-20210320224859-perscription-optional
-20210320225135-init
-20210327232851-remove-doc
-20210403171549-update-files
-20210403173105-comment-file-appo
-20210403190453-appointment-files
-20210403191309-set-id-to-app
+20210404045339-init
