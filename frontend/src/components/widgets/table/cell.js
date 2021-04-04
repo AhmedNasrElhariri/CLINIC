@@ -3,18 +3,32 @@ import * as R from 'ramda';
 import { Table } from 'rsuite';
 
 import { CRCellStyled } from './style';
+import { Div } from '../html';
 
-const CRCell = ({ children, getValue, dataKey,onTreeToggle, ...props }) => (
+const CRCell = ({
+  children,
+  getValue,
+  dataKey,
+  height,
+  onTreeToggle,
+  ...props
+}) => (
   <Table.Cell {...props}>
-    {children
-      ? children
-      : data => (
-          <CRCellStyled {...props}>
-            {getValue
-              ? getValue(R.path(dataKey.split('.'))(data), data, dataKey)
-              : R.path(dataKey.split('.'))(data)}
-          </CRCellStyled>
-        )}
+    {data => {
+      return (
+        <Div height={height - 2}>
+          {children ? (
+            children(data)
+          ) : (
+            <CRCellStyled {...props}>
+              {getValue
+                ? getValue(R.path(dataKey.split('.'))(data), data, dataKey)
+                : R.path(dataKey.split('.'))(data)}
+            </CRCellStyled>
+          )}
+        </Div>
+      );
+    }}
   </Table.Cell>
 );
 

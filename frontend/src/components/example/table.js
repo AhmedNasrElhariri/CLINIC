@@ -9,11 +9,11 @@ function Table({ data, borderLeft, onEdit }) {
         <CRTable data={data} border={borderLeft}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="type" bgvariant="success" />
+            <CRTable.CRCell dataKey="type" />
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Timeline</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="timeline" bgvariant="danger" />
+            <CRTable.CRCell dataKey="timeline" />
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>

@@ -28,8 +28,8 @@ const CRTableStyled = styled(Table).attrs(() => ({
 
 const CRTable = ({ children, flag, ...props }) => (
   <CRTableStyled {...props}>
-    <CRTable.CRColumn width={6}>
-      <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+    <CRTable.CRColumn width={7}>
+      <CRTable.CRHeaderCell/>
       <CRTable.CRCell>{() => <BarStyled flag={flag} />}</CRTable.CRCell>
     </CRTable.CRColumn>
     {children}
