@@ -4,6 +4,7 @@ import {
   NewPatient,
   NewAppointment,
   Calendar,
+  EmployeePayroll,
   TodayAppointment,
   Appointment,
   Appointments,
@@ -44,6 +45,10 @@ function AppRouter() {
       <Route path="/appointments/:appointmentId" component={Appointment} />
       <Route path="/patients" exact>
         <ListPatients />
+      </Route>
+
+      <Route path="/payroll/:emplyeeID">
+        <EmployeePayroll />
       </Route>
 
       <Route path="/patients/:patientId" component={Patient} />
