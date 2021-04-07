@@ -45,6 +45,11 @@ export const LIST_COURSES = gql`
       id
       price
       paid
+      discount
+      appointments{
+        id
+        date
+      }
       courseDefinition {
         id
         name
@@ -66,6 +71,7 @@ export const ADD_COURSE = gql`
     addCourse(course: $course) {
       id
       price
+      discount
       patient {
         id
         name

@@ -179,22 +179,32 @@ model Patient {
   Course           Course[]
 }
 
+model AppointmentsOnCourses {
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  appointmentId String
+  course        Course      @relation(fields: [courseId], references: [id])
+  courseId      String
+
+  @@id([appointmentId, courseId])
+}
+
 model Appointment {
-  id               String             @id @default(uuid())
-  date             DateTime           @default(now())
+  id               String                  @id @default(uuid())
+  date             DateTime                @default(now())
   type             AppointmentType
-  patient          Patient            @relation(fields: [patientId], references: [id])
+  patient          Patient                 @relation(fields: [patientId], references: [id])
   patientId        String
-  user             User               @relation(fields: [userId], references: [id])
+  user             User                    @relation(fields: [userId], references: [id])
   userId           String
   status           AppointmentStatus
   data             AppointmentField[]
-  notes            String?            @default("")
+  notes            String?                 @default("")
   patientSurgeries PatientSurgery[]
   prescription     Prescription[]
   labs             Lab[]
   images           Image[]
   pictures         AppointmentFile[]
+  courses          AppointmentsOnCourses[]
 }
 
 model Prescription {
@@ -510,16 +520,18 @@ model CourseDefinition {
 }
 
 model Course {
-  id                 String           @id @default(uuid())
+  id                 String                  @id @default(uuid())
   price              Int
   paid               Int
-  patient            Patient          @relation(fields: [patientId], references: [id])
+  discount           Int
+  appointments       AppointmentsOnCourses[]
+  patient            Patient                 @relation(fields: [patientId], references: [id])
   patientId          String
-  user               User             @relation("user", fields: [userId], references: [id])
+  user               User                    @relation("user", fields: [userId], references: [id])
   userId             String
-  courseDefinition   CourseDefinition @relation(fields: [courseDefinitionId], references: [id])
+  courseDefinition   CourseDefinition        @relation(fields: [courseDefinitionId], references: [id])
   courseDefinitionId String
-  doctor             User             @relation("doctor", fields: [doctorId], references: [id])
+  doctor             User                    @relation("doctor", fields: [doctorId], references: [id])
   doctorId           String
 }
 

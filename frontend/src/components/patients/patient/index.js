@@ -23,7 +23,7 @@ const tabs = [
   'Labs',
   'Images',
   'History',
-  'Courses'
+  'Courses',
 ];
 const Container = styled.div`
   display: flex;
@@ -95,7 +95,12 @@ function Appointment() {
                 {showComp('3') && <PatientLabs patient={patient} />}
                 {showComp('4') && <PatientImages patient={patient} />}
                 {showComp('5') && <History patient={patient} />}
-                {showComp('6') && <PatientCourses patient={patient} appointmentId={appointmentId}/>}
+                {showComp('6') && (
+                  <PatientCourses
+                    patient={patient}
+                    appointmentId={appointmentId}
+                  />
+                )}
               </TabContainer>
             </Container>
           )}

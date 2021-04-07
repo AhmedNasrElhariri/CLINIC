@@ -30,7 +30,8 @@ const getDayAppointments = (day, userId) => {
 const isBeforeNow = date => moment(date).isBefore(moment(), 'minute');
 
 const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
-  const { patientId, userId, ...rest } = appointment;
+  const { patientId, userId, courseId, ...rest } = appointment;
+
   const appointments = await getDayAppointments(appointment.date, userId);
 
   if (
@@ -60,6 +61,15 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
       user: {
         connect: {
           id: userId,
+        },
+      },
+      courses: {
+        create: {
+          course: {
+            connect: {
+              id: courseId,
+            },
+          },
         },
       },
     },

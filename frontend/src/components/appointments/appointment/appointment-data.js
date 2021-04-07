@@ -29,7 +29,6 @@ import AppointmentPictures from '../pictures';
 import Medicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
-import Courses from './appointment-courses';
 
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {

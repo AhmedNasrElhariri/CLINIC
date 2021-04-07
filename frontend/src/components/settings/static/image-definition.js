@@ -45,7 +45,6 @@ const ImageDefinition = () => {
     },
     [open, setFormValue, setType]
   );
-
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       addImageDefinition({

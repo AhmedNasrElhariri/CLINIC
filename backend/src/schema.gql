@@ -367,6 +367,7 @@ type Appointment {
   userId: String
   labs: [Lab!]
   images: [Image!]
+  courses: [Course!]
 }
 
 type AppointmentFile {
@@ -387,6 +388,7 @@ input AppointmentInput {
   type: AppointmentType!
   userId: ID!
   notes: String
+  courseId: ID
 }
 
 input AppointmentPictureInput {
@@ -514,6 +516,16 @@ type Session {
 input SessionInput {
   name: String!
   price: Int!
+}
+
+type CourseSessions {
+  date: Date!
+  time: Date!
+}
+
+input CourseSessionsInput {
+  date: Date!
+  time: Date!
 }
 
 ########################### Snippet ##################################
@@ -866,6 +878,8 @@ type Course {
   id: ID!
   price: Int!
   paid: Int!
+  discount: Int!
+  appointments: [Appointment!]
   patient: Patient!
   doctor: User!
   courseDefinition: CourseDefinition!
@@ -874,12 +888,19 @@ type Course {
 input CourseInput {
   price: Int!
   paid: Int
+  discount: Int
+  appointmentId: ID!
   patientId: ID!
   courseDefinitionId: ID!
   doctorId: ID
 }
 
 ########################### Patient Surgeries ##################################
+
+type AppointmentsOnCourses {
+  appointment: Appointment
+  course: Course
+}
 
 type PatientSurgery {
   id: ID!
