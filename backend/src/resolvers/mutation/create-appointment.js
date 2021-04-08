@@ -31,7 +31,14 @@ const isBeforeNow = date => moment(date).isBefore(moment(), 'minute');
 
 const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
   const { patientId, userId, courseId, ...rest } = appointment;
-
+  const course = await prisma.course.findOne({ where: { id: courseId } });
+  const {
+    patientId: coursePatientId,
+    courseDefinitionId,
+    doctorId,
+    userId: courseUserId,
+    ...courseRestData
+  } = course;
   const appointments = await getDayAppointments(appointment.date, userId);
 
   if (
@@ -65,9 +72,25 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
       },
       courses: {
         create: {
-          course: {
+          ...courseRestData,
+          user: {
             connect: {
-              id: courseId,
+              id: courseUserId,
+            },
+          },
+          doctor: {
+            connect: {
+              id: doctorId,
+            },
+          },
+          patient: {
+            connect: {
+              id: coursePatientId,
+            },
+          },
+          courseDefinition: {
+            connect: {
+              id: courseDefinitionId,
             },
           },
         },

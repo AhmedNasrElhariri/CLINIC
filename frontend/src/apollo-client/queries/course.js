@@ -46,7 +46,7 @@ export const LIST_COURSES = gql`
       price
       paid
       discount
-      appointments{
+      appointments {
         id
         date
       }
@@ -60,6 +60,16 @@ export const LIST_COURSES = gql`
       }
       doctor {
         id
+        name
+      }
+    }
+  }
+`;
+export const LIST_PATIENT_COURSES = gql`
+  query($patientId: ID!) {
+    myCourses(patientId: $patientId) {
+      id
+      courseDefinition {
         name
       }
     }

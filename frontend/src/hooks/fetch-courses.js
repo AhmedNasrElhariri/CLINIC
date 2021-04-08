@@ -7,6 +7,7 @@ import {
   ADD_COURSE,
   EDIT_COURSE,
   LIST_COURSES,
+  LIST_PATIENT_COURSES,
   LIST_USERS,
   EDIT_COURSE_DOCTOR,
 } from 'apollo-client/queries';
@@ -28,7 +29,14 @@ function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
     { fetchPolicy: 'network-only' }
   );
   const courses = useMemo(() => R.propOr([], 'myCourses')(data), [data]);
-
+  const { data: patientData } = useQuery(
+    LIST_PATIENT_COURSES,
+    { variables: { patientId } },
+    { fetchPolicy: 'network-only' }
+  );
+  const patientCourses = useMemo(() => R.propOr([], 'myCourses')(patientData), [
+    patientData,
+  ]);
   const { data: userData } = useQuery(LIST_USERS);
   const users = useMemo(() => R.propOr([], 'listUsers')(userData), [userData]);
 
@@ -66,13 +74,14 @@ function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
   return useMemo(
     () => ({
       courses,
+      patientCourses,
       addCourse,
       editCourse,
       editCourseDoctor,
       users,
       updateCache,
     }),
-    [courses, addCourse, editCourse, editCourseDoctor, users]
+    [courses, patientCourses, addCourse, editCourse, editCourseDoctor, users]
   );
 }
 

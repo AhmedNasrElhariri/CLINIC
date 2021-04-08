@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const addCourse = async (_, { course }, { userId }) => {
-  const { patientId, courseDefinitionId,appointmentId, ...rest } = course;
+  const { patientId, courseDefinitionId, appointmentId, ...rest } = course;
   return prisma.course.create({
     data: {
       ...rest,
@@ -25,15 +25,15 @@ const addCourse = async (_, { course }, { userId }) => {
           id: courseDefinitionId,
         },
       },
-      appointments:{
-        create:{
-          appointment:{
-            connect:{
-              id:appointmentId
-            }
-          }
-        }
-      }
+      appointments: {
+        create: {
+          appointment: {
+            connect: {
+              id: appointmentId,
+            },
+          },
+        },
+      },
     },
   });
 };

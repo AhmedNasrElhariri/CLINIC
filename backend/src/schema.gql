@@ -30,6 +30,7 @@ enum PatientMembershipType {
 enum AppointmentType {
   Examination
   Followup
+  Course
   Urgent
   Session
   Surgery

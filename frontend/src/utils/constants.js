@@ -37,6 +37,7 @@ export const APPT_STATUS = Object.freeze({
 export const APPT_TYPE = Object.freeze({
   Examination: 'Examination',
   Followup: 'Followup',
+  Course: 'Course',
   Urgent: 'Urgent',
   Session: 'Session',
   Surgery: 'Surgery',

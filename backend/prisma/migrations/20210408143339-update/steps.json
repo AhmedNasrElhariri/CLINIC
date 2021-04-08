@@ -1,0 +1,21 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteModel",
+      "model": "AppointmentsOnCourses"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Appointment",
+      "field": "courses",
+      "type": "Course"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Course",
+      "field": "appointments",
+      "type": "Appointment"
+    }
+  ]
+}
