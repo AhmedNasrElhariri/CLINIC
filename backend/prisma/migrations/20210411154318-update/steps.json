@@ -1,0 +1,137 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "PayRollTransactionType",
+      "values": [
+        "Commision",
+        "Advance",
+        "Incentive",
+        "Deduction",
+        "Salary"
+      ]
+    },
+    {
+      "tag": "CreateModel",
+      "model": "PayRollTransaction"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PayRollTransaction",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PayRollTransaction",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PayRollTransaction",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PayRollTransaction",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "uuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PayRollTransaction",
+      "field": "amount",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PayRollTransaction",
+      "field": "type",
+      "type": "PayRollTransactionType",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PayRollTransaction",
+      "field": "payRollUser",
+      "type": "PayRollUser",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "PayRollTransaction",
+          "field": "payRollUser"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PayRollTransaction",
+          "field": "payRollUser"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[payRollUserId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "PayRollTransaction",
+          "field": "payRollUser"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PayRollTransaction",
+      "field": "payRollUserId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "PayRollUser",
+      "field": "PayRollTransaction",
+      "type": "PayRollTransaction",
+      "arity": "List"
+    }
+  ]
+}

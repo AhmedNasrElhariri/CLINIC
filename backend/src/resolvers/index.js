@@ -14,7 +14,8 @@ import * as fromUser from './user';
 import * as fromRole from './role';
 import * as fromLab from './lab';
 import * as fromImage from './image';
-
+import * as fromPayRoll from './payRollUser';
+import * as fromPayRollTransaction from './payRollTransaction';
 export default {
   Query: fromQuery,
   Mutation: fromMutation,
@@ -30,5 +31,7 @@ export default {
   Role: fromRole,
   Lab: fromLab,
   Image: fromImage,
+  PayRollUser: fromPayRoll,
+  PayRollTransaction: fromPayRollTransaction,
   ...fromCustomResolvers,
 };

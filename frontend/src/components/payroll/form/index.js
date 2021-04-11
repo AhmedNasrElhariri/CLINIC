@@ -1,25 +1,34 @@
-import React, { useState, useRef, useCallback, memo } from 'react';
-import { Form, Schema, Alert } from 'rsuite';
-
-import { CRModal, CRTextInput, CRNumberInput, CRDatePicker } from 'components';
+import React, { useState, useRef, useCallback, memo, useEffect } from 'react';
+import { Form, Schema, Alert, SelectPicker } from 'rsuite';
+import { mapArrWithIdsToChoices } from 'utils/misc';
+import {
+  CRModal,
+  CRTextInput,
+  CRNumberInput,
+  CRDatePicker,
+  CRSelectInput,
+} from 'components';
 import { isValid } from 'services/form';
-
-const initValue = {
-  name: '',
-  amount: 1,
-  date: null,
-};
+import { usePermissions } from 'hooks';
 
 const { StringType, DateType, NumberType } = Schema.Types;
 
 const model = Schema.Model({
-  name: StringType().isRequired('Name Type is required'),
-  amount: NumberType().isRequired('Amount value is required'),
-  date: DateType().isRequired('date is required'),
+  userId: StringType().isRequired('Name Type is required'),
+  salary: NumberType().isRequired('Amount value is required'),
 });
+const initValue = {
+  userId: '',
+  salary: '',
+};
 
-export const usePayrollForm = ({ header, onOk }) => {
-  const [formValue, setFormValue] = useState(initValue);
+export const usePayrollForm = ({
+  header,
+  onOk,
+  formValue,
+  setFormValue,
+  type,
+}) => {
   const [visible, setVisible] = useState(false);
 
   const onCancel = useCallback(() => {
@@ -30,6 +39,9 @@ export const usePayrollForm = ({ header, onOk }) => {
   const show = useCallback(() => {
     setVisible(true);
   }, []);
+  const close = useCallback(() => {
+    setVisible(false);
+  }, []);
 
   const hide = useCallback(() => {
     setVisible(false);
@@ -39,10 +51,12 @@ export const usePayrollForm = ({ header, onOk }) => {
     formValue,
     setFormValue,
     visible,
+    close,
     show,
     hide,
     header,
     onOk,
+    type,
     onCancel,
     onChange: setFormValue,
     model,
@@ -57,19 +71,18 @@ const PayrollForm = ({
   onChange,
   header,
   model,
+  type,
+  close,
 }) => {
+  const { users } = usePermissions({});
   const ref = useRef();
   return (
     <CRModal
       show={visible}
       header={header}
       onOk={() => {
-        ref.current.check();
-        if (!isValid(model, formValue)) {
-          Alert.error('Complete Required Fields');
-          return;
-        }
-        onOk(formValue);
+        onOk();
+        close();
       }}
       onHide={onCancel}
       onCancel={onCancel}
@@ -81,14 +94,26 @@ const PayrollForm = ({
         ref={ref}
         fluid
       >
-        <CRTextInput label="Name" name="name" block></CRTextInput>
-        <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
-        <CRDatePicker
-          label="Date"
-          name="date"
-          placement="top"
+        <CRSelectInput
+          label="User"
+          name="userId"
+          placeholder="Select User"
           block
-        ></CRDatePicker>
+          cleanable={false}
+          searchable={false}
+          accepter={SelectPicker}
+          data={mapArrWithIdsToChoices(users)}
+        />
+        {type.length == 0 ? (
+          <CRNumberInput label="Salary" name="salary" block></CRNumberInput>
+        ) : (
+          <></>
+        )}
+        {type.length != 0 ? (
+          <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
+        ) : (
+          <></>
+        )}
       </Form>
     </CRModal>
   );

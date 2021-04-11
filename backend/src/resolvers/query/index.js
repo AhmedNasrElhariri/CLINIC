@@ -41,3 +41,5 @@ export { default as myInvoiceCounter } from './invoice-counter';
 export { default as myTimings } from './my-timings';
 export { default as patientAppointments } from './patient-appointments';
 export { default as patientImageDocs } from './patient-image-docs';
+export { default as myPayRollUsers } from './my-payRoll-users';
+export { default as myUserTransactions } from './my-user-transactions' ;

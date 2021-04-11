@@ -1,13 +1,85 @@
 import React from 'react';
 import { useLocation } from 'react-router';
-
+import { usePayRoll } from 'hooks';
+import { Icon } from 'rsuite';
+import {
+  HeaderRow,
+  Cell,
+  RowData,
+  RowDataCell,
+  TotalData,
+  TotalCell,
+} from './style';
 export default function EmployeePayroll(props) {
   const location = useLocation();
-  const { state: employee } = location;
+  const userId = location.state.id;
+  const { userTransactions } = usePayRoll({ userId });
+  let salary = 0;
+  let totalCommision = 0,
+    totalIncentive = 0,
+    totalAdvance = 0,
+    totalDeduction = 0,
+    netSalary = 0;
+  userTransactions.map(transaction => {
+    if (transaction.type === 'Commision') {
+      totalCommision += transaction.amount;
+    } else if (transaction.type === 'Advance') {
+      totalAdvance += transaction.amount;
+    } else if (transaction.type === 'Incentive') {
+      totalIncentive += transaction.amount;
+    } else {
+      totalDeduction += transaction.amount;
+    }
+    salary = transaction.payRollUser.salary;
+  });
+  netSalary =
+    totalCommision + totalAdvance + totalIncentive + totalDeduction + salary;
+
   return (
     <>
-      <h1>{employee.name}</h1>
-      <pre>{JSON.stringify(employee)}</pre>
+      <HeaderRow>
+        <Cell>Date</Cell>
+        <Cell>Basic Salary</Cell>
+        <Cell>Commission</Cell>
+        <Cell>Advance</Cell>
+        <Cell>Incentive</Cell>
+        <Cell>Deduction</Cell>
+        <Cell></Cell>
+      </HeaderRow>
+      {userTransactions.map(transaction => (
+        <RowData>
+          <RowDataCell color="#1b253a">
+            {transaction.date.split('T')[0]}
+          </RowDataCell>
+          <RowDataCell color="#1b253a">
+            {transaction.payRollUser.salary}
+          </RowDataCell>
+          <RowDataCell color="#037f4b">
+            {transaction.type === 'Commision' ? transaction.amount : ''}
+          </RowDataCell>
+          <RowDataCell color="#037f4b">
+            {transaction.type === 'Advance' ? -1 * transaction.amount : ''}
+          </RowDataCell>
+          <RowDataCell color="#bc3254">
+            {transaction.type === 'Incentive' ? transaction.amount : ''}
+          </RowDataCell>
+          <RowDataCell color="#bc3254">
+            {transaction.type === 'Deduction' ? -1 * transaction.amount : ''}
+          </RowDataCell>
+          <RowDataCell>
+            {() => <Icon onClick={() => {}}>Edit</Icon>}
+          </RowDataCell>
+        </RowData>
+      ))}
+      <TotalData>
+        <TotalCell>{'Total'}</TotalCell>
+        <TotalCell>{salary}</TotalCell>
+        <TotalCell>{totalCommision}</TotalCell>
+        <TotalCell>{-1 * totalAdvance}</TotalCell>
+        <TotalCell>{totalIncentive}</TotalCell>
+        <TotalCell>{-1 * totalDeduction}</TotalCell>
+        <TotalCell>{netSalary}</TotalCell>
+      </TotalData>
     </>
   );
 }

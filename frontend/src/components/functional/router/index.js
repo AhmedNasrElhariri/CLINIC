@@ -23,6 +23,7 @@ import {
   ReportPrintout,
   Example,
   Csv,
+  PayRoll
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 
@@ -61,6 +62,9 @@ function AppRouter() {
       </Route>
       <Route path="/permissions">
         <PermissionContainer />
+      </Route>
+      <Route path="/payroll">
+        <PayRoll />
       </Route>
       <Route path="/views/new">
         <CreateView />

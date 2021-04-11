@@ -22,6 +22,14 @@ enum Position {
   Assistant
 }
 
+enum PayRollTransactionType{
+  Commision
+  Advance
+  Incentive
+  Deduction
+  Salary
+}
+
 enum PatientMembershipType {
   Primary
   Secondary
@@ -113,6 +121,8 @@ type Query {
   myInvoiceCounter: Organization!
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
+  myPayRollUsers:[PayRollUser!]
+  myUserTransactions(userId: ID!):[PayRollTransaction!]
 }
 
 ########################### Mutation ##################################
@@ -189,6 +199,8 @@ type Mutation {
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
   updateConfiguration(configuration: ConfigurationInput): Configuration!
+  addPayRollUser(payRollUser: PayRollUserInput!):PayRollUser!
+  addTransaction(payRollTransaction: PayRollTransactionInput!): PayRollTransaction!
 }
 
 ########################### Auth ##################################
@@ -547,7 +559,39 @@ type Image {
   imageDefinition: ImageDefinition
 }
 
-########################### History ##################################
+########################### PayRollUser ##################################
+
+type PayRollUser {
+  id: ID!
+  salary: Int!
+  user: User
+}
+
+input PayRollUserInput{
+  userId: ID!
+  salary: Int!
+}
+
+########################### payRollTransaction ##################################
+
+type PayRollTransaction {
+  id: ID!
+  amount: Int!
+  date: Date!
+  type: PayRollTransactionType
+  payRollUser: PayRollUser
+}
+
+input PayRollTransactionInput{
+  userId: ID!
+  amount: Int!
+  type: PayRollTransactionType!
+}
+
+
+
+
+########################## History ##################################
 
 type MedicineHistory {
   id: ID!

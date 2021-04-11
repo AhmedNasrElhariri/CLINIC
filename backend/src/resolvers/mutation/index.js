@@ -58,3 +58,5 @@ export { default as updateConfiguration } from './update-configuration';
 export { default as addTiming } from './add-timing';
 export { default as editTiming } from './edit-timing';
 export { default as insertLabResult } from './insert-lab-result';
+export { default as addPayRollUser} from './addPayRoll-user';
+export { default as addTransaction} from './addPayRoll-transaction';
