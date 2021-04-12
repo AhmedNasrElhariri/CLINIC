@@ -18,7 +18,12 @@ import { ModalBodyStyled, ContainerStyled } from './style';
 import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
 import { mapArrWithIdsToChoices } from 'utils/misc';
-import { useAppointmentForm, useNewAppointment, useModal } from 'hooks';
+import {
+  useAppointmentForm,
+  useNewAppointment,
+  useModal,
+  useCourses,
+} from 'hooks';
 
 const { StringType, DateType } = Schema.Types;
 
@@ -38,6 +43,7 @@ const model = Schema.Model({
 const initialValues = {
   type: 'Examination',
   patientId: '',
+  courseId: null,
   branchId: null,
   specialtyId: null,
   userId: null,
@@ -65,6 +71,13 @@ export default function NewAppointment({ show, onHide }) {
     patients,
     loading,
   } = useNewAppointment({ onCreate: onHide });
+  const { patientCourses } = useCourses({
+    patientId: formValue.patientId,
+  });
+  const updatedPatientCourses = patientCourses.map(course => ({
+    label: course.courseDefinition.name,
+    value: course.id,
+  }));
   const [selectedHour, setSelectedHour] = useState(null);
 
   useEffect(() => {
@@ -85,16 +98,15 @@ export default function NewAppointment({ show, onHide }) {
       Alert.error('Complete Required Fields');
       return;
     }
-    const { patientId, userId, type } = formValue;
+    const { patientId, userId, type, courseId } = formValue;
 
     const timeDate = moment(formValue.time);
     const date = moment(formValue.date).set({
       hours: timeDate.hours(),
       minute: timeDate.minutes(),
     });
-    createAppointment({ patientId, type, date, userId });
+    createAppointment({ patientId, type, date, userId, courseId });
   }, [createAppointment, formValue]);
-
   return (
     <>
       <NewPatient
@@ -129,14 +141,6 @@ export default function NewAppointment({ show, onHide }) {
             onChange={setFormValue}
           >
             <CRSelectInput
-              label="Examination/Followup"
-              name="type"
-              block
-              cleanable={false}
-              searchable={false}
-              data={appointmentTypes}
-            />
-            <CRSelectInput
               label="Patient"
               name="patientId"
               placeholder="Name / Phone no"
@@ -162,6 +166,26 @@ export default function NewAppointment({ show, onHide }) {
                 </H5>
               </Div>
             </CRSelectInput>
+            <CRSelectInput
+              label="Examination/Followup"
+              name="type"
+              block
+              cleanable={false}
+              searchable={false}
+              data={appointmentTypes}
+            />
+            {formValue.type === 'Course' ? (
+              <CRSelectInput
+                label="Course"
+                name="courseId"
+                block
+                cleanable={false}
+                searchable={false}
+                data={updatedPatientCourses}
+              />
+            ) : (
+              <></>
+            )}
             <CRSelectInput
               label="Branch"
               name="branchId"

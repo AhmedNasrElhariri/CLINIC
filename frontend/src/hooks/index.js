@@ -27,3 +27,5 @@ export { default as useTimings } from './timings';
 export { default as useUpload } from './upload';
 export { default as useUser } from './user';
 export { default as usePatientDetails } from './patinet-details';
+export { default as useCoursesDefinition } from './fetch-courses-definition';
+export { default as useCourses } from './fetch-courses';

@@ -40,6 +40,14 @@ function ListCoursesDefinition({ courses, onEdit }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Messure Of Units</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ messureOfUnits }) => (
+                <CRTable.CRCellStyled bold>{messureOfUnits}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>

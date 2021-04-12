@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput, CRSelectInput } from 'components';
+import { CRModal, CRTextInput, CRSelectInput, CRNumberInput } from 'components';
 const model = Schema.Model({});
 const coursesType = [
   { label: 'Session', value: 'session' },
@@ -42,18 +42,22 @@ function NewCourseDefinition({
           searchable={false}
           data={coursesType}
         />
-        <CRTextInput
-          label="Course Price"
-          name="price"
-          placeholder="Type Course Price"
-          block
-        />
-        <CRTextInput
-          label="Course units"
+        <CRNumberInput label="Price" name="price" title="Price" />
+        <CRNumberInput
+          label="Number of Sessions or Units"
           name="units"
-          placeholder="Type Course units"
-          block
+          title="units"
         />
+        {formValue.type === 'perunit' ? (
+          <CRTextInput
+            label="Messure Of Units"
+            name="messureOfUnits"
+            placeholder="Type Messure Of Units"
+            block
+          />
+        ) : (
+          <></>
+        )}
       </Form>
     </CRModal>
   );

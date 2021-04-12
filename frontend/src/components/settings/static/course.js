@@ -5,11 +5,11 @@ import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import NewCourseDefinition from './new-course-definition';
 import ListCoursesDefinition from './list-courses-definition';
-import useCoursesDefinition from 'hooks/fetch-courses-definition';
+import { useCoursesDefinition } from 'hooks';
 
-import useModal from 'hooks/use-model';
+import { useModal } from 'hooks';
 
-const initValue = { name: '', type: '',price:'',units:'' };
+const initValue = { name: '', type: '', price: '', units: '' ,messureOfUnits:''};
 
 const CourseDefinition = () => {
   const { visible, open, close } = useModal();
@@ -38,7 +38,7 @@ const CourseDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const course = R.pick(['id', 'name','type','price','units'])(data);
+      const course = R.pick(['id', 'name', 'type', 'price', 'units','messureOfUnits'])(data);
       setType('edit');
       setFormValue(course);
       open();

@@ -125,7 +125,15 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-
+  const handleCoursesChange = useCallback(
+    courseIds => {
+      onChange({
+        ...appointmentFormValue,
+        courseIds,
+      });
+    },
+    [appointmentFormValue, onChange]
+  );
   return (
     <>
       <Div display="flex">
@@ -168,6 +176,7 @@ function AppointmentData({
               onChange={handleImagesChange}
             />
           </SectionContainer>
+
           <SectionContainer title="Notes" name="Notes">
             <Form formValue={appointmentFormValue} onChange={onChange}>
               <CRTextArea name="notes" disabled={disabled} />

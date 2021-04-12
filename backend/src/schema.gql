@@ -30,6 +30,7 @@ enum PatientMembershipType {
 enum AppointmentType {
   Examination
   Followup
+  Course
   Urgent
   Session
   Surgery
@@ -101,6 +102,8 @@ type Query {
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
   myCoursesDefinition: [CourseDefinition!]
+  myCourses(patientId: ID): [Course!]
+  myDoctors(appointmentId: ID): [User!]
   myImagesCategory: [ImageCategory!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
@@ -190,8 +193,15 @@ type Mutation {
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
   updateConfiguration(configuration: ConfigurationInput): Configuration!
-  addCourseDefinition(courseDefinition: CourseInputDefinition!): CourseDefinition
-  editCourseDefinition(courseDefinition: CourseInputDefinition!): CourseDefinition
+  addCourseDefinition(
+    courseDefinition: CourseInputDefinition!
+  ): CourseDefinition
+  editCourseDefinition(
+    courseDefinition: CourseInputDefinition!
+  ): CourseDefinition
+  addCourse(course: CourseInput!): Course!
+  editCourse(courseId: ID!, paid: Int!): Course!
+  editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
 }
 
 ########################### Auth ##################################
@@ -358,6 +368,7 @@ type Appointment {
   userId: String
   labs: [Lab!]
   images: [Image!]
+  courses: [Course!]
 }
 
 type AppointmentFile {
@@ -378,6 +389,7 @@ input AppointmentInput {
   type: AppointmentType!
   userId: ID!
   notes: String
+  courseId: ID
 }
 
 input AppointmentPictureInput {
@@ -505,6 +517,16 @@ type Session {
 input SessionInput {
   name: String!
   price: Int!
+}
+
+type CourseSessions {
+  date: Date!
+  time: Date!
+}
+
+input CourseSessionsInput {
+  date: Date!
+  time: Date!
 }
 
 ########################### Snippet ##################################
@@ -837,19 +859,49 @@ type CourseDefinition {
   id: ID!
   name: String!
   type: String!
-  price: String!
-  units: String!
+  price: Int!
+  units: Int!
+  messureOfUnits: String!
 }
 
 input CourseInputDefinition {
   id: ID
   name: String!
   type: String!
-  price: String!
-  units: String!
+  price: Int!
+  units: Int!
+  messureOfUnits: String
+}
+
+########################### Course  ##################################
+
+type Course {
+  id: ID!
+  price: Int!
+  paid: Int!
+  discount: Int!
+  appointments: [Appointment!]
+  patient: Patient!
+  doctor: User!
+  courseDefinition: CourseDefinition!
+}
+
+input CourseInput {
+  price: Int!
+  paid: Int
+  discount: Int
+  appointmentId: ID!
+  patientId: ID!
+  courseDefinitionId: ID!
+  doctorId: ID
 }
 
 ########################### Patient Surgeries ##################################
+
+type AppointmentsOnCourses {
+  appointment: Appointment
+  course: Course
+}
 
 type PatientSurgery {
   id: ID!

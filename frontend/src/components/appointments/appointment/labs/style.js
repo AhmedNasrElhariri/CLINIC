@@ -91,7 +91,7 @@ export const MedicineName = styled.h4`
 `;
 
 export const ContainerStyled = styled(CRModal.CRContainer)`
-  width: 420px;
+  width: 520px;
   height: 595px;
   z-index: 2;
 

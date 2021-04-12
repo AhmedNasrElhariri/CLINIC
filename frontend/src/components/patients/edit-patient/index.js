@@ -15,8 +15,6 @@ const initialValues = {
   guardianName: '',
 };
 const EditButton = styled(Button)`
-  margin-left: ${props => props.margin};
-  margin-bottom: 30px;
   background-color: white;
   color: #50c7f2;
   font-size: 18px;
@@ -41,7 +39,7 @@ const EditPatient = ({ patient }) => {
   return (
     <>
       <Div onClick={handleOpen}>
-        <EditButton margin="15px" onClick={open}>
+        <EditButton onClick={open}>
           Edit
         </EditButton>
         <CRModal

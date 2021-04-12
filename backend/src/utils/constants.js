@@ -13,6 +13,7 @@ export const APPOINTMENTS_STATUS = Object.freeze({
 export const APPOINTMENTS_TYPES = Object.freeze({
   Examination: 'Examination',
   Followup: 'Followup',
+  Course: 'Course',
   Urgent: 'Urgent',
   Session: 'Session',
   Surgery: 'Surgery',
