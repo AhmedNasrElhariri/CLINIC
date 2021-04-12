@@ -68,7 +68,7 @@ const CourseDefinition = () => {
         <CRButton
           variant="primary"
           onClick={handleClickCreate}
-          style={{ marginTop: 4 }}
+          mt={2}
         >
           Add New Course+
         </CRButton>

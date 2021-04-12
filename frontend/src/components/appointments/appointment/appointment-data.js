@@ -125,15 +125,7 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-  const handleCoursesChange = useCallback(
-    courseIds => {
-      onChange({
-        ...appointmentFormValue,
-        courseIds,
-      });
-    },
-    [appointmentFormValue, onChange]
-  );
+
   return (
     <>
       <Div display="flex">

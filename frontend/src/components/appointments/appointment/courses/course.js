@@ -24,7 +24,7 @@ const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
       >
         <CRButton
           variant="primary"
-          style={{ marginTop: 4 }}
+          mt={2}
           onClick={() => onEditDoctor(course)}
         >
           Asign Doctor

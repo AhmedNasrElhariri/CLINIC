@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { Div, CRSelectInput, CRNumberInput, H6 } from 'components';
+import { Div, CRSelectInput, CRNumberInput } from 'components';
 import ListInvoiceItems from 'components/appointments/list-invoice-items';
 import { useForm } from 'hooks';
 

@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { CRModal } from 'components';
 import { useCoursesDefinition } from 'hooks';
 import { mapArrWithIdsToChoices } from 'utils/misc';
@@ -18,7 +12,7 @@ import {
   CRDatePicker,
   CRButton,
 } from 'components/widgets';
-import { Div, CRCard, CRTable } from 'components';
+import { CRCard, CRTable } from 'components';
 import { StyledSession, TimeDiv, TableDiv } from './style';
 let course = [];
 let difference = 0;
@@ -35,7 +29,7 @@ const calcFirstDayDate = (startDay, firstDay) => {
   const startDayName = moment(startDay).format('dddd');
   const startDayIndex = options.indexOf(startDayName);
   const firstDayIndex = options.indexOf(firstDay);
-  if (startDayIndex == firstDayIndex) {
+  if (startDayIndex === firstDayIndex) {
     difference = 0;
   } else if (startDayIndex < firstDayIndex) {
     difference = firstDayIndex - startDayIndex;
@@ -50,9 +44,7 @@ const calcFirstDayDate = (startDay, firstDay) => {
 };
 const getDates = (days, times, startDay, numOfSessions) => {
   let steps = 0;
-  let updateDate = '';
-  let oldDate = {},
-    time = '';
+  let oldDate = {};
   const daysDate = days.map((day, indx) => {
     return {
       date: calcFirstDayDate(startDay, day),
@@ -90,12 +82,12 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
   useEffect(() => {
     formValue.price = item;
     onChange(formValue);
-  }, [item, formValue]);
+  }, [item, formValue, onChange]);
   const addSessions = useCallback(
     sessions => {
       onChange({ ...formValue, sessions: sessions });
     },
-    [formValue]
+    [formValue, onChange]
   );
   const addTime = useCallback(() => {
     setTimes([...times, '']);
@@ -157,7 +149,9 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
                       <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
                       <CRTable.CRCell>
                         {({ time }) => (
-                          <CRTable.CRCellStyled bold>{time.getHours()}:{time.getMinutes()}</CRTable.CRCellStyled>
+                          <CRTable.CRCellStyled bold>
+                            {time.getHours()}:{time.getMinutes()}
+                          </CRTable.CRCellStyled>
                         )}
                       </CRTable.CRCell>
                     </CRTable.CRColumn>

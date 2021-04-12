@@ -6,7 +6,6 @@ import React, {
   useMemo,
 } from 'react';
 import { FlexboxGrid } from 'rsuite';
-import * as R from 'ramda';
 
 import { Div, CRModal, CRButton } from 'components';
 import CRUploader from './uploader';

@@ -64,11 +64,7 @@ const ImageDefinition = () => {
   return (
     <>
       <Div textAlign="right">
-        <CRButton
-          variant="primary"
-          onClick={handleClickCreate}
-          style={{ marginTop: 4 }}
-        >
+        <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
           Add New Image+
         </CRButton>
       </Div>

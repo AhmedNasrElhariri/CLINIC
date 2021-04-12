@@ -103,7 +103,7 @@ const Course = ({ patient, appointmentId }) => {
           course: finalFormValue,
         },
       });
-      formValue.sessions.map(session => {
+      formValue.sessions.forEach(session => {
         createAppointment({
           patientId: patientId,
           type: 'Session',
@@ -128,12 +128,19 @@ const Course = ({ patient, appointmentId }) => {
       });
     }
   }, [
+    type,
     addCourse,
+    finalFormValue,
+    formValue.sessions,
+    formValue.id,
+    formValue.doctorId,
+    formValue.paid,
+    createAppointment,
+    patientId,
+    userId,
+    courses,
     editCourseDoctor,
     editCourse,
-    createAppointment,
-    finalFormValue,
-    type,
   ]);
   return (
     <>
@@ -160,9 +167,7 @@ const Course = ({ patient, appointmentId }) => {
         type={type}
         users={users}
       />
-      {Object.keys(course).length == 0 ? (
-        <></>
-      ) : (
+      {Object.keys(course).length === 0 && (
         <CourseData
           course={course}
           onEditPaid={handleClickEditPaid}

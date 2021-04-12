@@ -65,7 +65,7 @@ const ImageCategory = () => {
         <CRButton
           variant="primary"
           onClick={handleClickCreate}
-          style={{ marginTop: 4 }}
+          mt={2}
         >
           Add New Image Category+
         </CRButton>

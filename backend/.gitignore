@@ -7,4 +7,6 @@ server-dist/
 package-lock.json
 
 .env
+.env.dev
 .test1.env
+prisma/migrations/
