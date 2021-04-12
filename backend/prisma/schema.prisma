@@ -147,6 +147,7 @@ model User {
   timing              Timing[]
   labCategories       LabCategory[]
   imageCategories     ImageCategory[]
+  CourseDefinition    CourseDefinition[]
 }
 
 model Patient {
@@ -486,6 +487,16 @@ model ImageDefinition {
   user     User    @relation(fields: [userId], references: [id])
   userId   String
   Image    Image[]
+}
+
+model CourseDefinition {
+  id     String @id @default(uuid())
+  name   String
+  type   String
+  price  String
+  units  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model ImageCategory {
