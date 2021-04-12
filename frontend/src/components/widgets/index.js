@@ -21,6 +21,7 @@ export { default as CRPanelGroup } from './panel-group';
 export { default as CRPanel } from './panel';
 export { default as CRButtonGroup } from './button-group';
 export { default as CRRadio } from './radio-button';
+export { default as CRCheckBoxGroup } from './check-box-group';
 export { default as CRCheckBox } from './check-box';
 export { default as CRNestedSelector } from './nested-selector';
 export { default as CRLabel } from './label';

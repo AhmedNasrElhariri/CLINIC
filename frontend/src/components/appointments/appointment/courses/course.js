@@ -13,6 +13,7 @@ const DataName = styled.div`
 const DataValue = styled.div``;
 
 const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
+  console.log(course);
   const history = useHistory();
   return (
     <>
@@ -22,11 +23,7 @@ const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
         margin="5px"
         padding="5px"
       >
-        <CRButton
-          variant="primary"
-          mt={2}
-          onClick={() => onEditDoctor(course)}
-        >
+        <CRButton variant="primary" mt={2} onClick={() => onEditDoctor(course)}>
           Asign Doctor
         </CRButton>
         <CRButton
@@ -38,7 +35,7 @@ const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
         </CRButton>
         <Data>
           <DataName>Name: </DataName>
-          <DataValue>{course.courseDefinition.name}</DataValue>
+          <DataValue>{course?.courseDefinition?.name}</DataValue>
         </Data>
         <Data>
           <DataName>Price: </DataName>
@@ -58,7 +55,7 @@ const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
         </Data>
         <Data>
           <DataName>Doctor: </DataName>
-          <DataValue>{course.doctor.name}</DataValue>
+          <DataValue>{course?.doctor?.name}</DataValue>
         </Data>
         <CRCard borderless>
           <CRTable

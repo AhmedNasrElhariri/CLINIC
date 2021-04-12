@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 export const StyledSession = styled.div`
-  display: flex;
+  /* display: flex; */
 `;
 export const TimeDiv = styled.div`
   margin-left: 5px;

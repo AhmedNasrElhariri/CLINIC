@@ -25,7 +25,6 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
 
   return (
     <NumberContainerStyled>
-      <Label>{props.title}</Label>
       <NumberButton
         borderRadius={'50%'}
         onClick={() => setValue(Number(value || 0) - 1)}

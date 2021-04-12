@@ -4,8 +4,8 @@ import { Form, Schema } from 'rsuite';
 import { CRModal, CRTextInput, CRSelectInput, CRNumberInput } from 'components';
 const model = Schema.Model({});
 const coursesType = [
-  { label: 'Session', value: 'session' },
-  { label: 'Per Unit', value: 'perunit' },
+  { label: 'Session', value: 'Session' },
+  { label: 'Per Unit', value: 'Perunit' },
 ];
 function NewCourseDefinition({
   formValue,
@@ -42,12 +42,8 @@ function NewCourseDefinition({
           searchable={false}
           data={coursesType}
         />
-        <CRNumberInput label="Price" name="price" title="Price" />
-        <CRNumberInput
-          label="Number of Sessions or Units"
-          name="units"
-          title="units"
-        />
+        <CRNumberInput label="Price" name="price" />
+        <CRNumberInput label="Number of Sessions/Units" name="units" />
         {formValue.type === 'perunit' ? (
           <CRTextInput
             label="Messure Of Units"

@@ -9,9 +9,7 @@ const PatientsFilter = ({ onNameChange }) => {
         name="name"
         placeholder="Search"
         onChange={e => onNameChange(e)}
-      >
-        search
-      </CRTextInput>
+      />
     </Form>
   );
 };

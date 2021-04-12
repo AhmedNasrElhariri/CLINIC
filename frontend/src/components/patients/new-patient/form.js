@@ -57,7 +57,6 @@ const NewPatient = ({ formValue, onChange }) => {
 
       <CRSelectInput
         label="Sex"
-        title="Sex"
         name="sex"
         searchable={false}
         data={SEX}

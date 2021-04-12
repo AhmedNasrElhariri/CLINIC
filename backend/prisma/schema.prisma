@@ -17,8 +17,8 @@ enum AppointmentType {
 }
 
 enum CourseType {
-  session
-  perunit
+  Session
+  Perunit
 }
 
 enum LabStatus {

@@ -21,7 +21,6 @@ function Patients() {
   return (
     <>
       <MainContainer title="Patients">
-        {/* <Can I="view" a="Patient"> */}
         <PatientsFilter onNameChange={setFilter}></PatientsFilter>
         <CRTable
           autoHeight

@@ -10,7 +10,7 @@ import {
   CRTextInput,
   CRTextArea,
   CRRadio,
-  CRCheckBox,
+  CRCheckBoxGroup,
   CRNestedSelector,
 } from 'components';
 import { isSession } from 'services/appointment';
@@ -44,7 +44,7 @@ const renderItem = ({ type, id, name, choices = [], ...props }) => {
       );
     case CHECK_FIELD_TYPE:
       return (
-        <CRCheckBox
+        <CRCheckBoxGroup
           label={name}
           options={choices}
           name={id}

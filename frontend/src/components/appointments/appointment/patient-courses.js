@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import * as R from 'ramda';
 import styled from 'styled-components';
-import { Div, CRButton } from 'components';
+import { Div, H3, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import NewCourse from 'components/appointments/appointment/courses';
 import CourseData from 'components/appointments/appointment/courses/course';
@@ -16,7 +16,7 @@ const initValue = {
   paid: 0,
   doctorId: null,
   sessions: [],
-  startDate: '',
+  startDate: null,
   date: [],
 };
 const CourseButton = styled.button`
@@ -142,6 +142,7 @@ const Course = ({ patient, appointmentId }) => {
     editCourseDoctor,
     editCourse,
   ]);
+
   return (
     <>
       <Div textAlign="right">
@@ -167,12 +168,14 @@ const Course = ({ patient, appointmentId }) => {
         type={type}
         users={users}
       />
-      {Object.keys(course).length === 0 && (
+      {Object.keys(course).length > 0 ? (
         <CourseData
           course={course}
           onEditPaid={handleClickEditPaid}
           onEditDoctor={handleClickEditDoctor}
         />
+      ) : (
+        <H3>No courses</H3>
       )}
     </>
   );

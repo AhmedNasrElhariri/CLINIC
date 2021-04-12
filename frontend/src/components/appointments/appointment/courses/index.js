@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { CRModal } from 'components';
+import { Form, SelectPicker, DatePicker } from 'rsuite';
+import * as moment from 'moment';
+
 import { useCoursesDefinition } from 'hooks';
 import { mapArrWithIdsToChoices } from 'utils/misc';
-import * as moment from 'moment';
-import { Form, SelectPicker, DatePicker } from 'rsuite';
 import {
   CRNumberInput,
   CRSelectInput,
@@ -11,20 +11,54 @@ import {
   CRTimePicker,
   CRDatePicker,
   CRButton,
-} from 'components/widgets';
-import { CRCard, CRTable } from 'components';
+  CRModal,
+  Div,
+  CRCard,
+  CRTable,
+} from 'components';
+
 import { StyledSession, TimeDiv, TableDiv } from './style';
+
 let course = [];
 let difference = 0;
 const options = [
-  'Saturday',
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
+  {
+    name: 'Saturday',
+    checked: false,
+    time: null,
+  },
+  {
+    name: 'Sunday',
+    checked: false,
+    time: null,
+  },
+  {
+    name: 'Monday',
+    checked: false,
+    time: null,
+  },
+  {
+    name: 'Tuesday',
+    checked: false,
+    time: null,
+  },
+  {
+    name: 'Wednesday',
+    checked: false,
+    time: null,
+  },
+  {
+    name: 'Thursday',
+    checked: false,
+    time: null,
+  },
+  {
+    name: 'Friday',
+    checked: false,
+    time: null,
+  },
 ];
+
 const calcFirstDayDate = (startDay, firstDay) => {
   const startDayName = moment(startDay).format('dddd');
   const startDayIndex = options.indexOf(startDayName);
@@ -73,7 +107,8 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
   const { coursesDefinition } = useCoursesDefinition({});
   const [item, setItem] = useState('');
   const [numberSessions, setNumberSessions] = useState(0);
-  const [times, setTimes] = useState([]);
+  // const [times, setTimes] = useState(defaultTimes);
+  const [checkedDays, setCheckedDays] = useState(options);
   const specificCourse = value => {
     course = coursesDefinition.find(course => course.id === value);
     setItem(course.price);
@@ -85,22 +120,39 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
   }, [item, formValue, onChange]);
   const addSessions = useCallback(
     sessions => {
-      onChange({ ...formValue, sessions: sessions });
+      onChange({ ...formValue, sessions });
     },
     [formValue, onChange]
   );
-  const addTime = useCallback(() => {
-    setTimes([...times, '']);
-  }, [times]);
-  const handleOnChange = useCallback(
-    (newVal, index) => {
-      const newValue = times.map((oldVal, indx) =>
-        index === indx ? newVal : oldVal
+
+  const toggleTime = useCallback(
+    (val, idx) => {
+      const newOption = {
+        ...checkedDays[idx],
+        checked: val,
+      };
+      const newOptions = checkedDays.map((o, index) =>
+        index === idx ? newOption : o
       );
-      setTimes(newValue);
+      setCheckedDays(newOptions);
     },
-    [times]
+    [checkedDays]
   );
+
+  const handleTimeChange = useCallback(
+    (val, idx) => {
+      const newOption = {
+        ...checkedDays[idx],
+        time: val,
+      };
+      const newOptions = checkedDays.map((o, index) =>
+        index === idx ? newOption : o
+      );
+      setCheckedDays(newOptions);
+    },
+    [checkedDays]
+  );
+
   return (
     <CRModal show={visible} header={header} onHide={onClose} onOk={onOk}>
       <Form fluid formValue={formValue} onChange={onChange}>
@@ -158,30 +210,38 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
                   </CRTable>
                 </CRCard>
               </TableDiv>
-              <CRCheckBox
-                options={options}
-                name="date"
-                onChange={() => addTime()}
-              ></CRCheckBox>
-              <TimeDiv>
-                {times.map((val, indx) => (
-                  <CRTimePicker
-                    block
-                    name="time"
-                    value={val}
-                    accepter={DatePicker}
-                    onChange={val => handleOnChange(val, indx)}
-                    placement="top"
-                  />
-                ))}
-              </TimeDiv>
+              {checkedDays.map(({ name, checked, time }, idx) => (
+                <Div display="flex">
+                  <Div width={100}>
+                    <CRCheckBox
+                      name="date"
+                      value={checked}
+                      onChange={(_, val) => toggleTime(val, idx)}
+                    >
+                      {name}
+                    </CRCheckBox>
+                  </Div>
+                  {checked && (
+                    <CRTimePicker
+                      block
+                      name="time"
+                      value={time}
+                      accepter={DatePicker}
+                      onChange={val => handleTimeChange(val, idx)}
+                      placement="top"
+                      style={{ width: 150, marginLeft: 20 }}
+                    />
+                  )}
+                </Div>
+              ))}
             </StyledSession>
             <CRButton
               onClick={() =>
                 addSessions(
                   getDates(
                     formValue.date,
-                    times,
+                    null,
+                    // times,
                     formValue.startDate,
                     numberSessions
                   )
