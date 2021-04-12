@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -13,11 +13,6 @@ enum AppointmentType {
   Urgent
   Session
   Surgery
-}
-
-enum PayRollStatus {
-  Open
-  Close
 }
 
 enum PayRollTransactionType {
@@ -124,7 +119,6 @@ model Organization {
   patients         Patient[]
   inventoryItems   InventoryItem[]
   inventoryHistory InventoryHistory[]
-  PayRoll          PayRoll[]
 }
 
 model User {
@@ -296,7 +290,6 @@ model PayRollUser {
   netSalary          Int
   user               User                 @relation(fields: [userId], references: [id])
   userId             String
-  organizationId     String
   PayRollTransaction PayRollTransaction[]
 }
 
@@ -305,18 +298,8 @@ model PayRollTransaction {
   amount        Int
   date          DateTime
   type          PayRollTransactionType
-  payRollUser   PayRollUser?            @relation(fields: [payRollUserId], references: [id])
-  payRollUserId String?
-}
-
-model PayRoll {
-  id             String        @id @default(uuid())
-  name           String
-  status         PayRollStatus
-  date           DateTime
-  payment        Int
-  organization   Organization  @relation(fields: [organizationId], references: [id])
-  organizationId String
+  payRollUser   PayRollUser            @relation(fields: [payRollUserId], references: [id])
+  payRollUserId String
 }
 
 model Configuration {

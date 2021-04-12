@@ -1,18 +1,22 @@
-import React, { useState, useRef, useCallback, memo, useEffect } from 'react';
-import { Form, Schema, Alert, SelectPicker } from 'rsuite';
+import React, { useState, useRef, useCallback, memo } from 'react';
+import { Form, Schema, SelectPicker } from 'rsuite';
 import { mapArrWithIdsToChoices } from 'utils/misc';
-import {
-  CRModal,
-  CRTextInput,
-  CRNumberInput,
-  CRDatePicker,
-  CRSelectInput,
-} from 'components';
+import { CRModal, CRNumberInput, CRSelectInput, CRCheckBox } from 'components';
 import { isValid } from 'services/form';
 import { usePermissions } from 'hooks';
-
+import styled from 'styled-components';
 const { StringType, DateType, NumberType } = Schema.Types;
 
+const DeleteMessage = styled.div`
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  color: #283148;
+`;
 const model = Schema.Model({
   userId: StringType().isRequired('Name Type is required'),
   salary: NumberType().isRequired('Amount value is required'),
@@ -28,6 +32,7 @@ export const usePayrollForm = ({
   formValue,
   setFormValue,
   type,
+  payRollUsers,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -57,6 +62,7 @@ export const usePayrollForm = ({
     header,
     onOk,
     type,
+    payRollUsers,
     onCancel,
     onChange: setFormValue,
     model,
@@ -72,10 +78,17 @@ const PayrollForm = ({
   header,
   model,
   type,
+  payRollUsers,
   close,
 }) => {
   const { users } = usePermissions({});
   const ref = useRef();
+  const payRollUsersCheck = payRollUsers.map(user => {
+    return {
+      name: `${user.user.name} ${user.netSalary}`,
+      value: user.netSalary,
+    };
+  });
   return (
     <CRModal
       show={visible}
@@ -94,25 +107,55 @@ const PayrollForm = ({
         ref={ref}
         fluid
       >
-        <CRSelectInput
-          label="User"
-          name="userId"
-          placeholder="Select User"
-          block
-          cleanable={false}
-          searchable={false}
-          accepter={SelectPicker}
-          data={mapArrWithIdsToChoices(users)}
-        />
-        {type.length == 0 ? (
-          <CRNumberInput label="Salary" name="salary" block></CRNumberInput>
+        {type === 'Delete' ? (
+          <DeleteMessage>
+            Are you sure you want to delete this user?
+          </DeleteMessage>
         ) : (
-          <></>
-        )}
-        {type.length != 0 ? (
-          <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
-        ) : (
-          <></>
+          <>
+            {type === 'addPayRoll' ? (
+              <>
+                <CRCheckBox
+                  name="payment"
+                  options={payRollUsersCheck}
+                ></CRCheckBox>
+              </>
+            ) : (
+              <>
+                <CRSelectInput
+                  label="User"
+                  name="userId"
+                  placeholder="Select User"
+                  block
+                  cleanable={false}
+                  searchable={false}
+                  accepter={SelectPicker}
+                  data={mapArrWithIdsToChoices(users)}
+                />
+                {type === 'addNewUser' ? (
+                  <CRNumberInput
+                    label="Salary"
+                    name="salary"
+                    block
+                  ></CRNumberInput>
+                ) : (
+                  <></>
+                )}
+                {type === 'Deduction' ||
+                type === 'Commision' ||
+                type === 'Incentive' ||
+                type === 'Advance' ? (
+                  <CRNumberInput
+                    label="Amount"
+                    name="amount"
+                    block
+                  ></CRNumberInput>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
+          </>
         )}
       </Form>
     </CRModal>

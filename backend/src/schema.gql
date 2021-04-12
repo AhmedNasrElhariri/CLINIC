@@ -22,7 +22,7 @@ enum Position {
   Assistant
 }
 
-enum PayRollTransactionType{
+enum PayRollTransactionType {
   Commision
   Advance
   Incentive
@@ -46,6 +46,11 @@ enum AppointmentType {
 enum Sex {
   Female
   Male
+}
+
+enum PayRollStatus {
+  Open
+  Close
 }
 
 enum FieldType {
@@ -121,8 +126,8 @@ type Query {
   myInvoiceCounter: Organization!
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
-  myPayRollUsers:[PayRollUser!]
-  myUserTransactions(userId: ID!):[PayRollTransaction!]
+  myPayRollUsers: [PayRollUser!]
+  myUserTransactions(userId: ID!): [PayRollTransaction!]
 }
 
 ########################### Mutation ##################################
@@ -199,8 +204,12 @@ type Mutation {
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
   updateConfiguration(configuration: ConfigurationInput): Configuration!
-  addPayRollUser(payRollUser: PayRollUserInput!):PayRollUser!
-  addTransaction(payRollTransaction: PayRollTransactionInput!): PayRollTransaction!
+  addPayRollUser(payRollUser: PayRollUserInput!): PayRollUser!
+  addTransaction(
+    payRollTransaction: PayRollTransactionInput!
+  ): PayRollTransaction!
+  addPayRollPayment(payment:Int!):PayRoll!
+  deleteUser(userId:ID!):PayRollUser!
 }
 
 ########################### Auth ##################################
@@ -564,12 +573,25 @@ type Image {
 type PayRollUser {
   id: ID!
   salary: Int!
+  netSalary: Int!
   user: User
+  organizationId: ID!
 }
 
-input PayRollUserInput{
+input PayRollUserInput {
   userId: ID!
   salary: Int!
+}
+
+########################### PayRoll ##################################
+
+type PayRoll {
+  id: ID!
+  name: String!
+  status: PayRollStatus!
+  date: Date!
+  payment: Int!
+  organization: Organization
 }
 
 ########################### payRollTransaction ##################################
@@ -582,14 +604,11 @@ type PayRollTransaction {
   payRollUser: PayRollUser
 }
 
-input PayRollTransactionInput{
+input PayRollTransactionInput {
   userId: ID!
   amount: Int!
   type: PayRollTransactionType!
 }
-
-
-
 
 ########################## History ##################################
 

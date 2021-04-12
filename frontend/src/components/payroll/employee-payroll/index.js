@@ -67,7 +67,7 @@ export default function EmployeePayroll(props) {
             {transaction.type === 'Deduction' ? -1 * transaction.amount : ''}
           </RowDataCell>
           <RowDataCell>
-            {() => <Icon onClick={() => {}}>Edit</Icon>}
+            Edit<Icon icon='edit'/>
           </RowDataCell>
         </RowData>
       ))}
@@ -78,7 +78,7 @@ export default function EmployeePayroll(props) {
         <TotalCell>{-1 * totalAdvance}</TotalCell>
         <TotalCell>{totalIncentive}</TotalCell>
         <TotalCell>{-1 * totalDeduction}</TotalCell>
-        <TotalCell>{netSalary}</TotalCell>
+        <TotalCell>Net Salary = {netSalary}</TotalCell>
       </TotalData>
     </>
   );

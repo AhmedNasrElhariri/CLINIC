@@ -1,6 +1,6 @@
 datasource postgresql {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -305,8 +305,8 @@ model PayRollTransaction {
   amount        Int
   date          DateTime
   type          PayRollTransactionType
-  payRollUser   PayRollUser?            @relation(fields: [payRollUserId], references: [id])
-  payRollUserId String?
+  payRollUser   PayRollUser            @relation(fields: [payRollUserId], references: [id])
+  payRollUserId String
 }
 
 model PayRoll {

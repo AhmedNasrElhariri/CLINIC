@@ -4,7 +4,7 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-export default function EmployeesPayroll({ payRollUsers }) {
+export default function EmployeesPayroll({ payRollUsers ,handleDelete}) {
   const history = useHistory();
   return (
     <>
@@ -48,7 +48,7 @@ export default function EmployeesPayroll({ payRollUsers }) {
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {() => (
+              {({ id }) => (
                 <>
                 <Icon
                   onClick={(...data) => {
@@ -59,8 +59,9 @@ export default function EmployeesPayroll({ payRollUsers }) {
                   Open Details
                 </Icon>
                 <Icon
-                  onClick={(...data) => {
-                    console.dir(data);
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleDelete(id);
                   }}
                   icon='trash'
                 >

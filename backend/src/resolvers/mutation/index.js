@@ -60,3 +60,5 @@ export { default as editTiming } from './edit-timing';
 export { default as insertLabResult } from './insert-lab-result';
 export { default as addPayRollUser} from './addPayRoll-user';
 export { default as addTransaction} from './addPayRoll-transaction';
+export {default as addPayRollPayment} from './add-payRoll-payment';
+export {default as deleteUser} from './delete-payRoll-user';

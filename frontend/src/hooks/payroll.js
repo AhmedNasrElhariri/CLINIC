@@ -8,6 +8,8 @@ import {
   LIST_PAY_ROLL_USERS,
   ADD_PAYROLL_TRANSACTION,
   LIST_USER_TRANSACTIONS,
+  ADD_PAY_ROLL_PAYMENT,
+  DELETE_PAYROLL_USER,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -36,34 +38,38 @@ function usePayRoll({ userId }) {
     onCompleted() {
       Alert.success('the User has been Added Successfully');
     },
-    // update(cache, { data: { addImageDefinition: imageDefinition } }) {
-    //   updateCache([...imagesDefinition, imageDefinition]);
-    // },
+    refetchQueries: [{ query: LIST_PAY_ROLL_USERS }],
     onError() {
       Alert.error('Failed to add new User');
+    },
+  });
+  const [deleteUser] = useMutation(DELETE_PAYROLL_USER, {
+    onCompleted() {
+      Alert.success('the User has been Deleted Successfully');
+    },
+    refetchQueries: [{ query: LIST_PAY_ROLL_USERS }],
+    onError() {
+      Alert.error('Failed to delete User');
+    },
+  });
+
+  const [addPayRollPayment] = useMutation(ADD_PAY_ROLL_PAYMENT, {
+    onCompleted() {
+      Alert.success('the PayRoll Payment has been Added Successfully');
+    },
+    onError() {
+      Alert.error('Failed to add PayRoll Payment');
     },
   });
 
   const [addTransaction] = useMutation(ADD_PAYROLL_TRANSACTION, {
     onCompleted() {
-      Alert.success('the User has been Added Successfully');
+      Alert.success('the Transaction Added Successfully');
     },
-    // update(cache, { data: { addImageDefinition: imageDefinition } }) {
-    //   updateCache([...imagesDefinition, imageDefinition]);
-    // },
     onError() {
-      Alert.error('Failed to add new User');
+      Alert.error('Failed to add The Transaction');
     },
   });
-  //   const [editImageDefinition] = useMutation(EDIT_IMAGE_DEFINITION, {
-  //     onCompleted() {
-  //       Alert.success('the Image has been Edited Successfully');
-  //       onEdit && onEdit();
-  //     },
-  //     onError() {
-  //       Alert.error('Failed to edit the Image');
-  //     },
-  //   });
 
   return useMemo(
     () => ({
@@ -71,8 +77,17 @@ function usePayRoll({ userId }) {
       payRollUsers,
       addTransaction,
       userTransactions,
+      addPayRollPayment,
+      deleteUser,
     }),
-    [addPayRollUser, payRollUsers, addTransaction, userTransactions]
+    [
+      addPayRollUser,
+      payRollUsers,
+      addTransaction,
+      userTransactions,
+      addPayRollPayment,
+      deleteUser,
+    ]
   );
 }
 

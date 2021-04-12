@@ -5,6 +5,7 @@ export const LIST_PAY_ROLL_USERS = gql`
     myPayRollUsers {
       id
       salary
+      netSalary
       user {
         name
         position
@@ -33,6 +34,15 @@ export const ADD_PAYROLL_USER = gql`
     }
   }
 `;
+
+export const DELETE_PAYROLL_USER = gql`
+  mutation deleteUser($userId: ID!) {
+    deleteUser(userId: $userId) {
+      id
+    }
+  }
+`;
+
 export const ADD_PAYROLL_TRANSACTION = gql`
   mutation addTransaction($payRollTransaction: PayRollTransactionInput!) {
     addTransaction(payRollTransaction: $payRollTransaction) {
@@ -40,3 +50,11 @@ export const ADD_PAYROLL_TRANSACTION = gql`
     }
   }
 `;
+
+export const ADD_PAY_ROLL_PAYMENT = gql`
+  mutation addPayRollPayment($payment: Int!) {
+    addPayRollPayment(payment: $payment) {
+      id
+    }
+  }
+`
