@@ -4,6 +4,7 @@ import {
   NewPatient,
   NewAppointment,
   Calendar,
+  EmployeePayroll,
   TodayAppointment,
   Appointment,
   Appointments,
@@ -22,6 +23,7 @@ import {
   ReportPrintout,
   Example,
   Csv,
+  Payroll
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 
@@ -46,6 +48,10 @@ function AppRouter() {
         <ListPatients />
       </Route>
 
+      <Route path="/payroll/:emplyeeID">
+        <EmployeePayroll />
+      </Route>
+
       <Route path="/patients/:patientId" component={Patient} />
 
       <Route path="/calendar">
@@ -56,6 +62,9 @@ function AppRouter() {
       </Route>
       <Route path="/permissions">
         <PermissionContainer />
+      </Route>
+      <Route path="/payroll">
+        <Payroll />
       </Route>
       <Route path="/views/new">
         <CreateView />

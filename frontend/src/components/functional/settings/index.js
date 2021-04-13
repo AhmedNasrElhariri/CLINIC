@@ -17,6 +17,11 @@ const items = [
     path: '/settings/static',
   },
   {
+    name: 'Payroll',
+    icon: '/icons/static.png',
+    path: '/payroll',
+  },
+  {
     name: 'Snippets',
     icon: '/icons/snippets.png',
     path: '/snippets',

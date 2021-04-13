@@ -94,3 +94,8 @@ export { default as ReportPrintout } from './report-printouts';
 
 /******************     Report Printouts    *********************************/
 export { default as Test } from './test';
+
+/******************     Payroll   *********************************/
+export { default as EmployeePayroll } from './payroll/employee-payroll';
+
+export { default as Payroll} from './payroll';

@@ -46,3 +46,5 @@ export { default as patientImageDocs } from './patient-image-docs';
 export { default as myCoursesDefinition } from './my-courses-definition';
 export { default as myCourses } from './my-courses';
 export { default as myDoctors } from './my-doctors';
+export { default as myPayrollUsers } from './my-payroll-users';
+export { default as myUserTransactions } from './my-user-transactions';

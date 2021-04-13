@@ -15,6 +15,8 @@ import * as fromRole from './role';
 import * as fromLab from './lab';
 import * as fromImage from './image';
 import * as fromCourse from './course';
+import * as fromPayroll from './payroll-user';
+import * as fromPayrollTransaction from './payroll-transaction';
 
 export default {
   Query: fromQuery,
@@ -31,6 +33,8 @@ export default {
   Role: fromRole,
   Lab: fromLab,
   Image: fromImage,
+  PayrollUser: fromPayroll,
+  PayrollTransaction: fromPayrollTransaction,
   ...fromCustomResolvers,
   Course: fromCourse,
 };

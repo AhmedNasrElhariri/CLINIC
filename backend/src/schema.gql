@@ -22,6 +22,14 @@ enum Position {
   Assistant
 }
 
+enum PayrollTransactionType {
+  Commision
+  Advance
+  Incentive
+  Deduction
+  Salary
+}
+
 enum PatientMembershipType {
   Primary
   Secondary
@@ -39,6 +47,11 @@ enum AppointmentType {
 enum Sex {
   Female
   Male
+}
+
+enum PayrollStatus {
+  Open
+  Close
 }
 
 enum FieldType {
@@ -119,6 +132,8 @@ type Query {
   myInvoiceCounter: Organization!
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
+  myPayrollUsers: [PayrollUser!]
+  myUserTransactions(userId: ID!): [PayrollTransaction!]
 }
 
 ########################### Mutation ##################################
@@ -204,6 +219,12 @@ type Mutation {
   addCourse(course: CourseInput!): Course!
   editCourse(courseId: ID!, paid: Int!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
+  addPayrollUser(payrollUser: PayrollUserInput!): PayrollUser!
+  addTransaction(
+    payrollTransaction: PayrollTransactionInput!
+  ): PayrollTransaction!
+  addPayrollPayment(payment:Int!):Payroll!
+  deletePayrollUser(userId:ID!):PayrollUser!
 }
 
 ########################### Auth ##################################
@@ -574,7 +595,47 @@ type Image {
   imageDefinition: ImageDefinition
 }
 
-########################### History ##################################
+########################### PayrollUser ##################################
+
+type PayrollUser {
+  id: ID!
+  salary: Int!
+  netSalary: Int!
+  user: User
+  organizationId: ID!
+}
+
+input PayrollUserInput {
+  userId: ID!
+  salary: Int!
+}
+
+########################### Payroll ##################################
+
+type Payroll {
+  id: ID!
+  name: String!
+  status: PayrollStatus!
+  date: Date!
+  payment: Int!
+  organization: Organization
+}
+
+type PayrollTransaction {
+  id: ID!
+  amount: Int!
+  date: Date!
+  type: PayrollTransactionType
+  payrollUser: PayrollUser
+}
+
+input PayrollTransactionInput {
+  userId: ID!
+  amount: Int!
+  type: PayrollTransactionType!
+}
+
+########################## History ##################################
 
 type MedicineHistory {
   id: ID!
