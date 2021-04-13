@@ -9,6 +9,7 @@ const addCourse = async (_, { course }, { userId }) => {
     paid,
     discount,
     sessions,
+    doctorId,
   } = course;
   return prisma.course.create({
     data: {
@@ -22,7 +23,7 @@ const addCourse = async (_, { course }, { userId }) => {
       },
       doctor: {
         connect: {
-          id: userId,
+          id: doctorId,
         },
       },
       patient: {
@@ -46,7 +47,7 @@ const addCourse = async (_, { course }, { userId }) => {
           },
           user: {
             connect: {
-              id: 'ce2e9cd3-5d58-4866-b0b3-a9c03fcd4fbc',
+              id: doctorId,
             },
           },
           date,

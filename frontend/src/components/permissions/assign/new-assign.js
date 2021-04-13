@@ -28,19 +28,13 @@ function NewAssign({
         <CRSelectInput
           name="roleId"
           placeholder="Permission Roles"
-          cleanable={true}
-          accepter={SelectPicker}
           data={roles}
-          virtualized={false}
           block
         />
         <CRSelectInput
           name="userId"
           placeholder="Users"
-          cleanable={true}
-          accepter={SelectPicker}
           data={users}
-          virtualized={false}
           block
         />
       </Form>

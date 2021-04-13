@@ -33,7 +33,7 @@ const useNewAppointment = ({ onCreate } = {}) => {
   });
 
   const [createAppointment, { loading }] = useMutation(CREATE_APPOINTMENT, {
-    onCompleted: ({ createAppointment }) => {
+    onCompleted: () => {
       setFormValue(initialValues);
       Alert.success('Appointment Created Successfully');
       onCreate && onCreate();

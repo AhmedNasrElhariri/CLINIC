@@ -42,8 +42,6 @@ function NewLabDefinition({
           label="Lab Category"
           name="category"
           block
-          cleanable={false}
-          searchable={false}
           data={categories}
         />
       </Form>

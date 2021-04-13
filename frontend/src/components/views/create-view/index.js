@@ -54,12 +54,7 @@ export default function CreateView() {
         </FormGroup>
         <FormGroup>
           <ControlLabel>Type</ControlLabel>
-          <FormControl
-            style={{ width }}
-            name="type"
-            accepter={SelectPicker}
-            data={appointmentTypes}
-          />
+          <FormControl style={{ width }} name="type" data={appointmentTypes} />
         </FormGroup>
         <Button appearance="primary" onClick={onClick}>
           Create

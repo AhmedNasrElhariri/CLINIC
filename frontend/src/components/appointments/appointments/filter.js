@@ -24,8 +24,6 @@ function AppointmentsFilter({ formValue, onChange }) {
             name="type"
             label="Type"
             block
-            cleanable={true}
-            searchable={true}
             data={appointmentTypes}
           />
         </Col>

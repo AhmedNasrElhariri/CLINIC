@@ -20,8 +20,6 @@ export default function CalendarFilter({ formValue, onChange }) {
         <CRSelectInput
           name="doctor"
           block
-          cleanable={true}
-          searchable={true}
           data={doctors}
         />
       </Form>

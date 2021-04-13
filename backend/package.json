@@ -16,7 +16,8 @@
     "db-source:dev": "ENV_FILE=./.dev.env npm run db-source",
     "db-source:dev-prod": "ENV_FILE=./.env db-source",
     "db-source:prod": "ENV_FILE=./.env db-source",
-    "debug": "babel src -d lib -s"
+    "debug": "babel src -d lib -s",
+    "update-schema":"npx prisma migrate save --experimental && npx prisma migrate up --experimental && npm run dev"
   },
   "author": "",
   "license": "ISC",

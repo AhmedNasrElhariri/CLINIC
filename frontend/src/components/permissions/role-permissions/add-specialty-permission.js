@@ -85,8 +85,6 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
         <CRSelectInput
           placeholder="Select Specialty"
           block
-          cleanable={false}
-          searchable={false}
           name="specialtyId"
           value={formValue.specialtyId}
           disabled={selectedAll}
@@ -98,8 +96,6 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
         <CRSelectInput
           placeholder="Select Branch"
           block
-          cleanable={false}
-          searchable={false}
           name="branchId"
           value={formValue.branchId}
           onChange={updateFormField('branchId')}

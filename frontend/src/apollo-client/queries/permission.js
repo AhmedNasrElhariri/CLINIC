@@ -155,3 +155,21 @@ export const LIST_BRANCHES_TREE = gql`
     }
   }
 `;
+
+export const LIST_ACTION_USERS = gql`
+  query listActionUsers($action: String!) {
+    listActionUsers(action: $action) {
+      id
+      name
+    }
+  }
+`;
+
+export const LIST_ACTION_DOCTORS = gql`
+  query listActionDoctors($action: String!) {
+    listActionDoctors(action: $action) {
+      id
+      name
+    }
+  }
+`;

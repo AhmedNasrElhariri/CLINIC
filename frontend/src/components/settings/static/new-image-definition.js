@@ -41,8 +41,6 @@ function NewImageDefinition({
           label="Image Category"
           name="category"
           block
-          cleanable={false}
-          searchable={false}
           data={categories}
         />
       </Form>

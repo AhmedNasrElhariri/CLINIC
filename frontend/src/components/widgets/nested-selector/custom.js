@@ -49,10 +49,9 @@ const CustomCascader = ({ choices, onChange, value, disabled, ...props }) => {
       ) : (
         <>
           <Cascader
-            style={{ width: '300px' }}
+            style={{ width: 300 }}
             data={data}
             value={null}
-            cleanable={false}
             onChange={handleOnChange}
             parentSelectable={false}
             childrenKey="choices"

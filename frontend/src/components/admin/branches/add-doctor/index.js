@@ -50,8 +50,6 @@ export default function AddDoctor({
           label="Specialty"
           data={specialties}
           block
-          cleanable
-          searchable
         />
         <CRSelectInput
           name="branchId"
@@ -59,16 +57,12 @@ export default function AddDoctor({
           data={branches}
           disabled={!formValue.specialtyId}
           block
-          cleanable
-          searchable
         />
         <CRSelectInput
           name="userId"
           label="Doctor"
           data={doctors}
           block
-          cleanable
-          searchable
         />
       </Form>
     </CRModal>

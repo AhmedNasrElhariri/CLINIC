@@ -32,7 +32,7 @@ const byOrganization = async (organizationId, allUsers = false) => {
   )(branches);
 };
 
-const byBranches = (organizationId, rules) =>
+export const byBranches = (organizationId, rules) =>
   prisma.branch.findMany({
     where: { organizationId, id: { in: rules.map(r => r.branchId) } },
     include: {
@@ -42,7 +42,7 @@ const byBranches = (organizationId, rules) =>
     },
   });
 
-const bySpecialties = rules => {
+export const bySpecialties = rules => {
   const orArg = rules.map(({ branchId, specialtyId }) => ({
     id: branchId,
     specialties: {
@@ -59,7 +59,7 @@ const bySpecialties = rules => {
   });
 };
 
-const byUser = rules => {
+export const byUsers = rules => {
   const orArg = rules.map(({ userId, branchId, specialtyId }) => ({
     id: branchId,
     specialties: {
@@ -119,7 +119,7 @@ export const listFlattenUsersTree = async (
     case PERMISSION_LEVEL.SPECIALTY:
       return bySpecialties(rules);
     case PERMISSION_LEVEL.USER:
-      return byUser(rules);
+      return byUsers(rules);
   }
 };
 

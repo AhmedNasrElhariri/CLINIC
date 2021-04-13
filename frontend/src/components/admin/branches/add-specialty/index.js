@@ -42,16 +42,12 @@ export default function AddSpecialty({
           label="Branch"
           data={branches}
           block
-          cleanable
-          searchable
         />
         <CRSelectInput
           name="specialtyId"
           label="Specialty"
           data={specialties}
           block
-          cleanable
-          searchable
         />
       </Form>
     </CRModal>

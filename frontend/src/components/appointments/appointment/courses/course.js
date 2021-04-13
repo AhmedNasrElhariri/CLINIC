@@ -4,13 +4,15 @@ import { useHistory } from 'react-router-dom';
 import { Div, CRButton, CRCard, CRTable } from 'components';
 import { Data, DataName, DataValue } from './style';
 
+import { formatDate } from 'utils/date';
+
 const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
   const history = useHistory();
   return (
     <>
       <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
-        <CRButton variant="primary" mt={2} onClick={() => onEditDoctor(course)}>
-          Asign Doctor
+        <CRButton variant="primary" mt={2} mr={1} onClick={() => onEditDoctor(course)}>
+          Assign Doctor
         </CRButton>
         <CRButton variant="primary" onClick={() => onEditPaid(course)}>
           Pay
@@ -52,7 +54,7 @@ const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
               <CRTable.CRCell>
                 {({ date }) => (
                   <CRTable.CRCellStyled bold>
-                    {date.split('T')[0]}
+                    {formatDate(date, 'dddd, DD-MM-YYYY')}
                   </CRTable.CRCellStyled>
                 )}
               </CRTable.CRCell>
@@ -62,7 +64,7 @@ const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
               <CRTable.CRCell>
                 {({ date }) => (
                   <CRTable.CRCellStyled bold>
-                    {date.split('T')[1].split('.')[0]}
+                    {formatDate(date, 'hh : mm a')}
                   </CRTable.CRCellStyled>
                 )}
               </CRTable.CRCell>

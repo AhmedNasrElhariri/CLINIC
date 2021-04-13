@@ -59,8 +59,6 @@ const AddBranchPermissions = ({ branches, rules, onAdd, onDelete }) => {
         <CRSelectInput
           placeholder="Select Branch"
           block
-          cleanable={false}
-          searchable={false}
           name="branchId"
           value={formValue.branchId}
           onChange={handelChange}

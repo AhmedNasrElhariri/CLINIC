@@ -15,8 +15,6 @@ function PatientSurgeryFilter({ formValue, onChange }) {
           <CRSelectInput
             name="surgery"
             label="Surgery"
-            cleanable={true}
-            searchable={true}
             data={surgeries}
             block
           />
@@ -26,8 +24,6 @@ function PatientSurgeryFilter({ formValue, onChange }) {
             name="hospital"
             label="Hospital"
             block
-            cleanable={true}
-            searchable={true}
             data={hospitals}
           />
         </Col>

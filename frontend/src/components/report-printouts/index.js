@@ -44,10 +44,7 @@ function ReportPrintout() {
         <CustomCRSelector
           name="patientReport"
           placeholder="Patient Reports"
-          cleanable={true}
-          accepter={SelectPicker}
           data={patientReports}
-          virtualized={false}
           block
         />
         <ReactQuill

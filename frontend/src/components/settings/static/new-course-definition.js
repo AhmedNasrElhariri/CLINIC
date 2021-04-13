@@ -33,8 +33,6 @@ function NewCourseDefinition({
           label="Type"
           name="type"
           block
-          cleanable={false}
-          searchable={false}
           data={coursesType}
         />
         <CRNumberInput label="Price" name="price" />

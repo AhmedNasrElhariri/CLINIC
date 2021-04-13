@@ -74,8 +74,6 @@ const CustomNestedSelect = ({ customItems }) => {
       <Cascader
         style={{ width: '300px' }}
         data={data}
-        cleanable={false}
-        searchable={false}
         onSelect={handelSelect}
         onClose={handelClose}
       />

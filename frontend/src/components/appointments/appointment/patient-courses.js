@@ -79,11 +79,12 @@ const Course = ({ patient }) => {
   );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      const { discount, course, sessions, paid } = formValue;
+      const { discount, course, sessions, paid, doctorId } = formValue;
       const finalFormValue = {
         price: course.price - discount,
         patientId: patient.id,
         courseDefinitionId: course.id,
+        doctorId,
         sessions,
         paid,
         discount,
@@ -112,7 +113,7 @@ const Course = ({ patient }) => {
 
   return (
     <>
-      <Div textAlign="right">
+      <Div display="flex" justifyContent="flex-end" alignItems="center">
         {courses.map((course, idx) => (
           <CourseButton
             variant="primary"
@@ -122,11 +123,7 @@ const Course = ({ patient }) => {
             {course.courseDefinition.name}
           </CourseButton>
         ))}
-        <CRButton
-          variant="primary"
-          onClick={handleClickCreate}
-          style={{ marginTop: 4, marginLeft: 4 }}
-        >
+        <CRButton variant="primary" onClick={handleClickCreate} ml={2}>
           Add New Course+
         </CRButton>
       </Div>

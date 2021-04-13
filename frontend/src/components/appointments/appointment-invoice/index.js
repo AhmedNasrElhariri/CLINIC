@@ -94,8 +94,6 @@ function AppointmentInvoice({
               name="type"
               placeholder="Select Type"
               block
-              cleanable={false}
-              searchable={false}
               value={session}
               onChange={setSession}
               data={choices}

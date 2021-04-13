@@ -18,8 +18,6 @@ function AppointmentsFilter({
             name="branch"
             label="Branch"
             block
-            cleanable={true}
-            searchable={true}
             data={branches}
           />
         </Col>
@@ -28,8 +26,6 @@ function AppointmentsFilter({
             name="doctor"
             label="Doctor"
             block
-            cleanable={true}
-            searchable={true}
             data={doctors}
           />
         </Col>
@@ -38,8 +34,6 @@ function AppointmentsFilter({
             name="specialty"
             label="Specialty"
             block
-            cleanable={true}
-            searchable={true}
             data={specialties}
           />
         </Col>

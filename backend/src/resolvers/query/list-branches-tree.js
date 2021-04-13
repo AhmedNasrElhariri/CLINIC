@@ -2,6 +2,11 @@ import { prisma } from '@';
 import * as R from 'ramda';
 
 import { PERMISSION_LEVEL, POSITION } from '@/utils/constants';
+import {
+  byUsers,
+  bySpecialties,
+  byBranches,
+} from '@/services/permission.service';
 
 const byOrganization = organizationId =>
   prisma.branch.findMany({
@@ -12,55 +17,6 @@ const byOrganization = organizationId =>
       },
     },
   });
-
-const byBranches = (organizationId, rules) =>
-  prisma.branch.findMany({
-    where: { organizationId, id: { in: rules.map(r => r.branchId) } },
-    include: {
-      specialties: {
-        include: { userSpecialties: { include: { user: true } } },
-      },
-    },
-  });
-
-const bySpecialties = rules => {
-  const orArg = rules.map(({ branchId, specialtyId }) => ({
-    id: branchId,
-    specialties: {
-      every: {
-        id: specialtyId,
-      },
-    },
-  }));
-
-  return prisma.branch.findMany({
-    where: {
-      OR: orArg,
-    },
-  });
-};
-
-const byUser = rules => {
-  const orArg = rules.map(({ userId, branchId, specialtyId }) => ({
-    id: branchId,
-    specialties: {
-      every: {
-        id: specialtyId,
-        userSpecialties: {
-          every: {
-            userId,
-          },
-        },
-      },
-    },
-  }));
-
-  return prisma.branch.findMany({
-    where: {
-      OR: orArg,
-    },
-  });
-};
 
 const listBranchesTree = async (_, { action }, { user, organizationId }) => {
   if (user.position === POSITION.Admin) {

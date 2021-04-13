@@ -28,8 +28,6 @@ export default ({ show, onOk, onCancel }) => {
           label="Title"
           name="snippet"
           block
-          cleanable={true}
-          searchable={true}
           data={snippets}
         ></CRSelectInput>
       </Form>

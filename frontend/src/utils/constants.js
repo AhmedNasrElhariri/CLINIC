@@ -88,14 +88,6 @@ export const POSITIONS = Object.freeze({
 
 export const ALL_CHOICE = 'All';
 
-export const Labs = [
-  { id: '1', title: 'SGPT(ALT)' },
-  { id: '2', title: 'SGOT(ALT)' },
-  { id: '3', title: 'HDL' },
-  { id: '4', title: 'LIQUID PROFILE' },
-  { id: '4', title: 'SGPT' },
-];
-
 export const ACTIONS = Object.freeze({
   Create_Appointment: 'Create_Appointment',
   List_Appointment: 'List_Appointment',
@@ -116,6 +108,7 @@ export const ACTIONS = Object.freeze({
   AddItem_Inventory: 'AddItem_Inventory',
   ViewHistory_Inventory: 'ViewHistory_Inventory',
   DefineItem_Inventory: 'DefineItem_Inventory',
+  Create_Course: 'Create_Course',
 });
 
 export const LAB_STATUS = Object.freeze({

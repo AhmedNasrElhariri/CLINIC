@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import * as R from 'ramda';
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Alert } from 'rsuite';
 
 import {
@@ -15,6 +15,8 @@ import {
   ADD_SPECIALITY,
   ADD_DOCTOR,
   ASSIGN_ROLE_TO_DOCOTR,
+  LIST_ACTION_USERS,
+  LIST_ACTION_DOCTORS,
 } from 'apollo-client/queries';
 import { POSITIONS, ACTIONS } from 'utils/constants';
 
@@ -186,6 +188,16 @@ function usePermissions({
     [formPermissions]
   );
 
+  const [listActionUsers, { data: actionUsersResp }] = useLazyQuery(
+    LIST_ACTION_USERS
+  );
+  const [listActionDoctors, { data: doctorsDataResp }] = useLazyQuery(
+    LIST_ACTION_DOCTORS
+  );
+
+  const actionUsers = R.prop('listActionUsers')(actionUsersResp);
+  const actionDoctors = R.prop('listActionDoctors')(doctorsDataResp);
+
   return useMemo(
     () => ({
       actions,
@@ -204,6 +216,10 @@ function usePermissions({
       indexePermissions,
       groupedPermissions,
       roles,
+      listActionUsers: action => listActionUsers({ variables: { action } }),
+      listActionDoctors: action => listActionDoctors({ variables: { action } }),
+      actionUsers: actionUsers || [],
+      actionDoctors: actionDoctors || [],
     }),
     [
       branches,
@@ -213,6 +229,8 @@ function usePermissions({
       indexePermissions,
       groupedPermissions,
       roles,
+      actionUsers,
+      actionDoctors,
       createRole,
       createBranch,
       createSpecialty,
@@ -220,6 +238,8 @@ function usePermissions({
       addSpecialty,
       addDoctor,
       assignRoleToUser,
+      listActionUsers,
+      listActionDoctors,
     ]
   );
 }

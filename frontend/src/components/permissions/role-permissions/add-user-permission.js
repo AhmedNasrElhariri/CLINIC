@@ -103,8 +103,6 @@ const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
         <CRSelectInput
           placeholder="Select User"
           block
-          cleanable={false}
-          searchable={false}
           name="userId"
           data={doctors}
           value={formValue.userId}
@@ -116,8 +114,6 @@ const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
         <CRSelectInput
           placeholder="Select Branch"
           block
-          cleanable={false}
-          searchable={false}
           name="branchId"
           data={branchChoices}
           value={formValue.branchId}

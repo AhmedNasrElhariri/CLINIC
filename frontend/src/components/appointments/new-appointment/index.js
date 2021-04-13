@@ -143,8 +143,6 @@ export default function NewAppointment({ show, onHide }) {
               label="Patient"
               name="patientId"
               placeholder="Name / Phone no"
-              accepter={SelectPicker}
-              cleanable={true}
               data={patients}
               searchBy={searchBy}
               virtualized={false}
@@ -167,30 +165,21 @@ export default function NewAppointment({ show, onHide }) {
               label="Examination/Followup"
               name="type"
               block
-              cleanable={false}
-              searchable={false}
               data={appointmentTypes}
             />
-            {formValue.type === 'Course' ? (
+            {formValue.type === 'Course' && (
               <CRSelectInput
                 label="Course"
                 name="courseId"
                 block
-                cleanable={false}
-                searchable={false}
                 data={updatedPatientCourses}
               />
-            ) : (
-              <></>
             )}
             <CRSelectInput
               label="Branch"
               name="branchId"
               placeholder="Select Branch"
               block
-              cleanable={false}
-              searchable={false}
-              accepter={SelectPicker}
               data={branches}
             />
             {formValue.branchId && (
@@ -201,7 +190,6 @@ export default function NewAppointment({ show, onHide }) {
                 block
                 cleanable={false}
                 searchable={false}
-                accepter={SelectPicker}
                 data={specialties}
               />
             )}
@@ -213,7 +201,6 @@ export default function NewAppointment({ show, onHide }) {
                 block
                 cleanable={false}
                 searchable={false}
-                accepter={SelectPicker}
                 data={doctors}
               />
             )}

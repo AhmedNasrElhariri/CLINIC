@@ -105,8 +105,6 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
               label="Examination/Followup"
               name="type"
               block
-              cleanable={false}
-              searchable={false}
               data={appointmentTypes}
             />
             <CRDatePicker

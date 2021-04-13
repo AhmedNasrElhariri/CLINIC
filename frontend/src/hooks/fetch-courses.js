@@ -23,17 +23,11 @@ const updateCache = myCourses => {
 };
 
 function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
-  const { data } = useQuery(
-    LIST_COURSES,
-    { variables: { patientId } },
-    { fetchPolicy: 'network-only' }
-  );
+  const { data } = useQuery(LIST_COURSES, { variables: { patientId } });
   const courses = useMemo(() => R.propOr([], 'myCourses')(data), [data]);
-  const { data: patientData } = useQuery(
-    LIST_PATIENT_COURSES,
-    { variables: { patientId } },
-    { fetchPolicy: 'network-only' }
-  );
+  const { data: patientData } = useQuery(LIST_PATIENT_COURSES, {
+    variables: { patientId },
+  });
   const patientCourses = useMemo(() => R.propOr([], 'myCourses')(patientData), [
     patientData,
   ]);

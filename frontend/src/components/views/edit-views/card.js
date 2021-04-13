@@ -55,9 +55,6 @@ const Card = ({ laneId, index }) => {
           size="xs"
           label="Type"
           name="type"
-          accepter={SelectPicker}
-          cleanable={false}
-          searchable={false}
           placeholder="Select type"
           data={FIELD_TYPES}
         />

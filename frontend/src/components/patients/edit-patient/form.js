@@ -36,8 +36,6 @@ const NewPatient = ({ formValue, onChange }) => {
       <CRSelectInput
         label="Membership Type"
         name="type"
-        accepter={SelectPicker}
-        searchable={false}
         data={membershipTypes}
         block
       />

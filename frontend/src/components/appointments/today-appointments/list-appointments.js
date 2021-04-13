@@ -98,7 +98,6 @@ function ListAppointments({
                       {isScheduled(appointment) && (
                         <CRButton
                           variant="primary"
-                          style={{marginTop:'8px'}}
                           onClick={e => {
                             e.stopPropagation();
                             onArchive(appointment);

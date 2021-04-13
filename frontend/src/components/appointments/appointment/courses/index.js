@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, SelectPicker, DatePicker, Alert } from 'rsuite';
+import { Form, DatePicker, Alert } from 'rsuite';
 import * as moment from 'moment';
 import * as R from 'ramda';
+import { ACTIONS } from 'utils/constants';
 
-import { useCoursesDefinition } from 'hooks';
+import { useCoursesDefinition, usePermissions } from 'hooks';
 import {
   CRNumberInput,
   CRSelectInput,
@@ -59,7 +60,6 @@ const getDates = (daysMetadata, numOfSessions, startDate) => {
   const shift = checkedDaysMetada.findIndex(
     d => moment(startDate).days() === d.day
   );
-  console.log(shift);
   checkDays = R.range(0, numOfSessions).map(j => {
     const length = checkedDaysMetada.length;
     const i = shift + j;
@@ -95,6 +95,11 @@ function NewCourse({
 }) {
   const { coursesDefinitions } = useCoursesDefinition();
   const [checkedDays, setCheckedDays] = useState(options);
+  const { listActionDoctors, actionDoctors } = usePermissions();
+
+  useEffect(() => {
+    listActionDoctors(ACTIONS.Create_Course);
+  }, []);
 
   useEffect(() => {
     onChange(formValue);
@@ -157,9 +162,6 @@ function NewCourse({
               label="Course Name"
               name="course"
               placeholder="Select Course"
-              cleanable={false}
-              searchable={false}
-              accepter={SelectPicker}
               data={coursesDefinitions}
               block
               sameValue
@@ -173,6 +175,13 @@ function NewCourse({
             />
             <CRNumberInput label="Discount" name="discount" />
             <CRNumberInput label="Paid" name="paid" />
+            <CRSelectInput
+              label="Doctor"
+              name="doctorId"
+              placeholder="Select Doctor"
+              data={actionDoctors}
+              block
+            />
             <CRDatePicker
               label="StartDate"
               block
@@ -213,9 +222,9 @@ function NewCourse({
                     <CRTable.CRColumn flexGrow={1}>
                       <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
                       <CRTable.CRCell>
-                        {data => (
+                        {date => (
                           <CRTable.CRCellStyled bold>
-                            {formatDate(data, 'dddd, DD-MM-YYYY')}
+                            {formatDate(date, 'dddd, DD-MM-YYYY')}
                           </CRTable.CRCellStyled>
                         )}
                       </CRTable.CRCell>
@@ -223,9 +232,9 @@ function NewCourse({
                     <CRTable.CRColumn flexGrow={1}>
                       <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
                       <CRTable.CRCell>
-                        {data => (
+                        {date => (
                           <CRTable.CRCellStyled bold>
-                            {formatDate(data, 'hh : mm a')}
+                            {formatDate(date, 'hh : mm a')}
                           </CRTable.CRCellStyled>
                         )}
                       </CRTable.CRCell>
@@ -244,9 +253,6 @@ function NewCourse({
             name="doctorId"
             placeholder="Select Doctor"
             block
-            cleanable={false}
-            searchable={false}
-            accepter={SelectPicker}
             data={users}
           />
         )}

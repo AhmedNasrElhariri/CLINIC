@@ -52,8 +52,6 @@ export default function NewUser({ show, onCancel, onCreate, specialties }) {
           name="position"
           label="Position"
           block
-          cleanable={true}
-          searchable={true}
           data={positions}
         />
       </Form>

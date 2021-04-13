@@ -113,6 +113,8 @@ type Query {
   listUsers: [User!]
   listRoles: [Role!]
   listBranchesTree(action: String!): [Branch!]
+  listActionUsers(action: String!): [User!]
+  listActionDoctors(action: String!): [User!]
   configuration: Configuration
   myInvoiceCounter: Organization!
   patientImageDocs(status: String!, patientId: String!): [Image!]
@@ -892,7 +894,7 @@ input CourseInput {
   discount: Int
   patientId: ID!
   courseDefinitionId: ID!
-  doctorId: ID
+  doctorId: ID!
   sessions: [Date!]
 }
 
