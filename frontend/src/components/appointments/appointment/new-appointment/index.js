@@ -18,8 +18,8 @@ import { useAppointmentForm, useNewAppointment } from 'hooks';
 const { StringType, DateType } = Schema.Types;
 
 const appointmentTypes = getCreatableApptTypes().map(type => ({
-  label: type,
-  value: type,
+  id: type,
+  name: type,
 }));
 
 const model = Schema.Model({

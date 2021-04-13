@@ -10,15 +10,14 @@ import { useModal, useNewAppointment } from 'hooks';
 import { useQuery } from '@apollo/client';
 import { GET_APPOINTMENT } from 'apollo-client/queries';
 const initValue = {
-  courseId: null,
-  discount: '',
-  price: '',
+  course: null,
+  discount: 0,
   paid: 0,
   doctorId: null,
   sessions: [],
   startDate: null,
-  date: [],
 };
+
 const CourseButton = styled.button`
   border: 1px solid rgba(81, 198, 243, 0.15);
   width: 100px;
@@ -28,29 +27,13 @@ const CourseButton = styled.button`
   cursor: pointer;
   height: 35px;
 `;
-const Course = ({ patient, appointmentId }) => {
+const Course = ({ patient }) => {
   const { visible, open, close } = useModal();
   const [course, setCourse] = useState({});
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
 
-  const { data } = useQuery(GET_APPOINTMENT, {
-    variables: {
-      id: appointmentId,
-    },
-  });
-  const appointment = R.propOr({}, 'appointment')(data);
-  const patientId = patient.id;
-  const userId = appointment.userId;
-  const finalFormValue = {
-    price: formValue.price - formValue.discount,
-    patientId: patient.id,
-    courseDefinitionId: formValue.courseId,
-    paid: formValue.paid,
-    discount: formValue.discount,
-    appointmentId: appointmentId,
-  };
   const {
     addCourse,
     courses,
@@ -72,7 +55,6 @@ const Course = ({ patient, appointmentId }) => {
     },
     patientId: patient.id,
   });
-  const { createAppointment } = useNewAppointment({});
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -98,19 +80,19 @@ const Course = ({ patient, appointmentId }) => {
   );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
+      const { discount, course, sessions, paid } = formValue;
+      const finalFormValue = {
+        price: course.price - discount,
+        patientId: patient.id,
+        courseDefinitionId: course.id,
+        sessions,
+        paid,
+        discount,
+      };
       addCourse({
         variables: {
           course: finalFormValue,
         },
-      });
-      formValue.sessions.forEach(session => {
-        createAppointment({
-          patientId: patientId,
-          type: 'Session',
-          date: new Date(session.date),
-          userId: userId,
-          courseId: courses[courses.length - 1].id,
-        });
       });
     } else if (type === 'courseDoctor') {
       editCourseDoctor({
@@ -127,27 +109,13 @@ const Course = ({ patient, appointmentId }) => {
         },
       });
     }
-  }, [
-    type,
-    addCourse,
-    finalFormValue,
-    formValue.sessions,
-    formValue.id,
-    formValue.doctorId,
-    formValue.paid,
-    createAppointment,
-    patientId,
-    userId,
-    courses,
-    editCourseDoctor,
-    editCourse,
-  ]);
+  }, [type, formValue, patient.id, addCourse, editCourseDoctor, editCourse]);
 
   return (
     <>
       <Div textAlign="right">
         {courses.map(course => (
-          <CourseButton variant="primary" onClick={() => setCourse(course)} >
+          <CourseButton variant="primary" onClick={() => setCourse(course)}>
             {course.courseDefinition.name}
           </CourseButton>
         ))}
@@ -160,7 +128,7 @@ const Course = ({ patient, appointmentId }) => {
         </CRButton>
       </Div>
       <NewCourse
-        visible={true}
+        visible={visible}
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}

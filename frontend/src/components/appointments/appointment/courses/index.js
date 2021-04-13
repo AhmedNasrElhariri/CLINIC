@@ -24,38 +24,38 @@ const options = [
   {
     name: 'Saturday',
     checked: false,
-    time: null,  
-    day: 0,
+    time: null,
+    day: 6,
   },
   {
     name: 'Sunday',
-    checked: true,
+    checked: false,
     time: null,
-    day: 1,
+    day: 0,
   },
   {
     name: 'Monday',
-    checked: true,
+    checked: false,
     time: null,
-    day: 2,
+    day: 1,
   },
   {
     name: 'Tuesday',
     checked: false,
     time: null,
-    day: 3,
+    day: 2,
   },
   {
     name: 'Wednesday',
     checked: false,
     time: null,
-    day: 4,
+    day: 3,
   },
   {
     name: 'Thursday',
-    checked: true,
+    checked: false,
     time: null,
-    day: 5,
+    day: 4,
   },
   {
     name: 'Friday',
@@ -69,6 +69,10 @@ const isValidStartDate = (dateMetadata, startDate) => {
   return moment(startDate).days() === dateMetadata.day;
 };
 
+const allTimeForAllDateSet = datesMetadata => {
+  return datesMetadata.every(d => !!d.time);
+};
+
 const getDates = (daysMetadata, numOfSessions, startDate) => {
   if (daysMetadata.length !== 7) {
     throw new Error('Invalid Days');
@@ -77,15 +81,18 @@ const getDates = (daysMetadata, numOfSessions, startDate) => {
     throw new Error('Set start Date');
   }
 
-  if (!isValidStartDate(daysMetadata[0], startDate)) {
+  let checkedDaysMetada = daysMetadata.filter(d => d.checked);
+
+  if (!isValidStartDate(checkedDaysMetada[0], startDate)) {
     throw new Error('Insert right start date');
   }
+  if (!allTimeForAllDateSet(checkedDaysMetada)) {
+    throw new Error('Set time for selected days');
+  }
 
-  let checkDaysMetada = daysMetadata.filter(d => d.checked);
-  let checkDays = checkDaysMetada.map(d => d.day);
-
+  let checkDays = checkedDaysMetada.map(d => d.day);
   checkDays = R.range(0, numOfSessions).map(i => {
-    const length = checkDaysMetada.length;
+    const length = checkedDaysMetada.length;
     const index = i % length;
     const repeat = Math.floor(i / length);
     const day = checkDays[index];
@@ -93,10 +100,10 @@ const getDates = (daysMetadata, numOfSessions, startDate) => {
   });
 
   const sessions = checkDays.reduce((acc, day, index) => {
-    const dayMetadataIndex = index % checkDaysMetada.length;
+    const dayMetadataIndex = index % checkedDaysMetada.length;
     const diff = index === 0 ? 0 : day - checkDays[index - 1];
     const lastDay = R.last(acc) || moment(startDate);
-    const time = moment(checkDaysMetada[dayMetadataIndex].time);
+    const time = moment(checkedDaysMetada[dayMetadataIndex].time);
     const date = moment(lastDay).add(diff, 'days').set({
       hours: time.hours(),
       minutes: time.minutes(),
@@ -163,7 +170,7 @@ function NewCourse({
         throw new Error('Please select a course');
       }
       const sessions = getDates(checkedDays, course.units, formValue.startDate);
-      console.log(addSessions(sessions));
+      addSessions(sessions);
     } catch (e) {
       Alert.error(e.message);
     }
@@ -191,7 +198,8 @@ function NewCourse({
               label="Price"
               name="price"
               title="Price"
-              value={course?.price}
+              disabled
+              value={course?.price || ''}
             />
             <CRNumberInput label="Discount" name="discount" title="Discount" />
             <CRDatePicker
@@ -227,32 +235,34 @@ function NewCourse({
                 </Div>
               ))}
             </StyledSession>
-            <TableDiv>
-              <CRCard borderless>
-                <CRTable autoHeight data={formValue.sessions || []}>
-                  <CRTable.CRColumn flexGrow={1}>
-                    <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-                    <CRTable.CRCell>
-                      {data => (
-                        <CRTable.CRCellStyled bold>
-                          {formatDate(data, 'DD-MM')}
-                        </CRTable.CRCellStyled>
-                      )}
-                    </CRTable.CRCell>
-                  </CRTable.CRColumn>
-                  <CRTable.CRColumn flexGrow={1}>
-                    <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
-                    <CRTable.CRCell>
-                      {data => (
-                        <CRTable.CRCellStyled bold>
-                          {formatDate(data, 'hh : mm a')}
-                        </CRTable.CRCellStyled>
-                      )}
-                    </CRTable.CRCell>
-                  </CRTable.CRColumn>
-                </CRTable>
-              </CRCard>
-            </TableDiv>
+            {formValue?.sessions?.length > 0 && (
+              <TableDiv>
+                <CRCard borderless>
+                  <CRTable autoHeight data={formValue.sessions || []}>
+                    <CRTable.CRColumn flexGrow={1}>
+                      <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+                      <CRTable.CRCell>
+                        {data => (
+                          <CRTable.CRCellStyled bold>
+                            {formatDate(data, 'DD-MM')}
+                          </CRTable.CRCellStyled>
+                        )}
+                      </CRTable.CRCell>
+                    </CRTable.CRColumn>
+                    <CRTable.CRColumn flexGrow={1}>
+                      <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
+                      <CRTable.CRCell>
+                        {data => (
+                          <CRTable.CRCellStyled bold>
+                            {formatDate(data, 'hh : mm a')}
+                          </CRTable.CRCellStyled>
+                        )}
+                      </CRTable.CRCell>
+                    </CRTable.CRColumn>
+                  </CRTable>
+                </CRCard>
+              </TableDiv>
+            )}
             <CRButton onClick={handleAddSessions}>Generate</CRButton>
           </>
         ) : type === 'edit' ? (

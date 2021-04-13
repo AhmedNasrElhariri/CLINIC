@@ -890,10 +890,10 @@ input CourseInput {
   price: Int!
   paid: Int
   discount: Int
-  appointmentId: ID!
   patientId: ID!
   courseDefinitionId: ID!
   doctorId: ID
+  sessions: [Date!]
 }
 
 ########################### Patient Surgeries ##################################

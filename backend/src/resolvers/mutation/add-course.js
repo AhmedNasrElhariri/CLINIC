@@ -1,10 +1,20 @@
 import { prisma } from '@';
+import { APPOINTMENTS_TYPES, APPOINTMENTS_STATUS } from '@/utils/constants';
 
 const addCourse = async (_, { course }, { userId }) => {
-  const { patientId, courseDefinitionId, appointmentId, ...rest } = course;
+  const {
+    patientId,
+    courseDefinitionId,
+    price,
+    paid,
+    discount,
+    sessions,
+  } = course;
   return prisma.course.create({
     data: {
-      ...rest,
+      price,
+      paid,
+      discount,
       user: {
         connect: {
           id: userId,
@@ -26,13 +36,21 @@ const addCourse = async (_, { course }, { userId }) => {
         },
       },
       appointments: {
-        create: {
-          appointment: {
+        create: sessions.map(date => ({
+          type: APPOINTMENTS_TYPES.Session,
+          status: APPOINTMENTS_STATUS.SCHEDULED,
+          patient: {
             connect: {
-              id: appointmentId,
+              id: patientId,
             },
           },
-        },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          date,
+        })),
       },
     },
   });
