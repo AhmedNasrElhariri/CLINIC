@@ -18,7 +18,7 @@ const CourseDefinition = () => {
   });
   const {
     addCourseDefinition,
-    coursesDefinition,
+    coursesDefinitions,
     editCourseDefinition,
   } = useCoursesDefinition({
     onCreate: () => {
@@ -82,7 +82,7 @@ const CourseDefinition = () => {
         type={type}
       />
       <ListCoursesDefinition
-        courses={coursesDefinition}
+        courses={coursesDefinitions}
         onEdit={handleClickEdit}
       />
     </>

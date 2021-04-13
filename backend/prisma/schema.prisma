@@ -516,7 +516,7 @@ model Course {
   price              Int
   paid               Int
   discount           Int
-  appointments       Appointment[]
+  sessions           Appointment[]
   patient            Patient          @relation(fields: [patientId], references: [id])
   patientId          String
   user               User             @relation("user", fields: [userId], references: [id])

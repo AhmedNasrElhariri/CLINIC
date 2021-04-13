@@ -35,7 +35,7 @@ const addCourse = async (_, { course }, { userId }) => {
           id: courseDefinitionId,
         },
       },
-      appointments: {
+      sessions: {
         create: sessions.map(date => ({
           type: APPOINTMENTS_TYPES.Session,
           status: APPOINTMENTS_STATUS.SCHEDULED,
@@ -46,7 +46,7 @@ const addCourse = async (_, { course }, { userId }) => {
           },
           user: {
             connect: {
-              id: userId,
+              id: 'ce2e9cd3-5d58-4866-b0b3-a9c03fcd4fbc',
             },
           },
           date,

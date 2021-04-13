@@ -880,7 +880,7 @@ type Course {
   price: Int!
   paid: Int!
   discount: Int!
-  appointments: [Appointment!]
+  sessions: [Appointment!]
   patient: Patient!
   doctor: User!
   courseDefinition: CourseDefinition!

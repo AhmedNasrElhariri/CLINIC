@@ -6,9 +6,8 @@ import useFrom from 'hooks/form';
 import NewCourse from 'components/appointments/appointment/courses';
 import CourseData from 'components/appointments/appointment/courses/course';
 import { useCourses } from 'hooks';
-import { useModal, useNewAppointment } from 'hooks';
-import { useQuery } from '@apollo/client';
-import { GET_APPOINTMENT } from 'apollo-client/queries';
+import { useModal } from 'hooks';
+
 const initValue = {
   course: null,
   discount: 0,
@@ -114,8 +113,12 @@ const Course = ({ patient }) => {
   return (
     <>
       <Div textAlign="right">
-        {courses.map(course => (
-          <CourseButton variant="primary" onClick={() => setCourse(course)}>
+        {courses.map((course, idx) => (
+          <CourseButton
+            variant="primary"
+            onClick={() => setCourse(course)}
+            key={idx}
+          >
             {course.courseDefinition.name}
           </CourseButton>
         ))}

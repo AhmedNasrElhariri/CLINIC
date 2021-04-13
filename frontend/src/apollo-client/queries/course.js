@@ -46,7 +46,7 @@ export const LIST_COURSES = gql`
       price
       paid
       discount
-      appointments {
+      sessions {
         id
         date
       }

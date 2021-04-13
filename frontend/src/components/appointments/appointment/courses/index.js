@@ -21,52 +21,17 @@ import { StyledSession, TableDiv } from './style';
 import { formatDate } from 'utils/date';
 
 const options = [
-  {
-    name: 'Saturday',
-    checked: false,
-    time: null,
-    day: 6,
-  },
-  {
-    name: 'Sunday',
-    checked: false,
-    time: null,
-    day: 0,
-  },
-  {
-    name: 'Monday',
-    checked: false,
-    time: null,
-    day: 1,
-  },
-  {
-    name: 'Tuesday',
-    checked: false,
-    time: null,
-    day: 2,
-  },
-  {
-    name: 'Wednesday',
-    checked: false,
-    time: null,
-    day: 3,
-  },
-  {
-    name: 'Thursday',
-    checked: false,
-    time: null,
-    day: 4,
-  },
-  {
-    name: 'Friday',
-    checked: false,
-    time: null,
-    day: 5,
-  },
+  { name: 'Saturday', checked: false, time: null, day: 6 },
+  { name: 'Sunday', checked: false, time: null, day: 0 },
+  { name: 'Monday', checked: false, time: null, day: 1 },
+  { name: 'Tuesday', checked: false, time: null, day: 2 },
+  { name: 'Wednesday', checked: false, time: null, day: 3 },
+  { name: 'Thursday', checked: false, time: null, day: 4 },
+  { name: 'Friday', checked: false, time: null, day: 5 },
 ];
 
-const isValidStartDate = (dateMetadata, startDate) => {
-  return moment(startDate).days() === dateMetadata.day;
+const isValidStartDate = (datesMetadata = [], startDate) => {
+  return datesMetadata.some(d => moment(startDate).days() === d.day);
 };
 
 const allTimeForAllDateSet = datesMetadata => {
@@ -81,9 +46,9 @@ const getDates = (daysMetadata, numOfSessions, startDate) => {
     throw new Error('Set start Date');
   }
 
-  let checkedDaysMetada = daysMetadata.filter(d => d.checked);
+  const checkedDaysMetada = daysMetadata.filter(d => d.checked) || [];
 
-  if (!isValidStartDate(checkedDaysMetada[0], startDate)) {
+  if (!isValidStartDate(checkedDaysMetada, startDate)) {
     throw new Error('Insert right start date');
   }
   if (!allTimeForAllDateSet(checkedDaysMetada)) {
@@ -91,8 +56,13 @@ const getDates = (daysMetadata, numOfSessions, startDate) => {
   }
 
   let checkDays = checkedDaysMetada.map(d => d.day);
-  checkDays = R.range(0, numOfSessions).map(i => {
+  const shift = checkedDaysMetada.findIndex(
+    d => moment(startDate).days() === d.day
+  );
+  console.log(shift);
+  checkDays = R.range(0, numOfSessions).map(j => {
     const length = checkedDaysMetada.length;
+    const i = shift + j;
     const index = i % length;
     const repeat = Math.floor(i / length);
     const day = checkDays[index];
@@ -201,7 +171,8 @@ function NewCourse({
               disabled
               value={course?.price || ''}
             />
-            <CRNumberInput label="Discount" name="discount" title="Discount" />
+            <CRNumberInput label="Discount" name="discount" />
+            <CRNumberInput label="Paid" name="paid" />
             <CRDatePicker
               label="StartDate"
               block
@@ -244,7 +215,7 @@ function NewCourse({
                       <CRTable.CRCell>
                         {data => (
                           <CRTable.CRCellStyled bold>
-                            {formatDate(data, 'DD-MM')}
+                            {formatDate(data, 'dddd, DD-MM-YYYY')}
                           </CRTable.CRCellStyled>
                         )}
                       </CRTable.CRCell>
