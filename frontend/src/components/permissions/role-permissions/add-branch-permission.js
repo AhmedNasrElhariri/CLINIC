@@ -61,8 +61,6 @@ const AddBranchPermissions = ({ branches, rules, onAdd, onDelete }) => {
           block
           cleanable={false}
           searchable={false}
-          labelKey="name"
-          valueKey="id"
           name="branchId"
           value={formValue.branchId}
           onChange={handelChange}

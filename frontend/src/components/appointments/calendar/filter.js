@@ -1,7 +1,6 @@
 import React from 'react';
 import { CRSelectInput, Div } from 'components';
 import { Form } from 'rsuite';
-import { mapArrWithIdsToChoices } from 'utils/misc';
 
 export default function CalendarFilter({ formValue, onChange }) {
   const doctors = [
@@ -23,7 +22,7 @@ export default function CalendarFilter({ formValue, onChange }) {
           block
           cleanable={true}
           searchable={true}
-          data={mapArrWithIdsToChoices(doctors)}
+          data={doctors}
         />
       </Form>
     </Div>

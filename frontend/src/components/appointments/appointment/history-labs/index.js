@@ -23,10 +23,7 @@ const HistoryLabs = ({ patient }) => {
         <CRSelectInput
           name="labId"
           data={historyLabs}
-          valueKey="id"
-          labelKey="name"
           block
-          // groupBy="category"
         />
       </Form>
       <ListLabDocs labs={labs} />

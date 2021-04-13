@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-export const StyledSession = styled.div`
-  /* display: flex; */
-`;
+export const StyledSession = styled.div``;
 export const TimeDiv = styled.div`
   margin-left: 5px;
 `;

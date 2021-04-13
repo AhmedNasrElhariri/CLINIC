@@ -31,8 +31,6 @@ function NewAssign({
           cleanable={true}
           accepter={SelectPicker}
           data={roles}
-          labelKey="name"
-          valueKey="id"
           virtualized={false}
           block
         />
@@ -41,8 +39,6 @@ function NewAssign({
           placeholder="Users"
           cleanable={true}
           accepter={SelectPicker}
-          labelKey="name"
-          valueKey="id"
           data={users}
           virtualized={false}
           block

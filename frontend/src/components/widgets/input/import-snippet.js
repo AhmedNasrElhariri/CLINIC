@@ -27,8 +27,6 @@ export default ({ show, onOk, onCancel }) => {
         <CRSelectInput
           label="Title"
           name="snippet"
-          labelKey="title"
-          valueKey="id"
           block
           cleanable={true}
           searchable={true}

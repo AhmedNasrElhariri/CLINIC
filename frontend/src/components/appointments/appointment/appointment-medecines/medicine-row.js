@@ -42,8 +42,6 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
                 placeholder="Timing"
                 name="timingId"
                 data={timings}
-                valueKey="id"
-                labelKey="name"
                 disabled={required}
                 layout="inline"
                 block

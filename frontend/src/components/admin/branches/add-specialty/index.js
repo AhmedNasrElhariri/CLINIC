@@ -40,8 +40,6 @@ export default function AddSpecialty({
         <CRSelectInput
           name="branchId"
           label="Branch"
-          valueKey="id"
-          labelKey="name"
           data={branches}
           block
           cleanable
@@ -50,8 +48,6 @@ export default function AddSpecialty({
         <CRSelectInput
           name="specialtyId"
           label="Specialty"
-          valueKey="id"
-          labelKey="name"
           data={specialties}
           block
           cleanable

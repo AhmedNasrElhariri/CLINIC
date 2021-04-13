@@ -37,8 +37,6 @@ function InventoryUsage() {
         <Div width={396} mr={30}>
           <CRSelectInput
             label="Item"
-            labelKey="name"
-            valueKey="id"
             name="itemId"
             data={items}
             block

@@ -17,7 +17,6 @@ import { ModalBodyStyled, ContainerStyled } from './style';
 
 import { filterPatientBy } from 'utils/patient';
 import { getCreatableApptTypes } from 'services/appointment';
-import { mapArrWithIdsToChoices } from 'utils/misc';
 import {
   useAppointmentForm,
   useNewAppointment,
@@ -146,8 +145,6 @@ export default function NewAppointment({ show, onHide }) {
               placeholder="Name / Phone no"
               accepter={SelectPicker}
               cleanable={true}
-              labelKey="name"
-              valueKey="id"
               data={patients}
               searchBy={searchBy}
               virtualized={false}
@@ -194,7 +191,7 @@ export default function NewAppointment({ show, onHide }) {
               cleanable={false}
               searchable={false}
               accepter={SelectPicker}
-              data={mapArrWithIdsToChoices(branches)}
+              data={branches}
             />
             {formValue.branchId && (
               <CRSelectInput
@@ -205,7 +202,7 @@ export default function NewAppointment({ show, onHide }) {
                 cleanable={false}
                 searchable={false}
                 accepter={SelectPicker}
-                data={mapArrWithIdsToChoices(specialties)}
+                data={specialties}
               />
             )}
             {formValue.specialtyId && (
@@ -217,7 +214,7 @@ export default function NewAppointment({ show, onHide }) {
                 cleanable={false}
                 searchable={false}
                 accepter={SelectPicker}
-                data={mapArrWithIdsToChoices(doctors)}
+                data={doctors}
               />
             )}
             <CRDatePicker

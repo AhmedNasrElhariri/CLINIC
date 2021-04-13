@@ -2,7 +2,6 @@ import React from 'react';
 import { Form, Row, Col } from 'rsuite';
 
 import { CRSelectInput } from 'components';
-import { mapArrWithIdsToChoices } from 'utils/misc';
 
 function AppointmentsFilter({
   formValue,
@@ -21,7 +20,7 @@ function AppointmentsFilter({
             block
             cleanable={true}
             searchable={true}
-            data={mapArrWithIdsToChoices(branches)}
+            data={branches}
           />
         </Col>
         <Col xs={8}>
@@ -31,7 +30,7 @@ function AppointmentsFilter({
             block
             cleanable={true}
             searchable={true}
-            data={mapArrWithIdsToChoices(doctors)}
+            data={doctors}
           />
         </Col>
         <Col xs={8}>
@@ -41,7 +40,7 @@ function AppointmentsFilter({
             block
             cleanable={true}
             searchable={true}
-            data={mapArrWithIdsToChoices(specialties)}
+            data={specialties}
           />
         </Col>
       </Row>

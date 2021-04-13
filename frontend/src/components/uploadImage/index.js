@@ -16,8 +16,6 @@ function UploadImage() {
         <Form fluid>
           <StyledSelector>
             <CRSelectInput
-              labelKey="name"
-              valueKey="id"
               name="itemId"
               block
               placeholder="Select Lab"

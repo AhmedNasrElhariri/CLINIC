@@ -36,8 +36,6 @@ const InsertLabResult = ({ visible, onClose, onCreate, id, labs }) => {
         <CRSelectInput
           virtualized={false}
           name="lab"
-          labelKey="name"
-          valueKey="id"
           value={formValue.id}
           data={labs}
           block

@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Form, SelectPicker, DatePicker } from 'rsuite';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Form, SelectPicker, DatePicker, Alert } from 'rsuite';
 import * as moment from 'moment';
+import * as R from 'ramda';
 
 import { useCoursesDefinition } from 'hooks';
-import { mapArrWithIdsToChoices } from 'utils/misc';
 import {
   CRNumberInput,
   CRSelectInput,
@@ -17,107 +17,111 @@ import {
   CRTable,
 } from 'components';
 
-import { StyledSession, TimeDiv, TableDiv } from './style';
+import { StyledSession, TableDiv } from './style';
+import { formatDate } from 'utils/date';
 
-let course = [];
-let difference = 0;
 const options = [
   {
     name: 'Saturday',
     checked: false,
-    time: null,
+    time: null,  
+    day: 0,
   },
   {
     name: 'Sunday',
-    checked: false,
+    checked: true,
     time: null,
+    day: 1,
   },
   {
     name: 'Monday',
-    checked: false,
+    checked: true,
     time: null,
+    day: 2,
   },
   {
     name: 'Tuesday',
     checked: false,
     time: null,
+    day: 3,
   },
   {
     name: 'Wednesday',
     checked: false,
     time: null,
+    day: 4,
   },
   {
     name: 'Thursday',
-    checked: false,
+    checked: true,
     time: null,
+    day: 5,
   },
   {
     name: 'Friday',
     checked: false,
     time: null,
+    day: 5,
   },
 ];
 
-const calcFirstDayDate = (startDay, firstDay) => {
-  const startDayName = moment(startDay).format('dddd');
-  const startDayIndex = options.indexOf(startDayName);
-  const firstDayIndex = options.indexOf(firstDay);
-  if (startDayIndex === firstDayIndex) {
-    difference = 0;
-  } else if (startDayIndex < firstDayIndex) {
-    difference = firstDayIndex - startDayIndex;
-  } else {
-    difference = firstDayIndex - startDayIndex + 7;
-  }
-  const firstDayDate = new Date(
-    new Date(startDay).getTime() + difference * 24 * 60 * 60 * 1000
-  );
-  const firstDayDateResult = firstDayDate.toISOString().split('T')[0];
-  return firstDayDateResult;
+const isValidStartDate = (dateMetadata, startDate) => {
+  return moment(startDate).days() === dateMetadata.day;
 };
-const getDates = (days, times, startDay, numOfSessions) => {
-  let steps = 0;
-  let oldDate = {};
-  const daysDate = days.map((day, indx) => {
-    return {
-      date: calcFirstDayDate(startDay, day),
-      time: times[indx],
-    };
+
+const getDates = (daysMetadata, numOfSessions, startDate) => {
+  if (daysMetadata.length !== 7) {
+    throw new Error('Invalid Days');
+  }
+  if (!startDate) {
+    throw new Error('Set start Date');
+  }
+
+  if (!isValidStartDate(daysMetadata[0], startDate)) {
+    throw new Error('Insert right start date');
+  }
+
+  let checkDaysMetada = daysMetadata.filter(d => d.checked);
+  let checkDays = checkDaysMetada.map(d => d.day);
+
+  checkDays = R.range(0, numOfSessions).map(i => {
+    const length = checkDaysMetada.length;
+    const index = i % length;
+    const repeat = Math.floor(i / length);
+    const day = checkDays[index];
+    return day + repeat * 7;
   });
-  numOfSessions = numOfSessions - days.length;
-  while (numOfSessions > steps) {
-    for (let i = 0; i < days.length; i++) {
-      oldDate = daysDate[daysDate.length - days.length];
-      const newDate = new Date(
-        new Date(oldDate.date).getTime() + 7 * 24 * 60 * 60 * 1000
-      );
-      let newSession = { date: '', time: '' };
-      newSession.time = oldDate.time;
-      newSession.date = newDate.toISOString().split('T')[0];
-      daysDate.push(newSession);
-      steps = steps + 1;
-    }
-  }
-  daysDate.length = numOfSessions + days.length;
-  return daysDate;
+
+  const sessions = checkDays.reduce((acc, day, index) => {
+    const dayMetadataIndex = index % checkDaysMetada.length;
+    const diff = index === 0 ? 0 : day - checkDays[index - 1];
+    const lastDay = R.last(acc) || moment(startDate);
+    const time = moment(checkDaysMetada[dayMetadataIndex].time);
+    const date = moment(lastDay).add(diff, 'days').set({
+      hours: time.hours(),
+      minutes: time.minutes(),
+      seconds: 0,
+      milliseconds: 0,
+    });
+    return [...acc, date];
+  }, []);
+  return sessions.map(m => m.toDate());
 };
-function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
-  const header = useMemo(() => 'Courses', []);
-  const { coursesDefinition } = useCoursesDefinition({});
-  const [item, setItem] = useState('');
-  const [numberSessions, setNumberSessions] = useState(0);
-  // const [times, setTimes] = useState(defaultTimes);
+function NewCourse({
+  visible,
+  onClose,
+  onOk,
+  formValue,
+  onChange,
+  type,
+  users,
+}) {
+  const { coursesDefinitions } = useCoursesDefinition();
   const [checkedDays, setCheckedDays] = useState(options);
-  const specificCourse = value => {
-    course = coursesDefinition.find(course => course.id === value);
-    setItem(course.price);
-    setNumberSessions(course.units);
-  };
+
   useEffect(() => {
-    formValue.price = item;
     onChange(formValue);
-  }, [item, formValue, onChange]);
+  }, [formValue, onChange]);
   const addSessions = useCallback(
     sessions => {
       onChange({ ...formValue, sessions });
@@ -153,27 +157,41 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
     [checkedDays]
   );
 
+  const handleAddSessions = () => {
+    try {
+      if (!course) {
+        throw new Error('Please select a course');
+      }
+      const sessions = getDates(checkedDays, course.units, formValue.startDate);
+      console.log(addSessions(sessions));
+    } catch (e) {
+      Alert.error(e.message);
+    }
+  };
+
+  const course = formValue?.course;
+
   return (
-    <CRModal show={visible} header={header} onHide={onClose} onOk={onOk}>
+    <CRModal show={visible} header="Courses" onHide={onClose} onOk={onOk}>
       <Form fluid formValue={formValue} onChange={onChange}>
         {type === 'create' ? (
           <>
             <CRSelectInput
               label="Course Name"
-              name="courseId"
+              name="course"
               placeholder="Select Course"
-              block
               cleanable={false}
               searchable={false}
               accepter={SelectPicker}
-              data={mapArrWithIdsToChoices(coursesDefinition)}
-              onSelect={data => specificCourse(data)}
+              data={coursesDefinitions}
+              block
+              sameValue
             />
             <CRNumberInput
               label="Price"
               name="price"
               title="Price"
-              value={item}
+              value={course?.price}
             />
             <CRNumberInput label="Discount" name="discount" title="Discount" />
             <CRDatePicker
@@ -184,34 +202,8 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
               placement="top"
             />
             <StyledSession>
-              <TableDiv>
-                <CRCard borderless>
-                  <CRTable autoHeight data={formValue.sessions}>
-                    <CRTable.CRColumn flexGrow={1}>
-                      <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-                      <CRTable.CRCell>
-                        {({ date }) => (
-                          <CRTable.CRCellStyled bold>
-                            {date}
-                          </CRTable.CRCellStyled>
-                        )}
-                      </CRTable.CRCell>
-                    </CRTable.CRColumn>
-                    <CRTable.CRColumn flexGrow={1}>
-                      <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
-                      <CRTable.CRCell>
-                        {({ time }) => (
-                          <CRTable.CRCellStyled bold>
-                            {time.getHours()}:{time.getMinutes()}
-                          </CRTable.CRCellStyled>
-                        )}
-                      </CRTable.CRCell>
-                    </CRTable.CRColumn>
-                  </CRTable>
-                </CRCard>
-              </TableDiv>
               {checkedDays.map(({ name, checked, time }, idx) => (
-                <Div display="flex">
+                <Div display="flex" key={idx}>
                   <Div width={100}>
                     <CRCheckBox
                       name="date"
@@ -235,21 +227,33 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
                 </Div>
               ))}
             </StyledSession>
-            <CRButton
-              onClick={() =>
-                addSessions(
-                  getDates(
-                    formValue.date,
-                    null,
-                    // times,
-                    formValue.startDate,
-                    numberSessions
-                  )
-                )
-              }
-            >
-              Generate
-            </CRButton>
+            <TableDiv>
+              <CRCard borderless>
+                <CRTable autoHeight data={formValue.sessions || []}>
+                  <CRTable.CRColumn flexGrow={1}>
+                    <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+                    <CRTable.CRCell>
+                      {data => (
+                        <CRTable.CRCellStyled bold>
+                          {formatDate(data, 'DD-MM')}
+                        </CRTable.CRCellStyled>
+                      )}
+                    </CRTable.CRCell>
+                  </CRTable.CRColumn>
+                  <CRTable.CRColumn flexGrow={1}>
+                    <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
+                    <CRTable.CRCell>
+                      {data => (
+                        <CRTable.CRCellStyled bold>
+                          {formatDate(data, 'hh : mm a')}
+                        </CRTable.CRCellStyled>
+                      )}
+                    </CRTable.CRCell>
+                  </CRTable.CRColumn>
+                </CRTable>
+              </CRCard>
+            </TableDiv>
+            <CRButton onClick={handleAddSessions}>Generate</CRButton>
           </>
         ) : type === 'edit' ? (
           <CRNumberInput label="Paid" name="paid" title="Paid" />
@@ -262,7 +266,7 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
             cleanable={false}
             searchable={false}
             accepter={SelectPicker}
-            data={mapArrWithIdsToChoices(users)}
+            data={users}
           />
         )}
       </Form>
@@ -270,8 +274,8 @@ function Course({ visible, onClose, onOk, formValue, onChange, type, users }) {
   );
 }
 
-Course.defaultProps = {
+NewCourse.defaultProps = {
   type: 'create',
 };
 
-export default Course;
+export default NewCourse;

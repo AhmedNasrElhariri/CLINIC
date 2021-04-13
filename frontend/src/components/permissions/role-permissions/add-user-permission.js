@@ -105,8 +105,6 @@ const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
           block
           cleanable={false}
           searchable={false}
-          labelKey="name"
-          valueKey="id"
           name="userId"
           data={doctors}
           value={formValue.userId}
@@ -120,8 +118,6 @@ const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
           block
           cleanable={false}
           searchable={false}
-          labelKey="name"
-          valueKey="id"
           name="branchId"
           data={branchChoices}
           value={formValue.branchId}

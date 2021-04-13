@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import moment from 'moment';
-import { mapArrToChoices, mapArrWithIdsToChoices } from 'utils/misc';
+import { mapArrToChoices } from 'utils/misc';
 import { isDateBefore } from 'utils/date';
 import { filterPatientBy } from 'utils/patient';
 import { APPT_STATUS, APPT_TYPE } from 'utils/constants';
@@ -137,15 +137,9 @@ export const getSpecialtiesByBranchId = (specialties, branchId) => {
   );
 };
 
-export const specialtiesTypes = (specialties, branchId) =>
-  mapArrWithIdsToChoices(getSpecialtiesByBranchId(specialties, branchId));
-
 export const getDoctorsBySpecialtyId = (doctors, specialtyId) => {
   return doctors.filter(d => d.specialty.id === specialtyId);
 };
-
-export const doctorsTypes = (doctors, specialtyId) =>
-  mapArrWithIdsToChoices(getDoctorsBySpecialtyId(doctors, specialtyId));
 
 export const getAppointmentTypes = () => Object.values(APPT_TYPE);
 

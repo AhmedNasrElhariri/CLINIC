@@ -21,7 +21,7 @@ const updateCache = myCoursesDefinition => {
 
 function useCoursesDefinition({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_COURSES_DEFINITION);
-  const coursesDefinition = useMemo(
+  const coursesDefinitions = useMemo(
     () => R.propOr([], 'myCoursesDefinition')(data),
     [data]
   );
@@ -32,7 +32,7 @@ function useCoursesDefinition({ onCreate, onEdit } = {}) {
       onCreate && onCreate();
     },
     update(cache, { data: { addCourseDefinition: courseDefinition } }) {
-      updateCache([...coursesDefinition, courseDefinition]);
+      updateCache([...coursesDefinitions, courseDefinition]);
     },
     onError() {
       Alert.error('Failed to add new Course');
@@ -50,12 +50,12 @@ function useCoursesDefinition({ onCreate, onEdit } = {}) {
 
   return useMemo(
     () => ({
-      coursesDefinition,
+      coursesDefinitions,
       addCourseDefinition,
       editCourseDefinition,
       updateCache,
     }),
-    [coursesDefinition, addCourseDefinition, editCourseDefinition]
+    [coursesDefinitions, addCourseDefinition, editCourseDefinition]
   );
 }
 

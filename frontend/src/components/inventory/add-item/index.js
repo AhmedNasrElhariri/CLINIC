@@ -59,8 +59,6 @@ const AddItem = ({ items }) => {
         <Form formValue={formValue} model={model} onChange={setFormValue} fluid>
           <CRSelectInput
             label="Item"
-            labelKey="name"
-            valueKey="id"
             name="itemId"
             data={items}
             block

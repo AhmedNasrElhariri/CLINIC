@@ -55,8 +55,6 @@ const CustomCascader = ({ choices, onChange, value, disabled, ...props }) => {
             cleanable={false}
             onChange={handleOnChange}
             parentSelectable={false}
-            labelKey="name"
-            valueKey="id"
             childrenKey="choices"
             renderValue={(value, activePaths, activeItemLabel) => {}}
             {...props}

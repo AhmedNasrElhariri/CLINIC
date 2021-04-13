@@ -42,7 +42,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     if (activeStep !== 1) {
       setActiveStep(activeStep + 1);
     } else {
-      console.log('hd');
       onOk({ ...value.current, discount });
     }
   }, [activeStep, onOk, discount]);

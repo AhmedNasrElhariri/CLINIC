@@ -147,7 +147,7 @@ const Course = ({ patient, appointmentId }) => {
     <>
       <Div textAlign="right">
         {courses.map(course => (
-          <CourseButton variant="primary" onClick={() => setCourse(course)}>
+          <CourseButton variant="primary" onClick={() => setCourse(course)} >
             {course.courseDefinition.name}
           </CourseButton>
         ))}
@@ -160,7 +160,7 @@ const Course = ({ patient, appointmentId }) => {
         </CRButton>
       </Div>
       <NewCourse
-        visible={visible}
+        visible={true}
         formValue={formValue}
         onChange={setFormValue}
         onOk={handleAdd}

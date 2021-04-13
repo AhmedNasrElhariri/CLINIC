@@ -48,8 +48,6 @@ export default function AddDoctor({
         <CRSelectInput
           name="specialtyId"
           label="Specialty"
-          valueKey="id"
-          labelKey="name"
           data={specialties}
           block
           cleanable
@@ -58,8 +56,6 @@ export default function AddDoctor({
         <CRSelectInput
           name="branchId"
           label="Branch"
-          valueKey="id"
-          labelKey="name"
           data={branches}
           disabled={!formValue.specialtyId}
           block
@@ -69,8 +65,6 @@ export default function AddDoctor({
         <CRSelectInput
           name="userId"
           label="Doctor"
-          valueKey="id"
-          labelKey="name"
           data={doctors}
           block
           cleanable

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 
@@ -30,27 +30,13 @@ const fontTheme200 = {
   },
 };
 
-const paddingLeft = css`
+const paddingLeft = css `
   padding-left: 22px;
 `;
 
-const borderCss = css`
+const borderCss = css `
   border: solid 1px ${props => props.theme.colors.primary} !important;
 `;
-
-// const ValueStyled = styled.div`
-//   background-color: #ffffff;
-//   font-weight: normal;
-//   font-stretch: normal;
-//   font-style: normal;
-//   line-height: 1.35;
-//   letter-spacing: normal;
-//   text-align: left;
-//   display: flex;
-//   align-items: center;
-//   color: ${props => props.theme.colors.primary};
-//   ${byTheme(theme)}
-// `;
 
 const ItemStyled = styled.div`
   height: 70px;
@@ -126,12 +112,40 @@ const SelectPickerStyled = styled(SelectPicker)`
   `}
 `;
 
-const CustomSelect = ({ value, label, onChange, ...props }) => {
+const CustomSelect = ({
+  value,
+  label,
+  onChange,
+  labelKey,
+  valueKey,
+  data,
+  sameValue,
+  ...props
+}) => {
+  const internalValue = useMemo(() => (sameValue&& value ? value[valueKey] : value), [
+    sameValue,
+    value,
+    valueKey,
+  ]);
+
+  const handleChange = useCallback(
+    val => {
+      const formVal = sameValue
+        ? data.find(d => d[valueKey] === val)
+        : val;
+      onChange(formVal);
+    },
+    [data, onChange, sameValue, valueKey]
+  );
+
   return (
     <SelectPickerStyled
       {...props}
-      value={value}
-      onChange={onChange}
+      value={internalValue}
+      onChange={handleChange}
+      labelKey={labelKey}
+      valueKey={valueKey}
+      data={data}
       menuClassName="cr-picker"
       virtualized={false}
       renderMenuItem={(label, { value: val }) => (
@@ -144,12 +158,32 @@ const CustomSelect = ({ value, label, onChange, ...props }) => {
   );
 };
 
-export default ({ label, layout, children, ...rest }) => {
+const CRSelectInput = ({
+  label,
+  labelKey,
+  valueKey,
+  layout,
+  children,
+  ...rest
+}) => {
   return (
     <FormGroupStyled layout={layout}>
       <Label>{label}</Label>
-      <FormControl {...rest} accepter={CustomSelect} />
+      <FormControl
+        {...rest}
+        accepter={CustomSelect}
+        labelKey={labelKey}
+        valueKey={valueKey}
+      />
       {children}
     </FormGroupStyled>
   );
 };
+
+CRSelectInput.defaultProps = {
+  labelKey: 'name',
+  valueKey: 'id',
+  sameValue: false,
+};
+
+export default CRSelectInput;

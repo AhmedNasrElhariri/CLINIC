@@ -46,8 +46,6 @@ function ReportPrintout() {
           placeholder="Patient Reports"
           cleanable={true}
           accepter={SelectPicker}
-          labelKey="name"
-          valueKey="body"
           data={patientReports}
           virtualized={false}
           block

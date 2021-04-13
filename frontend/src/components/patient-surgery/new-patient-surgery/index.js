@@ -38,24 +38,18 @@ const NewPatientSurgery = ({
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRSelectInput
           label="Patient"
-          labelKey="name"
-          valueKey="id"
           name="patientId"
           data={patients || []}
           block
         />
         <CRSelectInput
           label="Surgery"
-          labelKey="name"
-          valueKey="id"
           name="surgeryId"
           data={surgeries}
           block
         />
         <CRSelectInput
           label="Hospital"
-          labelKey="name"
-          valueKey="id"
           name="hospitalId"
           data={hospitals}
           block

@@ -87,8 +87,6 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
           block
           cleanable={false}
           searchable={false}
-          labelKey="name"
-          valueKey="id"
           name="specialtyId"
           value={formValue.specialtyId}
           disabled={selectedAll}
@@ -102,8 +100,6 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
           block
           cleanable={false}
           searchable={false}
-          labelKey="name"
-          valueKey="id"
           name="branchId"
           value={formValue.branchId}
           onChange={updateFormField('branchId')}

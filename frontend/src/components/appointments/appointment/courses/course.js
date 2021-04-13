@@ -13,7 +13,6 @@ const DataName = styled.div`
 const DataValue = styled.div``;
 
 const CourseData = ({ course, onEditPaid, onEditDoctor }) => {
-  console.log(course);
   const history = useHistory();
   return (
     <>
