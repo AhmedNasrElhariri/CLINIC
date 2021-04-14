@@ -3,11 +3,11 @@ import path from 'path';
 import { GraphQLServer } from 'graphql-yoga';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import fileUpload from 'express-fileupload';
-
+import cors from 'cors';
 import moment from 'moment';
 import 'moment-timezone';
 import mkdirp from 'mkdirp';
-
+import pdf from 'express-pdf';
 import { PrismaClient } from '@prisma/client';
 import typeDefs from './schema.gql';
 import resolvers from './resolvers';
@@ -18,6 +18,9 @@ import { getContextData } from './services/auth.service';
 
 export const UPLOAD_DIR = '/uploads';
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
+
+export const PDF_DIR = '/pdf';
+mkdirp.sync(path.join(__dirname, PDF_DIR));
 
 export const prisma = new PrismaClient();
 export const pubsub = new RedisPubSub();
@@ -48,8 +51,28 @@ const server = new GraphQLServer({
 });
 
 const app = server.express;
+app.use(cors({origin:true,credentials: true}));
+
+app.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
+});
 
 app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
+
 
 app.use(fileUpload());
 
@@ -65,6 +88,13 @@ app.post('/upload', async function (req, res) {
   const response = await Promise.all(files.map(f => upload(f)));
 
   res.send(response);
+});
+app.use(pdf);
+app.get('/pdf', function(req, res){
+  res.pdfFromHTML({
+      filename: 'generated.pdf',
+      html: path.resolve(__dirname, './template.ejs'),
+  });
 });
 
 if (process.env.NODE_ENV === 'production') {
