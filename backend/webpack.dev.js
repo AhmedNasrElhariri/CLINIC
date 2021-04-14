@@ -8,6 +8,5 @@ module.exports = merge(common, {
     path: __dirname + '/server-dist',
     publicPath: './src',
   },
-
   externals: [nodeExternals()],
 });
