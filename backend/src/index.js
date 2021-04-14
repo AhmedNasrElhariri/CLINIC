@@ -15,6 +15,32 @@ import resolvers from './resolvers';
 import middlewares from './middlewares';
 import { upload } from './services/upload.service';
 import { getContextData } from './services/auth.service';
+import htmlToPdfmake from 'html-to-pdfmake';
+var fs = require('fs');
+var pdfMake = require('pdfmake/build/pdfmake');
+var pdfFonts = require('pdfmake/build/vfs_fonts');
+
+import normal from './assets/fonts/Roboto-Regular.ttf';
+import bold from './assets/fonts/Roboto-Regular.ttf';
+import italics from './assets/fonts/Roboto-Regular.ttf';
+import bolditalics from './assets/fonts/Roboto-Regular.ttf';
+
+var PdfPrinter = require('pdfmake');
+var fonts = {
+  Roboto: {
+    normal,
+    bold,
+    italics,
+    bolditalics,
+  },
+};
+
+var printer = new PdfPrinter(fonts);
+var fs = require('fs');
+
+import jsdom from 'jsdom';
+const { JSDOM } = jsdom;
+const { window } = new JSDOM('');
 
 export const UPLOAD_DIR = '/uploads';
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
@@ -24,6 +50,8 @@ mkdirp.sync(path.join(__dirname, PDF_DIR));
 
 export const prisma = new PrismaClient();
 export const pubsub = new RedisPubSub();
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const options = {
   port: process.env.APP_PORT || 4000,
@@ -51,28 +79,9 @@ const server = new GraphQLServer({
 });
 
 const app = server.express;
-app.use(cors({origin:true,credentials: true}));
-
-app.use(function (req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Pass to next layer of middleware
-  next();
-});
+app.use(cors());
 
 app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
-
 
 app.use(fileUpload());
 
@@ -90,11 +99,18 @@ app.post('/upload', async function (req, res) {
   res.send(response);
 });
 app.use(pdf);
-app.get('/pdf', function(req, res){
-  res.pdfFromHTML({
-      filename: 'generated.pdf',
-      html: path.resolve(__dirname, './template.ejs'),
-  });
+
+app.get('/pdf', function (req, res) {
+  const html = htmlToPdfmake(`<div>the html code</div>`, { window });
+  var docDefinition = {
+    content: [html],
+  };
+
+  var options = {};
+
+  var pdfDoc = printer.createPdfKitDocument(docDefinition, options);
+  pdfDoc.pipe(res);
+  pdfDoc.end();
 });
 
 if (process.env.NODE_ENV === 'production') {
