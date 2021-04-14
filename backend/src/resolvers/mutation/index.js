@@ -65,5 +65,5 @@ export { default as editCourse } from './edit-course';
 export { default as editCourseDoctor } from './edit-course-doctor';
 export { default as addPayrollUser } from './add-payroll-user';
 export { default as addTransaction } from './add-payroll-transaction';
-export { default as addPayrollPayment } from './add-payroll-payment';
+export { default as addPayroll } from './add-payroll';
 export { default as deletePayrollUser } from './delete-payroll-user';

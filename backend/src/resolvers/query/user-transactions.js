@@ -1,11 +1,14 @@
 import { prisma } from '@';
 
-const myUserTransactions = (_, { userId }) => {
+const userTransactions = (_, { userId }) => {
   return prisma.payrollTransaction.findMany({
     where: {
       payrollUserId: userId,
+      payroll:{
+        status:'Open',
+      }
     },
   });
 };
 
-export default myUserTransactions;
+export default userTransactions;

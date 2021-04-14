@@ -8,8 +8,9 @@ import {
   LIST_PAY_ROLL_USERS,
   ADD_PAYROLL_TRANSACTION,
   LIST_USER_TRANSACTIONS,
-  ADD_PAY_ROLL_PAYMENT,
+  ADD_PAY_ROLL,
   DELETE_PAYROLL_USER,
+  PAYROLL_TO_PAY_SUMMARY,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -24,14 +25,18 @@ import client from 'apollo-client/client';
 
 function usePayroll({ userId }) {
   const { data } = useQuery(LIST_PAY_ROLL_USERS);
-  const payrollUsers = useMemo(() => R.propOr([], 'myPayrollUsers')(data), [
+  const payrollUsers = useMemo(() => R.propOr([], 'payrollUsers')(data), [
     data,
+  ]);
+  const { data:paySummary } = useQuery(PAYROLL_TO_PAY_SUMMARY);
+  const payrollToPaySummary = useMemo(() => R.propOr([], 'payrollToPaySummary')(paySummary), [
+    paySummary,
   ]);
   const { data: transactionData } = useQuery(LIST_USER_TRANSACTIONS, {
     variables: { userId },
   });
   const userTransactions = useMemo(
-    () => R.propOr([], 'myUserTransactions')(transactionData),
+    () => R.propOr([], 'userTransactions')(transactionData),
     [transactionData]
   );
   const [addPayrollUser] = useMutation(ADD_PAYROLL_USER, {
@@ -53,7 +58,7 @@ function usePayroll({ userId }) {
     },
   });
 
-  const [addPayrollPayment] = useMutation(ADD_PAY_ROLL_PAYMENT, {
+  const [addPayroll] = useMutation(ADD_PAY_ROLL, {
     onCompleted() {
       Alert.success('the Payroll Payment has been Added Successfully');
     },
@@ -75,17 +80,19 @@ function usePayroll({ userId }) {
     () => ({
       addPayrollUser,
       payrollUsers,
+      payrollToPaySummary,
       addTransaction,
       userTransactions,
-      addPayrollPayment,
+      addPayroll,
       deleteUser,
     }),
     [
       addPayrollUser,
       payrollUsers,
+      payrollToPaySummary,
       addTransaction,
       userTransactions,
-      addPayrollPayment,
+      addPayroll,
       deleteUser,
     ]
   );

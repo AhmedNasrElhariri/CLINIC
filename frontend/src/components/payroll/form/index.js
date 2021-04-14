@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form, Schema, SelectPicker } from 'rsuite';
-import { CRModal, CRNumberInput, CRSelectInput, CRCheckBox } from 'components';
+import { CRModal, CRNumberInput, CRSelectInput, CRCheckBoxGroup } from 'components';
 import { isValid } from 'services/form';
 import { usePermissions } from 'hooks';
 import styled from 'styled-components';
@@ -32,6 +32,7 @@ export const usePayrollForm = ({
   setFormValue,
   type,
   payrollUsers,
+  payrollToPaySummary,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -62,6 +63,7 @@ export const usePayrollForm = ({
     onOk,
     type,
     payrollUsers,
+    payrollToPaySummary,
     onCancel,
     onChange: setFormValue,
     model,
@@ -78,14 +80,16 @@ const PayrollForm = ({
   model,
   type,
   payrollUsers,
+  payrollToPaySummary,
   close,
 }) => {
+  
   const { users } = usePermissions({});
   const ref = useRef();
-  const payrollUsersCheck = payrollUsers.map(user => {
+  const payrollUsersCheck = payrollToPaySummary.map(u => {
     return {
-      name: `${user.user.name} ${user.netSalary}`,
-      value: user.netSalary,
+      name: `${u.user.name} ${u.salary}`,
+      value: u.id,
     };
   });
   return (
@@ -114,10 +118,8 @@ const PayrollForm = ({
           <>
             {type === 'addPayroll' ? (
               <>
-                <CRCheckBox
-                  name="payment"
-                  options={payrollUsersCheck}
-                ></CRCheckBox>
+              <CRCheckBoxGroup options={payrollUsersCheck} name='payment'/>
+              
               </>
             ) : (
               <>

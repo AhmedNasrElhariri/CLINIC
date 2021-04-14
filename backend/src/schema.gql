@@ -132,8 +132,9 @@ type Query {
   myInvoiceCounter: Organization!
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
-  myPayrollUsers: [PayrollUser!]
-  myUserTransactions(userId: ID!): [PayrollTransaction!]
+  payrollUsers: [PayrollUser!]
+  payrollToPaySummary:[PayrollUser!]
+  userTransactions(userId: ID!): [PayrollTransaction!]
 }
 
 ########################### Mutation ##################################
@@ -223,7 +224,7 @@ type Mutation {
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
   ): PayrollTransaction!
-  addPayrollPayment(payment:Int!):Payroll!
+  addPayroll(payment:[ID!]):Payroll!
   deletePayrollUser(userId:ID!):PayrollUser!
 }
 
@@ -605,6 +606,12 @@ type PayrollUser {
   organizationId: ID!
 }
 
+type PayrollToPaySummary{
+  id: ID!
+  name: String!
+  amount: Int!
+}
+
 input PayrollUserInput {
   userId: ID!
   salary: Int!
@@ -616,8 +623,8 @@ type Payroll {
   id: ID!
   name: String!
   status: PayrollStatus!
-  date: Date!
-  payment: Int!
+  startDate: Date!
+  endDate: Date!
   organization: Organization
 }
 
@@ -627,6 +634,7 @@ type PayrollTransaction {
   date: Date!
   type: PayrollTransactionType
   payrollUser: PayrollUser
+  payroll:Payroll
 }
 
 input PayrollTransactionInput {

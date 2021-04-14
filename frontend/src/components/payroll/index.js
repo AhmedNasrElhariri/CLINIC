@@ -12,14 +12,16 @@ const initValue = {
   type: '',
   payment: [],
 };
+
 let type = '';
 function Payroll() {
   const [formValue, setFormValue] = useState(initValue);
   const {
     addPayrollUser,
     payrollUsers,
+    payrollToPaySummary,
     addTransaction,
-    addPayrollPayment,
+    addPayroll,
     deleteUser,
   } = usePayroll({});
   const handleAddUser = useCallback(() => {
@@ -34,16 +36,12 @@ function Payroll() {
     });
   }, [formValue, addPayrollUser]);
   const handleAddPayroll = useCallback(() => {
-    let payment = 0;
-    formValue.payment.map(pay => {
-      payment += pay;
-    });
-    addPayrollPayment({
+    addPayroll({
       variables: {
-        payment: payment,
+        payment: formValue.payment,
       },
     });
-  }, [addPayrollPayment, formValue.payment]);
+  }, [addPayroll, formValue.payment]);
   const handleAddAdvance = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
@@ -108,14 +106,16 @@ function Payroll() {
     type: 'Advance',
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
+    payrollToPaySummary:payrollToPaySummary,
   });
-  const addPayroll = usePayrollForm({
+  const addPayrollCycle = usePayrollForm({
     header: 'Add Payroll',
     onOk: handleAddPayroll,
     formValue: formValue,
     type: 'addPayroll',
     payrollUsers: payrollUsers,
     setFormValue: setFormValue,
+    payrollToPaySummary:payrollToPaySummary,
   });
   const addIncentiveForm = usePayrollForm({
     header: 'Add Incentives',
@@ -124,6 +124,7 @@ function Payroll() {
     formValue: formValue,
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
+    payrollToPaySummary:payrollToPaySummary,
   });
   const addCommissionForm = usePayrollForm({
     header: 'Add Commission',
@@ -132,6 +133,7 @@ function Payroll() {
     type: 'Commision',
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
+    payrollToPaySummary:payrollToPaySummary,
   });
   const addDeductionForm = usePayrollForm({
     header: 'Add Deduction',
@@ -140,6 +142,7 @@ function Payroll() {
     formValue: formValue,
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
+    payrollToPaySummary:payrollToPaySummary,
   });
   const deletePayrollUser = usePayrollForm({
     header: 'Delete Payroll User',
@@ -148,6 +151,7 @@ function Payroll() {
     formValue: formValue,
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
+    payrollToPaySummary:payrollToPaySummary,
   });
   const addNewUser = usePayrollForm({
     header: 'Add New User',
@@ -156,6 +160,7 @@ function Payroll() {
     type: 'addNewUser',
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
+    payrollToPaySummary:payrollToPaySummary,
   });
   return (
     <>
@@ -164,7 +169,7 @@ function Payroll() {
           title="Payroll Reports"
           more={
             <Div display="flex">
-              <CRButton variant="primary" onClick={addPayroll.show} ml={1}>
+              <CRButton variant="primary" onClick={addPayrollCycle.show} ml={1}>
                 Add Payroll
               </CRButton>
               <CRButton variant="primary" onClick={addNewUser.show} ml={1}>
@@ -199,7 +204,7 @@ function Payroll() {
         <PayrollForm {...addCommissionForm} />
         <PayrollForm {...addDeductionForm} />
         <PayrollForm {...addNewUser} />
-        <PayrollForm {...addPayroll} />
+        <PayrollForm {...addPayrollCycle} />
         <PayrollForm {...deletePayrollUser} />
         <EmployeesPayroll
           payrollUsers={payrollUsers}

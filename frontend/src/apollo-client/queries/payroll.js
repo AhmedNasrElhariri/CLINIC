@@ -2,20 +2,32 @@ import gql from 'graphql-tag';
 
 export const LIST_PAY_ROLL_USERS = gql`
   {
-    myPayrollUsers {
+    payrollUsers {
       id
       salary
-      netSalary
-      user {
+      user{
         name
         position
       }
     }
   }
 `;
+
+export const PAYROLL_TO_PAY_SUMMARY = gql`
+  {
+    payrollToPaySummary {
+      id
+      salary
+      user{
+        name
+      }
+    }
+  }
+`;
+
 export const LIST_USER_TRANSACTIONS = gql`
-  query myUserTransactions($userId: ID!) {
-    myUserTransactions(userId: $userId) {
+  query userTransactions($userId: ID!) {
+    userTransactions(userId: $userId) {
       id
       amount
       type
@@ -51,9 +63,9 @@ export const ADD_PAYROLL_TRANSACTION = gql`
   }
 `;
 
-export const ADD_PAY_ROLL_PAYMENT = gql`
-  mutation addPayrollPayment($payment: Int!) {
-    addPayrollPayment(payment: $payment) {
+export const ADD_PAY_ROLL = gql`
+  mutation addPayroll($payment: [ID!]) {
+    addPayroll(payment: $payment) {
       id
     }
   }
