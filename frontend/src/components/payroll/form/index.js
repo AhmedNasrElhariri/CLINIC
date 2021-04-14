@@ -1,10 +1,13 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
-import { Form, Schema, SelectPicker } from 'rsuite';
-import { CRModal, CRNumberInput, CRSelectInput, CRCheckBoxGroup } from 'components';
-import { isValid } from 'services/form';
-import { usePermissions } from 'hooks';
+import { Form, Schema } from 'rsuite';
+import {
+  CRModal,
+  CRNumberInput,
+  CRSelectInput,
+  CRCheckBoxGroup,
+} from 'components';
 import styled from 'styled-components';
-const { StringType, DateType, NumberType } = Schema.Types;
+const { StringType, NumberType } = Schema.Types;
 
 const DeleteMessage = styled.div`
   font-size: 10px;
@@ -39,7 +42,7 @@ export const usePayrollForm = ({
   const onCancel = useCallback(() => {
     setFormValue(initValue);
     setVisible(false);
-  }, []);
+  }, [setFormValue]);
 
   const show = useCallback(() => {
     setVisible(true);
@@ -83,8 +86,6 @@ const PayrollForm = ({
   payrollToPaySummary,
   close,
 }) => {
-  
-  const { users } = usePermissions({});
   const ref = useRef();
   const payrollUsersCheck = payrollToPaySummary.map(u => {
     return {
@@ -118,8 +119,7 @@ const PayrollForm = ({
           <>
             {type === 'addPayroll' ? (
               <>
-              <CRCheckBoxGroup options={payrollUsersCheck} name='payment'/>
-              
+                <CRCheckBoxGroup options={payrollUsersCheck} name="payment" />
               </>
             ) : (
               <>
@@ -128,31 +128,24 @@ const PayrollForm = ({
                   name="userId"
                   placeholder="Select User"
                   block
-                  cleanable={false}
-                  searchable={false}
-                  accepter={SelectPicker}
-                  data={users}
+                  data={payrollUsers}
                 />
-                {type === 'addNewUser' ? (
+                {type === 'addNewUser' && (
                   <CRNumberInput
                     label="Salary"
                     name="salary"
                     block
                   ></CRNumberInput>
-                ) : (
-                  <></>
                 )}
-                {type === 'Deduction' ||
-                type === 'Commision' ||
-                type === 'Incentive' ||
-                type === 'Advance' ? (
+                {(type === 'Deduction' ||
+                  type === 'Commision' ||
+                  type === 'Incentive' ||
+                  type === 'Advance') && (
                   <CRNumberInput
                     label="Amount"
                     name="amount"
                     block
                   ></CRNumberInput>
-                ) : (
-                  <></>
                 )}
               </>
             )}

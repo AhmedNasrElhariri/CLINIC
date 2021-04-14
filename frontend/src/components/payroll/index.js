@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from 'react';
 
 import { Div, MainContainer, CRButton } from 'components';
-import { Can } from 'components/user/can';
 import PayrollForm, { usePayrollForm } from './form';
 import EmployeesPayroll from './list-payrolls';
-import { usePayroll } from 'hooks';
+import { usePayroll, usePermissions } from 'hooks';
 const initValue = {
   userId: '',
   salary: '',
@@ -13,9 +12,9 @@ const initValue = {
   payment: [],
 };
 
-let type = '';
 function Payroll() {
   const [formValue, setFormValue] = useState(initValue);
+  const { users } = usePermissions();
   const {
     addPayrollUser,
     payrollUsers,
@@ -23,7 +22,7 @@ function Payroll() {
     addTransaction,
     addPayroll,
     deleteUser,
-  } = usePayroll({});
+  } = usePayroll();
   const handleAddUser = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
@@ -91,8 +90,7 @@ function Payroll() {
       },
     });
   }, [addTransaction, formValue.amount, formValue.userId]);
-  const deletePayrollUserFun = (userId) => {
-    //deletePayrollUser.show();
+  const deletePayrollUserFun = userId => {
     deleteUser({
       variables: {
         userId: userId,
@@ -106,7 +104,7 @@ function Payroll() {
     type: 'Advance',
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
-    payrollToPaySummary:payrollToPaySummary,
+    payrollToPaySummary: payrollToPaySummary,
   });
   const addPayrollCycle = usePayrollForm({
     header: 'Add Payroll',
@@ -115,7 +113,7 @@ function Payroll() {
     type: 'addPayroll',
     payrollUsers: payrollUsers,
     setFormValue: setFormValue,
-    payrollToPaySummary:payrollToPaySummary,
+    payrollToPaySummary: payrollToPaySummary,
   });
   const addIncentiveForm = usePayrollForm({
     header: 'Add Incentives',
@@ -124,7 +122,7 @@ function Payroll() {
     formValue: formValue,
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
-    payrollToPaySummary:payrollToPaySummary,
+    payrollToPaySummary: payrollToPaySummary,
   });
   const addCommissionForm = usePayrollForm({
     header: 'Add Commission',
@@ -133,7 +131,7 @@ function Payroll() {
     type: 'Commision',
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
-    payrollToPaySummary:payrollToPaySummary,
+    payrollToPaySummary: payrollToPaySummary,
   });
   const addDeductionForm = usePayrollForm({
     header: 'Add Deduction',
@@ -142,7 +140,7 @@ function Payroll() {
     formValue: formValue,
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
-    payrollToPaySummary:payrollToPaySummary,
+    payrollToPaySummary: payrollToPaySummary,
   });
   const deletePayrollUser = usePayrollForm({
     header: 'Delete Payroll User',
@@ -151,7 +149,7 @@ function Payroll() {
     formValue: formValue,
     setFormValue: setFormValue,
     payrollUsers: payrollUsers,
-    payrollToPaySummary:payrollToPaySummary,
+    payrollToPaySummary: payrollToPaySummary,
   });
   const addNewUser = usePayrollForm({
     header: 'Add New User',
@@ -159,58 +157,48 @@ function Payroll() {
     formValue: formValue,
     type: 'addNewUser',
     setFormValue: setFormValue,
-    payrollUsers: payrollUsers,
-    payrollToPaySummary:payrollToPaySummary,
+    payrollUsers: users,
+    payrollToPaySummary: payrollToPaySummary,
   });
   return (
     <>
-      <Can I="view" an="Report">
-        <MainContainer
-          title="Payroll Reports"
-          more={
-            <Div display="flex">
-              <CRButton variant="primary" onClick={addPayrollCycle.show} ml={1}>
-                Add Payroll
-              </CRButton>
-              <CRButton variant="primary" onClick={addNewUser.show} ml={1}>
-                Add New User
-              </CRButton>
-              <CRButton variant="success" onClick={addAdvanceForm.show} ml={1}>
-                Add Advance
-              </CRButton>
-              <CRButton
-                variant="primary"
-                onClick={addIncentiveForm.show}
-                ml={1}
-              >
-                Add Incentives
-              </CRButton>
-              <CRButton
-                variant="primary"
-                onClick={addCommissionForm.show}
-                ml={1}
-              >
-                Add Commission
-              </CRButton>
-              <CRButton variant="danger" onClick={addDeductionForm.show} ml={1}>
-                Add Deduction
-              </CRButton>
-            </Div>
-          }
-          nobody
-        ></MainContainer>
-        <PayrollForm {...addAdvanceForm} />
-        <PayrollForm {...addIncentiveForm} />
-        <PayrollForm {...addCommissionForm} />
-        <PayrollForm {...addDeductionForm} />
-        <PayrollForm {...addNewUser} />
-        <PayrollForm {...addPayrollCycle} />
-        <PayrollForm {...deletePayrollUser} />
-        <EmployeesPayroll
-          payrollUsers={payrollUsers}
-          handleDelete={deletePayrollUserFun}
-        />
-      </Can>
+      <MainContainer
+        title="Payroll Reports"
+        more={
+          <Div display="flex">
+            <CRButton variant="primary" onClick={addPayrollCycle.show} ml={1}>
+              Add Payroll
+            </CRButton>
+            <CRButton variant="primary" onClick={addNewUser.show} ml={1}>
+              Add New User
+            </CRButton>
+            <CRButton variant="success" onClick={addAdvanceForm.show} ml={1}>
+              Add Advance
+            </CRButton>
+            <CRButton variant="primary" onClick={addIncentiveForm.show} ml={1}>
+              Add Incentives
+            </CRButton>
+            <CRButton variant="primary" onClick={addCommissionForm.show} ml={1}>
+              Add Commission
+            </CRButton>
+            <CRButton variant="danger" onClick={addDeductionForm.show} ml={1}>
+              Add Deduction
+            </CRButton>
+          </Div>
+        }
+        nobody
+      ></MainContainer>
+      <PayrollForm {...addAdvanceForm} />
+      <PayrollForm {...addIncentiveForm} />
+      <PayrollForm {...addCommissionForm} />
+      <PayrollForm {...addDeductionForm} />
+      <PayrollForm {...addNewUser} />
+      <PayrollForm {...addPayrollCycle} />
+      <PayrollForm {...deletePayrollUser} />
+      <EmployeesPayroll
+        payrollUsers={payrollUsers}
+        handleDelete={deletePayrollUserFun}
+      />
     </>
   );
 }

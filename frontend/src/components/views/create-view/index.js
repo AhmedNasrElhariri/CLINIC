@@ -6,7 +6,6 @@ import {
   FormControl,
   FormGroup,
   ControlLabel,
-  SelectPicker,
 } from 'rsuite';
 import { useMutation } from '@apollo/client';
 import { CREATE_VIEW } from 'apollo-client/queries';

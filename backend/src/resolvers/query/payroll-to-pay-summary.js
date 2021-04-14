@@ -1,10 +1,10 @@
 import { prisma } from '@';
 
-const payrollToPaySummary = (_,  { organizationId })=> {
+const payrollToPaySummary = (_, { organizationId }) => {
   return prisma.payrollUser.findMany({
-    where:{
-      organizationId:organizationId,
-    }
+    where: {
+      organizationId: organizationId,
+    },
   });
   // let users = [];
   // const Users = await prisma.payrollUser.findMany({

@@ -48,8 +48,8 @@ export const ADD_PAYROLL_USER = gql`
 `;
 
 export const DELETE_PAYROLL_USER = gql`
-  mutation deleteUser($userId: ID!) {
-    deleteUser(userId: $userId) {
+  mutation deletePayrollUser($userId: ID!) {
+    deletePayrollUser(userId: $userId) {
       id
     }
   }

@@ -12,26 +12,22 @@ import {
   DELETE_PAYROLL_USER,
   PAYROLL_TO_PAY_SUMMARY,
 } from 'apollo-client/queries';
-import client from 'apollo-client/client';
 
-// const updateCache = myPayrollUsers => {
-//   client.writeQuery({
-//     query: LIST_PAY_ROLL_USERS,
-//     data: {
-//         myPayrollUsers,
-//     },
-//   });
-// };
-
-function usePayroll({ userId }) {
+function usePayroll({ userId } = {}) {
   const { data } = useQuery(LIST_PAY_ROLL_USERS);
-  const payrollUsers = useMemo(() => R.propOr([], 'payrollUsers')(data), [
-    data,
-  ]);
-  const { data:paySummary } = useQuery(PAYROLL_TO_PAY_SUMMARY);
-  const payrollToPaySummary = useMemo(() => R.propOr([], 'payrollToPaySummary')(paySummary), [
-    paySummary,
-  ]);
+  const payrollUsers = useMemo(
+    () =>
+      R.pipe(
+        R.propOr([], 'payrollUsers'),
+        R.map(u => ({ ...u, name: u.user.name }))
+      )(data),
+    [data]
+  );
+  const { data: paySummary } = useQuery(PAYROLL_TO_PAY_SUMMARY);
+  const payrollToPaySummary = useMemo(
+    () => R.propOr([], 'payrollToPaySummary')(paySummary),
+    [paySummary]
+  );
   const { data: transactionData } = useQuery(LIST_USER_TRANSACTIONS, {
     variables: { userId },
   });
@@ -63,16 +59,16 @@ function usePayroll({ userId }) {
       Alert.success('the Payroll Payment has been Added Successfully');
     },
     onError() {
-      Alert.error('Failed to add Payroll Payment');
+      Alert.error('Failed to create the Payroll');
     },
   });
 
   const [addTransaction] = useMutation(ADD_PAYROLL_TRANSACTION, {
     onCompleted() {
-      Alert.success('the Transaction Added Successfully');
+      Alert.success('The transaction has been created successfully');
     },
     onError() {
-      Alert.error('Failed to add The Transaction');
+      Alert.error('Failed to create The Transaction');
     },
   });
 

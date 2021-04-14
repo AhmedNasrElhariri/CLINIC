@@ -188,8 +188,6 @@ export default function NewAppointment({ show, onHide }) {
                 name="specialtyId"
                 placeholder="Select Specialty"
                 block
-                cleanable={false}
-                searchable={false}
                 data={specialties}
               />
             )}
@@ -199,8 +197,6 @@ export default function NewAppointment({ show, onHide }) {
                 name="userId"
                 placeholder="Select Doctor"
                 block
-                cleanable={false}
-                searchable={false}
                 data={doctors}
               />
             )}
