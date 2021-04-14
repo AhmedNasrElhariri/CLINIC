@@ -1,6 +1,7 @@
 const NodemonPlugin = require('nodemon-webpack-plugin');
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   target: 'node',
@@ -17,6 +18,10 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'graphql-tag/loader',
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        loader: 'file-loader',
+      },
     ],
   },
   resolve: {
@@ -31,6 +36,17 @@ module.exports = {
   node: {
     __dirname: false,
   },
-  plugins: [new NodemonPlugin(), new CleanWebpackPlugin()],
+  plugins: [
+    new NodemonPlugin(),
+    new CleanWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './src/views/',
+          to: 'views',
+        },
+      ],
+    }),
+  ],
   mode: 'development',
 };

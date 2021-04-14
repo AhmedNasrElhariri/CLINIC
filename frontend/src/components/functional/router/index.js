@@ -22,6 +22,7 @@ import {
   PatientSurgeriesContainer,
   ReportPrintout,
   Example,
+  Test,
   Csv,
   Payroll
 } from 'components';
@@ -108,12 +109,12 @@ function AppRouter() {
       <Route path="/example">
         <Example />
       </Route>
-      {/* <Route path="/test">
+      <Route path="/test">
         <>
-          <Patient />
+          
           <Test />
         </>
-      </Route> */}
+      </Route>
       <Route path="/csv">
         <Csv />
       </Route>
