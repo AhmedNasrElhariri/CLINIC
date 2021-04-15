@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const listBranches = (_, { organizationId }) => {
+const listBranches = (_, __, { organizationId }) => {
   return prisma.branch.findMany({
     where: {
       organizationId,

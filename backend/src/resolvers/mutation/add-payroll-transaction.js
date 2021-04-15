@@ -1,4 +1,5 @@
 import { prisma } from '@';
+import { PAYROLL_STATUS } from '@/utils/constants';
 
 const addTransaction = async (
   _,
@@ -11,7 +12,7 @@ const addTransaction = async (
     amount = amount * -1;
   }
   const payrollRow = await prisma.payroll.findMany({
-    where: { status: 'Open' },
+    where: { status: PAYROLL_STATUS.Open },
   });
   if (payrollRow.length == 0) {
     let date = new Date();
@@ -21,9 +22,9 @@ const addTransaction = async (
     const payroll = await prisma.payroll.create({
       data: {
         name: payrollDate,
-        status: 'Open',
+        status: PAYROLL_STATUS.Open,
         startDate: date,
-        endDate:date,
+        endDate: date,
         organization: {
           connect: {
             id: organizationId,
@@ -49,7 +50,7 @@ const addTransaction = async (
         },
       },
     });
-  }else{
+  } else {
     payrollId = payrollRow[0].id;
     return prisma.payrollTransaction.create({
       data: {

@@ -306,7 +306,6 @@ model AppointmentFile {
 model PayrollUser {
   id             String               @id @default(uuid())
   salary         Int
-  netSalary      Int
   user           User                 @relation(fields: [userId], references: [id])
   userId         String
   organizationId String

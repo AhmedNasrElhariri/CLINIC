@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const listSpecialties = (_, { organizationId }) => {
+const listSpecialties = (_, __, { organizationId }) => {
   return prisma.specialty.findMany({
     where: {
       organizationId,

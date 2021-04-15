@@ -5,7 +5,7 @@ export const LIST_PAY_ROLL_USERS = gql`
     payrollUsers {
       id
       salary
-      user{
+      user {
         name
         position
       }
@@ -17,10 +17,8 @@ export const PAYROLL_TO_PAY_SUMMARY = gql`
   {
     payrollToPaySummary {
       id
-      salary
-      user{
-        name
-      }
+      name
+      amount
     }
   }
 `;
@@ -32,7 +30,7 @@ export const LIST_USER_TRANSACTIONS = gql`
       amount
       type
       date
-      payrollUser{
+      payrollUser {
         salary
       }
     }
@@ -69,4 +67,4 @@ export const ADD_PAY_ROLL = gql`
       id
     }
   }
-`
+`;

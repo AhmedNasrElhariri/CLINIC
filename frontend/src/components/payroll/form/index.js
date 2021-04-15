@@ -89,7 +89,7 @@ const PayrollForm = ({
   const ref = useRef();
   const payrollUsersCheck = payrollToPaySummary.map(u => {
     return {
-      name: `${u.user.name} ${u.salary}`,
+      name: `${u.name} ${u.amount}`,
       value: u.id,
     };
   });

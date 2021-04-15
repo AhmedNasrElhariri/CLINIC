@@ -1,38 +1,40 @@
-import { prisma } from '@';
+import * as R from 'ramda';
 
-const payrollToPaySummary = (_, { organizationId }) => {
-  return prisma.payrollUser.findMany({
+import { prisma } from '@';
+import { PAYROLL_STATUS } from '@/utils/constants';
+
+const byUserId = trx => trx.payrollUser.id;
+const sumSalary = trxs => {
+  const {
+    id,
+    user: { name },
+  } = trxs[0].payrollUser;
+  return {
+    id,
+    name,
+    amount: trxs.reduce((acc, { amount }) => acc + amount, 0),
+  };
+};
+
+const payrollToPaySummary = async (_, __, { organizationId }) => {
+  const transactions = await prisma.payrollTransaction.findMany({
     where: {
-      organizationId: organizationId,
+      payroll: {
+        organizationId,
+        status: PAYROLL_STATUS.Open,
+      },
+    },
+    include: {
+      payrollUser: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
-  // let users = [];
-  // const Users = await prisma.payrollUser.findMany({
-  //   where:{
-  //     organizationId:organizationId,
-  //   }
-  // });
-  // Users.map(u => {
-  //   let amount = 0;
-  //   let user = {id:null,name:'',amount:0};
-  //   const userTransactions = prisma.payrollTransaction.findMany({
-  //     where: {
-  //       payrollUserId: u.id,
-  //       payroll:{
-  //         status:'Open',
-  //       }
-  //     },
-  //   });
-  //   userTransactions.forEach(transaction => {
-  //     amount += transaction.amount;
-  //   });
-  //   user.id = u.id;
-  //   user.name = u.user.name;
-  //   user.amount = amount;
-  //   users.push(user);
-  // });
-  // console.log(users,'dkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-  // return users;
+
+  const groupedTrxs = R.groupBy(byUserId)(transactions);
+  return R.map(sumSalary)(Object.values(groupedTrxs));
 };
 
 export default payrollToPaySummary;

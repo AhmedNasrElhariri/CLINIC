@@ -15,7 +15,7 @@ export const getUserPayloads = request => {
     const { userId, organizationId } = jwt.verify(token, APP_SECRET);
     return {
       userId: userId,
-      organizationId: organizationId,
+      organizationId,
     };
   } catch (error) {
     return null;

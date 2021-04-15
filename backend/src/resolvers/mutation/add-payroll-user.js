@@ -7,7 +7,7 @@ const payrollUser = async (_, { payrollUser }, { organizationId }) => {
       id: userId,
       salary: salary,
       netSalary: salary,
-      organizationId: organizationId,
+      organizationId,
       user: {
         connect: {
           id: userId,

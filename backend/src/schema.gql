@@ -133,7 +133,7 @@ type Query {
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
   payrollUsers: [PayrollUser!]
-  payrollToPaySummary:[PayrollUser!]
+  payrollToPaySummary:[PayrollToPaySummary!]
   userTransactions(userId: ID!): [PayrollTransaction!]
 }
 

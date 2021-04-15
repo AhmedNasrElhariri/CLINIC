@@ -50,6 +50,19 @@ export const PERMISSION_LEVEL = Object.freeze({
   USER: 'User',
 });
 
+export const PAYROLL_STATUS = Object.freeze({
+  Open: 'Open',
+  Close: 'Close',
+});
+
+export const PAYROLL_TRANSACTION_TYPE = Object.freeze({
+  Commision: 'Commision',
+  Advance: 'Advance',
+  Incentive: 'Incentive',
+  Deduction: 'Deduction',
+  Salary: 'Salary',
+});
+
 export const ACTIONS = Object.freeze({
   Create_Appointment: 'Create_Appointment',
   List_Appointment: 'List_Appointment',
