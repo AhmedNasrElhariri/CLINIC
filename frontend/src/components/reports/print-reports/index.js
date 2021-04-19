@@ -31,15 +31,13 @@ const Test = props => {
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
-    console.log(new Date(month),'mmmm');
-    const date = month.getTime();
     let res = null;
 
     try {
       res = await axios({
         url: `http://localhost:4000/monthly`,
         params: {
-          month: date,
+          month: moment(month).utc(true).toDate(),
         },
         method: 'GET',
         responseType: 'blob',

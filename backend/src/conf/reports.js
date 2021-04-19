@@ -1,7 +1,7 @@
 import { generatePdf } from '@/services/report.service';
 import moment from 'moment';
 import { prisma } from '..';
-import { formatDate} from './../services/date.service';
+import { formatDate } from './../services/date.service';
 let totalAmount = 0;
 const init = app => {
   const calTotal = arr => {
@@ -12,8 +12,7 @@ const init = app => {
   };
   app.get('/monthly', async (req, res) => {
     const { month } = req.query;
-    const data1 = new Date(Number(month));
-    console.log(data1,"llllllllllllllllllllllllllllllJJJJJJJJJJJJJJJJJJJJ");
+    console.log(month, 'llllllllllllllllllllllllllllllJJJJJJJJJJJJJJJJJJJJ');
     try {
       const revenue = await prisma.revenue.findMany({});
       const expenses = await prisma.expense.findMany({});
@@ -43,7 +42,7 @@ const init = app => {
         numOfFollowup = followups.length,
         numOfSession = sessions.length,
         numOfCourses = courses.length;
-        
+
       const monthYear = formatDate(new Date(), 'MM-YYYY');
       // const pulses = await prisma.pulse.findMany({});
       // const pulsesControl = await prisma.pulseControl.findMany({});
@@ -84,21 +83,20 @@ const init = app => {
   app.get('/daily', async (req, res) => {
     try {
       const pulses = await prisma.pulse.findMany({
-        where:{
-          
-        }
+        where: {},
       });
       const data = pulses.map(p => {
-        const app =  prisma.appointment
-          .findOne({ where: { id: p.appointmentId } });
-            return {
-              doctor: app.userId,
-              patient: app.patientId,
-              powerOne: p.powerOne,
-              powerTwo: p.powerTwo,
-              pulses: p.pulses,
-              type: app.type,
-            };
+        const app = prisma.appointment.findOne({
+          where: { id: p.appointmentId },
+        });
+        return {
+          doctor: app.userId,
+          patient: app.patientId,
+          powerOne: p.powerOne,
+          powerTwo: p.powerTwo,
+          pulses: p.pulses,
+          type: app.type,
+        };
       });
       const pdfDoc = await generatePdf('/views/reports/daily.ejs', {
         data: data,
