@@ -6,6 +6,7 @@ import { Alert } from 'rsuite';
 import {
   LIST_CONFIGURATIONS,
   UPDATE_CONFIGURATION,
+  ADD_PULSES_CONTROL,
 } from 'apollo-client/queries';
 
 const useConfigurations = ({ onUpdate } = {}) => {
@@ -19,13 +20,20 @@ const useConfigurations = ({ onUpdate } = {}) => {
     configurations,
   ]);
 
-  const [updateConfiguration] = useMutation(UPDATE_CONFIGURATION, {
+  const [updateConfiguration] = useMutation(
+    UPDATE_CONFIGURATION,
+    {
+      onCompleted: () => {
+        Alert.success('Event has been updated successfully');
+        onUpdate && onUpdate();
+      },
+    }
+  );
+  const [addPulsesControl] = useMutation(ADD_PULSES_CONTROL, {
     onCompleted: () => {
-      Alert.success('Event has been updated successfully');
-      onUpdate && onUpdate();
+      Alert.success('Pulses Contol Added successfully');
     },
   });
-
   const handleUpdateConfiguration = useCallback(
     configuration => updateConfiguration({ variables: { configuration } }),
     [updateConfiguration]
@@ -36,8 +44,14 @@ const useConfigurations = ({ onUpdate } = {}) => {
       configurations,
       sessions,
       update: handleUpdateConfiguration,
+      addPulsesControl,
     }),
-    [configurations, handleUpdateConfiguration, sessions]
+    [
+      configurations,
+      handleUpdateConfiguration,
+      sessions,
+      addPulsesControl,
+    ]
   );
 };
 

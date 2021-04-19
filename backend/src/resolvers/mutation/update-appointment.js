@@ -6,10 +6,12 @@ const updateAppointment = async (_, { appointment }) => {
     where: { id: appointment.id },
     include: { patient: true },
   });
-
   return prisma.appointment.update({
     data: {
       notes: appointment.notes || '',
+      pulses: appointment.pulses || '',
+      powerOne: appointment.powerOne || '',
+      powerTwo: appointment.powerTwo || '',
       data: {
         upsert: appointment.data.map(({ id, value, fieldId }) => ({
           create: {

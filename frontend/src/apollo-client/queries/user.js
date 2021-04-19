@@ -116,3 +116,13 @@ export const UPDATE_CONFIGURATION = gql`
     }
   }
 `;
+export const ADD_PULSES_CONTROL = gql`
+  mutation addPulsesControl($pulsesControl: PulseControlInput!) {
+    addPulsesControl(pulsesControl: $pulsesControl) {
+      id
+      before
+      after
+      date
+    }
+  }
+`;

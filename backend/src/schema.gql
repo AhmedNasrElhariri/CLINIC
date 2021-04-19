@@ -133,8 +133,9 @@ type Query {
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
   payrollUsers: [PayrollUser!]
-  payrollToPaySummary:[PayrollToPaySummary!]
+  payrollToPaySummary: [PayrollToPaySummary!]
   userTransactions(userId: ID!): [PayrollTransaction!]
+  pulseControl:PulseControl!
 }
 
 ########################### Mutation ##################################
@@ -224,8 +225,9 @@ type Mutation {
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
   ): PayrollTransaction!
-  addPayroll(payment:[ID!]):Payroll!
-  deletePayrollUser(userId:ID!):PayrollUser!
+  addPayroll(payment: [ID!]): Payroll!
+  deletePayrollUser(userId: ID!): PayrollUser!
+  addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
 }
 
 ########################### Auth ##################################
@@ -393,6 +395,9 @@ type Appointment {
   labs: [Lab!]
   images: [Image!]
   courses: [Course!]
+  pulses: Int
+  powerOne:Int
+  powerTwo:Int 
 }
 
 type AppointmentFile {
@@ -427,6 +432,9 @@ input UpdateAppointmentInput {
   imageIds: [ID!]
   data: [AppointmentFieldInput!]
   notes: String
+  pulses: Int
+  powerOne: Int
+  powerTwo: Int
   prescription: [PrescriptionInput!]
   pictures: [AppointmentPictureInput!]
 }
@@ -463,6 +471,17 @@ input PrescriptionInput {
   period: String
 }
 
+type PulseControl {
+  id: ID!
+  before: Int
+  after: Int
+  date: Date
+}
+input PulseControlInput {
+  before: Int!
+  after: Int!
+  date: Date!
+}
 ########################### views ##################################
 
 type View {
@@ -606,7 +625,7 @@ type PayrollUser {
   organizationId: ID!
 }
 
-type PayrollToPaySummary{
+type PayrollToPaySummary {
   id: ID!
   name: String!
   amount: Int!
@@ -634,7 +653,7 @@ type PayrollTransaction {
   date: Date!
   type: PayrollTransactionType
   payrollUser: PayrollUser
-  payroll:Payroll
+  payroll: Payroll
 }
 
 input PayrollTransactionInput {

@@ -214,6 +214,16 @@ model Appointment {
   images           Image[]
   pictures         AppointmentFile[]
   courses          Course[]
+  pulses           Int?
+  powerOne         Int?
+  powerTwo         Int?
+}
+
+model PulseControl {
+  id     String   @id @default(uuid())
+  before Int
+  after  Int
+  date   DateTime
 }
 
 model Prescription {

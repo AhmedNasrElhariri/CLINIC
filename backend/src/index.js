@@ -9,7 +9,6 @@ import mkdirp from 'mkdirp';
 import { PrismaClient } from '@prisma/client';
 import typeDefs from './schema.gql';
 import resolvers from './resolvers';
-
 import middlewares from './middlewares';
 import { getContextData } from './services/auth.service';
 
@@ -51,7 +50,6 @@ const app = server.express;
 app.use(cors());
 
 app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
-
 initUploadConfig(app);
 initReportsConfig(app);
 

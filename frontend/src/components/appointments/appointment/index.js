@@ -41,6 +41,9 @@ function Appointment() {
     labIds: [],
     imageIds: [],
     pictures: [],
+    powerOne:'',
+    powerTwo:'',
+    pulses:'',
   });
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
@@ -52,7 +55,6 @@ function Appointment() {
       setDisabled(isArchived(appointment));
     },
   });
-
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -86,6 +88,9 @@ function Appointment() {
           prescription: apptFormValue.prescription,
           labIds: apptFormValue.labIds,
           imageIds: apptFormValue.imageIds,
+          pulses: apptFormValue.pulses,
+          powerOne: apptFormValue.powerOne,
+          powerTwo: apptFormValue.powerTwo,
           pictures: apptFormValue.pictures.map(c => ({
             ...R.pick(['id', 'comment'])(c),
           })),
@@ -129,6 +134,9 @@ function Appointment() {
       notes: R.propOr('', 'notes')(appointment),
       prescription: R.propOr([], 'prescription')(appointment),
       pictures: R.propOr([], 'pictures')(appointment),
+      pulses: R.propOr('', 'pulses')(appointment),
+      powerOne: R.propOr('', 'powerOne')(appointment),
+      powerTwo: R.propOr('', 'powerTwo')(appointment),
       labIds: R.pipe(
         R.propOr([], 'labs'),
         R.map(R.path(['labDefinition', 'id']))
@@ -176,7 +184,6 @@ function Appointment() {
   if (loading) {
     return <Loader />;
   }
-
   return (
     <Div display="flex">
       <Div flexGrow={1}>

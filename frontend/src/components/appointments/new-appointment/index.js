@@ -106,6 +106,7 @@ export default function NewAppointment({ show, onHide }) {
     });
     createAppointment({ patientId, type, date, userId, courseId });
   }, [createAppointment, formValue]);
+  
   return (
     <>
       <NewPatient

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <div class="title">Daily Report </div>
+    <% for (let row of data) { %>
+    <div>
+      Doctor Name: <%= row.doctor%> ---  patient <%= row.patient %> --- 
+      power one <%= row.powerOne%> --- power Two <%= row.powerTwo%> --- type <%= row.type %> -- pulses <%= row.pulses%>
+    </div>
+    <% } %>
+  </body>
+</html>
