@@ -63,15 +63,17 @@ const Test = props => {
     link.click();
     link.parentNode.removeChild(link);
   };
-  const handleDailyReport = async () => {
+  const handleDailyReport = async (day) => {
     setLoading(true);
     setError(null);
-
     let res = null;
 
     try {
       res = await axios({
         url: 'http://localhost:4000/daily',
+        params: {
+          day: moment(day).utc(true).toDate(),
+        },
         method: 'GET',
         responseType: 'blob',
       });
@@ -129,7 +131,7 @@ const Test = props => {
               style={{ width: '270px' }}
             />
           </Form>
-          <CRButton onClick={handleDailyReport}>Generate</CRButton>
+          <CRButton onClick={() => handleDailyReport(formValue.date)}>Generate</CRButton>
         </Report>
       </Container>
     </>
