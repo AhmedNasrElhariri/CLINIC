@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style type="text/css" >
-      .title{
-        text-align: center;
-        font-weight: bold;
-        color:red;
-      }
-      .totalContainer{
-        display: flex;
-      }
-      .totalName{
-        font-weight: 600;
-        margin-right: 20px;
-      }
-    </style>
   </head>
   <body>
-    <div class="title">Monthly Report </div>
-    <div class="totalContainer"><div class="totalName">Total Of Revenue :</div> <div><%= totalRevenues %></div></div>
-    <div class="totalContainer"><div class="totalName">Total of Expenses :</div> <div><%= totalExpenses %></div></div>
-    <div class="totalContainer"><div class="totalName">number of Examination appointments: </div> <div><%= numOfExamination%></div></div>
-    <div class="totalContainer"><div lass="totalName">number of Followup appointments: </div><div><%= numOfFollowup %></div> </div>
-    <div class="totalContainer"><div lass="totalName">number of Sessions appointments: </div> <div><%= numOfSession %></div></div>
-    <div class="totalContainer"><div lass="totalName">number of Courses appointments:  </div><div><%= numOfCourses %></div></div>
-    <div >
-      <div>Date</div>
-      <div>Pulses</div>
-      <div>Before</div>
-      <div>After</div>
-      <div>Diff</div>
-    </div>
-    <% for (let row of data) { %>
+    <div>
+      <div style="text-align: center; font-weight: bold; margin-bottom: 20px">
+        Monthly Report
+      </div>
+      <div style="margin-bottom: 20px; display: flex">
+        <div style="margin-bottom: 10px">
+          Total Of Revenue: <%= totalRevenues %>
+        </div>
+      </div>
+      <div style="margin-bottom: 10px; display: flex">
+        <div style="margin-right: 20px">
+          Total of Expenses: <%= totalExpenses %>
+        </div>
+      </div>
+      <div style="display: flex">
+        <div style="margin-right: 20px">
+          number of Examination appointments:
+        </div>
+        <div><%= numOfExamination%></div>
+      </div>
+      <div style="display: flex">
+        <div style="margin-right: 20px">number of Followup appointments:</div>
+        <div><%= numOfFollowup %></div>
+      </div>
+      <div style="display: flex">
+        <div style="margin-right: 20px">number of Sessions appointments:</div>
+        <div><%= numOfSession %></div>
+      </div>
+      <div style="display: flex">
+        <div style="margin-right: 20px">number of Courses appointments:</div>
+        <div><%= numOfCourses %></div>
+      </div>
+      <div>
+        <div>Date</div>
+        <div>Pulses</div>
+        <div>Before</div>
+        <div>After</div>
+        <div>Diff</div>
+      </div>
+      <% for (let row of data) { %>
       <div>
         <div><%= row.date %></div>
         <div><%= row.numOfPulses %></div>
@@ -40,6 +53,7 @@
         <div><%= row.after %></div>
         <div><%= row.diff %></div>
       </div>
-    <% } %>
+      <% } %>
+    </div>
   </body>
 </html>
