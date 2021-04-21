@@ -8,6 +8,7 @@ export const APPOINTMENTS_STATUS = Object.freeze({
   MISSED: 'Missed',
   CHANGED: 'Changed',
   ARCHIVED: 'Archived',
+  WAITING: 'Waiting',
 });
 
 export const COURSE_STATUS = Object.freeze({

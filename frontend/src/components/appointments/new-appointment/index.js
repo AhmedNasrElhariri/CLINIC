@@ -24,6 +24,8 @@ import {
   LeftContainer,
   RightContainer,
   SecondRowContainer,
+  SecondContainerStyled,
+  SecondModalBodyStyled,
 } from './style';
 
 import { filterPatientBy } from 'utils/patient';
@@ -103,6 +105,7 @@ const NewAppointment = ({ show, onHide }) => {
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).utc(true).toDate() },
     // pollInterval: 500,
+    // pollInterval: 500,
   });
   const appointmentsCount = useMemo(
     () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
@@ -134,6 +137,7 @@ const NewAppointment = ({ show, onHide }) => {
       specialtyId,
       waiting,
     } = formValue;
+    const { patientId, userId, type, courseId, waiting } = formValue;
 
     const timeDate = moment(formValue.time);
 
@@ -144,6 +148,7 @@ const NewAppointment = ({ show, onHide }) => {
     if (waiting) {
       date = moment(formValue.date).set({
         hours: '24',
+        hours: '00',
         minute: '00',
         second: '00',
       });
@@ -182,6 +187,30 @@ const NewAppointment = ({ show, onHide }) => {
         show={visible}
         onHide={close}
       />
+      <CRModal
+        show={show}
+        CRContainer={SecondContainerStyled}
+        CRBody={SecondModalBodyStyled}
+        noFooter
+        noHeader
+        loading={loading}
+        onHide={() => {
+          onHide();
+        }}
+        onCancel={() => {
+          onHide();
+        }}
+      >
+        <Div>
+          Total Appointments: {appointmentsCount.totalAppointment} Patient
+        </Div>
+        <SecondRowContainer>
+          <Div>
+            Total Waiting List: {appointmentsCount.totalWaiting} Patient
+          </Div>
+          <Div>View All</Div>
+        </SecondRowContainer>
+      </CRModal>
       <CRModal
         show={show}
         header="New Appointment"
@@ -243,6 +272,17 @@ const NewAppointment = ({ show, onHide }) => {
                     onSelect={a => setSelectedHour(moment(a).hour())}
                   />
                 )}
+                <CRTimePicker
+                  label="Time"
+                  block
+                  name="time"
+                  accepter={DatePicker}
+                  placement="top"
+                  disabledMinutes={disabledMinutes}
+                  hideHours={hideHours}
+                  startHour={8}
+                  onSelect={a => setSelectedHour(moment(a).hour())}
+                />
               </LeftContainer>
               <RightContainer>
                 <CRSelectInput

@@ -30,28 +30,47 @@ const getDayAppointments = (day, userId) => {
 const isBeforeNow = date => moment(date).isBefore(moment(), 'minute');
 
 const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
-  const { patientId, userId, branchId, specialtyId, ...rest } = appointment;
+  const {
+    patientId,
+    userId,
+    branchId,
+    specialtyId,
+    waiting,
+    ...rest
+  } = appointment;
+  // const course = await prisma.course.findOne({ where: { id: courseId } });
+  // const {
+  //   patientId: coursePatientId,
+  //   courseDefinitionId,
+  //   doctorId,
+  //   userId: courseUserId,
+  //   ...courseRestData
+  // } = course;
   const appointments = await getDayAppointments(appointment.date, userId);
 
   if (
     !(
       appointment.type === APPOINTMENTS_TYPES.Urgent ||
-      appointment.type === APPOINTMENTS_TYPES.Surgery
+      appointment.type === APPOINTMENTS_TYPES.Surgery ||
+      waiting
     )
   ) {
     if (!validDate(appointment.date, appointments)) {
       throw new APIExceptcion('Time slot already reversed');
     }
-
     if (isBeforeNow(appointment.date)) {
       throw new APIExceptcion('Can not set to past time');
     }
+  }
+  let appointmentType = APPOINTMENTS_STATUS.SCHEDULED;
+  if (waiting) {
+    appointmentType = APPOINTMENTS_STATUS.WAITING;
   }
 
   const createdAppointment = await prisma.appointment.create({
     data: {
       ...rest,
-      status: APPOINTMENTS_STATUS.SCHEDULED,
+      status: appointmentType,
       patient: {
         connect: {
           id: patientId,

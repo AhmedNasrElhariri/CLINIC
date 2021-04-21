@@ -53,6 +53,7 @@ enum AppointmentStatus {
   Missed
   Changed
   Archived
+  Waiting
 }
 
 enum Position {

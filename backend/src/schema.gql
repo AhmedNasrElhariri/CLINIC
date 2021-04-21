@@ -75,6 +75,7 @@ enum AppointmentStatus {
   Missed
   Changed
   Archived
+  Waiting
 }
 
 enum UnitOfMeaure {
@@ -143,7 +144,11 @@ type Query {
   payrollUsers: [PayrollUser!]
   payrollToPaySummary: [PayrollToPaySummary!]
   userTransactions(userId: ID!): [PayrollTransaction!]
+<<<<<<< HEAD
   pulseControl:PulseControl!
+=======
+  pulseControl: PulseControl!
+>>>>>>> 2efe6cb... merge 456b48e
   appointmentsDayCount(date: Date!): AppointmentsDayCount!
 }
 
@@ -243,7 +248,6 @@ type Mutation {
   editSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
   addSales(sales: SalesInput!): Sales
   editSales(sales: SalesInput!): Sales
-  updateNotes(id: ID!, notes: String!): Appointment!
 }
 
 ########################### Auth ##################################
@@ -420,6 +424,10 @@ type Appointment {
   powerTwo:Int 
 }
 
+type AppointmentsDayCount {
+  totalAppointment: Int
+  totalWaiting: Int
+}
 type AppointmentFile {
   id: ID!
   comment: String
@@ -441,6 +449,7 @@ input AppointmentInput {
   specialtyId: ID
   notes: String
   courseId: ID
+  waiting: Boolean
 }
 
 input AppointmentPictureInput {

@@ -156,6 +156,15 @@ export const LIST_BRANCHES_TREE = gql`
   }
 `;
 
+export const APPOINTMENTS_DAY_COUNT = gql`
+  query appointmentsDayCount($date: Date!) {
+    appointmentsDayCount(date: $date) {
+      totalAppointment
+      totalWaiting
+    }
+  }
+`;
+
 export const LIST_ACTION_USERS = gql`
   query listActionUsers($action: String!) {
     listActionUsers(action: $action) {

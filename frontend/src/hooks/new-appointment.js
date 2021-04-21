@@ -20,6 +20,7 @@ const initialValues = {
   userId: null,
   date: new Date(),
   time: null,
+  waiting:false,
 };
 
 const useNewAppointment = ({ onCreate } = {}) => {
