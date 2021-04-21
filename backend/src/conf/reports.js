@@ -155,7 +155,6 @@ const init = app => {
     const { day } = req.query;
     const endOfDay = moment(day).endOf('day').toDate();
     const startOfDay = moment(day).startOf('day').toDate();
-    console.log(startOfDay,endOfDay,'dddddddddddddddd',day);
     try {
       const appointments = await prisma.appointment.findMany({
         where: {

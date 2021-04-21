@@ -7,38 +7,28 @@
   </head>
   <body>
     <div>
-      <div style="text-align: center; font-weight: bold; margin-bottom: 20px">
+      <div style="text-align: center; font-weight: bold; margin-bottom: 20px;">
         Monthly Report
       </div>
-      <div style="margin-bottom: 20px; display: flex">
-        <div style="margin-bottom: 10px">
-          Total Of Revenue: <%= totalRevenues %>
-        </div>
+      <div style="margin-bottom: 10px;">
+        Total Of Revenue: <%= totalRevenues %>
       </div>
-      <div style="margin-bottom: 10px; display: flex">
-        <div style="margin-right: 20px">
-          Total of Expenses: <%= totalExpenses %>
-        </div>
+      <div style="margin-bottom: 10px;">
+        Total of Expenses: <%= totalExpenses %>
       </div>
-      <div style="display: flex">
-        <div style="margin-right: 20px">
-          number of Examination appointments:
-        </div>
-        <div><%= numOfExamination%></div>
+      <div style="margin-bottom: 10px;">
+        number of Examination appointments: <%= numOfExamination%>
       </div>
-      <div style="display: flex">
-        <div style="margin-right: 20px">number of Followup appointments:</div>
-        <div><%= numOfFollowup %></div>
+      <div style="margin-bottom: 10px;">
+        number of Followup appointments: <%= numOfFollowup %>
       </div>
-      <div style="display: flex">
-        <div style="margin-right: 20px">number of Sessions appointments:</div>
-        <div><%= numOfSession %></div>
+      <div style="margin-bottom: 10px;">
+        number of Sessions appointments: <%= numOfSession %>
       </div>
-      <div style="display: flex">
-        <div style="margin-right: 20px">number of Courses appointments:</div>
-        <div><%= numOfCourses %></div>
+      <div style="margin-bottom: 10px;">
+        number of Courses appointments: <%= numOfCourses %>
       </div>
-      <div>
+      <div style="display: flex; justify-content: space-between;">
         <div>Date</div>
         <div>Pulses</div>
         <div>Before</div>
@@ -46,7 +36,7 @@
         <div>Diff</div>
       </div>
       <% for (let row of data) { %>
-      <div>
+      <div style="display: flex; justify-content: space-between;">
         <div><%= row.date %></div>
         <div><%= row.numOfPulses %></div>
         <div><%= row.before %></div>
