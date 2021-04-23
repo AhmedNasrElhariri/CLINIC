@@ -28,7 +28,8 @@ const CourseButton = styled.button`
 `;
 const Course = ({ patient }) => {
   const { visible, open, close } = useModal();
-  const [course, setCourse] = useState({});
+  const [index, setIndex] = useState(0);
+  const [header,setHeader] = useState('');
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
@@ -39,6 +40,7 @@ const Course = ({ patient }) => {
     editCourse,
     editCourseDoctor,
     users,
+    finishCourse,
   } = useCourses({
     onCreate: () => {
       close();
@@ -52,10 +54,15 @@ const Course = ({ patient }) => {
       close();
       setFormValue(initValue);
     },
+    onFinishCourse: () => {
+      close();
+      setFormValue(initValue);
+    },
     patientId: patient.id,
   });
   const handleClickCreate = useCallback(() => {
     setType('create');
+    setHeader('Create New Course');
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
@@ -63,6 +70,7 @@ const Course = ({ patient }) => {
     data => {
       const course = R.pick(['id', 'paid'])(data);
       setType('edit');
+      setHeader('Add New Payment');
       setFormValue(course);
       open();
     },
@@ -72,6 +80,16 @@ const Course = ({ patient }) => {
     data => {
       const course = R.pick(['id', 'doctorId'])(data);
       setType('courseDoctor');
+      setHeader('Assign New Doctor');
+      setFormValue(course);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleFinishCourse = useCallback(
+    course => {
+      setType('finishCourse');
+      setHeader('Finish the course');
       setFormValue(course);
       open();
     },
@@ -102,6 +120,13 @@ const Course = ({ patient }) => {
           doctorId: formValue.doctorId,
         },
       });
+    } else if (type === 'finishCourse') {
+      finishCourse({
+        variables: {
+          courseId: formValue.id,
+        },
+      });
+
     } else {
       editCourse({
         variables: {
@@ -110,15 +135,14 @@ const Course = ({ patient }) => {
         },
       });
     }
-  }, [type, formValue, patient.id, addCourse, editCourseDoctor, editCourse]);
-
+  }, [type, formValue, patient.id, addCourse, editCourseDoctor, editCourse,finishCourse]);
   return (
     <>
       <Div display="flex" justifyContent="flex-end" alignItems="center">
         {courses.map((course, idx) => (
           <CourseButton
             variant="primary"
-            onClick={() => setCourse(course)}
+            onClick={() => setIndex(idx)}
             key={idx}
           >
             {course.courseDefinition.name}
@@ -134,14 +158,17 @@ const Course = ({ patient }) => {
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
+        header={header}
         type={type}
         users={users}
       />
-      {Object.keys(course).length > 0 ? (
+      {courses.length > 0 ? (
         <CourseData
-          course={course}
+          courses={courses}
+          indx={index}
           onEditPaid={handleClickEditPaid}
           onEditDoctor={handleClickEditDoctor}
+          onFinishCourse={handleFinishCourse}
         />
       ) : (
         <H3>No courses</H3>

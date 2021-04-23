@@ -16,7 +16,7 @@ const CourseData = ({
 }) => {
   const history = useHistory();
   let course = courses[indx];
-  let sessions = sortByDate(course.sessions);
+  let { sessions } = course;
   const handleClick = appointment => {
     if (
       moment(new Date()).endOf('day').toDate() >

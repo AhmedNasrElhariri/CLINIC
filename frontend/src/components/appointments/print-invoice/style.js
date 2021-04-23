@@ -8,5 +8,5 @@ export const StyledContainer = styled(Div)`
 
 export const StyledHeader = styled.div`
   text-align: center;
-  padding: 10px 5px;
+  padding: 10px 6px;
 `;

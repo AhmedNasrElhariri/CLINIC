@@ -10,6 +10,12 @@ enum PermissionLevel {
   User
 }
 
+enum CourseStatus {
+  InProgress
+  Finished
+  EarlyFinished
+}
+
 enum LabStatus {
   Draft
   Pending
@@ -224,6 +230,7 @@ type Mutation {
   addCourse(course: CourseInput!): Course!
   editCourse(courseId: ID!, paid: Int!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
+  finishCourse(courseId: ID!): Course!
   addPayrollUser(payrollUser: PayrollUserInput!): PayrollUser!
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
@@ -236,6 +243,7 @@ type Mutation {
   editSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
   addSales(sales: SalesInput!): Sales
   editSales(sales: SalesInput!): Sales
+  updateNotes(id: ID!, notes: String!): Appointment!
 }
 
 ########################### Auth ##################################
@@ -400,6 +408,7 @@ type Appointment {
   user: User!
   data: [AppointmentField!]
   notes: String
+  businessNotes: String
   prescription: [Prescription!]
   pictures: [AppointmentFile!]
   userId: String
@@ -1011,6 +1020,9 @@ type Course {
   price: Int!
   paid: Int!
   discount: Int!
+  startDate: Date!
+  endDate: Date!
+  status: CourseStatus!
   sessions: [Appointment!]
   patient: Patient!
   doctor: User!

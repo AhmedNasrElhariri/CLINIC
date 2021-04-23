@@ -10,6 +10,11 @@ export const APPOINTMENTS_STATUS = Object.freeze({
   ARCHIVED: 'Archived',
 });
 
+export const COURSE_STATUS = Object.freeze({
+  FINISHED: 'Finished',
+  INPROGRESS: 'InProgress',
+  EARLY_FINISHED: 'EarlyFinished',
+});
 export const APPOINTMENTS_TYPES = Object.freeze({
   Examination: 'Examination',
   Followup: 'Followup',

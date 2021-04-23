@@ -58,7 +58,6 @@ function TodayAppointments() {
       Alert.success('Business Notes Added Successfully');
     },
   });
-
   const upcomingAppointments = useMemo(
     () =>
       R.pipe(R.filter(R.propEq('status', APPT_STATUS.SCHEDULED)))(
@@ -129,13 +128,6 @@ function TodayAppointments() {
   }, [appointment, updateNotes, notes]);
   return (
     <>
-      {/* <ToolBar
-        formValue={formValue}
-        onChange={setFormValue}
-        branches={branches}
-        doctors={doctors}
-        specialties={specialties}
-      /> */}
       <CRTabs>
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>Main Appointments</CRTabs.CRTab>

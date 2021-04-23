@@ -71,7 +71,7 @@ const addCourse = async (_, { course }, { userId }) => {
   });
   const payment =
     'C' + '/' + courseDef.courseDefinition.name + '/' + courseDef.patient.name;
-  const revenue = await prisma.revenue.create({
+  await prisma.revenue.create({
     data: {
       name: payment,
       date: new Date(),

@@ -46,9 +46,13 @@ export const LIST_COURSES = gql`
       price
       paid
       discount
+      startDate
+      endDate
+      status
       sessions {
         id
         date
+        status
       }
       courseDefinition {
         id
@@ -71,6 +75,23 @@ export const LIST_PATIENT_COURSES = gql`
       id
       courseDefinition {
         name
+      }
+      price
+      discount
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
+      courseDefinition {
+        id
+        name
+        type
+        price
+        units
+        messureOfUnits
       }
     }
   }
@@ -106,12 +127,37 @@ export const EDIT_COURSE = gql`
     editCourse(courseId: $courseId, paid: $paid) {
       id
       price
+      discount
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
+      courseDefinition {
+        id
+        name
+        type
+        price
+        units
+        messureOfUnits
+      }
     }
   }
 `;
 export const EDIT_COURSE_DOCTOR = gql`
   mutation editCourseDoctor($courseId: ID!, $doctorId: ID!) {
     editCourseDoctor(courseId: $courseId, doctorId: $doctorId) {
+      id
+      price
+    }
+  }
+`;
+
+export const FINISH_COURSE = gql`
+  mutation finishCourse($courseId: ID!) {
+    finishCourse(courseId: $courseId) {
       id
       price
     }

@@ -11,6 +11,7 @@ import {
   LIST_USERS,
   EDIT_COURSE_DOCTOR,
   FINISH_COURSE,
+<<<<<<< HEAD
   LIST_REVENUES,
   LIST_APPOINTMENTS,
 } from 'apollo-client/queries';
@@ -21,6 +22,17 @@ const updateCache = (myCourses, patientId) => {
     query: LIST_COURSES,
     variables: {
       patientId: patientId,
+=======
+  LIST_REVENUES
+} from 'apollo-client/queries';
+import client from 'apollo-client/client';
+
+const updateCache = (myCourses,patientId) => {
+  client.writeQuery({
+    query: LIST_COURSES,
+    variables:{
+      patientId:patientId,
+>>>>>>> db66f42... complete the features of course task
     },
     data: {
       myCourses,
@@ -28,6 +40,10 @@ const updateCache = (myCourses, patientId) => {
   });
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> db66f42... complete the features of course task
 function useCourses({
   onCreate,
   onEdit,
@@ -56,12 +72,15 @@ function useCourses({
         query: LIST_COURSES,
         variables: { patientId: patientId },
       },
+<<<<<<< HEAD
       {
         query: LIST_APPOINTMENTS,
       },
       {
         query: LIST_REVENUES,
       },
+=======
+>>>>>>> db66f42... complete the features of course task
     ],
     onError() {
       Alert.error('Failed to add new Course');
@@ -79,7 +98,11 @@ function useCourses({
       },
       {
         query: LIST_REVENUES,
+<<<<<<< HEAD
       },
+=======
+      }
+>>>>>>> db66f42... complete the features of course task
     ],
     onError() {
       Alert.error('Failed to edit the Course');

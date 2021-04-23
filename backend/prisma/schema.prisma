@@ -22,6 +22,12 @@ enum CourseType {
 
 }
 
+enum CourseStatus {
+  InProgress
+  Finished
+  EarlyFinished
+}
+
 enum PayrollStatus {
   Open
   Close
@@ -207,10 +213,6 @@ model Appointment {
   patientId        String
   user             User               @relation(fields: [userId], references: [id])
   userId           String
-  branch           Branch?            @relation(fields: [branchId], references: [id])
-  branchId         String?
-  specialty        Specialty?         @relation(fields: [specilityId], references: [id])
-  specilityId      String?
   businessNotes    String             @default("")
   status           AppointmentStatus
   data             AppointmentField[]
@@ -224,6 +226,10 @@ model Appointment {
   pulses           Int?
   powerOne         Int?
   powerTwo         Int?
+  Branch           Branch?            @relation(fields: [branchId], references: [id])
+  branchId         String?
+  Specialty        Specialty?         @relation(fields: [specialtyId], references: [id])
+  specialtyId      String?
 }
 
 model PulseControl {
@@ -602,6 +608,9 @@ model Course {
   price              Int
   paid               Int
   discount           Int
+  startDate          DateTime
+  endDate            DateTime
+  status             CourseStatus
   sessions           Appointment[]
   patient            Patient          @relation(fields: [patientId], references: [id])
   patientId          String

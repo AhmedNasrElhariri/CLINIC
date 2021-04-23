@@ -26,6 +26,7 @@ export const LIST_APPOINTMENTS = gql`
       date
       status
       date
+      businessNotes
       patient {
         id
         name
@@ -193,6 +194,13 @@ export const ARCHIVE_APPOINTMENT = gql`
     ) {
       id
       status
+    }
+  }
+`;
+export const UPDATE_BUSINESS_NOTES = gql`
+  mutation updateNotes($id: ID!, $notes: String!) {
+    updateNotes(id: $id, notes: $notes) {
+      id
     }
   }
 `;

@@ -89,6 +89,7 @@ function NewCourse({
   onClose,
   onOk,
   formValue,
+  header,
   onChange,
   type,
   users,
@@ -154,7 +155,7 @@ function NewCourse({
   const course = formValue?.course;
 
   return (
-    <CRModal show={visible} header="Courses" onHide={onClose} onOk={onOk}>
+    <CRModal show={visible} header={header} onHide={onClose} onOk={onOk}>
       <Form fluid formValue={formValue} onChange={onChange}>
         {type === 'create' ? (
           <>
@@ -247,6 +248,8 @@ function NewCourse({
           </>
         ) : type === 'edit' ? (
           <CRNumberInput label="Paid" name="paid" title="Paid" />
+        ) : type === 'finishCourse' ? (
+          <Div>Are you sure that you want to finish this course ?</Div>
         ) : (
           <CRSelectInput
             label="Doctor Name"
