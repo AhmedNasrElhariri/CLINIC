@@ -10,7 +10,7 @@
     "build1": "npm run db-source:test1 && dotenv -e .test1.env -- webpack --config=webpack.prod.js",
     "db-source:test1": "cross-env ENV_FILE=./.test1.env npm run db-source",
     "dev": "npm run db-source:dev && prisma generate && dotenv -e .dev.env -- webpack --config ./webpack.dev.js --watch",
-    "dev:prod-db": "npm run db-source:dev-prod && dotenv -e .env -- webpack --config ./webpack.dev.js --watch",
+    "dev:prod-db": "npm run db-source:dev-prod && dotenv -e .env -- webbpack --config ./webpack.dev.js --watch",
     "build-server": "webpack --config=webpack.server.js",
     "db-source": "node database-connection",
     "db-source:dev": "cross-env ENV_FILE=./.dev.env npm run db-source",

@@ -36,6 +36,10 @@ module.exports = merge(common, {
           from: './.env',
           to: '',
         },
+        {
+          from: './src/views/',
+          to: 'views',
+        },
       ],
     }),
   ],
