@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const surgery = ({ id }) => {
-  return prisma.patientSurgery.findOne({ where: { id } }).surgery();
+  return prisma.patientSurgery.findUnique({ where: { id } }).surgery();
 };
 
 export default surgery;

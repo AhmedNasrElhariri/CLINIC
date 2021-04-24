@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { APIExceptcion } from '@/services/erros.service';
 
 const setActiveView = async (_, { viewId }, { userId }) => {
-  const view = await prisma.view.findOne({ where: { id: viewId } });
+  const view = await prisma.view.findUnique({ where: { id: viewId } });
   if (!view) {
     throw APIExceptcion('invalid view');
   }

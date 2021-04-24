@@ -184,9 +184,9 @@ const init = app => {
       const pdfDoc = await generatePdf('/views/reports/daily.ejs', {
         data: data,
       });
-      pdfDoc.pipe(res);
-      pdfDoc.end();
+      res.end(pdfDoc);
     } catch (e) {
+      console.log(e);
       res.status(400).send('Invalid');
     }
   });

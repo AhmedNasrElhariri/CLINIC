@@ -88,7 +88,7 @@ export const listFlattenUsersTree = async (
   if (user.position === POSITION.Admin) {
     return byOrganization(organizationId, allUsers);
   }
-  const role = await prisma.user.findOne({ where: { id: user.id } }).role({
+  const role = await prisma.user.findUnique({ where: { id: user.id } }).role({
     include: {
       permissions: {
         where: {

@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { APIExceptcion } from '@/services/erros.service';
 
 const removeItemDefinition = async (_, { id }) => {
-  const item = await prisma.item.findOne({
+  const item = await prisma.item.findUnique({
     where: { id },
     include: { inventoryItems: true, inventoryHistory: true },
   });

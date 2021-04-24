@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const configuration = (_, __, { userId }) => {
-  return prisma.configuration.findOne({
+  return prisma.configuration.findUnique({
     where: {
       userId,
     },

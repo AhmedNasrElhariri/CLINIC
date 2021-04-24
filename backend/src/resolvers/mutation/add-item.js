@@ -9,7 +9,7 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
     throw new APIExceptcion('invalid user');
   }
 
-  const persistedItem = await prisma.item.findOne({
+  const persistedItem = await prisma.item.findUnique({
     where: {
       id: input.itemId,
     },
@@ -17,7 +17,7 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
 
   const { itemId } = input;
 
-  const persistedInventoryItem = await prisma.inventoryItem.findOne({
+  const persistedInventoryItem = await prisma.inventoryItem.findUnique({
     where: {
       itemId_userId: {
         itemId,

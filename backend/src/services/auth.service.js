@@ -24,7 +24,7 @@ export const getUserPayloads = request => {
 
 export const getUser = userId => {
   if (!userId) return null;
-  const user = prisma.user.findOne({ where: { id: userId } });
+  const user = prisma.user.findUnique({ where: { id: userId } });
   return user;
 };
 

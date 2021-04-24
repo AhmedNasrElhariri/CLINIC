@@ -138,6 +138,7 @@ type Query {
   payrollToPaySummary: [PayrollToPaySummary!]
   userTransactions(userId: ID!): [PayrollTransaction!]
   pulseControl:PulseControl!
+  appointmentsDayCount(date: Date!): AppointmentsDayCount!
 }
 
 ########################### Mutation ##################################

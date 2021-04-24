@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { LAB_STATUS } from '@/utils/constants';
 
 const updateAppointment = async (_, { appointment }) => {
-  const persistedAppointment = await prisma.appointment.findOne({
+  const persistedAppointment = await prisma.appointment.findUnique({
     where: { id: appointment.id },
     include: { patient: true },
   });

@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const myInvoiceCounter = (_, __, { organizationId }) => {
-  return prisma.organization.findOne({
+  return prisma.organization.findUnique({
     where: {
       id: organizationId,
     },

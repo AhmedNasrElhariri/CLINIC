@@ -1,34 +1,31 @@
-import htmlToPdfmake from 'html-to-pdfmake';
-import PdfPrinter from 'pdfmake';
-import jsdom from 'jsdom';
 import ejs from 'ejs';
 import { promises as fsp } from 'fs';
+import pdf from 'html-pdf';
+const posthtml = require('posthtml');
+const postcss = require('posthtml-postcss');
+const autoprefixer = require('autoprefixer');
 
-const { JSDOM } = jsdom;
-const { window } = new JSDOM('');
-
-const fonts = {
-  Helvetica: {
-    normal: 'Helvetica',
-    bold: 'Helvetica-Bold',
-    italics: 'Helvetica-Oblique',
-    bolditalics: 'Helvetica-BoldOblique',
-  },
-};
-
-const printer = new PdfPrinter(fonts);
-const options = {};
+const postcssPlugins = [autoprefixer()];
+const filterType = /^text\/css$/;
+const postcssOptions = {};
+const options = { format: 'A4' };
 
 export const generatePdf = async (path, vairables = {}) => {
   const file = await fsp.readFile(__dirname + path, 'utf8');
   const compiled = ejs.compile(file);
-  const html = htmlToPdfmake(compiled(vairables), { window });
-  const docDefinition = {
-    content: [html],
-    defaultStyle: {
-      font: 'Helvetica',
-    },
-  };
 
-  return printer.createPdfKitDocument(docDefinition, options);
+  const html = await posthtml([
+    postcss(postcssPlugins, postcssOptions, filterType),
+  ])
+    .process(compiled(vairables))
+    .then(result => result.html);
+
+  return new Promise((resolve, reject) => {
+    pdf.create(html, options).toBuffer((err, res) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(res);
+    });
+  });
 };

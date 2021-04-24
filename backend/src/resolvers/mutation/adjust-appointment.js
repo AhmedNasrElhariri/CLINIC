@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { onAppointmentEdit } from '@/services/notification.service';
 
 const adjustAppointment = async (_, { id, date }, { userId }) => {
-  const persistedAppt = await prisma.appointment.findOne({
+  const persistedAppt = await prisma.appointment.findUnique({
     where: { id },
   });
 

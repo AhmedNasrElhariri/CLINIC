@@ -1,6 +1,6 @@
 import { prisma } from '@';
 const editCourseDoctor = async (_, { courseId, doctorId }) => {
-  const data = await prisma.course.findOne({
+  const data = await prisma.course.findUnique({
     where: {
       id: courseId,
     },

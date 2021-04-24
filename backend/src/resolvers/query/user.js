@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const user = (_, { id }) => {
-  return prisma.user.findOne({
+  return prisma.user.findUnique({
     where: {
       id,
     },

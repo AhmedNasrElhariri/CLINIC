@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const patient = (_, { id }) => {
-  return prisma.patient.findOne({ where: { id } });
+  return prisma.patient.findUnique({ where: { id } });
 };
 
 export default patient;

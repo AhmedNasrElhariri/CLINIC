@@ -3,11 +3,11 @@ import * as R from 'ramda';
 import { APIExceptcion } from '@/services/erros.service';
 
 const addSpecialty = async (_, { branchId, specialtyId }) => {
-  const persistedBranch = await prisma.branch.findOne({
+  const persistedBranch = await prisma.branch.findUnique({
     where: { id: branchId },
     include: { specialties: true },
   });
-  const specialty = await prisma.specialty.findOne({
+  const specialty = await prisma.specialty.findUnique({
     where: { id: specialtyId },
   });
   const specialties = persistedBranch.specialties;

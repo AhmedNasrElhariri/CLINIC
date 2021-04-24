@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const user = ({ id }) => {
-  return prisma.payrollUser.findOne({ where: { id } }).user();
+  return prisma.payrollUser.findUnique({ where: { id } }).user();
 };
 
 export default user;

@@ -26,7 +26,7 @@ const addPayroll = async (_, { payment }, { organizationId }) => {
     });
     payrollId = payroll.id;
     payment.map(u => {
-      const user = prisma.payrollUser.findOne({ where: { id: u } });
+      const user = prisma.payrollUser.findUnique({ where: { id: u } });
       const amount = user.salary;
       const type = PAYROLL_TRANSACTION_TYPE.Salary;
       prisma.payrollTransaction.create({
@@ -64,7 +64,7 @@ const addPayroll = async (_, { payment }, { organizationId }) => {
   } else {
     payrollId = payrollRow[0].id;
     payment.map(u => {
-      const user = prisma.payrollUser.findOne({ where: { id: u } });
+      const user = prisma.payrollUser.findUnique({ where: { id: u } });
       const amount = user.salary;
       const type = 'Salary';
       prisma.payrollTransaction.create({
