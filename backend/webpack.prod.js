@@ -9,6 +9,7 @@ module.exports = merge(common, {
   mode: 'production',
   devtool: 'source-map',
   optimization: {
+    nodeEnv: false,
     minimizer: [new TerserPlugin()],
   },
   output: {
@@ -26,15 +27,11 @@ module.exports = merge(common, {
         },
         {
           from: '../frontend/build/',
-          to: 'build',
+          to: 'frontend',
         },
         {
           from: './prisma/migrations/',
           to: 'migrations',
-        },
-        {
-          from: './.env',
-          to: '',
         },
         {
           from: './src/views/',

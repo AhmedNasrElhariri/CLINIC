@@ -60,6 +60,7 @@
     "graphql-config": "^3.0.3",
     "moment-timezone": "^0.5.31",
     "nodemon-webpack-plugin": "^4.3.2",
+    "postcss-load-config": "^3.0.1",
     "prettier": "2.1.2",
     "prisma": "^2.21.2",
     "uglifyjs-webpack-plugin": "^2.2.0",

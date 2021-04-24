@@ -54,7 +54,7 @@ initUploadConfig(app);
 initReportsConfig(app);
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'build')));
+  app.use(express.static(path.join(__dirname, 'frontend')));
   app.get('*', (req, res, next) => {
     if (
       req.url == options.playground ||
@@ -63,7 +63,7 @@ if (process.env.NODE_ENV === 'production') {
     ) {
       return next();
     }
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
   });
 }
 
