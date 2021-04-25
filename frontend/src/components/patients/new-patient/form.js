@@ -4,12 +4,12 @@ import { Form, SelectPicker, Schema } from 'rsuite';
 import { CRSelectInput, CRTextInput, CRNumberInput, ShowIf } from 'components';
 
 const membershipTypes = [
-  { label: 'Primary', value: 'Primary' },
-  { label: 'Secondary', value: 'Secondary' },
+  { name: 'Primary', value: 'Primary' },
+  { name: 'Secondary', value: 'Secondary' },
 ];
 
 const SEX = ['Male', 'Female'].map(s => ({
-  label: s,
+  name: s,
   value: s,
 }));
 
@@ -35,6 +35,7 @@ const NewPatient = ({ formValue, onChange }) => {
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput
         label="Membership Type"
+        valueKey="value"
         name="type"
         data={membershipTypes}
         block
@@ -56,6 +57,7 @@ const NewPatient = ({ formValue, onChange }) => {
       <CRSelectInput
         label="Sex"
         name="sex"
+        valueKey="value"
         searchable={false}
         data={SEX}
         block
