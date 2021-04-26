@@ -1,7 +1,7 @@
 export const mapObjValuesToChoices = obj =>
   Object.values(obj).map(i => ({
-    label: i,
-    value: i,
+    name: i,
+    id: i,
   }));
 
 export const mapArrToChoices = arr =>

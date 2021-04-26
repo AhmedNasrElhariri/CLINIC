@@ -46,8 +46,8 @@ export default function NewUser({ show, onCancel, onCreate, specialties }) {
     >
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
         <CRTextInput label="Name" name="name" />
-        <CRTextInput label="Email" name="email" type="email" />
-        <CRTextInput label="Password" name="password" type="password" />
+        <CRTextInput label="Email" name="email"  />
+        <CRTextInput label="Password" name="password" />
         <CRSelectInput
           name="position"
           label="Position"
