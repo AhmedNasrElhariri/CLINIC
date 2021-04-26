@@ -78,12 +78,8 @@
     "webpack-cli": "^3.3.12",
     "webpack-merge": "^5.1.4",
     "webpack-node-externals": "^2.5.2"
-<<<<<<< HEAD
-  }
-=======
   },
   "browserslist": [
     "last 2 versions"
   ]
->>>>>>> fa42b67... update bugs
 }
