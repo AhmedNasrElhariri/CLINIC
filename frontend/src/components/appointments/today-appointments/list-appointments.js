@@ -22,8 +22,13 @@ import { FULL_DATE_FORMAT } from 'utils/constants';
 function ListAppointments({
   appointments,
   onArchive,
+<<<<<<< HEAD
   title,
   defaultExpanded = false,
+=======
+  waiting,
+  onAddBusinessNotes,
+>>>>>>> 27c3281... resolve the bugs
 }) {
   const history = useHistory();
   const componentRef = useRef();
@@ -80,6 +85,7 @@ function ListAppointments({
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
+<<<<<<< HEAD
             <CRTable.CRColumn flexGrow={1}>
               <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
               <CRTable.CRCell>
@@ -125,6 +131,48 @@ function ListAppointments({
                         <AdjustAppointment appointment={appointment} />
                       )}
                     </Div>
+=======
+        <CRTable.CRColumn flexGrow={2}>
+          <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {appointment => (
+              <Div display="flex">
+                <CRTable.CRCellStyled>
+                  {(isScheduled(appointment) || isWaiting(appointment)) && (
+                    <CRButton
+                      variant="primary"
+                      onClick={e => {
+                        e.stopPropagation();
+                        onArchive(appointment);
+                      }}
+                    >
+                      Archive
+                    </CRButton>
+                  )}
+                </CRTable.CRCellStyled>
+                <CRTable.CRCellStyled>
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onAddBusinessNotes(appointment);
+                    }}
+                  >
+                    Notes
+                  </CRButton>
+                </CRTable.CRCellStyled>
+                <Div onClick={e => e.stopPropagation()}>
+                  <ReactToPrint
+                    trigger={() => <PrintOLIcon ml={2} />}
+                    content={() => componentRef.current}
+                  />
+                  <Div display="none">
+                    <AppointmentPrintout
+                      ref={componentRef}
+                      appointment={appointment}
+                      patient={appointment.patient}
+                    />
+>>>>>>> 27c3281... resolve the bugs
                   </Div>
                 )}
               </CRTable.CRCell>

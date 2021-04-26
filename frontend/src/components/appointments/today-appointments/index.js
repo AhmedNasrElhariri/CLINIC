@@ -49,7 +49,18 @@ function TodayAppointments() {
       ),
     [filteredAppointments]
   );
+<<<<<<< HEAD
 
+=======
+  
+  const waitingAppointments = useMemo(
+    () =>
+      R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(
+        filteredAppointments
+      ),
+    [filteredAppointments]
+  );
+>>>>>>> 27c3281... resolve the bugs
   const completedAppointments = useMemo(
     () =>
       R.pipe(R.filter(R.propEq('status', APPT_STATUS.ARCHIVED)))(
@@ -96,6 +107,7 @@ function TodayAppointments() {
         doctors={doctors}
         specialties={specialties}
       /> */}
+<<<<<<< HEAD
       <ListAppointments
         title="Upcoming Appointments"
         appointments={upcomingAppointments}
@@ -114,6 +126,59 @@ function TodayAppointments() {
         onCancel={close}
         onOk={handleArchive}
       />
+=======
+      <CRTabs>
+        <CRTabs.CRTabsGroup>
+          <CRTabs.CRTab>Main Appointments</CRTabs.CRTab>
+          <CRTabs.CRTab>Waiting Appointments</CRTabs.CRTab>
+          <CRTabs.CRTab>Completed Appointments</CRTabs.CRTab>
+        </CRTabs.CRTabsGroup>
+        <CRTabs.CRContentGroup>
+          <CRTabs.CRContent>
+            <ListAppointments
+              title="Upcoming Appointments"
+              appointments={upcomingAppointments}
+              onArchive={onClickDone}
+              onAddBusinessNotes={onAddBusinessNotes}
+              defaultExpanded={true}
+            />
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <ListAppointments
+              appointments={waitingAppointments}
+              onArchive={onClickDone}
+              defaultExpanded={true}
+              waiting={true}
+            />
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <ListAppointments
+              title="Completed Appointments"
+              appointments={completedAppointments}
+              defaultExpanded={true}
+            />
+          </CRTabs.CRContent>
+        </CRTabs.CRContentGroup>
+      </CRTabs>
+      {popUp === 'archive' && (
+        <ArchiveAppointment
+          appointment={appointment}
+          show={visible}
+          onCancel={close}
+          onOk={handleArchive}
+        />
+      )}
+      {popUp === 'notes' && (
+        <BusinessNotes
+          appointment={appointment}
+          show={visible}
+          onCancel={close}
+          notes={notes}
+          setNotes={setNotes}
+          onOk={addBusinessNotes}
+        />
+      )}
+>>>>>>> 27c3281... resolve the bugs
     </>
   );
 }
