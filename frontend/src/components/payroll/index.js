@@ -14,6 +14,7 @@ const initValue = {
 
 function Payroll() {
   const [formValue, setFormValue] = useState(initValue);
+  let userId = formValue.userId;
   const { users } = usePermissions();
   const {
     addPayrollUser,
@@ -22,7 +23,7 @@ function Payroll() {
     addTransaction,
     addPayroll,
     deleteUser,
-  } = usePayroll();
+  } = usePayroll({ userId });
   const handleAddUser = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,

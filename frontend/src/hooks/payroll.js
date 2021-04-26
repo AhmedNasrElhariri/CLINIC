@@ -12,8 +12,20 @@ import {
   DELETE_PAYROLL_USER,
   PAYROLL_TO_PAY_SUMMARY,
 } from 'apollo-client/queries';
-
+import client from 'apollo-client/client';
 function usePayroll({ userId } = {}) {
+  console.log(userId, 'uuuuuuu');
+  const updateTransactionsCache = userTransactions => {
+    client.writeQuery({
+      query: LIST_USER_TRANSACTIONS,
+      variables: {
+        userId,
+      },
+      data: {
+        userTransactions,
+      },
+    });
+  };
   const { data } = useQuery(LIST_PAY_ROLL_USERS);
   const payrollUsers = useMemo(
     () =>
@@ -66,6 +78,9 @@ function usePayroll({ userId } = {}) {
   const [addTransaction] = useMutation(ADD_PAYROLL_TRANSACTION, {
     onCompleted() {
       Alert.success('The transaction has been created successfully');
+    },
+    update(cache, { data: { addTransaction: transaction } }) {
+      updateTransactionsCache([...userTransactions, transaction]);
     },
     onError() {
       Alert.error('Failed to create The Transaction');
