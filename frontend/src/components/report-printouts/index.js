@@ -19,6 +19,12 @@ function ReportPrintout() {
     onCreate: () => {},
     onEdit: () => {},
   });
+  const values = patientReports.map(pR => {
+    return {
+      name: pR.name,
+      id: pR.body,
+    }
+  })
   const handlePrint = useReactToPrint({
     content: () => ref.current,
   });
@@ -30,7 +36,6 @@ function ReportPrintout() {
     width: 40%;
     float: left;
   `;
-
   return (
     <>
       <Div>
@@ -44,7 +49,7 @@ function ReportPrintout() {
         <CustomCRSelector
           name="patientReport"
           placeholder="Patient Reports"
-          data={patientReports}
+          data={values}
           block
         />
         <ReactQuill

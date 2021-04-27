@@ -4,8 +4,8 @@ import { Form, SelectPicker, Schema } from 'rsuite';
 import { CRSelectInput, CRTextInput, CRNumberInput, ShowIf } from 'components';
 
 const membershipTypes = [
-  { label: 'Primary', value: 'Primary' },
-  { label: 'Secondary', value: 'Secondary' },
+  { name: 'Primary', id: 'Primary' },
+  { name: 'Secondary', id: 'Secondary' },
 ];
 
 const SEX = ['Male', 'Female'].map(s => ({

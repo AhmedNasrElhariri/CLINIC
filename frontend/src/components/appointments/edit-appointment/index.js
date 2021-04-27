@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Div, CRModal, CRCard, H6, CRDatePicker } from 'components';
+import { Div, CRModal, CRCard, H6, CRDatePicker ,CRTimePicker} from 'components';
 import { Form, DatePicker } from 'rsuite';
 import { formatDate, isBeforeToday } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
@@ -30,7 +30,7 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
       show={visible}
       header="Adjust Appointment"
       bodyStyle={{
-        padding: '40px 89px ',
+        padding: '10px 89px ',
       }}
       okTitle="Adjust"
       onOk={() => onOk(formValue)}
@@ -38,9 +38,9 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
       onHide={onClose}
     >
       <Form formValue={formValue} onChange={setFormValue} fluid>
-        <Div my={3}>
+        <Div my={1}>
           <CRCard>
-            <H6 color="texts.1" mb={3}>
+            <H6 color="texts.1" mb={1}>
               Old Date
             </H6>
             <H6>
@@ -51,8 +51,8 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
             </H6>
           </CRCard>
 
-          <CRCard mt={40} pb={50}>
-            <H6 color="texts.1" mb={3}>
+          <CRCard mt={10} pb={50}>
+            <H6 color="texts.1" mb={1}>
               New Date
             </H6>
             <Div px={53}>
@@ -70,8 +70,19 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
                 disabledMinutes={disabledMinutes}
                 hideHours={hideHours}
                 placement="top"
+                style={{marginTop:'10px'}}
                 block
               />
+              {/* <CRTimePicker
+                    block
+                    name="time"
+                    accepter={DatePicker}
+                    placement="top"
+                    disabledMinutes={disabledMinutes}
+                    hideHours={hideHours}
+                    startHour={8}
+                    style={{marginTop:'10px'}}
+                  /> */}
             </Div>
           </CRCard>
         </Div>

@@ -20,7 +20,7 @@ const Configurations = () => {
       R.map(R.pick(['name', 'price']))
     )(configurations);
     const enableInvoiceCounter = R.propOr(
-      false,
+      '',
       'enableInvoiceCounter'
     )(configurations);
     setFormValue({

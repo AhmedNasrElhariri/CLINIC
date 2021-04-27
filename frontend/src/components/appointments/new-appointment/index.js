@@ -135,7 +135,7 @@ const NewAppointment = ({ show, onHide }) => {
     });
     if (waiting) {
       date = moment(formValue.date).set({
-        hours: '00',
+        hours: '24',
         minute: '00',
         second: '00',
       });
@@ -165,30 +165,6 @@ const NewAppointment = ({ show, onHide }) => {
         show={visible}
         onHide={close}
       />
-      {/* <CRModal
-        show={show}
-        CRContainer={SecondContainerStyled}
-        CRBody={SecondModalBodyStyled}
-        noFooter
-        noHeader
-        loading={loading}
-        onHide={() => {
-          onHide();
-        }}
-        onCancel={() => {
-          onHide();
-        }}
-      >
-        <Div>
-          Total Appointments: {appointmentsCount.totalAppointment} Patient
-        </Div>
-        <SecondRowContainer>
-          <Div>
-            Total Waiting List: {appointmentsCount.totalWaiting} Patient
-          </Div>
-          <Div>View All</Div>
-        </SecondRowContainer>
-      </CRModal> */}
       <CRModal
         show={show}
         header="New Appointment"

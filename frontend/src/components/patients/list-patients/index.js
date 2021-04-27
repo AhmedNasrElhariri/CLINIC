@@ -1,27 +1,47 @@
 import React, { useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { MainContainer, CRTable } from 'components';
+import { MainContainer, CRTable, CRLabel, Div } from 'components';
+
 import PatientsFilter from '../filter/index';
 import EditPatient from '../edit-patient';
 import { usePatients } from 'hooks';
-
+const initialValue = {
+  name: '',
+  phoneNo: '',
+};
 function Patients() {
   const history = useHistory();
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState(initialValue);
+  console.log(filter);
   const [currentPage, setCurrentPage] = useState(1);
   const { patients } = usePatients();
 
-  const filteredPatients = useMemo(
+  const filteredPatient = useMemo(
     () =>
-      patients.filter(p => p.name.toLowerCase().includes(filter.toLowerCase())),
+      patients.filter(p => 
+        p.name.toLowerCase().includes(filter.name.toLowerCase()),
+      ),
     [filter, patients]
   );
-
+  const filteredPatients = useMemo(
+    () =>
+    filteredPatient.filter(p => 
+          p.phoneNo.includes(filter.phoneNo)
+      ),
+    [filter, filteredPatient]
+  );
   return (
     <>
       <MainContainer title="Patients">
-        <PatientsFilter onNameChange={setFilter}></PatientsFilter>
+        <Div display="flex">
+          <Div mr={3}>
+            <PatientsFilter
+              formValue={filter}
+              setFormValue={setFilter}
+            ></PatientsFilter>
+          </Div>
+        </Div>
         <CRTable
           autoHeight
           data={filteredPatients}
@@ -45,7 +65,7 @@ function Patients() {
             <CRTable.CRCell dataKey="phoneNo" />
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn width={35}>
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => <EditPatient patient={data} />}
