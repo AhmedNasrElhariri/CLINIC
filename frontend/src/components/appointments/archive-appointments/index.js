@@ -21,6 +21,7 @@ const StepsDev = styled.div`
 const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [others, setOthers] = useState(0);
   const value = useRef(initValue);
 
   const { sessions } = useConfigurations();
@@ -42,16 +43,16 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     if (activeStep !== 1) {
       setActiveStep(activeStep + 1);
     } else {
-      onOk({ ...value.current, discount });
+      onOk({ ...value.current, discount, others });
     }
-  }, [activeStep, onOk, discount]);
+  }, [activeStep, onOk, discount,others]);
 
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
-      value.current = { ...value.current, discount };
+      value.current = { ...value.current, discount, others };
       setActiveStep(0);
     }
-  }, [activeStep, discount]);
+  }, [activeStep, discount,others]);
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
     activeStep,
   ]);
@@ -70,8 +71,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     >
       <StepsDev>
         <Steps current={activeStep}>
-          <Steps.Item title="Invoice" />
-          <Steps.Item title="Inventory" />
+          <Steps.Item title="Invoice" onClick={() => setActiveStep(0)} />
+          <Steps.Item title="Inventory" onClick={() => setActiveStep(1)} />
         </Steps>
       </StepsDev>
       <Div>
@@ -79,6 +80,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
           <AppointmentInvoice
             onChange={handleInvoiceChange}
             discount={discount}
+            others={others}
+            onOthersChange={setOthers}
             onDiscountChange={setDiscount}
             appointment={appointment}
             sessions={sessions}

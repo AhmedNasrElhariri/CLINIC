@@ -38,6 +38,8 @@ const isOtherType = session => session.name === OTHER;
 function AppointmentInvoice({
   onChange,
   discount,
+  others,
+  onOthersChange,
   onDiscountChange,
   sessions,
   organization,
@@ -82,7 +84,7 @@ function AppointmentInvoice({
     [selectedSessions]
   );
 
-  const total = useMemo(() => subtotal - discount, [discount, subtotal]);
+  const total = useMemo(() => subtotal + (others - discount), [discount,others, subtotal]);
 
   return (
     <>
@@ -133,13 +135,27 @@ function AppointmentInvoice({
                 width={210}
                 addOn={<CRButton variant="danger">Applied</CRButton>}
               />
+              <CRTextInput
+                label="Others"
+                name="others"
+                value={others}
+                onChange={onOthersChange}
+                width={210}
+                addOn={<CRButton variant="primary">Add</CRButton>}
+              />
             </Form>
           </Div>
           <H5 fontWeight={400}>Session Summary</H5>
           <Div background="#f0f1f1" p="6px 8px">
             <Price name="Subtotal " price={subtotal} overriden />
             <Price
-              name="Discount "
+              name="Others"
+              price={others}
+              overriden
+              variant="primary"
+            />
+            <Price
+              name="Discount"
               price={discount}
               overriden
               variant="danger"
@@ -155,6 +171,7 @@ function AppointmentInvoice({
         items={selectedSessions}
         subtotal={subtotal}
         total={total}
+        others={others}
         discount={discount}
         organization={organization}
       />

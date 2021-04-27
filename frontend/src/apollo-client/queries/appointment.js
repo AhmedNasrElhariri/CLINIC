@@ -33,6 +33,9 @@ export const LIST_APPOINTMENTS = gql`
         sex
         phoneNo
       }
+      user{
+        name
+      }
     }
   }
 `;

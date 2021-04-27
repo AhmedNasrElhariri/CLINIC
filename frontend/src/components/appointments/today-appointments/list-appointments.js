@@ -88,10 +88,10 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Status</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ status }) => (
-              <CRTable.CRCellStyled>{status}</CRTable.CRCellStyled>
+            {({ user }) => (
+              <CRTable.CRCellStyled>{user.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>

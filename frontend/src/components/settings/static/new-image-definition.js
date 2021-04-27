@@ -19,8 +19,8 @@ function NewImageDefinition({
   );
   const { imagesCategory } = useImageCategory();
   const categories = imagesCategory.map(category => ({
-    label: category.name,
-    value: category.name,
+    id: category.name,
+    name: category.name,
   }));
   return (
     <CRModal

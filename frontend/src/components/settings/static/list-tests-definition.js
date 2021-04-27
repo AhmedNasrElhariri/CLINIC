@@ -9,7 +9,7 @@ function ListTestsDefinition({ labs, onEdit }) {
       <CRCard borderless>
         <CRTable autoHeight data={labs}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Test Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Lab Name</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>

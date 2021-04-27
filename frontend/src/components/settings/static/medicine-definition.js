@@ -29,7 +29,6 @@ const MedicineDefinition = () => {
       setFormValue(initValue);
     },
   });
-
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);

@@ -20,8 +20,8 @@ function NewLabDefinition({
   );
   const { labsCategory } = useLabCategory();
   const categories = labsCategory.map(category => ({
-    label: category.name,
-    value: category.name,
+    id: category.name,
+    name: category.name,
   }));
   return (
     <CRModal

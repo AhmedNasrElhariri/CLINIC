@@ -387,6 +387,7 @@ type Appointment {
   type: AppointmentType!
   status: AppointmentStatus!
   patient: Patient!
+  user:User!
   data: [AppointmentField!]
   notes: String
   prescription: [Prescription!]
@@ -919,7 +920,7 @@ type MedicineDefinition {
   id: ID!
   name: String!
   concentration: String!
-  form: String
+  form: String!
 }
 
 input MedicineInputDefinition {

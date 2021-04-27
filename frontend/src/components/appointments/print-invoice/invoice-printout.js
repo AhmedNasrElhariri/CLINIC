@@ -21,7 +21,7 @@ const TotalPrice = ({ name, price }) => (
 );
 
 const InvoicePrintout = React.forwardRef(
-  ({ items, discount, subtotal, total, organization }, ref) => {
+  ({ items, discount, subtotal, total, organization,others }, ref) => {
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
@@ -41,6 +41,7 @@ const InvoicePrintout = React.forwardRef(
           ))}
           <Divider />
           <TotalPrice name="Subtotal" price={subtotal} />
+          <TotalPrice name="Others" price={others} />
           <TotalPrice name="Discount" price={discount} />
           <TotalPrice name="Total" price={total} />
         </StyledContainer>
