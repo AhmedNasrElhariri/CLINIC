@@ -156,6 +156,7 @@ function TodayAppointments() {
             <ListAppointments
               appointments={waitingAppointments}
               onArchive={onClickDone}
+              onAddBusinessNotes={onAddBusinessNotes}
               defaultExpanded={true}
               waiting={true}
             />
@@ -164,6 +165,7 @@ function TodayAppointments() {
             <ListAppointments
               title="Completed Appointments"
               appointments={completedAppointments}
+              onAddBusinessNotes={onAddBusinessNotes}
               defaultExpanded={true}
             />
           </CRTabs.CRContent>

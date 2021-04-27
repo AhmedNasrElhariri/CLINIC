@@ -24,14 +24,6 @@ function ListAppointments({
 }) {
   const history = useHistory();
   const componentRef = useRef();
-  // let index = 0;
-  // const NewAppointment = appointments.map(app => {
-  //    index+=1;
-  //    return {
-  //      ...app,
-
-  //    }
-  // })
   return (
     <Div padding={20} wd>
       <CRTable
@@ -104,35 +96,32 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn flexGrow={2}>
+        <CRTable.CRColumn flexGrow={4}>
           <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (
               <Div display="flex">
-                <CRTable.CRCellStyled>
-                  {(isScheduled(appointment) || isWaiting(appointment)) && (
-                    <CRButton
-                      variant="primary"
-                      onClick={e => {
-                        e.stopPropagation();
-                        onArchive(appointment);
-                      }}
-                    >
-                      Archive
-                    </CRButton>
-                  )}
-                </CRTable.CRCellStyled>
-                <CRTable.CRCellStyled>
+                {(isScheduled(appointment) || isWaiting(appointment)) && (
                   <CRButton
                     variant="primary"
+                    mr={1}
                     onClick={e => {
                       e.stopPropagation();
-                      onAddBusinessNotes(appointment);
+                      onArchive(appointment);
                     }}
                   >
-                    Notes
+                    Archive
                   </CRButton>
-                </CRTable.CRCellStyled>
+                )}
+                <CRButton
+                  variant="primary"
+                  onClick={e => {
+                    e.stopPropagation();
+                    onAddBusinessNotes(appointment);
+                  }}
+                >
+                  Notes
+                </CRButton>
                 <Div onClick={e => e.stopPropagation()}>
                   <ReactToPrint
                     trigger={() => <PrintOLIcon ml={2} />}

@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client';
 import moment from 'moment';
 
 import { Div } from 'components';
-import { ADJUST_APPOINTMENT, CANCEL_APPOINTMENT } from 'apollo-client/queries';
+import { ADJUST_APPOINTMENT, CANCEL_APPOINTMENT ,LIST_APPOINTMENTS} from 'apollo-client/queries';
 
 import { EditOLIcon, DeleteOLIcon } from 'components/icons';
 import { Can } from 'components/user/can';
@@ -34,6 +34,11 @@ export const useAdjustAppointment = ({
       onAdjust({ ...appointment, ...adjustAppointment });
       Alert.success('Appointment has been changed successfully');
     },
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
+      },
+    ],
   });
 
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {

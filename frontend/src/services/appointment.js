@@ -150,15 +150,17 @@ export const isArchived = appointment =>
 
 export const isScheduled = appointment =>
   appointment.status === APPT_STATUS.SCHEDULED;
+export const isWaiting = appointment =>
+  appointment.status === APPT_STATUS.WAITING;
 
 export const isScheduledOrArchived = appointment =>
   isScheduled(appointment) || isArchived(appointment);
 
+export const isScheduledOrWaiting = appointment =>
+  isScheduled(appointment) || isWaiting(appointment);
+
 export const canAjdust = appointment => {
-  return (
-    appointment.status === 'Scheduled' &&
-    isDateBefore(new Date(), appointment.date)
-  );
+  return isScheduledOrWaiting;
 };
 
 export const sortAppointmentsByDate = appointments => {

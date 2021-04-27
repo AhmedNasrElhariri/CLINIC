@@ -10,19 +10,31 @@ import {
   LIST_PATIENT_COURSES,
   LIST_USERS,
   EDIT_COURSE_DOCTOR,
+  FINISH_COURSE,
+  LIST_REVENUES,
+  LIST_APPOINTMENTS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
-const updateCache = myCourses => {
+const updateCache = (myCourses, patientId) => {
   client.writeQuery({
     query: LIST_COURSES,
+    variables: {
+      patientId: patientId,
+    },
     data: {
       myCourses,
     },
   });
 };
 
-function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
+function useCourses({
+  onCreate,
+  onEdit,
+  onEditDoctor,
+  patientId,
+  onFinishCourse,
+} = {}) {
   const { data } = useQuery(LIST_COURSES, { variables: { patientId } });
   const courses = useMemo(() => R.propOr([], 'myCourses')(data), [data]);
   const { data: patientData } = useQuery(LIST_PATIENT_COURSES, {
@@ -39,9 +51,18 @@ function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
       Alert.success('the Course has been Added Successfully');
       onCreate && onCreate();
     },
-    update(cache, { data: { addCourse: course } }) {
-      updateCache([...courses, course]);
-    },
+    refetchQueries: [
+      {
+        query: LIST_COURSES,
+        variables: { patientId: patientId },
+      },
+      {
+        query: LIST_APPOINTMENTS,
+      },
+      {
+        query: LIST_REVENUES,
+      },
+    ],
     onError() {
       Alert.error('Failed to add new Course');
     },
@@ -51,6 +72,15 @@ function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
       Alert.success('the Course has been Edited Successfully');
       onEdit && onEdit();
     },
+    refetchQueries: [
+      {
+        query: LIST_COURSES,
+        variables: { patientId: patientId },
+      },
+      {
+        query: LIST_REVENUES,
+      },
+    ],
     onError() {
       Alert.error('Failed to edit the Course');
     },
@@ -60,8 +90,30 @@ function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
       Alert.success('the Doctor has been Edited Successfully');
       onEditDoctor && onEditDoctor();
     },
+    refetchQueries: [
+      {
+        query: LIST_COURSES,
+        variables: { patientId: patientId },
+      },
+    ],
     onError() {
       Alert.error('Failed to edit the Course');
+    },
+  });
+
+  const [finishCourse] = useMutation(FINISH_COURSE, {
+    onCompleted() {
+      Alert.success('the Course Finished  Successfully');
+      onFinishCourse && onFinishCourse();
+    },
+    refetchQueries: [
+      {
+        query: LIST_COURSES,
+        variables: { patientId: patientId },
+      },
+    ],
+    onError() {
+      Alert.error('Failed to Finish the Course');
     },
   });
 
@@ -73,9 +125,18 @@ function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
       editCourse,
       editCourseDoctor,
       users,
+      finishCourse,
       updateCache,
     }),
-    [courses, patientCourses, addCourse, editCourse, editCourseDoctor, users]
+    [
+      courses,
+      patientCourses,
+      addCourse,
+      editCourse,
+      editCourseDoctor,
+      finishCourse,
+      users,
+    ]
   );
 }
 

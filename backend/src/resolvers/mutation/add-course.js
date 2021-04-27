@@ -1,5 +1,9 @@
 import { prisma } from '@';
-import { APPOINTMENTS_TYPES, APPOINTMENTS_STATUS } from '@/utils/constants';
+import {
+  APPOINTMENTS_TYPES,
+  APPOINTMENTS_STATUS,
+  COURSE_STATUS,
+} from '@/utils/constants';
 
 const addCourse = async (_, { course }, { userId }) => {
   const {
@@ -11,11 +15,17 @@ const addCourse = async (_, { course }, { userId }) => {
     sessions,
     doctorId,
   } = course;
-  return prisma.course.create({
+  const startDate = sessions.length > 0 ? sessions[0] : new Date();
+  const endDate =
+    sessions.length > 0 ? sessions[sessions.length - 1] : new Date();
+  const courseDef = await prisma.course.create({
     data: {
       price,
       paid,
       discount,
+      startDate,
+      endDate,
+      status: COURSE_STATUS.INPROGRESS,
       user: {
         connect: {
           id: userId,
@@ -54,7 +64,26 @@ const addCourse = async (_, { course }, { userId }) => {
         })),
       },
     },
+    include: {
+      courseDefinition: true,
+      patient: true,
+    },
   });
+  const payment =
+    'C' + '/' + courseDef.courseDefinition.name + '/' + courseDef.patient.name;
+  const revenue = await prisma.revenue.create({
+    data: {
+      name: payment,
+      date: new Date(),
+      amount: paid,
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+    },
+  });
+  return courseDef;
 };
 
 export default addCourse;

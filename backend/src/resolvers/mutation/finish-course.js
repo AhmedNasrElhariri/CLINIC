@@ -1,38 +1,14 @@
 import { prisma } from '@';
 import {
-  APPOINTMENTS_TYPES,
   APPOINTMENTS_STATUS,
   COURSE_STATUS,
 } from '@/utils/constants';
-import { date } from 'yup';
 const finishCourse = async (_, { courseId }) => {
   const data = await prisma.course.findUnique({
     where: {
       id: courseId,
     },
   });
-  //   const { sessions } = data;
-  //   sessions.map(session => {
-  //     prisma.appointment.update({
-  //       where: {
-  //         id: session.id,
-  //       },
-  //       data: {
-  //         type: APPOINTMENTS_TYPES.Session,
-  //         status: APPOINTMENTS_STATUS.CANCELLED,
-  //         patient: {
-  //           connect: {
-  //             id: session.patientId,
-  //           },
-  //         },
-  //         user: {
-  //           connect: {
-  //             id: session.userId,
-  //           },
-  //         },
-  //       },
-  //     });
-  //   });
   let status =
     new Date() > data.endDate
       ? COURSE_STATUS.FINISHED

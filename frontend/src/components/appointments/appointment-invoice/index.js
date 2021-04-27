@@ -49,7 +49,7 @@ function AppointmentInvoice({
 
   const choices = useMemo(() => {
     const allChoices = [...sessions, { name: OTHER, price: 0 }];
-    return allChoices.map(s => ({ label: s.name, value: s }));
+    return allChoices.map(s => ({ name: s.name, id: s }));
   }, [sessions]);
 
   const handleOnChange = useCallback(

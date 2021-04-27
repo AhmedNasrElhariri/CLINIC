@@ -327,8 +327,8 @@ model PayrollTransaction {
   amount        Int
   date          DateTime
   type          PayrollTransactionType
-  payrollUser   PayrollUser            @relation(fields: [payrollUserId], references: [id])
-  payrollUserId String
+  payrollUser   PayrollUser?           @relation(fields: [payrollUserId], references: [id])
+  payrollUserId String?
   payroll       Payroll                @relation(fields: [payrollId], references: [id])
   payrollId     String
 }
