@@ -11,6 +11,8 @@ const AppointmentMedicines = ({ prescription, onChange }) => {
   const [formValue, setFormValue] = useState([]);
   const { timings } = useTimings();
 
+  console.log(medicineDefinitions)
+
   useEffect(() => {
     const newFormValue = medicineDefinitions.map((m, idx) => {
       const formMedicine = prescription.find(f => f.medicineId === m.id) || {};

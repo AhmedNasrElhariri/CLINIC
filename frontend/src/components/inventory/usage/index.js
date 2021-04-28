@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import * as R from 'ramda';
 import { Form, Schema } from 'rsuite';
 
 import { Div, CRSelectInput, CRNumberInput } from 'components';
 import ListInvoiceItems from 'components/appointments/list-invoice-items';
-import { useForm } from 'hooks';
+import { useForm, useInventory } from 'hooks';
 
 const { StringType, NumberType } = Schema.Types;
 
@@ -17,19 +18,27 @@ const initValue = {
   quantity: 1,
 };
 
-function InventoryUsage() {
+function InventoryUsage({ onChange }) {
   const { formValue, setFormValue } = useForm({
     initValue,
     model,
   });
+  const { items } = useInventory();
 
-  const handleDelete = () => {};
-  const items = [
-    { name: 'Examination', price: 0 },
-    { name: 'Followup', price: 0 },
-    { name: 'Urgent', price: 0 },
-    { name: 'Other', price: 0 },
-  ];
+  const handleOnChange = useCallback(
+    items => {
+      // setInvoiceItems(items);
+      onChange(items);
+    },
+    [onChange]
+  );
+
+  const handleDelete = useCallback(
+    idx => {
+      handleOnChange(R.remove(idx, 1)(items));
+    },
+    [handleOnChange]
+  );
 
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
@@ -42,7 +51,7 @@ function InventoryUsage() {
             block
           ></CRSelectInput>
           <Div my={3}>
-            <ListInvoiceItems items={items} onDelete={handleDelete} />
+            <ListInvoiceItems items={[]} onDelete={handleDelete} />
           </Div>
         </Div>
         <Div width={104}>

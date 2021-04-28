@@ -50,13 +50,13 @@ export const MIN_EXAMINATION_DURATION = 5;
 export const DAYS = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI'];
 
 export const UNIT_OF_MEASURES = [
-  { label: 'Per unit', value: 'PerUnit', shortcut: 'unit' },
-  { label: 'Milligram', value: 'Milligram', shortcut: 'mg' },
-  { label: 'Kilogram', value: 'Kilogram', shortcut: 'kg' },
-  { label: 'Millimeter', value: 'Millimeter', shortcut: 'mm' },
-  { label: 'Centimetre', value: 'Centimetre', shortcut: 'cm' },
-  { label: 'Tablet', value: 'Tablet', shortcut: 'tablet' },
-  { label: 'Stripe', value: 'Stripe', shortcut: 'stripe' },
+  { name: 'Per unit', value: 'PerUnit', shortcut: 'unit' },
+  { name: 'Milligram', value: 'Milligram', shortcut: 'mg' },
+  { name: 'Kilogram', value: 'Kilogram', shortcut: 'kg' },
+  { name: 'Millimeter', value: 'Millimeter', shortcut: 'mm' },
+  { name: 'Centimetre', value: 'Centimetre', shortcut: 'cm' },
+  { name: 'Tablet', value: 'Tablet', shortcut: 'tablet' },
+  { name: 'Stripe', value: 'Stripe', shortcut: 'stripe' },
 ];
 
 export const FORM_ACTIONS = Object.freeze({

@@ -16,7 +16,7 @@ const archiveAppointment = async (
   { id, sessions = [], items = [], discount = 0 },
   { userId, organizationId }
 ) => {
-  // const persistedAppointment = await prisma.appointment.findOne({
+  // const persistedAppointment = await prisma.appointment.findUnique({
   //   where: { id },
   //   include: true,
   //   images: true,
@@ -53,12 +53,13 @@ const archiveAppointment = async (
     updateImagesAfterArchiveAppointment(R.map(R.prop('id'))(images)),
   ]);
 
-  const configuration = await prisma.configuration.findOne({
-    where: { userId: userId },
+  const configuration = await prisma.configuration.findUnique({
+    where: { userId },
   });
+  console.log(configuration);
   const enable = configuration.enableInvoiceCounter;
   if (enable) {
-    const existedOrganization = await prisma.organization.findOne({
+    const existedOrganization = await prisma.organization.findUnique({
       where: { id: organizationId },
     });
     const newInvoiceCounter = existedOrganization.invoiceCounter + 1;

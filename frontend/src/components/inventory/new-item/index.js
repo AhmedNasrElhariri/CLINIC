@@ -69,6 +69,7 @@ const NewItem = () => {
           <CRSelectInput
             label="Unit Of measure"
             name="unitOfMeasure"
+            valueKey="value"
             data={UNIT_OF_MEASURES}
             block
           ></CRSelectInput>

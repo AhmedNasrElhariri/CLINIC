@@ -26,7 +26,7 @@ import {
 
 import AppointmentPictures from '../pictures';
 
-import Medicines from './appointment-medecines';
+import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
 import Pulses from './pulses';
@@ -161,7 +161,7 @@ function AppointmentData({
             </>
           )}
           <SectionContainer title="Prescription" name="prescription">
-            <Medicines
+            <AppointmentMedicines
               prescription={appointmentFormValue.prescription}
               onChange={handleMedicineChange}
             />

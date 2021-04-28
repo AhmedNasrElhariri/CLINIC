@@ -33,21 +33,9 @@ const InventoryPage = () => {
         ))}
       </CRNav>
       <CRCard borderless>
-        {activeTab === '0' && (
-          <Can I="add" an="Inventory">
-            <InventoryStatus />
-          </Can>
-        )}
-        {activeTab === '1' && (
-          <Can I="view_history" an="Inventory">
-            <InventoryHistory />
-          </Can>
-        )}
-        {activeTab === '2' && (
-          <Can I="define" an="Inventory">
-            <ItemsDefinitions />
-          </Can>
-        )}
+        {activeTab === '0' && <InventoryStatus />}
+        {activeTab === '1' && <InventoryHistory />}
+        {activeTab === '2' && <ItemsDefinitions />}
       </CRCard>
     </>
   );

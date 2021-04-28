@@ -20,7 +20,7 @@ const Configurations = () => {
       R.map(R.pick(['name', 'price']))
     )(configurations);
     const enableInvoiceCounter = R.propOr(
-      '',
+      false,
       'enableInvoiceCounter'
     )(configurations);
     setFormValue({
@@ -81,7 +81,10 @@ const Configurations = () => {
         onChange={updateSession}
         onDelete={handleDelete}
       />
-      <EnableInvoiceCounter setEnable={updateEnable} formValue={formValue} />
+      <EnableInvoiceCounter
+        onChange={updateEnable}
+        value={formValue.enableInvoiceCounter}
+      />
     </>
   );
 };
