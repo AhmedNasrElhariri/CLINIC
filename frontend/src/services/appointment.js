@@ -160,7 +160,7 @@ export const isScheduledOrWaiting = appointment =>
   isScheduled(appointment) || isWaiting(appointment);
 
 export const canAjdust = appointment => {
-  return isScheduledOrWaiting;
+  return isScheduledOrWaiting(appointment);
 };
 
 export const sortAppointmentsByDate = appointments => {
