@@ -5,6 +5,9 @@ CREATE TYPE "AppointmentType" AS ENUM ('Examination', 'Followup', 'Course', 'Urg
 CREATE TYPE "CourseType" AS ENUM ('Session', 'Perunit');
 
 -- CreateEnum
+CREATE TYPE "CourseStatus" AS ENUM ('InProgress', 'Finished', 'EarlyFinished');
+
+-- CreateEnum
 CREATE TYPE "PayrollStatus" AS ENUM ('Open', 'Close');
 
 -- CreateEnum
@@ -86,8 +89,24 @@ CREATE TABLE "Appointment" (
     "type" "AppointmentType" NOT NULL,
     "patientId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "businessNotes" TEXT NOT NULL DEFAULT E'',
     "status" "AppointmentStatus" NOT NULL,
     "notes" TEXT DEFAULT E'',
+    "pulses" INTEGER,
+    "powerOne" INTEGER,
+    "powerTwo" INTEGER,
+    "branchId" TEXT,
+    "specialtyId" TEXT,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PulseControl" (
+    "id" TEXT NOT NULL,
+    "before" INTEGER NOT NULL,
+    "after" INTEGER NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -192,7 +211,7 @@ CREATE TABLE "PayrollTransaction" (
     "amount" INTEGER NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "type" "PayrollTransactionType" NOT NULL,
-    "payrollUserId" TEXT NOT NULL,
+    "payrollUserId" TEXT,
     "payrollId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
@@ -439,6 +458,28 @@ CREATE TABLE "ImageDefinition" (
 );
 
 -- CreateTable
+CREATE TABLE "SalesDefinition" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Sales" (
+    "id" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "totalPrice" INTEGER NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
+    "salesDefinitionId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "CourseDefinition" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -457,6 +498,9 @@ CREATE TABLE "Course" (
     "price" INTEGER NOT NULL,
     "paid" INTEGER NOT NULL,
     "discount" INTEGER NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "status" "CourseStatus" NOT NULL,
     "patientId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "courseDefinitionId" TEXT NOT NULL,
@@ -684,6 +728,12 @@ ALTER TABLE "Appointment" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id
 ALTER TABLE "Appointment" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Appointment" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Appointment" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Prescription" ADD FOREIGN KEY ("medicineId") REFERENCES "MedicineDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -723,7 +773,7 @@ ALTER TABLE "AppointmentFile" ADD FOREIGN KEY ("fileId") REFERENCES "File"("id")
 ALTER TABLE "PayrollUser" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PayrollTransaction" ADD FOREIGN KEY ("payrollUserId") REFERENCES "PayrollUser"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "PayrollTransaction" ADD FOREIGN KEY ("payrollUserId") REFERENCES "PayrollUser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PayrollTransaction" ADD FOREIGN KEY ("payrollId") REFERENCES "Payroll"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -817,6 +867,15 @@ ALTER TABLE "Timing" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELET
 
 -- AddForeignKey
 ALTER TABLE "ImageDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Sales" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Sales" ADD FOREIGN KEY ("salesDefinitionId") REFERENCES "SalesDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CourseDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
