@@ -2,8 +2,8 @@ import { generatePdf } from '@/services/report.service';
 import moment from 'moment';
 import * as R from 'ramda';
 import { prisma } from '..';
-import {  formatDateStandard } from './../services/date.service';
-let totalAmount = 0;
+import { formatDateStandard } from './../services/date.service';
+
 const init = app => {
   const byAppointmentDate = R.groupBy(function (appointment) {
     const date = formatDateStandard(appointment.date);
@@ -166,10 +166,10 @@ const init = app => {
             lte: endOfDay,
           },
         },
-        include:{
+        include: {
           user: true,
-          patient:true,
-        }
+          patient: true,
+        },
       });
       const data = appointments.map(p => {
         return {
