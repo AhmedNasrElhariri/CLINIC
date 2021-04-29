@@ -49,3 +49,6 @@ export { default as myDoctors } from './my-doctors';
 export { default as payrollUsers } from './payroll-users';
 export { default as userTransactions } from './user-transactions';
 export { default as payrollToPaySummary } from './payroll-to-pay-summary';
+export { default as appointmentsDayCount } from './appointments-day-count';
+export { default as mySalesesDefinition } from './my-sales-definition';
+export { default as mySaleses } from './my-sales';

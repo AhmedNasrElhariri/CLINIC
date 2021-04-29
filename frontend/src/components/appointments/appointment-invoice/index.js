@@ -84,7 +84,11 @@ function AppointmentInvoice({
     [selectedSessions]
   );
 
-  const total = useMemo(() => subtotal + (others - discount), [discount,others, subtotal]);
+  const total = useMemo(() => subtotal + (others - discount), [
+    discount,
+    others,
+    subtotal,
+  ]);
 
   return (
     <>
@@ -147,13 +151,8 @@ function AppointmentInvoice({
           </Div>
           <H5 fontWeight={400}>Session Summary</H5>
           <Div background="#f0f1f1" p="6px 8px">
+            <Price name="Others" price={others} overriden variant="primary" />
             <Price name="Subtotal " price={subtotal} overriden />
-            <Price
-              name="Others"
-              price={others}
-              overriden
-              variant="primary"
-            />
             <Price
               name="Discount"
               price={discount}

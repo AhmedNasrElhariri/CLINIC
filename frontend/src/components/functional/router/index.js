@@ -24,7 +24,8 @@ import {
   Example,
   Test,
   Csv,
-  Payroll
+  Payroll,
+  Sales,
 } from 'components';
 import CreateDefaultView from 'components/views/create-default-view';
 
@@ -108,6 +109,9 @@ function AppRouter() {
       </Route>
       <Route path="/example">
         <Example />
+      </Route>
+      <Route path="/sales">
+        <Sales />
       </Route>
       <Route path="/test">
         <>

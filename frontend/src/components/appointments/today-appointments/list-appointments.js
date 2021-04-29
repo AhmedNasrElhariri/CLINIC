@@ -95,7 +95,22 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ specialty }) => (
+              <CRTable.CRCellStyled>{specialty.name}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ branch }) => (
+              <CRTable.CRCellStyled>{branch.name}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={4}>
           <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
           <CRTable.CRCell>

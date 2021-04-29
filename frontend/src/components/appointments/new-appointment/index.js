@@ -125,7 +125,15 @@ const NewAppointment = ({ show, onHide }) => {
       Alert.error('Complete Required Fields');
       return;
     }
-    const { patientId, userId, type, courseId, waiting } = formValue;
+    const {
+      patientId,
+      userId,
+      type,
+      courseId,
+      branchId,
+      specialtyId,
+      waiting,
+    } = formValue;
 
     const timeDate = moment(formValue.time);
 
@@ -140,7 +148,16 @@ const NewAppointment = ({ show, onHide }) => {
         second: '00',
       });
     }
-    createAppointment({ patientId, type, date, userId, courseId, waiting });
+    createAppointment({
+      patientId,
+      type,
+      date,
+      userId,
+      courseId,
+      branchId,
+      specialtyId,
+      waiting,
+    });
   }, [createAppointment, formValue]);
   const notify = () => {
     toast(

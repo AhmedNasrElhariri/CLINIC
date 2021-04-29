@@ -19,3 +19,4 @@ export * from './invoice-counter';
 export * from './timing';
 export * from './course';
 export * from './payroll';
+export * from './sales-definition';

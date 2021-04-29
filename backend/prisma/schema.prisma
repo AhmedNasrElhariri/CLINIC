@@ -173,6 +173,8 @@ model User {
   users               Course[]             @relation("user")
   doctors             Course[]             @relation("doctor")
   PayrollUser         PayrollUser[]
+  SalesDefinition     SalesDefinition[]
+  Sales               Sales[]
 }
 
 model Patient {
@@ -205,6 +207,11 @@ model Appointment {
   patientId        String
   user             User               @relation(fields: [userId], references: [id])
   userId           String
+  branch           Branch?            @relation(fields: [branchId], references: [id])
+  branchId         String?
+  specialty        Specialty?         @relation(fields: [specilityId], references: [id])
+  specilityId      String?
+  businessNotes    String             @default("")
   status           AppointmentStatus
   data             AppointmentField[]
   notes            String?            @default("")
@@ -557,6 +564,27 @@ model ImageDefinition {
   Image    Image[]
 }
 
+model SalesDefinition {
+  id     String  @id @default(uuid())
+  name   String
+  price  Int
+  user   User    @relation(fields: [userId], references: [id])
+  userId String
+  Sales  Sales[]
+}
+
+model Sales {
+  id                String          @id @default(uuid())
+  quantity          Int
+  totalPrice        Int
+  date              DateTime
+  user              User            @relation(fields: [userId], references: [id])
+  userId            String
+  salesDefinition   SalesDefinition @relation(fields: [salesDefinitionId], references: [id])
+  salesDefinitionId String
+
+}
+
 model CourseDefinition {
   id             String     @id @default(uuid())
   name           String
@@ -693,6 +721,7 @@ model Branch {
   rules           Rule[]
   specialties     Specialty[]
   userSpecialties UserSpecialty[]
+  Appointment     Appointment[]
 }
 
 model Specialty {
@@ -703,6 +732,7 @@ model Specialty {
   rules           Rule[]
   branches        Branch[]
   userSpecialties UserSpecialty[]
+  Appointment     Appointment[]
 }
 
 model UserSpecialty {

@@ -114,6 +114,8 @@ type Query {
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
+  mySalesesDefinition: [SalesDefinition!]
+  mySaleses: [Sales!]
   myCoursesDefinition: [CourseDefinition!]
   myCourses(patientId: ID): [Course!]
   myDoctors(appointmentId: ID): [User!]
@@ -228,6 +230,11 @@ type Mutation {
   addPayroll(payment: [ID!]): Payroll!
   deletePayrollUser(userId: ID!): PayrollUser!
   addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
+  updateNotes(id: ID!, notes: String!): Appointment!
+  addSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
+  editSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
+  addSales(sales: SalesInput!): Sales
+  editSales(sales: SalesInput!): Sales
 }
 
 ########################### Auth ##################################
@@ -387,7 +394,9 @@ type Appointment {
   type: AppointmentType!
   status: AppointmentStatus!
   patient: Patient!
-  user:User!
+  branch: Branch!
+  specialty: Specialty!
+  user: User!
   data: [AppointmentField!]
   notes: String
   prescription: [Prescription!]
@@ -418,6 +427,8 @@ input AppointmentInput {
   date: Date!
   type: AppointmentType!
   userId: ID!
+  branchId: ID
+  specialtyId: ID
   notes: String
   courseId: ID
 }
@@ -912,6 +923,34 @@ type ImageCategory {
 input ImageInputCategory {
   id: ID
   name: String!
+}
+
+########################### Sales Definition ##################################
+
+type SalesDefinition {
+  id: ID!
+  name: String!
+  price: Int!
+}
+
+input SalesInputDefinition {
+  id: ID
+  name: String!
+  price: Int!
+}
+
+type Sales {
+  id: ID!
+  date: Date!
+  salesDefinition: SalesDefinition!
+  quantity: Int!
+  totalPrice: Int!
+}
+
+input SalesInput {
+  id: ID
+  salesDefinitionId: ID!
+  quantity: Int!
 }
 
 ########################### Medicine Definition ##################################

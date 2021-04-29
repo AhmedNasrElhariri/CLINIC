@@ -21,6 +21,10 @@ const appointments = async (_, { input }, { user, organizationId }) => {
         in: ids,
       },
     },
+    include:{
+      specialty:true,
+      branch:true,
+    }
   });
 };
 

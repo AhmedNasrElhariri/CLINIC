@@ -30,3 +30,5 @@ export { default as usePatientDetails } from './patinet-details';
 export { default as useCoursesDefinition } from './fetch-courses-definition';
 export { default as useCourses } from './courses';
 export { default as usePayroll } from './payroll';
+export { default as useSalesDefinition } from './sales-definition';
+export { default as useSales } from './sales';

@@ -36,6 +36,12 @@ export const LIST_APPOINTMENTS = gql`
       user{
         name
       }
+      branch{
+        name
+      }
+      specialty{
+        name
+      }
     }
   }
 `;

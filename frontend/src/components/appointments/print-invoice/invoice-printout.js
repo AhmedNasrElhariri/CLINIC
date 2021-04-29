@@ -40,8 +40,8 @@ const InvoicePrintout = React.forwardRef(
             <ItemPrice {...item} key={idx} />
           ))}
           <Divider />
-          <TotalPrice name="Subtotal" price={subtotal} />
           <TotalPrice name="Others" price={others} />
+          <TotalPrice name="Subtotal" price={subtotal} />
           <TotalPrice name="Discount" price={discount} />
           <TotalPrice name="Total" price={total} />
         </StyledContainer>
