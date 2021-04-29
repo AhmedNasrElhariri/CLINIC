@@ -226,9 +226,9 @@ model Appointment {
   pulses           Int?
   powerOne         Int?
   powerTwo         Int?
-  Branch           Branch?            @relation(fields: [branchId], references: [id])
+  branch           Branch?            @relation(fields: [branchId], references: [id])
   branchId         String?
-  Specialty        Specialty?         @relation(fields: [specialtyId], references: [id])
+  specialty        Specialty?         @relation(fields: [specialtyId], references: [id])
   specialtyId      String?
 }
 
