@@ -4,11 +4,24 @@ import * as R from 'ramda';
 import { prisma } from '..';
 import { formatDateStandard } from './../services/date.service';
 
+const byAppointmentDate = R.groupBy(function (appointment) {
+  const date = formatDateStandard(appointment.date);
+  return date;
+});
+
 const init = app => {
-  const byAppointmentDate = R.groupBy(function (appointment) {
-    const date = formatDateStandard(appointment.date);
-    return date;
+  app.get('/pdf', async (req, res) => {
+    try {
+      const pdfDoc = await generatePdf('/views/reports/rt.ejs', {
+        test: 'ddddddddd',
+      });
+      res.end(pdfDoc);
+    } catch (e) {
+      console.log(e);
+      res.status(400).send('Invalid');
+    }
   });
+
   app.get('/monthly', async (req, res) => {
     const { month } = req.query;
     const endOfMonth = moment(month).clone().endOf('month').toDate();
