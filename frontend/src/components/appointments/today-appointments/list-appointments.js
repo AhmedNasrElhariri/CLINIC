@@ -19,14 +19,8 @@ import { FULL_DATE_FORMAT, STANDARD_DATE_FORMAT } from 'utils/constants';
 function ListAppointments({
   appointments,
   onArchive,
-<<<<<<< HEAD
   waiting,
   onAddBusinessNotes,
-=======
-  onAddBusinessNotes,
-  title,
-  defaultExpanded = false,
->>>>>>> db66f42... complete the features of course task
 }) {
   const history = useHistory();
   const componentRef = useRef();

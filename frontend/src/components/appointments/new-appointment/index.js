@@ -137,7 +137,6 @@ const NewAppointment = ({ show, onHide }) => {
       specialtyId,
       waiting,
     } = formValue;
-    const { patientId, userId, type, courseId, waiting } = formValue;
 
     const timeDate = moment(formValue.time);
 

@@ -144,11 +144,7 @@ type Query {
   payrollUsers: [PayrollUser!]
   payrollToPaySummary: [PayrollToPaySummary!]
   userTransactions(userId: ID!): [PayrollTransaction!]
-<<<<<<< HEAD
-  pulseControl:PulseControl!
-=======
   pulseControl: PulseControl!
->>>>>>> 2efe6cb... merge 456b48e
   appointmentsDayCount(date: Date!): AppointmentsDayCount!
 }
 
