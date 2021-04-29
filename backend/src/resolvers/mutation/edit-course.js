@@ -1,11 +1,6 @@
 import { prisma } from '@';
-<<<<<<< HEAD
 const editCourse = async (_, { courseId, paid }) => {
-  const data = await prisma.course.findOne({
-=======
-const editCourse = async (_, { courseId, paid }, { userId }) => {
   const data = await prisma.course.findUnique({
->>>>>>> 27c3281... resolve the bugs
     where: {
       id: courseId,
     },

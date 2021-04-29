@@ -1,25 +1,33 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
-import { Div } from 'components';
-import { ARCHIVE_APPOINTMENT } from 'apollo-client/queries';
+
+import { CRTabs, Div } from 'components';
+
+import {
+  ARCHIVE_APPOINTMENT,
+  UPDATE_BUSINESS_NOTES,
+} from 'apollo-client/queries';
+
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointments';
 import { getName } from 'services/accounting';
 import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
-
+import BusinessNotes from './business-notes';
 import {
   filterTodayAppointments,
   sortAppointments,
 } from 'services/appointment';
 import { APPT_STATUS } from 'utils/constants';
-
+const initialValue = {
+  businessNotes: '',
+};
 function TodayAppointments() {
   const { todayAppointments: appointments } = useAppointments();
-
+  const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
-
+  const [notes, setNotes] = useState(initialValue);
   const filteredAppointments = useMemo(
     () => sortAppointments(filterTodayAppointments(appointments, formValue)),
     [appointments, formValue]
@@ -29,7 +37,11 @@ function TodayAppointments() {
   const { refetchInventory, refetchInventoryHistory } = useInventory();
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);
-
+  useEffect(() => {
+    setNotes(val => ({
+      businessNotes: R.propOr('', 'businessNotes')(appointment),
+    }));
+  }, [appointment]);
   const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
     refetchQueries: () => [
       refetchRevenues,
@@ -41,6 +53,11 @@ function TodayAppointments() {
       Alert.success('Appointment has been Archived successfully');
     },
   });
+  const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
+    onCompleted: () => {
+      Alert.success('Business Notes Added Successfully');
+    },
+  });
 
   const upcomingAppointments = useMemo(
     () =>
@@ -49,10 +66,7 @@ function TodayAppointments() {
       ),
     [filteredAppointments]
   );
-<<<<<<< HEAD
 
-=======
-  
   const waitingAppointments = useMemo(
     () =>
       R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(
@@ -60,7 +74,6 @@ function TodayAppointments() {
       ),
     [filteredAppointments]
   );
->>>>>>> 27c3281... resolve the bugs
   const completedAppointments = useMemo(
     () =>
       R.pipe(R.filter(R.propEq('status', APPT_STATUS.ARCHIVED)))(
@@ -71,12 +84,20 @@ function TodayAppointments() {
 
   const onClickDone = useCallback(
     appointment => {
+      setPopUp('archive');
       setAppointment(appointment);
       open();
     },
     [open]
   );
-
+  const onAddBusinessNotes = useCallback(
+    appointment => {
+      setPopUp('notes');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
   const handleArchive = useCallback(
     ({ sessions, items, discount }) => {
       close();
@@ -97,7 +118,15 @@ function TodayAppointments() {
     },
     [appointment, archive, close]
   );
-
+  const addBusinessNotes = useCallback(() => {
+    close();
+    updateNotes({
+      variables: {
+        id: appointment.id,
+        notes: notes.businessNotes,
+      },
+    });
+  }, [appointment, updateNotes, notes]);
   return (
     <>
       {/* <ToolBar
@@ -107,26 +136,6 @@ function TodayAppointments() {
         doctors={doctors}
         specialties={specialties}
       /> */}
-<<<<<<< HEAD
-      <ListAppointments
-        title="Upcoming Appointments"
-        appointments={upcomingAppointments}
-        onArchive={onClickDone}
-        defaultExpanded={true}
-      />
-      <Div my={5} />
-      <ListAppointments
-        title="Completed Appointments"
-        appointments={completedAppointments}
-        defaultExpanded={true}
-      />
-      <ArchiveAppointment
-        appointment={appointment}
-        show={visible}
-        onCancel={close}
-        onOk={handleArchive}
-      />
-=======
       <CRTabs>
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>Main Appointments</CRTabs.CRTab>
@@ -178,7 +187,6 @@ function TodayAppointments() {
           onOk={addBusinessNotes}
         />
       )}
->>>>>>> 27c3281... resolve the bugs
     </>
   );
 }
