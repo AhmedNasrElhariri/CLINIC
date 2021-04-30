@@ -6,15 +6,14 @@ import { CRButton, Div, H6, H7 } from 'components';
 import { CRNumberInput, CRSelectInput, CRTextInput } from 'components/widgets';
 
 const peridos = [
-  { label: 'Year', value: 'year', arbiceValue: 'سنة', englishValue: 'year' },
-  { label: 'Month', value: 'month', arbiceValue: 'شهر', englishValue: 'month' },
-  { label: 'Week', value: 'week', arbiceValue: 'أسبوع', englishValue: 'week' },
-  { label: 'Day', value: 'day', arbiceValue: 'يوم', englishValue: 'day' },
+  { name: 'Year', value: 'year', arbiceValue: 'سنة', englishValue: 'year' },
+  { name: 'Month', value: 'month', arbiceValue: 'شهر', englishValue: 'month' },
+  { name: 'Week', value: 'week', arbiceValue: 'أسبوع', englishValue: 'week' },
+  { name: 'Day', value: 'day', arbiceValue: 'يوم', englishValue: 'day' },
 ];
 const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
   const { name, concentration, form } = medicine;
   const required = formValue.required;
-
   return (
     <MedicineContainerStyled>
       <Form fluid formValue={formValue} onChange={onChange}>

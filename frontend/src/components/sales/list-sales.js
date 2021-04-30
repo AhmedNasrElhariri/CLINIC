@@ -4,27 +4,17 @@ import { formatDate } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { CRCard, CRTable } from 'components';
 
-function ListSaleses({ saleses, onEdit }) {
+function ListSaleses({ saleses, onEdit, onDelete }) {
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={saleses}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ },indx) => (
-                <CRTable.CRCellStyled bold>
-                  {indx + 1}
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (
                 <CRTable.CRCellStyled bold>
-                  {formatDate(date,STANDARD_DATE_FORMAT)}
+                  {formatDate(date, STANDARD_DATE_FORMAT)}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
@@ -82,7 +72,7 @@ function ListSaleses({ saleses, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon icon="trash" onClick={() => onEdit(data)}>
+                <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
                   Delete
                 </Icon>

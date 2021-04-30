@@ -74,3 +74,4 @@ export { default as addSalesDefinition } from './add-sales-definition';
 export { default as editSalesDefinition } from './edit-sales-definition';
 export { default as addSales } from './add-sales';
 export { default as editSales } from './edit-sales';
+export { default as deleteSales } from './delete-sales';

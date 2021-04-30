@@ -244,6 +244,7 @@ type Mutation {
   editSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
   addSales(sales: SalesInput!): Sales
   editSales(sales: SalesInput!): Sales
+  deleteSales(id: ID!): Sales
 }
 
 ########################### Auth ##################################
@@ -416,8 +417,8 @@ type Appointment {
   images: [Image!]
   courses: [Course!]
   pulses: Int
-  powerOne:Int
-  powerTwo:Int 
+  powerOne: Int
+  powerTwo: Int
 }
 
 type AppointmentsDayCount {

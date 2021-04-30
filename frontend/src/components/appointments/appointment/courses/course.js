@@ -17,6 +17,7 @@ const CourseData = ({
   const history = useHistory();
   let course = courses[indx];
   let { sessions } = course;
+  const updatedSessions = sortByDate(sessions);
   const handleClick = appointment => {
     if (
       moment(new Date()).endOf('day').toDate() >
@@ -85,7 +86,7 @@ const CourseData = ({
         <CRCard borderless>
           <CRTable
             autoHeight
-            data={sessions}
+            data={updatedSessions}
             onRowClick={appointment => {
               handleClick(appointment);
             }}

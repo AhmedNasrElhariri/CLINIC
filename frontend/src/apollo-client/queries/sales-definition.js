@@ -55,6 +55,14 @@ export const ADD_SALES = gql`
   }
 `;
 
+export const DELETE_SALES = gql`
+  mutation deleteSales($id: ID!) {
+    deleteSales(id: $id) {
+      id
+    }
+  }
+`;
+
 export const EDIT_SALES = gql`
   mutation editSales($sales: SalesInput!) {
     editSales(sales: $sales) {

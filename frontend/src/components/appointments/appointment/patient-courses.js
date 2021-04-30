@@ -33,7 +33,7 @@ const Course = ({ patient }) => {
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-
+  console.log(patient);
   const {
     addCourse,
     courses,
@@ -95,7 +95,6 @@ const Course = ({ patient }) => {
     },
     [open, setFormValue, setType]
   );
-  console.log(courses);
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       const { discount, course, sessions, paid, doctorId } = formValue;

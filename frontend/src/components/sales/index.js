@@ -15,7 +15,7 @@ const Sales = () => {
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  const { addSales, saleses, editSales } = useSales({
+  const { addSales, saleses, editSales, deleteSales } = useSales({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -25,17 +25,25 @@ const Sales = () => {
       setFormValue(initValue);
     },
   });
-
+  console.log(formValue);
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
-
   const handleClickEdit = useCallback(
     data => {
-      const sales = R.pick(['id', 'quantity','salesDefinitionId'])(data);
+      const sales = R.pick(['id','quantity', 'salesDefinitionId'])(data);
       setType('edit');
+      setFormValue(sales);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleClickDelete = useCallback(
+    data => {
+      const sales = R.pick(['id'])(data);
+      setType('delete');
       setFormValue(sales);
       open();
     },
@@ -46,6 +54,12 @@ const Sales = () => {
       addSales({
         variables: {
           sales: formValue,
+        },
+      });
+    } else if (type === 'delete') {
+      deleteSales({
+        variables: {
+          id: formValue.id,
         },
       });
     } else {
@@ -72,7 +86,11 @@ const Sales = () => {
         onClose={close}
         type={type}
       />
-      <ListSaleses saleses={saleses} onEdit={handleClickEdit} />
+      <ListSaleses
+        saleses={saleses}
+        onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
+      />
     </>
   );
 };

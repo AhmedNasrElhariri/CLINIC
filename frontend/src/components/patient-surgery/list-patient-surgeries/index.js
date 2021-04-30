@@ -63,6 +63,21 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
+
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Hospital Fees</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ hospitalFees }) => (
+                <CRTable.CRCellStyled bold>
+                  <NumberFormat
+                    value={hospitalFees}
+                    displayType="text"
+                    thousandSeparator
+                  />
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
         </CRTable>
       </CRCard>
     </>
