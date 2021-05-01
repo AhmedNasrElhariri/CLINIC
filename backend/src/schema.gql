@@ -142,7 +142,7 @@ type Query {
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
   payrollUsers: [PayrollUser!]
-  payrollToPaySummary: [PayrollToPaySummary!]
+  payslips: [Payslips!]
   userTransactions(userId: ID!): [PayrollTransaction!]
   pulseControl: PulseControl!
   appointmentsDayCount(date: Date!): AppointmentsDayCount!
@@ -654,7 +654,7 @@ type PayrollUser {
   organizationId: ID!
 }
 
-type PayrollToPaySummary {
+type Payslips {
   id: ID!
   name: String!
   amount: Int!

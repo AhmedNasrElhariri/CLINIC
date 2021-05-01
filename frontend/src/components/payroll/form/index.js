@@ -1,11 +1,6 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form, Schema } from 'rsuite';
-import {
-  CRModal,
-  CRNumberInput,
-  CRSelectInput,
-  CRCheckBoxGroup,
-} from 'components';
+import { CRModal, CRNumberInput, CRSelectInput } from 'components';
 import styled from 'styled-components';
 const { StringType, NumberType } = Schema.Types;
 
@@ -35,7 +30,7 @@ export const usePayrollForm = ({
   setFormValue,
   type,
   payrollUsers,
-  payrollToPaySummary,
+  payslips,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -66,7 +61,7 @@ export const usePayrollForm = ({
     onOk,
     type,
     payrollUsers,
-    payrollToPaySummary,
+    payslips,
     onCancel,
     onChange: setFormValue,
     model,
@@ -83,16 +78,11 @@ const PayrollForm = ({
   model,
   type,
   payrollUsers,
-  payrollToPaySummary,
+  payslips,
   close,
 }) => {
   const ref = useRef();
-  const payrollUsersCheck = payrollToPaySummary.map(u => {
-    return {
-      name: `${u.name} ${u.amount}`,
-      value: u.id,
-    };
-  });
+
   return (
     <CRModal
       show={visible}
@@ -117,37 +107,21 @@ const PayrollForm = ({
           </DeleteMessage>
         ) : (
           <>
-            {type === 'addPayroll' ? (
-              <>
-                <CRCheckBoxGroup options={payrollUsersCheck} name="payment" />
-              </>
-            ) : (
-              <>
-                <CRSelectInput
-                  label="User"
-                  name="userId"
-                  placeholder="Select User"
-                  block
-                  data={payrollUsers}
-                />
-                {type === 'addNewUser' && (
-                  <CRNumberInput
-                    label="Salary"
-                    name="salary"
-                    block
-                  ></CRNumberInput>
-                )}
-                {(type === 'Deduction' ||
-                  type === 'Commision' ||
-                  type === 'Incentive' ||
-                  type === 'Advance') && (
-                  <CRNumberInput
-                    label="Amount"
-                    name="amount"
-                    block
-                  ></CRNumberInput>
-                )}
-              </>
+            <CRSelectInput
+              label="User"
+              name="userId"
+              placeholder="Select User"
+              block
+              data={payrollUsers}
+            />
+            {type === 'addNewUser' && (
+              <CRNumberInput label="Salary" name="salary" block></CRNumberInput>
+            )}
+            {(type === 'Deduction' ||
+              type === 'Commision' ||
+              type === 'Incentive' ||
+              type === 'Advance') && (
+              <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
             )}
           </>
         )}
@@ -156,6 +130,8 @@ const PayrollForm = ({
   );
 };
 
-PayrollForm.propTypes = {};
+PayrollForm.defaultProps = {
+  payslips: [],
+};
 
 export default memo(PayrollForm);

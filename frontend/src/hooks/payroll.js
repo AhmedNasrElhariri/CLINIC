@@ -10,11 +10,10 @@ import {
   LIST_USER_TRANSACTIONS,
   ADD_PAY_ROLL,
   DELETE_PAYROLL_USER,
-  PAYROLL_TO_PAY_SUMMARY,
+  PAYSLIPS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 function usePayroll({ userId } = {}) {
-  console.log(userId, 'uuuuuuu');
   const updateTransactionsCache = userTransactions => {
     client.writeQuery({
       query: LIST_USER_TRANSACTIONS,
@@ -35,11 +34,10 @@ function usePayroll({ userId } = {}) {
       )(data),
     [data]
   );
-  const { data: paySummary } = useQuery(PAYROLL_TO_PAY_SUMMARY);
-  const payrollToPaySummary = useMemo(
-    () => R.propOr([], 'payrollToPaySummary')(paySummary),
-    [paySummary]
-  );
+  const { data: payslipsData } = useQuery(PAYSLIPS);
+  const payslips = useMemo(() => R.propOr([], 'payslips')(payslipsData), [
+    payslipsData,
+  ]);
   const { data: transactionData } = useQuery(LIST_USER_TRANSACTIONS, {
     variables: { userId },
   });
@@ -91,7 +89,7 @@ function usePayroll({ userId } = {}) {
     () => ({
       addPayrollUser,
       payrollUsers,
-      payrollToPaySummary,
+      payslips,
       addTransaction,
       userTransactions,
       addPayroll,
@@ -100,7 +98,7 @@ function usePayroll({ userId } = {}) {
     [
       addPayrollUser,
       payrollUsers,
-      payrollToPaySummary,
+      payslips,
       addTransaction,
       userTransactions,
       addPayroll,

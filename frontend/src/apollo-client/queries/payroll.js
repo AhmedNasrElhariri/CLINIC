@@ -13,9 +13,9 @@ export const LIST_PAY_ROLL_USERS = gql`
   }
 `;
 
-export const PAYROLL_TO_PAY_SUMMARY = gql`
+export const PAYSLIPS = gql`
   {
-    payrollToPaySummary {
+    payslips {
       id
       name
       amount

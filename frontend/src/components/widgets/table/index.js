@@ -7,9 +7,10 @@ import CRCell from './cell';
 import { BarStyled, CRCellStyled } from './style';
 import CRDateCell from './date-cell';
 
-const CRTableStyled = styled(Table).attrs(() => ({
+const CRTableStyled = styled(Table).attrs(({ data }) => ({
   rowHeight: 37,
   autoHeight: true,
+  minHeight: data.length * 37 + 40,
 }))`
   cursor: pointer;
   & .rs-table-row {
@@ -23,6 +24,10 @@ const CRTableStyled = styled(Table).attrs(() => ({
   }
   & .rs-table-row {
     text-align: center;
+  }
+
+  & .rs-table-body-row-wrapper {
+    /* height: 100% !important; */
   }
 `;
 

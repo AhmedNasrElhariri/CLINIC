@@ -4,7 +4,7 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-export default function EmployeesPayroll({ payrollUsers ,handleDelete}) {
+export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
   const history = useHistory();
   return (
     <>
@@ -50,23 +50,24 @@ export default function EmployeesPayroll({ payrollUsers ,handleDelete}) {
             <CRTable.CRCell>
               {({ id }) => (
                 <>
-                <Icon
-                  onClick={(...data) => {
-                    console.dir(data);
-                  }}
-                  style={{paddingRight:'25px'}}
-                >
-                  Open Details
-                </Icon>
-                <Icon
-                  onClick={e => {
-                    e.stopPropagation();
-                    handleDelete(id);
-                  }}
-                  icon='trash'
-                >
-                  Delete
-                </Icon></>
+                  <Icon
+                    onClick={(...data) => {
+                      console.dir(data);
+                    }}
+                    style={{ paddingRight: '25px' }}
+                  >
+                    Open Details
+                  </Icon>
+                  <Icon
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleDelete(id);
+                    }}
+                    icon="trash"
+                  >
+                    Delete
+                  </Icon>
+                </>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -77,5 +78,3 @@ export default function EmployeesPayroll({ payrollUsers ,handleDelete}) {
 }
 
 EmployeesPayroll.propTypes = {};
-
-

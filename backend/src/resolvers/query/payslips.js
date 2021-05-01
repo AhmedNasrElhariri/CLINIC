@@ -4,11 +4,11 @@ import { prisma } from '@';
 import { PAYROLL_STATUS } from '@/utils/constants';
 
 const byUserId = trx => trx.payrollUser.id;
-const sumSalary = trxs => {
+const sumSalary = (payrollUser, trxs = []) => {
   const {
     id,
     user: { name },
-  } = trxs[0].payrollUser;
+  } = payrollUser;
   return {
     id,
     name,
@@ -16,7 +16,8 @@ const sumSalary = trxs => {
   };
 };
 
-const payrollToPaySummary = async (_, __, { organizationId }) => {
+const payslips = async (_, __, { organizationId }) => {
+  const users = await prisma.payrollUser.findMany({ include: { user: true } });
   const transactions = await prisma.payrollTransaction.findMany({
     where: {
       payroll: {
@@ -34,7 +35,11 @@ const payrollToPaySummary = async (_, __, { organizationId }) => {
   });
 
   const groupedTrxs = R.groupBy(byUserId)(transactions);
-  return R.map(sumSalary)(Object.values(groupedTrxs));
+
+  return users.map(u => {
+    const userTrxs = groupedTrxs[u.id];
+    return sumSalary(u, userTrxs);
+  });
 };
 
-export default payrollToPaySummary;
+export default payslips;

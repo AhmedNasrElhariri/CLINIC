@@ -14,11 +14,11 @@ const CRCell = ({
   ...props
 }) => (
   <Table.Cell {...props}>
-    {data => {
+    {(data, ...rest) => {
       return (
         <Div height={height - 2}>
           {children ? (
-            children(data)
+            children(data, ...rest)
           ) : (
             <CRCellStyled {...props}>
               {getValue
