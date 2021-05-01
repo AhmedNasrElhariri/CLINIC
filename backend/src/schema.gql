@@ -230,6 +230,7 @@ type Mutation {
   ): CourseDefinition
   addCourse(course: CourseInput!): Course!
   editCourse(courseId: ID!, paid: Int!): Course!
+  editCourseUnits(courseId: ID!, consumed: Int!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
   finishCourse(courseId: ID!): Course!
   addPayrollUser(payrollUser: PayrollUserInput!): PayrollUser!
@@ -1025,6 +1026,7 @@ type Course {
   id: ID!
   price: Int!
   paid: Int!
+  consumed: Int!
   discount: Int!
   startDate: Date!
   endDate: Date!
@@ -1038,6 +1040,7 @@ type Course {
 input CourseInput {
   price: Int!
   paid: Int
+  consumed: Int
   discount: Int
   patientId: ID!
   courseDefinitionId: ID!

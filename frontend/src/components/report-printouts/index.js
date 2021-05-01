@@ -36,19 +36,13 @@ function ReportPrintout() {
     width: 40%;
     float: left;
   `;
-  
+
   return (
     <>
-      <Div>
+      <Div display="flex" justifyContent="space-between">
         <Label>Patient Reports </Label>
         <ReactToPrint
-          trigger={() => (
-            <CRButton
-              variant="primary"
-            >
-              Print
-            </CRButton>
-          )}
+          trigger={() => <CRButton variant="primary">Print</CRButton>}
           content={() => ref.current}
         />
       </Div>
@@ -71,8 +65,8 @@ function ReportPrintout() {
         />
       </Form>
       <Div style={{ overflow: 'hidden', height: '0px' }}>
-        <Div ref={ref}>
-          {formValue.body}
+        <Div ref={ref} m={50}>
+          <div dangerouslySetInnerHTML={{ __html: formValue.body }}></div>
         </Div>
       </Div>
     </>

@@ -24,6 +24,7 @@ const addCourse = async (_, { course }, { userId }) => {
       paid,
       discount,
       startDate,
+      consumed:0,
       endDate,
       status: COURSE_STATUS.INPROGRESS,
       user: {

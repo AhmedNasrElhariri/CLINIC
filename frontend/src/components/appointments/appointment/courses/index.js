@@ -248,6 +248,8 @@ function NewCourse({
           </>
         ) : type === 'edit' ? (
           <CRNumberInput label="Paid" name="paid" title="Paid" />
+        ) : type === 'consumed' ? (
+          <CRNumberInput label="Consumed Units" name="consumed" title="Consumed Units" />
         ) : type === 'finishCourse' ? (
           <Div>Are you sure that you want to finish this course ?</Div>
         ) : (

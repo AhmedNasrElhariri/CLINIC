@@ -158,10 +158,10 @@ function Appointment() {
     [apptFormValue, setApptFormValue]
   );
   const handleLabsChange = useCallback(
-    labs => {
+    newLabs => {
       setApptFormValue({
         ...apptFormValue,
-        labsIds:labs,
+        labIds:newLabs,
       });
     },
     [apptFormValue, setApptFormValue]
