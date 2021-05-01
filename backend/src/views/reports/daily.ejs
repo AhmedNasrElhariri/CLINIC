@@ -1,17 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/main.css" />
+    <title>Clinic-R Report</title>
   </head>
+  <style>
+    .title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .totalsContainer {
+      display: flex;
+      justify-content: space-around;
+    }
+    .name {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .rowTitle {
+      margin-top: 20px;
+      display: flex;
+      font-weight: bold;
+      justify-content: space-between;
+    }
+    .rowData {
+      display: flex;
+      justify-content: space-between;
+    }
+    .content{
+      width:100px;
+      display: flex;
+      text-align: center;
+    }
+  </style>
   <body>
-    <div class="title">Daily Report </div>
+    <div class="title">Daily Report</div>
+    <div class="totalsContainer">
+      <div class="name">Day:</div>
+      <div><%= dayName %></div>
+    </div>
+    <div class="rowTitle">
+      <div class="content">Doctor</div>
+      <div class="content">Patient</div>
+      <div class="content">Power one</div>
+      <div class="content">Power two</div>
+      <div class="content">Type</div>
+      <div class="content">Pulses</div>
+    </div>
     <% for (let row of data) { %>
-    <div>
-      Doctor Name: <%= row.doctor%> ---  patient <%= row.patient %> --- 
-      power one <%= row.powerOne%> --- power Two <%= row.powerTwo%> --- type <%= row.type %> -- pulses <%= row.pulses%>
+    <div class="rowData">
+      <div class="content"><%= row.doctor %></div>
+      <div class="content"><%= row.patient %></div>
+      <div class="content"><%= row.powerOne %></div>
+      <div class="content"><%= row.powerTwo %></div>
+      <div class="content"><%= row.type %></div>
+      <div class="content"><%= row.pulses %></div>
     </div>
     <% } %>
   </body>

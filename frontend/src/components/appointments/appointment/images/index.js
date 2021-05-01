@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 import { CRModal, Div } from 'components';
+import { useImageDefinition } from 'hooks';
 import {
   Title,
   Container,
@@ -16,6 +17,8 @@ import {
 let newImages = [];
 function Images({ visible, onClose, images, onChange: setFormValue2 }) {
   const header = useMemo(() => 'Images', []);
+  const { imagesDefinition } = useImageDefinition();
+  const Images = imagesDefinition.filter(i => images.includes(i.id));
   const removeItem = indx => {
     newImages = images.filter((element, index) => {
       return index !== indx;
@@ -34,7 +37,7 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
       <Title>Images</Title>
-      {images.map((element, indx) => (
+      {Images.map((element, indx) => (
         <Container>
           <Medicine>
             <Ul>
@@ -44,14 +47,6 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
           <Button onClick={() => removeItem(indx)}>Delete</Button>
         </Container>
       ))}
-      {/* <FooterButton
-        marginLeft="231px"
-        bkColor="#40c173"
-        color="#fbfbfb"
-        width="136px"
-      >
-        Send on WhatsApp
-      </FooterButton> */}
       <ReactToPrint
         trigger={() => (
           <FooterButton
@@ -67,10 +62,10 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
       />
       <Div style={{ height: '0px', overflow: 'hidden' }}>
         <PrescriptionPrintout ref={ref}>
-          {images.length === '0' ? (
+          {Images.length === '0' ? (
             <Div>No Pictures</Div>
           ) : (
-            images.map(image => (
+            Images.map(image => (
               <Div>
                 <MedicineName>{image.name}</MedicineName>
               </Div>

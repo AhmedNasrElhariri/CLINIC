@@ -20,13 +20,6 @@ function Appointments() {
   return (
     <>
       <H3 mb={64}>Appointments</H3>
-      {/* <ToolBar
-        formValue={formValue}
-        onChange={setFormValue}
-        branches={branches}
-        specialties={specialties}
-        doctors={doctors}
-      /> */}
       <Div mb={4}>
         <Filter formValue={formValue} onChange={setFormValue} />
       </Div>

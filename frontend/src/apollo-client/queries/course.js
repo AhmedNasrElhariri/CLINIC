@@ -46,6 +46,7 @@ export const LIST_COURSES = gql`
       price
       paid
       discount
+      consumed
       startDate
       endDate
       status
@@ -146,6 +147,33 @@ export const EDIT_COURSE = gql`
     }
   }
 `;
+
+export const EDIT_COURSE_UNITS = gql`
+  mutation editCourseUnits($courseId: ID!, $consumed: Int!) {
+    editCourseUnits(courseId: $courseId, consumed: $consumed) {
+      id
+      price
+      discount
+      consumed
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
+      courseDefinition {
+        id
+        name
+        type
+        price
+        units
+        messureOfUnits
+      }
+    }
+  }
+`;
+
 export const EDIT_COURSE_DOCTOR = gql`
   mutation editCourseDoctor($courseId: ID!, $doctorId: ID!) {
     editCourseDoctor(courseId: $courseId, doctorId: $doctorId) {

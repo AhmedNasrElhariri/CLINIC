@@ -6,8 +6,8 @@ export const mapObjValuesToChoices = obj =>
 
 export const mapArrToChoices = arr =>
   arr.map(i => ({
-    label: i,
-    value: i,
+    name: i,
+    id: i,
   }));
 
 export const toUpperCase = str => {

@@ -13,10 +13,12 @@ const CourseData = ({
   onEditPaid,
   onEditDoctor,
   onFinishCourse,
+  onEditUnits,
 }) => {
   const history = useHistory();
   let course = courses[indx];
   let { sessions } = course;
+  const updatedSessions = sortByDate(sessions);
   const handleClick = appointment => {
     if (
       moment(new Date()).endOf('day').toDate() >
@@ -39,6 +41,16 @@ const CourseData = ({
         <CRButton variant="primary" mr={1} onClick={() => onEditPaid(course)}>
           Pay
         </CRButton>
+        {course.courseDefinition.type === 'Perunit' && (
+          <CRButton
+            variant="primary"
+            mr={1}
+            onClick={() => onEditUnits(course)}
+          >
+            Add Units
+          </CRButton>
+        )}
+
         <CRButton variant="danger" onClick={() => onFinishCourse(course)}>
           Finish
         </CRButton>
@@ -70,6 +82,24 @@ const CourseData = ({
           <DataName>status : </DataName>
           <DataValue>{course.status}</DataValue>
         </Data>
+        {course.courseDefinition.type === 'Perunit' && (
+          <>
+            <Data>
+              <DataName>Total of Units : </DataName>
+              <DataValue>{course.courseDefinition.units}</DataValue>
+            </Data>
+            <Data>
+              <DataName>Consumed: </DataName>
+              <DataValue>{course.consumed}</DataValue>
+            </Data>
+            <Data>
+              <DataName>Remaining: </DataName>
+              <DataValue>
+                {course.courseDefinition.units - course.consumed}
+              </DataValue>
+            </Data>
+          </>
+        )}
         <Data>
           <DataName>Start of Date : </DataName>
           <DataValue>
@@ -85,7 +115,7 @@ const CourseData = ({
         <CRCard borderless>
           <CRTable
             autoHeight
-            data={sessions}
+            data={updatedSessions}
             onRowClick={appointment => {
               handleClick(appointment);
             }}

@@ -12,7 +12,8 @@ import {
   EDIT_COURSE_DOCTOR,
   FINISH_COURSE,
   LIST_APPOINTMENTS,
-  LIST_REVENUES
+  LIST_REVENUES,
+  EDIT_COURSE_UNITS
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -83,6 +84,21 @@ function useCourses({
       Alert.error('Failed to edit the Course');
     },
   });
+  const [editCourseUnits] = useMutation(EDIT_COURSE_UNITS, {
+    onCompleted() {
+      Alert.success('the Course has been Edited Successfully');
+      onEdit && onEdit();
+    },
+    refetchQueries: [
+      {
+        query: LIST_COURSES,
+        variables: { patientId: patientId },
+      },
+    ],
+    onError() {
+      Alert.error('Failed to edit the Course');
+    },
+  });
   const [editCourseDoctor] = useMutation(EDIT_COURSE_DOCTOR, {
     onCompleted() {
       Alert.success('the Doctor has been Edited Successfully');
@@ -123,6 +139,7 @@ function useCourses({
       editCourse,
       editCourseDoctor,
       users,
+      editCourseUnits,
       finishCourse,
       updateCache,
     }),
@@ -131,6 +148,7 @@ function useCourses({
       patientCourses,
       addCourse,
       editCourse,
+      editCourseUnits,
       editCourseDoctor,
       finishCourse,
       users,

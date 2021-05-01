@@ -25,6 +25,7 @@ const init = app => {
   app.get('/monthly', async (req, res) => {
     const { month } = req.query;
     const endOfMonth = moment(month).clone().endOf('month').toDate();
+    const monthName = moment(month).format('MMMM YYYY');
     try {
       const revenue = await prisma.revenue.aggregate({
         sum: {
@@ -37,7 +38,20 @@ const init = app => {
           },
         },
       });
-      const revenues = revenue.sum.amount;
+      const revenues = revenue.sum.amount === null ? 0 : revenue.sum.amount;
+      const sales = await prisma.sales.aggregate({
+        sum: {
+          totalPrice: true,
+        },
+        where: {
+          date: {
+            gte: month,
+            lte: endOfMonth,
+          },
+        },
+      });
+      const totalSales =
+        sales.sum.totalPrice === null ? 0 : sales.sum.totalPrice;
       const expense = await prisma.expense.aggregate({
         sum: {
           amount: true,
@@ -49,7 +63,7 @@ const init = app => {
           },
         },
       });
-      const expenses = expense.sum.amount;
+      const expenses = expense.sum.amount === null ? 0 : expense.sum.amount;
       const examinations = await prisma.appointment.findMany({
         where: {
           NOT: {
@@ -150,6 +164,8 @@ const init = app => {
         numOfCourses = courses.length;
       const pdfDoc = await generatePdf('/views/reports/monthly.ejs', {
         totalRevenues: revenues,
+        monthName: monthName,
+        totalSales: totalSales,
         totalExpenses: expenses,
         numOfExamination: numOfExamination,
         numOfFollowup: numOfFollowup,
@@ -157,8 +173,7 @@ const init = app => {
         numOfCourses: numOfCourses,
         data: data,
       });
-      pdfDoc.pipe(res);
-      pdfDoc.end();
+      res.end(pdfDoc);
     } catch (e) {
       res.status(400).send('Invalid');
     }
@@ -166,6 +181,7 @@ const init = app => {
 
   app.get('/daily', async (req, res) => {
     const { day } = req.query;
+    const dayName = moment(day).format('DD-MM-YYYY');
     const endOfDay = moment(day).endOf('day').toDate();
     const startOfDay = moment(day).startOf('day').toDate();
     try {
@@ -196,6 +212,7 @@ const init = app => {
       });
       const pdfDoc = await generatePdf('/views/reports/daily.ejs', {
         data: data,
+        dayName: dayName,
       });
       res.end(pdfDoc);
     } catch (e) {

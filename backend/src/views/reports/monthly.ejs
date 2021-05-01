@@ -1,34 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic-R Report</title>
   </head>
+  <style>
+    .title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .totalsContainer {
+      display: flex;
+      justify-content: space-around;
+    }
+    .name{
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .rowTitle{
+      margin-top: 20px;
+      display: flex;
+      font-weight: bold;
+      justify-content: space-between;
+    }
+    .rowData{
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
   <body>
     <div>
-      <div style="text-align: center; font-weight: bold; margin-bottom: 20px;">
-        Monthly Report
+      <div class="title">Monthly Report</div>
+      <div class="totalsContainer">
+        <div class="name">Month:</div>
+        <div><%= monthName %></div>
       </div>
-      <div style="margin-bottom: 10px;">
-        Total Of Revenue: <%= totalRevenues %>
+      <div class="totalsContainer">
+        <div class="name">Total Of Revenue:</div>
+        <div><%= totalRevenues %></div>
       </div>
-      <div style="margin-bottom: 10px;">
-        Total of Expenses: <%= totalExpenses %>
+      <div class="totalsContainer">
+        <div class="name">Total Of Expenses:</div>
+        <div><%= totalExpenses %></div>
       </div>
-      <div style="margin-bottom: 10px;">
-        number of Examination appointments: <%= numOfExamination%>
+      <div class="totalsContainer">
+        <div class="name">Total Of Sales:</div>
+        <div><%= totalSales %></div>
       </div>
-      <div style="margin-bottom: 10px;">
-        number of Followup appointments: <%= numOfFollowup %>
+      <div class="totalsContainer">
+        <div class="name">number of Examination appointments:</div>
+        <div><%= numOfExamination %></div>
       </div>
-      <div style="margin-bottom: 10px;">
-        number of Sessions appointments: <%= numOfSession %>
+      <div class="totalsContainer">
+        <div class="name">number of Followup appointments:</div>
+        <div><%= numOfFollowup %></div>
       </div>
-      <div style="margin-bottom: 10px;">
-        number of Courses appointments: <%= numOfCourses %>
+      <div class="totalsContainer">
+        <div class="name">number of Sessions appointments:</div>
+        <div><%= numOfSession %></div>
       </div>
-      <div style="display: flex; justify-content: space-between;">
+      <div class="totalsContainer">
+        <div class="name">number of Courses appointments:</div>
+        <div><%= numOfCourses %></div>
+      </div>
+      <div class="rowTitle">
         <div>Date</div>
         <div>Pulses</div>
         <div>Before</div>
@@ -36,7 +71,7 @@
         <div>Diff</div>
       </div>
       <% for (let row of data) { %>
-      <div style="display: flex; justify-content: space-between;">
+      <div class="rowData">
         <div><%= row.date %></div>
         <div><%= row.numOfPulses %></div>
         <div><%= row.before %></div>

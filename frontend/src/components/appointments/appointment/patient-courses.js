@@ -12,6 +12,7 @@ const initValue = {
   course: null,
   discount: 0,
   paid: 0,
+  consumed: 0,
   doctorId: null,
   sessions: [],
   startDate: null,
@@ -29,16 +30,16 @@ const CourseButton = styled.button`
 const Course = ({ patient }) => {
   const { visible, open, close } = useModal();
   const [index, setIndex] = useState(0);
-  const [header,setHeader] = useState('');
+  const [header, setHeader] = useState('');
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-
   const {
     addCourse,
     courses,
     editCourse,
     editCourseDoctor,
+    editCourseUnits,
     users,
     finishCourse,
   } = useCourses({
@@ -66,6 +67,16 @@ const Course = ({ patient }) => {
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
+  const handleClickEditUnits = useCallback(
+    data => {
+      const course = R.pick(['id', 'consumed'])(data);
+      setType('consumed');
+      setHeader('Add New Units');
+      setFormValue(course);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleClickEditPaid = useCallback(
     data => {
       const course = R.pick(['id', 'paid'])(data);
@@ -95,7 +106,6 @@ const Course = ({ patient }) => {
     },
     [open, setFormValue, setType]
   );
-  console.log(courses);
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       const { discount, course, sessions, paid, doctorId } = formValue;
@@ -126,7 +136,13 @@ const Course = ({ patient }) => {
           courseId: formValue.id,
         },
       });
-
+    } else if (type === 'consumed') {
+      editCourseUnits({
+        variables: {
+          courseId: formValue.id,
+          consumed: formValue.consumed,
+        },
+      });
     } else {
       editCourse({
         variables: {
@@ -135,7 +151,16 @@ const Course = ({ patient }) => {
         },
       });
     }
-  }, [type, formValue, patient.id, addCourse, editCourseDoctor, editCourse,finishCourse]);
+  }, [
+    type,
+    formValue,
+    patient.id,
+    addCourse,
+    editCourseDoctor,
+    editCourse,
+    finishCourse,
+  ]);
+  console.log(courses);
   return (
     <>
       <Div display="flex" justifyContent="flex-end" alignItems="center">
@@ -167,6 +192,7 @@ const Course = ({ patient }) => {
           courses={courses}
           indx={index}
           onEditPaid={handleClickEditPaid}
+          onEditUnits={handleClickEditUnits}
           onEditDoctor={handleClickEditDoctor}
           onFinishCourse={handleFinishCourse}
         />

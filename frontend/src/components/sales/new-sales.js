@@ -27,14 +27,20 @@ function NewSales({ formValue, onChange, type, visible, onOk, onClose }) {
       onCancel={onClose}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRSelectInput
-          label="Item"
-          name="salesDefinitionId"
-          placeholder="Select Item"
-          data={salesItems}
-          block
-        />
-        <CRNumberInput label="Quantity" name="quantity" block />
+        {type === 'delete' ? (
+          'Are you sure that you want delete this sales'
+        ) : (
+          <>
+            <CRSelectInput
+              label="Item"
+              name="salesDefinitionId"
+              placeholder="Select Item"
+              data={salesItems}
+              block
+            />
+            <CRNumberInput label="Quantity" name="quantity" block />
+          </>
+        )}
       </Form>
     </CRModal>
   );

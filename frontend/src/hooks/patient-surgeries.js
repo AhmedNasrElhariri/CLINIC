@@ -7,6 +7,7 @@ import client from 'apollo-client/client';
 import {
   CREATE_PATIENT_SURGERY,
   LIST_PATIENT_SURGERIES,
+  LIST_REVENUES,
 } from 'apollo-client/queries';
 
 const updateCache = patientSurgeries => {
@@ -30,6 +31,11 @@ const usePatientSurgeries = ({ onCreate } = {}) => {
       Alert.success('the Surgery has been created Successfully');
       onCreate && onCreate();
     },
+    refetchQueries: [
+      {
+        query: LIST_REVENUES,
+      },
+    ],
     update(cache, { data: { createPatientSurgery: surgery } }) {
       updateCache([...patientSurgeries, surgery]);
     },

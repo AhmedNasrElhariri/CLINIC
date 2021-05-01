@@ -1,33 +1,32 @@
 import { prisma } from '@';
 
 const addSales = async (_, { sales }, { userId }) => {
-  const { id , salesDefinitionId, quantity} = sales;
-  console.log(id,salesDefinitionId,quantity);
+  const { id, salesDefinitionId, quantity } = sales;
   const salesDefinitionRow = await prisma.salesDefinition.findUnique({
-      where:{
-          id:salesDefinitionId,
-      }
+    where: {
+      id: salesDefinitionId,
+    },
   });
   const totalPrice = salesDefinitionRow.price * quantity;
   return prisma.sales.update({
     data: {
-      quantity:quantity,
-      totalPrice:totalPrice,
+      quantity: quantity,
+      totalPrice: totalPrice,
       date: new Date(),
       user: {
         connect: {
           id: userId,
         },
       },
-      salesDefinition:{
-          connect:{
-              id:salesDefinitionId,
-          }
-      }
+      salesDefinition: {
+        connect: {
+          id: salesDefinitionId,
+        },
+      },
     },
-    where:{
-        id:id
-    }
+    where: {
+      id: id,
+    },
   });
 };
 
