@@ -39,7 +39,7 @@ const getHeight = ({ small, large }) =>
     ? byTheme(largeHeight)
     : byTheme(normalHeight);
 
-const Button = styled.button.attrs(({ block, semiBold, uppercase }) => ({
+const Button = styled.button.attrs(({ block, uppercase }) => ({
   width: block ? '100%' : 'initial',
   textTransform: uppercase ? 'uppercase' : 'initial',
 }))`
@@ -78,6 +78,10 @@ const Button = styled.button.attrs(({ block, semiBold, uppercase }) => ({
       },
       danger: {
         background: theme => theme.colors.danger,
+        color: theme => theme.colors.white,
+      },
+      dark: {
+        background: theme => theme.colors.dark,
         color: theme => theme.colors.white,
       },
     },
