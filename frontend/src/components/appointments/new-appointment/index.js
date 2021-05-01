@@ -271,17 +271,6 @@ const NewAppointment = ({ show, onHide }) => {
                     onSelect={a => setSelectedHour(moment(a).hour())}
                   />
                 )}
-                <CRTimePicker
-                  label="Time"
-                  block
-                  name="time"
-                  accepter={DatePicker}
-                  placement="top"
-                  disabledMinutes={disabledMinutes}
-                  hideHours={hideHours}
-                  startHour={8}
-                  onSelect={a => setSelectedHour(moment(a).hour())}
-                />
               </LeftContainer>
               <RightContainer>
                 <CRSelectInput
