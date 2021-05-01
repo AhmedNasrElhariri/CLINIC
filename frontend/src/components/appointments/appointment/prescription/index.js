@@ -1,7 +1,9 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Divider, Toggle } from 'rsuite';
 import ReactToPrint from 'react-to-print';
-import { formatDate } from 'utils/date';
+import { formatDate, formatFullDay } from 'utils/date';
+import { useMedicineDefinitions, useTimings } from 'hooks';
+import * as R from 'ramda';
 import { CRModal, Div, H6 } from 'components';
 import {
   Title,
@@ -13,11 +15,7 @@ import {
   FooterButton,
   MedicineName,
   PrescriptionPrintout,
-  DoesContent,
-  Row,
   ContainerStyled,
-  Content,
-  NextAppointment,
   StyledFooterData,
 } from './style';
 let newPrescription = [];
@@ -30,6 +28,8 @@ function Prescription({
   arabicEnable,
 }) {
   const [enable, setEnable] = useState(false);
+  const { medicineDefinitions } = useMedicineDefinitions();
+  const { timings } = useTimings();
   const header = useMemo(() => 'Prescription', []);
   const removeItem = indx => {
     newPrescription = medicine.filter((element, index) => {
@@ -37,6 +37,21 @@ function Prescription({
     });
     setFormValue2(newPrescription);
   };
+  const newMedicine = medicine.map((m, idx) => {
+    const formMedicine = medicineDefinitions.find(f => f.medicineId === m.id) || {};
+    const { dose, medicineId, timingId, duration, period } = m;
+    let specificTiming = timings.find(t => t.id === timingId);
+    const tN = R.propOr('', 'name')(specificTiming);
+    return {
+      medicine: formMedicine,
+      dose: dose || undefined,
+      timing: tN || undefined,
+      medicineId: medicineId || m.id || null,
+      duration: duration || '',
+      period: period || null,
+      required: !R.isEmpty(formMedicine),
+    };
+  });
   const ref = useRef();
   return (
     <CRModal
@@ -51,46 +66,27 @@ function Prescription({
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
       <Title>Medicine</Title>
-      {medicine.map((element, indx) => (
+      {newMedicine.map((element, indx) => (
         <Container>
           <Medicine>
             <Ul>
-              <Li>{element.medicine}</Li>
-              {arabicEnable ? (
-                <li style={{ direction: 'rtl' }}>
-                  {element.dose} {element.timing} {' لمده '}{' '}
-                  {element.numDuration} {element.periodDuration}
-                </li>
-              ) : (
+              <Li>{element.medicine.name}</Li>
+              {
                 <li>
-                  {element.dose} - {element.timing} - {element.numDuration} -{' '}
-                  {element.periodDuration}
+                  {element.dose} - {element.timing} - {element.duration} - {element.period}
                 </li>
-              )}
+              }
             </Ul>
           </Medicine>
           <Button onClick={() => removeItem(indx)}>Delete</Button>
         </Container>
       ))}
       <Divider />
-      <NextAppointment>
-        <H6 style={{ marginRight: '29px' }}>Next Appointment </H6>
-        <H6 style={{ marginRight: '31px' }}>
-          {formatDate(nextAppointment.date)}
-        </H6>
-        <H6 style={{ marginRight: '75px' }}>
-          {formatDate(nextAppointment.date)}
-        </H6>
+      <Div display="flex" justifyContent="space-between">
+        <Div>Next Appointment </Div>
+        <Div>{formatFullDay(nextAppointment.date)}</Div>
         <Toggle onChange={setEnable} />
-      </NextAppointment>
-      {/* <FooterButton
-        marginLeft="231px"
-        bkColor="#40c173"
-        color="#fbfbfb"
-        width="136px"
-      >
-        Send on WhatsApp
-      </FooterButton> */}
+      </Div>
       <ReactToPrint
         trigger={() => (
           <FooterButton
@@ -106,32 +102,31 @@ function Prescription({
       />
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <PrescriptionPrintout ref={ref}>
-          {medicine.length === '0' ? (
+          {newMedicine.length === '0' ? (
             <Div>No Medicines</Div>
           ) : (
-            medicine.map(medicine => (
+            newMedicine.map(medicine => (
               <Div style={{ marginBottom: '15px' }}>
-                <MedicineName>{medicine.medicine}</MedicineName>
-                <Row style={{ direction: 'rtl' }}>
-                  <DoesContent>
+                <MedicineName>{medicine.medicine.name}</MedicineName>
+                <Div display="flex" justifyContent="space-around">
+                  <Div>
                     {medicine.dose}
                     {'  '}
-                  </DoesContent>
-                  <Content>
+                  </Div>
+                  {/* <Content>
                     {medicine.timing}
                     {'  '}
-                  </Content>
-                  <Content>
-                    {medicine.numDuration} {'  '} {medicine.periodDuration}
-                  </Content>
-                </Row>
+                  </Content> */}
+                  <Div>{medicine.duration}</Div>
+                  <Div>{medicine.period}</Div>
+                </Div>
               </Div>
             ))
           )}
           {enable ? (
             <StyledFooterData>
               <H6 style={{ marginRight: '50px' }}>
-                {formatDate(nextAppointment.date)}
+                {formatFullDay(nextAppointment.date)}
               </H6>
               <H6>{'المعاد القادم'}</H6>
             </StyledFooterData>

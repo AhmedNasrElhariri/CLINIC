@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { Form, DatePicker } from 'rsuite';
-import { H3, Div, CRButton, CRNumberInput,CRDatePicker } from 'components';
+import { H3, Div, CRButton, CRNumberInput, CRDatePicker } from 'components';
 import SessionDefinitions from '../session-definations';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
 import { useConfigurations } from 'hooks';

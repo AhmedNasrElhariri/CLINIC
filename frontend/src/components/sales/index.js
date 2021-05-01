@@ -25,7 +25,6 @@ const Sales = () => {
       setFormValue(initValue);
     },
   });
-  console.log(formValue);
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);

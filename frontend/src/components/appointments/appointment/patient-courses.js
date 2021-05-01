@@ -33,7 +33,6 @@ const Course = ({ patient }) => {
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  console.log(patient);
   const {
     addCourse,
     courses,

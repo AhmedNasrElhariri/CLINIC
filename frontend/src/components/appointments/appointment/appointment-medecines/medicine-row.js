@@ -6,10 +6,10 @@ import { CRButton, Div, H6, H7 } from 'components';
 import { CRNumberInput, CRSelectInput, CRTextInput } from 'components/widgets';
 
 const peridos = [
-  { name: 'Year', value: 'year', arbiceValue: 'سنة', englishValue: 'year' },
-  { name: 'Month', value: 'month', arbiceValue: 'شهر', englishValue: 'month' },
-  { name: 'Week', value: 'week', arbiceValue: 'أسبوع', englishValue: 'week' },
-  { name: 'Day', value: 'day', arbiceValue: 'يوم', englishValue: 'day' },
+  { name: 'Year', id: 'year', arbiceValue: 'سنة', englishValue: 'year' },
+  { name: 'Month', id: 'month', arbiceValue: 'شهر', englishValue: 'month' },
+  { name: 'Week', id: 'week', arbiceValue: 'أسبوع', englishValue: 'week' },
+  { name: 'Day', id: 'day', arbiceValue: 'يوم', englishValue: 'day' },
 ];
 const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
   const { name, concentration, form } = medicine;

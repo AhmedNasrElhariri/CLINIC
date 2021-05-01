@@ -41,10 +41,11 @@ function Appointment() {
     labIds: [],
     imageIds: [],
     pictures: [],
-    powerOne:'',
-    powerTwo:'',
-    pulses:'',
+    powerOne: '',
+    powerTwo: '',
+    pulses: '',
   });
+
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
   const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
@@ -148,10 +149,10 @@ function Appointment() {
     }));
   }, [appointment]);
   const handleMedicineChange = useCallback(
-    medicine => {
+    newPrescription => {
       setApptFormValue({
         ...apptFormValue,
-        medicine,
+        prescription:newPrescription,
       });
     },
     [apptFormValue, setApptFormValue]
@@ -160,16 +161,17 @@ function Appointment() {
     labs => {
       setApptFormValue({
         ...apptFormValue,
-        labs,
+        labsIds:labs,
       });
     },
     [apptFormValue, setApptFormValue]
   );
+
   const handleImagesChange = useCallback(
-    images => {
+    Images => {
       setApptFormValue({
         ...apptFormValue,
-        images,
+        imageIds:Images,
       });
     },
     [apptFormValue, setApptFormValue]
@@ -180,7 +182,10 @@ function Appointment() {
     },
   });
   const patientAppointments = R.propOr([], 'patientAppointments')(data);
-  const nextAppointment = patientAppointments[1];
+  const appoint = R.propOr('', 'appointment')(appointmentRes);
+  const appointId = R.propOr('', 'id')(appoint);
+  const indx = patientAppointments.findIndex(pA => pA.id === appointId);
+  const nextAppointment = patientAppointments[indx + 1];
   if (loading) {
     return <Loader />;
   }
@@ -244,7 +249,7 @@ function Appointment() {
                   visible={visible}
                   onClose={close}
                   type={type}
-                  medicine={apptFormValue.medicine}
+                  medicine={apptFormValue.prescription}
                   onChange={handleMedicineChange}
                   nextAppointment={nextAppointment}
                 />

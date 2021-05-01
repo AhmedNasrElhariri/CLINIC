@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { Form, SelectPicker } from 'rsuite';
+import { Form } from 'rsuite';
 import ReactQuill from 'react-quill';
-
+import ReactToPrint from 'react-to-print';
 import { CRSelectInput, CRButton, Div } from 'components';
 import { useReactToPrint } from 'react-to-print';
 import Label from '../widgets/label';
@@ -23,8 +23,8 @@ function ReportPrintout() {
     return {
       name: pR.name,
       id: pR.body,
-    }
-  })
+    };
+  });
   const handlePrint = useReactToPrint({
     content: () => ref.current,
   });
@@ -36,13 +36,21 @@ function ReportPrintout() {
     width: 40%;
     float: left;
   `;
+  
   return (
     <>
       <Div>
         <Label>Patient Reports </Label>
-        <CustomButton onClick={handlePrint} variant="primary">
-          Print
-        </CustomButton>
+        <ReactToPrint
+          trigger={() => (
+            <CRButton
+              variant="primary"
+            >
+              Print
+            </CRButton>
+          )}
+          content={() => ref.current}
+        />
       </Div>
 
       <Form fluid formValue={formValue} onChange={setFormValue}>
@@ -62,9 +70,11 @@ function ReportPrintout() {
           onChange={value => setFormValue({ body: value })}
         />
       </Form>
-      <div style={{ visibility: 'hidden' }}>
-        <div ref={ref} dangerouslySetInnerHTML={{ __html: formValue.body }} />
-      </div>
+      <Div style={{ overflow: 'hidden', height: '0px' }}>
+        <Div ref={ref}>
+          {formValue.body}
+        </Div>
+      </Div>
     </>
   );
 }

@@ -135,7 +135,7 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-  console.log(appointmentFormValue,'ss');
+
   return (
     <>
       <Div display="flex">
@@ -167,10 +167,7 @@ function AppointmentData({
             />
           </SectionContainer>
           <SectionContainer title="Pulses" name="pulses">
-            <Pulses
-              pulses={appointmentFormValue}
-              onChange={onChange}
-            />
+            <Pulses pulses={appointmentFormValue} onChange={onChange} />
           </SectionContainer>
           <SectionContainer title="Labs" name="labs">
             <Labs
