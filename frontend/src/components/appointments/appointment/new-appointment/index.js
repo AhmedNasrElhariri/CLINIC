@@ -38,7 +38,12 @@ const initialValues = {
   time: null,
 };
 
-export default function NewAppointment({ show, onHide, patientid, userid }) {
+export default function NewAppointment({
+  show,
+  onHide,
+  patientid,
+  userid,
+}) {
   const {
     formValue,
     setFormValue,
@@ -75,7 +80,7 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
       minute: timeDate.minutes(),
     });
     createAppointment({ patientId, type, date, userId });
-  }, [createAppointment, formValue, patientid, userid]);
+  }, [createAppointment, formValue, patientid, userid ]);
 
   return (
     <>

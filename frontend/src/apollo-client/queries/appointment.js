@@ -84,7 +84,6 @@ export const GET_APPOINTMENT = gql`
         duration
         period
       }
-      userId
       data {
         id
         value
@@ -116,6 +115,7 @@ export const GET_APPOINTMENT = gql`
           id
         }
       }
+
     }
   }
 `;
