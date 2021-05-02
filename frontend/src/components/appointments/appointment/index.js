@@ -41,9 +41,9 @@ function Appointment() {
     labIds: [],
     imageIds: [],
     pictures: [],
-    powerOne: '',
-    powerTwo: '',
-    pulses: '',
+    powerOne: 0,
+    powerTwo: 0,
+    pulses: 0,
   });
 
   const [disabled, setDisabled] = useState(false);
@@ -135,9 +135,9 @@ function Appointment() {
       notes: R.propOr('', 'notes')(appointment),
       prescription: R.propOr([], 'prescription')(appointment),
       pictures: R.propOr([], 'pictures')(appointment),
-      pulses: R.propOr('', 'pulses')(appointment),
-      powerOne: R.propOr('', 'powerOne')(appointment),
-      powerTwo: R.propOr('', 'powerTwo')(appointment),
+      pulses: R.propOr(null, 'pulses')(appointment),
+      powerOne: R.propOr(null, 'powerOne')(appointment),
+      powerTwo: R.propOr(null, 'powerTwo')(appointment),
       labIds: R.pipe(
         R.propOr([], 'labs'),
         R.map(R.path(['labDefinition', 'id']))

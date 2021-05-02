@@ -608,7 +608,7 @@ model Course {
   id                 String           @id @default(uuid())
   price              Int
   paid               Int
-  consumed           Int
+  consumed           Int              @default(0)
   discount           Int
   startDate          DateTime
   endDate            DateTime

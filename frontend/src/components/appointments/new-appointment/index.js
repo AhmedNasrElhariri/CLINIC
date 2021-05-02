@@ -98,8 +98,8 @@ const NewAppointment = ({ show, onHide }) => {
     patientId: formValue.patientId,
   });
   const updatedPatientCourses = patientCourses.map(course => ({
-    label: course.courseDefinition.name,
-    value: course.id,
+    name: course.courseDefinition.name,
+    IDBTransaction: course.id,
   }));
   const [selectedHour, setSelectedHour] = useState(null);
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
