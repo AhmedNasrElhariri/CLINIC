@@ -25,6 +25,7 @@ const initialValue = {
 };
 function TodayAppointments() {
   const { todayAppointments: appointments } = useAppointments();
+  console.log(appointments,'apapap');
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);

@@ -37,12 +37,6 @@ export const LIST_APPOINTMENTS = gql`
       user{
         name
       }
-      branch{
-        name
-      }
-      specialty{
-        name
-      }
     }
   }
 `;
@@ -84,6 +78,7 @@ export const GET_APPOINTMENT = gql`
         duration
         period
       }
+      userId
       data {
         id
         value

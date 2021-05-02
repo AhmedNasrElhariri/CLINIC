@@ -31,7 +31,6 @@ function Prescription({
   const { medicineDefinitions } = useMedicineDefinitions();
   const { timings } = useTimings();
   const header = useMemo(() => 'Prescription', []);
-  let times = 'مرات';
   const removeItem = indx => {
     newPrescription = medicine.filter((element, index) => {
       return index !== indx;
@@ -40,7 +39,7 @@ function Prescription({
   };
   const newMedicine = medicine.map((m, idx) => {
     const formMedicine =
-      medicineDefinitions.find(f => f.medicineId === m.id) || {};
+      medicineDefinitions.find(f => f.id === m.medicineId) || {};
     const { dose, medicineId, timingId, duration, period } = m;
     let specificTiming = timings.find(t => t.id === timingId);
     const tN = R.propOr('', 'name')(specificTiming);
@@ -69,23 +68,22 @@ function Prescription({
     >
       <Title>Medicine</Title>
       {newMedicine.map((element, indx) => (
-        <Container>
+        <Container color='#f4f4f6'>
           <Medicine>
             <Ul>
               <Li>{element.medicine.name}</Li>
               <Div display="flex">
                 <Div>
                   {element.dose}
-                  {''}
+                  {' - '}
                 </Div>
-                <Div>{' مرات - '}</Div>
                 <Div>
                   {' '}
                   {element.timing}
                   {' - '}
                 </Div>
                 <Div>
-                  {' لمده '}
+                  {' for '}
                   {' - '}
                 </Div>
                 <Div>{element.duration} </Div>
@@ -120,30 +118,31 @@ function Prescription({
           {newMedicine.length === '0' ? (
             <Div>No Medicines</Div>
           ) : (
-            newMedicine.map(element => (
-              <Medicine>
-                <Ul>
-                  <Li>{element.medicine.name}</Li>
-                  <Div display="flex">
-                    <Div>
-                      {element.dose}
-                      {''}
+            newMedicine.map((element, indx) => (
+              <Container>
+                <Medicine>
+                  <Ul>
+                    <Li>{element.medicine.name}</Li>
+                    <Div display="flex">
+                      <Div>
+                        {element.dose}
+                        {' - '}
+                      </Div>
+                      <Div>
+                        {' '}
+                        {element.timing}
+                        {' - '}
+                      </Div>
+                      <Div>
+                        {' for '}
+                        {' - '}
+                      </Div>
+                      <Div>{element.duration} </Div>
+                      <Div>{element.period}</Div>
                     </Div>
-                    <Div>{' مرات - '}</Div>
-                    <Div>
-                      {' '}
-                      {element.timing}
-                      {' - '}
-                    </Div>
-                    <Div>
-                      {' لمده '}
-                      {' - '}
-                    </Div>
-                    <Div>{element.duration} </Div>
-                    <Div>{element.period}</Div>
-                  </Div>
-                </Ul>
-              </Medicine>
+                  </Ul>
+                </Medicine>
+              </Container>
             ))
           )}
           {enable ? (

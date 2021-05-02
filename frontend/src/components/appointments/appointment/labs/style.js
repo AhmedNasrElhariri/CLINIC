@@ -82,7 +82,7 @@ export const FooterButton = styled.button`
 export const PrescriptionPrintout = styled.div`
   width: 420px;
   height: 595px;
-  padding: 80px 20px;
+  padding: 80px 50px;
 `;
 export const MedicineName = styled.h4`
   color: blue;

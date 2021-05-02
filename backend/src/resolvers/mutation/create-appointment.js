@@ -38,16 +38,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
     waiting,
     ...rest
   } = appointment;
-  // const course = await prisma.course.findOne({ where: { id: courseId } });
-  // const {
-  //   patientId: coursePatientId,
-  //   courseDefinitionId,
-  //   doctorId,
-  //   userId: courseUserId,
-  //   ...courseRestData
-  // } = course;
   const appointments = await getDayAppointments(appointment.date, userId);
-
   if (
     !(
       appointment.type === APPOINTMENTS_TYPES.Urgent ||
@@ -83,12 +74,12 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
       },
       specialty: {
         connect: {
-          id: specialtyId,
+          id: specialtyId || undefined,
         },
       },
       branch: {
         connect: {
-          id: branchId,
+          id: branchId || undefined ,
         },
       },
     },

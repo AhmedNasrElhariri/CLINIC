@@ -38,17 +38,17 @@ const initialValues = {
   time: null,
 };
 
-export default function NewAppointment({
-  show,
-  onHide,
-  patientid,
-  userid,
-}) {
+export default function NewAppointment({ show, onHide, patientid, userid }) {
   const {
+    branches,
+    specialties,
+    doctors,
     formValue,
     setFormValue,
     createAppointment,
     appointments,
+    patients,
+    loading,
   } = useNewAppointment({ onCreate: onHide });
 
   const [selectedHour, setSelectedHour] = useState(null);
@@ -65,13 +65,12 @@ export default function NewAppointment({
     selectedHour,
     appointments,
   });
-
   const handleCreate = useCallback(() => {
     if (!isValid(model, formValue)) {
       Alert.error('Complete Required Fields');
       return;
     }
-    const { type } = formValue;
+    const { type, branchId, specialtyId } = formValue;
     const patientId = patientid;
     const userId = userid;
     const timeDate = moment(formValue.time);
@@ -79,9 +78,13 @@ export default function NewAppointment({
       hours: timeDate.hours(),
       minute: timeDate.minutes(),
     });
-    createAppointment({ patientId, type, date, userId });
-  }, [createAppointment, formValue, patientid, userid ]);
-
+    createAppointment({
+      patientId,
+      type,
+      date,
+      userId,
+    });
+  }, [createAppointment, formValue, patientid, userid]);
   return (
     <>
       <CRModal

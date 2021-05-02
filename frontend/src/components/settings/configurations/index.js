@@ -114,6 +114,14 @@ const Configurations = () => {
       </Div>
       <Form formValue={pulsesValue} onChange={setPulseValues}>
         <Div display="flex" justifyContent="space-between">
+          <Div mr={20} mb={50} mt={0}>
+            <CRDatePicker
+              block
+              name="date"
+              accepter={DatePicker}
+              placement="top"
+            />
+          </Div>
           <CRNumberInput
             name="before"
             label="before"
@@ -125,12 +133,6 @@ const Configurations = () => {
             label="after"
             layout="inline"
             placeholder="Pulses"
-          />
-          <CRDatePicker
-            block
-            name="date"
-            accepter={DatePicker}
-            placement="top"
           />
         </Div>
       </Form>

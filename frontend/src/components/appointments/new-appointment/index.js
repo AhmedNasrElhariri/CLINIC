@@ -146,8 +146,7 @@ const NewAppointment = ({ show, onHide }) => {
     });
     if (waiting) {
       date = moment(formValue.date).set({
-        hours: '24',
-        hours: '00',
+        hours: '13',
         minute: '00',
         second: '00',
       });

@@ -32,13 +32,14 @@ export const Container = styled.div`
   flex-direction: row;
   width: 435px;
   height: 63px;
-  background-color: #f4f4f6;
+  background-color: ${props => props.color};
   position: relative;
   margin-bottom: 2px;
   margin-left: 26px;
 `;
 export const Medicine = styled.div`
   font-size: 12px;
+  padding: 5px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -70,14 +71,13 @@ export const Button = styled.button`
 `;
 export const Ul = styled.ul`
   list-style-type: none;
+  font-weight: blod;
   margin: 0;
   padding: 0;
 `;
 export const Li = styled.li`
   padding: 0px;
-  border-bottom: 1px solid black;
   margin-bottom: 5px;
-  width: 42px;
 `;
 export const FooterButton = styled.button`
   height: 34px;
