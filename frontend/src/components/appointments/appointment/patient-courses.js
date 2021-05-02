@@ -160,7 +160,6 @@ const Course = ({ patient }) => {
     editCourse,
     finishCourse,
   ]);
-  console.log(courses);
   return (
     <>
       <Div display="flex" justifyContent="flex-end" alignItems="center">

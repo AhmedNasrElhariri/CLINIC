@@ -31,6 +31,7 @@ function Prescription({
   const { medicineDefinitions } = useMedicineDefinitions();
   const { timings } = useTimings();
   const header = useMemo(() => 'Prescription', []);
+  let times = 'مرات';
   const removeItem = indx => {
     newPrescription = medicine.filter((element, index) => {
       return index !== indx;
@@ -38,7 +39,8 @@ function Prescription({
     setFormValue2(newPrescription);
   };
   const newMedicine = medicine.map((m, idx) => {
-    const formMedicine = medicineDefinitions.find(f => f.medicineId === m.id) || {};
+    const formMedicine =
+      medicineDefinitions.find(f => f.medicineId === m.id) || {};
     const { dose, medicineId, timingId, duration, period } = m;
     let specificTiming = timings.find(t => t.id === timingId);
     const tN = R.propOr('', 'name')(specificTiming);
@@ -71,11 +73,24 @@ function Prescription({
           <Medicine>
             <Ul>
               <Li>{element.medicine.name}</Li>
-              {
-                <li>
-                  {element.dose} - {element.timing} - {element.duration} - {element.period}
-                </li>
-              }
+              <Div display="flex">
+                <Div>
+                  {element.dose}
+                  {''}
+                </Div>
+                <Div>{' مرات - '}</Div>
+                <Div>
+                  {' '}
+                  {element.timing}
+                  {' - '}
+                </Div>
+                <Div>
+                  {' لمده '}
+                  {' - '}
+                </Div>
+                <Div>{element.duration} </Div>
+                <Div>{element.period}</Div>
+              </Div>
             </Ul>
           </Medicine>
           <Button onClick={() => removeItem(indx)}>Delete</Button>
@@ -105,22 +120,30 @@ function Prescription({
           {newMedicine.length === '0' ? (
             <Div>No Medicines</Div>
           ) : (
-            newMedicine.map(medicine => (
-              <Div style={{ marginBottom: '15px' }}>
-                <MedicineName>{medicine.medicine.name}</MedicineName>
-                <Div display="flex" justifyContent="space-around">
-                  <Div>
-                    {medicine.dose}
-                    {'  '}
+            newMedicine.map(element => (
+              <Medicine>
+                <Ul>
+                  <Li>{element.medicine.name}</Li>
+                  <Div display="flex">
+                    <Div>
+                      {element.dose}
+                      {''}
+                    </Div>
+                    <Div>{' مرات - '}</Div>
+                    <Div>
+                      {' '}
+                      {element.timing}
+                      {' - '}
+                    </Div>
+                    <Div>
+                      {' لمده '}
+                      {' - '}
+                    </Div>
+                    <Div>{element.duration} </Div>
+                    <Div>{element.period}</Div>
                   </Div>
-                  {/* <Content>
-                    {medicine.timing}
-                    {'  '}
-                  </Content> */}
-                  <Div>{medicine.duration}</Div>
-                  <Div>{medicine.period}</Div>
-                </Div>
-              </Div>
+                </Ul>
+              </Medicine>
             ))
           )}
           {enable ? (

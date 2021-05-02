@@ -153,7 +153,6 @@ function NewCourse({
   };
 
   const course = formValue?.course;
-
   return (
     <CRModal show={visible} header={header} onHide={onClose} onOk={onOk}>
       <Form fluid formValue={formValue} onChange={onChange}>
@@ -190,66 +189,74 @@ function NewCourse({
               accepter={DatePicker}
               placement="top"
             />
-            <StyledSession>
-              {checkedDays.map(({ name, checked, time }, idx) => (
-                <Div display="flex" key={idx}>
-                  <Div width={100}>
-                    <CRCheckBox
-                      name="date"
-                      value={checked}
-                      onChange={(_, val) => toggleTime(val, idx)}
-                    >
-                      {name}
-                    </CRCheckBox>
-                  </Div>
-                  {checked && (
-                    <CRTimePicker
-                      block
-                      name="time"
-                      value={time}
-                      accepter={DatePicker}
-                      onChange={val => handleTimeChange(val, idx)}
-                      placement="top"
-                      style={{ width: 150, marginLeft: 20 }}
-                    />
-                  )}
-                </Div>
-              ))}
-            </StyledSession>
-            {formValue?.sessions?.length > 0 && (
-              <TableDiv>
-                <CRCard borderless>
-                  <CRTable autoHeight data={formValue.sessions || []}>
-                    <CRTable.CRColumn flexGrow={1}>
-                      <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-                      <CRTable.CRCell>
-                        {date => (
-                          <CRTable.CRCellStyled bold>
-                            {formatDate(date, 'dddd, DD-MM-YYYY')}
-                          </CRTable.CRCellStyled>
-                        )}
-                      </CRTable.CRCell>
-                    </CRTable.CRColumn>
-                    <CRTable.CRColumn flexGrow={1}>
-                      <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
-                      <CRTable.CRCell>
-                        {date => (
-                          <CRTable.CRCellStyled bold>
-                            {formatDate(date, 'hh : mm a')}
-                          </CRTable.CRCellStyled>
-                        )}
-                      </CRTable.CRCell>
-                    </CRTable.CRColumn>
-                  </CRTable>
-                </CRCard>
-              </TableDiv>
+            {formValue?.course?.type === 'Session' && (
+              <>
+                <StyledSession>
+                  {checkedDays.map(({ name, checked, time }, idx) => (
+                    <Div display="flex" key={idx}>
+                      <Div width={100}>
+                        <CRCheckBox
+                          name="date"
+                          value={checked}
+                          onChange={(_, val) => toggleTime(val, idx)}
+                        >
+                          {name}
+                        </CRCheckBox>
+                      </Div>
+                      {checked && (
+                        <CRTimePicker
+                          block
+                          name="time"
+                          value={time}
+                          accepter={DatePicker}
+                          onChange={val => handleTimeChange(val, idx)}
+                          placement="top"
+                          style={{ width: 150, marginLeft: 20 }}
+                        />
+                      )}
+                    </Div>
+                  ))}
+                </StyledSession>
+                {formValue?.sessions?.length > 0 && (
+                  <TableDiv>
+                    <CRCard borderless>
+                      <CRTable autoHeight data={formValue.sessions || []}>
+                        <CRTable.CRColumn flexGrow={1}>
+                          <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+                          <CRTable.CRCell>
+                            {date => (
+                              <CRTable.CRCellStyled bold>
+                                {formatDate(date, 'dddd, DD-MM-YYYY')}
+                              </CRTable.CRCellStyled>
+                            )}
+                          </CRTable.CRCell>
+                        </CRTable.CRColumn>
+                        <CRTable.CRColumn flexGrow={1}>
+                          <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
+                          <CRTable.CRCell>
+                            {date => (
+                              <CRTable.CRCellStyled bold>
+                                {formatDate(date, 'hh : mm a')}
+                              </CRTable.CRCellStyled>
+                            )}
+                          </CRTable.CRCell>
+                        </CRTable.CRColumn>
+                      </CRTable>
+                    </CRCard>
+                  </TableDiv>
+                )}
+                <CRButton onClick={handleAddSessions}>Generate</CRButton>
+              </>
             )}
-            <CRButton onClick={handleAddSessions}>Generate</CRButton>
           </>
         ) : type === 'edit' ? (
           <CRNumberInput label="Paid" name="paid" title="Paid" />
         ) : type === 'consumed' ? (
-          <CRNumberInput label="Consumed Units" name="consumed" title="Consumed Units" />
+          <CRNumberInput
+            label="Consumed Units"
+            name="consumed"
+            title="Consumed Units"
+          />
         ) : type === 'finishCourse' ? (
           <Div>Are you sure that you want to finish this course ?</Div>
         ) : (
