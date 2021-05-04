@@ -36,6 +36,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
     branchId,
     specialtyId,
     waiting,
+    courseId,
     ...rest
   } = appointment;
   const appointments = await getDayAppointments(appointment.date, userId);
@@ -59,30 +60,41 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
   }
 
   const createdAppointment = await prisma.appointment.create({
-    data: {
-      ...rest,
-      status: appointmentType,
-      patient: {
-        connect: {
-          id: patientId,
+    data: Object.assign(
+      {
+        ...rest,
+        status: appointmentType,
+        patient: {
+          connect: {
+            id: patientId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        specialty: {
+          connect: {
+            id: specialtyId || undefined,
+          },
+        },
+        branch: {
+          connect: {
+            id: branchId || undefined,
+          },
         },
       },
-      user: {
-        connect: {
-          id: userId,
+      appointment.type === APPOINTMENTS_TYPES.Course && {
+        courses: {
+          connect: [
+            {
+              id: courseId,
+            },
+          ],
         },
-      },
-      specialty: {
-        connect: {
-          id: specialtyId || undefined,
-        },
-      },
-      branch: {
-        connect: {
-          id: branchId || undefined ,
-        },
-      },
-    },
+      }
+    ),
   });
 
   if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {

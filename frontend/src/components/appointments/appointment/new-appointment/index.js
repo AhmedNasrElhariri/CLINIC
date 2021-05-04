@@ -121,14 +121,12 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
               name="date"
               accepter={DatePicker}
               disabledDate={isBeforeToday}
-              placement="top"
             />
             <CRTimePicker
               label="Time"
               block
               name="time"
               accepter={DatePicker}
-              placement="top"
               disabledMinutes={disabledMinutes}
               hideHours={hideHours}
               startHour={8}

@@ -54,7 +54,7 @@ const NewPatientSurgery = ({
           data={hospitals}
           block
         />
-        <CRDatePicker name="date" label="Date" placement="top" block />
+        <CRDatePicker name="date" label="Date" block />
         <CRNumberInput label="Fees" name="fees" block />
         <CRNumberInput label="Hospital fees" name="hospitalFees" block />
       </Form>

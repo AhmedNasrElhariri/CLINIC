@@ -51,7 +51,6 @@ const RevenueForm = ({ action, show, onCancel, onOk }) => {
         <CRDatePicker
           label="Date"
           name="date"
-          placement="top"
           block
         ></CRDatePicker>
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>

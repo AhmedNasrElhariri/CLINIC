@@ -53,7 +53,6 @@ const Navbar = ({
           width={180}
         >
           <Whisper
-            placement="bottomEnd"
             trigger="click"
             ref={notificationsRef}
             speaker={
@@ -72,7 +71,6 @@ const Navbar = ({
             </Div>
           </Whisper>
           <Whisper
-            placement="bottomEnd"
             trigger="click"
             ref={settingsRef}
             speaker={

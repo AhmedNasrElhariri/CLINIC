@@ -69,7 +69,6 @@ export default {
       return (
         <>
           <Whisper
-            placement="bottomEnd"
             trigger="click"
             speaker={
               <PopoverStyled {...event}>
@@ -94,7 +93,6 @@ export default {
     ),
     event: ({ event }) => (
       <Whisper
-        placement="bottomEnd"
         trigger="click"
         speaker={
           <PopoverStyled {...event}>

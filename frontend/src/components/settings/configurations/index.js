@@ -101,7 +101,7 @@ const Configurations = () => {
       />
       <EnableInvoiceCounter
         onChange={updateEnable}
-        value={formValue.enableInvoiceCounter}
+        value={formValue?.enableInvoiceCounter}
       />
       <hr></hr>
       <Div display="flex" justifyContent="space-between">
@@ -115,12 +115,7 @@ const Configurations = () => {
       <Form formValue={pulsesValue} onChange={setPulseValues}>
         <Div display="flex" justifyContent="space-between">
           <Div mr={20} mb={50} mt={0}>
-            <CRDatePicker
-              block
-              name="date"
-              accepter={DatePicker}
-              placement="top"
-            />
+            <CRDatePicker block name="date" accepter={DatePicker} />
           </Div>
           <CRNumberInput
             name="before"

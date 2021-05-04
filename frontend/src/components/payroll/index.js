@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react';
 
-import { Div, MainContainer, CRButton, CRTable, CRModal } from 'components';
+import { Div, MainContainer, CRButton, CRTable, CRModal, H4 } from 'components';
 import PayrollForm, { usePayrollForm } from './form';
 import EmployeesPayroll from './list-payrolls';
 import { useModal, usePayroll, usePermissions } from 'hooks';
-import { height } from 'styled-system';
-import { CRCard } from 'components/widgets';
+import { formatDate } from 'utils/date';
 const initValue = {
   userId: '',
   salary: '',
@@ -206,6 +205,7 @@ function Payroll() {
           header="Payslips"
           bodyStyle={{ minWidth: 300 }}
         >
+          <H4>{formatDate(new Date())}</H4>
           <CRTable autoHeight data={payslips}>
             <CRTable.CRColumn flexGrow={1}>
               <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>

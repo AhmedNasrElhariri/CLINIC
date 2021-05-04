@@ -111,7 +111,11 @@ export const createSubstractHistoryForMultipleItems = async ({
   });
 
   //eslint-disable-next-line
-  return Promise.all(args.map(d => prisma.inventoryHistory.create(d)));
+  return prisma.inventoryHistory.createMany({
+    data: args,
+  });
+
+  // return Promise.all(args.map(d => prisma.inventoryHistory.createMany(d)));
 };
 
 export const createHistoryBody = async (

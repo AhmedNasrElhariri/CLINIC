@@ -25,7 +25,7 @@ export default ({ label, children, ...rest }) => {
   return (
     <FormGroup>
       <Label>{label}</Label>
-      <FormControl {...rest} accepter={CustomDatePicker} />
+      <FormControl {...rest} accepter={CustomDatePicker} placement="auto" />
       {children}
     </FormGroup>
   );

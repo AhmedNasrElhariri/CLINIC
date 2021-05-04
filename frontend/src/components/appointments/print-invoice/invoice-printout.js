@@ -29,7 +29,7 @@ const InvoicePrintout = React.forwardRef(
     const Count =
       year + '' + month + '' + day + '/' + organization.invoiceCounter;
     const { configurations } = useConfigurations();
-    const enable = configurations.enableInvoiceCounter;
+    const enable = configurations?.enableInvoiceCounter;
     return (
       <Div height={0} overflow="hidden">
         <StyledContainer ref={ref}>

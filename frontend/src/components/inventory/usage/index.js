@@ -39,6 +39,13 @@ function InventoryUsage({ onChange }) {
     },
     [handleOnChange]
   );
+  
+  const handleAdd = useCallback(
+    idx => {
+      handleOnChange(R.remove(idx, 1)(items));
+    },
+    [handleOnChange]
+  );
 
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
@@ -48,13 +55,14 @@ function InventoryUsage({ onChange }) {
             label="Item"
             name="itemId"
             data={items}
+            // onChange={onAdd}
             block
           ></CRSelectInput>
           <Div my={3}>
             <ListInvoiceItems items={[]} onDelete={handleDelete} />
           </Div>
         </Div>
-        <Div width={104}>
+        <Div width={200}>
           <CRNumberInput label="Quantity" name="quantity" />
         </Div>
       </Div>

@@ -34,7 +34,7 @@ const Toolbar = ({ activeKey, onSelect, onChangePeriod }) => {
             size="sm"
             block
             small
-            noLabel
+            $noLabel
             onChange={onChangePeriod}
           />
         </Form>

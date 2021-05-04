@@ -32,6 +32,7 @@ export const APPT_STATUS = Object.freeze({
   MISSED: 'Missed',
   CHANGED: 'Changed',
   ARCHIVED: 'Archived',
+  WAITING: 'Waiting',
 });
 
 export const APPT_TYPE = Object.freeze({

@@ -187,7 +187,6 @@ function NewCourse({
               block
               name="startDate"
               accepter={DatePicker}
-              placement="top"
             />
             {formValue?.course?.type === 'Session' && (
               <>
@@ -210,7 +209,6 @@ function NewCourse({
                           value={time}
                           accepter={DatePicker}
                           onChange={val => handleTimeChange(val, idx)}
-                          placement="top"
                           style={{ width: 150, marginLeft: 20 }}
                         />
                       )}

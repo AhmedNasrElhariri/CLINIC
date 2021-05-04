@@ -127,7 +127,6 @@ const Test = props => {
               block
               name="date"
               accepter={DatePicker}
-              placement="top"
               style={{ width: '270px' }}
             />
           </Form>

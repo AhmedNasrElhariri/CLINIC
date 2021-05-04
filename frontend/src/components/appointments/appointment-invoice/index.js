@@ -50,7 +50,7 @@ function AppointmentInvoice({
   const [selectedSessions, setSelectedSessions] = useState([]);
 
   const choices = useMemo(() => {
-    const allChoices = [...sessions, { name: OTHER, price: 0 }];
+    const allChoices = [...sessions];
     return allChoices.map(s => ({ name: s.name, id: s }));
   }, [sessions]);
 
@@ -135,7 +135,7 @@ function AppointmentInvoice({
                 label="Discount"
                 name="amount"
                 value={discount}
-                onChange={onDiscountChange}
+                onChange={val => onDiscountChange(Number(val))}
                 width={210}
                 addOn={<CRButton variant="danger">Applied</CRButton>}
               />
@@ -143,9 +143,8 @@ function AppointmentInvoice({
                 label="Others"
                 name="others"
                 value={others}
-                onChange={onOthersChange}
+                onChange={val => onOthersChange(Number(val))}
                 width={210}
-                addOn={<CRButton variant="primary">Add</CRButton>}
               />
             </Form>
           </Div>

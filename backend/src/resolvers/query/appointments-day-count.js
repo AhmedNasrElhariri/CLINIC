@@ -9,8 +9,16 @@ const appointmentsDayCount = async (_, { date }) => {
       ? 'waitingList'
       : 'totalAppointments';
   });
-  const endOfDay = moment(date).endOf('day').toDate();
-  const startOfDay = moment(date).startOf('day').toDate();
+  const refDate =
+    moment(date).hours() >= 5 ? moment() : moment().subtract(1, 'days');
+  const startOfDay = moment(refDate).set({
+    hours: 6,
+    minutes: 0,
+    seconds: 0,
+    milliseconds: 0,
+  });
+  const endOfDay = startOfDay.clone().add(1, 'days');
+
   let appointmentsDayCount = {
     totalAppointment: 0,
     totalWaiting: 0,
@@ -18,8 +26,8 @@ const appointmentsDayCount = async (_, { date }) => {
   const allAppointments = await prisma.appointment.findMany({
     where: {
       date: {
-        gte: startOfDay,
-        lte: endOfDay,
+        gte: startOfDay.toDate(),
+        lte: endOfDay.toDate(),
       },
     },
   });

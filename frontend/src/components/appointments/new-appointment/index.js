@@ -244,6 +244,7 @@ const NewAppointment = ({ show, onHide }) => {
                   <CRSelectInput
                     label="Course"
                     name="courseId"
+                    valueKey="IDBTransaction"
                     block
                     data={updatedPatientCourses}
                   />
@@ -255,7 +256,6 @@ const NewAppointment = ({ show, onHide }) => {
                   onOk={() => notify()}
                   accepter={DatePicker}
                   disabledDate={isBeforeToday}
-                  placement="top"
                 />
                 {!formValue.waiting && (
                   <CRTimePicker
@@ -263,7 +263,6 @@ const NewAppointment = ({ show, onHide }) => {
                     block
                     name="time"
                     accepter={DatePicker}
-                    placement="top"
                     disabledMinutes={disabledMinutes}
                     hideHours={hideHours}
                     startHour={8}

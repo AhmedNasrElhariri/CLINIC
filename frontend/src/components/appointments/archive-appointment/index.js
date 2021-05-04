@@ -45,14 +45,14 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     } else {
       onOk({ ...value.current, discount, others });
     }
-  }, [activeStep, onOk, discount,others]);
+  }, [activeStep, onOk, discount, others]);
 
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
       value.current = { ...value.current, discount, others };
       setActiveStep(0);
     }
-  }, [activeStep, discount,others]);
+  }, [activeStep, discount, others]);
   const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
     activeStep,
   ]);

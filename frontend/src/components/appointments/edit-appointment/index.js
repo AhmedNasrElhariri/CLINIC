@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 
-import { Div, CRModal, CRCard, H6, CRDatePicker ,CRTimePicker} from 'components';
+import {
+  Div,
+  CRModal,
+  CRCard,
+  H6,
+  CRDatePicker,
+  CRTimePicker,
+} from 'components';
 import { Form, DatePicker } from 'rsuite';
 import { formatDate, isBeforeToday } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
@@ -69,20 +76,9 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
                 accepter={DatePicker}
                 disabledMinutes={disabledMinutes}
                 hideHours={hideHours}
-                placement="top"
-                style={{marginTop:'10px'}}
+                style={{ marginTop: '10px' }}
                 block
               />
-              {/* <CRTimePicker
-                    block
-                    name="time"
-                    accepter={DatePicker}
-                    placement="top"
-                    disabledMinutes={disabledMinutes}
-                    hideHours={hideHours}
-                    startHour={8}
-                    style={{marginTop:'10px'}}
-                  /> */}
             </Div>
           </CRCard>
         </Div>

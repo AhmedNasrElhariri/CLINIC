@@ -72,7 +72,6 @@ const DateInput = ({ appointments, onChange }) => {
       hours: timeDate.hours(),
       minute: timeDate.minutes(),
     });
-    // onChange(date.toDate());
   }, [formValue, onChange]);
 
   return (
@@ -84,7 +83,6 @@ const DateInput = ({ appointments, onChange }) => {
         onChange={updateForm('day')}
         accepter={DatePicker}
         disabledDate={isBeforeToday}
-        placement="top"
       />
 
       <CRTimePicker
@@ -93,8 +91,6 @@ const DateInput = ({ appointments, onChange }) => {
         value={formValue.time}
         onChange={updateForm('time')}
         accepter={DatePicker}
-        placement="top"
-        // disabledMinutes={disabledMinutes}
         hideHours={hideHours}
         startHour={8}
       />

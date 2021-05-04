@@ -1,7 +1,10 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 
-import { createAppointmentRevenue } from '@/services/revenue.service';
+import {
+  createAppointmentRevenue,
+  createAppointmentRevenueFromSessions,
+} from '@/services/revenue.service';
 import { createAppointmentExpense } from '@/services/expense.service';
 import { APPOINTMENTS_STATUS } from '@/utils/constants';
 import {
@@ -13,19 +16,9 @@ import { updateImagesAfterArchiveAppointment } from '@/services/image.service';
 
 const archiveAppointment = async (
   _,
-  { id, sessions = [], items = [], discount = 0 },
+  { id, sessions = [], items = [], discount = 0, others = 0 },
   { userId, organizationId }
 ) => {
-  // const persistedAppointment = await prisma.appointment.findUnique({
-  //   where: { id },
-  //   include: true,
-  //   images: true,
-  // });
-  // const status = getAppointmentNextStatus(
-  //   persistedAppointment.status,
-  //   APPOINTMENTS_STATUS.ARCHIVED
-  // );
-
   const appointment = await prisma.appointment.update({
     data: { status: APPOINTMENTS_STATUS.ARCHIVED },
     where: { id },
@@ -35,11 +28,29 @@ const archiveAppointment = async (
     },
   });
 
-  await createAppointmentRevenue(id, sessions);
-  if (discount) {
-    await createAppointmentExpense(id, discount);
+  await createAppointmentRevenue(
+    createAppointmentRevenueFromSessions(userId, sessions)
+  );
+  if (others) {
+    await prisma.revenue.create({
+      data: {
+        name: 'Others',
+        date: new Date(),
+        amount: others,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
   }
-  await updatedUsedMaterials(id, items);
+  if (discount) {
+    await createAppointmentExpense(userId, discount);
+  }
+
+  await updatedUsedMaterials(userId, items);
+
   await createSubstractHistoryForMultipleItems({
     data: items,
     userId,
@@ -56,9 +67,7 @@ const archiveAppointment = async (
   const configuration = await prisma.configuration.findUnique({
     where: { userId },
   });
-  console.log(configuration);
-  const enable = configuration.enableInvoiceCounter;
-  if (enable) {
+  if (configuration && configuration.enable) {
     const existedOrganization = await prisma.organization.findUnique({
       where: { id: organizationId },
     });

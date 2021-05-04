@@ -1,11 +1,13 @@
 import { prisma } from '@';
 import { PAYROLL_STATUS, PAYROLL_TRANSACTION_TYPE } from '@/utils/constants';
+import { normalizeArray } from '@/utils/common';
+import { getAllTransactionForCurrentOpenPayslips } from '@/services/payroll.service';
 
-const addPayroll = async (_, { payment }, { organizationId }) => {
+const addPayroll = async (_, { payment }, { userId, organizationId }) => {
+  let currentPayroll;
   const payrollRow = await prisma.payroll.findMany({
     where: { status: PAYROLL_STATUS.Open },
   });
-  let payrollId = '';
   if (payrollRow.length == 0) {
     let date = new Date();
     let month = date.getUTCMonth() + 1;
@@ -24,57 +26,34 @@ const addPayroll = async (_, { payment }, { organizationId }) => {
         },
       },
     });
-    payrollId = payroll.id;
-    payment.map(u => {
-      const user = prisma.payrollUser.findUnique({ where: { id: u } });
-      const amount = user.salary;
-      const type = PAYROLL_TRANSACTION_TYPE.Salary;
-      prisma.payrollTransaction.create({
-        data: {
-          amount: amount,
-          type: type,
-          date: new Date(),
-          payrollUser: {
-            connect: {
-              id: u,
-            },
-          },
-          payroll: {
-            connect: {
-              id: payrollId,
-            },
-          },
-        },
-      });
-    });
-    return prisma.payroll.update({
-      data: {
-        status: PAYROLL_STATUS.Close,
-        endDate: new Date(),
-        organization: {
-          connect: {
-            id: organizationId,
-          },
-        },
-      },
-      where: {
-        id: payrollId,
-      },
-    });
+    currentPayroll = payroll;
   } else {
-    payrollId = payrollRow[0].id;
-    payment.map(u => {
-      const user = prisma.payrollUser.findUnique({ where: { id: u } });
-      const amount = user.salary;
-      const type = 'Salary';
-      prisma.payrollTransaction.create({
+    currentPayroll = payrollRow[0];
+  }
+  const payrollId = currentPayroll.id;
+  const type = PAYROLL_TRANSACTION_TYPE.Salary;
+
+  const users = await prisma.payrollUser
+    .findMany({
+      where: {
+        id: {
+          in: payment,
+        },
+      },
+    })
+    .then(normalizeArray);
+
+  await Promise.all(
+    payment.map(id => {
+      const amount = users[id].salary;
+      return prisma.payrollTransaction.create({
         data: {
-          amount: amount,
-          type: type,
+          amount,
+          type,
           date: new Date(),
           payrollUser: {
             connect: {
-              id: u,
+              id,
             },
           },
           payroll: {
@@ -84,22 +63,39 @@ const addPayroll = async (_, { payment }, { organizationId }) => {
           },
         },
       });
-    });
-    return prisma.payroll.update({
-      data: {
-        status: PAYROLL_STATUS.Close,
-        endDate: new Date(),
-        organization: {
-          connect: {
-            id: organizationId,
-          },
+    })
+  );
+
+  const allTrx = await getAllTransactionForCurrentOpenPayslips(
+    organizationId,
+    false
+  );
+
+  console.log('allTrx', allTrx);
+
+  await prisma.expense.createMany({
+    data: allTrx.map(({ name, amount }) => ({
+      name,
+      amount,
+      date: new Date(),
+      userId,
+    })),
+  });
+
+  return prisma.payroll.update({
+    data: {
+      status: PAYROLL_STATUS.Close,
+      endDate: new Date(),
+      organization: {
+        connect: {
+          id: organizationId,
         },
       },
-      where: {
-        id: payrollId,
-      },
-    });
-  }
+    },
+    where: {
+      id: payrollId,
+    },
+  });
 };
 
 export default addPayroll;

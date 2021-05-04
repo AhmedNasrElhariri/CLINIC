@@ -34,7 +34,15 @@ export const LIST_APPOINTMENTS = gql`
         sex
         phoneNo
       }
-      user{
+      user {
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty {
+        id
         name
       }
     }
@@ -110,7 +118,6 @@ export const GET_APPOINTMENT = gql`
           id
         }
       }
-
     }
   }
 `;
@@ -180,12 +187,14 @@ export const ARCHIVE_APPOINTMENT = gql`
     $sessions: [SessionInput!]
     $items: [FinishAppointmentItemInput!]
     $discount: Int
+    $others: Int
   ) {
     archiveAppointment(
       id: $id
       sessions: $sessions
       items: $items
       discount: $discount
+      others: $others
     ) {
       id
       status

@@ -26,20 +26,17 @@ function NewEvent({ show, onOk, onCancel, formValue, onChange }) {
           <CRDatePicker
             label="Start Date"
             name="startDate"
-            placement="top"
             block
           />
           <CRTimePicker
             label="Start Time"
             block
             name="startTime"
-            placement="top"
             minInterval={MIN_EVENT_DURATION}
           />
           <CRDatePicker
             label="End Date"
             name="endDate"
-            placement="top"
             disabledDate={date => isDateBefore(date, formValue.startDate)}
             block
           />
@@ -47,7 +44,6 @@ function NewEvent({ show, onOk, onCancel, formValue, onChange }) {
             label="End Time"
             block
             name="endTime"
-            placement="top"
             minInterval={MIN_EVENT_DURATION}
           />
         </Div>

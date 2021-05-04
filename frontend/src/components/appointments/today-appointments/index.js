@@ -11,7 +11,7 @@ import {
 } from 'apollo-client/queries';
 
 import ListAppointments from './list-appointments';
-import ArchiveAppointment from '../archive-appointments';
+import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
 import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 import BusinessNotes from './business-notes';
@@ -25,7 +25,6 @@ const initialValue = {
 };
 function TodayAppointments() {
   const { todayAppointments: appointments } = useAppointments();
-  console.log(appointments,'apapap');
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
@@ -99,7 +98,7 @@ function TodayAppointments() {
     [open]
   );
   const handleArchive = useCallback(
-    ({ sessions, items, discount }) => {
+    ({ sessions, items, discount,others }) => {
       close();
       archive({
         variables: {
@@ -113,6 +112,7 @@ function TodayAppointments() {
             quantity,
           })),
           discount,
+          others
         },
       });
     },
