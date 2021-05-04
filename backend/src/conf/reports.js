@@ -27,6 +27,8 @@ const init = app => {
     const { month } = req.query;
     const endOfMonth = moment(month).clone().endOf('month').toDate();
     const monthName = moment(month).format('MMMM YYYY');
+
+    console.log('BBB', month, endOfMonth);
     try {
       const revenue = await prisma.revenue.aggregate({
         sum: {
@@ -68,7 +70,7 @@ const init = app => {
       const examinations = await prisma.appointment.findMany({
         where: {
           NOT: {
-            pulses: null,
+            // pulses: null,
           },
           type: 'Examination',
           date: {
@@ -80,7 +82,7 @@ const init = app => {
       const followups = await prisma.appointment.findMany({
         where: {
           NOT: {
-            pulses: null,
+            // pulses: null,
           },
           type: 'Followup',
           date: {
@@ -92,7 +94,7 @@ const init = app => {
       const sessions = await prisma.appointment.findMany({
         where: {
           NOT: {
-            pulses: null,
+            // pulses: null,
           },
           type: 'Session',
           date: {
@@ -104,7 +106,7 @@ const init = app => {
       const courses = await prisma.appointment.findMany({
         where: {
           NOT: {
-            pulses: null,
+            // pulses: null,
           },
           type: 'Course',
           date: {

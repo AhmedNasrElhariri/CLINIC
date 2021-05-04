@@ -16,7 +16,7 @@ const getMonths = () => {
 
   while (dateEnd > dateStart || dateStart.format('M') === dateEnd.format('M')) {
     let date = { id: '', name: '' };
-    date.id = dateStart.toDate();
+    date.id = dateStart.toISOString();
     date.name = dateStart.format('MMMM-YYYY');
     timeValues.push(date);
     dateStart.add(1, 'month');

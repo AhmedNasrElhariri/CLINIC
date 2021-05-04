@@ -406,8 +406,8 @@ type Appointment {
   type: AppointmentType!
   status: AppointmentStatus!
   patient: Patient!
-  branch: Branch!
-  specialty: Specialty!
+  branch: Branch
+  specialty: Specialty
   user: User!
   data: [AppointmentField!]
   notes: String
