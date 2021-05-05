@@ -86,6 +86,8 @@ export const LIST_PATIENT_IMAGES = gql`
   query($patientId: ID!) {
     patientImages(patientId: $patientId) {
       id
+      status
+      value
       imageDefinition {
         name
       }

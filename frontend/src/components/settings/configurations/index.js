@@ -19,12 +19,8 @@ const initialPulsesValue = {
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
   const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
-  const {
-    configurations,
-    update,
-    addPulsesControl,
-    mutationData,
-  } = useConfigurations({});
+  const { configurations, update, addPulsesControl } = useConfigurations();
+
   useEffect(() => {
     const sessions = R.pipe(
       R.propOr([], 'sessions'),
@@ -39,6 +35,7 @@ const Configurations = () => {
       enableInvoiceCounter,
     });
   }, [configurations]);
+
   const handleSave = useCallback(() => {
     update(formValue);
   }, [formValue, update]);

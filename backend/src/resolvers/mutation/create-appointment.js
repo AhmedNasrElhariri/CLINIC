@@ -48,7 +48,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
     )
   ) {
     if (!validDate(appointment.date, appointments)) {
-      throw new APIExceptcion('Time slot already reversed');
+      throw new APIExceptcion('Time slot already reserved');
     }
     if (isBeforeNow(appointment.date)) {
       throw new APIExceptcion('Can not set to past time');
@@ -74,14 +74,18 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
             id: userId,
           },
         },
+      },
+      specialtyId && {
         specialty: {
           connect: {
-            id: specialtyId || undefined,
+            id: specialtyId,
           },
         },
+      },
+      branchId && {
         branch: {
           connect: {
-            id: branchId || undefined,
+            id: branchId,
           },
         },
       },

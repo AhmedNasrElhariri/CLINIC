@@ -113,15 +113,12 @@ function AppRouter() {
       <Route path="/sales">
         <Sales />
       </Route>
-      <Route path="/test">
-        <>
-          
+      {/* <Route path="/test">
           <Test />
-        </>
-      </Route>
-      <Route path="/csv">
+      </Route> */}
+      {/* <Route path="/csv">
         <Csv />
-      </Route>
+      </Route> */}
       <Route path="" exact>
         <Redirect to="/appointments/today" />
         {/* <Redirect to="/admin" /> */}

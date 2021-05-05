@@ -7,8 +7,8 @@ const PatientImages = ({ patient }) => {
     <>
       <CRTabs>
         <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>Pending Images</CRTabs.CRTab>
-          <CRTabs.CRTab>History Images</CRTabs.CRTab>
+          <CRTabs.CRTab>Pending</CRTabs.CRTab>
+          <CRTabs.CRTab>History</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>

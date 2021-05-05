@@ -6,7 +6,7 @@ import * as R from 'ramda';
 import { LIST_PATIENT_LABS, INSRET_LAB_RESULT } from 'apollo-client/queries';
 import { LAB_STATUS } from 'utils/constants';
 
-function usePatientDetails({ patientId, onInsert } = {}) {
+function usePatientLabs({ patientId, onInsert } = {}) {
   const [getPendingLabs, { data, called, refetch }] = useLazyQuery(
     LIST_PATIENT_LABS,
     {
@@ -56,4 +56,4 @@ function usePatientDetails({ patientId, onInsert } = {}) {
   );
 }
 
-export default usePatientDetails;
+export default usePatientLabs;

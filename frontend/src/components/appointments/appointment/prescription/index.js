@@ -68,25 +68,18 @@ function Prescription({
     >
       <Title>Medicine</Title>
       {newMedicine.map((element, indx) => (
-        <Container color='#f4f4f6'>
+        <Container color="#f4f4f6">
           <Medicine>
             <Ul>
               <Li>{element.medicine.name}</Li>
               <Div display="flex">
                 <Div>
                   {element.dose}
-                  {' - '}
+                  &nbsp;
                 </Div>
-                <Div>
-                  {' '}
-                  {element.timing}
-                  {' - '}
-                </Div>
-                <Div>
-                  {' for '}
-                  {' - '}
-                </Div>
-                <Div>{element.duration} </Div>
+                <Div>{element.timing}&nbsp;</Div>
+                <Div>for&nbsp;</Div>
+                <Div>{element.duration}&nbsp;</Div>
                 <Div>{element.period}</Div>
               </Div>
             </Ul>
@@ -97,7 +90,7 @@ function Prescription({
       <Divider />
       <Div display="flex" justifyContent="space-between">
         <Div>Next Appointment </Div>
-        <Div>{formatFullDay(nextAppointment.date)}</Div>
+        <Div>{formatFullDay(nextAppointment?.date)}</Div>
         <Toggle onChange={setEnable} />
       </Div>
       <ReactToPrint
@@ -126,18 +119,11 @@ function Prescription({
                     <Div display="flex">
                       <Div>
                         {element.dose}
-                        {' - '}
+                        &nbsp;
                       </Div>
-                      <Div>
-                        {' '}
-                        {element.timing}
-                        {' - '}
-                      </Div>
-                      <Div>
-                        {' for '}
-                        {' - '}
-                      </Div>
-                      <Div>{element.duration} </Div>
+                      <Div>{element.timing}&nbsp;</Div>
+                      <Div>for&nbsp;</Div>
+                      <Div>{element.duration}&nbsp;</Div>
                       <Div>{element.period}</Div>
                     </Div>
                   </Ul>
@@ -148,7 +134,7 @@ function Prescription({
           {enable ? (
             <StyledFooterData>
               <H6 style={{ marginRight: '50px' }}>
-                {formatFullDay(nextAppointment.date)}
+                {formatFullDay(nextAppointment?.date)}
               </H6>
               <H6>{'المعاد القادم'}</H6>
             </StyledFooterData>

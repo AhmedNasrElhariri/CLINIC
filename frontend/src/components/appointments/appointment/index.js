@@ -72,7 +72,6 @@ function Appointment() {
     () => R.prop('appointment')(appointmentRes) || {},
     [appointmentRes]
   );
-  console.log(appointment,'sso');
   const patient = useMemo(() => R.propOr({}, 'patient')(appointment), [
     appointment,
   ]);
@@ -153,7 +152,7 @@ function Appointment() {
     newPrescription => {
       setApptFormValue({
         ...apptFormValue,
-        prescription:newPrescription,
+        prescription: newPrescription,
       });
     },
     [apptFormValue, setApptFormValue]
@@ -162,7 +161,7 @@ function Appointment() {
     newLabs => {
       setApptFormValue({
         ...apptFormValue,
-        labIds:newLabs,
+        labIds: newLabs,
       });
     },
     [apptFormValue, setApptFormValue]
@@ -172,7 +171,7 @@ function Appointment() {
     Images => {
       setApptFormValue({
         ...apptFormValue,
-        imageIds:Images,
+        imageIds: Images,
       });
     },
     [apptFormValue, setApptFormValue]
@@ -229,7 +228,7 @@ function Appointment() {
               open={visbleAppointment}
               onClick={toggleAppointment}
             >
-              Reverse Appoinment <Icon icon="save" />
+              Reserve Appoinment <Icon icon="save" />
             </CRButton>
           </Div>
         </HeaderStyled>

@@ -1,5 +1,6 @@
 import { prisma } from '@';
 import { onAppointmentEdit } from '@/services/notification.service';
+import { APPOINTMENTS_STATUS } from '@/utils/constants';
 
 const adjustAppointment = async (_, { id, date }, { userId }) => {
   const persistedAppt = await prisma.appointment.findUnique({
@@ -7,7 +8,7 @@ const adjustAppointment = async (_, { id, date }, { userId }) => {
   });
 
   const newAppointment = await prisma.appointment.update({
-    data: { date },
+    data: { date, status: APPOINTMENTS_STATUS.SCHEDULED },
     where: { id },
   });
 

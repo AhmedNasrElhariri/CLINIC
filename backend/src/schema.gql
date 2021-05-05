@@ -141,6 +141,7 @@ type Query {
   myInvoiceCounter: Organization!
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
+  patientImages(patientId: ID!): [Image!]
   payrollUsers: [PayrollUser!]
   payslips: [Payslips!]
   userTransactions(userId: ID!): [PayrollTransaction!]
@@ -643,6 +644,13 @@ type Image {
   resultDate: Date
   value: String
   imageDefinition: ImageDefinition
+  documents: [File!]
+}
+
+input ImageInput {
+  id: ID!
+  value: String
+  documents: [ID!]
 }
 
 ########################### PayrollUser ##################################

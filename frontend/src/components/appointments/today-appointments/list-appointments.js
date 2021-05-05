@@ -99,7 +99,7 @@ function ListAppointments({
           <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ specialty }) => (
-              <CRTable.CRCellStyled>{specialty.name}</CRTable.CRCellStyled>
+              <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
@@ -107,7 +107,7 @@ function ListAppointments({
           <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ branch }) => (
-              <CRTable.CRCellStyled>{branch.name}</CRTable.CRCellStyled>
+              <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>

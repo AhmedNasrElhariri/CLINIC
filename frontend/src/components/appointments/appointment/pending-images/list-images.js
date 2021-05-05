@@ -25,28 +25,22 @@ function ListLabDocs({ images, onEdit }) {
                   onClick={() => onEdit(data)}
                   style={{
                     fontSize: 17,
-                    padding: '14px 23px 16px 22px',
-                    borderRadius: '0px',
+                    padding: '15px',
                     backgroundColor: '#eef1f1',
+                    paddingRight: '40px',
                     marginLeft: '1px',
                   }}
-                >
-                  {' '}
-                  insert Values
-                </Icon>
+                />
                 <Icon
-                  icon="edit"
+                  icon="trash"
                   style={{
                     fontSize: 17,
-                    padding: '14px 33px 16px 32px',
-                    borderRadius: '0px',
+                    padding: '15px',
                     backgroundColor: '#eef1f1',
+                    paddingRight: '40px',
                     marginLeft: '1px',
                   }}
-                >
-                  {' '}
-                  Delete
-                </Icon>
+                />
               </>
             )}
           </CRTable.CRCell>

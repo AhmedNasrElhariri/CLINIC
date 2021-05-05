@@ -111,21 +111,21 @@ function Root() {
       name: 'Sales',
       icon: <UserIcon width={11.8} height={14.1} />,
     },
-    {
-      to: '/example',
-      name: 'Example',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/test',
-      name: 'PDF',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/csv',
-      name: 'csv',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
+    // {
+    //   to: '/example',
+    //   name: 'Example',
+    //   icon: <UserIcon width={11.8} height={14.1} />,
+    // },
+    // {
+    //   to: '/test',
+    //   name: 'PDF',
+    //   icon: <UserIcon width={11.8} height={14.1} />,
+    // },
+    // {
+    //   to: '/csv',
+    //   name: 'csv',
+    //   icon: <UserIcon width={11.8} height={14.1} />,
+    // },
   ];
 
   return (

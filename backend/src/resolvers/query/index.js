@@ -9,6 +9,7 @@ export { default as listMyViewsStatus } from './list-my-views-status';
 export { default as activeViews } from './active-views';
 export { default as mySnippets } from './my-snippets';
 export { default as patientLabs } from './patient-labs';
+export { default as patientImages } from './patient-images';
 export { default as medicineHistory } from './medicine-history';
 export { default as familyHistory } from './family-history';
 export { default as expenses } from './expenses';

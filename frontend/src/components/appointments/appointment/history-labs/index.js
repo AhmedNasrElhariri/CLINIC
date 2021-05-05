@@ -3,11 +3,11 @@ import { Form } from 'rsuite';
 
 import ListLabDocs from './list-lab-docs';
 import { CRSelectInput } from 'components';
-import { usePatientDetails } from 'hooks';
+import { usePatientLabs } from 'hooks';
 
 const HistoryLabs = ({ patient }) => {
   const [formValue, setFormValue] = useState({ labId: null });
-  const { historyLabs } = usePatientDetails({ patientId: patient.id });
+  const { historyLabs } = usePatientLabs({ patientId: patient.id });
 
   const labs = useMemo(() => {
     const lab = historyLabs.find(h => h.id === formValue.labId);
