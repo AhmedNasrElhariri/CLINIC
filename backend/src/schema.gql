@@ -138,6 +138,7 @@ type Query {
   listActionUsers(action: String!): [User!]
   listActionDoctors(action: String!): [User!]
   configuration: Configuration
+  getPulseControl: PulseControl
   myInvoiceCounter: Organization!
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
@@ -176,6 +177,7 @@ type Mutation {
   multipleUpload(files: [Upload!]!): [File!]!
   createSnippet(snippet: SnippetInput!): Snippet!
   insertLabResult(lab: LabInput!): Lab!
+  insertImageResult(image:ImageInput!):Image!
   createMedicineHistory(
     medicineHistory: MedicineHistoryInput!
   ): MedicineHistory!
@@ -511,7 +513,6 @@ type PulseControl {
 input PulseControlInput {
   before: Int!
   after: Int!
-  date: Date!
 }
 ########################### views ##################################
 

@@ -38,6 +38,12 @@ export const LAB_STATUS = Object.freeze({
   COMPLETED: 'Completed',
 });
 
+export const IMAGE_STATUS = Object.freeze({
+  DRAFT: 'Draft',
+  PENDING: 'Pending',
+  COMPLETED: 'Completed',
+});
+
 export const INVENTORY_OPERATION = {
   ADD: 'Add',
   SUBSTRACT: 'Substract',

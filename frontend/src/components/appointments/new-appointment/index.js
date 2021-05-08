@@ -69,17 +69,6 @@ const searchBy = (text, _, patient) => {
   return filterPatientBy(text, patient);
 };
 
-const CustomizedNotification = ({ totalAppointment, totalWaiting }) => {
-  return (
-    <>
-      <Div>Total Appointments: {totalAppointment} Patient</Div>
-      <SecondRowContainer>
-        <Div mr="50px">Total Waiting List: {totalWaiting} Patient</Div>
-        <Div>View All</Div>
-      </SecondRowContainer>
-    </>
-  );
-};
 const NewAppointment = ({ show, onHide }) => {
   const { visible, open, close } = useModal();
 
@@ -107,6 +96,7 @@ const NewAppointment = ({ show, onHide }) => {
     // pollInterval: 500,
     // pollInterval: 500,
   });
+  
   const appointmentsCount = useMemo(
     () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
     [appointmentsDay]
@@ -116,6 +106,18 @@ const NewAppointment = ({ show, onHide }) => {
       setFormValue(initialValues);
     };
   }, [setFormValue]);
+  
+  const CustomizedNotification = ({ totalAppointment, totalWaiting }) => {
+    return (
+      <>
+        <Div>Total Appointments: {totalAppointment} Patient</Div>
+        <SecondRowContainer>
+          <Div mr="50px">Total Waiting List: {totalWaiting} Patient</Div>
+          <Div>View All</Div>
+        </SecondRowContainer>
+      </>
+    );
+  };
 
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
@@ -170,7 +172,7 @@ const NewAppointment = ({ show, onHide }) => {
       />,
       {
         position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: false,
+        autoClose: 5000,
         style: { backgroundColor: '#00b1cc', color: '#ffffff' },
       }
     );
@@ -253,7 +255,6 @@ const NewAppointment = ({ show, onHide }) => {
                   label="Date"
                   block
                   name="date"
-                  onOk={() => notify()}
                   accepter={DatePicker}
                   disabledDate={isBeforeToday}
                 />

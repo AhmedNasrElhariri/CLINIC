@@ -43,10 +43,14 @@ function Prescription({
     const { dose, medicineId, timingId, duration, period } = m;
     let specificTiming = timings.find(t => t.id === timingId);
     const tN = R.propOr('', 'name')(specificTiming);
+    const tA = R.propOr('', 'arabicPrintValue')(specificTiming);
+    const tE = R.propOr('', 'englishPrintValue')(specificTiming);
     return {
       medicine: formMedicine,
       dose: dose || undefined,
       timing: tN || undefined,
+      tA: tA || undefined,
+      tE: tE || undefined,
       medicineId: medicineId || m.id || null,
       duration: duration || '',
       period: period || null,
@@ -54,6 +58,7 @@ function Prescription({
     };
   });
   const ref = useRef();
+  const refTwo = useRef();
   return (
     <CRModal
       show={visible}
@@ -99,12 +104,25 @@ function Prescription({
             marginLeft="13px"
             bkColor="#50c7f2"
             color="#fbfbfb"
-            width="81px"
+            width="95px"
           >
-            Print
+            Print Arabic
           </FooterButton>
         )}
         content={() => ref.current}
+      />
+      <ReactToPrint
+        trigger={() => (
+          <FooterButton
+            marginLeft="13px"
+            bkColor="#50c7f2"
+            color="#fbfbfb"
+            width="95px"
+          >
+            Print English
+          </FooterButton>
+        )}
+        content={() => refTwo.current}
       />
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <PrescriptionPrintout ref={ref}>
@@ -118,10 +136,59 @@ function Prescription({
                     <Li>{element.medicine.name}</Li>
                     <Div display="flex">
                       <Div>
+                        {element.period}
+                        &nbsp;
+                      </Div>
+                      <Div>{element.duration}&nbsp;</Div>
+                      <Div>لمده &nbsp;</Div>
+                      {element.tA.includes(' ') ? (
+                        <>
+                          <Div>{element.tA.split(' ')[1]}&nbsp;</Div>
+                          <Div>{element.tA.split(' ')[0]}&nbsp;</Div>
+                        </>
+                      ) : (
+                        <Div>{element.tA}&nbsp;</Div>
+                      )}
+                      {element.dose.includes(' ') ? (
+                        <>
+                          <Div>{element.dose.split(' ')[1]}&nbsp;</Div>
+                          <Div>{element.dose.split(' ')[0]}&nbsp;</Div>
+                        </>
+                      ) : (
+                        <Div>{element.dose}&nbsp;</Div>
+                      )}
+                    </Div>
+                  </Ul>
+                </Medicine>
+              </Container>
+            ))
+          )}
+          {enable ? (
+            <StyledFooterData>
+              <H6 style={{ marginRight: '50px' }}>
+                {formatFullDay(nextAppointment?.date)}
+              </H6>
+              <H6>{'المعاد القادم'}</H6>
+            </StyledFooterData>
+          ) : (
+            <></>
+          )}
+        </PrescriptionPrintout>
+        <PrescriptionPrintout ref={refTwo}>
+          {newMedicine.length === '0' ? (
+            <Div>No Medicines</Div>
+          ) : (
+            newMedicine.map((element, indx) => (
+              <Container>
+                <Medicine>
+                  <Ul>
+                    <Li>{element.medicine.name}</Li>
+                    <Div display="flex">
+                      <Div>
                         {element.dose}
                         &nbsp;
                       </Div>
-                      <Div>{element.timing}&nbsp;</Div>
+                      <Div>{element.tE}&nbsp;</Div>
                       <Div>for&nbsp;</Div>
                       <Div>{element.duration}&nbsp;</Div>
                       <Div>{element.period}</Div>

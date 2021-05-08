@@ -53,3 +53,4 @@ export { default as payslips } from './payslips';
 export { default as appointmentsDayCount } from './appointments-day-count';
 export { default as mySalesesDefinition } from './my-sales-definition';
 export { default as mySaleses } from './my-sales';
+export { default as getPulseControl } from './get-pulse-control';

@@ -16,7 +16,7 @@ function usePatientImages({ patientId, onInsert } = {}) {
       variables: { patientId },
     }
   );
-
+  console.log(getPendingImages);
   const images = useMemo(
     () =>
       R.pipe(
@@ -30,6 +30,7 @@ function usePatientImages({ patientId, onInsert } = {}) {
     () => R.filter(R.propEq('status', IMAGE_STATUS.PENDING))(images),
     [images]
   );
+  console.log(pendingImages);
   const historyImages = useMemo(
     () => R.filter(R.propEq('status', IMAGE_STATUS.COMPLETED))(images),
     [images]
@@ -39,7 +40,6 @@ function usePatientImages({ patientId, onInsert } = {}) {
     onCompleted: () => {
       Alert.success('Image Document has been uploaded successfully');
       onInsert && onInsert();
-      refetch();
     },
   });
 

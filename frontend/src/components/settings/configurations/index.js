@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
+import * as moment from 'moment';
 import { Form, DatePicker } from 'rsuite';
 import { H3, Div, CRButton, CRNumberInput, CRDatePicker } from 'components';
 import SessionDefinitions from '../session-definations';
@@ -13,14 +14,17 @@ const initialValues = {
 const initialPulsesValue = {
   before: 0,
   after: 0,
-  date: new Date(),
 };
 
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
   const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
-  const { configurations, update, addPulsesControl } = useConfigurations();
-
+  const {
+    configurations,
+    update,
+    addPulsesControl,
+    getPulseControl,
+  } = useConfigurations();
   useEffect(() => {
     const sessions = R.pipe(
       R.propOr([], 'sessions'),
@@ -34,7 +38,10 @@ const Configurations = () => {
       sessions,
       enableInvoiceCounter,
     });
-  }, [configurations]);
+    const before = R.propOr(0, 'before')(getPulseControl);
+    const after = R.propOr(0, 'after')(getPulseControl);
+    setPulseValues({ ...pulsesValue, before: before, after: after });
+  }, [configurations, getPulseControl]);
 
   const handleSave = useCallback(() => {
     update(formValue);
@@ -80,7 +87,7 @@ const Configurations = () => {
     },
     [formValue, sessions]
   );
-
+  const today = moment(new Date()).format('DD/MM/YYYY');
   return (
     <>
       <Div display="flex" justifyContent="space-between">
@@ -102,7 +109,12 @@ const Configurations = () => {
       />
       <hr></hr>
       <Div display="flex" justifyContent="space-between">
-        <H3 mb={64}>Pulses Control</H3>
+        <Div display="flex" justifyContent="space-around">
+          <H3 mb={64} mr={20}>
+            Pulses Control
+          </H3>
+          <H3>{today}</H3>
+        </Div>
         <Div>
           <CRButton onClick={handlePulsesSave} variant="primary">
             Save
@@ -111,13 +123,12 @@ const Configurations = () => {
       </Div>
       <Form formValue={pulsesValue} onChange={setPulseValues}>
         <Div display="flex" justifyContent="space-between">
-          <Div mr={20} mb={50} mt={0}>
-            <CRDatePicker block name="date" accepter={DatePicker} />
-          </Div>
+          <Div mr={20} mb={50} mt={0}></Div>
           <CRNumberInput
             name="before"
             label="before"
             layout="inline"
+            disabled
             placeholder="Pulses"
           />
           <CRNumberInput

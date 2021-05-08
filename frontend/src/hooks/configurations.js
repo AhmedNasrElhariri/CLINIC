@@ -7,6 +7,7 @@ import {
   LIST_CONFIGURATIONS,
   UPDATE_CONFIGURATION,
   ADD_PULSES_CONTROL,
+  GET_PULSE_CONTROL,
 } from 'apollo-client/queries';
 
 const useConfigurations = ({ onUpdate } = {}) => {
@@ -20,15 +21,19 @@ const useConfigurations = ({ onUpdate } = {}) => {
     configurations,
   ]);
 
-  const [updateConfiguration] = useMutation(
-    UPDATE_CONFIGURATION,
-    {
-      onCompleted: () => {
-        Alert.success('Event has been updated successfully');
-        onUpdate && onUpdate();
-      },
-    }
+  const { data: PulseData } = useQuery(GET_PULSE_CONTROL, {
+    fetchPolicy: 'network-only',
+  });
+  const getPulseControl = useMemo(
+    () => R.propOr({}, 'getPulseControl')(PulseData),
+    [PulseData]
   );
+  const [updateConfiguration] = useMutation(UPDATE_CONFIGURATION, {
+    onCompleted: () => {
+      Alert.success('Event has been updated successfully');
+      onUpdate && onUpdate();
+    },
+  });
   const [addPulsesControl] = useMutation(ADD_PULSES_CONTROL, {
     onCompleted: () => {
       Alert.success('Pulses Contol Added successfully');
@@ -45,12 +50,14 @@ const useConfigurations = ({ onUpdate } = {}) => {
       sessions,
       update: handleUpdateConfiguration,
       addPulsesControl,
+      getPulseControl,
     }),
     [
       configurations,
       handleUpdateConfiguration,
       sessions,
       addPulsesControl,
+      getPulseControl,
     ]
   );
 };

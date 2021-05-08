@@ -104,6 +104,17 @@ export const LIST_CONFIGURATIONS = gql`
   }
 `;
 
+export const GET_PULSE_CONTROL = gql`
+  query getPulseControl {
+    getPulseControl {
+      id
+      before
+      after
+      date
+    }
+  }
+`;
+
 export const UPDATE_CONFIGURATION = gql`
   mutation updateConfiguration($configuration: ConfigurationInput!) {
     updateConfiguration(configuration: $configuration) {
