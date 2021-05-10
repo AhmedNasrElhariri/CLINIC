@@ -6,6 +6,7 @@ export const LIST_SALESES_DEFINITION = gql`
       id
       name
       price
+      cost
     }
   }
 `;
@@ -16,6 +17,7 @@ export const ADD_SALES_DEFINITION = gql`
       id
       name
       price
+      cost
     }
   }
 `;
@@ -26,6 +28,7 @@ export const EDIT_SALES_DEFINITION = gql`
       id
       name
       price
+      cost
     }
   }
 `;
@@ -35,6 +38,7 @@ export const LIST_SALESES = gql`
     mySaleses {
       id
       totalPrice
+      totalCost
       quantity
       date
       salesDefinition {

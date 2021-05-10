@@ -3,14 +3,19 @@ import { pdf } from '@react-pdf/renderer';
 
 import { CRButton } from 'components';
 import PdfDocument from './pdf-document';
+import PdfSalesDocument from './pdf-sales';
 
-const PdfView = ({ data, period }) => {
+const PdfView = ({ data, period, sales }) => {
   const [pdfData, setPdfData] = useState({ loaded: false });
 
   useEffect(() => {
     (async () => {
-      const blob = await pdf(
-        <PdfDocument data={data} period={period} />
+      let blob = await pdf(
+        sales ? (
+          <PdfSalesDocument data={data} period={period} />
+        ) : (
+          <PdfDocument data={data} period={period} />
+        )
       ).toBlob();
       const url = URL.createObjectURL(blob);
 
@@ -26,11 +31,19 @@ const PdfView = ({ data, period }) => {
     'loading'
   ) : (
     <div>
-      <a href={pdfData.url} download="accounting.pdf" type="application/pdf">
-        <CRButton variant="primary" ml={1}>
-          Print
-        </CRButton>
-      </a>
+      {sales ? (
+        <a href={pdfData.url} download="sales.pdf" type="application/pdf">
+          <CRButton variant="primary" ml={1}>
+            Print
+          </CRButton>
+        </a>
+      ) : (
+        <a href={pdfData.url} download="accounting.pdf" type="application/pdf">
+          <CRButton variant="primary" ml={1}>
+            Print
+          </CRButton>
+        </a>
+      )}
     </div>
   );
 };

@@ -34,6 +34,11 @@ function NewSalesDefinition({
           block
         />
         <CRNumberInput
+          label="Item Cost"
+          name="cost"
+          block
+        />
+        <CRNumberInput
           label="Item Price"
           name="price"
           block

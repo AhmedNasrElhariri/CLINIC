@@ -26,7 +26,7 @@ import {
 import useAppointmentHistory from './fetch-appointment-history';
 import { HeaderStyled } from './style';
 import { useForm, useModal } from 'hooks';
-
+const sortByDate = R.sortBy(R.compose(R.prop('date')));
 function Appointment() {
   const { visible, open, close } = useModal();
   const { type, setType } = useForm({});
@@ -182,9 +182,10 @@ function Appointment() {
     },
   });
   const patientAppointments = R.propOr([], 'patientAppointments')(data);
+  const sortedPatientAppointments = sortByDate(patientAppointments);
   const appoint = R.propOr('', 'appointment')(appointmentRes);
   const appointId = R.propOr('', 'id')(appoint);
-  const indx = patientAppointments.findIndex(pA => pA.id === appointId);
+  const indx = sortedPatientAppointments.findIndex(pA => pA.id === appointId);
   const nextAppointment = patientAppointments[indx + 1];
   if (loading) {
     return <Loader />;
@@ -228,7 +229,7 @@ function Appointment() {
               open={visbleAppointment}
               onClick={toggleAppointment}
             >
-              Reserve Appoinment <Icon icon="save" />
+              Reverse Appoinment <Icon icon="save" />
             </CRButton>
           </Div>
         </HeaderStyled>

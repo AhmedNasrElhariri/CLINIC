@@ -61,6 +61,8 @@ export const INSRET_IMAGE_RESULT = gql`
   mutation insertImageResult($image: ImageInput!) {
     insertImageResult(image: $image) {
       id
+      status
+      value
     }
   }
 `;

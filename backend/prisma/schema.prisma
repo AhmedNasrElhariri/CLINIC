@@ -235,8 +235,8 @@ model Appointment {
 
 model PulseControl {
   id     String   @id @default(uuid())
-  before Int
-  after  Int
+  before Int      @default(0)
+  after  Int      @default(0)
   date   DateTime
 }
 
@@ -575,6 +575,7 @@ model SalesDefinition {
   id     String  @id @default(uuid())
   name   String
   price  Int
+  cost   Int
   user   User    @relation(fields: [userId], references: [id])
   userId String
   Sales  Sales[]
@@ -584,6 +585,7 @@ model Sales {
   id                String          @id @default(uuid())
   quantity          Int
   totalPrice        Int
+  totalCost         Int
   date              DateTime
   user              User            @relation(fields: [userId], references: [id])
   userId            String

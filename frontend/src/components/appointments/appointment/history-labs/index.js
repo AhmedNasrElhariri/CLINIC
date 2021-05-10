@@ -8,7 +8,6 @@ import { usePatientLabs } from 'hooks';
 const HistoryLabs = ({ patient }) => {
   const [formValue, setFormValue] = useState({ labId: null });
   const { historyLabs } = usePatientLabs({ patientId: patient.id });
-
   const labs = useMemo(() => {
     const lab = historyLabs.find(h => h.id === formValue.labId);
     return (lab?.documents || []).map(d => ({
@@ -16,7 +15,6 @@ const HistoryLabs = ({ patient }) => {
       ...d,
     }));
   }, [formValue.labId, historyLabs]);
-
   return (
     <>
       <Form fluid formValue={formValue} onChange={setFormValue}>
@@ -24,9 +22,10 @@ const HistoryLabs = ({ patient }) => {
           name="labId"
           data={historyLabs}
           block
+          style={{ marginTop: '10px', width: '310px', marginLeft: '0px' }}
         />
       </Form>
-      <ListLabDocs labs={labs} />
+      <ListLabDocs labs={historyLabs} labId={formValue.labId}/>
     </>
   );
 };

@@ -1,19 +1,10 @@
 import { prisma } from '@';
 import * as moment from 'moment';
+import * as R from 'ramda';
+const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const getPulseControl = async () => {
-  const yestarDay = moment(new Date()).subtract(1, 'days').toDate();
-  const startOfYestarDay = moment(yestarDay).startOf('day').toDate();
-  const endOfYestarDay = moment(yestarDay).endOf('day').toDate();
   const startOfTodayDay = moment(new Date()).startOf('day').toDate();
   const endOfTodayDay = moment(new Date()).endOf('day').toDate();
-  const yestardayPulseControl = await prisma.pulseControl.findMany({
-    where: {
-      date: {
-        gte: startOfYestarDay,
-        lte: endOfYestarDay,
-      },
-    },
-  });
   const TodayPulseControl = await prisma.pulseControl.findMany({
     where: {
       date: {
@@ -22,21 +13,34 @@ const getPulseControl = async () => {
       },
     },
   });
-  const yestardayPulseControlRow = yestardayPulseControl[0];
+  const beforePulseControl = await prisma.pulseControl.findMany({});
+  const sortedBeforeBulseControl = sortByDate(beforePulseControl);
+  const beforeBusleControlRow =
+    sortedBeforeBulseControl.length > 0
+      ? sortedBeforeBulseControl[sortedBeforeBulseControl.length - 1]
+      : {}; //
+  const beforeBusleControlRowTodayExisted =
+    sortedBeforeBulseControl.length > 0
+      ? sortedBeforeBulseControl[sortedBeforeBulseControl.length - 2]
+      : {};
   const todayPulseControlRow =
     TodayPulseControl.length > 0 ? TodayPulseControl[0] : {};
   let pulseControl = {};
   if (TodayPulseControl.length > 0) {
     pulseControl = {
       id: todayPulseControlRow.id,
-      before: yestardayPulseControlRow.after,
+      before: beforeBusleControlRowTodayExisted.after,
       after: todayPulseControlRow.after,
       date: new Date(),
     };
   } else {
-    pulseControl = yestardayPulseControlRow;
+    pulseControl = {
+      id: beforeBusleControlRow.id,
+      before: beforeBusleControlRow.after,
+      after: 0,
+      date: new Date(),
+    };
   }
-  console.log(pulseControl);
   return pulseControl;
 };
 

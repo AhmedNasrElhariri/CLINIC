@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
-
+import { filterAccountingList } from 'utils/accounting';
 import {
   ADD_SALES,
   EDIT_SALES,
@@ -20,9 +20,24 @@ const updateCache = mySaleses => {
   });
 };
 
-function useSales({ onCreate, onEdit } = {}) {
+function useSales({ onCreate, onEdit, view, period } = {}) {
   const { data } = useQuery(LIST_SALESES);
   const saleses = useMemo(() => R.propOr([], 'mySaleses')(data), [data]);
+
+  const filteredSales = useMemo(
+    () => filterAccountingList(saleses, view, period),
+    [saleses, period, view]
+  );
+
+  const totalSalesPrice = useMemo(
+    () => filteredSales.reduce((acc, s) => acc + s.totalPrice, 0),
+    [filteredSales]
+  );
+
+  const totalSalesCost = useMemo(
+    () => filteredSales.reduce((acc, s) => acc + s.totalCost, 0),
+    [filteredSales]
+  );
 
   const [addSales] = useMutation(ADD_SALES, {
     onCompleted() {
@@ -68,12 +83,23 @@ function useSales({ onCreate, onEdit } = {}) {
   return useMemo(
     () => ({
       saleses,
+      filteredSales,
+      totalSalesPrice,
+      totalSalesCost,
       addSales,
       editSales,
       deleteSales,
       updateCache,
     }),
-    [saleses, addSales, editSales, deleteSales]
+    [
+      saleses,
+      addSales,
+      editSales,
+      deleteSales,
+      filteredSales,
+      totalSalesPrice,
+      totalSalesCost,
+    ]
   );
 }
 

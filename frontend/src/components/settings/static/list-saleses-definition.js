@@ -17,6 +17,14 @@ function ListSalesesDefinition({ saless, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Cost</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ cost }) => (
+                <CRTable.CRCellStyled bold>{cost}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Price</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price }) => (

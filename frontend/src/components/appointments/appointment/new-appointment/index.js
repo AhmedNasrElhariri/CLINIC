@@ -13,7 +13,7 @@ import { isBeforeToday } from 'utils/date';
 import { isValid } from 'services/form';
 import { ModalBodyStyled, ContainerStyled } from './style';
 import { getCreatableApptTypes } from 'services/appointment';
-import { useAppointmentForm, useNewAppointment } from 'hooks';
+import { useAppointmentForm, useNewAppointment, useCourses } from 'hooks';
 
 const { StringType, DateType } = Schema.Types;
 
@@ -33,6 +33,7 @@ const initialValues = {
   patientId: '',
   branchId: null,
   specialtyId: null,
+  courseId: null,
   userId: null,
   date: new Date(),
   time: null,
@@ -40,19 +41,20 @@ const initialValues = {
 
 export default function NewAppointment({ show, onHide, patientid, userid }) {
   const {
-    branches,
-    specialties,
-    doctors,
     formValue,
     setFormValue,
     createAppointment,
     appointments,
-    patients,
-    loading,
   } = useNewAppointment({ onCreate: onHide });
 
   const [selectedHour, setSelectedHour] = useState(null);
-
+  const { patientCourses } = useCourses({
+    patientId: patientid,
+  });
+  const updatedPatientCourses = patientCourses.map(course => ({
+    name: course.courseDefinition.name,
+    IDBTransaction: course.id,
+  }));
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
@@ -70,7 +72,7 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
       Alert.error('Complete Required Fields');
       return;
     }
-    const { type, branchId, specialtyId } = formValue;
+    const { type, courseId } = formValue;
     const patientId = patientid;
     const userId = userid;
     const timeDate = moment(formValue.time);
@@ -83,6 +85,7 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
       type,
       date,
       userId,
+      courseId,
     });
   }, [createAppointment, formValue, patientid, userid]);
   return (
@@ -115,6 +118,15 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
               block
               data={appointmentTypes}
             />
+            {formValue.type === 'Course' && (
+              <CRSelectInput
+                label="Course"
+                name="courseId"
+                valueKey="IDBTransaction"
+                block
+                data={updatedPatientCourses}
+              />
+            )}
             <CRDatePicker
               label="Date"
               block

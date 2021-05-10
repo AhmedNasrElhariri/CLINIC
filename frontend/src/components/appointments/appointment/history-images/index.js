@@ -1,52 +1,34 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import ListImageDocs from './list-image-docs';
-import * as R from 'ramda';
-import { SelectPicker } from 'rsuite';
-import { LIST_PATIENT_IMAGES } from 'apollo-client/queries';
-import { useQuery } from '@apollo/client';
-import { formatDate } from 'utils/date';
-
+import {Form} from 'rsuite';
+import { usePatientImages } from 'hooks';
+import { CRSelectInput } from 'components/widgets';
+const initialValue = {
+  imageId:'',
+};
 const HistoryImages = ({ patient }) => {
-  const [formValue, setFormValue] = useState([]);
-  const [image, setImage] = useState({});
-  useEffect(() => {
-    if (Object.keys(image).length !== 0) {
-      setFormValue([...formValue, image]);
-    }
-  }, [formValue, image]);
-  const status = 'completed';
-  const patientId = patient.id;
-  const { data } = useQuery(LIST_PATIENT_IMAGES, {
-    variables: { status: status, patientId: patientId },
+  const [formValue, setFormValue] = useState(initialValue);
+  const { historyImages } = usePatientImages({
+    patientId: patient.id,
   });
-  const patientImageDocs = useMemo(
-    () => R.propOr([], 'patientImageDocs')(data),
-    [data]
-  );
-  const ImageDocs = patientImageDocs.map(element => {
+  const ImageDocs = historyImages.map(element => {
     return {
-      label: element.imageDefinition.name,
-      value: {
-        name: element.imageDefinition.name,
-        value: element.value,
-        date: formatDate(element.resultDate),
-        results: 'view Images',
-      },
-      category: element.imageDefinition.name,
+      name: element.imageDefinition.name,
+      id: element.id,
     };
   });
   return (
     <>
-      <SelectPicker
-        virtualized={false}
-        name="image"
-        onSelect={setImage}
-        data={ImageDocs}
-        block
-        groupBy="category"
-        style={{ marginTop: '10px', width: '310px', marginLeft: '0px' }}
-      />
-      <ListImageDocs images={formValue} />
+      <Form formValue={formValue} onChange={setFormValue}>
+        <CRSelectInput
+          virtualized={false}
+          name="imageId"
+          data={ImageDocs}
+          block
+          style={{ marginTop: '10px', width: '310px', marginLeft: '0px' }}
+        />
+      </Form>
+      <ListImageDocs imageId={formValue.imageId} images={historyImages}/>
     </>
   );
 };

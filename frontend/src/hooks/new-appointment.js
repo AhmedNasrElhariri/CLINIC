@@ -2,12 +2,13 @@ import { useMemo, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
-
+import * as moment from 'moment';
 import { ACTIONS } from 'utils/constants';
 import {
   CREATE_APPOINTMENT,
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
+  APPOINTMENTS_DAY_COUNT,
 } from 'apollo-client/queries';
 import useAppointments from './appointments';
 import usePatients from './patients';
@@ -23,7 +24,7 @@ const initialValues = {
   waiting:false,
 };
 
-const useNewAppointment = ({ onCreate } = {}) => {
+const useNewAppointment = ({ onCreate,date } = {}) => {
   const [formValue, setFormValue] = useState(initialValues);
 
   const { appointments } = useAppointments();
@@ -39,8 +40,15 @@ const useNewAppointment = ({ onCreate } = {}) => {
       Alert.success('Appointment Created Successfully');
       onCreate && onCreate();
     },
+    refetchQueries: [
+      {
+        query: APPOINTMENTS_DAY_COUNT,
+        variables: { date: moment(formValue.date).utc(true).toDate() },
+      },{
+        query: LIST_APPOINTMENTS,
+      }
+    ],
     onError: ({ message }) => Alert.error(message),
-    refetchQueries: [{ query: LIST_APPOINTMENTS }],
   });
 
   const branches = R.propOr([], 'listBranchesTree')(data);

@@ -91,33 +91,35 @@ const NewAppointment = ({ show, onHide }) => {
     IDBTransaction: course.id,
   }));
   const [selectedHour, setSelectedHour] = useState(null);
-  const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
+  const { data: appointmentsDay ,refetch} = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).utc(true).toDate() },
     // pollInterval: 500,
     // pollInterval: 500,
   });
-  
   const appointmentsCount = useMemo(
     () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
-    [appointmentsDay]
+    [formValue.date, appointmentsDay]
   );
+  useEffect(() => {
+    refetch(formValue.date);
+  }, [formValue.date,appointmentsCount]);
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
     };
   }, [setFormValue]);
-  
-  const CustomizedNotification = ({ totalAppointment, totalWaiting }) => {
-    return (
-      <>
-        <Div>Total Appointments: {totalAppointment} Patient</Div>
-        <SecondRowContainer>
-          <Div mr="50px">Total Waiting List: {totalWaiting} Patient</Div>
-          <Div>View All</Div>
-        </SecondRowContainer>
-      </>
-    );
-  };
+
+  // const CustomizedNotification = ({ totalAppointment, totalWaiting }) => {
+  //   return (
+  //     <>
+  //       <Div>Total Appointments: {totalAppointment} Patient</Div>
+  //       <SecondRowContainer>
+  //         <Div mr="50px">Total Waiting List: {totalWaiting} Patient</Div>
+  //         <Div>View All</Div>
+  //       </SecondRowContainer>
+  //     </>
+  //   );
+  // };
 
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
@@ -164,19 +166,19 @@ const NewAppointment = ({ show, onHide }) => {
       waiting,
     });
   }, [createAppointment, formValue]);
-  const notify = () => {
-    toast(
-      <CustomizedNotification
-        totalAppointment={appointmentsCount.totalAppointment}
-        totalWaiting={appointmentsCount.totalWaiting}
-      />,
-      {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 5000,
-        style: { backgroundColor: '#00b1cc', color: '#ffffff' },
-      }
-    );
-  };
+  // const notify = () => {
+  //   toast(
+  //     <CustomizedNotification
+  //       totalAppointment={appointmentsCount.totalAppointment}
+  //       totalWaiting={appointmentsCount.totalWaiting}
+  //     />,
+  //     {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       autoClose: 5000,
+  //       style: { backgroundColor: '#00b1cc', color: '#ffffff' },
+  //     }
+  //   );
+  // };
   return (
     <>
       <NewPatient

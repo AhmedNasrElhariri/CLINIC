@@ -177,7 +177,7 @@ type Mutation {
   multipleUpload(files: [Upload!]!): [File!]!
   createSnippet(snippet: SnippetInput!): Snippet!
   insertLabResult(lab: LabInput!): Lab!
-  insertImageResult(image:ImageInput!):Image!
+  insertImageResult(image: ImageInput!): Image!
   createMedicineHistory(
     medicineHistory: MedicineHistoryInput!
   ): MedicineHistory!
@@ -958,12 +958,14 @@ type SalesDefinition {
   id: ID!
   name: String!
   price: Int!
+  cost: Int!
 }
 
 input SalesInputDefinition {
   id: ID
   name: String!
   price: Int!
+  cost: Int!
 }
 
 type Sales {
@@ -972,6 +974,7 @@ type Sales {
   salesDefinition: SalesDefinition!
   quantity: Int!
   totalPrice: Int!
+  totalCost: Int!
 }
 
 input SalesInput {

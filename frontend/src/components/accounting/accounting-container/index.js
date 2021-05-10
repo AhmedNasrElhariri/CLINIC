@@ -147,7 +147,6 @@ const AccountingContainer = () => {
     updateRevenuesCache,
     timeFrame,
   } = useAccounting({ view, period });
-
   return (
     <>
       <MainContainer

@@ -60,7 +60,7 @@ function TodayAppointments() {
   });
   const upcomingAppointments = useMemo(
     () =>
-      R.pipe(R.filter(R.propEq('status', APPT_STATUS.SCHEDULED)))(
+      R.pipe(R.filter(R.propEq('status', APPT_STATUS.SCHEDULED) || R.propEq('status', APPT_STATUS.CHANGED)))(
         filteredAppointments
       ),
     [filteredAppointments]

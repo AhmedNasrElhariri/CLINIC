@@ -13,7 +13,6 @@ const PendingImages = ({ patient }) => {
     patientId: patient.id,
     onInsert: close,
   });
-
   const handleClickEdit = useCallback(
     data => {
       setSelectedImage(data);

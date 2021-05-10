@@ -8,7 +8,7 @@ import { useForm, useSalesDefinition } from 'hooks';
 
 import { useModal } from 'hooks';
 
-const initValue = { name: '', price: '' };
+const initValue = { name: '', price: '',cost:'' };
 
 const SalesDefinition = () => {
   const { visible, open, close } = useModal();
@@ -38,7 +38,7 @@ const SalesDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const sales = R.pick(['id', 'name','price'])(data);
+      const sales = R.pick(['id', 'name','price','cost'])(data);
       setType('edit');
       setFormValue(sales);
       open();

@@ -1,10 +1,11 @@
 import React from 'react';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
-function ListLabDocs({ labs }) {
+function ListLabDocs({ labs ,labId}) {
+  const lab = labs.filter(ele => ele.id === labId);
   return (
     <CRCard borderless>
-      <CRTable autoHeight data={labs}>
+      <CRTable autoHeight data={lab}>
         <CRTable.CRColumn flexGrow={0.5}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell>
