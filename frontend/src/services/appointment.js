@@ -104,10 +104,9 @@ export const filterAppointments = (appointments = [], filter) => {
 
 const filterByBranch = (appointments, filter) => {
   const branch = R.prop('branch')(filter);
-
   return !branch
     ? appointments
-    : appointments.filter(app => app.branchId === branch);
+    : appointments.filter(app => app.branch.id === branch);
 };
 
 const filterByDoctor = (appointments, filter) => {

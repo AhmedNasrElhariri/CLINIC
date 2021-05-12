@@ -9,7 +9,7 @@ import {
   ARCHIVE_APPOINTMENT,
   UPDATE_BUSINESS_NOTES,
 } from 'apollo-client/queries';
-
+import Filter from '../../filters';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
@@ -60,9 +60,12 @@ function TodayAppointments() {
   });
   const upcomingAppointments = useMemo(
     () =>
-      R.pipe(R.filter(R.propEq('status', APPT_STATUS.SCHEDULED) || R.propEq('status', APPT_STATUS.CHANGED)))(
-        filteredAppointments
-      ),
+      R.pipe(
+        R.filter(
+          R.propEq('status', APPT_STATUS.SCHEDULED) ||
+            R.propEq('status', APPT_STATUS.CHANGED)
+        )
+      )(filteredAppointments),
     [filteredAppointments]
   );
 
@@ -98,7 +101,7 @@ function TodayAppointments() {
     [open]
   );
   const handleArchive = useCallback(
-    ({ sessions, items, discount,others }) => {
+    ({ sessions, items, discount, others }) => {
       close();
       archive({
         variables: {
@@ -112,7 +115,7 @@ function TodayAppointments() {
             quantity,
           })),
           discount,
-          others
+          others,
         },
       });
     },
@@ -137,12 +140,17 @@ function TodayAppointments() {
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
-            <ListAppointments
-              title="Upcoming Appointments"
+            <Filter
               appointments={upcomingAppointments}
-              onArchive={onClickDone}
-              onAddBusinessNotes={onAddBusinessNotes}
-              defaultExpanded={true}
+              render={apps => (
+                <ListAppointments
+                  title="Upcoming Appointments"
+                  appointments={apps}
+                  onArchive={onClickDone}
+                  onAddBusinessNotes={onAddBusinessNotes}
+                  defaultExpanded={true}
+                />
+              )}
             />
           </CRTabs.CRContent>
           <CRTabs.CRContent>

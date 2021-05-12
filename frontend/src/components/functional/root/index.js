@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 import Fab from 'components/appointments/new-appointment/fab';
@@ -16,11 +16,13 @@ import NewAppointment from 'components/appointments/new-appointment';
 
 import useUserProfile from './fetch-user';
 import { useModal } from 'hooks';
-
+const initialvalues = {
+  branchId: null,
+};
 function Root() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
-
+  const [formValue, setFormValue] = useState(initialvalues);
   const history = useHistory();
   const {
     clearNotifications,
@@ -140,6 +142,8 @@ function Root() {
               avatar={R.prop('avatar')(user)}
               notifications={notifications}
               onClear={clearNotifications}
+              formValue={formValue}
+              setFormValue={setFormValue}
             />
             <ContentStyled>
               <AppRouter></AppRouter>

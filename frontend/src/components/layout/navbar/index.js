@@ -1,15 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
-import { Whisper, Popover } from 'rsuite';
+import { Whisper, Popover, Form } from 'rsuite';
 import { NavStyled, BadgeStyled } from './style';
 import { Div } from 'components';
-
+import { set, get } from 'services/local-storage';
 import { NotificationIcon, SettingsIcon } from 'components/icons/index';
 import Notifications from 'components/functional/notifications';
 import Settings from 'components/functional/settings';
 import Avatar from './avatar';
 import Navigator from './navigator';
-
+import { CRSelectInput } from 'components/widgets';
+import { useNewAppointment } from 'hooks';
 const NotificatinBadge = ({ count }) => (
   <Div position="relative">
     {!!count && (
@@ -20,7 +21,6 @@ const NotificatinBadge = ({ count }) => (
     <NotificationIcon />
   </Div>
 );
-
 NotificatinBadge.defaultProps = {
   alert: false,
 };
@@ -31,14 +31,33 @@ const Navbar = ({
   avatar,
   notifications,
   onClear,
+  formValue,
+  setFormValue,
 }) => {
   const notificationsRef = useRef();
   const settingsRef = useRef();
-
+  const { branches, specialties, doctors } = useNewAppointment({});
+  useEffect(() => {
+    setFormValue(val => ({
+      ...val,
+      branchId: get('branch'),
+    }));
+  }, []);
   return (
     <NavStyled>
       <Navigator />
       {/* {renderSearch()} */}
+      <Div ml={200} width={300}>
+        <Form formValue={formValue} onChange={setFormValue}>
+          <CRSelectInput
+            name="branchId"
+            block
+            data={branches}
+            onSelect={val => set('branch', val)}
+            style={{ width: '250px' }}
+          />
+        </Form>
+      </Div>
       <Div
         flexGrow={1}
         display="flex"
