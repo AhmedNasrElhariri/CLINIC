@@ -6,6 +6,7 @@ import { DatePickerStyled } from './style';
 
 const CustomDatePicker = ({
   value,
+  onSelectTrigger,
   onChange,
   format = 'DD-MM-YYYY',
   ...props
@@ -16,6 +17,7 @@ const CustomDatePicker = ({
       value={value}
       format={format}
       onChange={onChange}
+      onSelect={onSelectTrigger && onChange}
       ranges={[]}
     ></DatePickerStyled>
   );

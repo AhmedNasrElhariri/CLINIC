@@ -40,14 +40,9 @@ const initialValues = {
 };
 
 export default function NewAppointment({ show, onHide, patientid, userid }) {
-  const {
-    formValue,
-    setFormValue,
-    createAppointment,
-    appointments,
-  } = useNewAppointment({ onCreate: onHide });
+  const { formValue, setFormValue, createAppointment, appointments } =
+    useNewAppointment({ onCreate: onHide });
 
-  const [selectedHour, setSelectedHour] = useState(null);
   const { patientCourses } = useCourses({
     patientId: patientid,
   });
@@ -64,7 +59,6 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,
-    selectedHour,
     appointments,
   });
   const handleCreate = useCallback(() => {
@@ -139,10 +133,11 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
               block
               name="time"
               accepter={DatePicker}
-              disabledMinutes={disabledMinutes}
+              disabledMinutes={minute =>
+                disabledMinutes(minute, moment(formValue.time).hours())
+              }
               hideHours={hideHours}
               startHour={8}
-              onSelect={a => setSelectedHour(moment(a).hour())}
             />
           </Form>
         </Div>

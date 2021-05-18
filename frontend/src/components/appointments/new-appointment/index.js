@@ -89,7 +89,7 @@ const NewAppointment = ({ show, onHide }) => {
     IDBTransaction: course.id,
   }));
   const [selectedHour, setSelectedHour] = useState(null);
-  const { data: appointmentsDay ,refetch} = useQuery(APPOINTMENTS_DAY_COUNT, {
+  const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).utc(true).toDate() },
     // pollInterval: 500,
     // pollInterval: 500,
@@ -100,7 +100,7 @@ const NewAppointment = ({ show, onHide }) => {
   );
   useEffect(() => {
     refetch(formValue.date);
-  }, [formValue.date,appointmentsCount]);
+  }, [formValue.date, appointmentsCount]);
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
@@ -122,7 +122,6 @@ const NewAppointment = ({ show, onHide }) => {
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,
-    selectedHour,
     appointments,
   });
   const handleCreate = useCallback(() => {
@@ -252,7 +251,9 @@ const NewAppointment = ({ show, onHide }) => {
                     block
                     name="time"
                     accepter={DatePicker}
-                    disabledMinutes={disabledMinutes}
+                    disabledMinutes={minute =>
+                      disabledMinutes(minute, moment(formValue.time).hours())
+                    }
                     hideHours={hideHours}
                     startHour={8}
                     onSelect={a => setSelectedHour(moment(a).hour())}

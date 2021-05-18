@@ -44,7 +44,7 @@ function Appointment() {
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);
-  const { viewFields } = usePatientHistory({ patientId });
+  const { viewFields, appointmentHistory } = usePatientHistory({ patientId });
 
   return (
     <>
@@ -84,7 +84,9 @@ function Appointment() {
               </CRVNav>
               <TabContainer>
                 {showComp('0') && <PatientInfo patient={patient} />}
-                {showComp('1') && <PatientSummary summary={[]} />}
+                {showComp('1') && (
+                  <PatientSummary summary={appointmentHistory} />
+                )}
                 {showComp('2') && (
                   <PatientSurgries
                     history={[]}

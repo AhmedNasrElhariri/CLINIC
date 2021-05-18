@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
+import * as moment from 'moment';
 
-import {
-  Div,
-  CRModal,
-  CRCard,
-  H6,
-  CRDatePicker,
-  CRTimePicker,
-} from 'components';
+import { Div, CRModal, CRCard, H6, CRDatePicker } from 'components';
 import { Form, DatePicker } from 'rsuite';
 import { formatDate, isBeforeToday } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
@@ -24,7 +18,6 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,
-    selectedHour: formValue.time,
     appointments,
   });
 
@@ -74,9 +67,12 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
                 hideMinutes={minute => minute % 5 !== 0}
                 name="time"
                 accepter={DatePicker}
-                disabledMinutes={disabledMinutes}
+                disabledMinutes={minute =>
+                  disabledMinutes(minute, moment(formValue.time).hours())
+                }
                 hideHours={hideHours}
                 style={{ marginTop: '10px' }}
+                onSelectTrigger
                 block
               />
             </Div>

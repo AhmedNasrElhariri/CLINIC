@@ -72,9 +72,10 @@ function Appointment() {
     () => R.prop('appointment')(appointmentRes) || {},
     [appointmentRes]
   );
-  const patient = useMemo(() => R.propOr({}, 'patient')(appointment), [
-    appointment,
-  ]);
+  const patient = useMemo(
+    () => R.propOr({}, 'patient')(appointment),
+    [appointment]
+  );
   const { normalizedFields, groups } = useAppointmentHistory({
     appointmentId,
     appointment,
@@ -245,7 +246,7 @@ function Appointment() {
                 groups={groups}
                 appointment={appointment}
               />
-              {popup ? (
+              {popup && (
                 <Prescription
                   visible={visible}
                   onClose={close}
@@ -254,10 +255,8 @@ function Appointment() {
                   onChange={handleMedicineChange}
                   nextAppointment={nextAppointment}
                 />
-              ) : (
-                <></>
               )}
-              {popupTwo ? (
+              {popupTwo && (
                 <Labs
                   visible={visible}
                   onClose={close}
@@ -265,10 +264,8 @@ function Appointment() {
                   labs={apptFormValue.labIds}
                   onChange={handleLabsChange}
                 />
-              ) : (
-                <></>
               )}
-              {popupThree ? (
+              {popupThree && (
                 <Images
                   visible={visible}
                   onClose={close}
@@ -276,8 +273,6 @@ function Appointment() {
                   images={apptFormValue.imageIds}
                   onChange={handleImagesChange}
                 />
-              ) : (
-                <></>
               )}
               <NewAppointment
                 show={visbleAppointment}

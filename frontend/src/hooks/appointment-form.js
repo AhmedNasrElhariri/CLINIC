@@ -2,7 +2,7 @@ import { useMemo, useCallback } from 'react';
 import * as moment from 'moment';
 import { isUrgent } from 'services/appointment';
 
-function useAppointmentForm({ date, type, selectedHour, appointments }) {
+function useAppointmentForm({ date, type, appointments }) {
   const selectedDayAppointments = useMemo(
     () => appointments.filter(({ date }) => moment(date).isSame(date, 'day')),
     [appointments]
@@ -29,7 +29,7 @@ function useAppointmentForm({ date, type, selectedHour, appointments }) {
   );
 
   const disabledMinutes = useCallback(
-    minute => {
+    (minute, selectedHour) => {
       if (isUrgent({ type })) {
         return false;
       }
@@ -51,7 +51,7 @@ function useAppointmentForm({ date, type, selectedHour, appointments }) {
         return newDate.isBetween(startDate, endDate, 'minutes', '[)');
       });
     },
-    [date, selectedDayAppointments, selectedHour, type]
+    [date, selectedDayAppointments, type]
   );
 
   return useMemo(
