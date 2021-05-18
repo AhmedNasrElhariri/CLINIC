@@ -14,11 +14,10 @@ const InsertImageResult = ({ visible, onClose, onCreate, id, images }) => {
       documents: [],
     },
   });
-
+  console.log(formValue,'ff');
   useEffect(() => {
     updateProp('id', id);
   }, [id, updateProp]);
-  console.log(formValue.id,'idid');
   return (
     <CRModal
       header="Update Image Docs"

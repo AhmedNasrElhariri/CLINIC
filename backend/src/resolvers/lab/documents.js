@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const imagesDocuments = ({ id }) => {
-  return prisma.image.findUnique({ where: { id } }).documents();
+  return prisma.lab.findUnique({ where: { id } }).documents();
 };
 
 export default imagesDocuments;

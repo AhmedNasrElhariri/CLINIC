@@ -9,6 +9,7 @@ import {
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
   APPOINTMENTS_DAY_COUNT,
+  LIST_BRANCHES,
 } from 'apollo-client/queries';
 import useAppointments from './appointments';
 import usePatients from './patients';
@@ -21,10 +22,10 @@ const initialValues = {
   userId: null,
   date: new Date(),
   time: null,
-  waiting:false,
+  waiting: false,
 };
 
-const useNewAppointment = ({ onCreate,date } = {}) => {
+const useNewAppointment = ({ onCreate, date } = {}) => {
   const [formValue, setFormValue] = useState(initialValues);
 
   const { appointments } = useAppointments();
@@ -33,6 +34,7 @@ const useNewAppointment = ({ onCreate,date } = {}) => {
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Appointment },
   });
+  const { data: organizationBranchesData } = useQuery(LIST_BRANCHES);
 
   const [createAppointment, { loading }] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: () => {
@@ -44,15 +46,19 @@ const useNewAppointment = ({ onCreate,date } = {}) => {
       {
         query: APPOINTMENTS_DAY_COUNT,
         variables: { date: moment(formValue.date).utc(true).toDate() },
-      },{
+      },
+      {
         query: LIST_APPOINTMENTS,
-      }
+      },
     ],
     onError: ({ message }) => Alert.error(message),
   });
 
   const branches = R.propOr([], 'listBranchesTree')(data);
-
+  const organizationBranches = R.propOr(
+    [],
+    'listBranches'
+  )(organizationBranchesData);
   const specialties = useMemo(
     () =>
       R.pipe(
@@ -81,12 +87,14 @@ const useNewAppointment = ({ onCreate,date } = {}) => {
       setFormValue,
       appointments,
       loading,
+      organizationBranches,
       createAppointment: appointment =>
         createAppointment({ variables: { appointment } }),
     }),
     [
       appointments,
       branches,
+      organizationBranches,
       createAppointment,
       doctors,
       formValue,

@@ -8,7 +8,7 @@ import { useModal, usePatientImages } from 'hooks';
 const PendingImages = ({ patient }) => {
   const { visible, open, close } = useModal();
   const [selectedImage, setSelectedImage] = useState({});
-
+  
   const { pendingImages, insertImageResult } = usePatientImages({
     patientId: patient.id,
     onInsert: close,

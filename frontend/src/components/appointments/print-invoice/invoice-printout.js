@@ -1,5 +1,5 @@
 import React from 'react';
-
+import * as R from 'ramda';
 import { StyledContainer, StyledHeader } from './style';
 import { H5, H6, Div, H7 } from 'components';
 import { formatDate } from 'utils/date';
@@ -21,15 +21,17 @@ const TotalPrice = ({ name, price }) => (
 );
 
 const InvoicePrintout = React.forwardRef(
-  ({ items, discount, subtotal, total, organization,others }, ref) => {
+  ({ items, discount, subtotal, total, organization, others }, ref) => {
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
+    
     const Count =
-      year + '' + month + '' + day + '/' + organization.invoiceCounter;
+      year + '' + month + '' + day + '/' + organization?.invoiceCounter;
     const { configurations } = useConfigurations();
-    const enable = configurations?.enableInvoiceCounter;
+    const enable =
+    R.isEmpty(configurations) ? configurations.enableInvoiceCounter: false ;
     return (
       <Div height={0} overflow="hidden">
         <StyledContainer ref={ref}>

@@ -35,6 +35,7 @@ export const LIST_APPOINTMENTS = gql`
         phoneNo
       }
       user {
+        id
         name
       }
       branch {

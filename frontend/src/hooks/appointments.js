@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import { useQuery } from '@apollo/client';
-
+import { ACTIONS } from 'utils/constants';
 import { sortAppointmentsByDate } from 'services/appointment';
 import { APPT_TYPE } from 'utils/constants';
-import { LIST_APPOINTMENTS } from 'apollo-client/queries';
+import { LIST_APPOINTMENTS, LIST_BRANCHES_TREE } from 'apollo-client/queries';
 
 function useAppointments({ includeSurgery } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS);
@@ -46,21 +46,21 @@ function useAppointments({ includeSurgery } = {}) {
     });
   }, [appointments]);
 
-  /*  const patientsDoctors = useMemo(() => {
-    return [
-      ...new Map(appointments.map(({ doctorId }) => doctorId)).values(),
-    ];
-  }, [appointments]); */
+  const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
+    variables: { action: ACTIONS.List_Appointment },
+  });
+  const filterBranches = R.propOr([], 'listBranchesTree')(branchesTreeData);
 
   return useMemo(
     () => ({
       appointments,
       todayAppointments,
+      filterBranches,
       branches: [],
       specialties,
       doctors,
     }),
-    [appointments, todayAppointments, specialties, doctors]
+    [appointments, todayAppointments, specialties, doctors, filterBranches]
   );
 }
 

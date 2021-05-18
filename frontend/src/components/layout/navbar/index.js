@@ -36,7 +36,7 @@ const Navbar = ({
 }) => {
   const notificationsRef = useRef();
   const settingsRef = useRef();
-  const { branches, specialties, doctors } = useNewAppointment({});
+  const { organizationBranches } = useNewAppointment({});
   useEffect(() => {
     setFormValue(val => ({
       ...val,
@@ -52,7 +52,7 @@ const Navbar = ({
           <CRSelectInput
             name="branchId"
             block
-            data={branches}
+            data={organizationBranches}
             onSelect={val => set('branch', val)}
             style={{ width: '250px' }}
           />

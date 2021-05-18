@@ -57,7 +57,7 @@ const FileStyled = styled.div`
 const LabFormInput = ({ value, onChange }) => {
   const onUpload = resp => {
     const newImages = value.concat(resp);
-    onChange(newImages);
+    onChange(newImages);  
   };
 
   const handleRemove = idx => {
@@ -98,7 +98,7 @@ const LabFormInput = ({ value, onChange }) => {
         </Div>
       </UploaderStyled>
       <Div mt={1}>
-        {value.map(({ filename }, index) => (
+        {value.map(({ filename}, index) => (
           <FileStyled key={index}>
             <span>{filename}</span>
             <Icon
@@ -109,6 +109,7 @@ const LabFormInput = ({ value, onChange }) => {
           </FileStyled>
         ))}
       </Div>
+      
     </Div>
   );
 };

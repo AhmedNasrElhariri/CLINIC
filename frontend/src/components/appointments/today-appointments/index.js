@@ -24,7 +24,10 @@ const initialValue = {
   businessNotes: '',
 };
 function TodayAppointments() {
-  const { todayAppointments: appointments } = useAppointments();
+  const {
+    todayAppointments: appointments,
+    filterBranches,
+  } = useAppointments();
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
@@ -130,6 +133,7 @@ function TodayAppointments() {
       },
     });
   }, [appointment, updateNotes, notes]);
+
   return (
     <>
       <CRTabs>
@@ -142,6 +146,7 @@ function TodayAppointments() {
           <CRTabs.CRContent>
             <Filter
               appointments={upcomingAppointments}
+              branches={filterBranches}
               render={apps => (
                 <ListAppointments
                   title="Upcoming Appointments"

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import ListImageDocs from './list-image-docs';
 import {Form} from 'rsuite';
 import { usePatientImages } from 'hooks';
