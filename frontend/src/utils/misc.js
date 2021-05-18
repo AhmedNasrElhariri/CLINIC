@@ -26,3 +26,12 @@ export const convertActionsToEntities = arr =>
       subject: toUpperCase(subject),
     };
   });
+
+export const normalize = (arr = [], prop = 'id') =>
+  arr.reduce(
+    (acc, item) => ({
+      ...acc,
+      [item[prop]]: item,
+    }),
+    {}
+  );

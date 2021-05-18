@@ -61,7 +61,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     <CRModal
       show={show}
       header="Archive Appointment"
-      okTitle={okTitle}
+      okTitle={okTitle}z
       onOk={handleOk}
       onHide={onCancel}
       onCancel={handleCancel}

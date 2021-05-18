@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import * as R from 'ramda';
 import { Form, Schema } from 'rsuite';
 
 import { Div, CRSelectInput, CRNumberInput } from 'components';
 import ListInvoiceItems from 'components/appointments/list-invoice-items';
 import { useForm, useInventory } from 'hooks';
+import { CRButton } from 'components/widgets';
+import { normalize } from 'utils/misc';
 
 const { StringType, NumberType } = Schema.Types;
 
@@ -23,29 +25,38 @@ function InventoryUsage({ onChange }) {
     initValue,
     model,
   });
-  const { items } = useInventory();
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  const handleOnChange = useCallback(
-    items => {
-      // setInvoiceItems(items);
-      onChange(items);
-    },
-    [onChange]
-  );
+  const { items } = useInventory();
 
   const handleDelete = useCallback(
     idx => {
-      handleOnChange(R.remove(idx, 1)(items));
+      const newItems = R.remove(idx, 1)(selectedItems);
+      setSelectedItems(newItems);
+      onChange(newItems);
     },
-    [handleOnChange]
+    [onChange, selectedItems]
   );
-  
-  const handleAdd = useCallback(
-    idx => {
-      handleOnChange(R.remove(idx, 1)(items));
-    },
-    [handleOnChange]
-  );
+
+  const handleAdd = useCallback(() => {
+    const newItems = [...selectedItems, formValue];
+    setSelectedItems(newItems);
+    setFormValue(initValue);
+    onChange(newItems);
+  }, [onChange, formValue, selectedItems]);
+
+  const itemsChoices = useMemo(() => {
+    const selectedItemIds = R.map(R.prop('itemId'))(selectedItems);
+    return items.filter(f => !selectedItemIds.includes(f.id));
+  }, [selectedItems]);
+
+  const itemsList = useMemo(() => {
+    const byIds = normalize(items);
+    return selectedItems.map(({ itemId, quantity }) => ({
+      ...byIds[itemId],
+      price: quantity,
+    }));
+  }, [selectedItems]);
 
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
@@ -54,18 +65,18 @@ function InventoryUsage({ onChange }) {
           <CRSelectInput
             label="Item"
             name="itemId"
-            data={items}
-            // onChange={onAdd}
+            data={itemsChoices}
             block
           ></CRSelectInput>
-          <Div my={3}>
-            <ListInvoiceItems items={[]} onDelete={handleDelete} />
-          </Div>
         </Div>
         <Div width={200}>
-          <CRNumberInput label="Quantity" name="quantity" />
+          <CRNumberInput name="quantity" label="Quantity" name="quantity" />
         </Div>
+        <CRButton variant="primary" onClick={handleAdd}>
+          add
+        </CRButton>
       </Div>
+      <ListInvoiceItems items={itemsList} onDelete={handleDelete} />
     </Form>
   );
 }
