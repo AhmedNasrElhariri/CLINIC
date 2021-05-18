@@ -2,8 +2,6 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox, DatePicker, Schema } from 'rsuite';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useQuery } from '@apollo/client';
 import {
   CRSelectInput,
@@ -166,19 +164,7 @@ const NewAppointment = ({ show, onHide }) => {
       waiting,
     });
   }, [createAppointment, formValue]);
-  // const notify = () => {
-  //   toast(
-  //     <CustomizedNotification
-  //       totalAppointment={appointmentsCount.totalAppointment}
-  //       totalWaiting={appointmentsCount.totalWaiting}
-  //     />,
-  //     {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //       autoClose: 5000,
-  //       style: { backgroundColor: '#00b1cc', color: '#ffffff' },
-  //     }
-  //   );
-  // };
+
   return (
     <>
       <NewPatient
@@ -335,7 +321,6 @@ const NewAppointment = ({ show, onHide }) => {
           </Form>
         </Div>
       </CRModal>
-      <ToastContainer />
     </>
   );
 };
