@@ -156,6 +156,8 @@ export const LIST_BRANCHES_TREE = gql`
   }
 `;
 
+
+
 export const APPOINTMENTS_DAY_COUNT = gql`
   query appointmentsDayCount($date: Date!) {
     appointmentsDayCount(date: $date) {

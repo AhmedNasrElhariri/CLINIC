@@ -5,7 +5,10 @@ import { useQuery } from '@apollo/client';
 import { ACTIONS } from 'utils/constants';
 import { sortAppointmentsByDate } from 'services/appointment';
 import { APPT_TYPE } from 'utils/constants';
-import { LIST_APPOINTMENTS, LIST_BRANCHES_TREE } from 'apollo-client/queries';
+import {
+  LIST_APPOINTMENTS,
+  LIST_BRANCHES_TREE,
+} from 'apollo-client/queries';
 
 function useAppointments({ includeSurgery } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS);

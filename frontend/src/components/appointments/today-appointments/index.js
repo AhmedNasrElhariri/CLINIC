@@ -133,7 +133,6 @@ function TodayAppointments() {
       },
     });
   }, [appointment, updateNotes, notes]);
-
   return (
     <>
       <CRTabs>

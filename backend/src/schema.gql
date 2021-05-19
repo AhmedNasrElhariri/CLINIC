@@ -105,7 +105,7 @@ type Query {
   medicineHistory(patientId: ID!): [MedicineHistory!]
   familyHistory(patientId: ID!): [FamilyHistory!]
   expenses: [Expense!]
-  revenues: [Revenue!]
+  revenues(action: String!): [Branch!]
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
   myNotifications: [Notification!]
@@ -135,6 +135,7 @@ type Query {
   listUsers: [User!]
   listRoles: [Role!]
   listBranchesTree(action: String!): [Branch!]
+  organizationBranches: [Branch!]
   listActionUsers(action: String!): [User!]
   listActionDoctors(action: String!): [User!]
   configuration: Configuration
@@ -272,6 +273,7 @@ type User {
   email: String!
   position: Position
   permissions: [Permission!]
+  revenues: [Revenue!]
   avatar: String
   specialty: Specialty
   role: Role
