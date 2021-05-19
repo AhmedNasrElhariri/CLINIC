@@ -2,8 +2,6 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox, DatePicker, Schema } from 'rsuite';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useQuery } from '@apollo/client';
 import {
   CRSelectInput,
@@ -335,7 +333,6 @@ const NewAppointment = ({ show, onHide }) => {
           </Form>
         </Div>
       </CRModal>
-      <ToastContainer />
     </>
   );
 };
