@@ -1,5 +1,12 @@
-import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import React, { useEffect } from 'react';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Font,
+} from '@react-pdf/renderer';
 
 import {
   Table,
@@ -10,12 +17,20 @@ import {
 } from '@david.kucsai/react-pdf-table';
 
 import { formatDate } from 'utils/date';
+import font from "../../../fonts/Tajawal-Regular.ttf";
+
+Font.register({
+  family: "Tajawal",
+  format: "truetype",
+  src: font 
+});
+
 
 const styles = StyleSheet.create({
   page: {
     backgroundColor: '#ffffff',
     padding: 20,
-    // fontFamily: 'Cairo'
+    fontFamily: 'Tajawal',
   },
   header: {
     fontSize: 14,
@@ -31,6 +46,7 @@ const styles = StyleSheet.create({
   profit: {
     marginTop: 30,
   },
+  
 });
 
 const PdfTable = ({ data }) => (
@@ -44,7 +60,10 @@ const PdfTable = ({ data }) => (
     </TableHeader>
     <TableBody>
       <DataTableCell getContent={r => r.salesDefinition.name} weighting={0.6} />
-      <DataTableCell getContent={r => r.salesDefinition.price} weighting={0.2} />
+      <DataTableCell
+        getContent={r => r.salesDefinition.price}
+        weighting={0.2}
+      />
       <DataTableCell getContent={r => r.quantity} weighting={0.2} />
       <DataTableCell getContent={r => r.totalPrice} weighting={0.2} />
       <DataTableCell getContent={r => formatDate(r.date)} weighting={0.2} />

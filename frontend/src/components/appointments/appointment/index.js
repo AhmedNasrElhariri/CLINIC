@@ -79,7 +79,6 @@ function Appointment() {
     appointmentId,
     appointment,
   });
-
   const handleUpdate = useCallback(() => {
     update({
       variables: {
@@ -282,8 +281,7 @@ function Appointment() {
               <NewAppointment
                 show={visbleAppointment}
                 onHide={toggleAppointment}
-                patientid={patient.id}
-                userid={appointment.userId}
+                appointment={appointment}
               />
             </Div>
           </Div>
