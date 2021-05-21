@@ -19,7 +19,7 @@ const Item = ({ name, icon, path, onClick }) => {
 export default function Settings({ onClose, ...props }) {
   const history = useHistory();
   let items = [];
-  if (get('user').position === POSITIONS.DOCTOR) {
+  if (get('user').position === POSITIONS.ADMIN) {
     items = [
       {
         name: 'Configurations',
@@ -30,6 +30,11 @@ export default function Settings({ onClose, ...props }) {
         name: 'Static Info',
         icon: '/icons/static.png',
         path: '/settings/static',
+      },
+      {
+        name: 'Payroll',
+        icon: '/icons/static.png',
+        path: '/payroll',
       },
       {
         name: 'Snippets',
@@ -64,11 +69,6 @@ export default function Settings({ onClose, ...props }) {
         name: 'Static Info',
         icon: '/icons/static.png',
         path: '/settings/static',
-      },
-      {
-        name: 'Payroll',
-        icon: '/icons/static.png',
-        path: '/payroll',
       },
       {
         name: 'Snippets',
