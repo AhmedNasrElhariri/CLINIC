@@ -41,7 +41,6 @@ const getPulseControl = async () => {
       date: new Date(),
     };
   }
-  console.log(pulseControl,'kkkkkkkkkkkkkkkkkkkkkk');
   return pulseControl;
 };
 

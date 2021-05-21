@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { VERIFY } from 'apollo-client/queries';
 import { useMutation } from '@apollo/client';
 import { useAbility } from '@casl/react';
-import { ACCESS_TOKEN } from '../utils/constants';
+import { POSITIONS, ACCESS_TOKEN } from '../utils/constants';
 
 import useGlobalState from 'state';
 import { AbilityContext } from 'components/user/can';
@@ -39,7 +39,11 @@ const useAuth = () => {
     updatePermissions: permissions => {
       ability.update(permissions);
     },
-    isAdmin: ability.can('manage', 'all'),
+    isAdmin: user && user.position === POSITIONS.ADMIN,
+    isOrAssistant:
+      user &&
+      (user.position === POSITIONS.ADMIN ||
+        user.position === POSITIONS.ASSISTANT),
     can: (action, subject) => ability.can(action, subject),
   };
 };

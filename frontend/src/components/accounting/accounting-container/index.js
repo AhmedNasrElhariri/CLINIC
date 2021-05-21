@@ -7,7 +7,7 @@ import Toolbar from '../toolbar';
 import ListData from '../list-data';
 import Tabs from '../tabs';
 import Profit from '../profit';
-import { useAccounting, useAppointments } from 'hooks';
+import { useAccounting, useAppointments, useAuth } from 'hooks';
 import { POSITIONS } from 'utils/constants';
 import {
   CREATE_EXPENSE,
@@ -20,14 +20,13 @@ import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
-import { get } from './../../../services/local-storage';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
-  const position = get('user').position;
+  const { isAdmin } = useAuth();
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
       Alert.success('Expense Added Successfully');
@@ -151,7 +150,7 @@ const AccountingContainer = () => {
         title="Accounting"
         more={
           <Div display="flex">
-            {position === POSITIONS.ADMIN && (
+            {isAdmin && (
               <>
                 <CRButton variant="primary" onClick={createRevenueForm.show}>
                   Reveneue +

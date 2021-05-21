@@ -14,17 +14,13 @@ import Sidebar from 'components/layout/sidebar';
 import Navbar from 'components/layout/navbar';
 import NewAppointment from 'components/appointments/new-appointment';
 import useUserProfile from './fetch-user';
-import { POSITIONS } from 'utils/constants';
-import { get } from './../../../services/local-storage';
-import { useModal } from 'hooks';
-const initialvalues = {
-  branchId: null,
-};
+
+import { useAuth, useModal } from 'hooks';
+
 function Root() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
   const history = useHistory();
-  const position = get('user').position;
 
   const {
     clearNotifications,
@@ -36,128 +32,65 @@ function Root() {
     notifications,
     user,
   } = useUserProfile();
-  // const renderSearch = useCallback(
-  //   () => (
-  //     <Form style={{ width: 276 }}>
-  //       <InputGroup>
-  //         <AutoComplete
-  //           data={patients}
-  //           value={searchValue}
-  //           onChange={setSearchValue}
-  //           filterBy={(val, item) => {
-  //             return filterPatientBy(val, item, true);
-  //           }}
-  //           renderItem={item => {
-  //             return item.name;
-  //           }}
-  //           onSelect={({ id }) => {
-  //             history.push(`/patients/${id}`);
-  //           }}
-  //         />
-  //         <InputGroup.Button>
-  //           <Icon icon="search" />
-  //         </InputGroup.Button>
-  //       </InputGroup>
-  //     </Form>
-  //   ),
-  //   [history, patients, searchValue]
-  // );
+
+  const { isOrAssistant } = useAuth();
 
   if (!isVerified) {
     return <div>Loading ...</div>;
   }
-  let items = [];
-  if (position === POSITIONS.DOCTOR) {
-    items = [
-      {
-        to: '/appointments/today',
-        name: `Today's Appointments`,
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/calendar',
-        name: 'Calendar',
-        icon: <CalendarIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/appointments',
-        name: 'Appointments',
-        extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/patients',
-        name: 'Patients',
-        extra: <Fab open={visblePatient} onClick={togglePatient} />,
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/surgeries',
-        name: 'Surgeries',
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/report-printouts',
-        name: 'Report Printouts',
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/permissions',
-        name: 'Permissions',
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-    ];
-  } else {
-    items = [
-      {
-        to: '/appointments/today',
-        name: `Today's Appointments`,
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/calendar',
-        name: 'Calendar',
-        icon: <CalendarIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/appointments',
-        name: 'Appointments',
-        extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/patients',
-        name: 'Patients',
-        extra: <Fab open={visblePatient} onClick={togglePatient} />,
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/reports',
-        name: 'Reports',
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/surgeries',
-        name: 'Surgeries',
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/report-printouts',
-        name: 'Report Printouts',
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/permissions',
-        name: 'Permissions',
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-      {
-        to: '/sales',
-        name: 'Sales',
-        icon: <UserIcon width={11.8} height={14.1} />,
-      },
-    ];
-  }
+
+  const items = [
+    {
+      to: '/appointments/today',
+      name: `Today's Appointments`,
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/calendar',
+      name: 'Calendar',
+      icon: <CalendarIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/appointments',
+      name: 'Appointments',
+      extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/patients',
+      name: 'Patients',
+      extra: <Fab open={visblePatient} onClick={togglePatient} />,
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    ...(isOrAssistant
+      ? [
+          {
+            to: '/reports',
+            name: 'Reports',
+            icon: <UserIcon width={11.8} height={14.1} />,
+          },
+        ]
+      : []),
+    {
+      to: '/surgeries',
+      name: 'Surgeries',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/report-printouts',
+      name: 'Report Printouts',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    ...(isOrAssistant
+      ? [
+          {
+            to: '/sales',
+            name: 'Sales',
+            icon: <UserIcon width={11.8} height={14.1} />,
+          },
+        ]
+      : []),
+  ];
 
   return (
     <ContainerStyled>

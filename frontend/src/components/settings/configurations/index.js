@@ -5,7 +5,7 @@ import { Form } from 'rsuite';
 import { H3, Div, CRButton, CRNumberInput } from 'components';
 import SessionDefinitions from '../session-definations';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
-import { useConfigurations } from 'hooks';
+import { useAuth, useConfigurations } from 'hooks';
 import { get } from './../../../services/local-storage';
 import { POSITIONS } from 'utils/constants';
 const initialValues = {
@@ -20,7 +20,7 @@ const initialPulsesValue = {
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
   const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
-  const position = get('user').position;
+  const { isOrAssistant } = useAuth();
   const { configurations, update, addPulsesControl, getPulseControl } =
     useConfigurations();
   useEffect(() => {
@@ -38,7 +38,7 @@ const Configurations = () => {
     });
     const before = R.propOr(0, 'before')(getPulseControl);
     const after = R.propOr(0, 'after')(getPulseControl);
-    setPulseValues({ ...pulsesValue, before: before, after: after });
+    setPulseValues({ ...pulsesValue, before, after });
   }, [configurations, getPulseControl]);
   console.log(getPulseControl);
   const handleSave = useCallback(() => {
@@ -106,7 +106,7 @@ const Configurations = () => {
         onChange={updateEnable}
         value={formValue?.enableInvoiceCounter}
       />
-      {(position === POSITIONS.ADMIN || position === POSITIONS.ASSISTANT) && (
+      {isOrAssistant && (
         <>
           <hr></hr>
           <Div display="flex" justifyContent="space-between">
@@ -124,7 +124,6 @@ const Configurations = () => {
           </Div>
           <Form formValue={pulsesValue} onChange={setPulseValues}>
             <Div display="flex" justifyContent="space-between">
-              <Div mr={20} mb={50} mt={0}></Div>
               <CRNumberInput
                 name="before"
                 label="before"

@@ -36,6 +36,7 @@ export const VERIFY = gql`
     verify(token: $token) {
       id
       avatar
+      position
       permissions {
         action
         subject
