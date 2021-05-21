@@ -29,7 +29,7 @@ const getPulseControl = async () => {
   if (TodayPulseControl.length > 0) {
     pulseControl = {
       id: todayPulseControlRow.id,
-      before: beforeBusleControlRowTodayExisted.after,
+      before: todayPulseControlRow.before,
       after: todayPulseControlRow.after,
       date: new Date(),
     };
@@ -41,6 +41,7 @@ const getPulseControl = async () => {
       date: new Date(),
     };
   }
+  console.log(pulseControl,'kkkkkkkkkkkkkkkkkkkkkk');
   return pulseControl;
 };
 

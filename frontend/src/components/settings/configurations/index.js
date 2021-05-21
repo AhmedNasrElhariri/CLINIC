@@ -42,7 +42,7 @@ const Configurations = () => {
     const after = R.propOr(0, 'after')(getPulseControl);
     setPulseValues({ ...pulsesValue, before: before, after: after });
   }, [configurations, getPulseControl]);
-
+  console.log(getPulseControl);
   const handleSave = useCallback(() => {
     update(formValue);
   }, [formValue, update]);

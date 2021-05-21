@@ -39,12 +39,12 @@ const initialValues = {
   time: null,
 };
 
-export default function NewAppointment({ show, onHide, patientid, userid }) {
+export default function NewAppointment({ show, onHide, appointment }) {
   const { formValue, setFormValue, createAppointment, appointments } =
     useNewAppointment({ onCreate: onHide });
-
+  const { patient, branch, specialty, userId } = appointment;
   const { patientCourses } = useCourses({
-    patientId: patientid,
+    patientId: patient.id,
   });
   const updatedPatientCourses = patientCourses.map(course => ({
     name: course.courseDefinition.name,
@@ -67,8 +67,9 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
       return;
     }
     const { type, courseId } = formValue;
-    const patientId = patientid;
-    const userId = userid;
+    const patientId = patient.id;
+    const branchId = branch.id;
+    const specialtyId = specialty.id;
     const timeDate = moment(formValue.time);
     const date = moment(formValue.date).set({
       hours: timeDate.hours(),
@@ -79,9 +80,11 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
       type,
       date,
       userId,
+      branchId,
+      specialtyId,
       courseId,
     });
-  }, [createAppointment, formValue, patientid, userid]);
+  }, [createAppointment, formValue, appointment, userId]);
   return (
     <>
       <CRModal

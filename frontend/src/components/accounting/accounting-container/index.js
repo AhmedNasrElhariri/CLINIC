@@ -7,9 +7,9 @@ import { MainContainer, Div, CRCard, CRButton, H6 } from 'components';
 import Toolbar from '../toolbar';
 import ListData from '../list-data';
 import Tabs from '../tabs';
-
+import Filter from '../../filters';
 import Profit from '../profit';
-import { useAccounting } from 'hooks';
+import { useAccounting, useAppointments } from 'hooks';
 
 import {
   CREATE_EXPENSE,
@@ -23,6 +23,7 @@ import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
+import { CRLabel } from 'components/widgets';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 
@@ -147,6 +148,7 @@ const AccountingContainer = () => {
     updateRevenuesCache,
     timeFrame,
   } = useAccounting({ view, period });
+  const { filterBranches } = useAppointments();
   return (
     <>
       <MainContainer
@@ -188,13 +190,21 @@ const AccountingContainer = () => {
           {activeTab === '0' ? (
             <Div display="flex">
               <Div flexGrow={1} mr={2}>
-                <ListData
-                  title="Revenue"
-                  data={revenues}
-                  onEdit={revenue => {
-                    editRevenueForm.setFormValue(R.pick(ENTITY_PROPS)(revenue));
-                    editRevenueForm.show();
-                  }}
+                <CRLabel style={{color:'#51C6F3'}}>Reveneue</CRLabel>
+                <Filter
+                  appointments={revenues}
+                  branches={filterBranches}
+                  render={revs => (
+                    <ListData
+                      data={revs}
+                      onEdit={revenue => {
+                        editRevenueForm.setFormValue(
+                          R.pick(ENTITY_PROPS)(revenue)
+                        );
+                        editRevenueForm.show();
+                      }}
+                    />
+                  )}
                 />
               </Div>
 

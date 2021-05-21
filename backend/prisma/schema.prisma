@@ -125,6 +125,8 @@ model Organization {
   id               String             @id @default(uuid())
   name             String
   invoiceCounter   Int                @default(1)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt @default(now())
   item             Item[]
   hospital         Hospital[]
   surgeries        Surgery[]
@@ -153,6 +155,8 @@ model User {
   avatar              String?
   role                PermissionRole?      @relation(fields: [roleId], references: [id])
   roleId              String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt @default(now())
   appointments        Appointment[]
   views               View[]
   viewStatus          ViewStatus[]
@@ -197,6 +201,8 @@ model Patient {
   user             User                  @relation(fields: [userId], references: [id])
   userId           String
   guardianName     String?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt @default(now())
   medicineHistory  MedicineHistory[]
   familyHistory    FamilyHistory[]
   inventoryHistory InventoryHistory[]
@@ -231,13 +237,17 @@ model Appointment {
   branchId         String?
   specialty        Specialty?         @relation(fields: [specialtyId], references: [id])
   specialtyId      String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt @default(now())
 }
 
 model PulseControl {
-  id     String   @id @default(uuid())
-  before Int      @default(0)
-  after  Int      @default(0)
-  date   DateTime
+  id        String   @id @default(uuid())
+  before    Int      @default(0)
+  after     Int      @default(0)
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model Prescription {
@@ -251,6 +261,8 @@ model Prescription {
   period        String?
   appointment   Appointment?       @relation(fields: [appointmentId], references: [id])
   appointmentId String?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt @default(now())
 }
 
 model View {
@@ -261,23 +273,29 @@ model View {
   userId              String
   fieldGroups         FieldGroup[]
   activeViewsStatuses ViewStatus[]
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt @default(now())
 }
 
 model ViewStatus {
-  id           String @id @default(uuid())
-  user         User   @relation(fields: [userId], references: [id])
+  id           String   @id @default(uuid())
+  user         User     @relation(fields: [userId], references: [id])
   userId       String
-  activeView   View   @relation(fields: [activeViewId], references: [id])
+  activeView   View     @relation(fields: [activeViewId], references: [id])
   activeViewId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt @default(now())
 }
 
 model FieldGroup {
-  id     String  @id @default(uuid())
-  name   String
-  order  Int
-  view   View    @relation(fields: [viewId], references: [id])
-  viewId String
-  fields Field[]
+  id        String   @id @default(uuid())
+  name      String
+  order     Int
+  view      View     @relation(fields: [viewId], references: [id])
+  viewId    String
+  fields    Field[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 
   @@unique([order, viewId], name: "order_viewId_unique_constraint")
 }
@@ -291,6 +309,8 @@ model Field {
   fieldGroup        FieldGroup?        @relation(fields: [fieldGroupId], references: [id])
   fieldGroupId      String?
   appointmentFields AppointmentField[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt @default(now())
 
   @@unique([order, fieldGroupId], name: "order_fieldGroupId_unique_constraint")
 }
@@ -302,6 +322,8 @@ model AppointmentField {
   field         Field       @relation(fields: [fieldId], references: [id])
   fieldId       String
   value         String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt @default(now())
 
   @@unique([appointmentId, fieldId], name: "appointment_fieldId_unique_constraint")
 }
@@ -312,6 +334,8 @@ model File {
   filename         String
   mimetype         String?
   encoding         String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt @default(now())
   lab              Lab[]
   image            Image[]
   appointmentFiles AppointmentFile[]
@@ -323,6 +347,8 @@ model AppointmentFile {
   appointmentId String
   file          File        @relation(fields: [fileId], references: [id])
   fileId        String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt @default(now())
 
   @@id(fileId)
 }
@@ -333,6 +359,8 @@ model PayrollUser {
   user           User                 @relation(fields: [userId], references: [id])
   userId         String
   organizationId String
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt @default(now())
   transactions   PayrollTransaction[]
 }
 
@@ -340,6 +368,8 @@ model PayrollTransaction {
   id            String                 @id @default(uuid())
   amount        Int
   date          DateTime
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt @default(now())
   type          PayrollTransactionType
   payrollUser   PayrollUser?           @relation(fields: [payrollUserId], references: [id])
   payrollUserId String?
@@ -352,6 +382,8 @@ model Payroll {
   name           String
   startDate      DateTime
   endDate        DateTime
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt @default(now())
   status         PayrollStatus
   organization   Organization         @relation(fields: [organizationId], references: [id])
   organizationId String
@@ -359,41 +391,48 @@ model Payroll {
 }
 
 model Configuration {
-  id                   String  @id @default(uuid())
-  user                 User    @relation(fields: [userId], references: [id])
+  id                   String   @id @default(uuid())
+  user                 User     @relation(fields: [userId], references: [id])
   userId               String
-  enableInvoiceCounter Boolean @default(false)
-  sessions             Json    @default("[]")
-
+  enableInvoiceCounter Boolean  @default(false)
+  sessions             Json     @default("[]")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt @default(now())
 
   @@unique([userId], name: "userid_unique_constraint")
 }
 
 model Week {
-  id     String @id @default(uuid())
-  weekNo Int
-  year   Int
-
+  id           String         @id @default(uuid())
+  weekNo       Int
+  year         Int
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt @default(now())
   WorkingHours WorkingHours[]
+
   @@unique([weekNo, year], name: "week_year_unique_constraint")
 }
 
 model WorkingHours {
-  id       String   @id @default(uuid())
-  week     Week     @relation(fields: [weekId], references: [id])
-  weekId   String
-  doctor   User     @relation(fields: [doctorId], references: [id])
-  doctorId String
-  start    DateTime
-  end      DateTime
+  id        String   @id @default(uuid())
+  week      Week     @relation(fields: [weekId], references: [id])
+  weekId    String
+  doctor    User     @relation(fields: [doctorId], references: [id])
+  doctorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  start     DateTime
+  end       DateTime
 }
 
 model Snippet {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  title  String @unique
-  body   String
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  title     String   @unique
+  body      String
 }
 
 model Lab {
@@ -402,6 +441,8 @@ model Lab {
   requiredDate    DateTime      @default(now())
   resultDate      DateTime?
   value           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt @default(now())
   patient         Patient       @relation(fields: [patientId], references: [id])
   patientId       String
   labDefinition   LabDefinition @relation(fields: [labDefinitionId], references: [id])
@@ -417,6 +458,8 @@ model Image {
   requiredDate      DateTime        @default(now())
   resultDate        DateTime?
   value             String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt @default(now())
   patient           Patient         @relation(fields: [patientId], references: [id])
   patientId         String
   imageDefinition   ImageDefinition @relation(fields: [imageDefinitionId], references: [id])
@@ -432,15 +475,19 @@ model MedicineHistory {
   frequency    String?
   dose         String?
   fromDate     DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt @default(now())
   patient      Patient   @relation(fields: [patientId], references: [id])
   patientId    String
 }
 
 model FamilyHistory {
-  id        String  @id @default(uuid())
+  id        String   @id @default(uuid())
   disease   String
   relative  String
-  patient   Patient @relation(fields: [patientId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  patient   Patient  @relation(fields: [patientId], references: [id])
   patientId String
 }
 
@@ -450,6 +497,8 @@ model Expense {
   date      DateTime
   amount    Int
   invoiceNo String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
 }
@@ -460,6 +509,8 @@ model Revenue {
   date      DateTime
   amount    Int
   invoiceNo String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
 }
@@ -470,17 +521,21 @@ model Notification {
   userId     String
   type       String
   message    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt @default(now())
   viewed     Boolean  @default(false)
   date       DateTime @default(now())
 }
 
 model Event {
-  id     String   @id @default(uuid())
-  user   User     @relation(fields: [userId], references: [id])
-  userId String
-  name   String
-  start  DateTime
-  end    DateTime
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  userId    String
+  name      String
+  start     DateTime
+  end       DateTime
 }
 
 model Item {
@@ -490,6 +545,8 @@ model Item {
   quantity         Int
   barcode          String?
   notes            String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt @default(now())
   organization     Organization       @relation(fields: [organizationId], references: [id])
   organizationId   String
   user             User               @relation(fields: [userId], references: [id])
@@ -502,6 +559,8 @@ model InventoryItem {
   quantity       Int
   item           Item         @relation(fields: [itemId], references: [id])
   itemId         String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt @default(now())
   user           User         @relation(fields: [userId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
@@ -522,6 +581,8 @@ model InventoryHistory {
   quantity       Int
   price          Int?
   date           DateTime
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt @default(now())
   organization   Organization       @relation(fields: [organizationId], references: [id])
   organizationId String
 }
@@ -531,30 +592,38 @@ model Hospital {
   name           String
   phoneNo        String?
   address        String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt @default(now())
   organization   Organization     @relation(fields: [organizationId], references: [id])
   organizationId String
   PatientSurgery PatientSurgery[]
 }
 
 model LabDefinition {
-  id       String @id @default(uuid())
-  name     String
-  category String
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  labs     Lab[]
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  category  String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  labs      Lab[]
 }
 
 model LabCategory {
-  id     String @id @default(uuid())
-  name   String
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
 
 model Timing {
   id                String         @id @default(uuid())
   name              String
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt @default(now())
   englishPrintValue String
   arabicPrintValue  String
   user              User           @relation(fields: [userId], references: [id])
@@ -563,22 +632,26 @@ model Timing {
 }
 
 model ImageDefinition {
-  id       String  @id @default(uuid())
-  name     String
-  category String
-  user     User    @relation(fields: [userId], references: [id])
-  userId   String
-  Image    Image[]
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  category  String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  Image     Image[]
 }
 
 model SalesDefinition {
-  id     String  @id @default(uuid())
-  name   String
-  price  Int
-  cost   Int
-  user   User    @relation(fields: [userId], references: [id])
-  userId String
-  Sales  Sales[]
+  id        String   @id @default(uuid())
+  name      String
+  price     Int
+  cost      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  Sales     Sales[]
 }
 
 model Sales {
@@ -587,6 +660,8 @@ model Sales {
   totalPrice        Int
   totalCost         Int
   date              DateTime
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt @default(now())
   user              User            @relation(fields: [userId], references: [id])
   userId            String
   salesDefinition   SalesDefinition @relation(fields: [salesDefinitionId], references: [id])
@@ -603,6 +678,8 @@ model CourseDefinition {
   messureOfUnits String
   user           User       @relation(fields: [userId], references: [id])
   userId         String
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt @default(now())
   Course         Course[]
 }
 
@@ -624,13 +701,17 @@ model Course {
   courseDefinitionId String
   doctor             User             @relation("doctor", fields: [doctorId], references: [id])
   doctorId           String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt @default(now())
 }
 
 model ImageCategory {
-  id     String @id @default(uuid())
-  name   String
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  id        String   @id @default(uuid())
+  name      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model MedicineDefinition {
@@ -641,15 +722,18 @@ model MedicineDefinition {
   user          User           @relation(fields: [userId], references: [id])
   userId        String
   prescriptions Prescription[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt @default(now())
 }
 
 model PatientReport {
-  id     String @id @default(uuid())
-  name   String
-  body   String
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
+  id        String   @id @default(uuid())
+  name      String
+  body      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model Surgery {
@@ -658,6 +742,8 @@ model Surgery {
   organization   Organization     @relation(fields: [organizationId], references: [id])
   organizationId String
   patientSurgery PatientSurgery[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt @default(now())
 }
 
 model PatientSurgery {
@@ -675,6 +761,8 @@ model PatientSurgery {
   date           DateTime
   fees           Int?
   hospitalFees   Int?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt @default(now())
 }
 
 // permissions
@@ -693,6 +781,8 @@ model PermissionRole {
   organizationId String
   permissions    Permission[]
   users          User[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt @default(now())
 }
 
 model Permission {
@@ -705,6 +795,8 @@ model Permission {
   rules          Rule[]
   organization   Organization     @relation(fields: [organizationId], references: [id])
   organizationId String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt @default(now())
 
   @@unique([action, roleId], name: "action_roleId_unique_constraint")
 }
@@ -721,6 +813,8 @@ model Rule {
   userId         String?
   permission     Permission   @relation(fields: [permissionId], references: [id])
   permissionId   String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt @default(now())
 }
 
 model Branch {
@@ -735,6 +829,8 @@ model Branch {
   specialties     Specialty[]
   userSpecialties UserSpecialty[]
   Appointment     Appointment[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt @default(now())
 }
 
 model Specialty {
@@ -746,6 +842,8 @@ model Specialty {
   branches        Branch[]
   userSpecialties UserSpecialty[]
   Appointment     Appointment[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt @default(now())
 }
 
 model UserSpecialty {
@@ -758,6 +856,8 @@ model UserSpecialty {
   userId         String
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt @default(now())
 
   @@unique([userId, branchId], name: "userId_branchId_unique_constraint")
 }

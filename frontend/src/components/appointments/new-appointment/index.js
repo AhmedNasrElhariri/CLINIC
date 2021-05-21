@@ -150,6 +150,16 @@ const NewAppointment = ({ show, onHide }) => {
     });
   }, [createAppointment, formValue]);
 
+  useEffect(() => {
+    if (branches.length == 1) {
+      setFormValue({
+        ...formValue,
+        branchId: branches[0]?.id,
+        specialtyId: branches[0]?.specialties[0]?.id,
+        userId: branches[0]?.specialties[0]?.doctors[0]?.id,
+      });
+    }
+  }, [branches]);
   return (
     <>
       <NewPatient
@@ -267,15 +277,16 @@ const NewAppointment = ({ show, onHide }) => {
                     </H5>
                   </Div>
                 </CRSelectInput>
-
-                <CRSelectInput
-                  label="Branch"
-                  name="branchId"
-                  placeholder="Select Branch"
-                  block
-                  data={branches}
-                />
-                {formValue.branchId && (
+                {branches.length > 1 && (
+                  <CRSelectInput
+                    label="Branch"
+                    name="branchId"
+                    placeholder="Select Branch"
+                    block
+                    data={branches}
+                  />
+                )}
+                {branches.length > 1 && formValue.branchId && (
                   <CRSelectInput
                     label="Specialty"
                     name="specialtyId"
@@ -284,7 +295,7 @@ const NewAppointment = ({ show, onHide }) => {
                     data={specialties}
                   />
                 )}
-                {formValue.specialtyId && (
+                {branches.length > 1 && formValue.specialtyId && (
                   <CRSelectInput
                     label="Doctor"
                     name="userId"

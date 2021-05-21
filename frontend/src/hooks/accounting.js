@@ -13,10 +13,14 @@ import {
   getQuarterStartAndEnd,
   getYearStartAndEnd,
 } from 'utils/date';
-
+import { ACTIONS } from 'utils/constants';
 const useAccounting = ({ view, period } = {}) => {
   const { data: expensesData } = useQuery(LIST_EXPENSES);
-  const { data: revenueData } = useQuery(LIST_REVENUES);
+  const { data: revenueData } = useQuery(LIST_REVENUES, {
+    variables: {
+      action: ACTIONS.View_Accounting,
+    },
+  });
 
   const allExpenses = useMemo(() => R.propOr([], 'expenses')(expensesData), [
     expensesData,
@@ -25,15 +29,42 @@ const useAccounting = ({ view, period } = {}) => {
   const allRevenues = useMemo(() => R.propOr([], 'revenues')(revenueData), [
     revenueData,
   ]);
-
+  let newRevenues = [];
+  allRevenues.forEach(rB => {
+    rB.specialties.forEach(rS => {
+      rS.doctors.forEach(rDO => {
+        if (rDO.revenues.length > 0) {
+          rDO.revenues.forEach(r => {
+            let oneRevenue = {};
+            oneRevenue = {
+              branch: {
+                id: rB.id,
+              },
+              specialty: {
+                id: rS.id,
+              },
+              user: {
+                id: rDO.id,
+              },
+              id: r.id,
+              name: r.name,
+              amount: r.amount,
+              date: r.date,
+            };
+            newRevenues.push(oneRevenue);
+          });
+        }
+      });
+    });
+  });
   const expenses = useMemo(
     () => filterAccountingList(allExpenses, view, period),
     [allExpenses, period, view]
   );
 
   const revenues = useMemo(
-    () => filterAccountingList(allRevenues, view, period),
-    [allRevenues, period, view]
+    () => filterAccountingList(newRevenues, view, period),
+    [newRevenues, period, view]
   );
 
   const totalExpenses = useMemo(
@@ -71,22 +102,6 @@ const useAccounting = ({ view, period } = {}) => {
       totalExpenses,
       totalRevenues,
       timeFrame,
-      updateExpensesCache: expenses => {
-        client.writeQuery({
-          query: LIST_EXPENSES,
-          data: {
-            expenses,
-          },
-        });
-      },
-      updateRevenuesCache: revenues => {
-        client.writeQuery({
-          query: LIST_REVENUES,
-          data: {
-            revenues,
-          },
-        });
-      },
       refetchRevenues: {
         query: LIST_REVENUES,
       },

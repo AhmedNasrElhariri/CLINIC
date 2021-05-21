@@ -13,13 +13,25 @@ export const LIST_EXPENSES = gql`
 `;
 
 export const LIST_REVENUES = gql`
-  query revenues {
-    revenues {
+  query revenues($action: String!) {
+    revenues(action: $action) {
       id
       name
-      amount
-      date
-      invoiceNo
+      specialties {
+        id
+        name
+        doctors {
+          id
+          name
+          revenues {
+            id
+            name
+            amount
+            date
+            invoiceNo
+          }
+        }
+      }
     }
   }
 `;

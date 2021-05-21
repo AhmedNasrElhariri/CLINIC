@@ -119,6 +119,12 @@ export const GET_APPOINTMENT = gql`
           id
         }
       }
+      branch {
+        id
+      }
+      specialty {
+        id
+      }
     }
   }
 `;
