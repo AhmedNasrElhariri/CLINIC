@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
-import { Alert, Form, Checkbox, DatePicker, Schema } from 'rsuite';
+import { Alert, Form, Checkbox, Schema } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import {
   CRSelectInput,
@@ -88,7 +88,6 @@ const NewAppointment = ({ show, onHide }) => {
     name: course.courseDefinition.name,
     IDBTransaction: course.id,
   }));
-  const [selectedHour, setSelectedHour] = useState(null);
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).utc(true).toDate() },
   });
