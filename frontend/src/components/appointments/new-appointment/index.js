@@ -74,8 +74,6 @@ const NewAppointment = ({ show, onHide }) => {
 
   const {
     branches,
-    specialties,
-    doctors,
     formValue,
     setFormValue,
     createAppointment,
@@ -166,16 +164,54 @@ const NewAppointment = ({ show, onHide }) => {
       waiting,
     });
   }, [createAppointment, formValue]);
+  const specialties = useMemo(
+    () =>
+      R.pipe(
+        R.find(R.propEq('id', formValue.branchId)),
+        R.propOr([], 'specialties')
+      )(branches),
+    [branches, formValue.branchId]
+  );
+  
+  const doctors = useMemo(
+    () =>
+      R.pipe(
+        R.find(R.propEq('id', formValue.specialtyId)),
+        R.propOr([], 'doctors')
+      )(specialties),
+    [formValue.specialtyId, specialties]
+  );
   useEffect(() => {
-    if (branches.length == 1) {
+    if (
+      branches.length == 1 
+      
+    ) {
       setFormValue({
         ...formValue,
         branchId: branches[0]?.id,
-        specialtyId: branches[0]?.specialties[0]?.id,
-        userId: branches[0]?.specialties[0]?.doctors[0]?.id,
       });
     }
-  }, [branches]);
+  },[branches,formValue.branchId]);
+  useEffect(() => {
+    if (
+      specialties.length == 1 
+    ) {
+      setFormValue({
+        ...formValue,
+        specialtyId: specialties[0]?.id,
+      });
+    }
+  },[specialties,formValue.branchId]);
+  useEffect(() => {
+    if (
+      doctors.length == 1
+    ) {
+      setFormValue({
+        ...formValue,
+        userId: doctors[0]?.id,
+      });
+    }
+  },[doctors,formValue.specialtyId]);
   // const notify = () => {
   //   toast(
   //     <CustomizedNotification
@@ -189,6 +225,7 @@ const NewAppointment = ({ show, onHide }) => {
   //     }
   //   );
   // };
+  
   return (
     <>
       <NewPatient
@@ -314,9 +351,8 @@ const NewAppointment = ({ show, onHide }) => {
                     block
                     data={branches}
                   />
-                )} 
-                 {branches.length > 1 && (
-                   formValue.branchId && (
+                )}
+                {specialties.length > 1 && formValue.branchId && (
                   <CRSelectInput
                     label="Specialty"
                     name="specialtyId"
@@ -324,9 +360,8 @@ const NewAppointment = ({ show, onHide }) => {
                     block
                     data={specialties}
                   />
-                ))}
-                { branches.length > 1 && (
-                  formValue.specialtyId && (
+                )}
+                {doctors.length > 1 && formValue.specialtyId && (
                   <CRSelectInput
                     label="Doctor"
                     name="userId"
@@ -334,7 +369,7 @@ const NewAppointment = ({ show, onHide }) => {
                     block
                     data={doctors}
                   />
-                ))}
+                )}
               </RightContainer>
             </Container>
             <Checkbox
