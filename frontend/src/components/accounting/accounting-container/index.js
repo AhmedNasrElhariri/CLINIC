@@ -2,15 +2,13 @@ import React, { useState, useCallback } from 'react';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
-
 import { MainContainer, Div, CRCard, CRButton, H6 } from 'components';
 import Toolbar from '../toolbar';
 import ListData from '../list-data';
 import Tabs from '../tabs';
-import Filter from '../../filters';
 import Profit from '../profit';
 import { useAccounting, useAppointments } from 'hooks';
-
+import { POSITIONS } from 'utils/constants';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -18,20 +16,18 @@ import {
   UPDATE_REVENUE,
 } from 'apollo-client/queries';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
-
 import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
-import { CRLabel } from 'components/widgets';
-
+import { get } from './../../../services/local-storage';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
-
+  const position = get('user').position;
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
       Alert.success('Expense Added Successfully');
@@ -155,12 +151,20 @@ const AccountingContainer = () => {
         title="Accounting"
         more={
           <Div display="flex">
-            <CRButton variant="primary" onClick={createRevenueForm.show}>
-              Reveneue +
-            </CRButton>
-            <CRButton variant="primary" onClick={createExpenseForm.show} ml={1}>
-              Expense +
-            </CRButton>
+            {position === POSITIONS.ADMIN && (
+              <>
+                <CRButton variant="primary" onClick={createRevenueForm.show}>
+                  Reveneue +
+                </CRButton>
+                <CRButton
+                  variant="primary"
+                  onClick={createExpenseForm.show}
+                  ml={1}
+                >
+                  Expense +
+                </CRButton>
+              </>
+            )}
             <Div ml={1}>
               <PdfView data={{ revenues, expenses }} period={timeFrame} />
             </Div>
@@ -190,21 +194,13 @@ const AccountingContainer = () => {
           {activeTab === '0' ? (
             <Div display="flex">
               <Div flexGrow={1} mr={2}>
-                <CRLabel style={{color:'#51C6F3'}}>Reveneue</CRLabel>
-                <Filter
-                  appointments={revenues}
-                  branches={filterBranches}
-                  render={revs => (
-                    <ListData
-                      data={revs}
-                      onEdit={revenue => {
-                        editRevenueForm.setFormValue(
-                          R.pick(ENTITY_PROPS)(revenue)
-                        );
-                        editRevenueForm.show();
-                      }}
-                    />
-                  )}
+                <ListData
+                  title="Revenues"
+                  data={revenues}
+                  onEdit={revenue => {
+                    editRevenueForm.setFormValue(R.pick(ENTITY_PROPS)(revenue));
+                    editRevenueForm.show();
+                  }}
                 />
               </Div>
 

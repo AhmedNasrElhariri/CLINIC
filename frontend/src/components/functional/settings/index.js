@@ -4,45 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { Img, H6, Div } from 'components';
 import { Container, LinkStyled } from './style';
 import { Can } from 'components/user/can';
-
-const items = [
-  {
-    name: 'Configurations',
-    icon: '/icons/config.png',
-    path: '/settings/configurations',
-  },
-  {
-    name: 'Static Info',
-    icon: '/icons/static.png',
-    path: '/settings/static',
-  },
-  {
-    name: 'Payroll',
-    icon: '/icons/static.png',
-    path: '/payroll',
-  },
-  {
-    name: 'Snippets',
-    icon: '/icons/snippets.png',
-    path: '/snippets',
-  },
-  {
-    name: 'Permissions',
-    icon: '/icons/permissions.png',
-    path: '/permissions',
-    permission: { actions: 'manage', subject: 'all' },
-  },
-  {
-    name: 'Inventory',
-    icon: '/icons/static.png',
-    path: '/inventory',
-  },
-  {
-    name: 'Logout',
-    icon: '/icons/logout.png',
-    action: 'onLogout',
-  },
-];
+import { POSITIONS } from 'utils/constants';
+import { get } from './../../../services/local-storage';
 
 const Item = ({ name, icon, path, onClick }) => {
   return (
@@ -55,6 +18,81 @@ const Item = ({ name, icon, path, onClick }) => {
 
 export default function Settings({ onClose, ...props }) {
   const history = useHistory();
+  let items = [];
+  if (get('user').position === POSITIONS.DOCTOR) {
+    items = [
+      {
+        name: 'Configurations',
+        icon: '/icons/config.png',
+        path: '/settings/configurations',
+      },
+      {
+        name: 'Static Info',
+        icon: '/icons/static.png',
+        path: '/settings/static',
+      },
+      {
+        name: 'Snippets',
+        icon: '/icons/snippets.png',
+        path: '/snippets',
+      },
+      {
+        name: 'Permissions',
+        icon: '/icons/permissions.png',
+        path: '/permissions',
+        permission: { actions: 'manage', subject: 'all' },
+      },
+      {
+        name: 'Inventory',
+        icon: '/icons/static.png',
+        path: '/inventory',
+      },
+      {
+        name: 'Logout',
+        icon: '/icons/logout.png',
+        action: 'onLogout',
+      },
+    ];
+  } else {
+    items = [
+      {
+        name: 'Configurations',
+        icon: '/icons/config.png',
+        path: '/settings/configurations',
+      },
+      {
+        name: 'Static Info',
+        icon: '/icons/static.png',
+        path: '/settings/static',
+      },
+      {
+        name: 'Payroll',
+        icon: '/icons/static.png',
+        path: '/payroll',
+      },
+      {
+        name: 'Snippets',
+        icon: '/icons/snippets.png',
+        path: '/snippets',
+      },
+      {
+        name: 'Permissions',
+        icon: '/icons/permissions.png',
+        path: '/permissions',
+        permission: { actions: 'manage', subject: 'all' },
+      },
+      {
+        name: 'Inventory',
+        icon: '/icons/static.png',
+        path: '/inventory',
+      },
+      {
+        name: 'Logout',
+        icon: '/icons/logout.png',
+        action: 'onLogout',
+      },
+    ];
+  }
 
   return (
     <Container>

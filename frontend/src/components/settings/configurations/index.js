@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
-import { Form, DatePicker } from 'rsuite';
-import { H3, Div, CRButton, CRNumberInput, CRDatePicker } from 'components';
+import { Form } from 'rsuite';
+import { H3, Div, CRButton, CRNumberInput } from 'components';
 import SessionDefinitions from '../session-definations';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
 import { useConfigurations } from 'hooks';
-
+import { get } from './../../../services/local-storage';
+import { POSITIONS } from 'utils/constants';
 const initialValues = {
   sessions: [],
   enableInvoiceCounter: false,
@@ -19,12 +20,9 @@ const initialPulsesValue = {
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
   const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
-  const {
-    configurations,
-    update,
-    addPulsesControl,
-    getPulseControl,
-  } = useConfigurations();
+  const position = get('user').position;
+  const { configurations, update, addPulsesControl, getPulseControl } =
+    useConfigurations();
   useEffect(() => {
     const sessions = R.pipe(
       R.propOr([], 'sessions'),
@@ -47,9 +45,10 @@ const Configurations = () => {
     update(formValue);
   }, [formValue, update]);
 
-  const sessions = useMemo(() => R.propOr([], 'sessions')(formValue), [
-    formValue,
-  ]);
+  const sessions = useMemo(
+    () => R.propOr([], 'sessions')(formValue),
+    [formValue]
+  );
 
   const updateSession = useCallback(
     session => {
@@ -107,38 +106,42 @@ const Configurations = () => {
         onChange={updateEnable}
         value={formValue?.enableInvoiceCounter}
       />
-      <hr></hr>
-      <Div display="flex" justifyContent="space-between">
-        <Div display="flex" justifyContent="space-around">
-          <H3 mb={64} mr={20}>
-            Pulses Control
-          </H3>
-          <H3>{today}</H3>
-        </Div>
-        <Div>
-          <CRButton onClick={handlePulsesSave} variant="primary">
-            Save
-          </CRButton>
-        </Div>
-      </Div>
-      <Form formValue={pulsesValue} onChange={setPulseValues}>
-        <Div display="flex" justifyContent="space-between">
-          <Div mr={20} mb={50} mt={0}></Div>
-          <CRNumberInput
-            name="before"
-            label="before"
-            layout="inline"
-            disabled
-            placeholder="Pulses"
-          />
-          <CRNumberInput
-            name="after"
-            label="after"
-            layout="inline"
-            placeholder="Pulses"
-          />
-        </Div>
-      </Form>
+      {(position === POSITIONS.ADMIN || position === POSITIONS.ASSISTANT) && (
+        <>
+          <hr></hr>
+          <Div display="flex" justifyContent="space-between">
+            <Div display="flex" justifyContent="space-around">
+              <H3 mb={64} mr={20}>
+                Pulses Control
+              </H3>
+              <H3>{today}</H3>
+            </Div>
+            <Div>
+              <CRButton onClick={handlePulsesSave} variant="primary">
+                Save
+              </CRButton>
+            </Div>
+          </Div>
+          <Form formValue={pulsesValue} onChange={setPulseValues}>
+            <Div display="flex" justifyContent="space-between">
+              <Div mr={20} mb={50} mt={0}></Div>
+              <CRNumberInput
+                name="before"
+                label="before"
+                layout="inline"
+                disabled
+                placeholder="Pulses"
+              />
+              <CRNumberInput
+                name="after"
+                label="after"
+                layout="inline"
+                placeholder="Pulses"
+              />
+            </Div>
+          </Form>
+        </>
+      )}
     </>
   );
 };

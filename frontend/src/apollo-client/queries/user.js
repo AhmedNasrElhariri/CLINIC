@@ -21,6 +21,7 @@ export const LOGIN = gql`
       user {
         id
         avatar
+        position
         permissions {
           action
           subject

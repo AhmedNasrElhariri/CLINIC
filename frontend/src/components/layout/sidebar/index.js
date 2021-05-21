@@ -4,7 +4,6 @@ import { ContainerStyled, BodyStyled, IconDiv, LinkName, Fab } from './style';
 import { useLocation } from 'react-router-dom';
 
 import Link from './link';
-
 export default function Sidebar({ onLogout, items }) {
   const { pathname } = useLocation();
   return (

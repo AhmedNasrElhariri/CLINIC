@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 import Fab from 'components/appointments/new-appointment/fab';
@@ -13,8 +13,9 @@ import {
 import Sidebar from 'components/layout/sidebar';
 import Navbar from 'components/layout/navbar';
 import NewAppointment from 'components/appointments/new-appointment';
-
 import useUserProfile from './fetch-user';
+import { POSITIONS } from 'utils/constants';
+import { get } from './../../../services/local-storage';
 import { useModal } from 'hooks';
 const initialvalues = {
   branchId: null,
@@ -22,8 +23,9 @@ const initialvalues = {
 function Root() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
-  const [formValue, setFormValue] = useState(initialvalues);
   const history = useHistory();
+  const position = get('user').position;
+
   const {
     clearNotifications,
     onLoginFailed,
@@ -34,7 +36,6 @@ function Root() {
     notifications,
     user,
   } = useUserProfile();
-
   // const renderSearch = useCallback(
   //   () => (
   //     <Form style={{ width: 276 }}>
@@ -65,70 +66,98 @@ function Root() {
   if (!isVerified) {
     return <div>Loading ...</div>;
   }
-  const items = [
-    {
-      to: '/appointments/today',
-      name: `Today's Appointments`,
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/calendar',
-      name: 'Calendar',
-      icon: <CalendarIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/appointments',
-      name: 'Appointments',
-      extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/patients',
-      name: 'Patients',
-      extra: <Fab open={visblePatient} onClick={togglePatient} />,
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/reports',
-      name: 'Reports',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/surgeries',
-      name: 'Surgeries',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/report-printouts',
-      name: 'Report Printouts',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/permissions',
-      name: 'Permissions',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
-      to: '/sales',
-      name: 'Sales',
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    // {
-    //   to: '/example',
-    //   name: 'Example',
-    //   icon: <UserIcon width={11.8} height={14.1} />,
-    // },
-    // {
-    //   to: '/test',
-    //   name: 'PDF',
-    //   icon: <UserIcon width={11.8} height={14.1} />,
-    // },
-    // {
-    //   to: '/csv',
-    //   name: 'csv',
-    //   icon: <UserIcon width={11.8} height={14.1} />,
-    // },
-  ];
+  let items = [];
+  if (position === POSITIONS.DOCTOR) {
+    items = [
+      {
+        to: '/appointments/today',
+        name: `Today's Appointments`,
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/calendar',
+        name: 'Calendar',
+        icon: <CalendarIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/appointments',
+        name: 'Appointments',
+        extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/patients',
+        name: 'Patients',
+        extra: <Fab open={visblePatient} onClick={togglePatient} />,
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/surgeries',
+        name: 'Surgeries',
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/report-printouts',
+        name: 'Report Printouts',
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/permissions',
+        name: 'Permissions',
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+    ];
+  } else {
+    items = [
+      {
+        to: '/appointments/today',
+        name: `Today's Appointments`,
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/calendar',
+        name: 'Calendar',
+        icon: <CalendarIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/appointments',
+        name: 'Appointments',
+        extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/patients',
+        name: 'Patients',
+        extra: <Fab open={visblePatient} onClick={togglePatient} />,
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/reports',
+        name: 'Reports',
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/surgeries',
+        name: 'Surgeries',
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/report-printouts',
+        name: 'Report Printouts',
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/permissions',
+        name: 'Permissions',
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+      {
+        to: '/sales',
+        name: 'Sales',
+        icon: <UserIcon width={11.8} height={14.1} />,
+      },
+    ];
+  }
 
   return (
     <ContainerStyled>
@@ -142,8 +171,6 @@ function Root() {
               avatar={R.prop('avatar')(user)}
               notifications={notifications}
               onClear={clearNotifications}
-              formValue={formValue}
-              setFormValue={setFormValue}
             />
             <ContentStyled>
               <AppRouter></AppRouter>

@@ -7,6 +7,7 @@ const login = async (_, { email = '', password }) => {
   const user = await prisma.user.findUnique({
     where: { email: email.toLowerCase() },
   });
+  console.log(user);
   if (!user) {
     throw new Error('No such user found');
   }

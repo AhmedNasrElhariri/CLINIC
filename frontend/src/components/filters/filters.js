@@ -14,7 +14,7 @@ const filterByBranch = (appointments, filter) => {
   const branch = R.prop('branch')(filter);
   return !branch
     ? appointments
-    : appointments.filter(app => app.branch.id === branch);
+    : appointments.filter(app => app.branch?.id === branch);
 };
 
 const filterByDoctor = (appointments, filter) => {

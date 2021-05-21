@@ -10,7 +10,7 @@ import {
   CLEAR_NOTIFICATIONS,
 } from 'apollo-client/queries';
 import { ACCESS_TOKEN } from 'utils/constants';
-
+import { set } from '../../../services/local-storage';
 import { useAuth } from 'hooks';
 import useGlobalState from 'state';
 
@@ -69,6 +69,7 @@ function useUserProfile() {
     ({ token, user }) => {
       ls.setUserToken(token);
       setAuthenticated(true);
+      set('user',user);
       setUser(user);
       updatePermissions(user.permissions);
     },

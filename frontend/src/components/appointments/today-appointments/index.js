@@ -3,13 +3,12 @@ import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 
-import { CRTabs, Div } from 'components';
+import { CRTabs} from 'components';
 
 import {
   ARCHIVE_APPOINTMENT,
   UPDATE_BUSINESS_NOTES,
 } from 'apollo-client/queries';
-import Filter from '../../filters';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
@@ -143,19 +142,13 @@ function TodayAppointments() {
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
-            <Filter
-              appointments={upcomingAppointments}
-              branches={filterBranches}
-              render={apps => (
                 <ListAppointments
                   title="Upcoming Appointments"
-                  appointments={apps}
+                  appointments={upcomingAppointments}
                   onArchive={onClickDone}
                   onAddBusinessNotes={onAddBusinessNotes}
                   defaultExpanded={true}
                 />
-              )}
-            />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <ListAppointments
