@@ -91,8 +91,6 @@ const NewAppointment = ({ show, onHide }) => {
   const [selectedHour, setSelectedHour] = useState(null);
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).utc(true).toDate() },
-    // pollInterval: 500,
-    // pollInterval: 500,
   });
   const appointmentsCount = useMemo(
     () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
@@ -106,18 +104,6 @@ const NewAppointment = ({ show, onHide }) => {
       setFormValue(initialValues);
     };
   }, [setFormValue]);
-
-  // const CustomizedNotification = ({ totalAppointment, totalWaiting }) => {
-  //   return (
-  //     <>
-  //       <Div>Total Appointments: {totalAppointment} Patient</Div>
-  //       <SecondRowContainer>
-  //         <Div mr="50px">Total Waiting List: {totalWaiting} Patient</Div>
-  //         <Div>View All</Div>
-  //       </SecondRowContainer>
-  //     </>
-  //   );
-  // };
 
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
@@ -242,7 +228,6 @@ const NewAppointment = ({ show, onHide }) => {
                   label="Date"
                   block
                   name="date"
-                  accepter={DatePicker}
                   disabledDate={isBeforeToday}
                 />
                 {!formValue.waiting && (
@@ -250,13 +235,12 @@ const NewAppointment = ({ show, onHide }) => {
                     label="Time"
                     block
                     name="time"
-                    accepter={DatePicker}
                     disabledMinutes={minute =>
                       disabledMinutes(minute, moment(formValue.time).hours())
                     }
                     hideHours={hideHours}
                     startHour={8}
-                    onSelect={a => setSelectedHour(moment(a).hour())}
+                    onSelectTrigger
                   />
                 )}
               </LeftContainer>

@@ -125,17 +125,16 @@ export default function NewAppointment({ show, onHide, patientid, userid }) {
               label="Date"
               block
               name="date"
-              accepter={DatePicker}
               disabledDate={isBeforeToday}
             />
             <CRTimePicker
               label="Time"
               block
               name="time"
-              accepter={DatePicker}
               disabledMinutes={minute =>
                 disabledMinutes(minute, moment(formValue.time).hours())
               }
+              onSelectTrigger
               hideHours={hideHours}
               startHour={8}
             />
