@@ -105,7 +105,7 @@ type Query {
   medicineHistory(patientId: ID!): [MedicineHistory!]
   familyHistory(patientId: ID!): [FamilyHistory!]
   expenses: [Expense!]
-  revenues(action: String!): [Branch!]
+  revenues: [Revenue!]
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
   myNotifications: [Notification!]
@@ -660,9 +660,9 @@ input ImageInput {
 
 type PayrollUser {
   id: ID!
+  name: String!
   salary: Int!
   netSalary: Int!
-  user: User
   organizationId: ID!
 }
 
@@ -673,7 +673,7 @@ type Payslips {
 }
 
 input PayrollUserInput {
-  userId: ID!
+  name: String!
   salary: Int!
 }
 

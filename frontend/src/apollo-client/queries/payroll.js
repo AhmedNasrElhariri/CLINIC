@@ -5,10 +5,7 @@ export const LIST_PAY_ROLL_USERS = gql`
     payrollUsers {
       id
       salary
-      user {
-        name
-        position
-      }
+      name
     }
   }
 `;

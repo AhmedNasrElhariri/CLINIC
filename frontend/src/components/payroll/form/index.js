@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form, Schema } from 'rsuite';
 import { CRModal, CRNumberInput, CRSelectInput } from 'components';
 import styled from 'styled-components';
+import { CRTextInput } from 'components/widgets';
 const { StringType, NumberType } = Schema.Types;
 
 const DeleteMessage = styled.div`
@@ -105,6 +106,11 @@ const PayrollForm = ({
           <DeleteMessage>
             Are you sure you want to delete this user?
           </DeleteMessage>
+        ) : type === 'addNewUser' ? (
+          <>
+            <CRTextInput label="name" name="name" block></CRTextInput>
+            <CRNumberInput label="Salary" name="salary" block></CRNumberInput>
+          </>
         ) : (
           <>
             <CRSelectInput
@@ -114,9 +120,6 @@ const PayrollForm = ({
               block
               data={payrollUsers}
             />
-            {type === 'addNewUser' && (
-              <CRNumberInput label="Salary" name="salary" block></CRNumberInput>
-            )}
             {(type === 'Deduction' ||
               type === 'Commision' ||
               type === 'Incentive' ||

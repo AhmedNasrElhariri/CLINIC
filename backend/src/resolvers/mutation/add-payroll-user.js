@@ -1,17 +1,12 @@
 import { prisma } from '@';
 
 const payrollUser = async (_, { payrollUser }, { organizationId }) => {
-  const { userId, salary } = payrollUser;
+  const { salary, name } = payrollUser;
   return prisma.payrollUser.create({
     data: {
-      id: userId,
       salary: salary,
+      name: name,
       organizationId,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
     },
   });
 };

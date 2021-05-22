@@ -8,9 +8,8 @@ const sumSalary = (payrollUser, trxs = [], includeExtraSalary = true) => {
   const {
     id,
     salary,
-    user: { name },
+    name,
   } = payrollUser;
-  console.log(includeExtraSalary);
   return {
     id,
     name,
@@ -24,7 +23,7 @@ export const getAllTransactionForCurrentOpenPayslips = async (
   organizationId,
   includeExtraSalary
 ) => {
-  const users = await prisma.payrollUser.findMany({ include: { user: true } });
+  const users = await prisma.payrollUser.findMany({});
   const transactions = await prisma.payrollTransaction.findMany({
     where: {
       payroll: {
@@ -33,11 +32,7 @@ export const getAllTransactionForCurrentOpenPayslips = async (
       },
     },
     include: {
-      payrollUser: {
-        include: {
-          user: true,
-        },
-      },
+      payrollUser: true
     },
   });
 

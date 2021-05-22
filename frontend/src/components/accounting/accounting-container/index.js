@@ -7,6 +7,7 @@ import Toolbar from '../toolbar';
 import ListData from '../list-data';
 import Tabs from '../tabs';
 import Profit from '../profit';
+import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
 import { useAccounting, useAppointments, useAuth } from 'hooks';
 import { POSITIONS } from 'utils/constants';
 import {
@@ -32,9 +33,11 @@ const AccountingContainer = () => {
       Alert.success('Expense Added Successfully');
       createExpenseForm.hide();
     },
-    update(cache, { data: { createExpense: expnese } }) {
-      updateExpensesCache([...expenses, expnese]);
-    },
+    refetchQueries: [
+      {
+        query: LIST_EXPENSES,
+      },
+    ],
     onError() {
       Alert.error('Failed to add new Expense');
     },
@@ -45,9 +48,11 @@ const AccountingContainer = () => {
       Alert.success('Revenue Added Successfully');
       createRevenueForm.hide();
     },
-    update(cache, { data: { createRevenue: revenue } }) {
-      updateRevenuesCache([...revenues, revenue]);
-    },
+    refetchQueries: [
+      {
+        query: LIST_REVENUES,
+      },
+    ],
     onError() {
       Alert.error('Failed to add new Revenue');
     },
@@ -134,16 +139,8 @@ const AccountingContainer = () => {
     onOk: handleUpdateExpense,
   });
 
-  const {
-    expenses,
-    revenues,
-    totalExpenses,
-    totalRevenues,
-    updateExpensesCache,
-    updateRevenuesCache,
-    timeFrame,
-  } = useAccounting({ view, period });
-  const { filterBranches } = useAppointments();
+  const { expenses, revenues, totalExpenses, totalRevenues, timeFrame } =
+    useAccounting({ view, period });
   return (
     <>
       <MainContainer

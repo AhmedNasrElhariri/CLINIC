@@ -29,42 +29,15 @@ const useAccounting = ({ view, period } = {}) => {
   const allRevenues = useMemo(() => R.propOr([], 'revenues')(revenueData), [
     revenueData,
   ]);
-  let newRevenues = [];
-  allRevenues.forEach(rB => {
-    rB.specialties.forEach(rS => {
-      rS.doctors.forEach(rDO => {
-        if (rDO.revenues.length > 0) {
-          rDO.revenues.forEach(r => {
-            let oneRevenue = {};
-            oneRevenue = {
-              branch: {
-                id: rB.id,
-              },
-              specialty: {
-                id: rS.id,
-              },
-              user: {
-                id: rDO.id,
-              },
-              id: r.id,
-              name: r.name,
-              amount: r.amount,
-              date: r.date,
-            };
-            newRevenues.push(oneRevenue);
-          });
-        }
-      });
-    });
-  });
+  
   const expenses = useMemo(
     () => filterAccountingList(allExpenses, view, period),
     [allExpenses, period, view]
   );
 
   const revenues = useMemo(
-    () => filterAccountingList(newRevenues, view, period),
-    [newRevenues, period, view]
+    () => filterAccountingList(allRevenues, view, period),
+    [allRevenues, period, view]
   );
 
   const totalExpenses = useMemo(
@@ -109,7 +82,7 @@ const useAccounting = ({ view, period } = {}) => {
         query: LIST_EXPENSES,
       },
     }),
-    [expenses, revenues, timeFrame, totalExpenses, totalRevenues]
+    [expenses, revenues, timeFrame,totalExpenses, totalRevenues]
   );
 };
 

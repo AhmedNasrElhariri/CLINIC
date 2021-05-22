@@ -30,7 +30,7 @@ function usePayroll({ userId } = {}) {
     () =>
       R.pipe(
         R.propOr([], 'payrollUsers'),
-        R.map(u => ({ ...u, name: u.user.name }))
+        R.map(u => ({ ...u, name: u.name }))
       )(data),
     [data]
   );

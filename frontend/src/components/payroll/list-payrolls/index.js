@@ -20,13 +20,13 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>User Name</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ user }) => (
-                <CRTable.CRCellStyled bold>{user.name}</CRTable.CRCellStyled>
+              {({ name }) => (
+                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          {/* <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Position</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
@@ -35,7 +35,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
-          </CRTable.CRColumn>
+          </CRTable.CRColumn> */}
 
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Salary</CRTable.CRHeaderCell>

@@ -75,6 +75,7 @@ function Appointments() {
           <CRTabs.CRTabsGroup>
             <CRTabs.CRTab>Main Appointments</CRTabs.CRTab>
             <CRTabs.CRTab>Waiting Appointments</CRTabs.CRTab>
+            <CRTabs.CRTab>Completed Appointments</CRTabs.CRTab>
           </CRTabs.CRTabsGroup>
           <CRTabs.CRContentGroup>
             <CRTabs.CRContent>
@@ -87,6 +88,14 @@ function Appointments() {
             <CRTabs.CRContent>
               <ListAppointments
                 appointments={filterByStatus(filteredAppointments, 'Waiting')}
+                onArchive={onClickDone}
+                defaultExpanded={true}
+                waiting={true}
+              />
+            </CRTabs.CRContent>
+            <CRTabs.CRContent>
+              <ListAppointments
+                appointments={filterByStatus(filteredAppointments, 'Archived')}
                 onArchive={onClickDone}
                 defaultExpanded={true}
                 waiting={true}

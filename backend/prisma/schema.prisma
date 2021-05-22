@@ -183,7 +183,6 @@ model User {
   CourseDefinition    CourseDefinition[]
   users               Course[]             @relation("user")
   doctors             Course[]             @relation("doctor")
-  PayrollUser         PayrollUser[]
   SalesDefinition     SalesDefinition[]
   Sales               Sales[]
 }
@@ -355,9 +354,8 @@ model AppointmentFile {
 
 model PayrollUser {
   id             String               @id @default(uuid())
+  name           String
   salary         Int
-  user           User                 @relation(fields: [userId], references: [id])
-  userId         String
   organizationId String
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt @default(now())

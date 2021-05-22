@@ -8,6 +8,7 @@ import { formatDate } from 'utils/date';
 const initValue = {
   userId: '',
   salary: '',
+  name:'',
   amount: '',
   type: '',
   payment: [],
@@ -17,7 +18,6 @@ function Payroll() {
   const [formValue, setFormValue] = useState(initValue);
   const { visible, open, close } = useModal();
   const userId = formValue.userId;
-  const { users } = usePermissions();
   const {
     addPayrollUser,
     payrollUsers,
@@ -29,7 +29,7 @@ function Payroll() {
 
   const handleAddUser = useCallback(() => {
     const updatedFormValue = {
-      userId: formValue.userId,
+      name: formValue.name,
       salary: formValue.salary,
     };
     addPayrollUser({
@@ -148,7 +148,6 @@ function Payroll() {
     formValue: formValue,
     type: 'addNewUser',
     setFormValue,
-    payrollUsers: users,
   });
   const handlePayPayslips = useCallback(() => {
     addPayroll({

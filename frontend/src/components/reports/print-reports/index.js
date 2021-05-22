@@ -32,7 +32,6 @@ const Test = props => {
     setLoading(true);
     setError(null);
     let res = null;
-
     try {
       res = await axios({
         url: `/monthly`,
@@ -98,7 +97,6 @@ const Test = props => {
     link.click();
     link.parentNode.removeChild(link);
   };
-  console.log(monthes);
   return (
     <>
       <Container>

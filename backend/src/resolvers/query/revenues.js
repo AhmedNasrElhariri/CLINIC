@@ -1,80 +1,25 @@
 import { prisma } from '@';
-import * as R from 'ramda';
 
-import { PERMISSION_LEVEL, POSITION } from '@/utils/constants';
-import {
-  byUsers,
-  bySpecialties,
-  byBranches,
-} from '@/services/permission.service';
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { ACTIONS } from '@/utils/constants';
 
-const byOrganization = organizationId =>
-  prisma.branch.findMany({
-    where: { organizationId },
-    include: {
-      specialties: {
-        include: {
-          userSpecialties: {
-            include: {
-              user: {
-                include: {
-                   revenues: true,
-                },
-              },
-            },
-          },
-        },
+const revenues = async (_, __, { user, organizationId }) => {
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.View_Accounting,
+    },
+    true
+  );
+
+  return prisma.revenue.findMany({
+    where: {
+      userId: {
+        in: ids,
       },
     },
   });
-
-const revenues = async (_, { action }, { user, organizationId }) => {
-  if (user.position === POSITION.Admin) {
-    return byOrganization(organizationId);
-  }
-
-  const role = await prisma.permissionRole
-    .findMany({
-      where: {
-        users: {
-          every: {
-            id: user.id,
-          },
-        },
-      },
-      include: {
-        permissions: {
-          where: {
-            action,
-          },
-          include: {
-            rules: true,
-          },
-        },
-      },
-    })
-    .then(res => (res.length ? res[0] : null));
-
-  const permission = R.pathOr(null, ['permissions', '0'])(role);
-
-  if (!permission) {
-    return [];
-  }
-
-  const { level, all, rules } = permission;
-
-  switch (level) {
-    case PERMISSION_LEVEL.ORGANIZATION:
-      return byOrganization(organizationId);
-    case PERMISSION_LEVEL.BRANCH:
-      return all
-        ? byOrganization(organizationId)
-        : byBranches(organizationId, rules);
-    case PERMISSION_LEVEL.SPECIALTY:
-      return bySpecialties(rules);
-    case PERMISSION_LEVEL.USER:
-      return byUser(rules);
-  }
 };
 
 export default revenues;
