@@ -45,7 +45,7 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
     refetchQueries: [
       {
         query: APPOINTMENTS_DAY_COUNT,
-        variables: { date: moment(formValue.date).utc(true).toDate() },
+        variables: { date: moment(formValue.date).toDate() },
       },
       {
         query: LIST_APPOINTMENTS,

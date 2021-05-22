@@ -87,7 +87,7 @@ const NewAppointment = ({ show, onHide }) => {
     IDBTransaction: course.id,
   }));
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
-    variables: { date: moment(formValue.date).utc(true).toDate() },
+    variables: { date: moment(formValue.date).toDate() },
   });
   const appointmentsCount = useMemo(
     () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),

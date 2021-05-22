@@ -74,7 +74,7 @@ Input.defaultProps = {
 };
 
 export const InputGroupStyled = styled(InputGroup)`
-  height: 35px;
+  height: ${props => (props.autoHeight ? 'auto' : '35px')};
   &.rs-input-group {
     ${getBorder}
     width:100% !important;
@@ -91,6 +91,10 @@ export const InputGroupStyled = styled(InputGroup)`
     }
   }
 `;
+
+InputGroupStyled.defaultProps = {
+  autoHeight: false,
+};
 
 export const AddOnStyle = styled(InputGroup.Addon)`
   padding: 0;
