@@ -43,7 +43,7 @@ const CRTextArea = ({
   return (
     <FormGroup>
       <Label>{label}</Label>
-      <InputGroupStyled borderless={borderless ? 1 : 0}>
+      <InputGroupStyled borderless={borderless ? 1 : 0} autoHeight>
         <FormControl
           {...rest}
           accepter={CustomInput}

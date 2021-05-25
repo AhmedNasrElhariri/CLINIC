@@ -174,7 +174,7 @@ const CRSelectInput = ({
         accepter={CustomSelect}
         labelKey={labelKey}
         valueKey={valueKey}
-        placement="auto"
+        // placement="auto"
       />
       {children}
     </FormGroupStyled>

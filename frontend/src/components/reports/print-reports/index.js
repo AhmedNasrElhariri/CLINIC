@@ -36,7 +36,7 @@ const Test = props => {
       res = await axios({
         url: `/monthly`,
         params: {
-          month: moment(month).utc(true).toDate(),
+          month: moment(month).toDate(),
         },
         method: 'GET',
         responseType: 'blob',
@@ -71,7 +71,7 @@ const Test = props => {
       res = await axios({
         url: 'http://localhost:4000/daily',
         params: {
-          day: moment(day).utc(true).toDate(),
+          day: moment(day).toDate(),
         },
         method: 'GET',
         responseType: 'blob',
