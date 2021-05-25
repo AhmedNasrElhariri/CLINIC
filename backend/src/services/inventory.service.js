@@ -83,39 +83,68 @@ export const mapHistoryToMessage = async history => {
 export const createSubstractHistoryForMultipleItems = async ({
   patientId,
   userId,
+  organizationId,
   data,
 }) => {
-  const args = data.map(i => {
-    return {
-      data: {
-        item: {
-          connect: {
-            id: i.itemId,
-          },
-        },
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-        patient: {
-          connect: {
-            id: patientId,
-          },
-        },
-        operation: INVENTORY_OPERATION.SUBSTRACT,
-        quantity: i.quantity,
-        date: new Date(),
-      },
-    };
-  });
-
+  // const args = data.map(i => {
+  //   return {
+  //     item: {
+  //       connect: {
+  //         id: i.itemId,
+  //       },
+  //     },
+  //     user: {
+  //       connect: {
+  //         id: userId,
+  //       },
+  //     },
+  //     patient: {
+  //       connect: {
+  //         id: patientId,
+  //       },
+  //     },
+  //     operation: INVENTORY_OPERATION.SUBSTRACT,
+  //     quantity: i.quantity,
+  //     date: new Date(),
+  //   };
+  // });
+  console.log(data, 'skskskskskkkkkkkkk');
   //eslint-disable-next-line
-  return prisma.inventoryHistory.createMany({
-    data: args,
-  });
+  // return prisma.inventoryHistory.createMany({
+  //   data: args,
+  // });
 
-  // return Promise.all(args.map(d => prisma.inventoryHistory.createMany(d)));
+  return Promise.all(
+    data.map(i =>
+      prisma.inventoryHistory.create({
+        data: {
+          item: {
+            connect: {
+              id: i.itemId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          patient: {
+            connect: {
+              id: patientId,
+            },
+          },
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          operation: INVENTORY_OPERATION.SUBSTRACT,
+          quantity: i.quantity,
+          date: new Date(),
+        },
+      })
+    )
+  );
 };
 
 export const createHistoryBody = async (

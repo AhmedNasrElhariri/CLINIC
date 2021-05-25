@@ -12,6 +12,7 @@ import LabCategory from './lab-category';
 import ImageCategory from './image-category';
 import Course from './course';
 import SalesDefinition from './sales-definition';
+import SessionsDefinition from './sessions-definition';
 
 const Container = styled.div`
   display: flex;
@@ -41,7 +42,8 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="7">Timing</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="8">Courses and Packages</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="9">Sales Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="10">Patient Report</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="10">Sessions Definition</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="11">Patient Report</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -66,6 +68,8 @@ function StaticSettings() {
               return <Course />;
             case '9':
               return <SalesDefinition />;
+            case '10':
+              return <SessionsDefinition />;
             default:
               return <PatientReport />;
           }

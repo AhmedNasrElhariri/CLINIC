@@ -1,14 +1,24 @@
 import React, { useCallback, useState } from 'react';
 
-import { Div, MainContainer, CRButton, CRTable, CRModal, H4 } from 'components';
+import {
+  Div,
+  MainContainer,
+  CRButton,
+  CRTable,
+  CRModal,
+  H4,
+  CRCheckBox,
+} from 'components';
+import { CheckboxGroup, Checkbox } from 'rsuite';
 import PayrollForm, { usePayrollForm } from './form';
 import EmployeesPayroll from './list-payrolls';
 import { useModal, usePayroll, usePermissions } from 'hooks';
 import { formatDate } from 'utils/date';
+const initialPayrollusers = [];
 const initValue = {
   userId: '',
   salary: '',
-  name:'',
+  name: '',
   amount: '',
   type: '',
   payment: [],
@@ -17,6 +27,8 @@ const initValue = {
 function Payroll() {
   const [formValue, setFormValue] = useState(initValue);
   const { visible, open, close } = useModal();
+  const [checkedPayLipsUsers, setCheckPayLipsUsers] =
+    useState(initialPayrollusers);
   const userId = formValue.userId;
   const {
     addPayrollUser,
@@ -152,11 +164,11 @@ function Payroll() {
   const handlePayPayslips = useCallback(() => {
     addPayroll({
       variables: {
-        payment: payrollUsers.map(u => u.id),
+        payment: checkedPayLipsUsers,
       },
     });
     close();
-  }, [addPayroll, payrollUsers]);
+  }, [addPayroll, checkedPayLipsUsers]);
   return (
     <>
       <MainContainer
@@ -205,7 +217,7 @@ function Payroll() {
           bodyStyle={{ minWidth: 300 }}
         >
           <H4>{formatDate(new Date())}</H4>
-          <CRTable autoHeight data={payslips}>
+          {/* <CRTable autoHeight data={payslips}>
             <CRTable.CRColumn flexGrow={1}>
               <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
               <CRTable.CRCell dataKey="name" semiBold />
@@ -215,7 +227,49 @@ function Payroll() {
               <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
               <CRTable.CRCell dataKey="amount" semiBold />
             </CRTable.CRColumn>
-          </CRTable>
+          </CRTable> */}
+          <CheckboxGroup
+            inline
+            name="payrolluserIds"
+            value={checkedPayLipsUsers}
+            onChange={val => setCheckPayLipsUsers(val)}
+          >
+            {payslips.map(pa => (
+              <Div
+                display="flex"
+                backgroundColor="#eef1f1"
+                borderBottom="2px solid #ffffff"
+                borderLeft="5px solid #51C6F3"
+              >
+                <Div
+                  width={200}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRight="2px solid #ffffff"
+                >
+                  {pa.name}
+                </Div>
+                <Div
+                  width={200}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRight="2px solid #ffffff"
+                >
+                  {pa.amount}
+                </Div>
+                <Div
+                  width={200}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Checkbox value={pa.id}></Checkbox>
+                </Div>
+              </Div>
+            ))}
+          </CheckboxGroup>
         </CRModal>
       }
     </>

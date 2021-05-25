@@ -20,3 +20,4 @@ export * from './timing';
 export * from './course';
 export * from './payroll';
 export * from './sales-definition';
+export * from './session-definition';

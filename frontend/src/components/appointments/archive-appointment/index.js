@@ -38,7 +38,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const handleInventoryChange = useCallback(items => {
     value.current = { ...value.current, items };
   }, []);
-
   const handleOk = useCallback(() => {
     if (activeStep !== 1) {
       setActiveStep(activeStep + 1);

@@ -9,6 +9,7 @@ const appointmentsDayCount = async (_, { date }) => {
       ? 'waitingList'
       : 'totalAppointments';
   });
+  console.log(date,'dadadadada');
   const startOfDay = moment(date).startOf('day').toDate();
   const endofDay = moment(date).endOf('day').toDate();
   let appointmentsDayCount = {

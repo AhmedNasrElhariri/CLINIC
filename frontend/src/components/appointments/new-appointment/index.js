@@ -33,6 +33,7 @@ import {
   useNewAppointment,
   useModal,
   useCourses,
+  useSessionDefinition,
 } from 'hooks';
 
 const { StringType, DateType } = Schema.Types;
@@ -86,6 +87,15 @@ const NewAppointment = ({ show, onHide }) => {
     name: course.courseDefinition.name,
     IDBTransaction: course.id,
   }));
+  const { sessionsDefinition } = useSessionDefinition({});
+  const updatedsessionsDefinition = sessionsDefinition.map(session => ({
+    name: session.name,
+    IDBTransaction: session.id,
+  }));
+  // const updatedSessionsDefinition = sessionsDefinition.map(session => ({
+  //   name: session.courseDefinition.name,
+  //   IDBTransaction: course.id,
+  // }));
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).utc(true).toDate() },
   });
@@ -120,6 +130,7 @@ const NewAppointment = ({ show, onHide }) => {
       branchId,
       specialtyId,
       waiting,
+      sessionId,
     } = formValue;
 
     const timeDate = moment(formValue.time);
@@ -128,7 +139,7 @@ const NewAppointment = ({ show, onHide }) => {
       hours: timeDate.hours(),
       minute: timeDate.minutes(),
     });
-    
+
     if (waiting) {
       date = moment(formValue.date).set({
         hours: '13',
@@ -136,6 +147,18 @@ const NewAppointment = ({ show, onHide }) => {
         second: '00',
       });
     }
+    console.log(
+      patientId,'p',
+      type,
+      date,
+      userId,'u',
+      courseId,
+      branchId,'br',
+      specialtyId,'sp',
+      waiting,
+      sessionId,
+      'ssksks'
+    );
     createAppointment({
       patientId,
       type,
@@ -145,8 +168,10 @@ const NewAppointment = ({ show, onHide }) => {
       branchId,
       specialtyId,
       waiting,
+      sessionId,
     });
   }, [createAppointment, formValue]);
+  console.log(formValue);
   const specialties = useMemo(
     () =>
       R.pipe(
@@ -155,7 +180,7 @@ const NewAppointment = ({ show, onHide }) => {
       )(branches),
     [branches, formValue.branchId]
   );
-  
+
   const doctors = useMemo(
     () =>
       R.pipe(
@@ -165,36 +190,30 @@ const NewAppointment = ({ show, onHide }) => {
     [formValue.specialtyId, specialties]
   );
   useEffect(() => {
-    if (
-      branches.length == 1 
-      
-    ) {
+    if (branches.length == 1) {
       setFormValue({
         ...formValue,
         branchId: branches[0]?.id,
       });
     }
-  },[branches,formValue.branchId]);
+  }, [branches, formValue.branchId]);
   useEffect(() => {
-    if (
-      specialties.length == 1 
-    ) {
+    if (specialties.length == 1) {
       setFormValue({
         ...formValue,
         specialtyId: specialties[0]?.id,
       });
     }
-  },[specialties,formValue.branchId]);
+  }, [specialties, formValue.branchId]);
   useEffect(() => {
-    if (
-      doctors.length == 1
-    ) {
+    if (doctors.length == 1) {
       setFormValue({
         ...formValue,
         userId: doctors[0]?.id,
       });
     }
-  },[doctors,formValue.specialtyId]);
+  }, [doctors, formValue.specialtyId]);
+  console.log(branches,specialties,doctors);
   // const notify = () => {
   //   toast(
   //     <CustomizedNotification
@@ -208,7 +227,7 @@ const NewAppointment = ({ show, onHide }) => {
   //     }
   //   );
   // };
-  
+
   return (
     <>
       <NewPatient
@@ -281,6 +300,15 @@ const NewAppointment = ({ show, onHide }) => {
                     valueKey="IDBTransaction"
                     block
                     data={updatedPatientCourses}
+                  />
+                )}
+                {formValue.type === 'Session' && (
+                  <CRSelectInput
+                    label="Session Name"
+                    name="sessionId"
+                    valueKey="IDBTransaction"
+                    block
+                    data={updatedsessionsDefinition}
                   />
                 )}
                 <CRDatePicker

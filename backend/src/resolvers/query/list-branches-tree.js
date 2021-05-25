@@ -7,6 +7,7 @@ import {
   bySpecialties,
   byBranches,
 } from '@/services/permission.service';
+import { permissions } from '../role';
 
 const byOrganization = organizationId =>
   prisma.branch.findMany({
@@ -19,10 +20,9 @@ const byOrganization = organizationId =>
   });
 
 const listBranchesTree = async (_, { action }, { user, organizationId }) => {
-  if (user.position === POSITION.Admin) {
+  if (user.position === POSITION.Admin  ) {
     return byOrganization(organizationId);
   }
-
   const role = await prisma.permissionRole
     .findMany({
       where: {
@@ -44,15 +44,12 @@ const listBranchesTree = async (_, { action }, { user, organizationId }) => {
       },
     })
     .then(res => (res.length ? res[0] : null));
-
   const permission = R.pathOr(null, ['permissions', '0'])(role);
-
   if (!permission) {
     return [];
   }
 
   const { level, all, rules } = permission;
-
   switch (level) {
     case PERMISSION_LEVEL.ORGANIZATION:
       return byOrganization(organizationId);

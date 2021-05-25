@@ -55,6 +55,7 @@ const archiveAppointment = async (
     data: items,
     userId,
     patientId: appointment.patientId,
+    organizationId:organizationId,
   });
 
   const { labs, images } = appointment;

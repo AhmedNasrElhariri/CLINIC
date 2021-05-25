@@ -35,7 +35,7 @@ function ListAppointments({
           );
         }}
       >
-        <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRColumn flexGrow={0.2}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }, indx) => (
@@ -84,7 +84,11 @@ function ListAppointments({
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ type }) => <CRTable.CRCellStyled>{type}</CRTable.CRCellStyled>}
+            {({ type, session }) => (
+              <CRTable.CRCellStyled>
+                {type} {type === 'Session' ? session?.name : ''}
+              </CRTable.CRCellStyled>
+            )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
@@ -95,7 +99,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRColumn flexGrow={0.8}>
           <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ specialty }) => (
@@ -103,7 +107,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRColumn flexGrow={0.8}>
           <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ branch }) => (

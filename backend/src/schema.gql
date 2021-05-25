@@ -121,6 +121,7 @@ type Query {
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
+  mySessionsDefinition: [SessionDefinition!]
   mySalesesDefinition: [SalesDefinition!]
   mySaleses: [Sales!]
   myCoursesDefinition: [CourseDefinition!]
@@ -209,6 +210,12 @@ type Mutation {
   editTiming(timing: TimingInput!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  addSessionDefinition(
+    sessionDefinition: SessionInputDefinition!
+  ): SessionDefinition
+  editSessionDefinition(
+    sessionDefinition: SessionInputDefinition!
+  ): SessionDefinition
   addImageCategory(imageCategory: ImageInputCategory!): ImageCategory
   editImageCategory(imageCategory: ImageInputCategory!): ImageCategory
   addMedicineDefinition(
@@ -413,6 +420,7 @@ type Appointment {
   patient: Patient!
   branch: Branch
   specialty: Specialty
+  session: SessionDefinition
   user: User!
   data: [AppointmentField!]
   notes: String
@@ -451,6 +459,7 @@ input AppointmentInput {
   userId: ID!
   branchId: ID
   specialtyId: ID
+  sessionId: ID
   notes: String
   courseId: ID
   waiting: Boolean
@@ -950,6 +959,18 @@ type ImageCategory {
 }
 
 input ImageInputCategory {
+  id: ID
+  name: String!
+}
+
+########################### Images Definition ##################################
+
+type SessionDefinition {
+  id: ID!
+  name: String!
+}
+
+input SessionInputDefinition {
   id: ID
   name: String!
 }
