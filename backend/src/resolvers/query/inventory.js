@@ -1,9 +1,9 @@
 import { prisma } from '@';
 
-const inventory = (_, __, { userId }) => {
+const inventory = (_, __, { organizationId }) => {
   return prisma.inventoryItem.findMany({
     where: {
-      userId,
+      organizationId,
     },
   });
 };

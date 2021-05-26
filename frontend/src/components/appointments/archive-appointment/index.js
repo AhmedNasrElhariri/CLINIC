@@ -23,7 +23,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
   const value = useRef(initValue);
-
   const { sessions } = useConfigurations();
   const { data } = useQuery(GET_INVOICE_COUNTER, {
     fetchPolicy: 'network-only',

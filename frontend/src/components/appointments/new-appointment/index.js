@@ -147,18 +147,7 @@ const NewAppointment = ({ show, onHide }) => {
         second: '00',
       });
     }
-    console.log(
-      patientId,'p',
-      type,
-      date,
-      userId,'u',
-      courseId,
-      branchId,'br',
-      specialtyId,'sp',
-      waiting,
-      sessionId,
-      'ssksks'
-    );
+    
     createAppointment({
       patientId,
       type,
@@ -171,7 +160,6 @@ const NewAppointment = ({ show, onHide }) => {
       sessionId,
     });
   }, [createAppointment, formValue]);
-  console.log(formValue);
   const specialties = useMemo(
     () =>
       R.pipe(
@@ -213,7 +201,6 @@ const NewAppointment = ({ show, onHide }) => {
       });
     }
   }, [doctors, formValue.specialtyId]);
-  console.log(branches,specialties,doctors);
   // const notify = () => {
   //   toast(
   //     <CustomizedNotification

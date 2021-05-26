@@ -1,12 +1,12 @@
 import { prisma } from '@';
 
-const addCourseDefinition = async (_, { courseDefinition }, { userId }) => {
+const addCourseDefinition = async (_, { courseDefinition }, { organizationId }) => {
   return prisma.courseDefinition.create({
     data: {
       ...courseDefinition,
-      user: {
+      organization: {
         connect: {
-          id: userId,
+          id: organizationId,
         },
       },
     },

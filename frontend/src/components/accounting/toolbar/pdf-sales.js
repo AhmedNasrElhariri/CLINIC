@@ -17,14 +17,6 @@ import {
 } from '@david.kucsai/react-pdf-table';
 
 import { formatDate } from 'utils/date';
-import font from "../../../fonts/Tajawal-Regular.ttf";
-
-Font.register({
-  family: "Tajawal",
-  format: "truetype",
-  src: font 
-});
-
 
 const styles = StyleSheet.create({
   page: {

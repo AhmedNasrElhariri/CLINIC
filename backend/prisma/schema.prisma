@@ -122,26 +122,31 @@ enum PermissionAction {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id               String             @id @default(uuid())
-  name             String
-  invoiceCounter   Int                @default(1)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt
-  item             Item[]
-  hospital         Hospital[]
-  surgeries        Surgery[]
-  patientSurgeries PatientSurgery[]
-  roles            PermissionRole[]
-  permissions      Permission[]
-  rules            Rule[]
-  branches         Branch[]
-  specialties      Specialty[]
-  users            User[]
-  userSpecialties  UserSpecialty[]
-  patients         Patient[]
-  inventoryItems   InventoryItem[]
-  inventoryHistory InventoryHistory[]
-  Payroll          Payroll[]
+  id                String              @id @default(uuid())
+  name              String
+  invoiceCounter    Int                 @default(1)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now()) @updatedAt
+  item              Item[]
+  hospital          Hospital[]
+  surgeries         Surgery[]
+  patientSurgeries  PatientSurgery[]
+  roles             PermissionRole[]
+  permissions       Permission[]
+  rules             Rule[]
+  configurations    Configuration?
+  branches          Branch[]
+  specialties       Specialty[]
+  users             User[]
+  userSpecialties   UserSpecialty[]
+  patients          Patient[]
+  inventoryItems    InventoryItem[]
+  inventoryHistory  InventoryHistory[]
+  Payroll           Payroll[]
+  SessionDefinition SessionDefinition[]
+  SalesDefinition   SalesDefinition[]
+  Sales             Sales[]
+  CourseDefinition  CourseDefinition[]
 }
 
 model User {
@@ -174,18 +179,13 @@ model User {
   patients            Patient[]
   expenses            Expense[]
   revenues            Revenue[]
-  configurations      Configuration?
   inventoryItem       InventoryItem[]
   item                Item[]
   timing              Timing[]
   labCategories       LabCategory[]
   imageCategories     ImageCategory[]
-  CourseDefinition    CourseDefinition[]
   users               Course[]             @relation("user")
   doctors             Course[]             @relation("doctor")
-  SalesDefinition     SalesDefinition[]
-  Sales               Sales[]
-  sessionsDefinition  SessionDefinition[]
 }
 
 model Patient {
@@ -369,6 +369,8 @@ model PayrollTransaction {
   id            String                 @id @default(uuid())
   amount        Int
   date          DateTime
+  status        String                 @default("on")
+  added         Boolean                @default(false)
   createdAt     DateTime               @default(now())
   updatedAt     DateTime               @default(now()) @updatedAt
   type          PayrollTransactionType
@@ -392,15 +394,15 @@ model Payroll {
 }
 
 model Configuration {
-  id                   String   @id @default(uuid())
-  user                 User     @relation(fields: [userId], references: [id])
-  userId               String
-  enableInvoiceCounter Boolean  @default(false)
-  sessions             Json     @default("[]")
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @default(now()) @updatedAt
+  id                   String       @id @default(uuid())
+  organization         Organization @relation(fields: [organizationId], references: [id])
+  organizationId       String
+  enableInvoiceCounter Boolean      @default(false)
+  sessions             Json         @default("[]")
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @default(now()) @updatedAt
 
-  @@unique([userId], name: "userid_unique_constraint")
+  @@unique([organizationId], name: "organizationId_unique_constraint")
 }
 
 model Week {
@@ -644,25 +646,26 @@ model ImageDefinition {
 }
 
 model SessionDefinition {
-  id          String        @id @default(uuid())
-  name        String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now()) @updatedAt
-  user        User          @relation(fields: [userId], references: [id])
-  userId      String
-  Appointment Appointment[]
+  id             String        @id @default(uuid())
+  name           String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organizationId String
+  Appointment    Appointment[]
+
 }
 
 model SalesDefinition {
-  id        String   @id @default(uuid())
-  name      String
-  price     Int
-  cost      Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  Sales     Sales[]
+  id             String       @id @default(uuid())
+  name           String
+  price          Int
+  cost           Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  Sales          Sales[]
 }
 
 model Sales {
@@ -673,24 +676,24 @@ model Sales {
   date              DateTime
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now()) @updatedAt
-  user              User            @relation(fields: [userId], references: [id])
-  userId            String
+  organization      Organization    @relation(fields: [organizationId], references: [id])
+  organizationId    String
   salesDefinition   SalesDefinition @relation(fields: [salesDefinitionId], references: [id])
   salesDefinitionId String
 
 }
 
 model CourseDefinition {
-  id             String     @id @default(uuid())
+  id             String       @id @default(uuid())
   name           String
   type           CourseType
   price          Int
   units          Int
   messureOfUnits String
-  user           User       @relation(fields: [userId], references: [id])
-  userId         String
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
   Course         Course[]
 }
 

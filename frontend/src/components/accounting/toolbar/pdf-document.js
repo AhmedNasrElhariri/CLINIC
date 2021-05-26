@@ -1,5 +1,12 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Font,
+} from '@react-pdf/renderer';
 
 import {
   Table,
@@ -10,12 +17,19 @@ import {
 } from '@david.kucsai/react-pdf-table';
 
 import { formatDate } from 'utils/date';
+// import font from '../../../fonts/Almarai-Regular.ttf';
+
+// Font.register({
+//   family: 'Almarai',
+//   format: 'truetype',
+//   src: font,
+// });
 
 const styles = StyleSheet.create({
   page: {
     backgroundColor: '#ffffff',
     padding: 20,
-    // fontFamily: 'Cairo'
+    // fontFamily: 'Almarai',
   },
   header: {
     fontSize: 14,

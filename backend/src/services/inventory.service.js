@@ -2,10 +2,10 @@ import { prisma } from '@';
 import * as R from 'ramda';
 import { INVENTORY_OPERATION } from '@/utils/constants';
 
-export const updatedUsedMaterials = async (userId, items) => {
+export const updatedUsedMaterials = async (organizationId, items) => {
   const persistedItems = await prisma.inventoryItem.findMany({
     where: {
-      userId,
+      organizationId,
       itemId: {
         in: R.map(R.prop('itemId'))(items),
       },
@@ -19,7 +19,7 @@ export const updatedUsedMaterials = async (userId, items) => {
         quantity: persistedItem.quantity - quantity,
       },
       where: {
-        userId,
+        organizationId,
         itemId,
       },
     };
@@ -108,7 +108,6 @@ export const createSubstractHistoryForMultipleItems = async ({
   //     date: new Date(),
   //   };
   // });
-  console.log(data, 'skskskskskkkkkkkkk');
   //eslint-disable-next-line
   // return prisma.inventoryHistory.createMany({
   //   data: args,

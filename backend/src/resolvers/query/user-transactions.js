@@ -8,6 +8,8 @@ const userTransactions = (_, { userId }) => {
       payroll: {
         status: PAYROLL_STATUS.Open,
       },
+      added: false,
+      status: 'on',
     },
   });
 };

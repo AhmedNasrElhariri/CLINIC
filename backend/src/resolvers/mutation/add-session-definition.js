@@ -1,12 +1,12 @@
 import { prisma } from '@';
 
-const addSessionDefinition = async (_, { sessionDefinition }, { userId }) => {
+const addSessionDefinition = async (_, { sessionDefinition }, { organizationId }) => {
   return prisma.sessionDefinition.create({
     data: {
       ...sessionDefinition,
-      user: {
+      organization: {
         connect: {
-          id: userId,
+          id: organizationId,
         },
       },
     },

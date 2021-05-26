@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { pdf } from '@react-pdf/renderer';
+import { pdf ,Font } from '@react-pdf/renderer';
 
 import { CRButton } from 'components';
 import PdfDocument from './pdf-document';
 import PdfSalesDocument from './pdf-sales';
 
+import font from '../../../fonts/Tajawal-Regular.ttf';
+
+Font.register({
+  family: 'Tajawal',
+  format: 'truetype',
+  src: font,
+});
 const PdfView = ({ data, period, sales }) => {
   const [pdfData, setPdfData] = useState({ loaded: false });
 

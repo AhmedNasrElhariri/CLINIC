@@ -8,8 +8,7 @@ import ListData from '../list-data';
 import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
-import { useAccounting, useAppointments, useAuth } from 'hooks';
-import { POSITIONS } from 'utils/constants';
+import { useAccounting,  useAuth } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -27,7 +26,7 @@ const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
-  const { isAdmin } = useAuth();
+  const { isOrAssistant } = useAuth();
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
       Alert.success('Expense Added Successfully');
@@ -147,7 +146,7 @@ const AccountingContainer = () => {
         title="Accounting"
         more={
           <Div display="flex">
-            {isAdmin && (
+            {isOrAssistant && (
               <>
                 <CRButton variant="primary" onClick={createRevenueForm.show}>
                   Reveneue +

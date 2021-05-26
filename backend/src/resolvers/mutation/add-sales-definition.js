@@ -1,12 +1,12 @@
 import { prisma } from '@';
 
-const addSalesDefinition = async (_, { salesDefinition }, { userId }) => {
+const addSalesDefinition = async (_, { salesDefinition }, { organizationId }) => {
   return prisma.salesDefinition.create({
     data: {
       ...salesDefinition,
-      user: {
+      organization: {
         connect: {
-          id: userId,
+          id: organizationId,
         },
       },
     },

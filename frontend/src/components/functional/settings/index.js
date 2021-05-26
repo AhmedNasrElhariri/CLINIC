@@ -17,7 +17,7 @@ const Item = ({ name, icon, path, onClick }) => {
 
 export default function Settings({ onClose, ...props }) {
   const history = useHistory();
-  const { isAdmin } = useAuth();
+  const { isOrAssistant } = useAuth();
 
   const items = [
     {
@@ -30,7 +30,7 @@ export default function Settings({ onClose, ...props }) {
       icon: '/icons/static.png',
       path: '/settings/static',
     },
-    ...(isAdmin
+    ...(isOrAssistant
       ? [
           {
             name: 'Payroll',

@@ -1,9 +1,9 @@
 import { prisma } from '@';
 
-const configuration = (_, __, { userId }) => {
+const configuration = (_, __, { organizationId }) => {
   return prisma.configuration.findUnique({
     where: {
-      userId,
+      organizationId,
     },
   });
 };

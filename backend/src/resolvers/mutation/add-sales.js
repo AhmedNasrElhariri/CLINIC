@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const addSales = async (_, { sales }, { userId }) => {
+const addSales = async (_, { sales }, { organizationId }) => {
   const { salesDefinitionId, quantity} = sales;
   const salesDefinitionRow = await prisma.salesDefinition.findUnique({
       where:{
@@ -15,9 +15,9 @@ const addSales = async (_, { sales }, { userId }) => {
       totalPrice:totalPrice,
       totalCost:totalCost,
       date: new Date(),
-      user: {
+      organization: {
         connect: {
-          id: userId,
+          id: organizationId,
         },
       },
       salesDefinition:{

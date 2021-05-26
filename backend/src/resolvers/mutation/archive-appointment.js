@@ -27,7 +27,6 @@ const archiveAppointment = async (
       images: true,
     },
   });
-
   await createAppointmentRevenue(
     createAppointmentRevenueFromSessions(userId, sessions)
   );
@@ -49,7 +48,7 @@ const archiveAppointment = async (
     await createAppointmentExpense(userId, discount);
   }
 
-  await updatedUsedMaterials(userId, items);
+  await updatedUsedMaterials(organizationId, items);
 
   await createSubstractHistoryForMultipleItems({
     data: items,

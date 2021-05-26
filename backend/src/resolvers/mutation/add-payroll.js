@@ -68,10 +68,23 @@ const addPayroll = async (_, { payment }, { userId, organizationId }) => {
 
   const allTrx = await getAllTransactionForCurrentOpenPayslips(
     organizationId,
+    payment,
     false
   );
-
-  console.log('allTrx', allTrx);
+  await prisma.payrollTransaction.updateMany({
+    data: {
+      status: 'off',
+      added: true,
+    },
+    where: {
+      payrollUser: {
+        id: {
+          in: payment,
+        },
+      },
+    },
+  });
+  console.log(allTrx, 'sjksssssssssss');
 
   await prisma.expense.createMany({
     data: allTrx.map(({ name, amount }) => ({
@@ -84,7 +97,6 @@ const addPayroll = async (_, { payment }, { userId, organizationId }) => {
 
   return prisma.payroll.update({
     data: {
-      status: PAYROLL_STATUS.Close,
       endDate: new Date(),
       organization: {
         connect: {
