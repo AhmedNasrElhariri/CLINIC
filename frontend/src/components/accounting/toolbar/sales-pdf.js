@@ -10,7 +10,7 @@ const PdfView = ({ data, period, sales }) => {
   useEffect(() => {
     (async () => {
       let blob = await pdf(
-        data ? <PdfSalesDocument data={data} period={period} /> : <></>
+        <PdfSalesDocument data={data} period={period} />
       ).toBlob();
       const url = URL.createObjectURL(blob);
 

@@ -17,11 +17,16 @@ import './state';
 import './global-style.js';
 import GlobalStyle from './global-style';
 import lightTheme from 'styles/light';
-import printFont from 'fonts/Cairo-Regular.ttf';
+import font from './fonts/Tajawal-Regular.ttf';
+
 
 import { AbilityContext } from 'components/user/can/index';
 
-Font.register({ family: 'Cairo', src: printFont });
+Font.register({
+  family: 'Tajawal',
+  format: 'truetype',
+  src: font,
+});
 
 export default function App() {
   return (

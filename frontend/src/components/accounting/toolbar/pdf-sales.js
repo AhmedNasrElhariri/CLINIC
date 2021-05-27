@@ -5,7 +5,6 @@ import {
   View,
   Document,
   StyleSheet,
-  Font,
 } from '@react-pdf/renderer';
 
 import {
@@ -70,6 +69,7 @@ const calculateTotalCost = data =>
 
 const PdfDocument = ({ period, data }) => {
   return (
+    
     <Document>
       <Page size="A4" orientation="landscape" style={styles.page}>
         <Text>Sales Report</Text>

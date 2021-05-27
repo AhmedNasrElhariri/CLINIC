@@ -11,7 +11,6 @@ import {
 } from 'apollo-client/queries';
 
 import { EditOLIcon, DeleteOLIcon } from 'components/icons';
-import { Can } from 'components/user/can';
 import EditAppointment from '../edit-appointment';
 import CancelAppointment from '../cancel-appointment';
 
@@ -114,17 +113,13 @@ const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
         children(getStateAndHelpers())
       ) : (
         <>
-          <Can I="reschedule" an="Appointment">
             <EditOLIcon
               onClick={() => {
                 onOpen('edit');
               }}
               ml={2}
             />
-          </Can>
-          <Can I="cancel" an="Appointment">
             <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
-          </Can>
         </>
       )}
 

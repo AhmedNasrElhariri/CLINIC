@@ -5,7 +5,6 @@ import {
   View,
   Document,
   StyleSheet,
-  Font,
 } from '@react-pdf/renderer';
 
 import {
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
   page: {
     backgroundColor: '#ffffff',
     padding: 20,
-    // fontFamily: 'Almarai',
+    fontFamily: 'Tajawal',
   },
   header: {
     fontSize: 14,
