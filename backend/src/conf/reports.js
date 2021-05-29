@@ -181,13 +181,12 @@ const init = app => {
     }
   });
 
-  app.get('/daily', async (req, res) => {
+  app.get('/daily', async(req, res) => {
     const { day } = req.query;
     const dayName = moment(day).format('DD-MM-YYYY');
     const endOfDay = moment(day).endOf('day').toDate();
     const startOfDay = moment(day).startOf('day').toDate();
-    try {
-      const appointments = await prisma.appointment.findMany({
+      const appointments =  await prisma.appointment.findMany({
         where: {
           NOT: {
             pulses: null,
@@ -212,15 +211,11 @@ const init = app => {
           type: app.type,
         };
       });
-      const pdfDoc = await generatePdf('/views/reports/daily.ejs', {
-        data: data,
-        dayName: dayName,
-      });
-      res.end(pdfDoc);
-    } catch (e) {
-      console.log(e);
-      res.status(400).send('Invalid');
-    }
+      // const pdfDoc = await generatePdf('/views/reports/daily.ejs', {
+      //   data: data,
+      //   dayName: dayName,
+      // });
+      res.json({output:data});
   });
 };
 

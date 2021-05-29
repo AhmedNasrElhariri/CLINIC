@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { CRButton, CRSelectInput, CRDatePicker } from 'components/widgets';
+import React, { useState, useRef } from 'react';
+import ReactToPrint from 'react-to-print';
+import { CRButton, CRSelectInput, CRDatePicker, Div ,CRCard, CRTable} from 'components/widgets';
 import axios from 'axios';
 import { Form, DatePicker, SelectPicker } from 'rsuite';
 import { Container, Report, Name } from './style';
@@ -27,6 +28,7 @@ const Test = props => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
   const [formValue, setFormValue] = useState(initialValue);
+  const [data, setData] = useState([]);
   let monthes = getMonths();
   const handleMonthlyReport = async month => {
     setLoading(true);
@@ -67,36 +69,35 @@ const Test = props => {
     setError(null);
     let res = null;
 
-    try {
-      res = await axios({
-        url: 'http://localhost:4000/daily',
-        params: {
-          day: moment(day).toDate(),
-        },
-        method: 'GET',
-        responseType: 'blob',
-      });
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      setError(err);
-      return;
-    }
-
-    const data = res.data; // or res.blob() if using blob responses
-
-    const url = window.URL.createObjectURL(
-      new Blob([data], {
-        type: res.headers['content-type'],
+    axios({
+      url: 'http://localhost:4000/daily',
+      params: {
+        day: moment(day).toDate(),
+      },
+      method: 'GET',
+    })
+      .then(res => {
+        setData(res.data.output);
       })
-    );
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'dailyReport.pdf');
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
+      .catch(err => {
+        console.log(err);
+      });
+
+    // const data = res.data; // or res.blob() if using blob responses
+
+    // const url = window.URL.createObjectURL(
+    //   new Blob([data], {
+    //     type: res.headers['content-type'],
+    //   })
+    // );
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', 'dailyReport.pdf');
+    // document.body.appendChild(link);
+    // link.click();
+    // link.parentNode.removeChild(link);
   };
+  const refOne = useRef();
   return (
     <>
       <Container>
@@ -131,8 +132,60 @@ const Test = props => {
           <CRButton onClick={() => handleDailyReport(formValue.date)}>
             Generate
           </CRButton>
+          <ReactToPrint
+            trigger={() => <CRButton primary>Print</CRButton>}
+            content={() => refOne.current}
+          />
         </Report>
       </Container>
+      <Div>
+        <Div style={{ overflow: 'hidden', height: '0px' }}>
+          <CRCard ref={refOne} borderless>
+            <CRTable autoHeight data={data}>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Doctor Name</CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ doctor }) => (
+                    <CRTable.CRCellStyled bold>{doctor}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Patient Name</CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ patient }) => (
+                    <CRTable.CRCellStyled bold>{patient}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Power One </CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ powerOne }) => (
+                    <CRTable.CRCellStyled bold>{powerOne}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Power Two</CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ powerTwo }) => (
+                    <CRTable.CRCellStyled bold>{powerTwo}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Pulses</CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ pulses }) => (
+                    <CRTable.CRCellStyled bold>{pulses}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+            </CRTable>
+          </CRCard>
+        </Div>
+      </Div>
     </>
   );
 };
