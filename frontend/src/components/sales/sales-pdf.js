@@ -4,7 +4,7 @@ import { pdf } from '@react-pdf/renderer';
 import { CRButton } from 'components';
 import PdfSalesDocument from './pdf-sales';
 
-const PdfView = ({ data, period, sales }) => {
+const PdfView = ({ data, period}) => {
   const [pdfData, setPdfData] = useState({ loaded: false });
 
   useEffect(() => {

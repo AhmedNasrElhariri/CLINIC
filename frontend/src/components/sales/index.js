@@ -5,7 +5,7 @@ import Toolbar from '../accounting/toolbar';
 import { Div, CRButton, CRCard, H6,MainContainer } from 'components';
 import NewSales from './new-sales';
 import ListSaleses from './list-sales';
-import PdfView from '../accounting/toolbar/sales-pdf';
+import PdfView from './sales-pdf';
 import { useForm, useSales, useAccounting, useModal } from 'hooks';
 import { formatDate } from 'utils/date';
 import { ACCOUNTING_VIEWS } from 'utils/constants';

@@ -16,13 +16,6 @@ import {
 } from '@david.kucsai/react-pdf-table';
 
 import { formatDate } from 'utils/date';
-// import font from '../../../fonts/Almarai-Regular.ttf';
-
-// Font.register({
-//   family: 'Almarai',
-//   format: 'truetype',
-//   src: font,
-// });
 
 const styles = StyleSheet.create({
   page: {
