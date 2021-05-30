@@ -80,7 +80,7 @@ const Test = props => {
       method: 'GET',
     })
       .then(res => {
-        setData(res.data.output);
+        setData(res.data);
       })
       .catch(err => {
         console.log(err);

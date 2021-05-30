@@ -204,10 +204,9 @@ const init = app => {
           powerOne: p.powerOne,
           powerTwo: p.powerTwo,
           pulses: p.pulses,
-          type: app.type,
         };
       });
-      res.json({output:data});
+      res.json(data);
   });
 };
 
