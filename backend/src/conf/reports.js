@@ -28,7 +28,6 @@ const init = app => {
     const endOfMonth = moment(month).clone().endOf('month').toDate();
     const monthName = moment(month).format('MMMM YYYY');
 
-    try {
       const revenue = await prisma.revenue.aggregate({
         sum: {
           amount: true,
@@ -164,7 +163,7 @@ const init = app => {
         numOfFollowup = followups.length,
         numOfSession = sessions.length,
         numOfCourses = courses.length;
-      const pdfDoc = await generatePdf('/views/reports/monthly.ejs', {
+      const pdfDoc = {
         totalRevenues: revenues,
         monthName: monthName,
         totalSales: totalSales,
@@ -174,11 +173,8 @@ const init = app => {
         numOfSession: numOfSession,
         numOfCourses: numOfCourses,
         data: data,
-      });
-      res.end(pdfDoc);
-    } catch (e) {
-      res.status(400).send('Invalid');
-    }
+      };
+      res.json(pdfDoc);
   });
 
   app.get('/daily', async(req, res) => {
@@ -211,10 +207,6 @@ const init = app => {
           type: app.type,
         };
       });
-      // const pdfDoc = await generatePdf('/views/reports/daily.ejs', {
-      //   data: data,
-      //   dayName: dayName,
-      // });
       res.json({output:data});
   });
 };

@@ -29,40 +29,39 @@ const Test = props => {
   const [error, setError] = React.useState(null);
   const [formValue, setFormValue] = useState(initialValue);
   const [data, setData] = useState([]);
+  const [dataTwo,setDataTwo] = useState({});
   let monthes = getMonths();
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
-    let res = null;
-    try {
-      res = await axios({
+    axios({
         url: `/monthly`,
         params: {
           month: moment(month).toDate(),
         },
         method: 'GET',
-        responseType: 'blob',
-      });
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      setError(err);
-      return;
-    }
+    }).then(res => {
+      setDataTwo(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 
-    const data = res.data; // or res.blob() if using blob responses
 
-    const url = window.URL.createObjectURL(
-      new Blob([data], {
-        type: res.headers['content-type'],
-      })
-    );
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'monthlyReport.pdf');
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
+  
+    // const data = res.data; // or res.blob() if using blob responses
+
+    // const url = window.URL.createObjectURL(
+    //   new Blob([data], {
+    //     type: res.headers['content-type'],
+    //   })
+    // );
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', 'monthlyReport.pdf');
+    // document.body.appendChild(link);
+    // link.click();
+    // link.parentNode.removeChild(link);
   };
   const handleDailyReport = async day => {
     setLoading(true);
@@ -98,6 +97,8 @@ const Test = props => {
     // link.parentNode.removeChild(link);
   };
   const refOne = useRef();
+  const refTwo = useRef();
+  let monthlyData = dataTwo?.data || [];
   return (
     <>
       <Container>
@@ -116,6 +117,10 @@ const Test = props => {
           <CRButton onClick={() => handleMonthlyReport(formValue.month)}>
             Generate
           </CRButton>
+          <ReactToPrint
+            trigger={() => <CRButton primary>Print</CRButton>}
+            content={() => refTwo.current}
+          />
         </Report>
       </Container>
       <Container>
@@ -179,6 +184,62 @@ const Test = props => {
                 <CRTable.CRCell>
                   {({ pulses }) => (
                     <CRTable.CRCellStyled bold>{pulses}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+            </CRTable>
+          </CRCard>
+        </Div>
+      </Div>
+      <Div>
+        <Div style={{ overflow: 'hidden', height: '0px' }}>
+          <CRCard ref={refTwo} borderless>
+            <Div>monthName: {dataTwo.monthName}</Div>
+            <Div>numOfCourses: {dataTwo.numOfCourses}</Div>
+            <Div>numOfExamination: {dataTwo.umOfExamination}</Div>
+            <Div>Number Of Followup: {dataTwo.numOfFollowup}</Div>
+            <Div>Number Of Sessions: {dataTwo.numOfSession}</Div>
+            <Div>totalExpenses: {dataTwo.totalExpenses}</Div>
+            <Div>totalRevenues:{dataTwo.totalRevenues}</Div>
+            <Div>totalSales: {dataTwo.totalSales}</Div>
+            <CRTable autoHeight data={monthlyData}>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Before</CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ before }) => (
+                    <CRTable.CRCellStyled bold>{before}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>After</CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ after }) => (
+                    <CRTable.CRCellStyled bold>{after}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Date </CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ date }) => (
+                    <CRTable.CRCellStyled bold>{date}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Difference</CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ diff }) => (
+                    <CRTable.CRCellStyled bold>{diff}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
+              </CRTable.CRColumn>
+              <CRTable.CRColumn flexGrow={1}>
+                <CRTable.CRHeaderCell>Number of Pulses </CRTable.CRHeaderCell>
+                <CRTable.CRCell>
+                  {({ numOfPulses }) => (
+                    <CRTable.CRCellStyled bold>{numOfPulses}</CRTable.CRCellStyled>
                   )}
                 </CRTable.CRCell>
               </CRTable.CRColumn>
