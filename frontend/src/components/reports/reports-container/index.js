@@ -10,14 +10,14 @@ const ReportsContainer = () => {
       <MainContainer title="Reports" nobody></MainContainer>
       <CRTabs>
         <CRTabs.CRTabsGroup>
-          {/* <CRTabs.CRTab>Accounting</CRTabs.CRTab> */}
+          <CRTabs.CRTab>Accounting</CRTabs.CRTab>
           <CRTabs.CRTab>Statistics</CRTabs.CRTab>
           <CRTabs.CRTab>Reports</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
-          {/* <CRTabs.CRContent>
+          <CRTabs.CRContent>
             <AccountingContainer />
-          </CRTabs.CRContent> */}
+          </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Reports />
           </CRTabs.CRContent>
