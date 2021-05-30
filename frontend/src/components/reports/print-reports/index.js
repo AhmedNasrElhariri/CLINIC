@@ -73,7 +73,7 @@ const Test = props => {
     let res = null;
 
     axios({
-      url: 'http://localhost:4000/daily',
+      url: '/daily',
       params: {
         day: moment(day).toDate(),
       },
