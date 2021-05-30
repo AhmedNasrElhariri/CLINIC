@@ -1,8 +1,13 @@
 import React, { useState, useRef } from 'react';
 import ReactToPrint from 'react-to-print';
-import { CRButton, CRSelectInput, CRDatePicker, Div ,CRCard, CRTable} from 'components/widgets';
+import {
+  CRButton,
+  CRSelectInput,
+  CRDatePicker,
+  Div,
+} from 'components/widgets';
 import axios from 'axios';
-import { Form, DatePicker, SelectPicker } from 'rsuite';
+import { Form, DatePicker, Table } from 'rsuite';
 import { Container, Report, Name } from './style';
 import moment from 'moment';
 
@@ -29,26 +34,25 @@ const Test = props => {
   const [error, setError] = React.useState(null);
   const [formValue, setFormValue] = useState(initialValue);
   const [data, setData] = useState([]);
-  const [dataTwo,setDataTwo] = useState({});
+  const [dataTwo, setDataTwo] = useState({});
   let monthes = getMonths();
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
     axios({
-        url: `/monthly`,
-        params: {
-          month: moment(month).toDate(),
-        },
-        method: 'GET',
-    }).then(res => {
-      setDataTwo(res.data);
+      url: `/monthly`,
+      params: {
+        month: moment(month).toDate(),
+      },
+      method: 'GET',
     })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(res => {
+        setDataTwo(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
-
-  
     // const data = res.data; // or res.blob() if using blob responses
 
     // const url = window.URL.createObjectURL(
@@ -96,6 +100,7 @@ const Test = props => {
     // link.click();
     // link.parentNode.removeChild(link);
   };
+  const { Column, HeaderCell, Cell, Pagination } = Table;
   const refOne = useRef();
   const refTwo = useRef();
   let monthlyData = dataTwo?.data || [];
@@ -145,106 +150,110 @@ const Test = props => {
       </Container>
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>
-          <CRCard ref={refOne} borderless>
-            <CRTable autoHeight data={data}>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Doctor Name</CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ doctor }) => (
-                    <CRTable.CRCellStyled bold>{doctor}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Patient Name</CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ patient }) => (
-                    <CRTable.CRCellStyled bold>{patient}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Power One </CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ powerOne }) => (
-                    <CRTable.CRCellStyled bold>{powerOne}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Power Two</CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ powerTwo }) => (
-                    <CRTable.CRCellStyled bold>{powerTwo}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Pulses</CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ pulses }) => (
-                    <CRTable.CRCellStyled bold>{pulses}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-            </CRTable>
-          </CRCard>
+          <Div ref={refOne} borderless>
+            <Div display="flex" justifyContent="center" mt={20} mb={20}>
+              Daily Report{' '}
+            </Div>
+            <Table
+              data={data}
+              autoHeight
+              borderless
+              style={{ marginTop: '30px' }}
+            >
+              <Column width={200} align="center" fixed>
+                <HeaderCell>Doctor Name</HeaderCell>
+                <Cell dataKey="doctor" />
+              </Column>
+
+              <Column width={150}>
+                <HeaderCell>Patient Name</HeaderCell>
+                <Cell dataKey="patient" />
+              </Column>
+
+              <Column width={150}>
+                <HeaderCell>Power One</HeaderCell>
+                <Cell dataKey="powerOne" />
+              </Column>
+
+              <Column width={150}>
+                <HeaderCell>Power Two</HeaderCell>
+                <Cell dataKey="powerTwo" />
+              </Column>
+
+              <Column width={150}>
+                <HeaderCell>Number of Pulses</HeaderCell>
+                <Cell dataKey="pulses" />
+              </Column>
+            </Table>
+          </Div>
         </Div>
       </Div>
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>
-          <CRCard ref={refTwo} borderless>
-            <Div>monthName: {dataTwo.monthName}</Div>
-            <Div>numOfCourses: {dataTwo.numOfCourses}</Div>
-            <Div>numOfExamination: {dataTwo.umOfExamination}</Div>
-            <Div>Number Of Followup: {dataTwo.numOfFollowup}</Div>
-            <Div>Number Of Sessions: {dataTwo.numOfSession}</Div>
-            <Div>totalExpenses: {dataTwo.totalExpenses}</Div>
-            <Div>totalRevenues:{dataTwo.totalRevenues}</Div>
-            <Div>totalSales: {dataTwo.totalSales}</Div>
-            <CRTable autoHeight data={monthlyData}>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Before</CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ before }) => (
-                    <CRTable.CRCellStyled bold>{before}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>After</CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ after }) => (
-                    <CRTable.CRCellStyled bold>{after}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Date </CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ date }) => (
-                    <CRTable.CRCellStyled bold>{date}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Difference</CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ diff }) => (
-                    <CRTable.CRCellStyled bold>{diff}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-              <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Number of Pulses </CRTable.CRHeaderCell>
-                <CRTable.CRCell>
-                  {({ numOfPulses }) => (
-                    <CRTable.CRCellStyled bold>{numOfPulses}</CRTable.CRCellStyled>
-                  )}
-                </CRTable.CRCell>
-              </CRTable.CRColumn>
-            </CRTable>
-          </CRCard>
+          <Div ref={refTwo} borderless>
+            <Div display="flex" justifyContent="center" mt={20} mb={20}>
+              Monthly Report{' '}
+            </Div>
+            <Div m="5px">
+              Month Name:{'  '} {dataTwo.monthName}
+            </Div>
+            <Div m="5px">
+              Num Of Courses: {'  '}
+              {dataTwo.numOfCourses}
+            </Div>
+            <Div m="5px">
+              Num Of Examination:{'  '} {dataTwo.numOfExamination}
+            </Div>
+            <Div m="5px">
+              Number Of Followup:{'  '} {dataTwo.numOfFollowup}
+            </Div>
+            <Div m="5px">
+              Number Of Sessions: {'  '}
+              {dataTwo.numOfSession}
+            </Div>
+            <Div m="5px">
+              Total Expenses:{'  '} {dataTwo.totalExpenses}
+            </Div>
+            <Div m="5px">
+              Total Revenues:{'  '}
+              {dataTwo.totalRevenues}
+            </Div>
+            <Div m="5px">
+              Total Sales: {'  '}
+              {dataTwo.totalSales}
+            </Div>
+            <Table
+              data={monthlyData}
+              autoHeight
+              borderless
+              style={{ marginTop: '30px' }}
+            >
+              <Column width={200} align="center" fixed>
+                <HeaderCell>Date</HeaderCell>
+                <Cell dataKey="date" />
+              </Column>
+
+              <Column width={150}>
+                <HeaderCell>Before</HeaderCell>
+                <Cell dataKey="before" />
+              </Column>
+
+              <Column width={150}>
+                <HeaderCell>after</HeaderCell>
+                <Cell dataKey="after" />
+              </Column>
+
+              <Column width={150}>
+                <HeaderCell>Difference</HeaderCell>
+                <Cell dataKey="diff" />
+              </Column>
+
+              <Column width={150}>
+                <HeaderCell>Number of Pulses</HeaderCell>
+                <Cell dataKey="numOfPulses" />
+              </Column>
+            </Table>
+          </Div>
         </Div>
       </Div>
     </>
