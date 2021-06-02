@@ -6,7 +6,7 @@ const addTransaction = async (
   { payrollTransaction },
   { organizationId }
 ) => {
-  let { userId, amount, type } = payrollTransaction;
+  let { userId, amount, type,reason } = payrollTransaction;
   let payrollId = '';
   if (type === 'Advance' || type === 'Deduction') {
     amount = amount * -1;
@@ -37,6 +37,7 @@ const addTransaction = async (
       data: {
         amount: amount,
         type: type,
+        reason:reason,
         date: new Date(),
         payrollUser: {
           connect: {
@@ -56,6 +57,7 @@ const addTransaction = async (
       data: {
         amount: amount,
         type: type,
+        reason:reason,
         date: new Date(),
         payrollUser: {
           connect: {

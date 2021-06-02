@@ -1,8 +1,10 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form, Schema } from 'rsuite';
-import { CRModal, CRNumberInput, CRSelectInput } from 'components';
+import { CRModal, CRNumberInput, CRSelectInput, CRRadio ,CRLabel} from 'components';
 import styled from 'styled-components';
+import { InputNumber } from 'rsuite';
 import { CRTextInput } from 'components/widgets';
+import Toolbar from './toolbar';
 const { StringType, NumberType } = Schema.Types;
 
 const DeleteMessage = styled.div`
@@ -15,6 +17,16 @@ const DeleteMessage = styled.div`
   text-align: center;
   color: #283148;
 `;
+
+const options = [
+  { name: 'Amount Only', value: 'amount' },
+  { name: 'Percentage of Revenue', value: 'percentage' },
+  { name: 'hours', value: 'hours' },
+];
+const options2 = [
+  { name: 'Profit', value: 'profit' },
+  { name: 'Revenue', value: 'revenue' },
+];
 const model = Schema.Model({
   userId: StringType().isRequired('Name Type is required'),
   salary: NumberType().isRequired('Amount value is required'),
@@ -120,11 +132,62 @@ const PayrollForm = ({
               block
               data={payrollUsers}
             />
-            {(type === 'Deduction' ||
-              type === 'Commision' ||
-              type === 'Incentive' ||
-              type === 'Advance') && (
-              <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
+            <CRTextInput label="Reason" name="reason" block></CRTextInput>
+            <CRRadio
+              label="Select one Option"
+              name="option"
+              options={options}
+            />
+            {formValue.option === 'amount' ? (
+              (type === 'Deduction' ||
+                type === 'Commision' ||
+                type === 'Incentive' ||
+                type === 'Advance') && (
+                <CRNumberInput
+                  label="Amount"
+                  name="amount"
+                  block
+                ></CRNumberInput>
+              )
+            ) : formValue.option === 'hours' ? (
+              <>
+                <CRNumberInput
+                  label="Number of Hourse"
+                  name="hoursNumber"
+                  block
+                ></CRNumberInput>
+                <CRNumberInput
+                  label="Price of Hours"
+                  name="hourPrice"
+                  block
+                ></CRNumberInput>
+              </>
+            ) : formValue.option === 'percentage' ? (
+              <>
+                <CRNumberInput
+                  label="Percentage from 0 - 100"
+                  name="percentage"
+                  block
+                ></CRNumberInput>
+                {/* <InputNumber
+                  max={100}
+                  min={0}
+                  name="percentage"
+                  onChange={val => onChange({ ...formValue, percentage: val })}
+                /> */}
+                <CRRadio
+                  label="Select one Choice"
+                  name="choice"
+                  options={options2}
+                  style={{marginBottom:'10px'}}
+                />
+                <Toolbar
+                  activeKey={formValue.view}
+                  onSelect={val => onChange({ ...formValue, view: val })}
+                />
+              </>
+            ) : (
+              <></>
             )}
           </>
         )}

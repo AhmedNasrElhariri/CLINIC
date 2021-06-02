@@ -368,6 +368,7 @@ model PayrollUser {
 model PayrollTransaction {
   id            String                 @id @default(uuid())
   amount        Int
+  reason        String                 @default(" ")
   date          DateTime
   status        String                 @default("on")
   added         Boolean                @default(false)

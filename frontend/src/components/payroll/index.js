@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import {
   Div,
@@ -9,19 +9,43 @@ import {
   H4,
   CRCheckBox,
 } from 'components';
+import { ACCOUNTING_VIEWS } from 'utils/constants';
 import { CheckboxGroup, Checkbox } from 'rsuite';
 import PayrollForm, { usePayrollForm } from './form';
 import EmployeesPayroll from './list-payrolls';
-import { useModal, usePayroll, usePermissions } from 'hooks';
+import { useModal, usePayroll, useAccounting } from 'hooks';
 import { formatDate } from 'utils/date';
 const initialPayrollusers = [];
 const initValue = {
   userId: '',
   salary: '',
   name: '',
-  amount: '',
+  amount: 0,
+  option: 'amount',
+  view: ACCOUNTING_VIEWS.DAY,
+  period: [],
   type: '',
+  choice: 'revenue',
+  hoursNumber: 0,
+  hourPrice: 0,
+  reason: '',
+  percentage: 0,
   payment: [],
+};
+const getAmount = (fv, totalRevenue, totalExpenses) => {
+  let amount = 0;
+  if (fv.option === 'hours') {
+    amount = fv.hoursNumber * fv.hourPrice;
+  } else if (fv.option === 'percentage') {
+    if (fv.choice === 'revenue') {
+      amount = fv.percentage * 0.01 * totalRevenue;
+    } else {
+      amount = (totalRevenue - totalExpenses) * 0.01 * fv.percentage;
+    }
+  } else {
+    amount = fv.amount;
+  }
+  return Math.ceil(amount);
 };
 
 function Payroll() {
@@ -38,7 +62,18 @@ function Payroll() {
     addPayroll,
     deleteUser,
   } = usePayroll({ userId });
-
+  const view = formValue.view,
+    period = formValue.period;
+  const { totalExpenses, totalRevenues } = useAccounting({
+    view,
+    period,
+  });
+  const amount = useMemo(
+    () => getAmount(formValue, totalRevenues, totalExpenses),
+    [
+      formValue
+    ]
+  );
   const handleAddUser = useCallback(() => {
     const updatedFormValue = {
       name: formValue.name,
@@ -50,17 +85,11 @@ function Payroll() {
       },
     });
   }, [formValue, addPayrollUser]);
-  const handleAddPayroll = useCallback(() => {
-    addPayroll({
-      variables: {
-        payment: formValue.payment,
-      },
-    });
-  }, [addPayroll, formValue.payment]);
   const handleAddAdvance = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
-      amount: formValue.amount,
+      amount: amount,
+      reason: formValue.reason,
       type: 'Advance',
     };
     addTransaction({
@@ -68,12 +97,13 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, formValue.amount, formValue.userId]);
+  }, [addTransaction, amount, formValue.userId]);
 
   const handleAddCommision = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
-      amount: formValue.amount,
+      amount: amount,
+      reason: formValue.reason,
       type: 'Commision',
     };
     addTransaction({
@@ -81,11 +111,12 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, formValue.amount, formValue.userId]);
+  }, [addTransaction, amount, formValue.userId]);
   const handleAddIncentive = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
-      amount: formValue.amount,
+      amount: amount,
+      reason: formValue.reason,
       type: 'Incentive',
     };
     addTransaction({
@@ -93,11 +124,12 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, formValue.amount, formValue.userId]);
+  }, [addTransaction, amount, formValue.userId]);
   const handleAddDeduction = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
-      amount: formValue.amount,
+      amount: amount,
+      reason: formValue.reason,
       type: 'Deduction',
     };
     addTransaction({
@@ -105,7 +137,7 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, formValue.amount, formValue.userId]);
+  }, [addTransaction, amount, formValue.userId]);
   const deletePayrollUserFun = userId => {
     deleteUser({
       variables: {
@@ -217,17 +249,6 @@ function Payroll() {
           bodyStyle={{ minWidth: 300 }}
         >
           <H4>{formatDate(new Date())}</H4>
-          {/* <CRTable autoHeight data={payslips}>
-            <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-              <CRTable.CRCell dataKey="name" semiBold />
-            </CRTable.CRColumn>
-
-            <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
-              <CRTable.CRCell dataKey="amount" semiBold />
-            </CRTable.CRColumn>
-          </CRTable> */}
           <CheckboxGroup
             inline
             name="payrolluserIds"

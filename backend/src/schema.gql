@@ -701,6 +701,7 @@ type PayrollTransaction {
   id: ID!
   amount: Int!
   date: Date!
+  reason: String!
   type: PayrollTransactionType
   payrollUser: PayrollUser
   payroll: Payroll
@@ -709,6 +710,7 @@ type PayrollTransaction {
 input PayrollTransactionInput {
   userId: ID!
   amount: Int!
+  reason: String
   type: PayrollTransactionType!
 }
 

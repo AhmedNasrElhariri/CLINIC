@@ -39,6 +39,7 @@ export default function EmployeePayroll(props) {
     <>
       <HeaderRow>
         <Cell>Date</Cell>
+        <Cell>Reason</Cell>
         <Cell>Basic Salary</Cell>
         <Cell>Commission</Cell>
         <Cell>Advance</Cell>
@@ -50,6 +51,9 @@ export default function EmployeePayroll(props) {
         <RowData>
           <RowDataCell color="#1b253a">
             {transaction.date.split('T')[0]}
+          </RowDataCell>
+          <RowDataCell color="#1b253a">
+            {transaction.reason}
           </RowDataCell>
           <RowDataCell color="#1b253a">
             {transaction.payrollUser.salary}
@@ -73,6 +77,7 @@ export default function EmployeePayroll(props) {
       ))}
       <TotalData>
         <TotalCell>{'Total'}</TotalCell>
+        <TotalCell>{' '}</TotalCell>
         <TotalCell>{salary}</TotalCell>
         <TotalCell>{totalCommision}</TotalCell>
         <TotalCell>{-1 * totalAdvance}</TotalCell>

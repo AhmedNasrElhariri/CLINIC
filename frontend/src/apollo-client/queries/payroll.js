@@ -27,6 +27,7 @@ export const LIST_USER_TRANSACTIONS = gql`
       amount
       type
       date
+      reason
       payrollUser {
         salary
       }
