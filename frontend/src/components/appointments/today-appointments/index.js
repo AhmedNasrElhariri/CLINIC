@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 
-import { CRTabs} from 'components';
+import { CRTabs } from 'components';
 
 import {
   ARCHIVE_APPOINTMENT,
@@ -23,10 +23,7 @@ const initialValue = {
   businessNotes: '',
 };
 function TodayAppointments() {
-  const {
-    todayAppointments: appointments,
-    filterBranches,
-  } = useAppointments();
+  const { todayAppointments: appointments, filterBranches } = useAppointments();
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
@@ -103,7 +100,7 @@ function TodayAppointments() {
     [open]
   );
   const handleArchive = useCallback(
-    ({ sessions, items, discount, others }) => {
+    ({ sessions, items, discount, others, bank }) => {
       close();
       archive({
         variables: {
@@ -111,6 +108,7 @@ function TodayAppointments() {
           sessions: sessions.map(session => ({
             name: getName({ session, appointment }),
             price: session.price,
+            number: session.number,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,
@@ -118,6 +116,7 @@ function TodayAppointments() {
           })),
           discount,
           others,
+          bank,
         },
       });
     },
@@ -142,13 +141,13 @@ function TodayAppointments() {
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
-                <ListAppointments
-                  title="Upcoming Appointments"
-                  appointments={upcomingAppointments}
-                  onArchive={onClickDone}
-                  onAddBusinessNotes={onAddBusinessNotes}
-                  defaultExpanded={true}
-                />
+            <ListAppointments
+              title="Upcoming Appointments"
+              appointments={upcomingAppointments}
+              onArchive={onClickDone}
+              onAddBusinessNotes={onAddBusinessNotes}
+              defaultExpanded={true}
+            />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <ListAppointments

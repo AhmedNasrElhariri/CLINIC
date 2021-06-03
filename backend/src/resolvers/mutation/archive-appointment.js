@@ -4,6 +4,8 @@ import * as R from 'ramda';
 import {
   createAppointmentRevenue,
   createAppointmentRevenueFromSessions,
+  createAppointmentBankRevenue,
+  createAppointmentBankRevenueFromSessions
 } from '@/services/revenue.service';
 import { createAppointmentExpense } from '@/services/expense.service';
 import { APPOINTMENTS_STATUS } from '@/utils/constants';
@@ -16,7 +18,7 @@ import { updateImagesAfterArchiveAppointment } from '@/services/image.service';
 
 const archiveAppointment = async (
   _,
-  { id, sessions = [], items = [], discount = 0, others = 0 },
+  { id, bank = null, sessions = [], items = [], discount = 0, others = 0 },
   { userId, organizationId }
 ) => {
   const appointment = await prisma.appointment.update({
@@ -27,9 +29,17 @@ const archiveAppointment = async (
       images: true,
     },
   });
-  await createAppointmentRevenue(
-    createAppointmentRevenueFromSessions(userId, sessions)
-  );
+  if(bank != null){
+    await createAppointmentBankRevenue(
+      createAppointmentBankRevenueFromSessions(userId,bank, sessions)
+    );
+  }
+  if(bank == null){
+    await createAppointmentRevenue(
+      createAppointmentRevenueFromSessions(userId, sessions)
+    );
+  }
+  
   if (others) {
     await prisma.revenue.create({
       data: {
@@ -54,7 +64,7 @@ const archiveAppointment = async (
     data: items,
     userId,
     patientId: appointment.patientId,
-    organizationId:organizationId,
+    organizationId: organizationId,
   });
 
   const { labs, images } = appointment;

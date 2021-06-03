@@ -106,6 +106,7 @@ type Query {
   familyHistory(patientId: ID!): [FamilyHistory!]
   expenses: [Expense!]
   revenues: [Revenue!]
+  bankRevenues: [BankRevenue!]
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
   myNotifications: [Notification!]
@@ -122,6 +123,7 @@ type Query {
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
   mySessionsDefinition: [SessionDefinition!]
+  myBanksDefinition: [BankDefinition!]
   mySalesesDefinition: [SalesDefinition!]
   mySaleses: [Sales!]
   myCoursesDefinition: [CourseDefinition!]
@@ -165,6 +167,7 @@ type Mutation {
     items: [FinishAppointmentItemInput!]
     discount: Int
     others: Int
+    bank: ID
   ): Appointment!
   createView(view: ViewInput!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
@@ -216,6 +219,8 @@ type Mutation {
   editSessionDefinition(
     sessionDefinition: SessionInputDefinition!
   ): SessionDefinition
+  addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
+  editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   addImageCategory(imageCategory: ImageInputCategory!): ImageCategory
   editImageCategory(imageCategory: ImageInputCategory!): ImageCategory
   addMedicineDefinition(
@@ -598,11 +603,13 @@ type File {
 type Session {
   name: String!
   price: Int!
+  number: Int!
 }
 
 input SessionInput {
   name: String!
   price: Int!
+  number: Int!
 }
 
 type CourseSessions {
@@ -777,6 +784,15 @@ type Revenue {
   amount: Int!
   date: Date!
   invoiceNo: String
+}
+
+type BankRevenue {
+  id: ID!
+  name: String!
+  amount: Int!
+  date: Date!
+  invoiceNo: String
+  bank: BankDefinition!
 }
 
 input RevenueInput {
@@ -965,7 +981,7 @@ input ImageInputCategory {
   name: String!
 }
 
-########################### Images Definition ##################################
+########################### Session Definition ##################################
 
 type SessionDefinition {
   id: ID!
@@ -973,6 +989,18 @@ type SessionDefinition {
 }
 
 input SessionInputDefinition {
+  id: ID
+  name: String!
+}
+
+########################### Bank Definition ##################################
+
+type BankDefinition {
+  id: ID!
+  name: String!
+}
+
+input BankInputDefinition {
   id: ID
   name: String!
 }

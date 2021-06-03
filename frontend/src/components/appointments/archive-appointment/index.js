@@ -18,18 +18,21 @@ const StepsDev = styled.div`
   width: 450px;
   margin: auto;
 `;
+
 const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
+  const [bank, setBank] = useState(null);
   const value = useRef(initValue);
   const { sessions } = useConfigurations();
   const { data } = useQuery(GET_INVOICE_COUNTER, {
     fetchPolicy: 'network-only',
   });
-  const organization = useMemo(() => R.propOr([], 'myInvoiceCounter')(data), [
-    data,
-  ]);
+  const organization = useMemo(
+    () => R.propOr([], 'myInvoiceCounter')(data),
+    [data]
+  );
   const handleInvoiceChange = useCallback(sessions => {
     value.current = { ...value.current, sessions };
   }, []);
@@ -41,9 +44,10 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     if (activeStep !== 1) {
       setActiveStep(activeStep + 1);
     } else {
-      onOk({ ...value.current, discount, others });
+      onOk({ ...value.current, discount, others, bank });
+      setBank(null);
     }
-  }, [activeStep, onOk, discount, others]);
+  }, [activeStep, onOk, discount, others, bank]);
 
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
@@ -51,15 +55,17 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
       setActiveStep(0);
     }
   }, [activeStep, discount, others]);
-  const okTitle = useMemo(() => (activeStep === 0 ? 'Next' : 'Ok'), [
-    activeStep,
-  ]);
+  const okTitle = useMemo(
+    () => (activeStep === 0 ? 'Next' : 'Ok'),
+    [activeStep]
+  );
 
   return (
     <CRModal
       show={show}
       header="Archive Appointment"
-      okTitle={okTitle}z
+      okTitle={okTitle}
+      z
       onOk={handleOk}
       onHide={onCancel}
       onCancel={handleCancel}
@@ -79,6 +85,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
             onChange={handleInvoiceChange}
             discount={discount}
             others={others}
+            bank={bank}
+            setBank={setBank}
             onOthersChange={setOthers}
             onDiscountChange={setDiscount}
             appointment={appointment}

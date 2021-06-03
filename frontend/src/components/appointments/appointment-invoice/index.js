@@ -14,6 +14,7 @@ import {
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
 import { CRDivider } from 'components';
+import { useBankDefinition } from 'hooks';
 
 const OTHER = 'Other';
 
@@ -42,13 +43,16 @@ function AppointmentInvoice({
   onOthersChange,
   onDiscountChange,
   sessions,
+  bank,
+  setBank,
   organization,
 }) {
   const [session, setSession] = useState({});
+  const [sessionNumber, setSessionNumber] = useState(0);
+  const [visa, setVisa] = useState(false);
   const [formValue, setFormValue] = useState(initValue);
-
   const [selectedSessions, setSelectedSessions] = useState([]);
-
+  const { banksDefinition } = useBankDefinition({});
   const choices = useMemo(() => {
     const allChoices = [...sessions];
     return allChoices.map(s => ({ name: s.name, id: s }));
@@ -68,10 +72,12 @@ function AppointmentInvoice({
     if (R.isNil(session) || R.isEmpty(session)) {
       return;
     }
-    const sessionData = isOtherType(session) ? { ...formValue } : session;
+    const updatedSession = { ...session, number: sessionNumber };
+    const sessionData = isOtherType(session)
+      ? { ...formValue }
+      : updatedSession;
     handleOnChange([...selectedSessions, sessionData]);
-  }, [formValue, handleOnChange, selectedSessions, session]);
-
+  }, [formValue, handleOnChange, sessionNumber, selectedSessions, session]);
   const handleDelete = useCallback(
     idx => {
       handleOnChange(R.remove(idx, 1));
@@ -80,31 +86,57 @@ function AppointmentInvoice({
   );
 
   const subtotal = useMemo(
-    () => selectedSessions.reduce((sum, { price }) => sum + price, 0),
+    () =>
+      selectedSessions.reduce(
+        (sum, { price, number }) => sum + number * price,
+        0
+      ),
     [selectedSessions]
   );
 
-  const total = useMemo(() => subtotal + (others - discount), [
-    discount,
-    others,
-    subtotal,
-  ]);
-
+  const total = useMemo(
+    () => subtotal + (others - discount),
+    [discount, others, subtotal]
+  );
   return (
     <>
-      <Div display="flex" mt={40}>
-        <Div width={500} mr={50}>
-          <Form fluid>
+      <Div mt={20}>
+        <CRButton onClick={() => setVisa(true)}>Pay By Visa</CRButton>
+        {visa && (
+          <Form>
             <CRSelectInput
-              label="Session Type"
-              name="type"
-              placeholder="Select Type"
-              block
-              value={session}
-              onChange={setSession}
-              data={choices}
-              onSelect={add()}
+              label="Bank Name"
+              name="bank"
+              data={banksDefinition}
+              value={bank}
+              onChange={setBank}
+              placeholder="Select One Bank "
+              style={{ width: '230px' }}
             />
+          </Form>
+        )}
+      </Div>
+      <Div display="flex" mt={40}>
+        <Div width={500} mr={20}>
+          <Form fluid>
+            <CRButton onClick={() => add()}>add</CRButton>
+            <Div display="flex" justifyContent="space-around">
+              <CRSelectInput
+                label="Session Type"
+                name="type"
+                placeholder="Select Type"
+                value={session}
+                onChange={setSession}
+                data={choices}
+                style={{ width: '230px' }}
+              />
+              <CRNumberInput
+                label="Number of Sessions"
+                name="sessionsNumber"
+                value={sessionNumber}
+                onChange={setSessionNumber}
+              ></CRNumberInput>
+            </Div>
           </Form>
           {isOtherType(session) && (
             <Div mt={4}>

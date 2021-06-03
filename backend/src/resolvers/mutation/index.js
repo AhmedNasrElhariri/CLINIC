@@ -79,3 +79,5 @@ export { default as editSales } from './edit-sales';
 export { default as deleteSales } from './delete-sales';
 export { default as addSessionDefinition } from './add-session-definition';
 export { default as editSessionDefinition } from './edit-session-definition';
+export { default as addBankDefinition } from './add-bank-definition';
+export { default as editBankDefinition } from './edit-bank-definition';

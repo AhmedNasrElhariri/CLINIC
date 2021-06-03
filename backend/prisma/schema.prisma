@@ -147,6 +147,7 @@ model Organization {
   SalesDefinition   SalesDefinition[]
   Sales             Sales[]
   CourseDefinition  CourseDefinition[]
+  BankDefinition    BankDefinition[]
 }
 
 model User {
@@ -186,6 +187,7 @@ model User {
   imageCategories     ImageCategory[]
   users               Course[]             @relation("user")
   doctors             Course[]             @relation("doctor")
+  BankRevenue         BankRevenue[]
 }
 
 model Patient {
@@ -519,6 +521,20 @@ model Revenue {
   userId    String
 }
 
+model BankRevenue {
+  id        String         @id @default(uuid())
+  name      String
+  date      DateTime
+  amount    Int
+  invoiceNo String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now()) @updatedAt
+  user      User           @relation(fields: [userId], references: [id])
+  userId    String
+  bank      BankDefinition @relation(fields: [bankId], references: [id])
+  bankId    String
+}
+
 model Notification {
   id         String   @id @default(uuid())
   notifierId String
@@ -655,6 +671,16 @@ model SessionDefinition {
   organizationId String
   Appointment    Appointment[]
 
+}
+
+model BankDefinition {
+  id             String        @id @default(uuid())
+  name           String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organizationId String
+  BankRevenue    BankRevenue[]
 }
 
 model SalesDefinition {

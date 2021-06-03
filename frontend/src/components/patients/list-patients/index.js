@@ -13,7 +13,6 @@ const initialValue = {
 function Patients() {
   const history = useHistory();
   const [filter, setFilter] = useState(initialValue);
-  console.log(filter);
   const [currentPage, setCurrentPage] = useState(1);
   const { patients } = usePatients();
 

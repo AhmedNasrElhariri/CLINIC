@@ -37,4 +37,5 @@ export default {
   PayrollTransaction: fromPayrollTransaction,
   ...fromCustomResolvers,
   Course: fromCourse,
+
 };

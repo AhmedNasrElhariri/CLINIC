@@ -34,3 +34,5 @@ export { default as usePayroll } from './payroll';
 export { default as useSalesDefinition } from './sales-definition';
 export { default as useSales } from './sales';
 export { default as useSessionDefinition } from './sessions-definition';
+export { default as useBankDefinition } from './banks-definition';
+export { default as useBankAccounting } from './bank-accounting';

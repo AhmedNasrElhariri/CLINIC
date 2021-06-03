@@ -6,10 +6,15 @@ import { formatDate } from 'utils/date';
 import { Divider } from 'rsuite';
 import { useConfigurations } from 'hooks';
 
-const ItemPrice = ({ name, price }) => (
+const ItemPrice = ({ name, number, price }) => (
   <Div display="flex" justifyContent="space-between">
-    <H7>{name}</H7>
-    <H7>{price}</H7>
+    <H7>
+      {number}
+      {' / '}
+      {'  '}
+      {name}
+    </H7>
+    <H7>{price * number}</H7>
   </Div>
 );
 
@@ -26,12 +31,13 @@ const InvoicePrintout = React.forwardRef(
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
-    
+
     const Count =
       year + '' + month + '' + day + '/' + organization?.invoiceCounter;
     const { configurations } = useConfigurations();
-    const enable =
-    R.isEmpty(configurations) ? configurations.enableInvoiceCounter: false ;
+    const enable = R.isEmpty(configurations)
+      ? configurations.enableInvoiceCounter
+      : false;
     return (
       <Div height={0} overflow="hidden">
         <StyledContainer ref={ref}>
