@@ -17,7 +17,7 @@ const appointments = async (_, { input }, { user, organizationId }) => {
         gte: R.prop('fromDate')(input),
         lte: R.prop('toDate')(input),
       },
-      userId: {
+      doctorId: {
         in: ids,
       },
     },
@@ -25,6 +25,7 @@ const appointments = async (_, { input }, { user, organizationId }) => {
       specialty: true,
       branch: true,
       session:true,
+      doctor:true,
     },
   });
 };

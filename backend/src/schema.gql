@@ -107,7 +107,7 @@ type Query {
   expenses: [Expense!]
   revenues: [Revenue!]
   bankRevenues: [BankRevenue!]
-  companyRevenues:[InsuranceRevenue!]
+  companyRevenues: [InsuranceRevenue!]
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
   myNotifications: [Notification!]
@@ -444,6 +444,7 @@ type Appointment {
   specialty: Specialty
   session: SessionDefinition
   user: User!
+  doctor: User!
   data: [AppointmentField!]
   notes: String
   businessNotes: String
@@ -620,13 +621,11 @@ type File {
 type ConfSession {
   name: String!
   price: Int!
-
 }
 
 input ConfSessionInput {
   name: String!
   price: Int!
-
 }
 
 type Session {

@@ -40,7 +40,6 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
     sessionId,
     ...rest
   } = appointment;
-  console.log(sessionId, 'jsssssssss');
   const appointments = await getDayAppointments(appointment.date, userId);
   if (
     !(
@@ -72,6 +71,11 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
           },
         },
         user: {
+          connect: {
+            id: creatorId,
+          },
+        },
+        doctor: {
           connect: {
             id: userId,
           },

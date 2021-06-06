@@ -38,6 +38,10 @@ export const LIST_APPOINTMENTS = gql`
         id
         name
       }
+      doctor{
+        id
+        name
+      }
       branch {
         id
         name
