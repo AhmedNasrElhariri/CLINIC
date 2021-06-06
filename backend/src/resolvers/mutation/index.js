@@ -81,3 +81,7 @@ export { default as addSessionDefinition } from './add-session-definition';
 export { default as editSessionDefinition } from './edit-session-definition';
 export { default as addBankDefinition } from './add-bank-definition';
 export { default as editBankDefinition } from './edit-bank-definition';
+export { default as addCompanyDefinition } from './add-company-definition';
+export { default as editCompanyDefinition } from './edit-company-definition';
+export { default as addCompanySessionDefinition } from './add-company-session-definition';
+export { default as editCompanySessionDefinition } from './edit-company-session-definition';

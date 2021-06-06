@@ -6,7 +6,7 @@ import {
   BankAccountingContainer,
   CRTabs,
 } from 'components';
-
+import BankInsuranceAccountingContainer from './banking-insurance';
 import Reports from '../reports';
 import PrintReports from '../print-reports';
 const ReportsContainer = () => {
@@ -16,7 +16,7 @@ const ReportsContainer = () => {
       <CRTabs>
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>Accounting</CRTabs.CRTab>
-          <CRTabs.CRTab>Bank Accounting</CRTabs.CRTab>
+          <CRTabs.CRTab>Bank and Insurance Accounting</CRTabs.CRTab>
           <CRTabs.CRTab>Statistics</CRTabs.CRTab>
           <CRTabs.CRTab>Reports</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
@@ -25,7 +25,7 @@ const ReportsContainer = () => {
             <AccountingContainer />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
-            <BankAccountingContainer />
+            <BankInsuranceAccountingContainer />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Reports />

@@ -79,6 +79,7 @@ export { default as MainContainer } from './layout/main-container';
 /******************     Accounting    *******************************/
 export { default as AccountingContainer } from './accounting/accounting-container';
 export { default as BankAccountingContainer } from './bank-accounting/accounting-container';
+export { default as InsuranceAccountingContainer } from './insurance-accounting/accounting-container';
 
 /******************     Permissions    *******************************/
 // export { default as UserPermissions } from './permissions/user-permissions';

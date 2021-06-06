@@ -6,12 +6,17 @@ import styled from 'styled-components';
 import { CRModal, Div } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
-import { useConfigurations } from 'hooks';
+import { useConfigurations, useCompanySessionDefinition } from 'hooks';
 import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 
 const initValue = {
   sessions: [],
   items: [],
+};
+const initlOption = {
+  option: '',
+  amount: 0,
+  payMethod: 'cash',
 };
 
 const StepsDev = styled.div`
@@ -24,6 +29,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
   const [bank, setBank] = useState(null);
+  const [company, setCompany] = useState(null);
+  const [option, setOption] = useState(initlOption);
   const value = useRef(initValue);
   const { sessions } = useConfigurations();
   const { data } = useQuery(GET_INVOICE_COUNTER, {
@@ -44,10 +51,11 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     if (activeStep !== 1) {
       setActiveStep(activeStep + 1);
     } else {
-      onOk({ ...value.current, discount, others, bank });
+      onOk({ ...value.current, discount, others, bank, company, option });
       setBank(null);
+      setCompany(null);
     }
-  }, [activeStep, onOk, discount, others, bank]);
+  }, [activeStep, onOk, discount, others, bank, company, option]);
 
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
@@ -59,7 +67,23 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     () => (activeStep === 0 ? 'Next' : 'Ok'),
     [activeStep]
   );
-
+  const { companysSessionDefinition } = useCompanySessionDefinition({});
+  const companySessions = useMemo(
+    () => companysSessionDefinition.filter(s => s.company.id === company),
+    [company]
+  );
+  const updatedCompanySessions = companySessions.map(cS => {
+    return {
+      name: cS.name,
+      price: cS.price,
+    };
+  });
+  let updatedSessions = [];
+  if (company != null) {
+    updatedSessions = updatedCompanySessions;
+  } else {
+    updatedSessions = sessions;
+  }
   return (
     <CRModal
       show={show}
@@ -87,10 +111,14 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
             others={others}
             bank={bank}
             setBank={setBank}
+            company={company}
+            setCompany={setCompany}
             onOthersChange={setOthers}
             onDiscountChange={setDiscount}
             appointment={appointment}
-            sessions={sessions}
+            option={option}
+            setOption={setOption}
+            sessions={updatedSessions}
             organization={organization}
             handleOk={handleOk}
             onCancel={handleCancel}

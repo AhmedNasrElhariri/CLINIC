@@ -36,3 +36,6 @@ export { default as useSales } from './sales';
 export { default as useSessionDefinition } from './sessions-definition';
 export { default as useBankDefinition } from './banks-definition';
 export { default as useBankAccounting } from './bank-accounting';
+export { default as useCompanyDefinition } from './company-definition';
+export { default as useCompanySessionDefinition } from './company-session-definition';
+export { default as useInsuranceAccounting } from './company-accounting';

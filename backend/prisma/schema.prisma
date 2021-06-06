@@ -122,32 +122,34 @@ enum PermissionAction {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id                String              @id @default(uuid())
-  name              String
-  invoiceCounter    Int                 @default(1)
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @default(now()) @updatedAt
-  item              Item[]
-  hospital          Hospital[]
-  surgeries         Surgery[]
-  patientSurgeries  PatientSurgery[]
-  roles             PermissionRole[]
-  permissions       Permission[]
-  rules             Rule[]
-  configurations    Configuration?
-  branches          Branch[]
-  specialties       Specialty[]
-  users             User[]
-  userSpecialties   UserSpecialty[]
-  patients          Patient[]
-  inventoryItems    InventoryItem[]
-  inventoryHistory  InventoryHistory[]
-  Payroll           Payroll[]
-  SessionDefinition SessionDefinition[]
-  SalesDefinition   SalesDefinition[]
-  Sales             Sales[]
-  CourseDefinition  CourseDefinition[]
-  BankDefinition    BankDefinition[]
+  id                       String                     @id @default(uuid())
+  name                     String
+  invoiceCounter           Int                        @default(1)
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @default(now()) @updatedAt
+  item                     Item[]
+  hospital                 Hospital[]
+  surgeries                Surgery[]
+  patientSurgeries         PatientSurgery[]
+  roles                    PermissionRole[]
+  permissions              Permission[]
+  rules                    Rule[]
+  configurations           Configuration?
+  branches                 Branch[]
+  specialties              Specialty[]
+  users                    User[]
+  userSpecialties          UserSpecialty[]
+  patients                 Patient[]
+  inventoryItems           InventoryItem[]
+  inventoryHistory         InventoryHistory[]
+  Payroll                  Payroll[]
+  SessionDefinition        SessionDefinition[]
+  SalesDefinition          SalesDefinition[]
+  Sales                    Sales[]
+  CourseDefinition         CourseDefinition[]
+  BankDefinition           BankDefinition[]
+  CompanyDefinition        CompanyDefinition[]
+  CompanySessionDefinition CompanySessionDefinition[]
 }
 
 model User {
@@ -188,6 +190,7 @@ model User {
   users               Course[]             @relation("user")
   doctors             Course[]             @relation("doctor")
   BankRevenue         BankRevenue[]
+  InsuranceRevenue    InsuranceRevenue[]
 }
 
 model Patient {
@@ -535,6 +538,20 @@ model BankRevenue {
   bankId    String
 }
 
+model InsuranceRevenue {
+  id        String            @id @default(uuid())
+  name      String
+  date      DateTime
+  amount    Int
+  invoiceNo String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @default(now()) @updatedAt
+  user      User              @relation(fields: [userId], references: [id])
+  userId    String
+  company   CompanyDefinition @relation(fields: [companyId], references: [id])
+  companyId String
+}
+
 model Notification {
   id         String   @id @default(uuid())
   notifierId String
@@ -681,6 +698,29 @@ model BankDefinition {
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
   BankRevenue    BankRevenue[]
+}
+
+model CompanyDefinition {
+  id                       String                     @id @default(uuid())
+  name                     String
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @default(now()) @updatedAt
+  organization             Organization               @relation(fields: [organizationId], references: [id])
+  organizationId           String
+  CompanySessionDefinition CompanySessionDefinition[]
+  InsuranceRevenue         InsuranceRevenue[]
+}
+
+model CompanySessionDefinition {
+  id             String            @id @default(uuid())
+  name           String
+  price          Int
+  company        CompanyDefinition @relation(fields: [companyId], references: [id])
+  companyId      String
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @default(now()) @updatedAt
+  organization   Organization      @relation(fields: [organizationId], references: [id])
+  organizationId String
 }
 
 model SalesDefinition {

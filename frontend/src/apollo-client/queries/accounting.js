@@ -40,6 +40,22 @@ export const LIST_BANK_REVENUES = gql`
   }
 `;
 
+export const LIST_COMPANY_REVENUES = gql`
+  query companyRevenues{
+    companyRevenues {
+      id
+      name
+      amount
+      company{
+        id
+        name
+      }
+      date
+      invoiceNo
+    }
+  }
+`;
+
 export const CREATE_EXPENSE = gql`
   mutation createExpense($expense: ExpenseInput!) {
     createExpense(expense: $expense) {

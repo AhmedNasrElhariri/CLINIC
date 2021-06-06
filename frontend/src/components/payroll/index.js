@@ -201,6 +201,7 @@ function Payroll() {
     });
     close();
   }, [addPayroll, checkedPayLipsUsers]);
+  console.log(payslips,'slslslsl');
   return (
     <>
       <MainContainer

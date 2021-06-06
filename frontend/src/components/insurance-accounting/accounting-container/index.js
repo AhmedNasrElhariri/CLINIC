@@ -1,11 +1,12 @@
-import React, { useState,useMemo } from 'react';
-
+import React, { useState, useCallback, useMemo } from 'react';
+import { useMutation } from '@apollo/client';
+import { Alert } from 'rsuite';
 import * as R from 'ramda';
-import { MainContainer, Div, CRCard,  H6 } from 'components';
+import { MainContainer, Div, CRCard, CRButton, H6 } from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../../accounting/profit';
-import { useBankAccounting, useAuth } from 'hooks';
+import { useInsuranceAccounting, useAuth } from 'hooks';
 import Filter from './filter';
 
 import { ACCOUNTING_VIEWS } from 'utils/constants';
@@ -14,21 +15,21 @@ import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initialval = {
-  bank: '',
+  company: '',
 };
 const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
 
-  const { revenues, timeFrame } = useBankAccounting({
+  const { revenues, timeFrame } = useInsuranceAccounting({
     view,
     period,
   });
   const updatedRevenues = useMemo(
     () =>
       revenues.filter(r =>
-        r.bank.name.toLowerCase().includes(filter.bank.toLowerCase())
+        r.company.name.toLowerCase().includes(filter.company.toLowerCase())
       ),
     [filter, revenues]
   );
@@ -36,15 +37,18 @@ const BankAccountingContainer = () => {
     () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
     [updatedRevenues]
   );
-
+  console.log(updatedRevenues);
   return (
     <>
       <MainContainer
-        title="Banking"
+        title="Insurance"
         more={
           <Div display="flex">
             <Div ml={1}>
-              <PdfView data={{ revenues:updatedRevenues, expenses: [] }} period={timeFrame} />
+              <PdfView
+                data={{ revenues: updatedRevenues, expenses: [] }}
+                period={timeFrame}
+              />
             </Div>
           </Div>
         }
@@ -68,7 +72,7 @@ const BankAccountingContainer = () => {
         <Div>
           <Div display="flex">
             <Div flexGrow={1} mr={2}>
-              <ListData title="Banking Revenues" data={updatedRevenues} />
+              <ListData title="Insurance Revenues" data={updatedRevenues} />
             </Div>
           </Div>
         </Div>

@@ -43,11 +43,13 @@ const PdfTable = ({ data }) => (
   <Table data={data}>
     <TableHeader>
       <TableCell weighting={0.6}>Name</TableCell>
+      <TableCell weighting={0.6}>Bank Name</TableCell>
       <TableCell weighting={0.2}>Amount</TableCell>
       <TableCell weighting={0.2}>Date</TableCell>
     </TableHeader>
     <TableBody>
       <DataTableCell getContent={r => r.name} weighting={0.6} />
+      <DataTableCell getContent={r => r.bank.name} weighting={0.6} />
       <DataTableCell getContent={r => r.amount} weighting={0.2} />
       <DataTableCell getContent={r => formatDate(r.date)} weighting={0.2} />
     </TableBody>
@@ -70,9 +72,6 @@ const PdfDocument = ({ period, data: { revenues, expenses } }) => {
             Revenues = {calculateTotal(revenues)}
           </Text>
           <Text style={styles.header}>
-            Expenses = {calculateTotal(expenses)}
-          </Text>
-          <Text style={styles.header}>
             Profit = {calculateTotal(revenues) - calculateTotal(expenses)}
           </Text>
         </View>
@@ -81,10 +80,6 @@ const PdfDocument = ({ period, data: { revenues, expenses } }) => {
           <View style={styles.section}>
             <Text>Revenue</Text>
             <PdfTable data={revenues} />
-          </View>
-          <View style={styles.section}>
-            <Text>Expenses</Text>
-            <PdfTable data={expenses} />
           </View>
         </View>
       </Page>

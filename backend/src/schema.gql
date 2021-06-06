@@ -107,6 +107,7 @@ type Query {
   expenses: [Expense!]
   revenues: [Revenue!]
   bankRevenues: [BankRevenue!]
+  companyRevenues:[InsuranceRevenue!]
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
   myNotifications: [Notification!]
@@ -124,6 +125,8 @@ type Query {
   myImagesDefinition: [ImageDefinition!]
   mySessionsDefinition: [SessionDefinition!]
   myBanksDefinition: [BankDefinition!]
+  myCompanysDefinition: [CompanyDefinition!]
+  myCompanysSessionDefinition: [CompanySessionDefinition!]
   mySalesesDefinition: [SalesDefinition!]
   mySaleses: [Sales!]
   myCoursesDefinition: [CourseDefinition!]
@@ -168,6 +171,8 @@ type Mutation {
     discount: Int
     others: Int
     bank: ID
+    company: ID
+    option: optionInput!
   ): Appointment!
   createView(view: ViewInput!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
@@ -221,6 +226,18 @@ type Mutation {
   ): SessionDefinition
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
+  addCompanyDefinition(
+    companyDefinition: CompanyInputDefinition!
+  ): CompanyDefinition
+  editCompanyDefinition(
+    companyDefinition: CompanyInputDefinition!
+  ): CompanyDefinition
+  addCompanySessionDefinition(
+    companySessionDefinition: CompanySessionInputDefinition!
+  ): CompanySessionDefinition
+  editCompanySessionDefinition(
+    companySessionDefinition: CompanySessionInputDefinition!
+  ): CompanySessionDefinition
   addImageCategory(imageCategory: ImageInputCategory!): ImageCategory
   editImageCategory(imageCategory: ImageInputCategory!): ImageCategory
   addMedicineDefinition(
@@ -371,13 +388,13 @@ input UserInput {
 
 type Configuration {
   id: ID!
-  sessions: [Session!]
+  sessions: [ConfSession!]
   enableInvoiceCounter: Boolean!
 }
 
 input ConfigurationInput {
   id: ID
-  sessions: [SessionInput!]
+  sessions: [ConfSessionInput!]
   enableInvoiceCounter: Boolean!
 }
 
@@ -600,6 +617,18 @@ type File {
   url: String
 }
 
+type ConfSession {
+  name: String!
+  price: Int!
+
+}
+
+input ConfSessionInput {
+  name: String!
+  price: Int!
+
+}
+
 type Session {
   name: String!
   price: Int!
@@ -610,6 +639,12 @@ input SessionInput {
   name: String!
   price: Int!
   number: Int!
+}
+
+input optionInput {
+  option: String
+  payMethod: String!
+  amount: Int
 }
 
 type CourseSessions {
@@ -793,6 +828,15 @@ type BankRevenue {
   date: Date!
   invoiceNo: String
   bank: BankDefinition!
+}
+
+type InsuranceRevenue {
+  id: ID!
+  name: String!
+  amount: Int!
+  date: Date!
+  invoiceNo: String
+  company: CompanyDefinition!
 }
 
 input RevenueInput {
@@ -1002,6 +1046,34 @@ type BankDefinition {
 
 input BankInputDefinition {
   id: ID
+  name: String!
+}
+
+########################### Company Definition ##################################
+
+type CompanyDefinition {
+  id: ID!
+  name: String!
+}
+
+input CompanyInputDefinition {
+  id: ID
+  name: String!
+}
+
+########################### Company Definition ##################################
+
+type CompanySessionDefinition {
+  id: ID!
+  company: CompanyDefinition
+  name: String!
+  price: Int!
+}
+
+input CompanySessionInputDefinition {
+  id: ID
+  companyId: ID!
+  price: Int!
   name: String!
 }
 

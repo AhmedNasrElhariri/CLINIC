@@ -100,7 +100,7 @@ function TodayAppointments() {
     [open]
   );
   const handleArchive = useCallback(
-    ({ sessions, items, discount, others, bank }) => {
+    ({ sessions, items, discount, others, bank, company, option }) => {
       close();
       archive({
         variables: {
@@ -117,6 +117,8 @@ function TodayAppointments() {
           discount,
           others,
           bank,
+          company,
+          option,
         },
       });
     },

@@ -57,3 +57,6 @@ export { default as getPulseControl } from './get-pulse-control';
 export { default as mySessionsDefinition } from './get-sessions-definition';
 export { default as myBanksDefinition } from './get-banks-definition';
 export { default as bankRevenues } from './bank-revenues';
+export { default as myCompanysDefinition } from './get-companys-definition';
+export { default as myCompanysSessionDefinition } from './get-companys-session-definition';
+export { default as companyRevenues } from './company-revenues';

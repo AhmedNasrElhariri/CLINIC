@@ -30,3 +30,9 @@ export const createAppointmentBankRevenueFromSessions = (
     bankId: bank,
   }));
 };
+
+// export const createAppointmentCompanyRevenue = async data => {
+//   return prisma.bankRevenue.createMany({ data });
+// };
+
+
