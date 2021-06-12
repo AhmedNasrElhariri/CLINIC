@@ -12,6 +12,8 @@ import { usePatients } from 'hooks';
 const initialValues = {
   name: '',
   phoneNo: '',
+  area:'',
+  reference:[],
   age: '',
   type: null,
   guardianName: '',
@@ -19,6 +21,7 @@ const initialValues = {
 
 export default function NewPatient({ show, onHide }) {
   const [formValue, setFormValue] = useState(initialValues);
+  console.log(formValue);
   const { patients, updateCache } = usePatients();
   const [createPatient, { loading }] = useMutation(CREATE_PATIENT, {
     update(cache, { data: { createPatient: patient } }) {

@@ -7,6 +7,8 @@ export const CREATE_PATIENT = gql`
       name
       type
       phoneNo
+      reference
+      area
     }
   }
 `;
@@ -20,6 +22,8 @@ export const EDIT_PATIENT = gql`
       phoneNo
       sex
       age
+      reference
+      area
     }
   }
 `;
@@ -33,6 +37,8 @@ export const LIST_PATIENTS = gql`
       phoneNo
       sex
       age
+      reference
+      area
     }
   }
 `;

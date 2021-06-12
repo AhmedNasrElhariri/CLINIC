@@ -9,11 +9,15 @@ import {
   ADD_PAYROLL_TRANSACTION,
   LIST_USER_TRANSACTIONS,
   ADD_PAY_ROLL,
+  LIST_USERS,
   DELETE_PAYROLL_USER,
   PAYSLIPS,
+  TRANSCTION_COURSES_TIMEFRAME,
+  TRANSCTION_REVENUES_TIMEFRAME,
+  USER_COURSE_PAYMENT,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
-function usePayroll({ userId } = {}) {
+function usePayroll({ userId,period } = {}) {
   const updateTransactionsCache = userTransactions => {
     client.writeQuery({
       query: LIST_USER_TRANSACTIONS,
@@ -34,13 +38,42 @@ function usePayroll({ userId } = {}) {
       )(data),
     [data]
   );
+  const { data: OrgUsers } = useQuery(LIST_USERS);
+  const organizationusers = useMemo(
+    () => R.propOr([], 'listUsers')(OrgUsers),
+    [OrgUsers]
+  );
   const { data: payslipsData } = useQuery(PAYSLIPS);
-  const payslips = useMemo(() => R.propOr([], 'payslips')(payslipsData), [
-    payslipsData,
-  ]);
+  const payslips = useMemo(
+    () => R.propOr([], 'payslips')(payslipsData),
+    [payslipsData]
+  );
   const { data: transactionData } = useQuery(LIST_USER_TRANSACTIONS, {
     variables: { userId },
   });
+  const { data: coursePaymentData } = useQuery(USER_COURSE_PAYMENT, {
+    variables: { userId, period },
+  });
+  const userCoursesPayment = useMemo(
+    () => R.propOr([], 'userCoursePayment')(coursePaymentData),
+    [coursePaymentData]
+  );
+  const { data: transctionCoursesTimeFrame } = useQuery(TRANSCTION_COURSES_TIMEFRAME, {
+    variables: { userId },
+  });
+  const lastTransactionDate = useMemo(
+    () => R.propOr({}, 'transactionCoursesTimeFrame')(transctionCoursesTimeFrame),
+    [transctionCoursesTimeFrame]
+  );
+
+  const { data: transctionRevenuesTimeFrame } = useQuery(TRANSCTION_REVENUES_TIMEFRAME, {
+    variables: { userId },
+  });
+  const lastTransactionRevenueDate = useMemo(
+    () => R.propOr({}, 'transactionRevenuesTimeFrame')(transctionRevenuesTimeFrame),
+    [transctionRevenuesTimeFrame]
+  );
+
   const userTransactions = useMemo(
     () => R.propOr([], 'userTransactions')(transactionData),
     [transactionData]
@@ -91,7 +124,11 @@ function usePayroll({ userId } = {}) {
       payrollUsers,
       payslips,
       addTransaction,
+      organizationusers,
       userTransactions,
+      userCoursesPayment,
+      lastTransactionDate,
+      lastTransactionRevenueDate,
       addPayroll,
       deleteUser,
     }),
@@ -101,6 +138,10 @@ function usePayroll({ userId } = {}) {
       payslips,
       addTransaction,
       userTransactions,
+      organizationusers,
+      userCoursesPayment,
+      lastTransactionDate,
+      lastTransactionRevenueDate,
       addPayroll,
       deleteUser,
     ]

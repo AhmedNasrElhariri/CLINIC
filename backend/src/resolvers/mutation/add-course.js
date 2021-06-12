@@ -57,6 +57,11 @@ const addCourse = async (_, { course }, { userId }) => {
           },
           user: {
             connect: {
+              id: userId,
+            },
+          },
+          doctor: {
+            connect: {
               id: doctorId,
             },
           },
@@ -67,6 +72,22 @@ const addCourse = async (_, { course }, { userId }) => {
     include: {
       courseDefinition: true,
       patient: true,
+    },
+  });
+  await prisma.coursePayment.create({
+    data: {
+      payment: paid,
+      date: new Date(),
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+      course: {
+        connect: {
+          id: courseDef.id,
+        },
+      },
     },
   });
   const payment =

@@ -6,7 +6,7 @@ const addTransaction = async (
   { payrollTransaction },
   { organizationId }
 ) => {
-  let { userId, amount, type,reason } = payrollTransaction;
+  let { userId, amount, type, reason, periodTime, option } = payrollTransaction;
   let payrollId = '';
   if (type === 'Advance' || type === 'Deduction') {
     amount = amount * -1;
@@ -33,11 +33,45 @@ const addTransaction = async (
       },
     });
     payrollId = payroll.id;
+    if (periodTime.length > 0 && option === 'courses') {
+      const TimeFramedate = periodTime[1];
+      await prisma.transactionCoursesTimeFrame.upsert({
+        where: {
+          payrollUserId: userId,
+        },
+        update: { date: TimeFramedate },
+        create: {
+          date: TimeFramedate,
+          payrollUser: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+    }
+    if (periodTime.length > 0 && option === 'percentage') {
+      const TimeFramedate = periodTime[1];
+      await prisma.transactionRevenuesTimeFrame.upsert({
+        where: {
+          payrollUserId: userId,
+        },
+        update: { date: TimeFramedate },
+        create: {
+          date: TimeFramedate,
+          payrollUser: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+    }
     return prisma.payrollTransaction.create({
       data: {
         amount: amount,
         type: type,
-        reason:reason,
+        reason: reason,
         date: new Date(),
         payrollUser: {
           connect: {
@@ -53,11 +87,45 @@ const addTransaction = async (
     });
   } else {
     payrollId = payrollRow[0].id;
+    if (periodTime.length > 0 && option === 'courses') {
+      const TimeFramedate = periodTime[1];
+      await prisma.transactionCoursesTimeFrame.upsert({
+        where: {
+          payrollUserId: userId,
+        },
+        update: { date: TimeFramedate },
+        create: {
+          date: TimeFramedate,
+          payrollUser: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+    }
+    if (periodTime.length > 0 && option === 'percentage') {
+      const TimeFramedate = periodTime[1];
+      await prisma.transactionRevenuesTimeFrame.upsert({
+        where: {
+          payrollUserId: userId,
+        },
+        update: { date: TimeFramedate },
+        create: {
+          date: TimeFramedate,
+          payrollUser: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+    }
     return prisma.payrollTransaction.create({
       data: {
         amount: amount,
         type: type,
-        reason:reason,
+        reason: reason,
         date: new Date(),
         payrollUser: {
           connect: {

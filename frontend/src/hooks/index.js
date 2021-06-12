@@ -39,3 +39,4 @@ export { default as useBankAccounting } from './bank-accounting';
 export { default as useCompanyDefinition } from './company-definition';
 export { default as useCompanySessionDefinition } from './company-session-definition';
 export { default as useInsuranceAccounting } from './company-accounting';
+export { default as useExpenseTypeDefinition } from './expense-type-definition';

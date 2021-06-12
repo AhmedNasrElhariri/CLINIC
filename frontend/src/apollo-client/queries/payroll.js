@@ -5,7 +5,11 @@ export const LIST_PAY_ROLL_USERS = gql`
     payrollUsers {
       id
       salary
-      name
+      user {
+        id
+        name
+        position
+      }
     }
   }
 `;
@@ -31,6 +35,34 @@ export const LIST_USER_TRANSACTIONS = gql`
       payrollUser {
         salary
       }
+    }
+  }
+`;
+
+export const USER_COURSE_PAYMENT = gql`
+  query userCoursePayment($userId: ID!, $period: [String!]) {
+    userCoursePayment(userId: $userId, period: $period) {
+      id
+      payment
+      date
+    }
+  }
+`;
+
+export const TRANSCTION_COURSES_TIMEFRAME = gql`
+  query transactionCoursesTimeFrame($userId: ID!) {
+    transactionCoursesTimeFrame(userId: $userId) {
+      id
+      date
+    }
+  }
+`;
+
+export const TRANSCTION_REVENUES_TIMEFRAME = gql`
+  query transactionRevenuesTimeFrame($userId: ID!) {
+    transactionRevenuesTimeFrame(userId: $userId) {
+      id
+      date
     }
   }
 `;

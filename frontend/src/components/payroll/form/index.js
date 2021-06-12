@@ -1,10 +1,11 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form, Schema } from 'rsuite';
-import { CRModal, CRNumberInput, CRSelectInput, CRRadio ,CRLabel} from 'components';
+import { CRModal, CRNumberInput, CRSelectInput, CRRadio } from 'components';
+import { usePayroll } from 'hooks';
 import styled from 'styled-components';
-import { InputNumber } from 'rsuite';
 import { CRTextInput } from 'components/widgets';
 import Toolbar from './toolbar';
+import CourseToolbar from './toolbar-courses';
 const { StringType, NumberType } = Schema.Types;
 
 const DeleteMessage = styled.div`
@@ -21,7 +22,8 @@ const DeleteMessage = styled.div`
 const options = [
   { name: 'Amount Only', value: 'amount' },
   { name: 'Percentage of Revenue', value: 'percentage' },
-  { name: 'hours', value: 'hours' },
+  { name: 'Hours', value: 'hours' },
+  { name: 'Courses', value: 'courses' },
 ];
 const options2 = [
   { name: 'Profit', value: 'profit' },
@@ -43,6 +45,10 @@ export const usePayrollForm = ({
   setFormValue,
   type,
   payrollUsers,
+  lastDay,
+  lastRevenueDay,
+  period,
+  setPeriod,
   payslips,
 }) => {
   const [visible, setVisible] = useState(false);
@@ -74,7 +80,11 @@ export const usePayrollForm = ({
     onOk,
     type,
     payrollUsers,
+    period,
+    setPeriod,
     payslips,
+    lastDay,
+    lastRevenueDay,
     onCancel,
     onChange: setFormValue,
     model,
@@ -88,14 +98,23 @@ const PayrollForm = ({
   formValue,
   onChange,
   header,
+  lastDay,
+  lastRevenueDay,
+  period,
+  setPeriod,
   model,
   type,
   payrollUsers,
-  payslips,
   close,
 }) => {
   const ref = useRef();
-
+  const { organizationusers } = usePayroll({});
+  const updatedPayrollUsers = payrollUsers?.map(u => {
+    return {
+      id: u.id,
+      name: u.user.name,
+    };
+  });
   return (
     <CRModal
       show={visible}
@@ -120,7 +139,13 @@ const PayrollForm = ({
           </DeleteMessage>
         ) : type === 'addNewUser' ? (
           <>
-            <CRTextInput label="name" name="name" block></CRTextInput>
+            <CRSelectInput
+              label="User"
+              name="orgUserId"
+              placeholder="Select User"
+              block
+              data={organizationusers}
+            />
             <CRNumberInput label="Salary" name="salary" block></CRNumberInput>
           </>
         ) : (
@@ -130,7 +155,7 @@ const PayrollForm = ({
               name="userId"
               placeholder="Select User"
               block
-              data={payrollUsers}
+              data={updatedPayrollUsers}
             />
             <CRTextInput label="Reason" name="reason" block></CRTextInput>
             <CRRadio
@@ -179,12 +204,21 @@ const PayrollForm = ({
                   label="Select one Choice"
                   name="choice"
                   options={options2}
-                  style={{marginBottom:'10px'}}
+                  style={{ marginBottom: '10px' }}
                 />
                 <Toolbar
-                  activeKey={formValue.view}
-                  onSelect={val => onChange({ ...formValue, view: val })}
+                  onChangePeriod={setPeriod}
+                  lastTimeFrameDay={lastRevenueDay}
                 />
+              </>
+            ) : formValue.option === 'courses' ? (
+              <>
+                <CRNumberInput
+                  label="Percentage from 0 - 100"
+                  name="percentage"
+                  block
+                ></CRNumberInput>
+                <CourseToolbar onChangePeriod={setPeriod} lastTimeFrameDay={lastDay}/>
               </>
             ) : (
               <></>

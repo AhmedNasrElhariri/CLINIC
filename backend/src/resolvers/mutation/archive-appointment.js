@@ -150,7 +150,10 @@ const archiveAppointment = async (
     });
   }
   if (discount) {
-    await createAppointmentExpense(userId, discount);
+    await createAppointmentExpense(
+      userId,
+      discount,
+    );
   }
 
   await updatedUsedMaterials(organizationId, items);

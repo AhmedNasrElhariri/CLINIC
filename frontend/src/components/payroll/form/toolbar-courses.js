@@ -3,8 +3,7 @@ import moment from 'moment';
 import { Div, CRDateRangePicker } from 'components';
 import { DateRangePicker ,Form} from 'rsuite';
 const { allowedRange } = DateRangePicker;
-const Toolbar = ({ onChangePeriod ,lastTimeFrameDay}) => {
-  console.log(lastTimeFrameDay,'in');
+const Toolbar = ({ onChangePeriod, lastTimeFrameDay }) => {
   const startDayOfYear = moment().startOf('year').toDate();
   const lastDay = lastTimeFrameDay?.date || startDayOfYear;
   return (
@@ -28,6 +27,11 @@ const Toolbar = ({ onChangePeriod ,lastTimeFrameDay}) => {
   );
 };
 
-
+Toolbar.defaultProps = {
+  data: {
+    revenues: [],
+    expenses: [],
+  },
+};
 
 export default Toolbar;

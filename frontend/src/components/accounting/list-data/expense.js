@@ -15,7 +15,16 @@ const ListData = ({ title, data, onEdit, canEdit }) => {
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
-
+          <CRTable.CRColumn width={100}>
+            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ expenseType }) => (
+                <CRTable.CRCellStyled bold>
+                  {expenseType}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
         <CRTable.CRColumn width={100}>
           <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
           <CRTable.CRCell>

@@ -125,6 +125,7 @@ type Query {
   myImagesDefinition: [ImageDefinition!]
   mySessionsDefinition: [SessionDefinition!]
   myBanksDefinition: [BankDefinition!]
+  myExpenseTypesDefinition: [ExpenseTypeDefinition!]
   myCompanysDefinition: [CompanyDefinition!]
   myCompanysSessionDefinition: [CompanySessionDefinition!]
   mySalesesDefinition: [SalesDefinition!]
@@ -153,8 +154,12 @@ type Query {
   payrollUsers: [PayrollUser!]
   payslips: [Payslips!]
   userTransactions(userId: ID!): [PayrollTransaction!]
+  userCoursePayment(userId: ID!, period: [String!]): [CoursePayment!]
   pulseControl: PulseControl!
   appointmentsDayCount(date: Date!): AppointmentsDayCount!
+  coursePayments(courseId: ID!): [CoursePayment!]
+  transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
+  transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
 }
 
 ########################### Mutation ##################################
@@ -226,6 +231,12 @@ type Mutation {
   ): SessionDefinition
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
+  addExpenseTypeDefinition(
+    expenseTypeDefinition: ExpenseTypeInputDefinition!
+  ): ExpenseTypeDefinition
+  editExpenseTypeDefinition(
+    expenseTypeDefinition: ExpenseTypeInputDefinition!
+  ): ExpenseTypeDefinition
   addCompanyDefinition(
     companyDefinition: CompanyInputDefinition!
   ): CompanyDefinition
@@ -292,6 +303,18 @@ type AuthPayload {
 input UserLoginInput {
   email: String!
   password: String!
+}
+
+type TransctionCoursesTimeFrame {
+  id: ID!
+  date: Date!
+  payrollUser: PayrollUser!
+}
+
+type TransctionRevenuesTimeFrame {
+  id: ID!
+  date: Date!
+  payrollUser: PayrollUser!
 }
 
 ########################### User ##################################
@@ -417,8 +440,11 @@ type Patient implements Searchable {
   name: String!
   searchName: String!
   phoneNo: String!
+  reference: [String!]
+  area: String!
   age: Int!
   sex: Sex!
+
   appointments: [Appointment!]
 }
 
@@ -428,6 +454,8 @@ input PatientInput {
   phoneNo: String!
   age: Int!
   sex: Sex!
+  reference: [String]
+  area: String
   type: PatientMembershipType!
   guardianName: String
 }
@@ -710,7 +738,7 @@ input ImageInput {
 
 type PayrollUser {
   id: ID!
-  name: String!
+  user: User!
   salary: Int!
   netSalary: Int!
   organizationId: ID!
@@ -723,7 +751,7 @@ type Payslips {
 }
 
 input PayrollUserInput {
-  name: String!
+  userId: ID!
   salary: Int!
 }
 
@@ -752,6 +780,8 @@ input PayrollTransactionInput {
   userId: ID!
   amount: Int!
   reason: String
+  periodTime: [String]
+  option: String
   type: PayrollTransactionType!
 }
 
@@ -792,12 +822,14 @@ type Expense {
   name: String!
   amount: Int!
   date: Date!
+  expenseType: String!
   invoiceNo: String
 }
 
 input ExpenseInput {
   name: String!
   amount: Int!
+  expenseType: String!
   date: Date!
   invoiceNo: String
 }
@@ -1048,6 +1080,18 @@ input BankInputDefinition {
   name: String!
 }
 
+########################### ExpenseType Definition ##################################
+
+type ExpenseTypeDefinition {
+  id: ID!
+  name: String!
+}
+
+input ExpenseTypeInputDefinition {
+  id: ID
+  name: String!
+}
+
 ########################### Company Definition ##################################
 
 type CompanyDefinition {
@@ -1170,6 +1214,7 @@ type Course {
   status: CourseStatus!
   sessions: [Appointment!]
   patient: Patient!
+  user: User!
   doctor: User!
   courseDefinition: CourseDefinition!
 }
@@ -1183,6 +1228,14 @@ input CourseInput {
   courseDefinitionId: ID!
   doctorId: ID!
   sessions: [Date!]
+}
+
+type CoursePayment {
+  id: ID!
+  payment: Int!
+  date: Date!
+  user: User!
+  course: Course!
 }
 
 ########################### Patient Surgeries ##################################

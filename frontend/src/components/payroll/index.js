@@ -1,14 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-
-import {
-  Div,
-  MainContainer,
-  CRButton,
-  CRTable,
-  CRModal,
-  H4,
-  CRCheckBox,
-} from 'components';
+import { Div, MainContainer, CRButton, CRModal, H4 } from 'components';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import { CheckboxGroup, Checkbox } from 'rsuite';
 import PayrollForm, { usePayrollForm } from './form';
@@ -19,10 +10,10 @@ const initialPayrollusers = [];
 const initValue = {
   userId: '',
   salary: '',
+  orgUserId: null,
   name: '',
   amount: 0,
   option: 'amount',
-  view: ACCOUNTING_VIEWS.DAY,
   period: [],
   type: '',
   choice: 'revenue',
@@ -32,7 +23,12 @@ const initValue = {
   percentage: 0,
   payment: [],
 };
-const getAmount = (fv, totalRevenue, totalExpenses) => {
+const getAmount = (
+  fv,
+  totalRevenue,
+  totalExpenses,
+  totalUserPaymentCourses
+) => {
   let amount = 0;
   if (fv.option === 'hours') {
     amount = fv.hoursNumber * fv.hourPrice;
@@ -42,6 +38,8 @@ const getAmount = (fv, totalRevenue, totalExpenses) => {
     } else {
       amount = (totalRevenue - totalExpenses) * 0.01 * fv.percentage;
     }
+  } else if (fv.option === 'courses') {
+    amount = totalUserPaymentCourses * 0.01 * fv.percentage;
   } else {
     amount = fv.amount;
   }
@@ -51,6 +49,7 @@ const getAmount = (fv, totalRevenue, totalExpenses) => {
 function Payroll() {
   const [formValue, setFormValue] = useState(initValue);
   const { visible, open, close } = useModal();
+  const [period, setPeriod] = useState([]);
   const [checkedPayLipsUsers, setCheckPayLipsUsers] =
     useState(initialPayrollusers);
   const userId = formValue.userId;
@@ -61,22 +60,33 @@ function Payroll() {
     addTransaction,
     addPayroll,
     deleteUser,
-  } = usePayroll({ userId });
-  const view = formValue.view,
-    period = formValue.period;
+    lastTransactionDate,
+    lastTransactionRevenueDate,
+    userCoursesPayment,
+  } = usePayroll({ userId, period });
+  const view = ACCOUNTING_VIEWS.YEAR,
+    updatedPeriod = formValue.period;
   const { totalExpenses, totalRevenues } = useAccounting({
     view,
     period,
   });
+  const totalUserPaymentCourses = useMemo(
+    () => userCoursesPayment.reduce((acc, e) => acc + e.payment, 0),
+    [userCoursesPayment]
+  );
   const amount = useMemo(
-    () => getAmount(formValue, totalRevenues, totalExpenses),
-    [
-      formValue
-    ]
+    () =>
+      getAmount(
+        formValue,
+        totalRevenues,
+        totalExpenses,
+        totalUserPaymentCourses
+      ),
+    [formValue, totalUserPaymentCourses]
   );
   const handleAddUser = useCallback(() => {
     const updatedFormValue = {
-      name: formValue.name,
+      userId: formValue.orgUserId,
       salary: formValue.salary,
     };
     addPayrollUser({
@@ -89,6 +99,8 @@ function Payroll() {
     const updatedFormValue = {
       userId: formValue.userId,
       amount: amount,
+      periodTime: period,
+      option: formValue.option,
       reason: formValue.reason,
       type: 'Advance',
     };
@@ -97,13 +109,14 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.userId]);
-
+  }, [addTransaction, amount, formValue.userId, period]);
   const handleAddCommision = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
       amount: amount,
       reason: formValue.reason,
+      option: formValue.option,
+      periodTime: period,
       type: 'Commision',
     };
     addTransaction({
@@ -111,12 +124,14 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.userId]);
+  }, [addTransaction, amount, formValue.userId, period]);
   const handleAddIncentive = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
       amount: amount,
       reason: formValue.reason,
+      option: formValue.option,
+      periodTime: period,
       type: 'Incentive',
     };
     addTransaction({
@@ -124,12 +139,14 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.userId]);
+  }, [addTransaction, amount, formValue.userId, period]);
   const handleAddDeduction = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.userId,
       amount: amount,
       reason: formValue.reason,
+      option: formValue.option,
+      periodTime: period,
       type: 'Deduction',
     };
     addTransaction({
@@ -137,7 +154,7 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.userId]);
+  }, [addTransaction, amount, formValue.userId, period]);
   const deletePayrollUserFun = userId => {
     deleteUser({
       variables: {
@@ -151,22 +168,34 @@ function Payroll() {
     onOk: handleAddAdvance,
     formValue: formValue,
     type: 'Advance',
+    period: period,
+    lastDay: lastTransactionDate,
+    lastRevenueDay: lastTransactionRevenueDate,
+    setPeriod: setPeriod,
     setFormValue,
     payrollUsers,
   });
   const addIncentiveForm = usePayrollForm({
     header: 'Add Incentives',
     onOk: handleAddIncentive,
+    lastDay: lastTransactionDate,
+    lastRevenueDay: lastTransactionRevenueDate,
     type: 'Incentive',
     formValue: formValue,
+    period: period,
+    setPeriod: setPeriod,
     setFormValue,
     payrollUsers,
   });
   const addCommissionForm = usePayrollForm({
     header: 'Add Commission',
     onOk: handleAddCommision,
+    lastDay: lastTransactionDate,
+    lastRevenueDay: lastTransactionRevenueDate,
     formValue: formValue,
     type: 'Commision',
+    period: period,
+    setPeriod: setPeriod,
     setFormValue,
     payrollUsers,
   });
@@ -174,8 +203,12 @@ function Payroll() {
     header: 'Add Deduction',
     onOk: handleAddDeduction,
     type: 'Deduction',
+    lastDay: lastTransactionDate,
+    lastRevenueDay: lastTransactionRevenueDate,
     formValue: formValue,
     setFormValue,
+    period: period,
+    setPeriod: setPeriod,
     payrollUsers,
   });
   const deletePayrollUser = usePayrollForm({
@@ -183,6 +216,8 @@ function Payroll() {
     onOk: () => deletePayrollUserFun.handleDeleteUser,
     type: 'Delete',
     formValue: formValue,
+    period: period,
+    setPeriod: setPeriod,
     setFormValue,
     payrollUsers,
   });
@@ -190,6 +225,8 @@ function Payroll() {
     header: 'Add New User',
     onOk: handleAddUser,
     formValue: formValue,
+    period: period,
+    setPeriod: setPeriod,
     type: 'addNewUser',
     setFormValue,
   });
@@ -201,7 +238,6 @@ function Payroll() {
     });
     close();
   }, [addPayroll, checkedPayLipsUsers]);
-  console.log(payslips,'slslslsl');
   return (
     <>
       <MainContainer

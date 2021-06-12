@@ -6,6 +6,7 @@ export const LIST_EXPENSES = gql`
       id
       name
       amount
+      expenseType
       date
       invoiceNo
     }
@@ -103,3 +104,32 @@ export const UPDATE_REVENUE = gql`
     }
   }
 `;
+
+
+export const LIST_EXPENSE_TYPES_DEFINITION = gql`
+  {
+    myExpenseTypesDefinition {
+      id
+      name
+    }
+  }
+`;
+
+export const ADD_EXPENSE_TYPE_DEFINITION = gql`
+  mutation addExpenseTypeDefinition($expenseTypeDefinition: ExpenseTypeInputDefinition!) {
+    addExpenseTypeDefinition(expenseTypeDefinition: $expenseTypeDefinition) {
+      id
+      name
+    }
+  }
+`;
+
+export const EDIT_EXPENSE_TYPE_DEFINITION = gql`
+  mutation editExpenseTypeDefinition($expenseTypeDefinition: ExpenseTypeInputDefinition!) {
+    editExpenseTypeDefinition(expenseTypeDefinition: $expenseTypeDefinition) {
+      id
+      name
+    }
+  }
+`;
+

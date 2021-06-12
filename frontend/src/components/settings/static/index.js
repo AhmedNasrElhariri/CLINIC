@@ -16,6 +16,7 @@ import SessionsDefinition from './sessions-definition';
 import BanksDefinition from './banks-definition';
 import CompanysDefinition from './companys-definition';
 import CompanysSessions from './companys-sessions-definition';
+import ExpensesTypes from './expenses-types-definition';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -50,7 +51,8 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="13">
           Insurance Companies Sessions
         </CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="14">Patient Report</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="14">Expenses Types</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="15">Patient Report</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -83,6 +85,8 @@ function StaticSettings() {
               return <CompanysDefinition />;
             case '13':
               return <CompanysSessions />;
+            case '14':
+              return <ExpensesTypes />;
             default:
               return <PatientReport />;
           }

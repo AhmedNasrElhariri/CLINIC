@@ -85,3 +85,5 @@ export { default as addCompanyDefinition } from './add-company-definition';
 export { default as editCompanyDefinition } from './edit-company-definition';
 export { default as addCompanySessionDefinition } from './add-company-session-definition';
 export { default as editCompanySessionDefinition } from './edit-company-session-definition';
+export { default as addExpenseTypeDefinition } from './add-expense-type';
+export { default as editExpenseTypeDefinition } from './edit-expense-type';

@@ -40,7 +40,7 @@ export const EDIT_COURSE_DEFINITION = gql`
 `;
 
 export const LIST_COURSES = gql`
-  query($patientId: ID!) {
+  query ($patientId: ID!) {
     myCourses(patientId: $patientId) {
       id
       price
@@ -67,11 +67,15 @@ export const LIST_COURSES = gql`
         id
         name
       }
+      user {
+        id
+        name
+      }
     }
   }
 `;
 export const LIST_PATIENT_COURSES = gql`
-  query($patientId: ID!) {
+  query ($patientId: ID!) {
     myCourses(patientId: $patientId) {
       id
       courseDefinition {
@@ -93,6 +97,20 @@ export const LIST_PATIENT_COURSES = gql`
         price
         units
         messureOfUnits
+      }
+    }
+  }
+`;
+
+export const LIST_COURSE_PAYMENTS = gql`
+  query ($courseId: ID!) {
+    coursePayments(courseId: $courseId) {
+      id
+      payment
+      date
+      user{
+        id
+        name
       }
     }
   }
