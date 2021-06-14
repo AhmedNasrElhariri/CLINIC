@@ -56,7 +56,7 @@ function usePayroll({ userId,period } = {}) {
   });
   const userCoursesPayment = useMemo(
     () => R.propOr([], 'userCoursePayment')(coursePaymentData),
-    [coursePaymentData]
+    [coursePaymentData,period,userId]
   );
   const { data: transctionCoursesTimeFrame } = useQuery(TRANSCTION_COURSES_TIMEFRAME, {
     variables: { userId },

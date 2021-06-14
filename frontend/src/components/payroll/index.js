@@ -70,10 +70,12 @@ function Payroll() {
     view,
     period,
   });
+  
   const totalUserPaymentCourses = useMemo(
     () => userCoursesPayment.reduce((acc, e) => acc + e.payment, 0),
     [userCoursesPayment]
   );
+  
   const amount = useMemo(
     () =>
       getAmount(
@@ -82,7 +84,7 @@ function Payroll() {
         totalExpenses,
         totalUserPaymentCourses
       ),
-    [formValue, totalUserPaymentCourses]
+    [formValue, totalUserPaymentCourses, totalRevenues, totalExpenses]
   );
   const handleAddUser = useCallback(() => {
     const updatedFormValue = {
