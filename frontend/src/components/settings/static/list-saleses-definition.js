@@ -17,7 +17,7 @@ function ListSalesesDefinition({ saless, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Cost</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Unit Cost</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ cost }) => (
                 <CRTable.CRCellStyled bold>{cost}</CRTable.CRCellStyled>
@@ -25,10 +25,20 @@ function ListSalesesDefinition({ saless, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Price</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Unit Price</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price }) => (
                 <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Total Quantity</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ totalQuantity }) => (
+                <CRTable.CRCellStyled bold>
+                  {totalQuantity}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

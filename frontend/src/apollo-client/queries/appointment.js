@@ -50,10 +50,7 @@ export const LIST_APPOINTMENTS = gql`
         id
         name
       }
-      session {
-        id
-        name
-      }
+      session
     }
   }
 `;

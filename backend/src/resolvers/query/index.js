@@ -65,3 +65,4 @@ export { default as coursePayments } from './course-payments';
 export { default as myExpenseTypesDefinition } from './my-expense-type';
 export { default as transactionCoursesTimeFrame} from './transction-courses-timeFrame';
 export { default as transactionRevenuesTimeFrame} from './transction-revenues-timeFrame';
+export { default as areas} from './areas';

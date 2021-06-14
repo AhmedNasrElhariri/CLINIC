@@ -97,7 +97,7 @@ function ListAppointments({
           <CRTable.CRCell>
             {({ type, session }) => (
               <CRTable.CRCellStyled>
-                {type} {type === 'Session' ? session?.name : ''}
+                {type} {type === 'Session' ? session : ''}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>

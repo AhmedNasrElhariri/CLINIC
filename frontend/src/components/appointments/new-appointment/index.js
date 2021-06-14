@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox, Schema } from 'rsuite';
@@ -33,8 +33,9 @@ import {
   useNewAppointment,
   useModal,
   useCourses,
-  useSessionDefinition,
+  useConfigurations
 } from 'hooks';
+
 
 const { StringType, DateType } = Schema.Types;
 
@@ -87,15 +88,7 @@ const NewAppointment = ({ show, onHide }) => {
     name: course.courseDefinition.name,
     IDBTransaction: course.id,
   }));
-  const { sessionsDefinition } = useSessionDefinition({});
-  const updatedsessionsDefinition = sessionsDefinition.map(session => ({
-    name: session.name,
-    IDBTransaction: session.id,
-  }));
-  // const updatedSessionsDefinition = sessionsDefinition.map(session => ({
-  //   name: session.courseDefinition.name,
-  //   IDBTransaction: course.id,
-  // }));
+  const { sessions } = useConfigurations();
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).toDate() },
   });
@@ -130,7 +123,7 @@ const NewAppointment = ({ show, onHide }) => {
       branchId,
       specialtyId,
       waiting,
-      sessionId,
+      session,
     } = formValue;
 
     const timeDate = moment(formValue.time);
@@ -157,7 +150,7 @@ const NewAppointment = ({ show, onHide }) => {
       branchId,
       specialtyId,
       waiting,
-      sessionId,
+      session,
     });
   }, [createAppointment, formValue]);
   const specialties = useMemo(
@@ -292,10 +285,10 @@ const NewAppointment = ({ show, onHide }) => {
                 {formValue.type === 'Session' && (
                   <CRSelectInput
                     label="Session Name"
-                    name="sessionId"
-                    valueKey="IDBTransaction"
+                    name="session"
+                    valueKey="name"
                     block
-                    data={updatedsessionsDefinition}
+                    data={sessions}
                   />
                 )}
                 <CRDatePicker

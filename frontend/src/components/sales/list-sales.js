@@ -10,6 +10,14 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
       <CRCard borderless>
         <CRTable autoHeight data={saleses}>
           <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Number</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ date }, index) => (
+                <CRTable.CRCellStyled bold>{index + 1}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (
@@ -25,6 +33,16 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
               {({ salesDefinition }) => (
                 <CRTable.CRCellStyled bold>
                   {salesDefinition.name}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ user }) => (
+                <CRTable.CRCellStyled bold>
+                  {user.name}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

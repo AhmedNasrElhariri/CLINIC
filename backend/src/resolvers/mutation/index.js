@@ -87,3 +87,4 @@ export { default as addCompanySessionDefinition } from './add-company-session-de
 export { default as editCompanySessionDefinition } from './edit-company-session-definition';
 export { default as addExpenseTypeDefinition } from './add-expense-type';
 export { default as editExpenseTypeDefinition } from './edit-expense-type';
+export { default as addSalesDefinitionQuantity } from './add-sales-definition-quentity';

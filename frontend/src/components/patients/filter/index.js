@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { CRTextInput, Div, CRSelectInput } from 'components';
 import { Form } from 'rsuite';
 import * as R from 'ramda';
-import fetch from 'node-fetch';
-const getData = async () => {
-  const response = await fetch(
-    'https://parseapi.back4app.com/classes/Egyptcities_City?limit=10000&keys=name,cityId',
-    {
-      headers: {
-        'X-Parse-Application-Id': 'xuOlHpX8MZ1FEq09w2vzqgy4HCorRoFvSuylRfki', // This is your app's application id
-        'X-Parse-REST-API-Key': 'Th6myPQRCNvZ8xhJh3PC25MVKOrWSxn7VBMQXGSt', // This is your app's REST API key
-      },
-    }
-  );
-  const data = await response.json();
-  return data;
-};
+import { useQuery } from '@apollo/client';
+import { ALL_AREAS } from  'apollo-client/queries';
 const options = [
   { name: 'FaceBook', id: 'facebook' },
   { name: 'Instagram', id: 'instagram' },
@@ -25,22 +13,16 @@ const options = [
   { name: 'Another Doctor', id: 'another doctor' },
   { name: 'Others', id: 'others' },
   { name: 'Friends', id: 'friends' },
-  
 ];
 const PatientsFilter = ({ formValue, setFormValue }) => {
-  const [areas, setAreas] = useState([]);
-  useEffect(() => {
-    getData().then(result => {
-      const newResult = R.propOr([], 'results')(result);
-      const updatedData = newResult.map(d => {
-        return {
-          id: d.name,
-          name: d.name,
-        };
-      });
-      setAreas(updatedData);
-    });
-  }, []);
+  const { data } = useQuery(ALL_AREAS);
+  const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
+  const newAreas = areas.map(a => {
+    return {
+      id: a.city_name_ar,
+      name: a.city_name_ar,
+    };
+  });
   return (
     <Form
       style={{ width: 276, marginBottom: 64 }}
@@ -74,7 +56,7 @@ const PatientsFilter = ({ formValue, setFormValue }) => {
           <CRSelectInput
             label="Area"
             name="area"
-            data={areas}
+            data={newAreas}
             style={{ width: '300px' }}
           />
         </Div>

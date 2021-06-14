@@ -7,6 +7,7 @@ import {
   ADD_SALES_DEFINITION,
   EDIT_SALES_DEFINITION,
   LIST_SALESES_DEFINITION,
+  ADD_SALES_DEFINITION_QUENTITY
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -47,15 +48,25 @@ function useSalesDefinition({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Item');
     },
   });
+  const [addSalesDefinitionQuantity] = useMutation(ADD_SALES_DEFINITION_QUENTITY, {
+    onCompleted() {
+      Alert.success('the Quantity has been added Successfully');
+      onEdit && onEdit();
+    },
+    onError() {
+      Alert.error('Failed to add the quantity');
+    },
+  });
 
   return useMemo(
     () => ({
       salesesDefinition,
+      addSalesDefinitionQuantity,
       addSalesDefinition,
       editSalesDefinition,
       updateCache,
     }),
-    [salesesDefinition, addSalesDefinition, editSalesDefinition]
+    [salesesDefinition, addSalesDefinition, editSalesDefinition,addSalesDefinitionQuantity]
   );
 }
 

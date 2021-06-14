@@ -160,6 +160,7 @@ type Query {
   coursePayments(courseId: ID!): [CoursePayment!]
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
   transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
+  areas: [Area]
 }
 
 ########################### Mutation ##################################
@@ -288,7 +289,10 @@ type Mutation {
   updateNotes(id: ID!, notes: String!): Appointment!
   addSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
   editSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
-  addSales(sales: SalesInput!): Sales
+  addSalesDefinitionQuantity(
+    salesDefinition: SalesInputDefinition!
+  ): SalesDefinition
+  addSales(sales: [SalesItemsInput!]!): [Sales!]!
   editSales(sales: SalesInput!): Sales
   deleteSales(id: ID!): Sales
 }
@@ -470,7 +474,7 @@ type Appointment {
   patient: Patient!
   branch: Branch
   specialty: Specialty
-  session: SessionDefinition
+  session: String
   user: User!
   doctor: User!
   data: [AppointmentField!]
@@ -510,7 +514,7 @@ input AppointmentInput {
   userId: ID!
   branchId: ID
   specialtyId: ID
-  sessionId: ID
+  session: String
   notes: String
   courseId: ID
   waiting: Boolean
@@ -576,8 +580,13 @@ input PulseControlInput {
   before: Int!
   after: Int!
 }
+########################### Area ##################################
+type Area {
+  id: ID!
+  governorate_id: String!
+  city_name_ar: String!
+}
 ########################### views ##################################
-
 type View {
   id: ID!
   name: String
@@ -1125,6 +1134,7 @@ input CompanySessionInputDefinition {
 type SalesDefinition {
   id: ID!
   name: String!
+  totalQuantity: Int!
   price: Int!
   cost: Int!
 }
@@ -1132,6 +1142,8 @@ type SalesDefinition {
 input SalesInputDefinition {
   id: ID
   name: String!
+  quantity: Int
+  salesId: ID
   price: Int!
   cost: Int!
 }
@@ -1141,13 +1153,19 @@ type Sales {
   date: Date!
   salesDefinition: SalesDefinition!
   quantity: Int!
+  user: User!
   totalPrice: Int!
   totalCost: Int!
 }
 
 input SalesInput {
   id: ID
-  salesDefinitionId: ID!
+  items: ID!
+  quantity: Int!
+}
+
+input SalesItemsInput {
+  itemId: ID!
   quantity: Int!
 }
 

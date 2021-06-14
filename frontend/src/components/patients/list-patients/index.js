@@ -2,7 +2,6 @@ import React, { useState, useMemo, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import { MainContainer, CRTable, Div } from 'components';
-
 import PatientsFilter from '../filter/index';
 import EditPatient from '../edit-patient';
 import { CRButton, H3, H4, H5 } from 'components';
@@ -19,6 +18,7 @@ function Patients() {
   const [filter, setFilter] = useState(initialValue);
   const [currentPage, setCurrentPage] = useState(1);
   const { patients } = usePatients();
+  
   const updatedPatients = patients.map(p => {
     return { ...p, reference: p.reference.join(' ') };
   });

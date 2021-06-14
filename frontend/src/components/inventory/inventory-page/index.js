@@ -5,7 +5,7 @@ import { MainContainer, CRCard, CRNav } from 'components';
 import InventoryStatus from '../status';
 import InventoryHistory from '../history';
 import ItemsDefinitions from '../items-definitions';
-import { Can } from 'components/user/can';
+
 
 const tabs = [
   { name: 'Inventory', key: '0', component: InventoryStatus },

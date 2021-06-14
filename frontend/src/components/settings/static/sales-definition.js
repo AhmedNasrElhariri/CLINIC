@@ -8,7 +8,7 @@ import { useForm, useSalesDefinition } from 'hooks';
 
 import { useModal } from 'hooks';
 
-const initValue = { name: '', price: '',cost:'' };
+const initValue = { name: '', price: 0, cost: 0, quantity: 0, salesId: null };
 
 const SalesDefinition = () => {
   const { visible, open, close } = useModal();
@@ -19,6 +19,7 @@ const SalesDefinition = () => {
     addSalesDefinition,
     salesesDefinition,
     editSalesDefinition,
+    addSalesDefinitionQuantity,
   } = useSalesDefinition({
     onCreate: () => {
       close();
@@ -35,10 +36,15 @@ const SalesDefinition = () => {
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
+  const handleAddQuantity = useCallback(() => {
+    setType('addQuentity');
+    setFormValue(initValue);
+    open();
+  }, [open, setFormValue, setType]);
 
   const handleClickEdit = useCallback(
     data => {
-      const sales = R.pick(['id', 'name','price','cost'])(data);
+      const sales = R.pick(['id', 'name', 'price', 'cost'])(data);
       setType('edit');
       setFormValue(sales);
       open();
@@ -48,6 +54,12 @@ const SalesDefinition = () => {
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       addSalesDefinition({
+        variables: {
+          salesDefinition: formValue,
+        },
+      });
+    } else if (type === 'addQuentity') {
+      addSalesDefinitionQuantity({
         variables: {
           salesDefinition: formValue,
         },
@@ -66,6 +78,9 @@ const SalesDefinition = () => {
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
           Add New Sales Definition+
+        </CRButton>
+        <CRButton variant="primary" onClick={handleAddQuantity} mt={2} ml={1}>
+          Add Sales Quantity+
         </CRButton>
       </Div>
       <NewSalesDefinition

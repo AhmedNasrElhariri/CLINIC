@@ -1,6 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Form, SelectPicker, Schema } from 'rsuite';
+import React, { useMemo } from 'react';
+import { Form, Schema } from 'rsuite';
 import * as R from 'ramda';
+import { useQuery } from '@apollo/client';
+import { ALL_AREAS } from  'apollo-client/queries';
 import {
   CRSelectInput,
   CRTextInput,
@@ -8,20 +10,6 @@ import {
   ShowIf,
   CRCheckBoxGroup,
 } from 'components';
-const fetch = require('node-fetch');
-const getData = async () => {
-  const response = await fetch(
-    'https://parseapi.back4app.com/classes/Egyptcities_City?limit=10000&keys=name,cityId',
-    {
-      headers: {
-        'X-Parse-Application-Id': 'xuOlHpX8MZ1FEq09w2vzqgy4HCorRoFvSuylRfki', // This is your app's application id
-        'X-Parse-REST-API-Key': 'Th6myPQRCNvZ8xhJh3PC25MVKOrWSxn7VBMQXGSt', // This is your app's REST API key
-      },
-    }
-  );
-  const data = await response.json();
-  return data;
-};
 
 const membershipTypes = [
   { name: 'Primary', value: 'Primary' },
@@ -62,19 +50,14 @@ const isPrimary = ({ type }) => type === membershipTypes[0].value;
 const isSecondary = ({ type }) => type === membershipTypes[1].value;
 
 const NewPatient = ({ formValue, onChange }) => {
-  const [areas, setAreas] = useState([]);
-  useEffect(() => {
-    getData().then(result => {
-      const newResult = R.propOr([], 'results')(result);
-      const updatedData = newResult.map(d => {
-        return {
-          id: d.name,
-          name: d.name,
-        };
-      });
-      setAreas(updatedData);
-    });
-  }, []);
+  const { data } = useQuery(ALL_AREAS);
+  const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
+  const newAreas = areas.map(a => {
+    return {
+      id: a.city_name_ar,
+      name: a.city_name_ar,
+    };
+  });
   return (
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput
@@ -105,7 +88,7 @@ const NewPatient = ({ formValue, onChange }) => {
         data={SEX}
         block
       />
-      <CRSelectInput label="Area" name="area" data={areas} block />
+      <CRSelectInput label="Area" name="area" data={newAreas} block />
       <CRCheckBoxGroup
         label="Refernce"
         options={options}
