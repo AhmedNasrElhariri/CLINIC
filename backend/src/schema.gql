@@ -226,7 +226,7 @@ type Mutation {
   ): MedicineDefinition
   addPatientReport(patientReport: PatientReportInput!): PatientReport
   editPatientReport(patientReport: PatientReportInput!): PatientReport
-  createRole(role: RoleInput!): Role!
+  createOrUpdateRole(role: RoleInput!): Role!
   createBranch(branch: BranchInput!): Branch!
   createSpecialty(specialty: SpecialtyInput!): Specialty!
   createUser(user: UserInput!): User!
@@ -325,6 +325,7 @@ type Specialty {
 }
 
 input RoleInput {
+  id: ID
   name: String!
   permissions: [PermissionInput!]!
 }

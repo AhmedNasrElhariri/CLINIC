@@ -1,9 +1,9 @@
 import React from 'react';
-import { Tag } from 'rsuite';
+import { Tag, Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListAssigns({ data }) {
+function ListAssigns({ data, onEdit }) {
   return (
     <>
       <CRCard borderless>
@@ -20,6 +20,16 @@ function ListAssigns({ data }) {
                   {users.map((u, index) => (
                     <Tag key={index}>{u.name}</Tag>
                   ))}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Edit</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {(_, idx) => (
+                <CRTable.CRCellStyled>
+                  <Icon icon="edit" onClick={() => onEdit(idx)} />
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

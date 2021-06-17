@@ -17,6 +17,7 @@ import * as fromImage from './image';
 import * as fromCourse from './course';
 import * as fromPayroll from './payroll-user';
 import * as fromPayrollTransaction from './payroll-transaction';
+import * as fromPermission from './permission';
 
 export default {
   Query: fromQuery,
@@ -35,6 +36,7 @@ export default {
   Image: fromImage,
   PayrollUser: fromPayroll,
   PayrollTransaction: fromPayrollTransaction,
+  Permission: fromPermission,
   ...fromCustomResolvers,
   Course: fromCourse,
 };

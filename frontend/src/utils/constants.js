@@ -87,6 +87,11 @@ export const POSITIONS = Object.freeze({
   ASSISTANT: 'Assistant',
 });
 
+export const CRUD = Object.freeze({
+  CREATE: 'create',
+  EDIT: 'edit',
+});
+
 export const ALL_CHOICE = 'All';
 
 export const ACTIONS = Object.freeze({

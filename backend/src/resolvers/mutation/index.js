@@ -47,7 +47,7 @@ export { default as addMedicineDefinition } from './add-medicine-definition';
 export { default as editMedicineDefinition } from './edit-medicine-definition';
 export { default as addPatientReport } from './add-patient-report';
 export { default as editPatientReport } from './edit-patient-report';
-export { default as createRole } from './create-role';
+export { default as createOrUpdateRole } from './create-or-update-role';
 export { default as createBranch } from './create-branch';
 export { default as createSpecialty } from './create-specialty';
 export { default as createUser } from './create-user';

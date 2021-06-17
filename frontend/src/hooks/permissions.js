@@ -4,7 +4,7 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Alert } from 'rsuite';
 
 import {
-  CREATE_ROLE,
+  CREATE_OR_UPDATE_ROLE,
   LIST_BRANCHES,
   LIST_SPECIALTIES,
   LIST_USERS,
@@ -52,7 +52,7 @@ const updateUsersCache = (client, listUsers) => {
 const actions = convertActionsToEntities(Object.keys(ACTIONS));
 
 function usePermissions({
-  onCreateRole,
+  onCreateOrUpdateRole,
   onCreateBranch,
   onCreateSpecialty,
   onCreateUser,
@@ -61,9 +61,10 @@ function usePermissions({
   onAssignRoleToUser,
 } = {}) {
   const { data: branchesData } = useQuery(LIST_BRANCHES);
-  const branches = useMemo(() => R.propOr([], 'listBranches')(branchesData), [
-    branchesData,
-  ]);
+  const branches = useMemo(
+    () => R.propOr([], 'listBranches')(branchesData),
+    [branchesData]
+  );
 
   const { data: specialtiesData } = useQuery(LIST_SPECIALTIES);
   const specialties = useMemo(
@@ -72,26 +73,28 @@ function usePermissions({
   );
 
   const { data: usersData } = useQuery(LIST_USERS);
-  const users = useMemo(() => R.propOr([], 'listUsers')(usersData), [
-    usersData,
-  ]);
+  const users = useMemo(
+    () => R.propOr([], 'listUsers')(usersData),
+    [usersData]
+  );
   const doctors = useMemo(
     () => users.filter(u => u.position === POSITIONS.DOCTOR),
     [users]
   );
   const { data: rolesData } = useQuery(LIST_ROLES);
-  const roles = useMemo(() => R.propOr([], 'listRoles')(rolesData), [
-    rolesData,
-  ]);
+  const roles = useMemo(
+    () => R.propOr([], 'listRoles')(rolesData),
+    [rolesData]
+  );
 
   /* mutations */
-  const [createRole] = useMutation(CREATE_ROLE, {
+  const [createOrUpdateRole] = useMutation(CREATE_OR_UPDATE_ROLE, {
     onCompleted() {
-      Alert.success('The role has been created Successfully');
-      onCreateRole && onCreateRole();
+      Alert.success('The role has been created or updated Successfully');
+      onCreateOrUpdateRole && onCreateOrUpdateRole();
     },
     onError() {
-      Alert.error('Failed to create new role');
+      Alert.error('Failed to create create or edit role');
     },
     refetchQueries: [{ query: LIST_ROLES }],
   });
@@ -188,12 +191,10 @@ function usePermissions({
     [formPermissions]
   );
 
-  const [listActionUsers, { data: actionUsersResp }] = useLazyQuery(
-    LIST_ACTION_USERS
-  );
-  const [listActionDoctors, { data: doctorsDataResp }] = useLazyQuery(
-    LIST_ACTION_DOCTORS
-  );
+  const [listActionUsers, { data: actionUsersResp }] =
+    useLazyQuery(LIST_ACTION_USERS);
+  const [listActionDoctors, { data: doctorsDataResp }] =
+    useLazyQuery(LIST_ACTION_DOCTORS);
 
   const actionUsers = R.prop('listActionUsers')(actionUsersResp);
   const actionDoctors = R.prop('listActionDoctors')(doctorsDataResp);
@@ -205,7 +206,7 @@ function usePermissions({
       specialties,
       users,
       doctors,
-      createRole: role => createRole({ variables: { role } }),
+      createOrUpdateRole: role => createOrUpdateRole({ variables: { role } }),
       createBranch: branch => createBranch({ variables: { branch } }),
       createSpecialty: specialty =>
         createSpecialty({ variables: { specialty } }),
@@ -221,26 +222,7 @@ function usePermissions({
       actionUsers: actionUsers || [],
       actionDoctors: actionDoctors || [],
     }),
-    [
-      branches,
-      specialties,
-      users,
-      doctors,
-      indexePermissions,
-      groupedPermissions,
-      roles,
-      actionUsers,
-      actionDoctors,
-      createRole,
-      createBranch,
-      createSpecialty,
-      createUser,
-      addSpecialty,
-      addDoctor,
-      assignRoleToUser,
-      listActionUsers,
-      listActionDoctors,
-    ]
+    [branches, specialties, users, doctors, indexePermissions, groupedPermissions, roles, actionUsers, actionDoctors, createOrUpdateRole, createBranch, createSpecialty, createUser, addSpecialty, addDoctor, assignRoleToUser, listActionUsers, listActionDoctors]
   );
 }
 

@@ -1,5 +1,5 @@
 import { prisma } from '@';
-import { LAB_STATUS,APPOINTMENTS_STATUS } from '@/utils/constants';
+import { LAB_STATUS } from '@/utils/constants';
 
 const updateAppointment = async (_, { appointment }) => {
   const persistedAppointment = await prisma.appointment.findUnique({

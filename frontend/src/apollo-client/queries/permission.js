@@ -85,9 +85,9 @@ export const LIST_ROLES = gql`
   }
 `;
 
-export const CREATE_ROLE = gql`
-  mutation createRole($role: RoleInput!) {
-    createRole(role: $role) {
+export const CREATE_OR_UPDATE_ROLE = gql`
+  mutation createOrUpdateRole($role: RoleInput!) {
+    createOrUpdateRole(role: $role) {
       id
     }
   }
@@ -155,8 +155,6 @@ export const LIST_BRANCHES_TREE = gql`
     }
   }
 `;
-
-
 
 export const APPOINTMENTS_DAY_COUNT = gql`
   query appointmentsDayCount($date: Date!) {

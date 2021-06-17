@@ -6,24 +6,44 @@ import { Div, H6, H5, CRTextInput, CRPanelGroup, CRModal } from 'components';
 
 import PermissionRules from '../permission-rules';
 import { usePermissions } from 'hooks';
-import { ALL_CHOICE } from 'utils/constants';
+import { ALL_CHOICE, CRUD } from 'utils/constants';
 
-const RolePermissions = ({ show, onClose, onCreate }) => {
-  const [formValue, setFormValue] = useState({ name: '', permissions: {} });
+const normalizePermisson = (permissions = []) =>
+  R.pipe(
+    R.map(p => ({ ...p, visibility: true, id: p.action })),
+    R.indexBy(R.prop('action'))
+  )(permissions);
+
+const RolePermissions = ({
+  show,
+  onClose,
+  onCreateOrUpdate,
+  onEdit,
+  defaultFormValue,
+}) => {
+  const [formValue, setFormValue] = useState({
+    name: '',
+    permissions: {},
+  });
 
   const setFF = useCallback(permissions => {
     setFormValue(f => ({ ...f, permissions }));
   }, []);
+
   const {
     branches,
     doctors,
-    createRole,
+    createOrUpdateRole,
     indexePermissions,
     groupedPermissions,
   } = usePermissions({
-    onCreateRole: () => {
+    onCreateOrUpdateRole: () => {
       setFF(indexePermissions);
-      onCreate();
+      onCreateOrUpdate && onCreateOrUpdate();
+    },
+    onEditRole: () => {
+      setFF(indexePermissions);
+      onEdit && onEdit();
     },
   });
 
@@ -32,6 +52,16 @@ const RolePermissions = ({ show, onClose, onCreate }) => {
   useEffect(() => {
     setFormValue(f => ({ ...f, permissions: indexePermissions }));
   }, [indexePermissions]);
+
+  useEffect(() => {
+    setFormValue({
+      ...defaultFormValue,
+      permissions: {
+        ...indexePermissions,
+        ...normalizePermisson(defaultFormValue?.permissions),
+      },
+    });
+  }, [indexePermissions, defaultFormValue]);
 
   const toggle = useCallback(
     id => {
@@ -102,11 +132,12 @@ const RolePermissions = ({ show, onClose, onCreate }) => {
         )
       );
     const role = {
+      id: defaultFormValue?.id,
       name: formValue.name,
       permissions,
     };
-    createRole(role);
-  }, [createRole, ff, formValue.name]);
+    createOrUpdateRole(role);
+  }, [defaultFormValue.id, ff, formValue.name]);
 
   return (
     <CRModal
@@ -119,7 +150,9 @@ const RolePermissions = ({ show, onClose, onCreate }) => {
       bodyStyle={{ padding: '50px 80px' }}
     >
       <Form formValue={formValue} onChange={setFormValue} fluid>
-        <CRTextInput name="name" label="Role Name" />
+        <Div mb={2}>
+          <CRTextInput name="name" label="Role Name" />
+        </Div>
         {Object.keys(ff).length > 1 &&
           Object.entries(groupedPermissions).map(
             ([subject, actions], index) => (
@@ -178,5 +211,9 @@ const RolePermissions = ({ show, onClose, onCreate }) => {
   );
 };
 RolePermissions.propTypes = {};
+
+RolePermissions.defaultProps = {
+  type: CRUD.CREATE,
+};
 
 export default RolePermissions;

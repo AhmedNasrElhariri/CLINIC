@@ -10,8 +10,8 @@ import { CRNav } from 'components';
 import useTabs from './use-tabs';
 import Context from './context';
 
-const CRTabs = ({ children }) => {
-  const { activeTab, selectTab } = useTabs();
+const CRTabs = ({ children, defaultValue }) => {
+  const { activeTab, selectTab } = useTabs({ defaultValue });
 
   return (
     <>

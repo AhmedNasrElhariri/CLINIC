@@ -13,7 +13,7 @@ const AdminContainer = () => {
   return (
     <>
       <MainContainer title="Admin" nobody></MainContainer>
-      <CRTabs>
+      <CRTabs defaultValue={3}>
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>Branches</CRTabs.CRTab>
           <CRTabs.CRTab>Specialties</CRTabs.CRTab>

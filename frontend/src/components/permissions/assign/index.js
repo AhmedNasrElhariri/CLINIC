@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Div, CRButton, RolePermissions } from 'components';
 import NewAssign from './new-assign';
@@ -10,6 +10,7 @@ const initValue = { roleId: null, userId: null };
 
 function Assign() {
   const { visible, open, close } = useModal();
+  const [role, setRole] = useState(null);
   const {
     visible: assignPermissions,
     open: openPermissions,
@@ -31,21 +32,32 @@ function Assign() {
     assignRoleToUser(formValue);
   }, [assignRoleToUser, formValue]);
 
+  const handleEdit = useCallback(
+    index => {
+      setRole(roles[index]);
+      openPermissions();
+    },
+    [openPermissions, roles]
+  );
+
   return (
     <>
       <Div textAlign="right">
-        <CRButton variant="primary" onClick={openPermissions}>
+        <CRButton variant="primary" onClick={openPermissions} mr={1}>
           Create
         </CRButton>
         <CRButton variant="primary" onClick={handleClickCreate}>
           Assign
         </CRButton>
       </Div>
-      <RolePermissions
-        show={assignPermissions}
-        onClose={closePermissions}
-        onCreate={closePermissions}
-      />
+      {assignPermissions && (
+        <RolePermissions
+          show={true}
+          onClose={closePermissions}
+          onCreateOrUpdate={closePermissions}
+          defaultFormValue={role}
+        />
+      )}
       <NewAssign
         visible={visible}
         formValue={formValue}
@@ -56,7 +68,7 @@ function Assign() {
         users={users}
         roles={roles}
       />
-      <ListAssigns data={roles} />
+      <ListAssigns data={roles} onEdit={handleEdit} />
     </>
   );
 }
