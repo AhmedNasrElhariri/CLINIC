@@ -16,7 +16,7 @@ const ListData = ({ title, data, onEdit, canEdit }) => {
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn width={100}>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ amount }) => (
@@ -31,7 +31,18 @@ const ListData = ({ title, data, onEdit, canEdit }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn width={130}>
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>Company Name</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ company }) => (
+              <CRTable.CRCellStyled bold>
+                {company.name}
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (

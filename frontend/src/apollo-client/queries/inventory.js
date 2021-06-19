@@ -9,6 +9,7 @@ export const LIST_ITEMS = gql`
       quantity
       barcode
       notes
+      level
     }
   }
 `;

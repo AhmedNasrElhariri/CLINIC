@@ -7,6 +7,7 @@ const mySaleses = (_, __, { organizationId }) => {
     },
     include: {
       salesDefinition: true,
+      user: true,
     },
   });
 };

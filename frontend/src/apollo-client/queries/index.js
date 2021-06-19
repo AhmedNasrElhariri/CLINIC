@@ -21,3 +21,6 @@ export * from './course';
 export * from './payroll';
 export * from './sales-definition';
 export * from './session-definition';
+export * from './bank-definition';
+export * from './company-definition';
+export * from './company-session-definition';

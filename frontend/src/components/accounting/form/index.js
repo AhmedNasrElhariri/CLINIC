@@ -1,13 +1,21 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form, Schema, Alert } from 'rsuite';
 
-import { CRModal, CRTextInput, CRNumberInput, CRDatePicker } from 'components';
+import {
+  CRModal,
+  CRTextInput,
+  CRNumberInput,
+  CRDatePicker,
+  CRSelectInput,
+} from 'components';
+import { useExpenseTypeDefinition } from 'hooks';
 import { isValid } from 'services/form';
 
 const initValue = {
   name: '',
   amount: 1,
   date: null,
+  expenseType: '',
   invoiceNo: '',
 };
 
@@ -58,6 +66,13 @@ const AccountingForm = ({
   header,
   model,
 }) => {
+  const { expenseTypesDefinition } = useExpenseTypeDefinition({});
+  const updatedexpenseType = expenseTypesDefinition.map(e => {
+    return {
+      id: e.name,
+      name: e.name,
+    };
+  });
   const ref = useRef();
   return (
     <CRModal
@@ -83,11 +98,15 @@ const AccountingForm = ({
       >
         <CRTextInput label="Name" name="name" block></CRTextInput>
         <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
-        <CRDatePicker
-          label="Date"
-          name="date"
-          block
-        ></CRDatePicker>
+        {header === 'New Expense' && (
+          <CRSelectInput
+            label="Expense Type"
+            name="expenseType"
+            block
+            data={updatedexpenseType}
+          />
+        )}
+        <CRDatePicker label="Date" name="date" block></CRDatePicker>
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
       </Form>
     </CRModal>

@@ -8,6 +8,7 @@ import {
   EDIT_SALES,
   LIST_SALESES,
   DELETE_SALES,
+  LIST_USERS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -23,7 +24,11 @@ const updateCache = mySaleses => {
 function useSales({ onCreate, onEdit, view, period } = {}) {
   const { data } = useQuery(LIST_SALESES);
   const saleses = useMemo(() => R.propOr([], 'mySaleses')(data), [data]);
-
+  const { data: OrgUsers } = useQuery(LIST_USERS);
+  const organizationusers = useMemo(
+    () => R.propOr([], 'listUsers')(OrgUsers),
+    [OrgUsers]
+  );
   const filteredSales = useMemo(
     () => filterAccountingList(saleses, view, period),
     [saleses, period, view]
@@ -45,11 +50,9 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
       onCreate && onCreate();
     },
     update(cache, { data: { addSales: sales } }) {
-      updateCache([...saleses, sales]);
+      updateCache([...saleses, ...sales]);
     },
-    onError() {
-      Alert.error('Failed to add new Item');
-    },
+    onError: ({ message }) => Alert.error(message) ,
   });
   const [editSales] = useMutation(EDIT_SALES, {
     onCompleted() {
@@ -86,6 +89,7 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
       filteredSales,
       totalSalesPrice,
       totalSalesCost,
+      organizationusers,
       addSales,
       editSales,
       deleteSales,
@@ -96,6 +100,7 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
       addSales,
       editSales,
       deleteSales,
+      organizationusers,
       filteredSales,
       totalSalesPrice,
       totalSalesCost,

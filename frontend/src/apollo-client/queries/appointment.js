@@ -19,7 +19,7 @@ export const CREATE_APPOINTMENT = gql`
 `;
 
 export const LIST_APPOINTMENTS = gql`
-  query($input: AppointmentQueryInput) {
+  query ($input: AppointmentQueryInput) {
     appointments(input: $input) {
       id
       type
@@ -38,6 +38,10 @@ export const LIST_APPOINTMENTS = gql`
         id
         name
       }
+      doctor{
+        id
+        name
+      }
       branch {
         id
         name
@@ -46,16 +50,13 @@ export const LIST_APPOINTMENTS = gql`
         id
         name
       }
-      session{
-        id
-        name
-      }
+      session
     }
   }
 `;
 
 export const LIST_PATIENT_APPOINTMENTS = gql`
-  query($patientId: ID!) {
+  query ($patientId: ID!) {
     patientAppointments(patientId: $patientId) {
       id
       type
@@ -74,7 +75,7 @@ export const LIST_PATIENT_APPOINTMENTS = gql`
 `;
 
 export const GET_APPOINTMENT = gql`
-  query($id: ID!) {
+  query ($id: ID!) {
     appointment(id: $id) {
       id
       type
@@ -134,7 +135,7 @@ export const GET_APPOINTMENT = gql`
 `;
 
 export const GET_SURGRIES_APPOINTMENT = gql`
-  query($id: ID!) {
+  query ($id: ID!) {
     surgriesAppointments(id: $id) {
       id
       type
@@ -199,6 +200,9 @@ export const ARCHIVE_APPOINTMENT = gql`
     $items: [FinishAppointmentItemInput!]
     $discount: Int
     $others: Int
+    $bank: ID
+    $company: ID
+    $option: optionInput!
   ) {
     archiveAppointment(
       id: $id
@@ -206,6 +210,9 @@ export const ARCHIVE_APPOINTMENT = gql`
       items: $items
       discount: $discount
       others: $others
+      bank: $bank
+      company: $company
+      option: $option
     ) {
       id
       status
@@ -221,7 +228,7 @@ export const UPDATE_BUSINESS_NOTES = gql`
 `;
 
 export const GET_APPOINTMENT_HISTORY = gql`
-  query($appointmentId: ID, $patientId: ID) {
+  query ($appointmentId: ID, $patientId: ID) {
     appointmentHistory(appointmentId: $appointmentId, patientId: $patientId) {
       id
       type

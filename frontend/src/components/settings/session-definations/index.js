@@ -21,7 +21,6 @@ const initialValues = {
 const SessionDefinitions = ({ sessions, onChange, onDelete }) => {
   const { visible, open, close } = useModal();
   const [formValue, setFormValue] = useState(initialValues);
-
   const onCreate = useCallback(() => {
     onChange(formValue);
     close();

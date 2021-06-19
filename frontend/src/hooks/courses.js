@@ -13,7 +13,8 @@ import {
   FINISH_COURSE,
   LIST_APPOINTMENTS,
   LIST_REVENUES,
-  EDIT_COURSE_UNITS
+  EDIT_COURSE_UNITS,
+  LIST_COURSE_PAYMENTS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -32,6 +33,7 @@ function useCourses({
   onEdit,
   onEditDoctor,
   patientId,
+  courseId,
   onFinishCourse,
 } = {}) {
   const { data } = useQuery(LIST_COURSES, { variables: { patientId } });
@@ -39,11 +41,20 @@ function useCourses({
   const { data: patientData } = useQuery(LIST_PATIENT_COURSES, {
     variables: { patientId },
   });
-  const patientCourses = useMemo(() => R.propOr([], 'myCourses')(patientData), [
-    patientData,
-  ]);
+  const patientCourses = useMemo(
+    () => R.propOr([], 'myCourses')(patientData),
+    [patientData]
+  );
   const { data: userData } = useQuery(LIST_USERS);
   const users = useMemo(() => R.propOr([], 'listUsers')(userData), [userData]);
+
+  const { data: dataPayment } = useQuery(LIST_COURSE_PAYMENTS, {
+    variables: { courseId },
+  });
+  const coursePayments = useMemo(
+    () => R.propOr([], 'coursePayments')(dataPayment),
+    [dataPayment]
+  );
 
   const [addCourse] = useMutation(ADD_COURSE, {
     onCompleted() {
@@ -142,6 +153,7 @@ function useCourses({
       editCourseUnits,
       finishCourse,
       updateCache,
+      coursePayments,
     }),
     [
       courses,
@@ -152,6 +164,7 @@ function useCourses({
       editCourseDoctor,
       finishCourse,
       users,
+      coursePayments,
     ]
   );
 }

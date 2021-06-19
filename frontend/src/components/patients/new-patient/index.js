@@ -12,6 +12,8 @@ import { usePatients } from 'hooks';
 const initialValues = {
   name: '',
   phoneNo: '',
+  area:'',
+  reference:[],
   age: '',
   type: null,
   guardianName: '',

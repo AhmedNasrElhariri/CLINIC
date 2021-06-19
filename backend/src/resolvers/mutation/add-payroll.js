@@ -5,6 +5,7 @@ import { getAllTransactionForCurrentOpenPayslips } from '@/services/payroll.serv
 
 const addPayroll = async (_, { payment }, { userId, organizationId }) => {
   let currentPayroll;
+  const expenseType = 'Salary';
   const payrollRow = await prisma.payroll.findMany({
     where: { status: PAYROLL_STATUS.Open },
   });
@@ -84,12 +85,12 @@ const addPayroll = async (_, { payment }, { userId, organizationId }) => {
       },
     },
   });
-  console.log(allTrx, 'sjksssssssssss');
-
+  
   await prisma.expense.createMany({
     data: allTrx.map(({ name, amount }) => ({
       name,
       amount,
+      expenseType: expenseType,
       date: new Date(),
       userId,
     })),

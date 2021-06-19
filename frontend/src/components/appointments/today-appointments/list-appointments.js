@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
-
 import {
   AppointmentPrintout,
   AdjustAppointment,
@@ -24,8 +23,20 @@ function ListAppointments({
 }) {
   const history = useHistory();
   const componentRef = useRef();
+  const ref = useRef();
   return (
     <Div padding={20} wd>
+      <Div display="flex" justifyContent="space-between">
+        <Div></Div>
+        <ReactToPrint
+          trigger={() => (
+            <CRButton primary mb={20}>
+              Print
+            </CRButton>
+          )}
+          content={() => ref.current}
+        />
+      </Div>
       <CRTable
         autoHeight
         data={appointments}
@@ -81,18 +92,27 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRColumn flexGrow={1.5}>
           <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ type, session }) => (
               <CRTable.CRCellStyled>
-                {type} {type === 'Session' ? session?.name : ''}
+                {type === 'Session' ? 'S ' : type}{' '}
+                {type === 'Session' ? session : ''}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ doctor }) => (
+              <CRTable.CRCellStyled>{doctor.name}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ user }) => (
               <CRTable.CRCellStyled>{user.name}</CRTable.CRCellStyled>
@@ -164,6 +184,111 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
       </CRTable>
+      <Div style={{ overflow: 'hidden', height: '0px' }}>
+        <Div ref={ref} mt={20} mr={10}>
+          <CRTable
+            autoHeight
+            data={appointments}
+            width={900}
+            onRowClick={appointment => {
+              history.push(
+                `/patients/${appointment.patient.id}?appointmentId=${appointment.id}`
+              );
+            }}
+          >
+            <CRTable.CRColumn flexGrow={0.2}>
+              <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ date }, indx) => (
+                  <CRTable.CRCellStyled>{indx + 1}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ date }) => (
+                  <CRTable.CRCellStyled>
+                    {waiting ? '' : formatDate(date, FULL_DATE_FORMAT)}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ date }) => (
+                  <CRTable.CRCellStyled>
+                    {formatDate(date, STANDARD_DATE_FORMAT)}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ patient }) => (
+                  <CRTable.CRCellStyled bold>
+                    {patient.name}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ patient }) => (
+                  <CRTable.CRCellStyled>{patient.phoneNo}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ type, session }) => (
+                  <CRTable.CRCellStyled>
+                    {type} {type === 'Session' ? session?.name : ''}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ doctor }) => (
+                  <CRTable.CRCellStyled>{doctor.name}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ user }) => (
+                  <CRTable.CRCellStyled>{user.name}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={0.8}>
+              <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ specialty }) => (
+                  <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={0.8}>
+              <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ branch }) => (
+                  <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+          </CRTable>
+        </Div>
+      </Div>
     </Div>
   );
 }

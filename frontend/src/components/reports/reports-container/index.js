@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { MainContainer, AccountingContainer, CRTabs } from 'components';
-
+import {
+  MainContainer,
+  AccountingContainer,
+  BankAccountingContainer,
+  CRTabs,
+} from 'components';
+import BankInsuranceAccountingContainer from './banking-insurance';
 import Reports from '../reports';
 import PrintReports from '../print-reports';
 const ReportsContainer = () => {
@@ -11,12 +16,16 @@ const ReportsContainer = () => {
       <CRTabs>
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>Accounting</CRTabs.CRTab>
+          <CRTabs.CRTab>Bank and Insurance Accounting</CRTabs.CRTab>
           <CRTabs.CRTab>Statistics</CRTabs.CRTab>
           <CRTabs.CRTab>Reports</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
             <AccountingContainer />
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <BankInsuranceAccountingContainer />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Reports />

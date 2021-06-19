@@ -122,31 +122,35 @@ enum PermissionAction {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id                String              @id @default(uuid())
-  name              String
-  invoiceCounter    Int                 @default(1)
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @default(now()) @updatedAt
-  item              Item[]
-  hospital          Hospital[]
-  surgeries         Surgery[]
-  patientSurgeries  PatientSurgery[]
-  roles             PermissionRole[]
-  permissions       Permission[]
-  rules             Rule[]
-  configurations    Configuration?
-  branches          Branch[]
-  specialties       Specialty[]
-  users             User[]
-  userSpecialties   UserSpecialty[]
-  patients          Patient[]
-  inventoryItems    InventoryItem[]
-  inventoryHistory  InventoryHistory[]
-  Payroll           Payroll[]
-  SessionDefinition SessionDefinition[]
-  SalesDefinition   SalesDefinition[]
-  Sales             Sales[]
-  CourseDefinition  CourseDefinition[]
+  id                       String                     @id @default(uuid())
+  name                     String
+  invoiceCounter           Int                        @default(1)
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @default(now()) @updatedAt
+  item                     Item[]
+  hospital                 Hospital[]
+  surgeries                Surgery[]
+  patientSurgeries         PatientSurgery[]
+  roles                    PermissionRole[]
+  permissions              Permission[]
+  rules                    Rule[]
+  configurations           Configuration?
+  branches                 Branch[]
+  specialties              Specialty[]
+  users                    User[]
+  userSpecialties          UserSpecialty[]
+  patients                 Patient[]
+  inventoryItems           InventoryItem[]
+  inventoryHistory         InventoryHistory[]
+  Payroll                  Payroll[]
+  SessionDefinition        SessionDefinition[]
+  SalesDefinition          SalesDefinition[]
+  Sales                    Sales[]
+  CourseDefinition         CourseDefinition[]
+  BankDefinition           BankDefinition[]
+  CompanyDefinition        CompanyDefinition[]
+  CompanySessionDefinition CompanySessionDefinition[]
+  ExpenseTypeDefinition    ExpenseTypeDefinition[]
 }
 
 model User {
@@ -162,13 +166,14 @@ model User {
   roleId              String?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @default(now()) @updatedAt
-  appointments        Appointment[]
   views               View[]
   viewStatus          ViewStatus[]
   workingHours        WorkingHours[]
   snippets            Snippet[]
   position            Position
   events              Event[]
+  user                Appointment[]        @relation("userApp")
+  doctor              Appointment[]        @relation("doctorApp")
   inventoryHistory    InventoryHistory[]
   rules               Rule[]
   specialties         UserSpecialty[]
@@ -186,6 +191,11 @@ model User {
   imageCategories     ImageCategory[]
   users               Course[]             @relation("user")
   doctors             Course[]             @relation("doctor")
+  BankRevenue         BankRevenue[]
+  InsuranceRevenue    InsuranceRevenue[]
+  CoursePayment       CoursePayment[]
+  PayrollUser         PayrollUser[]
+  Sales               Sales[]
 }
 
 model Patient {
@@ -196,6 +206,8 @@ model Patient {
   appointments     Appointment[]
   age              Int
   sex              Sex
+  reference        Json                  @default("[]")
+  area             String                @default("")
   organization     Organization          @relation(fields: [organizationId], references: [id])
   organizationId   String
   user             User                  @relation(fields: [userId], references: [id])
@@ -218,8 +230,10 @@ model Appointment {
   type             AppointmentType
   patient          Patient            @relation(fields: [patientId], references: [id])
   patientId        String
-  user             User               @relation(fields: [userId], references: [id])
+  user             User               @relation("userApp", fields: [userId], references: [id])
   userId           String
+  doctor           User               @relation("doctorApp", fields: [doctorId], references: [id])
+  doctorId         String
   businessNotes    String             @default("")
   status           AppointmentStatus
   data             AppointmentField[]
@@ -237,8 +251,7 @@ model Appointment {
   branchId         String?
   specialty        Specialty?         @relation(fields: [specialtyId], references: [id])
   specialtyId      String?
-  session          SessionDefinition? @relation(fields: [sessionId], references: [id])
-  sessionId        String?
+  session          String?
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @default(now()) @updatedAt
 }
@@ -356,18 +369,22 @@ model AppointmentFile {
 }
 
 model PayrollUser {
-  id             String               @id @default(uuid())
-  name           String
-  salary         Int
-  organizationId String
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @default(now()) @updatedAt
-  transactions   PayrollTransaction[]
+  id                           String                         @id @default(uuid())
+  user                         User                           @relation(fields: [userId], references: [id])
+  userId                       String
+  salary                       Int
+  organizationId               String
+  createdAt                    DateTime                       @default(now())
+  updatedAt                    DateTime                       @default(now()) @updatedAt
+  transactions                 PayrollTransaction[]
+  TransactionCoursesTimeFrame  TransactionCoursesTimeFrame[]
+  TransactionRevenuesTimeFrame TransactionRevenuesTimeFrame[]
 }
 
 model PayrollTransaction {
   id            String                 @id @default(uuid())
   amount        Int
+  reason        String                 @default(" ")
   date          DateTime
   status        String                 @default("on")
   added         Boolean                @default(false)
@@ -378,6 +395,24 @@ model PayrollTransaction {
   payrollUserId String?
   payroll       Payroll                @relation(fields: [payrollId], references: [id])
   payrollId     String
+}
+
+model TransactionCoursesTimeFrame {
+  id            String      @id @default(uuid())
+  date          DateTime
+  payrollUser   PayrollUser @relation(fields: [payrollUserId], references: [id])
+  payrollUserId String
+
+  @@unique([payrollUserId], name: "payrollUserId_unique_constraint")
+}
+
+model TransactionRevenuesTimeFrame {
+  id            String      @id @default(uuid())
+  date          DateTime
+  payrollUser   PayrollUser @relation(fields: [payrollUserId], references: [id])
+  payrollUserId String
+
+  @@unique([payrollUserId], name: "payrollUserId Revenues_unique_constraint")
 }
 
 model Payroll {
@@ -495,15 +530,16 @@ model FamilyHistory {
 }
 
 model Expense {
-  id        String   @id @default(uuid())
-  name      String
-  date      DateTime
-  amount    Int
-  invoiceNo String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  id          String   @id @default(uuid())
+  name        String
+  date        DateTime
+  amount      Int
+  expenseType String
+  invoiceNo   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
 }
 
 model Revenue {
@@ -516,6 +552,34 @@ model Revenue {
   updatedAt DateTime @default(now()) @updatedAt
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+}
+
+model BankRevenue {
+  id        String         @id @default(uuid())
+  name      String
+  date      DateTime
+  amount    Int
+  invoiceNo String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now()) @updatedAt
+  user      User           @relation(fields: [userId], references: [id])
+  userId    String
+  bank      BankDefinition @relation(fields: [bankId], references: [id])
+  bankId    String
+}
+
+model InsuranceRevenue {
+  id        String            @id @default(uuid())
+  name      String
+  date      DateTime
+  amount    Int
+  invoiceNo String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @default(now()) @updatedAt
+  user      User              @relation(fields: [userId], references: [id])
+  userId    String
+  company   CompanyDefinition @relation(fields: [companyId], references: [id])
+  companyId String
 }
 
 model Notification {
@@ -562,12 +626,17 @@ model InventoryItem {
   quantity       Int
   item           Item         @relation(fields: [itemId], references: [id])
   itemId         String
+  level          String
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
-  user           User         @relation(fields: [userId], references: [id])
+  user           User        @relation(fields: [userId], references: [id])
+  branch         Branch?      @relation(fields: [branchId], references: [id])
+  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   userId         String
+  branchId       String?
+  specialtyId    String?
 
   @@id([itemId, userId])
 }
@@ -646,14 +715,54 @@ model ImageDefinition {
 }
 
 model SessionDefinition {
+  id             String       @id @default(uuid())
+  name           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
+model BankDefinition {
   id             String        @id @default(uuid())
   name           String
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @default(now()) @updatedAt
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
-  Appointment    Appointment[]
+  BankRevenue    BankRevenue[]
+}
 
+model ExpenseTypeDefinition {
+  id             String       @id @default(uuid())
+  name           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
+model CompanyDefinition {
+  id                       String                     @id @default(uuid())
+  name                     String
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @default(now()) @updatedAt
+  organization             Organization               @relation(fields: [organizationId], references: [id])
+  organizationId           String
+  CompanySessionDefinition CompanySessionDefinition[]
+  InsuranceRevenue         InsuranceRevenue[]
+}
+
+model CompanySessionDefinition {
+  id             String            @id @default(uuid())
+  name           String
+  price          Int
+  company        CompanyDefinition @relation(fields: [companyId], references: [id])
+  companyId      String
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @default(now()) @updatedAt
+  organization   Organization      @relation(fields: [organizationId], references: [id])
+  organizationId String
 }
 
 model SalesDefinition {
@@ -661,6 +770,7 @@ model SalesDefinition {
   name           String
   price          Int
   cost           Int
+  totalQuantity  Int          @default(0)
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
   organization   Organization @relation(fields: [organizationId], references: [id])
@@ -678,6 +788,8 @@ model Sales {
   updatedAt         DateTime        @default(now()) @updatedAt
   organization      Organization    @relation(fields: [organizationId], references: [id])
   organizationId    String
+  user              User            @relation(fields: [userId], references: [id])
+  userId            String
   salesDefinition   SalesDefinition @relation(fields: [salesDefinitionId], references: [id])
   salesDefinitionId String
 
@@ -717,6 +829,17 @@ model Course {
   doctorId           String
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @default(now()) @updatedAt
+  CoursePayment      CoursePayment[]
+}
+
+model CoursePayment {
+  id       String   @id @default(uuid())
+  payment  Int
+  date     DateTime
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId String
 }
 
 model ImageCategory {
@@ -845,6 +968,7 @@ model Branch {
   Appointment     Appointment[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @default(now()) @updatedAt
+  InventoryItem   InventoryItem[]
 }
 
 model Specialty {
@@ -858,6 +982,7 @@ model Specialty {
   Appointment     Appointment[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @default(now()) @updatedAt
+  InventoryItem   InventoryItem[]
 }
 
 model UserSpecialty {

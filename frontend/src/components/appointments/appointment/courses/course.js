@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
+import CoursePayment from './course-payment-history';
+import CourseSession from './course-sessions';
 import * as moment from 'moment';
 import * as R from 'ramda';
-import { Div, CRButton, CRCard, CRTable } from 'components';
+import { Div, CRButton, CRTabs } from 'components';
+import { useCourses } from 'hooks';
 import { Data, DataName, DataValue } from './style';
-
 import { formatDate } from 'utils/date';
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const CourseData = ({
@@ -19,6 +21,7 @@ const CourseData = ({
   let course = courses[indx];
   let { sessions } = course;
   const updatedSessions = sortByDate(sessions);
+  const { coursePayments } = useCourses({ courseId: course.id });
   const handleClick = appointment => {
     if (
       moment(new Date()).endOf('day').toDate() >
@@ -27,6 +30,7 @@ const CourseData = ({
       history.push(`/appointments/${appointment.id}`);
     }
   };
+
   return (
     <>
       <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
@@ -79,6 +83,10 @@ const CourseData = ({
           <DataValue>{course?.doctor?.name}</DataValue>
         </Data>
         <Data>
+          <DataName>Creator : </DataName>
+          <DataValue>{course?.user?.name}</DataValue>
+        </Data>
+        <Data>
           <DataName>status : </DataName>
           <DataValue>{course.status}</DataValue>
         </Data>
@@ -108,56 +116,33 @@ const CourseData = ({
         </Data>
         <Data>
           <DataName>End of Date : </DataName>
-          <DataValue>
-            {formatDate(course.endDate, 'dddd, DD-MM-YYYY')}
-          </DataValue>
+          {course.status !== 'InProgress' ? (
+            <DataValue>
+              {formatDate(course.endDate, 'dddd, DD-MM-YYYY')}
+            </DataValue>
+          ) : (
+            ''
+          )}
         </Data>
-        <CRCard borderless>
-          <CRTable
-            autoHeight
-            data={updatedSessions}
-            onRowClick={appointment => {
-              handleClick(appointment);
-            }}
-          >
-            <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>Number</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({}, indx) => (
-                  <CRTable.CRCellStyled bold>{indx + 1}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ date }) => (
-                  <CRTable.CRCellStyled bold>
-                    {formatDate(date, 'dddd, DD-MM-YYYY')}
-                  </CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ date }) => (
-                  <CRTable.CRCellStyled bold>
-                    {formatDate(date, 'hh : mm a')}
-                  </CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>Status</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ status }) => (
-                  <CRTable.CRCellStyled bold>{status}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-          </CRTable>
-        </CRCard>
+        <Div textAlign="left" mt={20}>
+          <CRTabs>
+            <CRTabs.CRTabsGroup>
+              <CRTabs.CRTab>Course Session</CRTabs.CRTab>
+              <CRTabs.CRTab>Course Payment History</CRTabs.CRTab>
+            </CRTabs.CRTabsGroup>
+            <CRTabs.CRContentGroup>
+              <CRTabs.CRContent>
+                <CourseSession
+                  sessions={updatedSessions}
+                  handleClick={handleClick}
+                />
+              </CRTabs.CRContent>
+              <CRTabs.CRContent>
+                <CoursePayment coursePayments={coursePayments} />
+              </CRTabs.CRContent>
+            </CRTabs.CRContentGroup>
+          </CRTabs>
+        </Div>
       </Div>
     </>
   );

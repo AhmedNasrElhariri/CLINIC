@@ -5,6 +5,7 @@ export const LIST_SALESES_DEFINITION = gql`
     mySalesesDefinition {
       id
       name
+      totalQuantity
       price
       cost
     }
@@ -16,6 +17,7 @@ export const ADD_SALES_DEFINITION = gql`
     addSalesDefinition(salesDefinition: $salesDefinition) {
       id
       name
+      totalQuantity
       price
       cost
     }
@@ -27,6 +29,19 @@ export const EDIT_SALES_DEFINITION = gql`
     editSalesDefinition(salesDefinition: $salesDefinition) {
       id
       name
+      totalQuantity
+      price
+      cost
+    }
+  }
+`;
+
+export const ADD_SALES_DEFINITION_QUENTITY = gql`
+  mutation addSalesDefinitionQuantity($salesDefinition: SalesInputDefinition!) {
+    addSalesDefinitionQuantity(salesDefinition: $salesDefinition) {
+      id
+      name
+      totalQuantity
       price
       cost
     }
@@ -41,6 +56,10 @@ export const LIST_SALESES = gql`
       totalCost
       quantity
       date
+      user{
+        id
+        name
+      }
       salesDefinition {
         name
         price
@@ -50,7 +69,7 @@ export const LIST_SALESES = gql`
 `;
 
 export const ADD_SALES = gql`
-  mutation addSales($sales: SalesInput!) {
+  mutation addSales($sales: [SalesItemsInput!]!) {
     addSales(sales: $sales) {
       id
       quantity

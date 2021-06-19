@@ -1,14 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback,useMemo } from 'react';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
 import { MainContainer, Div, CRCard, CRButton, H6 } from 'components';
 import Toolbar from '../toolbar';
-import ListData from '../list-data';
+import ListExpenseData from '../list-data/expense.js';
+import ListRevenueData from '../list-data/revenue.js';
 import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
-import { useAccounting,  useAuth } from 'hooks';
+import { useAccounting, useAuth } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -20,13 +21,17 @@ import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
+import Filter from '../filter';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
-
+const initalVal = {
+  expenseType: '',
+};
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const { isOrAssistant } = useAuth();
+  const [formValue, setFormValue] = useState(initalVal);
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
       Alert.success('Expense Added Successfully');
@@ -137,9 +142,19 @@ const AccountingContainer = () => {
     header: 'Edit Expense',
     onOk: handleUpdateExpense,
   });
-
-  const { expenses, revenues, totalExpenses, totalRevenues, timeFrame } =
+  const { expenses, revenues, totalRevenues, timeFrame } =
     useAccounting({ view, period });
+  const updatedExpenses = useMemo(
+    () =>
+      expenses.filter(e =>
+        e.expenseType.toLowerCase().includes(formValue.expenseType.toLowerCase())
+      ),
+    [formValue,expenses]
+  );
+  const totalExpenses = useMemo(
+    () => updatedExpenses.reduce((acc, e) => acc + e.amount, 0),
+    [updatedExpenses]
+  );
   return (
     <>
       <MainContainer
@@ -189,7 +204,7 @@ const AccountingContainer = () => {
           {activeTab === '0' ? (
             <Div display="flex">
               <Div flexGrow={1} mr={2}>
-                <ListData
+                <ListRevenueData
                   title="Revenues"
                   data={revenues}
                   onEdit={revenue => {
@@ -200,9 +215,10 @@ const AccountingContainer = () => {
               </Div>
 
               <Div flexGrow={1} ml={2}>
-                <ListData
+                <Filter formValue={formValue} setFormValue={setFormValue} />
+                <ListExpenseData
                   title="Expenses"
-                  data={expenses}
+                  data={updatedExpenses}
                   onEdit={expense => {
                     editExpenseForm.setFormValue(R.pick(ENTITY_PROPS)(expense));
                     editExpenseForm.show();
@@ -211,7 +227,7 @@ const AccountingContainer = () => {
               </Div>
             </Div>
           ) : (
-            <Summary expenses={totalExpenses} revenues={totalRevenues} />
+            <Summary expenses={updatedExpenses} revenues={totalRevenues} />
           )}
         </Div>
         <AccountingForm {...createRevenueForm} />

@@ -14,6 +14,8 @@ import {
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
 import { CRDivider } from 'components';
+import { useBankDefinition, useCompanyDefinition } from 'hooks';
+import { CRRadio } from 'components/widgets';
 
 const OTHER = 'Other';
 
@@ -34,7 +36,14 @@ const Price = ({ name, price, variant }) => (
 );
 
 const isOtherType = session => session.name === OTHER;
-
+const payOptions = [
+  { name: 'Fixed', value: 'fixed' },
+  { name: 'Percentage', value: 'percentage' },
+];
+const payMethods = [
+  { name: 'Visa', value: 'visa' },
+  { name: 'Cash', value: 'cash' },
+];
 function AppointmentInvoice({
   onChange,
   discount,
@@ -42,13 +51,22 @@ function AppointmentInvoice({
   onOthersChange,
   onDiscountChange,
   sessions,
+  company,
+  setCompany,
+  option,
+  setOption,
+  bank,
+  setBank,
   organization,
 }) {
   const [session, setSession] = useState({});
+  const [sessionNumber, setSessionNumber] = useState(0);
+  const [visa, setVisa] = useState(false);
+  const [insurance, setInsurance] = useState(false);
   const [formValue, setFormValue] = useState(initValue);
-
   const [selectedSessions, setSelectedSessions] = useState([]);
-
+  const { banksDefinition } = useBankDefinition({});
+  const { companysDefinition } = useCompanyDefinition({});
   const choices = useMemo(() => {
     const allChoices = [...sessions];
     return allChoices.map(s => ({ name: s.name, id: s }));
@@ -68,10 +86,12 @@ function AppointmentInvoice({
     if (R.isNil(session) || R.isEmpty(session)) {
       return;
     }
-    const sessionData = isOtherType(session) ? { ...formValue } : session;
+    const updatedSession = { ...session, number: sessionNumber };
+    const sessionData = isOtherType(session)
+      ? { ...formValue }
+      : updatedSession;
     handleOnChange([...selectedSessions, sessionData]);
-  }, [formValue, handleOnChange, selectedSessions, session]);
-
+  }, [formValue, handleOnChange, sessionNumber, selectedSessions, session]);
   const handleDelete = useCallback(
     idx => {
       handleOnChange(R.remove(idx, 1));
@@ -79,32 +99,100 @@ function AppointmentInvoice({
     [handleOnChange]
   );
 
-  const subtotal = useMemo(
-    () => selectedSessions.reduce((sum, { price }) => sum + price, 0),
-    [selectedSessions]
+  const subtotal = useMemo(() => {
+    let sub = 0;
+    const subRed = selectedSessions.reduce(
+      (sum, { price, number }) => sum + number * price,
+      0
+    );
+    if (option.option === 'fixed') {
+      sub = option.amount;
+    } else if (option.option === 'percentage') {
+      sub = option.amount * subRed * 0.01;
+    } else {
+      sub = subRed;
+    }
+    return sub;
+  }, [selectedSessions, option]);
+
+  const total = useMemo(
+    () => subtotal + (others - discount),
+    [discount, others, subtotal]
   );
-
-  const total = useMemo(() => subtotal + (others - discount), [
-    discount,
-    others,
-    subtotal,
-  ]);
-
   return (
     <>
-      <Div display="flex" mt={40}>
-        <Div width={500} mr={50}>
-          <Form fluid>
+      <Div mt={20}>
+        <Div display="flex">
+          <CRButton
+            onClick={() => {
+              setVisa(true);
+              setInsurance(false);
+            }}
+            mr={10}
+          >
+            Pay By Visa
+          </CRButton>
+          <CRButton
+            onClick={() => {
+              setInsurance(true);
+              setVisa(false);
+            }}
+            mr={10}
+          >
+            Insurance Pay
+          </CRButton>
+          <Form formValue={option} onChange={setOption}>
+            <CRRadio options={payMethods} name="payMethod" />
+          </Form>
+        </Div>
+        {visa && (
+          <Form>
             <CRSelectInput
-              label="Session Type"
-              name="type"
-              placeholder="Select Type"
-              block
-              value={session}
-              onChange={setSession}
-              data={choices}
-              onSelect={add()}
+              label="Bank Name"
+              name="bank"
+              data={banksDefinition}
+              value={bank}
+              onChange={setBank}
+              placeholder="Select One Bank "
+              style={{ width: '230px' }}
             />
+          </Form>
+        )}
+        {insurance && (
+          <Form>
+            <CRSelectInput
+              label="Compance Name"
+              name="bank"
+              data={companysDefinition}
+              value={company}
+              onChange={setCompany}
+              placeholder="Select One Company "
+              style={{ width: '230px' }}
+            />
+          </Form>
+        )}
+      </Div>
+      <Div display="flex" mt={40}>
+        <Div width={500} mr={20}>
+          <Form fluid>
+            <CRButton onClick={() => add()}>add</CRButton>
+            <Div display="flex" justifyContent="space-around">
+              <CRSelectInput
+                label="Session Type"
+                name="type"
+                placeholder="Select Type"
+                value={session}
+                onChange={setSession}
+                data={choices}
+                style={{ width: '230px' }}
+              />
+              <CRNumberInput
+                label="Number of Sessions"
+                name="sessionsNumber"
+                value={sessionNumber}
+                onChange={setSessionNumber}
+              ></CRNumberInput>
+            </Div>
           </Form>
           {isOtherType(session) && (
             <Div mt={4}>
@@ -148,6 +236,23 @@ function AppointmentInvoice({
               />
             </Form>
           </Div>
+          <CRDivider />
+          <Form formValue={option} onChange={setOption}>
+            <CRRadio options={payOptions} name="option" />
+            {option.option === 'fixed' && company !== null ? (
+              <CRNumberInput label="Fixed Payment" name="amount" />
+            ) : (
+              option.option === 'percentage' &&
+              company !== null && (
+                <CRNumberInput
+                  label="Percentage from 0 : 100"
+                  name="price"
+                  name="amount"
+                />
+              )
+            )}
+          </Form>
+          <CRDivider />
           <H5 fontWeight={400}>Session Summary</H5>
           <Div background="#f0f1f1" p="6px 8px">
             <Price name="Others" price={others} overriden variant="primary" />

@@ -23,6 +23,22 @@ const editCourse = async (_, { courseId, paid }, { userId }) => {
       },
     },
   });
+  await prisma.coursePayment.create({
+    data: {
+      payment: paid,
+      date: new Date(),
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+      course: {
+        connect: {
+          id: courseId,
+        },
+      },
+    },
+  });
   return prisma.course.update({
     where: {
       id: courseId,

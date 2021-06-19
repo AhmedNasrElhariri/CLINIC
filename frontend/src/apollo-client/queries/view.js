@@ -22,6 +22,16 @@ export const ACTIVE_VIEWS = gql`
   }
 `;
 
+export const ALL_AREAS = gql`
+  query areas {
+    areas {
+      id
+      governorate_id
+      city_name_ar
+    }
+  }
+`;
+
 export const EDIT_VIEW = gql`
   mutation editView($groups: [GroupInput!]) {
     editView(groups: $groups)

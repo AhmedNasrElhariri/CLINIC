@@ -6,6 +6,7 @@ export const LIST_EXPENSES = gql`
       id
       name
       amount
+      expenseType
       date
       invoiceNo
     }
@@ -18,6 +19,38 @@ export const LIST_REVENUES = gql`
       id
       name
       amount
+      date
+      invoiceNo
+    }
+  }
+`;
+
+export const LIST_BANK_REVENUES = gql`
+  query bankRevenues{
+    bankRevenues {
+      id
+      name
+      amount
+      bank{
+        id
+        name
+      }
+      date
+      invoiceNo
+    }
+  }
+`;
+
+export const LIST_COMPANY_REVENUES = gql`
+  query companyRevenues{
+    companyRevenues {
+      id
+      name
+      amount
+      company{
+        id
+        name
+      }
       date
       invoiceNo
     }
@@ -71,3 +104,32 @@ export const UPDATE_REVENUE = gql`
     }
   }
 `;
+
+
+export const LIST_EXPENSE_TYPES_DEFINITION = gql`
+  {
+    myExpenseTypesDefinition {
+      id
+      name
+    }
+  }
+`;
+
+export const ADD_EXPENSE_TYPE_DEFINITION = gql`
+  mutation addExpenseTypeDefinition($expenseTypeDefinition: ExpenseTypeInputDefinition!) {
+    addExpenseTypeDefinition(expenseTypeDefinition: $expenseTypeDefinition) {
+      id
+      name
+    }
+  }
+`;
+
+export const EDIT_EXPENSE_TYPE_DEFINITION = gql`
+  mutation editExpenseTypeDefinition($expenseTypeDefinition: ExpenseTypeInputDefinition!) {
+    editExpenseTypeDefinition(expenseTypeDefinition: $expenseTypeDefinition) {
+      id
+      name
+    }
+  }
+`;
+

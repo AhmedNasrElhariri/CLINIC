@@ -13,7 +13,10 @@ import ImageCategory from './image-category';
 import Course from './course';
 import SalesDefinition from './sales-definition';
 import SessionsDefinition from './sessions-definition';
-
+import BanksDefinition from './banks-definition';
+import CompanysDefinition from './companys-definition';
+import CompanysSessions from './companys-sessions-definition';
+import ExpensesTypes from './expenses-types-definition';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -43,7 +46,13 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="8">Courses and Packages</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="9">Sales Definition</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="10">Sessions Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="11">Patient Report</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="11">Bank Definition</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="12">Insurance Companies</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="13">
+          Insurance Companies Sessions
+        </CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="14">Expenses Types</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="15">Patient Report</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -70,6 +79,14 @@ function StaticSettings() {
               return <SalesDefinition />;
             case '10':
               return <SessionsDefinition />;
+            case '11':
+              return <BanksDefinition />;
+            case '12':
+              return <CompanysDefinition />;
+            case '13':
+              return <CompanysSessions />;
+            case '14':
+              return <ExpensesTypes />;
             default:
               return <PatientReport />;
           }

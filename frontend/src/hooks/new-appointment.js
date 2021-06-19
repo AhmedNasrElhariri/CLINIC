@@ -18,7 +18,7 @@ const initialValues = {
   type: 'Examination',
   patientId: null,
   branchId: null,
-  sessionId:null,
+  session:'',
   specialtyId: null,
   userId: null,
   date: new Date(),
