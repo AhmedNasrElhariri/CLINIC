@@ -1,13 +1,6 @@
 dist
 .vscode/
-yarn.lock
 server-dist/
 
-
-package-lock.json
-
-.env
-.dev.env
-.test1.env
-
-prisma/migrations/
+.env.dev
+.env.prod
