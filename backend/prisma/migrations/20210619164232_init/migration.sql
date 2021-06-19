@@ -79,6 +79,8 @@ CREATE TABLE "Patient" (
     "type" "PatientMembershipType" NOT NULL,
     "age" INTEGER NOT NULL,
     "sex" "Sex" NOT NULL,
+    "reference" JSONB NOT NULL DEFAULT E'[]',
+    "area" TEXT NOT NULL DEFAULT E'',
     "organizationId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "guardianName" TEXT,
@@ -95,6 +97,7 @@ CREATE TABLE "Appointment" (
     "type" "AppointmentType" NOT NULL,
     "patientId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "doctorId" TEXT NOT NULL,
     "businessNotes" TEXT NOT NULL DEFAULT E'',
     "status" "AppointmentStatus" NOT NULL,
     "notes" TEXT DEFAULT E'',
@@ -103,6 +106,7 @@ CREATE TABLE "Appointment" (
     "powerTwo" INTEGER,
     "branchId" TEXT,
     "specialtyId" TEXT,
+    "session" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -224,7 +228,7 @@ CREATE TABLE "AppointmentFile" (
 -- CreateTable
 CREATE TABLE "PayrollUser" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "salary" INTEGER NOT NULL,
     "organizationId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -237,12 +241,33 @@ CREATE TABLE "PayrollUser" (
 CREATE TABLE "PayrollTransaction" (
     "id" TEXT NOT NULL,
     "amount" INTEGER NOT NULL,
+    "reason" TEXT NOT NULL DEFAULT E'',
     "date" TIMESTAMP(3) NOT NULL,
+    "status" TEXT NOT NULL DEFAULT E'on',
+    "added" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "type" "PayrollTransactionType" NOT NULL,
     "payrollUserId" TEXT,
     "payrollId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TransactionCoursesTimeFrame" (
+    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "payrollUserId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TransactionRevenuesTimeFrame" (
+    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "payrollUserId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -264,7 +289,7 @@ CREATE TABLE "Payroll" (
 -- CreateTable
 CREATE TABLE "Configuration" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
     "enableInvoiceCounter" BOOLEAN NOT NULL DEFAULT false,
     "sessions" JSONB NOT NULL DEFAULT E'[]',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -373,6 +398,7 @@ CREATE TABLE "Expense" (
     "name" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "amount" INTEGER NOT NULL,
+    "expenseType" TEXT NOT NULL,
     "invoiceNo" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -391,6 +417,36 @@ CREATE TABLE "Revenue" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BankRevenue" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "amount" INTEGER NOT NULL,
+    "invoiceNo" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
+    "bankId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "InsuranceRevenue" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "amount" INTEGER NOT NULL,
+    "invoiceNo" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
+    "companyId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -443,10 +499,13 @@ CREATE TABLE "Item" (
 CREATE TABLE "InventoryItem" (
     "quantity" INTEGER NOT NULL,
     "itemId" TEXT NOT NULL,
+    "level" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "organizationId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "branchId" TEXT,
+    "specialtyId" TEXT,
 
     PRIMARY KEY ("itemId","userId")
 );
@@ -530,14 +589,72 @@ CREATE TABLE "ImageDefinition" (
 );
 
 -- CreateTable
+CREATE TABLE "SessionDefinition" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "organizationId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BankDefinition" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "organizationId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ExpenseTypeDefinition" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "organizationId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CompanyDefinition" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "organizationId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CompanySessionDefinition" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
+    "companyId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "organizationId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "SalesDefinition" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
     "cost" INTEGER NOT NULL,
+    "totalQuantity" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "userId" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -551,6 +668,7 @@ CREATE TABLE "Sales" (
     "date" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "organizationId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "salesDefinitionId" TEXT NOT NULL,
 
@@ -565,7 +683,7 @@ CREATE TABLE "CourseDefinition" (
     "price" INTEGER NOT NULL,
     "units" INTEGER NOT NULL,
     "messureOfUnits" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -588,6 +706,17 @@ CREATE TABLE "Course" (
     "doctorId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CoursePayment" (
+    "id" TEXT NOT NULL,
+    "payment" INTEGER NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
+    "courseId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -773,7 +902,13 @@ CREATE UNIQUE INDEX "order_fieldGroupId_unique_constraint" ON "Field"("order", "
 CREATE UNIQUE INDEX "appointment_fieldId_unique_constraint" ON "AppointmentField"("appointmentId", "fieldId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "userid_unique_constraint" ON "Configuration"("userId");
+CREATE UNIQUE INDEX "payrollUserId_unique_constraint" ON "TransactionCoursesTimeFrame"("payrollUserId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "payrollUserId Revenues_unique_constraint" ON "TransactionRevenuesTimeFrame"("payrollUserId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "organizationId_unique_constraint" ON "Configuration"("organizationId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "week_year_unique_constraint" ON "Week"("weekNo", "year");
@@ -833,6 +968,9 @@ ALTER TABLE "Appointment" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id
 ALTER TABLE "Appointment" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Appointment" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Appointment" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -875,16 +1013,25 @@ ALTER TABLE "AppointmentFile" ADD FOREIGN KEY ("appointmentId") REFERENCES "Appo
 ALTER TABLE "AppointmentFile" ADD FOREIGN KEY ("fileId") REFERENCES "File"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "PayrollUser" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "PayrollTransaction" ADD FOREIGN KEY ("payrollUserId") REFERENCES "PayrollUser"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PayrollTransaction" ADD FOREIGN KEY ("payrollId") REFERENCES "Payroll"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "TransactionCoursesTimeFrame" ADD FOREIGN KEY ("payrollUserId") REFERENCES "PayrollUser"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TransactionRevenuesTimeFrame" ADD FOREIGN KEY ("payrollUserId") REFERENCES "PayrollUser"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Payroll" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Configuration" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Configuration" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "WorkingHours" ADD FOREIGN KEY ("weekId") REFERENCES "Week"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -926,6 +1073,18 @@ ALTER TABLE "Expense" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELE
 ALTER TABLE "Revenue" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "BankRevenue" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BankRevenue" ADD FOREIGN KEY ("bankId") REFERENCES "BankDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InsuranceRevenue" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InsuranceRevenue" ADD FOREIGN KEY ("companyId") REFERENCES "CompanyDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Event" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -939,6 +1098,12 @@ ALTER TABLE "InventoryItem" ADD FOREIGN KEY ("itemId") REFERENCES "Item"("id") O
 
 -- AddForeignKey
 ALTER TABLE "InventoryItem" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InventoryItem" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InventoryItem" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "InventoryItem" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -971,7 +1136,28 @@ ALTER TABLE "Timing" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELET
 ALTER TABLE "ImageDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BankDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ExpenseTypeDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CompanyDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CompanySessionDefinition" ADD FOREIGN KEY ("companyId") REFERENCES "CompanyDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CompanySessionDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Sales" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Sales" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -980,7 +1166,7 @@ ALTER TABLE "Sales" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE
 ALTER TABLE "Sales" ADD FOREIGN KEY ("salesDefinitionId") REFERENCES "SalesDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "CourseDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "CourseDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Course" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -993,6 +1179,12 @@ ALTER TABLE "Course" ADD FOREIGN KEY ("courseDefinitionId") REFERENCES "CourseDe
 
 -- AddForeignKey
 ALTER TABLE "Course" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CoursePayment" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CoursePayment" ADD FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ImageCategory" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
