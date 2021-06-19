@@ -14,9 +14,9 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
       id: input.itemId,
     },
   });
+  const { itemId, specialtyId, branchId, userId: userID, level } = input;
 
-  const { itemId } = input;
-
+  console.log(input,'fllllllllllllllllllll');
   const persistedInventoryItem = await prisma.inventoryItem.findUnique({
     where: {
       itemId_userId: {
@@ -46,24 +46,41 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
   });
 
   return prisma.inventoryItem.upsert({
-    create: {
-      item: {
-        connect: {
-          id: itemId,
+    create: Object.assign(
+      {
+        item: {
+          connect: {
+            id: itemId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        quantity: newtotalQuantity,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        level: level,
+      },
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
         },
       },
-      user: {
-        connect: {
-          id: userId,
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
         },
-      },
-      quantity: newtotalQuantity,
-      organization: {
-        connect: {
-          id: organizationId,
-        },
-      },
-    },
+      }
+    ),
     update: {
       quantity: newtotalQuantity,
     },

@@ -57,7 +57,6 @@ function InventoryUsage({ onChange }) {
       price: quantity,
     }));
   }, [selectedItems]);
-  console.log(itemsList);
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
       <Div display="flex" padding={30}>

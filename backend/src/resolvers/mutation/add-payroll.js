@@ -5,7 +5,6 @@ import { getAllTransactionForCurrentOpenPayslips } from '@/services/payroll.serv
 
 const addPayroll = async (_, { payment }, { userId, organizationId }) => {
   let currentPayroll;
-  console.log(payment,'dllllllllll');
   const expenseType = 'Salary';
   const payrollRow = await prisma.payroll.findMany({
     where: { status: PAYROLL_STATUS.Open },

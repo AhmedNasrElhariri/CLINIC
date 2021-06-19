@@ -11,6 +11,8 @@ import {
   Div,
   CRModal,
   NewPatient,
+  CRBrancheTree,
+  CRDocSelectInput,
 } from 'components';
 import { APPOINTMENTS_DAY_COUNT } from 'apollo-client/queries';
 import { isBeforeToday } from 'utils/date';
@@ -33,9 +35,8 @@ import {
   useNewAppointment,
   useModal,
   useCourses,
-  useConfigurations
+  useConfigurations,
 } from 'hooks';
-
 
 const { StringType, DateType } = Schema.Types;
 
@@ -140,7 +141,7 @@ const NewAppointment = ({ show, onHide }) => {
         second: '00',
       });
     }
-    
+  
     createAppointment({
       patientId,
       type,
@@ -153,47 +154,6 @@ const NewAppointment = ({ show, onHide }) => {
       session,
     });
   }, [createAppointment, formValue]);
-  const specialties = useMemo(
-    () =>
-      R.pipe(
-        R.find(R.propEq('id', formValue.branchId)),
-        R.propOr([], 'specialties')
-      )(branches),
-    [branches, formValue.branchId]
-  );
-
-  const doctors = useMemo(
-    () =>
-      R.pipe(
-        R.find(R.propEq('id', formValue.specialtyId)),
-        R.propOr([], 'doctors')
-      )(specialties),
-    [formValue.specialtyId, specialties]
-  );
-  useEffect(() => {
-    if (branches.length == 1) {
-      setFormValue({
-        ...formValue,
-        branchId: branches[0]?.id,
-      });
-    }
-  }, [branches, formValue.branchId]);
-  useEffect(() => {
-    if (specialties.length == 1) {
-      setFormValue({
-        ...formValue,
-        specialtyId: specialties[0]?.id,
-      });
-    }
-  }, [specialties, formValue.branchId]);
-  useEffect(() => {
-    if (doctors.length == 1) {
-      setFormValue({
-        ...formValue,
-        userId: doctors[0]?.id,
-      });
-    }
-  }, [doctors, formValue.specialtyId]);
   // const notify = () => {
   //   toast(
   //     <CustomizedNotification
@@ -207,7 +167,48 @@ const NewAppointment = ({ show, onHide }) => {
   //     }
   //   );
   // };
-
+  // const CRSelectInputData = [
+  //   {
+  //     id: 'cea3818c-ed9e-4981-9c06-7f391655dbc1',
+  //     name: 'med1',
+  //     permision: {
+  //       level: 'organization',
+  //       speciality: {},
+  //       branch: {},
+  //       user: {},
+  //     },
+  //   },
+  //   {
+  //     id: 'fcf12fa5-f708-43a6-bb7d-f81264246ee9',
+  //     name: 'med2',
+  //     permision: {
+  //       level: 'speciality',
+  //       speciality: {id:1,name:'عظام'},
+  //       branch: {},
+  //       user: {},
+  //     },
+  //   },
+  //   {
+  //     id: '63a12875-ab6c-481b-a829-da984ee691b4',
+  //     name: 'med3',
+  //     permision: {
+  //       level: 'branch',
+  //       speciality: {},
+  //       branch: {id:1,name:'القاهره'},
+  //       user: {},
+  //     },
+  //   },
+  //   {
+  //     id: '3a7b42c1-5025-4c17-a42b-5a220285f5dd',
+  //     name: 'med3',
+  //     permision: {
+  //       level: 'user',
+  //       speciality: {},
+  //       branch: {},
+  //       user: {id:1,name:'حماده'},
+  //     },
+  //   },
+  // ];
   return (
     <>
       <NewPatient
@@ -334,33 +335,8 @@ const NewAppointment = ({ show, onHide }) => {
                     </H5>
                   </Div>
                 </CRSelectInput>
-                {branches.length > 1 && (
-                  <CRSelectInput
-                    label="Branch"
-                    name="branchId"
-                    placeholder="Select Branch"
-                    block
-                    data={branches}
-                  />
-                )}
-                {specialties.length > 1 && formValue.branchId && (
-                  <CRSelectInput
-                    label="Specialty"
-                    name="specialtyId"
-                    placeholder="Select Specialty"
-                    block
-                    data={specialties}
-                  />
-                )}
-                {doctors.length > 1 && formValue.specialtyId && (
-                  <CRSelectInput
-                    label="Doctor"
-                    name="userId"
-                    placeholder="Select Doctor"
-                    block
-                    data={doctors}
-                  />
-                )}
+                {/* <CRDocSelectInput data={CRSelectInputData} label="data" name="docId"/> */}
+                <CRBrancheTree formValue={formValue} onChange={setFormValue} />
               </RightContainer>
             </Container>
             <Checkbox

@@ -936,6 +936,10 @@ type InventoryItem {
   itemId: ID!
   userId: ID!
   quantity: Int!
+  branch: Branch
+  specialty: Specialty
+  user: User!
+  level: String!
 }
 
 type InventoryHistory {
@@ -961,6 +965,10 @@ input AddToInventoryInput {
   itemId: ID!
   amount: Int!
   price: Int!
+  branchId: ID
+  specialtyId: ID
+  userId: ID
+  level: String!
 }
 
 input FinishAppointmentItemInput {

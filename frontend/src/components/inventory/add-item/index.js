@@ -1,11 +1,11 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import { Form, Schema, Alert } from 'rsuite';
 
 import { CRModal, CRButton, CRNumberInput, Div, H5 } from 'components';
 import { isValid } from 'services/form';
 import { useInventory } from 'hooks';
-import { CRSelectInput } from 'components/widgets';
+import { CRSelectInput,CRBrancheTree } from 'components/widgets';
 import { useForm, useModal } from 'hooks';
 
 const { StringType, NumberType } = Schema.Types;
@@ -22,16 +22,30 @@ const AddItem = ({ items }) => {
       itemId: null,
       amount: 1,
       price: 1,
+      branchId:null,
+      specialtyId:null,
+      userId:null,
+      level:''
     },
   });
-
   const { addItem } = useInventory({
     onAddCompleted: () => {
       Alert.success('Item has been created successfully');
       close();
     },
   });
-
+  useEffect(() => {
+     const {branchId,specialtyId,userId} = formValue;
+     if(branchId == null && specialtyId == null && userId == null){
+       setFormValue({...formValue,level:'organization'});
+     }else if(userId != null){
+      setFormValue({...formValue,level:'user'});
+     }else if(userId == null && specialtyId != null){
+      setFormValue({...formValue,level:'specialty'});
+     }else{
+      setFormValue({...formValue,level:'branch'});
+     }
+  },[formValue.specialtyId,formValue.branchId,formValue.userId]);
   const handleClose = useCallback(() => {
     close();
     reset();
@@ -65,6 +79,7 @@ const AddItem = ({ items }) => {
           ></CRSelectInput>
           <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
           <CRNumberInput label="Unit Price" name="price" block></CRNumberInput>
+          <CRBrancheTree formValue={formValue} onChange={setFormValue} />
         </Form>
         <Div mt={3} display="flex">
           <H5 color="texts.2" fontWeight={400}>

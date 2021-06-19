@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Divider, Toggle } from 'rsuite';
 import ReactToPrint from 'react-to-print';
-import { formatDate, formatFullDay } from 'utils/date';
+import {formatFullDay } from 'utils/date';
 import { useMedicineDefinitions, useTimings } from 'hooks';
 import * as R from 'ramda';
 import { CRModal, Div, H6 } from 'components';
@@ -13,7 +13,6 @@ import {
   Ul,
   Li,
   FooterButton,
-  MedicineName,
   PrescriptionPrintout,
   ContainerStyled,
   StyledFooterData,
@@ -25,7 +24,6 @@ function Prescription({
   medicine,
   onChange: setFormValue2,
   nextAppointment,
-  arabicEnable,
 }) {
   const [enable, setEnable] = useState(false);
   const { medicineDefinitions } = useMedicineDefinitions();

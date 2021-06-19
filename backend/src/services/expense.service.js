@@ -5,7 +5,7 @@ export const createInventoryExpense = async ({ name, price, userId }) => {
     data: {
       name,
       amount: price,
-      expenseType: expenseType,
+      expenseType: 'InventoryExpense',
       date: new Date(),
       user: {
         connect: {

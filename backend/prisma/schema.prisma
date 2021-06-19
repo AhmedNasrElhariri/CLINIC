@@ -626,12 +626,17 @@ model InventoryItem {
   quantity       Int
   item           Item         @relation(fields: [itemId], references: [id])
   itemId         String
+  level          String
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
-  user           User         @relation(fields: [userId], references: [id])
+  user           User        @relation(fields: [userId], references: [id])
+  branch         Branch?      @relation(fields: [branchId], references: [id])
+  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   userId         String
+  branchId       String?
+  specialtyId    String?
 
   @@id([itemId, userId])
 }
@@ -710,11 +715,11 @@ model ImageDefinition {
 }
 
 model SessionDefinition {
-  id             String        @id @default(uuid())
+  id             String       @id @default(uuid())
   name           String
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @default(now()) @updatedAt
-  organization   Organization  @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
 }
 
@@ -963,6 +968,7 @@ model Branch {
   Appointment     Appointment[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @default(now()) @updatedAt
+  InventoryItem   InventoryItem[]
 }
 
 model Specialty {
@@ -976,6 +982,7 @@ model Specialty {
   Appointment     Appointment[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @default(now()) @updatedAt
+  InventoryItem   InventoryItem[]
 }
 
 model UserSpecialty {
