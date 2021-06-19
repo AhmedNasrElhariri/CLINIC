@@ -16,12 +16,14 @@ import NewAppointment from 'components/appointments/new-appointment';
 import useUserProfile from './fetch-user';
 
 import { useAuth, useModal } from 'hooks';
-
+const initialvalues = {
+  branchId: null,
+};
 function Root() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
   const history = useHistory();
-
+  const [formValue, setFormValue] = useState(initialvalues);
   const {
     clearNotifications,
     onLoginFailed,
@@ -91,7 +93,7 @@ function Root() {
         ]
       : []),
   ];
-
+ 
   return (
     <ContainerStyled>
       {isAuthenticated ? (
@@ -104,6 +106,8 @@ function Root() {
               avatar={R.prop('avatar')(user)}
               notifications={notifications}
               onClear={clearNotifications}
+              formValue={formValue}
+              setFormValue={setFormValue}
             />
             <ContentStyled>
               <AppRouter></AppRouter>

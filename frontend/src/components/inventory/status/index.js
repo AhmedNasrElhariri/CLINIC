@@ -2,10 +2,12 @@ import React from 'react';
 import { MainContainer, CRCard } from 'components';
 import AddItem from '../add-item';
 import ListInventory from '../list-inventory';
-import { useInventory } from 'hooks';
+import { useInventory, useAppointments } from 'hooks';
+import Filter from '../../filters';
 
 const InventoryStatus = () => {
   const { items, inventoryWithAmount } = useInventory();
+  const { filterBranches } = useAppointments();
   return (
     <>
       <MainContainer
@@ -14,7 +16,11 @@ const InventoryStatus = () => {
         nobody
       ></MainContainer>
       <CRCard borderless>
-        <ListInventory items={inventoryWithAmount} />
+        <Filter
+          appointments={inventoryWithAmount}
+          branches={filterBranches}
+          render={inventories => <ListInventory items={inventories} />}
+        />
       </CRCard>
     </>
   );

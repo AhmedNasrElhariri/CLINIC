@@ -31,13 +31,33 @@ const Navbar = ({
   avatar,
   notifications,
   onClear,
+  formValue,
+  setFormValue
 }) => {
   const notificationsRef = useRef();
   const settingsRef = useRef();
+  const { organizationBranches } = useNewAppointment({});
+  useEffect(() => {
+    setFormValue(val => ({
+      ...val,
+      branchId: get('branch'),
+    }));
+  }, []);
   return (
     <NavStyled>
       <Navigator />
       {/* {renderSearch()} */}
+      <Div ml={200} width={300}>
+        <Form formValue={formValue} onChange={setFormValue}>
+          <CRSelectInput
+            name="branchId"
+            block
+            data={organizationBranches}
+            onSelect={val => set('branch', val)}
+            style={{ width: '250px' }}
+          />
+        </Form>
+      </Div>
       <Div
         flexGrow={1}
         display="flex"

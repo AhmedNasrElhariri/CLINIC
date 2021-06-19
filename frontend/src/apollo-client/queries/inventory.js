@@ -9,7 +9,6 @@ export const LIST_ITEMS = gql`
       quantity
       barcode
       notes
-      level
     }
   }
 `;
@@ -20,6 +19,19 @@ export const LIST_INVENTORY = gql`
       itemId
       userId
       quantity
+      level
+      user{
+        id
+        name
+      }
+      branch{
+        id
+        name
+      }
+      specialty{
+        id
+        name
+      }
     }
   }
 `;

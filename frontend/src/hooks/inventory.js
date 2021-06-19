@@ -29,9 +29,10 @@ function useInventory({
   const { data: InventoryHistoryData } = useQuery(LIST_INVENTORY_HISTORY);
 
   const items = useMemo(() => R.propOr([], 'items')(ItemData), [ItemData]);
-  const inventory = useMemo(() => R.propOr([], 'inventory')(InventoryData), [
-    InventoryData,
-  ]);
+  const inventory = useMemo(
+    () => R.propOr([], 'inventory')(InventoryData),
+    [InventoryData]
+  );
   const history = useMemo(
     () => R.propOr([], 'inventoryHistory')(InventoryHistoryData),
     [InventoryHistoryData]
@@ -64,11 +65,14 @@ function useInventory({
             amount: i.quantity / item.quantity,
             quantity: i.quantity,
             item,
+            branch: i.branch,
+            specialty: i.specialty,
+            doctor: i.user,
           };
         }),
     [inventory, items]
   );
-
+  console.log(inventory, 'ininin');
   const [create] = useMutation(CREATE_ITEM, {
     onCompleted: ({ defineItem }) => {
       onCreateCompleted && onCreateCompleted(defineItem);

@@ -18,6 +18,7 @@ import {
   filterTodayAppointments,
   sortAppointments,
 } from 'services/appointment';
+import Filter from '../../filters';
 import { APPT_STATUS } from 'utils/constants';
 const initialValue = {
   businessNotes: '',
@@ -143,12 +144,18 @@ function TodayAppointments() {
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
-            <ListAppointments
-              title="Upcoming Appointments"
+            <Filter
               appointments={upcomingAppointments}
-              onArchive={onClickDone}
-              onAddBusinessNotes={onAddBusinessNotes}
-              defaultExpanded={true}
+              branches={filterBranches}
+              render={apps => (
+                <ListAppointments
+                  title="Upcoming Appointments"
+                  appointments={apps}
+                  onArchive={onClickDone}
+                  onAddBusinessNotes={onAddBusinessNotes}
+                  defaultExpanded={true}
+                />
+              )}
             />
           </CRTabs.CRContent>
           <CRTabs.CRContent>

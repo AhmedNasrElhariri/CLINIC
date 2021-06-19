@@ -45,7 +45,30 @@ const ListInventory = ({ items }) => {
           )}
         </CRTable.CRCell>
       </CRTable.CRColumn>
-
+      <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
+        <CRTable.CRCell>
+          {({ doctor }) => (
+            <CRTable.CRCellStyled>{doctor.name}</CRTable.CRCellStyled>
+          )}
+        </CRTable.CRCell>
+      </CRTable.CRColumn>
+      <CRTable.CRColumn flexGrow={0.8}>
+        <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
+        <CRTable.CRCell>
+          {({ specialty }) => (
+            <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
+          )}
+        </CRTable.CRCell>
+      </CRTable.CRColumn>
+      <CRTable.CRColumn flexGrow={0.8}>
+        <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
+        <CRTable.CRCell>
+          {({ branch }) => (
+            <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>
+          )}
+        </CRTable.CRCell>
+      </CRTable.CRColumn>
       <CRTable.CRColumn width={35}>
         <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
         <CRTable.CRCell>{data => <RemoveItem item={data} />}</CRTable.CRCell>
