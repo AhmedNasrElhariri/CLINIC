@@ -38,7 +38,7 @@ export const LIST_APPOINTMENTS = gql`
         id
         name
       }
-      doctor{
+      doctor {
         id
         name
       }

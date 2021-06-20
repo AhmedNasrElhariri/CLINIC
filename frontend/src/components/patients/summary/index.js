@@ -56,13 +56,15 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
     setActiveSession(R.propOr({}, '0')(summary));
   }, [summary]);
 
-  const date = useMemo(() => R.propOr(new Date(), 'date')(activeSession), [
-    activeSession,
-  ]);
+  const date = useMemo(
+    () => R.propOr(new Date(), 'date')(activeSession),
+    [activeSession]
+  );
 
-  const data = useMemo(() => R.propOr([], 'data')(activeSession), [
-    activeSession,
-  ]);
+  const data = useMemo(
+    () => R.propOr([], 'data')(activeSession),
+    [activeSession]
+  );
 
   const sessionId = useMemo(
     () => R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(summary),
@@ -71,15 +73,10 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
 
   const { visible, open, close } = useModal();
 
-  const images = useMemo(() => {
-    return R.pipe(
-      R.propOr([], 'collections'),
-      R.map(c =>
-        c.images.map(i => ({ ...i, caption: c.caption, original: i.url }))
-      ),
-      R.flatten
-    )(activeSession);
-  }, [activeSession]);
+  const pictures = useMemo(
+    () => R.propOr([], 'pictures')(activeSession),
+    [activeSession]
+  );
 
   if (!activeSession) {
     return '...No History';
@@ -106,8 +103,11 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
               {renderProp('Date', formatDate(date))}
               {renderAppointment(data)}
               {activeSession.notes && renderProp('Notes', activeSession.notes)}
-              {images.length > 0 &&
-                renderProp('Images', <AppointmentGallery images={images} />)}
+              {pictures.length > 0 &&
+                renderProp(
+                  'Images',
+                  <AppointmentGallery pictures={pictures} />
+                )}
             </Div>
           </>
         ) : (

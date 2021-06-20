@@ -6,6 +6,7 @@ import {
   FormControl,
   FormGroup,
   ControlLabel,
+  SelectPicker,
 } from 'rsuite';
 import { useMutation } from '@apollo/client';
 import { CREATE_VIEW } from 'apollo-client/queries';
@@ -53,7 +54,14 @@ export default function CreateView() {
         </FormGroup>
         <FormGroup>
           <ControlLabel>Type</ControlLabel>
-          <FormControl style={{ width }} name="type" data={appointmentTypes} />
+          <FormControl
+            accepter={SelectPicker}
+            style={{ width }}
+            name="type"
+            data={appointmentTypes}
+            labelKey="name"
+            valueKey="id"
+          />
         </FormGroup>
         <Button appearance="primary" onClick={onClick}>
           Create

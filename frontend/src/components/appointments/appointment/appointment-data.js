@@ -140,7 +140,7 @@ function AppointmentData({
     <>
       <Div display="flex">
         <Div flexGrow={1}>
-          {!isSession(appointment) && Object.keys(formValue).length > 0 && (
+          {Object.keys(formValue).length > 0 && (
             <>
               <Form formValue={formValue} onChange={onDataChange} fluid>
                 {navs.map((v, idx) => (

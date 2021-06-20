@@ -87,6 +87,8 @@ const Card = ({ laneId, index }) => {
               label="Type"
               name="type"
               placeholder="Select type"
+              accepter={SelectPicker}
+              searchable={false}
               data={FIELD_TYPES}
             />
           </Form>
