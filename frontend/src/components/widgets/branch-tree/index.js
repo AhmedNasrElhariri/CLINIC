@@ -21,7 +21,7 @@ const CustomBranchTress = ({ onChange, formValue, ...props }) => {
         R.find(R.propEq('id', formValue?.branchId)),
         R.propOr([], 'specialties')
       )(branches),
-    [formValue?.branchId,branches]
+    [formValue?.branchId, branches]
   );
   const doctors = useMemo(
     () =>
@@ -54,7 +54,7 @@ const CustomBranchTress = ({ onChange, formValue, ...props }) => {
         userId: doctors[0]?.id,
       });
     }
-  }, [doctors, formValue?.specialtyId,checkFormValue]);
+  }, [doctors, formValue?.specialtyId, checkFormValue]);
   useEffect(() => {
     if (
       checkFormValue.check.length != 0 &&
@@ -83,10 +83,11 @@ const CustomBranchTress = ({ onChange, formValue, ...props }) => {
     formValue.userId,
     checkFormValue.check,
   ]);
+
   return (
     <>
       <Form formValue={checkFormValue} onChange={setCheckFormValue}>
-        <CRCheckBoxGroup name="check" options={options} inline />
+        <CRCheckBoxGroup name="check" options={options} max={1} inline />
       </Form>
       <Form formValue={formValue} onChange={onChange}>
         {checkFormValue.check.length == 0 && (

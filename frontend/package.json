@@ -7,7 +7,7 @@
     "@casl/ability": "^4.1.5",
     "@casl/react": "^2.1.1",
     "@david.kucsai/react-pdf-table": "^0.3.0",
-    "@react-pdf/renderer": "^1.6.11",
+    "@react-pdf/renderer": "^2.0.15",
     "@rsuite/charts": "^3.2.4",
     "@rsuite/responsive-nav": "^0.0.10",
     "apollo-upload-client": "^13.0.0",

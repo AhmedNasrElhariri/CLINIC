@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Ability } from '@casl/ability';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
@@ -19,16 +19,16 @@ import GlobalStyle from './global-style';
 import lightTheme from 'styles/light';
 import font from './fonts/Tajawal-Regular.ttf';
 
-
 import { AbilityContext } from 'components/user/can/index';
 
-Font.register({
-  family: 'Tajawal',
-  format: 'truetype',
-  src: font,
-});
-
 export default function App() {
+  useEffect(() => {
+    Font.register({
+      family: 'Tajawal',
+      format: 'truetype',
+      src: font,
+    });
+  }, []);
   return (
     <>
       <GlobalStyle />

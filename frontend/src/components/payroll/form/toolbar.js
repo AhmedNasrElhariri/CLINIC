@@ -4,7 +4,7 @@ import { Div, CRDateRangePicker } from 'components';
 import { DateRangePicker ,Form} from 'rsuite';
 const { allowedRange } = DateRangePicker;
 const Toolbar = ({ onChangePeriod ,lastTimeFrameDay}) => {
-  console.log(lastTimeFrameDay,'in');
+
   const startDayOfYear = moment().startOf('year').toDate();
   const lastDay = lastTimeFrameDay?.date || startDayOfYear;
   return (

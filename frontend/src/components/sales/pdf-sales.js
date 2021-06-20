@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   page: {
     backgroundColor: '#ffffff',
     padding: 20,
-    fontFamily: 'Tajawal',
   },
   header: {
     fontSize: 14,

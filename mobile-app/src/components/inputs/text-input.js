@@ -7,8 +7,6 @@ export default ({ field: { name }, form, ...props }) => {
   const onChangeText = val => form.setFieldValue(name, val, true);
   const onBlur = () => form.setFieldTouched(name, true, true);
 
-console.log(form)
-
   return (
     <Content marginBottom={crVariables.fieldMarginBottom}>
       <Input

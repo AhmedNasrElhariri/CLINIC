@@ -46,7 +46,6 @@ const LoginScreen = () => {
           <Image source={logo} style={{ marginHorizontal: 'auto' }} />
         </View>
         <Formik
-          // validateOnMount
           initialValues={{
             email: '',
             password: '',

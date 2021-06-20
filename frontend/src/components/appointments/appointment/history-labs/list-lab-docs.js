@@ -31,7 +31,6 @@ const Column = styled.div`
 function ListLabDocs({ labs, labId }) {
   const lab = labs.filter(ele => ele.id === labId);
   const documents = lab[0]?.documents;
-  console.log(documents);
   return (
     <>
       <CRCard borderless>

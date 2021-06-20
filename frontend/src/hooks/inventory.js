@@ -72,7 +72,6 @@ function useInventory({
         }),
     [inventory, items]
   );
-  console.log(inventory, 'ininin');
   const [create] = useMutation(CREATE_ITEM, {
     onCompleted: ({ defineItem }) => {
       onCreateCompleted && onCreateCompleted(defineItem);

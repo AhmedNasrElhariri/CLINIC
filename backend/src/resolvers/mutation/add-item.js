@@ -14,9 +14,8 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
       id: input.itemId,
     },
   });
-  const { itemId, specialtyId, branchId, userId: userID, level } = input;
+  const { itemId, specialtyId, branchId, level } = input;
 
-  console.log(input,'fllllllllllllllllllll');
   const persistedInventoryItem = await prisma.inventoryItem.findUnique({
     where: {
       itemId_userId: {

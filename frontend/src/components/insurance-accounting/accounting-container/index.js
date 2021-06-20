@@ -37,7 +37,7 @@ const BankAccountingContainer = () => {
     () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
     [updatedRevenues]
   );
-  console.log(updatedRevenues);
+
   return (
     <>
       <MainContainer

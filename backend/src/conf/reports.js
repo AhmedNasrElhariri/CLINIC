@@ -17,7 +17,6 @@ const init = app => {
       });
       res.end(pdfDoc);
     } catch (e) {
-      // console.log(e);
       res.status(400).send(e);
       res.status(400).send('Invalid');
     }
