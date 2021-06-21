@@ -4,12 +4,21 @@ import * as R from 'ramda';
 import { Div, CRButton } from 'components';
 import ListHospitals from './list-hospitals';
 import NewHospital from './new-hospital';
-import { useForm, useModal, useHospitals } from 'hooks';
+import { useForm, useModal, useHospitals, useAppointments } from 'hooks';
+import Filter from '../../filters';
 
-const initValue = { name: '', phoneNo: '', address: '' };
+const initValue = {
+  name: '',
+  phoneNo: '',
+  address: '',
+  branchId: null,
+  specialtyId: null,
+  userId: null,
+};
 
 const Hospitals = () => {
   const { visible, open, close } = useModal();
+  const { filterBranches } = useAppointments();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
@@ -70,7 +79,13 @@ const Hospitals = () => {
         onOk={handleAdd}
         onClose={close}
       />
-      <ListHospitals hospitals={hospitals} onEdit={handleClickEdit} />
+      <Filter
+        appointments={hospitals}
+        branches={filterBranches}
+        render={hosps => (
+          <ListHospitals hospitals={hosps} onEdit={handleClickEdit} />
+        )}
+      />
     </>
   );
 };

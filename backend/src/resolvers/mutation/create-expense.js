@@ -1,16 +1,39 @@
 import { prisma } from '@';
-
-const createExpense = async (_, { expense }, { userId }) => {
+import { GetLevel } from '@/services/get-level';
+const createExpense = async (_, { expense }, { userId, organizationId }) => {
+  const { specialtyId, branchId, userId: userID, ...rest } = expense;
+  const level = GetLevel(branchId, specialtyId, userId);
   return prisma.expense.create({
-    data: {
-      ...expense,
-      user: {
-        connect: {
-          id: userId,
+    data: Object.assign(
+      {
+        ...rest,
+        level,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
         },
       },
-      ...expense,
-    },
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
+        },
+      },
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
+        },
+      }
+    ),
   });
 };
 

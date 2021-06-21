@@ -7,6 +7,19 @@ export const LIST_HOSPITALS = gql`
       name
       phoneNo
       address
+      level
+      user{
+        id
+        name
+      }
+      branch{
+        id
+        name
+      }
+      specialty{
+        id
+        name
+      }
     }
   }
 `;

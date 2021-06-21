@@ -226,8 +226,12 @@ type Mutation {
   editTiming(timing: TimingInput!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
-  addSessionDefinition(sessionDefinition: SessionInputDefinition!): SessionDefinition
-  editSessionDefinition(sessionDefinition: SessionInputDefinition!): SessionDefinition
+  addSessionDefinition(
+    sessionDefinition: SessionInputDefinition!
+  ): SessionDefinition
+  editSessionDefinition(
+    sessionDefinition: SessionInputDefinition!
+  ): SessionDefinition
   addPrice(price: PriceInput!): Price
   editPrice(price: PriceInput!): Price
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
@@ -831,6 +835,10 @@ type Expense {
   id: ID!
   name: String!
   amount: Int!
+  level: String
+  user: User
+  branch: Branch
+  specialty: Specialty
   date: Date!
   expenseType: String!
   invoiceNo: String
@@ -840,6 +848,9 @@ input ExpenseInput {
   name: String!
   amount: Int!
   expenseType: String!
+  branchId: ID
+  specialtyId: ID
+  userId: ID
   date: Date!
   invoiceNo: String
 }
@@ -857,6 +868,10 @@ input ExpenseUpdateInput {
 type Revenue {
   id: ID!
   name: String!
+  level: String
+  user: User
+  branch: Branch
+  specialty: Specialty
   amount: Int!
   date: Date!
   invoiceNo: String
@@ -884,6 +899,10 @@ input RevenueInput {
   name: String!
   amount: Int!
   date: Date!
+  expenseType: String
+  branchId: ID
+  specialtyId: ID
+  userId: ID
   invoiceNo: String
 }
 
@@ -990,6 +1009,10 @@ type Hospital {
   name: String!
   phoneNo: String
   address: Date
+  level: String!
+  branch: Branch
+  specialty: Specialty
+  user: User
 }
 
 input HospitalInput {
@@ -997,6 +1020,9 @@ input HospitalInput {
   name: String!
   phoneNo: String
   address: Date
+  userId: ID
+  branchId: ID
+  specialtyId: ID
 }
 
 ########################### Surgeries ##################################
@@ -1004,11 +1030,18 @@ input HospitalInput {
 type Surgery {
   id: ID!
   name: String!
+  level: String!
+  branch: Branch
+  specialty: Specialty
+  user: User
 }
 
 input SurgeryInput {
   id: ID
   name: String!
+  userId: ID
+  branchId: ID
+  specialtyId: ID
 }
 ########################### Labs Definition ##################################
 

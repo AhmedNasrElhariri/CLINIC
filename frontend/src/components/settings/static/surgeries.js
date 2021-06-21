@@ -1,16 +1,17 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
+import Filter from '../../filters';
 import { Div, CRButton } from 'components';
 import ListSurgeries from './list-surgeries';
 import NewSurgery from './new-surgery';
 
-import { useForm, useModal, useSurgeries } from 'hooks';
+import { useForm, useModal, useSurgeries, useAppointments } from 'hooks';
 
-const initValue = { name: '' };
+const initValue = { name: '', branchId: null, specialtyId: null, userId: null };
 
 function Surgeries() {
   const { visible, open, close } = useModal();
+  const { filterBranches } = useAppointments();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
@@ -71,7 +72,13 @@ function Surgeries() {
         onOk={handleAdd}
         onClose={close}
       />
-      <ListSurgeries surgeries={surgeries} onEdit={handleClickEdit} />
+      <Filter
+        appointments={surgeries}
+        branches={filterBranches}
+        render={surgs => (
+          <ListSurgeries surgeries={surgs} onEdit={handleClickEdit} />
+        )}
+      />
     </>
   );
 }

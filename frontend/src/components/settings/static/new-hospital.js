@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput, CRTextArea } from 'components';
+import { CRModal, CRTextInput, CRTextArea ,CRBrancheTree} from 'components';
 
 const model = Schema.Model({});
 
@@ -23,6 +23,7 @@ function NewHospital({ formValue, onChange, type, visible, onOk, onClose }) {
         <CRTextInput label="Name" name="name" block />
         <CRTextInput label="Phone No" name="phoneNo" block />
         <CRTextArea label="Address" name="address" block />
+        <CRBrancheTree formValue={formValue} onChange={onChange} />
       </Form>
     </CRModal>
   );

@@ -32,6 +32,38 @@ function ListHospitals({ hospitals, onEdit }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Hospital Level</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ level }) => (
+                <CRTable.CRCellStyled bold>{level}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Hospital Branch</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ branch }) => (
+                <CRTable.CRCellStyled bold>{branch?.name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Hospital Specialty</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ specialty }) => (
+                <CRTable.CRCellStyled bold>{specialty?.name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Hospital User</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ user }) => (
+                <CRTable.CRCellStyled bold>{user?.name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>

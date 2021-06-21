@@ -6,6 +6,7 @@ import {
   CRTextInput,
   CRNumberInput,
   CRDatePicker,
+  CRBrancheTree,
   CRSelectInput,
 } from 'components';
 import { useExpenseTypeDefinition } from 'hooks';
@@ -17,6 +18,9 @@ const initValue = {
   date: null,
   expenseType: '',
   invoiceNo: '',
+  branchId: null,
+  specialtyId: null,
+  userId: null,
 };
 
 const { StringType, DateType } = Schema.Types;
@@ -42,7 +46,7 @@ export const useAccountingForm = ({ header, onOk }) => {
   const hide = useCallback(() => {
     setVisible(false);
   }, []);
-
+  
   return {
     formValue,
     setFormValue,
@@ -106,6 +110,7 @@ const AccountingForm = ({
             data={updatedexpenseType}
           />
         )}
+        <CRBrancheTree formValue={formValue} onChange={onChange} />
         <CRDatePicker label="Date" name="date" block></CRDatePicker>
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
       </Form>

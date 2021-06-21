@@ -104,4 +104,10 @@ export const ACTIONS = Object.freeze({
   DefineItem_Inventory: 'DefineItem_Inventory',
   List_Price: 'List_Price',
   Create_Price: 'Create_Price',
+  List_Session: 'List_Session',
+  Create_Session: 'Create_Session',
+  Create_Hospital: 'Create_Hospital',
+  List_Hospital: 'List_Hospital',
+  Create_Surgery: 'Create_Surgery',
+  List_Surgery: 'List_Surgery',
 });

@@ -5,6 +5,11 @@ const mySurgeries = (_, __, { organizationId }) => {
     where: {
       organizationId,
     },
+    include: {
+      user: true,
+      specialty: true,
+      branch: true,
+    },
   });
 };
 

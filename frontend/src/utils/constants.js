@@ -119,6 +119,10 @@ export const ACTIONS = Object.freeze({
   Create_Price: 'Create_Price',
   List_Session: 'List_Session',
   Create_Session: 'Create_Session',
+  Create_Hospital: 'Create_Hospital',
+  List_Hospital: 'List_Hospital',
+  Create_Surgery: 'Create_Surgery',
+  List_Surgery: 'List_Surgery',
 });
 
 export const LAB_STATUS = Object.freeze({

@@ -1,4 +1,4 @@
-import React, { useState, useCallback,useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
@@ -9,25 +9,27 @@ import ListRevenueData from '../list-data/revenue.js';
 import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
-import { useAccounting, useAuth } from 'hooks';
+import { useAccounting, useAuth, useAppointments } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
   UPDATE_EXPENSE,
   UPDATE_REVENUE,
 } from 'apollo-client/queries';
+import BranchFilter from '../../filters';
+import Filter from '../filter';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
-import Filter from '../filter';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalVal = {
   expenseType: '',
 };
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
+  const { filterBranches } = useAppointments();
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const { isOrAssistant } = useAuth();
@@ -46,7 +48,7 @@ const AccountingContainer = () => {
       Alert.error('Failed to add new Expense');
     },
   });
-
+  
   const [createRevenue] = useMutation(CREATE_REVENUE, {
     onCompleted({ createRevenue: revenue }) {
       Alert.success('Revenue Added Successfully');
@@ -142,14 +144,18 @@ const AccountingContainer = () => {
     header: 'Edit Expense',
     onOk: handleUpdateExpense,
   });
-  const { expenses, revenues, totalRevenues, timeFrame } =
-    useAccounting({ view, period });
+  const { expenses, revenues, totalRevenues, timeFrame } = useAccounting({
+    view,
+    period,
+  });
   const updatedExpenses = useMemo(
     () =>
       expenses.filter(e =>
-        e.expenseType.toLowerCase().includes(formValue.expenseType.toLowerCase())
+        e.expenseType
+          .toLowerCase()
+          .includes(formValue.expenseType.toLowerCase())
       ),
-    [formValue,expenses]
+    [formValue, expenses]
   );
   const totalExpenses = useMemo(
     () => updatedExpenses.reduce((acc, e) => acc + e.amount, 0),
@@ -204,25 +210,41 @@ const AccountingContainer = () => {
           {activeTab === '0' ? (
             <Div display="flex">
               <Div flexGrow={1} mr={2}>
-                <ListRevenueData
-                  title="Revenues"
-                  data={revenues}
-                  onEdit={revenue => {
-                    editRevenueForm.setFormValue(R.pick(ENTITY_PROPS)(revenue));
-                    editRevenueForm.show();
-                  }}
+                <BranchFilter
+                  appointments={revenues}
+                  branches={filterBranches}
+                  render={revenues => (
+                    <ListRevenueData
+                      title="Revenues"
+                      data={revenues}
+                      onEdit={revenue => {
+                        editRevenueForm.setFormValue(
+                          R.pick(ENTITY_PROPS)(revenue)
+                        );
+                        editRevenueForm.show();
+                      }}
+                    />
+                  )}
                 />
               </Div>
 
               <Div flexGrow={1} ml={2}>
                 <Filter formValue={formValue} setFormValue={setFormValue} />
-                <ListExpenseData
-                  title="Expenses"
-                  data={updatedExpenses}
-                  onEdit={expense => {
-                    editExpenseForm.setFormValue(R.pick(ENTITY_PROPS)(expense));
-                    editExpenseForm.show();
-                  }}
+                <BranchFilter
+                  appointments={updatedExpenses}
+                  branches={filterBranches}
+                  render={expenses => (
+                    <ListExpenseData
+                      title="Expenses"
+                      data={expenses}
+                      onEdit={expense => {
+                        editExpenseForm.setFormValue(
+                          R.pick(ENTITY_PROPS)(expense)
+                        );
+                        editExpenseForm.show();
+                      }}
+                    />
+                  )}
                 />
               </Div>
             </Div>

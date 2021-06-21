@@ -19,6 +19,11 @@ const expenses = async (_, __, { user, organizationId }) => {
         in: ids,
       },
     },
+    include: {
+      user: true,
+      specialty: true,
+      branch: true,
+    },
   });
 };
 

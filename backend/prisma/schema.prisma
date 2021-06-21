@@ -121,6 +121,10 @@ enum PermissionAction {
   Create_Price
   List_Session
   Create_Session
+  Create_Hospital
+  List_Hospital
+  Create_Surgery
+  List_Surgery
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,6 +160,8 @@ model Organization {
   ExpenseTypeDefinition    ExpenseTypeDefinition[]
   Price                    Price[]
   SessionDefinition        SessionDefinition[]
+  Expense                  Expense[]
+  Revenue                  Revenue[]
 }
 
 model User {
@@ -203,6 +209,8 @@ model User {
   Sales               Sales[]
   Price               Price[]
   SessionDefinition   SessionDefinition[]
+  Hospital            Hospital[]
+  Surgery             Surgery[]
 }
 
 model Patient {
@@ -537,28 +545,42 @@ model FamilyHistory {
 }
 
 model Expense {
-  id          String   @id @default(uuid())
-  name        String
-  date        DateTime
-  amount      Int
-  expenseType String
-  invoiceNo   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String
+  id             String       @id @default(uuid())
+  name           String
+  date           DateTime
+  amount         Int
+  expenseType    String
+  invoiceNo      String?
+  level          String?
+  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?      @relation(fields: [branchId], references: [id])
+  branchId       String?
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
 }
 
 model Revenue {
-  id        String   @id @default(uuid())
-  name      String
-  date      DateTime
-  amount    Int
-  invoiceNo String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  id             String       @id @default(uuid())
+  name           String
+  date           DateTime
+  amount         Int
+  invoiceNo      String?
+  level          String?
+  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?      @relation(fields: [branchId], references: [id])
+  branchId       String?
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
 }
 
 model BankRevenue {
@@ -671,8 +693,15 @@ model Hospital {
   name           String
   phoneNo        String?
   address        String?
+  level          String
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @default(now()) @updatedAt
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+  specialty      Specialty?       @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?          @relation(fields: [branchId], references: [id])
+  branchId       String?
   organization   Organization     @relation(fields: [organizationId], references: [id])
   organizationId String
   PatientSurgery PatientSurgery[]
@@ -908,6 +937,13 @@ model PatientReport {
 model Surgery {
   id             String           @id @default(uuid())
   name           String
+  level          String
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+  specialty      Specialty?       @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?          @relation(fields: [branchId], references: [id])
+  branchId       String?
   organization   Organization     @relation(fields: [organizationId], references: [id])
   organizationId String
   patientSurgery PatientSurgery[]
@@ -1003,6 +1039,10 @@ model Branch {
   InventoryItem     InventoryItem[]
   Price             Price[]
   SessionDefinition SessionDefinition[]
+  Hospital          Hospital[]
+  Surgery           Surgery[]
+  Revenue           Revenue[]
+  Expense           Expense[]
 }
 
 model Specialty {
@@ -1019,6 +1059,10 @@ model Specialty {
   InventoryItem     InventoryItem[]
   Price             Price[]
   SessionDefinition SessionDefinition[]
+  Hospital          Hospital[]
+  Surgery           Surgery[]
+  Revenue           Revenue[]
+  Expense           Expense[]
 }
 
 model UserSpecialty {

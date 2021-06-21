@@ -5,6 +5,19 @@ export const LIST_SURGERIES = gql`
     mySurgeries {
       id
       name
+      level
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty {
+        id
+        name
+      }
     }
   }
 `;
