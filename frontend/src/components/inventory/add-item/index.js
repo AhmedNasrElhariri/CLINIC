@@ -5,7 +5,7 @@ import { Form, Schema, Alert } from 'rsuite';
 import { CRModal, CRButton, CRNumberInput, Div, H5 } from 'components';
 import { isValid } from 'services/form';
 import { useInventory } from 'hooks';
-import { CRSelectInput,CRBrancheTree } from 'components/widgets';
+import { CRSelectInput, CRBrancheTree } from 'components/widgets';
 import { useForm, useModal } from 'hooks';
 
 const { StringType, NumberType } = Schema.Types;
@@ -22,10 +22,10 @@ const AddItem = ({ items }) => {
       itemId: null,
       amount: 1,
       price: 1,
-      branchId:null,
-      specialtyId:null,
-      userId:null,
-      level:''
+      branchId: null,
+      specialtyId: null,
+      userId: null,
+      level: '',
     },
   });
   const { addItem } = useInventory({
@@ -34,18 +34,7 @@ const AddItem = ({ items }) => {
       close();
     },
   });
-  useEffect(() => {
-     const {branchId,specialtyId,userId} = formValue;
-     if(branchId == null && specialtyId == null && userId == null){
-       setFormValue({...formValue,level:'organization'});
-     }else if(userId != null){
-      setFormValue({...formValue,level:'user'});
-     }else if(userId == null && specialtyId != null){
-      setFormValue({...formValue,level:'specialty'});
-     }else{
-      setFormValue({...formValue,level:'branch'});
-     }
-  },[formValue.specialtyId,formValue.branchId,formValue.userId]);
+  
   const handleClose = useCallback(() => {
     close();
     reset();

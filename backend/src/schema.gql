@@ -124,6 +124,7 @@ type Query {
   myTimings: [Timing!]
   myImagesDefinition: [ImageDefinition!]
   mySessionsDefinition: [SessionDefinition!]
+  myPrices: [Price!]
   myBanksDefinition: [BankDefinition!]
   myExpenseTypesDefinition: [ExpenseTypeDefinition!]
   myCompanysDefinition: [CompanyDefinition!]
@@ -178,6 +179,7 @@ type Mutation {
     others: Int
     bank: ID
     company: ID
+    appPrice: Int
     option: optionInput!
   ): Appointment!
   createView(view: ViewInput!): Boolean
@@ -224,12 +226,10 @@ type Mutation {
   editTiming(timing: TimingInput!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
-  addSessionDefinition(
-    sessionDefinition: SessionInputDefinition!
-  ): SessionDefinition
-  editSessionDefinition(
-    sessionDefinition: SessionInputDefinition!
-  ): SessionDefinition
+  addSessionDefinition(sessionDefinition: SessionInputDefinition!): SessionDefinition
+  editSessionDefinition(sessionDefinition: SessionInputDefinition!): SessionDefinition
+  addPrice(price: PriceInput!): Price
+  editPrice(price: PriceInput!): Price
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   addExpenseTypeDefinition(
@@ -1050,6 +1050,25 @@ input TimingInput {
   arabicPrintValue: String!
 }
 
+type SessionDefinition {
+  id: ID!
+  name: String!
+  price: Int!
+  level: String!
+  user: User
+  branch: Branch
+  specialty: Specialty
+}
+
+input SessionInputDefinition {
+  id: ID
+  name: String!
+  price: Int!
+  userId: ID
+  specialtyId: ID
+  branchId: ID
+}
+
 ########################### Images Definition ##################################
 
 type ImageDefinition {
@@ -1074,16 +1093,26 @@ input ImageInputCategory {
   name: String!
 }
 
-########################### Session Definition ##################################
+########################### Price ##################################
 
-type SessionDefinition {
+type Price {
   id: ID!
-  name: String!
+  Apptype: String!
+  level: String!
+  price: Int!
+  user: User!
+  branch: Branch
+  specialty: Specialty
 }
 
-input SessionInputDefinition {
+input PriceInput {
   id: ID
-  name: String!
+  Apptype: String!
+  price: Int!
+  level: String!
+  userId: ID
+  branchId: ID
+  specialtyId: ID
 }
 
 ########################### Bank Definition ##################################

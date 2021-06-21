@@ -8,37 +8,39 @@ import { useForm, useSessionDefinition } from 'hooks';
 
 import { useModal } from 'hooks';
 
-const initValue = { name: ''};
+const initValue = {
+  name: '',
+  price: 0,
+  branchId:null,
+  userId: null,
+  specialtyId: null,
+};
 
 const SessionDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  const {
-    addSessionDefinition,
-    sessionsDefinition,
-    editSessionDefinition,
-  } = useSessionDefinition({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
-  });
+  const { addSessionDefinition, sessionsDefinition, editSessionDefinition } =
+    useSessionDefinition({
+      onCreate: () => {
+        close();
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setFormValue(initValue);
+      },
+    });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
-
   const handleClickEdit = useCallback(
     data => {
-      const session = R.pick(['id', 'name'])(data);
+      const session = R.pick(['id', 'name', 'price'])(data);
       setType('edit');
       setFormValue(session);
       open();
@@ -65,7 +67,7 @@ const SessionDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Session+
+          Add New Session Definition+
         </CRButton>
       </Div>
       <NewSessionDefinition

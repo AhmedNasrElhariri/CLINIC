@@ -10,7 +10,7 @@ const appointments = async (_, { input }, { user, organizationId }) => {
     organizationId,
     action: ACTIONS.List_Appointment,
   });
-
+  console.log(ids,'apapapa');
   return prisma.appointment.findMany({
     where: {
       date: {

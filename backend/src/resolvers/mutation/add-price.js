@@ -1,16 +1,16 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
-const addSessionDefinition = async (
+const addPrice = async (
   _,
-  { sessionDefinition },
+  { price: priceInput },
   { organizationId, userId }
 ) => {
-  const { name, price, branchId, specialtyId } = sessionDefinition;
+  const { Apptype, price, branchId, specialtyId } = priceInput;
   const level = GetLevel(branchId, specialtyId, userId);
-  return prisma.sessionDefinition.create({
+  return prisma.price.create({
     data: Object.assign(
       {
-        name,
+        Apptype,
         price,
         level,
         organization: {
@@ -42,4 +42,4 @@ const addSessionDefinition = async (
   });
 };
 
-export default addSessionDefinition;
+export default addPrice;

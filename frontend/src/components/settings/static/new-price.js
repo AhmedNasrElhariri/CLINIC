@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import {
-  CRModal,
-  CRNumberInput,
-  CRTextInput,
-  CRBrancheTree,
-} from 'components';
+import { CRModal, CRNumberInput ,CRSelectInput,CRBrancheTree} from 'components';
+import { getCreatableApptTypes } from 'services/appointment';
 const model = Schema.Model({});
-function NewSessionDefinition({
+const appointmentTypes = getCreatableApptTypes().map(type => ({
+  id: type,
+  name: type,
+}));
+function NewPrice({
   formValue,
   onChange,
   type,
@@ -17,10 +17,7 @@ function NewSessionDefinition({
   onClose,
 }) {
   const header = useMemo(
-    () =>
-      type === 'create'
-        ? 'Add New Session Definition'
-        : 'Edit Session Definition ',
+    () => (type === 'create' ? 'Add New Price' : 'Edit Price '),
     [type]
   );
 
@@ -33,7 +30,12 @@ function NewSessionDefinition({
       onCancel={onClose}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput label="Name" name="name" placeholder="Type Name" block />
+        <CRSelectInput
+          label="Examination/Followup"
+          name="Apptype"
+          block
+          data={appointmentTypes}
+        />
         <CRNumberInput
           label="Price"
           name="price"
@@ -46,8 +48,8 @@ function NewSessionDefinition({
   );
 }
 
-NewSessionDefinition.defaultProps = {
+NewPrice.defaultProps = {
   type: 'create',
 };
 
-export default NewSessionDefinition;
+export default NewPrice;

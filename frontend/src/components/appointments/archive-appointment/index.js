@@ -29,6 +29,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
   const [bank, setBank] = useState(null);
+  const [price, setPrice] = useState({});
   const [company, setCompany] = useState(null);
   const [option, setOption] = useState(initlOption);
   const value = useRef(initValue);
@@ -51,12 +52,20 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
     if (activeStep !== 1) {
       setActiveStep(activeStep + 1);
     } else {
-      onOk({ ...value.current, discount, others, bank, company, option });
+      onOk({
+        ...value.current,
+        discount,
+        others,
+        bank,
+        company,
+        option,
+        appPrice: price?.price || 0,
+      });
       setBank(null);
       setCompany(null);
     }
-  }, [activeStep, onOk, discount, others, bank, company, option]);
-
+  }, [activeStep, onOk, discount, others, bank, company, option, price]);
+  
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
       value.current = { ...value.current, discount, others };
@@ -78,12 +87,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
       price: cS.price,
     };
   });
-  let updatedSessions = [];
-  if (company != null) {
-    updatedSessions = updatedCompanySessions;
-  } else {
-    updatedSessions = sessions;
-  }
   return (
     <CRModal
       show={show}
@@ -117,8 +120,10 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
             onDiscountChange={setDiscount}
             appointment={appointment}
             option={option}
+            price={price}
+            setPrice={setPrice}
             setOption={setOption}
-            sessions={updatedSessions}
+            sessions={updatedCompanySessions}
             organization={organization}
             handleOk={handleOk}
             onCancel={handleCancel}

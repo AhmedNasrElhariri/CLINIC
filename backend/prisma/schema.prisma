@@ -117,6 +117,10 @@ enum PermissionAction {
   ViewHistory_Inventory
   DefineItem_Inventory
   Create_Course
+  List_Price
+  Create_Price
+  List_Session
+  Create_Session
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +147,6 @@ model Organization {
   inventoryItems           InventoryItem[]
   inventoryHistory         InventoryHistory[]
   Payroll                  Payroll[]
-  SessionDefinition        SessionDefinition[]
   SalesDefinition          SalesDefinition[]
   Sales                    Sales[]
   CourseDefinition         CourseDefinition[]
@@ -151,6 +154,8 @@ model Organization {
   CompanyDefinition        CompanyDefinition[]
   CompanySessionDefinition CompanySessionDefinition[]
   ExpenseTypeDefinition    ExpenseTypeDefinition[]
+  Price                    Price[]
+  SessionDefinition        SessionDefinition[]
 }
 
 model User {
@@ -196,6 +201,8 @@ model User {
   CoursePayment       CoursePayment[]
   PayrollUser         PayrollUser[]
   Sales               Sales[]
+  Price               Price[]
+  SessionDefinition   SessionDefinition[]
 }
 
 model Patient {
@@ -629,7 +636,7 @@ model InventoryItem {
   level          String
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
-  user           User        @relation(fields: [userId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
   branch         Branch?      @relation(fields: [branchId], references: [id])
   specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
   organization   Organization @relation(fields: [organizationId], references: [id])
@@ -714,9 +721,34 @@ model ImageDefinition {
   Image     Image[]
 }
 
+model Price {
+  id             String       @id @default(uuid())
+  Apptype        String
+  price          Int
+  level          String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?      @relation(fields: [branchId], references: [id])
+  branchId       String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
 model SessionDefinition {
   id             String       @id @default(uuid())
   name           String
+  price          Int
+  level          String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?      @relation(fields: [branchId], references: [id])
+  branchId       String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
   organization   Organization @relation(fields: [organizationId], references: [id])
@@ -955,34 +987,38 @@ model Rule {
 }
 
 model Branch {
-  id              String          @id @default(uuid())
-  name            String
-  address         String?
-  phoneNo         String?
-  notes           String?
-  organization    Organization    @relation(fields: [organizationId], references: [id])
-  organizationId  String
-  rules           Rule[]
-  specialties     Specialty[]
-  userSpecialties UserSpecialty[]
-  Appointment     Appointment[]
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @default(now()) @updatedAt
-  InventoryItem   InventoryItem[]
+  id                String              @id @default(uuid())
+  name              String
+  address           String?
+  phoneNo           String?
+  notes             String?
+  organization      Organization        @relation(fields: [organizationId], references: [id])
+  organizationId    String
+  rules             Rule[]
+  specialties       Specialty[]
+  userSpecialties   UserSpecialty[]
+  Appointment       Appointment[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now()) @updatedAt
+  InventoryItem     InventoryItem[]
+  Price             Price[]
+  SessionDefinition SessionDefinition[]
 }
 
 model Specialty {
-  id              String          @id @default(uuid())
-  name            String
-  organization    Organization    @relation(fields: [organizationId], references: [id])
-  organizationId  String
-  rules           Rule[]
-  branches        Branch[]
-  userSpecialties UserSpecialty[]
-  Appointment     Appointment[]
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @default(now()) @updatedAt
-  InventoryItem   InventoryItem[]
+  id                String              @id @default(uuid())
+  name              String
+  organization      Organization        @relation(fields: [organizationId], references: [id])
+  organizationId    String
+  rules             Rule[]
+  branches          Branch[]
+  userSpecialties   UserSpecialty[]
+  Appointment       Appointment[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now()) @updatedAt
+  InventoryItem     InventoryItem[]
+  Price             Price[]
+  SessionDefinition SessionDefinition[]
 }
 
 model UserSpecialty {

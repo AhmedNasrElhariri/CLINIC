@@ -167,48 +167,6 @@ const NewAppointment = ({ show, onHide }) => {
   //     }
   //   );
   // };
-  // const CRSelectInputData = [
-  //   {
-  //     id: 'cea3818c-ed9e-4981-9c06-7f391655dbc1',
-  //     name: 'med1',
-  //     permision: {
-  //       level: 'organization',
-  //       speciality: {},
-  //       branch: {},
-  //       user: {},
-  //     },
-  //   },
-  //   {
-  //     id: 'fcf12fa5-f708-43a6-bb7d-f81264246ee9',
-  //     name: 'med2',
-  //     permision: {
-  //       level: 'speciality',
-  //       speciality: {id:1,name:'عظام'},
-  //       branch: {},
-  //       user: {},
-  //     },
-  //   },
-  //   {
-  //     id: '63a12875-ab6c-481b-a829-da984ee691b4',
-  //     name: 'med3',
-  //     permision: {
-  //       level: 'branch',
-  //       speciality: {},
-  //       branch: {id:1,name:'القاهره'},
-  //       user: {},
-  //     },
-  //   },
-  //   {
-  //     id: '3a7b42c1-5025-4c17-a42b-5a220285f5dd',
-  //     name: 'med3',
-  //     permision: {
-  //       level: 'user',
-  //       speciality: {},
-  //       branch: {},
-  //       user: {id:1,name:'حماده'},
-  //     },
-  //   },
-  // ];
   return (
     <>
       <NewPatient
@@ -335,8 +293,8 @@ const NewAppointment = ({ show, onHide }) => {
                     </H5>
                   </Div>
                 </CRSelectInput>
-                {/* <CRDocSelectInput data={CRSelectInputData} label="data" name="docId"/> */}
                 <CRBrancheTree formValue={formValue} onChange={setFormValue} />
+
               </RightContainer>
             </Container>
             <Checkbox

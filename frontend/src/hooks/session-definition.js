@@ -14,7 +14,7 @@ const updateCache = mySessionsDefinition => {
   client.writeQuery({
     query: LIST_SESSIONS_DEFINITION,
     data: {
-      mySessionsDefinition,
+        mySessionsDefinition,
     },
   });
 };

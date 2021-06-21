@@ -47,7 +47,7 @@ function Appointments() {
     },
   });
   const handleArchive = useCallback(
-    ({ sessions, items, discount }) => {
+    ({ sessions, items, discount, appPrice, option }) => {
       close();
       archive({
         variables: {
@@ -55,12 +55,15 @@ function Appointments() {
           sessions: sessions.map(session => ({
             name: getName({ session, appointment }),
             price: session.price,
+            number: session.number,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,
             quantity,
           })),
           discount,
+          option,
+          appPrice,
         },
       });
     },

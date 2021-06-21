@@ -3,16 +3,16 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListSessions({ sessions, onEdit }) {
+function ListPrices({ prices, onEdit }) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={sessions}>
+        <CRTable autoHeight data={prices}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>App Type</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ name }) => (
-                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+              {({ Apptype }) => (
+                <CRTable.CRCellStyled bold>{Apptype}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -25,7 +25,7 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Level</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Price Level</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ level }) => (
                 <CRTable.CRCellStyled bold>{level}</CRTable.CRCellStyled>
@@ -33,7 +33,7 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Branch</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Price Branch</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ branch }) => (
                 <CRTable.CRCellStyled bold>{branch?.name}</CRTable.CRCellStyled>
@@ -41,7 +41,7 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Specialty</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Price Specialty</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ specialty }) => (
                 <CRTable.CRCellStyled bold>{specialty?.name}</CRTable.CRCellStyled>
@@ -49,7 +49,7 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Doctor</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Price Doctors</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
                 <CRTable.CRCellStyled bold>{user?.name}</CRTable.CRCellStyled>
@@ -86,4 +86,4 @@ function ListSessions({ sessions, onEdit }) {
   );
 }
 
-export default ListSessions;
+export default ListPrices;

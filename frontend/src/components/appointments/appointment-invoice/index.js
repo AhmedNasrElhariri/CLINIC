@@ -14,8 +14,13 @@ import {
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
 import { CRDivider } from 'components';
-import { useBankDefinition, useCompanyDefinition } from 'hooks';
-import { CRRadio } from 'components/widgets';
+import {
+  useBankDefinition,
+  useCompanyDefinition,
+  usePrice,
+  useSessionDefinition,
+} from 'hooks';
+import { CRRadio, CRDocSelectInput } from 'components/widgets';
 
 const OTHER = 'Other';
 
@@ -53,6 +58,8 @@ function AppointmentInvoice({
   sessions,
   company,
   setCompany,
+  price: appointmentPrice,
+  setPrice,
   option,
   setOption,
   bank,
@@ -60,6 +67,8 @@ function AppointmentInvoice({
   organization,
 }) {
   const [session, setSession] = useState({});
+
+  const { prices } = usePrice({});
   const [sessionNumber, setSessionNumber] = useState(0);
   const [visa, setVisa] = useState(false);
   const [insurance, setInsurance] = useState(false);
@@ -67,6 +76,7 @@ function AppointmentInvoice({
   const [selectedSessions, setSelectedSessions] = useState([]);
   const { banksDefinition } = useBankDefinition({});
   const { companysDefinition } = useCompanyDefinition({});
+  const { sessionsDefinition } = useSessionDefinition({});
   const choices = useMemo(() => {
     const allChoices = [...sessions];
     return allChoices.map(s => ({ name: s.name, id: s }));
@@ -98,7 +108,6 @@ function AppointmentInvoice({
     },
     [handleOnChange]
   );
-
   const subtotal = useMemo(() => {
     let sub = 0;
     const subRed = selectedSessions.reduce(
@@ -110,15 +119,15 @@ function AppointmentInvoice({
     } else if (option.option === 'percentage') {
       sub = option.amount * subRed * 0.01;
     } else {
-      sub = subRed;
+      sub = subRed + (appointmentPrice?.price || 0);
     }
     return sub;
-  }, [selectedSessions, option]);
-
+  }, [selectedSessions, option, appointmentPrice]);
   const total = useMemo(
     () => subtotal + (others - discount),
     [discount, others, subtotal]
   );
+
   return (
     <>
       <Div mt={20}>
@@ -166,7 +175,7 @@ function AppointmentInvoice({
               data={companysDefinition}
               value={company}
               onChange={setCompany}
-              placeholder="Select One Company "
+              placeholder="Select One Company"
               style={{ width: '230px' }}
             />
           </Form>
@@ -174,18 +183,37 @@ function AppointmentInvoice({
       </Div>
       <Div display="flex" mt={40}>
         <Div width={500} mr={20}>
+          <Form>
+            <Div mb={10}>
+              <CRDocSelectInput
+                onChange={val => setPrice(val)}
+                label="Appointment Price"
+                data={prices}
+                style={{ width: '400px' }}
+              />
+            </Div>
+          </Form>
           <Form fluid>
             <CRButton onClick={() => add()}>add</CRButton>
             <Div display="flex" justifyContent="space-around">
-              <CRSelectInput
-                label="Session Type"
-                name="type"
-                placeholder="Select Type"
-                value={session}
-                onChange={setSession}
-                data={choices}
-                style={{ width: '230px' }}
-              />
+              {company == null ? (
+                <CRDocSelectInput
+                  onChange={val => setSession(val)}
+                  value={session}
+                  label="session Type"
+                  data={sessionsDefinition}
+                  style={{ width: '230px' }}
+                />
+              ) : (
+                <CRSelectInput
+                  label="Session Type"
+                  placeholder="Select Type"
+                  value={session}
+                  onChange={setSession}
+                  data={choices}
+                  style={{ width: '230px' }}
+                />
+              )}
               <CRNumberInput
                 label="Number of Sessions"
                 name="sessionsNumber"

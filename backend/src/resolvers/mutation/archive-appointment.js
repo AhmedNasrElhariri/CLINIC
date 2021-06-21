@@ -26,10 +26,12 @@ const archiveAppointment = async (
     option,
     items = [],
     discount = 0,
+    appPrice = 0,
     others = 0,
   },
   { userId, organizationId }
 ) => {
+  console.log(sessions,'skkkkkkkkkkkkkkkkk');
   const appointment = await prisma.appointment.update({
     data: { status: APPOINTMENTS_STATUS.ARCHIVED },
     where: { id },
@@ -42,6 +44,20 @@ const archiveAppointment = async (
     await createAppointmentRevenue(
       createAppointmentRevenueFromSessions(userId, sessions)
     );
+  }
+  if (appPrice > 0 ) {
+    await prisma.revenue.create({
+      data: {
+        name: 'Appointment Price',
+        date: new Date(),
+        amount: appPrice,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
   }
   if (option.payMethod === 'visa' && company == null) {
     await createAppointmentBankRevenue(

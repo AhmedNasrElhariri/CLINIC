@@ -137,7 +137,7 @@ const RolePermissions = ({
       permissions,
     };
     createOrUpdateRole(role);
-  }, [defaultFormValue.id, ff, formValue.name]);
+  }, [defaultFormValue?.id, ff, formValue.name]);
 
   return (
     <CRModal

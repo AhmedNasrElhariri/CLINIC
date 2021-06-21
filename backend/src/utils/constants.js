@@ -38,6 +38,13 @@ export const LAB_STATUS = Object.freeze({
   COMPLETED: 'Completed',
 });
 
+export const LEVEL = Object.freeze({
+  ORGANIZATION: 'organization',
+  BRANCH: 'branch',
+  SPECIALTY: 'specialty',
+  USER: 'user',
+});
+
 export const IMAGE_STATUS = Object.freeze({
   DRAFT: 'Draft',
   PENDING: 'Pending',
@@ -95,4 +102,6 @@ export const ACTIONS = Object.freeze({
   AddItem_Inventory: 'AddItem_Inventory',
   ViewHistory_Inventory: 'ViewHistory_Inventory',
   DefineItem_Inventory: 'DefineItem_Inventory',
+  List_Price: 'List_Price',
+  Create_Price: 'Create_Price',
 });

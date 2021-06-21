@@ -115,6 +115,10 @@ export const ACTIONS = Object.freeze({
   ViewHistory_Inventory: 'ViewHistory_Inventory',
   DefineItem_Inventory: 'DefineItem_Inventory',
   Create_Course: 'Create_Course',
+  List_Price: 'List_Price',
+  Create_Price: 'Create_Price',
+  List_Session: 'List_Session',
+  Create_Session: 'Create_Session',
 });
 
 export const LAB_STATUS = Object.freeze({

@@ -1,26 +1,25 @@
 import React from 'react';
 import { CRSelectInput } from 'components';
-const CRDocSelectInput = ({ data, name, label, ...props }) => {
+const CRDocSelectInput = ({ data, name, label, ...rest }) => {
   const updatedData = data.map(d => {
-    const id = d.id;
-    let objName = d.name;
-    if (d.permision.level === 'organization') {
+    let objName = d.Apptype || d.name;
+    if (d.level === 'organization') {
       objName = objName + '/' + '(Organization)';
-    } else if (d.permision.level === 'branch') {
-      objName = objName + '/' + d.permision.branch.name + '(Branch)';
-    } else if (d.permision.level === 'speciality') {
-      objName = objName + '/' + d.permision.speciality.name + '(Speciality)';
+    } else if (d.level === 'branch') {
+      objName = objName + '/' + d.branch.name + '(Branch)';
+    } else if (d.level === 'speciality') {
+      objName = objName + '/' + d.speciality.name + '(Speciality)';
     } else {
-      objName = objName + '/' + d.permision.user.name + '(User)';
+      objName = objName + '/' + d.user.name + '(User)';
     }
     return {
-      id: id,
+      id: d,
       name: objName,
     };
   });
   return (
     <>
-      <CRSelectInput name={name} label={label} data={updatedData}/>
+      <CRSelectInput name={name} label={label} data={updatedData} {...rest} />
     </>
   );
 };
