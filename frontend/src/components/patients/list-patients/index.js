@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Table } from 'rsuite';
 
 import { MainContainer, CRTable, CRLabel, Div } from 'components';
 
@@ -43,7 +44,8 @@ function Patients() {
           </Div>
         </Div>
         <CRTable
-          autoHeight
+          height={600}
+          virtualized
           data={filteredPatients}
           onRowClick={({ id }) => {
             history.push(`/patients/${id}`);
@@ -55,7 +57,7 @@ function Patients() {
             <CRTable.CRCell dataKey="name" bold />
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Membership Type</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="type" semiBold />
           </CRTable.CRColumn>

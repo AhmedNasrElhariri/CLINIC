@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
 import { filterAppointments, sortAppointments } from 'services/appointment';
 import { Div, H3, CRTabs } from 'components';
 import Filter from './filter';
@@ -12,7 +11,6 @@ import ArchiveAppointment from '../archive-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
 
 function Appointments() {
-  const history = useHistory();
   const [formValue, setFormValue] = useState({ date: [], patient: '' });
   const { visible, close, open } = useModal({});
   const { appointments } = useAppointments();
@@ -82,7 +80,7 @@ function Appointments() {
               <ListAppointments
                 appointments={filterByStatus(filteredAppointments, 'Scheduled')}
                 onArchive={onClickDone}
-                defaultExpanded={true}
+                defaultExpanded={false}
               />
             </CRTabs.CRContent>
             <CRTabs.CRContent>

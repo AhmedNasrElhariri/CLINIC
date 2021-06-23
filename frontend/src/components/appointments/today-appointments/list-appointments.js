@@ -27,7 +27,8 @@ function ListAppointments({
   return (
     <Div padding={20} wd>
       <CRTable
-        autoHeight
+        height={600}
+        virtualized
         data={appointments}
         onRowClick={appointment => {
           history.push(

@@ -9,7 +9,7 @@ import CRDateCell from './date-cell';
 
 const CRTableStyled = styled(Table).attrs(({ data }) => ({
   rowHeight: 37,
-  autoHeight: true,
+  // autoHeight: true,
   minHeight: data.length * 37 + 40,
 }))`
   cursor: pointer;

@@ -53,7 +53,6 @@ function useAppointments({ includeSurgery } = {}) {
     variables: { action: ACTIONS.List_Appointment },
   });
   const filterBranches = R.propOr([], 'listBranchesTree')(branchesTreeData);
-
   return useMemo(
     () => ({
       appointments,
