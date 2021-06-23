@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox, Schema } from 'rsuite';
 import { useQuery } from '@apollo/client';
+import { ACTIONS } from 'utils/constants';
 import {
   CRSelectInput,
   CRTimePicker,
@@ -12,7 +13,6 @@ import {
   CRModal,
   NewPatient,
   CRBrancheTree,
-  CRDocSelectInput,
 } from 'components';
 import { APPOINTMENTS_DAY_COUNT } from 'apollo-client/queries';
 import { isBeforeToday } from 'utils/date';
@@ -141,7 +141,7 @@ const NewAppointment = ({ show, onHide }) => {
         second: '00',
       });
     }
-  
+
     createAppointment({
       patientId,
       type,
@@ -293,8 +293,11 @@ const NewAppointment = ({ show, onHide }) => {
                     </H5>
                   </Div>
                 </CRSelectInput>
-                <CRBrancheTree formValue={formValue} onChange={setFormValue} />
-
+                <CRBrancheTree
+                  formValue={formValue}
+                  onChange={setFormValue}
+                  action={ACTIONS?.Create_Appointment}
+                />
               </RightContainer>
             </Container>
             <Checkbox

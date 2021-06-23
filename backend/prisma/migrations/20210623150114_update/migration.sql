@@ -38,7 +38,7 @@ CREATE TYPE "UnitOfMeaure" AS ENUM ('PerUnit', 'Milligram', 'Kilogram', 'Millime
 CREATE TYPE "InventoryOperation" AS ENUM ('Add', 'Substract');
 
 -- CreateEnum
-CREATE TYPE "PermissionAction" AS ENUM ('List_Appointment', 'Create_Appointment', 'Reschedule_Appointment', 'Finish_Appointment', 'Cancel_Appointment', 'Archive_Appointment', 'View_Patient', 'View_Accounting', 'AddRevenue_Accounting', 'AddExpense_Accounting', 'EditRevenue_Accounting', 'EditExpense_Accounting', 'Print_Accounting', 'View_Calendar', 'CreateEvent_Calendar', 'View_Inventory', 'AddItem_Inventory', 'ViewHistory_Inventory', 'DefineItem_Inventory', 'Create_Course');
+CREATE TYPE "PermissionAction" AS ENUM ('List_Appointment', 'Create_Appointment', 'Reschedule_Appointment', 'Finish_Appointment', 'Cancel_Appointment', 'Archive_Appointment', 'View_Patient', 'View_Accounting', 'AddRevenue_Accounting', 'AddExpense_Accounting', 'EditRevenue_Accounting', 'EditExpense_Accounting', 'Print_Accounting', 'View_Calendar', 'CreateEvent_Calendar', 'View_Inventory', 'AddItem_Inventory', 'ViewHistory_Inventory', 'DefineItem_Inventory', 'Create_Course', 'List_Price', 'Create_Price', 'List_Session', 'Create_Session', 'Create_Hospital', 'List_Hospital', 'Create_Surgery', 'List_Surgery');
 
 -- CreateEnum
 CREATE TYPE "PermissionLevel" AS ENUM ('Organization', 'Branch', 'Specialty', 'User');
@@ -400,6 +400,10 @@ CREATE TABLE "Expense" (
     "amount" INTEGER NOT NULL,
     "expenseType" TEXT NOT NULL,
     "invoiceNo" TEXT,
+    "level" TEXT,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
+    "organizationId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
@@ -414,6 +418,10 @@ CREATE TABLE "Revenue" (
     "date" TIMESTAMP(3) NOT NULL,
     "amount" INTEGER NOT NULL,
     "invoiceNo" TEXT,
+    "level" TEXT,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
+    "organizationId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
@@ -533,8 +541,12 @@ CREATE TABLE "Hospital" (
     "name" TEXT NOT NULL,
     "phoneNo" TEXT,
     "address" TEXT,
+    "level" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
     "organizationId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
@@ -589,9 +601,30 @@ CREATE TABLE "ImageDefinition" (
 );
 
 -- CreateTable
+CREATE TABLE "Price" (
+    "id" TEXT NOT NULL,
+    "Apptype" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
+    "level" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "organizationId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "SessionDefinition" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
+    "level" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "organizationId" TEXT NOT NULL,
@@ -761,6 +794,10 @@ CREATE TABLE "PatientReport" (
 CREATE TABLE "Surgery" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "level" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
     "organizationId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1067,7 +1104,25 @@ ALTER TABLE "MedicineHistory" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"
 ALTER TABLE "FamilyHistory" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Expense" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Expense" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Expense" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Expense" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Revenue" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Revenue" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Revenue" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Revenue" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -1121,6 +1176,15 @@ ALTER TABLE "InventoryHistory" ADD FOREIGN KEY ("patientId") REFERENCES "Patient
 ALTER TABLE "InventoryHistory" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Hospital" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Hospital" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Hospital" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Hospital" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1134,6 +1198,27 @@ ALTER TABLE "Timing" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELET
 
 -- AddForeignKey
 ALTER TABLE "ImageDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Price" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Price" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Price" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Price" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -1194,6 +1279,15 @@ ALTER TABLE "MedicineDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("i
 
 -- AddForeignKey
 ALTER TABLE "PatientReport" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Surgery" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Surgery" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Surgery" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Surgery" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;

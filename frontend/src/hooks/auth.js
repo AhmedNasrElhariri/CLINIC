@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect} from 'react';
 import { VERIFY } from 'apollo-client/queries';
 import { useMutation } from '@apollo/client';
 import { useAbility } from '@casl/react';
 import { POSITIONS, ACCESS_TOKEN } from '../utils/constants';
-
+import {
+  USER
+} from 'apollo-client/queries';
 import useGlobalState from 'state';
 import { AbilityContext } from 'components/user/can';
 
@@ -11,7 +13,6 @@ const useAuth = () => {
   const [isAuthenticated, setAuthenticated] = useGlobalState('isAuthenticated');
   const [isVerified, setVerified] = useGlobalState('isVerified');
   const [user, setUser] = useGlobalState('user');
-
   const ability = useAbility(AbilityContext);
 
   const [verify] = useMutation(VERIFY, {
@@ -30,7 +31,9 @@ const useAuth = () => {
   useEffect(() => {
     verify({ variables: { token: localStorage.getItem(ACCESS_TOKEN) } });
   }, [verify]);
-
+  const updatedUserActions = 
+  // const userAbility = useMemo(() => ,[user]);
+  console.log(user,'userrrrrrrrrrrr');
   return {
     isAuthenticated,
     isVerified,

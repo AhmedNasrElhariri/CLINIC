@@ -332,7 +332,6 @@ type User {
   name: String!
   email: String!
   position: Position
-  permissions: [Permission!]
   revenues: [Revenue!]
   avatar: String
   specialty: Specialty

@@ -37,9 +37,11 @@ export const VERIFY = gql`
       id
       avatar
       position
-      permissions {
-        action
-        subject
+      role{
+        permissions{
+          subject
+          action
+        }
       }
     }
   }

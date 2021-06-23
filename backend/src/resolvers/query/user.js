@@ -5,6 +5,9 @@ const user = (_, { id }) => {
     where: {
       id,
     },
+    include:{
+      role:true,
+    }
   });
 };
 

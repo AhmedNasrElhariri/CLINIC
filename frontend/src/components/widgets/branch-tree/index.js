@@ -1,7 +1,8 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { CRSelectInput, CRCheckBoxGroup } from 'components';
 import { Form } from 'rsuite';
-import { useNewAppointment } from 'hooks';
+import { useQuery } from '@apollo/client';
+import { LIST_BRANCHES_TREE } from 'apollo-client/queries';
 import useUserProfile from 'components/functional/root/fetch-user';
 import * as R from 'ramda';
 const options = [
@@ -11,9 +12,12 @@ const options = [
 const intialCheckValue = {
   check: [],
 };
-const CustomBranchTress = ({ onChange, formValue, ...props }) => {
+const CustomBranchTress = ({ onChange, formValue, action  }) => {
   const [checkFormValue, setCheckFormValue] = useState(intialCheckValue);
-  const { branches } = useNewAppointment({});
+  const { data } = useQuery(LIST_BRANCHES_TREE, {
+    variables: { action: action },
+  });
+  const branches = useMemo(() => R.propOr([], 'listBranchesTree')(data),[data,action]);
   const { user } = useUserProfile();
   const specialties = useMemo(
     () =>
@@ -126,8 +130,8 @@ const CustomBranchTress = ({ onChange, formValue, ...props }) => {
   );
 };
 
-const CRBranchTree = ({ formValue, onChange }) => {
-  return <CustomBranchTress formValue={formValue} onChange={onChange} />;
+const CRBranchTree = ({ formValue, onChange, action }) => {
+  return <CustomBranchTress formValue={formValue} onChange={onChange} action={action}/>;
 };
 
 export default CRBranchTree;
