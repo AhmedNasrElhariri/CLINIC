@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
-
+import { ACTIONS } from 'utils/constants';
 import {
   CRModal,
   CRNumberInput,
@@ -40,7 +40,7 @@ function NewSessionDefinition({
           placeholder="Type Price"
           block
         />
-        <CRBrancheTree formValue={formValue} onChange={onChange} />
+        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Session}/>
       </Form>
     </CRModal>
   );

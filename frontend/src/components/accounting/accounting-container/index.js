@@ -48,7 +48,7 @@ const AccountingContainer = () => {
       Alert.error('Failed to add new Expense');
     },
   });
-  
+
   const [createRevenue] = useMutation(CREATE_REVENUE, {
     onCompleted({ createRevenue: revenue }) {
       Alert.success('Revenue Added Successfully');

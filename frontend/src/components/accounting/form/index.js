@@ -10,6 +10,7 @@ import {
   CRSelectInput,
 } from 'components';
 import { useExpenseTypeDefinition } from 'hooks';
+import { ACTIONS } from 'utils/constants';
 import { isValid } from 'services/form';
 
 const initValue = {
@@ -33,7 +34,6 @@ const model = Schema.Model({
 export const useAccountingForm = ({ header, onOk }) => {
   const [formValue, setFormValue] = useState(initValue);
   const [visible, setVisible] = useState(false);
-
   const onCancel = useCallback(() => {
     setFormValue(initValue);
     setVisible(false);
@@ -46,7 +46,7 @@ export const useAccountingForm = ({ header, onOk }) => {
   const hide = useCallback(() => {
     setVisible(false);
   }, []);
-  
+
   return {
     formValue,
     setFormValue,
@@ -103,14 +103,26 @@ const AccountingForm = ({
         <CRTextInput label="Name" name="name" block></CRTextInput>
         <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
         {header === 'New Expense' && (
+          <>
           <CRSelectInput
             label="Expense Type"
             name="expenseType"
             block
             data={updatedexpenseType}
           />
+          <CRBrancheTree
+            formValue={formValue}
+            onChange={onChange}
+            action={ACTIONS.AddExpense_Accounting}
+          /></>
         )}
-        <CRBrancheTree formValue={formValue} onChange={onChange} />
+        {header === 'New Revenue' && (
+          <CRBrancheTree
+            formValue={formValue}
+            onChange={onChange}
+            action={ACTIONS.AddRevenue_Accounting}
+          />
+        )}
         <CRDatePicker label="Date" name="date" block></CRDatePicker>
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
       </Form>

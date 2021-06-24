@@ -87,7 +87,6 @@ const CustomBranchTress = ({ onChange, formValue, action  }) => {
     formValue.userId,
     checkFormValue.check,
   ]);
-
   return (
     <>
       <Form formValue={checkFormValue} onChange={setCheckFormValue}>

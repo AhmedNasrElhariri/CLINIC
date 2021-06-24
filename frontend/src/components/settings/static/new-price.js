@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
-
+import { ACTIONS } from 'utils/constants';
 import { CRModal, CRNumberInput ,CRSelectInput,CRBrancheTree} from 'components';
 import { getCreatableApptTypes } from 'services/appointment';
 const model = Schema.Model({});
@@ -42,7 +42,7 @@ function NewPrice({
           placeholder="Type Price"
           block
         />
-        <CRBrancheTree formValue={formValue} onChange={onChange} />
+        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Price}/>
       </Form>
     </CRModal>
   );
