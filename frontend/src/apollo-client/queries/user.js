@@ -10,6 +10,7 @@ export const USER = gql`
         permissions {
           subject
           action
+          level
         }
       }
     }
@@ -28,6 +29,7 @@ export const LOGIN = gql`
           permissions {
             subject
             action
+            level
           }
         }
       }
@@ -45,6 +47,7 @@ export const VERIFY = gql`
         permissions {
           subject
           action
+          level
         }
       }
     }
