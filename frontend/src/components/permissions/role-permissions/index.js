@@ -10,7 +10,11 @@ import { ALL_CHOICE, CRUD } from 'utils/constants';
 
 const normalizePermisson = (permissions = []) =>
   R.pipe(
-    R.map(p => ({ ...p, visibility: true, id: p.action })),
+    R.map(p => {
+      const action = `${p.action}_${p.subject}`;
+      return { ...p, visibility: true, id: action, action };
+    }),
+    // R.map(p => ({ ...p, visibility: true, id: p.action })),
     R.indexBy(R.prop('action'))
   )(permissions);
 
@@ -25,6 +29,8 @@ const RolePermissions = ({
     name: '',
     permissions: {},
   });
+
+  console.log('defaultFormValue', defaultFormValue);
 
   const setFF = useCallback(permissions => {
     setFormValue(f => ({ ...f, permissions }));

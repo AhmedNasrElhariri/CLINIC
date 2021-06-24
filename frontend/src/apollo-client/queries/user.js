@@ -6,9 +6,11 @@ export const USER = gql`
       id
       name
       email
-      permissions {
-        subject
-        action
+      role {
+        permissions {
+          subject
+          action
+        }
       }
     }
   }
@@ -22,9 +24,11 @@ export const LOGIN = gql`
         id
         avatar
         position
-        permissions {
-          action
-          subject
+        role {
+          permissions {
+            subject
+            action
+          }
         }
       }
     }
@@ -37,8 +41,8 @@ export const VERIFY = gql`
       id
       avatar
       position
-      role{
-        permissions{
+      role {
+        permissions {
           subject
           action
         }

@@ -1,11 +1,9 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import { VERIFY } from 'apollo-client/queries';
 import { useMutation } from '@apollo/client';
 import { useAbility } from '@casl/react';
 import { POSITIONS, ACCESS_TOKEN } from '../utils/constants';
-import {
-  USER
-} from 'apollo-client/queries';
+import { USER } from 'apollo-client/queries';
 import useGlobalState from 'state';
 import { AbilityContext } from 'components/user/can';
 
@@ -15,12 +13,29 @@ const useAuth = () => {
   const [user, setUser] = useGlobalState('user');
   const ability = useAbility(AbilityContext);
 
+  const updatePermissions = user => {
+    let permissions;
+    if (user.position === 'Admin') {
+      permissions = [
+        {
+          action: 'manage',
+          subject: 'all',
+        },
+      ];
+    } else {
+      permissions = (user?.role?.permissions || []).map(
+        ({ action, subject }) => ({ action, subject })
+      );
+    }
+    ability.update(permissions);
+  };
+
   const [verify] = useMutation(VERIFY, {
     fetchPolicy: 'no-cache',
     onCompleted({ verify: user }) {
       setAuthenticated(true);
       setUser(user);
-      ability.update(user.permissions);
+      updatePermissions(user);
       setVerified(true);
     },
     onError() {
@@ -31,17 +46,15 @@ const useAuth = () => {
   useEffect(() => {
     verify({ variables: { token: localStorage.getItem(ACCESS_TOKEN) } });
   }, [verify]);
-  const updatedUserActions = 
-  // const userAbility = useMemo(() => ,[user]);
-  console.log(user,'userrrrrrrrrrrr');
+  // const updatedUserActions =
+  //   // const userAbility = useMemo(() => ,[user]);
+  //   console.log(user, 'userrrrrrrrrrrr');
   return {
     isAuthenticated,
     isVerified,
     user,
     setAuthenticated,
-    updatePermissions: permissions => {
-      ability.update(permissions);
-    },
+    updatePermissions,
     isAdmin: user && user.position === POSITIONS.ADMIN,
     isOrAssistant:
       user &&

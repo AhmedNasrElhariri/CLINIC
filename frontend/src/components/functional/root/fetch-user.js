@@ -71,7 +71,7 @@ function useUserProfile() {
       setAuthenticated(true);
       set('user',user);
       setUser(user);
-      updatePermissions(user.permissions);
+      updatePermissions(user);
     },
     [setAuthenticated, setUser, updatePermissions]
   );
