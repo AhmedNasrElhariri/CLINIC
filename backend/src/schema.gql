@@ -147,7 +147,6 @@ type Query {
   listActionUsers(action: String!): [User!]
   listActionDoctors(action: String!): [User!]
   configuration: Configuration
-  getPulseControl: PulseControl
   myInvoiceCounter: Organization!
   patientImageDocs(status: String!, patientId: String!): [Image!]
   patientLabs(patientId: ID!): [Lab!]
@@ -156,7 +155,6 @@ type Query {
   payslips: [Payslips!]
   userTransactions(userId: ID!): [PayrollTransaction!]
   userCoursePayment(userId: ID!, period: [String!]): [CoursePayment!]
-  pulseControl: PulseControl!
   appointmentsDayCount(date: Date!): AppointmentsDayCount!
   coursePayments(courseId: ID!): [CoursePayment!]
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
@@ -289,7 +287,6 @@ type Mutation {
   ): PayrollTransaction!
   addPayroll(payment: [ID!]): Payroll!
   deletePayrollUser(userId: ID!): PayrollUser!
-  addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
   updateNotes(id: ID!, notes: String!): Appointment!
   addSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
   editSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
@@ -419,13 +416,11 @@ input UserInput {
 
 type Configuration {
   id: ID!
-  sessions: [ConfSession!]
   enableInvoiceCounter: Boolean!
 }
 
 input ConfigurationInput {
   id: ID
-  sessions: [ConfSessionInput!]
   enableInvoiceCounter: Boolean!
 }
 
@@ -490,9 +485,6 @@ type Appointment {
   labs: [Lab!]
   images: [Image!]
   courses: [Course!]
-  pulses: Int
-  powerOne: Int
-  powerTwo: Int
 }
 
 type AppointmentsDayCount {
@@ -535,9 +527,6 @@ input UpdateAppointmentInput {
   imageIds: [ID!]
   data: [AppointmentFieldInput!]
   notes: String
-  pulses: Int
-  powerOne: Int
-  powerTwo: Int
   prescription: [PrescriptionInput!]
   pictures: [AppointmentPictureInput!]
 }
@@ -574,16 +563,6 @@ input PrescriptionInput {
   period: String
 }
 
-type PulseControl {
-  id: ID!
-  before: Int
-  after: Int
-  date: Date
-}
-input PulseControlInput {
-  before: Int!
-  after: Int!
-}
 ########################### Area ##################################
 type Area {
   id: ID!
@@ -657,16 +636,6 @@ type File {
   encoding: String
   comment: String
   url: String
-}
-
-type ConfSession {
-  name: String!
-  price: Int!
-}
-
-input ConfSessionInput {
-  name: String!
-  price: Int!
 }
 
 type Session {
@@ -1207,6 +1176,10 @@ type SalesDefinition {
   totalQuantity: Int!
   price: Int!
   cost: Int!
+  user: User
+  specialty: Specialty
+  branch: Branch
+  level: String
 }
 
 input SalesInputDefinition {
@@ -1216,6 +1189,9 @@ input SalesInputDefinition {
   salesId: ID
   price: Int!
   cost: Int!
+  branchId: ID
+  specialtyId: ID
+  userId: ID
 }
 
 type Sales {

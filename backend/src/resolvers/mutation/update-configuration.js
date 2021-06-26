@@ -1,7 +1,6 @@
 import { prisma } from '@';
 
 const updateConfiguration = async (_, { configuration }, { organizationId }) => {
-  const sessions = configuration.sessions || [];
   const enableInvoiceCounter = configuration.enableInvoiceCounter || false;
   return prisma.configuration.upsert({
     create: {
@@ -10,11 +9,9 @@ const updateConfiguration = async (_, { configuration }, { organizationId }) => 
           id: organizationId,
         },
       },
-      sessions,
       enableInvoiceCounter,
     },
     update: {
-      sessions,
       enableInvoiceCounter,
     },
     where: {

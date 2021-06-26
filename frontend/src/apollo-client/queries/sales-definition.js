@@ -8,6 +8,19 @@ export const LIST_SALESES_DEFINITION = gql`
       totalQuantity
       price
       cost
+      level
+      user{
+        id
+        name 
+      }
+      branch{
+        id
+        name 
+      }
+      specialty{
+        id
+        name
+      }
     }
   }
 `;

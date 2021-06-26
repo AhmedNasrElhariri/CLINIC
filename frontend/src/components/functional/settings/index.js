@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { Img, H6, Div } from 'components';
 import { Container, LinkStyled } from './style';
 import { Can } from 'components/user/can';
-import { useAuth } from 'hooks';
 
 const Item = ({ name, icon, path, onClick }) => {
   return (
@@ -17,7 +16,6 @@ const Item = ({ name, icon, path, onClick }) => {
 
 export default function Settings({ onClose, ...props }) {
   const history = useHistory();
-  const { isOrAssistant } = useAuth();
 
   const items = [
     {
@@ -30,15 +28,13 @@ export default function Settings({ onClose, ...props }) {
       icon: '/icons/static.png',
       path: '/settings/static',
     },
-    ...(isOrAssistant
-      ? [
-          {
-            name: 'Payroll',
-            icon: '/icons/static.png',
-            path: '/payroll',
-          },
-        ]
-      : []),
+
+    {
+      name: 'Payroll',
+      icon: '/icons/static.png',
+      path: '/payroll',
+    },
+
     {
       name: 'Snippets',
       icon: '/icons/snippets.png',

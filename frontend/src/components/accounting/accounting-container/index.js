@@ -9,7 +9,7 @@ import ListRevenueData from '../list-data/revenue.js';
 import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
-import { useAccounting, useAuth, useAppointments } from 'hooks';
+import { useAccounting, useAppointments } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -17,6 +17,7 @@ import {
   UPDATE_REVENUE,
 } from 'apollo-client/queries';
 import BranchFilter from '../../filters';
+import { Can } from 'components/user/can';
 import Filter from '../filter';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import AccountingForm, { useAccountingForm } from '../form';
@@ -32,7 +33,6 @@ const AccountingContainer = () => {
   const { filterBranches } = useAppointments();
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
-  const { isOrAssistant } = useAuth();
   const [formValue, setFormValue] = useState(initalVal);
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     onCompleted({ createExpense: expnese }) {
@@ -163,101 +163,104 @@ const AccountingContainer = () => {
   );
   return (
     <>
-      <MainContainer
-        title="Accounting"
-        more={
-          <Div display="flex">
-            {isOrAssistant && (
-              <>
-                <CRButton variant="primary" onClick={createRevenueForm.show}>
-                  Reveneue +
-                </CRButton>
-                <CRButton
-                  variant="primary"
-                  onClick={createExpenseForm.show}
-                  ml={1}
-                >
-                  Expense +
-                </CRButton>
-              </>
-            )}
-            <Div ml={1}>
-              <PdfView data={{ revenues, expenses }} period={timeFrame} />
-            </Div>
-          </Div>
-        }
-        nobody
-      ></MainContainer>
-      <Tabs onSelect={setActiveTab} activeTab={activeTab} />
-      <CRCard borderless>
-        <Toolbar
-          onAddRevenue={createRevenueForm.show}
-          onAddExpense={createExpenseForm.show}
-          activeKey={view}
-          onSelect={setView}
-          data={{ revenues, expenses }}
-          onChangePeriod={setPeriod}
-        />
-
-        <Div display="flex" my={4}>
-          <H6>Showing for :</H6>
-          <H6 variant="primary" ml={2} fontWeight="bold">
-            {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
-          </H6>
-        </Div>
-
-        <Div>
-          {activeTab === '0' ? (
+        <MainContainer
+          title="Accounting"
+          more={
             <Div display="flex">
-              <Div flexGrow={1} mr={2}>
-                <BranchFilter
-                  appointments={revenues}
-                  branches={filterBranches}
-                  render={revenues => (
-                    <ListRevenueData
-                      title="Revenues"
-                      data={revenues}
-                      onEdit={revenue => {
-                        editRevenueForm.setFormValue(
-                          R.pick(ENTITY_PROPS)(revenue)
-                        );
-                        editRevenueForm.show();
-                      }}
-                    />
-                  )}
-                />
-              </Div>
+              <>
+                <Can I="AddRevenue" an="Accounting">
+                  <CRButton variant="primary" onClick={createRevenueForm.show}>
+                    Reveneue +
+                  </CRButton>
+                </Can>
+                <Can I="AddExpense" an="Accounting">
+                  <CRButton
+                    variant="primary"
+                    onClick={createExpenseForm.show}
+                    ml={1}
+                  >
+                    Expense +
+                  </CRButton>
+                </Can>
+              </>
 
-              <Div flexGrow={1} ml={2}>
-                <Filter formValue={formValue} setFormValue={setFormValue} />
-                <BranchFilter
-                  appointments={updatedExpenses}
-                  branches={filterBranches}
-                  render={expenses => (
-                    <ListExpenseData
-                      title="Expenses"
-                      data={expenses}
-                      onEdit={expense => {
-                        editExpenseForm.setFormValue(
-                          R.pick(ENTITY_PROPS)(expense)
-                        );
-                        editExpenseForm.show();
-                      }}
-                    />
-                  )}
-                />
+              <Div ml={1}>
+                <PdfView data={{ revenues, expenses }} period={timeFrame} />
               </Div>
             </Div>
-          ) : (
-            <Summary expenses={updatedExpenses} revenues={totalRevenues} />
-          )}
-        </Div>
-        <AccountingForm {...createRevenueForm} />
-        <AccountingForm {...createExpenseForm} />
-        <AccountingForm {...editRevenueForm} />
-        <AccountingForm {...editExpenseForm} />
-        <Profit expenses={totalExpenses} revenues={totalRevenues} />
-      </CRCard>
+          }
+          nobody
+        ></MainContainer>
+        <Tabs onSelect={setActiveTab} activeTab={activeTab} />
+        <CRCard borderless>
+          <Toolbar
+            onAddRevenue={createRevenueForm.show}
+            onAddExpense={createExpenseForm.show}
+            activeKey={view}
+            onSelect={setView}
+            data={{ revenues, expenses }}
+            onChangePeriod={setPeriod}
+          />
+
+          <Div display="flex" my={4}>
+            <H6>Showing for :</H6>
+            <H6 variant="primary" ml={2} fontWeight="bold">
+              {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
+            </H6>
+          </Div>
+
+          <Div>
+            {activeTab === '0' ? (
+              <Div display="flex">
+                <Div flexGrow={1} mr={2}>
+                  <BranchFilter
+                    appointments={revenues}
+                    branches={filterBranches}
+                    render={revenues => (
+                      <ListRevenueData
+                        title="Revenues"
+                        data={revenues}
+                        onEdit={revenue => {
+                          editRevenueForm.setFormValue(
+                            R.pick(ENTITY_PROPS)(revenue)
+                          );
+                          editRevenueForm.show();
+                        }}
+                      />
+                    )}
+                  />
+                </Div>
+
+                <Div flexGrow={1} ml={2}>
+                  <Filter formValue={formValue} setFormValue={setFormValue} />
+                  <BranchFilter
+                    appointments={updatedExpenses}
+                    branches={filterBranches}
+                    render={expenses => (
+                      <ListExpenseData
+                        title="Expenses"
+                        data={expenses}
+                        onEdit={expense => {
+                          editExpenseForm.setFormValue(
+                            R.pick(ENTITY_PROPS)(expense)
+                          );
+                          editExpenseForm.show();
+                        }}
+                      />
+                    )}
+                  />
+                </Div>
+              </Div>
+            ) : (
+              <Summary expenses={updatedExpenses} revenues={totalRevenues} />
+            )}
+          </Div>
+          <AccountingForm {...createRevenueForm} />
+          <AccountingForm {...createExpenseForm} />
+          <AccountingForm {...editRevenueForm} />
+          <AccountingForm {...editExpenseForm} />
+          <Profit expenses={totalExpenses} revenues={totalRevenues} />
+        </CRCard>
     </>
   );
 };

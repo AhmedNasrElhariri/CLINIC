@@ -123,6 +123,15 @@ export const ACTIONS = Object.freeze({
   List_Hospital: 'List_Hospital',
   Create_Surgery: 'Create_Surgery',
   List_Surgery: 'List_Surgery',
+  View_Payroll:'View_Payroll',
+  Create_Commission:'Create_Commission',
+  Create_Deduction:'Create_Deduction',
+  Create_Incentives:'Create_Incentives',
+  Create_Advance:'Create_Advance',
+  Create_Payslips:'Create_Payslips',
+  Define_Sales:'Define_Sales',
+  Create_Sales:'Create_Sales',
+  View_Sales:'View_Sales',
 });
 
 export const LAB_STATUS = Object.freeze({

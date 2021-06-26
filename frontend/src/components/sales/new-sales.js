@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef,useEffect } from 'react';
 import ReactToPrint from 'react-to-print';
 import { Form, Schema } from 'rsuite';
 import {
@@ -9,6 +9,7 @@ import {
   CRButton,
   H7,
   H4,
+  CRDocSelectInput,
 } from 'components';
 import { useSalesDefinition } from 'hooks';
 import ListInvoiceItems from './list-invoice-items';
@@ -35,12 +36,6 @@ function NewSales({
   );
   const ref = useRef();
   const { salesesDefinition } = useSalesDefinition({});
-  const salesItems = salesesDefinition.map(s => {
-    return {
-      id: s.id,
-      name: s.name,
-    };
-  });
   const itemsList = useMemo(() => {
     const byIds = normalize(salesesDefinition);
     return selectedItems.map(({ itemId, quantity }) => ({
@@ -53,6 +48,7 @@ function NewSales({
       itemsList.reduce((acc, { price, quantity }) => acc + price * quantity, 0),
     [itemsList]
   );
+  console.log(formValue,selectedItems);
   return (
     <CRModal
       show={visible}
@@ -72,12 +68,12 @@ function NewSales({
             />
             <Div display="flex" padding={30}>
               <Div width={396} mr={30}>
-                <CRSelectInput
+                <CRDocSelectInput
+                  onChange={val => onChange({ ...formValue, itemId: val?.id })}
                   label="Item"
-                  name="itemId"
-                  data={salesItems}
+                  data={salesesDefinition}
                   block
-                ></CRSelectInput>
+                />
               </Div>
               <Div width={250}>
                 <CRNumberInput

@@ -72,7 +72,6 @@ export { default as addPayrollUser } from './add-payroll-user';
 export { default as addTransaction } from './add-payroll-transaction';
 export { default as addPayroll } from './add-payroll';
 export { default as deletePayrollUser } from './delete-payroll-user';
-export { default as addPulsesControl } from './pulses-control';
 export { default as updateNotes } from './update-business-notes';
 export { default as addSalesDefinition } from './add-sales-definition';
 export { default as editSalesDefinition } from './edit-sales-definition';

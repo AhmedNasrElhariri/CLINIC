@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
-
+import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRNumberInput } from 'components';
 import { useSalesDefinition } from 'hooks';
-import { CRSelectInput } from 'components/widgets';
+import { CRSelectInput, CRBrancheTree } from 'components/widgets';
 
 const model = Schema.Model({});
 
@@ -54,6 +54,11 @@ function NewSalesDefinition({
             />
             <CRNumberInput label="Item Cost" name="cost" block />
             <CRNumberInput label="Item Price" name="price" block />
+            <CRBrancheTree
+              formValue={formValue}
+              onChange={onChange}
+              action={ACTIONS.Define_Sales}
+            />
           </>
         )}
       </Form>

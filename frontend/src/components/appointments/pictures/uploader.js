@@ -16,7 +16,7 @@ const CRUploader = ({ onUpload }) => {
   });
 
   const h = res => {
-    console.log(res);
+    
   };
 
   return (

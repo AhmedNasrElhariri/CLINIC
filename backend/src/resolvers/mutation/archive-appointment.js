@@ -31,7 +31,6 @@ const archiveAppointment = async (
   },
   { userId, organizationId }
 ) => {
-  console.log(sessions,'skkkkkkkkkkkkkkkkk');
   const appointment = await prisma.appointment.update({
     data: { status: APPOINTMENTS_STATUS.ARCHIVED },
     where: { id },

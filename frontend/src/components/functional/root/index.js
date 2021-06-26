@@ -15,7 +15,7 @@ import Navbar from 'components/layout/navbar';
 import NewAppointment from 'components/appointments/new-appointment';
 import useUserProfile from './fetch-user';
 
-import { useAuth, useModal } from 'hooks';
+import {  useModal } from 'hooks';
 const initialvalues = {
   branchId: null,
 };
@@ -34,8 +34,6 @@ function Root() {
     notifications,
     user,
   } = useUserProfile();
-
-  const { isOrAssistant } = useAuth();
 
   if (!isVerified) {
     return <div>Loading ...</div>;
@@ -64,15 +62,13 @@ function Root() {
       extra: <Fab open={visblePatient} onClick={togglePatient} />,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
-    ...(isOrAssistant
-      ? [
-          {
-            to: '/reports',
-            name: 'Reports',
-            icon: <UserIcon width={11.8} height={14.1} />,
-          },
-        ]
-      : []),
+
+    {
+      to: '/reports',
+      name: 'Reports',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+
     {
       to: '/surgeries',
       name: 'Surgeries',
@@ -83,17 +79,14 @@ function Root() {
       name: 'Report Printouts',
       icon: <UserIcon width={11.8} height={14.1} />,
     },
-    ...(isOrAssistant
-      ? [
-          {
-            to: '/sales',
-            name: 'Sales',
-            icon: <UserIcon width={11.8} height={14.1} />,
-          },
-        ]
-      : []),
+
+    {
+      to: '/sales',
+      name: 'Sales',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
   ];
- 
+
   return (
     <ContainerStyled>
       {isAuthenticated ? (

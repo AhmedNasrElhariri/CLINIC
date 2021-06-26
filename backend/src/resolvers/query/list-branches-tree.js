@@ -20,7 +20,6 @@ const byOrganization = organizationId =>
   });
 
 const listBranchesTree = async (_, { action }, { user, organizationId }) => {
-  console.log(action,'aaaaaaaaaaaaaaaaaaaaaaaaaa');
   if (user.position === POSITION.Admin  ) {
     return byOrganization(organizationId);
   }

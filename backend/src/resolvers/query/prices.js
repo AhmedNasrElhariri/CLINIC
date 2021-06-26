@@ -9,7 +9,6 @@ const myPrice = async (_, __, { user, organizationId }) => {
       action: ACTIONS.List_Price,
     },true
   );
-  console.log(ids, user);
   return prisma.price.findMany({
     where: {
       userId: {

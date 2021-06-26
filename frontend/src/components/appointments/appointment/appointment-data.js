@@ -13,7 +13,6 @@ import {
   CRCheckBoxGroup,
   CRNestedSelector,
 } from 'components';
-import { isSession } from 'services/appointment';
 import { convertGroupFieldsToNavs } from 'services/appointment';
 import {
   NUMBER_FIELD_TYPE,
@@ -29,7 +28,6 @@ import AppointmentPictures from '../pictures';
 import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
-import Pulses from './pulses';
 
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
@@ -98,15 +96,6 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-  const handlePulsesChange = useCallback(
-    pulses => {
-      onChange({
-        ...appointmentFormValue,
-        pulses,
-      });
-    },
-    [appointmentFormValue, onChange]
-  );
 
   const handleMedicineChange = useCallback(
     prescription => {
@@ -165,9 +154,6 @@ function AppointmentData({
               prescription={appointmentFormValue.prescription}
               onChange={handleMedicineChange}
             />
-          </SectionContainer>
-          <SectionContainer title="Pulses" name="pulses">
-            <Pulses pulses={appointmentFormValue} onChange={onChange} />
           </SectionContainer>
           <SectionContainer title="Labs" name="labs">
             <Labs

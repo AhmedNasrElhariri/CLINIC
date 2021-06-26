@@ -29,9 +29,6 @@ const RolePermissions = ({
     name: '',
     permissions: {},
   });
-
-  console.log('defaultFormValue', defaultFormValue);
-
   const setFF = useCallback(permissions => {
     setFormValue(f => ({ ...f, permissions }));
   }, []);

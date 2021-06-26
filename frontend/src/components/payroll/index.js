@@ -3,6 +3,7 @@ import { Div, MainContainer, CRButton, CRModal, H4 } from 'components';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import { CheckboxGroup, Checkbox } from 'rsuite';
 import PayrollForm, { usePayrollForm } from './form';
+import { Can } from 'components/user/can';
 import EmployeesPayroll from './list-payrolls';
 import { useModal, usePayroll, useAccounting } from 'hooks';
 import { formatDate } from 'utils/date';
@@ -70,12 +71,12 @@ function Payroll() {
     view,
     period,
   });
-  
+
   const totalUserPaymentCourses = useMemo(
     () => userCoursesPayment.reduce((acc, e) => acc + e.payment, 0),
     [userCoursesPayment]
   );
-  
+
   const amount = useMemo(
     () =>
       getAmount(
@@ -242,96 +243,124 @@ function Payroll() {
   }, [addPayroll, checkedPayLipsUsers]);
   return (
     <>
-      <MainContainer
-        title="Payroll Reports"
-        more={
-          <Div display="flex">
-            <CRButton variant="primary" onClick={open} ml={1}>
-              Pay Payslips
-            </CRButton>
-            <CRButton variant="primary" onClick={addNewUser.show} ml={1}>
-              Add New User
-            </CRButton>
-            <CRButton variant="success" onClick={addAdvanceForm.show} ml={1}>
-              Add Advance
-            </CRButton>
-            <CRButton variant="primary" onClick={addIncentiveForm.show} ml={1}>
-              Add Incentives
-            </CRButton>
-            <CRButton variant="primary" onClick={addCommissionForm.show} ml={1}>
-              Add Commission
-            </CRButton>
-            <CRButton variant="danger" onClick={addDeductionForm.show} ml={1}>
-              Add Deduction
-            </CRButton>
-          </Div>
-        }
-        nobody
-      ></MainContainer>
-      <PayrollForm {...addAdvanceForm} />
-      <PayrollForm {...addIncentiveForm} />
-      <PayrollForm {...addCommissionForm} />
-      <PayrollForm {...addDeductionForm} />
-      <PayrollForm {...addNewUser} />
-      <PayrollForm {...deletePayrollUser} />
-      <EmployeesPayroll
-        payrollUsers={payrollUsers}
-        handleDelete={deletePayrollUserFun}
-      />
-      {
-        <CRModal
-          show={visible}
-          onOk={handlePayPayslips}
-          onHide={close}
-          onCancel={close}
-          header="Payslips"
-          bodyStyle={{ minWidth: 300 }}
-        >
-          <H4>{formatDate(new Date())}</H4>
-          <CheckboxGroup
-            inline
-            name="payrolluserIds"
-            value={checkedPayLipsUsers}
-            onChange={val => setCheckPayLipsUsers(val)}
+      <Can I="View" an="Payroll">
+        <MainContainer
+          title="Payroll Reports"
+          more={
+            <Div display="flex">
+              <Can I="Create" an="Payslips">
+                <CRButton variant="primary" onClick={open} ml={1}>
+                  Pay Payslips
+                </CRButton>
+              </Can>
+              <CRButton variant="primary" onClick={addNewUser.show} ml={1}>
+                Add New User
+              </CRButton>
+              <Can I="Create" an="Advance">
+                <CRButton
+                  variant="success"
+                  onClick={addAdvanceForm.show}
+                  ml={1}
+                >
+                  Add Advance
+                </CRButton>
+              </Can>
+              <Can I="Create" an="Incentives">
+                <CRButton
+                  variant="primary"
+                  onClick={addIncentiveForm.show}
+                  ml={1}
+                >
+                  Add Incentives
+                </CRButton>
+              </Can>
+              <Can I="Create" an="Commission">
+                <CRButton
+                  variant="primary"
+                  onClick={addCommissionForm.show}
+                  ml={1}
+                >
+                  Add Commission
+                </CRButton>
+              </Can>
+              <Can I="Create" an="Deduction">
+                <CRButton
+                  variant="danger"
+                  onClick={addDeductionForm.show}
+                  ml={1}
+                >
+                  Add Deduction
+                </CRButton>
+              </Can>
+            </Div>
+          }
+          nobody
+        ></MainContainer>
+        <PayrollForm {...addAdvanceForm} />
+        <PayrollForm {...addIncentiveForm} />
+        <PayrollForm {...addCommissionForm} />
+        <PayrollForm {...addDeductionForm} />
+        <PayrollForm {...addNewUser} />
+        <PayrollForm {...deletePayrollUser} />
+        <EmployeesPayroll
+          payrollUsers={payrollUsers}
+          handleDelete={deletePayrollUserFun}
+        />
+        {
+          <CRModal
+            show={visible}
+            onOk={handlePayPayslips}
+            onHide={close}
+            onCancel={close}
+            header="Payslips"
+            bodyStyle={{ minWidth: 300 }}
           >
-            {payslips.map(pa => (
-              <Div
-                display="flex"
-                backgroundColor="#eef1f1"
-                borderBottom="2px solid #ffffff"
-                borderLeft="5px solid #51C6F3"
-              >
+            <H4>{formatDate(new Date())}</H4>
+            <CheckboxGroup
+              inline
+              name="payrolluserIds"
+              value={checkedPayLipsUsers}
+              onChange={val => setCheckPayLipsUsers(val)}
+            >
+              {payslips.map(pa => (
                 <Div
-                  width={200}
                   display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  borderRight="2px solid #ffffff"
+                  backgroundColor="#eef1f1"
+                  borderBottom="2px solid #ffffff"
+                  borderLeft="5px solid #51C6F3"
                 >
-                  {pa.name}
+                  <Div
+                    width={200}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    borderRight="2px solid #ffffff"
+                  >
+                    {pa.name}
+                  </Div>
+                  <Div
+                    width={200}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    borderRight="2px solid #ffffff"
+                  >
+                    {pa.amount}
+                  </Div>
+                  <Div
+                    width={200}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Checkbox value={pa.id}></Checkbox>
+                  </Div>
                 </Div>
-                <Div
-                  width={200}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  borderRight="2px solid #ffffff"
-                >
-                  {pa.amount}
-                </Div>
-                <Div
-                  width={200}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Checkbox value={pa.id}></Checkbox>
-                </Div>
-              </Div>
-            ))}
-          </CheckboxGroup>
-        </CRModal>
-      }
+              ))}
+            </CheckboxGroup>
+          </CRModal>
+        }
+      </Can>
     </>
   );
 }

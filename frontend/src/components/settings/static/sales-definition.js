@@ -8,7 +8,16 @@ import { useForm, useSalesDefinition } from 'hooks';
 
 import { useModal } from 'hooks';
 
-const initValue = { name: '', price: 0, cost: 0, quantity: 0, salesId: null };
+const initValue = {
+  name: '',
+  price: 0,
+  cost: 0,
+  quantity: 0,
+  salesId: null,
+  branchId: null,
+  specialtyId: null,
+  userId: null,
+};
 
 const SalesDefinition = () => {
   const { visible, open, close } = useModal();

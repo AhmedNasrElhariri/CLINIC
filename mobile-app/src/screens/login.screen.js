@@ -30,7 +30,6 @@ const LoginScreen = () => {
       onSignIn(login);
     },
     onError: error => {
-      console.log(error);
       Toast.show({
         text: 'Invalid Email or Password',
         type: 'danger',
