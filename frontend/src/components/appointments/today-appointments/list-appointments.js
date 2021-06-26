@@ -27,7 +27,6 @@ function ListAppointments({
   return (
     <Div padding={20} wd>
       <Div display="flex" justifyContent="space-between">
-        <Div></Div>
         <ReactToPrint
           trigger={() => (
             <CRButton primary mb={20}>
