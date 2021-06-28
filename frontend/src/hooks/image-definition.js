@@ -19,8 +19,12 @@ const updateCache = myImagesDefinition => {
   });
 };
 
-function useImageDefinition({ onCreate, onEdit } = {}) {
-  const { data } = useQuery(LIST_IMAGES_DEFINITION);
+function useImageDefinition({ onCreate, onEdit, categoryId } = {}) {
+  const { data } = useQuery(LIST_IMAGES_DEFINITION, {
+    variables: {
+      categoryId: categoryId,
+    },
+  });
   const imagesDefinition = useMemo(
     () => R.propOr([], 'myImagesDefinition')(data),
     [data]

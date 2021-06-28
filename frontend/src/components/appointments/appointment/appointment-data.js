@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
@@ -12,6 +12,7 @@ import {
   CRRadio,
   CRCheckBoxGroup,
   CRNestedSelector,
+  CRSelectInput,
 } from 'components';
 import { convertGroupFieldsToNavs } from 'services/appointment';
 import {
@@ -24,7 +25,7 @@ import {
 } from 'utils/constants';
 
 import AppointmentPictures from '../pictures';
-
+import { useImageCategory, useLabCategory } from 'hooks';
 import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
@@ -75,7 +76,12 @@ SectionContainer.propTypes = {
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
-
+const initalCategoryLab = {
+  categoryId: null,
+};
+const initalCategoryImage = {
+  categoryId: null,
+};
 function AppointmentData({
   formValue,
   groups,
@@ -86,7 +92,11 @@ function AppointmentData({
   appointmentFormValue,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
-
+  const { labsCategory } = useLabCategory();
+  const { imagesCategory } = useImageCategory();
+  const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryLab);
+  const [categoryImageForm, setCategoryImageForm] =
+    useState(initalCategoryImage);
   const handlePicturesChange = useCallback(
     pictures => {
       onChange({
@@ -156,15 +166,52 @@ function AppointmentData({
             />
           </SectionContainer>
           <SectionContainer title="Labs" name="labs">
+            <Div
+              mb={10}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Form formValue={categoryLabForm} onChange={setCategoryLabForm}>
+                <CRSelectInput
+                  name="categoryId"
+                  block
+                  data={labsCategory}
+                  label="Lab Category"
+                  style={{ width: '300px' }}
+                />
+              </Form>
+            </Div>
             <Labs
               selectedLabs={appointmentFormValue.labIds}
               onChange={handleLabsChange}
+              categoryId={categoryLabForm?.categoryId}
             />
           </SectionContainer>
           <SectionContainer title="Images" name="images">
+            <Div
+              mb={10}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Form
+                formValue={categoryImageForm}
+                onChange={setCategoryImageForm}
+              >
+                <CRSelectInput
+                  name="categoryId"
+                  block
+                  data={imagesCategory}
+                  label="Image Category"
+                  style={{ width: '300px' }}
+                />
+              </Form>
+            </Div>
             <Images
               selectedImages={appointmentFormValue.imageIds}
               onChange={handleImagesChange}
+              categoryId={categoryImageForm?.categoryId}
             />
           </SectionContainer>
 

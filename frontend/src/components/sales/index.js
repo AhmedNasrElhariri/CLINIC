@@ -151,11 +151,11 @@ const Sales = () => {
                 sales={true}
               />
             </Div>
-            <Can I="Create" an="Sales">
+            {/* <Can I="Create" an="Sales"> */}
               <CRButton variant="primary" onClick={handleClickCreate}>
                 Add New Sales +
               </CRButton>
-            </Can>
+            {/* </Can> */}
           </Div>
         }
         nobody
@@ -192,12 +192,14 @@ const Sales = () => {
             <CRSelectInput
               label="Item"
               name="item"
+              onChange={val => val == null ? setFilter({...filter,item:''}):''}
               data={updatedSalesItems}
               style={{ width: '300px' }}
             />
             <CRSelectInput
               label="Creator"
               name="user"
+              onChange={val => val == null ? setFilter({...filter,user:''}):''}
               data={updatedUsers}
               style={{ width: '300px' }}
             />

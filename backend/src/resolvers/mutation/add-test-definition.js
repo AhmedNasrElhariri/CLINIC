@@ -1,12 +1,18 @@
 import { prisma } from '@';
 
 const addLabDefinition = async (_, { labDefinition }, { userId }) => {
+  const { categoryId, ...rest } = labDefinition;
   return prisma.labDefinition.create({
     data: {
-      ...labDefinition,
+      ...rest,
       user: {
         connect: {
           id: userId,
+        },
+      },
+      category: {
+        connect: {
+          id: categoryId,
         },
       },
     },

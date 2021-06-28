@@ -272,7 +272,8 @@ model Appointment {
   branchId         String?
   specialty        Specialty?         @relation(fields: [specialtyId], references: [id])
   specialtyId      String?
-  session          String?
+  session          SessionDefinition? @relation(fields: [sessionId], references: [id])
+  sessionId        String?
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @default(now()) @updatedAt
 }
@@ -704,23 +705,25 @@ model Hospital {
 }
 
 model LabDefinition {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  category  String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  labs      Lab[]
+  id         String      @id @default(uuid())
+  name       String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now()) @updatedAt
+  category   LabCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String
+  labs       Lab[]
 }
 
 model LabCategory {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  id            String          @id @default(uuid())
+  name          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
+  user          User            @relation(fields: [userId], references: [id])
+  userId        String
+  LabDefinition LabDefinition[]
 }
 
 model Timing {
@@ -736,14 +739,15 @@ model Timing {
 }
 
 model ImageDefinition {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  category  String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  Image     Image[]
+  id         String        @id @default(uuid())
+  name       String
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @default(now()) @updatedAt
+  category   ImageCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+  user       User          @relation(fields: [userId], references: [id])
+  userId     String
+  Image      Image[]
 }
 
 model Price {
@@ -764,20 +768,21 @@ model Price {
 }
 
 model SessionDefinition {
-  id             String       @id @default(uuid())
+  id             String        @id @default(uuid())
   name           String
   price          Int
   level          String
-  user           User         @relation(fields: [userId], references: [id])
+  user           User          @relation(fields: [userId], references: [id])
   userId         String
-  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
+  specialty      Specialty?    @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
-  branch         Branch?      @relation(fields: [branchId], references: [id])
+  branch         Branch?       @relation(fields: [branchId], references: [id])
   branchId       String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now()) @updatedAt
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
+  Appointment    Appointment[]
 }
 
 model BankDefinition {
@@ -907,12 +912,13 @@ model CoursePayment {
 }
 
 model ImageCategory {
-  id        String   @id @default(uuid())
-  name      String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id              String            @id @default(uuid())
+  name            String
+  user            User              @relation(fields: [userId], references: [id])
+  userId          String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+  ImageDefinition ImageDefinition[]
 }
 
 model MedicineDefinition {

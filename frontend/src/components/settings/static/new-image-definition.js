@@ -18,10 +18,6 @@ function NewImageDefinition({
     [type]
   );
   const { imagesCategory } = useImageCategory();
-  const categories = imagesCategory.map(category => ({
-    id: category.name,
-    name: category.name,
-  }));
   return (
     <CRModal
       show={visible}
@@ -39,9 +35,9 @@ function NewImageDefinition({
         />
         <CRSelectInput
           label="Image Category"
-          name="category"
+          name="categoryId"
           block
-          data={categories}
+          data={imagesCategory}
         />
       </Form>
     </CRModal>

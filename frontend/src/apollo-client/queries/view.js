@@ -28,6 +28,7 @@ export const ALL_AREAS = gql`
       id
       governorate_id
       city_name_ar
+      city_name_en
     }
   }
 `;

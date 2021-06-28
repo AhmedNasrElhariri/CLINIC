@@ -3,7 +3,7 @@ import { CRTextInput, Div, CRSelectInput } from 'components';
 import { Form } from 'rsuite';
 import * as R from 'ramda';
 import { useQuery } from '@apollo/client';
-import { ALL_AREAS } from  'apollo-client/queries';
+import { ALL_AREAS } from 'apollo-client/queries';
 const options = [
   { name: 'FaceBook', id: 'facebook' },
   { name: 'Instagram', id: 'instagram' },
@@ -19,10 +19,11 @@ const PatientsFilter = ({ formValue, setFormValue }) => {
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const newAreas = areas.map(a => {
     return {
-      id: a.city_name_ar,
-      name: a.city_name_ar,
+      id: a.city_name_en,
+      name: a.city_name_en,
     };
   });
+  console.log(newAreas);
   return (
     <Form
       style={{ width: 276, marginBottom: 64 }}
@@ -49,6 +50,9 @@ const PatientsFilter = ({ formValue, setFormValue }) => {
             label="Reference"
             name="reference"
             data={options}
+            onChange={val =>
+              val == null ? setFormValue({ ...formValue, reference: '' }) : ''
+            }
             style={{ width: '300px' }}
           />
         </Div>
@@ -57,6 +61,9 @@ const PatientsFilter = ({ formValue, setFormValue }) => {
             label="Area"
             name="area"
             data={newAreas}
+            onChange={val =>
+              val == null ? setFormValue({ ...formValue, area: '' }) : ''
+            }
             style={{ width: '300px' }}
           />
         </Div>

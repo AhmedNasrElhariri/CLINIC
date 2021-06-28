@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-export const createInventoryExpense = async ({ name, price, userId }) => {
+export const createInventoryExpense = async ({ name, price, userId ,organizationId}) => {
   return prisma.expense.create({
     data: {
       name,
@@ -12,17 +12,31 @@ export const createInventoryExpense = async ({ name, price, userId }) => {
           id: userId,
         },
       },
+      organization:{
+        connect:{
+          id:organizationId
+        }
+      }
     },
   });
 };
 
-export const createAppointmentExpense = async (userId, amount) => {
+export const createAppointmentExpense = async (
+  userId,
+  discount,
+  organizationId
+) => {
   return prisma.expense.create({
     data: {
       date: new Date(),
-      name: 'Session Discount',
-      expenseType:'Dicount',
-      amount,
+      name: discount.name,
+      expenseType: 'Dicount',
+      amount: discount.amount,
+      organization: {
+        connect: {
+          id: organizationId,
+        },
+      },
       user: {
         connect: {
           id: userId,

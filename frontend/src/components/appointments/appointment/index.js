@@ -41,9 +41,6 @@ function Appointment() {
     labIds: [],
     imageIds: [],
     pictures: [],
-    powerOne: 0,
-    powerTwo: 0,
-    pulses: 0,
   });
 
   const [disabled, setDisabled] = useState(false);
@@ -89,9 +86,6 @@ function Appointment() {
           prescription: apptFormValue.prescription,
           labIds: apptFormValue.labIds,
           imageIds: apptFormValue.imageIds,
-          pulses: apptFormValue.pulses,
-          powerOne: apptFormValue.powerOne,
-          powerTwo: apptFormValue.powerTwo,
           pictures: apptFormValue.pictures.map(c => ({
             ...R.pick(['id', 'comment'])(c),
           })),
@@ -135,9 +129,6 @@ function Appointment() {
       notes: R.propOr('', 'notes')(appointment),
       prescription: R.propOr([], 'prescription')(appointment),
       pictures: R.propOr([], 'pictures')(appointment),
-      pulses: R.propOr(null, 'pulses')(appointment),
-      powerOne: R.propOr(null, 'powerOne')(appointment),
-      powerTwo: R.propOr(null, 'powerTwo')(appointment),
       labIds: R.pipe(
         R.propOr([], 'labs'),
         R.map(R.path(['labDefinition', 'id']))

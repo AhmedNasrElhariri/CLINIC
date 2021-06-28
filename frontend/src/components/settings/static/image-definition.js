@@ -8,7 +8,7 @@ import { useForm, useImageDefinition } from 'hooks';
 
 import { useModal } from 'hooks';
 
-const initValue = { name: '', category: '' };
+const initValue = { name: '', categoryId: null };
 
 const ImageDefinition = () => {
   const { visible, open, close } = useModal();

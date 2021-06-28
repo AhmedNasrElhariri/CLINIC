@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
 import { CRModal, CRSelectInput ,CRNumberInput } from 'components';
-import { useCompanyDefinition, useConfigurations } from 'hooks';
+import { useCompanyDefinition, useSessionDefinition } from 'hooks';
 const model = Schema.Model({});
 
 function NewCompanySessionDefinition({
@@ -19,11 +19,11 @@ function NewCompanySessionDefinition({
     [type]
   );
   const { companysDefinition } = useCompanyDefinition({});
-  const { sessions } = useConfigurations();
+  const { sessionsDefinition } = useSessionDefinition({});
   const choices = useMemo(() => {
-    const allChoices = [...sessions];
+    const allChoices = [...sessionsDefinition];
     return allChoices.map(s => ({ name: s.name, id: s.name }));
-  }, [sessions]);
+  }, [sessionsDefinition]);
   return (
     <CRModal
       show={visible}

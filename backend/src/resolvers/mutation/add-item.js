@@ -34,6 +34,7 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
     name: `${persistedItem.name} X ${input.amount}`,
     price: input.amount * input.price,
     userId,
+    organizationId
   });
 
   await storeHistoryOfAddition({

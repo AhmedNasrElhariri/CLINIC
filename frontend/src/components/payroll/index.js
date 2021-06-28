@@ -243,7 +243,7 @@ function Payroll() {
   }, [addPayroll, checkedPayLipsUsers]);
   return (
     <>
-      <Can I="View" an="Payroll">
+      {/* <Can I="View" an="Payroll"> */}
         <MainContainer
           title="Payroll Reports"
           more={
@@ -274,7 +274,7 @@ function Payroll() {
                   Add Incentives
                 </CRButton>
               </Can>
-              <Can I="Create" an="Commission">
+              {/* <Can I="Create" an="Commission"> */}
                 <CRButton
                   variant="primary"
                   onClick={addCommissionForm.show}
@@ -282,7 +282,7 @@ function Payroll() {
                 >
                   Add Commission
                 </CRButton>
-              </Can>
+              {/* </Can> */}
               <Can I="Create" an="Deduction">
                 <CRButton
                   variant="danger"
@@ -360,7 +360,7 @@ function Payroll() {
             </CheckboxGroup>
           </CRModal>
         }
-      </Can>
+      {/* </Can> */}
     </>
   );
 }

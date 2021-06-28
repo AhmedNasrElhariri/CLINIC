@@ -4,12 +4,13 @@ export const createAppointmentRevenue = async data => {
   return prisma.revenue.createMany({ data });
 };
 
-export const createAppointmentRevenueFromSessions = (userId, sessions) => {
+export const createAppointmentRevenueFromSessions = (userId, sessions,organizationId) => {
   return sessions.map(({ name, price, number }) => ({
     date: new Date(),
     name,
     amount: price * number,
     userId,
+    organizationId,
   }));
 };
 

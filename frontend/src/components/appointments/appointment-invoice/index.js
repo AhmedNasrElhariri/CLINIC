@@ -52,8 +52,11 @@ const payMethods = [
 function AppointmentInvoice({
   onChange,
   discount,
+  appointment,
   others,
   onOthersChange,
+  othersName,
+  onOthersNameChange,
   onDiscountChange,
   sessions,
   company,
@@ -67,7 +70,6 @@ function AppointmentInvoice({
   organization,
 }) {
   const [session, setSession] = useState({});
-
   const { prices } = usePrice({});
   const [sessionNumber, setSessionNumber] = useState(0);
   const [visa, setVisa] = useState(false);
@@ -114,19 +116,10 @@ function AppointmentInvoice({
       (sum, { price, number }) => sum + number * price,
       0
     );
-    if (option.option === 'fixed') {
-      sub = option.amount;
-    } else if (option.option === 'percentage') {
-      sub = option.amount * subRed * 0.01;
-    } else {
-      sub = subRed + (appointmentPrice?.price || 0);
-    }
+    sub = subRed + others + (appointmentPrice?.price || 0);
     return sub;
-  }, [selectedSessions, option, appointmentPrice]);
-  const total = useMemo(
-    () => subtotal + (others - discount),
-    [discount, others, subtotal]
-  );
+  }, [selectedSessions, option, appointmentPrice, others]);
+  const total = useMemo(() => subtotal - discount, [discount, subtotal]);
 
   return (
     <>
@@ -150,9 +143,6 @@ function AppointmentInvoice({
           >
             Insurance Pay
           </CRButton>
-          <Form formValue={option} onChange={setOption}>
-            <CRRadio options={payMethods} name="payMethod" />
-          </Form>
         </Div>
         {visa && (
           <Form>
@@ -255,32 +245,43 @@ function AppointmentInvoice({
                 width={210}
                 addOn={<CRButton variant="danger">Applied</CRButton>}
               />
-              <CRTextInput
-                label="Others"
-                name="others"
-                value={others}
-                onChange={val => onOthersChange(Number(val))}
-                width={210}
-              />
+              <Div display="flex">
+                <CRTextInput
+                  label="Others"
+                  name="others"
+                  value={others}
+                  onChange={val => onOthersChange(Number(val))}
+                />
+                <CRTextInput
+                  label="Others Name"
+                  name="othersName"
+                  value={othersName}
+                  onChange={val => onOthersNameChange(val)}
+                />
+              </Div>
             </Form>
           </Div>
           <CRDivider />
-          <Form formValue={option} onChange={setOption}>
-            <CRRadio options={payOptions} name="option" />
-            {option.option === 'fixed' && company !== null ? (
-              <CRNumberInput label="Fixed Payment" name="amount" />
-            ) : (
-              option.option === 'percentage' &&
-              company !== null && (
-                <CRNumberInput
-                  label="Percentage from 0 : 100"
-                  name="price"
-                  name="amount"
-                />
-              )
-            )}
-          </Form>
-          <CRDivider />
+          {company !== null && (
+            <>
+              <Form formValue={option} onChange={setOption}>
+                <CRRadio options={payOptions} name="option" />
+                {option.option === 'fixed' && company !== null ? (
+                  <CRNumberInput label="Fixed Payment" name="amount" />
+                ) : (
+                  option.option === 'percentage' &&
+                  company !== null && (
+                    <CRNumberInput
+                      label="Percentage from 0 : 100"
+                      name="price"
+                      name="amount"
+                    />
+                  )
+                )}
+              </Form>
+              <CRDivider />
+            </>
+          )}
           <H5 fontWeight={400}>Session Summary</H5>
           <Div background="#f0f1f1" p="6px 8px">
             <Price name="Others" price={others} overriden variant="primary" />
@@ -302,7 +303,11 @@ function AppointmentInvoice({
         items={selectedSessions}
         subtotal={subtotal}
         total={total}
+        patientName={appointment?.patient.name}
+        appointmentPrice={appointmentPrice}
         others={others}
+        option={option}
+        othersName={othersName}
         discount={discount}
         organization={organization}
       />

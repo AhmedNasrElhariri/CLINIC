@@ -1,11 +1,14 @@
 import gql from 'graphql-tag';
 
 export const LIST_IMAGES_DEFINITION = gql`
-  {
-    myImagesDefinition {
+  query ($categoryId: ID) {
+    myImagesDefinition(categoryId: $categoryId) {
       id
       name
-      category
+      category {
+        id
+        name
+      }
     }
   }
 `;
@@ -15,7 +18,6 @@ export const ADD_IMAGE_DEFINITION = gql`
     addImageDefinition(imageDefinition: $imageDefinition) {
       id
       name
-      category
     }
   }
 `;
@@ -25,7 +27,6 @@ export const EDIT_IMAGE_DEFINITION = gql`
     editImageDefinition(imageDefinition: $imageDefinition) {
       id
       name
-      category
     }
   }
 `;

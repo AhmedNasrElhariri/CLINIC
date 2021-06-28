@@ -19,8 +19,12 @@ const updateCache = myLabsDefinitions => {
   });
 };
 
-function useLabDefinition({ onCreate, onEdit } = {}) {
-  const { data } = useQuery(LIST_TESTS_DEFINITION);
+function useLabDefinition({ onCreate, onEdit, categoryId } = {}) {
+  const { data } = useQuery(LIST_TESTS_DEFINITION, {
+    variables: {
+      categoryId:categoryId,
+    },
+  });
   const labsDefinition = useMemo(
     () => R.propOr([], 'myLabsDefinitions')(data),
     [data]

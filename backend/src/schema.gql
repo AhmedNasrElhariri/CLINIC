@@ -119,10 +119,10 @@ type Query {
   mySurgeries: [Surgery!]
   patientSurgeries(patientId: ID): [PatientSurgery!]
   myPatientSurgeries: [PatientSurgery!]
-  myLabsDefinitions: [LabDefinition!]
+  myLabsDefinitions(categoryId: ID): [LabDefinition!]
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
-  myImagesDefinition: [ImageDefinition!]
+  myImagesDefinition(categoryId: ID): [ImageDefinition!]
   mySessionsDefinition: [SessionDefinition!]
   myPrices: [Price!]
   myBanksDefinition: [BankDefinition!]
@@ -173,8 +173,9 @@ type Mutation {
     id: ID!
     sessions: [SessionInput!]
     items: [FinishAppointmentItemInput!]
-    discount: Int
-    others: Int
+    discount: Discount
+    patientName: String!
+    others: Others
     bank: ID
     company: ID
     appPrice: Int
@@ -447,7 +448,6 @@ type Patient implements Searchable {
   area: String!
   age: Int!
   sex: Sex!
-
   appointments: [Appointment!]
 }
 
@@ -458,7 +458,7 @@ input PatientInput {
   age: Int!
   sex: Sex!
   reference: [String]
-  area: String
+  area: ID
   type: PatientMembershipType!
   guardianName: String
 }
@@ -473,7 +473,7 @@ type Appointment {
   patient: Patient!
   branch: Branch
   specialty: Specialty
-  session: String
+  session: SessionDefinition
   user: User!
   doctor: User!
   data: [AppointmentField!]
@@ -510,7 +510,7 @@ input AppointmentInput {
   userId: ID!
   branchId: ID
   specialtyId: ID
-  session: String
+  sessionId: ID
   notes: String
   courseId: ID
   waiting: Boolean
@@ -568,6 +568,7 @@ type Area {
   id: ID!
   governorate_id: String!
   city_name_ar: String!
+  city_name_en: String!
 }
 ########################### views ##################################
 type View {
@@ -648,6 +649,16 @@ input SessionInput {
   name: String!
   price: Int!
   number: Int!
+}
+
+input Discount {
+  name: String!
+  amount: Int!
+}
+
+input Others {
+  name: String!
+  amount: Int!
 }
 
 input optionInput {
@@ -1016,7 +1027,7 @@ input SurgeryInput {
 type LabDefinition {
   id: ID!
   name: String!
-  category: String!
+  category: LabCategory!
 }
 
 type LabCategory {
@@ -1027,7 +1038,7 @@ type LabCategory {
 input LabInputDefinition {
   id: ID
   name: String!
-  category: String!
+  categoryId: ID!
 }
 
 input LabCategoryInput {
@@ -1075,13 +1086,13 @@ input SessionInputDefinition {
 type ImageDefinition {
   id: ID!
   name: String!
-  category: String!
+  category: ImageCategory!
 }
 
 input ImageInputDefinition {
   id: ID
   name: String!
-  category: String!
+  categoryId: ID
 }
 
 type ImageCategory {

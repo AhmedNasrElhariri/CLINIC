@@ -19,10 +19,6 @@ function NewLabDefinition({
     [type]
   );
   const { labsCategory } = useLabCategory();
-  const categories = labsCategory.map(category => ({
-    id: category.name,
-    name: category.name,
-  }));
   return (
     <CRModal
       show={visible}
@@ -40,9 +36,9 @@ function NewLabDefinition({
         />
         <CRSelectInput
           label="Lab Category"
-          name="category"
+          name="categoryId"
           block
-          data={categories}
+          data={labsCategory}
         />
       </Form>
     </CRModal>

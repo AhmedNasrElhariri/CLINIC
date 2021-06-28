@@ -1,8 +1,5 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Form, Schema } from 'rsuite';
-import * as R from 'ramda';
-import { useQuery } from '@apollo/client';
-import { ALL_AREAS } from  'apollo-client/queries';
 import {
   CRSelectInput,
   CRTextInput,
@@ -49,15 +46,7 @@ const options = [
 const isPrimary = ({ type }) => type === membershipTypes[0].value;
 const isSecondary = ({ type }) => type === membershipTypes[1].value;
 
-const NewPatient = ({ formValue, onChange }) => {
-  const { data } = useQuery(ALL_AREAS);
-  const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
-  const newAreas = areas.map(a => {
-    return {
-      id: a.city_name_ar,
-      name: a.city_name_ar,
-    };
-  });
+const NewPatient = ({ formValue, onChange,newAreas }) => {
   return (
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput

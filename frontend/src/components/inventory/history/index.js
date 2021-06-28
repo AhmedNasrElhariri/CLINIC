@@ -36,6 +36,7 @@ const InventoryHistory = () => {
             label="Item"
             name="item"
             data={newItems}
+            onChange={val => val == null ? setFormValue({...formValue,item:''}):''}
             style={{ width: '300px' }}
           />
         </Form>

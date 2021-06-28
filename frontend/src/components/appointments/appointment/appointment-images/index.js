@@ -4,8 +4,10 @@ import { Div } from 'components';
 import { useImageDefinition } from 'hooks';
 import ImageRow from './image-row';
 
-const AppointmentImages = ({ selectedImages, onChange }) => {
-  const { imagesDefinition } = useImageDefinition();
+const AppointmentImages = ({ selectedImages, onChange, categoryId }) => {
+  
+  const { imagesDefinition } = useImageDefinition({ categoryId });
+  console.log(imagesDefinition);
   const [formValue, setFormValue] = useState([]);
 
   useEffect(() => {

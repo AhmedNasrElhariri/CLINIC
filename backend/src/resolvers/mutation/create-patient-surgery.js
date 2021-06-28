@@ -48,6 +48,11 @@ const createPatientSurgery = async (
           user: {
             connect: { id: userId },
           },
+          doctor:{
+            connect:{
+              id:userId,
+            },
+          },
           patient: {
             connect: {
               id: patientId,
@@ -66,6 +71,9 @@ const createPatientSurgery = async (
         amount: fees,
         user: {
           connect: { id: userId },
+        },
+        organization: {
+          connect: { id: organizationId },
         },
       },
     });

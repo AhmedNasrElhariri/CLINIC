@@ -20,7 +20,7 @@ function ListImagesDefinition({ images, onEdit }) {
             <CRTable.CRHeaderCell>Category Name</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ category }) => (
-                <CRTable.CRCellStyled bold>{category}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>{category.name}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

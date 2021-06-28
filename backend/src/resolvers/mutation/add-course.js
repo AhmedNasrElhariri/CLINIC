@@ -5,7 +5,7 @@ import {
   COURSE_STATUS,
 } from '@/utils/constants';
 
-const addCourse = async (_, { course }, { userId }) => {
+const addCourse = async (_, { course }, { userId ,organizationId}) => {
   const {
     patientId,
     courseDefinitionId,
@@ -100,6 +100,11 @@ const addCourse = async (_, { course }, { userId }) => {
       user: {
         connect: {
           id: userId,
+        },
+      },
+      organization: {
+        connect: {
+          id: organizationId,
         },
       },
     },

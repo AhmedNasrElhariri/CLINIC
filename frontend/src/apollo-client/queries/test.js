@@ -1,11 +1,14 @@
 import gql from 'graphql-tag';
 
 export const LIST_TESTS_DEFINITION = gql`
-  {
-    myLabsDefinitions {
+  query ($categoryId: ID) {
+    myLabsDefinitions(categoryId: $categoryId) {
       id
       name
-      category
+      category{
+        id
+        name
+      }
     }
   }
 `;
@@ -15,7 +18,6 @@ export const ADD_TEST_DEFINITION = gql`
     addLabDefinition(labDefinition: $labDefinition) {
       id
       name
-      category
     }
   }
 `;
@@ -25,7 +27,6 @@ export const EDIT_TEST_DEFINITION = gql`
     addLabDefinition(labDefinition: $labDefinition) {
       id
       name
-      category
     }
   }
 `;

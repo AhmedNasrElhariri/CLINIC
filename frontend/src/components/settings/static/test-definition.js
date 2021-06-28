@@ -6,13 +6,14 @@ import NewLabDefinition from './new-test-definition';
 import ListLabsDefinition from './list-tests-definition';
 import { useForm, useModal, useLabDefinitions } from 'hooks';
 
-const initValue = { name: '', category: '' };
+const initValue = { name: '', categoryId: null };
 
 const LabDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
+  console.log(formValue);
   const {
     addLabDefinition,
     labsDefinition,

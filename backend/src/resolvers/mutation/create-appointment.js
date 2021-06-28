@@ -37,7 +37,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
     specialtyId,
     waiting,
     courseId,
-    session,
+    sessionId,
     ...rest
   } = appointment;
   const appointments = await getDayAppointments(appointment.date, userId);
@@ -81,6 +81,13 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
           },
         },
       },
+      sessionId && {
+        session: {
+          connect: {
+            id: sessionId,
+          },
+        },
+      },
       specialtyId && {
         specialty: {
           connect: {
@@ -104,7 +111,6 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
           ],
         },
       },
-      appointment.type === APPOINTMENTS_TYPES.Session && { session:session }
     ),
   });
 

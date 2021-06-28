@@ -50,7 +50,10 @@ export const LIST_APPOINTMENTS = gql`
         id
         name
       }
-      session
+      session{
+        id
+        name
+      }
     }
   }
 `;
@@ -82,9 +85,6 @@ export const GET_APPOINTMENT = gql`
       date
       status
       notes
-      pulses
-      powerOne
-      powerTwo
       prescription {
         medicineId
         dose
@@ -198,9 +198,10 @@ export const ARCHIVE_APPOINTMENT = gql`
     $id: ID!
     $sessions: [SessionInput!]
     $items: [FinishAppointmentItemInput!]
-    $discount: Int
-    $others: Int
+    $discount: Discount
+    $others: Others
     $bank: ID
+    $patientName: String!
     $company: ID
     $appPrice: Int
     $option: optionInput!
@@ -210,10 +211,11 @@ export const ARCHIVE_APPOINTMENT = gql`
       sessions: $sessions
       items: $items
       discount: $discount
+      patientName:$patientName
       others: $others
       bank: $bank
       company: $company
-      appPrice:$appPrice
+      appPrice: $appPrice
       option: $option
     ) {
       id

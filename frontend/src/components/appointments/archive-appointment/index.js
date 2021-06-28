@@ -28,12 +28,12 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
+  const [othersName, setOthersName] = useState('');
   const [bank, setBank] = useState(null);
   const [price, setPrice] = useState({});
   const [company, setCompany] = useState(null);
   const [option, setOption] = useState(initlOption);
   const value = useRef(initValue);
-  const { sessions } = useConfigurations();
   const { data } = useQuery(GET_INVOICE_COUNTER, {
     fetchPolicy: 'network-only',
   });
@@ -56,6 +56,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
         ...value.current,
         discount,
         others,
+        othersName,
         bank,
         company,
         option,
@@ -112,11 +113,13 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
             onChange={handleInvoiceChange}
             discount={discount}
             others={others}
+            othersName={othersName}
             bank={bank}
             setBank={setBank}
             company={company}
             setCompany={setCompany}
             onOthersChange={setOthers}
+            onOthersNameChange={setOthersName}
             onDiscountChange={setDiscount}
             appointment={appointment}
             option={option}

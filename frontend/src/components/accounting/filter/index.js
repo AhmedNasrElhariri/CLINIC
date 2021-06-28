@@ -2,7 +2,7 @@ import React from 'react';
 import { Div } from 'components';
 import { Form } from 'rsuite';
 import { CRSelectInput } from 'components/widgets';
-import {  useExpenseTypeDefinition } from 'hooks';
+import { useExpenseTypeDefinition } from 'hooks';
 const AccountingFilter = ({ formValue, setFormValue }) => {
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
   const updatedExpenseTypeDefinitions = expenseTypesDefinition.map(b => {
@@ -11,7 +11,7 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
       name: b.name,
     };
   });
-  const salary = {id:'Salary',name:'Salary'};
+  const salary = { id: 'Salary', name: 'Salary' };
   updatedExpenseTypeDefinitions.push(salary);
   return (
     <Form
@@ -25,6 +25,7 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
             label="Expense Type"
             name="expenseType"
             data={updatedExpenseTypeDefinitions}
+            onChange={val => val == null ? setFormValue({...formValue,expenseType:''}):''}
             placeholder="Search"
             style={{ width: '230px' }}
           />

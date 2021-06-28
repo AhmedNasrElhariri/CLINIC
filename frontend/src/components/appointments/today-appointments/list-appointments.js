@@ -97,7 +97,7 @@ function ListAppointments({
             {({ type, session }) => (
               <CRTable.CRCellStyled>
                 {type === 'Session' ? 'S ' : type}{' '}
-                {type === 'Session' ? session : ''}
+                {type === 'Session' ? session?.name : ''}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
@@ -140,6 +140,17 @@ function ListAppointments({
             {appointment => (
               <Div display="flex">
                 {(isScheduled(appointment) || isWaiting(appointment)) && (
+                  <>
+                  {/* <CRButton
+                    variant="primary"
+                    mr={1}
+                    onClick={e => {
+                      e.stopPropagation();
+                      onArchive(appointment);
+                    }}
+                  >
+                    ACC
+                  </CRButton> */}
                   <CRButton
                     variant="primary"
                     mr={1}
@@ -150,6 +161,7 @@ function ListAppointments({
                   >
                     Archive
                   </CRButton>
+                  </>
                 )}
                 <CRButton
                   variant="primary"
@@ -188,12 +200,7 @@ function ListAppointments({
           <CRTable
             autoHeight
             data={appointments}
-            width={900}
-            onRowClick={appointment => {
-              history.push(
-                `/patients/${appointment.patient.id}?appointmentId=${appointment.id}`
-              );
-            }}
+            width={1000}
           >
             <CRTable.CRColumn flexGrow={0.2}>
               <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
@@ -203,7 +210,7 @@ function ListAppointments({
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={0.5}>
               <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ date }) => (
@@ -213,7 +220,7 @@ function ListAppointments({
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={0.5}>
               <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ date }) => (
@@ -223,7 +230,7 @@ function ListAppointments({
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={0.7}>
               <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ patient }) => (
@@ -234,7 +241,7 @@ function ListAppointments({
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={0.7}>
               <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ patient }) => (
@@ -253,7 +260,7 @@ function ListAppointments({
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={0.7}>
               <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ doctor }) => (
@@ -261,7 +268,7 @@ function ListAppointments({
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={0.8}>
               <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ user }) => (
@@ -269,7 +276,7 @@ function ListAppointments({
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.8}>
+            <CRTable.CRColumn flexGrow={0.5}>
               <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ specialty }) => (
