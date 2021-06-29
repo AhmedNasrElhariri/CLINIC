@@ -18,7 +18,8 @@ import {
 } from 'apollo-client/queries';
 import BranchFilter from '../../filters';
 import { Can } from 'components/user/can';
-import Filter from '../filter';
+import ExpenseFilter from '../filter/expense-filter';
+import RevenueFilter from '../filter/revenue-filter';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
@@ -27,6 +28,7 @@ import { formatDate } from 'utils/date';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalVal = {
   expenseType: '',
+  revenueName: '',
 };
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
@@ -144,7 +146,7 @@ const AccountingContainer = () => {
     header: 'Edit Expense',
     onOk: handleUpdateExpense,
   });
-  const { expenses, revenues, totalRevenues, timeFrame } = useAccounting({
+  const { expenses, revenues, timeFrame } = useAccounting({
     view,
     period,
   });
@@ -161,106 +163,126 @@ const AccountingContainer = () => {
     () => updatedExpenses.reduce((acc, e) => acc + e.amount, 0),
     [updatedExpenses]
   );
+  const updatedRevenues = useMemo(
+    () =>
+      revenues.filter(e =>
+        e.name
+          .toLowerCase()
+          .includes(formValue.revenueName.toLowerCase())
+      ),
+    [formValue, revenues]
+  );
+  const totalRevenues = useMemo(
+    () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
+    [updatedRevenues]
+  );
   return (
     <>
-        <MainContainer
-          title="Accounting"
-          more={
-            <Div display="flex">
-              <>
-                <Can I="AddRevenue" an="Accounting">
-                  <CRButton variant="primary" onClick={createRevenueForm.show}>
-                    Reveneue +
-                  </CRButton>
-                </Can>
-                <Can I="AddExpense" an="Accounting">
-                  <CRButton
-                    variant="primary"
-                    onClick={createExpenseForm.show}
-                    ml={1}
-                  >
-                    Expense +
-                  </CRButton>
-                </Can>
-              </>
+      <MainContainer
+        title="Accounting"
+        more={
+          <Div display="flex">
+            <>
+              <Can I="AddRevenue" an="Accounting">
+                <CRButton variant="primary" onClick={createRevenueForm.show}>
+                  Reveneue +
+                </CRButton>
+              </Can>
+              <Can I="AddExpense" an="Accounting">
+                <CRButton
+                  variant="primary"
+                  onClick={createExpenseForm.show}
+                  ml={1}
+                >
+                  Expense +
+                </CRButton>
+              </Can>
+            </>
 
-              <Div ml={1}>
-                <PdfView data={{ revenues, expenses }} period={timeFrame} />
+            <Div ml={1}>
+              <PdfView data={{ revenues, expenses }} period={timeFrame} />
+            </Div>
+          </Div>
+        }
+        nobody
+      ></MainContainer>
+      <Tabs onSelect={setActiveTab} activeTab={activeTab} />
+      <CRCard borderless>
+        <Toolbar
+          onAddRevenue={createRevenueForm.show}
+          onAddExpense={createExpenseForm.show}
+          activeKey={view}
+          onSelect={setView}
+          data={{ revenues, expenses }}
+          onChangePeriod={setPeriod}
+        />
+
+        <Div display="flex" my={4}>
+          <H6>Showing for :</H6>
+          <H6 variant="primary" ml={2} fontWeight="bold">
+            {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
+          </H6>
+        </Div>
+
+        <Div>
+          {activeTab === '0' ? (
+            <Div display="flex">
+              <Div flexGrow={1} mr={2}>
+                <RevenueFilter
+                  formValue={formValue}
+                  setFormValue={setFormValue}
+                />
+                <BranchFilter
+                  appointments={updatedRevenues}
+                  branches={filterBranches}
+                  render={revenues => (
+                    <ListRevenueData
+                      title="Revenues"
+                      data={revenues}
+                      onEdit={revenue => {
+                        editRevenueForm.setFormValue(
+                          R.pick(ENTITY_PROPS)(revenue)
+                        );
+                        editRevenueForm.show();
+                      }}
+                    />
+                  )}
+                />
+              </Div>
+
+              <Div flexGrow={1} ml={2}>
+                <ExpenseFilter
+                  formValue={formValue}
+                  setFormValue={setFormValue}
+                />
+                <BranchFilter
+                  appointments={updatedExpenses}
+                  branches={filterBranches}
+                  render={expenses => (
+                    <ListExpenseData
+                      title="Expenses"
+                      data={expenses}
+                      onEdit={expense => {
+                        editExpenseForm.setFormValue(
+                          R.pick(ENTITY_PROPS)(expense)
+                        );
+                        editExpenseForm.show();
+                      }}
+                    />
+                  )}
+                />
               </Div>
             </Div>
-          }
-          nobody
-        ></MainContainer>
-        <Tabs onSelect={setActiveTab} activeTab={activeTab} />
-        <CRCard borderless>
-          <Toolbar
-            onAddRevenue={createRevenueForm.show}
-            onAddExpense={createExpenseForm.show}
-            activeKey={view}
-            onSelect={setView}
-            data={{ revenues, expenses }}
-            onChangePeriod={setPeriod}
-          />
-
-          <Div display="flex" my={4}>
-            <H6>Showing for :</H6>
-            <H6 variant="primary" ml={2} fontWeight="bold">
-              {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
-            </H6>
-          </Div>
-
-          <Div>
-            {activeTab === '0' ? (
-              <Div display="flex">
-                <Div flexGrow={1} mr={2}>
-                  <BranchFilter
-                    appointments={revenues}
-                    branches={filterBranches}
-                    render={revenues => (
-                      <ListRevenueData
-                        title="Revenues"
-                        data={revenues}
-                        onEdit={revenue => {
-                          editRevenueForm.setFormValue(
-                            R.pick(ENTITY_PROPS)(revenue)
-                          );
-                          editRevenueForm.show();
-                        }}
-                      />
-                    )}
-                  />
-                </Div>
-
-                <Div flexGrow={1} ml={2}>
-                  <Filter formValue={formValue} setFormValue={setFormValue} />
-                  <BranchFilter
-                    appointments={updatedExpenses}
-                    branches={filterBranches}
-                    render={expenses => (
-                      <ListExpenseData
-                        title="Expenses"
-                        data={expenses}
-                        onEdit={expense => {
-                          editExpenseForm.setFormValue(
-                            R.pick(ENTITY_PROPS)(expense)
-                          );
-                          editExpenseForm.show();
-                        }}
-                      />
-                    )}
-                  />
-                </Div>
-              </Div>
-            ) : (
-              <Summary expenses={updatedExpenses} revenues={totalRevenues} />
-            )}
-          </Div>
-          <AccountingForm {...createRevenueForm} />
-          <AccountingForm {...createExpenseForm} />
-          <AccountingForm {...editRevenueForm} />
-          <AccountingForm {...editExpenseForm} />
-          <Profit expenses={totalExpenses} revenues={totalRevenues} />
-        </CRCard>
+          ) : (
+            <Summary expenses={updatedExpenses} revenues={totalRevenues} />
+          )}
+        </Div>
+        <AccountingForm {...createRevenueForm} />
+        <AccountingForm {...createExpenseForm} />
+        <AccountingForm {...editRevenueForm} />
+        <AccountingForm {...editExpenseForm} />
+        <Profit expenses={totalExpenses} revenues={totalRevenues} />
+      </CRCard>
     </>
   );
 };

@@ -50,7 +50,7 @@ export const LIST_APPOINTMENTS = gql`
         id
         name
       }
-      session{
+      session {
         id
         name
       }
@@ -193,6 +193,15 @@ export const UPDATE_APPOINTMENT = gql`
   }
 `;
 
+export const COMPLETE_APPOINTMENT = gql`
+  mutation completeAppointment($id: ID!) {
+    completeAppointment(id: $id) {
+      id
+      status
+    }
+  }
+`;
+
 export const ARCHIVE_APPOINTMENT = gql`
   mutation archiveAppointment(
     $id: ID!
@@ -211,7 +220,7 @@ export const ARCHIVE_APPOINTMENT = gql`
       sessions: $sessions
       items: $items
       discount: $discount
-      patientName:$patientName
+      patientName: $patientName
       others: $others
       bank: $bank
       company: $company

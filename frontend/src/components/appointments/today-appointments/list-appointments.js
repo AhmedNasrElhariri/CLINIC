@@ -18,6 +18,7 @@ import { FULL_DATE_FORMAT, STANDARD_DATE_FORMAT } from 'utils/constants';
 function ListAppointments({
   appointments,
   onArchive,
+  onComplete,
   waiting,
   onAddBusinessNotes,
 }) {
@@ -141,7 +142,7 @@ function ListAppointments({
               <Div display="flex">
                 {(isScheduled(appointment) || isWaiting(appointment)) && (
                   <>
-                  {/* <CRButton
+                  <CRButton
                     variant="primary"
                     mr={1}
                     onClick={e => {
@@ -150,13 +151,13 @@ function ListAppointments({
                     }}
                   >
                     ACC
-                  </CRButton> */}
+                  </CRButton>
                   <CRButton
                     variant="primary"
                     mr={1}
                     onClick={e => {
                       e.stopPropagation();
-                      onArchive(appointment);
+                      onComplete(appointment);
                     }}
                   >
                     Archive
