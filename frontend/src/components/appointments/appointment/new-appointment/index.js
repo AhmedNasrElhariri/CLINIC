@@ -44,7 +44,7 @@ export default function NewAppointment({ show, onHide, appointment }) {
     useNewAppointment({ onCreate: onHide });
   const { patient, branch, specialty, userId } = appointment;
   const { patientCourses } = useCourses({
-    patientId: patient.id,
+    patientId: patient?.id,
   });
   const updatedPatientCourses = patientCourses.map(course => ({
     name: course.courseDefinition.name,

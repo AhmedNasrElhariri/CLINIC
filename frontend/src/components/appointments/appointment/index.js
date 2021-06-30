@@ -3,7 +3,6 @@ import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { Alert, Loader, Icon } from 'rsuite';
-
 import Prescription from './prescription';
 
 import Labs from './labs/index';
@@ -14,6 +13,7 @@ import AppointmentData from './appointment-data';
 import {
   getFormInitValues,
   mapFormValueToAppointmentData,
+  mapSessionValues,
   isArchived,
 } from 'services/appointment';
 
@@ -30,7 +30,8 @@ const sortByDate = R.sortBy(R.compose(R.prop('date')));
 function Appointment() {
   const { visible, open, close } = useModal();
   const { type, setType } = useForm({});
-
+  const [sessionsPulses, setSessionsPulses] = useState([]);
+  const [sessionFormValue, setSessionFormValue] = useState({});
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
 
   const [formValue, setFormValue] = useState({});
@@ -96,10 +97,19 @@ function Appointment() {
             ...R.pick(['id', 'comment'])(c),
           })),
           id: appointmentId,
+          sessionsPulses: mapSessionValues(sessionsPulses, sessionFormValue),
         },
       },
     });
-  }, [update, normalizedFields, formValue, apptFormValue, appointmentId]);
+  }, [
+    update,
+    normalizedFields,
+    formValue,
+    apptFormValue,
+    appointmentId,
+    sessionsPulses,
+    sessionFormValue,
+  ]);
   const [popup, setPopup] = useState(false);
   const [popupTwo, setPopupTwo] = useState(false);
   const [popupThree, setPopupThree] = useState(false);
@@ -148,6 +158,28 @@ function Appointment() {
       )(appointment),
     }));
   }, [appointment]);
+  useEffect(() => {
+    setSessionsPulses(R.propOr([], 'sessionsPulses')(appointment));
+  }, [appointment]);
+  useEffect(() => {
+    const sessionsFormValueUpdated = sessionsPulses.reduce(function (
+      result,
+      item
+    ) {
+      let key = item.name;
+      result[key] = item.value;
+      return result;
+    },
+    {});
+    setSessionFormValue(sessionsFormValueUpdated);
+  }, [sessionsPulses, setSessionFormValue]);
+  useEffect(() => {
+    let totalPulses = 0;
+    for (const session in sessionFormValue) {
+      totalPulses += sessionFormValue[session];
+    }
+    setApptFormValue({ ...apptFormValue, pulses: totalPulses });
+  }, [sessionFormValue]);
   const handleMedicineChange = useCallback(
     newPrescription => {
       setApptFormValue({
@@ -242,6 +274,10 @@ function Appointment() {
                 appointmentFormValue={apptFormValue}
                 onDataChange={setFormValue}
                 onChange={setApptFormValue}
+                sessionsPulses={sessionsPulses}
+                setSessionsPulses={setSessionsPulses}
+                sessionFormValue={sessionFormValue}
+                setSessionFormValue={setSessionFormValue}
                 groups={groups}
                 appointment={appointment}
               />

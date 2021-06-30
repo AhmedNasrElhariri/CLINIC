@@ -1,17 +1,24 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import * as R from 'ramda';
+import React from 'react';
 
 import { Div } from 'components';
 import PulseRow from './pulse-row';
 
-const AppointmentPulses = ({ pulses, onChange }) => {
- 
+const AppointmentPulses = ({
+  pulses,
+  onChange,
+  sessionsPulses,
+  sessionFormValue,
+  setSessionFormValue,
+}) => {
   return (
     <Div>
-          <PulseRow
-            formValue={pulses}
-            setFormValue={onChange}
-          />
+      <PulseRow
+        formValue={pulses}
+        setFormValue={onChange}
+        sessionsPulses={sessionsPulses}
+        sessionFormValue={sessionFormValue}
+        setSessionFormValue={setSessionFormValue}
+      />
     </Div>
   );
 };

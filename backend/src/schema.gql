@@ -434,6 +434,7 @@ type Appointment {
   pulses: Int
   powerOne: Int
   powerTwo: Int
+  sessionsPulses: [SessionPulse!]
 }
 
 type AppointmentsDayCount {
@@ -444,6 +445,11 @@ type AppointmentFile {
   id: ID!
   comment: String
   url: String
+}
+
+type SessionPulse {
+  name: String!
+  value: Int!
 }
 
 type AppointmentField {
@@ -481,6 +487,7 @@ input UpdateAppointmentInput {
   powerTwo: Int
   prescription: [PrescriptionInput!]
   pictures: [AppointmentPictureInput!]
+  sessionsPulses: [SessionPulseInput]
 }
 
 input AppointmentQueryInput {
@@ -488,6 +495,11 @@ input AppointmentQueryInput {
   fromDate: Date
   toDate: Date
   type: AppointmentType
+}
+
+input SessionPulseInput {
+  name: String
+  value: Int
 }
 
 input AppointmentFieldInput {

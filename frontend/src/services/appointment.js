@@ -65,6 +65,16 @@ export const mapFormValueToAppointmentData = (normFields, fromValue) => {
   }));
 };
 
+export const mapSessionValues = (sessionsPulses, sessionFormValue) => {
+  return sessionsPulses.map(sp => {
+    const newVal = R.propOr(0, sp.name)(sessionFormValue);
+    return {
+      name: sp.name,
+      value: newVal,
+    };
+  });
+};
+
 const filterByDate = (appointments, filter) => {
   const { date } = filter;
 
