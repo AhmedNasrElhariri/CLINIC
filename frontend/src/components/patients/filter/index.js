@@ -23,7 +23,6 @@ const PatientsFilter = ({ formValue, setFormValue }) => {
       name: a.city_name_en,
     };
   });
-  console.log(newAreas);
   return (
     <Form
       style={{ width: 276, marginBottom: 64 }}

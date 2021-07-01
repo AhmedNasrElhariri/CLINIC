@@ -3,7 +3,7 @@ import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 import Fab from 'components/appointments/new-appointment/fab';
 import { AppRouter, Login, NewPatient } from 'components';
-import { UserIcon, CalendarIcon } from 'components/icons/index';
+import { UserIcon, CalendarIcon } from 'components/icons';
 import {
   ContainerStyled,
   MainStyled,
@@ -79,10 +79,14 @@ function Root() {
       name: 'Report Printouts',
       icon: <UserIcon width={11.8} height={14.1} />,
     },
-
     {
       to: '/sales',
       name: 'Sales',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/permissions',
+      name: 'Permissions',
       icon: <UserIcon width={11.8} height={14.1} />,
     },
   ];
