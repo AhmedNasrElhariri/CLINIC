@@ -23,6 +23,9 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
             label="Bank"
             name="bank"
             data={updatedBankDefinitions}
+            onChange={val =>
+              val == null ? setFormValue({ bank: '' }) : setFormValue({ bank: val })
+            }
             placeholder="Search"
             style={{ width: '230px' }}
           />

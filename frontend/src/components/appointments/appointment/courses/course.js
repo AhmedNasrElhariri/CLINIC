@@ -42,9 +42,12 @@ const CourseData = ({
         >
           Assign Doctor
         </CRButton>
-        <CRButton variant="primary" mr={1} onClick={() => onEditPaid(course)}>
-          Pay
-        </CRButton>
+        {course.price > course.paid && (
+          <CRButton variant="primary" mr={1} onClick={() => onEditPaid(course)}>
+            Pay
+          </CRButton>
+        )}
+
         {course.courseDefinition.type === 'Perunit' && (
           <CRButton
             variant="primary"

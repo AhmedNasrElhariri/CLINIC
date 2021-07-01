@@ -176,7 +176,7 @@ function AppointmentInvoice({
           <Form>
             <Div mb={10}>
               <CRDocSelectInput
-                onChange={val => setPrice(val)}
+                onChange={val => val == null ? setPrice({}) : setPrice(val) }
                 label="Appointment Price"
                 data={prices}
                 style={{ width: '400px' }}
@@ -188,7 +188,7 @@ function AppointmentInvoice({
             <Div display="flex" justifyContent="space-around">
               {company == null ? (
                 <CRDocSelectInput
-                  onChange={val => setSession(val)}
+                  onChange={val => val == null ? setSession({}) : setSession(val) }
                   value={session}
                   label="session Type"
                   data={sessionsDefinition}
@@ -199,7 +199,7 @@ function AppointmentInvoice({
                   label="Session Type"
                   placeholder="Select Type"
                   value={session}
-                  onChange={setSession}
+                  onChange={val => val == null ? setSession({}) : setSession(val) }
                   data={choices}
                   style={{ width: '230px' }}
                 />

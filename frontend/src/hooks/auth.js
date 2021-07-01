@@ -14,7 +14,6 @@ const useAuth = () => {
 
   const updatePermissions = user => {
     let permissions;
-    console.log(user)
     if (user.position === 'Admin') {
       permissions = [
         {

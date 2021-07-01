@@ -120,7 +120,7 @@ function AppointmentData({
     labIds => {
       onChange({
         ...appointmentFormValue,
-        labIds,
+        labIds: [...appointmentFormValue.labIds, ...labIds],
       });
     },
     [appointmentFormValue, onChange]
@@ -129,7 +129,7 @@ function AppointmentData({
     imageIds => {
       onChange({
         ...appointmentFormValue,
-        imageIds,
+        imageIds: [...appointmentFormValue.imageIds, ...imageIds],
       });
     },
     [appointmentFormValue, onChange]

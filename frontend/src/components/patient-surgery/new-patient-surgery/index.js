@@ -19,7 +19,7 @@ const NewPatientSurgery = ({
   onOk,
   onClose,
 }) => {
-  const { patients } = usePatients();
+  const { patientsSummary: patients } = usePatients();
   const { surgeries } = useSurgeries();
   const { hospitals } = useHospitals();
   const header = useMemo(

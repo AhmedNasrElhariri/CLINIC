@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import { Form, Schema, Alert } from 'rsuite';
-
+import { ACTIONS } from 'utils/constants';
 import { CRModal, CRButton, CRNumberInput, Div, H5 } from 'components';
 import { isValid } from 'services/form';
 import { useInventory } from 'hooks';
@@ -68,7 +68,7 @@ const AddItem = ({ items }) => {
           ></CRSelectInput>
           <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
           <CRNumberInput label="Unit Price" name="price" block></CRNumberInput>
-          <CRBrancheTree formValue={formValue} onChange={setFormValue} />
+          <CRBrancheTree formValue={formValue} onChange={setFormValue} action={ACTIONS.AddItem_Inventory}/>
         </Form>
         <Div mt={3} display="flex">
           <H5 color="texts.2" fontWeight={400}>
