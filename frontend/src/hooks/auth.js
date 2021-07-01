@@ -1,4 +1,4 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import { VERIFY } from 'apollo-client/queries';
 import { useMutation } from '@apollo/client';
 import { useAbility } from '@casl/react';
@@ -12,12 +12,28 @@ const useAuth = () => {
   const [user, setUser] = useGlobalState('user');
   const ability = useAbility(AbilityContext);
 
+  const updatePermissions = user => {
+    let permissions;
+    console.log(user)
+    if (user.position === 'Admin') {
+      permissions = [
+        {
+          action: 'manage',
+          subject: 'all',
+        },
+      ];
+    } else {
+      permissions = [...user.role.permissions];
+    }
+    ability.update(permissions);
+  };
+
   const [verify] = useMutation(VERIFY, {
     fetchPolicy: 'no-cache',
     onCompleted({ verify: user }) {
       setAuthenticated(true);
       setUser(user);
-      ability.update(user.permissions);
+      updatePermissions(user);
       setVerified(true);
     },
     onError() {
@@ -33,9 +49,7 @@ const useAuth = () => {
     isVerified,
     user,
     setAuthenticated,
-    updatePermissions: permissions => {
-      ability.update(permissions);
-    },
+    updatePermissions,
     isAdmin: user && user.position === POSITIONS.ADMIN,
     isOrAssistant:
       user &&

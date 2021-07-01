@@ -44,18 +44,18 @@ function AppRouter() {
       <Route path="/appointments" exact>
         <Appointments />
       </Route>
-
-      <Route path="/appointments/:appointmentId" component={Appointment} />
+      <Route path="/appointments/:appointmentId">
+        <Appointment />
+      </Route>
       <Route path="/patients" exact>
         <ListPatients />
       </Route>
-
       <Route path="/payroll/:emplyeeID">
         <EmployeePayroll />
       </Route>
-
-      <Route path="/patients/:patientId" component={Patient} />
-
+      <Route path="/patients/:patientId">
+        <Patient />
+      </Route>
       <Route path="/calendar">
         <Calendar />
       </Route>
@@ -86,24 +86,18 @@ function AppRouter() {
       <Route path="/snippets">
         <Snippets />
       </Route>
-
-      <Route
-        path="/surgeries"
-        component={PatientSurgeriesContainer}
-        action="manage"
-        subject="all"
-      />
+      <Route path="/surgeries">
+        <PatientSurgeriesContainer />
+      </Route>
       <Route path="/report-printouts">
         <ReportPrintout />
       </Route>
       <Route path="/inventory">
         <InventoryPage />
       </Route>
-
       <Route path="/init-default-view">
         <CreateDefaultView />
       </Route>
-
       <Route path="/me">
         <Profile />
       </Route>
