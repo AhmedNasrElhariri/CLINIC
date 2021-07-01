@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef,useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import {
@@ -17,13 +17,22 @@ import { FULL_DATE_FORMAT, STANDARD_DATE_FORMAT } from 'utils/constants';
 
 function ListAppointments({
   appointments,
+  pages,
   onArchive,
   waiting,
   onAddBusinessNotes,
+  currentPage,
+  setCurrentPage
 }) {
   const history = useHistory();
   const componentRef = useRef();
   const ref = useRef();
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <Div padding={20} wd>
       <Div display="flex" justifyContent="space-between">
@@ -141,7 +150,7 @@ function ListAppointments({
               <Div display="flex">
                 {(isScheduled(appointment) || isWaiting(appointment)) && (
                   <>
-                  {/* <CRButton
+                    {/* <CRButton
                     variant="primary"
                     mr={1}
                     onClick={e => {
@@ -151,16 +160,16 @@ function ListAppointments({
                   >
                     ACC
                   </CRButton> */}
-                  <CRButton
-                    variant="primary"
-                    mr={1}
-                    onClick={e => {
-                      e.stopPropagation();
-                      onArchive(appointment);
-                    }}
-                  >
-                    Archive
-                  </CRButton>
+                    <CRButton
+                      variant="primary"
+                      mr={1}
+                      onClick={e => {
+                        e.stopPropagation();
+                        onArchive(appointment);
+                      }}
+                    >
+                      Archive
+                    </CRButton>
                   </>
                 )}
                 <CRButton
@@ -195,13 +204,26 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
       </CRTable>
+      <CRTable.CRPagination
+        lengthMenu={[
+          {
+            value: 10,
+            label: 10,
+          },
+          {
+            value: 20,
+            label: 20,
+          },
+        ]}
+        activePage={currentPage?.activePage}
+        pages={pages}
+        onSelect={handleSelect}
+        total={appointments.length}
+        
+      />
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <Div ref={ref} mt={20} mr={10}>
-          <CRTable
-            autoHeight
-            data={appointments}
-            width={1000}
-          >
+          <CRTable autoHeight data={appointments} width={1000}>
             <CRTable.CRColumn flexGrow={0.2}>
               <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
               <CRTable.CRCell>

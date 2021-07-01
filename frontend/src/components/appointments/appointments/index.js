@@ -10,12 +10,17 @@ import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 import { getName } from 'services/accounting';
 import ArchiveAppointment from '../archive-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
-
+const inialCurrentPage = {
+  activePage: 1,
+};
 function Appointments() {
   const history = useHistory();
   const [formValue, setFormValue] = useState({ date: [], patient: '' });
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const page = currentPage?.activePage;
   const { visible, close, open } = useModal({});
-  const { appointments } = useAppointments();
+  const { appointments, appointmentsCount } = useAppointments({ page });
+  const pages = Math.ceil(appointmentsCount/20);
   const [appointment, setAppointment] = useState(null);
   const { refetchRevenues, refetchExpenses } = useAccounting();
   const { refetchInventory, refetchInventoryHistory } = useInventory();
@@ -86,6 +91,9 @@ function Appointments() {
                 appointments={filterByStatus(filteredAppointments, 'Scheduled')}
                 onArchive={onClickDone}
                 defaultExpanded={true}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                pages={pages}
               />
             </CRTabs.CRContent>
             <CRTabs.CRContent>

@@ -1,9 +1,14 @@
 import { prisma } from '@';
+import { where } from 'ramda';
 import { getArea } from '../../services/get_Area';
-const createPatient = (_, { input: patient }, { userId, organizationId }) => {
+const createPatient = async (
+  _,
+  { input: patient },
+  { userId, organizationId }
+) => {
   const { area, ...rest } = patient;
   const areaName = getArea(area);
-  return prisma.patient.create({
+  const patientData = await prisma.patient.create({
     data: {
       area: areaName,
       ...rest,
@@ -18,6 +23,23 @@ const createPatient = (_, { input: patient }, { userId, organizationId }) => {
         },
       },
     },
+  });
+  const { codeNumber, id } = patientData;
+  return prisma.patient.update({
+    data: {
+      code: 'cr' + (codeNumber+1000),
+      organization: {
+        connect: {
+          id: organizationId,
+        },
+      },
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+    },
+    where: { id },
   });
 };
 

@@ -3,7 +3,11 @@ import { useQuery, useMutation } from '@apollo/client';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
 
-import { LIST_PATIENTS, EDIT_PATIENT } from 'apollo-client/queries';
+import {
+  LIST_PATIENTS,
+  EDIT_PATIENT,
+  LIST_PATIENTS_SUMMARY,
+} from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
 const updateCache = patients => {
@@ -15,12 +19,31 @@ const updateCache = patients => {
   });
 };
 
-function usePatients({ onEdit } = {}) {
-  const { data } = useQuery(LIST_PATIENTS, {
-    variables: {},
+function usePatients({ onEdit, page } = {}) {
+  const { data, fetchMore } = useQuery(LIST_PATIENTS, {
+    variables: {
+      offset: (page - 1) * 20,
+      limit: 20,
+    },
   });
-  const patients = useMemo(() => R.propOr([], 'patients')(data), [data]);
+  const patientsdata = data?.patients;
+  const patients = useMemo(
+    () => R.propOr([], 'patients')(patientsdata),
+    [data]
+  );
+  const patientsCount = useMemo(
+    () => R.propOr(0, 'patientsCount')(patientsdata),
+    [data]
+  );
+  const pages = Math.ceil(patientsCount / 20);
 
+  const { data: patientSummaryData } = useQuery(LIST_PATIENTS_SUMMARY, {});
+  const patientsSummarydata = patientSummaryData?.patients;
+  const patientsSummary = useMemo(
+    () => R.propOr([], 'patients')(patientsSummarydata),
+    [patientSummaryData]
+  );
+  
   const [editPatient] = useMutation(EDIT_PATIENT, {
     update(cache, { data: { editPatient: patient } }) {
       const newPatients = patients.map(p =>
@@ -46,12 +69,14 @@ function usePatients({ onEdit } = {}) {
           },
         });
       },
+      patientsSummary,
+      pages,
       edit: patient =>
         editPatient({
           variables: { patient },
         }),
     }),
-    [editPatient, patients]
+    [editPatient, patients, pages, patientsSummary]
   );
 }
 

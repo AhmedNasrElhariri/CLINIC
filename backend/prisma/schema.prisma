@@ -229,6 +229,8 @@ model Patient {
   type             PatientMembershipType
   appointments     Appointment[]
   age              Int
+  codeNumber       Int                   @default(autoincrement())
+  code             String?
   sex              Sex
   reference        Json                  @default("[]")
   area             String                @default("")

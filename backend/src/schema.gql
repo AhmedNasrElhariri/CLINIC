@@ -92,8 +92,12 @@ enum UnitOfMeaure {
 
 type Query {
   hello(name: String): Boolean
-  patients: [Patient!]
-  appointments(input: AppointmentQueryInput): [Appointment!]
+  patients(offset: Int, limit: Int): PatientData
+  appointments(
+    input: AppointmentQueryInput
+    offset: Int
+    limit: Int
+  ): AppointmentData!
   appointment(id: ID!): Appointment
   patientAppointments(patientId: ID!): [Appointment!]
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
@@ -444,6 +448,8 @@ type Patient implements Searchable {
   name: String!
   searchName: String!
   phoneNo: String!
+  code: String!
+  codeNumber: Int!
   reference: [String!]
   area: String!
   age: Int!
@@ -461,6 +467,11 @@ input PatientInput {
   area: ID
   type: PatientMembershipType!
   guardianName: String
+}
+
+type PatientData {
+  patients: [Patient!]
+  patientsCount: Int!
 }
 
 ########################### Appointment ##################################
@@ -485,6 +496,11 @@ type Appointment {
   labs: [Lab!]
   images: [Image!]
   courses: [Course!]
+}
+
+type AppointmentData {
+  appointments: [Appointment!]
+  appointmentsCount: Int!
 }
 
 type AppointmentsDayCount {

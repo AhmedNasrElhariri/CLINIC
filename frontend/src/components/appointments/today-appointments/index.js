@@ -26,6 +26,7 @@ const initialValue = {
 function TodayAppointments() {
   const { todayAppointments: appointments, filterBranches } = useAppointments();
   const [popUp, setPopUp] = useState('');
+
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
   const filteredAppointments = useMemo(
@@ -58,6 +59,7 @@ function TodayAppointments() {
       Alert.success('Business Notes Added Successfully');
     },
   });
+  
   const upcomingAppointments = useMemo(
     () =>
       R.pipe(
@@ -68,7 +70,6 @@ function TodayAppointments() {
       )(filteredAppointments),
     [filteredAppointments]
   );
-
   const waitingAppointments = useMemo(
     () =>
       R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(

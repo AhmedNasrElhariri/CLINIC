@@ -3,7 +3,7 @@ import { prisma } from '@';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
-const patients = async (_, __, { user, organizationId }) => {
+const patients = async (_, { offset, limit }, { user, organizationId }) => {
   const ids = await listFlattenUsersTreeIds(
     {
       user,
@@ -12,14 +12,18 @@ const patients = async (_, __, { user, organizationId }) => {
     },
     true
   );
-
-  return prisma.patient.findMany({
+  const patientsCount = await prisma.patient.count();
+  const patients = await prisma.patient.findMany({
     where: {
       userId: {
         in: ids,
       },
     },
+    skip: offset,
+    take: limit,
   });
+  const data = { patients: patients, patientsCount: patientsCount };
+  return data;
 };
 
 export default patients;

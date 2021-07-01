@@ -38,7 +38,7 @@ CREATE TYPE "UnitOfMeaure" AS ENUM ('PerUnit', 'Milligram', 'Kilogram', 'Millime
 CREATE TYPE "InventoryOperation" AS ENUM ('Add', 'Substract');
 
 -- CreateEnum
-CREATE TYPE "PermissionAction" AS ENUM ('List_Appointment', 'Create_Appointment', 'Reschedule_Appointment', 'Finish_Appointment', 'Cancel_Appointment', 'Archive_Appointment', 'View_Patient', 'View_Accounting', 'AddRevenue_Accounting', 'AddExpense_Accounting', 'EditRevenue_Accounting', 'EditExpense_Accounting', 'Print_Accounting', 'View_Calendar', 'CreateEvent_Calendar', 'View_Inventory', 'AddItem_Inventory', 'ViewHistory_Inventory', 'DefineItem_Inventory', 'Create_Course', 'List_Price', 'Create_Price', 'List_Session', 'Create_Session', 'Create_Hospital', 'List_Hospital', 'Create_Surgery', 'List_Surgery');
+CREATE TYPE "PermissionAction" AS ENUM ('List_Appointment', 'Create_Appointment', 'Reschedule_Appointment', 'Finish_Appointment', 'Cancel_Appointment', 'Archive_Appointment', 'View_Patient', 'View_Accounting', 'AddRevenue_Accounting', 'AddExpense_Accounting', 'EditRevenue_Accounting', 'EditExpense_Accounting', 'Print_Accounting', 'View_Calendar', 'CreateEvent_Calendar', 'View_Inventory', 'AddItem_Inventory', 'ViewHistory_Inventory', 'DefineItem_Inventory', 'Create_Course', 'List_Price', 'Create_Price', 'List_Session', 'Create_Session', 'Create_Hospital', 'List_Hospital', 'Create_Surgery', 'List_Surgery', 'View_Payroll', 'Create_Commission', 'Create_Deduction', 'Create_Incentives', 'Create_Advance', 'Define_Sales', 'Create_Sales', 'View_Sales', 'Create_Payslips');
 
 -- CreateEnum
 CREATE TYPE "PermissionLevel" AS ENUM ('Organization', 'Branch', 'Specialty', 'User');
@@ -61,7 +61,6 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
-    "permissions" JSONB NOT NULL DEFAULT E'[]',
     "avatar" TEXT,
     "roleId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -101,24 +100,9 @@ CREATE TABLE "Appointment" (
     "businessNotes" TEXT NOT NULL DEFAULT E'',
     "status" "AppointmentStatus" NOT NULL,
     "notes" TEXT DEFAULT E'',
-    "pulses" INTEGER,
-    "powerOne" INTEGER,
-    "powerTwo" INTEGER,
     "branchId" TEXT,
     "specialtyId" TEXT,
-    "session" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "PulseControl" (
-    "id" TEXT NOT NULL,
-    "before" INTEGER NOT NULL DEFAULT 0,
-    "after" INTEGER NOT NULL DEFAULT 0,
-    "date" TIMESTAMP(3) NOT NULL,
+    "sessionId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -291,7 +275,6 @@ CREATE TABLE "Configuration" (
     "id" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
     "enableInvoiceCounter" BOOLEAN NOT NULL DEFAULT false,
-    "sessions" JSONB NOT NULL DEFAULT E'[]',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -558,7 +541,7 @@ CREATE TABLE "LabDefinition" (
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "category" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
@@ -594,7 +577,7 @@ CREATE TABLE "ImageDefinition" (
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "category" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
@@ -685,6 +668,10 @@ CREATE TABLE "SalesDefinition" (
     "price" INTEGER NOT NULL,
     "cost" INTEGER NOT NULL,
     "totalQuantity" INTEGER NOT NULL DEFAULT 0,
+    "level" TEXT NOT NULL,
+    "userId" TEXT,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "organizationId" TEXT NOT NULL,
@@ -1014,6 +1001,9 @@ ALTER TABLE "Appointment" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id")
 ALTER TABLE "Appointment" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Appointment" ADD FOREIGN KEY ("sessionId") REFERENCES "SessionDefinition"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Prescription" ADD FOREIGN KEY ("medicineId") REFERENCES "MedicineDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1188,6 +1178,9 @@ ALTER TABLE "Hospital" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON
 ALTER TABLE "Hospital" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "LabDefinition" ADD FOREIGN KEY ("categoryId") REFERENCES "LabCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "LabDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1195,6 +1188,9 @@ ALTER TABLE "LabCategory" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON 
 
 -- AddForeignKey
 ALTER TABLE "Timing" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ImageDefinition" ADD FOREIGN KEY ("categoryId") REFERENCES "ImageCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ImageDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -1237,6 +1233,15 @@ ALTER TABLE "CompanySessionDefinition" ADD FOREIGN KEY ("companyId") REFERENCES 
 
 -- AddForeignKey
 ALTER TABLE "CompanySessionDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;

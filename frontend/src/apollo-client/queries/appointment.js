@@ -19,41 +19,44 @@ export const CREATE_APPOINTMENT = gql`
 `;
 
 export const LIST_APPOINTMENTS = gql`
-  query ($input: AppointmentQueryInput) {
-    appointments(input: $input) {
-      id
-      type
-      date
-      status
-      date
-      businessNotes
-      patient {
+  query ($input: AppointmentQueryInput, $offset: Int, $limit: Int) {
+    appointments(input: $input, offset: $offset, limit: $limit) {
+      appointments {
         id
-        name
-        age
-        sex
-        phoneNo
+        type
+        date
+        status
+        date
+        businessNotes
+        patient {
+          id
+          name
+          age
+          sex
+          phoneNo
+        }
+        user {
+          id
+          name
+        }
+        doctor {
+          id
+          name
+        }
+        branch {
+          id
+          name
+        }
+        specialty {
+          id
+          name
+        }
+        session {
+          id
+          name
+        }
       }
-      user {
-        id
-        name
-      }
-      doctor {
-        id
-        name
-      }
-      branch {
-        id
-        name
-      }
-      specialty {
-        id
-        name
-      }
-      session{
-        id
-        name
-      }
+      appointmentsCount
     }
   }
 `;
@@ -211,7 +214,7 @@ export const ARCHIVE_APPOINTMENT = gql`
       sessions: $sessions
       items: $items
       discount: $discount
-      patientName:$patientName
+      patientName: $patientName
       others: $others
       bank: $bank
       company: $company

@@ -13,7 +13,6 @@ const LabDefinition = () => {
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  console.log(formValue);
   const {
     addLabDefinition,
     labsDefinition,

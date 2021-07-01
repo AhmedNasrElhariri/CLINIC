@@ -14,16 +14,25 @@ const options = [
   { name: 'Others', id: 'others' },
   { name: 'Friends', id: 'friends' },
 ];
-const PatientsFilter = ({ formValue, setFormValue }) => {
+const PatientsFilter = ({
+  formValue,
+  setFormValue,
+  areaFormValue,
+  setAreaFormValue,
+}) => {
   const { data } = useQuery(ALL_AREAS);
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const newAreas = areas.map(a => {
     return {
-      id: a.city_name_en,
+      id: a.id,
       name: a.city_name_en,
     };
   });
-  console.log(newAreas);
+  const setAreaValue = val => {
+    const area = newAreas.find(a => a.id == val);
+    setFormValue({ ...formValue, area: area.name });
+    setAreaFormValue({ ...areaFormValue, areaId: val });
+  };
   return (
     <Form
       style={{ width: 276, marginBottom: 64 }}
@@ -33,7 +42,7 @@ const PatientsFilter = ({ formValue, setFormValue }) => {
       <Div display="flex">
         <Div mr={3}>
           <CRTextInput
-            label="Name"
+            label="Name  Or  Code"
             name="name"
             placeholder="Search"
             width={300}
@@ -61,8 +70,12 @@ const PatientsFilter = ({ formValue, setFormValue }) => {
             label="Area"
             name="area"
             data={newAreas}
+            value={areaFormValue.areaId}
             onChange={val =>
-              val == null ? setFormValue({ ...formValue, area: '' }) : ''
+              val == null
+                ? (setFormValue({ ...formValue, area: '' }),
+                  setAreaFormValue({ areaId: null }))
+                : setAreaValue(val)
             }
             style={{ width: '300px' }}
           />

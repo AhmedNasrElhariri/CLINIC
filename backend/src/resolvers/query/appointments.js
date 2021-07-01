@@ -4,13 +4,18 @@ import * as R from 'ramda';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
-const appointments = async (_, { input }, { user, organizationId }) => {
+const appointments = async (
+  _,
+  { input, offset, limit },
+  { user, organizationId }
+) => {
   const ids = await listFlattenUsersTreeIds({
     user,
     organizationId,
     action: ACTIONS.List_Appointment,
   });
-  return prisma.appointment.findMany({
+  const appointmentsCount = await prisma.appointment.count();
+  const appointments = await prisma.appointment.findMany({
     where: {
       date: {
         gte: R.prop('fromDate')(input),
@@ -26,7 +31,14 @@ const appointments = async (_, { input }, { user, organizationId }) => {
       doctor: true,
       session: true,
     },
+    skip: offset,
+    take: limit,
   });
+  const data = {
+    appointments: appointments,
+    appointmentsCount: appointmentsCount,
+  };
+  return data;
 };
 
 export default appointments;

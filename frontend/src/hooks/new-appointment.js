@@ -30,8 +30,7 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
   const [formValue, setFormValue] = useState(initialValues);
 
   const { appointments } = useAppointments();
-  const { patients } = usePatients();
-
+  const { patientsSummary: patients } = usePatients();
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Appointment },
   });

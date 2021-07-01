@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import { MainContainer, CRTable, Div } from 'components';
 import PatientsFilter from '../filter/index';
 import EditPatient from '../edit-patient';
-import { CRButton, H3, H4, H5 } from 'components';
+import { CRButton, H3, H4} from 'components';
 import { usePatients } from 'hooks';
 const initialValue = {
   name: '',
@@ -12,20 +12,32 @@ const initialValue = {
   area: '',
   reference: '',
 };
-
+const inialCurrentPage = {
+  activePage: 1,
+};
+const initialAreaValue = {
+  areaId: null,
+};
 function Patients() {
   const history = useHistory();
   const [filter, setFilter] = useState(initialValue);
-  const [currentPage, setCurrentPage] = useState(1);
-  const { patients } = usePatients();
-  
+  const [area, setArea] = useState(initialAreaValue);
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const page = currentPage.activePage;
+  const { patients, pages } = usePatients({ page });
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   const updatedPatients = patients.map(p => {
     return { ...p, reference: p.reference.join(' ') };
   });
   const filteredPatient = useMemo(
     () =>
       updatedPatients.filter(p =>
-        p.name.toLowerCase().includes(filter.name.toLowerCase())
+        p.name.toLowerCase().includes(filter.name.toLowerCase()) || p.code.toLowerCase().includes(filter.name.toLowerCase()) 
       ),
     [filter, updatedPatients]
   );
@@ -36,14 +48,14 @@ function Patients() {
   const filteredPatientByArea = useMemo(
     () =>
       filteredPatients.filter(p =>
-        p.area.toLowerCase().includes(filter.area.toLowerCase())
+        p.area.toLowerCase().includes(filter?.area?.toLowerCase())
       ),
     [filter, filteredPatients]
   );
   const filteredPatientByReference = useMemo(
     () =>
       filteredPatientByArea.filter(p =>
-        p.reference?.toLowerCase().includes(filter.reference.toLowerCase())
+        p.reference?.toLowerCase().includes(filter?.reference.toLowerCase())
       ),
     [filter, filteredPatientByArea]
   );
@@ -77,12 +89,13 @@ function Patients() {
             <PatientsFilter
               formValue={filter}
               setFormValue={setFilter}
+              areaFormValue={area}
+              setAreaFormValue={setArea}
             ></PatientsFilter>
           </Div>
         </Div>
 
         <CRTable
-          autoHeight
           data={filteredPatientByReference}
           onRowClick={({ id }) => {
             history.push(`/patients/${id}`);
@@ -102,6 +115,11 @@ function Patients() {
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="phoneNo" />
+          </CRTable.CRColumn>
+
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Code</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="code" />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
@@ -141,8 +159,12 @@ function Patients() {
               label: 20,
             },
           ]}
-          activePage={currentPage}
-          total={filteredPatientByReference && filteredPatientByReference.length}
+          activePage={currentPage?.activePage}
+          pages={pages}
+          onSelect={handleSelect}
+          total={
+            filteredPatientByReference && filteredPatientByReference.length
+          }
           onChangePage={p => setCurrentPage(p)}
         />
         {/* </Can> */}
@@ -151,11 +173,11 @@ function Patients() {
             <H3 textAlign="center" margin="10px">
               Social Report
             </H3>
-            <Div display="flex" >
+            <Div display="flex">
               <H4 margin="0px 10px">Reference By:</H4>
               <H4>{filter.reference}</H4>
             </Div>
-            <Div display="flex" >
+            <Div display="flex">
               <H4 margin="0px 10px">Total Number Of Patients:</H4>
               <H4>{filteredPatientByReference.length}</H4>
             </Div>
@@ -166,11 +188,11 @@ function Patients() {
             <H3 textAlign="center" margin="10px">
               Area Report
             </H3>
-            <Div display="flex" >
+            <Div display="flex">
               <H4 margin="0px 10px">The Area:</H4>
               <H4>{filter.area}</H4>
             </Div>
-            <Div display="flex" >
+            <Div display="flex">
               <H4 margin="0px 10px">Total Number Of Patients:</H4>
               <H4>{filteredPatientByReference.length}</H4>
             </Div>

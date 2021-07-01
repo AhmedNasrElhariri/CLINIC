@@ -29,22 +29,37 @@ export const EDIT_PATIENT = gql`
 `;
 
 export const LIST_PATIENTS = gql`
-  {
-    patients {
-      id
-      name
-      type
-      phoneNo
-      sex
-      age
-      reference
-      area
+  query ($offset: Int, $limit: Int) {
+    patients(offset: $offset, limit: $limit) {
+      patients {
+        id
+        name
+        type
+        phoneNo
+        sex
+        age
+        reference
+        area
+        code
+      }
+      patientsCount
+    }
+  }
+`;
+
+export const LIST_PATIENTS_SUMMARY = gql`
+  query ($offset: Int, $limit: Int) {
+    patients(offset: $offset, limit: $limit) {
+      patients {
+        id
+        name
+      }
     }
   }
 `;
 
 export const GET_PATIENT = gql`
-  query($id: ID!) {
+  query ($id: ID!) {
     patient(id: $id) {
       id
       name
@@ -74,7 +89,7 @@ export const INSRET_IMAGE_RESULT = gql`
 `;
 
 export const LIST_PATIENT_LABS = gql`
-  query($patientId: ID!) {
+  query ($patientId: ID!) {
     patientLabs(patientId: $patientId) {
       id
       status
@@ -91,7 +106,7 @@ export const LIST_PATIENT_LABS = gql`
 `;
 
 export const LIST_PATIENT_IMAGES = gql`
-  query($patientId: ID!) {
+  query ($patientId: ID!) {
     patientImages(patientId: $patientId) {
       id
       status

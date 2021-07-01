@@ -48,7 +48,6 @@ function NewSales({
       itemsList.reduce((acc, { price, quantity }) => acc + price * quantity, 0),
     [itemsList]
   );
-  console.log(formValue,selectedItems);
   return (
     <CRModal
       show={visible}
