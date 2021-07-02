@@ -19,6 +19,7 @@ function ListAppointments({
   appointments,
   pages,
   onArchive,
+  onComplete,
   waiting,
   onAddBusinessNotes,
   currentPage,
@@ -150,7 +151,7 @@ function ListAppointments({
               <Div display="flex">
                 {(isScheduled(appointment) || isWaiting(appointment)) && (
                   <>
-                    {/* <CRButton
+                    <CRButton
                     variant="primary"
                     mr={1}
                     onClick={e => {
@@ -159,17 +160,17 @@ function ListAppointments({
                     }}
                   >
                     ACC
-                  </CRButton> */}
-                    <CRButton
-                      variant="primary"
-                      mr={1}
-                      onClick={e => {
-                        e.stopPropagation();
-                        onArchive(appointment);
-                      }}
-                    >
-                      Archive
-                    </CRButton>
+                  </CRButton>
+                  <CRButton
+                    variant="primary"
+                    mr={1}
+                    onClick={e => {
+                      e.stopPropagation();
+                      onComplete(appointment);
+                    }}
+                  >
+                    Archive
+                  </CRButton>
                   </>
                 )}
                 <CRButton

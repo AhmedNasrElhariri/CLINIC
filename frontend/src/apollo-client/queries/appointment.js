@@ -55,7 +55,7 @@ export const LIST_APPOINTMENTS = gql`
           id
           name
         }
-      }
+     }
       appointmentsCount
     }
   }
@@ -192,6 +192,15 @@ export const UPDATE_APPOINTMENT = gql`
   mutation updateAppointment($appointment: UpdateAppointmentInput!) {
     updateAppointment(appointment: $appointment) {
       id
+    }
+  }
+`;
+
+export const COMPLETE_APPOINTMENT = gql`
+  mutation completeAppointment($id: ID!) {
+    completeAppointment(id: $id) {
+      id
+      status
     }
   }
 `;

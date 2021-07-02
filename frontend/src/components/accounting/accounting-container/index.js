@@ -18,7 +18,8 @@ import {
 } from 'apollo-client/queries';
 import BranchFilter from '../../filters';
 import { Can } from 'components/user/can';
-import Filter from '../filter';
+import ExpenseFilter from '../filter/expense-filter';
+import RevenueFilter from '../filter/revenue-filter';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
@@ -27,6 +28,7 @@ import { formatDate } from 'utils/date';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalVal = {
   expenseType: '',
+  revenueName: '',
 };
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
@@ -144,7 +146,7 @@ const AccountingContainer = () => {
     header: 'Edit Expense',
     onOk: handleUpdateExpense,
   });
-  const { expenses, revenues, totalRevenues, timeFrame } = useAccounting({
+  const { expenses, revenues, timeFrame } = useAccounting({
     view,
     period,
   });
@@ -160,6 +162,19 @@ const AccountingContainer = () => {
   const totalExpenses = useMemo(
     () => updatedExpenses.reduce((acc, e) => acc + e.amount, 0),
     [updatedExpenses]
+  );
+  const updatedRevenues = useMemo(
+    () =>
+      revenues.filter(e =>
+        e.name
+          .toLowerCase()
+          .includes(formValue.revenueName.toLowerCase())
+      ),
+    [formValue, revenues]
+  );
+  const totalRevenues = useMemo(
+    () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
+    [updatedRevenues]
   );
   return (
     <>
@@ -201,7 +216,6 @@ const AccountingContainer = () => {
           data={{ revenues, expenses }}
           onChangePeriod={setPeriod}
         />
-
         <Div display="flex" my={4}>
           <H6>Showing for :</H6>
           <H6 variant="primary" ml={2} fontWeight="bold">
@@ -213,8 +227,12 @@ const AccountingContainer = () => {
           {activeTab === '0' ? (
             <Div display="flex">
               <Div flexGrow={1} mr={2}>
+                <RevenueFilter
+                  formValue={formValue}
+                  setFormValue={setFormValue}
+                />
                 <BranchFilter
-                  appointments={revenues}
+                  appointments={updatedRevenues}
                   branches={filterBranches}
                   render={revenues => (
                     <ListRevenueData
@@ -230,9 +248,11 @@ const AccountingContainer = () => {
                   )}
                 />
               </Div>
-
               <Div flexGrow={1} ml={2}>
-                <Filter formValue={formValue} setFormValue={setFormValue} />
+                <ExpenseFilter
+                  formValue={formValue}
+                  setFormValue={setFormValue}
+                />
                 <BranchFilter
                   appointments={updatedExpenses}
                   branches={filterBranches}

@@ -1,20 +1,13 @@
 import { prisma } from '@';
-import * as R from 'ramda';
-
 import {
   createAppointmentRevenue,
   createAppointmentRevenueFromSessions,
-  createAppointmentBankRevenue,
-  createAppointmentBankRevenueFromSessions,
 } from '@/services/revenue.service';
 import { createAppointmentExpense } from '@/services/expense.service';
-import { APPOINTMENTS_STATUS } from '@/utils/constants';
 import {
   createSubstractHistoryForMultipleItems,
   updatedUsedMaterials,
 } from '@/services/inventory.service';
-import { updateLabsAfterArchiveAppointment } from '@/services/lab.service';
-import { updateImagesAfterArchiveAppointment } from '@/services/image.service';
 
 const archiveAppointment = async (
   _,
@@ -32,13 +25,8 @@ const archiveAppointment = async (
   },
   { userId, organizationId }
 ) => {
-  const appointment = await prisma.appointment.update({
-    data: { status: APPOINTMENTS_STATUS.ARCHIVED },
+  const appointment = await prisma.appointment.findUnique({
     where: { id },
-    include: {
-      labs: true,
-      images: true,
-    },
   });
   if (bank == null && company == null) {
     await createAppointmentRevenue(
@@ -200,13 +188,6 @@ const archiveAppointment = async (
     patientId: appointment.patientId,
     organizationId: organizationId,
   });
-
-  const { labs, images } = appointment;
-
-  await Promise.all([
-    updateLabsAfterArchiveAppointment(R.map(R.prop('id'))(labs)),
-    updateImagesAfterArchiveAppointment(R.map(R.prop('id'))(images)),
-  ]);
 
   // const configuration = await prisma.configuration.findUnique({
   //   where: { organizationId },

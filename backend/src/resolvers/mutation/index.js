@@ -3,6 +3,7 @@ export { default as editPatient } from './edit-patient';
 export { default as createAppointment } from './create-appointment';
 export { default as updateAppointment } from './update-appointment';
 export { default as archiveAppointment } from './archive-appointment';
+export { default as completeAppointment } from './complete-appointment';
 export { default as login } from './login';
 export { default as changePassword } from './change-password';
 export { default as verify } from './verify';

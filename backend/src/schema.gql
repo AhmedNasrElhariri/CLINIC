@@ -173,6 +173,7 @@ type Mutation {
   editPatient(patient: PatientInput!): Patient!
   createAppointment(appointment: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
+  completeAppointment(id: ID!): Appointment!
   archiveAppointment(
     id: ID!
     sessions: [SessionInput!]
