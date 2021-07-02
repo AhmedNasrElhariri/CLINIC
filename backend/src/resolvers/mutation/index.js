@@ -49,6 +49,7 @@ export { default as editImageCategory } from './edit-image-category';
 export { default as addMedicineDefinition } from './add-medicine-definition';
 export { default as editMedicineDefinition } from './edit-medicine-definition';
 export { default as addPatientReport } from './add-patient-report';
+export { default as addPulsesControl } from './pulses-control';
 export { default as editPatientReport } from './edit-patient-report';
 export { default as createOrUpdateRole } from './create-or-update-role';
 export { default as createBranch } from './create-branch';
