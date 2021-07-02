@@ -529,6 +529,17 @@ type AppointmentField {
   field: Field!
 }
 
+type PulseControl {
+  id: ID!
+  before: Int
+  after: Int
+  date: Date
+}
+input PulseControlInput {
+  before: Int!
+  after: Int!
+}
+
 input AppointmentInput {
   patientId: ID!
   date: Date!
