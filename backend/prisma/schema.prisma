@@ -284,6 +284,15 @@ model Appointment {
   updatedAt        DateTime           @default(now()) @updatedAt
 }
 
+model PulseControl {
+  id        String   @id @default(uuid())
+  before    Int      @default(0)
+  after     Int      @default(0)
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
 model Prescription {
   id            String             @id @default(uuid())
   dose          String?
