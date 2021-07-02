@@ -55,6 +55,7 @@ export { default as appointmentsDayCount } from './appointments-day-count';
 export { default as mySalesesDefinition } from './my-sales-definition';
 export { default as mySaleses } from './my-sales';
 export { default as myPrices } from './prices';
+export { default as getPulseControl } from './get-pulse-control';
 export { default as myBanksDefinition } from './get-banks-definition';
 export { default as bankRevenues } from './bank-revenues';
 export { default as myCompanysDefinition } from './get-companys-definition';
