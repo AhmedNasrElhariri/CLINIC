@@ -1,3 +1,4 @@
+
 import React, { useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
@@ -11,6 +12,7 @@ import {
   CRTextArea,
   CRRadio,
   CRCheckBoxGroup,
+  CRButton,
   CRNestedSelector,
   CRSelectInput,
 } from 'components';
@@ -29,6 +31,9 @@ import { useImageCategory, useLabCategory } from 'hooks';
 import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
+import { useConfigurations } from 'hooks';
+import Pulses from './pulses';
+
 
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
@@ -89,7 +94,11 @@ function AppointmentData({
   onDataChange,
   disabled,
   appointment,
+  sessionsPulses,
+  setSessionsPulses,
+  sessionFormValue,
   appointmentFormValue,
+  setSessionFormValue
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
   const { labsCategory } = useLabCategory();
@@ -97,6 +106,14 @@ function AppointmentData({
   const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryLab);
   const [categoryImageForm, setCategoryImageForm] =
     useState(initalCategoryImage);
+  const { sessions } = useConfigurations();
+  const [session, SetSession] = useState({});
+  const choices = useMemo(() => {
+    return sessions.map(s => ({
+      name: s.name,
+      id: { name: s.name, value: 0 },
+    }));
+  }, [sessions]);
   const handlePicturesChange = useCallback(
     pictures => {
       onChange({
@@ -134,7 +151,9 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-
+  const handleAddSession = () => {
+    setSessionsPulses([...sessionsPulses, session]);
+  };
   return (
     <>
       <Div display="flex">
@@ -163,6 +182,39 @@ function AppointmentData({
             <AppointmentMedicines
               prescription={appointmentFormValue.prescription}
               onChange={handleMedicineChange}
+            />
+          </SectionContainer>
+
+          <SectionContainer title="Pulses" name="pulses">
+            <Div
+              display="flext"
+              justifyContent="center"
+              alignItems="center"
+              mb={20}
+            >
+              <Form>
+                <CRSelectInput
+                  data={choices}
+                  label="Session"
+                  onChange={val => SetSession(val)}
+                  style={{ width: '300px' }}
+                />
+              </Form>
+              <CRButton
+                primary
+                onClick={() => handleAddSession()}
+                ml={10}
+                mt={40}
+              >
+                Add
+              </CRButton>
+            </Div>
+            <Pulses
+              pulses={appointmentFormValue}
+              onChange={onChange}
+              sessionsPulses={sessionsPulses}
+              sessionFormValue={sessionFormValue}
+              setSessionFormValue={setSessionFormValue}
             />
           </SectionContainer>
           <SectionContainer title="Labs" name="labs">

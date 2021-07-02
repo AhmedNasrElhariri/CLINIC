@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
 import { filterAppointments, sortAppointments } from 'services/appointment';
 import { Div, H3, CRTabs } from 'components';
 import Filter from './filter';
@@ -14,7 +13,6 @@ const inialCurrentPage = {
   activePage: 1,
 };
 function Appointments() {
-  const history = useHistory();
   const [formValue, setFormValue] = useState({ date: [], patient: '' });
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;

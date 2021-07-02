@@ -1,10 +1,9 @@
 import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
-import { MainContainer, CRTable, Div } from 'components';
+import { MainContainer, CRTable, Div ,CRButton, H3, H4} from 'components';
 import PatientsFilter from '../filter/index';
 import EditPatient from '../edit-patient';
-import { CRButton, H3, H4} from 'components';
 import { usePatients } from 'hooks';
 const initialValue = {
   name: '',
@@ -36,8 +35,10 @@ function Patients() {
   });
   const filteredPatient = useMemo(
     () =>
-      updatedPatients.filter(p =>
-        p.name.toLowerCase().includes(filter.name.toLowerCase()) || p.code.toLowerCase().includes(filter.name.toLowerCase()) 
+      updatedPatients.filter(
+        p =>
+          p.name.toLowerCase().includes(filter.name.toLowerCase()) ||
+          p.code.toLowerCase().includes(filter.name.toLowerCase())
       ),
     [filter, updatedPatients]
   );

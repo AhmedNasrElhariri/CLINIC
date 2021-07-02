@@ -88,6 +88,13 @@ export const GET_APPOINTMENT = gql`
       date
       status
       notes
+      pulses
+      powerOne
+      powerTwo
+      sessionsPulses{
+        name
+        value
+      }
       prescription {
         medicineId
         dose

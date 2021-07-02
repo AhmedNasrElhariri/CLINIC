@@ -1,6 +1,5 @@
 import { prisma } from '@';
-import { LAB_STATUS } from '@/utils/constants';
-
+import { LAB_STATUS, APPOINTMENTS_STATUS } from '@/utils/constants';
 const updateAppointment = async (_, { appointment }) => {
   const persistedAppointment = await prisma.appointment.findUnique({
     where: { id: appointment.id },
@@ -9,6 +8,10 @@ const updateAppointment = async (_, { appointment }) => {
   return prisma.appointment.update({
     data: {
       notes: appointment.notes || '',
+      pulses: appointment.pulses || null,
+      powerOne: appointment.powerOne || null,
+      powerTwo: appointment.powerTwo || null,
+      sessionsPulses: appointment.sessionsPulses || '[]',
       data: {
         upsert: appointment.data.map(({ id, value, fieldId }) => ({
           create: {
