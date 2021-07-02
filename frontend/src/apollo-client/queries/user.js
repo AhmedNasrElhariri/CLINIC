@@ -112,12 +112,38 @@ export const LIST_CONFIGURATIONS = gql`
 `;
 
 
+export const GET_PULSE_CONTROL = gql`
+  query getPulseControl {
+    getPulseControl {
+      id
+      before
+      after
+      date
+    }
+  }
+`;
+
 export const UPDATE_CONFIGURATION = gql`
   mutation updateConfiguration($configuration: ConfigurationInput!) {
     updateConfiguration(configuration: $configuration) {
       id
+      sessions {
+        name
+        price
+      }
       enableInvoiceCounter
     }
   }
 `;
+export const ADD_PULSES_CONTROL = gql`
+  mutation addPulsesControl($pulsesControl: PulseControlInput!) {
+    addPulsesControl(pulsesControl: $pulsesControl) {
+      id
+      before
+      after
+      date
+    }
+  }
+`;
+
 
