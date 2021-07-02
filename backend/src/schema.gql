@@ -142,6 +142,7 @@ type Query {
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
   getActions: [String!]
+  getPulseControl: PulseControl
   listBranches: [Branch!]
   listSpecialties: [Specialty!]
   listUsers: [User!]
@@ -237,6 +238,7 @@ type Mutation {
     sessionDefinition: SessionInputDefinition!
   ): SessionDefinition
   addPrice(price: PriceInput!): Price
+  addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
   editPrice(price: PriceInput!): Price
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
