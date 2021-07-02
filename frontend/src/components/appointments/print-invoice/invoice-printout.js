@@ -81,7 +81,7 @@ const InvoicePrintout = React.forwardRef(
             <>
               <Divider />
               <TotalPrice name="User Payment" price={userPayment} />
-              <TotalPrice name="Company Payment" price={total-userPayment} />
+              <TotalPrice name="Company Payment" price={total - userPayment} />
             </>
           )}
         </StyledContainer>

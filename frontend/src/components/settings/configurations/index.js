@@ -106,7 +106,6 @@ const Configurations = () => {
         onChange={updateEnable}
         value={formValue?.enableInvoiceCounter}
       />
-      {isOrAssistant && (
         <>
           <hr></hr>
           <Div display="flex" justifyContent="space-between">
@@ -140,7 +139,6 @@ const Configurations = () => {
             </Div>
           </Form>
         </>
-      )}
     </>
   );
 };
