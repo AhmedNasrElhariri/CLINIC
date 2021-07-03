@@ -12,12 +12,21 @@ const options = [
 const intialCheckValue = {
   check: [],
 };
-const CustomBranchTress = ({ onChange, formValue, action  }) => {
+const CustomBranchTress = ({
+  onChange,
+  formValue,
+  action,
+  showUserAndOrganization,
+  NotAutoHideNested
+}) => {
   const [checkFormValue, setCheckFormValue] = useState(intialCheckValue);
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: action },
   });
-  const branches = useMemo(() => R.propOr([], 'listBranchesTree')(data),[data,action]);
+  const branches = useMemo(
+    () => R.propOr([], 'listBranchesTree')(data),
+    [data, action]
+  );
   const { user } = useUserProfile();
   const specialties = useMemo(
     () =>
@@ -89,13 +98,16 @@ const CustomBranchTress = ({ onChange, formValue, action  }) => {
   ]);
   return (
     <>
-      <Form formValue={checkFormValue} onChange={setCheckFormValue}>
-        <CRCheckBoxGroup name="check" options={options} max={1} inline />
-      </Form>
+      {showUserAndOrganization && (
+        <Form formValue={checkFormValue} onChange={setCheckFormValue}>
+          <CRCheckBoxGroup name="check" options={options} max={1} inline />
+        </Form>
+      )}
+
       <Form formValue={formValue} onChange={onChange}>
         {checkFormValue.check.length == 0 && (
           <>
-            {branches.length > 1 && (
+            {(branches.length > 1 || NotAutoHideNested) && (
               <CRSelectInput
                 label="Branch"
                 name="branchId"
@@ -104,7 +116,7 @@ const CustomBranchTress = ({ onChange, formValue, action  }) => {
                 data={branches}
               />
             )}
-            {specialties.length > 1 && formValue.branchId && (
+            {(specialties.length > 1 && formValue.branchId )|| NotAutoHideNested && (
               <CRSelectInput
                 label="Specialty"
                 name="specialtyId"
@@ -113,7 +125,7 @@ const CustomBranchTress = ({ onChange, formValue, action  }) => {
                 data={specialties}
               />
             )}
-            {doctors.length > 1 && formValue.specialtyId && (
+            {(doctors.length > 1 && formValue.specialtyId) || NotAutoHideNested &&(
               <CRSelectInput
                 label="Doctor"
                 name="userId"
@@ -129,8 +141,22 @@ const CustomBranchTress = ({ onChange, formValue, action  }) => {
   );
 };
 
-const CRBranchTree = ({ formValue, onChange, action }) => {
-  return <CustomBranchTress formValue={formValue} onChange={onChange} action={action}/>;
+const CRBranchTree = ({
+  formValue,
+  onChange,
+  action,
+  showUserAndOrganization = true,
+  NotAutoHideNested = true,
+}) => {
+  return (
+    <CustomBranchTress
+      formValue={formValue}
+      onChange={onChange}
+      action={action}
+      showUserAndOrganization={showUserAndOrganization}
+      NotAutoHideNested={NotAutoHideNested}
+    />
+  );
 };
 
 export default CRBranchTree;
