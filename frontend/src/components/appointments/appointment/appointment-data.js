@@ -27,7 +27,7 @@ import {
 } from 'utils/constants';
 
 import AppointmentPictures from '../pictures';
-import { useImageCategory, useLabCategory } from 'hooks';
+import { useImageCategory, useLabCategory, useSessionDefinition } from 'hooks';
 import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
@@ -106,14 +106,14 @@ function AppointmentData({
   const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryLab);
   const [categoryImageForm, setCategoryImageForm] =
     useState(initalCategoryImage);
-  const { sessions } = useConfigurations();
+  const { sessionsDefinition } = useSessionDefinition();
   const [session, SetSession] = useState({});
   const choices = useMemo(() => {
-    return sessions.map(s => ({
+    return sessionsDefinition.map(s => ({
       name: s.name,
       id: { name: s.name, value: 0 },
     }));
-  }, [sessions]);
+  }, [sessionsDefinition]);
   const handlePicturesChange = useCallback(
     pictures => {
       onChange({

@@ -66,7 +66,7 @@ const PulseRow = ({
           </FlexboxGrid>
         </Form>
       </MedicineContainerStyled>
-      {sessionsPulses.length > 0 && (
+      {sessionsPulses?.length > 0 && (
         <MedicineContainerStyled>
           <Form formValue={sessionFormValue} onChange={setSessionFormValue}>
             <FlexboxGrid>

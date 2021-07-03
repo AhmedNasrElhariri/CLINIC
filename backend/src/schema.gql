@@ -564,6 +564,9 @@ input UpdateAppointmentInput {
   id: ID!
   labIds: [ID!]
   imageIds: [ID!]
+  powerOne: Int
+  powerTwo: Int
+  pulses: Int
   data: [AppointmentFieldInput!]
   notes: String
   prescription: [PrescriptionInput!]

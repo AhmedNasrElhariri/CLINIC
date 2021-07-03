@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import * as moment from 'moment';
 import { Form } from 'rsuite';
 import { H3, Div, CRButton, CRNumberInput } from 'components';
-import SessionDefinitions from '../session-definations';
+// import SessionDefinitions from '../session-definations';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
 import { useAuth, useConfigurations } from 'hooks';
 import { get } from './../../../services/local-storage';
@@ -97,11 +97,11 @@ const Configurations = () => {
           </CRButton>
         </Div>
       </Div>
-      <SessionDefinitions
+      {/* <SessionDefinitions
         sessions={sessions}
         onChange={updateSession}
         onDelete={handleDelete}
-      />
+      /> */}
       <EnableInvoiceCounter
         onChange={updateEnable}
         value={formValue?.enableInvoiceCounter}

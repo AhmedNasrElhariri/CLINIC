@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { Alert, Loader, Icon } from 'rsuite';
+
 import Prescription from './prescription';
 
 import Labs from './labs/index';
@@ -13,7 +14,6 @@ import AppointmentData from './appointment-data';
 import {
   getFormInitValues,
   mapFormValueToAppointmentData,
-  mapSessionValues,
   isArchived,
 } from 'services/appointment';
 
@@ -30,8 +30,7 @@ const sortByDate = R.sortBy(R.compose(R.prop('date')));
 function Appointment() {
   const { visible, open, close } = useModal();
   const { type, setType } = useForm({});
-  const [sessionsPulses, setSessionsPulses] = useState([]);
-  const [sessionFormValue, setSessionFormValue] = useState({});
+
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
 
   const [formValue, setFormValue] = useState({});
@@ -42,6 +41,9 @@ function Appointment() {
     labIds: [],
     imageIds: [],
     pictures: [],
+    powerOne: 0,
+    powerTwo:0,
+    pulses:0,
   });
 
   const [disabled, setDisabled] = useState(false);
@@ -78,6 +80,7 @@ function Appointment() {
     appointmentId,
     appointment,
   });
+  console.log(apptFormValue);
   const handleUpdate = useCallback(() => {
     update({
       variables: {
@@ -87,23 +90,17 @@ function Appointment() {
           prescription: apptFormValue.prescription,
           labIds: apptFormValue.labIds,
           imageIds: apptFormValue.imageIds,
+          powerOne:apptFormValue.powerOne,
+          powerTwo:apptFormValue.powerTwo,
+          pulses:apptFormValue.pulses,
           pictures: apptFormValue.pictures.map(c => ({
             ...R.pick(['id', 'comment'])(c),
           })),
           id: appointmentId,
-          sessionsPulses: mapSessionValues(sessionsPulses, sessionFormValue),
         },
       },
     });
-  }, [
-    update,
-    normalizedFields,
-    formValue,
-    apptFormValue,
-    appointmentId,
-    sessionsPulses,
-    sessionFormValue,
-  ]);
+  }, [update, normalizedFields, formValue, apptFormValue, appointmentId]);
   const [popup, setPopup] = useState(false);
   const [popupTwo, setPopupTwo] = useState(false);
   const [popupThree, setPopupThree] = useState(false);
@@ -138,6 +135,9 @@ function Appointment() {
       ...val,
       notes: R.propOr('', 'notes')(appointment),
       prescription: R.propOr([], 'prescription')(appointment),
+      powerOne: R.propOr([], 'powerOne')(appointment),
+      powerTwo: R.propOr([], 'powerTwo')(appointment),
+      pulses: R.propOr([], 'pulses')(appointment),
       pictures: R.propOr([], 'pictures')(appointment),
       labIds: R.pipe(
         R.propOr([], 'labs'),
@@ -149,28 +149,6 @@ function Appointment() {
       )(appointment),
     }));
   }, [appointment]);
-  useEffect(() => {
-    setSessionsPulses(R.propOr([], 'sessionsPulses')(appointment));
-  }, [appointment]);
-  useEffect(() => {
-    const sessionsFormValueUpdated = sessionsPulses.reduce(function (
-      result,
-      item
-    ) {
-      let key = item.name;
-      result[key] = item.value;
-      return result;
-    },
-    {});
-    setSessionFormValue(sessionsFormValueUpdated);
-  }, [sessionsPulses, setSessionFormValue]);
-  useEffect(() => {
-    let totalPulses = 0;
-    for (const session in sessionFormValue) {
-      totalPulses += sessionFormValue[session];
-    }
-    setApptFormValue({ ...apptFormValue, pulses: totalPulses });
-  }, [sessionFormValue]);
   const handleMedicineChange = useCallback(
     newPrescription => {
       setApptFormValue({
@@ -265,10 +243,6 @@ function Appointment() {
                 appointmentFormValue={apptFormValue}
                 onDataChange={setFormValue}
                 onChange={setApptFormValue}
-                sessionsPulses={sessionsPulses}
-                setSessionsPulses={setSessionsPulses}
-                sessionFormValue={sessionFormValue}
-                setSessionFormValue={setSessionFormValue}
                 groups={groups}
                 appointment={appointment}
               />
