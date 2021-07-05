@@ -9,10 +9,12 @@ import {
   ARCHIVE_APPOINTMENT,
   LIST_APPOINTMENTS,
   UPDATE_BUSINESS_NOTES,
+  COMPLETE_APPOINTMENT,
 } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
+import CompleteAppointment from '../complete-appointment';
 import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 import BusinessNotes from './business-notes';
 import {
@@ -50,11 +52,18 @@ function TodayAppointments() {
       refetchInventory,
       refetchInventoryHistory,
     ],
-    refetchQueries: [{
-      query: LIST_APPOINTMENTS,
-    }],
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
+      },
+    ],
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
+    },
+  });
+  const [complete] = useMutation(COMPLETE_APPOINTMENT, {
+    onCompleted: () => {
+      Alert.success('Appointment has been Completed successfully');
     },
   });
   const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
@@ -87,10 +96,17 @@ function TodayAppointments() {
       ),
     [filteredAppointments]
   );
-
   const onClickDone = useCallback(
     appointment => {
       setPopUp('archive');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
+  const onCompleteDone = useCallback(
+    appointment => {
+      setPopUp('complete');
       setAppointment(appointment);
       open();
     },
@@ -131,13 +147,13 @@ function TodayAppointments() {
           })),
           discount: {
             name: 'discount' + ' - ' + appointment.patient.name,
-            amount: discount ,
+            amount: discount,
           },
           others: {
             name: 'others - ' + othersName + ' - ' + appointment.patient.name,
             amount: others,
           },
-          patientName:appointment.patient.name,
+          patientName: appointment.patient.name,
           bank,
           appPrice,
           company,
@@ -156,6 +172,17 @@ function TodayAppointments() {
       },
     });
   }, [appointment, updateNotes, notes]);
+  const handleComplete = useCallback(
+    ({appointment}) => {
+      close();
+      complete({
+        variables: {
+          id: appointment?.id,
+        },
+      });
+    },
+    [appointment, complete, close]
+  );
   return (
     <>
       <CRTabs>
@@ -174,6 +201,7 @@ function TodayAppointments() {
                   title="Upcoming Appointments"
                   appointments={apps}
                   onArchive={onClickDone}
+                  onComplete={onCompleteDone}
                   onAddBusinessNotes={onAddBusinessNotes}
                   defaultExpanded={true}
                 />
@@ -184,6 +212,7 @@ function TodayAppointments() {
             <ListAppointments
               appointments={waitingAppointments}
               onArchive={onClickDone}
+              onComplete={onCompleteDone}
               onAddBusinessNotes={onAddBusinessNotes}
               defaultExpanded={true}
               waiting={true}
@@ -205,6 +234,14 @@ function TodayAppointments() {
           show={visible}
           onCancel={close}
           onOk={handleArchive}
+        />
+      )}
+      {popUp === 'complete' && (
+        <CompleteAppointment
+          appointment={appointment}
+          show={visible}
+          onCancel={close}
+          onOk={handleComplete}
         />
       )}
       {popUp === 'notes' && (

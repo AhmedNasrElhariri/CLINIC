@@ -183,7 +183,6 @@ function ListAppointments({
                         e.stopPropagation();
                         onComplete(appointment);
                       }}
-                      width={70}
                     >
                       Archive
                     </CRButton>
