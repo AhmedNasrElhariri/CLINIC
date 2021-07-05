@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
-
-import { CRModal, CRTextInput, CRRadio } from 'components';
+import { ACTIONS } from 'utils/constants';
+import { CRModal, CRTextInput, CRRadio,CRBrancheTree } from 'components';
 const model = Schema.Model({});
 const options = [
   {
@@ -76,6 +76,7 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
           placeholder="Type Concentration"
           block
         />
+        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Hospital}/>
         <CRRadio label="Medicine Form" name="form" options={options} />
       </Form>
     </CRModal>

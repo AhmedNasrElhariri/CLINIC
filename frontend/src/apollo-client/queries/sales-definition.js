@@ -77,6 +77,14 @@ export const LIST_SALESES = gql`
         name
         price
       }
+      branch{
+        id
+        name
+      }
+      specialty{
+        id
+        name
+      }
     }
   }
 `;

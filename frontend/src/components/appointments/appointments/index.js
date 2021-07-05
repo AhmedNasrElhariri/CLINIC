@@ -17,8 +17,9 @@ function Appointments() {
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const { visible, close, open } = useModal({});
-  const { appointments, appointmentsCount } = useAppointments({ page });
-  const pages = Math.ceil(appointmentsCount/20);
+  const { appointments, appointmentsCount, refetchAppointments } =
+    useAppointments({ page });
+  const pages = Math.ceil(appointmentsCount / 20);
   const [appointment, setAppointment] = useState(null);
   const { refetchRevenues, refetchExpenses } = useAccounting();
   const { refetchInventory, refetchInventoryHistory } = useInventory();
@@ -44,13 +45,14 @@ function Appointments() {
       refetchExpenses,
       refetchInventory,
       refetchInventoryHistory,
+      refetchAppointments,
     ],
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
     },
   });
   const handleArchive = useCallback(
-    ({ sessions, items, discount, appPrice, option }) => {
+    ({ sessions, items, discount, option }) => {
       close();
       archive({
         variables: {
@@ -66,7 +68,6 @@ function Appointments() {
           })),
           discount,
           option,
-          appPrice,
         },
       });
     },

@@ -15,6 +15,7 @@ import {
   CRModal,
   Div,
   CRCard,
+  CRBrancheTree,
   CRTable,
 } from 'components';
 
@@ -173,6 +174,11 @@ function NewCourse({
               disabled
               value={course?.price || ''}
             />
+            <CRBrancheTree
+              formValue={formValue}
+              onChange={onChange}
+              action={ACTIONS.AddRevenue_Accounting}
+            />
             <CRNumberInput label="Discount" name="discount" />
             <CRNumberInput label="Paid" name="paid" />
             <CRSelectInput
@@ -248,7 +254,14 @@ function NewCourse({
             )}
           </>
         ) : type === 'edit' ? (
-          <CRNumberInput label="Paid" name="paid" title="Paid" />
+          <>
+            <CRNumberInput label="Paid" name="paid" title="Paid" />
+            <CRBrancheTree
+              formValue={formValue}
+              onChange={onChange}
+              action={ACTIONS.AddRevenue_Accounting}
+            />
+          </>
         ) : type === 'consumed' ? (
           <CRNumberInput
             label="Consumed Units"

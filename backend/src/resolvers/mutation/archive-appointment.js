@@ -19,38 +19,16 @@ const archiveAppointment = async (
     option,
     items = [],
     discount = {},
-    appPrice = 0,
     others = {},
     patientName,
   },
   { userId, organizationId }
 ) => {
-  const appointment = await prisma.appointment.findUnique({
-    where: { id },
-  });
   if (bank == null && company == null) {
     await createAppointmentRevenue(
       createAppointmentRevenueFromSessions(userId, sessions, organizationId)
     );
-    if (appPrice > 0) {
-      await prisma.revenue.create({
-        data: {
-          name: 'Appointment Price',
-          date: new Date(),
-          amount: appPrice,
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
-          organization: {
-            connect: {
-              id: organizationId,
-            },
-          },
-        },
-      });
-    }
+    
     if (others.amount > 0) {
       await prisma.revenue.create({
         data: {
@@ -80,7 +58,7 @@ const archiveAppointment = async (
       (sum, { price, number }) => sum + number * price,
       0
     );
-    sub = subRed + others.amount + appPrice - discount.amount;
+    sub = subRed + others.amount - discount.amount;
     const name = 'Bank Payment - ' + patientName;
     await prisma.bankRevenue.create({
       data: {
@@ -98,7 +76,7 @@ const archiveAppointment = async (
       0
     );
     const totalAmount =
-      totalSessionAmount + others.amount + appPrice - discount.amount;
+      totalSessionAmount + others.amount - discount.amount;
     let subtotal = 0;
     let amount = 0;
     subtotal = totalAmount - option.amount;
@@ -179,7 +157,10 @@ const archiveAppointment = async (
       });
     }
   }
-
+  const appointment = await prisma.appointment.update({
+    data: { accounted: true },
+    where: { id },
+  });
   await updatedUsedMaterials(organizationId, items);
 
   await createSubstractHistoryForMultipleItems({

@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
 const addHospital = async (_, { hospital }, { organizationId, userId }) => {
   const { specialtyId, branchId, userId: userID, ...rest } = hospital;
-  const level = GetLevel(branchId, specialtyId, userId);
+  const level = GetLevel(branchId, specialtyId, userID);
   return prisma.hospital.create({
     data: Object.assign(
       {

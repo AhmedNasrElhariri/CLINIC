@@ -81,6 +81,9 @@ function useAppointments({ includeSurgery, page } = {}) {
       appointmentsCount,
       todayAppointments,
       filterBranches,
+      refetchAppointments: {
+        query: LIST_APPOINTMENTS,
+      },
       branches: [],
       specialties,
       doctors,

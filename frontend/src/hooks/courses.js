@@ -88,6 +88,10 @@ function useCourses({
         variables: { patientId: patientId },
       },
       {
+        query: LIST_COURSE_PAYMENTS,
+        variables: { courseId: courseId },
+      },
+      {
         query: LIST_REVENUES,
       },
     ],

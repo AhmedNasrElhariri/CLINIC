@@ -7,28 +7,32 @@ import ListMedicinesDefinition from './list-medicine-definition';
 import { useMedicineDefinitions } from 'hooks';
 import { useForm, useModal } from 'hooks';
 
-const initValue = { name: '', concentration: '', form: '' };
+const initValue = {
+  name: '',
+  concentration: '',
+  form: '',
+  branchId: null,
+  specialtyId: null,
+  userId: null,
+};
 
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-
-  const {
-    addMedicineDefinition,
-    medicineDefinitions,
-    editMedicineDefinition,
-  } = useMedicineDefinitions({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
-  });
+console.log(formValue);
+  const { addMedicineDefinition, medicineDefinitions, editMedicineDefinition } =
+    useMedicineDefinitions({
+      onCreate: () => {
+        close();
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setFormValue(initValue);
+      },
+    });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -60,7 +64,7 @@ const MedicineDefinition = () => {
       });
     }
   }, [addMedicineDefinition, editMedicineDefinition, formValue, type]);
-
+  console.log(formValue);
   return (
     <>
       <Div textAlign="right">
@@ -76,7 +80,10 @@ const MedicineDefinition = () => {
         onClose={close}
         type={type}
       />
-      <ListMedicinesDefinition medicines={medicineDefinitions} onEdit={handleClickEdit} />
+      <ListMedicinesDefinition
+        medicines={medicineDefinitions}
+        onEdit={handleClickEdit}
+      />
     </>
   );
 };

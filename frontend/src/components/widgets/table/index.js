@@ -13,6 +13,7 @@ const CRTableStyled = styled(Table).attrs(({ data }) => ({
 }))`
   cursor: pointer;
   & .rs-table-row {
+    
   }
   & .rs-table-row-header {
     border-left: none;

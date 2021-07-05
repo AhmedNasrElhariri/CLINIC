@@ -7,12 +7,11 @@ import { CRTabs } from 'components';
 
 import {
   ARCHIVE_APPOINTMENT,
+  LIST_APPOINTMENTS,
   UPDATE_BUSINESS_NOTES,
-  COMPLETE_APPOINTMENT,
 } from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
-import CompleteAppointment from '../complete-appointment';
 import { getName } from 'services/accounting';
 import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 import BusinessNotes from './business-notes';
@@ -28,7 +27,6 @@ const initialValue = {
 function TodayAppointments() {
   const { todayAppointments: appointments, filterBranches } = useAppointments();
   const [popUp, setPopUp] = useState('');
-
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
   const filteredAppointments = useMemo(
@@ -40,7 +38,6 @@ function TodayAppointments() {
   const { refetchInventory, refetchInventoryHistory } = useInventory();
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState(null);
-  const patientName = appointment?.patient.name;
   useEffect(() => {
     setNotes(val => ({
       businessNotes: R.propOr('', 'businessNotes')(appointment),
@@ -53,13 +50,11 @@ function TodayAppointments() {
       refetchInventory,
       refetchInventoryHistory,
     ],
+    refetchQueries: [{
+      query: LIST_APPOINTMENTS,
+    }],
     onCompleted: () => {
       Alert.success('Appointment has been Archived successfully');
-    },
-  });
-  const [complete] = useMutation(COMPLETE_APPOINTMENT, {
-    onCompleted: () => {
-      Alert.success('Appointment has been Completed successfully');
     },
   });
   const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
@@ -67,7 +62,6 @@ function TodayAppointments() {
       Alert.success('Business Notes Added Successfully');
     },
   });
-  
   const upcomingAppointments = useMemo(
     () =>
       R.pipe(
@@ -78,6 +72,7 @@ function TodayAppointments() {
       )(filteredAppointments),
     [filteredAppointments]
   );
+
   const waitingAppointments = useMemo(
     () =>
       R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(
@@ -96,14 +91,6 @@ function TodayAppointments() {
   const onClickDone = useCallback(
     appointment => {
       setPopUp('archive');
-      setAppointment(appointment);
-      open();
-    },
-    [open]
-  );
-  const onClickComplete = useCallback(
-    appointment => {
-      setPopUp('complete');
       setAppointment(appointment);
       open();
     },
@@ -143,14 +130,14 @@ function TodayAppointments() {
             quantity,
           })),
           discount: {
-            name: 'discount' + ' - ' + patientName,
-            amount: discount,
+            name: 'discount' + ' - ' + appointment.patient.name,
+            amount: discount ,
           },
           others: {
-            name: 'others - ' + othersName + ' - ' + patientName,
+            name: 'others - ' + othersName + ' - ' + appointment.patient.name,
             amount: others,
           },
-          patientName: patientName,
+          patientName:appointment.patient.name,
           bank,
           appPrice,
           company,
@@ -159,17 +146,6 @@ function TodayAppointments() {
       });
     },
     [appointment, archive, close]
-  );
-  const handleComplete = useCallback(
-    ({ appointment }) => {
-      close();
-      complete({
-        variables: {
-          id: appointment?.id,
-        },
-      });
-    },
-    [appointment, complete, close]
   );
   const addBusinessNotes = useCallback(() => {
     close();
@@ -198,7 +174,6 @@ function TodayAppointments() {
                   title="Upcoming Appointments"
                   appointments={apps}
                   onArchive={onClickDone}
-                  onComplete={onClickComplete}
                   onAddBusinessNotes={onAddBusinessNotes}
                   defaultExpanded={true}
                 />
@@ -209,7 +184,6 @@ function TodayAppointments() {
             <ListAppointments
               appointments={waitingAppointments}
               onArchive={onClickDone}
-              onComplete={onClickComplete}
               onAddBusinessNotes={onAddBusinessNotes}
               defaultExpanded={true}
               waiting={true}
@@ -231,14 +205,6 @@ function TodayAppointments() {
           show={visible}
           onCancel={close}
           onOk={handleArchive}
-        />
-      )}
-      {popUp === 'complete' && (
-        <CompleteAppointment
-          appointment={appointment}
-          show={visible}
-          onCancel={close}
-          onOk={handleComplete}
         />
       )}
       {popUp === 'notes' && (

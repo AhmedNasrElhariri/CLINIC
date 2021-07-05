@@ -6,12 +6,14 @@ import Toolbar from '../accounting/toolbar';
 import { Div, CRButton, CRCard, H6, MainContainer } from 'components';
 import NewSales from './new-sales';
 import ListSaleses from './list-sales';
+import Filter from '../filters';
 import { Can } from 'components/user/can';
 import PdfView from './sales-pdf';
 import {
   useForm,
   useSales,
   useAccounting,
+  useAppointments,
   useModal,
   useSalesDefinition,
 } from 'hooks';
@@ -22,6 +24,9 @@ const initValue = { itemId: '', quantity: 0 };
 const initFilter = {
   item: '',
   user: '',
+  specialtyId: null,
+  branchId: null,
+  userId: null,
 };
 const Sales = () => {
   const { visible, open, close } = useModal();
@@ -29,6 +34,7 @@ const Sales = () => {
     initValue,
   });
   const [filter, setFilter] = useState(initFilter);
+  const { filterBranches } = useAppointments();
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const { timeFrame } = useAccounting({ view, period });
@@ -138,6 +144,7 @@ const Sales = () => {
       });
     }
   }, [addSales, editSales, formValue, type]);
+  console.log(itemFilteredSalesByUser);
   return (
     <>
       <MainContainer
@@ -152,9 +159,9 @@ const Sales = () => {
               />
             </Div>
             {/* <Can I="Create" an="Sales"> */}
-              <CRButton variant="primary" onClick={handleClickCreate}>
-                Add New Sales +
-              </CRButton>
+            <CRButton variant="primary" onClick={handleClickCreate}>
+              Add New Sales +
+            </CRButton>
             {/* </Can> */}
           </Div>
         }
@@ -192,24 +199,34 @@ const Sales = () => {
             <CRSelectInput
               label="Item"
               name="item"
-              onChange={val => val == null ? setFilter({...filter,item:''}):''}
+              onChange={val =>
+                val == null ? setFilter({ ...filter, item: '' }) : ''
+              }
               data={updatedSalesItems}
               style={{ width: '300px' }}
             />
             <CRSelectInput
               label="Creator"
               name="user"
-              onChange={val => val == null ? setFilter({...filter,user:''}):''}
+              onChange={val =>
+                val == null ? setFilter({ ...filter, user: '' }) : ''
+              }
               data={updatedUsers}
               style={{ width: '300px' }}
             />
           </Div>
         </Form>
       </Div>
-      <ListSaleses
-        saleses={itemFilteredSalesByUser}
-        onEdit={handleClickEdit}
-        onDelete={handleClickDelete}
+      <Filter
+        appointments={itemFilteredSalesByUser}
+        branches={filterBranches}
+        render={sales => (
+          <ListSaleses
+            saleses={sales}
+            onEdit={handleClickEdit}
+            onDelete={handleClickDelete}
+          />
+        )}
       />
       <Profit totalPrice={totalSalesPrice} totalCost={totalSalesCost} />
     </>

@@ -184,7 +184,6 @@ type Mutation {
     others: Others
     bank: ID
     company: ID
-    appPrice: Int
     option: optionInput!
   ): Appointment!
   createView(view: ViewInput!): Boolean
@@ -285,7 +284,13 @@ type Mutation {
     courseDefinition: CourseInputDefinition!
   ): CourseDefinition
   addCourse(course: CourseInput!): Course!
-  editCourse(courseId: ID!, paid: Int!): Course!
+  editCourse(
+    courseId: ID!
+    paid: Int!
+    branchId: ID
+    specialtyId: ID
+    userId: ID
+  ): Course!
   editCourseUnits(courseId: ID!, consumed: Int!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
   finishCourse(courseId: ID!): Course!
@@ -490,6 +495,7 @@ type Appointment {
   pulses: Int
   powerOne: Int
   powerTwo: Int
+  accounted: Boolean
   sessionsPulses: [SessionPulse!]
   session: SessionDefinition
   user: User!
@@ -1258,9 +1264,12 @@ type Sales {
   date: Date!
   salesDefinition: SalesDefinition!
   quantity: Int!
-  user: User!
   totalPrice: Int!
   totalCost: Int!
+  level: String!
+  branch: Branch
+  specialty: Specialty
+  user: User
 }
 
 input SalesInput {
@@ -1272,6 +1281,9 @@ input SalesInput {
 input SalesItemsInput {
   itemId: ID!
   quantity: Int!
+  userId: ID
+  branchId: ID
+  specialtyId: ID
 }
 
 ########################### Medicine Definition ##################################
@@ -1281,6 +1293,10 @@ type MedicineDefinition {
   name: String!
   concentration: String!
   form: String!
+  level: String
+  branch: Branch!
+  specialty: Specialty!
+  user: User!
 }
 
 input MedicineInputDefinition {
@@ -1288,6 +1304,9 @@ input MedicineInputDefinition {
   name: String!
   concentration: String!
   form: String
+  userId: ID
+  branchId: ID
+  specialtyId: ID
 }
 
 ########################### Patient Report ##################################
@@ -1351,6 +1370,9 @@ input CourseInput {
   courseDefinitionId: ID!
   doctorId: ID!
   sessions: [Date!]
+  branchId: ID
+  specialtyId: ID
+  userId: ID
 }
 
 type CoursePayment {

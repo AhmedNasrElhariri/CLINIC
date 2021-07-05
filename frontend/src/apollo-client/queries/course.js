@@ -108,7 +108,7 @@ export const LIST_COURSE_PAYMENTS = gql`
       id
       payment
       date
-      user{
+      user {
         id
         name
       }
@@ -142,8 +142,20 @@ export const ADD_COURSE = gql`
 `;
 
 export const EDIT_COURSE = gql`
-  mutation editCourse($courseId: ID!, $paid: Int!) {
-    editCourse(courseId: $courseId, paid: $paid) {
+  mutation editCourse(
+    $courseId: ID!
+    $branchId: ID
+    $specialtyId: ID
+    $userId: ID
+    $paid: Int!
+  ) {
+    editCourse(
+      courseId: $courseId
+      paid: $paid
+      branchId: $branchId
+      specialtyId: $specialtyId
+      userId: $userId
+    ) {
       id
       price
       discount

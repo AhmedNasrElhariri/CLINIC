@@ -16,6 +16,9 @@ const initValue = {
   doctorId: null,
   sessions: [],
   startDate: null,
+  branchId: null,
+  specialtyId: null,
+  userId: null,
 };
 
 const CourseButton = styled.button`
@@ -60,6 +63,7 @@ const Course = ({ patient }) => {
       setFormValue(initValue);
     },
     patientId: patient.id,
+    courseId: formValue?.id,
   });
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -108,7 +112,16 @@ const Course = ({ patient }) => {
   );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      const { discount, course, sessions, paid, doctorId } = formValue;
+      const {
+        discount,
+        course,
+        sessions,
+        paid,
+        doctorId,
+        specialtyId,
+        userId,
+        branchId,
+      } = formValue;
       const finalFormValue = {
         price: course.price - discount,
         patientId: patient.id,
@@ -117,6 +130,9 @@ const Course = ({ patient }) => {
         sessions,
         paid,
         discount,
+        specialtyId,
+        userId,
+        branchId,
       };
       addCourse({
         variables: {
@@ -148,6 +164,9 @@ const Course = ({ patient }) => {
         variables: {
           courseId: formValue.id,
           paid: formValue.paid,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
+          branchId: formValue.branchId,
         },
       });
     }

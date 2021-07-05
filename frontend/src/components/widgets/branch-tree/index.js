@@ -17,7 +17,7 @@ const CustomBranchTress = ({
   formValue,
   action,
   showUserAndOrganization,
-  NotAutoHideNested
+  NotAutoHideNested,
 }) => {
   const [checkFormValue, setCheckFormValue] = useState(intialCheckValue);
   const { data } = useQuery(LIST_BRANCHES_TREE, {
@@ -96,6 +96,7 @@ const CustomBranchTress = ({
     formValue.userId,
     checkFormValue.check,
   ]);
+  console.log(specialties);
   return (
     <>
       {showUserAndOrganization && (
@@ -116,7 +117,8 @@ const CustomBranchTress = ({
                 data={branches}
               />
             )}
-            {(specialties.length > 1 && formValue.branchId )|| NotAutoHideNested && (
+            {((specialties.length > 1 && formValue.branchId) ||
+              NotAutoHideNested) && (
               <CRSelectInput
                 label="Specialty"
                 name="specialtyId"
@@ -125,7 +127,8 @@ const CustomBranchTress = ({
                 data={specialties}
               />
             )}
-            {(doctors.length > 1 && formValue.specialtyId) || NotAutoHideNested &&(
+            {((doctors.length > 1 && formValue.specialtyId) ||
+              NotAutoHideNested) && (
               <CRSelectInput
                 label="Doctor"
                 name="userId"

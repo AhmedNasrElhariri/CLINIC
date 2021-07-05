@@ -1,6 +1,6 @@
 import { prisma } from '@';
 import * as moment from 'moment';
-const addPulsesControl = async (_, { pulsesControl }) => {
+const addPulsesControl = async (_, { pulsesControl: pulseControlData }) => {
   const startOfDay = moment(new Date()).startOf('day').toDate();
   const endOfDay = moment(new Date()).endOf('day').toDate();
   const pulseControlRow = await prisma.pulseControl.findMany({
@@ -15,7 +15,7 @@ const addPulsesControl = async (_, { pulsesControl }) => {
   if (pulseControlRow.length > 0) {
     return prisma.pulseControl.update({
       data: {
-        ...pulsesControl,
+        ...pulseControlData,
         date: new Date(),
       },
       where: {
@@ -25,7 +25,7 @@ const addPulsesControl = async (_, { pulsesControl }) => {
   } else {
     return prisma.pulseControl.create({
       data: {
-        ...pulsesControl,
+        ...pulseControlData,
         date: new Date(),
       },
     });

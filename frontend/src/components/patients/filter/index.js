@@ -39,20 +39,20 @@ const PatientsFilter = ({
       formValue={formValue}
       onChange={setFormValue}
     >
-      <Div display="flex">
-        <Div mr={3}>
+      <Div display="flex" justifyContent="space-between">
+        <Div mr={3} >
           <CRTextInput
             label="Name  Or  Code"
             name="name"
             placeholder="Search"
-            width={300}
+            style={{width:"200px"}}
           />
         </Div>
         <CRTextInput
           label="Phone Number"
           name="phoneNo"
           placeholder="Search"
-          width={300}
+          style={{width:"200px"}}
         />
         <Div ml={3} mr={3}>
           <CRSelectInput
@@ -62,7 +62,7 @@ const PatientsFilter = ({
             onChange={val =>
               val == null ? setFormValue({ ...formValue, reference: '' }) : ''
             }
-            style={{ width: '300px' }}
+            style={{width:"200px"}}
           />
         </Div>
         <Div>
@@ -71,13 +71,13 @@ const PatientsFilter = ({
             name="area"
             data={newAreas}
             value={areaFormValue.areaId}
+            style={{width:"200px"}}
             onChange={val =>
               val == null
                 ? (setFormValue({ ...formValue, area: '' }),
                   setAreaFormValue({ areaId: null }))
                 : setAreaValue(val)
             }
-            style={{ width: '300px' }}
           />
         </Div>
       </Div>

@@ -61,8 +61,6 @@ function AppointmentInvoice({
   sessions,
   company,
   setCompany,
-  price: appointmentPrice,
-  setPrice,
   option,
   setOption,
   bank,
@@ -70,7 +68,6 @@ function AppointmentInvoice({
   organization,
 }) {
   const [session, setSession] = useState({});
-  const { prices } = usePrice({});
   const [sessionNumber, setSessionNumber] = useState(0);
   const [visa, setVisa] = useState(false);
   const [insurance, setInsurance] = useState(false);
@@ -116,9 +113,9 @@ function AppointmentInvoice({
       (sum, { price, number }) => sum + number * price,
       0
     );
-    sub = subRed + others + (appointmentPrice?.price || 0);
+    sub = subRed + others ;
     return sub;
-  }, [selectedSessions, option, appointmentPrice, others]);
+  }, [selectedSessions, option, others]);
   const total = useMemo(() => subtotal - discount, [discount, subtotal]);
 
   return (
@@ -173,16 +170,6 @@ function AppointmentInvoice({
       </Div>
       <Div display="flex" mt={40}>
         <Div width={500} mr={20}>
-          <Form>
-            <Div mb={10}>
-              <CRDocSelectInput
-                onChange={val => val == null ? setPrice({}) : setPrice(val) }
-                label="Appointment Price"
-                data={prices}
-                style={{ width: '400px' }}
-              />
-            </Div>
-          </Form>
           <Form fluid>
             <CRButton onClick={() => add()}>add</CRButton>
             <Div display="flex" justifyContent="space-around">
@@ -304,7 +291,6 @@ function AppointmentInvoice({
         subtotal={subtotal}
         total={total}
         patientName={appointment?.patient.name}
-        appointmentPrice={appointmentPrice}
         others={others}
         option={option}
         othersName={othersName}

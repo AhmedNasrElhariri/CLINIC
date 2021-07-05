@@ -261,6 +261,7 @@ model Appointment {
   doctor           User               @relation("doctorApp", fields: [doctorId], references: [id])
   doctorId         String
   businessNotes    String             @default("")
+  accounted        Boolean            @default(false)
   status           AppointmentStatus
   data             AppointmentField[]
   notes            String?            @default("")
@@ -392,6 +393,7 @@ model AppointmentFile {
   fileId        String
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @default(now()) @updatedAt
+
   @@id([fileId])
 }
 
@@ -867,6 +869,11 @@ model Sales {
   totalPrice        Int
   totalCost         Int
   date              DateTime
+  level             String
+  specialty         Specialty?      @relation(fields: [specialtyId], references: [id])
+  specialtyId       String?
+  branch            Branch?         @relation(fields: [branchId], references: [id])
+  branchId          String?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now()) @updatedAt
   organization      Organization    @relation(fields: [organizationId], references: [id])
@@ -940,8 +947,13 @@ model MedicineDefinition {
   name          String
   concentration String
   form          String
+  level         String
   user          User           @relation(fields: [userId], references: [id])
   userId        String
+  specialty     Specialty?     @relation(fields: [specialtyId], references: [id])
+  specialtyId   String?
+  branch        Branch?        @relation(fields: [branchId], references: [id])
+  branchId      String?
   prescriptions Prescription[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now()) @updatedAt
@@ -1046,48 +1058,52 @@ model Rule {
 }
 
 model Branch {
-  id                String              @id @default(uuid())
-  name              String
-  address           String?
-  phoneNo           String?
-  notes             String?
-  organization      Organization        @relation(fields: [organizationId], references: [id])
-  organizationId    String
-  rules             Rule[]
-  specialties       Specialty[]
-  userSpecialties   UserSpecialty[]
-  Appointment       Appointment[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @default(now()) @updatedAt
-  InventoryItem     InventoryItem[]
-  Price             Price[]
-  SessionDefinition SessionDefinition[]
-  Hospital          Hospital[]
-  Surgery           Surgery[]
-  Revenue           Revenue[]
-  Expense           Expense[]
-  SalesDefinition   SalesDefinition[]
+  id                 String               @id @default(uuid())
+  name               String
+  address            String?
+  phoneNo            String?
+  notes              String?
+  organization       Organization         @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  rules              Rule[]
+  specialties        Specialty[]
+  userSpecialties    UserSpecialty[]
+  Appointment        Appointment[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
+  InventoryItem      InventoryItem[]
+  Price              Price[]
+  SessionDefinition  SessionDefinition[]
+  Hospital           Hospital[]
+  Surgery            Surgery[]
+  Revenue            Revenue[]
+  Expense            Expense[]
+  SalesDefinition    SalesDefinition[]
+  MedicineDefinition MedicineDefinition[]
+  Sales              Sales[]
 }
 
 model Specialty {
-  id                String              @id @default(uuid())
-  name              String
-  organization      Organization        @relation(fields: [organizationId], references: [id])
-  organizationId    String
-  rules             Rule[]
-  branches          Branch[]
-  userSpecialties   UserSpecialty[]
-  Appointment       Appointment[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @default(now()) @updatedAt
-  InventoryItem     InventoryItem[]
-  Price             Price[]
-  SessionDefinition SessionDefinition[]
-  Hospital          Hospital[]
-  Surgery           Surgery[]
-  Revenue           Revenue[]
-  Expense           Expense[]
-  SalesDefinition   SalesDefinition[]
+  id                 String               @id @default(uuid())
+  name               String
+  organization       Organization         @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  rules              Rule[]
+  branches           Branch[]
+  userSpecialties    UserSpecialty[]
+  Appointment        Appointment[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
+  InventoryItem      InventoryItem[]
+  Price              Price[]
+  SessionDefinition  SessionDefinition[]
+  Hospital           Hospital[]
+  Surgery            Surgery[]
+  Revenue            Revenue[]
+  Expense            Expense[]
+  SalesDefinition    SalesDefinition[]
+  MedicineDefinition MedicineDefinition[]
+  Sales              Sales[]
 }
 
 model UserSpecialty {

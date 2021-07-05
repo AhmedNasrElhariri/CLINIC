@@ -13,7 +13,7 @@ import ImageCategory from './image-category';
 import Course from './course';
 import SalesDefinition from './sales-definition';
 import SessionDefinition from './session-definition';
-import Price from './price';
+// import Price from './price';
 import BanksDefinition from './banks-definition';
 import CompanysDefinition from './companys-definition';
 import CompanysSessions from './companys-sessions-definition';
@@ -46,15 +46,14 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="7">Timing</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="8">Courses and Packages</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="9">Sales Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="10">Price</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="11">Bank Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="12">Insurance Companies</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="13">
+        <CRVNav.CRItem eventKey="10">Bank Definition</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="11">Insurance Companies</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="12">
           Insurance Companies Sessions
         </CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="14">Expenses Types</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="15">Sessions Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="16">Patient Report</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="13">Expenses Types</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="14">Sessions Definition</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="15">Patient Report</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -80,16 +79,14 @@ function StaticSettings() {
             case '9':
               return <SalesDefinition />;
             case '10':
-              return <Price />;
-            case '11':
               return <BanksDefinition />;
-            case '12':
+            case '11':
               return <CompanysDefinition />;
-            case '13':
+            case '12':
               return <CompanysSessions />;
-            case '14':
+            case '13':
               return <ExpensesTypes />;
-            case '15':
+            case '14':
               return <SessionDefinition />;
             default:
               return <PatientReport />;

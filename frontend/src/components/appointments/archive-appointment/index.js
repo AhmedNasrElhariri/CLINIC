@@ -30,7 +30,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
   const [others, setOthers] = useState(0);
   const [othersName, setOthersName] = useState('');
   const [bank, setBank] = useState(null);
-  const [price, setPrice] = useState({});
   const [company, setCompany] = useState(null);
   const [option, setOption] = useState(initlOption);
   const value = useRef(initValue);
@@ -60,12 +59,11 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
         bank,
         company,
         option,
-        appPrice: price?.price || 0,
       });
       setBank(null);
       setCompany(null);
     }
-  }, [activeStep, onOk, discount, others, bank, company, option, price]);
+  }, [activeStep, onOk, discount, others, bank, company, option]);
   
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
@@ -123,8 +121,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
             onDiscountChange={setDiscount}
             appointment={appointment}
             option={option}
-            price={price}
-            setPrice={setPrice}
             setOption={setOption}
             sessions={updatedCompanySessions}
             organization={organization}

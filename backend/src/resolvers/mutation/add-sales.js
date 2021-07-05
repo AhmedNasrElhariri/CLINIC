@@ -1,7 +1,10 @@
 import { prisma } from '@';
 import * as R from 'ramda';
+import { GetLevel } from '@/services/get-level';
 import { APIExceptcion } from '@/services/erros.service';
 const addSales = async (_, { sales }, { organizationId, userId }) => {
+  const { specialtyId, branchId, userId: userID } = sales[0];
+  const level = GetLevel(branchId, specialtyId, userID);
   const persistedItems = await prisma.salesDefinition.findMany({
     where: {
       organizationId,
@@ -31,15 +34,45 @@ const addSales = async (_, { sales }, { organizationId, userId }) => {
   const args = sales.map(({ itemId, quantity }) => {
     const persistedItem = R.find(R.propEq('id', itemId))(persistedItems);
     return {
-      data: {
-        quantity: quantity,
-        totalPrice: persistedItem.price * quantity,
-        totalCost: persistedItem.cost * quantity,
-        date: new Date(),
-        organizationId,
-        userId,
-        salesDefinitionId: itemId,
-      },
+      data:
+        Object.assign(
+          {
+            level,
+            quantity: quantity,
+            totalPrice: persistedItem.price * quantity,
+            totalCost: persistedItem.cost * quantity,
+            date: new Date(),
+            salesDefinition:{
+              connect:{
+                id:itemId,
+              },
+            },
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
+            },
+          },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          }
+        ),
     };
   });
   Promise.all(

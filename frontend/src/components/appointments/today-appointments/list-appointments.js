@@ -1,4 +1,4 @@
-import React, { useRef,useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import {
@@ -23,7 +23,7 @@ function ListAppointments({
   waiting,
   onAddBusinessNotes,
   currentPage,
-  setCurrentPage
+  setCurrentPage,
 }) {
   const history = useHistory();
   const componentRef = useRef();
@@ -48,7 +48,6 @@ function ListAppointments({
       </Div>
       <CRTable
         height={600}
-        virtualized
         data={appointments}
         onRowClick={appointment => {
           history.push(
@@ -145,33 +144,49 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={4}>
+        <CRTable.CRColumn flexGrow={8}>
           <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (
               <Div display="flex">
                 {(isScheduled(appointment) || isWaiting(appointment)) && (
                   <>
+                    {appointment.accounted ? (
+                      <CRButton
+                        variant="success"
+                        mr={1}
+                        onClick={e => {
+                          e.stopPropagation();
+                          onArchive(appointment);
+                        }}
+                        width={70}
+                      >
+                        ACC
+                      </CRButton>
+                    ) : (
+                      <CRButton
+                        variant="primary"
+                        mr={1}
+                        onClick={e => {
+                          e.stopPropagation();
+                          onArchive(appointment);
+                        }}
+                        width={70}
+                      >
+                        ACC
+                      </CRButton>
+                    )}
                     <CRButton
-                    variant="primary"
-                    mr={1}
-                    onClick={e => {
-                      e.stopPropagation();
-                      onArchive(appointment);
-                    }}
-                  >
-                    ACC
-                  </CRButton>
-                  <CRButton
-                    variant="primary"
-                    mr={1}
-                    onClick={e => {
-                      e.stopPropagation();
-                      onComplete(appointment);
-                    }}
-                  >
-                    Archive
-                  </CRButton>
+                      variant="primary"
+                      mr={1}
+                      onClick={e => {
+                        e.stopPropagation();
+                        onComplete(appointment);
+                      }}
+                      width={70}
+                    >
+                      Archive
+                    </CRButton>
                   </>
                 )}
                 <CRButton
@@ -180,6 +195,7 @@ function ListAppointments({
                     e.stopPropagation();
                     onAddBusinessNotes(appointment);
                   }}
+                  width={70}
                 >
                   Notes
                 </CRButton>
@@ -221,7 +237,6 @@ function ListAppointments({
         pages={pages}
         onSelect={handleSelect}
         total={appointments.length}
-        
       />
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <Div ref={ref} mt={20} mr={10}>

@@ -37,7 +37,6 @@ const InvoicePrintout = React.forwardRef(
       patientName,
       othersName,
       option,
-      appointmentPrice,
     },
     ref
   ) => {
@@ -65,10 +64,6 @@ const InvoicePrintout = React.forwardRef(
           <H5 mb={3}>Invoice {enable ? Count : ''}</H5>
           <H5 mb={3}>Patient Name {' : ' + patientName}</H5>
           <H6 mb={50}>Date : {formatDate(new Date())}</H6>
-          <Div display="flex" justifyContent="space-between" mb={1}>
-            <H7>{appointmentPrice.Apptype}</H7>
-            <H6>{appointmentPrice.price}</H6>
-          </Div>
           {items.map((item, idx) => (
             <ItemPrice {...item} key={idx} />
           ))}
@@ -81,7 +76,6 @@ const InvoicePrintout = React.forwardRef(
             <>
               <Divider />
               <TotalPrice name="User Payment" price={userPayment} />
-              <TotalPrice name="Company Payment" price={total - userPayment} />
             </>
           )}
         </StyledContainer>

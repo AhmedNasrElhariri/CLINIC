@@ -18,6 +18,8 @@ const mySaleses = async(_, __, { user, organizationId }) => {
     include: {
       salesDefinition: true,
       user: true,
+      branch:true,
+      specialty:true,
     },
   });
 };

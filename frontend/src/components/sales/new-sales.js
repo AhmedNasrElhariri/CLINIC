@@ -1,6 +1,7 @@
-import React, { useMemo, useRef,useEffect } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import ReactToPrint from 'react-to-print';
 import { Form, Schema } from 'rsuite';
+import { ACTIONS } from 'utils/constants';
 import {
   CRModal,
   CRSelectInput,
@@ -10,6 +11,7 @@ import {
   H7,
   H4,
   CRDocSelectInput,
+  CRBrancheTree
 } from 'components';
 import { useSalesDefinition } from 'hooks';
 import ListInvoiceItems from './list-invoice-items';
@@ -18,6 +20,7 @@ const model = Schema.Model({});
 const initValue = {
   itemId: null,
   quantity: 1,
+  
 };
 function NewSales({
   formValue,
@@ -65,16 +68,19 @@ function NewSales({
               trigger={() => <CRButton>Print</CRButton>}
               content={() => ref.current}
             />
-            <Div display="flex" padding={30}>
-              <Div width={396} mr={30}>
+            <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Sales}/>
+            <Div display="flex" justifyContent="space-between" mt={3}>
+              <Div>
                 <CRDocSelectInput
                   onChange={val => onChange({ ...formValue, itemId: val?.id })}
                   label="Item"
                   data={salesesDefinition}
+                  placement="left"
+                  style={{ width: '240px' }}
                   block
                 />
               </Div>
-              <Div width={250}>
+              <Div display="flex">
                 <CRNumberInput
                   name="quantity"
                   label="Quantity"

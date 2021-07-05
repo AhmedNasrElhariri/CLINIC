@@ -1,5 +1,11 @@
 import { prisma } from '@';
-const editCourse = async (_, { courseId, paid }, { userId,organizationId }) => {
+import { GetLevel } from '@/services/get-level';
+const editCourse = async (
+  _,
+  { courseId, paid, branchId, specialtyId, userId: userID },
+  { userId, organizationId }
+) => {
+  const level = GetLevel(branchId, specialtyId, userID);
   const data = await prisma.course.findUnique({
     where: {
       id: courseId,
@@ -12,21 +18,38 @@ const editCourse = async (_, { courseId, paid }, { userId,organizationId }) => {
   const payment =
     'C' + '/' + data.courseDefinition.name + '/' + data.patient.name;
   await prisma.revenue.create({
-    data: {
-      name: payment,
-      date: new Date(),
-      amount: paid,
-      user: {
-        connect: {
-          id: userId,
+    data: Object.assign(
+      {
+        level,
+        name: payment,
+        date: new Date(),
+        amount: paid,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
         },
       },
-      organization: {
-        connect: {
-          id: organizationId,
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
         },
       },
-    },
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
+        },
+      }
+    ),
   });
   await prisma.coursePayment.create({
     data: {

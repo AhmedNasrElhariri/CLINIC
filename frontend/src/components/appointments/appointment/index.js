@@ -139,9 +139,9 @@ function Appointment() {
       ...val,
       notes: R.propOr('', 'notes')(appointment),
       prescription: R.propOr([], 'prescription')(appointment),
-      powerOne: R.propOr([], 'powerOne')(appointment),
-      powerTwo: R.propOr([], 'powerTwo')(appointment),
-      pulses: R.propOr([], 'pulses')(appointment),
+      powerOne: R.propOr(0, 'powerOne')(appointment),
+      powerTwo: R.propOr(0, 'powerTwo')(appointment),
+      pulses: R.propOr(0, 'pulses')(appointment),
       pictures: R.propOr([], 'pictures')(appointment),
       labIds: R.pipe(
         R.propOr([], 'labs'),

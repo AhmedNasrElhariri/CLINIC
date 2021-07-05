@@ -28,6 +28,7 @@ export const LIST_APPOINTMENTS = gql`
         status
         date
         businessNotes
+        accounted
         patient {
           id
           name
@@ -222,7 +223,6 @@ export const ARCHIVE_APPOINTMENT = gql`
     $bank: ID
     $patientName: String!
     $company: ID
-    $appPrice: Int
     $option: optionInput!
   ) {
     archiveAppointment(
@@ -234,7 +234,6 @@ export const ARCHIVE_APPOINTMENT = gql`
       others: $others
       bank: $bank
       company: $company
-      appPrice: $appPrice
       option: $option
     ) {
       id

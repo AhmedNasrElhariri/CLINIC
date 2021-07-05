@@ -4,8 +4,8 @@ import {
   APPOINTMENTS_STATUS,
   COURSE_STATUS,
 } from '@/utils/constants';
-
-const addCourse = async (_, { course }, { userId ,organizationId}) => {
+import { GetLevel } from '@/services/get-level';
+const addCourse = async (_, { course }, { userId, organizationId }) => {
   const {
     patientId,
     courseDefinitionId,
@@ -14,7 +14,11 @@ const addCourse = async (_, { course }, { userId ,organizationId}) => {
     discount,
     sessions,
     doctorId,
+    branchId,
+    specialtyId,
+    userId: userID,
   } = course;
+  const level = GetLevel(branchId, specialtyId, userID);
   const startDate = sessions.length > 0 ? sessions[0] : new Date();
   const endDate =
     sessions.length > 0 ? sessions[sessions.length - 1] : new Date();
@@ -93,21 +97,38 @@ const addCourse = async (_, { course }, { userId ,organizationId}) => {
   const payment =
     'C' + '/' + courseDef.courseDefinition.name + '/' + courseDef.patient.name;
   await prisma.revenue.create({
-    data: {
-      name: payment,
-      date: new Date(),
-      amount: paid,
-      user: {
-        connect: {
-          id: userId,
+    data: Object.assign(
+      {
+        level,
+        name: payment,
+        date: new Date(),
+        amount: paid,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
         },
       },
-      organization: {
-        connect: {
-          id: organizationId,
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
         },
       },
-    },
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
+        },
+      }
+    ),
   });
   return courseDef;
 };
