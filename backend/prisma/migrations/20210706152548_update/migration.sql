@@ -77,6 +77,8 @@ CREATE TABLE "Patient" (
     "phoneNo" TEXT NOT NULL,
     "type" "PatientMembershipType" NOT NULL,
     "age" INTEGER NOT NULL,
+    "codeNumber" SERIAL NOT NULL,
+    "code" TEXT,
     "sex" "Sex" NOT NULL,
     "reference" JSONB NOT NULL DEFAULT E'[]',
     "area" TEXT NOT NULL DEFAULT E'',
@@ -98,11 +100,28 @@ CREATE TABLE "Appointment" (
     "userId" TEXT NOT NULL,
     "doctorId" TEXT NOT NULL,
     "businessNotes" TEXT NOT NULL DEFAULT E'',
+    "accounted" BOOLEAN NOT NULL DEFAULT false,
     "status" "AppointmentStatus" NOT NULL,
     "notes" TEXT DEFAULT E'',
+    "pulses" INTEGER,
+    "powerOne" INTEGER,
+    "powerTwo" INTEGER,
+    "sessionsPulses" JSONB DEFAULT E'[]',
     "branchId" TEXT,
     "specialtyId" TEXT,
     "sessionId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PulseControl" (
+    "id" TEXT NOT NULL,
+    "before" INTEGER NOT NULL DEFAULT 0,
+    "after" INTEGER NOT NULL DEFAULT 0,
+    "date" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -686,6 +705,9 @@ CREATE TABLE "Sales" (
     "totalPrice" INTEGER NOT NULL,
     "totalCost" INTEGER NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
+    "level" TEXT NOT NULL,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "organizationId" TEXT NOT NULL,
@@ -758,7 +780,10 @@ CREATE TABLE "MedicineDefinition" (
     "name" TEXT NOT NULL,
     "concentration" TEXT NOT NULL,
     "form" TEXT NOT NULL,
+    "level" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -1247,6 +1272,12 @@ ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("
 ALTER TABLE "SalesDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Sales" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Sales" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Sales" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1281,6 +1312,12 @@ ALTER TABLE "ImageCategory" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") O
 
 -- AddForeignKey
 ALTER TABLE "MedicineDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MedicineDefinition" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MedicineDefinition" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PatientReport" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

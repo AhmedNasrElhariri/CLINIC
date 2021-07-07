@@ -28,6 +28,7 @@ const initialValue = {
 };
 function TodayAppointments() {
   const { todayAppointments: appointments, filterBranches } = useAppointments();
+  console.log(appointments);
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
@@ -120,6 +121,7 @@ function TodayAppointments() {
     },
     [open]
   );
+  console.log(appointment);
   const handleArchive = useCallback(
     ({
       sessions,
@@ -136,6 +138,9 @@ function TodayAppointments() {
       archive({
         variables: {
           id: appointment.id,
+          specialtyId: appointment?.specialty.id,
+          userId: appointment?.user.id,
+          branchId: appointment?.branch.id,
           sessions: sessions.map(session => ({
             name: getName({ session, appointment }),
             price: session.price,
@@ -173,7 +178,7 @@ function TodayAppointments() {
     });
   }, [appointment, updateNotes, notes]);
   const handleComplete = useCallback(
-    ({appointment}) => {
+    ({ appointment }) => {
       close();
       complete({
         variables: {
@@ -209,21 +214,33 @@ function TodayAppointments() {
             />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
-            <ListAppointments
+            <Filter
               appointments={waitingAppointments}
-              onArchive={onClickDone}
-              onComplete={onCompleteDone}
-              onAddBusinessNotes={onAddBusinessNotes}
-              defaultExpanded={true}
-              waiting={true}
+              branches={filterBranches}
+              render={apps => (
+                <ListAppointments
+                  appointments={apps}
+                  onArchive={onClickDone}
+                  onComplete={onCompleteDone}
+                  onAddBusinessNotes={onAddBusinessNotes}
+                  defaultExpanded={true}
+                  waiting={true}
+                />
+              )}
             />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
-            <ListAppointments
-              title="Completed Appointments"
+            <Filter
               appointments={completedAppointments}
-              onAddBusinessNotes={onAddBusinessNotes}
-              defaultExpanded={true}
+              branches={filterBranches}
+              render={apps => (
+                <ListAppointments
+                  title="Completed Appointments"
+                  appointments={apps}
+                  onAddBusinessNotes={onAddBusinessNotes}
+                  defaultExpanded={true}
+                />
+              )}
             />
           </CRTabs.CRContent>
         </CRTabs.CRContentGroup>

@@ -82,7 +82,6 @@ function Appointment() {
     appointmentId,
     appointment,
   });
-  console.log(apptFormValue);
   const handleUpdate = useCallback(() => {
     update({
       variables: {

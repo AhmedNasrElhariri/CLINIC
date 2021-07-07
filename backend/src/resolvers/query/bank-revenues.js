@@ -7,6 +7,9 @@ const bankRevenues = async (_, __, { userId, organizationId }) => {
     },
     include: {
       bank: true,
+      user:true,
+      branch:true,
+      specialty:true,
     },
   });
 };

@@ -3,6 +3,7 @@ import {
   createAppointmentRevenue,
   createAppointmentRevenueFromSessions,
 } from '@/services/revenue.service';
+import { GetLevel } from '@/services/get-level';
 import { createAppointmentExpense } from '@/services/expense.service';
 import {
   createSubstractHistoryForMultipleItems,
@@ -21,35 +22,71 @@ const archiveAppointment = async (
     discount = {},
     others = {},
     patientName,
+    branchId,
+    specialtyId,
+    userId: userID,
   },
   { userId, organizationId }
 ) => {
+  const level = GetLevel(branchId, specialtyId, userID);
   if (bank == null && company == null) {
     await createAppointmentRevenue(
-      createAppointmentRevenueFromSessions(userId, sessions, organizationId)
+      createAppointmentRevenueFromSessions(
+        userId,
+        sessions,
+        organizationId,
+        branchId,
+        specialtyId,
+        userID
+      )
     );
-    
+
     if (others.amount > 0) {
       await prisma.revenue.create({
-        data: {
-          name: others.name,
-          date: new Date(),
-          amount: others.amount,
-          organization: {
-            connect: {
-              id: organizationId,
+        data: Object.assign(
+          {
+            name: others.name,
+            date: new Date(),
+            amount: others.amount,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          user: {
-            connect: {
-              id: userId,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-        },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          }
+        ),
       });
     }
     if (discount) {
-      await createAppointmentExpense(userId, discount, organizationId);
+      await createAppointmentExpense(
+        userId,
+        discount,
+        organizationId,
+        branchId,
+        specialtyId,
+        userID,
+        level
+      );
     }
   }
   if (bank != null && company == null) {
@@ -61,13 +98,43 @@ const archiveAppointment = async (
     sub = subRed + others.amount - discount.amount;
     const name = 'Bank Payment - ' + patientName;
     await prisma.bankRevenue.create({
-      data: {
-        date: new Date(),
-        name,
-        amount: sub,
-        userId,
-        bankId: bank,
-      },
+      data: Object.assign(
+        {
+          date: new Date(),
+          name,
+          amount: sub,
+          level,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          bank: {
+            connect: {
+              id: bank,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        }
+      ),
     });
   }
   if (company != null) {
@@ -75,8 +142,7 @@ const archiveAppointment = async (
       (sum, { price, number }) => sum + price * number,
       0
     );
-    const totalAmount =
-      totalSessionAmount + others.amount - discount.amount;
+    const totalAmount = totalSessionAmount + others.amount - discount.amount;
     let subtotal = 0;
     let amount = 0;
     subtotal = totalAmount - option.amount;
@@ -87,73 +153,156 @@ const archiveAppointment = async (
     }
     if (bank == null) {
       await prisma.revenue.create({
-        data: {
-          date: new Date(),
-          name: 'Cash Payment - ' + patientName,
-          amount: amount,
-          user: {
-            connect: {
-              id: userId,
+        data: Object.assign(
+          {
+            date: new Date(),
+            name: 'Cash Payment - ' + patientName,
+            amount: amount,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          organization: {
-            connect: {
-              id: organizationId,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-        },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          }
+        ),
       });
       await prisma.insuranceRevenue.create({
-        data: {
-          date: new Date(),
-          name: 'insurance Payment - ' + patientName,
-          amount: subtotal,
-          user: {
-            connect: {
-              id: userId,
+        data: Object.assign(
+          {
+            date: new Date(),
+            name: 'insurance Payment - ' + patientName,
+            amount: subtotal,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            company: {
+              connect: {
+                id: company,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          company: {
-            connect: {
-              id: company,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-        },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          }
+        ),
       });
     } else {
       await prisma.bankRevenue.create({
-        data: {
-          date: new Date(),
-          name: 'Bank Payment - ' + patientName,
-          amount: amount,
-          user: {
-            connect: {
-              id: userId,
+        data: Object.assign(
+          {
+            date: new Date(),
+            name: 'Bank Payment - ' + patientName,
+            amount: amount,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            bank: {
+              connect: {
+                id: bank,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          bank: {
-            connect: {
-              id: bank,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-        },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          }
+        ),
       });
       await prisma.insuranceRevenue.create({
-        data: {
-          date: new Date(),
-          name: 'insurance Payment - ' + patientName,
-          amount: subtotal,
-          user: {
-            connect: {
-              id: userId,
+        data: Object.assign(
+          {
+            date: new Date(),
+            name: 'insurance Payment - ' + patientName,
+            amount: subtotal,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            company: {
+              connect: {
+                id: company,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          company: {
-            connect: {
-              id: company,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-        },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          }
+        ),
       });
     }
   }

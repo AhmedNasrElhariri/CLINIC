@@ -61,6 +61,18 @@ export const LIST_BANK_REVENUES = gql`
       }
       date
       invoiceNo
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty{
+        id
+        name
+      }
     }
   }
 `;

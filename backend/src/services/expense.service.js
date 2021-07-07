@@ -1,6 +1,11 @@
 import { prisma } from '@';
 
-export const createInventoryExpense = async ({ name, price, userId ,organizationId}) => {
+export const createInventoryExpense = async ({
+  name,
+  price,
+  userId,
+  organizationId,
+}) => {
   return prisma.expense.create({
     data: {
       name,
@@ -12,11 +17,11 @@ export const createInventoryExpense = async ({ name, price, userId ,organization
           id: userId,
         },
       },
-      organization:{
-        connect:{
-          id:organizationId
-        }
-      }
+      organization: {
+        connect: {
+          id: organizationId,
+        },
+      },
     },
   });
 };
@@ -24,24 +29,45 @@ export const createInventoryExpense = async ({ name, price, userId ,organization
 export const createAppointmentExpense = async (
   userId,
   discount,
-  organizationId
+  organizationId,
+  branchId,
+  specialtyId,
+  userID,
+  level
 ) => {
   return prisma.expense.create({
-    data: {
-      date: new Date(),
-      name: discount.name,
-      expenseType: 'Dicount',
-      amount: discount.amount,
-      organization: {
-        connect: {
-          id: organizationId,
+    data: Object.assign(
+      {
+        date: new Date(),
+        name: discount.name,
+        expenseType: 'Dicount',
+        amount: discount.amount,
+        level,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
         },
       },
-      user: {
-        connect: {
-          id: userId,
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
         },
       },
-    },
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
+        },
+      }
+    ),
   });
 };

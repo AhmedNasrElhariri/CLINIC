@@ -1,17 +1,32 @@
 import { prisma } from '@';
-
+import { GetLevel } from '@/services/get-level';
 export const createAppointmentRevenue = async data => {
   return prisma.revenue.createMany({ data });
 };
 
-export const createAppointmentRevenueFromSessions = (userId, sessions,organizationId) => {
-  return sessions.map(({ name, price, number }) => ({
-    date: new Date(),
-    name,
-    amount: price * number,
-    userId,
-    organizationId,
-  }));
+export const createAppointmentRevenueFromSessions = (
+  userId,
+  sessions,
+  organizationId,
+  branchId,
+  specialtyId,
+  userID
+) => {
+  const level = GetLevel(branchId, specialtyId, userID);
+  return sessions.map(({ name, price, number }) =>
+    Object.assign(
+      {
+        date: new Date(),
+        name,
+        amount: price * number,
+        level,
+        organizationId,
+        userId,
+      },
+      specialtyId && {specialtyId},
+      branchId && {branchId},
+    )
+  );
 };
 
 export const createAppointmentBankRevenue = async data => {
@@ -35,5 +50,3 @@ export const createAppointmentBankRevenueFromSessions = (
 // export const createAppointmentCompanyRevenue = async data => {
 //   return prisma.bankRevenue.createMany({ data });
 // };
-
-

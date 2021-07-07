@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import * as moment from 'moment';
-
-import { Div, CRModal, CRCard, H6, CRDatePicker } from 'components';
+import { ACTIONS } from 'utils/constants';
+import {
+  Div,
+  CRModal,
+  CRCard,
+  H6,
+  CRDatePicker,
+  CRBrancheTree,
+} from 'components';
 import { Form, DatePicker } from 'rsuite';
 import { formatDate, isBeforeToday } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
@@ -11,10 +18,13 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
   const [formValue, setFormValue] = useState({
     date: null,
     time: null,
+    branchId:null,
+    specialtyId:null,
+    userId:null,
   });
 
   const { appointments } = useAppointments();
-
+  console.log(formValue);
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,
@@ -74,6 +84,11 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
                 style={{ marginTop: '10px' }}
                 onSelectTrigger
                 block
+              />
+              <CRBrancheTree
+                formValue={formValue}
+                onChange={setFormValue}
+                action={ACTIONS.Create_Appointment}
               />
             </Div>
           </CRCard>

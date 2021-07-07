@@ -185,6 +185,9 @@ type Mutation {
     bank: ID
     company: ID
     option: optionInput!
+    branchId: ID
+    specialtyId: ID
+    userId: ID
   ): Appointment!
   createView(view: ViewInput!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
@@ -193,7 +196,13 @@ type Mutation {
   changePassword(currentPassword: String!, newPassword: String!): AuthPayload
   activateView(viewId: ID!): ViewStatus!
   createDefaultView: Boolean
-  adjustAppointment(id: ID!, date: Date!): Appointment!
+  adjustAppointment(
+    id: ID!
+    date: Date!
+    branchId: ID
+    specialtyId: ID
+    userId: ID
+  ): Appointment!
   cancelAppointment(id: ID!): Appointment!
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
@@ -915,6 +924,10 @@ type BankRevenue {
   name: String!
   amount: Int!
   date: Date!
+  level: String
+  user: User
+  branch: Branch
+  specialty: Specialty
   invoiceNo: String
   bank: BankDefinition!
 }
@@ -924,6 +937,10 @@ type InsuranceRevenue {
   name: String!
   amount: Int!
   date: Date!
+  level: String
+  user: User
+  branch: Branch
+  specialty: Specialty
   invoiceNo: String
   company: CompanyDefinition!
 }

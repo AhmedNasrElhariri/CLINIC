@@ -54,7 +54,15 @@ export const useAdjustAppointment = ({
 
   const handleEdit = useCallback(
     formValue => {
-      adjust({ variables: { id: appointment.id, date: calcDate(formValue) } });
+      adjust({
+        variables: {
+          id: appointment.id,
+          date: calcDate(formValue),
+          branchId: formValue.branchId,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
+        },
+      });
     },
     [adjust, appointment]
   );
@@ -74,13 +82,8 @@ export const useAdjustAppointment = ({
 };
 
 const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
-  const {
-    edit,
-    cancel,
-    visible,
-    setVisible,
-    setAppointment,
-  } = useAdjustAppointment();
+  const { edit, cancel, visible, setVisible, setAppointment } =
+    useAdjustAppointment();
 
   useEffect(() => {
     setAppointment(appointment);
@@ -113,13 +116,13 @@ const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
         children(getStateAndHelpers())
       ) : (
         <>
-            <EditOLIcon
-              onClick={() => {
-                onOpen('edit');
-              }}
-              ml={2}
-            />
-            <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+          <EditOLIcon
+            onClick={() => {
+              onOpen('edit');
+            }}
+            ml={2}
+          />
+          <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
         </>
       )}
 

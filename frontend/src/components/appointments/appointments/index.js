@@ -8,6 +8,7 @@ import {
   ARCHIVE_APPOINTMENT,
   COMPLETE_APPOINTMENT,
 } from 'apollo-client/queries';
+import BranchFilter from '../../filters';
 import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 import { getName } from 'services/accounting';
 import ArchiveAppointment from '../archive-appointment';
@@ -21,8 +22,12 @@ function Appointments() {
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const { visible, close, open } = useModal({});
-  const { appointments, appointmentsCount, refetchAppointments } =
-    useAppointments({ page });
+  const {
+    appointments,
+    appointmentsCount,
+    refetchAppointments,
+    filterBranches,
+  } = useAppointments({ page });
   const pages = Math.ceil(appointmentsCount / 20);
   const [popUp, setPopUp] = useState('');
   const [appointment, setAppointment] = useState(null);
@@ -117,32 +122,50 @@ function Appointments() {
           </CRTabs.CRTabsGroup>
           <CRTabs.CRContentGroup>
             <CRTabs.CRContent>
-              <ListAppointments
-                appointments={filterByStatus(filteredAppointments, 'Scheduled')}
-                onArchive={onClickDone}
-                onComplete={onCompleteDone}
-                defaultExpanded={true}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                pages={pages}
+              <BranchFilter
+                appointments={filteredAppointments}
+                branches={filterBranches}
+                render={apps => (
+                  <ListAppointments
+                    appointments={filterByStatus(apps, 'Scheduled')}
+                    onArchive={onClickDone}
+                    onComplete={onCompleteDone}
+                    defaultExpanded={true}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    pages={pages}
+                  />
+                )}
               />
             </CRTabs.CRContent>
             <CRTabs.CRContent>
-              <ListAppointments
-                appointments={filterByStatus(filteredAppointments, 'Waiting')}
-                onArchive={onClickDone}
-                onComplete={onCompleteDone}
-                defaultExpanded={true}
-                waiting={true}
+              <BranchFilter
+                appointments={filteredAppointments}
+                branches={filterBranches}
+                render={apps => (
+                  <ListAppointments
+                    appointments={filterByStatus(apps, 'Waiting')}
+                    onArchive={onClickDone}
+                    onComplete={onCompleteDone}
+                    defaultExpanded={true}
+                    waiting={true}
+                  />
+                )}
               />
             </CRTabs.CRContent>
             <CRTabs.CRContent>
-              <ListAppointments
-                appointments={filterByStatus(filteredAppointments, 'Archived')}
-                onArchive={onClickDone}
-                onComplete={onCompleteDone}
-                defaultExpanded={true}
-                waiting={true}
+              <BranchFilter
+                appointments={filteredAppointments}
+                branches={filterBranches}
+                render={apps => (
+                  <ListAppointments
+                    appointments={filterByStatus(apps, 'Archived')}
+                    onArchive={onClickDone}
+                    onComplete={onCompleteDone}
+                    defaultExpanded={true}
+                    waiting={true}
+                  />
+                )}
               />
             </CRTabs.CRContent>
           </CRTabs.CRContentGroup>

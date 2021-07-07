@@ -56,7 +56,7 @@ export const LIST_APPOINTMENTS = gql`
           id
           name
         }
-     }
+      }
       appointmentsCount
     }
   }
@@ -92,7 +92,7 @@ export const GET_APPOINTMENT = gql`
       pulses
       powerOne
       powerTwo
-      sessionsPulses{
+      sessionsPulses {
         name
         value
       }
@@ -179,8 +179,20 @@ export const GET_SURGRIES_APPOINTMENT = gql`
 `;
 
 export const ADJUST_APPOINTMENT = gql`
-  mutation adjustAppointment($id: ID!, $date: Date!) {
-    adjustAppointment(id: $id, date: $date) {
+  mutation adjustAppointment(
+    $id: ID!
+    $date: Date!
+    $branchId: ID
+    $specialtyId: ID
+    $userId: ID
+  ) {
+    adjustAppointment(
+      id: $id
+      date: $date
+      branchId: $branchId
+      specialtyId: $specialtyId
+      userId: $userId
+    ) {
       id
       date
     }
@@ -224,6 +236,9 @@ export const ARCHIVE_APPOINTMENT = gql`
     $patientName: String!
     $company: ID
     $option: optionInput!
+    $branchId: ID
+    $specialtyId: ID
+    $userId: ID
   ) {
     archiveAppointment(
       id: $id
@@ -235,6 +250,9 @@ export const ARCHIVE_APPOINTMENT = gql`
       bank: $bank
       company: $company
       option: $option
+      branchId: $branchId
+      specialtyId: $specialtyId
+      userId: $userId
     ) {
       id
       status
