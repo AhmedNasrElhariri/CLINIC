@@ -67,7 +67,7 @@ const CustomBranchTress = ({
         userId: doctors[0]?.id,
       });
     }
-  }, [doctors, formValue?.specialtyId, checkFormValue]);
+  }, [doctors, formValue.specialtyId, checkFormValue]);
   useEffect(() => {
     if (
       checkFormValue.check.length != 0 &&
@@ -77,6 +77,7 @@ const CustomBranchTress = ({
         ...formValue,
         branchId: null,
         specialtyId: null,
+        userId:null,
       });
     }
     if (

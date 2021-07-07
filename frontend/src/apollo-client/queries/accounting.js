@@ -87,6 +87,18 @@ export const LIST_COMPANY_REVENUES = gql`
         id
         name
       }
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty{
+        id
+        name
+      }
       date
       invoiceNo
     }

@@ -7,8 +7,8 @@ const CRDocSelectInput = ({ data, name, label, ...rest }) => {
       objName = objName + '/' + '(Organization)';
     } else if (d.level === 'branch') {
       objName = objName + '/' + d?.branch?.name + '(Branch)';
-    } else if (d.level === 'speciality') {
-      objName = objName + '/' + d?.speciality?.name + '(Speciality)';
+    } else if (d.level === 'specialty') {
+      objName = objName + '/' + d?.specialty?.name + '(Speciality)';
     } else {
       objName = objName + '/' + d?.user?.name + '(User)';
     }

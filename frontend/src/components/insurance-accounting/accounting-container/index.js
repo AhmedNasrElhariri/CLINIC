@@ -1,16 +1,13 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { useMutation } from '@apollo/client';
-import { Alert } from 'rsuite';
 import * as R from 'ramda';
-import { MainContainer, Div, CRCard, CRButton, H6 } from 'components';
+import { MainContainer, Div, CRCard, H6 } from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../../accounting/profit';
-import { useInsuranceAccounting, useAuth } from 'hooks';
+import { useInsuranceAccounting, useAppointments } from 'hooks';
 import Filter from './filter';
-
+import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
-
 import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
@@ -21,7 +18,9 @@ const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
-
+  const {
+    filterBranches,
+  } = useAppointments({});
   const { revenues, timeFrame } = useInsuranceAccounting({
     view,
     period,
@@ -72,7 +71,13 @@ const BankAccountingContainer = () => {
         <Div>
           <Div display="flex">
             <Div flexGrow={1} mr={2}>
-              <ListData title="Insurance Revenues" data={updatedRevenues} />
+            <BranchFilter
+                appointments={updatedRevenues}
+                branches={filterBranches}
+                render={revenues => (
+              <ListData title="Insurance Revenues" data={revenues} />
+                )}
+                />
             </Div>
           </Div>
         </Div>
