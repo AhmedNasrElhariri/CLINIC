@@ -464,6 +464,7 @@ CREATE TABLE "InsuranceRevenue" (
     "specialtyId" TEXT,
     "branchId" TEXT,
     "companyId" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -1175,6 +1176,9 @@ ALTER TABLE "InsuranceRevenue" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"(
 
 -- AddForeignKey
 ALTER TABLE "InsuranceRevenue" ADD FOREIGN KEY ("companyId") REFERENCES "CompanyDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InsuranceRevenue" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Event" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

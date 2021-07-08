@@ -97,7 +97,6 @@ const CustomBranchTress = ({
     formValue.userId,
     checkFormValue.check,
   ]);
-  console.log(specialties);
   return (
     <>
       {showUserAndOrganization && (

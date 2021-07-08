@@ -50,7 +50,6 @@ const Test = props => {
         setDataTwo(res.data);
       })
       .catch(err => {
-        console.log(err);
       });
 
     // const data = res.data; // or res.blob() if using blob responses
@@ -83,7 +82,6 @@ const Test = props => {
         setData(res.data);
       })
       .catch(err => {
-        console.log(err);
       });
 
     // const data = res.data; // or res.blob() if using blob responses

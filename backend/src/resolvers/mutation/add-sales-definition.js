@@ -8,7 +8,6 @@ const addSalesDefinition = async (
   const { specialtyId, branchId, userId: userID,quantity,salesId, ...rest } = salesDefinition;
   
   const level = GetLevel(branchId, specialtyId, userID);
-  console.log(specialtyId,userID,branchId,level,'llllllllllllllll');
   return prisma.salesDefinition.create({
     data: Object.assign(
       {

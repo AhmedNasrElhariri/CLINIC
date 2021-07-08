@@ -28,7 +28,6 @@ const initialValue = {
 };
 function TodayAppointments() {
   const { todayAppointments: appointments, filterBranches } = useAppointments();
-  console.log(appointments);
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
@@ -121,7 +120,6 @@ function TodayAppointments() {
     },
     [open]
   );
-  console.log(appointment);
   const handleArchive = useCallback(
     ({
       sessions,

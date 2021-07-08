@@ -45,7 +45,6 @@ const adjustAppointment = async (
     ),
     where: { id },
   });
-  console.log(newAppointment, 'slssssssssss');
   onAppointmentEdit({
     userId: persistedAppt.userId,
     notifierId: userId,

@@ -151,7 +151,6 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-  console.log(sessionsPulses);
   const handleAddSession = () => {
     setSessionsPulses([...sessionsPulses, session]);
   };

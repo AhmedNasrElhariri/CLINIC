@@ -144,7 +144,6 @@ const Sales = () => {
       });
     }
   }, [addSales, editSales, formValue, type]);
-  console.log(itemFilteredSalesByUser);
   return (
     <>
       <MainContainer

@@ -29,7 +29,7 @@ const appointments = async (
       specialty: true,
       branch: true,
       doctor: true,
-      session: true,
+      session:true,
     },
     skip: offset,
     take: limit,

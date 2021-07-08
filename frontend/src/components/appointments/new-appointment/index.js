@@ -36,6 +36,7 @@ import {
   useModal,
   useCourses,
   useConfigurations,
+  useSessionDefinition,
 } from 'hooks';
 
 const { StringType, DateType } = Schema.Types;
@@ -89,7 +90,7 @@ const NewAppointment = ({ show, onHide }) => {
     name: course.courseDefinition.name,
     IDBTransaction: course.id,
   }));
-  const { sessions } = useConfigurations();
+  const { sessionsDefinition } = useSessionDefinition();
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).toDate() },
   });
@@ -124,7 +125,7 @@ const NewAppointment = ({ show, onHide }) => {
       branchId,
       specialtyId,
       waiting,
-      session,
+      sessionId,
     } = formValue;
 
     const timeDate = moment(formValue.time);
@@ -151,7 +152,7 @@ const NewAppointment = ({ show, onHide }) => {
       branchId,
       specialtyId,
       waiting,
-      session,
+      sessionId,
     });
   }, [createAppointment, formValue]);
   // const notify = () => {
@@ -244,10 +245,9 @@ const NewAppointment = ({ show, onHide }) => {
                 {formValue.type === 'Session' && (
                   <CRSelectInput
                     label="Session Name"
-                    name="session"
-                    valueKey="name"
+                    name="sessionId"
                     block
-                    data={sessions}
+                    data={sessionsDefinition}
                   />
                 )}
                 <CRDatePicker

@@ -21,7 +21,6 @@ const MedicineDefinition = () => {
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-console.log(formValue);
   const { addMedicineDefinition, medicineDefinitions, editMedicineDefinition } =
     useMedicineDefinitions({
       onCreate: () => {
@@ -64,7 +63,6 @@ console.log(formValue);
       });
     }
   }, [addMedicineDefinition, editMedicineDefinition, formValue, type]);
-  console.log(formValue);
   return (
     <>
       <Div textAlign="right">

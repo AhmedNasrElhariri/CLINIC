@@ -24,7 +24,6 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
   });
 
   const { appointments } = useAppointments();
-  console.log(formValue);
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,

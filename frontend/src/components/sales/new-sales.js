@@ -72,6 +72,7 @@ function NewSales({
             <Div display="flex" justifyContent="space-between" mt={3}>
               <Div>
                 <CRDocSelectInput
+                  formValue={formValue}
                   onChange={val => onChange({ ...formValue, itemId: val?.id })}
                   label="Item"
                   data={salesesDefinition}
