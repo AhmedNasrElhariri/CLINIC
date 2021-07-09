@@ -18,7 +18,7 @@ const initialValues = {
   type: 'Examination',
   patientId: null,
   branchId: null,
-  sessionId: null,
+  session: {},
   specialtyId: null,
   userId: null,
   date: new Date(),
@@ -29,7 +29,7 @@ const initialValues = {
 const useNewAppointment = ({ onCreate, date } = {}) => {
   const [formValue, setFormValue] = useState(initialValues);
 
-  const { appointments } = useAppointments();
+  const { todayAppointments: appointments } = useAppointments();
   const { patientsSummary: patients } = usePatients();
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Appointment },

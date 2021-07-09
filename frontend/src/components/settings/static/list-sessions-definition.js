@@ -25,34 +25,10 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Level</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Session Duration</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ level }) => (
-                <CRTable.CRCellStyled bold>{level}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Branch</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ branch }) => (
-                <CRTable.CRCellStyled bold>{branch?.name}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Specialty</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ specialty }) => (
-                <CRTable.CRCellStyled bold>{specialty?.name}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Doctor</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ user }) => (
-                <CRTable.CRCellStyled bold>{user?.name}</CRTable.CRCellStyled>
+              {({ duration }) => (
+                <CRTable.CRCellStyled bold>{duration}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

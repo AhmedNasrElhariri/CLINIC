@@ -52,11 +52,6 @@ const addSales = async (_, { sales }, { organizationId, userId }) => {
                 id: organizationId,
               },
             },
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
           },
           specialtyId && {
             specialty: {
@@ -69,6 +64,13 @@ const addSales = async (_, { sales }, { organizationId, userId }) => {
             branch: {
               connect: {
                 id: branchId,
+              },
+            },
+          },
+          userID &&{
+            user: {
+              connect: {
+                id: userID,
               },
             },
           }

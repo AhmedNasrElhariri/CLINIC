@@ -11,9 +11,7 @@ import { useModal } from 'hooks';
 const initValue = {
   name: '',
   price: 0,
-  branchId:null,
-  userId: null,
-  specialtyId: null,
+  duration:5,
 };
 
 const SessionDefinition = () => {
@@ -40,7 +38,7 @@ const SessionDefinition = () => {
   }, [open, setFormValue, setType]);
   const handleClickEdit = useCallback(
     data => {
-      const session = R.pick(['id', 'name', 'price'])(data);
+      const session = R.pick(['id', 'name', 'price','duration'])(data);
       setType('edit');
       setFormValue(session);
       open();

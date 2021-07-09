@@ -47,19 +47,7 @@ export const LIST_SESSIONS_DEFINITION = gql`
       id
       name
       price
-      level
-      user{
-        id
-        name
-      }
-      branch{
-        id
-        name
-      }
-      specialty{
-        id
-        name
-      }
+      duration
     }
   }
 `;
@@ -69,6 +57,8 @@ export const ADD_SESSION_DEFINITION = gql`
     addSessionDefinition(sessionDefinition: $sessionDefinition) {
       id
       name
+      price
+      duration
     }
   }
 `;
@@ -78,6 +68,8 @@ export const EDIT_SESSION_DEFINITION = gql`
     editSessionDefinition(sessionDefinition: $sessionDefinition) {
       id
       name
+      price
+      duration
     }
   }
 `;

@@ -218,7 +218,6 @@ model User {
   PayrollUser         PayrollUser[]
   Sales               Sales[]
   Price               Price[]
-  SessionDefinition   SessionDefinition[]
   Hospital            Hospital[]
   Surgery             Surgery[]
   SalesDefinition     SalesDefinition[]
@@ -264,6 +263,7 @@ model Appointment {
   doctorId         String
   businessNotes    String             @default("")
   accounted        Boolean            @default(false)
+  duration         Int                @default(5)
   status           AppointmentStatus
   data             AppointmentField[]
   notes            String?            @default("")
@@ -803,13 +803,7 @@ model SessionDefinition {
   id             String        @id @default(uuid())
   name           String
   price          Int
-  level          String
-  user           User          @relation(fields: [userId], references: [id])
-  userId         String
-  specialty      Specialty?    @relation(fields: [specialtyId], references: [id])
-  specialtyId    String?
-  branch         Branch?       @relation(fields: [branchId], references: [id])
-  branchId       String?
+  duration       Int           @default(5)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @default(now()) @updatedAt
   organization   Organization  @relation(fields: [organizationId], references: [id])
@@ -894,8 +888,8 @@ model Sales {
   updatedAt         DateTime        @default(now()) @updatedAt
   organization      Organization    @relation(fields: [organizationId], references: [id])
   organizationId    String
-  user              User            @relation(fields: [userId], references: [id])
-  userId            String
+  user              User?           @relation(fields: [userId], references: [id])
+  userId            String?
   salesDefinition   SalesDefinition @relation(fields: [salesDefinitionId], references: [id])
   salesDefinitionId String
 
@@ -1089,7 +1083,6 @@ model Branch {
   updatedAt          DateTime             @default(now()) @updatedAt
   InventoryItem      InventoryItem[]
   Price              Price[]
-  SessionDefinition  SessionDefinition[]
   Hospital           Hospital[]
   Surgery            Surgery[]
   Revenue            Revenue[]
@@ -1114,7 +1107,6 @@ model Specialty {
   updatedAt          DateTime             @default(now()) @updatedAt
   InventoryItem      InventoryItem[]
   Price              Price[]
-  SessionDefinition  SessionDefinition[]
   Hospital           Hospital[]
   Surgery            Surgery[]
   Revenue            Revenue[]

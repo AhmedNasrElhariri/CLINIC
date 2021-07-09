@@ -45,9 +45,9 @@ function useAppointmentForm({ date, type, appointments }) {
         return true;
       }
 
-      return selectedDayAppointments.some(({ date }) => {
+      return selectedDayAppointments.some(({ date, duration }) => {
         const startDate = moment(date);
-        const endDate = moment(startDate).add(5, 'minutes');
+        const endDate = moment(startDate).add(duration, 'minutes');
         return newDate.isBetween(startDate, endDate, 'minutes', '[)');
       });
     },

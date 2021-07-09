@@ -83,14 +83,22 @@ const NewAppointment = ({ show, onHide }) => {
     patients,
     loading,
   } = useNewAppointment({ onCreate: onHide });
+  console.log(appointments);
   const { patientCourses } = useCourses({
     patientId: formValue.patientId,
   });
+  console.log(formValue);
   const updatedPatientCourses = patientCourses.map(course => ({
     name: course.courseDefinition.name,
     IDBTransaction: course.id,
   }));
   const { sessionsDefinition } = useSessionDefinition();
+  const updatedSessionsDefinition = sessionsDefinition.map(s => {
+    return {
+      name:s.name,
+      id: s,
+    }
+  }) ;
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).toDate() },
   });
@@ -125,7 +133,7 @@ const NewAppointment = ({ show, onHide }) => {
       branchId,
       specialtyId,
       waiting,
-      sessionId,
+      session,
     } = formValue;
 
     const timeDate = moment(formValue.time);
@@ -142,7 +150,8 @@ const NewAppointment = ({ show, onHide }) => {
         second: '00',
       });
     }
-
+    const sessionId = session?.id;
+    const duration = session?.duration;
     createAppointment({
       patientId,
       type,
@@ -153,6 +162,7 @@ const NewAppointment = ({ show, onHide }) => {
       specialtyId,
       waiting,
       sessionId,
+      duration
     });
   }, [createAppointment, formValue]);
   // const notify = () => {
@@ -245,9 +255,9 @@ const NewAppointment = ({ show, onHide }) => {
                 {formValue.type === 'Session' && (
                   <CRSelectInput
                     label="Session Name"
-                    name="sessionId"
+                    name="session"
                     block
-                    data={sessionsDefinition}
+                    data={updatedSessionsDefinition}
                   />
                 )}
                 <CRDatePicker

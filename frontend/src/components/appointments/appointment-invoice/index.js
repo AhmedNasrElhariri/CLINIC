@@ -76,11 +76,16 @@ function AppointmentInvoice({
   const { banksDefinition } = useBankDefinition({});
   const { companysDefinition } = useCompanyDefinition({});
   const { sessionsDefinition } = useSessionDefinition({});
+  const updatedSessionDefinitions = sessionsDefinition.map(s => {
+    return {
+      name: s.name,
+      id: s,
+    };
+  });
   const choices = useMemo(() => {
     const allChoices = [...sessions];
     return allChoices.map(s => ({ name: s.name, id: s }));
   }, [sessions]);
-
   const handleOnChange = useCallback(
     sessions => {
       setSelectedSessions(sessions);
@@ -90,7 +95,6 @@ function AppointmentInvoice({
     },
     [onChange]
   );
-
   const add = useCallback(() => {
     if (R.isNil(session) || R.isEmpty(session)) {
       return;
@@ -113,11 +117,10 @@ function AppointmentInvoice({
       (sum, { price, number }) => sum + number * price,
       0
     );
-    sub = subRed + others ;
+    sub = subRed + others;
     return sub;
   }, [selectedSessions, option, others]);
   const total = useMemo(() => subtotal - discount, [discount, subtotal]);
-
   return (
     <>
       <Div mt={20}>
@@ -174,11 +177,13 @@ function AppointmentInvoice({
             <CRButton onClick={() => add()}>add</CRButton>
             <Div display="flex" justifyContent="space-around">
               {company == null ? (
-                <CRDocSelectInput
-                  onChange={val => val == null ? setSession({}) : setSession(val) }
+                <CRSelectInput
+                  onChange={val =>
+                    val == null ? setSession({}) : setSession(val)
+                  }
                   value={session}
                   label="session Type"
-                  data={sessionsDefinition}
+                  data={updatedSessionDefinitions}
                   style={{ width: '230px' }}
                 />
               ) : (
@@ -186,7 +191,9 @@ function AppointmentInvoice({
                   label="Session Type"
                   placeholder="Select Type"
                   value={session}
-                  onChange={val => val == null ? setSession({}) : setSession(val) }
+                  onChange={val =>
+                    val == null ? setSession({}) : setSession(val)
+                  }
                   data={choices}
                   style={{ width: '230px' }}
                 />

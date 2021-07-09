@@ -11,8 +11,19 @@ function ListSalesesDefinition({ saless, onEdit }) {
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Item Name</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ name }) => (
-                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+              {({ name, level, branch, specialty, user }) => (
+                <CRTable.CRCellStyled bold>
+                  {name} {' / '}
+                  {level}
+                  {' / '}
+                  {level === 'organization'
+                    ? ''
+                    : level === 'branch'
+                    ? branch?.name
+                    : level === 'specialty'
+                    ? specialty?.name
+                    : user?.name}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

@@ -5,8 +5,15 @@ const addSalesDefinition = async (
   { salesDefinition },
   { organizationId, userId }
 ) => {
-  const { specialtyId, branchId, userId: userID,quantity,salesId, ...rest } = salesDefinition;
-  
+  const {
+    specialtyId,
+    branchId,
+    userId: userID,
+    quantity,
+    salesId,
+    ...rest
+  } = salesDefinition;
+
   const level = GetLevel(branchId, specialtyId, userID);
   return prisma.salesDefinition.create({
     data: Object.assign(
@@ -17,11 +24,6 @@ const addSalesDefinition = async (
         organization: {
           connect: {
             id: organizationId,
-          },
-        },
-        user: {
-          connect: {
-            id: userId,
           },
         },
       },
@@ -36,6 +38,13 @@ const addSalesDefinition = async (
         branch: {
           connect: {
             id: branchId,
+          },
+        },
+      },
+      userID && {
+        user: {
+          connect: {
+            id: userID,
           },
         },
       }

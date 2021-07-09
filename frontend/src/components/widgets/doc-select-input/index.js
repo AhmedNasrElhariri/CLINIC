@@ -1,20 +1,31 @@
 import React, { useMemo } from 'react';
 import { CRSelectInput } from 'components';
-const CRDocSelectInput = ({ data, name, formValue, label, ...rest }) => {
-  const { branchId, specialtyId, userId } = formValue;
+const CRDocSelectInput = ({
+  data,
+  name,
+  branchId = null,
+  specialtyId = null,
+  userId = null,
+  label,
+  ...rest
+}) => {
   const selectedData = useMemo(() => {
     let lastData = [];
     if (branchId != null && specialtyId == null && userId == null) {
-      lastData = data.filter(i => i.level === 'branch');
+      lastData = data.filter(
+        i => i.level === 'branch' && i.branch.id == branchId
+      );
     } else if (specialtyId != null && userId == null) {
-      lastData = data.filter(i => i.level === 'specialty');
+      lastData = data.filter(
+        i => i.level === 'specialty' && i.specialty.id == specialtyId
+      );
     } else if (userId != null) {
-      lastData = data.filter(i => i.level === 'user');
+      lastData = data.filter(i => i.level === 'user' && i.user.id == userId);
     } else {
-      lastData = data.filter(i => i.level === 'organization');
+      lastData = data;
     }
     return lastData;
-  }, [formValue.branchId, formValue.specialtyId, formValue.userId]);
+  }, [branchId, specialtyId, userId]);
   const updatedData = selectedData?.map(d => {
     let objName = d?.Apptype || d?.name;
     if (d.level === 'organization') {

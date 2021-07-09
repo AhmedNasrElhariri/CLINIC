@@ -504,6 +504,7 @@ type Appointment {
   pulses: Int
   powerOne: Int
   powerTwo: Int
+  duration: Int
   accounted: Boolean
   sessionsPulses: [SessionPulse!]
   session: SessionDefinition
@@ -563,6 +564,7 @@ input AppointmentInput {
   type: AppointmentType!
   userId: ID!
   branchId: ID
+  duration: Int
   specialtyId: ID
   sessionId: ID
   notes: String
@@ -1137,19 +1139,14 @@ type SessionDefinition {
   id: ID!
   name: String!
   price: Int!
-  level: String!
-  user: User
-  branch: Branch
-  specialty: Specialty
+  duration: Int!
 }
 
 input SessionInputDefinition {
   id: ID
   name: String!
   price: Int!
-  userId: ID
-  specialtyId: ID
-  branchId: ID
+  duration: Int!
 }
 
 ########################### Images Definition ##################################

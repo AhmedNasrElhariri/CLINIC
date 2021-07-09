@@ -40,7 +40,12 @@ function NewSessionDefinition({
           placeholder="Type Price"
           block
         />
-        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Session}/>
+        <CRNumberInput
+          label="Duration"
+          name="duration"
+          placeholder="Type Duration"
+          block
+        />
       </Form>
     </CRModal>
   );

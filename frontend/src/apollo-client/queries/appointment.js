@@ -29,6 +29,7 @@ export const LIST_APPOINTMENTS = gql`
         date
         businessNotes
         accounted
+        duration
         patient {
           id
           name
