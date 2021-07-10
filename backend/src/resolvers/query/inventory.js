@@ -9,6 +9,7 @@ const inventory = (_, __, { organizationId }) => {
       user:true,
       branch:true,
       specialty:true,
+      doctor:true,
     }
   });
 };

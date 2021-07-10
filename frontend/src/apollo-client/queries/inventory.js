@@ -32,6 +32,10 @@ export const LIST_INVENTORY = gql`
         id
         name
       }
+      doctor{
+        id
+        name
+      }
     }
   }
 `;

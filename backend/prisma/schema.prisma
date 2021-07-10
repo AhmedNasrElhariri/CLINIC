@@ -176,26 +176,25 @@ model Organization {
 }
 
 model User {
-  id               String             @id @default(uuid())
-  name             String
-  email            String             @unique
-  password         String
-  organization     Organization       @relation(fields: [organizationId], references: [id])
-  organizationId   String
-  avatar           String?
-  role             PermissionRole?    @relation(fields: [roleId], references: [id])
-  roleId           String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt
-  views            View[]
-  viewStatus       ViewStatus[]
-  workingHours     WorkingHours[]
-  snippets         Snippet[]
-  position         Position
-  events           Event[]
-  user             Appointment[]      @relation("userApp")
-  doctor           Appointment[]      @relation("doctorApp")
-  inventoryHistory InventoryHistory[] @relation("userInventory")
+  id                  String               @id @default(uuid())
+  name                String
+  email               String               @unique
+  password            String
+  organization        Organization         @relation(fields: [organizationId], references: [id])
+  organizationId      String
+  avatar              String?
+  role                PermissionRole?      @relation(fields: [roleId], references: [id])
+  roleId              String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @default(now()) @updatedAt
+  views               View[]
+  viewStatus          ViewStatus[]
+  workingHours        WorkingHours[]
+  snippets            Snippet[]
+  position            Position
+  events              Event[]
+  user                Appointment[]        @relation("userApp")
+  doctor              Appointment[]        @relation("doctorApp")
   rules               Rule[]
   specialties         UserSpecialty[]
   labDefinitions      LabDefinition[]
@@ -205,7 +204,6 @@ model User {
   patients            Patient[]
   expenses            Expense[]
   revenues            Revenue[]
-  inventoryItem       InventoryItem[]
   item                Item[]
   timing              Timing[]
   labCategories       LabCategory[]
@@ -223,7 +221,7 @@ model User {
   SalesDefinition     SalesDefinition[]
   UserInventoryItem   InventoryItem[]      @relation("userInventoryItem")
   DoctorInventoryItem InventoryItem[]      @relation("doctorInventoryItem")
-  InventoryHistory    InventoryHistory[]
+  InventoryHistory    InventoryHistory[]   @relation("userInventory")
 }
 
 model Patient {
@@ -701,7 +699,6 @@ model InventoryItem {
   branchId       String?
   specialtyId    String?
 
-  User User @relation(fields: [userId], references: [id])
   @@id([itemId, userId])
 }
 
@@ -709,7 +706,7 @@ model InventoryHistory {
   id             String             @id @default(uuid())
   item           Item               @relation(fields: [itemId], references: [id])
   itemId         String
-  user           User               @relation(fields: [userId], references: [id])
+  user           User               @relation("userInventory", fields: [userId], references: [id])
   userId         String
   patient        Patient?           @relation(fields: [patientId], references: [id])
   patientId      String?
@@ -721,7 +718,6 @@ model InventoryHistory {
   updatedAt      DateTime           @default(now()) @updatedAt
   organization   Organization       @relation(fields: [organizationId], references: [id])
   organizationId String
-  User           User               @relation("userInventory", fields: [userId], references: [id])
 }
 
 model Hospital {
