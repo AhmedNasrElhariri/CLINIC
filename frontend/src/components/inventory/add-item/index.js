@@ -28,6 +28,7 @@ const AddItem = ({ items }) => {
       level: '',
     },
   });
+  console.log(formValue);
   const { addItem } = useInventory({
     onAddCompleted: () => {
       Alert.success('Item has been created successfully');

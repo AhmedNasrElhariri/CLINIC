@@ -28,8 +28,11 @@ const initialValues = {
 
 const useNewAppointment = ({ onCreate, date } = {}) => {
   const [formValue, setFormValue] = useState(initialValues);
-
-  const { todayAppointments: appointments } = useAppointments();
+  const {
+    todayAppointments: appointments,
+    SpecialtytodayAppointments,
+    specialtyWaitingAppointmentsCount,
+  } = useAppointments({ specialtyId: formValue?.specialtyId });
   const { patientsSummary: patients } = usePatients();
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Appointment },
@@ -84,6 +87,8 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
       patients,
       doctors,
       formValue,
+      SpecialtytodayAppointments,
+      specialtyWaitingAppointmentsCount,
       setFormValue,
       appointments,
       loading,
@@ -94,6 +99,8 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
     [
       appointments,
       branches,
+      SpecialtytodayAppointments,
+      specialtyWaitingAppointmentsCount,
       organizationBranches,
       createAppointment,
       doctors,

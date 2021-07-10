@@ -1011,6 +1011,7 @@ type InventoryItem {
   branch: Branch
   specialty: Specialty
   user: User!
+  doctor: User
   level: String!
 }
 

@@ -80,14 +80,16 @@ const NewAppointment = ({ show, onHide }) => {
     setFormValue,
     createAppointment,
     appointments,
+    SpecialtytodayAppointments,
+    specialtyWaitingAppointmentsCount,
     patients,
     loading,
   } = useNewAppointment({ onCreate: onHide });
-  console.log(appointments);
+
+  console.log(specialtyWaitingAppointmentsCount, 'count');
   const { patientCourses } = useCourses({
     patientId: formValue.patientId,
   });
-  console.log(formValue);
   const updatedPatientCourses = patientCourses.map(course => ({
     name: course.courseDefinition.name,
     IDBTransaction: course.id,
@@ -95,10 +97,10 @@ const NewAppointment = ({ show, onHide }) => {
   const { sessionsDefinition } = useSessionDefinition();
   const updatedSessionsDefinition = sessionsDefinition.map(s => {
     return {
-      name:s.name,
+      name: s.name,
       id: s,
-    }
-  }) ;
+    };
+  });
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: { date: moment(formValue.date).toDate() },
   });
@@ -118,7 +120,7 @@ const NewAppointment = ({ show, onHide }) => {
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,
-    appointments,
+    appointments: SpecialtytodayAppointments,
   });
   const handleCreate = useCallback(() => {
     if (!isValid(model, formValue)) {
@@ -162,7 +164,7 @@ const NewAppointment = ({ show, onHide }) => {
       specialtyId,
       waiting,
       sessionId,
-      duration
+      duration,
     });
   }, [createAppointment, formValue]);
   // const notify = () => {
@@ -203,11 +205,14 @@ const NewAppointment = ({ show, onHide }) => {
         }}
       >
         <Div>
-          Total Appointments: {appointmentsCount.totalAppointment} Patient
+          Total Appointments:{' '}
+          {SpecialtytodayAppointments?.length -
+            specialtyWaitingAppointmentsCount}{' '}
+          Patient
         </Div>
         <SecondRowContainer>
           <Div>
-            Total Waiting List: {appointmentsCount.totalWaiting} Patient
+            Total Waiting List: {specialtyWaitingAppointmentsCount} Patient
           </Div>
           <Div>View All</Div>
         </SecondRowContainer>
@@ -266,7 +271,7 @@ const NewAppointment = ({ show, onHide }) => {
                   name="date"
                   disabledDate={isBeforeToday}
                 />
-                {!formValue.waiting && (
+                {!formValue.waiting && formValue?.userId && (
                   <CRTimePicker
                     label="Time"
                     block

@@ -101,6 +101,7 @@ CREATE TABLE "Appointment" (
     "doctorId" TEXT NOT NULL,
     "businessNotes" TEXT NOT NULL DEFAULT E'',
     "accounted" BOOLEAN NOT NULL DEFAULT false,
+    "duration" INTEGER NOT NULL DEFAULT 5,
     "status" "AppointmentStatus" NOT NULL,
     "notes" TEXT DEFAULT E'',
     "pulses" INTEGER,
@@ -631,10 +632,7 @@ CREATE TABLE "SessionDefinition" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
-    "level" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "specialtyId" TEXT,
-    "branchId" TEXT,
+    "duration" INTEGER NOT NULL DEFAULT 5,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "organizationId" TEXT NOT NULL,
@@ -719,7 +717,7 @@ CREATE TABLE "Sales" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "organizationId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" TEXT,
     "salesDefinitionId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
@@ -1259,15 +1257,6 @@ ALTER TABLE "Price" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DE
 ALTER TABLE "Price" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "SessionDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1307,7 +1296,7 @@ ALTER TABLE "Sales" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DE
 ALTER TABLE "Sales" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Sales" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Sales" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Sales" ADD FOREIGN KEY ("salesDefinitionId") REFERENCES "SalesDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,5 +1,6 @@
 import { prisma } from '@';
 import { APIExceptcion } from '@/services/erros.service';
+import { GetLevel } from '@/services/get-level';
 import { storeHistoryOfAddition } from '@/services/inventory.service';
 import * as R from 'ramda';
 import { createInventoryExpense } from '../../services/expense.service';
@@ -14,7 +15,8 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
       id: input.itemId,
     },
   });
-  const { itemId, specialtyId, branchId, level } = input;
+  const { itemId, specialtyId, branchId, userId: userID } = input;
+  const level = GetLevel(branchId, specialtyId, userID);
 
   const persistedInventoryItem = await prisma.inventoryItem.findUnique({
     where: {
@@ -34,7 +36,7 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
     name: `${persistedItem.name} X ${input.amount}`,
     price: input.amount * input.price,
     userId,
-    organizationId
+    organizationId,
   });
 
   await storeHistoryOfAddition({
@@ -53,15 +55,15 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
             id: itemId,
           },
         },
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
         quantity: newtotalQuantity,
         organization: {
           connect: {
             id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
           },
         },
         level: level,
@@ -77,6 +79,13 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
         branch: {
           connect: {
             id: branchId,
+          },
+        },
+      },
+      userID && {
+        doctor: {
+          connect: {
+            id: userID,
           },
         },
       }

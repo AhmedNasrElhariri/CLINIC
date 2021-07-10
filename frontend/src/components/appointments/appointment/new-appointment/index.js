@@ -55,7 +55,7 @@ export default function NewAppointment({ show, onHide, appointment }) {
       setFormValue(initialValues);
     };
   }, [setFormValue]);
-
+  
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,

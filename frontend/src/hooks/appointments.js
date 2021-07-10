@@ -7,7 +7,7 @@ import { sortAppointmentsByDate } from 'services/appointment';
 import { APPT_TYPE } from 'utils/constants';
 import { LIST_APPOINTMENTS, LIST_BRANCHES_TREE } from 'apollo-client/queries';
 
-function useAppointments({ includeSurgery, page } = {}) {
+function useAppointments({ includeSurgery, page ,specialtyId} = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: {
       offset: (page - 1) * 20,
@@ -71,9 +71,22 @@ function useAppointments({ includeSurgery, page } = {}) {
       return moment(date).isBetween(from, to, 'minutes', '[]');
     });
   }, [todayAllAppointments]);
+
+  const SpecialtytodayAppointments = useMemo(() => 
+    todayAppointments.filter(a => a.specialty.id == specialtyId)
+  ,[specialtyId,todayAppointments]);
+  
+  const specialtyWaitingAppointmentsCount = useMemo(() => {
+       const waitingAppointments = SpecialtytodayAppointments.filter(a => a.status === 'Waiting');
+       const waitingAppointmentsCount = waitingAppointments.length;
+       console.log(waitingAppointmentsCount,'waitingAppointmentsCount');
+       return waitingAppointmentsCount;
+  },[specialtyId,SpecialtytodayAppointments]); 
+
   const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.List_Appointment },
   });
+  
   const filterBranches = R.propOr([], 'listBranchesTree')(branchesTreeData);
   return useMemo(
     () => ({
@@ -81,6 +94,8 @@ function useAppointments({ includeSurgery, page } = {}) {
       appointmentsCount,
       todayAppointments,
       filterBranches,
+      SpecialtytodayAppointments,
+      specialtyWaitingAppointmentsCount,
       refetchAppointments: {
         query: LIST_APPOINTMENTS,
       },
@@ -92,6 +107,8 @@ function useAppointments({ includeSurgery, page } = {}) {
       appointments,
       todayAppointments,
       appointmentsCount,
+      SpecialtytodayAppointments,
+      specialtyWaitingAppointmentsCount,
       specialties,
       doctors,
       filterBranches,
