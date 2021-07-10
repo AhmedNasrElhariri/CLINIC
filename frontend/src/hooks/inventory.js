@@ -27,7 +27,7 @@ function useInventory({
   const { data: ItemData } = useQuery(LIST_ITEMS);
   const { data: InventoryData } = useQuery(LIST_INVENTORY);
   const { data: InventoryHistoryData } = useQuery(LIST_INVENTORY_HISTORY);
-
+  console.log(InventoryData,'InventoryData');
   const items = useMemo(() => R.propOr([], 'items')(ItemData), [ItemData]);
   const inventory = useMemo(
     () => R.propOr([], 'inventory')(InventoryData),
@@ -67,7 +67,7 @@ function useInventory({
             item,
             branch: i.branch,
             specialty: i.specialty,
-            doctor: i.doctor,
+            user: i.doctor,
           };
         }),
     [inventory, items]
@@ -148,10 +148,12 @@ function useInventory({
       cache,
       {
         data: {
-          addItem: { itemId, quantity },
+          addItem: { id, quantity },
         },
       }
     ) {
+      console.log(id,'iddiiiiiiiiiiii',quantity);
+
       const { inventory } = cache.readQuery({
         query: LIST_INVENTORY,
       });
@@ -159,7 +161,7 @@ function useInventory({
         query: LIST_INVENTORY,
         data: {
           inventory: inventory.map(i =>
-            Object.assign({}, i, i.itemId === itemId && { quantity })
+            Object.assign({}, i, i.id === id && { quantity })
           ),
         },
       });

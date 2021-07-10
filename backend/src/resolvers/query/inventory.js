@@ -5,12 +5,13 @@ const inventory = (_, __, { organizationId }) => {
     where: {
       organizationId,
     },
-    include:{
-      user:true,
-      branch:true,
-      specialty:true,
+    include: {
+      user: true,
+      branch: true,
+      specialty: true,
+      item: true,
       doctor:true,
-    }
+    },
   });
 };
 

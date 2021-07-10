@@ -49,8 +49,8 @@ const ListInventory = ({ items }) => {
       <CRTable.CRColumn flexGrow={1}>
         <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
         <CRTable.CRCell>
-          {({ doctor }) => (
-            <CRTable.CRCellStyled>{doctor.name}</CRTable.CRCellStyled>
+          {({ user }) => (
+            <CRTable.CRCellStyled>{user?.name}</CRTable.CRCellStyled>
           )}
         </CRTable.CRCell>
       </CRTable.CRColumn>

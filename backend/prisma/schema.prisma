@@ -682,6 +682,7 @@ model Item {
 }
 
 model InventoryItem {
+  id             String       @id @default(uuid())
   quantity       Int
   item           Item         @relation(fields: [itemId], references: [id])
   itemId         String
@@ -698,8 +699,6 @@ model InventoryItem {
   doctorId       String?
   branchId       String?
   specialtyId    String?
-
-  @@id([itemId, userId])
 }
 
 model InventoryHistory {

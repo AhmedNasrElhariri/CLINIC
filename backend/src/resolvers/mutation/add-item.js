@@ -9,7 +9,6 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
   if (R.isNil(userId) || R.isNil(input.itemId)) {
     throw new APIExceptcion('invalid user');
   }
-
   const persistedItem = await prisma.item.findUnique({
     where: {
       id: input.itemId,
@@ -17,19 +16,22 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
   });
   const { itemId, specialtyId, branchId, userId: userID } = input;
   const level = GetLevel(branchId, specialtyId, userID);
-
-  const persistedInventoryItem = await prisma.inventoryItem.findUnique({
+  console.log(input);
+  const persistedInventoryItem = await prisma.inventoryItem.findMany({
     where: {
-      itemId_userId: {
-        itemId,
-        userId,
-      },
+      branchId,
+      specialtyId,
+      doctorId: userID,
+      itemId: itemId,
     },
   });
-
-  const inventoryItemQuantity = R.propOr(0, 'quantity')(persistedInventoryItem);
+  const inventoryId =
+    persistedInventoryItem.length > 0 ? persistedInventoryItem[0].id : null;
+  const inventoryItemQuantity = R.propOr(
+    0,
+    'quantity'
+  )(persistedInventoryItem.length > 0 ? persistedInventoryItem[0] : {});
   const totalQuantity = R.propOr(0, 'quantity')(persistedItem);
-
   const newtotalQuantity = inventoryItemQuantity + totalQuantity * input.amount;
 
   await createInventoryExpense({
@@ -94,10 +96,7 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
       quantity: newtotalQuantity,
     },
     where: {
-      itemId_userId: {
-        itemId: input.itemId,
-        userId,
-      },
+      id: inventoryId || '',
     },
   });
 };

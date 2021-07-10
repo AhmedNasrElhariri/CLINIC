@@ -1005,12 +1005,12 @@ type Item {
 }
 
 type InventoryItem {
+  id: ID!
   itemId: ID!
   userId: ID!
   quantity: Int!
   branch: Branch
   specialty: Specialty
-  user: User!
   doctor: User
   level: String!
 }

@@ -16,6 +16,7 @@ const model = Schema.Model({
 });
 
 const AddItem = ({ items }) => {
+  console.log(items);
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, reset } = useForm({
     initValue: {
@@ -28,7 +29,6 @@ const AddItem = ({ items }) => {
       level: '',
     },
   });
-  console.log(formValue);
   const { addItem } = useInventory({
     onAddCompleted: () => {
       Alert.success('Item has been created successfully');

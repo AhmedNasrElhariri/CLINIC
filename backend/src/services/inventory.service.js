@@ -6,7 +6,7 @@ export const updatedUsedMaterials = async (organizationId, items) => {
   const persistedItems = await prisma.inventoryItem.findMany({
     where: {
       organizationId,
-      itemId: {
+      id: {
         in: R.map(R.prop('itemId'))(items),
       },
     },
@@ -20,7 +20,7 @@ export const updatedUsedMaterials = async (organizationId, items) => {
       },
       where: {
         organizationId,
-        itemId,
+        id: itemId,
       },
     };
   });

@@ -16,14 +16,11 @@ export const LIST_ITEMS = gql`
 export const LIST_INVENTORY = gql`
   query inventory {
     inventory {
+      id
       itemId
       userId
       quantity
       level
-      user{
-        id
-        name
-      }
       branch{
         id
         name
@@ -72,7 +69,7 @@ export const UPDATE_ITEM = gql`
 export const ADD_ITEM = gql`
   mutation addItem($item: AddToInventoryInput!) {
     addItem(item: $item) {
-      itemId
+      id
       quantity
     }
   }
