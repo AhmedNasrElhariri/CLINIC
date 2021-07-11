@@ -79,7 +79,6 @@ function useAppointments({ includeSurgery, page ,specialtyId} = {}) {
   const specialtyWaitingAppointmentsCount = useMemo(() => {
        const waitingAppointments = SpecialtytodayAppointments.filter(a => a.status === 'Waiting');
        const waitingAppointmentsCount = waitingAppointments.length;
-       console.log(waitingAppointmentsCount,'waitingAppointmentsCount');
        return waitingAppointmentsCount;
   },[specialtyId,SpecialtytodayAppointments]); 
 

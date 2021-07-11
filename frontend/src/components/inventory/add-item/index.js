@@ -16,7 +16,6 @@ const model = Schema.Model({
 });
 
 const AddItem = ({ items }) => {
-  console.log(items);
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, reset } = useForm({
     initValue: {

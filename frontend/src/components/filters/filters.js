@@ -30,7 +30,7 @@ const filterBySpecialty = (appointments, filter) => {
 
   return !specialty
     ? appointments
-    : appointments.filter(app => app.specialty.id === specialty);
+    : appointments.filter(app => app.specialty?.id === specialty);
 };
 
 export const filterTodayAppointments = (appointments = [], filter) => {

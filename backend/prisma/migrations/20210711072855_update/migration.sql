@@ -516,6 +516,7 @@ CREATE TABLE "Item" (
 
 -- CreateTable
 CREATE TABLE "InventoryItem" (
+    "id" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "itemId" TEXT NOT NULL,
     "level" TEXT NOT NULL,
@@ -527,7 +528,7 @@ CREATE TABLE "InventoryItem" (
     "branchId" TEXT,
     "specialtyId" TEXT,
 
-    PRIMARY KEY ("itemId","userId")
+    PRIMARY KEY ("id")
 );
 
 -- CreateTable

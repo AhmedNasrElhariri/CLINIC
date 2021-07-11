@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import * as R from 'ramda';
 import { Form, Schema } from 'rsuite';
-
-import { Div, CRSelectInput, CRNumberInput } from 'components';
+import { ACTIONS } from 'utils/constants';
+import { Div, CRNumberInput } from 'components';
 import ListInvoiceItems from 'components/appointments/list-invoice-items';
 import { useForm, useInventory } from 'hooks';
-import { CRButton } from 'components/widgets';
+import { CRButton, CRBrancheTree, CRDocSelectInput } from 'components/widgets';
 import { normalize } from 'utils/misc';
 
 const { StringType, NumberType } = Schema.Types;
@@ -18,6 +18,9 @@ const model = Schema.Model({
 const initValue = {
   itemId: null,
   quantity: 1,
+  branchId: null,
+  specialtyId: null,
+  userId: null,
 };
 
 function InventoryUsage({ onChange }) {
@@ -27,8 +30,7 @@ function InventoryUsage({ onChange }) {
   });
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const { items } = useInventory();
-
+  const { items, inventoryWithAmount } = useInventory();
   const handleDelete = useCallback(
     idx => {
       const newItems = R.remove(idx, 1)(selectedItems);
@@ -39,7 +41,9 @@ function InventoryUsage({ onChange }) {
   );
 
   const handleAdd = useCallback(() => {
-    const newItems = [...selectedItems, formValue];
+    const itemId = formValue?.itemId.id;
+    const quantity = formValue?.quantity;
+    const newItems = [...selectedItems, { itemId: itemId, quantity: quantity }];
     setSelectedItems(newItems);
     setFormValue(initValue);
     onChange(newItems);
@@ -47,11 +51,10 @@ function InventoryUsage({ onChange }) {
 
   const itemsChoices = useMemo(() => {
     const selectedItemIds = R.map(R.prop('itemId'))(selectedItems);
-    return items.filter(f => !selectedItemIds.includes(f.id));
+    return inventoryWithAmount.filter(f => !selectedItemIds.includes(f.id));
   }, [selectedItems]);
-
   const itemsList = useMemo(() => {
-    const byIds = normalize(items);
+    const byIds = normalize(inventoryWithAmount);
     return selectedItems.map(({ itemId, quantity }) => ({
       ...byIds[itemId],
       price: quantity,
@@ -59,14 +62,22 @@ function InventoryUsage({ onChange }) {
   }, [selectedItems]);
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
+      <CRBrancheTree
+        formValue={formValue}
+        onChange={setFormValue}
+        action={ACTIONS.AddItem_Inventory}
+      />
       <Div display="flex" padding={30}>
         <Div width={396} mr={30}>
-          <CRSelectInput
+          <CRDocSelectInput
             label="Item"
             name="itemId"
+            specialtyId={formValue?.specialtyId}
+            branchId={formValue?.branchId}
+            userId={formValue?.userId}
             data={itemsChoices}
             block
-          ></CRSelectInput>
+          ></CRDocSelectInput>
         </Div>
         <Div width={200}>
           <CRNumberInput name="quantity" label="Quantity" name="quantity" />

@@ -10,7 +10,7 @@ function ListInvoiceItems({ items, priceKey, onDelete }) {
         <Item key={idx}>
           <Div display="flex" alignItems="center">
             <H7 color="texts.1">
-              {item.number}{' / '}
+              {item.price}{' / '}
             </H7>
             <H7 color="texts.1" textDecoration="underline">
               {item.name}
@@ -20,7 +20,7 @@ function ListInvoiceItems({ items, priceKey, onDelete }) {
             </DeleteLinkStyled>
           </Div>
           <Div display="flex" alignItems="center">
-            <H7 color="texts.1">EGP {item[priceKey] * item.number}</H7>
+            <H7 color="texts.1">EGP {item[priceKey] * item.item.quantity}</H7>
           </Div>
         </Item>
       ))}

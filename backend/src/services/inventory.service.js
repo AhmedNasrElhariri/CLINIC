@@ -6,14 +6,10 @@ export const updatedUsedMaterials = async (organizationId, items) => {
   const persistedItems = await prisma.inventoryItem.findMany({
     where: {
       organizationId,
-      id: {
-        in: R.map(R.prop('itemId'))(items),
-      },
     },
   });
-
   const args = items.map(({ itemId, quantity }) => {
-    const persistedItem = R.find(R.propEq('itemId', itemId))(persistedItems);
+    const persistedItem = R.find(R.propEq('id', itemId))(persistedItems);
     return {
       data: {
         quantity: persistedItem.quantity - quantity,
@@ -86,6 +82,22 @@ export const createSubstractHistoryForMultipleItems = async ({
   organizationId,
   data,
 }) => {
+
+  const itemsIds = R.map(R.prop('itemId'))(data);
+  const inventoryItems = await prisma.inventoryItem.findMany({
+    where: {
+      id: {
+        in: itemsIds,
+      },
+    },
+  });
+  const items = inventoryItems.map(i => {
+    const item = R.find(R.propEq('itemId', i.id))(data)
+    return {
+        itemId: i.itemId,
+        quantity: item.quantity,
+    }
+  });
   // const args = data.map(i => {
   //   return {
   //     item: {
@@ -114,7 +126,7 @@ export const createSubstractHistoryForMultipleItems = async ({
   // });
 
   return Promise.all(
-    data.map(i =>
+    items.map(i =>
       prisma.inventoryHistory.create({
         data: {
           item: {

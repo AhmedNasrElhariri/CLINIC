@@ -7,7 +7,6 @@ import Filter from '../../filters';
 
 const InventoryStatus = () => {
   const { items, inventoryWithAmount } = useInventory();
-  console.log(inventoryWithAmount,'inventoryWithAmount');
   const { filterBranches } = useAppointments();
   return (
     <>

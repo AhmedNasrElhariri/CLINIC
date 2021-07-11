@@ -85,8 +85,6 @@ const NewAppointment = ({ show, onHide }) => {
     patients,
     loading,
   } = useNewAppointment({ onCreate: onHide });
-
-  console.log(specialtyWaitingAppointmentsCount, 'count');
   const { patientCourses } = useCourses({
     patientId: formValue.patientId,
   });

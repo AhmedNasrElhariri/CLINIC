@@ -6,12 +6,26 @@ import { getUnitOfMeasureShortCut } from 'services/inventory';
 import RemoveItem from '../remove-item';
 
 const ListInventory = ({ items }) => {
-  console.log(items);
   return (
     <CRTable autoHeight data={items}>
       <CRTable.CRColumn flexGrow={1}>
         <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-        <CRTable.CRCell dataKey="name" semiBold />
+        <CRTable.CRCell>
+          {({ name, branch, specialty, user, level }) => (
+            <CRTable.CRCellStyled>
+              {name} {' / '}
+              {level}
+              {' / '}
+              {level === 'organization'
+                ? ''
+                : level === 'branch'
+                ? branch?.name
+                : level === 'specialty'
+                ? specialty?.name
+                : user?.name}
+            </CRTable.CRCellStyled>
+          )}
+        </CRTable.CRCell>
       </CRTable.CRColumn>
 
       <CRTable.CRColumn flexGrow={1}>
