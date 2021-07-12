@@ -3,7 +3,11 @@ import { prisma } from '@';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
-const patients = async (_, { offset, limit }, { user, organizationId }) => {
+const patients = async (
+  _,
+  { offset, limit, name, phoneNo },
+  { user, organizationId }
+) => {
   const ids = await listFlattenUsersTreeIds(
     {
       user,
@@ -12,11 +16,29 @@ const patients = async (_, { offset, limit }, { user, organizationId }) => {
     },
     true
   );
-  const patientsCount = await prisma.patient.count();
+  const patientsCount = await prisma.patient.count({
+    where: {
+      userId: {
+        in: ids,
+      },
+      name: {
+        contains: name,
+      },
+      phoneNo: {
+        contains: phoneNo,
+      },
+    },
+  });
   const patients = await prisma.patient.findMany({
     where: {
       userId: {
         in: ids,
+      },
+      name: {
+        contains: name,
+      },
+      phoneNo: {
+        contains: phoneNo,
       },
     },
     skip: offset,

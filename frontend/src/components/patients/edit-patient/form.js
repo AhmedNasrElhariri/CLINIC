@@ -9,8 +9,8 @@ const membershipTypes = [
 ];
 
 const SEX = ['Male', 'Female'].map(s => ({
-  label: s,
-  value: s,
+  name: s,
+  id: s,
 }));
 
 const { StringType, NumberType } = Schema.Types;

@@ -19,8 +19,22 @@ export const CREATE_APPOINTMENT = gql`
 `;
 
 export const LIST_APPOINTMENTS = gql`
-  query ($input: AppointmentQueryInput, $offset: Int, $limit: Int) {
-    appointments(input: $input, offset: $offset, limit: $limit) {
+  query (
+    $input: AppointmentQueryInput
+    $offset: Int
+    $limit: Int
+    $status: AppointmentStatus
+    $dateFrom: Date
+    $dateTo: Date
+  ) {
+    appointments(
+      input: $input
+      offset: $offset
+      limit: $limit
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      status: $status
+    ) {
       appointments {
         id
         type
@@ -59,6 +73,48 @@ export const LIST_APPOINTMENTS = gql`
         }
       }
       appointmentsCount
+    }
+  }
+`;
+
+export const LIST_TODAY_APPOINTMENTS = gql`
+  {
+    todayAppointments {
+      id
+      type
+      date
+      status
+      date
+      accounted
+      duration
+      businessNotes
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty {
+        id
+        name
+      }
+      session {
+        id
+        name
+      }
+      doctor {
+        id
+        name
+      }
     }
   }
 `;

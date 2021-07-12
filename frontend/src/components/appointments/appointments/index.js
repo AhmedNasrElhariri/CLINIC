@@ -3,31 +3,39 @@ import { filterAppointments, sortAppointments } from 'services/appointment';
 import { Div, H3, CRTabs } from 'components';
 import Filter from './filter';
 import { Alert } from 'rsuite';
+import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
 import {
   ARCHIVE_APPOINTMENT,
   COMPLETE_APPOINTMENT,
 } from 'apollo-client/queries';
-import BranchFilter from '../../filters';
 import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 import { getName } from 'services/accounting';
 import ArchiveAppointment from '../archive-appointment';
 import CompleteAppointment from '../complete-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
+import { APPT_STATUS } from 'utils/constants';
 const inialCurrentPage = {
   activePage: 1,
 };
+const tabVsStatus = new Map([
+  [0, APPT_STATUS.SCHEDULED],
+  [1, APPT_STATUS.WAITING],
+  [2, APPT_STATUS.ARCHIVED],
+]);
 function Appointments() {
   const [formValue, setFormValue] = useState({ date: [], patient: '' });
+  const [status, setStatus] = useState(APPT_STATUS.SCHEDULED);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const { visible, close, open } = useModal({});
-  const {
-    appointments,
-    appointmentsCount,
-    refetchAppointments,
-    filterBranches,
-  } = useAppointments({ page });
+  const { appointments, appointmentsCount, refetchAppointments } =
+    useAppointments({
+      page,
+      dateFrom: R.pathOr(null, ['date', 0])(formValue),
+      dateTo: R.pathOr(null, ['date', 1])(formValue),
+      status,
+    });
   const pages = Math.ceil(appointmentsCount / 20);
   const [popUp, setPopUp] = useState('');
   const [appointment, setAppointment] = useState(null);
@@ -99,7 +107,7 @@ function Appointments() {
     [appointment, archive, close]
   );
   const handleComplete = useCallback(
-    appointment => {
+    ({ appointment }) => {
       close();
       complete({
         variables: {
@@ -114,7 +122,7 @@ function Appointments() {
       <H3 mb={64}>Appointments</H3>
       <Div mb={4}>
         <Filter formValue={formValue} onChange={setFormValue} />
-        <CRTabs>
+        <CRTabs onChange={index => setStatus(tabVsStatus.get(index))}>
           <CRTabs.CRTabsGroup>
             <CRTabs.CRTab>Main Appointments</CRTabs.CRTab>
             <CRTabs.CRTab>Waiting Appointments</CRTabs.CRTab>
@@ -122,50 +130,32 @@ function Appointments() {
           </CRTabs.CRTabsGroup>
           <CRTabs.CRContentGroup>
             <CRTabs.CRContent>
-              <BranchFilter
-                appointments={filteredAppointments}
-                branches={filterBranches}
-                render={apps => (
-                  <ListAppointments
-                    appointments={filterByStatus(apps, 'Scheduled')}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    defaultExpanded={true}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    pages={pages}
-                  />
-                )}
+              <ListAppointments
+                appointments={appointments}
+                onArchive={onClickDone}
+                onComplete={onCompleteDone}
+                defaultExpanded={true}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                pages={pages}
               />
             </CRTabs.CRContent>
             <CRTabs.CRContent>
-              <BranchFilter
-                appointments={filteredAppointments}
-                branches={filterBranches}
-                render={apps => (
-                  <ListAppointments
-                    appointments={filterByStatus(apps, 'Waiting')}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    defaultExpanded={true}
-                    waiting={true}
-                  />
-                )}
+              <ListAppointments
+                appointments={appointments}
+                onArchive={onClickDone}
+                onComplete={onCompleteDone}
+                defaultExpanded={true}
+                waiting={true}
               />
             </CRTabs.CRContent>
             <CRTabs.CRContent>
-              <BranchFilter
-                appointments={filteredAppointments}
-                branches={filterBranches}
-                render={apps => (
-                  <ListAppointments
-                    appointments={filterByStatus(apps, 'Archived')}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    defaultExpanded={true}
-                    waiting={true}
-                  />
-                )}
+              <ListAppointments
+                appointments={appointments}
+                onArchive={onClickDone}
+                onComplete={onCompleteDone}
+                defaultExpanded={true}
+                waiting={true}
               />
             </CRTabs.CRContent>
           </CRTabs.CRContentGroup>

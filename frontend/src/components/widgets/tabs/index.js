@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import CRTab from './tab-item';
 import CRContent from './tab-content';
@@ -10,9 +10,11 @@ import { CRNav } from 'components';
 import useTabs from './use-tabs';
 import Context from './context';
 
-const CRTabs = ({ children, defaultValue }) => {
-  const { activeTab, selectTab } = useTabs({ defaultValue });
-
+const CRTabs = ({ children, onChange }) => {
+  const { activeTab, selectTab } = useTabs();
+  useEffect(() => {
+    onChange && onChange(activeTab);
+  }, [activeTab]);
   return (
     <>
       <Context.Provider value={{ onSelect: selectTab, activeTab }}>

@@ -27,9 +27,9 @@ const EditPatient = ({ patient }) => {
   useEffect(() => {
     setFormValue(R.omit(['__typename'])(patient));
   }, [patient]);
-
   const handleEditPatient = useCallback(() => {
-    edit(formValue);
+    const { code , ...rest} = formValue;
+    edit(rest);
   }, [edit, formValue]);
 
   const handleOpen = useCallback(e => {

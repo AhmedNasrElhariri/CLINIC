@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
-import { MainContainer, CRTable, Div ,CRButton, H3, H4} from 'components';
+import { MainContainer, CRTable, Div, CRButton, H3, H4 } from 'components';
 import PatientsFilter from '../filter/index';
 import EditPatient from '../edit-patient';
 import { usePatients } from 'hooks';
@@ -23,7 +23,11 @@ function Patients() {
   const [area, setArea] = useState(initialAreaValue);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage.activePage;
-  const { patients, pages } = usePatients({ page });
+  const { patients, pages } = usePatients({
+    page,
+    name: filter.name,
+    phoneNo: filter.phoneNo,
+  });
   const handleSelect = useCallback(
     eventKey => {
       setCurrentPage({ activePage: eventKey });
@@ -97,7 +101,8 @@ function Patients() {
         </Div>
 
         <CRTable
-          data={filteredPatientByReference}
+          data={patients}
+          autoHeight
           onRowClick={({ id }) => {
             history.push(`/patients/${id}`);
           }}
@@ -164,7 +169,7 @@ function Patients() {
           pages={pages}
           onSelect={handleSelect}
           total={
-            filteredPatientByReference && filteredPatientByReference.length
+            patients && patients.length
           }
           onChangePage={p => setCurrentPage(p)}
         />

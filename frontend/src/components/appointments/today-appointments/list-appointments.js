@@ -47,7 +47,7 @@ function ListAppointments({
         />
       </Div>
       <CRTable
-        height={600}
+        autoHeight
         data={appointments}
         onRowClick={appointment => {
           history.push(
@@ -116,7 +116,7 @@ function ListAppointments({
           <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ doctor }) => (
-              <CRTable.CRCellStyled>{doctor.name}</CRTable.CRCellStyled>
+              <CRTable.CRCellStyled>{doctor?.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
@@ -124,7 +124,7 @@ function ListAppointments({
           <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ user }) => (
-              <CRTable.CRCellStyled>{user.name}</CRTable.CRCellStyled>
+              <CRTable.CRCellStyled>{user?.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>

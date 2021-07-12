@@ -19,11 +19,13 @@ const updateCache = patients => {
   });
 };
 
-function usePatients({ onEdit, page } = {}) {
+function usePatients({ onEdit, page, name, phoneNo } = {}) {
   const { data, fetchMore } = useQuery(LIST_PATIENTS, {
     variables: {
       offset: (page - 1) * 20,
       limit: 20,
+      name,
+      phoneNo,
     },
   });
   const patientsdata = data?.patients;
@@ -43,7 +45,7 @@ function usePatients({ onEdit, page } = {}) {
     () => R.propOr([], 'patients')(patientsSummarydata),
     [patientSummaryData]
   );
-  
+
   const [editPatient] = useMutation(EDIT_PATIENT, {
     update(cache, { data: { editPatient: patient } }) {
       const newPatients = patients.map(p =>

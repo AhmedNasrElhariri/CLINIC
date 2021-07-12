@@ -2,11 +2,24 @@ import { prisma } from '@';
 import * as R from 'ramda';
 
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
+import { ACTIONS,APPOINTMENTS_STATUS } from '@/utils/constants';
+
+const generateWhereCondition = ({ status, dateFrom, dateTo }) => ({
+  date: {
+    gte: dateFrom,
+    lte: dateTo,
+  },
+  status,
+});
 
 const appointments = async (
   _,
-  { input, offset, limit },
+  { input,
+    offset,
+    limit,
+    dateFrom,
+    dateTo,
+    status = APPOINTMENTS_STATUS.SCHEDULED, },
   { user, organizationId }
 ) => {
   const ids = await listFlattenUsersTreeIds({
@@ -14,17 +27,11 @@ const appointments = async (
     organizationId,
     action: ACTIONS.List_Appointment,
   });
-  const appointmentsCount = await prisma.appointment.count();
+  const appointmentsCount = await prisma.appointment.count({
+    where: generateWhereCondition({ dateFrom, dateTo, status }),
+  });
   const appointments = await prisma.appointment.findMany({
-    where: {
-      date: {
-        gte: R.prop('fromDate')(input),
-        lte: R.prop('toDate')(input),
-      },
-      doctorId: {
-        in: ids,
-      },
-    },
+    where: generateWhereCondition({ dateFrom, dateTo, status }),
     include: {
       specialty: true,
       branch: true,

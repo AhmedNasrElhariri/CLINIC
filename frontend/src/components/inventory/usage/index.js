@@ -76,6 +76,7 @@ function InventoryUsage({ onChange }) {
             branchId={formValue?.branchId}
             userId={formValue?.userId}
             data={itemsChoices}
+            placement="topStart"
             block
           ></CRDocSelectInput>
         </Div>

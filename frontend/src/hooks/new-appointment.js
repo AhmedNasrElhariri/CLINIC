@@ -8,6 +8,7 @@ import {
   CREATE_APPOINTMENT,
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
+  LIST_TODAY_APPOINTMENTS,
   APPOINTMENTS_DAY_COUNT,
   LIST_BRANCHES,
 } from 'apollo-client/queries';
@@ -51,7 +52,11 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
         variables: { date: moment(formValue.date).toDate() },
       },
       {
+        query: LIST_TODAY_APPOINTMENTS,
+      },
+      {
         query: LIST_APPOINTMENTS,
+        variables: { offset: 0, limit: 20 },
       },
     ],
     onError: ({ message }) => Alert.error(message),
