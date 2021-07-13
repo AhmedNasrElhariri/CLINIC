@@ -47,11 +47,6 @@ function useAppointments({
     [data, includeSurgery]
   );
 
-  const appointmentsCount = useMemo(
-    () => R.propOr(0, 'appointmentsCount')(appointmentsdata),
-    [data]
-  );
-
   const specialties = useMemo(
     () => R.pipe(R.propOr([], 'specialties'))(data),
     [data]
@@ -73,19 +68,7 @@ function useAppointments({
     [todayAppointmentsData, includeSurgery]
   );
 
-  const SpecialtytodayAppointments = useMemo(
-    () => todayAppointments.filter(a => a.specialty.id == specialtyId),
-    [specialtyId, todayAppointments]
-  );
-
-  const specialtyWaitingAppointmentsCount = useMemo(() => {
-    const waitingAppointments = SpecialtytodayAppointments.filter(
-      a => a.status === 'Waiting'
-    );
-    const waitingAppointmentsCount = waitingAppointments.length;
-    return waitingAppointmentsCount;
-  }, [specialtyId, SpecialtytodayAppointments]);
-
+  
   const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.List_Appointment },
   });
@@ -94,11 +77,8 @@ function useAppointments({
   return useMemo(
     () => ({
       appointments,
-      appointmentsCount,
       todayAppointments,
       filterBranches,
-      SpecialtytodayAppointments,
-      specialtyWaitingAppointmentsCount,
       refetchAppointments: {
         query: LIST_APPOINTMENTS,
       },
@@ -109,9 +89,6 @@ function useAppointments({
     [
       appointments,
       todayAppointments,
-      appointmentsCount,
-      SpecialtytodayAppointments,
-      specialtyWaitingAppointmentsCount,
       specialties,
       doctors,
       filterBranches,

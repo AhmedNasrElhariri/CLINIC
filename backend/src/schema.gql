@@ -104,6 +104,7 @@ type Query {
     dateFrom: Date
     dateTo: Date
   ): AppointmentData!
+  dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
   todayAppointments: [Appointment!]
   appointment(id: ID!): Appointment
   patientAppointments(patientId: ID!): [Appointment!]
@@ -167,7 +168,7 @@ type Query {
   payslips: [Payslips!]
   userTransactions(userId: ID!): [PayrollTransaction!]
   userCoursePayment(userId: ID!, period: [String!]): [CoursePayment!]
-  appointmentsDayCount(date: Date!): AppointmentsDayCount!
+  appointmentsDayCount(date: Date!,specialtyId:ID): AppointmentsDayCount!
   coursePayments(courseId: ID!): [CoursePayment!]
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
   transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
@@ -536,6 +537,7 @@ type AppointmentData {
 type AppointmentsDayCount {
   totalAppointment: Int
   totalWaiting: Int
+  appointments:[Appointment!]
 }
 type AppointmentFile {
   id: ID!

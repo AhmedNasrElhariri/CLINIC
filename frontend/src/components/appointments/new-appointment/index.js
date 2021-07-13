@@ -33,6 +33,7 @@ import { getCreatableApptTypes } from 'services/appointment';
 import {
   useAppointmentForm,
   useNewAppointment,
+  useAppointments,
   useModal,
   useCourses,
   usePatients,
@@ -80,15 +81,11 @@ const NewAppointment = ({ show, onHide }) => {
     formValue,
     setFormValue,
     createAppointment,
-    appointments,
-    SpecialtytodayAppointments,
-    specialtyWaitingAppointmentsCount,
     patients,
     loading,
   } = useNewAppointment({
     onCreate: onHide,
   });
-
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
   });
@@ -107,7 +104,10 @@ const NewAppointment = ({ show, onHide }) => {
     };
   });
   const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
-    variables: { date: moment(formValue.date).toDate() },
+    variables: {
+      date: moment(formValue.date).toDate(),
+      specialtyId: formValue.specialtyId,
+    },
   });
   const appointmentsCount = useMemo(
     () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
@@ -121,11 +121,11 @@ const NewAppointment = ({ show, onHide }) => {
       setFormValue(initialValues);
     };
   }, [setFormValue]);
-
+  console.log(appointmentsCount, 'appointmentsCountappointmentsCount');
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,
-    appointments: SpecialtytodayAppointments,
+    appointments: appointmentsCount?.appointments || [],
   });
   const handleCreate = useCallback(() => {
     if (!isValid(model, formValue)) {
@@ -210,15 +210,10 @@ const NewAppointment = ({ show, onHide }) => {
         }}
       >
         <Div>
-          Total Appointments:{' '}
-          {SpecialtytodayAppointments?.length -
-            specialtyWaitingAppointmentsCount}{' '}
-          Patient
+          Total Appointments: {appointmentsCount?.totalAppointment}{' '}Patient
         </Div>
         <SecondRowContainer>
-          <Div>
-            Total Waiting List: {specialtyWaitingAppointmentsCount} Patient
-          </Div>
+          <Div>Total Waiting List: {appointmentsCount?.totalWaiting}{' '}Patient</Div>
           <Div>View All</Div>
         </SecondRowContainer>
       </CRModal>

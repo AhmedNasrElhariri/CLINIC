@@ -81,6 +81,7 @@ export const LIST_APPOINTMENTS = gql`
   }
 `;
 
+
 export const LIST_TODAY_APPOINTMENTS = gql`
   {
     todayAppointments {
