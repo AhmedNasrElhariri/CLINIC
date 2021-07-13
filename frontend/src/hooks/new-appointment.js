@@ -35,6 +35,7 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
     specialtyWaitingAppointmentsCount,
   } = useAppointments({ specialtyId: formValue?.specialtyId });
   const { patientsSummary: patients } = usePatients();
+
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Appointment },
   });

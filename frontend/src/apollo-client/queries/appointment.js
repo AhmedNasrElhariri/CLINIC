@@ -23,6 +23,8 @@ export const LIST_APPOINTMENTS = gql`
     $input: AppointmentQueryInput
     $offset: Int
     $limit: Int
+    $patient: String
+    $type: AppointmentType
     $status: AppointmentStatus
     $dateFrom: Date
     $dateTo: Date
@@ -31,6 +33,8 @@ export const LIST_APPOINTMENTS = gql`
       input: $input
       offset: $offset
       limit: $limit
+      patient: $patient
+      type: $type
       dateFrom: $dateFrom
       dateTo: $dateTo
       status: $status

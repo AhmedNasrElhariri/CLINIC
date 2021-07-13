@@ -5,6 +5,7 @@ import { Alert } from 'rsuite';
 
 import {
   LIST_PATIENTS,
+  LIST_SEARCHED_PATIENTS,
   EDIT_PATIENT,
   LIST_PATIENTS_SUMMARY,
 } from 'apollo-client/queries';
@@ -19,7 +20,13 @@ const updateCache = patients => {
   });
 };
 
-function usePatients({ onEdit, page, name, phoneNo } = {}) {
+function usePatients({
+  onEdit,
+  page,
+  name,
+  phoneNo,
+  patientSearchValue,
+} = {}) {
   const { data, fetchMore } = useQuery(LIST_PATIENTS, {
     variables: {
       offset: (page - 1) * 20,
@@ -46,6 +53,18 @@ function usePatients({ onEdit, page, name, phoneNo } = {}) {
     [patientSummaryData]
   );
 
+  const { data: searchedPatientsData } = useQuery(
+    LIST_SEARCHED_PATIENTS,
+    {
+      variables: {
+        name: patientSearchValue,
+      },
+    }
+  );
+  const searchedPatients = useMemo(
+    () => R.propOr([], 'searchedPatients')(searchedPatientsData),
+    [searchedPatientsData]
+  );
   const [editPatient] = useMutation(EDIT_PATIENT, {
     update(cache, { data: { editPatient: patient } }) {
       const newPatients = patients.map(p =>
@@ -71,6 +90,7 @@ function usePatients({ onEdit, page, name, phoneNo } = {}) {
           },
         });
       },
+      searchedPatients,
       patientsSummary,
       pages,
       edit: patient =>
@@ -78,7 +98,7 @@ function usePatients({ onEdit, page, name, phoneNo } = {}) {
           variables: { patient },
         }),
     }),
-    [editPatient, patients, pages, patientsSummary]
+    [editPatient, patients, pages, patientsSummary,searchedPatients]
   );
 }
 

@@ -47,6 +47,16 @@ export const LIST_PATIENTS = gql`
   }
 `;
 
+export const LIST_SEARCHED_PATIENTS = gql`
+  query ($name: String) {
+    searchedPatients(name: $name) {
+        id
+        name
+        phoneNo
+    }
+  }
+`;
+
 export const LIST_PATIENTS_SUMMARY = gql`
   query ($offset: Int, $limit: Int) {
     patients(offset: $offset, limit: $limit) {

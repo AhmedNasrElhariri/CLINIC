@@ -93,10 +93,13 @@ enum UnitOfMeaure {
 type Query {
   hello(name: String): Boolean
   patients(offset: Int, limit: Int, name: String, phoneNo: String): PatientData
+  searchedPatients(name: String): [Patient!]
   appointments(
     input: AppointmentQueryInput
     offset: Int
     limit: Int
+    patient: String
+    type: AppointmentType
     status: AppointmentStatus
     dateFrom: Date
     dateTo: Date

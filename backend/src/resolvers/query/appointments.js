@@ -1,42 +1,88 @@
 import { prisma } from '@';
-import * as R from 'ramda';
+import moment from 'moment';
 
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS,APPOINTMENTS_STATUS } from '@/utils/constants';
-
-const generateWhereCondition = ({ status, dateFrom, dateTo }) => ({
-  date: {
-    gte: dateFrom,
-    lte: dateTo,
-  },
-  status,
-});
+import { ACTIONS, APPOINTMENTS_STATUS } from '@/utils/constants';
 
 const appointments = async (
   _,
-  { input,
+  {
+    input,
     offset,
+    type,
+    patient,
     limit,
     dateFrom,
     dateTo,
-    status = APPOINTMENTS_STATUS.SCHEDULED, },
+    status = APPOINTMENTS_STATUS.SCHEDULED,
+  },
   { user, organizationId }
 ) => {
+  const startDay = moment(dateFrom).startOf('day').toDate();
+  const endDay = moment(dateTo).endOf('day').toDate();
   const ids = await listFlattenUsersTreeIds({
     user,
     organizationId,
     action: ACTIONS.List_Appointment,
   });
   const appointmentsCount = await prisma.appointment.count({
-    where: generateWhereCondition({ dateFrom, dateTo, status }),
+    where: {
+      date: {
+        gte: startDay,
+        lte: endDay,
+      },
+      status,
+      type: type,
+      OR: [
+        {
+          patient: {
+            name: {
+              contains: patient,
+              mode:"insensitive",
+            },
+          },
+        },
+        {
+          patient: {
+            phoneNo: {
+              contains: patient,
+            },
+          },
+        },
+      ],
+    },
   });
   const appointments = await prisma.appointment.findMany({
-    where: generateWhereCondition({ dateFrom, dateTo, status }),
+    where: {
+      date: {
+        gte: startDay,
+        lte: endDay,
+      },
+      status,
+      type: type,
+      OR: [
+        {
+          patient: {
+            name: {
+              contains: patient,
+              mode:"insensitive",
+            },
+          },
+        },
+        {
+          patient: {
+            phoneNo: {
+              contains: patient,
+            },
+          },
+        },
+      ],
+    },
     include: {
       specialty: true,
       branch: true,
       doctor: true,
-      session:true,
+      session: true,
     },
     skip: offset,
     take: limit,

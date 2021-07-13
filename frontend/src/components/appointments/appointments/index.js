@@ -14,7 +14,7 @@ import { getName } from 'services/accounting';
 import ArchiveAppointment from '../archive-appointment';
 import CompleteAppointment from '../complete-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
-import { APPT_STATUS } from 'utils/constants';
+import { APPT_STATUS, APPT_TYPE } from 'utils/constants';
 const inialCurrentPage = {
   activePage: 1,
 };
@@ -35,6 +35,8 @@ function Appointments() {
       dateFrom: R.pathOr(null, ['date', 0])(formValue),
       dateTo: R.pathOr(null, ['date', 1])(formValue),
       status,
+      type: R.propOr(APPT_TYPE.Examination, 'type')(formValue),
+      patient: R.propOr('', 'patient')(formValue),
     });
   const pages = Math.ceil(appointmentsCount / 20);
   const [popUp, setPopUp] = useState('');

@@ -15,6 +15,8 @@ function useAppointments({
   page,
   dateFrom,
   dateTo,
+  patient,
+  type,
   status = APPT_STATUS.SCHEDULED,
   specialtyId,
 } = {}) {
@@ -24,6 +26,8 @@ function useAppointments({
         offset: (page - 1) * 20,
         limit: 20,
         status,
+        patient,
+        type,
       },
       dateFrom && { dateFrom },
       dateTo && { dateTo }

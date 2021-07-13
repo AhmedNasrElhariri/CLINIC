@@ -23,6 +23,7 @@ const patients = async (
       },
       name: {
         contains: name,
+        mode: 'insensitive',
       },
       phoneNo: {
         contains: phoneNo,
@@ -36,6 +37,7 @@ const patients = async (
       },
       name: {
         contains: name,
+        mode: 'insensitive',
       },
       phoneNo: {
         contains: phoneNo,

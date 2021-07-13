@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox, Schema } from 'rsuite';
@@ -35,6 +35,7 @@ import {
   useNewAppointment,
   useModal,
   useCourses,
+  usePatients,
   useConfigurations,
   useSessionDefinition,
 } from 'hooks';
@@ -73,7 +74,7 @@ const searchBy = (text, _, patient) => {
 
 const NewAppointment = ({ show, onHide }) => {
   const { visible, open, close } = useModal();
-
+  const [patientSearchValue, setPatientSearchValue] = useState('');
   const {
     branches,
     formValue,
@@ -84,7 +85,13 @@ const NewAppointment = ({ show, onHide }) => {
     specialtyWaitingAppointmentsCount,
     patients,
     loading,
-  } = useNewAppointment({ onCreate: onHide });
+  } = useNewAppointment({
+    onCreate: onHide,
+  });
+
+  const { searchedPatients } = usePatients({
+    patientSearchValue: patientSearchValue,
+  });
   const { patientCourses } = useCourses({
     patientId: formValue.patientId,
   });
@@ -287,8 +294,9 @@ const NewAppointment = ({ show, onHide }) => {
                 <CRSelectInput
                   label="Patient"
                   name="patientId"
+                  onSearch={v => setPatientSearchValue(v)}
                   placeholder="Name / Phone no"
-                  data={patients}
+                  data={searchedPatients}
                   searchBy={searchBy}
                   virtualized={false}
                   block
