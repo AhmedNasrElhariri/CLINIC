@@ -21,8 +21,9 @@ const revenues = async (_, __, { user, organizationId }) => {
     },
     include: {
       user: true,
-      specialty:true,
+      specialty: true,
       branch: true,
+      doctor:true,
     },
   });
 };

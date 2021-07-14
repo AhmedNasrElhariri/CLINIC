@@ -1,0 +1,2 @@
+-- AddForeignKey
+ALTER TABLE "Revenue" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

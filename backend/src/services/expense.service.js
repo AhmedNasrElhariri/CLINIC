@@ -67,6 +67,13 @@ export const createAppointmentExpense = async (
             id: branchId,
           },
         },
+      },
+      userID && {
+        doctor: {
+          connect: {
+            id: userID,
+          },
+        },
       }
     ),
   });

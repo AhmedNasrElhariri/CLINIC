@@ -16,7 +16,6 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
   });
   const { itemId, specialtyId, branchId, userId: userID } = input;
   const level = GetLevel(branchId, specialtyId, userID);
-  console.log(input);
   const persistedInventoryItem = await prisma.inventoryItem.findMany({
     where: {
       branchId,
@@ -58,6 +57,7 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
           },
         },
         quantity: newtotalQuantity,
+        price: input.price,
         organization: {
           connect: {
             id: organizationId,
@@ -94,6 +94,7 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
     ),
     update: {
       quantity: newtotalQuantity,
+      price: input.price,
     },
     where: {
       id: inventoryId || '',

@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import React,{ useMemo,useEffect } from 'react';
 import * as R from 'ramda';
+import moment from 'moment';
 import { useQuery } from '@apollo/client';
 import { ACTIONS } from 'utils/constants';
 import { sortAppointmentsByDate } from 'services/appointment';
@@ -8,6 +9,7 @@ import {
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
   LIST_TODAY_APPOINTMENTS,
+  APPOINTMENTS_DAY_COUNT
 } from 'apollo-client/queries';
 
 function useAppointments({
@@ -18,6 +20,7 @@ function useAppointments({
   patient,
   type,
   status = APPT_STATUS.SCHEDULED,
+  date,
   specialtyId,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
@@ -45,6 +48,17 @@ function useAppointments({
         sortAppointmentsByDate
       )(appointmentsdata),
     [data, includeSurgery]
+  );
+
+  const { data: appointmentsDay} = useQuery(APPOINTMENTS_DAY_COUNT, {
+    variables: {
+      date: date,
+      specialtyId: specialtyId,
+    },
+  });
+  const appointmentsCount = useMemo(
+    () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
+    [date, appointmentsDay]
   );
 
   const specialties = useMemo(
@@ -79,6 +93,7 @@ function useAppointments({
       appointments,
       todayAppointments,
       filterBranches,
+      appointmentsCount,
       refetchAppointments: {
         query: LIST_APPOINTMENTS,
       },
@@ -88,6 +103,7 @@ function useAppointments({
     }),
     [
       appointments,
+      appointmentsCount,
       todayAppointments,
       specialties,
       doctors,

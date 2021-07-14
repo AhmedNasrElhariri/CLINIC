@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import { Form, Schema } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { Div, CRNumberInput } from 'components';
-import ListInvoiceItems from 'components/appointments/list-invoice-items';
+import ListInvoiceItems from './list-invoice-items';
 import { useForm, useInventory } from 'hooks';
 import { CRButton, CRBrancheTree, CRDocSelectInput } from 'components/widgets';
 import { normalize } from 'utils/misc';
@@ -57,7 +57,7 @@ function InventoryUsage({ onChange }) {
     const byIds = normalize(inventoryWithAmount);
     return selectedItems.map(({ itemId, quantity }) => ({
       ...byIds[itemId],
-      price: quantity,
+      Quantity: quantity,
     }));
   }, [selectedItems]);
   return (

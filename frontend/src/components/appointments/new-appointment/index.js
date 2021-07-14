@@ -103,25 +103,15 @@ const NewAppointment = ({ show, onHide }) => {
       id: s,
     };
   });
-  const { data: appointmentsDay, refetch } = useQuery(APPOINTMENTS_DAY_COUNT, {
-    variables: {
-      date: moment(formValue.date).toDate(),
-      specialtyId: formValue.specialtyId,
-    },
+  const { appointmentsCount } = useAppointments({
+    date: formValue?.date,
+    specialtyId: formValue?.specialtyId,
   });
-  const appointmentsCount = useMemo(
-    () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
-    [formValue.date, appointmentsDay]
-  );
-  useEffect(() => {
-    refetch(formValue.date);
-  }, [formValue.date, appointmentsCount]);
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
     };
   }, [setFormValue]);
-  console.log(appointmentsCount, 'appointmentsCountappointmentsCount');
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,
@@ -210,10 +200,12 @@ const NewAppointment = ({ show, onHide }) => {
         }}
       >
         <Div>
-          Total Appointments: {appointmentsCount?.totalAppointment}{' '}Patient
+          Total Appointments: {appointmentsCount?.totalAppointment} Patient
         </Div>
         <SecondRowContainer>
-          <Div>Total Waiting List: {appointmentsCount?.totalWaiting}{' '}Patient</Div>
+          <Div>
+            Total Waiting List: {appointmentsCount?.totalWaiting} Patient
+          </Div>
           <Div>View All</Div>
         </SecondRowContainer>
       </CRModal>

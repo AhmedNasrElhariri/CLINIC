@@ -73,6 +73,13 @@ const archiveAppointment = async (
                 id: branchId,
               },
             },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
           }
         ),
       });
@@ -133,6 +140,13 @@ const archiveAppointment = async (
               id: branchId,
             },
           },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: userID,
+            },
+          },
         }
       ),
     });
@@ -183,6 +197,13 @@ const archiveAppointment = async (
                 id: branchId,
               },
             },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
           }
         ),
       });
@@ -220,6 +241,13 @@ const archiveAppointment = async (
             branch: {
               connect: {
                 id: branchId,
+              },
+            },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
               },
             },
           }
@@ -262,6 +290,13 @@ const archiveAppointment = async (
                 id: branchId,
               },
             },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
           }
         ),
       });
@@ -299,6 +334,13 @@ const archiveAppointment = async (
             branch: {
               connect: {
                 id: branchId,
+              },
+            },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
               },
             },
           }

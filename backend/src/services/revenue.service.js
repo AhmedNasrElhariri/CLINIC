@@ -23,8 +23,9 @@ export const createAppointmentRevenueFromSessions = (
         organizationId,
         userId,
       },
-      specialtyId && {specialtyId},
-      branchId && {branchId},
+      specialtyId && { specialtyId },
+      branchId && { branchId },
+      userID && { doctorId: userID }
     )
   );
 };

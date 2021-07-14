@@ -74,6 +74,7 @@ export const LIST_SALESES = gql`
         name
       }
       salesDefinition {
+        id
         name
         price
       }

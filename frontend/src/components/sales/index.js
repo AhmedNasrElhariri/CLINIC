@@ -19,11 +19,11 @@ import {
 } from 'hooks';
 import { formatDate } from 'utils/date';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
-import { CRSelectInput } from 'components/widgets';
+import { CRDocSelectInput, CRSelectInput } from 'components/widgets';
 const initValue = { itemId: '', quantity: 0 };
 const initFilter = {
-  item: '',
-  user: '',
+  itemId: null,
+  userId: null,
   specialtyId: null,
   branchId: null,
   userId: null,
@@ -42,7 +42,7 @@ const Sales = () => {
   const { salesesDefinition } = useSalesDefinition({});
   const updatedSalesItems = salesesDefinition.map(s => {
     return {
-      id: s.name,
+      id: s.id,
       name: s.name,
     };
   });
@@ -69,10 +69,11 @@ const Sales = () => {
   });
   const updatedUsers = organizationusers.map(u => {
     return {
-      id: u.name,
+      id: u.id,
       name: u.name,
     };
   });
+  console.log(salesesDefinition,'salesesDefinition');
   const handleDelete = useCallback(
     idx => {
       const newItems = R.remove(idx, 1)(selectedItems);
@@ -80,20 +81,26 @@ const Sales = () => {
     },
     [selectedItems]
   );
-  const itemFilteredSales = useMemo(
-    () =>
-      filteredSales.filter(s =>
-        s.salesDefinition.name.toLowerCase().includes(filter.item.toLowerCase())
-      ),
-    [filter, filteredSales]
-  );
-  const itemFilteredSalesByUser = useMemo(
-    () =>
-      itemFilteredSales.filter(s =>
-        s.user.name.toLowerCase().includes(filter.user.toLowerCase())
-      ),
-    [filter, itemFilteredSales]
-  );
+  const itemFilteredSales = useMemo(() => {
+    if (filter.itemId == null) {
+      return filteredSales;
+    } else {
+      const newSales = filteredSales.filter(
+        s => s?.salesDefinition?.id == filter.itemId
+      );
+      return newSales;
+    }
+  }, [filter, filteredSales]);
+  const itemFilteredSalesByUser = useMemo(() => {
+    if (filter.userId == null) {
+      return itemFilteredSales;
+    } else {
+      const newSales = itemFilteredSales.filter(
+        s => s?.user?.id == filter.userId
+      );
+      return newSales;
+    }
+  }, [filter, itemFilteredSales]);
   const handleAddItems = useCallback(() => {
     const newItems = [...selectedItems, formValue];
     setSelectedItems(newItems);
@@ -197,19 +204,13 @@ const Sales = () => {
           <Div display="flex" justifyContent="space-around">
             <CRSelectInput
               label="Item"
-              name="item"
-              onChange={val =>
-                val == null ? setFilter({ ...filter, item: '' }) : ''
-              }
-              data={updatedSalesItems}
+              name="itemId"
+              data={salesesDefinition}
               style={{ width: '300px' }}
             />
             <CRSelectInput
               label="Creator"
-              name="user"
-              onChange={val =>
-                val == null ? setFilter({ ...filter, user: '' }) : ''
-              }
+              name="userId"
               data={updatedUsers}
               style={{ width: '300px' }}
             />

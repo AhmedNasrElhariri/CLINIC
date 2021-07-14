@@ -42,7 +42,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             <CRTable.CRCell>
               {({ user }) => (
                 <CRTable.CRCellStyled bold>
-                  {user.name}
+                  {user?.name}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
@@ -52,7 +52,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             <CRTable.CRCell>
               {({ salesDefinition }) => (
                 <CRTable.CRCellStyled bold>
-                  {salesDefinition.price}
+                  {salesDefinition?.price}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

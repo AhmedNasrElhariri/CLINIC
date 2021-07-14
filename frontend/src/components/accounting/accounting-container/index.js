@@ -150,6 +150,7 @@ const AccountingContainer = () => {
     view,
     period,
   });
+  console.log(revenues,'rererree');
   const updatedExpenses = useMemo(
     () =>
       expenses.filter(e =>
@@ -176,6 +177,7 @@ const AccountingContainer = () => {
     () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
     [updatedRevenues]
   );
+  console.log(updatedRevenues);
   return (
     <>
       <MainContainer

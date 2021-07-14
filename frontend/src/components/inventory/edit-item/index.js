@@ -31,7 +31,6 @@ const EditItem = ({ defaultValue }) => {
       close();
     },
   });
-
   const handleClose = useCallback(() => {
     close();
   }, [close]);

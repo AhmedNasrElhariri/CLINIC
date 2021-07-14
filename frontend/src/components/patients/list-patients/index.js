@@ -66,6 +66,7 @@ function Patients() {
   );
   const ref = useRef();
   const refTwo = useRef();
+  console.log(patients);
   return (
     <>
       <MainContainer
@@ -141,7 +142,13 @@ function Patients() {
             <CRTable.CRHeaderCell>Reference</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ reference }) => (
-                <CRTable.CRCellStyled bold>{reference}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>
+                  <Div display="flex">
+                    {reference.map(r => (
+                      <Div>{' - '}{r}{'  '}</Div>
+                    ))}
+                  </Div>
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -168,9 +175,7 @@ function Patients() {
           activePage={currentPage?.activePage}
           pages={pages}
           onSelect={handleSelect}
-          total={
-            patients && patients.length
-          }
+          total={patients && patients.length}
           onChangePage={p => setCurrentPage(p)}
         />
         {/* </Can> */}

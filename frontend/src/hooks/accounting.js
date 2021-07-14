@@ -21,7 +21,6 @@ const useAccounting = ({ view, period } = {}) => {
       action: ACTIONS.View_Accounting,
     },
   });
-
   const allExpenses = useMemo(() => R.propOr([], 'expenses')(expensesData), [
     expensesData,
   ]);

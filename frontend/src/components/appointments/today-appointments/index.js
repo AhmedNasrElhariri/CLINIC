@@ -137,7 +137,7 @@ function TodayAppointments() {
         variables: {
           id: appointment.id,
           specialtyId: appointment?.specialty.id,
-          userId: appointment?.user.id,
+          userId: appointment?.doctor.id,
           branchId: appointment?.branch.id,
           sessions: sessions.map(session => ({
             name: getName({ session, appointment }),

@@ -3,7 +3,7 @@ import { Form, Schema } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRNumberInput } from 'components';
 import { useSalesDefinition } from 'hooks';
-import { CRSelectInput, CRBrancheTree } from 'components/widgets';
+import { CRSelectInput, CRBrancheTree, CRDocSelectInput } from 'components/widgets';
 
 const model = Schema.Model({});
 
@@ -36,7 +36,7 @@ function NewSalesDefinition({
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         {type === 'addQuentity' ? (
           <>
-            <CRSelectInput
+            <CRDocSelectInput
               label="Sales Item"
               data={salesesDefinition}
               name="salesId"

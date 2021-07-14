@@ -18,16 +18,19 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
   const [formValue, setFormValue] = useState({
     date: null,
     time: null,
-    branchId:null,
-    specialtyId:null,
-    userId:null,
+    branchId: null,
+    specialtyId: null,
+    userId: null,
   });
 
-  const { appointments } = useAppointments();
+  const { appointmentsCount } = useAppointments({
+    date: formValue?.date,
+    specialtyId: formValue?.specialtyId,
+  });
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,
-    appointments,
+    appointments: appointmentsCount?.appointments || [],
   });
 
   if (!appointment) {

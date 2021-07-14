@@ -22,7 +22,7 @@ const filterByDoctor = (appointments, filter) => {
 
   return !doctor
     ? appointments
-    : appointments.filter(app => app.user?.id === doctor);
+    : appointments.filter(app => app?.doctor?.id === doctor);
 };
 
 const filterBySpecialty = (appointments, filter) => {

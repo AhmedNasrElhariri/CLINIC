@@ -63,6 +63,7 @@ function useInventory({
             name: item.name,
             amount: i.quantity / item.quantity,
             quantity: i.quantity,
+            price: i.price,
             item,
             level: i.level,
             branch: i.branch,

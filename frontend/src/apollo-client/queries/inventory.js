@@ -20,6 +20,7 @@ export const LIST_INVENTORY = gql`
       itemId
       userId
       quantity
+      price
       level
       branch{
         id

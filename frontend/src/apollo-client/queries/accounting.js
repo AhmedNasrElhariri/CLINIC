@@ -17,7 +17,11 @@ export const LIST_EXPENSES = gql`
         id
         name
       }
-      specialty{
+      specialty {
+        id
+        name
+      }
+      doctor {
         id
         name
       }
@@ -41,7 +45,11 @@ export const LIST_REVENUES = gql`
         id
         name
       }
-      specialty{
+      specialty {
+        id
+        name
+      }
+      doctor {
         id
         name
       }
@@ -69,7 +77,11 @@ export const LIST_BANK_REVENUES = gql`
         id
         name
       }
-      specialty{
+      specialty {
+        id
+        name
+      }
+      doctor {
         id
         name
       }
@@ -95,7 +107,11 @@ export const LIST_COMPANY_REVENUES = gql`
         id
         name
       }
-      specialty{
+      specialty {
+        id
+        name
+      }
+      doctor {
         id
         name
       }

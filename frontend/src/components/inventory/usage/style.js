@@ -20,3 +20,12 @@ export const Button = styled.button`
   margin-left: ${props => props.marginLeft};
   margin-top: ${props => props.marginTop};
 `;
+
+export const Item = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 396px;
+  padding: 8px 12px;
+  background-color: #f0f1f1;
+  margin-bottom: 10px;
+`;

@@ -23,6 +23,7 @@ const expenses = async (_, __, { user, organizationId }) => {
       user: true,
       specialty: true,
       branch: true,
+      doctor:true,
     },
   });
 };

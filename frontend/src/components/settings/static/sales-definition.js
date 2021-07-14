@@ -24,6 +24,7 @@ const SalesDefinition = () => {
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
+  console.log(formValue);
   const {
     addSalesDefinition,
     salesesDefinition,
@@ -68,9 +69,19 @@ const SalesDefinition = () => {
         },
       });
     } else if (type === 'addQuentity') {
+      const updatedFormValue = {
+        quantity: formValue?.quantity,
+        salesId: formValue?.salesId.id,
+        name: formValue?.salesId.name,
+        cost: formValue?.salesId.cost,
+        price: formValue?.salesId.price,
+        branchId: formValue?.salesId?.branch?.id,
+        specialtyId: formValue?.salesId?.specialty?.id,
+        userId: formValue?.salesId?.user?.id,
+      };
       addSalesDefinitionQuantity({
         variables: {
-          salesDefinition: formValue,
+          salesDefinition: updatedFormValue,
         },
       });
     } else {

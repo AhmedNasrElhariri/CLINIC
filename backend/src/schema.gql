@@ -168,7 +168,7 @@ type Query {
   payslips: [Payslips!]
   userTransactions(userId: ID!): [PayrollTransaction!]
   userCoursePayment(userId: ID!, period: [String!]): [CoursePayment!]
-  appointmentsDayCount(date: Date!,specialtyId:ID): AppointmentsDayCount!
+  appointmentsDayCount(date: Date!, specialtyId: ID): AppointmentsDayCount!
   coursePayments(courseId: ID!): [CoursePayment!]
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
   transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
@@ -537,7 +537,7 @@ type AppointmentData {
 type AppointmentsDayCount {
   totalAppointment: Int
   totalWaiting: Int
-  appointments:[Appointment!]
+  appointments: [Appointment!]
 }
 type AppointmentFile {
   id: ID!
@@ -892,6 +892,7 @@ type Expense {
   user: User
   branch: Branch
   specialty: Specialty
+  doctor: User
   date: Date!
   expenseType: String!
   invoiceNo: String
@@ -922,7 +923,8 @@ type Revenue {
   id: ID!
   name: String!
   level: String
-  user: User
+  user: User!
+  doctor: User
   branch: Branch
   specialty: Specialty
   amount: Int!
@@ -938,6 +940,7 @@ type BankRevenue {
   level: String
   user: User
   branch: Branch
+  doctor: User
   specialty: Specialty
   invoiceNo: String
   bank: BankDefinition!
@@ -952,6 +955,7 @@ type InsuranceRevenue {
   user: User
   branch: Branch
   specialty: Specialty
+  doctor: User
   invoiceNo: String
   company: CompanyDefinition!
 }
@@ -1017,7 +1021,9 @@ type InventoryItem {
   id: ID!
   itemId: ID!
   userId: ID!
+  price: Int!
   quantity: Int!
+
   branch: Branch
   specialty: Specialty
   doctor: User

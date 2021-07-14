@@ -73,6 +73,9 @@ function NewSales({
               <Div>
                 <CRDocSelectInput
                   formValue={formValue}
+                  branchId={formValue?.branchId}
+                  specialtyId={formValue?.specialtyId}
+                  userId={formValue?.userId}
                   onChange={val => onChange({ ...formValue, itemId: val?.id })}
                   label="Item"
                   data={salesesDefinition}
