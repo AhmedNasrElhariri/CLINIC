@@ -371,6 +371,12 @@ export const GET_APPOINTMENT_HISTORY = gql`
       images {
         id
       }
+      sessionsPulses {
+        name
+        value
+      }
+      powerOne
+      powerTwo
     }
   }
 `;

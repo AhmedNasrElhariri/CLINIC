@@ -68,30 +68,32 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
               New Date
             </H6>
             <Div px={53}>
+              <CRBrancheTree
+                formValue={formValue}
+                onChange={setFormValue}
+                action={ACTIONS.Create_Appointment}
+              />
               <CRDatePicker
                 disabledDate={isBeforeToday}
                 accepter={DatePicker}
                 name="date"
                 block
               />
-              <CRDatePicker
-                format="HH:mm"
-                hideMinutes={minute => minute % 5 !== 0}
-                name="time"
-                accepter={DatePicker}
-                disabledMinutes={minute =>
-                  disabledMinutes(minute, moment(formValue.time).hours())
-                }
-                hideHours={hideHours}
-                style={{ marginTop: '10px' }}
-                onSelectTrigger
-                block
-              />
-              <CRBrancheTree
-                formValue={formValue}
-                onChange={setFormValue}
-                action={ACTIONS.Create_Appointment}
-              />
+              {formValue.userId && (
+                <CRDatePicker
+                  format="HH:mm"
+                  hideMinutes={minute => minute % 5 !== 0}
+                  name="time"
+                  accepter={DatePicker}
+                  disabledMinutes={minute =>
+                    disabledMinutes(minute, moment(formValue.time).hours())
+                  }
+                  hideHours={hideHours}
+                  style={{ marginTop: '10px' }}
+                  onSelectTrigger
+                  block
+                />
+              )}
             </Div>
           </CRCard>
         </Div>

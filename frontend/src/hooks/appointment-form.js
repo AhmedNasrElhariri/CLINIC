@@ -4,7 +4,7 @@ import { isUrgent } from 'services/appointment';
 
 function useAppointmentForm({ date, type, appointments }) {
   const selectedDayAppointments = useMemo(
-    () => appointments.filter(({ date }) => moment(date).isSame(date, 'day')),
+    () => appointments?.filter(({ date }) => moment(date).isSame(date, 'day')),
     [appointments]
   );
 

@@ -14,6 +14,7 @@ import PatientImages from 'components/appointments/appointment/patient-images';
 import History from 'components/appointments/appointment/patient-history';
 import PatientCourses from 'components/appointments/appointment/patient-courses';
 import PatientSurgries from 'components/appointments/appointment/surgries';
+import SessionsPulses from '../sessions-pulses';
 import { useQueryParams } from 'hooks';
 
 const tabs = [
@@ -24,6 +25,7 @@ const tabs = [
   'Images',
   'History',
   'Courses',
+  'Sessions Pulses',
 ];
 const Container = styled.div`
   display: flex;
@@ -98,6 +100,7 @@ function Appointment() {
                 {showComp('4') && <PatientImages patient={patient} />}
                 {showComp('5') && <History patient={patient} />}
                 {showComp('6') && <PatientCourses patient={patient} />}
+                {showComp('7') && <SessionsPulses  summary={appointmentHistory}/>}
               </TabContainer>
             </Container>
           )}
