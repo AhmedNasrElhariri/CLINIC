@@ -66,7 +66,6 @@ function Patients() {
   );
   const ref = useRef();
   const refTwo = useRef();
-  console.log(patients);
   return (
     <>
       <MainContainer

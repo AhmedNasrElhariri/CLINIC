@@ -40,12 +40,6 @@ const Sales = () => {
   const { timeFrame } = useAccounting({ view, period });
   const [selectedItems, setSelectedItems] = useState([]);
   const { salesesDefinition } = useSalesDefinition({});
-  const updatedSalesItems = salesesDefinition.map(s => {
-    return {
-      id: s.id,
-      name: s.name,
-    };
-  });
   const {
     addSales,
     saleses,
@@ -73,7 +67,6 @@ const Sales = () => {
       name: u.name,
     };
   });
-  console.log(salesesDefinition,'salesesDefinition');
   const handleDelete = useCallback(
     idx => {
       const newItems = R.remove(idx, 1)(selectedItems);
@@ -86,7 +79,7 @@ const Sales = () => {
       return filteredSales;
     } else {
       const newSales = filteredSales.filter(
-        s => s?.salesDefinition?.id == filter.itemId
+        s => s?.salesDefinition?.id == filter?.itemId?.id
       );
       return newSales;
     }
@@ -202,10 +195,11 @@ const Sales = () => {
       <Div mb={50}>
         <Form formValue={filter} onChange={setFilter}>
           <Div display="flex" justifyContent="space-around">
-            <CRSelectInput
+            <CRDocSelectInput
               label="Item"
-              name="itemId"
               data={salesesDefinition}
+              name="itemId"
+              placement="auto"
               style={{ width: '300px' }}
             />
             <CRSelectInput

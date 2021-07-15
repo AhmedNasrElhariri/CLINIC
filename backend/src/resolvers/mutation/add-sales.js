@@ -34,47 +34,44 @@ const addSales = async (_, { sales }, { organizationId, userId }) => {
   const args = sales.map(({ itemId, quantity }) => {
     const persistedItem = R.find(R.propEq('id', itemId))(persistedItems);
     return {
-      data:
-        Object.assign(
-          {
-            level,
-            quantity: quantity,
-            totalPrice: persistedItem.price * quantity,
-            totalCost: persistedItem.cost * quantity,
-            date: new Date(),
-            salesDefinition:{
-              connect:{
-                id:itemId,
-              },
-            },
-            organization: {
-              connect: {
-                id: organizationId,
-              },
+      data: Object.assign(
+        {
+          level,
+          quantity: quantity,
+          totalPrice: persistedItem.price * quantity,
+          totalCost: persistedItem.cost * quantity,
+          date: new Date(),
+          salesDefinition: {
+            connect: {
+              id: itemId,
             },
           },
-          specialtyId && {
-            specialty: {
-              connect: {
-                id: specialtyId,
-              },
+          organization: {
+            connect: {
+              id: organizationId,
             },
           },
-          branchId && {
-            branch: {
-              connect: {
-                id: branchId,
-              },
+          user: {
+            connect: {
+              id: userId,
             },
           },
-          userID &&{
-            user: {
-              connect: {
-                id: userID,
-              },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
             },
-          }
-        ),
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        }
+      ),
     };
   });
   Promise.all(

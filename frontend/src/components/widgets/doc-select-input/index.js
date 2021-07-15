@@ -25,7 +25,7 @@ const CRDocSelectInput = ({
       lastData = data;
     }
     return lastData;
-  }, [branchId, specialtyId, userId]);
+  }, [branchId, specialtyId, userId,data]);
   const updatedData = selectedData?.map(d => {
     let objName = d?.Apptype || d?.name;
     if (d.level === 'organization') {

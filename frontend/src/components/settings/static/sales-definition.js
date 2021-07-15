@@ -24,7 +24,6 @@ const SalesDefinition = () => {
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  console.log(formValue);
   const {
     addSalesDefinition,
     salesesDefinition,

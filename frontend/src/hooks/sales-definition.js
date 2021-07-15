@@ -26,7 +26,6 @@ function useSalesDefinition({ onCreate, onEdit } = {}) {
     () => R.propOr([], 'mySalesesDefinition')(data),
     [data]
   );
-
   const [addSalesDefinition] = useMutation(ADD_SALES_DEFINITION, {
     onCompleted() {
       Alert.success('the Item has been Added Successfully');
