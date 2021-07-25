@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Alert } from 'rsuite';
 import { useMutation } from '@apollo/client';
 import moment from 'moment';
-
+import { Can } from 'components/user/can';
 import { Div } from 'components';
 import {
   ADJUST_APPOINTMENT,
@@ -116,13 +116,17 @@ const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
         children(getStateAndHelpers())
       ) : (
         <>
-          <EditOLIcon
-            onClick={() => {
-              onOpen('edit');
-            }}
-            ml={2}
-          />
-          <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+          <Can I="Reschedule" an="Appointment">
+            <EditOLIcon
+              onClick={() => {
+                onOpen('edit');
+              }}
+              ml={2}
+            />
+          </Can>
+          <Can I="Cancel" an="Appointment">
+            <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+          </Can>
         </>
       )}
 
@@ -132,6 +136,7 @@ const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
         appointment={appointment}
         onClose={() => onClose('edit')}
       />
+
       <CancelAppointment
         visible={visible.cancel}
         appointment={appointment}

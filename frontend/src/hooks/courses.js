@@ -56,7 +56,7 @@ function useCourses({
     [dataPayment]
   );
 
-  const [addCourse] = useMutation(ADD_COURSE, {
+  const [addCourse,{loading}] = useMutation(ADD_COURSE, {
     onCompleted() {
       Alert.success('the Course has been Added Successfully');
       onCreate && onCreate();
@@ -154,6 +154,7 @@ function useCourses({
       editCourse,
       editCourseDoctor,
       users,
+      loading,
       editCourseUnits,
       finishCourse,
       updateCache,
@@ -164,6 +165,7 @@ function useCourses({
       patientCourses,
       addCourse,
       editCourse,
+      loading,
       editCourseUnits,
       editCourseDoctor,
       finishCourse,

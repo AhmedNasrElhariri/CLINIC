@@ -14,8 +14,8 @@ import Sidebar from 'components/layout/sidebar';
 import Navbar from 'components/layout/navbar';
 import NewAppointment from 'components/appointments/new-appointment';
 import useUserProfile from './fetch-user';
-
-import {  useModal } from 'hooks';
+import { Can } from 'components/user/can';
+import { useModal } from 'hooks';
 const initialvalues = {
   branchId: null,
 };
@@ -53,13 +53,21 @@ function Root() {
     {
       to: '/appointments',
       name: 'Appointments',
-      extra: <Fab open={visbleAppointment} onClick={toggleAppointment} />,
+      extra: (
+        <Can I="Create" an="Appointment">
+          <Fab open={visbleAppointment} onClick={toggleAppointment} />
+        </Can>
+      ),
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/patients',
       name: 'Patients',
-      extra: <Fab open={visblePatient} onClick={togglePatient} />,
+      extra: (
+        <Can I="Create" an="Patient">
+          <Fab open={visblePatient} onClick={togglePatient} />
+        </Can>
+      ),
       icon: <UserIcon width={11.8} height={14.1} />,
     },
 

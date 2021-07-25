@@ -17,7 +17,7 @@ import {
   USER_COURSE_PAYMENT,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
-function usePayroll({ userId,period } = {}) {
+function usePayroll({ userId, period, doctorId, specialtyId, branchId } = {}) {
   const updateTransactionsCache = userTransactions => {
     client.writeQuery({
       query: LIST_USER_TRANSACTIONS,
@@ -52,25 +52,33 @@ function usePayroll({ userId,period } = {}) {
     variables: { userId },
   });
   const { data: coursePaymentData } = useQuery(USER_COURSE_PAYMENT, {
-    variables: { userId, period },
+    variables: { userId, period, doctorId, specialtyId, branchId },
   });
   const userCoursesPayment = useMemo(
     () => R.propOr([], 'userCoursePayment')(coursePaymentData),
-    [coursePaymentData,period,userId]
+    [coursePaymentData, period, userId, doctorId, specialtyId, branchId]
   );
-  const { data: transctionCoursesTimeFrame } = useQuery(TRANSCTION_COURSES_TIMEFRAME, {
-    variables: { userId },
-  });
+  const { data: transctionCoursesTimeFrame } = useQuery(
+    TRANSCTION_COURSES_TIMEFRAME,
+    {
+      variables: { userId },
+    }
+  );
   const lastTransactionDate = useMemo(
-    () => R.propOr({}, 'transactionCoursesTimeFrame')(transctionCoursesTimeFrame),
+    () =>
+      R.propOr({}, 'transactionCoursesTimeFrame')(transctionCoursesTimeFrame),
     [transctionCoursesTimeFrame]
   );
 
-  const { data: transctionRevenuesTimeFrame } = useQuery(TRANSCTION_REVENUES_TIMEFRAME, {
-    variables: { userId },
-  });
+  const { data: transctionRevenuesTimeFrame } = useQuery(
+    TRANSCTION_REVENUES_TIMEFRAME,
+    {
+      variables: { userId },
+    }
+  );
   const lastTransactionRevenueDate = useMemo(
-    () => R.propOr({}, 'transactionRevenuesTimeFrame')(transctionRevenuesTimeFrame),
+    () =>
+      R.propOr({}, 'transactionRevenuesTimeFrame')(transctionRevenuesTimeFrame),
     [transctionRevenuesTimeFrame]
   );
 

@@ -19,18 +19,24 @@ function Assign() {
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  const { users, roles, assignRoleToUser } = usePermissions({
+  const { users, roles, assignRoleToUser, deleteRoleToUser } = usePermissions({
     onAssignRoleToUser: close,
+    onDeleteRoleToUser: close,
   });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
-
+  console.log(formValue);
   const handleAdd = useCallback(() => {
-    assignRoleToUser(formValue);
-  }, [assignRoleToUser, formValue]);
+    if (type === 'create') {
+      assignRoleToUser(formValue);
+    } else {
+      console.log(formValue,'formValue');
+      deleteRoleToUser(formValue);
+    }
+  }, [assignRoleToUser, deleteRoleToUser, formValue]);
 
   const handleEdit = useCallback(
     index => {
@@ -39,7 +45,15 @@ function Assign() {
     },
     [openPermissions, roles]
   );
-
+  const handleDelete = useCallback(
+    index => {
+      setRole(roles[index]);
+      setType('change');
+      setFormValue(initValue);
+      open();
+    },
+    [open, setFormValue, setType, roles]
+  );
   return (
     <>
       <Div textAlign="right">
@@ -67,8 +81,9 @@ function Assign() {
         type={type}
         users={users}
         roles={roles}
+        role={role}
       />
-      <ListAssigns data={roles} onEdit={handleEdit} />
+      <ListAssigns data={roles} onEdit={handleEdit} onDelete={handleDelete} />
     </>
   );
 }

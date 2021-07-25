@@ -8,6 +8,7 @@ import {
   LIST_SEARCHED_PATIENTS,
   EDIT_PATIENT,
   LIST_PATIENTS_SUMMARY,
+  LIST_PATIENTS_REPORT,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -25,11 +26,13 @@ function usePatients({
   page,
   name,
   phoneNo,
+  area,
+  reference,
   patientSearchValue,
 } = {}) {
-  const { data, fetchMore } = useQuery(LIST_PATIENTS, {
+  const { data } = useQuery(LIST_PATIENTS, {
     variables: {
-      offset: (page - 1) * 20,
+      offset: (page - 1) * 20 || 0,
       limit: 20,
       name,
       phoneNo,
@@ -53,14 +56,11 @@ function usePatients({
     [patientSummaryData]
   );
 
-  const { data: searchedPatientsData } = useQuery(
-    LIST_SEARCHED_PATIENTS,
-    {
-      variables: {
-        name: patientSearchValue,
-      },
-    }
-  );
+  const { data: searchedPatientsData } = useQuery(LIST_SEARCHED_PATIENTS, {
+    variables: {
+      name: patientSearchValue,
+    },
+  });
   const searchedPatients = useMemo(
     () => R.propOr([], 'searchedPatients')(searchedPatientsData),
     [searchedPatientsData]
@@ -79,6 +79,17 @@ function usePatients({
     onError: () => Alert.error('Invalid Input'),
   });
 
+  const { data: patientsReportData } = useQuery(LIST_PATIENTS_REPORT, {
+    variables: {
+      area,
+      reference,
+    },
+  });
+  const patientsReports = useMemo(
+    () => R.propOr({}, 'patientsReport')(patientsReportData),
+    [patientsReportData]
+  );
+
   return useMemo(
     () => ({
       patients,
@@ -92,13 +103,21 @@ function usePatients({
       },
       searchedPatients,
       patientsSummary,
+      patientsReports,
       pages,
       edit: patient =>
         editPatient({
           variables: { patient },
         }),
     }),
-    [editPatient, patients, pages, patientsSummary,searchedPatients]
+    [
+      editPatient,
+      patients,
+      pages,
+      patientsSummary,
+      searchedPatients,
+      patientsReports,
+    ]
   );
 }
 

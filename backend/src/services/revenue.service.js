@@ -9,6 +9,7 @@ export const createAppointmentRevenueFromSessions = (
   sessions,
   organizationId,
   branchId,
+  date,
   specialtyId,
   userID
 ) => {
@@ -16,7 +17,7 @@ export const createAppointmentRevenueFromSessions = (
   return sessions.map(({ name, price, number }) =>
     Object.assign(
       {
-        date: new Date(),
+        date: new Date(date),
         name,
         amount: price * number,
         level,

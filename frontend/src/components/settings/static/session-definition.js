@@ -5,13 +5,13 @@ import { Div, CRButton } from 'components';
 import NewSessionDefinition from './new-session-definition';
 import ListSessionsDefinition from './list-sessions-definition';
 import { useForm, useSessionDefinition } from 'hooks';
-
+import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
 
 const initValue = {
   name: '',
   price: 0,
-  duration:5,
+  duration: 5,
 };
 
 const SessionDefinition = () => {
@@ -38,7 +38,7 @@ const SessionDefinition = () => {
   }, [open, setFormValue, setType]);
   const handleClickEdit = useCallback(
     data => {
-      const session = R.pick(['id', 'name', 'price','duration'])(data);
+      const session = R.pick(['id', 'name', 'price', 'duration'])(data);
       setType('edit');
       setFormValue(session);
       open();
@@ -64,9 +64,11 @@ const SessionDefinition = () => {
   return (
     <>
       <Div textAlign="right">
-        <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Session Definition+
-        </CRButton>
+        <Can I="Create" an="SessionDefinition">
+          <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
+            Add New Session Definition+
+          </CRButton>
+        </Can>
       </Div>
       <NewSessionDefinition
         visible={visible}

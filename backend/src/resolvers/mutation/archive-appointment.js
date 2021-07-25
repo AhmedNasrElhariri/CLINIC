@@ -21,6 +21,7 @@ const archiveAppointment = async (
     items = [],
     discount = {},
     others = {},
+    date,
     patientName,
     branchId,
     specialtyId,
@@ -36,6 +37,7 @@ const archiveAppointment = async (
         sessions,
         organizationId,
         branchId,
+        date,
         specialtyId,
         userID
       )
@@ -46,7 +48,7 @@ const archiveAppointment = async (
         data: Object.assign(
           {
             name: others.name,
-            date: new Date(),
+            date: new Date(date),
             amount: others.amount,
             level,
             organization: {
@@ -91,6 +93,7 @@ const archiveAppointment = async (
         organizationId,
         branchId,
         specialtyId,
+        date,
         userID,
         level
       );
@@ -107,7 +110,7 @@ const archiveAppointment = async (
     await prisma.bankRevenue.create({
       data: Object.assign(
         {
-          date: new Date(),
+          date: new Date(date),
           name,
           amount: sub,
           level,
@@ -169,7 +172,7 @@ const archiveAppointment = async (
       await prisma.revenue.create({
         data: Object.assign(
           {
-            date: new Date(),
+            date: new Date(date),
             name: 'Cash Payment - ' + patientName,
             amount: amount,
             level,
@@ -210,7 +213,7 @@ const archiveAppointment = async (
       await prisma.insuranceRevenue.create({
         data: Object.assign(
           {
-            date: new Date(),
+            date: new Date(date),
             name: 'insurance Payment - ' + patientName,
             amount: subtotal,
             level,
@@ -257,7 +260,7 @@ const archiveAppointment = async (
       await prisma.bankRevenue.create({
         data: Object.assign(
           {
-            date: new Date(),
+            date: new Date(date),
             name: 'Bank Payment - ' + patientName,
             amount: amount,
             level,
@@ -303,7 +306,7 @@ const archiveAppointment = async (
       await prisma.insuranceRevenue.create({
         data: Object.assign(
           {
-            date: new Date(),
+            date: new Date(date),
             name: 'insurance Payment - ' + patientName,
             amount: subtotal,
             level,

@@ -1,11 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ReactToPrint from 'react-to-print';
-import {
-  CRButton,
-  CRSelectInput,
-  CRDatePicker,
-  Div,
-} from 'components/widgets';
+import { CRButton, CRSelectInput, CRDatePicker, Div } from 'components/widgets';
+import { Can } from 'components/user/can';
 import axios from 'axios';
 import { Form, DatePicker, Table } from 'rsuite';
 import { Container, Report, Name } from './style';
@@ -49,8 +45,7 @@ const Test = props => {
       .then(res => {
         setDataTwo(res.data);
       })
-      .catch(err => {
-      });
+      .catch(err => {});
 
     // const data = res.data; // or res.blob() if using blob responses
 
@@ -81,8 +76,7 @@ const Test = props => {
       .then(res => {
         setData(res.data);
       })
-      .catch(err => {
-      });
+      .catch(err => {});
 
     // const data = res.data; // or res.blob() if using blob responses
 
@@ -105,46 +99,50 @@ const Test = props => {
   return (
     <>
       <Container>
-        <Report>
-          <Name>Monthly Report</Name>
-          <Form formValue={formValue} onChange={setFormValue}>
-            <CRSelectInput
-              placeholder="Select Month"
-              name="month"
-              data={monthes}
-              layout="inline"
-              block
-              style={{ width: '270px' }}
+        <Can I="GenerateMonthly" an="PulsesReport">
+          <Report>
+            <Name>Monthly Report</Name>
+            <Form formValue={formValue} onChange={setFormValue}>
+              <CRSelectInput
+                placeholder="Select Month"
+                name="month"
+                data={monthes}
+                layout="inline"
+                block
+                style={{ width: '270px' }}
+              />
+            </Form>
+            <CRButton onClick={() => handleMonthlyReport(formValue.month)}>
+              Generate
+            </CRButton>
+            <ReactToPrint
+              trigger={() => <CRButton primary>Print</CRButton>}
+              content={() => refTwo.current}
             />
-          </Form>
-          <CRButton onClick={() => handleMonthlyReport(formValue.month)}>
-            Generate
-          </CRButton>
-          <ReactToPrint
-            trigger={() => <CRButton primary>Print</CRButton>}
-            content={() => refTwo.current}
-          />
-        </Report>
+          </Report>
+        </Can>
       </Container>
       <Container>
-        <Report>
-          <Name>Daily Report</Name>
-          <Form formValue={formValue} onChange={setFormValue}>
-            <CRDatePicker
-              block
-              name="date"
-              accepter={DatePicker}
-              style={{ width: '270px' }}
+        <Can I="GenerateDaily" an="PulsesReport">
+          <Report>
+            <Name>Daily Report</Name>
+            <Form formValue={formValue} onChange={setFormValue}>
+              <CRDatePicker
+                block
+                name="date"
+                accepter={DatePicker}
+                style={{ width: '270px' }}
+              />
+            </Form>
+            <CRButton onClick={() => handleDailyReport(formValue.date)}>
+              Generate
+            </CRButton>
+            <ReactToPrint
+              trigger={() => <CRButton primary>Print</CRButton>}
+              content={() => refOne.current}
             />
-          </Form>
-          <CRButton onClick={() => handleDailyReport(formValue.date)}>
-            Generate
-          </CRButton>
-          <ReactToPrint
-            trigger={() => <CRButton primary>Print</CRButton>}
-            content={() => refOne.current}
-          />
-        </Report>
+          </Report>
+        </Can>
       </Container>
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>

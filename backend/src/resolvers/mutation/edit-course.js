@@ -17,6 +17,7 @@ const editCourse = async (
   });
   const payment =
     'C' + '/' + data.courseDefinition.name + '/' + data.patient.name;
+  const salerId = data.userId;
   await prisma.revenue.create({
     data: Object.assign(
       {
@@ -48,24 +49,54 @@ const editCourse = async (
             id: branchId,
           },
         },
+      },
+      userID && {
+        doctor: {
+          connect: {
+            id: userID,
+          },
+        },
       }
     ),
   });
   await prisma.coursePayment.create({
-    data: {
-      payment: paid,
-      date: new Date(),
-      user: {
-        connect: {
-          id: userId,
+    data: Object.assign(
+      {
+        payment: paid,
+        date: new Date(),
+        user: {
+          connect: {
+            id: salerId,
+          },
+        },
+        course: {
+          connect: {
+            id: courseId,
+          },
         },
       },
-      course: {
-        connect: {
-          id: courseId,
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
         },
       },
-    },
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
+        },
+      },
+      userID && {
+        doctor: {
+          connect: {
+            id: userID,
+          },
+        },
+      }
+    ),
   });
   return prisma.course.update({
     where: {

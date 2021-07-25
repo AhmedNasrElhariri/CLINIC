@@ -40,7 +40,7 @@ function Appointments() {
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
     dateTo: R.pathOr(null, ['date', 1])(formValue),
     status,
-    type: R.propOr(APPT_TYPE.Examination, 'type')(formValue),
+    type: R.propOr(null, 'type')(formValue),
     patient: R.propOr('', 'patient')(formValue),
   });
   const pages = Math.ceil(appointmentsCount / 20);

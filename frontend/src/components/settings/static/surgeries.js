@@ -4,7 +4,7 @@ import Filter from '../../filters';
 import { Div, CRButton } from 'components';
 import ListSurgeries from './list-surgeries';
 import NewSurgery from './new-surgery';
-
+import { Can } from 'components/user/can';
 import { useForm, useModal, useSurgeries, useAppointments } from 'hooks';
 
 const initValue = { name: '', branchId: null, specialtyId: null, userId: null };
@@ -61,9 +61,11 @@ function Surgeries() {
   return (
     <>
       <Div textAlign="right">
-        <CRButton variant="primary" onClick={handleonClickCreate}>
-          Surgery +
-        </CRButton>
+        <Can I="Create" an="Surgery">
+          <CRButton variant="primary" onClick={handleonClickCreate}>
+            Surgery +
+          </CRButton>
+        </Can>
       </Div>
       <NewSurgery
         visible={visible}

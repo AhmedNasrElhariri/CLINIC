@@ -20,9 +20,39 @@ class Appointments extends React.Component {
   };
   render() {
     const appointments = this.props.appointments;
+    console.log(appointments,'slsls');
+    const type = this.props.type;
+    const method = this.props.method;
     const filteredAppointments = sortAppointments(
       filterAppointments(appointments, this.state)
     );
+    let totalRevenues = 0;
+    let totalExpenses = 0;
+    if (type === 'accounting') {
+      if (method === 'revenues') {
+        
+        totalRevenues = filteredAppointments?.reduce(
+          (acc, e) => acc + e?.amount,
+          0
+        );
+        console.log(totalRevenues,filteredAppointments);
+      } else {
+        totalExpenses = filteredAppointments?.reduce(
+          (acc, e) => acc + e?.amount,
+          0
+        );
+      }
+    }
+    if (type === 'sales') {
+        totalRevenues = filteredAppointments?.reduce(
+          (acc, e) => acc + e?.totalPrice,
+          0
+        );
+        totalExpenses = filteredAppointments?.reduce(
+          (acc, e) => acc + e?.totalCost,
+          0
+        );
+    }
     const branches = this.props.branches;
     return (
       <>
@@ -33,7 +63,7 @@ class Appointments extends React.Component {
             branches={branches}
           />
         </Div>
-        {this.props.render(filteredAppointments)}
+        {this.props.render(filteredAppointments, totalRevenues, totalExpenses)}
       </>
     );
   }

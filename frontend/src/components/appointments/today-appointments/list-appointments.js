@@ -10,7 +10,7 @@ import {
 } from 'components';
 import { isScheduled, isWaiting } from 'services/appointment';
 import { canAjdust } from 'services/appointment';
-
+import { Can } from 'components/user/can';
 import { PrintOLIcon } from 'components/icons';
 import { formatDate } from 'utils/date';
 import { FULL_DATE_FORMAT, STANDARD_DATE_FORMAT } from 'utils/constants';
@@ -151,41 +151,45 @@ function ListAppointments({
               <Div display="flex">
                 {(isScheduled(appointment) || isWaiting(appointment)) && (
                   <>
-                    {appointment.accounted ? (
-                      <CRButton
-                        variant="success"
-                        mr={1}
-                        onClick={e => {
-                          e.stopPropagation();
-                          onArchive(appointment);
-                        }}
-                        width={70}
-                      >
-                        ACC
-                      </CRButton>
-                    ) : (
+                    <Can I="Archive" an="Appointment">
+                      {appointment.accounted ? (
+                        <CRButton
+                          variant="success"
+                          mr={1}
+                          onClick={e => {
+                            e.stopPropagation();
+                            onArchive(appointment);
+                          }}
+                          width={70}
+                        >
+                          ACC
+                        </CRButton>
+                      ) : (
+                        <CRButton
+                          variant="primary"
+                          mr={1}
+                          onClick={e => {
+                            e.stopPropagation();
+                            onArchive(appointment);
+                          }}
+                          width={70}
+                        >
+                          ACC
+                        </CRButton>
+                      )}
+                    </Can>
+                    <Can I="Finish" an="Appointment">
                       <CRButton
                         variant="primary"
                         mr={1}
                         onClick={e => {
                           e.stopPropagation();
-                          onArchive(appointment);
+                          onComplete(appointment);
                         }}
-                        width={70}
                       >
-                        ACC
+                        Archive
                       </CRButton>
-                    )}
-                    <CRButton
-                      variant="primary"
-                      mr={1}
-                      onClick={e => {
-                        e.stopPropagation();
-                        onComplete(appointment);
-                      }}
-                    >
-                      Archive
-                    </CRButton>
+                    </Can>
                   </>
                 )}
                 <CRButton

@@ -84,7 +84,7 @@ const appointments = async (
       doctor: true,
       session: true,
     },
-    skip: offset,
+    skip: offset ,
     take: limit,
   });
   const data = {

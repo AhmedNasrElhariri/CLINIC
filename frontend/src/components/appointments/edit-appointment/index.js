@@ -71,6 +71,7 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
               <CRBrancheTree
                 formValue={formValue}
                 onChange={setFormValue}
+                showUserAndOrganization={false}
                 action={ACTIONS.Create_Appointment}
               />
               <CRDatePicker

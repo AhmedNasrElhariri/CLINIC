@@ -47,12 +47,21 @@ export const LIST_PATIENTS = gql`
   }
 `;
 
+export const LIST_PATIENTS_REPORT = gql`
+  query ($reference: String, $area: String) {
+    patientsReport(area: $area, reference: $reference) {
+      patientsAreaCount
+      patientsReferenceCount
+    }
+  }
+`;
+
 export const LIST_SEARCHED_PATIENTS = gql`
   query ($name: String) {
     searchedPatients(name: $name) {
-        id
-        name
-        phoneNo
+      id
+      name
+      phoneNo
     }
   }
 `;

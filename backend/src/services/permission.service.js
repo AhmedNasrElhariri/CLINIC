@@ -32,8 +32,8 @@ const byOrganization = async (organizationId, allUsers = false) => {
   )(branches);
 };
 
-export const byBranches = (organizationId, rules) =>
-  prisma.branch.findMany({
+export const byBranches = async(organizationId, rules) =>{
+  const branches = await prisma.branch.findMany({
     where: { organizationId, id: { in: rules.map(r => r.branchId) } },
     include: {
       specialties: {
@@ -41,7 +41,9 @@ export const byBranches = (organizationId, rules) =>
       },
     },
   });
-
+  return branches;
+  // return branches;
+}
 export const bySpecialties = rules => {
   const orArg = rules.map(({ branchId, specialtyId }) => ({
     id: branchId,
@@ -108,7 +110,6 @@ export const listFlattenUsersTree = async (
   }
 
   const { level, all, rules } = permission;
-
   switch (level) {
     case PERMISSION_LEVEL.ORGANIZATION:
       return byOrganization(organizationId, allUsers);
@@ -135,6 +136,6 @@ export const listFlattenUsersTreeIds = async (
     },
     allUsers
   );
-
+  console.log(users,'usereererer',R.map(R.prop('id'))(users));
   return R.map(R.prop('id'))(users);
 };

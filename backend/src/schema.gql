@@ -104,6 +104,7 @@ type Query {
     dateFrom: Date
     dateTo: Date
   ): AppointmentData!
+  patientsReport(area: String, reference: String): PatientsCount!
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
   todayAppointments: [Appointment!]
   appointment(id: ID!): Appointment
@@ -167,7 +168,13 @@ type Query {
   payrollUsers: [PayrollUser!]
   payslips: [Payslips!]
   userTransactions(userId: ID!): [PayrollTransaction!]
-  userCoursePayment(userId: ID!, period: [String!]): [CoursePayment!]
+  userCoursePayment(
+    userId: ID!
+    period: [String!]
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+  ): [CoursePayment!]
   appointmentsDayCount(date: Date!, specialtyId: ID): AppointmentsDayCount!
   coursePayments(courseId: ID!): [CoursePayment!]
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
@@ -191,6 +198,7 @@ type Mutation {
     patientName: String!
     others: Others
     bank: ID
+    date: Date!
     company: ID
     option: optionInput!
     branchId: ID
@@ -293,6 +301,7 @@ type Mutation {
   addSpecialty(branchId: ID!, specialtyId: ID!): Branch!
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
+  deleteRoleToUser(userId: ID!, roleId: ID!): Boolean
   updateConfiguration(configuration: ConfigurationInput): Configuration!
   addCourseDefinition(
     courseDefinition: CourseInputDefinition!
@@ -532,6 +541,11 @@ type Appointment {
 type AppointmentData {
   appointments: [Appointment!]
   appointmentsCount: Int!
+}
+
+type PatientsCount {
+  patientsAreaCount: Int!
+  patientsReferenceCount: Int!
 }
 
 type AppointmentsDayCount {
@@ -1411,6 +1425,9 @@ type CoursePayment {
   date: Date!
   user: User!
   course: Course!
+  doctor: User
+  branch: Branch
+  specialty: Specialty
 }
 
 ########################### Patient Surgeries ##################################

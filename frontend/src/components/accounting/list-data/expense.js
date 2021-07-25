@@ -3,8 +3,9 @@ import NumberFormat from 'react-number-format';
 import { H5, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
+import { Can } from 'components/user/can';
 
-const ListData = ({ title, data, onEdit, canEdit }) => {
+const ListData = ({ title, data, onEdit }) => {
   return (
     <div>
       <H5 mb={3} textAlign="center">
@@ -15,16 +16,14 @@ const ListData = ({ title, data, onEdit, canEdit }) => {
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
-          <CRTable.CRColumn width={100}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ expenseType }) => (
-                <CRTable.CRCellStyled bold>
-                  {expenseType}
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
+        <CRTable.CRColumn width={100}>
+          <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ expenseType }) => (
+              <CRTable.CRCellStyled bold>{expenseType}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
         <CRTable.CRColumn width={100}>
           <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -49,14 +48,16 @@ const ListData = ({ title, data, onEdit, canEdit }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        {canEdit && (
-          <CRTable.CRColumn width={35}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        )}
+        <CRTable.CRColumn width={35}>
+          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {data => (
+              <Can I="EditExpense" an="Accounting">
+                <Icon icon="edit" onClick={() => onEdit(data)} />
+              </Can>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
       </CRTable>
     </div>
   );

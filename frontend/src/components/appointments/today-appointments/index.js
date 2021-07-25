@@ -45,7 +45,7 @@ function TodayAppointments() {
       businessNotes: R.propOr('', 'businessNotes')(appointment),
     }));
   }, [appointment]);
-  const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
+  const [archive, { loading }] = useMutation(ARCHIVE_APPOINTMENT, {
     refetchQueries: () => [
       refetchRevenues,
       refetchExpenses,
@@ -139,6 +139,7 @@ function TodayAppointments() {
           specialtyId: appointment?.specialty.id,
           userId: appointment?.doctor.id,
           branchId: appointment?.branch.id,
+          date: appointment.date,
           sessions: sessions.map(session => ({
             name: getName({ session, appointment }),
             price: session.price,
@@ -249,6 +250,7 @@ function TodayAppointments() {
           show={visible}
           onCancel={close}
           onOk={handleArchive}
+          loading={loading}
         />
       )}
       {popUp === 'complete' && (

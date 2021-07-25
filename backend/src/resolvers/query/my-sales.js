@@ -12,7 +12,23 @@ const mySaleses = async (_, __, { user, organizationId }) => {
   );
   return prisma.sales.findMany({
     where: {
-      organizationId: organizationId,
+      OR: [
+        {
+          userId: {
+            in: ids,
+          },
+        },
+        {
+          branchId: {
+            in: ids,
+          },
+        },
+        {
+          specialtyId: {
+            in: ids,
+          },
+        },
+      ],
     },
     include: {
       salesDefinition: true,
