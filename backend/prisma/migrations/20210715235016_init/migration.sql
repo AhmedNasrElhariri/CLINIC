@@ -410,6 +410,7 @@ CREATE TABLE "Expense" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
+    "doctorId" TEXT,
 
     PRIMARY KEY ("id")
 );
@@ -428,6 +429,7 @@ CREATE TABLE "Revenue" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
+    "doctorId" TEXT,
 
     PRIMARY KEY ("id")
 );
@@ -442,6 +444,7 @@ CREATE TABLE "BankRevenue" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
+    "doctorId" TEXT,
     "level" TEXT,
     "specialtyId" TEXT,
     "branchId" TEXT,
@@ -461,6 +464,7 @@ CREATE TABLE "InsuranceRevenue" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
+    "doctorId" TEXT,
     "level" TEXT,
     "specialtyId" TEXT,
     "branchId" TEXT,
@@ -518,6 +522,7 @@ CREATE TABLE "Item" (
 CREATE TABLE "InventoryItem" (
     "id" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
+    "price" INTEGER NOT NULL,
     "itemId" TEXT NOT NULL,
     "level" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1139,6 +1144,9 @@ ALTER TABLE "Expense" ADD FOREIGN KEY ("organizationId") REFERENCES "Organizatio
 ALTER TABLE "Expense" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Expense" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Revenue" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1151,7 +1159,13 @@ ALTER TABLE "Revenue" ADD FOREIGN KEY ("organizationId") REFERENCES "Organizatio
 ALTER TABLE "Revenue" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Revenue" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "BankRevenue" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BankRevenue" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "BankRevenue" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -1167,6 +1181,9 @@ ALTER TABLE "BankRevenue" ADD FOREIGN KEY ("organizationId") REFERENCES "Organiz
 
 -- AddForeignKey
 ALTER TABLE "InsuranceRevenue" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InsuranceRevenue" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "InsuranceRevenue" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
