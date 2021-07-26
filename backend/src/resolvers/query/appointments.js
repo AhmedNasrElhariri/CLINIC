@@ -18,13 +18,12 @@ const appointments = async (
   },
   { user, organizationId }
 ) => {
+
+  
+
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
-  const ids = await listFlattenUsersTreeIds({
-    user,
-    organizationId,
-    action: ACTIONS.List_Appointment,
-  });
+  
   const appointmentsCount = await prisma.appointment.count({
     where: {
       date: {

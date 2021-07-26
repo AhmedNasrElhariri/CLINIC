@@ -28,12 +28,10 @@ function Assign() {
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
-  console.log(formValue);
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       assignRoleToUser(formValue);
     } else {
-      console.log(formValue,'formValue');
       deleteRoleToUser(formValue);
     }
   }, [assignRoleToUser, deleteRoleToUser, formValue]);

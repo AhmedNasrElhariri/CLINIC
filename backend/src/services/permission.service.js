@@ -20,7 +20,6 @@ const byOrganization = async (organizationId, allUsers = false) => {
       },
     },
   });
-
   return R.pipe(
     R.map(R.prop('specialties')),
     R.flatten,
@@ -32,7 +31,7 @@ const byOrganization = async (organizationId, allUsers = false) => {
   )(branches);
 };
 
-export const byBranches = async(organizationId, rules) =>{
+export const byBranches = async (organizationId, rules) => {
   const branches = await prisma.branch.findMany({
     where: { organizationId, id: { in: rules.map(r => r.branchId) } },
     include: {
@@ -43,33 +42,12 @@ export const byBranches = async(organizationId, rules) =>{
   });
   return branches;
   // return branches;
-}
-export const bySpecialties = rules => {
-  const orArg = rules.map(({ branchId, specialtyId }) => ({
-    id: branchId,
-    specialties: {
-      every: {
-        id: specialtyId,
-      },
-    },
-  }));
-   
-  const orSpecialties = orArg.map(o => {
-    return {
-      specialties: o.specialties.every,
-    }
+};
+export const bySpecialties = async rules => {
+  const specialtiesId = rules.map(val => {
+    return { id: val.specialtyId };
   });
-  const specialtiesIds = orSpecialties.map(s => {
-    return {
-      id:s.specialty.id,
-    }
-  })
-   console.log(Specialties,'specialtiesIdspecialtiesId',specialtiesIds);
-   return prisma.branch.findMany({
-    where: {
-      OR: orArg,
-    },
-  });
+  return specialtiesId;
 };
 
 export const byUsers = rules => {
@@ -115,7 +93,7 @@ export const listFlattenUsersTree = async (
   });
 
   const permission = R.pathOr(null, ['permissions', '0'])(role);
-
+  
   if (!permission) {
     return [];
   }

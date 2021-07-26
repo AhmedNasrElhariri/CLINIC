@@ -1,8 +1,6 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import * as R from 'ramda';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox, Schema } from 'rsuite';
-import { useQuery } from '@apollo/client';
 import { ACTIONS } from 'utils/constants';
 import {
   CRSelectInput,
@@ -37,7 +35,6 @@ import {
   useModal,
   useCourses,
   usePatients,
-  useConfigurations,
   useSessionDefinition,
 } from 'hooks';
 

@@ -20,7 +20,6 @@ class Appointments extends React.Component {
   };
   render() {
     const appointments = this.props.appointments;
-    console.log(appointments,'slsls');
     const type = this.props.type;
     const method = this.props.method;
     const filteredAppointments = sortAppointments(
@@ -35,7 +34,6 @@ class Appointments extends React.Component {
           (acc, e) => acc + e?.amount,
           0
         );
-        console.log(totalRevenues,filteredAppointments);
       } else {
         totalExpenses = filteredAppointments?.reduce(
           (acc, e) => acc + e?.amount,

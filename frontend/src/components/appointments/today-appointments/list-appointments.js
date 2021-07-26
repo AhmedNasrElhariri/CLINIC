@@ -151,7 +151,7 @@ function ListAppointments({
               <Div display="flex">
                 {(isScheduled(appointment) || isWaiting(appointment)) && (
                   <>
-                    <Can I="Archive" an="Appointment">
+                    <Can I="Acc" an="Appointment">
                       {appointment.accounted ? (
                         <CRButton
                           variant="success"
@@ -178,7 +178,7 @@ function ListAppointments({
                         </CRButton>
                       )}
                     </Can>
-                    <Can I="Finish" an="Appointment">
+                    <Can I="Archive" an="Appointment">
                       <CRButton
                         variant="primary"
                         mr={1}

@@ -25,7 +25,6 @@ const BankAccountingContainer = () => {
     view,
     period,
   });
-  console.log(revenues,'reveee');
   const updatedRevenues = useMemo(
     () =>
       revenues.filter(r =>

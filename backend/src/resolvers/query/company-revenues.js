@@ -12,7 +12,6 @@ const CompanyRevenues = async (_, __, { user, organizationId }) => {
     },
     true
   );
-  console.log(ids,'idididdidididiid');
   return prisma.insuranceRevenue.findMany({
     where: {
       OR: [
@@ -27,9 +26,9 @@ const CompanyRevenues = async (_, __, { user, organizationId }) => {
           },
         },
         {
-          specialtyId: {
-            in: ids,
-          },
+          specialtyId:{
+            in:ids,
+          }
         },
       ],
     },

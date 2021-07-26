@@ -54,7 +54,6 @@ const createOrUpdateRole = async (_, { role }, { organizationId }) => {
           }
     )
   );
-  console.log(permissionsArgs,'permissionsArgspermissionsArgs')
   return prisma.permissionRole.upsert({
     create: {
       name,

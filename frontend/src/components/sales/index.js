@@ -206,6 +206,7 @@ const Sales = () => {
             <CRSelectInput
               label="Creator"
               name="userId"
+              placement="auto"
               data={updatedUsers}
               style={{ width: '300px' }}
             />
