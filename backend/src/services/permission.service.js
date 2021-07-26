@@ -53,8 +53,19 @@ export const bySpecialties = rules => {
       },
     },
   }));
-
-  return prisma.branch.findMany({
+   
+  const orSpecialties = orArg.map(o => {
+    return {
+      specialties: o.specialties.every,
+    }
+  });
+  const specialtiesIds = orSpecialties.map(s => {
+    return {
+      id:s.specialty.id,
+    }
+  })
+   console.log(Specialties,'specialtiesIdspecialtiesId',specialtiesIds);
+   return prisma.branch.findMany({
     where: {
       OR: orArg,
     },
@@ -136,6 +147,5 @@ export const listFlattenUsersTreeIds = async (
     },
     allUsers
   );
-  console.log(users,'usereererer',R.map(R.prop('id'))(users));
   return R.map(R.prop('id'))(users);
 };

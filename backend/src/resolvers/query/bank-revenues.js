@@ -14,10 +14,23 @@ const bankRevenues = async (_, __, { user, organizationId }) => {
   );
   return prisma.bankRevenue.findMany({
     where: {
-      organizationId,
-      userId: {
-        in: ids,
-      },
+      OR: [
+        {
+          userId: {
+            in: ids,
+          },
+        },
+        {
+          branchId: {
+            in: ids,
+          },
+        },
+        {
+          specialtyId: {
+            in: ids,
+          },
+        },
+      ],
     },
     include: {
       bank: true,
