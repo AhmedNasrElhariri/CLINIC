@@ -1,6 +1,4 @@
 import React from 'react';
-
-import { sortAppointments } from 'services/appointment';
 import { filterAppointments } from './filters';
 import { Div } from 'components';
 import Filter from './filter';
@@ -22,7 +20,7 @@ class Appointments extends React.Component {
     const appointments = this.props.appointments;
     const type = this.props.type;
     const method = this.props.method;
-    const filteredAppointments = sortAppointments(
+    const filteredAppointments = (
       filterAppointments(appointments, this.state)
     );
     let totalRevenues = 0;

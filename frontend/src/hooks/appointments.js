@@ -1,9 +1,8 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import { useQuery } from '@apollo/client';
 import { ACTIONS } from 'utils/constants';
-import { sortAppointmentsByDate } from 'services/appointment';
 import { APPT_TYPE, APPT_STATUS } from 'utils/constants';
 import {
   LIST_APPOINTMENTS,
@@ -45,7 +44,6 @@ function useAppointments({
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery)),
-        sortAppointmentsByDate
       )(appointmentsdata),
     [data, includeSurgery]
   );
@@ -77,7 +75,6 @@ function useAppointments({
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery)),
-        sortAppointmentsByDate
       )(todayAppointmentsData),
     [todayAppointmentsData, includeSurgery]
   );

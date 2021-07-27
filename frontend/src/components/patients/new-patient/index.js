@@ -7,7 +7,7 @@ import { CRModal } from 'components';
 import { useMutation, useQuery } from '@apollo/client';
 
 import Form from './form';
-import { CREATE_PATIENT } from 'apollo-client/queries';
+import { CREATE_PATIENT ,LIST_SEARCHED_PATIENTS} from 'apollo-client/queries';
 import { usePatients } from 'hooks';
 
 const initialValues = {
@@ -20,7 +20,7 @@ const initialValues = {
   guardianName: '',
 };
 
-export default function NewPatient({ show, onHide }) {
+export default function NewPatient({ show, onHide ,onCreate}) {
   const [formValue, setFormValue] = useState(initialValues);
   const { patients, updateCache } = usePatients();
   const { data } = useQuery(ALL_AREAS);
@@ -38,8 +38,17 @@ export default function NewPatient({ show, onHide }) {
     onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
       onHide();
+      onCreate(patient);
       setFormValue(initialValues);
     },
+    refetchQueries: [
+      {
+        query: LIST_SEARCHED_PATIENTS,
+        variables: {
+          name: '0',
+        },
+      },
+    ],
     onError: () => Alert.error('Invalid Input'),
   });
   return (

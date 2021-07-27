@@ -19,7 +19,6 @@ import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 import BusinessNotes from './business-notes';
 import {
   filterTodayAppointments,
-  sortAppointments,
 } from 'services/appointment';
 import Filter from '../../filters';
 import { APPT_STATUS } from 'utils/constants';
@@ -32,7 +31,7 @@ function TodayAppointments() {
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
   const filteredAppointments = useMemo(
-    () => sortAppointments(filterTodayAppointments(appointments, formValue)),
+    () => (filterTodayAppointments(appointments, formValue)),
     [appointments, formValue]
   );
 

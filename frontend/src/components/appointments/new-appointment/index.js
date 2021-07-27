@@ -172,11 +172,13 @@ const NewAppointment = ({ show, onHide }) => {
   //     }
   //   );
   // };
+  console.log(searchedPatients,'sese');
+  console.log(formValue);
   return (
     <>
       <NewPatient
         onCreate={({ id }) => {
-          setFormValue({ ...formValue, patient: id });
+          setFormValue({ ...formValue, patientId: id });
           close();
         }}
         show={visible}
@@ -277,10 +279,11 @@ const NewAppointment = ({ show, onHide }) => {
               <RightContainer>
                 <CRSelectInput
                   label="Patient"
-                  name="patientId"
                   onSearch={v => setPatientSearchValue(v)}
                   placeholder="Name / Phone no"
                   data={searchedPatients}
+                  onChange={val => setFormValue({ ...formValue, patientId: val })}
+                  value={formValue.patientId}
                   searchBy={searchBy}
                   virtualized={false}
                   block
