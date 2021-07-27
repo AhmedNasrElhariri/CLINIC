@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import styled from 'styled-components';
 import { Div, H3, CRButton } from 'components';
 import useFrom from 'hooks/form';
+import { Can } from 'components/user/can';
 import NewCourse from 'components/appointments/appointment/courses';
 import CourseData from 'components/appointments/appointment/courses/course';
 import { useCourses } from 'hooks';
@@ -44,6 +45,7 @@ const Course = ({ patient }) => {
     editCourseDoctor,
     editCourseUnits,
     users,
+    loading,
     finishCourse,
   } = useCourses({
     onCreate: () => {
@@ -191,9 +193,11 @@ const Course = ({ patient }) => {
             {course.courseDefinition.name}
           </CourseButton>
         ))}
-        <CRButton variant="primary" onClick={handleClickCreate} ml={2}>
-          Add New Course+
-        </CRButton>
+        <Can I="Create" an="Course">
+          <CRButton variant="primary" onClick={handleClickCreate} ml={2}>
+            Add New Course+
+          </CRButton>
+        </Can>
       </Div>
       <NewCourse
         visible={visible}
@@ -203,6 +207,7 @@ const Course = ({ patient }) => {
         onClose={close}
         header={header}
         type={type}
+        loading={loading}
         users={users}
       />
       {courses.length > 0 ? (

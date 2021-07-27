@@ -1,15 +1,14 @@
-import React,{ useMemo,useEffect } from 'react';
+import React, { useMemo } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import { useQuery } from '@apollo/client';
 import { ACTIONS } from 'utils/constants';
-import { sortAppointmentsByDate } from 'services/appointment';
-import { APPT_TYPE,APPT_STATUS } from 'utils/constants';
+import { APPT_TYPE, APPT_STATUS } from 'utils/constants';
 import {
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
   LIST_TODAY_APPOINTMENTS,
-  APPOINTMENTS_DAY_COUNT
+  APPOINTMENTS_DAY_COUNT,
 } from 'apollo-client/queries';
 
 function useAppointments({
@@ -26,14 +25,14 @@ function useAppointments({
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
       {
-        offset: (page - 1) * 20,
+        offset: (page - 1) * 20 || 0,
         limit: 20,
         status,
         patient,
-        type,
       },
       dateFrom && { dateFrom },
-      dateTo && { dateTo }
+      dateTo && { dateTo },
+      type && { type }
     ),
   });
   const appointmentsdata = data?.appointments;
@@ -45,12 +44,11 @@ function useAppointments({
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery)),
-        sortAppointmentsByDate
       )(appointmentsdata),
     [data, includeSurgery]
   );
 
-  const { data: appointmentsDay} = useQuery(APPOINTMENTS_DAY_COUNT, {
+  const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: {
       date: date,
       specialtyId: specialtyId,
@@ -77,12 +75,10 @@ function useAppointments({
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery)),
-        sortAppointmentsByDate
       )(todayAppointmentsData),
     [todayAppointmentsData, includeSurgery]
   );
 
-  
   const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.List_Appointment },
   });

@@ -21,10 +21,18 @@ const patients = async (
       userId: {
         in: ids,
       },
-      name: {
-        contains: name,
-        mode: 'insensitive',
-      },
+      OR: [
+        {
+          name: {
+            contains: name,
+            mode: 'insensitive',
+          },
+          code: {
+            contains: name,
+            mode: 'insensitive',
+          },
+        },
+      ],
       phoneNo: {
         contains: phoneNo,
       },
@@ -35,10 +43,20 @@ const patients = async (
       userId: {
         in: ids,
       },
-      name: {
-        contains: name,
-        mode: 'insensitive',
-      },
+      OR: [
+        {
+          name: {
+            contains: name,
+            mode: 'insensitive',
+          },
+        },
+        {
+          code: {
+            contains: name,
+            mode: 'insensitive',
+          },
+        },
+      ],
       phoneNo: {
         contains: phoneNo,
       },

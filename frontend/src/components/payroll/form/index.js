@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form, Schema } from 'rsuite';
-import { CRModal, CRNumberInput, CRSelectInput, CRRadio } from 'components';
+import { CRModal, CRNumberInput, CRSelectInput, CRRadio,CRBrancheTree } from 'components';
+import { ACTIONS } from 'utils/constants';
 import { usePayroll } from 'hooks';
 import styled from 'styled-components';
 import { CRTextInput } from 'components/widgets';
@@ -152,7 +153,7 @@ const PayrollForm = ({
           <>
             <CRSelectInput
               label="User"
-              name="userId"
+              name="employeeId"
               placeholder="Select User"
               block
               data={updatedPayrollUsers}
@@ -206,6 +207,11 @@ const PayrollForm = ({
                   options={options2}
                   style={{ marginBottom: '10px' }}
                 />
+                <CRBrancheTree
+                  formValue={formValue}
+                  onChange={onChange}
+                  action={ACTIONS.Create_Commission}
+                />
                 <Toolbar
                   onChangePeriod={setPeriod}
                   lastTimeFrameDay={lastRevenueDay}
@@ -218,6 +224,11 @@ const PayrollForm = ({
                   name="percentage"
                   block
                 ></CRNumberInput>
+                <CRBrancheTree
+                  formValue={formValue}
+                  onChange={onChange}
+                  action={ACTIONS.Create_Commission}
+                />
                 <CourseToolbar onChangePeriod={setPeriod} lastTimeFrameDay={lastDay}/>
               </>
             ) : (

@@ -31,8 +31,11 @@ const patients = async (_, { name }, { user, organizationId }) => {
         },
       ],
     },
+    orderBy:[{
+      updatedAt:'desc',
+    }],
     skip: 0,
-    take: 100,
+    take: 20,
   });
 };
 

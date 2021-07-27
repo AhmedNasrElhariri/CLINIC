@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { MainContainer, CRCard, CRNav } from 'components';
-
+import { Can } from 'components/user/can';
 import InventoryStatus from '../status';
 import InventoryHistory from '../history';
 import ItemsDefinitions from '../items-definitions';
@@ -33,9 +33,9 @@ const InventoryPage = () => {
         ))}
       </CRNav>
       <CRCard borderless>
-        {activeTab === '0' && <InventoryStatus />}
-        {activeTab === '1' && <InventoryHistory />}
-        {activeTab === '2' && <ItemsDefinitions />}
+        {activeTab === '0' && <Can I="AddItem" an="Inventory"><InventoryStatus /></Can>}
+        {activeTab === '1' && <Can I="ViewHistory" an="Inventory"><InventoryHistory /></Can>}
+        {activeTab === '2' && <Can I="DefineItem" an="Inventory"><ItemsDefinitions /></Can>}
       </CRCard>
     </>
   );

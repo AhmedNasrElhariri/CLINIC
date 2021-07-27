@@ -1,6 +1,9 @@
 import { prisma } from '@';
 import moment from 'moment';
-const userCoursePayment = async (_, { userId, period }) => {
+const userCoursePayment = async (
+  _,
+  { userId, period, doctorId, specialtyId, branchId }
+) => {
   const user = await prisma.payrollUser.findUnique({ where: { id: userId } });
   const userid = user.userId;
   const start = moment(period[0]).clone().startOf('day').toDate();
@@ -12,6 +15,9 @@ const userCoursePayment = async (_, { userId, period }) => {
         gte: start,
         lte: end,
       },
+      doctorId,
+      specialtyId,
+      branchId,
     },
   });
 };

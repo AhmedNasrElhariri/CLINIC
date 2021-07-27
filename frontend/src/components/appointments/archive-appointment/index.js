@@ -24,7 +24,7 @@ const StepsDev = styled.div`
   margin: auto;
 `;
 
-const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
+const ArchiveAppointment = ({ appointment, show, onCancel, onOk ,loading}) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
@@ -93,6 +93,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk }) => {
       okTitle={okTitle}
       z
       onOk={handleOk}
+      loading={loading}
       onHide={onCancel}
       onCancel={handleCancel}
       width={850}

@@ -3,7 +3,7 @@ import { Tag, Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListAssigns({ data, onEdit }) {
+function ListAssigns({ data, onEdit,onDelete }) {
   return (
     <>
       <CRCard borderless>
@@ -30,6 +30,16 @@ function ListAssigns({ data, onEdit }) {
               {(_, idx) => (
                 <CRTable.CRCellStyled>
                   <Icon icon="edit" onClick={() => onEdit(idx)} />
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Change</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {(_, idx) => (
+                <CRTable.CRCellStyled>
+                  <Icon icon="edit" onClick={() => onDelete(idx)} />
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

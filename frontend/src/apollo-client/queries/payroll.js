@@ -40,8 +40,20 @@ export const LIST_USER_TRANSACTIONS = gql`
 `;
 
 export const USER_COURSE_PAYMENT = gql`
-  query userCoursePayment($userId: ID!, $period: [String!]) {
-    userCoursePayment(userId: $userId, period: $period) {
+  query userCoursePayment(
+    $userId: ID!
+    $period: [String!]
+    $doctorId: ID
+    $specialtyId: ID
+    $branchId: ID
+  ) {
+    userCoursePayment(
+      userId: $userId
+      period: $period
+      doctorId: $doctorId
+      specialtyId: $specialtyId
+      branchId: $branchId
+    ) {
       id
       payment
       date

@@ -139,6 +139,12 @@ export const ASSIGN_ROLE_TO_DOCOTR = gql`
   }
 `;
 
+export const DELETE_ROLE_TO_USER = gql`
+  mutation deleteRoleToUser($userId: ID!, $roleId: ID!) {
+    deleteRoleToUser(userId: $userId, roleId: $roleId)
+  }
+`;
+
 export const LIST_BRANCHES_TREE = gql`
   query listBranchesTree($action: String!) {
     listBranchesTree(action: $action) {

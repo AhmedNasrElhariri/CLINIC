@@ -17,6 +17,7 @@ import {
   ASSIGN_ROLE_TO_DOCOTR,
   LIST_ACTION_USERS,
   LIST_ACTION_DOCTORS,
+  DELETE_ROLE_TO_USER,
 } from 'apollo-client/queries';
 import { POSITIONS, ACTIONS } from 'utils/constants';
 
@@ -59,6 +60,7 @@ function usePermissions({
   onAddSpecialty,
   onAddDoctor,
   onAssignRoleToUser,
+  onDeleteRoleToUser,
 } = {}) {
   const { data: branchesData } = useQuery(LIST_BRANCHES);
   const branches = useMemo(
@@ -171,6 +173,17 @@ function usePermissions({
     refetchQueries: [{ query: LIST_ROLES }],
   });
 
+  const [deleteRoleToUser] = useMutation(DELETE_ROLE_TO_USER, {
+    onCompleted() {
+      Alert.success('Assigning role to user has been Removed Successfully');
+      onDeleteRoleToUser && onDeleteRoleToUser();
+    },
+    onError(err) {
+      Alert.error(err.message);
+    },
+    refetchQueries: [{ query: LIST_ROLES }],
+  });
+
   /* compound */
   const groupedPermissions = useMemo(
     () => R.groupBy(R.prop('subject'))(actions),
@@ -214,6 +227,7 @@ function usePermissions({
       addSpecialty: data => addSpecialty({ variables: data }),
       addDoctor: data => addDoctor({ variables: data }),
       assignRoleToUser: data => assignRoleToUser({ variables: data }),
+      deleteRoleToUser: data => deleteRoleToUser({ variables: data }),
       indexePermissions,
       groupedPermissions,
       roles,
@@ -222,7 +236,27 @@ function usePermissions({
       actionUsers: actionUsers || [],
       actionDoctors: actionDoctors || [],
     }),
-    [branches, specialties, users, doctors, indexePermissions, groupedPermissions, roles, actionUsers, actionDoctors, createOrUpdateRole, createBranch, createSpecialty, createUser, addSpecialty, addDoctor, assignRoleToUser, listActionUsers, listActionDoctors]
+    [
+      branches,
+      specialties,
+      users,
+      doctors,
+      indexePermissions,
+      deleteRoleToUser,
+      groupedPermissions,
+      roles,
+      actionUsers,
+      actionDoctors,
+      createOrUpdateRole,
+      createBranch,
+      createSpecialty,
+      createUser,
+      addSpecialty,
+      addDoctor,
+      assignRoleToUser,
+      listActionUsers,
+      listActionDoctors,
+    ]
   );
 }
 

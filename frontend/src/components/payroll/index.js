@@ -9,7 +9,7 @@ import { useModal, usePayroll, useAccounting } from 'hooks';
 import { formatDate } from 'utils/date';
 const initialPayrollusers = [];
 const initValue = {
-  userId: '',
+  employeeId: '',
   salary: '',
   orgUserId: null,
   name: '',
@@ -23,6 +23,9 @@ const initValue = {
   reason: '',
   percentage: 0,
   payment: [],
+  userId: null,
+  specialtyId: null,
+  branchId: null,
 };
 const getAmount = (
   fv,
@@ -53,7 +56,8 @@ function Payroll() {
   const [period, setPeriod] = useState([]);
   const [checkedPayLipsUsers, setCheckPayLipsUsers] =
     useState(initialPayrollusers);
-  const userId = formValue.userId;
+  const userId = formValue.employeeId;
+  const { userId: doctorId, specialtyId, branchId } = formValue;
   const {
     addPayrollUser,
     payrollUsers,
@@ -64,14 +68,16 @@ function Payroll() {
     lastTransactionDate,
     lastTransactionRevenueDate,
     userCoursesPayment,
-  } = usePayroll({ userId, period });
+  } = usePayroll({ userId, period, doctorId, specialtyId, branchId });
   const view = ACCOUNTING_VIEWS.YEAR,
     updatedPeriod = formValue.period;
-  const { totalExpenses, totalRevenues } = useAccounting({
+  const { BranchTotalRevenues, BranchTotalExpenses } = useAccounting({
     view,
     period,
+    specialtyId: formValue.specialtyId,
+    userId: formValue.userId,
+    branchId: formValue.branchId,
   });
-
   const totalUserPaymentCourses = useMemo(
     () => userCoursesPayment.reduce((acc, e) => acc + e.payment, 0),
     [userCoursesPayment]
@@ -81,11 +87,16 @@ function Payroll() {
     () =>
       getAmount(
         formValue,
-        totalRevenues,
-        totalExpenses,
+        BranchTotalRevenues,
+        BranchTotalExpenses,
         totalUserPaymentCourses
       ),
-    [formValue, totalUserPaymentCourses, totalRevenues, totalExpenses]
+    [
+      formValue,
+      totalUserPaymentCourses,
+      BranchTotalRevenues,
+      BranchTotalExpenses,
+    ]
   );
   const handleAddUser = useCallback(() => {
     const updatedFormValue = {
@@ -100,7 +111,7 @@ function Payroll() {
   }, [formValue, addPayrollUser]);
   const handleAddAdvance = useCallback(() => {
     const updatedFormValue = {
-      userId: formValue.userId,
+      userId: formValue.employeeId,
       amount: amount,
       periodTime: period,
       option: formValue.option,
@@ -112,10 +123,10 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.userId, period]);
+  }, [addTransaction, amount, formValue.employeeId, period]);
   const handleAddCommision = useCallback(() => {
     const updatedFormValue = {
-      userId: formValue.userId,
+      userId: formValue.employeeId,
       amount: amount,
       reason: formValue.reason,
       option: formValue.option,
@@ -127,10 +138,10 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.userId, period]);
+  }, [addTransaction, amount, formValue.employeeId, period]);
   const handleAddIncentive = useCallback(() => {
     const updatedFormValue = {
-      userId: formValue.userId,
+      userId: formValue.employeeId,
       amount: amount,
       reason: formValue.reason,
       option: formValue.option,
@@ -142,10 +153,10 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.userId, period]);
+  }, [addTransaction, amount, formValue.employeeId, period]);
   const handleAddDeduction = useCallback(() => {
     const updatedFormValue = {
-      userId: formValue.userId,
+      userId: formValue.employeeId,
       amount: amount,
       reason: formValue.reason,
       option: formValue.option,
@@ -157,7 +168,7 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.userId, period]);
+  }, [addTransaction, amount, formValue.employeeId, period]);
   const deletePayrollUserFun = userId => {
     deleteUser({
       variables: {
@@ -243,12 +254,12 @@ function Payroll() {
   }, [addPayroll, checkedPayLipsUsers]);
   return (
     <>
-      {/* <Can I="View" an="Payroll"> */}
+      <Can I="View" an="Payroll">
         <MainContainer
           title="Payroll Reports"
           more={
             <Div display="flex">
-              <Can I="Create" an="Payslips">
+              <Can I="CreatePayslips" an="Payroll">
                 <CRButton variant="primary" onClick={open} ml={1}>
                   Pay Payslips
                 </CRButton>
@@ -256,7 +267,7 @@ function Payroll() {
               <CRButton variant="primary" onClick={addNewUser.show} ml={1}>
                 Add New User
               </CRButton>
-              <Can I="Create" an="Advance">
+              <Can I="CreateAdvance" an="Payroll">
                 <CRButton
                   variant="success"
                   onClick={addAdvanceForm.show}
@@ -265,7 +276,7 @@ function Payroll() {
                   Add Advance
                 </CRButton>
               </Can>
-              <Can I="Create" an="Incentives">
+              <Can I="CreateIncentives" an="Payroll">
                 <CRButton
                   variant="primary"
                   onClick={addIncentiveForm.show}
@@ -274,7 +285,7 @@ function Payroll() {
                   Add Incentives
                 </CRButton>
               </Can>
-              {/* <Can I="Create" an="Commission"> */}
+              <Can I="CreateCommission" an="Payroll">
                 <CRButton
                   variant="primary"
                   onClick={addCommissionForm.show}
@@ -282,8 +293,8 @@ function Payroll() {
                 >
                   Add Commission
                 </CRButton>
-              {/* </Can> */}
-              <Can I="Create" an="Deduction">
+              </Can>
+              <Can I="CreateDeduction" an="Payroll">
                 <CRButton
                   variant="danger"
                   onClick={addDeductionForm.show}
@@ -360,7 +371,7 @@ function Payroll() {
             </CheckboxGroup>
           </CRModal>
         }
-      {/* </Can> */}
+      </Can>
     </>
   );
 }

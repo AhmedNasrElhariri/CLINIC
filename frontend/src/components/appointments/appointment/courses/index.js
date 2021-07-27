@@ -92,6 +92,7 @@ function NewCourse({
   formValue,
   header,
   onChange,
+  loading,
   type,
   users,
 }) {
@@ -155,7 +156,7 @@ function NewCourse({
 
   const course = formValue?.course;
   return (
-    <CRModal show={visible} header={header} onHide={onClose} onOk={onOk}>
+    <CRModal show={visible} header={header} onHide={onClose} onOk={onOk} loading={loading}>
       <Form fluid formValue={formValue} onChange={onChange}>
         {type === 'create' ? (
           <>

@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import { Can } from 'components/user/can';
 import { Div, CRButton, MainContainer } from 'components';
 import ListPatientSurgeries from '../list-patient-surgeries';
 import NewPatientSurgery from '../new-patient-surgery';
@@ -23,13 +23,11 @@ const PatientSurgeriesContainer = () => {
   const { formValue, setFormValue } = useForm({
     initValue,
   });
-  const {
-    formValue: filterFormValue,
-    setFormValue: setFilterFormValue,
-  } = useForm({
-    surgery: null,
-    hospital: null,
-  });
+  const { formValue: filterFormValue, setFormValue: setFilterFormValue } =
+    useForm({
+      surgery: null,
+      hospital: null,
+    });
   const { createPatientSurgery, patientSurgeries } = usePatientSurgeries({
     onCreate: () => {
       close();
@@ -62,9 +60,11 @@ const PatientSurgeriesContainer = () => {
         title="Patients Surgeries"
         more={
           <Div display="flex">
-            <CRButton variant="primary" onClick={handleOnClickCreate}>
-              Surgery +
-            </CRButton>
+            <Can I="Create" an="Surgery">
+              <CRButton variant="primary" onClick={handleOnClickCreate}>
+                Surgery +
+              </CRButton>
+            </Can>
           </Div>
         }
       >

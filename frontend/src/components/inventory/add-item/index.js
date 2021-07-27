@@ -34,7 +34,7 @@ const AddItem = ({ items }) => {
       close();
     },
   });
-  
+
   const handleClose = useCallback(() => {
     close();
     reset();
@@ -68,7 +68,11 @@ const AddItem = ({ items }) => {
           ></CRSelectInput>
           <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
           <CRNumberInput label="Unit Price" name="price" block></CRNumberInput>
-          <CRBrancheTree formValue={formValue} onChange={setFormValue} action={ACTIONS.AddItem_Inventory}/>
+          <CRBrancheTree
+            formValue={formValue}
+            onChange={setFormValue}
+            action={ACTIONS.AddItem_Inventory}
+          />
         </Form>
         <Div mt={3} display="flex">
           <H5 color="texts.2" fontWeight={400}>

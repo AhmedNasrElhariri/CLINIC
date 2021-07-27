@@ -166,9 +166,7 @@ const AccountingContainer = () => {
   const updatedRevenues = useMemo(
     () =>
       revenues.filter(e =>
-        e.name
-          .toLowerCase()
-          .includes(formValue.revenueName.toLowerCase())
+        e.name.toLowerCase().includes(formValue.revenueName.toLowerCase())
       ),
     [formValue, revenues]
   );
@@ -233,40 +231,49 @@ const AccountingContainer = () => {
                 />
                 <BranchFilter
                   appointments={updatedRevenues}
+                  type="accounting"
+                  method="revenues"
                   branches={filterBranches}
-                  render={revenues => (
-                    <ListRevenueData
-                      title="Revenues"
-                      data={revenues}
-                      onEdit={revenue => {
-                        editRevenueForm.setFormValue(
-                          R.pick(ENTITY_PROPS)(revenue)
-                        );
-                        editRevenueForm.show();
-                      }}
-                    />
-                  )}
-                />
-              </Div>
-              <Div flexGrow={1} ml={2}>
-                <ExpenseFilter
-                  formValue={formValue}
-                  setFormValue={setFormValue}
-                />
-                <BranchFilter
-                  appointments={updatedExpenses}
-                  branches={filterBranches}
-                  render={expenses => (
-                    <ListExpenseData
-                      title="Expenses"
-                      data={expenses}
-                      onEdit={expense => {
-                        editExpenseForm.setFormValue(
-                          R.pick(ENTITY_PROPS)(expense)
-                        );
-                        editExpenseForm.show();
-                      }}
-                    />
+                  render={(revenues, totalRevenues) => (
+                    <>
+                      <ListRevenueData
+                        title="Revenues"
+                        data={revenues}
+                        onEdit={revenue => {
+                          editRevenueForm.setFormValue(
+                            R.pick(ENTITY_PROPS)(revenue)
+                          );
+                          editRevenueForm.show();
+                        }}
+                      />
+                      <Div flexGrow={1} ml={2}>
+                        <ExpenseFilter
+                          formValue={formValue}
+                          setFormValue={setFormValue}
+                        />
+                        <BranchFilter
+                          appointments={updatedExpenses}
+                          type="accounting"
+                          method="expenses"
+                          branches={filterBranches}
+                          render={(expenses,__,totalExpenses) => (
+                            <>
+                            <ListExpenseData
+                              title="Expenses"
+                              data={expenses}
+                              onEdit={expense => {
+                                editExpenseForm.setFormValue(
+                                  R.pick(ENTITY_PROPS)(expense)
+                                );
+                                editExpenseForm.show();
+                              }}
+                            />
+                            <Profit expenses={totalExpenses} revenues={totalRevenues} />
+                            </>
+                          )}
+                        />
+                      </Div>
+                    </>
                   )}
                 />
               </Div>
@@ -279,7 +286,6 @@ const AccountingContainer = () => {
         <AccountingForm {...createExpenseForm} />
         <AccountingForm {...editRevenueForm} />
         <AccountingForm {...editExpenseForm} />
-        <Profit expenses={totalExpenses} revenues={totalRevenues} />
       </CRCard>
     </>
   );

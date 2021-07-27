@@ -18,9 +18,7 @@ const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
-  const {
-    filterBranches,
-  } = useAppointments({});
+  const { filterBranches } = useAppointments({});
   const { revenues, timeFrame } = useInsuranceAccounting({
     view,
     period,
@@ -32,11 +30,6 @@ const BankAccountingContainer = () => {
       ),
     [filter, revenues]
   );
-  const totalRevenues = useMemo(
-    () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
-    [updatedRevenues]
-  );
-
   return (
     <>
       <MainContainer
@@ -71,17 +64,21 @@ const BankAccountingContainer = () => {
         <Div>
           <Div display="flex">
             <Div flexGrow={1} mr={2}>
-            <BranchFilter
+              <BranchFilter
                 appointments={updatedRevenues}
                 branches={filterBranches}
-                render={revenues => (
-              <ListData title="Insurance Revenues" data={revenues} />
+                type="accounting"
+                method="revenues"
+                render={(revenues, totalRevenues) => (
+                  <>
+                    <ListData title="Insurance Revenues" data={revenues} />
+                    <Profit expenses={0} revenues={totalRevenues} />
+                  </>
                 )}
-                />
+              />
             </Div>
           </Div>
         </Div>
-        <Profit expenses={0} revenues={totalRevenues} />
       </CRCard>
     </>
   );

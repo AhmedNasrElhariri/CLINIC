@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import * as R from 'ramda';
 import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-
+import { Can } from 'components/user/can';
 import { GET_PATIENT } from 'apollo-client/queries';
 import { CRVNav, CRButton, MainContainer, PatientSummary } from 'components';
 import AvatarWithName from '../patient-avatar-with-name/index';
@@ -87,7 +87,9 @@ function Appointment() {
               <TabContainer>
                 {showComp('0') && <PatientInfo patient={patient} />}
                 {showComp('1') && (
-                  <PatientSummary summary={appointmentHistory} />
+                  <Can I="ViewSessions" an="Patient">
+                    <PatientSummary summary={appointmentHistory} />
+                  </Can>
                 )}
                 {showComp('2') && (
                   <PatientSurgries
@@ -96,11 +98,27 @@ function Appointment() {
                     patientId={patient?.id}
                   />
                 )}
-                {showComp('3') && <PatientLabs patient={patient} />}
-                {showComp('4') && <PatientImages patient={patient} />}
+                {showComp('3') && (
+                  <Can I="ViewLabs" an="Patient">
+                    <PatientLabs patient={patient} />
+                  </Can>
+                )}
+                {showComp('4') && (
+                  <Can I="ViewImages" an="Patient">
+                    <PatientImages patient={patient} />
+                  </Can>
+                )}
                 {showComp('5') && <History patient={patient} />}
-                {showComp('6') && <PatientCourses patient={patient} />}
-                {showComp('7') && <SessionsPulses  summary={appointmentHistory}/>}
+                {showComp('6') && (
+                  <Can I="ViewCourses" an="Patient">
+                    <PatientCourses patient={patient} />
+                  </Can>
+                )}
+                {showComp('7') && (
+                  <Can I="ViewSessionsPulses" an="Patient">
+                    <SessionsPulses summary={appointmentHistory} />
+                  </Can>
+                )}
               </TabContainer>
             </Container>
           )}

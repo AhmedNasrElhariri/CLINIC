@@ -81,7 +81,6 @@ export const LIST_APPOINTMENTS = gql`
   }
 `;
 
-
 export const LIST_TODAY_APPOINTMENTS = gql`
   {
     todayAppointments {
@@ -293,6 +292,7 @@ export const ARCHIVE_APPOINTMENT = gql`
     $sessions: [SessionInput!]
     $items: [FinishAppointmentItemInput!]
     $discount: Discount
+    $date: Date!
     $others: Others
     $bank: ID
     $patientName: String!
@@ -309,6 +309,7 @@ export const ARCHIVE_APPOINTMENT = gql`
       discount: $discount
       patientName: $patientName
       others: $others
+      date: $date
       bank: $bank
       company: $company
       option: $option

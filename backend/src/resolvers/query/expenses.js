@@ -15,9 +15,23 @@ const expenses = async (_, __, { user, organizationId }) => {
 
   return prisma.expense.findMany({
     where: {
-      userId: {
-        in: ids,
-      },
+      OR: [
+        {
+          userId: {
+            in: ids,
+          },
+        },
+        {
+          branchId: {
+            in: ids,
+          },
+        },
+        {
+          specialtyId: {
+            in: ids,
+          },
+        },
+      ],
     },
     include: {
       user: true,

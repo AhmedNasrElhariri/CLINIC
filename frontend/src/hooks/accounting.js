@@ -14,21 +14,29 @@ import {
   getYearStartAndEnd,
 } from 'utils/date';
 import { ACTIONS } from 'utils/constants';
-const useAccounting = ({ view, period } = {}) => {
+const useAccounting = ({
+  view,
+  period,
+  specialtyId,
+  branchId,
+  userId,
+} = {}) => {
   const { data: expensesData } = useQuery(LIST_EXPENSES);
   const { data: revenueData } = useQuery(LIST_REVENUES, {
     variables: {
       action: ACTIONS.View_Accounting,
     },
   });
-  const allExpenses = useMemo(() => R.propOr([], 'expenses')(expensesData), [
-    expensesData,
-  ]);
+  const allExpenses = useMemo(
+    () => R.propOr([], 'expenses')(expensesData),
+    [expensesData]
+  );
 
-  const allRevenues = useMemo(() => R.propOr([], 'revenues')(revenueData), [
-    revenueData,
-  ]);
-  
+  const allRevenues = useMemo(
+    () => R.propOr([], 'revenues')(revenueData),
+    [revenueData]
+  );
+
   const expenses = useMemo(
     () => filterAccountingList(allExpenses, view, period),
     [allExpenses, period, view]
@@ -49,6 +57,25 @@ const useAccounting = ({ view, period } = {}) => {
     [revenues]
   );
 
+  const BranchTotalExpenses = useMemo(() => {
+    const updatedExpenses = expenses.filter(
+      e =>
+        e.branch?.id == branchId &&
+        e.specialty?.id == specialtyId &&
+        e.doctor?.id == userId
+    );
+    return updatedExpenses.reduce((acc, e) => acc + e.amount, 0);
+  }, [expenses, branchId, specialtyId, userId]);
+
+  const BranchTotalRevenues = useMemo(() => {
+    const updatedRevenue = revenues.filter(
+      r =>
+        r.branch?.id == branchId &&
+        r.specialty?.id == specialtyId &&
+        r.doctor?.id == userId
+    );
+    return updatedRevenue.reduce((acc, e) => acc + e.amount, 0);
+  }, [revenues, branchId, specialtyId, userId]);
   const getTimeFrameByView = view => {
     const viewVsFn = {
       [ACCOUNTING_VIEWS.DAY]: getDayStartAndEnd,
@@ -73,6 +100,8 @@ const useAccounting = ({ view, period } = {}) => {
       revenues,
       totalExpenses,
       totalRevenues,
+      BranchTotalExpenses,
+      BranchTotalRevenues,
       timeFrame,
       refetchRevenues: {
         query: LIST_REVENUES,
@@ -81,7 +110,15 @@ const useAccounting = ({ view, period } = {}) => {
         query: LIST_EXPENSES,
       },
     }),
-    [expenses, revenues, timeFrame,totalExpenses, totalRevenues]
+    [
+      expenses,
+      revenues,
+      timeFrame,
+      totalExpenses,
+      totalRevenues,
+      BranchTotalExpenses,
+      BranchTotalRevenues,
+    ]
   );
 };
 

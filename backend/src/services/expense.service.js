@@ -32,13 +32,14 @@ export const createAppointmentExpense = async (
   organizationId,
   branchId,
   specialtyId,
+  date,
   userID,
   level
 ) => {
   return prisma.expense.create({
     data: Object.assign(
       {
-        date: new Date(),
+        date: new Date(date),
         name: discount.name,
         expenseType: 'Dicount',
         amount: discount.amount,

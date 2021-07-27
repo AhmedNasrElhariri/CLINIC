@@ -58,6 +58,7 @@ export { default as createUser } from './create-user';
 export { default as addSpecialty } from './add-specialty';
 export { default as addDoctor } from './add-doctor';
 export { default as assignRoleToUser } from './assign-role-to-user';
+export { default as deleteRoleToUser } from './delete-role-to-user';
 export { default as updateConfiguration } from './update-configuration';
 export { default as addTiming } from './add-timing';
 export { default as editTiming } from './edit-timing';

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo ,useState} from 'react';
 import { Form, Schema } from 'rsuite';
 
 import {
@@ -19,9 +19,12 @@ const NewPatientSurgery = ({
   onOk,
   onClose,
 }) => {
-  const { patientsSummary: patients } = usePatients();
+  const [patientSearchValue, setPatientSearchValue] = useState('');
   const { surgeries } = useSurgeries();
   const { hospitals } = useHospitals();
+  const { searchedPatients } = usePatients({
+    patientSearchValue: patientSearchValue,
+  });
   const header = useMemo(
     () => (type === 'create' ? 'Add New Surgery' : 'Edit Surgery'),
     [type]
@@ -39,7 +42,8 @@ const NewPatientSurgery = ({
         <CRSelectInput
           label="Patient"
           name="patientId"
-          data={patients || []}
+          data={searchedPatients}
+          onSearch={v => setPatientSearchValue(v)}
           block
         />
         <CRSelectInput

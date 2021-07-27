@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import { MainContainer, CRTable, Div, CRButton, H3, H4 } from 'components';
+import { Can } from 'components/user/can';
 import PatientsFilter from '../filter/index';
 import EditPatient from '../edit-patient';
 import { usePatients } from 'hooks';
@@ -23,10 +24,12 @@ function Patients() {
   const [area, setArea] = useState(initialAreaValue);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage.activePage;
-  const { patients, pages } = usePatients({
+  const { patients, pages, patientsReports } = usePatients({
     page,
     name: filter.name,
     phoneNo: filter.phoneNo,
+    reference: filter.reference,
+    area: filter.area,
   });
   const handleSelect = useCallback(
     eventKey => {
@@ -72,20 +75,24 @@ function Patients() {
         title="Patients"
         more={
           <Div display="flex">
-            <ReactToPrint
-              trigger={() => (
-                <CRButton variant="primary">Social Report +</CRButton>
-              )}
-              content={() => ref.current}
-            />
-            <ReactToPrint
-              trigger={() => (
-                <CRButton variant="primary" ml={1}>
-                  Area Report +
-                </CRButton>
-              )}
-              content={() => refTwo.current}
-            />
+            <Can I="CreateSocialReport" an="Patient">
+              <ReactToPrint
+                trigger={() => (
+                  <CRButton variant="primary">Social Report +</CRButton>
+                )}
+                content={() => ref.current}
+              />
+            </Can>
+            <Can I="CreateAreaReport" an="Patient">
+              <ReactToPrint
+                trigger={() => (
+                  <CRButton variant="primary" ml={1}>
+                    Area Report +
+                  </CRButton>
+                )}
+                content={() => refTwo.current}
+              />
+            </Can>
           </Div>
         }
       >
@@ -144,7 +151,11 @@ function Patients() {
                 <CRTable.CRCellStyled bold>
                   <Div display="flex">
                     {reference.map(r => (
-                      <Div>{' - '}{r}{'  '}</Div>
+                      <Div>
+                        {' - '}
+                        {r}
+                        {'  '}
+                      </Div>
                     ))}
                   </Div>
                 </CRTable.CRCellStyled>
@@ -189,7 +200,7 @@ function Patients() {
             </Div>
             <Div display="flex">
               <H4 margin="0px 10px">Total Number Of Patients:</H4>
-              <H4>{filteredPatientByReference.length}</H4>
+              <H4>{patientsReports.patientsReferenceCount}</H4>
             </Div>
           </Div>
         </Div>
@@ -204,7 +215,7 @@ function Patients() {
             </Div>
             <Div display="flex">
               <H4 margin="0px 10px">Total Number Of Patients:</H4>
-              <H4>{filteredPatientByReference.length}</H4>
+              <H4>{patientsReports.patientsAreaCount}</H4>
             </Div>
           </Div>
         </Div>

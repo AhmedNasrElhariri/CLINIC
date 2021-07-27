@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
+import { Can } from 'components/user/can';
 import { Div, CRButton } from 'components';
 import NewSalesDefinition from './new-sales-definition';
 import ListSalesesDefinition from './list-saleses-definition';
@@ -95,13 +95,16 @@ const SalesDefinition = () => {
   return (
     <>
       <Div textAlign="right">
-        <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Sales Definition+
-        </CRButton>
-        <CRButton variant="primary" onClick={handleAddQuantity} mt={2} ml={1}>
-          Add Sales Quantity+
-        </CRButton>
+        <Can I="Define" an="Sales">
+          <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
+            Add New Sales Definition+
+          </CRButton>
+          <CRButton variant="primary" onClick={handleAddQuantity} mt={2} ml={1}>
+            Add Sales Quantity+
+          </CRButton>
+        </Can>
       </Div>
+
       <NewSalesDefinition
         visible={visible}
         formValue={formValue}

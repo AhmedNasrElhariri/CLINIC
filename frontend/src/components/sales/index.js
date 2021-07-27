@@ -40,6 +40,7 @@ const Sales = () => {
   const { timeFrame } = useAccounting({ view, period });
   const [selectedItems, setSelectedItems] = useState([]);
   const { salesesDefinition } = useSalesDefinition({});
+  const [allSales, setAllSales] = useState([]);
   const {
     addSales,
     saleses,
@@ -157,11 +158,11 @@ const Sales = () => {
                 sales={true}
               />
             </Div>
-            {/* <Can I="Create" an="Sales"> */}
-            <CRButton variant="primary" onClick={handleClickCreate}>
-              Add New Sales +
-            </CRButton>
-            {/* </Can> */}
+            <Can I="Create" an="Sales">
+              <CRButton variant="primary" onClick={handleClickCreate}>
+                Add New Sales +
+              </CRButton>
+            </Can>
           </Div>
         }
         nobody
@@ -205,6 +206,7 @@ const Sales = () => {
             <CRSelectInput
               label="Creator"
               name="userId"
+              placement="auto"
               data={updatedUsers}
               style={{ width: '300px' }}
             />
@@ -214,15 +216,18 @@ const Sales = () => {
       <Filter
         appointments={itemFilteredSalesByUser}
         branches={filterBranches}
-        render={sales => (
-          <ListSaleses
-            saleses={sales}
-            onEdit={handleClickEdit}
-            onDelete={handleClickDelete}
-          />
+        type="sales"
+        render={(sales, totalSalesPrice, totalSalesCost) => (
+          <>
+            <ListSaleses
+              saleses={sales}
+              onEdit={handleClickEdit}
+              onDelete={handleClickDelete}
+            />
+            <Profit totalPrice={totalSalesPrice} totalCost={totalSalesCost} />
+          </>
         )}
       />
-      <Profit totalPrice={totalSalesPrice} totalCost={totalSalesCost} />
     </>
   );
 };

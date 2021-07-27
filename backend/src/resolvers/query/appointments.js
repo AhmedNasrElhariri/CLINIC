@@ -18,13 +18,18 @@ const appointments = async (
   },
   { user, organizationId }
 ) => {
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.List_Appointment,
+    },
+    true
+  );
+
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
-  const ids = await listFlattenUsersTreeIds({
-    user,
-    organizationId,
-    action: ACTIONS.List_Appointment,
-  });
+
   const appointmentsCount = await prisma.appointment.count({
     where: {
       date: {
@@ -38,7 +43,7 @@ const appointments = async (
           patient: {
             name: {
               contains: patient,
-              mode:"insensitive",
+              mode: 'insensitive',
             },
           },
         },
@@ -65,7 +70,7 @@ const appointments = async (
           patient: {
             name: {
               contains: patient,
-              mode:"insensitive",
+              mode: 'insensitive',
             },
           },
         },
@@ -77,6 +82,23 @@ const appointments = async (
           },
         },
       ],
+      OR: [
+        {
+          userId: {
+            in: ids,
+          },
+        },
+        {
+          branchId: {
+            in: ids,
+          },
+        },
+        {
+          specialtyId: {
+            in: ids,
+          },
+        },
+      ],
     },
     include: {
       specialty: true,
@@ -84,6 +106,11 @@ const appointments = async (
       doctor: true,
       session: true,
     },
+    orderBy: [
+      {
+        date: 'asc',
+      },
+    ],
     skip: offset,
     take: limit,
   });

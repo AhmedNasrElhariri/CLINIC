@@ -2,6 +2,7 @@ import React from 'react';
 import { CRCard, CRTable } from 'components';
 import styled from 'styled-components';
 import { formatDate } from 'utils/date';
+import AppointmentGallery from 'components/appointments/pictures/gallery';
 const StyledImage = styled.img`
   width: 100%;
 `;
@@ -58,11 +59,7 @@ function ListLabDocs({ labs, labId }) {
         </CRTable>
       </CRCard>
       <Row>
-        <Column>
-          {documents?.map(im => (
-            <StyledImage alt="Image" src={im.url} />
-          ))}
-        </Column>
+        <AppointmentGallery pictures={documents} />
       </Row>
     </>
   );

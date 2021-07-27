@@ -70,3 +70,4 @@ export { default as transactionCoursesTimeFrame} from './transction-courses-time
 export { default as transactionRevenuesTimeFrame} from './transction-revenues-timeFrame';
 export { default as areas} from './areas';
 export { default as mySessionsDefinition} from './my-sessions-definition';
+export { default as patientsReport} from './patients-report';

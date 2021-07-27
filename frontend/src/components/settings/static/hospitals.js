@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
+import { Can } from 'components/user/can';
 import { Div, CRButton } from 'components';
 import ListHospitals from './list-hospitals';
 import NewHospital from './new-hospital';
@@ -68,9 +68,11 @@ const Hospitals = () => {
   return (
     <>
       <Div textAlign="right">
-        <CRButton variant="primary" onClick={handleClickCreate}>
-          Hospital +
-        </CRButton>
+        <Can I="Create" an="Hospital">
+          <CRButton variant="primary" onClick={handleClickCreate}>
+            Hospital +
+          </CRButton>
+        </Can>
       </Div>
       <NewHospital
         visible={visible}
