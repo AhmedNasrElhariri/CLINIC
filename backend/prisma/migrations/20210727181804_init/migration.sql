@@ -38,7 +38,7 @@ CREATE TYPE "UnitOfMeaure" AS ENUM ('PerUnit', 'Milligram', 'Kilogram', 'Millime
 CREATE TYPE "InventoryOperation" AS ENUM ('Add', 'Substract');
 
 -- CreateEnum
-CREATE TYPE "PermissionAction" AS ENUM ('List_Appointment', 'Create_Appointment', 'Reschedule_Appointment', 'Finish_Appointment', 'Cancel_Appointment', 'Archive_Appointment', 'View_Patient', 'View_Accounting', 'AddRevenue_Accounting', 'AddExpense_Accounting', 'EditRevenue_Accounting', 'EditExpense_Accounting', 'Print_Accounting', 'View_Calendar', 'CreateEvent_Calendar', 'View_Inventory', 'AddItem_Inventory', 'ViewHistory_Inventory', 'DefineItem_Inventory', 'Create_Course', 'List_Price', 'Create_Price', 'List_Session', 'Create_Session', 'Create_Hospital', 'List_Hospital', 'Create_Surgery', 'List_Surgery', 'View_Payroll', 'Create_Commission', 'Create_Deduction', 'Create_Incentives', 'Create_Advance', 'Define_Sales', 'Create_Sales', 'View_Sales', 'Create_Payslips');
+CREATE TYPE "PermissionAction" AS ENUM ('List_Appointment', 'Create_Appointment', 'Reschedule_Appointment', 'Acc_Appointment', 'Cancel_Appointment', 'Archive_Appointment', 'View_Patient', 'View_Accounting', 'AddRevenue_Accounting', 'AddExpense_Accounting', 'EditRevenue_Accounting', 'EditExpense_Accounting', 'ViewBank_Accounting', 'ViewInsurance_Accounting', 'Print_Accounting', 'View_Calendar', 'CreateEvent_Calendar', 'View_Inventory', 'AddItem_Inventory', 'ViewHistory_Inventory', 'DefineItem_Inventory', 'Create_Course', 'Create_SessionDefinition', 'Create_Hospital', 'Create_Surgery', 'View_Payroll', 'CreateCommission_Payroll', 'CreateDeduction_Payroll', 'CreateIncentives_Payroll', 'CreateAdvance_Payroll', 'CreatePayslips_Payroll', 'Define_Sales', 'Create_Sales', 'View_Sales', 'Create_Patient', 'CreateSocialReport_Patient', 'CreateAreaReport_Patient', 'ViewSessions_Patient', 'ViewLabs_Patient', 'ViewImages_Patient', 'ViewCourses_Patient', 'ViewSessionsPulses_Patient', 'GenerateMonthly_PulsesReport', 'GenerateDaily_PulsesReport');
 
 -- CreateEnum
 CREATE TYPE "PermissionLevel" AS ENUM ('Organization', 'Branch', 'Specialty', 'User');
@@ -771,6 +771,9 @@ CREATE TABLE "CoursePayment" (
     "payment" INTEGER NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
+    "doctorId" TEXT,
+    "specialtyId" TEXT,
+    "branchId" TEXT,
     "courseId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
@@ -879,7 +882,7 @@ CREATE TABLE "Rule" (
     "branchId" TEXT,
     "specialtyId" TEXT,
     "userId" TEXT,
-    "permissionId" TEXT NOT NULL,
+    "permissionId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -1342,6 +1345,15 @@ ALTER TABLE "Course" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DEL
 ALTER TABLE "CoursePayment" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "CoursePayment" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CoursePayment" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CoursePayment" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "CoursePayment" ADD FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1408,7 +1420,7 @@ ALTER TABLE "Rule" ADD FOREIGN KEY ("specialtyId") REFERENCES "Specialty"("id") 
 ALTER TABLE "Rule" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Rule" ADD FOREIGN KEY ("permissionId") REFERENCES "Permission"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Rule" ADD FOREIGN KEY ("permissionId") REFERENCES "Permission"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Branch" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;

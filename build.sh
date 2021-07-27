@@ -10,6 +10,7 @@ cd ../backend
 
 echo "start backend build env yarn build"
 
+npx prisma generate
 yarn build
 
 echo 'backend built successfullty'
