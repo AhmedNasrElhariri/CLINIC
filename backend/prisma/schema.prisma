@@ -141,7 +141,7 @@ enum PermissionAction {
   ViewSessionsPulses_Patient
   GenerateMonthly_PulsesReport
   GenerateDaily_PulsesReport
-
+  View_Medicine
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

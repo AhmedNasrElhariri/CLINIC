@@ -33,7 +33,7 @@ const initalVal = {
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
   const { filterBranches } = useAppointments();
-  const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
+  const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const [formValue, setFormValue] = useState(initalVal);
   const [createExpense] = useMutation(CREATE_EXPENSE, {
@@ -196,10 +196,6 @@ const AccountingContainer = () => {
                 </CRButton>
               </Can>
             </>
-
-            <Div ml={1}>
-              <PdfView data={{ revenues, expenses }} period={timeFrame} />
-            </Div>
           </Div>
         }
         nobody
@@ -256,19 +252,28 @@ const AccountingContainer = () => {
                           type="accounting"
                           method="expenses"
                           branches={filterBranches}
-                          render={(expenses,__,totalExpenses) => (
+                          render={(expenses, __, totalExpenses) => (
                             <>
-                            <ListExpenseData
-                              title="Expenses"
-                              data={expenses}
-                              onEdit={expense => {
-                                editExpenseForm.setFormValue(
-                                  R.pick(ENTITY_PROPS)(expense)
-                                );
-                                editExpenseForm.show();
-                              }}
-                            />
-                            <Profit expenses={totalExpenses} revenues={totalRevenues} />
+                              <ListExpenseData
+                                title="Expenses"
+                                data={expenses}
+                                onEdit={expense => {
+                                  editExpenseForm.setFormValue(
+                                    R.pick(ENTITY_PROPS)(expense)
+                                  );
+                                  editExpenseForm.show();
+                                }}
+                              />
+                                <Profit
+                                  expenses={totalExpenses}
+                                  revenues={totalRevenues}
+                                />
+                                <Div mt={10} display="flex" justifyContent="center" alignItems="center">
+                                  <PdfView
+                                    data={{ revenues, expenses }}
+                                    period={timeFrame}
+                                  />
+                                </Div>
                             </>
                           )}
                         />

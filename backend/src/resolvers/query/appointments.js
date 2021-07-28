@@ -26,7 +26,12 @@ const appointments = async (
     },
     true
   );
-
+  const sortingObj =
+    type === APPOINTMENTS_STATUS.WAITING
+      ? { updatedAt: 'asc' }
+      : {
+          date: 'asc',
+        };
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
 
@@ -100,17 +105,13 @@ const appointments = async (
         },
       ],
     },
+    orderBy: [sortingObj],
     include: {
       specialty: true,
       branch: true,
       doctor: true,
       session: true,
     },
-    orderBy: [
-      {
-        date: 'asc',
-      },
-    ],
     skip: offset,
     take: limit,
   });

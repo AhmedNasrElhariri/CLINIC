@@ -2,7 +2,7 @@ import { prisma } from '@';
 import moment from 'moment';
 import * as R from 'ramda';
 import { APPOINTMENTS_STATUS } from '@/utils/constants';
-const appointmentsDayCount = async (_, { date ,specialtyId}) => {
+const appointmentsDayCount = async (_, { date, userId }) => {
   const byAppointmentStatus = R.groupBy(function (appointment) {
     const status = appointment.status;
     return status === APPOINTMENTS_STATUS.WAITING
@@ -15,7 +15,7 @@ const appointmentsDayCount = async (_, { date ,specialtyId}) => {
   let appointmentsDayCount = {
     totalAppointment: 0,
     totalWaiting: 0,
-    appointments:[]
+    appointments: [],
   };
   const allAppointments = await prisma.appointment.findMany({
     where: {
@@ -23,7 +23,7 @@ const appointmentsDayCount = async (_, { date ,specialtyId}) => {
         gte: startOfDay,
         lte: endofDay,
       },
-      specialtyId:specialtyId,
+      doctorId: userId,
     },
   });
   appointmentsDayCount.appointments = allAppointments;

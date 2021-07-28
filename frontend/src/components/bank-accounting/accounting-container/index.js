@@ -34,20 +34,7 @@ const BankAccountingContainer = () => {
   );
   return (
     <>
-      <MainContainer
-        title="Banking"
-        more={
-          <Div display="flex">
-            <Div ml={1}>
-              <PdfView
-                data={{ revenues: updatedRevenues, expenses: [] }}
-                period={timeFrame}
-              />
-            </Div>
-          </Div>
-        }
-        nobody
-      ></MainContainer>
+      <MainContainer title="Banking" nobody></MainContainer>
       <CRCard borderless>
         <Toolbar
           activeKey={view}
@@ -75,6 +62,17 @@ const BankAccountingContainer = () => {
                   <>
                     <ListData title="Banking Revenues" data={revenues} />
                     <Profit expenses={0} revenues={totalRevenues} />
+                    <Div
+                      mt={10}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <PdfView
+                        data={{ revenues, expenses:[] }}
+                        period={timeFrame}
+                      />
+                    </Div>
                   </>
                 )}
               />

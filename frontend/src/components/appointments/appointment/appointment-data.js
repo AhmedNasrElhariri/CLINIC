@@ -1,5 +1,4 @@
-
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
@@ -27,7 +26,13 @@ import {
 } from 'utils/constants';
 
 import AppointmentPictures from '../pictures';
-import { useImageCategory, useLabCategory, useSessionDefinition } from 'hooks';
+import {
+  useImageCategory,
+  useLabCategory,
+  useSessionDefinition,
+  useLabDefinitions,
+  useImageDefinition,
+} from 'hooks';
 import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
@@ -98,7 +103,7 @@ function AppointmentData({
   setSessionsPulses,
   sessionFormValue,
   appointmentFormValue,
-  setSessionFormValue
+  setSessionFormValue,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
   const { labsCategory } = useLabCategory();
@@ -133,23 +138,35 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
+  const categoryId = categoryLabForm?.categoryId;
+  const { labsDefinition } = useLabDefinitions({ categoryId });
   const handleLabsChange = useCallback(
     labIds => {
+      const cateLabs = labsDefinition.map(l => l.id);
+      const appLabs = appointmentFormValue.labIds;
+      const oldLabs = appLabs.filter(x => !cateLabs.includes(x));
       onChange({
         ...appointmentFormValue,
-        labIds: [...appointmentFormValue.labIds, ...labIds],
+        labIds: [...oldLabs, ...labIds],
       });
     },
-    [appointmentFormValue, onChange]
+    [appointmentFormValue, onChange, categoryLabForm]
   );
+  const imageId = categoryImageForm?.categoryId;
+  const { imagesDefinition } = useImageDefinition({ categoryId:imageId });
   const handleImagesChange = useCallback(
     imageIds => {
+      const cateImages = imagesDefinition.map(i => i.id);
+      const appImages = appointmentFormValue.imageIds;
+      const oldImages = appImages.filter(x => !cateImages.includes(x));
+      console.log(cateImages,'cateImages',appImages,'appImages',oldImages,'oldImages');
       onChange({
         ...appointmentFormValue,
-        imageIds: [...appointmentFormValue.imageIds, ...imageIds],
+        imageIds: [...oldImages, ...imageIds],
       });
+      console.log(appointmentFormValue.imageIds,'imageIds');
     },
-    [appointmentFormValue, onChange]
+    [appointmentFormValue, onChange, categoryImageForm]
   );
   const handleAddSession = () => {
     setSessionsPulses([...sessionsPulses, session]);

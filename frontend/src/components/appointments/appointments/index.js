@@ -48,15 +48,6 @@ function Appointments() {
   const [appointment, setAppointment] = useState(null);
   const { refetchRevenues, refetchExpenses } = useAccounting();
   const { refetchInventory, refetchInventoryHistory } = useInventory();
-  const filteredAppointments = useMemo(
-    () => sortAppointments(filterAppointments(appointments, formValue)),
-    [appointments, formValue]
-  );
-  const filterByStatus = (appointments, filter) => {
-    return !filter
-      ? appointments
-      : appointments.filter(app => app.status === filter);
-  };
   const onClickDone = useCallback(
     appointment => {
       setAppointment(appointment);

@@ -83,7 +83,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRColumn flexGrow={2}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ patient }) => (
@@ -101,7 +101,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn flexGrow={1.5}>
+        <CRTable.CRColumn flexGrow={2}>
           <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ type, session }) => (
@@ -112,7 +112,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRColumn flexGrow={0.8}>
           <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ doctor }) => (
@@ -120,7 +120,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
+        <CRTable.CRColumn flexGrow={0.8}>
           <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ user }) => (
@@ -144,7 +144,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={8}>
+        <CRTable.CRColumn flexGrow={6}>
           <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (

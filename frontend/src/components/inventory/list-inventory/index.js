@@ -6,6 +6,7 @@ import { getUnitOfMeasureShortCut } from 'services/inventory';
 import RemoveItem from '../remove-item';
 
 const ListInventory = ({ items }) => {
+  console.log(items);
   return (
     <CRTable autoHeight data={items}>
       <CRTable.CRColumn flexGrow={1}>

@@ -92,6 +92,7 @@ export const LIST_TODAY_APPOINTMENTS = gql`
       accounted
       duration
       businessNotes
+      updatedAt
       patient {
         id
         name

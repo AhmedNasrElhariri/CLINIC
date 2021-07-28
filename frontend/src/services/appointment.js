@@ -178,6 +178,12 @@ export const sortAppointmentsByDate = appointments => {
   );
 };
 
+export const sortAppointmentsByUpdatedAt = appointments => {
+  return R.sort((a, b) => moment(a.updatedAt).valueOf() - moment(b.updatedAt).valueOf())(
+    appointments
+  );
+};
+
 export const isUrgent = appointment => {
   return R.propEq('type', APPT_TYPE.Urgent)(appointment);
 };

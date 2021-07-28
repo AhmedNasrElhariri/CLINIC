@@ -22,7 +22,7 @@ const DeleteMessage = styled.div`
 
 const options = [
   { name: 'Amount Only', value: 'amount' },
-  { name: 'Percentage of Revenue', value: 'percentage' },
+  // { name: 'Percentage of Revenue', value: 'percentage' },
   { name: 'Hours', value: 'hours' },
   { name: 'Courses', value: 'courses' },
 ];
@@ -188,46 +188,48 @@ const PayrollForm = ({
                   block
                 ></CRNumberInput>
               </>
-            ) : formValue.option === 'percentage' ? (
+            ) 
+            // : formValue.option === 'percentage' ? (
+            //   <>
+            //     <CRNumberInput
+            //       label="Percentage from 0 - 100"
+            //       name="percentage"
+            //       block
+            //     ></CRNumberInput>
+            //     {/* <InputNumber
+            //       max={100}
+            //       min={0}
+            //       name="percentage"
+            //       onChange={val => onChange({ ...formValue, percentage: val })}
+            //     /> */}
+            //     <CRRadio
+            //       label="Select one Choice"
+            //       name="choice"
+            //       options={options2}
+            //       style={{ marginBottom: '10px' }}
+            //     />
+            //     <CRBrancheTree
+            //       formValue={formValue}
+            //       onChange={onChange}
+            //       action={ACTIONS.CreateCommission_Payroll}
+            //     />
+            //     <Toolbar
+            //       onChangePeriod={setPeriod}
+            //       lastTimeFrameDay={lastRevenueDay}
+            //     />
+            //   </>
+            // ) 
+            : formValue.option === 'courses' ? (
               <>
                 <CRNumberInput
                   label="Percentage from 0 - 100"
                   name="percentage"
                   block
                 ></CRNumberInput>
-                {/* <InputNumber
-                  max={100}
-                  min={0}
-                  name="percentage"
-                  onChange={val => onChange({ ...formValue, percentage: val })}
-                /> */}
-                <CRRadio
-                  label="Select one Choice"
-                  name="choice"
-                  options={options2}
-                  style={{ marginBottom: '10px' }}
-                />
                 <CRBrancheTree
                   formValue={formValue}
                   onChange={onChange}
-                  action={ACTIONS.Create_Commission}
-                />
-                <Toolbar
-                  onChangePeriod={setPeriod}
-                  lastTimeFrameDay={lastRevenueDay}
-                />
-              </>
-            ) : formValue.option === 'courses' ? (
-              <>
-                <CRNumberInput
-                  label="Percentage from 0 - 100"
-                  name="percentage"
-                  block
-                ></CRNumberInput>
-                <CRBrancheTree
-                  formValue={formValue}
-                  onChange={onChange}
-                  action={ACTIONS.Create_Commission}
+                  action={ACTIONS.CreateCommission_Payroll}
                 />
                 <CourseToolbar onChangePeriod={setPeriod} lastTimeFrameDay={lastDay}/>
               </>

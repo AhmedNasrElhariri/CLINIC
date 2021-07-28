@@ -68,7 +68,7 @@ function useInventory({
             level: i.level,
             branch: i.branch,
             specialty: i.specialty,
-            doctor: i.doctor,
+            user: i.doctor,
             id:i.id,
           };
         }),

@@ -102,7 +102,7 @@ const NewAppointment = ({ show, onHide }) => {
   });
   const { appointmentsCount } = useAppointments({
     date: formValue?.date,
-    specialtyId: formValue?.specialtyId,
+    userId: formValue?.userId,
   });
   useEffect(() => {
     return () => {
@@ -172,8 +172,6 @@ const NewAppointment = ({ show, onHide }) => {
   //     }
   //   );
   // };
-  console.log(searchedPatients,'sese');
-  console.log(formValue);
   return (
     <>
       <NewPatient

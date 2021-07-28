@@ -20,7 +20,7 @@ function useAppointments({
   type,
   status = APPT_STATUS.SCHEDULED,
   date,
-  specialtyId,
+  userId,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -51,7 +51,7 @@ function useAppointments({
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: {
       date: date,
-      specialtyId: specialtyId,
+      userId: userId,
     },
   });
   const appointmentsCount = useMemo(
