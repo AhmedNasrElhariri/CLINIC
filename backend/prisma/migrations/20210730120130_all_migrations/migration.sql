@@ -38,7 +38,7 @@ CREATE TYPE "UnitOfMeaure" AS ENUM ('PerUnit', 'Milligram', 'Kilogram', 'Millime
 CREATE TYPE "InventoryOperation" AS ENUM ('Add', 'Substract');
 
 -- CreateEnum
-CREATE TYPE "PermissionAction" AS ENUM ('List_Appointment', 'Create_Appointment', 'Reschedule_Appointment', 'Acc_Appointment', 'Cancel_Appointment', 'Archive_Appointment', 'View_Patient', 'View_Accounting', 'AddRevenue_Accounting', 'AddExpense_Accounting', 'EditRevenue_Accounting', 'EditExpense_Accounting', 'ViewBank_Accounting', 'ViewInsurance_Accounting', 'Print_Accounting', 'View_Calendar', 'CreateEvent_Calendar', 'View_Inventory', 'AddItem_Inventory', 'ViewHistory_Inventory', 'DefineItem_Inventory', 'Create_Course', 'Create_SessionDefinition', 'Create_Hospital', 'Create_Surgery', 'View_Payroll', 'CreateCommission_Payroll', 'CreateDeduction_Payroll', 'CreateIncentives_Payroll', 'CreateAdvance_Payroll', 'CreatePayslips_Payroll', 'Define_Sales', 'Create_Sales', 'View_Sales', 'Create_Patient', 'CreateSocialReport_Patient', 'CreateAreaReport_Patient', 'ViewSessions_Patient', 'ViewLabs_Patient', 'ViewImages_Patient', 'ViewCourses_Patient', 'ViewSessionsPulses_Patient', 'GenerateMonthly_PulsesReport', 'GenerateDaily_PulsesReport');
+CREATE TYPE "PermissionAction" AS ENUM ('List_Appointment', 'Create_Appointment', 'Reschedule_Appointment', 'Acc_Appointment', 'Cancel_Appointment', 'Archive_Appointment', 'View_Patient', 'View_Accounting', 'AddRevenue_Accounting', 'AddExpense_Accounting', 'EditRevenue_Accounting', 'EditExpense_Accounting', 'ViewBank_Accounting', 'ViewInsurance_Accounting', 'Print_Accounting', 'View_Calendar', 'CreateEvent_Calendar', 'View_Inventory', 'AddItem_Inventory', 'ViewHistory_Inventory', 'DefineItem_Inventory', 'Create_Course', 'Create_SessionDefinition', 'Create_Hospital', 'Create_Surgery', 'View_Payroll', 'CreateCommission_Payroll', 'CreateDeduction_Payroll', 'CreateIncentives_Payroll', 'CreateAdvance_Payroll', 'CreatePayslips_Payroll', 'Define_Sales', 'Create_Sales', 'View_Sales', 'Create_Patient', 'CreateSocialReport_Patient', 'CreateAreaReport_Patient', 'ViewSessions_Patient', 'ViewLabs_Patient', 'ViewImages_Patient', 'ViewCourses_Patient', 'ViewSessionsPulses_Patient', 'GenerateMonthly_PulsesReport', 'GenerateDaily_PulsesReport', 'View_Medicine', 'View_Permission');
 
 -- CreateEnum
 CREATE TYPE "PermissionLevel" AS ENUM ('Organization', 'Branch', 'Specialty', 'User');
@@ -800,6 +800,7 @@ CREATE TABLE "MedicineDefinition" (
     "userId" TEXT NOT NULL,
     "specialtyId" TEXT,
     "branchId" TEXT,
+    "doctorId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -1367,6 +1368,9 @@ ALTER TABLE "MedicineDefinition" ADD FOREIGN KEY ("specialtyId") REFERENCES "Spe
 
 -- AddForeignKey
 ALTER TABLE "MedicineDefinition" ADD FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MedicineDefinition" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PatientReport" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
