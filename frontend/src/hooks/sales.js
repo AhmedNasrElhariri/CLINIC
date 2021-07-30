@@ -33,7 +33,6 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
     () => filterAccountingList(saleses, view, period),
     [saleses, period, view]
   );
-
   const totalSalesPrice = useMemo(
     () => filteredSales.reduce((acc, s) => acc + s.totalPrice, 0),
     [filteredSales]

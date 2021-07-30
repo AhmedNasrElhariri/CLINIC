@@ -2,12 +2,47 @@ import { prisma } from '@';
 import * as R from 'ramda';
 
 import { PERMISSION_LEVEL, POSITION } from '@/utils/constants';
-import {
-  byUsers,
-  bySpecialties,
-  byBranches,
-} from '@/services/permission.service';
-import { permissions } from '../role';
+
+export const byBranches = async (organizationId, rules) => {
+  const branches = await prisma.branch.findMany({
+    where: { organizationId, id: { in: rules.map(r => r.branchId) } },
+    include: {
+      specialties: {
+        include: { userSpecialties: { include: { user: true } } },
+      },
+    },
+  });
+  return branches;
+};
+
+export const bySpecialties = async (organizationId, rules) => {
+  const branches = await prisma.branch.findMany({
+    where: { organizationId, id: { in: rules.map(r => r.branchId) } },
+    include: {
+      specialties: {
+        include: { userSpecialties: { include: { user: true } } },
+      },
+    },
+  });
+  return branches;
+};
+
+export const byUsers = async rules => {
+  const orArg = rules.map(({ userId, branchId, specialtyId }) => ({
+    id: branchId,
+  }));
+  const branches = await prisma.branch.findMany({
+    where: {
+      OR: orArg,
+    },
+    include: {
+      specialties: {
+        include: { userSpecialties: { include: { user: true } } },
+      },
+    },
+  });
+  return branches;
+};
 
 const byOrganization = organizationId =>
   prisma.branch.findMany({
@@ -20,7 +55,7 @@ const byOrganization = organizationId =>
   });
 
 const listBranchesTree = async (_, { action }, { user, organizationId }) => {
-  if (user.position === POSITION.Admin  ) {
+  if (user.position === POSITION.Admin) {
     return byOrganization(organizationId);
   }
   const role = await prisma.permissionRole
@@ -58,9 +93,9 @@ const listBranchesTree = async (_, { action }, { user, organizationId }) => {
         ? byOrganization(organizationId)
         : byBranches(organizationId, rules);
     case PERMISSION_LEVEL.SPECIALTY:
-      return bySpecialties(rules);
+      return bySpecialties(organizationId, rules);
     case PERMISSION_LEVEL.USER:
-      return byUser(rules);
+      return byUsers(rules);
   }
 };
 

@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
+import { ACTIONS, POSITION } from '@/utils/constants';
 
 const revenues = async (_, __, { user, organizationId }) => {
   const ids = await listFlattenUsersTreeIds(
@@ -12,14 +12,21 @@ const revenues = async (_, __, { user, organizationId }) => {
     },
     true
   );
-  return prisma.revenue.findMany({
-    where: {
-      OR: [
-        {
+  const condition =
+    user.position === POSITION.Admin || user.position === POSITION.Assistant
+      ? {
           userId: {
             in: ids,
           },
-        },
+        }
+      : {
+          doctorId: {
+            in: ids,
+          },
+        };
+  return prisma.revenue.findMany({
+    where: {
+      OR: [
         {
           branchId: {
             in: ids,
@@ -30,6 +37,7 @@ const revenues = async (_, __, { user, organizationId }) => {
             in: ids,
           },
         },
+        condition,
       ],
     },
     include: {

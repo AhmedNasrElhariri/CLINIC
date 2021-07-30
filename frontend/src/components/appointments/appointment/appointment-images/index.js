@@ -7,7 +7,6 @@ import ImageRow from './image-row';
 const AppointmentImages = ({ selectedImages, onChange, categoryId }) => {
   
   const { imagesDefinition } = useImageDefinition({ categoryId });
-  console.log(imagesDefinition,'inin');
   const [formValue, setFormValue] = useState([]);
 
   useEffect(() => {

@@ -15,7 +15,7 @@ import { getName } from 'services/accounting';
 import ArchiveAppointment from '../archive-appointment';
 import CompleteAppointment from '../complete-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
-import { APPT_STATUS, APPT_TYPE } from 'utils/constants';
+import { ACTIONS, APPT_STATUS, APPT_TYPE } from 'utils/constants';
 const inialCurrentPage = {
   activePage: 1,
 };
@@ -42,6 +42,7 @@ function Appointments() {
     status,
     type: R.propOr(null, 'type')(formValue),
     patient: R.propOr('', 'patient')(formValue),
+    action: ACTIONS.List_Appointment,
   });
   const pages = Math.ceil(appointmentsCount / 20);
   const [popUp, setPopUp] = useState('');

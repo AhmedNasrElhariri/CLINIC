@@ -6,15 +6,29 @@ const myHospitals = async (_, __, { organizationId, user }) => {
     {
       user,
       organizationId,
-      action: ACTIONS.List_Hospital,
+      action: ACTIONS.Create_Hospital,
     },
     true
   );
   return prisma.hospital.findMany({
     where: {
-      userId: {
-        in: ids,
-      },
+      OR: [
+        {
+          userId: {
+            in: ids,
+          },
+        },
+        {
+          branchId: {
+            in: ids,
+          },
+        },
+        {
+          specialtyId:{
+            in:ids,
+          }
+        },
+      ],
     },
     include: {
       user: true,

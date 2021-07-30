@@ -11,8 +11,19 @@ function ListMedicines({ medicines, onEdit }) {
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ name }) => (
-                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+              {({ name, branch, specialty, doctor, level }) => (
+                <CRTable.CRCellStyled bold>
+                  {name} {' / '}
+                  {level}
+                  {' / '}
+                  {level === 'organization'
+                    ? ''
+                    : level === 'branch'
+                    ? branch?.name
+                    : level === 'specialty'
+                    ? specialty?.name
+                    : doctor?.name}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

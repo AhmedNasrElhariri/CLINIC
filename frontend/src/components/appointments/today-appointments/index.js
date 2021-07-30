@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
-
+import { ACTIONS } from 'utils/constants';
 import { CRTabs } from 'components';
 
 import {
@@ -28,7 +28,9 @@ const initialValue = {
   businessNotes: '',
 };
 function TodayAppointments() {
-  const { todayAppointments: appointments, filterBranches } = useAppointments();
+  const { todayAppointments: appointments, filterBranches } = useAppointments({
+    action: ACTIONS.List_Appointment,
+  });
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);

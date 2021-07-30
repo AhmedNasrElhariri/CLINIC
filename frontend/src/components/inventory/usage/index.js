@@ -51,9 +51,9 @@ function InventoryUsage({ onChange }) {
 
   const itemsChoices = useMemo(() => {
     const selectedItemIds = R.map(R.prop('itemId'))(selectedItems);
+
     return inventoryWithAmount.filter(f => !selectedItemIds.includes(f.id));
   }, [selectedItems]);
-  console.log(itemsChoices,'itemCh');
   const itemsList = useMemo(() => {
     const byIds = normalize(inventoryWithAmount);
     return selectedItems.map(({ itemId, quantity }) => ({

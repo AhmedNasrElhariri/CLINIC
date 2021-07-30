@@ -159,12 +159,10 @@ function AppointmentData({
       const cateImages = imagesDefinition.map(i => i.id);
       const appImages = appointmentFormValue.imageIds;
       const oldImages = appImages.filter(x => !cateImages.includes(x));
-      console.log(cateImages,'cateImages',appImages,'appImages',oldImages,'oldImages');
       onChange({
         ...appointmentFormValue,
         imageIds: [...oldImages, ...imageIds],
       });
-      console.log(appointmentFormValue.imageIds,'imageIds');
     },
     [appointmentFormValue, onChange, categoryImageForm]
   );

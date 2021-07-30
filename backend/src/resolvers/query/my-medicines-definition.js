@@ -1,24 +1,23 @@
 import { prisma } from '@';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
+import { ACTIONS, POSITION } from '@/utils/constants';
 
-const myMedicinesDefinition = async(_, __, { user, organizationId , userId }) => {
+const myMedicinesDefinition = async (
+  _,
+  __,
+  { user, organizationId, userId }
+) => {
   const ids = await listFlattenUsersTreeIds(
     {
       user,
       organizationId,
       action: ACTIONS.View_Medicine,
     },
-    true
+    false
   );
   return prisma.medicineDefinition.findMany({
     where: {
       OR: [
-        {
-          userId: {
-            in: ids,
-          },
-        },
         {
           branchId: {
             in: ids,
@@ -29,7 +28,23 @@ const myMedicinesDefinition = async(_, __, { user, organizationId , userId }) =>
             in: ids,
           },
         },
+        {
+          userId: {
+            in: ids,
+          },
+        },
+        {
+          doctorId: {
+            in: ids,
+          },
+        },
       ],
+    },
+    include: {
+      user: true,
+      specialty: true,
+      branch: true,
+      doctor: true,
     },
   });
 };

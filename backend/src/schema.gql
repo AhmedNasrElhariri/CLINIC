@@ -1038,7 +1038,6 @@ type InventoryItem {
   userId: ID!
   price: Int!
   quantity: Int!
-
   branch: Branch
   specialty: Specialty
   doctor: User
@@ -1339,8 +1338,9 @@ type MedicineDefinition {
   concentration: String!
   form: String!
   level: String
-  branch: Branch!
-  specialty: Specialty!
+  branch: Branch
+  specialty: Specialty
+  doctor: User
   user: User!
 }
 

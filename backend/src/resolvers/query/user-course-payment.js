@@ -15,9 +15,6 @@ const userCoursePayment = async (
         gte: start,
         lte: end,
       },
-      doctorId,
-      specialtyId,
-      branchId,
     },
   });
 };

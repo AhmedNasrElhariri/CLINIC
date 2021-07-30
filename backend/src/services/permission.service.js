@@ -4,43 +4,59 @@ import * as R from 'ramda';
 import { PERMISSION_LEVEL, POSITION } from '@/utils/constants';
 
 const byOrganization = async (organizationId, allUsers = false) => {
-  if (allUsers) {
-    return prisma.user.findMany({
-      where: {
-        organizationId,
-      },
-    });
-  }
-
   const branches = await prisma.branch.findMany({
-    where: { organizationId },
-    include: {
-      specialties: {
-        include: { userSpecialties: { include: { user: true } } },
-      },
+    where: {
+      organizationId,
     },
   });
-  return R.pipe(
-    R.map(R.prop('specialties')),
-    R.flatten,
-    R.map(R.path(['userSpecialties'])),
-    R.flatten,
-    R.map(R.path(['user'])),
-    R.flatten,
-    R.uniqBy(R.prop('id'))
-  )(branches);
+  const users = await prisma.user.findMany({
+    where:{
+      organizationId,
+    }
+  });
+
+  const totalIds = branches.concat(users);
+  return totalIds;
+  // if (allUsers) {
+  //   return prisma.user.findMany({
+  //     where: {
+  //       organizationId,
+  //     },
+  //   });
+  // }
+
+  // const branches = await prisma.branch.findMany({
+  //   where: { organizationId },
+  //   include: {
+  //     specialties: {
+  //       include: { userSpecialties: { include: { user: true } } },
+  //     },
+  //   },
+  // });
+  // return R.pipe(
+  //   R.map(R.prop('specialties')),
+  //   R.flatten,
+  //   R.map(R.path(['userSpecialties'])),
+  //   R.flatten,
+  //   R.map(R.path(['user'])),
+  //   R.flatten,
+  //   R.uniqBy(R.prop('id'))
+  // )(branches);
 };
 
 export const byBranches = async (organizationId, rules) => {
-  const branches = await prisma.branch.findMany({
-    where: { organizationId, id: { in: rules.map(r => r.branchId) } },
-    include: {
-      specialties: {
-        include: { userSpecialties: { include: { user: true } } },
-      },
-    },
+  // const branches = await prisma.branch.findMany({
+  //   where: { organizationId, id: { in: rules.map(r => r.branchId) } },
+  //   include: {
+  //     specialties: {
+  //       include: { userSpecialties: { include: { user: true } } },
+  //     },
+  //   },
+  // });
+  const branchesId = rules.map(val => {
+    return { id: val.branchId };
   });
-  return branches;
+  return branchesId;
   // return branches;
 };
 export const bySpecialties = async rules => {
@@ -51,25 +67,28 @@ export const bySpecialties = async rules => {
 };
 
 export const byUsers = rules => {
-  const orArg = rules.map(({ userId, branchId, specialtyId }) => ({
-    id: branchId,
-    specialties: {
-      every: {
-        id: specialtyId,
-        userSpecialties: {
-          every: {
-            userId,
-          },
-        },
-      },
-    },
-  }));
-
-  return prisma.branch.findMany({
-    where: {
-      OR: orArg,
-    },
+  // const orArg = rules.map(({ userId, branchId, specialtyId }) => ({
+  //   id: branchId,
+  //   specialties: {
+  //     every: {
+  //       id: specialtyId,
+  //       userSpecialties: {
+  //         every: {
+  //           userId,
+  //         },
+  //       },
+  //     },
+  //   },
+  // }));
+  // return prisma.branch.findMany({
+  //   where: {
+  //     OR: orArg,
+  //   },
+  // });
+  const usersIds = rules.map(val => {
+    return { id: val.userId };
   });
+  return usersIds;
 };
 
 export const listFlattenUsersTree = async (
@@ -93,7 +112,7 @@ export const listFlattenUsersTree = async (
   });
 
   const permission = R.pathOr(null, ['permissions', '0'])(role);
-  
+
   if (!permission) {
     return [];
   }

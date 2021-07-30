@@ -45,14 +45,6 @@ const CustomBranchTress = ({
     [formValue?.specialtyId, specialties]
   );
   useEffect(() => {
-    if (branches.length == 1 && checkFormValue.check.length == 0) {
-      onChange({
-        ...formValue,
-        branchId: branches[0]?.id,
-      });
-    }
-  }, [branches, formValue?.branchId, checkFormValue]);
-  useEffect(() => {
     if (specialties.length == 1) {
       onChange({
         ...formValue,
@@ -77,7 +69,7 @@ const CustomBranchTress = ({
         ...formValue,
         branchId: null,
         specialtyId: null,
-        userId:null,
+        userId: null,
       });
     }
     if (

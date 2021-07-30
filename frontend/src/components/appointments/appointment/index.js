@@ -44,8 +44,8 @@ function Appointment() {
     imageIds: [],
     pictures: [],
     powerOne: 0,
-    powerTwo:0,
-    pulses:0,
+    powerTwo: 0,
+    pulses: 0,
   });
 
   const [disabled, setDisabled] = useState(false);
@@ -91,9 +91,9 @@ function Appointment() {
           prescription: apptFormValue.prescription,
           labIds: apptFormValue.labIds,
           imageIds: apptFormValue.imageIds,
-          powerOne:apptFormValue.powerOne,
-          powerTwo:apptFormValue.powerTwo,
-          pulses:apptFormValue.pulses,
+          powerOne: apptFormValue.powerOne,
+          powerTwo: apptFormValue.powerTwo,
+          pulses: apptFormValue.pulses,
           pictures: apptFormValue.pictures.map(c => ({
             ...R.pick(['id', 'comment'])(c),
           })),
@@ -102,8 +102,15 @@ function Appointment() {
         },
       },
     });
-  }, [update, normalizedFields, formValue, apptFormValue, appointmentId,sessionsPulses,
-    sessionFormValue]);
+  }, [
+    update,
+    normalizedFields,
+    formValue,
+    apptFormValue,
+    appointmentId,
+    sessionsPulses,
+    sessionFormValue,
+  ]);
   const [popup, setPopup] = useState(false);
   const [popupTwo, setPopupTwo] = useState(false);
   const [popupThree, setPopupThree] = useState(false);
@@ -252,13 +259,13 @@ function Appointment() {
             >
               Save <Icon icon="save" />
             </CRButton>
-            <CRButton
+            {/* <CRButton
               variant="primary"
               open={visbleAppointment}
               onClick={toggleAppointment}
             >
               Reverse Appoinment <Icon icon="save" />
-            </CRButton>
+            </CRButton> */}
           </Div>
         </HeaderStyled>
         <Div display="flex">

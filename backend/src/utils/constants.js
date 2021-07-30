@@ -127,4 +127,5 @@ export const ACTIONS = Object.freeze({
   GenerateMonthly_PulsesReport:'GenerateMonthly_PulsesReport',
   GenerateDaily_PulsesReport:'GenerateDaily_PulsesReport',
   View_Medicine:'View_Medicine',
+  View_Permission:'View_Permission',
 });

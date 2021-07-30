@@ -28,6 +28,13 @@ const addMedicineDefinition = async (_, { medicineDefinition }, { userId }) => {
             id: branchId,
           },
         },
+      },
+      userID && {
+        doctor: {
+          connect: {
+            id: userID,
+          },
+        },
       }
     ),
   });

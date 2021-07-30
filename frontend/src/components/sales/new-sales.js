@@ -11,7 +11,7 @@ import {
   H7,
   H4,
   CRDocSelectInput,
-  CRBrancheTree
+  CRBrancheTree,
 } from 'components';
 import { useSalesDefinition } from 'hooks';
 import ListInvoiceItems from './list-invoice-items';
@@ -20,7 +20,6 @@ const model = Schema.Model({});
 const initValue = {
   itemId: null,
   quantity: 1,
-  
 };
 function NewSales({
   formValue,
@@ -68,7 +67,11 @@ function NewSales({
               trigger={() => <CRButton>Print</CRButton>}
               content={() => ref.current}
             />
-            <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Sales}/>
+            <CRBrancheTree
+              formValue={formValue}
+              onChange={onChange}
+              action={ACTIONS.Create_Sales}
+            />
             <Div display="flex" justifyContent="space-between" mt={3}>
               <Div>
                 <CRDocSelectInput

@@ -76,7 +76,7 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
           placeholder="Type Concentration"
           block
         />
-        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Hospital}/>
+        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.View_Medicine}/>
         <CRRadio label="Medicine Form" name="form" options={options} />
       </Form>
     </CRModal>

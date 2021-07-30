@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
+import { ACTIONS } from 'utils/constants';
 import { MainContainer, Div, CRCard, CRButton, H6 } from 'components';
 import Toolbar from '../toolbar';
 import ListExpenseData from '../list-data/expense.js';
@@ -32,7 +33,9 @@ const initalVal = {
 };
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
-  const { filterBranches } = useAppointments();
+  const { filterBranches } = useAppointments({
+    action: ACTIONS.View_Accounting,
+  });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const [formValue, setFormValue] = useState(initalVal);
@@ -264,16 +267,21 @@ const AccountingContainer = () => {
                                   editExpenseForm.show();
                                 }}
                               />
-                                <Profit
-                                  expenses={totalExpenses}
-                                  revenues={totalRevenues}
+                              <Profit
+                                expenses={totalExpenses}
+                                revenues={totalRevenues}
+                              />
+                              <Div
+                                mt={10}
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                              >
+                                <PdfView
+                                  data={{ revenues, expenses }}
+                                  period={timeFrame}
                                 />
-                                <Div mt={10} display="flex" justifyContent="center" alignItems="center">
-                                  <PdfView
-                                    data={{ revenues, expenses }}
-                                    period={timeFrame}
-                                  />
-                                </Div>
+                              </Div>
                             </>
                           )}
                         />

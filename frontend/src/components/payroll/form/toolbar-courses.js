@@ -30,8 +30,6 @@ const Toolbar = ({ onChangePeriod, lastTimeFrameDay }) => {
 
 Toolbar.defaultProps = {
   data: {
-    revenues: [],
-    expenses: [],
   },
 };
 

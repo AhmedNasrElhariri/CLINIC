@@ -18,7 +18,7 @@ import {
   useSalesDefinition,
 } from 'hooks';
 import { formatDate } from 'utils/date';
-import { ACCOUNTING_VIEWS } from 'utils/constants';
+import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import { CRDocSelectInput, CRSelectInput } from 'components/widgets';
 const initValue = { itemId: '', quantity: 0 };
 const initFilter = {
@@ -34,22 +34,18 @@ const Sales = () => {
     initValue,
   });
   const [filter, setFilter] = useState(initFilter);
-  const { filterBranches } = useAppointments();
-  const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
+  const { filterBranches } = useAppointments({action:ACTIONS.View_Sales});
+  const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const { timeFrame } = useAccounting({ view, period });
   const [selectedItems, setSelectedItems] = useState([]);
   const { salesesDefinition } = useSalesDefinition({});
-  const [allSales, setAllSales] = useState([]);
   const {
     addSales,
-    saleses,
     editSales,
     deleteSales,
     filteredSales,
-    totalSalesCost,
     organizationusers,
-    totalSalesPrice,
   } = useSales({
     onCreate: () => {
       close();
@@ -151,13 +147,6 @@ const Sales = () => {
         title="Sales"
         more={
           <Div display="flex">
-            <Div mr={10}>
-              <PdfView
-                data={itemFilteredSalesByUser}
-                period={timeFrame}
-                sales={true}
-              />
-            </Div>
             <Can I="Create" an="Sales">
               <CRButton variant="primary" onClick={handleClickCreate}>
                 Add New Sales +
@@ -225,6 +214,14 @@ const Sales = () => {
               onDelete={handleClickDelete}
             />
             <Profit totalPrice={totalSalesPrice} totalCost={totalSalesCost} />
+            <Div
+              mt={10}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <PdfView data={sales} period={timeFrame} sales={true}/>
+            </Div>
           </>
         )}
       />

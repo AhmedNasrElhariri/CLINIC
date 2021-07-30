@@ -21,6 +21,7 @@ function useAppointments({
   status = APPT_STATUS.SCHEDULED,
   date,
   userId,
+  action,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -43,7 +44,7 @@ function useAppointments({
         R.reject(R.propEq('status', 'Cancelled')),
         includeSurgery
           ? R.identity
-          : R.reject(R.propEq('type', APPT_TYPE.Surgery)),
+          : R.reject(R.propEq('type', APPT_TYPE.Surgery))
       )(appointmentsdata),
     [data, includeSurgery]
   );
@@ -74,16 +75,18 @@ function useAppointments({
         R.reject(R.propEq('status', 'Cancelled')),
         includeSurgery
           ? R.identity
-          : R.reject(R.propEq('type', APPT_TYPE.Surgery)),
+          : R.reject(R.propEq('type', APPT_TYPE.Surgery))
       )(todayAppointmentsData),
     [todayAppointmentsData, includeSurgery]
   );
 
   const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
-    variables: { action: ACTIONS.List_Appointment },
+    variables: { action: action },
   });
-
-  const filterBranches = R.propOr([], 'listBranchesTree')(branchesTreeData);
+  const filterBranches = useMemo(
+    () => R.propOr([], 'listBranchesTree')(branchesTreeData),
+    [branchesTreeData]
+  );
   return useMemo(
     () => ({
       appointments,

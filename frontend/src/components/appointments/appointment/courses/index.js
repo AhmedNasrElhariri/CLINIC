@@ -178,7 +178,7 @@ function NewCourse({
             <CRBrancheTree
               formValue={formValue}
               onChange={onChange}
-              action={ACTIONS.AddRevenue_Accounting}
+              action={ACTIONS.Create_Course}
             />
             <CRNumberInput label="Discount" name="discount" />
             <CRNumberInput label="Paid" name="paid" />
@@ -260,7 +260,7 @@ function NewCourse({
             <CRBrancheTree
               formValue={formValue}
               onChange={onChange}
-              action={ACTIONS.AddRevenue_Accounting}
+              action={ACTIONS.ViewCourses_Patient}
             />
           </>
         ) : type === 'consumed' ? (

@@ -7,6 +7,23 @@ export const LIST_MEDICINES_DEFINITION = gql`
       name
       concentration
       form
+      level
+      branch{
+        id
+        name
+      }
+      specialty{
+        id
+        name
+      }
+      user{
+        id
+        name
+      }
+      doctor{
+        id
+        name
+      }
     }
   }
 `;

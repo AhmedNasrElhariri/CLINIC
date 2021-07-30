@@ -8,7 +8,7 @@ import Profit from '../../accounting/profit';
 import { useBankAccounting, useAppointments } from 'hooks';
 import Filter from './filter';
 import BranchFilter from '../../filters';
-import { ACCOUNTING_VIEWS } from 'utils/constants';
+import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 
 import PdfView from './pdf';
 import { formatDate } from 'utils/date';
@@ -20,7 +20,7 @@ const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
-  const { filterBranches } = useAppointments({});
+  const { filterBranches } = useAppointments({action:ACTIONS.ViewBank_Accounting});
   const { revenues, timeFrame } = useBankAccounting({
     view,
     period,

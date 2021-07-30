@@ -226,11 +226,11 @@ const PayrollForm = ({
                   name="percentage"
                   block
                 ></CRNumberInput>
-                <CRBrancheTree
+                {/* <CRBrancheTree
                   formValue={formValue}
                   onChange={onChange}
                   action={ACTIONS.CreateCommission_Payroll}
-                />
+                /> */}
                 <CourseToolbar onChangePeriod={setPeriod} lastTimeFrameDay={lastDay}/>
               </>
             ) : (

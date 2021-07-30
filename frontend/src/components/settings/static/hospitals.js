@@ -6,6 +6,7 @@ import ListHospitals from './list-hospitals';
 import NewHospital from './new-hospital';
 import { useForm, useModal, useHospitals, useAppointments } from 'hooks';
 import Filter from '../../filters';
+import { ACTIONS } from 'utils/constants';
 
 const initValue = {
   name: '',
@@ -18,7 +19,7 @@ const initValue = {
 
 const Hospitals = () => {
   const { visible, open, close } = useModal();
-  const { filterBranches } = useAppointments();
+  const { filterBranches } = useAppointments({action:ACTIONS.Create_Hospital});
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });

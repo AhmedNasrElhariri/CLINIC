@@ -1,8 +1,5 @@
 import { prisma } from '@';
 
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
-
 const patientsReport = async (
   _,
   { area, reference },
