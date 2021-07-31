@@ -127,6 +127,13 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
             id: branchId,
           },
         },
+      },
+      userID && {
+        doctor: {
+          connect: {
+            id: userID,
+          },
+        },
       }
     ),
   });
