@@ -1,5 +1,6 @@
 import { prisma } from '@';
 import { PAYROLL_STATUS } from '@/utils/constants';
+import moment from 'moment';
 
 const addTransaction = async (
   _,
@@ -35,13 +36,14 @@ const addTransaction = async (
     payrollId = payroll.id;
     if (periodTime.length > 0 && option === 'courses') {
       const TimeFramedate = periodTime[1];
+      const newTimeFrameDate = moment(TimeFramedate).add(1, 'days').toDate();
       await prisma.transactionCoursesTimeFrame.upsert({
         where: {
           payrollUserId: userId,
         },
-        update: { date: TimeFramedate },
+        update: { date: newTimeFrameDate },
         create: {
-          date: TimeFramedate,
+          date: newTimeFrameDate,
           payrollUser: {
             connect: {
               id: userId,
@@ -89,13 +91,14 @@ const addTransaction = async (
     payrollId = payrollRow[0].id;
     if (periodTime.length > 0 && option === 'courses') {
       const TimeFramedate = periodTime[1];
+      const newTimeFrameDate = moment(TimeFramedate).add(1, 'days').toDate();
       await prisma.transactionCoursesTimeFrame.upsert({
         where: {
           payrollUserId: userId,
         },
-        update: { date: TimeFramedate },
+        update: { date: newTimeFrameDate },
         create: {
-          date: TimeFramedate,
+          date: newTimeFrameDate,
           payrollUser: {
             connect: {
               id: userId,

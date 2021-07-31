@@ -72,23 +72,6 @@ const appointments = async (
       type: type,
       OR: [
         {
-          patient: {
-            name: {
-              contains: patient,
-              mode: 'insensitive',
-            },
-          },
-        },
-        {
-          patient: {
-            phoneNo: {
-              contains: patient,
-            },
-          },
-        },
-      ],
-      OR: [
-        {
           userId: {
             in: ids,
           },
@@ -101,6 +84,23 @@ const appointments = async (
         {
           specialtyId: {
             in: ids,
+          },
+        },
+      ],
+      OR: [
+        {
+          patient: {
+            name: {
+              contains: patient,
+              mode: 'insensitive',
+            },
+          },
+        },
+        {
+          patient: {
+            phoneNo: {
+              contains: patient,
+            },
           },
         },
       ],

@@ -183,21 +183,25 @@ const Course = ({ patient }) => {
   ]);
   return (
     <>
-      <Div display="flex" justifyContent="flex-end" alignItems="center">
-        {courses.map((course, idx) => (
-          <CourseButton
-            variant="primary"
-            onClick={() => setIndex(idx)}
-            key={idx}
-          >
-            {course.courseDefinition.name}
-          </CourseButton>
-        ))}
-        <Can I="Create" an="Course">
-          <CRButton variant="primary" onClick={handleClickCreate} ml={2}>
-            Add New Course+
-          </CRButton>
-        </Can>
+      <Div display="flex" justifyContent="space-between">
+        <Div width={800}>
+          {courses.map((course, idx) => (
+            <CourseButton
+              variant="primary"
+              onClick={() => setIndex(idx)}
+              key={idx}
+            >
+              {course.courseDefinition.name}
+            </CourseButton>
+          ))}
+        </Div>
+        <Div width={200}>
+          <Can I="Create" an="Course">
+            <CRButton variant="primary" onClick={handleClickCreate}>
+              Add New Course+
+            </CRButton>
+          </Can>
+        </Div>
       </Div>
       <NewCourse
         visible={visible}

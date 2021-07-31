@@ -72,7 +72,7 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
                 formValue={formValue}
                 onChange={setFormValue}
                 showUserAndOrganization={false}
-                action={ACTIONS.Create_Appointment}
+                action={ACTIONS.Reschedule_Appointment}
               />
               <CRDatePicker
                 disabledDate={isBeforeToday}

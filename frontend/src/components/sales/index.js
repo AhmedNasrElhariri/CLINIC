@@ -34,30 +34,25 @@ const Sales = () => {
     initValue,
   });
   const [filter, setFilter] = useState(initFilter);
-  const { filterBranches } = useAppointments({action:ACTIONS.View_Sales});
+  const { filterBranches } = useAppointments({ action: ACTIONS.View_Sales });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const { timeFrame } = useAccounting({ view, period });
   const [selectedItems, setSelectedItems] = useState([]);
   const { salesesDefinition } = useSalesDefinition({});
-  const {
-    addSales,
-    editSales,
-    deleteSales,
-    filteredSales,
-    organizationusers,
-  } = useSales({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
-    view,
-    period,
-  });
+  const { addSales, editSales, deleteSales, filteredSales, organizationusers } =
+    useSales({
+      onCreate: () => {
+        close();
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setFormValue(initValue);
+      },
+      view,
+      period,
+    });
   const updatedUsers = organizationusers.map(u => {
     return {
       id: u.id,
@@ -220,7 +215,7 @@ const Sales = () => {
               justifyContent="center"
               alignItems="center"
             >
-              <PdfView data={sales} period={timeFrame} sales={true}/>
+              <PdfView data={sales} period={timeFrame} sales={true} />
             </Div>
           </>
         )}

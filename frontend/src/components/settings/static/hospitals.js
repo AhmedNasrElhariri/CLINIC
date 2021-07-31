@@ -19,7 +19,9 @@ const initValue = {
 
 const Hospitals = () => {
   const { visible, open, close } = useModal();
-  const { filterBranches } = useAppointments({action:ACTIONS.Create_Hospital});
+  const { filterBranches } = useAppointments({
+    action: ACTIONS.Create_Hospital,
+  });
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });

@@ -58,15 +58,27 @@ const listBranchesTree = async (_, { action }, { user, organizationId }) => {
   if (user.position === POSITION.Admin) {
     return byOrganization(organizationId);
   }
-  const role = await prisma.permissionRole
-    .findMany({
-      where: {
-        users: {
-          every: {
-            id: user.id,
-          },
-        },
-      },
+  // const role = await prisma.permissionRole
+  //   .findMany({
+  //     where: {
+  //       users: {
+  //         every: {
+  //           id: user.id,
+  //         },
+  //       },
+  //     },
+  //     include: {
+  //       permissions: {
+  //         where: {
+  //           action,
+  //         },
+  //         include: {
+  //           rules: true,
+  //         },
+  //       },
+  //     },
+  //   });
+    const role = await prisma.user.findUnique({ where: { id: user.id } }).role({
       include: {
         permissions: {
           where: {
@@ -77,8 +89,8 @@ const listBranchesTree = async (_, { action }, { user, organizationId }) => {
           },
         },
       },
-    })
-    .then(res => (res.length ? res[0] : null));
+    });
+    
   const permission = R.pathOr(null, ['permissions', '0'])(role);
   if (!permission) {
     return [];
