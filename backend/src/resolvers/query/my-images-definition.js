@@ -1,9 +1,9 @@
 import { prisma } from '@';
 
-const myImagesDefinition = (_, { categoryId }, { userId }) => {
+const myImagesDefinition = (_, { categoryId }, { userId ,organizationId}) => {
   return prisma.imageDefinition.findMany({
     where: {
-      userId,
+      organizationId,
       categoryId,
     },
     include: {

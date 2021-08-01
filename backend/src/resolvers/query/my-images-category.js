@@ -1,9 +1,9 @@
 import { prisma } from '@';
 
-const myImagesCategory = (_, __, { userId }) => {
+const myImagesCategory = (_, __, { userId ,organizationId}) => {
   return prisma.imageCategory.findMany({
     where: {
-      userId,
+      organizationId,
     },
   });
 };

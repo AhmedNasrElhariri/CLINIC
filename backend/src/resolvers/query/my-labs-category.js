@@ -1,9 +1,9 @@
 import { prisma } from '@';
 
-const myLabsCategory = (_, __, { userId }) => {
+const myLabsCategory = (_, __, { userId ,organizationId}) => {
   return prisma.labCategory.findMany({
     where: {
-      userId,
+      organizationId,
     },
   });
 };
