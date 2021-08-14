@@ -8,7 +8,6 @@ export default function UsersContainer() {
   const { users, createUser } = usePermissions({
     onCreateUser: close,
   });
-
   const handleCreate = useCallback(
     user => {
       createUser(user);

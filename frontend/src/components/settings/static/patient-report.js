@@ -14,20 +14,17 @@ const PatientReport = () => {
     initValue,
   });
 
-  const {
-    addPatientReport,
-    patientReports,
-    editPatientReport,
-  } = usePatientReports({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
-  });
+  const { addPatientReport, patientReports, editPatientReport } =
+    usePatientReports({
+      onCreate: () => {
+        close();
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setFormValue(initValue);
+      },
+    });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -43,23 +40,27 @@ const PatientReport = () => {
     },
     [open, setFormValue, setType]
   );
-
   const handleAdd = useCallback(() => {
+    const bodyFinal = '<pre>' + formValue.body + '</pre>';
+      const updatedFormValue = {
+        name: formValue.name,
+        body: bodyFinal,
+      };
     if (type === 'create') {
       addPatientReport({
         variables: {
-          patientReport: formValue,
+          patientReport: updatedFormValue,
         },
       });
     } else {
       editPatientReport({
         variables: {
-          patientReport: formValue,
+          patientReport: updatedFormValue,
         },
       });
     }
   }, [addPatientReport, editPatientReport, formValue, type]);
-
+  console.log(formValue, 'mmmm');
   return (
     <>
       <Div textAlign="right">

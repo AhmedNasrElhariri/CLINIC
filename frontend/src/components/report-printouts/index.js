@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Form } from 'rsuite';
 import ReactQuill from 'react-quill';
 import ReactToPrint from 'react-to-print';
+import 'react-quill/dist/quill.snow.css';
 import { CRSelectInput, CRButton, Div } from 'components';
 import { useReactToPrint } from 'react-to-print';
 import Label from '../widgets/label';
@@ -36,7 +37,9 @@ function ReportPrintout() {
     width: 40%;
     float: left;
   `;
-
+  useEffect(() => {
+    setFormValue({ ...formValue, body: formValue.patientReport });
+  }, [formValue.patientReport]);
   return (
     <>
       <Div display="flex" justifyContent="space-between">
@@ -48,25 +51,23 @@ function ReportPrintout() {
       </Div>
 
       <Form fluid formValue={formValue} onChange={setFormValue}>
-        <CustomCRSelector
+        <CRSelectInput
           name="patientReport"
           placeholder="Patient Reports"
           data={values}
+          style={{width:'1000px'}}
           block
         />
         <ReactQuill
-          theme="snow"
           name="body"
-          style={{ marginTop: 10 }}
-          value={
-            formValue.patientReport ? formValue.patientReport : formValue.body
-          }
-          onChange={value => setFormValue({ body: value })}
+          style={{ marginTop: 10, width: '1000px' }}
+          value={formValue.body}
+          onChange={value => setFormValue({ ...formValue, body: value })}
         />
       </Form>
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <Div ref={ref} m={50}>
-          <div dangerouslySetInnerHTML={{ __html: formValue.body }}></div>
+          <pre dangerouslySetInnerHTML={{ __html: formValue.body }}></pre>
         </Div>
       </Div>
     </>

@@ -151,6 +151,7 @@ model Organization {
   id                       String                     @id @default(uuid())
   name                     String
   invoiceCounter           Int                        @default(1)
+  patientCode              Int                        @default(1000)
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @default(now()) @updatedAt
   item                     Item[]
@@ -1182,7 +1183,7 @@ model UserSpecialty {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
 
-  @@unique([userId, branchId], name: "userId_branchId_unique_constraint")
+  @@unique([userId, specialtyId, branchId], name: "userId_specialtyId_branchId_unique_constraint")
 }
 
 // end permission

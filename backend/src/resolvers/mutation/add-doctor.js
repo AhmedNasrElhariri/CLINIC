@@ -17,12 +17,12 @@ const validateBeforeAdd = async ({ userId, specialtyId, branchId }) => {
     include: { branch: true },
   });
 
-  const alreadyAssignedToSpecialty =
-    userspecialties.length && userspecialties[0].specialtyId !== specialtyId;
+  // const alreadyAssignedToSpecialty =
+  //   userspecialties.length && userspecialties[0].specialtyId !== specialtyId;
 
-  if (alreadyAssignedToSpecialty) {
-    return 'User already assigned to another specialty';
-  }
+  // if (alreadyAssignedToSpecialty) {
+  //   return 'User already assigned to another specialty';
+  // }
 
   const mappedBranches = R.map(R.prop('branch'))(userspecialties);
   const mappedBranchesIds = R.map(R.prop('id'))(mappedBranches);
@@ -39,10 +39,10 @@ const addDoctor = async (
   { branchId, specialtyId, userId },
   { organizationId }
 ) => {
-  const message = await validateBeforeAdd({ branchId, specialtyId, userId });
-  if (message) {
-    throw new APIExceptcion(message);
-  }
+  // const message = await validateBeforeAdd({ branchId, specialtyId, userId });
+  // if (message) {
+  //   throw new APIExceptcion(message);
+  // }
 
   return prisma.userSpecialty.create({
     data: {

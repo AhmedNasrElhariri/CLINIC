@@ -23,7 +23,9 @@ export default function Users({ users }) {
             <CRTable.CRCell>
               {({ specialty }) => (
                 <div>
-                  <Tag>{specialty?.name}</Tag>
+                  {specialty.map(({ name }, index) => (
+                    <Tag key={index}>{name}</Tag>
+                  ))}
                 </div>
               )}
             </CRTable.CRCell>

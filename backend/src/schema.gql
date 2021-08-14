@@ -370,7 +370,7 @@ type User {
   position: Position
   revenues: [Revenue!]
   avatar: String
-  specialty: Specialty
+  specialty: [Specialty]
   role: Role
 }
 

@@ -6,11 +6,26 @@ const createPatient = async (
   { input: patient },
   { userId, organizationId }
 ) => {
-  const { area, ...rest } = patient;
+  const { area, code, ...rest } = patient;
+  const organization = await prisma.organization.findUnique({
+    where: {
+      id: organizationId,
+    },
+  });
+  const { patientCode, id } = organization;
+  await prisma.organization.update({
+    data: {
+      patientCode: patientCode + 1,
+    },
+    where: {
+      id,
+    },
+  });
   const areaName = getArea(area);
-  const patientData = await prisma.patient.create({
+  return prisma.patient.create({
     data: {
       area: areaName,
+      code: 'cr' + patientCode,
       ...rest,
       organization: {
         connect: {
@@ -23,23 +38,6 @@ const createPatient = async (
         },
       },
     },
-  });
-  const { codeNumber, id } = patientData;
-  return prisma.patient.update({
-    data: {
-      code: 'cr' + (codeNumber+1000),
-      organization: {
-        connect: {
-          id: organizationId,
-        },
-      },
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
-    },
-    where: { id },
   });
 };
 

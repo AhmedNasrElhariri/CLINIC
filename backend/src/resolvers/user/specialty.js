@@ -8,13 +8,24 @@ const specialty = ({ id }) => {
         userId: id,
       },
       include: { specialty: true },
-      distinct: ['userId'],
+      // distinct: ['userId'],
     })
-    .then(uSpecialties =>
-      uSpecialties.length
-        ? R.pipe(R.prop('specialty'), R.pick(['id', 'name']))(uSpecialties[0])
-        : null
-    );
+    .then(uSpecialties => {
+      const specialties = [];
+      for (let index = 0; index < uSpecialties.length; index++) {
+        const spe = R.pipe(
+          R.prop('specialty'),
+          R.pick(['id', 'name'])
+        )(uSpecialties[index]);
+        specialties.push(spe);
+      }
+
+      // console.log(specialties,'spepepepep');
+      // uSpecialties.length
+      //   ? R.pipe(R.prop('specialty'), R.pick(['id', 'name']))(uSpecialties)
+      //   : null
+      return specialties;
+    });
 };
 
 export default specialty;
