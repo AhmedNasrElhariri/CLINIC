@@ -136,6 +136,14 @@ type Query {
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   myImagesDefinition(categoryId: ID): [ImageDefinition!]
+  myDentalDiagnosissDefinition: [DentalDiagnosisDefinition!]
+  myToothTransactions(
+    toothNumber: Int!
+    toothPartNumber: Int!
+    patientId: ID!
+  ): [ToothTransaction!]
+  myTooths(patientId: ID): [Tooth!]
+  listOrganizationDoctors: [User!]
   mySessionsDefinition: [SessionDefinition!]
   myPrices: [Price!]
   myBanksDefinition: [BankDefinition!]
@@ -255,6 +263,13 @@ type Mutation {
   editTiming(timing: TimingInput!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  addDentalDiagnosisDefinition(
+    dentalDiagnosisDefinition: DentalDiagnosisInputDefinition!
+  ): DentalDiagnosisDefinition
+  addToothDiagnosis(toothDiagnosis: ToothDiagnosisInput!): Tooth
+  editDentalDiagnosisDefinition(
+    dentalDiagnosisDefinition: DentalDiagnosisInputDefinition!
+  ): DentalDiagnosisDefinition
   addSessionDefinition(
     sessionDefinition: SessionInputDefinition!
   ): SessionDefinition
@@ -1203,6 +1218,45 @@ input ImageInputCategory {
   name: String!
 }
 
+########################### DentalDiagnosis Definition ##################################
+
+type DentalDiagnosisDefinition {
+  id: ID!
+  name: String!
+}
+
+input DentalDiagnosisInputDefinition {
+  id: ID
+  name: String!
+}
+
+########################### DentalDiagnosis  ##################################
+
+type Tooth {
+  id: ID!
+  toothNumber: Int!
+  toothPartNumber: Int!
+  toothTransaction: ToothTransaction
+}
+
+type ToothTransaction {
+  id: ID!
+  depth: String!
+  dentalDiagnosis: DentalDiagnosisDefinition!
+  tooth: Tooth!
+  doctor: User!
+  date: Date!
+}
+
+input ToothDiagnosisInput {
+  id: ID
+  toothNumber: Int!
+  toothPartNumber: Int!
+  depth: String!
+  diagnosisId: ID!
+  patientId: ID!
+  doctorId: ID!
+}
 ########################### Price ##################################
 
 type Price {

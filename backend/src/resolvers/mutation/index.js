@@ -92,3 +92,6 @@ export { default as editCompanySessionDefinition } from './edit-company-session-
 export { default as addExpenseTypeDefinition } from './add-expense-type';
 export { default as editExpenseTypeDefinition } from './edit-expense-type';
 export { default as addSalesDefinitionQuantity } from './add-sales-definition-quentity';
+export { default as addDentalDiagnosisDefinition } from './add-dental-diagnosis-definition';
+export { default as editDentalDiagnosisDefinition } from './edit-dental-diagnosis-definition';
+export { default as addToothDiagnosis } from './add-tooth-diagnosis';

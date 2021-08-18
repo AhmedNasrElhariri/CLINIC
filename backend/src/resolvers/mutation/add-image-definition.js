@@ -1,6 +1,10 @@
 import { prisma } from '@';
 
-const addImageDefinition = async (_, { imageDefinition }, { userId,organizationId }) => {
+const addImageDefinition = async (
+  _,
+  { imageDefinition },
+  { userId, organizationId }
+) => {
   const { categoryId, ...rest } = imageDefinition;
   return prisma.imageDefinition.create({
     data: {
@@ -17,7 +21,7 @@ const addImageDefinition = async (_, { imageDefinition }, { userId,organizationI
       },
       category: {
         connect: {
-          id: categoryId
+          id: categoryId,
         },
       },
     },

@@ -9,8 +9,8 @@ export const ContainerStyled = styled.img`
   border-radius: 100px;
 `;
 
-export const IconStyled = styled.img.attrs(({ src }) => ({
-  src,
+export const IconStyled = styled.img.attrs(({ props }) => ({
+  ...props,
 }))`
   ${space}
 `;
@@ -71,4 +71,11 @@ export const LeftArrowIcon = props => (
 
 export const RightArrowIcon = props => (
   <IconStyled src="/icons/right-arrow.svg" {...props} />
+);
+
+export const DentalIcon_1_1 = props => (
+  <IconStyled src="/icons/dental-1-1.png" {...props} />
+);
+export const DentalIcon_1_2 = props => (
+  <IconStyled src="/icons/dental-1-2.png" {...props} />
 );

@@ -71,3 +71,7 @@ export { default as transactionRevenuesTimeFrame} from './transction-revenues-ti
 export { default as areas} from './areas';
 export { default as mySessionsDefinition} from './my-sessions-definition';
 export { default as patientsReport} from './patients-report';
+export { default as myDentalDiagnosissDefinition } from './my-dental-diagnosiss-definition';
+export { default as myToothTransactions } from './my-tooth-transactions';
+export { default as myTooths } from './my-tooths';
+export { default as listOrganizationDoctors } from './list-organization-doctors';

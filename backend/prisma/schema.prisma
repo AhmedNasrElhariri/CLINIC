@@ -148,101 +148,108 @@ enum PermissionAction {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id                       String                     @id @default(uuid())
-  name                     String
-  invoiceCounter           Int                        @default(1)
-  patientCode              Int                        @default(1000)
-  createdAt                DateTime                   @default(now())
-  updatedAt                DateTime                   @default(now()) @updatedAt
-  item                     Item[]
-  hospital                 Hospital[]
-  surgeries                Surgery[]
-  patientSurgeries         PatientSurgery[]
-  roles                    PermissionRole[]
-  permissions              Permission[]
-  rules                    Rule[]
-  configurations           Configuration?
-  branches                 Branch[]
-  specialties              Specialty[]
-  users                    User[]
-  userSpecialties          UserSpecialty[]
-  patients                 Patient[]
-  inventoryItems           InventoryItem[]
-  inventoryHistory         InventoryHistory[]
-  Payroll                  Payroll[]
-  SalesDefinition          SalesDefinition[]
-  Sales                    Sales[]
-  CourseDefinition         CourseDefinition[]
-  BankDefinition           BankDefinition[]
-  CompanyDefinition        CompanyDefinition[]
-  CompanySessionDefinition CompanySessionDefinition[]
-  ExpenseTypeDefinition    ExpenseTypeDefinition[]
-  Price                    Price[]
-  SessionDefinition        SessionDefinition[]
-  Expense                  Expense[]
-  Revenue                  Revenue[]
-  BankRevenue              BankRevenue[]
-  InsuranceRevenue         InsuranceRevenue[]
-  Timing                   Timing[]
-  ImageDefinition          ImageDefinition[]
-  LabDefinition            LabDefinition[]
-  LabCategory              LabCategory[]
-  ImageCategory            ImageCategory[]
+  id                        String                      @id @default(uuid())
+  name                      String
+  invoiceCounter            Int                         @default(1)
+  patientCode               Int                         @default(1000)
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @default(now()) @updatedAt
+  item                      Item[]
+  hospital                  Hospital[]
+  surgeries                 Surgery[]
+  patientSurgeries          PatientSurgery[]
+  roles                     PermissionRole[]
+  permissions               Permission[]
+  rules                     Rule[]
+  configurations            Configuration?
+  branches                  Branch[]
+  specialties               Specialty[]
+  users                     User[]
+  userSpecialties           UserSpecialty[]
+  patients                  Patient[]
+  inventoryItems            InventoryItem[]
+  inventoryHistory          InventoryHistory[]
+  Payroll                   Payroll[]
+  SalesDefinition           SalesDefinition[]
+  Sales                     Sales[]
+  CourseDefinition          CourseDefinition[]
+  BankDefinition            BankDefinition[]
+  CompanyDefinition         CompanyDefinition[]
+  CompanySessionDefinition  CompanySessionDefinition[]
+  ExpenseTypeDefinition     ExpenseTypeDefinition[]
+  Price                     Price[]
+  SessionDefinition         SessionDefinition[]
+  Expense                   Expense[]
+  Revenue                   Revenue[]
+  BankRevenue               BankRevenue[]
+  InsuranceRevenue          InsuranceRevenue[]
+  Timing                    Timing[]
+  ImageDefinition           ImageDefinition[]
+  LabDefinition             LabDefinition[]
+  LabCategory               LabCategory[]
+  ImageCategory             ImageCategory[]
+  DentalDiagnosisDefinition DentalDiagnosisDefinition[]
+  Tooth                     Tooth[]
+  ToothTransaction          ToothTransaction[]
 }
 
 model User {
-  id                        String               @id @default(uuid())
+  id                        String                      @id @default(uuid())
   name                      String
-  email                     String               @unique
+  email                     String                      @unique
   password                  String
-  organization              Organization         @relation(fields: [organizationId], references: [id])
+  organization              Organization                @relation(fields: [organizationId], references: [id])
   organizationId            String
   avatar                    String?
-  role                      PermissionRole?      @relation(fields: [roleId], references: [id])
+  role                      PermissionRole?             @relation(fields: [roleId], references: [id])
   roleId                    String?
-  createdAt                 DateTime             @default(now())
-  updatedAt                 DateTime             @default(now()) @updatedAt
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @default(now()) @updatedAt
   views                     View[]
   viewStatus                ViewStatus[]
   workingHours              WorkingHours[]
   snippets                  Snippet[]
   position                  Position
   events                    Event[]
-  user                      Appointment[]        @relation("userApp")
-  doctor                    Appointment[]        @relation("doctorApp")
+  user                      Appointment[]               @relation("userApp")
+  doctor                    Appointment[]               @relation("doctorApp")
   rules                     Rule[]
   specialties               UserSpecialty[]
   labDefinitions            LabDefinition[]
   imageDefinitions          ImageDefinition[]
-  medicineDefinitions       MedicineDefinition[] @relation("medicineUser")
-  medicineDefinitionsDoctor MedicineDefinition[] @relation("medicineDoctor")
+  medicineDefinitions       MedicineDefinition[]        @relation("medicineUser")
+  medicineDefinitionsDoctor MedicineDefinition[]        @relation("medicineDoctor")
   patientReports            PatientReport[]
   patients                  Patient[]
-  expenses                  Expense[]            @relation("expenseUser")
-  expensesDoctor            Expense[]            @relation("expenseDoctor")
-  revenues                  Revenue[]            @relation("revenueUser")
-  revenuesDoctor            Revenue[]            @relation("revenueDoctor")
+  expenses                  Expense[]                   @relation("expenseUser")
+  expensesDoctor            Expense[]                   @relation("expenseDoctor")
+  revenues                  Revenue[]                   @relation("revenueUser")
+  revenuesDoctor            Revenue[]                   @relation("revenueDoctor")
   item                      Item[]
   timing                    Timing[]
   labCategories             LabCategory[]
   imageCategories           ImageCategory[]
-  users                     Course[]             @relation("user")
-  doctors                   Course[]             @relation("doctor")
-  BankRevenue               BankRevenue[]        @relation("bankUser")
-  BankRevenueDoctor         BankRevenue[]        @relation("bankDoctor")
-  InsuranceRevenue          InsuranceRevenue[]   @relation("insuranceUser")
-  InsuranceRevenueDoctor    InsuranceRevenue[]   @relation("insuranceDoctor")
-  CoursePayment             CoursePayment[]      @relation("coursePaymentUser")
-  CoursePaymentDoctor       CoursePayment[]      @relation("coursePaymentDoctor")
+  users                     Course[]                    @relation("user")
+  doctors                   Course[]                    @relation("doctor")
+  BankRevenue               BankRevenue[]               @relation("bankUser")
+  BankRevenueDoctor         BankRevenue[]               @relation("bankDoctor")
+  InsuranceRevenue          InsuranceRevenue[]          @relation("insuranceUser")
+  InsuranceRevenueDoctor    InsuranceRevenue[]          @relation("insuranceDoctor")
+  CoursePayment             CoursePayment[]             @relation("coursePaymentUser")
+  CoursePaymentDoctor       CoursePayment[]             @relation("coursePaymentDoctor")
   PayrollUser               PayrollUser[]
   Sales                     Sales[]
   Price                     Price[]
   Hospital                  Hospital[]
   Surgery                   Surgery[]
   SalesDefinition           SalesDefinition[]
-  UserInventoryItem         InventoryItem[]      @relation("userInventoryItem")
-  DoctorInventoryItem       InventoryItem[]      @relation("doctorInventoryItem")
-  InventoryHistory          InventoryHistory[]   @relation("userInventory")
+  UserInventoryItem         InventoryItem[]             @relation("userInventoryItem")
+  DoctorInventoryItem       InventoryItem[]             @relation("doctorInventoryItem")
+  InventoryHistory          InventoryHistory[]          @relation("userInventory")
+  DentalDiagnosisDefinition DentalDiagnosisDefinition[]
+  Tooth                     Tooth[]
+  ToothTransaction          ToothTransaction[]          @relation("toothUser")
+  ToothTransactionDoctors   ToothTransaction[]          @relation("toothDoctor")
 }
 
 model Patient {
@@ -271,6 +278,7 @@ model Patient {
   labs             Lab[]
   images           Image[]
   Course           Course[]
+  Tooth            Tooth[]
 }
 
 model Appointment {
@@ -820,6 +828,51 @@ model ImageDefinition {
   user           User          @relation(fields: [userId], references: [id])
   userId         String
   Image          Image[]
+}
+
+model DentalDiagnosisDefinition {
+  id               String             @id @default(uuid())
+  name             String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now()) @updatedAt
+  organization     Organization       @relation(fields: [organizationId], references: [id])
+  organizationId   String
+  user             User               @relation(fields: [userId], references: [id])
+  userId           String
+  ToothTransaction ToothTransaction[]
+}
+
+model Tooth {
+  id               String             @id @default(uuid())
+  toothNumber      Int
+  toothPartNumber  Int
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now()) @updatedAt
+  patient          Patient            @relation(fields: [patientId], references: [id])
+  patientId        String
+  organization     Organization       @relation(fields: [organizationId], references: [id])
+  organizationId   String
+  user             User               @relation(fields: [userId], references: [id])
+  userId           String
+  ToothTransaction ToothTransaction[]
+
+  @@unique([toothNumber, toothPartNumber, patientId], name: "toothNumber_toothPartNumber_patientId_unique_constraint")
+}
+
+model ToothTransaction {
+  id              String                    @id @default(uuid())
+  date            DateTime                  @default(now())
+  depth           String
+  tooth           Tooth                     @relation(fields: [toothId], references: [id])
+  toothId         String
+  dentalDiagnosis DentalDiagnosisDefinition @relation(fields: [diagnosisId], references: [id])
+  diagnosisId     String
+  organization    Organization              @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  user            User                      @relation("toothUser", fields: [userId], references: [id])
+  userId          String
+  doctor          User                      @relation("toothDoctor", fields: [doctorId], references: [id])
+  doctorId        String
 }
 
 model Price {

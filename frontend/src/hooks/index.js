@@ -8,6 +8,8 @@ export { default as useForm } from './form';
 export { default as useHospitals } from './hospitals';
 export { default as useImageCategory } from './image-category';
 export { default as useImageDefinition } from './image-definition';
+export { default as useDentalDiagnosisDefinition } from './dental-diagnosis-definition';
+export { default as useDentalDiagnosis } from './dental-diagnosis';
 export { default as useInventory } from './inventory';
 export { default as useLabCategory } from './lab-category';
 export { default as useLabDefinitions } from './lab-definitions';
