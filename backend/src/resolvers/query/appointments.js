@@ -7,7 +7,6 @@ import { ACTIONS, APPOINTMENTS_STATUS } from '@/utils/constants';
 const appointments = async (
   _,
   {
-    input,
     offset,
     type,
     patient,
