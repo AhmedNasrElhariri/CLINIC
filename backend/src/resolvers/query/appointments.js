@@ -42,7 +42,10 @@ const appointments = async (
         lte: endDay,
       },
       status,
-      type: type,
+      type,
+      userId: {
+        in: ids,
+      },
       OR: [
         {
           patient: {
@@ -69,24 +72,10 @@ const appointments = async (
         lte: endDay,
       },
       status,
-      type: type,
-      OR: [
-        {
-          userId: {
-            in: ids,
-          },
-        },
-        {
-          branchId: {
-            in: ids,
-          },
-        },
-        {
-          specialtyId: {
-            in: ids,
-          },
-        },
-      ],
+      type,
+      userId: {
+        in: ids,
+      },
       OR: [
         {
           patient: {
