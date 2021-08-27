@@ -7,7 +7,8 @@ import {
   ADD_DENTAL_DIAGNOSIS,
   LIST_TOOTH_TRANSACTIONS,
   LIST_TOOTHS,
-  LIST_ORGANIZATION_DOCTORS
+  LIST_ORGANIZATION_DOCTORS,
+  DELETE_DENTAL_DIAGNOSIS
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -16,6 +17,7 @@ function useDentalDiagnosis({
   toothPartNumber,
   patientId,
   onCreate,
+  onDelete,
   onEdit,
 } = {}) {
   const { data } = useQuery(LIST_TOOTH_TRANSACTIONS, {
@@ -67,14 +69,25 @@ function useDentalDiagnosis({
     },
   });
 
+  const [deleteDentalDiagnosis] = useMutation(DELETE_DENTAL_DIAGNOSIS, {
+    onCompleted() {
+      Alert.success('the Dental Diagnosis has been delete Successfully');
+      onDelete && onDelete();
+    },
+    onError() {
+      Alert.error('Failed to delete new Dental Diagnosis');
+    },
+  });
+
   return useMemo(
     () => ({
       toothTransactions,
       addDentalDiagnosis,
+      deleteDentalDiagnosis,
       tooths,
       doctors
     }),
-    [toothTransactions, addDentalDiagnosis, tooths,doctors]
+    [toothTransactions, addDentalDiagnosis,deleteDentalDiagnosis, tooths,doctors]
   );
 }
 

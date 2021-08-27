@@ -43,6 +43,14 @@ export const ADD_DENTAL_DIAGNOSIS = gql`
   }
 `;
 
+export const DELETE_DENTAL_DIAGNOSIS = gql`
+  mutation deleteToothDiagnosis($id: ID!) {
+    deleteToothDiagnosis(id: $id) {
+      id
+    }
+  }
+`;
+
 export const LIST_TOOTH_TRANSACTIONS = gql`
   query ($toothNumber: Int!, $toothPartNumber: Int!, $patientId: ID!) {
     myToothTransactions(

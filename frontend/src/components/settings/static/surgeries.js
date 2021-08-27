@@ -5,13 +5,16 @@ import { Div, CRButton } from 'components';
 import ListSurgeries from './list-surgeries';
 import NewSurgery from './new-surgery';
 import { Can } from 'components/user/can';
+import { ACTIONS } from 'utils/constants';
 import { useForm, useModal, useSurgeries, useAppointments } from 'hooks';
 
 const initValue = { name: '', branchId: null, specialtyId: null, userId: null };
 
 function Surgeries() {
   const { visible, open, close } = useModal();
-  const { filterBranches } = useAppointments();
+  const { filterBranches } = useAppointments({
+    action: ACTIONS.Create_Surgery,
+  });
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });

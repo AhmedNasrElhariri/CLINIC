@@ -1,8 +1,9 @@
 import React from 'react';
 import { formatDate } from 'utils/date';
 import { CRCard, CRTable } from 'components';
+import { Icon } from 'rsuite';
 
-function ListToothTransaction({ toothTransactions }) {
+function ListToothTransaction({ toothTransactions, onDelete }) {
   return (
     <>
       <CRCard borderless>
@@ -64,6 +65,17 @@ function ListToothTransaction({ toothTransactions }) {
             <CRTable.CRCell>
               {({ doctor }) => (
                 <CRTable.CRCellStyled bold>{doctor.name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <Icon icon="trash" onClick={() => onDelete(data)}>
+                  {' '}
+                  Delete
+                </Icon>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

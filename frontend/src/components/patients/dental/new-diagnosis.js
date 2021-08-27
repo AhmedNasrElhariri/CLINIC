@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRNumberInput, CRSelectInput, CRRadio } from 'components';
+import {
+  CRModal,
+  CRNumberInput,
+  CRSelectInput,
+  CRRadio,
+  Div,
+} from 'components';
 import { useDentalDiagnosisDefinition } from 'hooks';
 
 const model = Schema.Model({});
@@ -48,7 +54,7 @@ function NewDiagnosis({
   doctors,
 }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add Diagnosis' : 'Edit Diagnosis '),
+    () => (type === 'create' ? 'Add Diagnosis' : 'Delete Diagnosis '),
     [type]
   );
   const { dentalDiagnosissDefinition } = useDentalDiagnosisDefinition({});
@@ -61,42 +67,48 @@ function NewDiagnosis({
       onCancel={onClose}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRNumberInput
-          label="Tooth Number"
-          name="toothNumber"
-          placeholder="Type Tooth Number"
-          disabled
-          block
-        />
-        <CRNumberInput
-          label="Tooth Part Number"
-          name="toothPartNumber"
-          placeholder="Type Tooth Part Number"
-          disabled
-          block
-        />
-        <CRRadio name="depthType" options={options} />
-        <CRSelectInput
-          label="Depth"
-          name="depth"
-          block
-          data={DepthTypes[formValue.depthType]}
-          placement="topStart"
-        />
-        <CRSelectInput
-          label="Diagnosis"
-          name="diagnosisId"
-          block
-          data={dentalDiagnosissDefinition}
-          placement="topStart"
-        />
-        <CRSelectInput
-          label="Doctor"
-          name="doctorId"
-          block
-          data={doctors}
-          placement="topStart"
-        />
+        {type === 'create' ? (
+          <>
+            <CRNumberInput
+              label="Tooth Number"
+              name="toothNumber"
+              placeholder="Type Tooth Number"
+              disabled
+              block
+            />
+            <CRNumberInput
+              label="Tooth Part Number"
+              name="toothPartNumber"
+              placeholder="Type Tooth Part Number"
+              disabled
+              block
+            />
+            <CRRadio name="depthType" options={options} />
+            <CRSelectInput
+              label="Depth"
+              name="depth"
+              block
+              data={DepthTypes[formValue.depthType]}
+              placement="topStart"
+            />
+            <CRSelectInput
+              label="Diagnosis"
+              name="diagnosisId"
+              block
+              data={dentalDiagnosissDefinition}
+              placement="topStart"
+            />
+            <CRSelectInput
+              label="Doctor"
+              name="doctorId"
+              block
+              data={doctors}
+              placement="topStart"
+            />
+          </>
+        ) : (
+          <Div>Are you sure that you want to delete this diagnosis</Div>
+        )}
       </Form>
     </CRModal>
   );

@@ -267,6 +267,7 @@ type Mutation {
     dentalDiagnosisDefinition: DentalDiagnosisInputDefinition!
   ): DentalDiagnosisDefinition
   addToothDiagnosis(toothDiagnosis: ToothDiagnosisInput!): Tooth
+  deleteToothDiagnosis(id: ID!): ToothTransaction
   editDentalDiagnosisDefinition(
     dentalDiagnosisDefinition: DentalDiagnosisInputDefinition!
   ): DentalDiagnosisDefinition

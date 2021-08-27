@@ -12,19 +12,23 @@ const initValue = {
   doctorId: null,
   depthType: '',
   depth: '',
+  id: null,
 };
 const DentalChart = ({ patient }) => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  console.log(formValue,'dldldldl');
-  const { addDentalDiagnosis, toothTransactions, tooths, doctors } =
+  const { addDentalDiagnosis,deleteDentalDiagnosis ,toothTransactions, tooths, doctors } =
     useDentalDiagnosis({
       toothNumber: formValue.toothNumber,
       toothPartNumber: formValue.toothPartNumber,
       patientId: patient?.id,
       onCreate: () => {
+        close();
+        setFormValue(initValue);
+      },
+      onDelete: () => {
         close();
         setFormValue(initValue);
       },
@@ -38,6 +42,19 @@ const DentalChart = ({ patient }) => {
         ...formValue,
         toothNumber: toothNumber,
         toothPartNumber: toothPartNumber,
+      });
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+
+  const handleDelete = useCallback(
+    data => {
+      const id = R.propOr(null, 'id')(data);
+      setType('delete');
+      setFormValue({
+        ...formValue,
+        id: id,
       });
       open();
     },
@@ -59,19 +76,31 @@ const DentalChart = ({ patient }) => {
         },
       });
     }
-  }, [type, formValue, addDentalDiagnosis]);
+    if (type === 'delete') {
+      deleteDentalDiagnosis({
+        variables: {
+          id: formValue.id,
+        },
+      });
+    }
+  }, [type, formValue, addDentalDiagnosis, deleteDentalDiagnosis]);
+  
   return (
     <>
       <Dental onAddDiagnosis={handleAddDiagnosis} tooths={tooths} />
       <NewDiagnosis
         visible={visible}
         formValue={formValue}
+        type={type}
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
         doctors={doctors}
       />
-      <ListToothTransaction toothTransactions={toothTransactions} />
+      <ListToothTransaction
+        toothTransactions={toothTransactions}
+        onDelete={handleDelete}
+      />
     </>
   );
 };
