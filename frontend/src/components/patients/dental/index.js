@@ -19,20 +19,25 @@ const DentalChart = ({ patient }) => {
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  const { addDentalDiagnosis,deleteDentalDiagnosis ,toothTransactions, tooths, doctors } =
-    useDentalDiagnosis({
-      toothNumber: formValue.toothNumber,
-      toothPartNumber: formValue.toothPartNumber,
-      patientId: patient?.id,
-      onCreate: () => {
-        close();
-        setFormValue(initValue);
-      },
-      onDelete: () => {
-        close();
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addDentalDiagnosis,
+    deleteDentalDiagnosis,
+    allToothTransactions,
+    tooths,
+    doctors,
+  } = useDentalDiagnosis({
+    toothNumber: formValue.toothNumber,
+    toothPartNumber: formValue.toothPartNumber,
+    patientId: patient?.id,
+    onCreate: () => {
+      close();
+      setFormValue(initValue);
+    },
+    onDelete: () => {
+      close();
+      setFormValue(initValue);
+    },
+  });
   const handleAddDiagnosis = useCallback(
     data => {
       const toothNumber = R.propOr(1, 'toothNumber')(data);
@@ -84,7 +89,6 @@ const DentalChart = ({ patient }) => {
       });
     }
   }, [type, formValue, addDentalDiagnosis, deleteDentalDiagnosis]);
-  
   return (
     <>
       <Dental onAddDiagnosis={handleAddDiagnosis} tooths={tooths} />
@@ -98,7 +102,7 @@ const DentalChart = ({ patient }) => {
         doctors={doctors}
       />
       <ListToothTransaction
-        toothTransactions={toothTransactions}
+        toothTransactions={allToothTransactions}
         onDelete={handleDelete}
       />
     </>

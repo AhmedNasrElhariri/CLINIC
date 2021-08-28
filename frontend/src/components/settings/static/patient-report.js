@@ -42,10 +42,10 @@ const PatientReport = () => {
   );
   const handleAdd = useCallback(() => {
     const bodyFinal = '<pre>' + formValue.body + '</pre>';
-      const updatedFormValue = {
-        name: formValue.name,
-        body: bodyFinal,
-      };
+    const updatedFormValue = {
+      name: formValue.name,
+      body: bodyFinal,
+    };
     if (type === 'create') {
       addPatientReport({
         variables: {
@@ -53,14 +53,14 @@ const PatientReport = () => {
         },
       });
     } else {
+      const updatedFormValueTwo = { ...updatedFormValue, id: formValue.id };
       editPatientReport({
         variables: {
-          patientReport: updatedFormValue,
+          patientReport: updatedFormValueTwo,
         },
       });
     }
   }, [addPatientReport, editPatientReport, formValue, type]);
-  console.log(formValue, 'mmmm');
   return (
     <>
       <Div textAlign="right">

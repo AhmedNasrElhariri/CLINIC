@@ -75,6 +75,28 @@ export const LIST_TOOTH_TRANSACTIONS = gql`
   }
 `;
 
+export const LIST_ALL_TOOTH_TRANSACTIONS = gql`
+  query ( $patientId: ID!) {
+    myAllToothTransactions(
+      patientId: $patientId
+    ) {
+      id
+      date
+      depth
+      tooth {
+        toothNumber
+        toothPartNumber
+      }
+      dentalDiagnosis {
+        name
+      }
+      doctor {
+        name
+      }
+    }
+  }
+`;
+
 export const LIST_TOOTHS = gql`
   query ($patientId: ID!) {
     myTooths(patientId: $patientId) {

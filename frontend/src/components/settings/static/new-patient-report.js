@@ -24,7 +24,6 @@ const model = Schema.Model({});
 //     }
   
 //     static value(node) {
-//       console.log("Requesting a value: ", node.textContent);
 //       return node.textContent;
 //     }
 //   }
@@ -66,7 +65,6 @@ function NewPatientReport({
       type === 'create' ? 'Add New Patient Report' : 'Edit Patient Report',
     [type]
   );
-  console.log(formValue,'ddd')
   return (
     <CRModal
       show={visible}
@@ -79,11 +77,8 @@ function NewPatientReport({
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput label="Name" name="name" block />
         <Label>Body</Label>
-        <ReactQuill
-          theme="snow"
+        <ReactQuill  
           name="body"
-          modules={NewPatientReport.modules}
-          formats={NewPatientReport.formats}
           style={{ marginTop: 10 }}
           value={formValue.body}
           onChange={value => onChange({ ...formValue, body: value })}
@@ -96,23 +91,6 @@ function NewPatientReport({
 NewPatientReport.defaultProps = {
   type: 'create',
 };
-NewPatientReport.modules = {
-  toolbar: [
-    [{ 'header': [1, 2, false]}],
-    [{ name: "PRE", tag: "PRE", prepare: "Pre" }],
-    ['bold', 'italic', 'underline','strike', 'blockquote'],
-    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-    ['link', 'image'],
-    ['clean']
-  ],
-};
 
-NewPatientReport.formats = [
-  'header',
-  'PRE', 
-  'bold', 'italic', 'underline', 'strike', 'blockquote',
-  'list', 'bullet', 'indent',
-  'link', 'image'
-];
 
 export default NewPatientReport;

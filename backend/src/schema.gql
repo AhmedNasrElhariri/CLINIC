@@ -142,6 +142,7 @@ type Query {
     toothPartNumber: Int!
     patientId: ID!
   ): [ToothTransaction!]
+  myAllToothTransactions(patientId: ID!): [ToothTransaction!]
   myTooths(patientId: ID): [Tooth!]
   listOrganizationDoctors: [User!]
   mySessionsDefinition: [SessionDefinition!]

@@ -8,7 +8,8 @@ import {
   LIST_TOOTH_TRANSACTIONS,
   LIST_TOOTHS,
   LIST_ORGANIZATION_DOCTORS,
-  DELETE_DENTAL_DIAGNOSIS
+  DELETE_DENTAL_DIAGNOSIS,
+  LIST_ALL_TOOTH_TRANSACTIONS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -30,6 +31,16 @@ function useDentalDiagnosis({
   const toothTransactions = useMemo(
     () => R.propOr([], 'myToothTransactions')(data),
     [data]
+  );
+
+  const { data: allToothData } = useQuery(LIST_ALL_TOOTH_TRANSACTIONS, {
+    variables: {
+      patientId: patientId,
+    },
+  });
+  const allToothTransactions = useMemo(
+    () => R.propOr([], 'myAllToothTransactions')(allToothData),
+    [allToothData]
   );
 
   const { data: toothsData } = useQuery(LIST_TOOTHS, {
@@ -60,6 +71,12 @@ function useDentalDiagnosis({
           patientId: patientId,
         },
       },
+      {
+        query: LIST_ALL_TOOTH_TRANSACTIONS,
+        variables: {
+          patientId: patientId,
+        },
+      },
     ],
     // update(cache, { data: { addDentalDiagnosis: dentalDiagnosis} }) {
     //   updateCache([...dentalDiagnosiss, dentalDiagnosis]);
@@ -74,6 +91,14 @@ function useDentalDiagnosis({
       Alert.success('the Dental Diagnosis has been delete Successfully');
       onDelete && onDelete();
     },
+    refetchQueries: [
+      {
+        query: LIST_ALL_TOOTH_TRANSACTIONS,
+        variables: {
+          patientId: patientId,
+        },
+      },
+    ],
     onError() {
       Alert.error('Failed to delete new Dental Diagnosis');
     },
@@ -82,12 +107,20 @@ function useDentalDiagnosis({
   return useMemo(
     () => ({
       toothTransactions,
+      allToothTransactions,
       addDentalDiagnosis,
       deleteDentalDiagnosis,
       tooths,
-      doctors
+      doctors,
     }),
-    [toothTransactions, addDentalDiagnosis,deleteDentalDiagnosis, tooths,doctors]
+    [
+      toothTransactions,
+      addDentalDiagnosis,
+      deleteDentalDiagnosis,
+      allToothTransactions,
+      tooths,
+      doctors,
+    ]
   );
 }
 

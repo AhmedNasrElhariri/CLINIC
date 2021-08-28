@@ -13,6 +13,14 @@ function ListToothTransaction({ toothTransactions, onDelete }) {
           style={{ marginTop: '330px' }}
         >
           <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Number</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ tooth }, index) => (
+                <CRTable.CRCellStyled bold>{index + 1}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Tooth Number</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ tooth }) => (

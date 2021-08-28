@@ -1,7 +1,9 @@
 import { prisma } from '@';
 
-const editDentalDiagnosisDefinition = async (_, { dentalDiagnosisDefinition }) => {
-    console.log(dentalDiagnosisDefinition,'dentalDiagnosisDefinitiondentalDiagnosisDefinition');
+const editDentalDiagnosisDefinition = async (
+  _,
+  { dentalDiagnosisDefinition }
+) => {
   const { id, ...rest } = dentalDiagnosisDefinition;
 
   return prisma.dentalDiagnosisDefinition.update({

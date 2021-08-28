@@ -20,7 +20,6 @@ const specialty = ({ id }) => {
         specialties.push(spe);
       }
 
-      // console.log(specialties,'spepepepep');
       // uSpecialties.length
       //   ? R.pipe(R.prop('specialty'), R.pick(['id', 'name']))(uSpecialties)
       //   : null
