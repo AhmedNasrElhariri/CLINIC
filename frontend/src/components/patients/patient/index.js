@@ -10,6 +10,7 @@ import AvatarWithName from '../patient-avatar-with-name/index';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import Dental from '../dental';
+import FaceOperations from '../face-operations';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import PatientImages from 'components/appointments/appointment/patient-images';
 import History from 'components/appointments/appointment/patient-history';
@@ -28,6 +29,7 @@ const tabs = [
   'Courses',
   'Sessions Pulses',
   'Dental',
+  'Face Operation'
 ];
 const Container = styled.div`
   display: flex;
@@ -123,6 +125,9 @@ function Appointment() {
                 )}
                 {showComp('8') && (
                     <Dental patient={patient}/>  
+                )}
+                {showComp('9') && (
+                    <FaceOperations patient={patient}/>  
                 )}
               </TabContainer>
             </Container>

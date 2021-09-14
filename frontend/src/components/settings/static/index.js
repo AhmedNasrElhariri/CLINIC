@@ -19,6 +19,7 @@ import CompanysDefinition from './companys-definition';
 import CompanysSessions from './companys-sessions-definition';
 import ExpensesTypes from './expenses-types-definition';
 import DentalDiagnosis from './dental-diagnosis-definition';
+import FaceMaterials from './face-materials';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -55,7 +56,8 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="13">Expenses Types</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="14">Sessions Definition</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="15">Dental Diagnosis</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="16">Patient Report</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="16">Face Materials</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="17">Patient Report</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -92,6 +94,8 @@ function StaticSettings() {
               return <SessionDefinition />;
             case '15':
               return <DentalDiagnosis />;
+            case '16':
+              return <FaceMaterials />;
             default:
               return <PatientReport />;
           }
