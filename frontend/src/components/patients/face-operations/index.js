@@ -7,6 +7,7 @@ import NewFaceOperation from './new-face-operation';
 import ListFaceOperations from './list-face-operations';
 import Filter from './filter';
 import * as R from 'ramda';
+import moment from 'moment';
 
 const initValue = {
   facePartationNumber: 0,
@@ -16,6 +17,7 @@ const initValue = {
 };
 const filterInialValues = {
   name:'',
+  date:[],
 };
 const FaceOperations = ({ patient }) => {
   const { visible, open, close } = useModal();
@@ -97,14 +99,24 @@ const FaceOperations = ({ patient }) => {
     }, [type, formValue, addFaceOperation,deleteFaceOperation]);
     const filteredOperations = useMemo(() => {
          return selectedOperations.filter(o => 
-         o.facePartation.name.includes(filter.name) || formatDate(o.date).includes(filter.name)
+         o.facePartation.name.includes(filter.name)
          );
-    },[filter,selectedOperations]);
+    },[filter.name,selectedOperations]);
+    const filteredDateOperations = useMemo(() => {
+         const startDate = moment(filter.date[0]).startOf('day').toDate();
+         const endDate =  moment(filter.date[1]).endOf('day').toDate();
+         return filteredOperations.filter(o => new Date(o.date) > startDate &&  new Date(o.date) < endDate );     
+    },[filter.date,filteredOperations]);
   return (
     <>
       <Div display="flex" justifyContent="space-between">
           <Face onAddFaceOperation={handleAddFaceOperation} />
-          <CRButton primary onClick={() => {setOperationsType('all')}}>Get All Operations</CRButton>
+          <CRButton primary onClick={() => {
+            setFilter(filterInialValues);
+            setOperationsType('all');}}
+          >
+            Clear
+          </CRButton>
       </Div>
       <NewFaceOperation
         visible={visible}
@@ -115,7 +127,7 @@ const FaceOperations = ({ patient }) => {
         onClose={close}
       />
       <Filter formValue={filter} setFormValue={setFilter}/>
-      <ListFaceOperations operations={filteredOperations} onDelete={handleDelete}/>
+      <ListFaceOperations operations={filteredDateOperations} onDelete={handleDelete}/>
     </>
   );
 };
