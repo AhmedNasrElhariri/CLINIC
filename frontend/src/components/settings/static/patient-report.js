@@ -6,7 +6,7 @@ import NewPatientReport from './new-patient-report';
 import ListPatientReports from './list-patient-report';
 import { useForm, useModal, usePatientReports } from 'hooks';
 
-const initValue = { name: '', body: '' };
+const initValue = { name: '', body: '', context: '' };
 
 const PatientReport = () => {
   const { visible, open, close } = useModal();

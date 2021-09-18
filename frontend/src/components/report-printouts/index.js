@@ -7,6 +7,7 @@ import { CRSelectInput, CRButton, Div } from 'components';
 import { useReactToPrint } from 'react-to-print';
 import Label from '../widgets/label';
 import styled from 'styled-components';
+import Editor from 'components/settings/static/editor';
 import { usePatientReports, useForm } from 'hooks';
 
 const initValue = { patientReport: '', body: '' };
@@ -40,6 +41,7 @@ function ReportPrintout() {
   useEffect(() => {
     setFormValue({ ...formValue, body: formValue.patientReport });
   }, [formValue.patientReport]);
+  console.log(formValue);
   return (
     <>
       <Div display="flex" justifyContent="space-between">
@@ -55,14 +57,18 @@ function ReportPrintout() {
           name="patientReport"
           placeholder="Patient Reports"
           data={values}
-          style={{width:'1000px'}}
+          style={{ width: '1000px' }}
           block
         />
-        <ReactQuill
+        {/* <ReactQuill
           name="body"
           style={{ marginTop: 10, width: '1000px' }}
           value={formValue.body}
           onChange={value => setFormValue({ ...formValue, body: value })}
+        /> */}
+        <Editor
+          onChange={value => setFormValue({ ...formValue, body: value })}
+          value={formValue.body}
         />
       </Form>
       <Div style={{ overflow: 'hidden', height: '0px' }}>

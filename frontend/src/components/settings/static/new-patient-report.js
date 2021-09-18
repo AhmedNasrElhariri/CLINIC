@@ -1,56 +1,31 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
-import ReactQuill from 'react-quill';
-
-import Quill from "quill";
-
 import Label from '../../widgets/label';
-
-import { CRModal, CRTextInput } from 'components';
-import 'react-quill/dist/quill.snow.css';
+import Editor from './editor';
+import { CRModal, CRTextInput, CRSelectInput } from 'components';
 
 const model = Schema.Model({});
-
-// const BlockEmbed = Quill.import("blots/block/embed");
-  
-
-//   class CustomCode extends BlockEmbed {
-//     static create(value) {
-//       let node = super.create(value);
-//       const code = document.createElement("code");
-//       code.innerHTML = value;
-//       node.appendChild(code);
-//       return node;
-//     }
-  
-//     static value(node) {
-//       return node.textContent;
-//     }
-//   }
-  
-//   CustomCode.blotName = "code-custom";
-  // ReactQuill.tagName = "pre";
-  // ReactQuill.className = "ql-syntax";
-  
-  // Quill.register(CustomCode);
-  
-  /*
-   * In order to try out the "custom code" functionality, click
-   * "Code" button in the editor's toolbar and paste/type your snippet,
-   * then hit ok.
-   * Here's an example: function something() {console.log('It works');}
-   */
-  
-  // new Quill("#editor", {
-  //   modules: {
-  //     toolbar: {
-  //       container: ["code-custom"]
-  //     }
-  //   },
-  //   theme: "snow"
-  // })
-
-  
+const contextData = [
+  { id: 'patient', name: 'Patient' },
+  { id: 'appointment', name: 'Appointment' },
+  { id: 'surgeries', name: 'Surgeries' },
+];
+const patientValues = [ 
+  { id: 1, value: 'name' },
+  { id: 2, value: 'age' },
+  { id: 3, value: 'phone' },
+];
+const surgeriesValues = [
+  { id: 1, value: 'name' },
+  { id: 2, value: 'fees' },
+  { id: 3, value: 'hospital_name' },
+];
+const appointmentValues = [
+  { id: 1, value: 'date' },
+  { id: 2, value: 'type' },
+  { id: 3, value: 'session_Type' },
+];
+const another = [{ id: 1, value: 'current_date' }];
 
 function NewPatientReport({
   formValue,
@@ -65,6 +40,22 @@ function NewPatientReport({
       type === 'create' ? 'Add New Patient Report' : 'Edit Patient Report',
     [type]
   );
+  const mentions = useMemo(() => {
+    const context = formValue?.context;
+    switch (context) {
+      case 'patient':
+        return patientValues;
+      case 'appointment':
+        return appointmentValues;
+      case 'surgeries':
+        return surgeriesValues;
+      default:
+        return another;
+    }
+  }, [formValue.context]);
+  const handleText = content => {
+    onChange({ ...formValue, body: content });
+  };
   return (
     <CRModal
       show={visible}
@@ -76,12 +67,26 @@ function NewPatientReport({
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput label="Name" name="name" block />
+        <CRSelectInput
+          label="Context"
+          name="context"
+          block
+          data={contextData}
+        />
         <Label>Body</Label>
-        <ReactQuill  
+        {/* <ReactQuill
           name="body"
+          theme='snow'
           style={{ marginTop: 10 }}
           value={formValue.body}
           onChange={value => onChange({ ...formValue, body: value })}
+          modules={modules}
+          onSelect={item => insertItem(item)}
+        /> */}
+        <Editor
+          onChange={handleText}
+          formValue={formValue}
+          mentionValues={mentions}
         />
       </Form>
     </CRModal>
@@ -91,6 +96,5 @@ function NewPatientReport({
 NewPatientReport.defaultProps = {
   type: 'create',
 };
-
 
 export default NewPatientReport;
