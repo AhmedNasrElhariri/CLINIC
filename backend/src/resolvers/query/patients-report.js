@@ -8,9 +8,14 @@ const patientsReport = async (
   const patientsAreaCount = await prisma.patient.count({
     where: {
       area,
+      organizationId,
     },
   });
-  const patients = await prisma.patient.findMany({});
+  const patients = await prisma.patient.findMany({
+    where: {
+      organizationId,
+    },
+  });
   const newPatients = patients.filter(p => p.reference.includes(reference));
   const data = {
     patientsAreaCount: patientsAreaCount || 0,
