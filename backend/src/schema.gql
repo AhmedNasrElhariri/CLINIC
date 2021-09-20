@@ -1416,12 +1416,14 @@ type PatientReport {
   id: ID!
   name: String!
   body: String!
+  context: String!
 }
 
 input PatientReportInput {
   id: ID
   name: String!
   body: String!
+  context: String!
 }
 
 ########################### Course Definition ##################################

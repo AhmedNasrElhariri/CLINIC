@@ -4,6 +4,14 @@ import { trim } from 'lodash';
 import 'quill-mention';
 import 'quill-mention/dist/quill.mention.css';
 import 'react-quill/dist/quill.snow.css';
+import styled from 'styled-components';
+
+const ReactQuillModified = styled(ReactQuill)`
+  & .ql-snow * {
+    direction: rtl;
+    text-align: right;
+  }
+`;
 
 const toolbarOptions = ['bold'];
 class Editor extends Component {
@@ -43,7 +51,7 @@ class Editor extends Component {
     const { formValue } = this.props;
     const newValue = formValue.context + '_' + item.value;
     const newItem = { ...item, denotationChar: '$', value: newValue };
-    insertItem(item);
+    insertItem(newItem);
   };
   modules = {
     toolbar: [
@@ -82,13 +90,13 @@ class Editor extends Component {
     const { formValue } = this.props;
     const value = formValue?.body;
     return (
-      <ReactQuill
+      <ReactQuillModified
         theme="snow"
         modules={this.modules}
         formats={this.formats}
         value={value}
         onChange={this.handleContentChange}
-      ></ReactQuill>
+      ></ReactQuillModified>
     );
   }
 }

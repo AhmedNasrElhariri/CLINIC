@@ -45,6 +45,7 @@ const PatientReport = () => {
     const updatedFormValue = {
       name: formValue.name,
       body: bodyFinal,
+      context: formValue.context,
     };
     if (type === 'create') {
       addPatientReport({
