@@ -191,6 +191,7 @@ model Organization {
   DentalDiagnosisDefinition DentalDiagnosisDefinition[]
   Tooth                     Tooth[]
   ToothTransaction          ToothTransaction[]
+  PageSetup                 PageSetup[]
 }
 
 model User {
@@ -498,6 +499,17 @@ model Configuration {
   updatedAt            DateTime     @default(now()) @updatedAt
 
   @@unique([organizationId], name: "organizationId_unique_constraint")
+}
+
+model PageSetup {
+  id             String       @id @default(uuid())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  top            Int          @default(0)
+  right          Int          @default(0)
+  bottom         Int          @default(0)
+  left           Int          @default(0)
+  type           String       @default("Letter")
 }
 
 model Week {

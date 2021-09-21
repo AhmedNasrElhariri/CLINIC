@@ -8,6 +8,8 @@ import {
   UPDATE_CONFIGURATION,
   ADD_PULSES_CONTROL,
   GET_PULSE_CONTROL,
+  ADD_PAGE_SETUP,
+  GET_PAGE_SETUP,
 } from 'apollo-client/queries';
 
 const useConfigurations = ({ onUpdate } = {}) => {
@@ -28,6 +30,14 @@ const useConfigurations = ({ onUpdate } = {}) => {
     () => R.propOr({}, 'getPulseControl')(PulseData),
     [PulseData]
   );
+
+  const { data: pageSetup } = useQuery(GET_PAGE_SETUP);
+  const pageSetupData = useMemo(
+    () => R.propOr({}, 'getPageSetup')(pageSetup),
+    [pageSetup]
+  );
+
+  console.log(pageSetupData,'papase');
   const [updateConfiguration] = useMutation(UPDATE_CONFIGURATION, {
     onCompleted: () => {
       Alert.success('Event has been updated successfully');
@@ -39,6 +49,13 @@ const useConfigurations = ({ onUpdate } = {}) => {
       Alert.success('Pulses Contol Added successfully');
     },
   });
+
+  const [addPageSetup] = useMutation(ADD_PAGE_SETUP, {
+    onCompleted: () => {
+      Alert.success('Page Setup updated successfully');
+    },
+  });
+
   const handleUpdateConfiguration = useCallback(
     configuration => updateConfiguration({ variables: { configuration } }),
     [updateConfiguration]
@@ -51,6 +68,8 @@ const useConfigurations = ({ onUpdate } = {}) => {
       update: handleUpdateConfiguration,
       addPulsesControl,
       getPulseControl,
+      addPageSetup,
+      pageSetupData
     }),
     [
       configurations,
@@ -58,6 +77,8 @@ const useConfigurations = ({ onUpdate } = {}) => {
       sessions,
       addPulsesControl,
       getPulseControl,
+      addPageSetup,
+      pageSetupData
     ]
   );
 };

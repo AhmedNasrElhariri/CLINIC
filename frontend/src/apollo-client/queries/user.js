@@ -111,7 +111,6 @@ export const LIST_CONFIGURATIONS = gql`
   }
 `;
 
-
 export const GET_PULSE_CONTROL = gql`
   query getPulseControl {
     getPulseControl {
@@ -147,3 +146,21 @@ export const ADD_PULSES_CONTROL = gql`
 `;
 
 
+export const ADD_PAGE_SETUP = gql`
+  mutation addPageSetup($pageSetup: PageSetupInput!) {
+    addPageSetup(pageSetup: $pageSetup) {
+      id
+    }
+  }
+`;
+export const GET_PAGE_SETUP = gql`
+  query getPageSetup {
+    getPageSetup {
+      top
+      right
+      bottom
+      left
+      type
+    }
+  }
+`;

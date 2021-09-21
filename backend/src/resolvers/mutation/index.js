@@ -96,3 +96,4 @@ export { default as addDentalDiagnosisDefinition } from './add-dental-diagnosis-
 export { default as editDentalDiagnosisDefinition } from './edit-dental-diagnosis-definition';
 export { default as addToothDiagnosis } from './add-tooth-diagnosis';
 export { default as deleteToothDiagnosis } from './delete-tooth-diagnosis';
+export { default as addPageSetup } from './add-page-setup';

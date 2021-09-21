@@ -12,6 +12,7 @@ import {
   useForm,
   usePatients,
   useAppointments,
+  useConfigurations,
 } from 'hooks';
 import Editor from 'components/settings/static/editor';
 const initValue = { patientReport: {}, body: '', context: '', data: {} };
@@ -24,6 +25,7 @@ function ReportPrintout() {
   const { formValue, setFormValue } = useForm({
     initValue,
   });
+  const { pageSetupData } = useConfigurations();
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
@@ -172,7 +174,11 @@ function ReportPrintout() {
           data={contextData}
         />
         <Div width={'1000px'}>
-          <Editor onChange={handleText} formValue={formValue} />
+          <Editor
+            onChange={handleText}
+            formValue={formValue}
+            pageSetupData={pageSetupData}
+          />
         </Div>
       </Form>
       <Div style={{ overflow: 'hidden', height: '0px' }}>

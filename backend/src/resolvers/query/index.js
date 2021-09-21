@@ -76,3 +76,4 @@ export { default as myToothTransactions } from './my-tooth-transactions';
 export { default as myAllToothTransactions } from './my-all-tooth-transactions';
 export { default as myTooths } from './my-tooths';
 export { default as listOrganizationDoctors } from './list-organization-doctors';
+export { default as getPageSetup } from './get-page-setup';
