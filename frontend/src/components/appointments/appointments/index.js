@@ -84,11 +84,25 @@ function Appointments() {
     },
   });
   const handleArchive = useCallback(
-    ({ sessions, items, discount, option }) => {
+    ({
+      sessions,
+      items,
+      discount,
+      others,
+      bank,
+      company,
+      option,
+      appPrice,
+      othersName,
+    }) => {
       close();
       archive({
         variables: {
           id: appointment.id,
+          specialtyId: appointment?.specialty.id,
+          userId: appointment?.doctor.id,
+          branchId: appointment?.branch.id,
+          date: appointment.date,
           sessions: sessions.map(session => ({
             name: getName({ session, appointment }),
             price: session.price,
@@ -98,7 +112,18 @@ function Appointments() {
             itemId,
             quantity,
           })),
-          discount,
+          discount: {
+            name: 'discount' + ' - ' + appointment.patient.name,
+            amount: discount,
+          },
+          others: {
+            name: 'others - ' + othersName + ' - ' + appointment.patient.name,
+            amount: others,
+          },
+          patientName: appointment.patient.name,
+          bank,
+          appPrice,
+          company,
           option,
         },
       });
