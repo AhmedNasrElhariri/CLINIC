@@ -50,6 +50,25 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Anesthesia Type</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ anesthesia }) => (
+                <CRTable.CRCellStyled>{anesthesia}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Anesthesia Doctor Name</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ anesthesiaDoctorName }) => (
+                <CRTable.CRCellStyled>
+                  {anesthesiaDoctorName}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Fees</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ fees }) => (

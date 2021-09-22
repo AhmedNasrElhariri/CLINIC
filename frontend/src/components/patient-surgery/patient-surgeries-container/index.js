@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Can } from 'components/user/can';
 import { Div, CRButton, MainContainer } from 'components';
+import moment from 'moment';
 import ListPatientSurgeries from '../list-patient-surgeries';
 import NewPatientSurgery from '../new-patient-surgery';
 import PatientSurgeryFilter from './filter';
@@ -13,6 +14,12 @@ const initValue = {
   surgeryId: null,
   hospitalId: null,
   date: null,
+  time: null,
+  anesthesia: null,
+  anesthesiaDoctorName: '',
+  assistantFees: 0,
+  anesthesiaFees: 0,
+  others: 0,
   fees: 0,
   hospitalFees: 0,
 };
@@ -39,7 +46,16 @@ const PatientSurgeriesContainer = () => {
   }, [open]);
 
   const handleAdd = useCallback(() => {
-    createPatientSurgery(formValue);
+    const { time, date, ...rest } = formValue;
+    const timeDate = moment(formValue.time);
+
+    let Date = moment(formValue.date).set({
+      hours: timeDate.hours(),
+      minute: timeDate.minutes(),
+    });
+    const newData = { date:Date, ...rest };
+    console.log(newData);
+    createPatientSurgery(newData);
   }, [createPatientSurgery, formValue]);
 
   const filteredList = useMemo(

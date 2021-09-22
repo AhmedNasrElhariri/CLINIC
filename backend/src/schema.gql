@@ -16,6 +16,12 @@ enum CourseStatus {
   EarlyFinished
 }
 
+enum AnesthesiaType {
+  GeneralAnesthesia
+  RegionalAnesthesia
+  LocalAnesthesia
+}
+
 enum LabStatus {
   Draft
   Pending
@@ -1503,6 +1509,11 @@ type PatientSurgery {
   fees: Int
   hospitalFees: Int
   appointment: Appointment
+  anesthesia: AnesthesiaType
+  anesthesiaDoctorName: String
+  assistantFees: Int
+  anesthesiaFees: Int
+  others: Int
 }
 
 input PatientSurgeryInput {
@@ -1512,4 +1523,9 @@ input PatientSurgeryInput {
   date: Date
   fees: Int
   hospitalFees: Int
+  anesthesia: AnesthesiaType
+  anesthesiaDoctorName: String
+  assistantFees: Int
+  anesthesiaFees: Int
+  others: Int
 }

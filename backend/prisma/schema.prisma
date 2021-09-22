@@ -22,6 +22,12 @@ enum CourseType {
 
 }
 
+enum AnesthesiaType {
+  GeneralAnesthesia
+  RegionalAnesthesia
+  LocalAnesthesia
+}
+
 enum CourseStatus {
   InProgress
   Finished
@@ -473,7 +479,7 @@ model TransactionRevenuesTimeFrame {
   payrollUser   PayrollUser @relation(fields: [payrollUserId], references: [id])
   payrollUserId String
 
-  @@unique([payrollUserId], name: "payrollUserId Revenues_unique_constraint")
+  @@unique([payrollUserId], name: "payrollUserId_Revenues_unique_constraint")
 }
 
 model Payroll {
@@ -1100,22 +1106,27 @@ model Surgery {
 }
 
 model PatientSurgery {
-  id             String       @id @default(uuid())
-  patient        Patient      @relation(fields: [patientId], references: [id])
-  patientId      String
-  surgery        Surgery      @relation(fields: [surgeryId], references: [id])
-  surgeryId      String
-  hospital       Hospital     @relation(fields: [hospitalId], references: [id])
-  hospitalId     String
-  appointment    Appointment? @relation(fields: [appointmentId], references: [id])
-  appointmentId  String?
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  date           DateTime
-  fees           Int?
-  hospitalFees   Int?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now()) @updatedAt
+  id                   String          @id @default(uuid())
+  patient              Patient         @relation(fields: [patientId], references: [id])
+  patientId            String
+  surgery              Surgery         @relation(fields: [surgeryId], references: [id])
+  surgeryId            String
+  hospital             Hospital        @relation(fields: [hospitalId], references: [id])
+  hospitalId           String
+  appointment          Appointment?    @relation(fields: [appointmentId], references: [id])
+  appointmentId        String?
+  organization         Organization    @relation(fields: [organizationId], references: [id])
+  organizationId       String
+  date                 DateTime
+  fees                 Int?
+  hospitalFees         Int?
+  anesthesia           AnesthesiaType?
+  anesthesiaDoctorName String?
+  assistantFees        Int?
+  anesthesiaFees       Int?
+  others               Int?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @default(now()) @updatedAt
 }
 
 // permissions
