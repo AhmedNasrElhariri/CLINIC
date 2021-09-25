@@ -14,9 +14,9 @@ import { useHospitals, useSurgeries, usePatients } from 'hooks';
 const model = Schema.Model({});
 
 const AnesthesiaData = [
-  { id: 'GeneralAnesthesia', name: 'General anesthesia' },
-  { id: 'RegionalAnesthesia', name: 'Regional anesthesia' },
-  { id: 'LocalAnesthesia', name: 'Local anesthesia' },
+  { id: 'General', name: 'General' },
+  { id: 'Regional', name: 'Regional' },
+  { id: 'Local', name: 'Local' },
 ];
 const NewPatientSurgery = ({
   formValue,

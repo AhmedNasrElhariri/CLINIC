@@ -17,9 +17,9 @@ enum CourseStatus {
 }
 
 enum AnesthesiaType {
-  GeneralAnesthesia
-  RegionalAnesthesia
-  LocalAnesthesia
+  General
+  Regional
+  Local
 }
 
 enum LabStatus {
