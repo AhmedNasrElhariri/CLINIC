@@ -2,7 +2,27 @@ import React from 'react';
 import { Tag } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
-export default function ListSpecialties({ specialties }) {
+export default function ListSpecialties({
+  specialties,
+  onBranchClick,
+  branchIds,
+  specialtyIds,
+}) {
+  const checkSpecialty = specialtyId => {
+    if (specialtyIds.includes(specialtyId)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const checkBranch = (branchId, specialtyId) => {
+    if (branchIds.includes(branchId) && specialtyIds.includes(specialtyId)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  console.log(specialties, 'spsps');
   return (
     <>
       <CRCard borderless>
@@ -15,13 +35,44 @@ export default function ListSpecialties({ specialties }) {
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Branches</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ branches }) => (
+              {({ branches, id: specialtyId }) => (
                 <div>
-                  {branches.map(({ name }, index) => (
-                    <Tag key={index}>{name}</Tag>
-                  ))}
+                  {branches.map(({ name, id: branchId }, index) =>
+                    checkBranch(branchId, specialtyId) ? (
+                      <Tag
+                        key={index}
+                        color="blue"
+                        onClick={() => onBranchClick(branchId, specialtyId)}
+                      >
+                        {name}
+                      </Tag>
+                    ) : (
+                      <Tag
+                        key={index}
+                        onClick={() => onBranchClick(branchId, specialtyId)}
+                      >
+                        {name}
+                      </Tag>
+                    )
+                  )}
                 </div>
               )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Doctors</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ doctors, id: specialtyId }) =>
+                checkSpecialty(specialtyId) ? (
+                  <div>
+                    {doctors.map(({ name }, index) => (
+                      <Tag key={index}>{name}</Tag>
+                    ))}
+                  </div>
+                ) : (
+                  ''
+                )
+              }
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>

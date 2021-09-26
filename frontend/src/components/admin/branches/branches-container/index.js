@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   NewBranch,
@@ -20,12 +20,12 @@ export default function Branches() {
     open: openSpecialty,
     close: closeSpecialty,
   } = useModal();
-
   const { branches, specialties, createBranch, addSpecialty } = usePermissions({
     onCreateBranch: closeBranch,
     onAddSpecialty: closeSpecialty,
   });
-
+  const [branchIds, setBranchIds] = useState([]);
+  const [specialtyIds, setSpecialtyIds] = useState([]);
   const handleCreate = useCallback(
     branch => {
       createBranch(branch);
@@ -33,10 +33,17 @@ export default function Branches() {
     [createBranch]
   );
 
-  const handleAddSpecialty = useCallback(value => addSpecialty(value), [
-    addSpecialty,
-  ]);
-
+  const handleAddSpecialty = useCallback(
+    value => addSpecialty(value),
+    [addSpecialty]
+  );
+  const onSpecilatyClick = useCallback(
+    (branchId, specialtyId) => {
+      setBranchIds([...branchIds, branchId]);
+      setSpecialtyIds([...specialtyIds, specialtyId]);
+    },
+    [branchIds, specialtyIds]
+  );
   return (
     <>
       <MainContainer
@@ -67,7 +74,12 @@ export default function Branches() {
         branches={branches}
         specialties={specialties}
       />
-      <ListBranches branches={branches} />
+      <ListBranches
+        branches={branches}
+        onSpecilatyClick={onSpecilatyClick}
+        branchIds={branchIds}
+        specialtyIds={specialtyIds}
+      />
     </>
   );
 }
