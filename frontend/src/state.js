@@ -4,6 +4,7 @@ const initialState = {
   isAuthenticated: false,
   isVerified: false,
   user: null,
+  editLane: false,
   lanes: [],
   activeViews: {},
 };

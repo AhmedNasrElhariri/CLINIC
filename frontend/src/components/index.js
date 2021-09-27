@@ -65,6 +65,7 @@ export { default as ReportsContainer } from './reports/reports-container';
 /******************       Views    *********************************/
 export { default as ListViews } from './views/list-views';
 export { default as CreateView } from './views/create-view';
+export { default as UpdateView } from './views/update-view';
 export { default as EditView } from './views/edit-views';
 export { default as ViewForm } from './views/view-form';
 export { default as CreateDefaultView } from './views/create-default-view';

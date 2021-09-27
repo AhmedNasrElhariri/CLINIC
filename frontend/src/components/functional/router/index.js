@@ -14,6 +14,7 @@ import {
   PermissionContainer,
   ListViews,
   CreateView,
+  UpdateView,
   Configurations,
   StaticSettings,
   Snippets,
@@ -70,6 +71,9 @@ function AppRouter() {
       </Route>
       <Route path="/views/new">
         <CreateView />
+      </Route>
+      <Route path="/views/:viewId">
+        <UpdateView />
       </Route>
       <Route path="/views" exact>
         <ListViews />

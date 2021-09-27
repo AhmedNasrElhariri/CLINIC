@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import {
   Button,
   Alert,
@@ -9,25 +9,35 @@ import {
   SelectPicker,
 } from 'rsuite';
 import { useQuery, useMutation } from '@apollo/client';
-import { CREATE_VIEW ,MY_VIEW} from 'apollo-client/queries';
+import { UPDATE_VIEW, MY_VIEW } from 'apollo-client/queries';
 import { useLocation } from 'react-router';
 import useGlobalState from 'state';
-import { mapLanesToGroupFields } from 'utils/view';
+import { mapLanesToGroupFields, mapGroupFieldsToLanes } from 'utils/view';
 import { ViewForm } from 'components';
 import { appointmentTypes } from 'services/appointment';
+import * as R from 'ramda';
 
 const json = [];
 const width = 300;
 
 export default function CreateView({}) {
   const [lanes, setLanes] = useGlobalState('lanes');
-  const [formValue, setFormValue] = useState({ name: '', type: null });
-  
+  const [formValue, setFormValue] = useState({
+    name: '',
+    type: null,
+    viewId: null,
+  });
   const location = useLocation();
   const viewId = location?.state?.id || null;
-  useEffect(() => setLanes(json), [setLanes]);
-
-  const [createView] = useMutation(CREATE_VIEW, {
+  const { data } = useQuery(MY_VIEW, {
+    variables: {
+      id: viewId,
+    },
+  });
+  const view = useMemo(() => {
+    return R.pipe(R.propOr({}, 'MyView'))(data);
+  }, [data]);
+  const [updateView] = useMutation(UPDATE_VIEW, {
     onCompleted() {
       Alert.success('Group Fields Updated Successfully');
     },
@@ -37,15 +47,24 @@ export default function CreateView({}) {
   });
 
   const onClick = useCallback(() => {
-    createView({
+    const { viewId, ...rest } = formValue;
+    updateView({
       variables: {
         view: {
-          ...formValue,
+          ...rest,
           fieldGroups: mapLanesToGroupFields(lanes),
         },
+        viewId: viewId,
       },
     });
-  }, [createView, formValue, lanes]);
+  }, [updateView, formValue, lanes]);
+  useEffect(() => {
+    const fieldGroups = R.propOr([], 'fieldGroups')(view);
+    const { id, name, type } = view;
+    setFormValue({ ...formValue, viewId: id, name: name, type: type });
+    const lanes = mapGroupFieldsToLanes(fieldGroups);
+    setLanes(lanes);
+  }, [view, setLanes]);
   return (
     <>
       <Form layout="inline" formValue={formValue} onChange={setFormValue}>
@@ -65,7 +84,7 @@ export default function CreateView({}) {
           />
         </FormGroup>
         {viewId ? (
-          <Button appearance="primary" disabled onClick={onClick}>
+          <Button appearance="primary" onClick={onClick}>
             Update
           </Button>
         ) : (
