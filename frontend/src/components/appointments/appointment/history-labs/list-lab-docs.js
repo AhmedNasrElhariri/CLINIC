@@ -1,7 +1,9 @@
-import React from 'react';
-import { CRCard, CRTable } from 'components';
+import React, { useMemo } from 'react';
+import { CRCard, CRTable, CRButton, Div } from 'components';
 import styled from 'styled-components';
 import { formatDate } from 'utils/date';
+import Axios from 'axios';
+import FileDownload from 'js-file-download';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
 const StyledImage = styled.img`
   width: 100%;
@@ -29,9 +31,28 @@ const Column = styled.div`
     max-width: 100%;
   }
 `;
+const saveFile = url => {
+  Axios({
+    url: url,
+    method: 'GET',
+    responseType: 'blob', 
+  }).then(response => {
+    FileDownload(response.data, 'report.pdf');
+  });
+};
 function ListLabDocs({ labs, labId }) {
   const lab = labs.filter(ele => ele.id === labId);
   const documents = lab[0]?.documents;
+  const pdfFiles = useMemo(() => {
+    const files = documents?.filter(d => d.url.includes('.pdf' || '.txt'));
+    return files;
+  }, [documents]);
+  const imagesFiles = useMemo(() => {
+    const files = documents?.filter(d =>
+      d.url.includes('.png' || '.jpeg' || '.jpg')
+    );
+    return files;
+  }, [documents]);
   return (
     <>
       <CRCard borderless>
@@ -58,9 +79,18 @@ function ListLabDocs({ labs, labId }) {
           </CRTable.CRColumn>
         </CRTable>
       </CRCard>
-      <Row>
-        <AppointmentGallery pictures={documents} />
-      </Row>
+
+      <Div mb={50}>
+        <AppointmentGallery pictures={imagesFiles} />
+      </Div>
+      <Div mt={50}>
+        {pdfFiles?.map(d => (
+          <Div display="flex">
+            <Div mr={10}>{'File'}</Div>
+            <CRButton onClick={() => saveFile(d?.url)}>Download File</CRButton>
+          </Div>
+        ))}
+      </Div>
     </>
   );
 }
