@@ -7,9 +7,13 @@ import NewSurgery from './new-surgery';
 import { Can } from 'components/user/can';
 import { ACTIONS } from 'utils/constants';
 import { useForm, useModal, useSurgeries, useAppointments } from 'hooks';
-
+import { Validate } from 'services/form';
+import { Schema } from 'rsuite';
 const initValue = { name: '', branchId: null, specialtyId: null, userId: null };
-
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('surgery name is required'),
+});
 function Surgeries() {
   const { visible, open, close } = useModal();
   const { filterBranches } = useAppointments({
@@ -46,7 +50,7 @@ function Surgeries() {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue) ) {
       defineSurgery({
         variables: {
           surgery: formValue,

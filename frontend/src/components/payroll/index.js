@@ -68,6 +68,10 @@ function Payroll() {
     lastTransactionDate,
     lastTransactionRevenueDate,
     userCoursesPayment,
+    addUserLoading,
+    deleteUserLoading,
+    addTransactionLoading,
+    addPayrollLoading,
   } = usePayroll({ userId, period, doctorId, specialtyId, branchId });
   const view = ACCOUNTING_VIEWS.YEAR,
     updatedPeriod = formValue.period;
@@ -307,12 +311,12 @@ function Payroll() {
           }
           nobody
         ></MainContainer>
-        <PayrollForm {...addAdvanceForm} />
-        <PayrollForm {...addIncentiveForm} />
-        <PayrollForm {...addCommissionForm} />
-        <PayrollForm {...addDeductionForm} />
-        <PayrollForm {...addNewUser} />
-        <PayrollForm {...deletePayrollUser} />
+        <PayrollForm {...addAdvanceForm} loading={addTransactionLoading} />
+        <PayrollForm {...addIncentiveForm} loading={addTransactionLoading} />
+        <PayrollForm {...addCommissionForm} loading={addTransactionLoading} />
+        <PayrollForm {...addDeductionForm} loading={addTransactionLoading} />
+        <PayrollForm {...addNewUser} loading={addUserLoading} />
+        <PayrollForm {...deletePayrollUser} loading={deleteUserLoading} />
         <EmployeesPayroll
           payrollUsers={payrollUsers}
           handleDelete={deletePayrollUserFun}
@@ -323,6 +327,7 @@ function Payroll() {
             onOk={handlePayPayslips}
             onHide={close}
             onCancel={close}
+            loading={addPayrollLoading}
             header="Payslips"
             bodyStyle={{ minWidth: 300 }}
           >

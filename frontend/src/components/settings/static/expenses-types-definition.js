@@ -5,10 +5,15 @@ import { Div, CRButton } from 'components';
 import NewExpenseTypeDefinition from './new-expenseType-definition';
 import ListExpenseTypesDefinition from './list-expenseTypes-definition';
 import { useForm, useExpenseTypeDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
+import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 
 const initValue = { name: ''};
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Expense  type is required'),
+});
 
 const ExpenseTypeDefinition = () => {
   const { visible, open, close } = useModal();
@@ -46,13 +51,13 @@ const ExpenseTypeDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       addExpenseTypeDefinition({
         variables: {
           expenseTypeDefinition: formValue,
         },
       });
-    } else {
+    } else if(type === 'edit' && Validate(model, formValue)) {
       editExpenseTypeDefinition({
         variables: {
           expenseTypeDefinition: formValue,

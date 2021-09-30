@@ -5,10 +5,16 @@ import { Div, CRButton } from 'components';
 import NewCompanySessionDefinition from './new-company-session-definition';
 import ListCompanysSessionDefinition from './list-companys-session-definition';
 import { useForm, useCompanySessionDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
+import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 
 const initValue = { companyId: null, name: '', price: 0 };
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Session name is required'),
+  price: NumberType().range(1, 1000000).isRequired('price is required'),
+});
 
 const CompanySessionDefinition = () => {
   const { visible, open, close } = useModal();
@@ -46,13 +52,13 @@ const CompanySessionDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       addCompanySessionDefinition({
         variables: {
           companySessionDefinition: formValue,
         },
       });
-    } else {
+    } else if (type === 'edit' && Validate(model, formValue)) {
       editCompanySessionDefinition({
         variables: {
           companySessionDefinition: formValue,

@@ -69,6 +69,7 @@ const AccountingForm = ({
   onChange,
   header,
   model,
+  loading,
 }) => {
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
   const updatedexpenseType = expenseTypesDefinition.map(e => {
@@ -82,6 +83,7 @@ const AccountingForm = ({
     <CRModal
       show={visible}
       header={header}
+      loading={loading}
       onOk={() => {
         ref.current.check();
         if (!isValid(model, formValue)) {

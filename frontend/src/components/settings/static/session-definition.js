@@ -7,12 +7,19 @@ import ListSessionsDefinition from './list-sessions-definition';
 import { useForm, useSessionDefinition } from 'hooks';
 import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
+import { Schema } from 'rsuite';
+import { Validate } from 'services/form';
 
 const initValue = {
   name: '',
   price: 0,
   duration: 5,
 };
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Session name is required'),
+  price: NumberType().range(1, 1000000).isRequired('price is required'),
+});
 
 const SessionDefinition = () => {
   const { visible, open, close } = useModal();
@@ -46,13 +53,13 @@ const SessionDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       addSessionDefinition({
         variables: {
           sessionDefinition: formValue,
         },
       });
-    } else {
+    } else if (type === 'edit' && Validate(model, formValue)) {
       editSessionDefinition({
         variables: {
           sessionDefinition: formValue,

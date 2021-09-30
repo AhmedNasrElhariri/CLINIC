@@ -86,45 +86,57 @@ function usePayroll({ userId, period, doctorId, specialtyId, branchId } = {}) {
     () => R.propOr([], 'userTransactions')(transactionData),
     [transactionData]
   );
-  const [addPayrollUser] = useMutation(ADD_PAYROLL_USER, {
-    onCompleted() {
-      Alert.success('the User has been Added Successfully');
-    },
-    refetchQueries: [{ query: LIST_PAY_ROLL_USERS }],
-    onError() {
-      Alert.error('Failed to add new User');
-    },
-  });
-  const [deleteUser] = useMutation(DELETE_PAYROLL_USER, {
-    onCompleted() {
-      Alert.success('the User has been Deleted Successfully');
-    },
-    refetchQueries: [{ query: LIST_PAY_ROLL_USERS }],
-    onError() {
-      Alert.error('Failed to delete User');
-    },
-  });
+  const [addPayrollUser, { loading: addUserLoading }] = useMutation(
+    ADD_PAYROLL_USER,
+    {
+      onCompleted() {
+        Alert.success('the User has been Added Successfully');
+      },
+      refetchQueries: [{ query: LIST_PAY_ROLL_USERS }],
+      onError() {
+        Alert.error('Failed to add new User');
+      },
+    }
+  );
+  const [deleteUser, { loading: deleteUserLoading }] = useMutation(
+    DELETE_PAYROLL_USER,
+    {
+      onCompleted() {
+        Alert.success('the User has been Deleted Successfully');
+      },
+      refetchQueries: [{ query: LIST_PAY_ROLL_USERS }],
+      onError() {
+        Alert.error('Failed to delete User');
+      },
+    }
+  );
 
-  const [addPayroll] = useMutation(ADD_PAY_ROLL, {
-    onCompleted() {
-      Alert.success('the Payroll Payment has been Added Successfully');
-    },
-    onError() {
-      Alert.error('Failed to create the Payroll');
-    },
-  });
+  const [addPayroll, { loading: addPayrollLoading }] = useMutation(
+    ADD_PAY_ROLL,
+    {
+      onCompleted() {
+        Alert.success('the Payroll Payment has been Added Successfully');
+      },
+      onError() {
+        Alert.error('Failed to create the Payroll');
+      },
+    }
+  );
 
-  const [addTransaction] = useMutation(ADD_PAYROLL_TRANSACTION, {
-    onCompleted() {
-      Alert.success('The transaction has been created successfully');
-    },
-    update(cache, { data: { addTransaction: transaction } }) {
-      updateTransactionsCache([...userTransactions, transaction]);
-    },
-    onError() {
-      Alert.error('Failed to create The Transaction');
-    },
-  });
+  const [addTransaction, { loading: addTransactionLoading }] = useMutation(
+    ADD_PAYROLL_TRANSACTION,
+    {
+      onCompleted() {
+        Alert.success('The transaction has been created successfully');
+      },
+      update(cache, { data: { addTransaction: transaction } }) {
+        updateTransactionsCache([...userTransactions, transaction]);
+      },
+      onError() {
+        Alert.error('Failed to create The Transaction');
+      },
+    }
+  );
 
   return useMemo(
     () => ({
@@ -139,6 +151,10 @@ function usePayroll({ userId, period, doctorId, specialtyId, branchId } = {}) {
       lastTransactionRevenueDate,
       addPayroll,
       deleteUser,
+      addUserLoading,
+      deleteUserLoading,
+      addTransactionLoading,
+      addPayrollLoading,
     }),
     [
       addPayrollUser,
@@ -152,6 +168,10 @@ function usePayroll({ userId, period, doctorId, specialtyId, branchId } = {}) {
       lastTransactionRevenueDate,
       addPayroll,
       deleteUser,
+      addUserLoading,
+      deleteUserLoading,
+      addTransactionLoading,
+      addPayrollLoading,
     ]
   );
 }

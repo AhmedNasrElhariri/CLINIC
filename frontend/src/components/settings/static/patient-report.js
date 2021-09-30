@@ -5,9 +5,13 @@ import { Div, CRButton } from 'components';
 import NewPatientReport from './new-patient-report';
 import ListPatientReports from './list-patient-report';
 import { useForm, useModal, usePatientReports } from 'hooks';
-
+import { Schema } from 'rsuite';
+import { Validate } from 'services/form';
 const initValue = { name: '', body: '' };
-
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('patient report name is required'),
+});
 const PatientReport = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useForm({
@@ -46,13 +50,13 @@ const PatientReport = () => {
       name: formValue.name,
       body: bodyFinal,
     };
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, updatedFormValue)) {
       addPatientReport({
         variables: {
           patientReport: updatedFormValue,
         },
       });
-    } else {
+    } else if (type === 'edit' && Validate(model, updatedFormValue)) {
       const updatedFormValueTwo = { ...updatedFormValue, id: formValue.id };
       editPatientReport({
         variables: {

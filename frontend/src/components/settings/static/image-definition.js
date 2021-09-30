@@ -5,9 +5,14 @@ import { Div, CRButton } from 'components';
 import NewImageDefinition from './new-image-definition';
 import ListImagesDefinition from './list-images-definition';
 import { useForm, useImageDefinition } from 'hooks';
-
+import { Validate } from 'services/form';
+import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
 
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('image name is required'),
+});
 const initValue = { name: '', categoryId: null };
 
 const ImageDefinition = () => {
@@ -15,20 +20,17 @@ const ImageDefinition = () => {
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  const {
-    addImageDefinition,
-    imagesDefinition,
-    editImageDefinition,
-  } = useImageDefinition({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
-  });
+  const { addImageDefinition, imagesDefinition, editImageDefinition } =
+    useImageDefinition({
+      onCreate: () => {
+        close();
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setFormValue(initValue);
+      },
+    });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -46,13 +48,13 @@ const ImageDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       addImageDefinition({
         variables: {
           imageDefinition: formValue,
         },
       });
-    } else {
+    } else if (type === 'edit' && Validate(model, formValue)) {
       editImageDefinition({
         variables: {
           imageDefinition: formValue,

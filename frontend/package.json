@@ -47,6 +47,7 @@
     "react-trello": "^2.2.5",
     "rsuite": "^4.8.1",
     "sanitize-html": "^2.3.2",
+    "schema-typed": "^2.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
     "subscriptions-transport-ws": "^0.9.18",

@@ -39,55 +39,67 @@ const AccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const [formValue, setFormValue] = useState(initalVal);
-  const [createExpense] = useMutation(CREATE_EXPENSE, {
-    onCompleted({ createExpense: expnese }) {
-      Alert.success('Expense Added Successfully');
-      createExpenseForm.hide();
-    },
-    refetchQueries: [
-      {
-        query: LIST_EXPENSES,
+  const [createExpense, { loading: createExpensesLoading }] = useMutation(
+    CREATE_EXPENSE,
+    {
+      onCompleted({ createExpense: expnese }) {
+        Alert.success('Expense Added Successfully');
+        createExpenseForm.hide();
       },
-    ],
-    onError() {
-      Alert.error('Failed to add new Expense');
-    },
-  });
-
-  const [createRevenue] = useMutation(CREATE_REVENUE, {
-    onCompleted({ createRevenue: revenue }) {
-      Alert.success('Revenue Added Successfully');
-      createRevenueForm.hide();
-    },
-    refetchQueries: [
-      {
-        query: LIST_REVENUES,
+      refetchQueries: [
+        {
+          query: LIST_EXPENSES,
+        },
+      ],
+      onError() {
+        Alert.error('Failed to add new Expense');
       },
-    ],
-    onError() {
-      Alert.error('Failed to add new Revenue');
-    },
-  });
+    }
+  );
 
-  const [updateExpense] = useMutation(UPDATE_EXPENSE, {
-    onCompleted({ updateExpense: expnese }) {
-      Alert.success('Expense has been updated Successfully');
-      editExpenseForm.hide();
-    },
-    onError() {
-      Alert.error('Failed to update Expense');
-    },
-  });
+  const [createRevenue, { loading: createRevenueLoading }] = useMutation(
+    CREATE_REVENUE,
+    {
+      onCompleted({ createRevenue: revenue }) {
+        Alert.success('Revenue Added Successfully');
+        createRevenueForm.hide();
+      },
+      refetchQueries: [
+        {
+          query: LIST_REVENUES,
+        },
+      ],
+      onError() {
+        Alert.error('Failed to add new Revenue');
+      },
+    }
+  );
 
-  const [updateRevenue] = useMutation(UPDATE_REVENUE, {
-    onCompleted({ updateRevenue: revenue }) {
-      Alert.success('Revenue has been updated Successfully');
-      editRevenueForm.hide();
-    },
-    onError() {
-      Alert.error('Failed to update Revenue');
-    },
-  });
+  const [updateExpense, { loading: updateExpensesLoading }] = useMutation(
+    UPDATE_EXPENSE,
+    {
+      onCompleted({ updateExpense: expnese }) {
+        Alert.success('Expense has been updated Successfully');
+        editExpenseForm.hide();
+      },
+      onError() {
+        Alert.error('Failed to update Expense');
+      },
+    }
+  );
+
+  const [updateRevenue, { loading: updateRevenueLoading }] = useMutation(
+    UPDATE_REVENUE,
+    {
+      onCompleted({ updateRevenue: revenue }) {
+        Alert.success('Revenue has been updated Successfully');
+        editRevenueForm.hide();
+      },
+      onError() {
+        Alert.error('Failed to update Revenue');
+      },
+    }
+  );
 
   const handleCreateRevenue = useCallback(
     revenue => {
@@ -295,10 +307,13 @@ const AccountingContainer = () => {
             <Summary expenses={updatedExpenses} revenues={totalRevenues} />
           )}
         </Div>
-        <AccountingForm {...createRevenueForm} />
-        <AccountingForm {...createExpenseForm} />
-        <AccountingForm {...editRevenueForm} />
-        <AccountingForm {...editExpenseForm} />
+        <AccountingForm {...createRevenueForm} loading={createRevenueLoading} />
+        <AccountingForm
+          {...createExpenseForm}
+          loading={createExpensesLoading}
+        />
+        <AccountingForm {...editRevenueForm} loading={updateRevenueLoading} />
+        <AccountingForm {...editExpenseForm} loading={updateExpensesLoading} />
       </CRCard>
     </>
   );

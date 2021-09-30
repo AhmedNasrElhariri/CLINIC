@@ -4,9 +4,13 @@ import * as R from 'ramda';
 import { Div, CRButton } from 'components';
 import NewLabCategory from './new-lab-category';
 import ListLabsCategory from './list-labs-category';
-
+import { Validate } from 'services/form';
+import { Schema } from 'rsuite';
 import { useForm, useLabCategory, useModal } from 'hooks';
-
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Category name is required'),
+});
 const initValue = { name: '' };
 
 const LabCategory = () => {
@@ -42,13 +46,13 @@ const LabCategory = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model,formValue)) {
       addLabCategory({
         variables: {
           labCategory: formValue,
         },
       });
-    } else {
+    } else if(type === 'edit' && Validate(model,formValue)) {
       editLabCategory({
         variables: {
           labCategory: formValue,

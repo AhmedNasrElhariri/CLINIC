@@ -69,12 +69,12 @@ function useInventory({
             branch: i.branch,
             specialty: i.specialty,
             user: i.doctor,
-            id:i.id,
+            id: i.id,
           };
         }),
     [inventory, items]
   );
-  const [create] = useMutation(CREATE_ITEM, {
+  const [create, { loading: createItemLoading }] = useMutation(CREATE_ITEM, {
     onCompleted: ({ defineItem }) => {
       onCreateCompleted && onCreateCompleted(defineItem);
     },
@@ -89,7 +89,7 @@ function useInventory({
     },
   });
 
-  const [update] = useMutation(UPDATE_ITEM, {
+  const [update, { loading: updateItemLoading }] = useMutation(UPDATE_ITEM, {
     onCompleted: ({ updateItem }) => {
       onCreateCompleted && onCreateCompleted(updateItem);
     },
@@ -137,7 +137,7 @@ function useInventory({
     },
   });
 
-  const [addItem] = useMutation(ADD_ITEM, {
+  const [addItem, { loading: addItemLoading }] = useMutation(ADD_ITEM, {
     onCompleted: ({ addItem }) => {
       onAddCompleted && onAddCompleted(addItem);
     },
@@ -206,6 +206,9 @@ function useInventory({
       history,
       refetchInventory,
       refetchInventoryHistory,
+      createItemLoading,
+      updateItemLoading,
+      addItemLoading,
     }),
     [
       items,
@@ -218,6 +221,9 @@ function useInventory({
       update,
       removeDefinition,
       removeItem,
+      createItemLoading,
+      updateItemLoading,
+      addItemLoading,
     ]
   );
 }

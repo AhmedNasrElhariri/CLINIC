@@ -32,7 +32,7 @@ const NewItem = () => {
     },
   });
 
-  const { create } = useInventory({
+  const { create, createItemLoading } = useInventory({
     onCreateCompleted: () => {
       Alert.success('Item has been created successfully');
       reset();
@@ -54,6 +54,7 @@ const NewItem = () => {
       <CRModal
         show={visible}
         header="Add Item"
+        loading={createItemLoading}
         onOk={() => {
           if (!isValid(model, formValue)) {
             Alert.error('Complete Required Fields');

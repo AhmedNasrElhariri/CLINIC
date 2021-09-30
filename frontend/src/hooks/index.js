@@ -43,3 +43,4 @@ export { default as useCompanySessionDefinition } from './company-session-defini
 export { default as useInsuranceAccounting } from './company-accounting';
 export { default as useExpenseTypeDefinition } from './expense-type-definition';
 export { default as useSessionDefinition } from './session-definition';
+export { default as useValidationForm } from './validation-form';

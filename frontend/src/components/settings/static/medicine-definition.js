@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
+import { Schema } from 'rsuite';
 import { Div, CRButton } from 'components';
 import NewMedicineDefinition from './new-medicine-definition';
 import ListMedicinesDefinition from './list-medicine-definition';
 import { useMedicineDefinitions } from 'hooks';
 import { useForm, useModal } from 'hooks';
+import { Validate } from 'services/form';
 
 const initValue = {
   name: '',
@@ -15,7 +16,12 @@ const initValue = {
   specialtyId: null,
   userId: null,
 };
-
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('medicine name is required'),
+  concentration: StringType().isRequired('concentration name is required'),
+  form: StringType().isRequired('form name is required'),
+});
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useForm({
@@ -49,7 +55,7 @@ const MedicineDefinition = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       addMedicineDefinition({
         variables: {
           medicineDefinition: formValue,

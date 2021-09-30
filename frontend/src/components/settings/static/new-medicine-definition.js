@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
-import { CRModal, CRTextInput, CRRadio,CRBrancheTree } from 'components';
-const model = Schema.Model({});
+import { CRModal, CRTextInput, CRRadio, CRBrancheTree } from 'components';
+import { Form } from 'rsuite';
+
 const options = [
   {
     value: 'tablets',
@@ -63,7 +63,7 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
+      <Form  formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
           label="Medicine Name"
           name="name"
@@ -76,7 +76,11 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
           placeholder="Type Concentration"
           block
         />
-        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.View_Medicine}/>
+        <CRBrancheTree
+          formValue={formValue}
+          onChange={onChange}
+          action={ACTIONS.View_Medicine}
+        />
         <CRRadio label="Medicine Form" name="form" options={options} />
       </Form>
     </CRModal>

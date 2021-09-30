@@ -1,6 +1,12 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form, Schema } from 'rsuite';
-import { CRModal, CRNumberInput, CRSelectInput, CRRadio,CRBrancheTree } from 'components';
+import {
+  CRModal,
+  CRNumberInput,
+  CRSelectInput,
+  CRRadio,
+  CRBrancheTree,
+} from 'components';
 import { ACTIONS } from 'utils/constants';
 import { usePayroll } from 'hooks';
 import styled from 'styled-components';
@@ -100,13 +106,12 @@ const PayrollForm = ({
   onChange,
   header,
   lastDay,
-  lastRevenueDay,
-  period,
   setPeriod,
   model,
   type,
   payrollUsers,
   close,
+  loading,
 }) => {
   const ref = useRef();
   const { organizationusers } = usePayroll({});
@@ -120,6 +125,7 @@ const PayrollForm = ({
     <CRModal
       show={visible}
       header={header}
+      loading={loading}
       onOk={() => {
         onOk();
         close();
@@ -188,8 +194,7 @@ const PayrollForm = ({
                   block
                 ></CRNumberInput>
               </>
-            ) 
-            // : formValue.option === 'percentage' ? (
+            ) : // : formValue.option === 'percentage' ? (
             //   <>
             //     <CRNumberInput
             //       label="Percentage from 0 - 100"
@@ -218,8 +223,8 @@ const PayrollForm = ({
             //       lastTimeFrameDay={lastRevenueDay}
             //     />
             //   </>
-            // ) 
-            : formValue.option === 'courses' ? (
+            // )
+            formValue.option === 'courses' ? (
               <>
                 <CRNumberInput
                   label="Percentage from 0 - 100"
@@ -231,7 +236,10 @@ const PayrollForm = ({
                   onChange={onChange}
                   action={ACTIONS.CreateCommission_Payroll}
                 /> */}
-                <CourseToolbar onChangePeriod={setPeriod} lastTimeFrameDay={lastDay}/>
+                <CourseToolbar
+                  onChangePeriod={setPeriod}
+                  lastTimeFrameDay={lastDay}
+                />
               </>
             ) : (
               <></>

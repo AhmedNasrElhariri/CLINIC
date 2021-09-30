@@ -43,7 +43,7 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
     [filteredSales]
   );
 
-  const [addSales] = useMutation(ADD_SALES, {
+  const [addSales, { loading }] = useMutation(ADD_SALES, {
     onCompleted() {
       Alert.success('the Item has been Added Successfully');
       onCreate && onCreate();
@@ -51,9 +51,9 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
     update(cache, { data: { addSales: sales } }) {
       updateCache([...saleses, ...sales]);
     },
-    onError: ({ message }) => Alert.error(message) ,
+    onError: ({ message }) => Alert.error(message),
   });
-  const [editSales] = useMutation(EDIT_SALES, {
+  const [editSales, { loading: editLoading }] = useMutation(EDIT_SALES, {
     onCompleted() {
       Alert.success('the Item has been Edited Successfully');
       onEdit && onEdit();
@@ -68,7 +68,7 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
     },
   });
 
-  const [deleteSales] = useMutation(DELETE_SALES, {
+  const [deleteSales, { loading: deleteLoading }] = useMutation(DELETE_SALES, {
     onCompleted() {
       Alert.success('the Item has been deleted Successfully');
       onCreate && onCreate();
@@ -93,6 +93,9 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
       editSales,
       deleteSales,
       updateCache,
+      loading: loading,
+      editLoading: editLoading,
+      deleteLoading: deleteLoading,
     }),
     [
       saleses,
@@ -103,6 +106,9 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
       filteredSales,
       totalSalesPrice,
       totalSalesCost,
+      loading,
+      editLoading,
+      deleteLoading,
     ]
   );
 }

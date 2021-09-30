@@ -40,19 +40,27 @@ const Sales = () => {
   const { timeFrame } = useAccounting({ view, period });
   const [selectedItems, setSelectedItems] = useState([]);
   const { salesesDefinition } = useSalesDefinition({});
-  const { addSales, editSales, deleteSales, filteredSales, organizationusers } =
-    useSales({
-      onCreate: () => {
-        close();
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setFormValue(initValue);
-      },
-      view,
-      period,
-    });
+  const {
+    addSales,
+    editSales,
+    deleteSales,
+    filteredSales,
+    organizationusers,
+    loading,
+    editLoading,
+    deleteLoading,
+  } = useSales({
+    onCreate: () => {
+      close();
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setFormValue(initValue);
+    },
+    view,
+    period,
+  });
   const updatedUsers = organizationusers.map(u => {
     return {
       id: u.id,
@@ -173,6 +181,7 @@ const Sales = () => {
         handleDelete={handleDelete}
         handleAdd={handleAddItems}
         selectedItems={selectedItems}
+        loading={loading || editLoading || deleteLoading}
         setSelectedItems={setSelectedItems}
         onClose={close}
         type={type}

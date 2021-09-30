@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form, Schema, Alert } from 'rsuite';
 
 export const isValid = (model, formValue) => {
   return Object.entries(model.check(formValue)).every(
@@ -23,4 +23,19 @@ export const CRForm = (schema = []) => {
       })}
     </Form>
   ));
+};
+
+export const Validate = (model, formValue) => {
+  const checkresult = model.check(formValue);
+  let valid = true;
+  for (const val in checkresult) {
+    if (checkresult[val].hasError) {
+      Alert.error(checkresult[val].errorMessage);
+      valid = false;
+      break;
+    } else {
+      continue;
+    }
+  }
+  return valid;
 };

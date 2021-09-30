@@ -5,9 +5,9 @@ import { Div, CRButton } from 'components';
 import NewSalesDefinition from './new-sales-definition';
 import ListSalesesDefinition from './list-saleses-definition';
 import { useForm, useSalesDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
+import { Validate } from 'services/form';
 import { useModal } from 'hooks';
-
 const initValue = {
   name: '',
   price: 0,
@@ -18,6 +18,13 @@ const initValue = {
   specialtyId: null,
   userId: null,
 };
+
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Sales name is required'),
+  price: NumberType().range(1, 1000000).isRequired('price is required'),
+  cost: NumberType().range(1, 1000000).isRequired('units is required'),
+});
 
 const SalesDefinition = () => {
   const { visible, open, close } = useModal();
@@ -61,7 +68,7 @@ const SalesDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       addSalesDefinition({
         variables: {
           salesDefinition: formValue,
@@ -83,7 +90,7 @@ const SalesDefinition = () => {
           salesDefinition: updatedFormValue,
         },
       });
-    } else {
+    } else if (type === 'edit' && Validate(model, formValue)) {
       editSalesDefinition({
         variables: {
           salesDefinition: formValue,

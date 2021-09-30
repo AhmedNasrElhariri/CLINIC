@@ -18,20 +18,6 @@ const SEX = ['Male', 'Female'].map(s => ({
   value: s,
 }));
 
-const { StringType, NumberType } = Schema.Types;
-
-const model = Schema.Model({
-  name: StringType().isRequired('User name is required'),
-  phoneNo: StringType()
-    .isRequired('Required')
-    .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
-  age: NumberType('Age should be a number').range(
-    0,
-    100,
-    'Age should be 0-100 years old'
-  ),
-});
-
 const options = [
   { name: 'FaceBook', value: 'facebook' },
   { name: 'Instagram', value: 'instagram' },
@@ -46,9 +32,9 @@ const options = [
 const isPrimary = ({ type }) => type === membershipTypes[0].value;
 const isSecondary = ({ type }) => type === membershipTypes[1].value;
 
-const NewPatient = ({ formValue, onChange,newAreas }) => {
+const NewPatient = ({ formValue, onChange, newAreas }) => {
   return (
-    <Form fluid model={model} formValue={formValue} onChange={onChange}>
+    <Form fluid formValue={formValue} onChange={onChange}>
       <CRSelectInput
         label="Membership Type"
         valueKey="value"

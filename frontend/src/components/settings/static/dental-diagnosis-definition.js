@@ -5,10 +5,15 @@ import { Div, CRButton } from 'components';
 import NewDentalDiagnosisDefinition from './new-dentalDiagnosis-definition';
 import ListDentalDiagnosissDefinition from './list-dentalDiagnosiss-definition';
 import { useForm, useDentalDiagnosisDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
+import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 
 const initValue = { name: '' };
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('dental name is required'),
+});
 
 const DentalDiagnosisDefinition = () => {
   const { visible, open, close } = useModal();
@@ -46,20 +51,25 @@ const DentalDiagnosisDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       addDentalDiagnosisDefinition({
         variables: {
           dentalDiagnosisDefinition: formValue,
         },
       });
-    } else {
+    } else if (type === 'edit' && Validate(model, formValue)) {
       editDentalDiagnosisDefinition({
         variables: {
           dentalDiagnosisDefinition: formValue,
         },
       });
     }
-  }, [addDentalDiagnosisDefinition, editDentalDiagnosisDefinition, formValue, type]);
+  }, [
+    addDentalDiagnosisDefinition,
+    editDentalDiagnosisDefinition,
+    formValue,
+    type,
+  ]);
 
   return (
     <>

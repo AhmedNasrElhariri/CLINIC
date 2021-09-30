@@ -5,30 +5,32 @@ import { Div, CRButton } from 'components';
 import NewBankDefinition from './new-bank-definition';
 import ListBanksDefinition from './list-banks-definition';
 import { useForm, useBankDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
+import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 
-const initValue = { name: ''};
+const initValue = { name: '' };
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Bank name is required'),
+});
 
 const BankDefinition = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
-  const {
-    addBankDefinition,
-    banksDefinition,
-    editBankDefinition,
-  } = useBankDefinition({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
-  });
+  const { addBankDefinition, banksDefinition, editBankDefinition } =
+    useBankDefinition({
+      onCreate: () => {
+        close();
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setFormValue(initValue);
+      },
+    });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -46,13 +48,13 @@ const BankDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       addBankDefinition({
         variables: {
           bankDefinition: formValue,
         },
       });
-    } else {
+    } else if (type === 'edit' && Validate(model, formValue)) {
       editBankDefinition({
         variables: {
           bankDefinition: formValue,
@@ -76,10 +78,7 @@ const BankDefinition = () => {
         onClose={close}
         type={type}
       />
-      <ListBanksDefinition
-        banks={banksDefinition}
-        onEdit={handleClickEdit}
-      />
+      <ListBanksDefinition banks={banksDefinition} onEdit={handleClickEdit} />
     </>
   );
 };

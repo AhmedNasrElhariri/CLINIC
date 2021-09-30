@@ -3,11 +3,18 @@ import * as R from 'ramda';
 import { Can } from 'components/user/can';
 import { Div, CRButton } from 'components';
 import ListHospitals from './list-hospitals';
+import { Schema } from 'rsuite';
 import NewHospital from './new-hospital';
-import { useForm, useModal, useHospitals, useAppointments } from 'hooks';
+import {
+  useForm,
+  useModal,
+  useHospitals,
+  useAppointments,
+  useValidationForm,
+} from 'hooks';
 import Filter from '../../filters';
 import { ACTIONS } from 'utils/constants';
-
+// import { Validate } from 'services/form';
 const initValue = {
   name: '',
   phoneNo: '',
@@ -16,6 +23,7 @@ const initValue = {
   specialtyId: null,
   userId: null,
 };
+
 
 const Hospitals = () => {
   const { visible, open, close } = useModal();
@@ -54,11 +62,13 @@ const Hospitals = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      addHospital({
-        variables: {
-          hospital: formValue,
-        },
-      });
+      
+        addHospital({
+          variables: {
+            hospital: formValue,
+          },
+        });
+      
     } else {
       editHospital({
         variables: {

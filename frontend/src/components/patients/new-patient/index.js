@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from 'rsuite';
+import { Alert, Schema } from 'rsuite';
 import * as R from 'ramda';
 import { ALL_AREAS } from 'apollo-client/queries';
 import { CRModal } from 'components';
 import { useMutation, useQuery } from '@apollo/client';
-
+import { Validate } from 'services/form';
 import Form from './form';
-import { CREATE_PATIENT ,LIST_SEARCHED_PATIENTS} from 'apollo-client/queries';
+import { CREATE_PATIENT, LIST_SEARCHED_PATIENTS } from 'apollo-client/queries';
 import { usePatients } from 'hooks';
 
 const initialValues = {
@@ -19,8 +19,22 @@ const initialValues = {
   type: null,
   guardianName: '',
 };
-
-export default function NewPatient({ show, onHide ,onCreate}) {
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType()
+    .minLength(6, 'The field cannot be less than 6 characters')
+    .maxLength(30, 'The field cannot be greater than 30 characters')
+    .isRequired('User name is required'),
+  phoneNo: StringType()
+    .isRequired('Phone No is  Required')
+    .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
+  age: NumberType('Age should be a number').range(
+    0,
+    100,
+    'Age should be 0-100 years old'
+  ),
+});
+export default function NewPatient({ show, onHide, onCreate }) {
   const [formValue, setFormValue] = useState(initialValues);
   const { patients, updateCache } = usePatients();
   const { data } = useQuery(ALL_AREAS);
@@ -58,11 +72,13 @@ export default function NewPatient({ show, onHide ,onCreate}) {
       header="New Patient"
       onCancel={onHide}
       onOk={() => {
-        createPatient({
-          variables: {
-            input: { ...formValue },
-          },
-        });
+        if (Validate(model, formValue)) {
+          createPatient({
+            variables: {
+              input: { ...formValue },
+            },
+          });
+        }
       }}
       loading={loading}
     >

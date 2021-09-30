@@ -5,8 +5,14 @@ import { Div, CRButton } from 'components';
 import NewImageCategory from './new-image-category';
 import ListImagesCategory from './list-images-category';
 import { useImageCategory, useModal, useForm } from 'hooks';
+import { Validate } from 'services/form';
+import { Schema } from 'rsuite';
 
 const initValue = { name: '' };
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('image category name is required'),
+});
 
 const ImageCategory = () => {
   const { visible, open, close } = useModal();
@@ -44,13 +50,13 @@ const ImageCategory = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model,formValue)) {
       addImageCategory({
         variables: {
           imageCategory: formValue,
         },
       });
-    } else {
+    } else if(type === 'edit' && Validate(model,formValue)) {
       editImageCategory({
         variables: {
           imageCategory: formValue,

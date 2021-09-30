@@ -10,9 +10,15 @@ const Footer = ({ okTitle, cancelTitle, onOk, onCancel, loading }) => (
       <CRButton minWidth={120} onClick={onCancel} variant="light">
         {cancelTitle}
       </CRButton>
-      <CRButton minWidth={120} ml={4} onClick={onOk}>
-        {loading ? <Spinner /> : okTitle}
-      </CRButton>
+      {loading ? (
+        <CRButton minWidth={120}  disabled ml={4} onClick={onOk}>
+          {loading ? <Spinner /> : okTitle}
+        </CRButton>
+      ) : (
+        <CRButton minWidth={120} ml={4} onClick={onOk}>
+          {loading ? <Spinner /> : okTitle}
+        </CRButton>
+      )}
     </Div>
   </ModalFooterStyled>
 );
