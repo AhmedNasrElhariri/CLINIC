@@ -22,6 +22,9 @@ import {
   PatientSurgeriesContainer,
   ReportPrintout,
   Example,
+  ListPatientViews,
+  EditPatientView,
+  CreatePatientView,
   Test,
   Csv,
   Payroll,
@@ -71,8 +74,14 @@ function AppRouter() {
       <Route path="/views/new">
         <CreateView />
       </Route>
+      <Route path="/patient-views/new">
+        <CreatePatientView />
+      </Route>
       <Route path="/views" exact>
         <ListViews />
+      </Route>
+      <Route path="/patient-views" exact>
+        <ListPatientViews />
       </Route>
       <Route path="/login">
         <Redirect to="/" />
