@@ -23,6 +23,7 @@ import {
   ReportPrintout,
   Example,
   ListPatientViews,
+  UpdatePatientView,
   EditPatientView,
   CreatePatientView,
   Test,
@@ -76,6 +77,9 @@ function AppRouter() {
       </Route>
       <Route path="/patient-views/new">
         <CreatePatientView />
+      </Route>
+      <Route path="/patient-views/:id">
+       <UpdatePatientView />
       </Route>
       <Route path="/views" exact>
         <ListViews />

@@ -71,6 +71,7 @@ export { default as CreateDefaultView } from './views/create-default-view';
 export { default as ListPatientViews } from './patient-views/list-views';
 export { default as CreatePatientView } from './patient-views/create-view';
 export { default as EditPatientView } from './patient-views/edit-views';
+export { default as UpdatePatientView } from './patient-views/update-patient-view';
 
 /******************     Settings    *********************************/
 export { default as StaticSettings } from './settings/static';

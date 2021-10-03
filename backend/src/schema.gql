@@ -112,8 +112,10 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
+  MyPatientView(id: ID!): PatientView
   activeViews: [View!]
   listMyViewsStatus: [ViewStatus!]
+  listMyPatientViews: [PatientView!]
   mySnippets: [Snippet!]
   medicineHistory(patientId: ID!): [MedicineHistory!]
   familyHistory(patientId: ID!): [FamilyHistory!]
@@ -215,7 +217,9 @@ type Mutation {
     userId: ID
   ): Appointment!
   createView(view: ViewInput!): Boolean
+  updatePatientView(view: PatientViewInput!, viewId: ID!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
+  createPatientView(view: PatientViewInput!): Boolean
   login(email: String!, password: String!): AuthPayload
   verify(token: String): User
   changePassword(currentPassword: String!, newPassword: String!): AuthPayload
@@ -687,6 +691,16 @@ type View {
   fieldGroups: [FieldGroup!]
 }
 
+type PatientView {
+  id: ID!
+  name: String
+  doctor: User
+  default: Boolean
+  user: User
+  userId: String
+  fieldGroups: [FieldGroup!]
+}
+
 type FieldGroup {
   id: ID!
   name: String!
@@ -716,6 +730,13 @@ input ViewInput {
   id: ID
   name: String!
   type: AppointmentType!
+  fieldGroups: [FieldGroupInput!]
+}
+
+input PatientViewInput {
+  id: ID
+  name: String!
+  userId: ID!
   fieldGroups: [FieldGroupInput!]
 }
 

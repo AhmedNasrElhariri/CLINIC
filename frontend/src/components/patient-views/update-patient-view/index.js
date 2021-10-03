@@ -8,33 +8,45 @@ import {
   ControlLabel,
   SelectPicker,
 } from 'rsuite';
-import { useMutation, useQuery } from '@apollo/client';
-import * as R from 'ramda';
+import { useQuery, useMutation } from '@apollo/client';
 import {
-  CREATE_PATIENT_VIEW,
+  UPDATE_PATIENT_VIEW,
+  MY_PATIENT_VIEW,
   LIST_ORGANIZATION_DOCTORS,
 } from 'apollo-client/queries';
 import { useLocation } from 'react-router';
 import useGlobalState from 'state';
-import { mapLanesToGroupFields } from 'utils/view';
+import { mapLanesToGroupFields, mapGroupFieldsToLanes } from 'utils/view';
 import { ViewForm } from 'components';
+import { appointmentTypes } from 'services/appointment';
+import * as R from 'ramda';
 
 const json = [];
 const width = 300;
 
-export default function CreateView() {
+export default function CreateView({}) {
   const [lanes, setLanes] = useGlobalState('lanes');
-  const [formValue, setFormValue] = useState({ name: '', userId: null });
   const { data: doctorsData } = useQuery(LIST_ORGANIZATION_DOCTORS);
-  const location = useLocation();
-  const viewId = location?.state?.id || null;
   const doctors = useMemo(
     () => R.propOr([], 'listOrganizationDoctors')(doctorsData),
     [doctorsData]
   );
-  useEffect(() => setLanes(json), [setLanes]);
-
-  const [createPatientView] = useMutation(CREATE_PATIENT_VIEW, {
+  const [formValue, setFormValue] = useState({
+    name: '',
+    type: null,
+    viewId: null,
+  });
+  const location = useLocation();
+  const viewId = location?.state?.id || null;
+  const { data } = useQuery(MY_PATIENT_VIEW, {
+    variables: {
+      id: viewId,
+    },
+  });
+  const view = useMemo(() => {
+    return R.pipe(R.propOr({}, 'MyPatientView'))(data);
+  }, [data]);
+  const [updatePatientView] = useMutation(UPDATE_PATIENT_VIEW, {
     onCompleted() {
       Alert.success('Group Fields Updated Successfully');
     },
@@ -44,16 +56,24 @@ export default function CreateView() {
   });
 
   const onClick = useCallback(() => {
-    createPatientView({
+    const { viewId, ...rest } = formValue;
+    updatePatientView({
       variables: {
         view: {
-          ...formValue,
+          ...rest,
           fieldGroups: mapLanesToGroupFields(lanes),
         },
+        viewId: viewId,
       },
     });
-  }, [createPatientView, formValue, lanes]);
-
+  }, [updatePatientView, formValue, lanes]);
+  useEffect(() => {
+    const fieldGroups = R.propOr([], 'fieldGroups')(view);
+    const { id, name, type } = view;
+    setFormValue({ ...formValue, viewId: id, name: name, type: type });
+    const lanes = mapGroupFieldsToLanes(fieldGroups);
+    setLanes(lanes);
+  }, [view, setLanes]);
   return (
     <>
       <Form layout="inline" formValue={formValue} onChange={setFormValue}>
@@ -62,7 +82,7 @@ export default function CreateView() {
           <FormControl style={{ width }} name="name" />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>User</ControlLabel>
+          <ControlLabel>Doctor</ControlLabel>
           <FormControl
             accepter={SelectPicker}
             style={{ width }}
@@ -73,7 +93,7 @@ export default function CreateView() {
           />
         </FormGroup>
         {viewId ? (
-          <Button appearance="primary" disabled onClick={onClick}>
+          <Button appearance="primary" onClick={onClick}>
             Update
           </Button>
         ) : (

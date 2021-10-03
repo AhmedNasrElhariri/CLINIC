@@ -45,12 +45,57 @@ export const CREATE_VIEW = gql`
   }
 `;
 
+export const CREATE_PATIENT_VIEW = gql`
+  mutation createPatientView($view: PatientViewInput!) {
+    createPatientView(view: $view)
+  }
+`;
+
+export const UPDATE_PATIENT_VIEW = gql`
+  mutation updatePatientView($view: PatientViewInput!, $viewId: ID!) {
+    updatePatientView(view: $view, viewId: $viewId)
+  }
+`;
+
 export const LIST_MY_VIEWS_SUMMARY = gql`
   {
     listMyViews {
       id
       name
       type
+    }
+  }
+`;
+export const LIST_MY_PATIENT_VIEWS_SUMMARY = gql`
+  {
+    listMyPatientViews {
+      id
+      name
+      doctor{
+        id
+        name
+      }
+    }
+  }
+`;
+export const MY_PATIENT_VIEW = gql`
+  query MyPatientView($id: ID!) {
+    MyPatientView(id: $id) {
+      id
+      name
+      doctor{
+        id
+        name
+      }
+      fieldGroups {
+        name
+        id
+        fields {
+          name
+          type
+          id
+        }
+      }
     }
   }
 `;

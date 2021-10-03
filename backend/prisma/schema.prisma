@@ -207,6 +207,8 @@ model User {
   updatedAt                 DateTime                    @default(now()) @updatedAt
   views                     View[]
   viewStatus                ViewStatus[]
+  patientViews              PatientView[]               @relation("userPatientView")
+  patientDoctorsViews       PatientView[]               @relation("doctorPatientView")
   workingHours              WorkingHours[]
   snippets                  Snippet[]
   position                  Position
@@ -353,25 +355,42 @@ model View {
   updatedAt           DateTime        @default(now()) @updatedAt
 }
 
+model PatientView {
+  id                  String       @id @default(uuid())
+  name                String
+  doctor              User         @relation("doctorPatientView", fields: [doctorId], references: [id])
+  doctorId            String
+  user                User         @relation("userPatientView", fields: [userId], references: [id])
+  userId              String
+  fieldGroups         FieldGroup[]
+  activeViewsStatuses ViewStatus[]
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @default(now()) @updatedAt
+}
+
 model ViewStatus {
-  id           String   @id @default(uuid())
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String
-  activeView   View     @relation(fields: [activeViewId], references: [id])
-  activeViewId String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  id            String       @id @default(uuid())
+  user          User         @relation(fields: [userId], references: [id])
+  userId        String
+  activeView    View         @relation(fields: [activeViewId], references: [id])
+  activeViewId  String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now()) @updatedAt
+  PatientView   PatientView? @relation(fields: [patientViewId], references: [id])
+  patientViewId String?
 }
 
 model FieldGroup {
-  id        String   @id @default(uuid())
-  name      String
-  order     Int
-  view      View     @relation(fields: [viewId], references: [id])
-  viewId    String
-  fields    Field[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id            String       @id @default(uuid())
+  name          String
+  order         Int
+  view          View?        @relation(fields: [viewId], references: [id])
+  viewId        String?
+  fields        Field[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now()) @updatedAt
+  PatientView   PatientView? @relation(fields: [patientViewId], references: [id])
+  patientViewId String?
 
   @@unique([order, viewId], name: "order_viewId_unique_constraint")
 }
@@ -381,7 +400,7 @@ model Field {
   name              String
   order             Int
   type              FieldType
-  choices           Json
+  choices           Json?
   fieldGroup        FieldGroup?        @relation(fields: [fieldGroupId], references: [id])
   fieldGroupId      String?
   appointmentFields AppointmentField[]

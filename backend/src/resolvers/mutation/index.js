@@ -8,6 +8,8 @@ export { default as login } from './login';
 export { default as changePassword } from './change-password';
 export { default as verify } from './verify';
 export { default as createView } from './create-view';
+export { default as createPatientView } from './create-patient-view';
+export { default as updatePatientView } from './update-patient-view';
 export { default as editView } from './edit-view';
 export { default as activateView } from './activate-view';
 export { default as createDefaultView } from './create-default-view';
