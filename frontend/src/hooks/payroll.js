@@ -17,7 +17,14 @@ import {
   USER_COURSE_PAYMENT,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
-function usePayroll({ userId, period, doctorId, specialtyId, branchId } = {}) {
+function usePayroll({
+  userId,
+  period,
+  doctorId,
+  specialtyId,
+  branchId,
+  onCreate,
+} = {}) {
   const updateTransactionsCache = userTransactions => {
     client.writeQuery({
       query: LIST_USER_TRANSACTIONS,
@@ -91,6 +98,7 @@ function usePayroll({ userId, period, doctorId, specialtyId, branchId } = {}) {
     {
       onCompleted() {
         Alert.success('the User has been Added Successfully');
+        onCreate && onCreate();
       },
       refetchQueries: [{ query: LIST_PAY_ROLL_USERS }],
       onError() {

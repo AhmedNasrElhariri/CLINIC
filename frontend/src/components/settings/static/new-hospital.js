@@ -1,21 +1,24 @@
 import React, { useMemo, useState } from 'react';
-import {  Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRTextArea, CRBrancheTree } from 'components';
-import { useValidationForm } from 'hooks';
 
-const { StringType } = Schema.Types;
-const model = Schema.Model({
-  name: StringType().isRequired('Hospital name is required'),
-});
-
-function NewHospital({ formValue, onChange, type, visible, onOk, onClose }) {
+function NewHospital({
+  formValue,
+  onChange,
+  type,
+  visible,
+  onOk,
+  onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
+}) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Hospital' : 'Edit Hospital'),
     [type]
   );
-  const [show, setShow] = useState(false);
-  const { checkResult, validate } = useValidationForm({ model, formValue });
   return (
     <CRModal
       show={visible}
@@ -27,7 +30,7 @@ function NewHospital({ formValue, onChange, type, visible, onOk, onClose }) {
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form model={model} formValue={formValue} onChange={onChange} fluid>
+      <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
           label="Name"
           name="name"

@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Div, MainContainer, CRButton, CRModal, H4 } from 'components';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
-import { CheckboxGroup, Checkbox } from 'rsuite';
+import { CheckboxGroup, Checkbox, Schema } from 'rsuite';
 import PayrollForm, { usePayrollForm } from './form';
 import { Can } from 'components/user/can';
 import EmployeesPayroll from './list-payrolls';
-import { useModal, usePayroll, useAccounting } from 'hooks';
+import { useModal, usePayroll, useAccounting, useForm } from 'hooks';
 import { formatDate } from 'utils/date';
 const initialPayrollusers = [];
 const initValue = {
-  employeeId: '',
+  employeeId: null,
   salary: '',
   orgUserId: null,
   name: '',
@@ -27,6 +27,14 @@ const initValue = {
   specialtyId: null,
   branchId: null,
 };
+const { StringType, NumberType } = Schema.Types;
+const model1 = Schema.Model({
+  orgUserId: StringType().isRequired('User is required'),
+  salary: NumberType().isRequired('Salary value is required'),
+});
+const model2 = Schema.Model({
+  employeeId: StringType().isRequired('User is required'),
+});
 const getAmount = (
   fv,
   totalRevenue,
@@ -51,7 +59,18 @@ const getAmount = (
 };
 
 function Payroll() {
-  const [formValue, setFormValue] = useState(initValue);
+  const [validModel, setValidModel] = useState(model1);
+  const {
+    formValue,
+    setFormValue,
+    checkResult,
+    validate,
+    show: showError,
+    setShow,
+  } = useForm({
+    initValue,
+    model: validModel,
+  });
   const { visible, open, close } = useModal();
   const [period, setPeriod] = useState([]);
   const [checkedPayLipsUsers, setCheckPayLipsUsers] =
@@ -72,7 +91,17 @@ function Payroll() {
     deleteUserLoading,
     addTransactionLoading,
     addPayrollLoading,
-  } = usePayroll({ userId, period, doctorId, specialtyId, branchId });
+  } = usePayroll({
+    userId,
+    period,
+    doctorId,
+    specialtyId,
+    branchId,
+    onCreate: () => {
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
   const view = ACCOUNTING_VIEWS.YEAR,
     updatedPeriod = formValue.period;
   const { BranchTotalRevenues, BranchTotalExpenses } = useAccounting({
@@ -107,11 +136,14 @@ function Payroll() {
       userId: formValue.orgUserId,
       salary: formValue.salary,
     };
-    addPayrollUser({
-      variables: {
-        payrollUser: updatedFormValue,
-      },
-    });
+    if (validate) {
+      addPayrollUser({
+        variables: {
+          payrollUser: updatedFormValue,
+        },
+      });
+      close();
+    }
   }, [formValue, addPayrollUser]);
   const handleAddAdvance = useCallback(() => {
     const updatedFormValue = {
@@ -192,6 +224,10 @@ function Payroll() {
     setPeriod: setPeriod,
     setFormValue,
     payrollUsers,
+    checkResult,
+    validate,
+    showError,
+    setShow,
   });
   const addIncentiveForm = usePayrollForm({
     header: 'Add Incentives',
@@ -204,6 +240,10 @@ function Payroll() {
     setPeriod: setPeriod,
     setFormValue,
     payrollUsers,
+    checkResult,
+    validate,
+    showError,
+    setShow,
   });
   const addCommissionForm = usePayrollForm({
     header: 'Add Commission',
@@ -216,6 +256,10 @@ function Payroll() {
     setPeriod: setPeriod,
     setFormValue,
     payrollUsers,
+    checkResult,
+    validate,
+    showError,
+    setShow,
   });
   const addDeductionForm = usePayrollForm({
     header: 'Add Deduction',
@@ -228,6 +272,10 @@ function Payroll() {
     period: period,
     setPeriod: setPeriod,
     payrollUsers,
+    checkResult,
+    validate,
+    showError,
+    setShow,
   });
   const deletePayrollUser = usePayrollForm({
     header: 'Delete Payroll User',
@@ -238,6 +286,10 @@ function Payroll() {
     setPeriod: setPeriod,
     setFormValue,
     payrollUsers,
+    checkResult,
+    validate,
+    showError,
+    setShow,
   });
   const addNewUser = usePayrollForm({
     header: 'Add New User',
@@ -247,6 +299,10 @@ function Payroll() {
     setPeriod: setPeriod,
     type: 'addNewUser',
     setFormValue,
+    checkResult,
+    validate,
+    showError,
+    setShow,
   });
   const handlePayPayslips = useCallback(() => {
     addPayroll({
@@ -268,13 +324,23 @@ function Payroll() {
                   Pay Payslips
                 </CRButton>
               </Can>
-              <CRButton variant="primary" onClick={addNewUser.show} ml={1}>
+              <CRButton
+                variant="primary"
+                onClick={() => {
+                  addNewUser.show();
+                  setValidModel(model1);
+                }}
+                ml={1}
+              >
                 Add New User
               </CRButton>
               <Can I="CreateAdvance" an="Payroll">
                 <CRButton
                   variant="success"
-                  onClick={addAdvanceForm.show}
+                  onClick={() => {
+                    setValidModel(model2);
+                    addAdvanceForm.show();
+                  }}
                   ml={1}
                 >
                   Add Advance
@@ -283,7 +349,10 @@ function Payroll() {
               <Can I="CreateIncentives" an="Payroll">
                 <CRButton
                   variant="primary"
-                  onClick={addIncentiveForm.show}
+                  onClick={() => {
+                    addIncentiveForm.show();
+                    setValidModel(model2);
+                  }}
                   ml={1}
                 >
                   Add Incentives
@@ -292,7 +361,10 @@ function Payroll() {
               <Can I="CreateCommission" an="Payroll">
                 <CRButton
                   variant="primary"
-                  onClick={addCommissionForm.show}
+                  onClick={() => {
+                    addCommissionForm.show();
+                    setValidModel(model2);
+                  }}
                   ml={1}
                 >
                   Add Commission
@@ -301,7 +373,10 @@ function Payroll() {
               <Can I="CreateDeduction" an="Payroll">
                 <CRButton
                   variant="danger"
-                  onClick={addDeductionForm.show}
+                  onClick={() => {
+                    addDeductionForm.show();
+                    setValidModel(model2);
+                  }}
                   ml={1}
                 >
                   Add Deduction

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 import {
   CRSelectInput,
   CRTextInput,
@@ -32,7 +32,7 @@ const options = [
 const isPrimary = ({ type }) => type === membershipTypes[0].value;
 const isSecondary = ({ type }) => type === membershipTypes[1].value;
 
-const NewPatient = ({ formValue, onChange, newAreas }) => {
+const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
   return (
     <Form fluid formValue={formValue} onChange={onChange}>
       <CRSelectInput
@@ -42,10 +42,26 @@ const NewPatient = ({ formValue, onChange, newAreas }) => {
         data={membershipTypes}
         block
       />
-      <CRTextInput label="Patient Name" name="name" />
+      <CRTextInput
+        label="Patient Name"
+        name="name"
+        errorMessage={
+          show && checkResult['name'].hasError
+            ? checkResult['name'].errorMessage
+            : ''
+        }
+      />
 
       <ShowIf show={isPrimary(formValue)}>
-        <CRTextInput label="Phone no" name="phoneNo" />
+        <CRTextInput
+          label="Phone no"
+          name="phoneNo"
+          errorMessage={
+            show && checkResult['phoneNo'].hasError
+              ? checkResult['phoneNo'].errorMessage
+              : ''
+          }
+        />
       </ShowIf>
 
       <ShowIf show={isSecondary(formValue)}>
@@ -53,7 +69,15 @@ const NewPatient = ({ formValue, onChange, newAreas }) => {
         <CRTextInput label="Guardian's Phone No" name="phoneNo" />
       </ShowIf>
 
-      <CRNumberInput label="Age" name="age" />
+      <CRNumberInput
+        label="Age"
+        name="age"
+        errorMessage={
+          show && checkResult['age'].hasError
+            ? checkResult['age'].errorMessage
+            : ''
+        }
+      />
 
       <CRSelectInput
         label="Sex"

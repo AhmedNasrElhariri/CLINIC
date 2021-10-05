@@ -6,7 +6,6 @@ import useFrom from 'hooks/form';
 import NewCourseDefinition from './new-course-definition';
 import ListCoursesDefinition from './list-courses-definition';
 import { useCoursesDefinition } from 'hooks';
-import { Validate } from 'services/form';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
 
@@ -27,17 +26,29 @@ const model = Schema.Model({
 
 const CourseDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useFrom({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useFrom({
     initValue,
+    model,
   });
   const { addCourseDefinition, coursesDefinitions, editCourseDefinition } =
     useCoursesDefinition({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -65,13 +76,13 @@ const CourseDefinition = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addCourseDefinition({
         variables: {
           courseDefinition: formValue,
         },
       });
-    } else if (type === 'edit' && Validate(model, formValue)) {
+    } else {
       editCourseDefinition({
         variables: {
           courseDefinition: formValue,
@@ -94,6 +105,10 @@ const CourseDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListCoursesDefinition
         courses={coursesDefinitions}

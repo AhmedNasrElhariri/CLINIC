@@ -5,16 +5,13 @@ import { Div, CRButton } from 'components';
 import ListHospitals from './list-hospitals';
 import { Schema } from 'rsuite';
 import NewHospital from './new-hospital';
-import {
-  useForm,
-  useModal,
-  useHospitals,
-  useAppointments,
-  useValidationForm,
-} from 'hooks';
+import { useForm, useModal, useHospitals, useAppointments } from 'hooks';
 import Filter from '../../filters';
 import { ACTIONS } from 'utils/constants';
-// import { Validate } from 'services/form';
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Hospital name is required'),
+});
 const initValue = {
   name: '',
   phoneNo: '',
@@ -24,22 +21,33 @@ const initValue = {
   userId: null,
 };
 
-
 const Hospitals = () => {
   const { visible, open, close } = useModal();
   const { filterBranches } = useAppointments({
     action: ACTIONS.Create_Hospital,
   });
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addHospital, hospitals, editHospital } = useHospitals({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -62,13 +70,11 @@ const Hospitals = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      
-        addHospital({
-          variables: {
-            hospital: formValue,
-          },
-        });
-      
+      addHospital({
+        variables: {
+          hospital: formValue,
+        },
+      });
     } else {
       editHospital({
         variables: {
@@ -93,6 +99,10 @@ const Hospitals = () => {
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <Filter
         appointments={hospitals}

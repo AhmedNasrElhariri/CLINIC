@@ -13,6 +13,10 @@ function NewLabDefinition({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Lab' : 'Edit Lab '),
@@ -23,7 +27,10 @@ function NewLabDefinition({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
@@ -31,6 +38,11 @@ function NewLabDefinition({
         <CRTextInput
           label="Lab Name"
           name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
           placeholder="Type Lab"
           block
         />

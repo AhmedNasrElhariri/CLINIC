@@ -3,9 +3,11 @@ import { Form, Schema } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRNumberInput } from 'components';
 import { useSalesDefinition } from 'hooks';
-import { CRSelectInput, CRBrancheTree, CRDocSelectInput } from 'components/widgets';
-
-const model = Schema.Model({});
+import {
+  CRSelectInput,
+  CRBrancheTree,
+  CRDocSelectInput,
+} from 'components/widgets';
 
 function NewSalesDefinition({
   formValue,
@@ -14,6 +16,10 @@ function NewSalesDefinition({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
 }) {
   const header = useMemo(
     () =>
@@ -29,11 +35,14 @@ function NewSalesDefinition({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
+      <Form formValue={formValue} onChange={onChange} fluid>
         {type === 'addQuentity' ? (
           <>
             <CRDocSelectInput
@@ -49,11 +58,34 @@ function NewSalesDefinition({
             <CRTextInput
               label="Item Name"
               name="name"
+              errorMessage={
+                show && checkResult['name'].hasError
+                  ? checkResult['name'].errorMessage
+                  : ''
+              }
               placeholder="Type Item Name"
               block
             />
-            <CRNumberInput label="Item Cost" name="cost" block />
-            <CRNumberInput label="Item Price" name="price" block />
+            <CRNumberInput
+              label="Item Cost"
+              name="cost"
+              errorMessage={
+                show && checkResult['cost'].hasError
+                  ? checkResult['cost'].errorMessage
+                  : ''
+              }
+              block
+            />
+            <CRNumberInput
+              label="Item Price"
+              name="price"
+              errorMessage={
+                show && checkResult['price'].hasError
+                  ? checkResult['price'].errorMessage
+                  : ''
+              }
+              block
+            />
             <CRBrancheTree
               formValue={formValue}
               onChange={onChange}

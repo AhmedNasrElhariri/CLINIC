@@ -1,13 +1,6 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
-import { ACTIONS } from 'utils/constants';
-import {
-  CRModal,
-  CRNumberInput,
-  CRTextInput,
-  CRBrancheTree,
-} from 'components';
-const model = Schema.Model({});
+import { Form } from 'rsuite';
+import { CRModal, CRNumberInput, CRTextInput } from 'components';
 function NewSessionDefinition({
   formValue,
   onChange,
@@ -15,6 +8,10 @@ function NewSessionDefinition({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
 }) {
   const header = useMemo(
     () =>
@@ -28,15 +25,33 @@ function NewSessionDefinition({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput label="Name" name="name" placeholder="Type Name" block />
+      <Form formValue={formValue} onChange={onChange} fluid>
+        <CRTextInput
+          label="Name"
+          name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
+          placeholder="Type Name"
+          block
+        />
         <CRNumberInput
           label="Price"
           name="price"
+          errorMessage={
+            show && checkResult['price'].hasError
+              ? checkResult['price'].errorMessage
+              : ''
+          }
           placeholder="Type Price"
           block
         />

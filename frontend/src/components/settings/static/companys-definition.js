@@ -6,7 +6,6 @@ import NewCompanyDefinition from './new-company-definition';
 import ListCompanysDefinition from './list-companys-definition';
 import { useForm, useCompanyDefinition } from 'hooks';
 import { Schema } from 'rsuite';
-import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 
 const initValue = { name: '' };
@@ -17,17 +16,29 @@ const model = Schema.Model({
 
 const CompanyDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addCompanyDefinition, companysDefinition, editCompanyDefinition } =
     useCompanyDefinition({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -48,13 +59,13 @@ const CompanyDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addCompanyDefinition({
         variables: {
           companyDefinition: formValue,
         },
       });
-    } else if (type === 'edit' && Validate(model, formValue)) {
+    } else {
       editCompanyDefinition({
         variables: {
           companyDefinition: formValue,
@@ -77,6 +88,10 @@ const CompanyDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListCompanysDefinition
         companys={companysDefinition}

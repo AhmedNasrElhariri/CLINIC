@@ -1,24 +1,32 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewDentalDiagnosisDefinition from './new-dentalDiagnosis-definition';
 import ListDentalDiagnosissDefinition from './list-dentalDiagnosiss-definition';
 import { useForm, useDentalDiagnosisDefinition } from 'hooks';
 import { Schema } from 'rsuite';
-import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 
 const initValue = { name: '' };
-const { StringType, NumberType } = Schema.Types;
+const { StringType } = Schema.Types;
 const model = Schema.Model({
   name: StringType().isRequired('dental name is required'),
 });
 
 const DentalDiagnosisDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const {
     addDentalDiagnosisDefinition,
@@ -27,6 +35,7 @@ const DentalDiagnosisDefinition = () => {
   } = useDentalDiagnosisDefinition({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
@@ -37,6 +46,7 @@ const DentalDiagnosisDefinition = () => {
 
   const handleClickCreate = useCallback(() => {
     setType('create');
+    setShow(false);
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
@@ -51,13 +61,13 @@ const DentalDiagnosisDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addDentalDiagnosisDefinition({
         variables: {
           dentalDiagnosisDefinition: formValue,
         },
       });
-    } else if (type === 'edit' && Validate(model, formValue)) {
+    } else {
       editDentalDiagnosisDefinition({
         variables: {
           dentalDiagnosisDefinition: formValue,
@@ -85,6 +95,10 @@ const DentalDiagnosisDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListDentalDiagnosissDefinition
         dentalDiagnosiss={dentalDiagnosissDefinition}

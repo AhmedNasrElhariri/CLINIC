@@ -12,6 +12,10 @@ function NewImageDefinition({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Image' : 'Edit Image '),
@@ -22,14 +26,22 @@ function NewImageDefinition({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
+      <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
           label="Image Name"
           name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
           placeholder="Type Image"
           block
         />

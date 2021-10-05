@@ -6,7 +6,6 @@ import NewCompanySessionDefinition from './new-company-session-definition';
 import ListCompanysSessionDefinition from './list-companys-session-definition';
 import { useForm, useCompanySessionDefinition } from 'hooks';
 import { Schema } from 'rsuite';
-import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 
 const initValue = { companyId: null, name: '', price: 0 };
@@ -18,8 +17,18 @@ const model = Schema.Model({
 
 const CompanySessionDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const {
     addCompanySessionDefinition,
@@ -28,10 +37,12 @@ const CompanySessionDefinition = () => {
   } = useCompanySessionDefinition({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -52,13 +63,13 @@ const CompanySessionDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addCompanySessionDefinition({
         variables: {
           companySessionDefinition: formValue,
         },
       });
-    } else if (type === 'edit' && Validate(model, formValue)) {
+    } else {
       editCompanySessionDefinition({
         variables: {
           companySessionDefinition: formValue,
@@ -86,6 +97,10 @@ const CompanySessionDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListCompanysSessionDefinition
         companysSession={companysSessionDefinition}

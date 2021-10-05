@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 import {
   CRModal,
   CRNumberInput,
@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import { CRTextInput } from 'components/widgets';
 import Toolbar from './toolbar';
 import CourseToolbar from './toolbar-courses';
-const { StringType, NumberType } = Schema.Types;
 
 const DeleteMessage = styled.div`
   font-size: 10px;
@@ -36,10 +35,7 @@ const options2 = [
   { name: 'Profit', value: 'profit' },
   { name: 'Revenue', value: 'revenue' },
 ];
-const model = Schema.Model({
-  userId: StringType().isRequired('Name Type is required'),
-  salary: NumberType().isRequired('Amount value is required'),
-});
+
 const initValue = {
   userId: '',
   salary: '',
@@ -57,6 +53,10 @@ export const usePayrollForm = ({
   period,
   setPeriod,
   payslips,
+  checkResult,
+  validate,
+  showError,
+  setShow,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -94,7 +94,10 @@ export const usePayrollForm = ({
     lastRevenueDay,
     onCancel,
     onChange: setFormValue,
-    model,
+    checkResult,
+    validate,
+    showError,
+    setShow,
   };
 };
 
@@ -107,11 +110,14 @@ const PayrollForm = ({
   header,
   lastDay,
   setPeriod,
-  model,
   type,
   payrollUsers,
   close,
   loading,
+  checkResult,
+  validate,
+  showError,
+  setShow,
 }) => {
   const ref = useRef();
   const { organizationusers } = usePayroll({});
@@ -127,19 +133,14 @@ const PayrollForm = ({
       header={header}
       loading={loading}
       onOk={() => {
+        setShow(true);
         onOk();
-        close();
+        validate && close();
       }}
       onHide={onCancel}
       onCancel={onCancel}
     >
-      <Form
-        formValue={formValue}
-        model={model}
-        onChange={onChange}
-        ref={ref}
-        fluid
-      >
+      <Form formValue={formValue} onChange={onChange} ref={ref} fluid>
         {type === 'Delete' ? (
           <DeleteMessage>
             Are you sure you want to delete this user?
@@ -149,17 +150,36 @@ const PayrollForm = ({
             <CRSelectInput
               label="User"
               name="orgUserId"
+              errorMessage={
+                showError && checkResult['orgUserId']?.hasError
+                  ? checkResult['orgUserId']?.errorMessage
+                  : ''
+              }
               placeholder="Select User"
               block
               data={organizationusers}
             />
-            <CRNumberInput label="Salary" name="salary" block></CRNumberInput>
+            <CRNumberInput
+              label="Salary"
+              name="salary"
+              errorMessage={
+                showError && checkResult['salary']?.hasError
+                  ? checkResult['salary']?.errorMessage
+                  : ''
+              }
+              block
+            ></CRNumberInput>
           </>
         ) : (
           <>
             <CRSelectInput
               label="User"
               name="employeeId"
+              errorMessage={
+                showError && checkResult['employeeId']?.hasError
+                  ? checkResult['employeeId']?.errorMessage
+                  : ''
+              }
               placeholder="Select User"
               block
               data={updatedPayrollUsers}

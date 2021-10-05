@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewLabCategory from './new-lab-category';
 import ListLabsCategory from './list-labs-category';
-import { Validate } from 'services/form';
 import { Schema } from 'rsuite';
 import { useForm, useLabCategory, useModal } from 'hooks';
+
 const { StringType } = Schema.Types;
 const model = Schema.Model({
   name: StringType().isRequired('Category name is required'),
@@ -15,16 +14,28 @@ const initValue = { name: '' };
 
 const LabCategory = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addLabCategory, labsCategory, editLabCategory } = useLabCategory({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -46,13 +57,13 @@ const LabCategory = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model,formValue)) {
+    if (type === 'create') {
       addLabCategory({
         variables: {
           labCategory: formValue,
         },
       });
-    } else if(type === 'edit' && Validate(model,formValue)) {
+    } else {
       editLabCategory({
         variables: {
           labCategory: formValue,
@@ -75,6 +86,10 @@ const LabCategory = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListLabsCategory labsCategory={labsCategory} onEdit={handleClickEdit} />
     </>

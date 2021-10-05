@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewSessionDefinition from './new-session-definition';
 import ListSessionsDefinition from './list-sessions-definition';
@@ -8,7 +7,6 @@ import { useForm, useSessionDefinition } from 'hooks';
 import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
 import { Schema } from 'rsuite';
-import { Validate } from 'services/form';
 
 const initValue = {
   name: '',
@@ -23,17 +21,29 @@ const model = Schema.Model({
 
 const SessionDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addSessionDefinition, sessionsDefinition, editSessionDefinition } =
     useSessionDefinition({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -53,13 +63,13 @@ const SessionDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addSessionDefinition({
         variables: {
           sessionDefinition: formValue,
         },
       });
-    } else if (type === 'edit' && Validate(model, formValue)) {
+    } else {
       editSessionDefinition({
         variables: {
           sessionDefinition: formValue,
@@ -84,6 +94,10 @@ const SessionDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListSessionsDefinition
         sessions={sessionsDefinition}

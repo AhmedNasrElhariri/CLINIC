@@ -1,14 +1,12 @@
-import React, { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
 import { Alert, Schema } from 'rsuite';
 import * as R from 'ramda';
 import { ALL_AREAS } from 'apollo-client/queries';
 import { CRModal } from 'components';
 import { useMutation, useQuery } from '@apollo/client';
-import { Validate } from 'services/form';
 import Form from './form';
 import { CREATE_PATIENT, LIST_SEARCHED_PATIENTS } from 'apollo-client/queries';
-import { usePatients } from 'hooks';
+import { usePatients, useForm } from 'hooks';
 
 const initialValues = {
   name: '',
@@ -34,8 +32,12 @@ const model = Schema.Model({
     'Age should be 0-100 years old'
   ),
 });
-export default function NewPatient({ show, onHide, onCreate }) {
-  const [formValue, setFormValue] = useState(initialValues);
+export default function NewPatient({ show: showModel, onHide, onCreate }) {
+  const { formValue, setFormValue, checkResult, validate, show, setShow } =
+    useForm({
+      initValue: initialValues,
+      model,
+    });
   const { patients, updateCache } = usePatients();
   const { data } = useQuery(ALL_AREAS);
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
@@ -52,6 +54,7 @@ export default function NewPatient({ show, onHide, onCreate }) {
     onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
       onHide();
+      setShow(false);
       onCreate(patient);
       setFormValue(initialValues);
     },
@@ -67,12 +70,13 @@ export default function NewPatient({ show, onHide, onCreate }) {
   });
   return (
     <CRModal
-      show={show}
+      show={showModel}
       onHide={onHide}
       header="New Patient"
       onCancel={onHide}
       onOk={() => {
-        if (Validate(model, formValue)) {
+        setShow(true);
+        if (validate) {
           createPatient({
             variables: {
               input: { ...formValue },
@@ -82,17 +86,13 @@ export default function NewPatient({ show, onHide, onCreate }) {
       }}
       loading={loading}
     >
-      <Form onChange={setFormValue} formValue={formValue} newAreas={newAreas} />
+      <Form
+        onChange={setFormValue}
+        formValue={formValue}
+        newAreas={newAreas}
+        checkResult={checkResult}
+        show={show}
+      />
     </CRModal>
   );
 }
-
-NewPatient.propTypes = {
-  show: PropTypes.bool.isRequired,
-  onHide: PropTypes.func,
-  onCreate: PropTypes.func,
-};
-
-NewPatient.defaultProps = {
-  show: false,
-};

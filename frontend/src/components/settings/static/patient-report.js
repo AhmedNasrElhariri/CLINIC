@@ -1,31 +1,43 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewPatientReport from './new-patient-report';
 import ListPatientReports from './list-patient-report';
 import { useForm, useModal, usePatientReports } from 'hooks';
 import { Schema } from 'rsuite';
-import { Validate } from 'services/form';
+
 const initValue = { name: '', body: '' };
 const { StringType } = Schema.Types;
 const model = Schema.Model({
   name: StringType().isRequired('patient report name is required'),
 });
+
 const PatientReport = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
 
   const { addPatientReport, patientReports, editPatientReport } =
     usePatientReports({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -50,13 +62,13 @@ const PatientReport = () => {
       name: formValue.name,
       body: bodyFinal,
     };
-    if (type === 'create' && Validate(model, updatedFormValue)) {
+    if (type === 'create') {
       addPatientReport({
         variables: {
           patientReport: updatedFormValue,
         },
       });
-    } else if (type === 'edit' && Validate(model, updatedFormValue)) {
+    } else {
       const updatedFormValueTwo = { ...updatedFormValue, id: formValue.id };
       editPatientReport({
         variables: {
@@ -79,6 +91,10 @@ const PatientReport = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListPatientReports reports={patientReports} onEdit={handleClickEdit} />
     </>

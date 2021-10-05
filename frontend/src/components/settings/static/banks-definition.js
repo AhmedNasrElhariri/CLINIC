@@ -6,7 +6,6 @@ import NewBankDefinition from './new-bank-definition';
 import ListBanksDefinition from './list-banks-definition';
 import { useForm, useBankDefinition } from 'hooks';
 import { Schema } from 'rsuite';
-import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 
 const initValue = { name: '' };
@@ -17,17 +16,29 @@ const model = Schema.Model({
 
 const BankDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addBankDefinition, banksDefinition, editBankDefinition } =
     useBankDefinition({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -48,13 +59,13 @@ const BankDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addBankDefinition({
         variables: {
           bankDefinition: formValue,
         },
       });
-    } else if (type === 'edit' && Validate(model, formValue)) {
+    } else {
       editBankDefinition({
         variables: {
           bankDefinition: formValue,
@@ -77,6 +88,10 @@ const BankDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListBanksDefinition banks={banksDefinition} onEdit={handleClickEdit} />
     </>

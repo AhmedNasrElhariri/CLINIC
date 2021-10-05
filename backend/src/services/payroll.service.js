@@ -21,15 +21,18 @@ export const getAllTransactionForCurrentOpenPayslips = async (
   payment,
   includeExtraSalary
 ) => {
+  
   const users = await prisma.payrollUser.findMany({
     where: {
-      id: {
-        in: payment,
-      },
+      organizationId,
     },
     include: {
       user: true,
     },
+  });
+  let userIds = [];
+  users.forEach(u => {
+    userIds.push(u.id);
   });
   const transactions = await prisma.payrollTransaction.findMany({
     where: {
@@ -38,7 +41,7 @@ export const getAllTransactionForCurrentOpenPayslips = async (
         status: PAYROLL_STATUS.Open,
       },
       payrollUserId: {
-        in: payment,
+        in: userIds,
       },
       status: 'on',
       added: false,

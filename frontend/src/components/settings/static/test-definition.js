@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-import { Schema } from 'rsuite';
 import { Div, CRButton } from 'components';
 import NewLabDefinition from './new-test-definition';
 import ListLabsDefinition from './list-tests-definition';
 import { useForm, useModal, useLabDefinitions } from 'hooks';
-import { Validate } from 'services/form';
+import { Schema } from 'rsuite';
 const initValue = { name: '', categoryId: null };
 const { StringType } = Schema.Types;
 const model = Schema.Model({
@@ -13,17 +12,29 @@ const model = Schema.Model({
 });
 const LabDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addLabDefinition, labsDefinition, editLabDefinition } =
     useLabDefinitions({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -44,7 +55,7 @@ const LabDefinition = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addLabDefinition({
         variables: {
           labDefinition: formValue,
@@ -73,6 +84,10 @@ const LabDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListLabsDefinition labs={labsDefinition} onEdit={handleClickEdit} />
     </>

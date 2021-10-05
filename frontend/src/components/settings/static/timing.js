@@ -5,7 +5,6 @@ import { Div, CRButton } from 'components';
 import NewTiming from './new-timing';
 import ListTiming from './list-timing';
 import { useForm, useModal, useTimings } from 'hooks';
-import { Validate } from 'services/form';
 import { Schema } from 'rsuite';
 
 const initValue = { name: '', englishPrintValue: '', arabicPrintValue: '' };
@@ -18,16 +17,28 @@ const model = Schema.Model({
 
 const Timing = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addTiming, timings, editTiming } = useTimings({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -53,13 +64,13 @@ const Timing = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model,formValue)) {
+    if (type === 'create') {
       addTiming({
         variables: {
           timing: formValue,
         },
       });
-    } else if(type === 'edit' && Validate(model,formValue)) {
+    } else {
       editTiming({
         variables: {
           timing: formValue,
@@ -82,6 +93,10 @@ const Timing = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListTiming timings={timings} onEdit={handleClickEdit} />
     </>

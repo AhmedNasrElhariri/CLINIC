@@ -6,7 +6,6 @@ import NewMedicineDefinition from './new-medicine-definition';
 import ListMedicinesDefinition from './list-medicine-definition';
 import { useMedicineDefinitions } from 'hooks';
 import { useForm, useModal } from 'hooks';
-import { Validate } from 'services/form';
 
 const initValue = {
   name: '',
@@ -24,17 +23,29 @@ const model = Schema.Model({
 });
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addMedicineDefinition, medicineDefinitions, editMedicineDefinition } =
     useMedicineDefinitions({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -55,7 +66,7 @@ const MedicineDefinition = () => {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addMedicineDefinition({
         variables: {
           medicineDefinition: formValue,
@@ -83,6 +94,10 @@ const MedicineDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListMedicinesDefinition
         medicines={medicineDefinitions}

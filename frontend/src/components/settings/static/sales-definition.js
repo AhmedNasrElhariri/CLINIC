@@ -6,7 +6,6 @@ import NewSalesDefinition from './new-sales-definition';
 import ListSalesesDefinition from './list-saleses-definition';
 import { useForm, useSalesDefinition } from 'hooks';
 import { Schema } from 'rsuite';
-import { Validate } from 'services/form';
 import { useModal } from 'hooks';
 const initValue = {
   name: '',
@@ -28,8 +27,18 @@ const model = Schema.Model({
 
 const SalesDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const {
     addSalesDefinition,
@@ -39,10 +48,12 @@ const SalesDefinition = () => {
   } = useSalesDefinition({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -68,7 +79,7 @@ const SalesDefinition = () => {
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create' && Validate(model, formValue)) {
+    if (type === 'create') {
       addSalesDefinition({
         variables: {
           salesDefinition: formValue,
@@ -90,7 +101,7 @@ const SalesDefinition = () => {
           salesDefinition: updatedFormValue,
         },
       });
-    } else if (type === 'edit' && Validate(model, formValue)) {
+    } else if (type === 'edit') {
       editSalesDefinition({
         variables: {
           salesDefinition: formValue,
@@ -119,6 +130,10 @@ const SalesDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListSalesesDefinition
         saless={salesesDefinition}

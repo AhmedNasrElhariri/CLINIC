@@ -1,11 +1,20 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRBrancheTree } from 'components';
 
-const model = Schema.Model({});
-
-function NewSurgery({ formValue, onChange, type, visible, onOk, onClose }) {
+function NewSurgery({
+  formValue,
+  onChange,
+  type,
+  visible,
+  onOk,
+  onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
+}) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Surgery' : 'Edit Surgery'),
     [type]
@@ -15,13 +24,29 @@ function NewSurgery({ formValue, onChange, type, visible, onOk, onClose }) {
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput label="Name" name="name" block />
-        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Surgery}/>
+      <Form formValue={formValue} onChange={onChange} fluid>
+        <CRTextInput
+          label="Name"
+          name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
+          block
+        />
+        <CRBrancheTree
+          formValue={formValue}
+          onChange={onChange}
+          action={ACTIONS.Create_Surgery}
+        />
       </Form>
     </CRModal>
   );

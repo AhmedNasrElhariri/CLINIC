@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
-
-import { CRModal, CRSelectInput ,CRNumberInput } from 'components';
+import { Form } from 'rsuite';
+import { CRModal, CRSelectInput, CRNumberInput } from 'components';
 import { useCompanyDefinition, useSessionDefinition } from 'hooks';
-const model = Schema.Model({});
 
 function NewCompanySessionDefinition({
   formValue,
@@ -12,6 +10,10 @@ function NewCompanySessionDefinition({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
 }) {
   const header = useMemo(
     () =>
@@ -28,11 +30,14 @@ function NewCompanySessionDefinition({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
+      <Form formValue={formValue} onChange={onChange} fluid>
         <CRSelectInput
           label="Company Name"
           name="companyId"
@@ -43,6 +48,11 @@ function NewCompanySessionDefinition({
         <CRSelectInput
           label="Session Name"
           name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
           placeholder="Select Type"
           data={choices}
           block
@@ -50,7 +60,11 @@ function NewCompanySessionDefinition({
         <CRNumberInput
           label="price"
           name="price"
-          
+          errorMessage={
+            show && checkResult['price'].hasError
+              ? checkResult['price'].errorMessage
+              : ''
+          }
         />
       </Form>
     </CRModal>

@@ -50,7 +50,18 @@ const options = [
   },
 ];
 
-function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
+function NewMedicine({
+  formValue,
+  onChange,
+  type,
+  visible,
+  onOk,
+  onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
+}) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Medicine' : 'Edit Medicine '),
     [type]
@@ -59,20 +70,33 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form  formValue={formValue} onChange={onChange} fluid>
+      <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
           label="Medicine Name"
           name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
           placeholder="Type Name"
           block
         />
         <CRTextInput
           label="Concentration"
           name="concentration"
+          errorMessage={
+            show && checkResult['concentration'].hasError
+              ? checkResult['concentration'].errorMessage
+              : ''
+          }
           placeholder="Type Concentration"
           block
         />
@@ -81,7 +105,16 @@ function NewMedicine({ formValue, onChange, type, visible, onOk, onClose }) {
           onChange={onChange}
           action={ACTIONS.View_Medicine}
         />
-        <CRRadio label="Medicine Form" name="form" options={options} />
+        <CRRadio
+          label="Medicine Form"
+          name="form"
+          errorMessage={
+            show && checkResult['form'].hasError
+              ? checkResult['form'].errorMessage
+              : ''
+          }
+          options={options}
+        />
       </Form>
     </CRModal>
   );
