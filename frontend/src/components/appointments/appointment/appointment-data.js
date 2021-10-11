@@ -39,7 +39,6 @@ import Images from './appointment-images';
 import { useConfigurations } from 'hooks';
 import Pulses from './pulses';
 
-
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
     case NUMBER_FIELD_TYPE:
@@ -86,11 +85,13 @@ SectionContainer.propTypes = {
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
-const initalCategoryLab = {
+const initalCategoryAndLab = {
   categoryId: null,
+  labId: null,
 };
 const initalCategoryImage = {
   categoryId: null,
+  imageId: null,
 };
 function AppointmentData({
   formValue,
@@ -108,7 +109,7 @@ function AppointmentData({
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
   const { labsCategory } = useLabCategory();
   const { imagesCategory } = useImageCategory();
-  const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryLab);
+  const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryAndLab);
   const [categoryImageForm, setCategoryImageForm] =
     useState(initalCategoryImage);
   const { sessionsDefinition } = useSessionDefinition();
@@ -153,7 +154,7 @@ function AppointmentData({
     [appointmentFormValue, onChange, categoryLabForm]
   );
   const imageId = categoryImageForm?.categoryId;
-  const { imagesDefinition } = useImageDefinition({ categoryId:imageId });
+  const { imagesDefinition } = useImageDefinition({ categoryId: imageId });
   const handleImagesChange = useCallback(
     imageIds => {
       const cateImages = imagesDefinition.map(i => i.id);
@@ -168,6 +169,26 @@ function AppointmentData({
   );
   const handleAddSession = () => {
     setSessionsPulses([...sessionsPulses, session]);
+  };
+  const addLab = () => {
+    const { labId } = categoryLabForm;
+    if (labId) {
+      const { labIds } = appointmentFormValue;
+      onChange({
+        ...appointmentFormValue,
+        labIds: [...labIds, labId],
+      });
+    }
+  };
+  const addImage = () => {
+    const { imageId } = categoryImageForm;
+    if (imageId) {
+      const { imageIds } = appointmentFormValue;
+      onChange({
+        ...appointmentFormValue,
+        imageIds: [...imageIds, imageId],
+      });
+    }
   };
   return (
     <>
@@ -233,22 +254,31 @@ function AppointmentData({
             />
           </SectionContainer>
           <SectionContainer title="Labs" name="labs">
-            <Div
-              mb={10}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Form formValue={categoryLabForm} onChange={setCategoryLabForm}>
+            <Form formValue={categoryLabForm} onChange={setCategoryLabForm}>
+              <Div
+                mb={10}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
                 <CRSelectInput
                   name="categoryId"
-                  block
                   data={labsCategory}
                   label="Lab Category"
+                  style={{ width: '300px', marginRight: '20px' }}
+                />
+                <CRSelectInput
+                  name="labId"
+                  data={labsDefinition}
+                  label="Lab"
                   style={{ width: '300px' }}
                 />
-              </Form>
-            </Div>
+                <CRButton ml={20} mt={40} onClick={addLab}>
+                  Add
+                </CRButton>
+              </Div>
+            </Form>
+
             <Labs
               selectedLabs={appointmentFormValue.labIds}
               onChange={handleLabsChange}
@@ -256,25 +286,31 @@ function AppointmentData({
             />
           </SectionContainer>
           <SectionContainer title="Images" name="images">
-            <Div
-              mb={10}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Form
-                formValue={categoryImageForm}
-                onChange={setCategoryImageForm}
+            <Form formValue={categoryImageForm} onChange={setCategoryImageForm}>
+              <Div
+                mb={10}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
               >
                 <CRSelectInput
                   name="categoryId"
                   block
                   data={imagesCategory}
                   label="Image Category"
+                  style={{ width: '300px', marginRight: '10px' }}
+                />
+                <CRSelectInput
+                  name="imageId"
+                  data={imagesDefinition}
+                  label="Image"
                   style={{ width: '300px' }}
                 />
-              </Form>
-            </Div>
+                <CRButton ml={20} mt={40} onClick={addImage}>
+                  Add
+                </CRButton>
+              </Div>
+            </Form>
             <Images
               selectedImages={appointmentFormValue.imageIds}
               onChange={handleImagesChange}

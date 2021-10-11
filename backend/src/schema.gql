@@ -504,6 +504,7 @@ type Patient implements Searchable {
   reference: [String!]
   area: String!
   age: Int!
+  date: Date
   sex: Sex!
   appointments: [Appointment!]
 }
@@ -513,6 +514,7 @@ input PatientInput {
   name: String!
   phoneNo: String!
   age: Int!
+  date: Date
   sex: Sex!
   reference: [String]
   area: ID

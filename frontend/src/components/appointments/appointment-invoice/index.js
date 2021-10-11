@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { Form } from 'rsuite';
 import NumberFormat from 'react-number-format';
+import { Spinner } from 'components/widgets/button/spinner';
 import * as R from 'ramda';
 import {
   CRSelectInput,
@@ -63,9 +64,12 @@ function AppointmentInvoice({
   setCompany,
   option,
   setOption,
+  handleOk,
   bank,
   setBank,
   organization,
+  handleFinish,
+  loading,
 }) {
   const [session, setSession] = useState({});
   const [sessionNumber, setSessionNumber] = useState(0);
@@ -293,17 +297,22 @@ function AppointmentInvoice({
           </Div>
         </Div>
       </Div>
-      <PrintInvoice
-        items={selectedSessions}
-        subtotal={subtotal}
-        total={total}
-        patientName={appointment?.patient.name}
-        others={others}
-        option={option}
-        othersName={othersName}
-        discount={discount}
-        organization={organization}
-      />
+      <Div display="flex">
+        <PrintInvoice
+          items={selectedSessions}
+          subtotal={subtotal}
+          total={total}
+          patientName={appointment?.patient.name}
+          others={others}
+          option={option}
+          othersName={othersName}
+          discount={discount}
+          organization={organization}
+        />
+        <CRButton onClick={handleFinish}>
+          {loading ? <Spinner /> : 'Finish'}
+        </CRButton>
+      </Div>
     </>
   );
 }

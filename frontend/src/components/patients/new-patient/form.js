@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Schema } from 'rsuite';
 import {
   CRSelectInput,
   CRTextInput,
   CRNumberInput,
+  CRDatePicker,
   ShowIf,
   CRCheckBoxGroup,
 } from 'components';
+import moment from 'moment';
 
 const membershipTypes = [
   { name: 'Primary', value: 'Primary' },
@@ -46,7 +48,14 @@ const options = [
 const isPrimary = ({ type }) => type === membershipTypes[0].value;
 const isSecondary = ({ type }) => type === membershipTypes[1].value;
 
-const NewPatient = ({ formValue, onChange,newAreas }) => {
+const NewPatient = ({ formValue, onChange, newAreas }) => {
+  useEffect(() => {
+    if (formValue.date) {
+      const years = moment().diff(formValue.date, 'years');
+      onChange({ ...formValue, age: years });
+    }
+  }, [formValue.date]);
+  console.log(formValue);
   return (
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput
@@ -66,7 +75,7 @@ const NewPatient = ({ formValue, onChange,newAreas }) => {
         <CRTextInput label="Guardian's Name" name="guardianName" />
         <CRTextInput label="Guardian's Phone No" name="phoneNo" />
       </ShowIf>
-
+      <CRDatePicker label="Birth of Date" block name="date" />
       <CRNumberInput label="Age" name="age" />
 
       <CRSelectInput

@@ -26,15 +26,15 @@ function Progress({ history, viewFields }) {
     setActiveField(R.propOr({}, '0')(viewFields));
   }, [viewFields]);
 
-  const values = useMemo(() => mapToPropValue(history, activeField), [
-    activeField,
-    history,
-  ]);
+  const values = useMemo(
+    () => mapToPropValue(history, activeField),
+    [activeField, history]
+  );
 
   if (!activeField) {
     return <H6>Loading</H6>;
   }
-
+  console.log(values);
   return (
     <Div display="flex">
       <CRNav vertical width={180} onSelect={setActiveField}>
@@ -66,19 +66,21 @@ function Progress({ history, viewFields }) {
           <Chart values={values} />
         ) : (
           <Div>
-            <CRTable autoHeight wordWrap data={values}>
+            <CRTable autoHeight data={values}>
               <CRTable.CRColumn flexGrow={1}>
                 <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-                <CRTable.CRCell dataKey="date" />
+                <CRTable.CRCell>
+                  {({ date }) => (
+                    <CRTable.CRCellStyled bold>{date}</CRTable.CRCellStyled>
+                  )}
+                </CRTable.CRCell>
               </CRTable.CRColumn>
 
               <CRTable.CRColumn flexGrow={1}>
                 <CRTable.CRHeaderCell>Value</CRTable.CRHeaderCell>
                 <CRTable.CRCell>
-                  {data => (
-                    <CRTable.CRCellStyled bold>
-                      {data.value}
-                    </CRTable.CRCellStyled>
+                  {({ value }) => (
+                    <CRTable.CRCellStyled bold>{value}</CRTable.CRCellStyled>
                   )}
                 </CRTable.CRCell>
               </CRTable.CRColumn>

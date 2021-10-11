@@ -10,11 +10,12 @@ const AppointmentLabs = ({ selectedLabs, onChange, categoryId }) => {
   const [formValue, setFormValue] = useState([]);
 
   useEffect(() => {
-    const newFormValue = labsDefinition.map((l, idx) => ({
+    const updatedLabs = labsDefinition.map((l, idx) => ({
       ...l,
       required: selectedLabs.includes(l.id),
     }));
-    setFormValue(newFormValue);
+    const filteredLabs = updatedLabs.filter(l => l.required == true);
+    setFormValue(filteredLabs);
   }, [labsDefinition, selectedLabs]);
 
   const handleOnClick = useCallback(

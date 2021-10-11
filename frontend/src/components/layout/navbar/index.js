@@ -69,9 +69,9 @@ const Navbar = ({
           justifyContent="space-between"
           alignItems="center"
           cursor="pointer"
-          width={180}
+          width={90} //180
         >
-          <Whisper
+          {/* <Whisper
             trigger="click"
             ref={notificationsRef}
             speaker={
@@ -88,7 +88,7 @@ const Navbar = ({
             <Div>
               <NotificatinBadge count={notifications.length} />
             </Div>
-          </Whisper>
+          </Whisper> */}
           <Whisper
             trigger="click"
             ref={settingsRef}

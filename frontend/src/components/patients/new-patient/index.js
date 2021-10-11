@@ -15,7 +15,8 @@ const initialValues = {
   phoneNo: '',
   area: '',
   reference: [],
-  age: '',
+  age: 0,
+  date: new Date(),
   type: null,
   guardianName: '',
 };

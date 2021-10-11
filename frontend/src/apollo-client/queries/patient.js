@@ -41,6 +41,7 @@ export const LIST_PATIENTS = gql`
         reference
         area
         code
+        date
       }
       patientsCount
     }

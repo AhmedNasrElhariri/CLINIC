@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Divider, Toggle } from 'rsuite';
 import ReactToPrint from 'react-to-print';
-import {formatFullDay } from 'utils/date';
+import { formatFullDay } from 'utils/date';
 import { useMedicineDefinitions, useTimings } from 'hooks';
 import * as R from 'ramda';
 import { CRModal, Div, H6 } from 'components';
@@ -27,6 +27,7 @@ function Prescription({
 }) {
   const [enable, setEnable] = useState(false);
   const { medicineDefinitions } = useMedicineDefinitions();
+  const [direction, setDirection] = useState('rtl');
   const { timings } = useTimings();
   const header = useMemo(() => 'Prescription', []);
   const removeItem = indx => {
@@ -72,7 +73,7 @@ function Prescription({
       <Title>Medicine</Title>
       {newMedicine.map((element, indx) => (
         <Container color="#f4f4f6">
-          <Medicine>
+          <Medicine >
             <Ul>
               <Li>{element.medicine.name}</Li>
               <Div display="flex">
@@ -91,7 +92,13 @@ function Prescription({
         </Container>
       ))}
       <Divider />
-      <Div display="flex" justifyContent="space-between">
+      <Div
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        width="435px"
+        ml="26px"
+      >
         <Div>Next Appointment </Div>
         <Div>{formatFullDay(nextAppointment?.date)}</Div>
         <Toggle onChange={setEnable} />
@@ -99,10 +106,11 @@ function Prescription({
       <ReactToPrint
         trigger={() => (
           <FooterButton
-            marginLeft="13px"
+            marginLeft="26px"
             bkColor="#50c7f2"
             color="#fbfbfb"
             width="95px"
+            onClick={() => setDirection('rtl')}
           >
             Print Arabic
           </FooterButton>
@@ -116,6 +124,7 @@ function Prescription({
             bkColor="#50c7f2"
             color="#fbfbfb"
             width="95px"
+            onClick={() => setDirection('ltr')}
           >
             Print English
           </FooterButton>
@@ -129,7 +138,7 @@ function Prescription({
           ) : (
             newMedicine.map((element, indx) => (
               <Container>
-                <Medicine>
+                <Medicine direction={direction}>
                   <Ul>
                     <Li>{element.medicine.name}</Li>
                     <Div display="flex">
@@ -139,22 +148,10 @@ function Prescription({
                       </Div>
                       <Div>{element.duration}&nbsp;</Div>
                       <Div>لمده &nbsp;</Div>
-                      {element.tA.includes(' ') ? (
-                        <>
-                          <Div>{element.tA.split(' ')[1]}&nbsp;</Div>
-                          <Div>{element.tA.split(' ')[0]}&nbsp;</Div>
-                        </>
-                      ) : (
-                        <Div>{element.tA}&nbsp;</Div>
-                      )}
-                      {element.dose.includes(' ') ? (
-                        <>
-                          <Div>{element.dose.split(' ')[1]}&nbsp;</Div>
-                          <Div>{element.dose.split(' ')[0]}&nbsp;</Div>
-                        </>
-                      ) : (
-                        <Div>{element.dose}&nbsp;</Div>
-                      )}
+
+                      <Div>{element.tA}&nbsp;</Div>
+
+                      <Div>{element.dose}&nbsp;</Div>
                     </Div>
                   </Ul>
                 </Medicine>
