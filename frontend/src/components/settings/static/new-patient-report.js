@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 import Label from '../../widgets/label';
 import Editor from './editor';
+import { useConfigurations } from 'hooks';
 import { CRModal, CRTextInput, CRSelectInput } from 'components';
 
 const model = Schema.Model({});
@@ -45,7 +46,7 @@ function NewPatientReport({
       type === 'create' ? 'Add New Patient Report' : 'Edit Patient Report',
     [type]
   );
-
+  const { pageSetupData } = useConfigurations();
   const mentions = useMemo(() => {
     const context = formValue?.context;
     switch (context) {
@@ -92,6 +93,7 @@ function NewPatientReport({
         <Editor
           onChange={handleText}
           formValue={formValue}
+          pageSetupData={pageSetupData}
           mentionValues={mentions}
         />
       </Form>
