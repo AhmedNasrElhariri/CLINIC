@@ -111,10 +111,13 @@ type Query {
   patientAppointments(patientId: ID!): [Appointment!]
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
+  getPatientField(patientId: ID!): [PatientField!]
   listMyViews: [View!]
   MyPatientView(id: ID!): PatientView
   activeViews: [View!]
+  activePatientViews: [PatientView!]
   listMyViewsStatus: [ViewStatus!]
+  listMyPatientViewsStatus: [PatientViewStatus!]
   listMyPatientViews: [PatientView!]
   mySnippets: [Snippet!]
   medicineHistory(patientId: ID!): [MedicineHistory!]
@@ -200,6 +203,10 @@ type Mutation {
   editPatient(patient: PatientInput!): Patient!
   createAppointment(appointment: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
+  updatePatientField(
+    patientId: ID!
+    data: [PatientFieldInput!]
+  ): [PatientField]!
   completeAppointment(id: ID!): Appointment!
   archiveAppointment(
     id: ID!
@@ -224,6 +231,7 @@ type Mutation {
   verify(token: String): User
   changePassword(currentPassword: String!, newPassword: String!): AuthPayload
   activateView(viewId: ID!): ViewStatus!
+  activatePatientView(viewId: ID!): PatientViewStatus!
   createDefaultView: Boolean
   adjustAppointment(
     id: ID!
@@ -592,6 +600,13 @@ type AppointmentField {
   field: Field!
 }
 
+type PatientField {
+  id: ID!
+  value: JSON
+  field: Field!
+  patient: Patient!
+}
+
 type PulseControl {
   id: ID!
   before: Int
@@ -649,6 +664,12 @@ input SessionPulseInput {
 }
 
 input AppointmentFieldInput {
+  id: ID
+  value: JSON
+  fieldId: ID!
+}
+
+input PatientFieldInput {
   id: ID
   value: JSON
   fieldId: ID!
@@ -723,6 +744,16 @@ type ViewStatus {
   defaultView: View
   defaultViewId: String
   activeView: View
+  activeViewId: String
+}
+
+type PatientViewStatus {
+  id: ID!
+  user: User
+  userId: String
+  defaultView: PatientView
+  defaultViewId: String
+  activeView: PatientView
   activeViewId: String
 }
 

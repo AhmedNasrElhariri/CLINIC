@@ -9,13 +9,12 @@ import { Div } from 'components';
 
 import {
   LIST_MY_PATIENT_VIEWS_SUMMARY,
-  LIST_MY_VIEWS_STATUS,
-  ACTIVATE_VIEW,
+  LIST_MY_PATIENT_VIEWS_STATUS,
+  ACTIVATE_PATIENT_VIEW,
 } from 'apollo-client/queries';
 
 const Card = ({ name, active, onClick, view, id }) => {
   const history = useHistory();
-  console.log(view,id,'inininnnnn');
   return (
     <Panel
       bordered
@@ -35,16 +34,16 @@ const Card = ({ name, active, onClick, view, id }) => {
 
 export default function ListViews() {
   const { data } = useQuery(LIST_MY_PATIENT_VIEWS_SUMMARY);
-  const { data: viewStatusData } = useQuery(LIST_MY_VIEWS_STATUS);
-  const [activateView] = useMutation(ACTIVATE_VIEW, {
+  const { data: viewStatusData } = useQuery(LIST_MY_PATIENT_VIEWS_STATUS);
+  const [activateView] = useMutation(ACTIVATE_PATIENT_VIEW, {
     onCompleted: () => Alert.success('Default view updated'),
     update(cache, { data: { activateView } }) {
-      const viewStatusDataList = viewStatusData.listMyViewsStatus;
-      if (!viewStatusDataList.find(v => v.id === activateView.id)) {
+      const viewStatusDataList = viewStatusData.listMyPatientViewsStatus;
+      if (!viewStatusDataList.find(v => v?.id === activateView?.id)) {
         cache.writeQuery({
-          query: LIST_MY_VIEWS_STATUS,
+          query: LIST_MY_PATIENT_VIEWS_STATUS,
           data: {
-            listMyViewsStatus: [...viewStatusDataList, activateView],
+            listMyPatientViewsStatus: [...viewStatusDataList, activateView],
           },
         });
       }
@@ -60,7 +59,7 @@ export default function ListViews() {
   const activeViewIds = useMemo(
     () =>
       R.pipe(
-        R.propOr([], 'listMyViewsStatus'),
+        R.propOr([], 'listMyPatientViewsStatus'),
         R.map(R.prop('activeViewId'))
       )(viewStatusData),
     [viewStatusData]

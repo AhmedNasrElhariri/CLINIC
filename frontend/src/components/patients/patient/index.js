@@ -16,6 +16,7 @@ import History from 'components/appointments/appointment/patient-history';
 import PatientCourses from 'components/appointments/appointment/patient-courses';
 import PatientSurgries from 'components/appointments/appointment/surgries';
 import SessionsPulses from '../sessions-pulses';
+import PatientInformationCreation from '../patient-information-creation';
 import { useQueryParams } from 'hooks';
 
 const tabs = [
@@ -28,6 +29,7 @@ const tabs = [
   'Courses',
   'Sessions Pulses',
   'Dental',
+  'Patient Information Creation',
 ];
 const Container = styled.div`
   display: flex;
@@ -121,8 +123,9 @@ function Appointment() {
                     <SessionsPulses summary={appointmentHistory} />
                   </Can>
                 )}
-                {showComp('8') && (
-                    <Dental patient={patient}/>  
+                {showComp('8') && <Dental patient={patient} />}
+                {showComp('9') && (
+                  <PatientInformationCreation patient={patient} />
                 )}
               </TabContainer>
             </Container>

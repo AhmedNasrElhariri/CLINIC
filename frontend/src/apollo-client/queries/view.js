@@ -22,6 +22,31 @@ export const ACTIVE_VIEWS = gql`
   }
 `;
 
+export const ACTIVE_PATIENT_VIEWS = gql`
+  query activePatientViews {
+    activePatientViews {
+      id
+      name
+      doctor {
+        id
+        name
+      }
+      fieldGroups {
+        id
+        name
+        order
+        fields {
+          id
+          name
+          order
+          type
+          choices
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_AREAS = gql`
   query areas {
     areas {
@@ -71,7 +96,7 @@ export const LIST_MY_PATIENT_VIEWS_SUMMARY = gql`
     listMyPatientViews {
       id
       name
-      doctor{
+      doctor {
         id
         name
       }
@@ -83,7 +108,7 @@ export const MY_PATIENT_VIEW = gql`
     MyPatientView(id: $id) {
       id
       name
-      doctor{
+      doctor {
         id
         name
       }
@@ -108,6 +133,15 @@ export const LIST_MY_VIEWS_STATUS = gql`
   }
 `;
 
+export const LIST_MY_PATIENT_VIEWS_STATUS = gql`
+  {
+    listMyPatientViewsStatus {
+      id
+      activeViewId
+    }
+  }
+`;
+
 export const CREATE_DEFAULT_VIEW = gql`
   mutation createDefaultView {
     createDefaultView
@@ -117,6 +151,15 @@ export const CREATE_DEFAULT_VIEW = gql`
 export const ACTIVATE_VIEW = gql`
   mutation activateView($viewId: ID!) {
     activateView(viewId: $viewId) {
+      id
+      activeViewId
+    }
+  }
+`;
+
+export const ACTIVATE_PATIENT_VIEW = gql`
+  mutation activatePatientView($viewId: ID!) {
+    activatePatientView(viewId: $viewId) {
       id
       activeViewId
     }

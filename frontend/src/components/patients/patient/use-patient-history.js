@@ -37,13 +37,25 @@ export default ({ patientId, appointment = {} }) => {
     () => R.pathOr([], ['appointmentHistory'])(history),
     [history]
   );
+  const patientViews = useGlobalState('activePatientViews');
+  const patientGroups = useMemo(
+    () => R.propOr([], 'fieldGroups')(patientViews[0]['0']),
+    [patientViews]
+  );
+  const patientViewFields = useMemo(
+    () => R.pipe(R.map(R.prop('fields')), R.unnest)(patientGroups),
+    [patientGroups]
+  );
   const data = useMemo(() => R.propOr([], 'data')(appointment), [appointment]);
 
   const normalizedFields = useMemo(
     () => normalizeFieldsOfGroups(groups, data),
     [data, groups]
   );
-
+  const normalizedPatientFields = useMemo(
+    () => normalizeFieldsOfGroups(patientGroups, data),
+    [data, patientGroups]
+  );
   const tabularFields = useMemo(() => {
     return viewFields.filter(
       f => f.type === NUMBER_FIELD_TYPE || f.type === TEXT_FIELD_TYPE
@@ -58,7 +70,6 @@ export default ({ patientId, appointment = {} }) => {
     () => (val, key) => tabularFieldsIds.includes(val.field.id),
     [tabularFieldsIds]
   );
-
   const tabularData = useMemo(
     () =>
       R.pipe(
@@ -105,6 +116,9 @@ export default ({ patientId, appointment = {} }) => {
     appointmentHistory,
     viewFields,
     groups,
+    patientGroups,
+    patientViewFields,
+    normalizedPatientFields,
     tabularFields,
     tabularData,
     normalizedAppointments,

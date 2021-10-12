@@ -12,6 +12,7 @@ export { default as createPatientView } from './create-patient-view';
 export { default as updatePatientView } from './update-patient-view';
 export { default as editView } from './edit-view';
 export { default as activateView } from './activate-view';
+export { default as activatePatientView } from './activate-patient-view';
 export { default as createDefaultView } from './create-default-view';
 export { default as adjustAppointment } from './adjust-appointment';
 export { default as cancelAppointment } from './cancel-appointment';
@@ -98,3 +99,4 @@ export { default as addDentalDiagnosisDefinition } from './add-dental-diagnosis-
 export { default as editDentalDiagnosisDefinition } from './edit-dental-diagnosis-definition';
 export { default as addToothDiagnosis } from './add-tooth-diagnosis';
 export { default as deleteToothDiagnosis } from './delete-tooth-diagnosis';
+export { default as updatePatientField } from './update-patient-field';

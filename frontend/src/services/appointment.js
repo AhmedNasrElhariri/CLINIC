@@ -59,7 +59,7 @@ export const getFormInitValues = normFields => {
 
 export const mapFormValueToAppointmentData = (normFields, fromValue) => {
   return Object.keys(normFields).map(id => ({
-    id: normFields[id].id,
+    id: normFields[id].id || id,
     value: fromValue[id],
     fieldId: id,
   }));
@@ -179,9 +179,9 @@ export const sortAppointmentsByDate = appointments => {
 };
 
 export const sortAppointmentsByUpdatedAt = appointments => {
-  return R.sort((a, b) => moment(a.updatedAt).valueOf() - moment(b.updatedAt).valueOf())(
-    appointments
-  );
+  return R.sort(
+    (a, b) => moment(a.updatedAt).valueOf() - moment(b.updatedAt).valueOf()
+  )(appointments);
 };
 
 export const isUrgent = appointment => {
