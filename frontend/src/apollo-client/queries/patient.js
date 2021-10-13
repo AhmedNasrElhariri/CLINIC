@@ -206,3 +206,19 @@ export const GET_PATIENT_FIELD = gql`
     }
   }
 `;
+
+export const GET_USER_PATIENT_FIELD = gql`
+  {
+    getUserPatientFields {
+      id
+      value
+      patient {
+        id
+      }
+      field {
+        id
+        name
+      }
+    }
+  }
+`;

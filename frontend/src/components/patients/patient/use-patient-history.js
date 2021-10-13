@@ -8,7 +8,10 @@ import {
 
 import useGlobalState from 'state';
 import { useQuery } from '@apollo/client';
-import { GET_APPOINTMENT_HISTORY } from 'apollo-client/queries';
+import {
+  GET_APPOINTMENT_HISTORY,
+  GET_USER_PATIENT_FIELD,
+} from 'apollo-client/queries';
 import { NUMBER_FIELD_TYPE, TEXT_FIELD_TYPE } from 'utils/constants';
 
 export default ({ patientId, appointment = {} }) => {
@@ -110,13 +113,18 @@ export default ({ patientId, appointment = {} }) => {
       })),
     [appointmentHistory, groups]
   );
-
+  const { data: patientFieldData } = useQuery(GET_USER_PATIENT_FIELD);
+  const userPatientFields = useMemo(
+    () => R.propOr([], 'getUserPatientFields')(patientFieldData),
+    [patientFieldData]
+  );
   return {
     normalizedFields,
     appointmentHistory,
     viewFields,
     groups,
     patientGroups,
+    userPatientFields,
     patientViewFields,
     normalizedPatientFields,
     tabularFields,

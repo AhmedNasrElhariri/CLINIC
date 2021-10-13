@@ -6,6 +6,7 @@ export const LIST_PATIENT_REPORTS = gql`
       id
       name
       body
+      context
     }
   }
 `;
@@ -16,6 +17,7 @@ export const ADD_PATIENT_REPORT = gql`
       id
       name
       body
+      context
     }
   }
 `;
@@ -26,6 +28,7 @@ export const EDIT_PATIENT_REPORT = gql`
       id
       name
       body
+      context
     }
   }
 `;

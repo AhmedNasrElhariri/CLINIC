@@ -4,6 +4,7 @@ import { trim } from 'lodash';
 import 'quill-mention';
 import 'quill-mention/dist/quill.mention.css';
 import 'react-quill/dist/quill.snow.css';
+
 import styled from 'styled-components';
 
 const ReactQuillModified = styled(ReactQuill)`
@@ -19,7 +20,7 @@ const ReactQuillModified = styled(ReactQuill)`
       margin-left: 10px;
     }
   }
-  @media print and (max-width: 499px){
+  @media print and (max-width: 499px) {
     @page {
       margin-right: ${props => props.mr}px;
       margin-top: ${props => props.mt}px;
@@ -27,7 +28,7 @@ const ReactQuillModified = styled(ReactQuill)`
       margin-left: ${props => props.ml}px;
     }
   }
-  @media print and (max-width: 595 px) and (min-width: 500px){
+  @media print and (max-width: 595 px) and (min-width: 500px) {
     @page {
       margin-right: ${props => props.mr}px;
       margin-top: ${props => props.mt}px;
@@ -35,7 +36,7 @@ const ReactQuillModified = styled(ReactQuill)`
       margin-left: ${props => props.ml}px;
     }
   }
-  @media print and (max-width: 791px) and (min-width: 596px){
+  @media print and (max-width: 791px) and (min-width: 596px) {
     @page {
       margin-right: ${props => props.mr}px;
       margin-top: ${props => props.mt}px;
@@ -53,7 +54,6 @@ const ReactQuillModified = styled(ReactQuill)`
   }
 `;
 
-const toolbarOptions = ['bold'];
 class Editor extends Component {
   constructor(props) {
     super(props);
@@ -100,7 +100,6 @@ class Editor extends Component {
       [{ list: 'ordered' }, { list: 'bullet' }],
       ['link', 'image'],
       [{ indent: '-1' }, { indent: '+1' }],
-      [{ direction: 'rtl' }],
     ],
     mention: {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,

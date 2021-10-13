@@ -1,9 +1,9 @@
 import { prisma } from '@';
 
-const getPatientFields = (_, { patientId }, { organizationId }) => {
+const getUserPatientFields = (_, __, { userId }) => {
   return prisma.patientField.findMany({
     where: {
-      patientId: patientId,
+      userId,
     },
     include: {
       patient: true,
@@ -12,4 +12,4 @@ const getPatientFields = (_, { patientId }, { organizationId }) => {
   });
 };
 
-export default getPatientFields;
+export default getUserPatientFields;

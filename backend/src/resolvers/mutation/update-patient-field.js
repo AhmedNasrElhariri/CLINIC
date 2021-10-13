@@ -11,6 +11,11 @@ const updatePatientField = async (_, { patientId, data }, { userId }) => {
           id: patientId,
         },
       },
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
     },
     create: {
       value,
@@ -18,6 +23,11 @@ const updatePatientField = async (_, { patientId, data }, { userId }) => {
       patient: {
         connect: {
           id: patientId,
+        },
+      },
+      user: {
+        connect: {
+          id: userId,
         },
       },
     },

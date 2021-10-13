@@ -112,6 +112,7 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   getPatientField(patientId: ID!): [PatientField!]
+  getUserPatientFields: [PatientField!]
   listMyViews: [View!]
   MyPatientView(id: ID!): PatientView
   activeViews: [View!]
@@ -166,6 +167,7 @@ type Query {
   myPatientReports: [PatientReport!]
   getActions: [String!]
   getPulseControl: PulseControl
+  getPageSetup: PageSetup!
   listBranches: [Branch!]
   listSpecialties: [Specialty!]
   listUsers: [User!]
@@ -292,6 +294,7 @@ type Mutation {
   ): SessionDefinition
   addPrice(price: PriceInput!): Price
   addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
+  addPageSetup(pageSetup: PageSetupInput!): PageSetup!
   editPrice(price: PriceInput!): Price
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
@@ -616,6 +619,22 @@ type PulseControl {
 input PulseControlInput {
   before: Int!
   after: Int!
+}
+
+type PageSetup {
+  id: ID!
+  top: Int!
+  right: Int!
+  bottom: Int!
+  left: Int!
+  type: String!
+}
+input PageSetupInput {
+  top: Int!
+  right: Int!
+  bottom: Int!
+  left: Int!
+  type: String!
 }
 
 input AppointmentInput {
@@ -1468,12 +1487,14 @@ type PatientReport {
   id: ID!
   name: String!
   body: String!
+  context: String!
 }
 
 input PatientReportInput {
   id: ID
   name: String!
   body: String!
+  context: String!
 }
 
 ########################### Course Definition ##################################

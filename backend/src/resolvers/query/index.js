@@ -81,3 +81,5 @@ export { default as myAllToothTransactions } from './my-all-tooth-transactions';
 export { default as myTooths } from './my-tooths';
 export { default as listOrganizationDoctors } from './list-organization-doctors';
 export { default as getPatientField } from './get-patient-field';
+export { default as getUserPatientFields } from './get-user-patient-fields';
+export { default as getPageSetup } from './get-page-setup';
