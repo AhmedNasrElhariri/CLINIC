@@ -16,6 +16,8 @@ export { default as cancelAppointment } from './cancel-appointment';
 export { default as singleUpload } from './single-upload';
 export { default as multipleUpload } from './multiple-upload';
 export { default as createSnippet } from './create-snippet';
+export { default as updateSnippet } from './update-snippet';
+export { default as deleteSnippet } from './delete-snippet';
 export { default as createMedicineHistory } from './create-medicine-history';
 export { default as createFamilyHistory } from './create-family-history';
 export { default as createExpense } from './create-expense';

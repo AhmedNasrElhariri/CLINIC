@@ -2,12 +2,25 @@ import React, { useState, useCallback } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
-
-import { MY_SNIPPETS, CREATE_SNIPPET } from 'apollo-client/queries';
+import { useForm } from 'hooks';
+import {
+  MY_SNIPPETS,
+  CREATE_SNIPPET,
+  UPDATE_SNIPPET,
+  DELETE_SNIPPET,
+} from 'apollo-client/queries';
 import { NewSnippet, MainContainer, CRButton, ListSnippets } from 'components';
+
+const initialValues = {
+  title: '',
+  body: '',
+};
 
 export default function Snippets() {
   const [visible, setVisible] = useState(false);
+  const { formValue, setFormValue, type, setType } = useForm({
+    initValue: initialValues,
+  });
   const { data } = useQuery(MY_SNIPPETS);
   const [create] = useMutation(CREATE_SNIPPET, {
     onCompleted: () => {
@@ -22,28 +35,84 @@ export default function Snippets() {
       });
     },
   });
+  const [update] = useMutation(UPDATE_SNIPPET, {
+    onCompleted: () => {
+      Alert.success('Snippet has been updated successfully');
+      setVisible(false);
+    },
+  });
 
-  const showModal = useCallback(() => setVisible(true), []);
+  const [deleteSnippet] = useMutation(DELETE_SNIPPET, {
+    onCompleted: () => {
+      Alert.success('Snippet has been deleted successfully');
+      setVisible(false);
+    },
+    update(cache, { data: { deleteSnippet: snippet } }) {
+      const { mySnippets } = cache.readQuery({ query: MY_SNIPPETS });
+      cache.writeQuery({
+        query: MY_SNIPPETS,
+        data: { mySnippets: mySnippets.filter(s => s.id != snippet.id) },
+      });
+    },
+  });
+
   const hideModal = useCallback(() => setVisible(false), []);
-  const onCreate = useCallback(
-    snippet =>
+  const onCreate = useCallback(() => {
+    if (type === 'create') {
       create({
         variables: {
-          snippet,
+          snippet: formValue,
         },
-      }),
-    [create]
+      });
+    } else if (type === 'edit') {
+      update({
+        variables: {
+          snippet: formValue,
+        },
+      });
+    } else if (type === 'delete') {
+      deleteSnippet({
+        variables: {
+          id: formValue?.id,
+        },
+      });
+    }
+  }, [type, create, update, deleteSnippet, formValue]);
+  console.log(formValue);
+  const handleClickCreate = useCallback(() => {
+    setType('create');
+    setFormValue(initialValues);
+    setVisible(true);
+  }, [setVisible, setFormValue, setType]);
+
+  const handleClickEdit = useCallback(
+    data => {
+      const snippet = R.pick(['id', 'title', 'body'])(data);
+      setType('edit');
+      setFormValue(snippet);
+      setVisible(true);
+    },
+    [setVisible, setFormValue, setType]
+  );
+  const handleClickDelete = useCallback(
+    data => {
+      const snippet = R.pick(['id'])(data);
+      setType('delete');
+      setFormValue(snippet);
+      setVisible(true);
+    },
+    [setVisible, setFormValue, setType]
   );
 
   const snippets = R.propOr([], 'mySnippets')(data);
-
+  console.log(type, 'tt', formValue);
   return (
     <>
       <MainContainer
         title="Snippets"
         nobody
         more={
-          <CRButton onClick={showModal} variant="primary">
+          <CRButton onClick={handleClickCreate} variant="primary">
             New Snippet
           </CRButton>
         }
@@ -53,8 +122,15 @@ export default function Snippets() {
         show={visible}
         onHide={hideModal}
         onCancel={hideModal}
+        type={type}
+        formValue={formValue}
+        onChange={setFormValue}
       />
-      <ListSnippets snippets={snippets} />
+      <ListSnippets
+        snippets={snippets}
+        onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
+      />
     </>
   );
 }

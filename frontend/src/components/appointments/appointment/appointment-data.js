@@ -39,7 +39,6 @@ import Images from './appointment-images';
 import { useConfigurations } from 'hooks';
 import Pulses from './pulses';
 
-
 const renderItem = ({ type, id, name, choices = [], ...props }) => {
   switch (type) {
     case NUMBER_FIELD_TYPE:
@@ -153,7 +152,7 @@ function AppointmentData({
     [appointmentFormValue, onChange, categoryLabForm]
   );
   const imageId = categoryImageForm?.categoryId;
-  const { imagesDefinition } = useImageDefinition({ categoryId:imageId });
+  const { imagesDefinition } = useImageDefinition({ categoryId: imageId });
   const handleImagesChange = useCallback(
     imageIds => {
       const cateImages = imagesDefinition.map(i => i.id);
@@ -284,7 +283,7 @@ function AppointmentData({
 
           <SectionContainer title="Notes" name="Notes">
             <Form formValue={appointmentFormValue} onChange={onChange}>
-              <CRTextArea name="notes" disabled={disabled} />
+              <CRTextArea name="notes" disabled={disabled} importable />
             </Form>
           </SectionContainer>
           <SectionContainer title="Pictures" name="Pictures">

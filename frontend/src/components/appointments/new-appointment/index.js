@@ -254,25 +254,13 @@ const NewAppointment = ({ show, onHide }) => {
                     data={updatedSessionsDefinition}
                   />
                 )}
-                <CRDatePicker
-                  label="Date"
-                  block
-                  name="date"
-                  disabledDate={isBeforeToday}
+                <CRBrancheTree
+                  formValue={formValue}
+                  onChange={setFormValue}
+                  showUserAndOrganization={false}
+                  NotAutoHideNested={false}
+                  action={ACTIONS.Create_Appointment}
                 />
-                {!formValue.waiting && formValue?.userId && (
-                  <CRTimePicker
-                    label="Time"
-                    block
-                    name="time"
-                    disabledMinutes={minute =>
-                      disabledMinutes(minute, moment(formValue.time).hours())
-                    }
-                    hideHours={hideHours}
-                    startHour={8}
-                    onSelectTrigger
-                  />
-                )}
               </LeftContainer>
               <RightContainer>
                 <CRSelectInput
@@ -280,7 +268,9 @@ const NewAppointment = ({ show, onHide }) => {
                   onSearch={v => setPatientSearchValue(v)}
                   placeholder="Name / Phone no"
                   data={searchedPatients}
-                  onChange={val => setFormValue({ ...formValue, patientId: val })}
+                  onChange={val =>
+                    setFormValue({ ...formValue, patientId: val })
+                  }
                   value={formValue.patientId}
                   searchBy={searchBy}
                   virtualized={false}
@@ -299,13 +289,25 @@ const NewAppointment = ({ show, onHide }) => {
                     </H5>
                   </Div>
                 </CRSelectInput>
-                <CRBrancheTree
-                  formValue={formValue}
-                  onChange={setFormValue}
-                  showUserAndOrganization={false}
-                  NotAutoHideNested={false}
-                  action={ACTIONS.Create_Appointment}
+                <CRDatePicker
+                  label="Date"
+                  block
+                  name="date"
+                  disabledDate={isBeforeToday}
                 />
+                {!formValue.waiting && formValue?.userId && (
+                  <CRTimePicker
+                    label="Time"
+                    block
+                    name="time"
+                    disabledMinutes={minute =>
+                      disabledMinutes(minute, moment(formValue.time).hours())
+                    }
+                    hideHours={hideHours}
+                    startHour={8}
+                    onSelectTrigger
+                  />
+                )}{' '}
               </RightContainer>
             </Container>
             <Checkbox
