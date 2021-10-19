@@ -125,8 +125,8 @@ export const LIST_TODAY_APPOINTMENTS = gql`
 `;
 
 export const LIST_PATIENT_APPOINTMENTS = gql`
-  query ($patientId: ID!) {
-    patientAppointments(patientId: $patientId) {
+  query ($patientId: ID!, $status: AppointmentStatus!) {
+    patientAppointments(patientId: $patientId, status: $status) {
       id
       type
       date
@@ -138,6 +138,13 @@ export const LIST_PATIENT_APPOINTMENTS = gql`
         age
         sex
         phoneNo
+      }
+      prescription {
+        medicineId
+        dose
+        timingId
+        duration
+        period
       }
     }
   }
