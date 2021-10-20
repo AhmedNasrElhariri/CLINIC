@@ -2,12 +2,10 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
 import { Form } from 'rsuite';
-import { H3, Div, CRButton, CRNumberInput, CRSelectInput } from 'components';
-// import SessionDefinitions from '../session-definations';
+import { H3, Div, CRButton, CRNumberInput } from 'components';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
-import { useAuth, useConfigurations } from 'hooks';
-import { get } from './../../../services/local-storage';
-import { POSITIONS } from 'utils/constants';
+import { useConfigurations } from 'hooks';
+
 const initialValues = {
   sessions: [],
   enableInvoiceCounter: false,
@@ -108,7 +106,6 @@ const Configurations = () => {
     });
   }, [pulsesValue, addPulsesControl]);
   const handlePageSetupSave = useCallback(() => {
-    console.log(pageSetup, 'pSH');
     addPageSetup({
       variables: {
         pageSetup: pageSetup,
@@ -194,14 +191,6 @@ const Configurations = () => {
           </Div>
         </Div>
         <Form formValue={pageSetup} onChange={setPageSetup}>
-          <CRSelectInput
-            name="type"
-            label="Size Type"
-            data={pageSizeTypes}
-            placement="topStart"
-            style={{ width: '300px' }}
-            block
-          />
           <Div display="flex" justifyContent="space-between">
             <CRNumberInput
               name="top"

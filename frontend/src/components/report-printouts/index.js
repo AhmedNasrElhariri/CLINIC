@@ -16,6 +16,17 @@ import {
   usePatientView,
 } from 'hooks';
 import Editor from 'components/settings/static/editor';
+const StyledDiv = styled.pre`
+  direction: rtl;
+  text-align: right;
+
+  @media print and (max-width: 499px) {
+    margin-right: ${props => props.mr}px;
+    margin-top: ${props => props.mt}px;
+    margin-bottom: ${props => props.mb}px;
+    margin-left: ${props => props.ml}px;
+  }
+`;
 const initValue = { patientReport: {}, body: '', context: '', data: {} };
 const contextData = [
   { id: 'patient', name: 'Patient' },
@@ -132,7 +143,6 @@ function ReportPrintout() {
         const name = 'patient_' + f.field.name;
         const val = f.value;
         const obj = { name: name, value: val };
-
         fields.push(obj);
       });
     }
@@ -212,12 +222,18 @@ function ReportPrintout() {
         </Div>
       </Form>
       <Div style={{ overflow: 'hidden', height: '0px' }}>
-        <Div ref={ref} m={50}>
+        <StyledDiv
+          ref={ref}
+          mt={pageSetupData?.top || 0}
+          mr={pageSetupData?.right || 0}
+          mb={pageSetupData?.bottom || 0}
+          ml={pageSetupData?.left || 0}
+        >
           <pre
             dangerouslySetInnerHTML={{ __html: formValue.body }}
             style={{ direction: 'rtl', textAlign: 'right' }}
           ></pre>
-        </Div>
+        </StyledDiv>
       </Div>
     </>
   );

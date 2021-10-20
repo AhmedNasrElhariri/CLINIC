@@ -12,46 +12,6 @@ const ReactQuillModified = styled(ReactQuill)`
     direction: rtl;
     text-align: right;
   }
-  @media print {
-    @page {
-      margin-right: 10px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      margin-left: 10px;
-    }
-  }
-  @media print and (max-width: 499px) {
-    @page {
-      margin-right: ${props => props.mr}px;
-      margin-top: ${props => props.mt}px;
-      margin-bottom: ${props => props.mb}px;
-      margin-left: ${props => props.ml}px;
-    }
-  }
-  @media print and (max-width: 595 px) and (min-width: 500px) {
-    @page {
-      margin-right: ${props => props.mr}px;
-      margin-top: ${props => props.mt}px;
-      margin-bottom: ${props => props.mb}px;
-      margin-left: ${props => props.ml}px;
-    }
-  }
-  @media print and (max-width: 791px) and (min-width: 596px) {
-    @page {
-      margin-right: ${props => props.mr}px;
-      margin-top: ${props => props.mt}px;
-      margin-bottom: ${props => props.mb}px;
-      margin-left: ${props => props.ml}px;
-    }
-  }
-  @media print and (max-width: 842px) and (min-width: 792px) {
-    @page {
-      margin-right: ${props => props.mr}px;
-      margin-top: ${props => props.mt}px;
-      margin-bottom: ${props => props.mb}px;
-      margin-left: ${props => props.ml}px;
-    }
-  }
 `;
 
 class Editor extends Component {
@@ -135,11 +95,11 @@ class Editor extends Component {
         formats={this.formats}
         value={value}
         onChange={this.handleContentChange}
-        mt={pageSetupData.top || 0}
-        mr={pageSetupData.right || 0}
-        mb={pageSetupData.bottom || 0}
-        ml={pageSetupData.left || 0}
-        type={pageSetupData.type || 'Letter'}
+        mt={pageSetupData?.top || 0}
+        mr={pageSetupData?.right || 0}
+        mb={pageSetupData?.bottom || 0}
+        ml={pageSetupData?.left || 0}
+        type={pageSetupData?.type || 'Letter'}
       ></ReactQuillModified>
     );
   }
