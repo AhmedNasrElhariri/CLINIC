@@ -46,6 +46,11 @@ export const LIST_PATIENT_SURGERIES = gql`
       date
       fees
       hospitalFees
+      anesthesia
+      anesthesiaDoctorName
+      assistantFees
+      anesthesiaFees
+      others
       patient {
         id
         name
