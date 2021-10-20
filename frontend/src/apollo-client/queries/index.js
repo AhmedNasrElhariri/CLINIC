@@ -25,3 +25,5 @@ export * from './bank-definition';
 export * from './company-definition';
 export * from './company-session-definition';
 export * from './dental-diagnosis';
+export * from './material';
+export * from './face-operations';

@@ -136,6 +136,7 @@ type Query {
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   myImagesDefinition(categoryId: ID): [ImageDefinition!]
+  myMaterialsDefinition: [MaterialDefinition!]
   myDentalDiagnosissDefinition: [DentalDiagnosisDefinition!]
   myToothTransactions(
     toothNumber: Int!
@@ -144,6 +145,8 @@ type Query {
   ): [ToothTransaction!]
   myAllToothTransactions(patientId: ID!): [ToothTransaction!]
   myTooths(patientId: ID): [Tooth!]
+  myFacePartationOperations(patientId: ID! facePartationNumber:Int!):[FaceOperation!]
+  myFaceOperations(patientId: ID!):[FaceOperation!]
   listOrganizationDoctors: [User!]
   mySessionsDefinition: [SessionDefinition!]
   myPrices: [Price!]
@@ -264,6 +267,14 @@ type Mutation {
   editTiming(timing: TimingInput!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  addMaterialDefinition(
+    materialDefinition: MaterialInputDefinition!
+  ): MaterialDefinition
+  addFaceOperation(faceOperation: FaceOperationInput!): FacePartation
+  deleteFaceOperation(id: ID!):FaceOperation
+  editMaterialDefinition(
+    materialDefinition: MaterialInputDefinition!
+  ): MaterialDefinition
   addDentalDiagnosisDefinition(
     dentalDiagnosisDefinition: DentalDiagnosisInputDefinition!
   ): DentalDiagnosisDefinition
@@ -1218,6 +1229,44 @@ type ImageCategory {
 input ImageInputCategory {
   id: ID
   name: String!
+}
+
+########################### Material Definition ##################################
+
+type MaterialDefinition {
+  id: ID!
+  name: String!
+}
+
+input MaterialInputDefinition {
+  id: ID
+  name: String!
+}
+
+########################### Face Operation ##################################
+
+input FaceOperationInput {
+  id: ID
+  materialId: ID!
+  patientId: ID!
+  facePartationNumber: Int!
+  units: String!
+  facePartationName: String!
+}
+
+type FacePartation {
+  id: ID!
+  number: Int!
+  name: String!
+  patient: Patient!
+}
+type FaceOperation {
+  id: ID!
+  date: Date!
+  units: String!
+  material: MaterialDefinition!
+  patient: Patient!
+  facePartation: FacePartation!
 }
 
 ########################### DentalDiagnosis Definition ##################################

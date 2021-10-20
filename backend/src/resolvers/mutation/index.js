@@ -96,3 +96,7 @@ export { default as addDentalDiagnosisDefinition } from './add-dental-diagnosis-
 export { default as editDentalDiagnosisDefinition } from './edit-dental-diagnosis-definition';
 export { default as addToothDiagnosis } from './add-tooth-diagnosis';
 export { default as deleteToothDiagnosis } from './delete-tooth-diagnosis';
+export { default as addMaterialDefinition } from './add-material-definition';
+export { default as editMaterialDefinition } from './edit-material-definition';
+export { default as addFaceOperation } from './add-face-operation';
+export { default as deleteFaceOperation } from './delete-face-operation';
