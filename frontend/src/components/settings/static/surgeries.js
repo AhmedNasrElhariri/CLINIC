@@ -7,24 +7,40 @@ import NewSurgery from './new-surgery';
 import { Can } from 'components/user/can';
 import { ACTIONS } from 'utils/constants';
 import { useForm, useModal, useSurgeries, useAppointments } from 'hooks';
-
+import { Validate } from 'services/form';
+import { Schema } from 'rsuite';
 const initValue = { name: '', branchId: null, specialtyId: null, userId: null };
-
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('surgery name is required'),
+});
 function Surgeries() {
   const { visible, open, close } = useModal();
   const { filterBranches } = useAppointments({
     action: ACTIONS.Create_Surgery,
   });
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { defineSurgery, editSurgery, surgeries } = useSurgeries({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -46,7 +62,7 @@ function Surgeries() {
   );
 
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === 'create' && Validate(model, formValue)) {
       defineSurgery({
         variables: {
           surgery: formValue,
@@ -76,6 +92,10 @@ function Surgeries() {
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <Filter
         appointments={surgeries}

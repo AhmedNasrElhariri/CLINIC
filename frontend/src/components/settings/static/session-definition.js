@@ -1,32 +1,49 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewSessionDefinition from './new-session-definition';
 import ListSessionsDefinition from './list-sessions-definition';
 import { useForm, useSessionDefinition } from 'hooks';
 import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
+import { Schema } from 'rsuite';
 
 const initValue = {
   name: '',
   price: 0,
   duration: 5,
 };
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Session name is required'),
+  price: NumberType().range(1, 1000000).isRequired('price is required'),
+});
 
 const SessionDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addSessionDefinition, sessionsDefinition, editSessionDefinition } =
     useSessionDefinition({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -77,6 +94,10 @@ const SessionDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListSessionsDefinition
         sessions={sessionsDefinition}

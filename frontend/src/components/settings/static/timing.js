@@ -5,21 +5,40 @@ import { Div, CRButton } from 'components';
 import NewTiming from './new-timing';
 import ListTiming from './list-timing';
 import { useForm, useModal, useTimings } from 'hooks';
+import { Schema } from 'rsuite';
 
 const initValue = { name: '', englishPrintValue: '', arabicPrintValue: '' };
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Timing name is required'),
+  englishPrintValue: StringType().isRequired('english Print Value is required'),
+  arabicPrintValue: StringType().isRequired('Arabic Print Value is required'),
+});
 
 const Timing = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addTiming, timings, editTiming } = useTimings({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -74,6 +93,10 @@ const Timing = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListTiming timings={timings} onEdit={handleClickEdit} />
     </>

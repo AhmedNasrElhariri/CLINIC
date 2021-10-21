@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
 import * as moment from 'moment';
 import { ACTIONS } from 'utils/constants';
+import { Schema } from 'rsuite';
 import {
   CREATE_APPOINTMENT,
   LIST_APPOINTMENTS,
@@ -12,7 +13,7 @@ import {
   APPOINTMENTS_DAY_COUNT,
   LIST_BRANCHES,
 } from 'apollo-client/queries';
-import useAppointments from './appointments';
+import { useForm } from 'hooks';
 import usePatients from './patients';
 
 const initialValues = {
@@ -26,9 +27,18 @@ const initialValues = {
   time: null,
   waiting: false,
 };
+const { StringType, DateType } = Schema.Types;
+const model = Schema.Model({
+  type: StringType().isRequired('appointment type is required'),
+  date: DateType().isRequired('date is required'),
+});
 
 const useNewAppointment = ({ onCreate, date } = {}) => {
-  const [formValue, setFormValue] = useState(initialValues);
+  const { formValue, setFormValue, checkResult, validate, show, setShow } =
+    useForm({
+      initValue: initialValues,
+      model,
+    });
   const { patientsSummary: patients } = usePatients();
 
   const { data } = useQuery(LIST_BRANCHES_TREE, {
@@ -39,6 +49,7 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
   const [createAppointment, { loading }] = useMutation(CREATE_APPOINTMENT, {
     onCompleted: () => {
       setFormValue(initialValues);
+      setShow(false);
       Alert.success('Appointment Created Successfully');
       onCreate && onCreate();
     },
@@ -89,6 +100,10 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
       doctors,
       formValue,
       setFormValue,
+      checkResult,
+      validate,
+      show,
+      setShow,
       loading,
       organizationBranches,
       createAppointment: appointment =>
@@ -100,6 +115,11 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
       createAppointment,
       doctors,
       formValue,
+      setFormValue,
+      checkResult,
+      validate,
+      show,
+      setShow,
       patients,
       specialties,
       loading,

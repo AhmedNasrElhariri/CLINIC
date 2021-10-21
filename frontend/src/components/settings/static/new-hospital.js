@@ -1,29 +1,53 @@
-import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
+import React, { useMemo, useState } from 'react';
+import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
-import { CRModal, CRTextInput, CRTextArea ,CRBrancheTree} from 'components';
+import { CRModal, CRTextInput, CRTextArea, CRBrancheTree } from 'components';
 
-const model = Schema.Model({});
-
-function NewHospital({ formValue, onChange, type, visible, onOk, onClose }) {
+function NewHospital({
+  formValue,
+  onChange,
+  type,
+  visible,
+  onOk,
+  onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
+}) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Hospital' : 'Edit Hospital'),
     [type]
   );
-
   return (
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput label="Name" name="name" block />
+      <Form formValue={formValue} onChange={onChange} fluid>
+        <CRTextInput
+          label="Name"
+          name="name"
+          block
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
+        />
         <CRTextInput label="Phone No" name="phoneNo" block />
         <CRTextArea label="Address" name="address" block />
-        <CRBrancheTree formValue={formValue} onChange={onChange} action={ACTIONS.Create_Hospital}/>
+        <CRBrancheTree
+          formValue={formValue}
+          onChange={onChange}
+          action={ACTIONS.Create_Hospital}
+        />
       </Form>
     </CRModal>
   );

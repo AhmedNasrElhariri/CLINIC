@@ -1,32 +1,45 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewImageCategory from './new-image-category';
 import ListImagesCategory from './list-images-category';
 import { useImageCategory, useModal, useForm } from 'hooks';
+import { Schema } from 'rsuite';
 
 const initValue = { name: '' };
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('image category name is required'),
+});
 
 const ImageCategory = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
-    initValue,
-  });
   const {
-    addImageCategory,
-    imagesCategory,
-    editImageCategory,
-  } = useImageCategory({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
+    initValue,
+    model,
   });
+  const { addImageCategory, imagesCategory, editImageCategory } =
+    useImageCategory({
+      onCreate: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+    });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -62,11 +75,7 @@ const ImageCategory = () => {
   return (
     <>
       <Div textAlign="right">
-        <CRButton
-          variant="primary"
-          onClick={handleClickCreate}
-          mt={2}
-        >
+        <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
           Add New Image Category+
         </CRButton>
       </Div>
@@ -77,6 +86,10 @@ const ImageCategory = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListImagesCategory
         imagesCategory={imagesCategory}

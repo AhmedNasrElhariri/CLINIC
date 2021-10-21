@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as moment from 'moment';
-import { Alert, Form, Checkbox, Schema } from 'rsuite';
+import { Alert, Form, Checkbox } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import {
   CRSelectInput,
@@ -12,9 +12,7 @@ import {
   NewPatient,
   CRBrancheTree,
 } from 'components';
-import { APPOINTMENTS_DAY_COUNT } from 'apollo-client/queries';
 import { isBeforeToday } from 'utils/date';
-import { isValid } from 'services/form';
 import {
   ModalBodyStyled,
   ContainerStyled,
@@ -38,19 +36,10 @@ import {
   useSessionDefinition,
 } from 'hooks';
 
-const { StringType, DateType } = Schema.Types;
-
 const appointmentTypes = getCreatableApptTypes().map(type => ({
   id: type,
   name: type,
 }));
-
-const model = Schema.Model({
-  type: StringType().isRequired('Appointment Type is required'),
-  patientId: StringType().isRequired('Patient Type is required'),
-  userId: StringType().isRequired('Doctor Type is required'),
-  date: DateType().isRequired('Day Type is required'),
-});
 
 const initialValues = {
   type: 'Examination',
@@ -70,13 +59,17 @@ const searchBy = (text, _, patient) => {
   return filterPatientBy(text, patient);
 };
 
-const NewAppointment = ({ show, onHide }) => {
+const NewAppointment = ({ show: showModel, onHide }) => {
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const {
     branches,
     formValue,
     setFormValue,
+    checkResult,
+    validate,
+    show,
+    setShow,
     createAppointment,
     patients,
     loading,
@@ -115,7 +108,8 @@ const NewAppointment = ({ show, onHide }) => {
     appointments: appointmentsCount?.appointments || [],
   });
   const handleCreate = useCallback(() => {
-    if (!isValid(model, formValue)) {
+    setShow(true);
+    if (!validate) {
       Alert.error('Complete Required Fields');
       return;
     }
@@ -183,7 +177,7 @@ const NewAppointment = ({ show, onHide }) => {
         onHide={close}
       />
       <CRModal
-        show={show}
+        show={showModel}
         CRContainer={SecondContainerStyled}
         CRBody={SecondModalBodyStyled}
         noFooter
@@ -207,7 +201,7 @@ const NewAppointment = ({ show, onHide }) => {
         </SecondRowContainer>
       </CRModal>
       <CRModal
-        show={show}
+        show={showModel}
         header="New Appointment"
         CRContainer={ContainerStyled}
         CRBody={ModalBodyStyled}
@@ -223,17 +217,17 @@ const NewAppointment = ({ show, onHide }) => {
         }}
       >
         <Div>
-          <Form
-            fluid
-            model={model}
-            formValue={formValue}
-            onChange={setFormValue}
-          >
+          <Form fluid formValue={formValue} onChange={setFormValue}>
             <Container>
               <LeftContainer>
                 <CRSelectInput
                   label="Examination/Followup"
                   name="type"
+                  errorMessage={
+                    show && checkResult['type']?.hasError
+                      ? checkResult['type']?.errorMessage
+                      : ''
+                  }
                   block
                   data={appointmentTypes}
                 />
@@ -258,6 +252,11 @@ const NewAppointment = ({ show, onHide }) => {
                   label="Date"
                   block
                   name="date"
+                  errorMessage={
+                    show && checkResult['date']?.hasError
+                      ? checkResult['date']?.errorMessage
+                      : ''
+                  }
                   disabledDate={isBeforeToday}
                 />
                 {!formValue.waiting && formValue?.userId && (
@@ -280,7 +279,9 @@ const NewAppointment = ({ show, onHide }) => {
                   onSearch={v => setPatientSearchValue(v)}
                   placeholder="Name / Phone no"
                   data={searchedPatients}
-                  onChange={val => setFormValue({ ...formValue, patientId: val })}
+                  onChange={val =>
+                    setFormValue({ ...formValue, patientId: val })
+                  }
                   value={formValue.patientId}
                   searchBy={searchBy}
                   virtualized={false}

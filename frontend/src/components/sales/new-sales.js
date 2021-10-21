@@ -31,6 +31,7 @@ function NewSales({
   handleAdd,
   handleDelete,
   selectedItems,
+  loading
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Sales' : 'Edit Sales '),
@@ -54,6 +55,7 @@ function NewSales({
     <CRModal
       show={visible}
       header={header}
+      loading={loading}
       onOk={onOk}
       onHide={onClose}
       onCancel={onClose}

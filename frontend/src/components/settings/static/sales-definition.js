@@ -5,9 +5,8 @@ import { Div, CRButton } from 'components';
 import NewSalesDefinition from './new-sales-definition';
 import ListSalesesDefinition from './list-saleses-definition';
 import { useForm, useSalesDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
-
 const initValue = {
   name: '',
   price: 0,
@@ -19,10 +18,27 @@ const initValue = {
   userId: null,
 };
 
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Sales name is required'),
+  price: NumberType().range(1, 1000000).isRequired('price is required'),
+  cost: NumberType().range(1, 1000000).isRequired('units is required'),
+});
+
 const SalesDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const {
     addSalesDefinition,
@@ -32,10 +48,12 @@ const SalesDefinition = () => {
   } = useSalesDefinition({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -83,7 +101,7 @@ const SalesDefinition = () => {
           salesDefinition: updatedFormValue,
         },
       });
-    } else {
+    } else if (type === 'edit') {
       editSalesDefinition({
         variables: {
           salesDefinition: formValue,
@@ -112,6 +130,10 @@ const SalesDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListSalesesDefinition
         saless={salesesDefinition}

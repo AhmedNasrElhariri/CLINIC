@@ -1,18 +1,13 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 import ReactQuill from 'react-quill';
-
-import Quill from "quill";
 
 import Label from '../../widgets/label';
 
 import { CRModal, CRTextInput } from 'components';
 import 'react-quill/dist/quill.snow.css';
 
-const model = Schema.Model({});
-
 // const BlockEmbed = Quill.import("blots/block/embed");
-  
 
 //   class CustomCode extends BlockEmbed {
 //     static create(value) {
@@ -22,35 +17,33 @@ const model = Schema.Model({});
 //       node.appendChild(code);
 //       return node;
 //     }
-  
+
 //     static value(node) {
 //       return node.textContent;
 //     }
 //   }
-  
-//   CustomCode.blotName = "code-custom";
-  // ReactQuill.tagName = "pre";
-  // ReactQuill.className = "ql-syntax";
-  
-  // Quill.register(CustomCode);
-  
-  /*
-   * In order to try out the "custom code" functionality, click
-   * "Code" button in the editor's toolbar and paste/type your snippet,
-   * then hit ok.
-   * Here's an example: function something() {console.log('It works');}
-   */
-  
-  // new Quill("#editor", {
-  //   modules: {
-  //     toolbar: {
-  //       container: ["code-custom"]
-  //     }
-  //   },
-  //   theme: "snow"
-  // })
 
-  
+//   CustomCode.blotName = "code-custom";
+// ReactQuill.tagName = "pre";
+// ReactQuill.className = "ql-syntax";
+
+// Quill.register(CustomCode);
+
+/*
+ * In order to try out the "custom code" functionality, click
+ * "Code" button in the editor's toolbar and paste/type your snippet,
+ * then hit ok.
+ * Here's an example: function something() {console.log('It works');}
+ */
+
+// new Quill("#editor", {
+//   modules: {
+//     toolbar: {
+//       container: ["code-custom"]
+//     }
+//   },
+//   theme: "snow"
+// })
 
 function NewPatientReport({
   formValue,
@@ -59,6 +52,10 @@ function NewPatientReport({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
 }) {
   const header = useMemo(
     () =>
@@ -69,15 +66,27 @@ function NewPatientReport({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
       width={1000}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput label="Name" name="name" block />
+      <Form formValue={formValue} onChange={onChange} fluid>
+        <CRTextInput
+          label="Name"
+          name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
+          block
+        />
         <Label>Body</Label>
-        <ReactQuill  
+        <ReactQuill
           name="body"
           style={{ marginTop: 10 }}
           value={formValue.body}
@@ -91,6 +100,5 @@ function NewPatientReport({
 NewPatientReport.defaultProps = {
   type: 'create',
 };
-
 
 export default NewPatientReport;

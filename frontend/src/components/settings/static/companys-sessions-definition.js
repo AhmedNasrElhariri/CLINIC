@@ -5,15 +5,30 @@ import { Div, CRButton } from 'components';
 import NewCompanySessionDefinition from './new-company-session-definition';
 import ListCompanysSessionDefinition from './list-companys-session-definition';
 import { useForm, useCompanySessionDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
 
 const initValue = { companyId: null, name: '', price: 0 };
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Session name is required'),
+  price: NumberType().range(1, 1000000).isRequired('price is required'),
+});
 
 const CompanySessionDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const {
     addCompanySessionDefinition,
@@ -22,10 +37,12 @@ const CompanySessionDefinition = () => {
   } = useCompanySessionDefinition({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -80,6 +97,10 @@ const CompanySessionDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListCompanysSessionDefinition
         companysSession={companysSessionDefinition}

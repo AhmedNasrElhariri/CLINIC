@@ -3,11 +3,15 @@ import * as R from 'ramda';
 import { Can } from 'components/user/can';
 import { Div, CRButton } from 'components';
 import ListHospitals from './list-hospitals';
+import { Schema } from 'rsuite';
 import NewHospital from './new-hospital';
 import { useForm, useModal, useHospitals, useAppointments } from 'hooks';
 import Filter from '../../filters';
 import { ACTIONS } from 'utils/constants';
-
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Hospital name is required'),
+});
 const initValue = {
   name: '',
   phoneNo: '',
@@ -22,16 +26,28 @@ const Hospitals = () => {
   const { filterBranches } = useAppointments({
     action: ACTIONS.Create_Hospital,
   });
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addHospital, hospitals, editHospital } = useHospitals({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -83,6 +99,10 @@ const Hospitals = () => {
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <Filter
         appointments={hospitals}

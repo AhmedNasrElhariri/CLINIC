@@ -1,34 +1,46 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewImageDefinition from './new-image-definition';
 import ListImagesDefinition from './list-images-definition';
 import { useForm, useImageDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
 
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('image name is required'),
+});
 const initValue = { name: '', categoryId: null };
 
 const ImageDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
-    initValue,
-  });
   const {
-    addImageDefinition,
-    imagesDefinition,
-    editImageDefinition,
-  } = useImageDefinition({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
+    initValue,
+    model,
   });
+  const { addImageDefinition, imagesDefinition, editImageDefinition } =
+    useImageDefinition({
+      onCreate: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+    });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -75,6 +87,10 @@ const ImageDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListImagesDefinition
         images={imagesDefinition}

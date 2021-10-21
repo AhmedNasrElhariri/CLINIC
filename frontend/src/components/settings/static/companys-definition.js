@@ -5,30 +5,43 @@ import { Div, CRButton } from 'components';
 import NewCompanyDefinition from './new-company-definition';
 import ListCompanysDefinition from './list-companys-definition';
 import { useForm, useCompanyDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
 
-const initValue = { name: ''};
+const initValue = { name: '' };
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Company name is required'),
+});
 
 const CompanyDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
-    initValue,
-  });
   const {
-    addCompanyDefinition,
-    companysDefinition,
-    editCompanyDefinition,
-  } = useCompanyDefinition({
-    onCreate: () => {
-      close();
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setFormValue(initValue);
-    },
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
+    initValue,
+    model,
   });
+  const { addCompanyDefinition, companysDefinition, editCompanyDefinition } =
+    useCompanyDefinition({
+      onCreate: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+    });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -75,6 +88,10 @@ const CompanyDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListCompanysDefinition
         companys={companysDefinition}

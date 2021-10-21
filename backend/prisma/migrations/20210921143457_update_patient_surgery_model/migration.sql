@@ -8,5 +8,3 @@ ADD COLUMN     "assistantFees" INTEGER,
 ADD COLUMN     "anesthesiaFees" INTEGER,
 ADD COLUMN     "others" INTEGER;
 
--- AlterIndex
-ALTER INDEX "payrollUserId Revenues_unique_constraint" RENAME TO "payrollUserId_Revenues_unique_constraint";

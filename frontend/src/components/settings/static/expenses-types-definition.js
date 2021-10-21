@@ -1,19 +1,32 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewExpenseTypeDefinition from './new-expenseType-definition';
 import ListExpenseTypesDefinition from './list-expenseTypes-definition';
 import { useForm, useExpenseTypeDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
 
-const initValue = { name: ''};
+const initValue = { name: '' };
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('Expense  type is required'),
+});
 
 const ExpenseTypeDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const {
     addExpenseTypeDefinition,
@@ -22,10 +35,12 @@ const ExpenseTypeDefinition = () => {
   } = useExpenseTypeDefinition({
     onCreate: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
       close();
+      setShow(false);
       setFormValue(initValue);
     },
   });
@@ -75,6 +90,10 @@ const ExpenseTypeDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListExpenseTypesDefinition
         expenseTypes={expenseTypesDefinition}

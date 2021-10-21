@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
+import { Schema } from 'rsuite';
 import { Div, CRButton } from 'components';
 import NewMedicineDefinition from './new-medicine-definition';
 import ListMedicinesDefinition from './list-medicine-definition';
@@ -15,20 +15,37 @@ const initValue = {
   specialtyId: null,
   userId: null,
 };
-
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('medicine name is required'),
+  concentration: StringType().isRequired('concentration name is required'),
+  form: StringType().isRequired('form name is required'),
+});
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const { addMedicineDefinition, medicineDefinitions, editMedicineDefinition } =
     useMedicineDefinitions({
       onCreate: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
       onEdit: () => {
         close();
+        setShow(false);
         setFormValue(initValue);
       },
     });
@@ -77,6 +94,10 @@ const MedicineDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
       <ListMedicinesDefinition
         medicines={medicineDefinitions}

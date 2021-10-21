@@ -11,6 +11,10 @@ function NewImageCategory({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
 }) {
   const header = useMemo(
     () =>
@@ -21,12 +25,25 @@ function NewImageCategory({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput label="Name" name="name" placeholder="Type Name" block />
+      <Form formValue={formValue} onChange={onChange} fluid>
+        <CRTextInput
+          label="Name"
+          name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
+          placeholder="Type Name"
+          block
+        />
       </Form>
     </CRModal>
   );

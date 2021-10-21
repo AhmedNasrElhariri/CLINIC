@@ -1,14 +1,12 @@
-import React, { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Alert } from 'rsuite';
+import React, { useMemo } from 'react';
+import { Alert, Schema } from 'rsuite';
 import * as R from 'ramda';
 import { ALL_AREAS } from 'apollo-client/queries';
 import { CRModal } from 'components';
 import { useMutation, useQuery } from '@apollo/client';
-
 import Form from './form';
-import { CREATE_PATIENT ,LIST_SEARCHED_PATIENTS} from 'apollo-client/queries';
-import { usePatients } from 'hooks';
+import { CREATE_PATIENT, LIST_SEARCHED_PATIENTS } from 'apollo-client/queries';
+import { usePatients, useForm } from 'hooks';
 
 const initialValues = {
   name: '',
@@ -19,9 +17,27 @@ const initialValues = {
   type: null,
   guardianName: '',
 };
-
-export default function NewPatient({ show, onHide ,onCreate}) {
-  const [formValue, setFormValue] = useState(initialValues);
+const { StringType, NumberType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType()
+    .minLength(6, 'The field cannot be less than 6 characters')
+    .maxLength(30, 'The field cannot be greater than 30 characters')
+    .isRequired('User name is required'),
+  phoneNo: StringType()
+    .isRequired('Phone No is  Required')
+    .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
+  age: NumberType('Age should be a number').range(
+    0,
+    100,
+    'Age should be 0-100 years old'
+  ),
+});
+export default function NewPatient({ show: showModel, onHide, onCreate }) {
+  const { formValue, setFormValue, checkResult, validate, show, setShow } =
+    useForm({
+      initValue: initialValues,
+      model,
+    });
   const { patients, updateCache } = usePatients();
   const { data } = useQuery(ALL_AREAS);
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
@@ -38,6 +54,7 @@ export default function NewPatient({ show, onHide ,onCreate}) {
     onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
       onHide();
+      setShow(false);
       onCreate(patient);
       setFormValue(initialValues);
     },
@@ -53,30 +70,29 @@ export default function NewPatient({ show, onHide ,onCreate}) {
   });
   return (
     <CRModal
-      show={show}
+      show={showModel}
       onHide={onHide}
       header="New Patient"
       onCancel={onHide}
       onOk={() => {
-        createPatient({
-          variables: {
-            input: { ...formValue },
-          },
-        });
+        setShow(true);
+        if (validate) {
+          createPatient({
+            variables: {
+              input: { ...formValue },
+            },
+          });
+        }
       }}
       loading={loading}
     >
-      <Form onChange={setFormValue} formValue={formValue} newAreas={newAreas} />
+      <Form
+        onChange={setFormValue}
+        formValue={formValue}
+        newAreas={newAreas}
+        checkResult={checkResult}
+        show={show}
+      />
     </CRModal>
   );
 }
-
-NewPatient.propTypes = {
-  show: PropTypes.bool.isRequired,
-  onHide: PropTypes.func,
-  onCreate: PropTypes.func,
-};
-
-NewPatient.defaultProps = {
-  show: false,
-};
