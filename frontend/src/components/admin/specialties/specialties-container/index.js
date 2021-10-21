@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback ,useState} from 'react';
 
 import {
   NewSpecialty,
@@ -18,17 +18,13 @@ export default function SpecialtiesContainer() {
     close: closeDoctor,
   } = useModal();
 
-  const {
-    branches,
-    specialties,
-    doctors,
-    createSpecialty,
-    addDoctor,
-  } = usePermissions({
-    onCreateSpecialty: close,
-    onAddDoctor: closeDoctor,
-  });
-
+  const { branches, specialties, doctors, createSpecialty, addDoctor } =
+    usePermissions({
+      onCreateSpecialty: close,
+      onAddDoctor: closeDoctor,
+    });
+  const [branchIds, setBranchIds] = useState([]);
+  const [specialtyIds, setSpecialtyIds] = useState([]);
   const handleCreate = useCallback(
     specialty => {
       createSpecialty(specialty);
@@ -41,6 +37,13 @@ export default function SpecialtiesContainer() {
       addDoctor(specialty);
     },
     [addDoctor]
+  );
+  const onBranchClick = useCallback(
+    (branchId, specialtyId) => {
+      setBranchIds([...branchIds, branchId]);
+      setSpecialtyIds([...specialtyIds, specialtyId]);
+    },
+    [branchIds, specialtyIds]
   );
 
   return (
@@ -73,7 +76,13 @@ export default function SpecialtiesContainer() {
         specialties={specialties}
         doctors={doctors}
       />
-      <ListSpecialties specialties={specialties} branches={branches} />
+      <ListSpecialties
+        specialties={specialties}
+        branches={branches}
+        onBranchClick={onBranchClick}
+        branchIds={branchIds}
+        specialtyIds={specialtyIds}
+      />
     </>
   );
 }

@@ -19,6 +19,11 @@ export default function Users({ users }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Position</CRTable.CRHeaderCell>
+            <CRTable.CRCell dataKey="position" />
+          </CRTable.CRColumn>
+
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ specialty }) => (
