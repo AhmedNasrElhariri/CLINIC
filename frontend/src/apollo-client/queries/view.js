@@ -39,6 +39,12 @@ export const EDIT_VIEW = gql`
   }
 `;
 
+export const UPDATE_VIEW = gql`
+  mutation updateView($view: ViewInput!, $viewId: ID!) {
+    updateView(view: $view, viewId: $viewId)
+  }
+`;
+
 export const CREATE_VIEW = gql`
   mutation createView($view: ViewInput!) {
     createView(view: $view)
@@ -51,6 +57,34 @@ export const LIST_MY_VIEWS_SUMMARY = gql`
       id
       name
       type
+      fieldGroups {
+        name
+        id
+        fields {
+          name
+          type
+          id
+        }
+      }
+    }
+  }
+`;
+
+export const MY_VIEW = gql`
+  query MyView($id: ID!) {
+    MyView(id: $id) {
+      id
+      name
+      type
+      fieldGroups {
+        name
+        id
+        fields {
+          name
+          type
+          id
+        }
+      }
     }
   }
 `;

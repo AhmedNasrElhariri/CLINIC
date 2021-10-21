@@ -14,12 +14,13 @@ import { useModal } from 'hooks';
 
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState('lanes');
-
-  const lane = lanes.find(l => l.id === laneId);
+  const [editLane, setEditLane] = useGlobalState('editLane');
+  const lane = lanes?.find(l => l.id === laneId);
   const [popup, setPopup] = useState(0);
 
-  const cards = lane.cards;
-  const formValue = cards[index];
+  const cards = lane?.cards;
+
+  const formValue = cards[index] ;
   const { visible, open, close } = useModal();
 
   const update = useCallback(
@@ -111,15 +112,17 @@ const Card = ({ laneId, index }) => {
             </H6>
           )}
         </Div>
-        <Icon
-          icon="trash"
-          onClick={remove}
-          style={{
-            color: '#f44336',
-            float: 'right',
-            marginTop: 2,
-          }}
-        />
+        {!editLane && (
+          <Icon
+            icon="trash"
+            onClick={remove}
+            style={{
+              color: '#f44336',
+              float: 'right',
+              marginTop: 2,
+            }}
+          />
+        )}
 
         {popup === 1 && (
           <Choices

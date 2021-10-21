@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { Button, Col, Row, Toggle, Divider, Alert } from 'rsuite';
 import { useQuery, useMutation } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Panel } from 'rsuite';
 import * as R from 'ramda';
-
+import useGlobalState from 'state';
 import { Div } from 'components';
 
 import {
@@ -13,15 +14,26 @@ import {
   ACTIVATE_VIEW,
 } from 'apollo-client/queries';
 
-const Card = ({ name, active, onClick }) => (
-  <Panel bordered header={name}>
-    Active <Toggle size="md" checked={active} />
-    <Divider />
-    <Button onClick={onClick} block disabled={active} appearance="primary">
-      Activate
-    </Button>
-  </Panel>
-);
+const Card = ({ name, active, onClick, view, id }) => {
+  const history = useHistory();
+  const [editLane, setEditLane] = useGlobalState('editLane');
+  return (
+    <Panel
+      bordered
+      header={name}
+      onSelect={() => {
+        history.push(`/views/${id}`, view);
+        setEditLane(true);
+      }}
+    >
+      Active <Toggle size="md" checked={active} />
+      <Divider />
+      <Button onClick={onClick} block disabled={active} appearance="primary">
+        Activate
+      </Button>
+    </Panel>
+  );
+};
 
 export default function ListViews() {
   const { data } = useQuery(LIST_MY_VIEWS_SUMMARY);
@@ -62,10 +74,9 @@ export default function ListViews() {
       }),
     [activateView]
   );
-
   return (
     <>
-      <Div>
+      <Div display="flex">
         <Link to="/views/new">
           <Button appearance="primary">New</Button>
         </Link>
@@ -81,8 +92,11 @@ export default function ListViews() {
                     <Col md={6} sm={12} key={v.id}>
                       <Card
                         {...v}
+                        view={v}
                         active={activeViewIds.includes(v.id)}
-                        onClick={() => onClick(v.id)}
+                        onClick={() => {
+                          onClick(v.id);
+                        }}
                       />
                     </Col>
                   ))}

@@ -395,7 +395,7 @@ model Field {
   name              String
   order             Int
   type              FieldType
-  choices           Json
+  choices           Json?
   fieldGroup        FieldGroup?        @relation(fields: [fieldGroupId], references: [id])
   fieldGroupId      String?
   appointmentFields AppointmentField[]

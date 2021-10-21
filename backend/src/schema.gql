@@ -118,6 +118,7 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
+  MyView(id: ID!): View
   activeViews: [View!]
   listMyViewsStatus: [ViewStatus!]
   mySnippets: [Snippet!]
@@ -224,6 +225,7 @@ type Mutation {
     userId: ID
   ): Appointment!
   createView(view: ViewInput!): Boolean
+  updateView(view: ViewInput!, viewId: ID!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
   login(email: String!, password: String!): AuthPayload
   verify(token: String): User

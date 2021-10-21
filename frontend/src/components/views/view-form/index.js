@@ -6,9 +6,9 @@ import {
   NewLaneSection as DNewLaneSection,
 } from 'react-trello/dist/styles/Base';
 import { AddLaneLink as DAddLaneLink } from 'react-trello/dist/styles/Elements';
-
 import Card from './card';
 import useGlobalState from 'state';
+
 
 const addCard = ({ onAdd }) => {
   onAdd({
@@ -51,7 +51,6 @@ const NewLaneSection = ({ onClick }) => (
 const AddCardLink = ({ onClick }) => (
   <DAddCardLink onClick={onClick}>Add Field</DAddCardLink>
 );
-
 const components = {
   Card,
   NewCardForm,
@@ -59,11 +58,9 @@ const components = {
   NewLaneSection,
   AddCardLink,
 };
-
 export default function ViewForm() {
   const [lanes, setLanes] = useGlobalState('lanes');
   const onDataChange = useCallback(({ lanes }) => setLanes(lanes), [setLanes]);
-
   return (
     <>
       <Board
