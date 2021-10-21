@@ -76,7 +76,7 @@ const Configurations = () => {
     const right = R.propOr(0, 'right')(pageSetupData);
     const bottom = R.propOr(0, 'bottom')(pageSetupData);
     const left = R.propOr(0, 'left')(pageSetupData);
-    const type = R.propOr(0, 'type')(pageSetupData);
+    const type = R.propOr('', 'type')(pageSetupData);
     setPageSetup({ ...pageSetup, top, right, bottom, left, type });
   }, [pageSetupData]);
   const updateSession = useCallback(
