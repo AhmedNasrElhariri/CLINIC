@@ -11,11 +11,15 @@ import typeDefs from './schema.gql';
 import resolvers from './resolvers';
 import middlewares from './middlewares';
 import { getContextData } from './services/auth.service';
+import cron from 'node-cron';
+
+import { todayAppointments } from './resolvers/query';
 
 import initUploadConfig from './conf/upload';
 import initReportsConfig from './conf/reports';
 
 export const UPLOAD_DIR = '/uploads';
+
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
 
 export const prisma = new PrismaClient();
@@ -52,6 +56,25 @@ app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
 initUploadConfig(app);
 initReportsConfig(app);
+
+cron.schedule('00 06 * * *', async function () {
+  const day = moment(new Date()).subtract(1, 'days').toDate();
+  const from = moment(day).startOf('day').toDate();
+  const to = moment(day).endOf('day').toDate();
+  await prisma.appointment.updateMany({
+    where: {
+      status: 'Scheduled',
+      accounted: false,
+      date: {
+        lte: to,
+        gte: from,
+      },
+    },
+    data: {
+      status: 'Missed',
+    },
+  });
+});
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend')));
