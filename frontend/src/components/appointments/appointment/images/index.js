@@ -50,7 +50,7 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
       <ReactToPrint
         trigger={() => (
           <FooterButton
-            marginLeft="13px"
+            marginLeft="25px"
             bkColor="#50c7f2"
             color="#fbfbfb"
             width="81px"

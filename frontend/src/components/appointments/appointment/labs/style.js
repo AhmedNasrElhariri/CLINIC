@@ -98,7 +98,6 @@ export const ContainerStyled = styled(CRModal.CRContainer)`
   & .rs-modal-content {
     box-shadow: -6px 6px 20px 0 rgba(0, 0, 0, 0.05);
     border: solid 1px rgba(40, 49, 72, 0.1);
-    border-radius: 17px;
     padding: 0;
   }
 

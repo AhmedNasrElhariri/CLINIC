@@ -17,7 +17,8 @@ import History from 'components/appointments/appointment/patient-history';
 import PatientCourses from 'components/appointments/appointment/patient-courses';
 import PatientSurgries from 'components/appointments/appointment/surgries';
 import SessionsPulses from '../sessions-pulses';
-import { useQueryParams } from 'hooks';
+import PatientProgress from '../progress';
+import { useQueryParams, useHospitals } from 'hooks';
 
 const tabs = [
   'Patient Info',
@@ -29,7 +30,8 @@ const tabs = [
   'Courses',
   'Sessions Pulses',
   'Dental',
-  'Face Operation'
+  'Face Operation',
+  'Progress',
 ];
 const Container = styled.div`
   display: flex;
@@ -51,6 +53,11 @@ function Appointment() {
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   const patient = R.propOr({}, 'patient')(data);
   const { viewFields, appointmentHistory } = usePatientHistory({ patientId });
+  const { hospitals } = useHospitals({});
+  const tabularFields = [
+    { id: 'name', name: 'name' },
+    { id: 'address', name: 'address' },
+  ];
 
   return (
     <>
@@ -92,7 +99,11 @@ function Appointment() {
                 {showComp('0') && <PatientInfo patient={patient} />}
                 {showComp('1') && (
                   <Can I="ViewSessions" an="Patient">
-                    <PatientSummary summary={appointmentHistory} />
+                    <PatientSummary
+                      summary={appointmentHistory}
+                      tabularFields={tabularFields}
+                      tabularData={hospitals}
+                    />
                   </Can>
                 )}
                 {showComp('2') && (
@@ -123,12 +134,14 @@ function Appointment() {
                     <SessionsPulses summary={appointmentHistory} />
                   </Can>
                 )}
-                {showComp('8') && (
-                    <Dental patient={patient}/>  
-                )}
+                {showComp('8') && <Dental patient={patient} />}
                 {showComp('9') && (
-                    <FaceOperations patient={patient}/>  
+                  <PatientProgress
+                    history={appointmentHistory}
+                    viewFields={viewFields}
+                  />
                 )}
+                {showComp('9') && <FaceOperations patient={patient} />}
               </TabContainer>
             </Container>
           )}

@@ -10,11 +10,12 @@ const AppointmentImages = ({ selectedImages, onChange, categoryId }) => {
   const [formValue, setFormValue] = useState([]);
 
   useEffect(() => {
-    const newFormValue = imagesDefinition.map(l => ({
+    const updatedImages = imagesDefinition.map((l, idx) => ({
       ...l,
       required: selectedImages.includes(l.id),
     }));
-    setFormValue(newFormValue);
+    const filteredImages = updatedImages.filter(i => i.required == true);
+    setFormValue(filteredImages);
   }, [imagesDefinition, selectedImages]);
 
   const handleOnClick = useCallback(

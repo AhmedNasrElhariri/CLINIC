@@ -50,7 +50,7 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
       <ReactToPrint
         trigger={() => (
           <FooterButton
-            marginLeft="13px"
+            marginLeft="26px"
             bkColor="#50c7f2"
             color="#fbfbfb"
             width="81px"

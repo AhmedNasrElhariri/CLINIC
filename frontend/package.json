@@ -28,6 +28,7 @@
     "node-fetch": "^2.6.1",
     "polished": "^3.6.5",
     "query-string": "^6.14.0",
+    "quill-mention": "^3.0.4",
     "ramda": "^0.27.0",
     "ramda-adjunct": "^2.26.0",
     "react": "^16.13.1",
@@ -47,7 +48,6 @@
     "react-trello": "^2.2.5",
     "rsuite": "^4.8.1",
     "sanitize-html": "^2.3.2",
-    "schema-typed": "^2.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5",
     "subscriptions-transport-ws": "^0.9.18",
@@ -75,5 +75,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:4000"
+  "proxy": "http://localhost:4000",
+  "devDependencies": {
+    "prettier": "2.4.0"
+  }
 }

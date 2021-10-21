@@ -24,7 +24,7 @@ const StepsDev = styled.div`
   margin: auto;
 `;
 
-const ArchiveAppointment = ({ appointment, show, onCancel, onOk ,loading}) => {
+const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
@@ -60,11 +60,40 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk ,loading}) => {
         company,
         option,
       });
+      setActiveStep(0);
+      setOthers(0);
       setBank(null);
       setCompany(null);
+      setOthersName('');
+      setDiscount(0);
+      value.current = {
+        sessions: [],
+        items: [],
+      };
     }
   }, [activeStep, onOk, discount, others, bank, company, option]);
-  
+  const handleFinish = useCallback(() => {
+    onOk({
+      ...value.current,
+      discount,
+      others,
+      othersName,
+      bank,
+      company,
+      option,
+    });
+    setActiveStep(0);
+    setOthers(0);
+    setBank(null);
+    setCompany(null);
+    setOthersName('');
+    setDiscount(0);
+    value.current = {
+      sessions: [],
+      items: [],
+    };
+  }, [onOk, discount, others, bank, company, option]);
+
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
       value.current = { ...value.current, discount, others };
@@ -94,7 +123,10 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk ,loading}) => {
       z
       onOk={handleOk}
       loading={loading}
-      onHide={onCancel}
+      onHide={() => {
+        onCancel();
+        setActiveStep(0);
+      }}
       onCancel={handleCancel}
       width={850}
       height={480}
@@ -127,6 +159,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk ,loading}) => {
             organization={organization}
             handleOk={handleOk}
             onCancel={handleCancel}
+            handleFinish={handleFinish}
+            loading={loading}
           />
         )}
         {activeStep === 1 && (
