@@ -1,10 +1,10 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useCallback } from 'react';
 import { Divider, Toggle } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 import { formatFullDay } from 'utils/date';
 import { useMedicineDefinitions, useTimings } from 'hooks';
 import * as R from 'ramda';
-import { CRModal, Div, H6 } from 'components';
+import { CRModal, Div, H6, CRButton } from 'components';
 import {
   Title,
   Container,
@@ -17,6 +17,7 @@ import {
   ContainerStyled,
   StyledFooterData,
 } from './style';
+
 let newPrescription = [];
 function Prescription({
   visible,
@@ -26,6 +27,9 @@ function Prescription({
   nextAppointment,
 }) {
   const [enable, setEnable] = useState(false);
+  const ref = useRef();
+  const refTwo = useRef();
+  const refThree = useRef();
   const { medicineDefinitions } = useMedicineDefinitions();
   const [direction, setDirection] = useState('rtl');
   const { timings } = useTimings();
@@ -56,8 +60,7 @@ function Prescription({
       required: !R.isEmpty(formMedicine),
     };
   });
-  const ref = useRef();
-  const refTwo = useRef();
+
   return (
     <CRModal
       show={visible}

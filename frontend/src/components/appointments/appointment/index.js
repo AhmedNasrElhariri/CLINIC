@@ -8,6 +8,7 @@ import Prescription from './prescription';
 
 import Labs from './labs/index';
 import Images from './images';
+import ShowMedicinines from './show-patient-medicines';
 import NewAppointment from './new-appointment';
 import { Div, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
@@ -27,6 +28,7 @@ import {
 import useAppointmentHistory from './fetch-appointment-history';
 import { HeaderStyled } from './style';
 import { useForm, useModal } from 'hooks';
+import { APPT_STATUS } from 'utils/constants';
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 function Appointment() {
   const { visible, open, close } = useModal();
@@ -114,9 +116,11 @@ function Appointment() {
   const [popup, setPopup] = useState(false);
   const [popupTwo, setPopupTwo] = useState(false);
   const [popupThree, setPopupThree] = useState(false);
+  const [popupFour, setPopupFour] = useState(false);
   const handleClickCreate = useCallback(() => {
     setPopupTwo(false);
     setPopupThree(false);
+    setPopupFour(false);
     setPopup(true);
     setType('create');
     open();
@@ -124,6 +128,7 @@ function Appointment() {
   const handleClickCreateTwo = useCallback(() => {
     setPopup(false);
     setPopupThree(false);
+    setPopupFour(false);
     setPopupTwo(true);
     setType('create');
     open();
@@ -131,7 +136,17 @@ function Appointment() {
   const handleClickCreateThree = useCallback(() => {
     setPopupTwo(false);
     setPopup(false);
+    setPopupFour(false);
     setPopupThree(true);
+    setType('create');
+    open();
+  }, [open, setType]);
+
+  const handleClickCreateFour = useCallback(() => {
+    setPopupTwo(false);
+    setPopup(false);
+    setPopupThree(false);
+    setPopupFour(true);
     setType('create');
     open();
   }, [open, setType]);
@@ -214,6 +229,7 @@ function Appointment() {
   const { data } = useQuery(LIST_PATIENT_APPOINTMENTS, {
     variables: {
       patientId: patient.id,
+      status: APPT_STATUS.SCHEDULED,
     },
   });
   const patientAppointments = R.propOr([], 'patientAppointments')(data);
@@ -233,10 +249,17 @@ function Appointment() {
           <Div>
             <CRButton
               variant="primary"
+              onClick={handleClickCreateFour}
+              disabled={disabled}
+            >
+              Show Medicines <Icon icon="print" />
+            </CRButton>
+            <CRButton
+              variant="primary"
               onClick={handleClickCreate}
               disabled={disabled}
             >
-              PrintMedicines <Icon icon="print" />
+              PrintMedicine <Icon icon="print" />
             </CRButton>
             <CRButton
               variant="primary"
@@ -310,6 +333,14 @@ function Appointment() {
                   type={type}
                   images={apptFormValue.imageIds}
                   onChange={handleImagesChange}
+                />
+              )}
+              {popupFour && (
+                <ShowMedicinines
+                  visible={visible}
+                  onClose={close}
+                  type={type}
+                  patient={patient}
                 />
               )}
               <NewAppointment

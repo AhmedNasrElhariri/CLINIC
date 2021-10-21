@@ -114,7 +114,10 @@ type Query {
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
   todayAppointments: [Appointment!]
   appointment(id: ID!): Appointment
-  patientAppointments(patientId: ID!): [Appointment!]
+  patientAppointments(
+    patientId: ID!
+    status: AppointmentStatus!
+  ): [Appointment!]
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   listMyViews: [View!]
