@@ -21,3 +21,5 @@ export const MEDICAL_HISTORY_TYPES = Object.freeze({
 });
 
 export const DAYS = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI'];
+
+

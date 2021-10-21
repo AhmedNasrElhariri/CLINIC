@@ -1,49 +1,17 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
-import ReactQuill from 'react-quill';
-
 import Label from '../../widgets/label';
-
-import { CRModal, CRTextInput } from 'components';
 import 'react-quill/dist/quill.snow.css';
-
-// const BlockEmbed = Quill.import("blots/block/embed");
-
-//   class CustomCode extends BlockEmbed {
-//     static create(value) {
-//       let node = super.create(value);
-//       const code = document.createElement("code");
-//       code.innerHTML = value;
-//       node.appendChild(code);
-//       return node;
-//     }
-
-//     static value(node) {
-//       return node.textContent;
-//     }
-//   }
-
-//   CustomCode.blotName = "code-custom";
-// ReactQuill.tagName = "pre";
-// ReactQuill.className = "ql-syntax";
-
-// Quill.register(CustomCode);
-
-/*
- * In order to try out the "custom code" functionality, click
- * "Code" button in the editor's toolbar and paste/type your snippet,
- * then hit ok.
- * Here's an example: function something() {console.log('It works');}
- */
-
-// new Quill("#editor", {
-//   modules: {
-//     toolbar: {
-//       container: ["code-custom"]
-//     }
-//   },
-//   theme: "snow"
-// })
+import Editor from './editor';
+import { useConfigurations, usePatientView } from 'hooks';
+import { CRModal, CRTextInput, CRSelectInput } from 'components';
+import {
+  patientValues,
+  appointmentValues,
+  surgeriesValues,
+  another,
+  contextData,
+} from 'services/constants';
 
 function NewPatientReport({
   formValue,
@@ -62,6 +30,31 @@ function NewPatientReport({
       type === 'create' ? 'Add New Patient Report' : 'Edit Patient Report',
     [type]
   );
+  const { pageSetupData } = useConfigurations();
+  const { userPatientFields } = usePatientView();
+  const patientMentionsValue = useMemo(() => {
+    const fields = userPatientFields.map(pF => {
+      return { id: pF.id, value: pF.field.name };
+    });
+    const allFields = patientValues.concat(fields);
+    return allFields;
+  }, [userPatientFields]);
+  const mentions = useMemo(() => {
+    const context = formValue?.context;
+    switch (context) {
+      case 'patient':
+        return patientMentionsValue;
+      case 'appointment':
+        return appointmentValues;
+      case 'surgeries':
+        return surgeriesValues;
+      default:
+        return another;
+    }
+  }, [formValue.context]);
+  const handleText = content => {
+    onChange({ ...formValue, body: content });
+  };
   return (
     <CRModal
       show={visible}
@@ -86,11 +79,19 @@ function NewPatientReport({
           block
         />
         <Label>Body</Label>
-        <ReactQuill
-          name="body"
-          style={{ marginTop: 10 }}
-          value={formValue.body}
-          onChange={value => onChange({ ...formValue, body: value })}
+
+        <CRSelectInput
+          label="Context"
+          name="context"
+          block
+          data={contextData}
+        />
+        <Label>Body</Label>
+        <Editor
+          onChange={handleText}
+          formValue={formValue}
+          pageSetupData={pageSetupData}
+          mentionValues={mentions}
         />
       </Form>
     </CRModal>

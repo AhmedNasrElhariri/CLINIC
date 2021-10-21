@@ -6,7 +6,7 @@ import ListPatientReports from './list-patient-report';
 import { useForm, useModal, usePatientReports } from 'hooks';
 import { Schema } from 'rsuite';
 
-const initValue = { name: '', body: '' };
+const initValue = { name: '', body: '', context: '' };
 const { StringType } = Schema.Types;
 const model = Schema.Model({
   name: StringType().isRequired('patient report name is required'),
@@ -61,6 +61,7 @@ const PatientReport = () => {
     const updatedFormValue = {
       name: formValue.name,
       body: bodyFinal,
+      context: formValue.context,
     };
     if (type === 'create') {
       addPatientReport({

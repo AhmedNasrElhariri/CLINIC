@@ -36,7 +36,6 @@ export default ({ appointmentId, appointment }) => {
     [history]
   );
   const data = useMemo(() => R.propOr([], 'data')(appointment), [appointment]);
-
   const normalizedFields = useMemo(
     () => normalizeFieldsOfGroups(groups, data),
     [data, groups]

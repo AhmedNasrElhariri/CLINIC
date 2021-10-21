@@ -22,6 +22,31 @@ export const ACTIVE_VIEWS = gql`
   }
 `;
 
+export const ACTIVE_PATIENT_VIEWS = gql`
+  query activePatientViews {
+    activePatientViews {
+      id
+      name
+      doctor {
+        id
+        name
+      }
+      fieldGroups {
+        id
+        name
+        order
+        fields {
+          id
+          name
+          order
+          type
+          choices
+        }
+      }
+    }
+  }
+`;
+
 export const ALL_AREAS = gql`
   query areas {
     areas {
@@ -48,6 +73,18 @@ export const UPDATE_VIEW = gql`
 export const CREATE_VIEW = gql`
   mutation createView($view: ViewInput!) {
     createView(view: $view)
+  }
+`;
+
+export const CREATE_PATIENT_VIEW = gql`
+  mutation createPatientView($view: PatientViewInput!) {
+    createPatientView(view: $view)
+  }
+`;
+
+export const UPDATE_PATIENT_VIEW = gql`
+  mutation updatePatientView($view: PatientViewInput!, $viewId: ID!) {
+    updatePatientView(view: $view, viewId: $viewId)
   }
 `;
 
@@ -88,9 +125,51 @@ export const MY_VIEW = gql`
     }
   }
 `;
+export const LIST_MY_PATIENT_VIEWS_SUMMARY = gql`
+  {
+    listMyPatientViews {
+      id
+      name
+      doctor {
+        id
+        name
+      }
+    }
+  }
+`;
+export const MY_PATIENT_VIEW = gql`
+  query MyPatientView($id: ID!) {
+    MyPatientView(id: $id) {
+      id
+      name
+      doctor {
+        id
+        name
+      }
+      fieldGroups {
+        name
+        id
+        fields {
+          name
+          type
+          id
+        }
+      }
+    }
+  }
+`;
 export const LIST_MY_VIEWS_STATUS = gql`
   {
     listMyViewsStatus {
+      id
+      activeViewId
+    }
+  }
+`;
+
+export const LIST_MY_PATIENT_VIEWS_STATUS = gql`
+  {
+    listMyPatientViewsStatus {
       id
       activeViewId
     }
@@ -106,6 +185,15 @@ export const CREATE_DEFAULT_VIEW = gql`
 export const ACTIVATE_VIEW = gql`
   mutation activateView($viewId: ID!) {
     activateView(viewId: $viewId) {
+      id
+      activeViewId
+    }
+  }
+`;
+
+export const ACTIVATE_PATIENT_VIEW = gql`
+  mutation activatePatientView($viewId: ID!) {
+    activatePatientView(viewId: $viewId) {
       id
       activeViewId
     }

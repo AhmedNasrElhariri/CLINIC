@@ -8,6 +8,7 @@ import {
   NOTIFICATION_SUBSCRIPTION,
   MY_NOTIFICATIONS,
   CLEAR_NOTIFICATIONS,
+  ACTIVE_PATIENT_VIEWS,
 } from 'apollo-client/queries';
 import { ACCESS_TOKEN } from 'utils/constants';
 import { set } from '../../../services/local-storage';
@@ -15,22 +16,20 @@ import { useAuth } from 'hooks';
 import useGlobalState from 'state';
 
 function useUserProfile() {
-  const {
-    isVerified,
-    isAuthenticated,
-    setAuthenticated,
-    updatePermissions,
-  } = useAuth();
+  const { isVerified, isAuthenticated, setAuthenticated, updatePermissions } =
+    useAuth();
 
   const [getViews, { data }] = useLazyQuery(ACTIVE_VIEWS);
-  const [getNotifications, { data: notificationsData, refetch }] = useLazyQuery(
-    MY_NOTIFICATIONS
-  );
+  const [getPatientViews, { data: patientViewsData }] =
+    useLazyQuery(ACTIVE_PATIENT_VIEWS);
+  const [getNotifications, { data: notificationsData, refetch }] =
+    useLazyQuery(MY_NOTIFICATIONS);
   useSubscription(NOTIFICATION_SUBSCRIPTION, {
     onSubscriptionData: () => refetch(),
   });
 
   const [_, setActiveViews] = useGlobalState('activeViews');
+  const [__, setActivePatientViews] = useGlobalState('activePatientViews');
   const [user, setUser] = useGlobalState('user');
   const [clearNotifications] = useMutation(CLEAR_NOTIFICATIONS, {
     update(cache, { data: { createRevenue: revenue } }) {
@@ -50,12 +49,14 @@ function useUserProfile() {
   useEffect(() => {
     if (isVerified && isAuthenticated) {
       getViews();
+      getPatientViews();
       getNotifications();
     }
   }, [data, getNotifications, getViews, isAuthenticated, isVerified]);
 
   useEffect(() => {
     const views = R.prop('activeViews')(data);
+    const patientViews = R.prop('activePatientViews')(patientViewsData);
     if (views) {
       const normalizedView = R.pipe(
         R.groupBy(R.prop('type')),
@@ -63,13 +64,16 @@ function useUserProfile() {
       )(views);
       setActiveViews(normalizedView);
     }
-  }, [data, setActiveViews]);
+    if (patientViews) {
+      setActivePatientViews(patientViews);
+    }
+  }, [data, setActiveViews, patientViewsData, setActivePatientViews]);
 
   const onLoginSucceeded = useCallback(
     ({ token, user }) => {
       ls.setUserToken(token);
       setAuthenticated(true);
-      set('user',user);
+      set('user', user);
       setUser(user);
       updatePermissions(user);
     },

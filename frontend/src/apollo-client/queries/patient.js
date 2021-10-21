@@ -184,3 +184,42 @@ export const LIST_FAMILY_HISTORY = gql`
     }
   }
 `;
+
+export const UPDATE_PATIENT_FIELD = gql`
+  mutation updatePatientField($patientId: ID!, $data: [PatientFieldInput!]) {
+    updatePatientField(patientId: $patientId, data: $data) {
+      id
+    }
+  }
+`;
+
+export const GET_PATIENT_FIELD = gql`
+  query getPatientField($patientId: ID!) {
+    getPatientField(patientId: $patientId) {
+      id
+      value
+      patient {
+        id
+      }
+      field {
+        id
+      }
+    }
+  }
+`;
+
+export const GET_USER_PATIENT_FIELD = gql`
+  {
+    getUserPatientFields {
+      id
+      value
+      patient {
+        id
+      }
+      field {
+        id
+        name
+      }
+    }
+  }
+`;

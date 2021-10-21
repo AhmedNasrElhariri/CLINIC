@@ -120,10 +120,16 @@ type Query {
   ): [Appointment!]
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
+  getPatientField(patientId: ID!): [PatientField!]
+  getUserPatientFields: [PatientField!]
   listMyViews: [View!]
   MyView(id: ID!): View
+  MyPatientView(id: ID!): PatientView
   activeViews: [View!]
+  activePatientViews: [PatientView!]
   listMyViewsStatus: [ViewStatus!]
+  listMyPatientViewsStatus: [PatientViewStatus!]
+  listMyPatientViews: [PatientView!]
   mySnippets: [Snippet!]
   medicineHistory(patientId: ID!): [MedicineHistory!]
   familyHistory(patientId: ID!): [FamilyHistory!]
@@ -155,8 +161,11 @@ type Query {
   ): [ToothTransaction!]
   myAllToothTransactions(patientId: ID!): [ToothTransaction!]
   myTooths(patientId: ID): [Tooth!]
-  myFacePartationOperations(patientId: ID! facePartationNumber:Int!):[FaceOperation!]
-  myFaceOperations(patientId: ID!):[FaceOperation!]
+  myFacePartationOperations(
+    patientId: ID!
+    facePartationNumber: Int!
+  ): [FaceOperation!]
+  myFaceOperations(patientId: ID!): [FaceOperation!]
   listOrganizationDoctors: [User!]
   mySessionsDefinition: [SessionDefinition!]
   myPrices: [Price!]
@@ -174,6 +183,7 @@ type Query {
   myPatientReports: [PatientReport!]
   getActions: [String!]
   getPulseControl: PulseControl
+  getPageSetup: PageSetup!
   listBranches: [Branch!]
   listSpecialties: [Specialty!]
   listUsers: [User!]
@@ -211,6 +221,10 @@ type Mutation {
   editPatient(patient: PatientInput!): Patient!
   createAppointment(appointment: AppointmentInput!): Appointment!
   updateAppointment(appointment: UpdateAppointmentInput!): Appointment!
+  updatePatientField(
+    patientId: ID!
+    data: [PatientFieldInput!]
+  ): [PatientField]!
   completeAppointment(id: ID!): Appointment!
   archiveAppointment(
     id: ID!
@@ -229,11 +243,14 @@ type Mutation {
   ): Appointment!
   createView(view: ViewInput!): Boolean
   updateView(view: ViewInput!, viewId: ID!): Boolean
+  updatePatientView(view: PatientViewInput!, viewId: ID!): Boolean
   editView(groups: [FieldGroupInput!]): Boolean
+  createPatientView(view: PatientViewInput!): Boolean
   login(email: String!, password: String!): AuthPayload
   verify(token: String): User
   changePassword(currentPassword: String!, newPassword: String!): AuthPayload
   activateView(viewId: ID!): ViewStatus!
+  activatePatientView(viewId: ID!): PatientViewStatus!
   createDefaultView: Boolean
   adjustAppointment(
     id: ID!
@@ -284,7 +301,7 @@ type Mutation {
     materialDefinition: MaterialInputDefinition!
   ): MaterialDefinition
   addFaceOperation(faceOperation: FaceOperationInput!): FacePartation
-  deleteFaceOperation(id: ID!):FaceOperation
+  deleteFaceOperation(id: ID!): FaceOperation
   editMaterialDefinition(
     materialDefinition: MaterialInputDefinition!
   ): MaterialDefinition
@@ -304,6 +321,7 @@ type Mutation {
   ): SessionDefinition
   addPrice(price: PriceInput!): Price
   addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
+  addPageSetup(pageSetup: PageSetupInput!): PageSetup!
   editPrice(price: PriceInput!): Price
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
@@ -614,6 +632,13 @@ type AppointmentField {
   field: Field!
 }
 
+type PatientField {
+  id: ID!
+  value: JSON
+  field: Field!
+  patient: Patient!
+}
+
 type PulseControl {
   id: ID!
   before: Int
@@ -623,6 +648,22 @@ type PulseControl {
 input PulseControlInput {
   before: Int!
   after: Int!
+}
+
+type PageSetup {
+  id: ID!
+  top: Int!
+  right: Int!
+  bottom: Int!
+  left: Int!
+  type: String!
+}
+input PageSetupInput {
+  top: Int!
+  right: Int!
+  bottom: Int!
+  left: Int!
+  type: String!
 }
 
 input AppointmentInput {
@@ -676,6 +717,12 @@ input AppointmentFieldInput {
   fieldId: ID!
 }
 
+input PatientFieldInput {
+  id: ID
+  value: JSON
+  fieldId: ID!
+}
+
 ########################### views ##################################
 
 type Prescription {
@@ -713,6 +760,16 @@ type View {
   fieldGroups: [FieldGroup!]
 }
 
+type PatientView {
+  id: ID!
+  name: String
+  doctor: User
+  default: Boolean
+  user: User
+  userId: String
+  fieldGroups: [FieldGroup!]
+}
+
 type FieldGroup {
   id: ID!
   name: String!
@@ -738,10 +795,27 @@ type ViewStatus {
   activeViewId: String
 }
 
+type PatientViewStatus {
+  id: ID!
+  user: User
+  userId: String
+  defaultView: PatientView
+  defaultViewId: String
+  activeView: PatientView
+  activeViewId: String
+}
+
 input ViewInput {
   id: ID
   name: String!
   type: AppointmentType!
+  fieldGroups: [FieldGroupInput!]
+}
+
+input PatientViewInput {
+  id: ID
+  name: String!
+  userId: ID!
   fieldGroups: [FieldGroupInput!]
 }
 
@@ -1481,12 +1555,14 @@ type PatientReport {
   id: ID!
   name: String!
   body: String!
+  context: String!
 }
 
 input PatientReportInput {
   id: ID
   name: String!
   body: String!
+  context: String!
 }
 
 ########################### Course Definition ##################################

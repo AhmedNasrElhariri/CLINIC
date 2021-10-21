@@ -19,6 +19,7 @@ import PatientSurgries from 'components/appointments/appointment/surgries';
 import SessionsPulses from '../sessions-pulses';
 import PatientProgress from '../progress';
 import { useQueryParams, useHospitals } from 'hooks';
+import PatientInformationCreation from '../patient-information-creation';
 
 const tabs = [
   'Patient Info',
@@ -32,6 +33,7 @@ const tabs = [
   'Dental',
   'Face Operation',
   'Progress',
+  'Patient Information Creation',
 ];
 const Container = styled.div`
   display: flex;
@@ -135,13 +137,16 @@ function Appointment() {
                   </Can>
                 )}
                 {showComp('8') && <Dental patient={patient} />}
-                {showComp('9') && (
+                {showComp('9') && <FaceOperations patient={patient} />}
+                {showComp('10') && (
                   <PatientProgress
                     history={appointmentHistory}
                     viewFields={viewFields}
                   />
                 )}
-                {showComp('9') && <FaceOperations patient={patient} />}
+                {showComp('11') && (
+                  <PatientInformationCreation patient={patient} />
+                )}
               </TabContainer>
             </Container>
           )}

@@ -200,6 +200,7 @@ model Organization {
   DentalDiagnosisDefinition DentalDiagnosisDefinition[]
   Tooth                     Tooth[]
   ToothTransaction          ToothTransaction[]
+  PageSetup                 PageSetup[]
 }
 
 model User {
@@ -216,6 +217,8 @@ model User {
   updatedAt                 DateTime                    @default(now()) @updatedAt
   views                     View[]
   viewStatus                ViewStatus[]
+  patientViews              PatientView[]               @relation("userPatientView")
+  patientDoctorsViews       PatientView[]               @relation("doctorPatientView")
   workingHours              WorkingHours[]
   snippets                  Snippet[]
   position                  Position
@@ -262,6 +265,8 @@ model User {
   Tooth                     Tooth[]
   ToothTransaction          ToothTransaction[]          @relation("toothUser")
   ToothTransactionDoctors   ToothTransaction[]          @relation("toothDoctor")
+  PatientViewStatus         PatientViewStatus[]
+  PatientField              PatientField[]
 }
 
 model Patient {
@@ -294,6 +299,7 @@ model Patient {
   Tooth            Tooth[]
   FaceOperation    FaceOperation[]
   FacePartation    FacePartation[]
+  PatientField     PatientField[]
 }
 
 model Appointment {
@@ -368,6 +374,19 @@ model View {
   updatedAt           DateTime        @default(now()) @updatedAt
 }
 
+model PatientView {
+  id                String              @id @default(uuid())
+  name              String
+  doctor            User                @relation("doctorPatientView", fields: [doctorId], references: [id])
+  doctorId          String
+  user              User                @relation("userPatientView", fields: [userId], references: [id])
+  userId            String
+  fieldGroups       FieldGroup[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now()) @updatedAt
+  PatientViewStatus PatientViewStatus[]
+}
+
 model ViewStatus {
   id           String   @id @default(uuid())
   user         User     @relation(fields: [userId], references: [id])
@@ -376,17 +395,30 @@ model ViewStatus {
   activeViewId String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
+
+}
+
+model PatientViewStatus {
+  id           String      @id @default(uuid())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  activeView   PatientView @relation(fields: [activeViewId], references: [id])
+  activeViewId String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt
 }
 
 model FieldGroup {
-  id        String   @id @default(uuid())
-  name      String
-  order     Int
-  view      View     @relation(fields: [viewId], references: [id])
-  viewId    String
-  fields    Field[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id            String       @id @default(uuid())
+  name          String
+  order         Int
+  view          View?        @relation(fields: [viewId], references: [id])
+  viewId        String?
+  fields        Field[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now()) @updatedAt
+  PatientView   PatientView? @relation(fields: [patientViewId], references: [id])
+  patientViewId String?
 
   @@unique([order, viewId], name: "order_viewId_unique_constraint")
 }
@@ -403,6 +435,7 @@ model Field {
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @default(now()) @updatedAt
 
+  PatientField PatientField[]
   @@unique([order, fieldGroupId], name: "order_fieldGroupId_unique_constraint")
 }
 
@@ -417,6 +450,21 @@ model AppointmentField {
   updatedAt     DateTime    @default(now()) @updatedAt
 
   @@unique([appointmentId, fieldId], name: "appointment_fieldId_unique_constraint")
+}
+
+model PatientField {
+  id        String   @id @default(uuid())
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId String
+  field     Field    @relation(fields: [fieldId], references: [id])
+  fieldId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([patientId, fieldId], name: "patient_fieldId_unique_constraint")
 }
 
 model File {
@@ -513,6 +561,17 @@ model Configuration {
   updatedAt            DateTime     @default(now()) @updatedAt
 
   @@unique([organizationId], name: "organizationId_unique_constraint")
+}
+
+model PageSetup {
+  id             String       @id @default(uuid())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  top            Int          @default(0)
+  right          Int          @default(0)
+  bottom         Int          @default(0)
+  left           Int          @default(0)
+  type           String       @default("Letter")
 }
 
 model Week {
@@ -846,13 +905,13 @@ model ImageDefinition {
 }
 
 model MaterialDefinition {
-  id             String       @id @default(uuid())
+  id             String          @id @default(uuid())
   name           String
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now()) @updatedAt
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now()) @updatedAt
+  organization   Organization    @relation(fields: [organizationId], references: [id])
   organizationId String
-  user           User         @relation(fields: [userId], references: [id])
+  user           User            @relation(fields: [userId], references: [id])
   userId         String
   FaceOperation  FaceOperation[]
 }
@@ -1136,6 +1195,7 @@ model PatientReport {
   id        String   @id @default(uuid())
   name      String
   body      String
+  context   String   @default("")
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   createdAt DateTime @default(now())
