@@ -243,6 +243,8 @@ type Mutation {
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
   createSnippet(snippet: SnippetInput!): Snippet!
+  updateSnippet(snippet: SnippetInput!): Snippet!
+  deleteSnippet(id: ID!): Snippet!
   insertLabResult(lab: LabInput!): Lab!
   insertImageResult(image: ImageInput!): Image!
   createMedicineHistory(
@@ -814,6 +816,7 @@ type Snippet implements Searchable {
 }
 
 input SnippetInput {
+  id: ID
   title: String!
   body: String!
 }

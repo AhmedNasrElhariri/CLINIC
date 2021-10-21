@@ -248,30 +248,13 @@ const NewAppointment = ({ show: showModel, onHide }) => {
                     data={updatedSessionsDefinition}
                   />
                 )}
-                <CRDatePicker
-                  label="Date"
-                  block
-                  name="date"
-                  errorMessage={
-                    show && checkResult['date']?.hasError
-                      ? checkResult['date']?.errorMessage
-                      : ''
-                  }
-                  disabledDate={isBeforeToday}
+                <CRBrancheTree
+                  formValue={formValue}
+                  onChange={setFormValue}
+                  showUserAndOrganization={false}
+                  NotAutoHideNested={false}
+                  action={ACTIONS.Create_Appointment}
                 />
-                {!formValue.waiting && formValue?.userId && (
-                  <CRTimePicker
-                    label="Time"
-                    block
-                    name="time"
-                    disabledMinutes={minute =>
-                      disabledMinutes(minute, moment(formValue.time).hours())
-                    }
-                    hideHours={hideHours}
-                    startHour={8}
-                    onSelectTrigger
-                  />
-                )}
               </LeftContainer>
               <RightContainer>
                 <CRSelectInput
@@ -300,13 +283,30 @@ const NewAppointment = ({ show: showModel, onHide }) => {
                     </H5>
                   </Div>
                 </CRSelectInput>
-                <CRBrancheTree
-                  formValue={formValue}
-                  onChange={setFormValue}
-                  showUserAndOrganization={false}
-                  NotAutoHideNested={false}
-                  action={ACTIONS.Create_Appointment}
+                <CRDatePicker
+                  label="Date"
+                  block
+                  name="date"
+                  errorMessage={
+                    show && checkResult['date']?.hasError
+                      ? checkResult['date']?.errorMessage
+                      : ''
+                  }
+                  disabledDate={isBeforeToday}
                 />
+                {!formValue.waiting && formValue?.userId && (
+                  <CRTimePicker
+                    label="Time"
+                    block
+                    name="time"
+                    disabledMinutes={minute =>
+                      disabledMinutes(minute, moment(formValue.time).hours())
+                    }
+                    hideHours={hideHours}
+                    startHour={8}
+                    onSelectTrigger
+                  />
+                )}{' '}
               </RightContainer>
             </Container>
             <Checkbox

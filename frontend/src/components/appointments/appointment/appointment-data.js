@@ -320,7 +320,7 @@ function AppointmentData({
 
           <SectionContainer title="Notes" name="Notes">
             <Form formValue={appointmentFormValue} onChange={onChange}>
-              <CRTextArea name="notes" disabled={disabled} />
+              <CRTextArea name="notes" disabled={disabled} importable />
             </Form>
           </SectionContainer>
           <SectionContainer title="Pictures" name="Pictures">

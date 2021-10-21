@@ -19,3 +19,22 @@ export const CREATE_SNIPPET = gql`
     }
   }
 `;
+
+export const UPDATE_SNIPPET = gql`
+  mutation updateSnippet($snippet: SnippetInput!) {
+    updateSnippet(snippet: $snippet) {
+      id
+      title
+      body
+    }
+  }
+`;
+export const DELETE_SNIPPET = gql`
+  mutation deleteSnippet($id: ID!) {
+    deleteSnippet(id: $id) {
+      id
+      title
+      body
+    }
+  }
+`;
