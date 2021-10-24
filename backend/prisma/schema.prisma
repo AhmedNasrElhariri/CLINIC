@@ -276,7 +276,7 @@ model Patient {
   type             PatientMembershipType
   appointments     Appointment[]
   age              Int
-  date             DateTime
+  date             DateTime              @default(now())
   codeNumber       Int                   @default(autoincrement())
   code             String?
   sex              Sex
