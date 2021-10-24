@@ -15,7 +15,7 @@ import { useMedicineDefinitions, useTimings } from 'hooks';
 import { LIST_PATIENT_APPOINTMENTS } from 'apollo-client/queries';
 import { APPT_STATUS } from 'utils/constants';
 import { CRButton } from 'components/widgets';
-import { ButtonsContainer } from './style';
+import { ButtonsContainer, StyledImage, ContainerStyled } from './style';
 
 function ShowMedicinines({ visible, onClose, patient }) {
   const header = useMemo(() => 'Show Medicines', []);
@@ -70,6 +70,7 @@ function ShowMedicinines({ visible, onClose, patient }) {
     const link = await toPng(ref?.current, { cacheBust: true });
     setUrl(link);
   }, [url, ref, med]);
+  console.log(med, 'mmmmm');
   return (
     <>
       <CRModal
@@ -79,8 +80,7 @@ function ShowMedicinines({ visible, onClose, patient }) {
         onCancel={onClose}
         noFooter={true}
         CancelFooter={true}
-        bodyStyle={{ padding: '0px' }}
-        headerStyle={{ borderBottom: 'none', padding: '27px' }}
+        CRContainer={ContainerStyled}
       >
         <ButtonsContainer>
           {FinishedMedicines.map((m, indx) => (
@@ -110,10 +110,10 @@ function ShowMedicinines({ visible, onClose, patient }) {
                     </Div>
                     <Div>{element.duration}&nbsp;</Div>
                     <Div>لمده &nbsp;</Div>
-                    {element.tA?.includes(' ') ? (
+                    {element.tE?.includes(' ') ? (
                       <>
-                        <Div>{element.tA.split(' ')[1]}&nbsp;</Div>
-                        <Div>{element.tA.split(' ')[0]}&nbsp;</Div>
+                        <Div>{element.tE.split(' ')[1]}&nbsp;</Div>
+                        <Div>{element.tE.split(' ')[0]}&nbsp;</Div>
                       </>
                     ) : (
                       <Div>{element.tA}&nbsp;</Div>
@@ -133,7 +133,7 @@ function ShowMedicinines({ visible, onClose, patient }) {
           </Div>
         </Div>
         <Div ml={10} mb={20}>
-          {<img src={url} alt="image" />}
+          {<StyledImage src={url} alt="image" />}
         </Div>
       </CRModal>
     </>

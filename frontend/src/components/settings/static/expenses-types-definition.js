@@ -32,6 +32,7 @@ const ExpenseTypeDefinition = () => {
     addExpenseTypeDefinition,
     expenseTypesDefinition,
     editExpenseTypeDefinition,
+    loading,
   } = useExpenseTypeDefinition({
     onCreate: () => {
       close();
@@ -94,6 +95,7 @@ const ExpenseTypeDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListExpenseTypesDefinition
         expenseTypes={expenseTypesDefinition}

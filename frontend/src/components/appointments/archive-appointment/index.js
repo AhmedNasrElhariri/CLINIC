@@ -71,7 +71,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         items: [],
       };
     }
-  }, [activeStep, onOk, discount, others, bank, company, option]);
+  }, [activeStep, onOk, discount, others, othersName, bank, company, option]);
   const handleFinish = useCallback(() => {
     onOk({
       ...value.current,
@@ -92,7 +92,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       sessions: [],
       items: [],
     };
-  }, [onOk, discount, others, bank, company, option]);
+  }, [onOk, discount, others, othersName, bank, company, option]);
 
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {

@@ -29,19 +29,23 @@ const CompanyDefinition = () => {
     initValue,
     model,
   });
-  const { addCompanyDefinition, companysDefinition, editCompanyDefinition } =
-    useCompanyDefinition({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addCompanyDefinition,
+    companysDefinition,
+    editCompanyDefinition,
+    loading,
+  } = useCompanyDefinition({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -92,6 +96,7 @@ const CompanyDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListCompanysDefinition
         companys={companysDefinition}

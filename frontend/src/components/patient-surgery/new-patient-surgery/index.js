@@ -25,6 +25,11 @@ const NewPatientSurgery = ({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
+  loading,
 }) => {
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const { surgeries } = useSurgeries();
@@ -41,14 +46,23 @@ const NewPatientSurgery = ({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRSelectInput
           label="Patient"
           name="patientId"
+          errorMessage={
+            show && checkResult['patientId'].hasError
+              ? checkResult['patientId'].errorMessage
+              : ''
+          }
           data={searchedPatients}
           onSearch={v => setPatientSearchValue(v)}
           block
@@ -56,16 +70,35 @@ const NewPatientSurgery = ({
         <CRSelectInput
           label="Surgery"
           name="surgeryId"
+          errorMessage={
+            show && checkResult['surgeryId'].hasError
+              ? checkResult['surgeryId'].errorMessage
+              : ''
+          }
           data={surgeries}
           block
         />
         <CRSelectInput
           label="Hospital"
           name="hospitalId"
+          errorMessage={
+            show && checkResult['hospitalId'].hasError
+              ? checkResult['hospitalId'].errorMessage
+              : ''
+          }
           data={hospitals}
           block
         />
-        <CRDatePicker name="date" label="Date" block />
+        <CRDatePicker
+          name="date"
+          label="Date"
+          block
+          errorMessage={
+            show && checkResult['date'].hasError
+              ? checkResult['date'].errorMessage
+              : ''
+          }
+        />
         <CRTimePicker
           label="Time of Admision"
           block

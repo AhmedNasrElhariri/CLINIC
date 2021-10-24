@@ -24,6 +24,7 @@ function NewPatientReport({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () =>
@@ -65,6 +66,7 @@ function NewPatientReport({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
       width={1000}
     >
       <Form formValue={formValue} onChange={onChange} fluid>

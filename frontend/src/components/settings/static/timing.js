@@ -30,7 +30,7 @@ const Timing = () => {
     initValue,
     model,
   });
-  const { addTiming, timings, editTiming } = useTimings({
+  const { addTiming, timings, editTiming, loading } = useTimings({
     onCreate: () => {
       close();
       setShow(false);
@@ -97,6 +97,7 @@ const Timing = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListTiming timings={timings} onEdit={handleClickEdit} />
     </>

@@ -34,6 +34,7 @@ const CompanySessionDefinition = () => {
     addCompanySessionDefinition,
     companysSessionDefinition,
     editCompanySessionDefinition,
+    loading,
   } = useCompanySessionDefinition({
     onCreate: () => {
       close();
@@ -101,6 +102,7 @@ const CompanySessionDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListCompanysSessionDefinition
         companysSession={companysSessionDefinition}

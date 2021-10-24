@@ -56,7 +56,6 @@ export default function ListViews() {
   const views = useMemo(() => {
     return R.pipe(R.propOr([], 'listMyViews'), R.groupBy(R.prop('type')))(data);
   }, [data]);
-  console.log(viewStatusData,'vvvvvv');
   const activeViewIds = useMemo(
     () =>
       R.pipe(

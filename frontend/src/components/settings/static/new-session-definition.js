@@ -12,6 +12,7 @@ function NewSessionDefinition({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () =>
@@ -31,6 +32,7 @@ function NewSessionDefinition({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput

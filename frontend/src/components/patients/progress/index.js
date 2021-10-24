@@ -34,7 +34,6 @@ function Progress({ history, viewFields }) {
   if (!activeField) {
     return <H6>Loading</H6>;
   }
-  console.log(values);
   return (
     <Div display="flex">
       <CRNav vertical width={180} onSelect={setActiveField}>

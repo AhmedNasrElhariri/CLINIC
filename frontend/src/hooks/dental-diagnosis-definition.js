@@ -26,27 +26,36 @@ function useDentalDiagnosisDefinition({ onCreate, onEdit } = {}) {
     [data]
   );
 
-  const [addDentalDiagnosisDefinition] = useMutation(ADD_DENTAL_DIAGNOSIS_DEFINITION, {
-    onCompleted() {
-      Alert.success('the Dental Diagnosis has been Added Successfully');
-      onCreate && onCreate();
-    },
-    update(cache, { data: { addDentalDiagnosisDefinition: dentalDiagnosisDefinition } }) {
-      updateCache([...dentalDiagnosissDefinition, dentalDiagnosisDefinition]);
-    },
-    onError() {
-      Alert.error('Failed to add new Dental Diagnosis');
-    },
-  });
-  const [editDentalDiagnosisDefinition] = useMutation(EDIT_DENTAL_DIAGNOSIS_DEFINITION, {
-    onCompleted() {
-      Alert.success('the Dental Diagnosis has been Edited Successfully');
-      onEdit && onEdit();
-    },
-    onError() {
-      Alert.error('Failed to edit the Dental Diagnosis');
-    },
-  });
+  const [addDentalDiagnosisDefinition, { loading }] = useMutation(
+    ADD_DENTAL_DIAGNOSIS_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the Dental Diagnosis has been Added Successfully');
+        onCreate && onCreate();
+      },
+      update(
+        cache,
+        { data: { addDentalDiagnosisDefinition: dentalDiagnosisDefinition } }
+      ) {
+        updateCache([...dentalDiagnosissDefinition, dentalDiagnosisDefinition]);
+      },
+      onError() {
+        Alert.error('Failed to add new Dental Diagnosis');
+      },
+    }
+  );
+  const [editDentalDiagnosisDefinition] = useMutation(
+    EDIT_DENTAL_DIAGNOSIS_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the Dental Diagnosis has been Edited Successfully');
+        onEdit && onEdit();
+      },
+      onError() {
+        Alert.error('Failed to edit the Dental Diagnosis');
+      },
+    }
+  );
 
   return useMemo(
     () => ({
@@ -54,8 +63,14 @@ function useDentalDiagnosisDefinition({ onCreate, onEdit } = {}) {
       addDentalDiagnosisDefinition,
       editDentalDiagnosisDefinition,
       updateCache,
+      loading,
     }),
-    [dentalDiagnosissDefinition, addDentalDiagnosisDefinition, editDentalDiagnosisDefinition]
+    [
+      dentalDiagnosissDefinition,
+      addDentalDiagnosisDefinition,
+      editDentalDiagnosisDefinition,
+      loading,
+    ]
   );
 }
 

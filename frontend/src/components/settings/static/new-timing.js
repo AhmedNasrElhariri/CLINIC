@@ -14,6 +14,7 @@ function NewTiming({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Timing' : 'Edit Timing '),
@@ -30,6 +31,7 @@ function NewTiming({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput

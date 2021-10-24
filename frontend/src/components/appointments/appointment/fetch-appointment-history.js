@@ -30,7 +30,6 @@ export default ({ appointmentId, appointment }) => {
     () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),
     [groups]
   );
-  console.log(groups,'GGGGGGG',viewFields);
   const appointmentHistory = useMemo(
     () => R.pathOr([], ['appointmentHistory'])(history),
     [history]

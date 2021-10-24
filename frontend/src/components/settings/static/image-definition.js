@@ -28,7 +28,7 @@ const ImageDefinition = () => {
     initValue,
     model,
   });
-  const { addImageDefinition, imagesDefinition, editImageDefinition } =
+  const { addImageDefinition, imagesDefinition, editImageDefinition, loading } =
     useImageDefinition({
       onCreate: () => {
         close();
@@ -91,6 +91,7 @@ const ImageDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListImagesDefinition
         images={imagesDefinition}

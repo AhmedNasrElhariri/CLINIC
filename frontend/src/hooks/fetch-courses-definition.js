@@ -26,18 +26,21 @@ function useCoursesDefinition({ onCreate, onEdit } = {}) {
     [data]
   );
 
-  const [addCourseDefinition] = useMutation(ADD_COURSE_DEFINITION, {
-    onCompleted() {
-      Alert.success('the Course has been Added Successfully');
-      onCreate && onCreate();
-    },
-    update(cache, { data: { addCourseDefinition: courseDefinition } }) {
-      updateCache([...coursesDefinitions, courseDefinition]);
-    },
-    onError() {
-      Alert.error('Failed to add new Course');
-    },
-  });
+  const [addCourseDefinition, { loading }] = useMutation(
+    ADD_COURSE_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the Course has been Added Successfully');
+        onCreate && onCreate();
+      },
+      update(cache, { data: { addCourseDefinition: courseDefinition } }) {
+        updateCache([...coursesDefinitions, courseDefinition]);
+      },
+      onError() {
+        Alert.error('Failed to add new Course');
+      },
+    }
+  );
   const [editCourseDefinition] = useMutation(EDIT_COURSE_DEFINITION, {
     onCompleted() {
       Alert.success('the Course has been Edited Successfully');
@@ -54,8 +57,9 @@ function useCoursesDefinition({ onCreate, onEdit } = {}) {
       addCourseDefinition,
       editCourseDefinition,
       updateCache,
+      loading,
     }),
-    [coursesDefinitions, addCourseDefinition, editCourseDefinition]
+    [coursesDefinitions, addCourseDefinition, editCourseDefinition, loading]
   );
 }
 

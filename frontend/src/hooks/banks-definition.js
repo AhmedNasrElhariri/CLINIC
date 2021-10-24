@@ -26,7 +26,7 @@ function useBankDefinition({ onCreate, onEdit } = {}) {
     [data]
   );
 
-  const [addBankDefinition] = useMutation(ADD_BANK_DEFINITION, {
+  const [addBankDefinition, { loading }] = useMutation(ADD_BANK_DEFINITION, {
     onCompleted() {
       Alert.success('the Bank has been Added Successfully');
       onCreate && onCreate();
@@ -54,8 +54,9 @@ function useBankDefinition({ onCreate, onEdit } = {}) {
       addBankDefinition,
       editBankDefinition,
       updateCache,
+      loading,
     }),
-    [banksDefinition, addBankDefinition, editBankDefinition]
+    [banksDefinition, addBankDefinition, editBankDefinition, loading]
   );
 }
 

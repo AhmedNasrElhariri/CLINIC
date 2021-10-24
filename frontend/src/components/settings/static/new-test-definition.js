@@ -17,6 +17,7 @@ function NewLabDefinition({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Lab' : 'Edit Lab '),
@@ -33,6 +34,7 @@ function NewLabDefinition({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput

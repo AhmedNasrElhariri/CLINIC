@@ -7,7 +7,7 @@ import {
   ADD_SALES_DEFINITION,
   EDIT_SALES_DEFINITION,
   LIST_SALESES_DEFINITION,
-  ADD_SALES_DEFINITION_QUENTITY
+  ADD_SALES_DEFINITION_QUENTITY,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -26,7 +26,7 @@ function useSalesDefinition({ onCreate, onEdit } = {}) {
     () => R.propOr([], 'mySalesesDefinition')(data),
     [data]
   );
-  const [addSalesDefinition] = useMutation(ADD_SALES_DEFINITION, {
+  const [addSalesDefinition, { loading }] = useMutation(ADD_SALES_DEFINITION, {
     onCompleted() {
       Alert.success('the Item has been Added Successfully');
       onCreate && onCreate();
@@ -47,15 +47,18 @@ function useSalesDefinition({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Item');
     },
   });
-  const [addSalesDefinitionQuantity] = useMutation(ADD_SALES_DEFINITION_QUENTITY, {
-    onCompleted() {
-      Alert.success('the Quantity has been added Successfully');
-      onEdit && onEdit();
-    },
-    onError() {
-      Alert.error('Failed to add the quantity');
-    },
-  });
+  const [addSalesDefinitionQuantity] = useMutation(
+    ADD_SALES_DEFINITION_QUENTITY,
+    {
+      onCompleted() {
+        Alert.success('the Quantity has been added Successfully');
+        onEdit && onEdit();
+      },
+      onError() {
+        Alert.error('Failed to add the quantity');
+      },
+    }
+  );
 
   return useMemo(
     () => ({
@@ -64,8 +67,15 @@ function useSalesDefinition({ onCreate, onEdit } = {}) {
       addSalesDefinition,
       editSalesDefinition,
       updateCache,
+      loading,
     }),
-    [salesesDefinition, addSalesDefinition, editSalesDefinition,addSalesDefinitionQuantity]
+    [
+      salesesDefinition,
+      addSalesDefinition,
+      editSalesDefinition,
+      addSalesDefinitionQuantity,
+      loading,
+    ]
   );
 }
 

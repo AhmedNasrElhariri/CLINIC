@@ -14,6 +14,7 @@ function NewCompanyDefinition({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Company' : 'Edit Company '),
@@ -30,6 +31,7 @@ function NewCompanyDefinition({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput

@@ -18,6 +18,7 @@ function NewCourseDefinition({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Course' : 'Edit Course '),
@@ -33,6 +34,7 @@ function NewCourseDefinition({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput

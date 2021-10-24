@@ -25,7 +25,7 @@ const LabDefinition = () => {
     initValue,
     model,
   });
-  const { addLabDefinition, labsDefinition, editLabDefinition } =
+  const { addLabDefinition, labsDefinition, editLabDefinition, loading } =
     useLabDefinitions({
       onCreate: () => {
         close();
@@ -88,6 +88,7 @@ const LabDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListLabsDefinition labs={labsDefinition} onEdit={handleClickEdit} />
     </>

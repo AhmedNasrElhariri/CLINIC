@@ -22,7 +22,6 @@ export default function ListSpecialties({
       return false;
     }
   };
-  console.log(specialties, 'spsps');
   return (
     <>
       <CRCard borderless>

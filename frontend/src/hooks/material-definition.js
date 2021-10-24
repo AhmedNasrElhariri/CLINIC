@@ -26,18 +26,21 @@ function useMaterialDefinition({ onCreate, onEdit } = {}) {
     [data]
   );
 
-  const [addMaterialDefinition] = useMutation(ADD_MATERIAL_DEFINITION, {
-    onCompleted() {
-      Alert.success('the Material has been Added Successfully');
-      onCreate && onCreate();
-    },
-    update(cache, { data: { addMaterialDefinition: materialDefinition } }) {
-      updateCache([...materialsDefinition, materialDefinition]);
-    },
-    onError() {
-      Alert.error('Failed to add new Material');
-    },
-  });
+  const [addMaterialDefinition, { loading }] = useMutation(
+    ADD_MATERIAL_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the Material has been Added Successfully');
+        onCreate && onCreate();
+      },
+      update(cache, { data: { addMaterialDefinition: materialDefinition } }) {
+        updateCache([...materialsDefinition, materialDefinition]);
+      },
+      onError() {
+        Alert.error('Failed to add new Material');
+      },
+    }
+  );
   const [editMaterialDefinition] = useMutation(EDIT_MATERIAL_DEFINITION, {
     onCompleted() {
       Alert.success('the Material has been Edited Successfully');
@@ -54,8 +57,14 @@ function useMaterialDefinition({ onCreate, onEdit } = {}) {
       addMaterialDefinition,
       editMaterialDefinition,
       updateCache,
+      loading,
     }),
-    [materialsDefinition, addMaterialDefinition, editMaterialDefinition]
+    [
+      materialsDefinition,
+      addMaterialDefinition,
+      editMaterialDefinition,
+      loading,
+    ]
   );
 }
 

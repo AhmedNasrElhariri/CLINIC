@@ -26,23 +26,26 @@ const usePatientSurgeries = ({ onCreate } = {}) => {
     [data]
   );
 
-  const [createPatientSurgery] = useMutation(CREATE_PATIENT_SURGERY, {
-    onCompleted() {
-      Alert.success('the Surgery has been created Successfully');
-      onCreate && onCreate();
-    },
-    refetchQueries: [
-      {
-        query: LIST_REVENUES,
+  const [createPatientSurgery, { loading }] = useMutation(
+    CREATE_PATIENT_SURGERY,
+    {
+      onCompleted() {
+        Alert.success('the Surgery has been created Successfully');
+        onCreate && onCreate();
       },
-    ],
-    update(cache, { data: { createPatientSurgery: surgery } }) {
-      updateCache([...patientSurgeries, surgery]);
-    },
-    onError() {
-      Alert.error('Failed to create new Surgery');
-    },
-  });
+      refetchQueries: [
+        {
+          query: LIST_REVENUES,
+        },
+      ],
+      update(cache, { data: { createPatientSurgery: surgery } }) {
+        updateCache([...patientSurgeries, surgery]);
+      },
+      onError() {
+        Alert.error('Failed to create new Surgery');
+      },
+    }
+  );
 
   return useMemo(
     () => ({
@@ -55,8 +58,9 @@ const usePatientSurgeries = ({ onCreate } = {}) => {
         });
       },
       updateCache,
+      loading,
     }),
-    [createPatientSurgery, patientSurgeries]
+    [createPatientSurgery, patientSurgeries, loading]
   );
 };
 

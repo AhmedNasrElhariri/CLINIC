@@ -21,11 +21,12 @@ const updateCache = myPatientReports => {
 
 function usePatientReports({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_PATIENT_REPORTS);
-  const patientReports = useMemo(() => R.propOr([], 'myPatientReports')(data), [
-    data,
-  ]);
+  const patientReports = useMemo(
+    () => R.propOr([], 'myPatientReports')(data),
+    [data]
+  );
 
-  const [addPatientReport] = useMutation(ADD_PATIENT_REPORT, {
+  const [addPatientReport, { loading }] = useMutation(ADD_PATIENT_REPORT, {
     onCompleted() {
       Alert.success('the Patient Report has been Added Successfully');
       onCreate && onCreate();
@@ -53,8 +54,9 @@ function usePatientReports({ onCreate, onEdit } = {}) {
       addPatientReport,
       editPatientReport,
       updateCache,
+      loading,
     }),
-    [patientReports, addPatientReport, editPatientReport]
+    [patientReports, addPatientReport, editPatientReport, loading]
   );
 }
 

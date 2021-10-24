@@ -27,18 +27,19 @@ const LabCategory = () => {
     initValue,
     model,
   });
-  const { addLabCategory, labsCategory, editLabCategory } = useLabCategory({
-    onCreate: () => {
-      close();
-      setShow(false);
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setShow(false);
-      setFormValue(initValue);
-    },
-  });
+  const { addLabCategory, labsCategory, editLabCategory, loading } =
+    useLabCategory({
+      onCreate: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+    });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -90,6 +91,7 @@ const LabCategory = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListLabsCategory labsCategory={labsCategory} onEdit={handleClickEdit} />
     </>

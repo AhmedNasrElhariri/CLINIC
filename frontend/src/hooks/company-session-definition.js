@@ -26,27 +26,36 @@ function useCompanySessionDefinition({ onCreate, onEdit } = {}) {
     [data]
   );
 
-  const [addCompanySessionDefinition] = useMutation(ADD_COMPANY_SESSION_DEFINITION, {
-    onCompleted() {
-      Alert.success('the Company Session has been Added Successfully');
-      onCreate && onCreate();
-    },
-    update(cache, { data: { addCompanySessionDefinition: companySessionDefinition } }) {
-      updateCache([...companysSessionDefinition, companySessionDefinition]);
-    },
-    onError() {
-      Alert.error('Failed to add new Company Session');
-    },
-  });
-  const [editCompanySessionDefinition] = useMutation(EDIT_COMPANY_SESSION_DEFINITION, {
-    onCompleted() {
-      Alert.success('the Company Session has been Edited Successfully');
-      onEdit && onEdit();
-    },
-    onError() {
-      Alert.error('Failed to edit the Company Session');
-    },
-  });
+  const [addCompanySessionDefinition, { loading }] = useMutation(
+    ADD_COMPANY_SESSION_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the Company Session has been Added Successfully');
+        onCreate && onCreate();
+      },
+      update(
+        cache,
+        { data: { addCompanySessionDefinition: companySessionDefinition } }
+      ) {
+        updateCache([...companysSessionDefinition, companySessionDefinition]);
+      },
+      onError() {
+        Alert.error('Failed to add new Company Session');
+      },
+    }
+  );
+  const [editCompanySessionDefinition] = useMutation(
+    EDIT_COMPANY_SESSION_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the Company Session has been Edited Successfully');
+        onEdit && onEdit();
+      },
+      onError() {
+        Alert.error('Failed to edit the Company Session');
+      },
+    }
+  );
 
   return useMemo(
     () => ({
@@ -54,8 +63,14 @@ function useCompanySessionDefinition({ onCreate, onEdit } = {}) {
       addCompanySessionDefinition,
       editCompanySessionDefinition,
       updateCache,
+      loading,
     }),
-    [companysSessionDefinition, addCompanySessionDefinition, editCompanySessionDefinition]
+    [
+      companysSessionDefinition,
+      addCompanySessionDefinition,
+      editCompanySessionDefinition,
+      loading,
+    ]
   );
 }
 

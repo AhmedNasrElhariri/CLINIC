@@ -78,7 +78,6 @@ export default function Snippets() {
       });
     }
   }, [type, create, update, deleteSnippet, formValue]);
-  console.log(formValue);
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initialValues);
@@ -105,7 +104,6 @@ export default function Snippets() {
   );
 
   const snippets = R.propOr([], 'mySnippets')(data);
-  console.log(type, 'tt', formValue);
   return (
     <>
       <MainContainer

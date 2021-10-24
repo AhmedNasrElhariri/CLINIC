@@ -32,6 +32,7 @@ const DentalDiagnosisDefinition = () => {
     addDentalDiagnosisDefinition,
     dentalDiagnosissDefinition,
     editDentalDiagnosisDefinition,
+    loading,
   } = useDentalDiagnosisDefinition({
     onCreate: () => {
       close();
@@ -99,6 +100,7 @@ const DentalDiagnosisDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListDentalDiagnosissDefinition
         dentalDiagnosiss={dentalDiagnosissDefinition}

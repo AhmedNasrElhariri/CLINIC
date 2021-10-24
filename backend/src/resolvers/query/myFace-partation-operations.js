@@ -1,23 +1,26 @@
 import { prisma } from '@';
 import patient from './patient';
 
-const myFacePartationOperations = async (_, { patientId,facePartationNumber }, { userId, organizationId }) => {
-  console.log(facePartationNumber,'facePartationNumberfacePartationNumber');
+const myFacePartationOperations = async (
+  _,
+  { patientId, facePartationNumber },
+  { userId, organizationId }
+) => {
   const partation = await prisma.facePartation.findMany({
-      where:{
-          number:facePartationNumber,
-          patientId:patientId,
-      },
+    where: {
+      number: facePartationNumber,
+      patientId: patientId,
+    },
   });
   const partationId = partation[0].id;
   const operations = await prisma.faceOperation.findMany({
     where: {
       patientId: patientId,
-      partationId:partationId,
+      partationId: partationId,
     },
-    include:{
-        material:true,
-        facePartation:true,
+    include: {
+      material: true,
+      facePartation: true,
     },
   });
   return operations;

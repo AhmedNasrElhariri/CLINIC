@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Can } from 'components/user/can';
+import { Schema } from 'rsuite';
 import { Div, CRButton, MainContainer } from 'components';
 import moment from 'moment';
 import ListPatientSurgeries from '../list-patient-surgeries';
@@ -23,23 +24,32 @@ const initValue = {
   fees: 0,
   hospitalFees: 0,
 };
-
+const { StringType, DateType } = Schema.Types;
+const model = Schema.Model({
+  patientId: StringType().isRequired('patient is required'),
+  surgeryId: StringType().isRequired('surgery is required'),
+  hospitalId: StringType().isRequired('hospital is required'),
+  date: DateType().isRequired('date is required'),
+});
 const PatientSurgeriesContainer = () => {
   const { visible, open, close } = useModal();
   const history = useHistory();
-  const { formValue, setFormValue } = useForm({
-    initValue,
-  });
+  const { formValue, setFormValue, checkResult, validate, show, setShow } =
+    useForm({
+      initValue,
+      model,
+    });
   const { formValue: filterFormValue, setFormValue: setFilterFormValue } =
     useForm({
       surgery: null,
       hospital: null,
     });
-  const { createPatientSurgery, patientSurgeries } = usePatientSurgeries({
-    onCreate: () => {
-      close();
-    },
-  });
+  const { createPatientSurgery, patientSurgeries, loading } =
+    usePatientSurgeries({
+      onCreate: () => {
+        close();
+      },
+    });
 
   const handleOnClickCreate = useCallback(() => {
     open();
@@ -53,8 +63,7 @@ const PatientSurgeriesContainer = () => {
       hours: timeDate.hours(),
       minute: timeDate.minutes(),
     });
-    const newData = { date:Date, ...rest };
-    console.log(newData);
+    const newData = { date: Date, ...rest };
     createPatientSurgery(newData);
   }, [createPatientSurgery, formValue]);
 
@@ -90,6 +99,11 @@ const PatientSurgeriesContainer = () => {
           onChange={setFormValue}
           onOk={handleAdd}
           onClose={close}
+          checkResult={checkResult}
+          validate={validate}
+          show={show}
+          setShow={setShow}
+          loading={loading}
         />
         <PatientSurgeryFilter
           formValue={filterFormValue}

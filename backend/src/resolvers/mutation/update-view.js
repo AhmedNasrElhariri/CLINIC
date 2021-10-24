@@ -44,7 +44,6 @@ const updateView = async (_, { view, viewId }, { userId }) => {
     })
     .then(() => true)
     .catch(err => {
-      console.log(err);
       return false;
     });
 };

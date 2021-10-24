@@ -7,11 +7,11 @@ export const Title = styled.div`
   font-stretch: normal;
   font-style: normal;
   line-height: 1.36;
+  margin-left: 25px;
   letter-spacing: normal;
   text-align: left;
   color: #283148;
   margin-bottom: 15px;
-  margin-left: 30px;
   &.rs-modal-header {
     padding: 27px;
     border-bottom: none;
@@ -22,7 +22,7 @@ export const NextAppointment = styled.div`
   display: flex;
   justifycontent: space-between;
   background-color: #f4f4f6;
-  margin-left: 26px;
+  margin-left: 25px;
   width: 435px;
   height: 63px;
   padding: 20px 8px;
@@ -34,8 +34,7 @@ export const Container = styled.div`
   height: 63px;
   background-color: ${props => props.color};
   position: relative;
-  margin-bottom: 2px;
-  margin-left: 26px;
+  margin: 0px 0px 2px 25px;
 `;
 export const Medicine = styled.div`
   font-size: 12px;
@@ -94,8 +93,13 @@ export const FooterButton = styled.button`
 export const PrescriptionPrintout = styled.div`
   width: 420px;
   height: 595px;
-  padding: 80px 20px;
   position: relative;
+  @media print and (max-width: 499px) {
+    margin-right: ${props => props.mr}px;
+    margin-top: ${props => props.mt}px;
+    margin-bottom: ${props => props.mb}px;
+    margin-left: ${props => props.ml}px;
+  }
 `;
 export const StyledFooterData = styled.div`
   position: absolute;
@@ -114,7 +118,6 @@ export const Row = styled.div`
 `;
 export const Content = styled.p`
   padding-top: 2px;
-  margin-left: 5px;
 `;
 export const DoesContent = styled.p`
   padding-top: 10px;

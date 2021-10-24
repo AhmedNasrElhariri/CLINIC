@@ -28,7 +28,7 @@ const PatientReport = () => {
     model,
   });
 
-  const { addPatientReport, patientReports, editPatientReport } =
+  const { addPatientReport, patientReports, editPatientReport, loading } =
     usePatientReports({
       onCreate: () => {
         close();
@@ -96,6 +96,7 @@ const PatientReport = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListPatientReports reports={patientReports} onEdit={handleClickEdit} />
     </>

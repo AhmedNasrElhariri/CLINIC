@@ -20,6 +20,7 @@ function NewSalesDefinition({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () =>
@@ -37,10 +38,11 @@ function NewSalesDefinition({
       header={header}
       onOk={() => {
         setShow(true);
-        validate && onOk();
+        type !== 'addQuentity' ? validate && onOk() : onOk();
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         {type === 'addQuentity' ? (

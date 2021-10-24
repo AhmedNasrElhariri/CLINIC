@@ -21,11 +21,12 @@ const updateCache = myImagesCategory => {
 
 function useImagesCategory({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_IMAGES_CATEGORY);
-  const imagesCategory = useMemo(() => R.propOr([], 'myImagesCategory')(data), [
-    data,
-  ]);
+  const imagesCategory = useMemo(
+    () => R.propOr([], 'myImagesCategory')(data),
+    [data]
+  );
 
-  const [addImageCategory] = useMutation(ADD_IMAGE_CATEGORY, {
+  const [addImageCategory, { loading }] = useMutation(ADD_IMAGE_CATEGORY, {
     onCompleted() {
       Alert.success('the Image has been Added Successfully');
       onCreate && onCreate();
@@ -53,8 +54,9 @@ function useImagesCategory({ onCreate, onEdit } = {}) {
       addImageCategory,
       editImageCategory,
       updateCache,
+      loading,
     }),
-    [imagesCategory, addImageCategory, editImageCategory]
+    [imagesCategory, addImageCategory, editImageCategory, loading]
   );
 }
 

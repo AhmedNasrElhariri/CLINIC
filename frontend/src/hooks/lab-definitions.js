@@ -22,14 +22,14 @@ const updateCache = myLabsDefinitions => {
 function useLabDefinition({ onCreate, onEdit, categoryId } = {}) {
   const { data } = useQuery(LIST_TESTS_DEFINITION, {
     variables: {
-      categoryId:categoryId,
+      categoryId: categoryId,
     },
   });
   const labsDefinition = useMemo(
     () => R.propOr([], 'myLabsDefinitions')(data),
     [data]
   );
-  const [addLabDefinition] = useMutation(ADD_TEST_DEFINITION, {
+  const [addLabDefinition, { loading }] = useMutation(ADD_TEST_DEFINITION, {
     onCompleted() {
       Alert.success('the Lab has been Added Successfully');
       onCreate && onCreate();
@@ -57,8 +57,9 @@ function useLabDefinition({ onCreate, onEdit, categoryId } = {}) {
       addLabDefinition,
       editLabDefinition,
       updateCache,
+      loading,
     }),
-    [labsDefinition, addLabDefinition, editLabDefinition]
+    [labsDefinition, addLabDefinition, editLabDefinition, loading]
   );
 }
 

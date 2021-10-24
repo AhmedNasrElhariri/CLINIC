@@ -13,6 +13,7 @@ function NewExpenseTypeDefinition({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Expense Type' : 'Edit Expense Type '),
@@ -29,6 +30,7 @@ function NewExpenseTypeDefinition({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput

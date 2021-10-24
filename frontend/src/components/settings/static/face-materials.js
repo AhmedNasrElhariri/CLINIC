@@ -5,20 +5,35 @@ import { Div, CRButton } from 'components';
 import NewMaterialDefinition from './new-material-definition';
 import ListMaterialsDefinition from './list-materials-definition';
 import { useForm, useMaterialDefinition } from 'hooks';
-
+import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
 
 const initValue = { name: '' };
+const { StringType } = Schema.Types;
+const model = Schema.Model({
+  name: StringType().isRequired('face material name is required'),
+});
 
 const MaterialDefinition = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, type, setType } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue,
+    model,
   });
   const {
     addMaterialDefinition,
     materialsDefinition,
     editMaterialDefinition,
+    loading,
   } = useMaterialDefinition({
     onCreate: () => {
       close();
@@ -75,6 +90,11 @@ const MaterialDefinition = () => {
         onOk={handleAdd}
         onClose={close}
         type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
+        loading={loading}
       />
       <ListMaterialsDefinition
         materials={materialsDefinition}

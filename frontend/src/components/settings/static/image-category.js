@@ -27,7 +27,7 @@ const ImageCategory = () => {
     initValue,
     model,
   });
-  const { addImageCategory, imagesCategory, editImageCategory } =
+  const { addImageCategory, imagesCategory, editImageCategory, loading } =
     useImageCategory({
       onCreate: () => {
         close();
@@ -90,6 +90,7 @@ const ImageCategory = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListImagesCategory
         imagesCategory={imagesCategory}

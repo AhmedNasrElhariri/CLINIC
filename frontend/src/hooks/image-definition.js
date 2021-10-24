@@ -30,7 +30,7 @@ function useImageDefinition({ onCreate, onEdit, categoryId } = {}) {
     [data]
   );
 
-  const [addImageDefinition] = useMutation(ADD_IMAGE_DEFINITION, {
+  const [addImageDefinition, { loading }] = useMutation(ADD_IMAGE_DEFINITION, {
     onCompleted() {
       Alert.success('the Image has been Added Successfully');
       onCreate && onCreate();
@@ -58,8 +58,9 @@ function useImageDefinition({ onCreate, onEdit, categoryId } = {}) {
       addImageDefinition,
       editImageDefinition,
       updateCache,
+      loading,
     }),
-    [imagesDefinition, addImageDefinition, editImageDefinition]
+    [imagesDefinition, addImageDefinition, editImageDefinition, loading]
   );
 }
 

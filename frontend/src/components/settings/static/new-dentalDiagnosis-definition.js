@@ -13,6 +13,7 @@ function NewDentalDiagnosisDefinition({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () =>
@@ -29,6 +30,7 @@ function NewDentalDiagnosisDefinition({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput

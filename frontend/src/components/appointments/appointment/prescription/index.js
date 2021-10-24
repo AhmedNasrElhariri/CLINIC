@@ -1,10 +1,10 @@
-import React, { useMemo, useRef, useState, useCallback } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Divider, Toggle } from 'rsuite';
 import ReactToPrint from 'react-to-print';
 import { formatFullDay } from 'utils/date';
-import { useMedicineDefinitions, useTimings } from 'hooks';
+import { useMedicineDefinitions, useTimings, useConfigurations } from 'hooks';
 import * as R from 'ramda';
-import { CRModal, Div, H6, CRButton } from 'components';
+import { CRModal, Div, H6 } from 'components';
 import {
   Title,
   Container,
@@ -17,6 +17,7 @@ import {
   ContainerStyled,
   StyledFooterData,
 } from './style';
+import PrescriptionPrinting from './prescription';
 
 let newPrescription = [];
 function Prescription({
@@ -29,8 +30,8 @@ function Prescription({
   const [enable, setEnable] = useState(false);
   const ref = useRef();
   const refTwo = useRef();
-  const refThree = useRef();
   const { medicineDefinitions } = useMedicineDefinitions();
+  const { pageSetupData } = useConfigurations();
   const [direction, setDirection] = useState('rtl');
   const { timings } = useTimings();
   const header = useMemo(() => 'Prescription', []);
@@ -40,7 +41,7 @@ function Prescription({
     });
     setFormValue2(newPrescription);
   };
-  const newMedicine = medicine.map((m, idx) => {
+  const newMedicine = medicine?.map((m, idx) => {
     const formMedicine =
       medicineDefinitions.find(f => f.id === m.medicineId) || {};
     const { dose, medicineId, timingId, duration, period } = m;
@@ -74,9 +75,9 @@ function Prescription({
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
       <Title>Medicine</Title>
-      {newMedicine.map((element, indx) => (
+      {newMedicine?.map((element, indx) => (
         <Container color="#f4f4f6">
-          <Medicine >
+          <Medicine>
             <Ul>
               <Li>{element.medicine.name}</Li>
               <Div display="flex">
@@ -135,11 +136,17 @@ function Prescription({
         content={() => refTwo.current}
       />
       <Div style={{ overflow: 'hidden', height: '0px' }}>
-        <PrescriptionPrintout ref={ref}>
-          {newMedicine.length === '0' ? (
+        <PrescriptionPrintout
+          ref={ref}
+          mt={pageSetupData?.top || 0}
+          mr={pageSetupData?.right || 0}
+          mb={pageSetupData?.bottom || 0}
+          ml={pageSetupData?.left || 0}
+        >
+          {newMedicine?.length === '0' ? (
             <Div>No Medicines</Div>
           ) : (
-            newMedicine.map((element, indx) => (
+            newMedicine?.map((element, indx) => (
               <Container>
                 <Medicine direction={direction}>
                   <Ul>
@@ -172,41 +179,47 @@ function Prescription({
             <></>
           )}
         </PrescriptionPrintout>
-        <PrescriptionPrintout ref={refTwo}>
-          {newMedicine.length === '0' ? (
+        <Div
+          mt={pageSetupData?.top || 0}
+          mr={pageSetupData?.right || 0}
+          mb={pageSetupData?.bottom || 0}
+          ml={pageSetupData?.left || 0}
+          ref={refTwo}
+          position="relative"
+          height="100%"
+        >
+          {newMedicine?.length === '0' ? (
             <Div>No Medicines</Div>
           ) : (
-            newMedicine.map((element, indx) => (
-              <Container>
-                <Medicine>
-                  <Ul>
-                    <Li>{element.medicine.name}</Li>
-                    <Div display="flex">
-                      <Div>
-                        {element.dose}
-                        &nbsp;
-                      </Div>
-                      <Div>{element.tE}&nbsp;</Div>
-                      <Div>for&nbsp;</Div>
-                      <Div>{element.duration}&nbsp;</Div>
-                      <Div>{element.period}</Div>
+            newMedicine?.map((element, indx) => (
+              <Div>
+                <Div>
+                  <Div>{element.medicine.name}</Div>
+                  <Div display="flex">
+                    <Div>
+                      {element.dose}
+                      &nbsp;
                     </Div>
-                  </Ul>
-                </Medicine>
-              </Container>
+                    <Div>{element.tE}&nbsp;</Div>
+                    <Div>for&nbsp;</Div>
+                    <Div>{element.duration}&nbsp;</Div>
+                    <Div>{element.period}</Div>
+                  </Div>
+                </Div>
+              </Div>
             ))
           )}
           {enable ? (
-            <StyledFooterData>
-              <H6 style={{ marginRight: '50px' }}>
-                {formatFullDay(nextAppointment?.date)}
-              </H6>
-              <H6>{'المعاد القادم'}</H6>
-            </StyledFooterData>
+            <Div position="absolute" top="80%">
+              <Div display="flex" justifyContent="space-around">
+                <H6>{formatFullDay(nextAppointment?.date)}</H6>
+                <H6>{'المعاد القادم'}</H6>
+              </Div>
+            </Div>
           ) : (
             <></>
           )}
-        </PrescriptionPrintout>
+        </Div>
       </Div>
     </CRModal>
   );

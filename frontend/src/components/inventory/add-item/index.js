@@ -9,7 +9,15 @@ import { CRSelectInput, CRBrancheTree } from 'components/widgets';
 import { useForm, useModal } from 'hooks';
 
 const { StringType, NumberType } = Schema.Types;
-
+const initValue = {
+  itemId: null,
+  amount: 1,
+  price: 1,
+  branchId: null,
+  specialtyId: null,
+  userId: null,
+  level: '',
+};
 const model = Schema.Model({
   itemId: StringType().isRequired('Item is required'),
   amount: NumberType().isRequired('Amount Type is required'),
@@ -17,21 +25,24 @@ const model = Schema.Model({
 
 const AddItem = ({ items }) => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, reset } = useForm({
-    initValue: {
-      itemId: null,
-      amount: 1,
-      price: 1,
-      branchId: null,
-      specialtyId: null,
-      userId: null,
-      level: '',
-    },
+  const {
+    formValue,
+    setFormValue,
+    reset,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
+    initValue,
+    model,
   });
   const { addItem, addItemLoading } = useInventory({
     onAddCompleted: () => {
       Alert.success('Item has been created successfully');
       close();
+      setShow(false);
+      setFormValue(initValue);
     },
   });
 
@@ -51,11 +62,8 @@ const AddItem = ({ items }) => {
         header="Add To Inventory"
         loading={addItemLoading}
         onOk={() => {
-          if (!isValid(model, formValue)) {
-            Alert.error('Complete Required Fields');
-            return;
-          }
-          addItem(formValue);
+          setShow(true);
+          validate && addItem(formValue);
         }}
         onHide={handleClose}
         onCancel={handleClose}
@@ -64,10 +72,24 @@ const AddItem = ({ items }) => {
           <CRSelectInput
             label="Item"
             name="itemId"
+            errorMessage={
+              show && checkResult['itemId'].hasError
+                ? checkResult['itemId'].errorMessage
+                : ''
+            }
             data={items}
             block
           ></CRSelectInput>
-          <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
+          <CRNumberInput
+            label="Amount"
+            name="amount"
+            errorMessage={
+              show && checkResult['amount'].hasError
+                ? checkResult['amount'].errorMessage
+                : ''
+            }
+            block
+          ></CRNumberInput>
           <CRNumberInput label="Unit Price" name="price" block></CRNumberInput>
           <CRBrancheTree
             formValue={formValue}

@@ -39,19 +39,23 @@ const CourseDefinition = () => {
     initValue,
     model,
   });
-  const { addCourseDefinition, coursesDefinitions, editCourseDefinition } =
-    useCoursesDefinition({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addCourseDefinition,
+    coursesDefinitions,
+    editCourseDefinition,
+    loading,
+  } = useCoursesDefinition({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -109,6 +113,7 @@ const CourseDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListCoursesDefinition
         courses={coursesDefinitions}

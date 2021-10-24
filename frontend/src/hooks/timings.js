@@ -18,7 +18,7 @@ const updateCache = myTimings => {
 function useTimings({ onCreate, onEdit } = {}) {
   const { data } = useQuery(LIST_TIMINGS);
   const timings = useMemo(() => R.propOr([], 'myTimings')(data), [data]);
-  const [addTiming] = useMutation(ADD_TIMING, {
+  const [addTiming, { loading }] = useMutation(ADD_TIMING, {
     onCompleted() {
       Alert.success('the Timing has been Added Successfully');
       onCreate && onCreate();
@@ -46,8 +46,9 @@ function useTimings({ onCreate, onEdit } = {}) {
       addTiming,
       editTiming,
       updateCache,
+      loading,
     }),
-    [timings, addTiming, editTiming]
+    [timings, addTiming, editTiming, loading]
   );
 }
 

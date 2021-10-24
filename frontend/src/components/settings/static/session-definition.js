@@ -34,19 +34,23 @@ const SessionDefinition = () => {
     initValue,
     model,
   });
-  const { addSessionDefinition, sessionsDefinition, editSessionDefinition } =
-    useSessionDefinition({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addSessionDefinition,
+    sessionsDefinition,
+    editSessionDefinition,
+    loading,
+  } = useSessionDefinition({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -98,6 +102,7 @@ const SessionDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListSessionsDefinition
         sessions={sessionsDefinition}

@@ -45,6 +45,7 @@ const SalesDefinition = () => {
     salesesDefinition,
     editSalesDefinition,
     addSalesDefinitionQuantity,
+    loading,
   } = useSalesDefinition({
     onCreate: () => {
       close();
@@ -134,6 +135,7 @@ const SalesDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListSalesesDefinition
         saless={salesesDefinition}

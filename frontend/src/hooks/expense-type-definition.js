@@ -26,27 +26,36 @@ function useExpenseTypeDefinition({ onCreate, onEdit } = {}) {
     [data]
   );
 
-  const [addExpenseTypeDefinition] = useMutation(ADD_EXPENSE_TYPE_DEFINITION, {
-    onCompleted() {
-      Alert.success('the ExpenseType has been Added Successfully');
-      onCreate && onCreate();
-    },
-    update(cache, { data: { addExpenseTypeDefinition: expenseTypeDefinition } }) {
-      updateCache([...expenseTypesDefinition, expenseTypeDefinition]);
-    },
-    onError() {
-      Alert.error('Failed to add new ExpenseType');
-    },
-  });
-  const [editExpenseTypeDefinition] = useMutation(EDIT_EXPENSE_TYPE_DEFINITION, {
-    onCompleted() {
-      Alert.success('the ExpenseType has been Edited Successfully');
-      onEdit && onEdit();
-    },
-    onError() {
-      Alert.error('Failed to edit the ExpenseType');
-    },
-  });
+  const [addExpenseTypeDefinition, { loading }] = useMutation(
+    ADD_EXPENSE_TYPE_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the ExpenseType has been Added Successfully');
+        onCreate && onCreate();
+      },
+      update(
+        cache,
+        { data: { addExpenseTypeDefinition: expenseTypeDefinition } }
+      ) {
+        updateCache([...expenseTypesDefinition, expenseTypeDefinition]);
+      },
+      onError() {
+        Alert.error('Failed to add new ExpenseType');
+      },
+    }
+  );
+  const [editExpenseTypeDefinition] = useMutation(
+    EDIT_EXPENSE_TYPE_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the ExpenseType has been Edited Successfully');
+        onEdit && onEdit();
+      },
+      onError() {
+        Alert.error('Failed to edit the ExpenseType');
+      },
+    }
+  );
 
   return useMemo(
     () => ({
@@ -54,8 +63,14 @@ function useExpenseTypeDefinition({ onCreate, onEdit } = {}) {
       addExpenseTypeDefinition,
       editExpenseTypeDefinition,
       updateCache,
+      loading,
     }),
-    [expenseTypesDefinition, addExpenseTypeDefinition, editExpenseTypeDefinition]
+    [
+      expenseTypesDefinition,
+      addExpenseTypeDefinition,
+      editExpenseTypeDefinition,
+      loading,
+    ]
   );
 }
 

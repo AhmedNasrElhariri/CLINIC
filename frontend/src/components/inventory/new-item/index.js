@@ -17,12 +17,20 @@ const { StringType } = Schema.Types;
 
 const model = Schema.Model({
   name: StringType().isRequired('Name Type is required'),
-  unitOfMeasure: StringType().isRequired('Name Type is required'),
+  unitOfMeasure: StringType().isRequired('unit Of Measure is required'),
 });
 
 const NewItem = () => {
   const { visible, open, close } = useModal();
-  const { formValue, setFormValue, reset } = useForm({
+  const {
+    formValue,
+    setFormValue,
+    reset,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
     initValue: {
       name: '',
       unitOfMeasure: '',
@@ -30,6 +38,7 @@ const NewItem = () => {
       barcode: '',
       notes: '',
     },
+    model,
   });
 
   const { create, createItemLoading } = useInventory({
@@ -37,6 +46,7 @@ const NewItem = () => {
       Alert.success('Item has been created successfully');
       reset();
       close();
+      setShow(false);
     },
   });
 
@@ -56,20 +66,31 @@ const NewItem = () => {
         header="Add Item"
         loading={createItemLoading}
         onOk={() => {
-          if (!isValid(model, formValue)) {
-            Alert.error('Complete Required Fields');
-            return;
-          }
-          create(formValue);
+          setShow(true);
+          validate && create(formValue);
         }}
         onHide={handleClose}
         onCancel={handleClose}
       >
         <Form formValue={formValue} model={model} onChange={setFormValue} fluid>
-          <CRTextInput label="Name" name="name" block></CRTextInput>
+          <CRTextInput
+            label="Name"
+            name="name"
+            errorMessage={
+              show && checkResult['name'].hasError
+                ? checkResult['name'].errorMessage
+                : ''
+            }
+            block
+          ></CRTextInput>
           <CRSelectInput
             label="Unit Of measure"
             name="unitOfMeasure"
+            errorMessage={
+              show && checkResult['unitOfMeasure'].hasError
+                ? checkResult['unitOfMeasure'].errorMessage
+                : ''
+            }
             valueKey="value"
             data={UNIT_OF_MEASURES}
             block

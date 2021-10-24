@@ -55,9 +55,9 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
     onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
       onHide();
+      setFormValue(initialValues);
       setShow(false);
       onCreate(patient);
-      setFormValue(initialValues);
     },
     refetchQueries: [
       {

@@ -14,7 +14,7 @@ const updateCache = mySessionsDefinition => {
   client.writeQuery({
     query: LIST_SESSIONS_DEFINITION,
     data: {
-        mySessionsDefinition,
+      mySessionsDefinition,
     },
   });
 };
@@ -26,18 +26,21 @@ function useSessionDefinition({ onCreate, onEdit } = {}) {
     [data]
   );
 
-  const [addSessionDefinition] = useMutation(ADD_SESSION_DEFINITION, {
-    onCompleted() {
-      Alert.success('the Session has been Added Successfully');
-      onCreate && onCreate();
-    },
-    update(cache, { data: { addSessionDefinition: sessionDefinition } }) {
-      updateCache([...sessionsDefinition, sessionDefinition]);
-    },
-    onError() {
-      Alert.error('Failed to add new Session');
-    },
-  });
+  const [addSessionDefinition, { loading }] = useMutation(
+    ADD_SESSION_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the Session has been Added Successfully');
+        onCreate && onCreate();
+      },
+      update(cache, { data: { addSessionDefinition: sessionDefinition } }) {
+        updateCache([...sessionsDefinition, sessionDefinition]);
+      },
+      onError() {
+        Alert.error('Failed to add new Session');
+      },
+    }
+  );
   const [editSessionDefinition] = useMutation(EDIT_SESSION_DEFINITION, {
     onCompleted() {
       Alert.success('the Session has been Edited Successfully');
@@ -54,8 +57,9 @@ function useSessionDefinition({ onCreate, onEdit } = {}) {
       addSessionDefinition,
       editSessionDefinition,
       updateCache,
+      loading,
     }),
-    [sessionsDefinition, addSessionDefinition, editSessionDefinition]
+    [sessionsDefinition, addSessionDefinition, editSessionDefinition, loading]
   );
 }
 

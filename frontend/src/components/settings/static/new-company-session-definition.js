@@ -14,6 +14,7 @@ function NewCompanySessionDefinition({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () =>
@@ -36,6 +37,7 @@ function NewCompanySessionDefinition({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRSelectInput

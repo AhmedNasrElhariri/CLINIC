@@ -32,7 +32,6 @@ export default function Branches() {
     },
     [createBranch]
   );
-
   const handleAddSpecialty = useCallback(
     value => addSpecialty(value),
     [addSpecialty]
@@ -44,6 +43,14 @@ export default function Branches() {
     },
     [branchIds, specialtyIds]
   );
+  useEffect(() => {
+    if (branches.length > 0 && specialties.length > 0) {
+      const branchId = branches[0]?.id;
+      const specialtyId = specialties[0]?.id;
+      setBranchIds([...branchIds, branchId]);
+      setSpecialtyIds([...specialtyIds, specialtyId]);
+    }
+  }, [branches, specialties]);
   return (
     <>
       <MainContainer

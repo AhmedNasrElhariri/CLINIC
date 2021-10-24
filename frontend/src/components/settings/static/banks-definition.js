@@ -29,7 +29,7 @@ const BankDefinition = () => {
     initValue,
     model,
   });
-  const { addBankDefinition, banksDefinition, editBankDefinition } =
+  const { addBankDefinition, banksDefinition, editBankDefinition, loading } =
     useBankDefinition({
       onCreate: () => {
         close();
@@ -92,6 +92,7 @@ const BankDefinition = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        loading={loading}
       />
       <ListBanksDefinition banks={banksDefinition} onEdit={handleClickEdit} />
     </>

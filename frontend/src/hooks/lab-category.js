@@ -25,7 +25,7 @@ function useLabCategory({ onCreate, onEdit } = {}) {
     () => R.propOr([], 'myLabsCategory')(data),
     [data]
   );
-  const [addLabCategory] = useMutation(ADD_LAB_CATEGORY, {
+  const [addLabCategory, { loading }] = useMutation(ADD_LAB_CATEGORY, {
     onCompleted() {
       Alert.success('the Test has been Added Successfully');
       onCreate && onCreate();
@@ -53,8 +53,9 @@ function useLabCategory({ onCreate, onEdit } = {}) {
       addLabCategory,
       editLabCategory,
       updateCache,
+      loading,
     }),
-    [labsCategory, addLabCategory, editLabCategory]
+    [labsCategory, addLabCategory, editLabCategory, loading]
   );
 }
 

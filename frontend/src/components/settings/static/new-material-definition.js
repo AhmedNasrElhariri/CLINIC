@@ -11,6 +11,11 @@ function NewMaterialDefinition({
   visible,
   onOk,
   onClose,
+  checkResult,
+  validate,
+  show,
+  setShow,
+  loading,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Material' : 'Edit Material '),
@@ -20,14 +25,23 @@ function NewMaterialDefinition({
     <CRModal
       show={visible}
       header={header}
-      onOk={onOk}
+      onOk={() => {
+        setShow(true);
+        validate && onOk();
+      }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput
           label="Material Name"
           name="name"
+          errorMessage={
+            show && checkResult['name'].hasError
+              ? checkResult['name'].errorMessage
+              : ''
+          }
           placeholder="Type Material"
           block
         />

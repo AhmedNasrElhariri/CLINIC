@@ -14,6 +14,7 @@ function NewLabCategory({
   validate,
   show,
   setShow,
+  loading,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Lab Category' : 'Edit Lab Category '),
@@ -30,8 +31,9 @@ function NewLabCategory({
       }}
       onHide={onClose}
       onCancel={onClose}
+      loading={loading}
     >
-      <Form formValue={formValue}  onChange={onChange} fluid>
+      <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
           label="Lab Category Name"
           name="name"

@@ -26,18 +26,21 @@ function useCompanyDefinition({ onCreate, onEdit } = {}) {
     [data]
   );
 
-  const [addCompanyDefinition] = useMutation(ADD_COMPANY_DEFINITION, {
-    onCompleted() {
-      Alert.success('the Company has been Added Successfully');
-      onCreate && onCreate();
-    },
-    update(cache, { data: { addCompanyDefinition: companyDefinition } }) {
-      updateCache([...companysDefinition, companyDefinition]);
-    },
-    onError() {
-      Alert.error('Failed to add new Company');
-    },
-  });
+  const [addCompanyDefinition, { loading }] = useMutation(
+    ADD_COMPANY_DEFINITION,
+    {
+      onCompleted() {
+        Alert.success('the Company has been Added Successfully');
+        onCreate && onCreate();
+      },
+      update(cache, { data: { addCompanyDefinition: companyDefinition } }) {
+        updateCache([...companysDefinition, companyDefinition]);
+      },
+      onError() {
+        Alert.error('Failed to add new Company');
+      },
+    }
+  );
   const [editCompanyDefinition] = useMutation(EDIT_COMPANY_DEFINITION, {
     onCompleted() {
       Alert.success('the Company has been Edited Successfully');
@@ -54,8 +57,9 @@ function useCompanyDefinition({ onCreate, onEdit } = {}) {
       addCompanyDefinition,
       editCompanyDefinition,
       updateCache,
+      loading,
     }),
-    [companysDefinition, addCompanyDefinition, editCompanyDefinition]
+    [companysDefinition, addCompanyDefinition, editCompanyDefinition, loading]
   );
 }
 

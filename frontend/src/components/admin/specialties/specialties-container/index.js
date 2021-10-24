@@ -1,4 +1,4 @@
-import React, { useCallback ,useState} from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import {
   NewSpecialty,
@@ -45,7 +45,14 @@ export default function SpecialtiesContainer() {
     },
     [branchIds, specialtyIds]
   );
-
+  useEffect(() => {
+    if (branches.length > 0 && specialties.length > 0) {
+      const branchId = branches[0]?.id;
+      const specialtyId = specialties[0]?.id;
+      setBranchIds([...branchIds, branchId]);
+      setSpecialtyIds([...specialtyIds, specialtyId]);
+    }
+  }, [branches, specialties]);
   return (
     <>
       <MainContainer
