@@ -70,7 +70,6 @@ function ShowMedicinines({ visible, onClose, patient }) {
     const link = await toPng(ref?.current, { cacheBust: true });
     setUrl(link);
   }, [url, ref, med]);
-  console.log(med, 'mmmmm');
   return (
     <>
       <CRModal

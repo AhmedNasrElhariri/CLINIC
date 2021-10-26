@@ -23,14 +23,14 @@ const updateCache = patients => {
 
 function usePatients({
   onEdit,
-  page,
-  name,
-  phoneNo,
+  page = 1,
+  name = '',
+  phoneNo = '',
   area,
   reference,
   patientSearchValue,
 } = {}) {
-  const { data } = useQuery(LIST_PATIENTS, {
+  const { data: patientData } = useQuery(LIST_PATIENTS, {
     variables: {
       offset: (page - 1) * 20 || 0,
       limit: 20,
@@ -38,14 +38,21 @@ function usePatients({
       phoneNo,
     },
   });
-  const patientsdata = data?.patients;
+  const patientsdata = patientData?.patients;
   const patients = useMemo(
     () => R.propOr([], 'patients')(patientsdata),
-    [data]
+    [patientData]
   );
   const patientsCount = useMemo(
     () => R.propOr(0, 'patientsCount')(patientsdata),
-    [data]
+    [patientData]
+  );
+  console.log(
+    patientsdata,
+    'patients',
+    patients,
+    'patientsCount',
+    patientsCount
   );
   const pages = Math.ceil(patientsCount / 20);
 

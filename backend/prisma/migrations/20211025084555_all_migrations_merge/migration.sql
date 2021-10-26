@@ -171,3 +171,4 @@ ALTER TABLE "FaceOperation" ADD FOREIGN KEY ("partationId") REFERENCES "FacePart
 
 -- AddForeignKey
 ALTER TABLE "FieldGroup" ADD FOREIGN KEY ("patientViewId") REFERENCES "PatientView"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+

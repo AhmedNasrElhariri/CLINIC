@@ -7,8 +7,12 @@ export const CREATE_PATIENT = gql`
       name
       type
       phoneNo
+      sex
+      age
       reference
       area
+      code
+      date
     }
   }
 `;
