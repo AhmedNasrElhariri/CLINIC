@@ -8,6 +8,7 @@ const init = app => {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send('No files were uploaded.');
     }
+
     const areMultipleFiles = Array.isArray(req.files.file);
     const files = areMultipleFiles ? req.files.file : [req.files.file];
     const response = await Promise.all(files.map(f => upload(f)));
@@ -16,7 +17,6 @@ const init = app => {
 };
 
 export default init;
-
 
 // import { generatePdf } from '@/services/report.service';
 // import { prisma } from '..';
@@ -104,7 +104,7 @@ export default init;
 //     try {
 //       // const pulses = await prisma.pulse.findMany({
 //       //   where:{
-          
+
 //       //   }
 //       // });
 //       // const data = pulses.map(p => {
@@ -131,4 +131,3 @@ export default init;
 // };
 
 // export default init;
-

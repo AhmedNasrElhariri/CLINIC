@@ -27,6 +27,7 @@ const AppointmentPictures = ({ formValue, onChange: setFormValue }) => {
 
   const handleFinishedUpload = useCallback(
     res => {
+      console.log(res, 'RRRRRR');
       setFormValue([...formValue, ...res]);
     },
     [formValue, setFormValue]

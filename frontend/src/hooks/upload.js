@@ -21,9 +21,10 @@ export function useUpload({ onCompleted = () => {}, onError = () => {} } = {}) {
 
       Promise.all(compressedFiles).then(images => {
         images.forEach(result => {
+          console.log(result, result.name, 'result');
           formData.append('file', result, result.name);
         });
-
+        console.log(formData, 'formDataformData');
         fetch('/upload', {
           method: 'POST',
           body: formData,
