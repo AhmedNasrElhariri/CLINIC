@@ -76,7 +76,7 @@ function Prescription({
     >
       <Title>Medicine</Title>
       {newMedicine?.map((element, indx) => (
-        <Container color="#f4f4f6">
+        <Container color="#f4f4f6" margin="0px 0px 2px 25px">
           <Medicine>
             <Ul>
               <Li>{element.medicine.name}</Li>
@@ -147,7 +147,7 @@ function Prescription({
             <Div>No Medicines</Div>
           ) : (
             newMedicine?.map((element, indx) => (
-              <Container>
+              <Container margin="0px">
                 <Medicine direction={direction}>
                   <Ul>
                     <Li>{element.medicine.name}</Li>

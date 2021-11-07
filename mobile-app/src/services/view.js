@@ -23,3 +23,4 @@ export const mapGroupFieldsToLanes = groups => {
     cards: fields.map(f => ({ ...f, laneId: id })),
   }));
 };
+

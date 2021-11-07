@@ -34,7 +34,7 @@ export const Container = styled.div`
   height: 63px;
   background-color: ${props => props.color};
   position: relative;
-  margin: 0px 0px 2px 25px;
+  margin: ${props => props.margin};
 `;
 export const Medicine = styled.div`
   font-size: 12px;

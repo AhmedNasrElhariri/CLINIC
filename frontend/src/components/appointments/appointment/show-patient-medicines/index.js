@@ -15,6 +15,7 @@ import { useMedicineDefinitions, useTimings } from 'hooks';
 import { LIST_PATIENT_APPOINTMENTS } from 'apollo-client/queries';
 import { APPT_STATUS } from 'utils/constants';
 import { CRButton } from 'components/widgets';
+import { formatDate } from 'utils/date';
 import { ButtonsContainer, StyledImage, ContainerStyled } from './style';
 
 function ShowMedicinines({ visible, onClose, patient }) {
@@ -34,13 +35,15 @@ function ShowMedicinines({ visible, onClose, patient }) {
   const patientAppointments = R.propOr([], 'patientAppointments')(data);
   patientAppointments.forEach(a => {
     const m = R.propOr([], 'prescription')(a);
-    patientMedicines.push(m);
+    const date = R.propOr([], 'date')(a);
+    const prescription = { med: m, date: date };
+    patientMedicines.push(prescription);
   });
-  const FinishedMedicines = patientMedicines.map(m => {
-    return m.map((m, idx) => {
+  const FinishedMedicines = patientMedicines.map(({ med, date }) => {
+    return med.map((m, idx) => {
       const formMedicine =
         medicineDefinitions.find(f => f.id === m.medicineId) || {};
-      const { dose, medicineId, timingId, duration, period } = m;
+      const { dose, timingId, duration, period } = m;
       let specificTiming = timings.find(t => t.id === timingId);
       const tN = R.propOr('', 'name')(specificTiming);
       const tA = R.propOr('', 'arabicPrintValue')(specificTiming);
@@ -51,10 +54,9 @@ function ShowMedicinines({ visible, onClose, patient }) {
         timing: tN || undefined,
         tA: tA || undefined,
         tE: tE || undefined,
-        medicineId: medicineId || m.id || null,
         duration: duration || '',
         period: period || null,
-        required: !R.isEmpty(formMedicine),
+        date: formatDate(date),
       };
     });
   });
@@ -70,7 +72,6 @@ function ShowMedicinines({ visible, onClose, patient }) {
     const link = await toPng(ref?.current, { cacheBust: true });
     setUrl(link);
   }, [url, ref, med]);
-  console.log(med, 'mmmmm');
   return (
     <>
       <CRModal
@@ -102,6 +103,7 @@ function ShowMedicinines({ visible, onClose, patient }) {
             ) : (
               med?.map((element, indx) => (
                 <Div mb={10}>
+                  <Div mb={20}>Date: {element.date}</Div>
                   <Div>{element.medicine.name}</Div>
                   <Div display="flex">
                     <Div>

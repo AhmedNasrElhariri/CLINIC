@@ -148,7 +148,6 @@ function ReportPrintout() {
     }
     return fields;
   }, [formValue]);
-
   useEffect(() => {
     const { data } = formValue;
     let dataMap = [];

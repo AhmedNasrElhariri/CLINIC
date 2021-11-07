@@ -102,11 +102,13 @@ const PatientInformationCreation = ({ patient }) => {
     update({ variables: { patientId: patient?.id, data: data } });
   }, [data, update]);
   useEffect(() => {
-    setFormValue(getFormInitValues(normalizedPatientFields));
-  }, [normalizedPatientFields]);
+    const mapData = getFormInitValues(normalizedPatientFields);
+    setFormValue(mapData);
+  }, []);
   return (
     <>
       <CRButton onClick={handleSave}>Save</CRButton>
+
       <Form formValue={formValue} onChange={setFormValue} fluid>
         {navs.map((v, idx) => (
           <SectionContainer

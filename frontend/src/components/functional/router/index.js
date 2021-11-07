@@ -36,6 +36,7 @@ import CreateDefaultView from 'components/views/create-default-view';
 
 function AppRouter() {
   return (
+    
     <Switch>
       <Route path="/patients/new">
         <NewPatient />

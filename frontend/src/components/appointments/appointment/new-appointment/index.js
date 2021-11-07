@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import * as moment from 'moment';
-import { Alert, Form, DatePicker, Schema } from 'rsuite';
+import { Alert, Form,  Schema } from 'rsuite';
 
 import {
   CRSelectInput,

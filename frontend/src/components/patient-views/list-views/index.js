@@ -37,17 +37,11 @@ export default function ListViews() {
   const { data: viewStatusData } = useQuery(LIST_MY_PATIENT_VIEWS_STATUS);
   const [activateView] = useMutation(ACTIVATE_PATIENT_VIEW, {
     onCompleted: () => Alert.success('Default view updated'),
-    update(cache, { data: { activateView } }) {
-      const viewStatusDataList = viewStatusData.listMyPatientViewsStatus;
-      if (!viewStatusDataList.find(v => v?.id === activateView?.id)) {
-        cache.writeQuery({
-          query: LIST_MY_PATIENT_VIEWS_STATUS,
-          data: {
-            listMyPatientViewsStatus: [...viewStatusDataList, activateView],
-          },
-        });
-      }
-    },
+    refetchQueries: [
+      {
+        query: LIST_MY_PATIENT_VIEWS_STATUS,
+      },
+    ],
   });
 
   const views = useMemo(() => {

@@ -63,6 +63,7 @@ export const LIST_SEARCHED_PATIENTS = gql`
       id
       name
       phoneNo
+      age
     }
   }
 `;

@@ -23,16 +23,15 @@ export default ({ patientId, appointment = {} }) => {
       groups: [],
     };
   }
-  const type = "Examination" || "Followup"|| "Course" || "Urgent"||"Session"||"Surgery";
-  const [views] = useGlobalState('activeViews');
-  const view = useMemo(() => views[type], [views]);
+
+  const views = useGlobalState('activeViews');
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {
       patientId,
     },
   });
-  
-  const groups = useMemo(() => R.propOr([],'fieldGroups')(view), [view]);
+
+  const groups = useMemo(() => R.propOr([], 'fieldGroups')(views), [views]);
   const viewFields = useMemo(
     () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),
     [groups]
@@ -114,18 +113,14 @@ export default ({ patientId, appointment = {} }) => {
       })),
     [appointmentHistory, groups]
   );
-  const { data: patientFieldData } = useQuery(GET_USER_PATIENT_FIELD);
-  const userPatientFields = useMemo(
-    () => R.propOr([], 'getUserPatientFields')(patientFieldData),
-    [patientFieldData]
-  );
+
   return {
     normalizedFields,
     appointmentHistory,
     viewFields,
     groups,
     patientGroups,
-    userPatientFields,
+
     patientViewFields,
     normalizedPatientFields,
     tabularFields,
