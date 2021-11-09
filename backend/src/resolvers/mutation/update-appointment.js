@@ -1,10 +1,14 @@
 import { prisma } from '@';
 import { LAB_STATUS, APPOINTMENTS_STATUS } from '@/utils/constants';
+import * as R from 'ramda';
+
 const updateAppointment = async (_, { appointment }) => {
   const persistedAppointment = await prisma.appointment.findUnique({
     where: { id: appointment.id },
-    include: { patient: true },
+    include: { patient: true, pictures: true },
   });
+
+  
   return prisma.appointment.update({
     data: {
       notes: appointment.notes || '',

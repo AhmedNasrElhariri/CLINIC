@@ -23,7 +23,6 @@ export function useUpload({ onCompleted = () => {}, onError = () => {} } = {}) {
         images.forEach(result => {
           formData.append('file', result, result.name);
         });
-
         fetch('/upload', {
           method: 'POST',
           body: formData,
