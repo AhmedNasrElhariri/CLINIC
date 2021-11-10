@@ -9,6 +9,8 @@ import {
   Title,
   Container,
   Medicine,
+  PrintContainer,
+  PrintMedicine,
   Button,
   Ul,
   Li,
@@ -138,17 +140,17 @@ function Prescription({
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <PrescriptionPrintout
           ref={ref}
-          mt={pageSetupData?.top || 0}
-          mr={pageSetupData?.right || 0}
-          mb={pageSetupData?.bottom || 0}
-          ml={pageSetupData?.left || 0}
+          mt={pageSetupData?.top * 37.7952755906 || 0}
+          mr={pageSetupData?.right * 37.7952755906 || 0}
+          mb={pageSetupData?.bottom * 37.7952755906 || 0}
+          ml={pageSetupData?.left * 37.7952755906 || 0}
         >
           {newMedicine?.length === '0' ? (
             <Div>No Medicines</Div>
           ) : (
             newMedicine?.map((element, indx) => (
-              <Container margin="0px">
-                <Medicine direction={direction}>
+              <PrintContainer margin="0px">
+                <PrintMedicine direction={direction}>
                   <Ul>
                     <Li>{element.medicine.name}</Li>
                     <Div display="flex">
@@ -164,8 +166,8 @@ function Prescription({
                       <Div>{element.dose}&nbsp;</Div>
                     </Div>
                   </Ul>
-                </Medicine>
-              </Container>
+                </PrintMedicine>
+              </PrintContainer>
             ))
           )}
           {enable ? (
@@ -179,21 +181,19 @@ function Prescription({
             <></>
           )}
         </PrescriptionPrintout>
-        <Div
-          mt={pageSetupData?.top || 0}
-          mr={pageSetupData?.right || 0}
-          mb={pageSetupData?.bottom || 0}
-          ml={pageSetupData?.left || 0}
+        <PrescriptionPrintout
+          mt={pageSetupData?.top * 37.7952755906 || 0}
+          mr={pageSetupData?.right * 37.7952755906 || 0}
+          mb={pageSetupData?.bottom * 37.7952755906 || 0}
+          ml={pageSetupData?.left * 37.7952755906 || 0}
           ref={refTwo}
-          position="relative"
-          height="100%"
         >
           {newMedicine?.length === '0' ? (
             <Div>No Medicines</Div>
           ) : (
             newMedicine?.map((element, indx) => (
-              <Div>
-                <Div>
+              <PrintContainer>
+                <PrintMedicine>
                   <Div>{element.medicine.name}</Div>
                   <Div display="flex">
                     <Div>
@@ -205,21 +205,23 @@ function Prescription({
                     <Div>{element.duration}&nbsp;</Div>
                     <Div>{element.period}</Div>
                   </Div>
-                </Div>
-              </Div>
+                </PrintMedicine>
+              </PrintContainer>
             ))
           )}
           {enable ? (
-            <Div position="absolute" top="80%">
+            <StyledFooterData>
               <Div display="flex" justifyContent="space-around">
-                <H6>{formatFullDay(nextAppointment?.date)}</H6>
+                <H6 style={{ marginRight: '50px' }}>
+                  {formatFullDay(nextAppointment?.date)}
+                </H6>
                 <H6>{'المعاد القادم'}</H6>
               </Div>
-            </Div>
+            </StyledFooterData>
           ) : (
             <></>
           )}
-        </Div>
+        </PrescriptionPrintout>
       </Div>
     </CRModal>
   );

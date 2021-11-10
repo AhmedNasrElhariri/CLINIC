@@ -21,7 +21,6 @@ const mapToPropValue = (appointments, field) =>
 function Progress({ history, viewFields }) {
   const [showChart, setShowChart] = useState(false);
   const [activeField, setActiveField] = useState({});
-
   useEffect(() => {
     setActiveField(R.propOr({}, '0')(viewFields));
   }, [viewFields]);

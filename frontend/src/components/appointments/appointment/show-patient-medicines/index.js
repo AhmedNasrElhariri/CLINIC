@@ -103,7 +103,7 @@ function ShowMedicinines({ visible, onClose, patient }) {
             ) : (
               med?.map((element, indx) => (
                 <Div mb={10}>
-                  <Div mb={20}>Date: {element.date}</Div>
+                  {indx === 0 && <Div mb={20}>Date: {element.date}</Div>}
                   <Div>{element.medicine.name}</Div>
                   <Div display="flex">
                     <Div>

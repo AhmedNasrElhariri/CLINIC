@@ -16,15 +16,16 @@ import {
   usePatientView,
 } from 'hooks';
 import Editor from 'components/settings/static/editor';
+import { formatDate } from 'utils/date';
 const StyledDiv = styled.pre`
   direction: rtl;
   text-align: right;
 
   @media print and (max-width: 499px) {
-    margin-right: ${props => props.mr}px;
-    margin-top: ${props => props.mt}px;
-    margin-bottom: ${props => props.mb}px;
-    margin-left: ${props => props.ml}px;
+    padding-right: ${props => props.mr}px;
+    padding-top: ${props => props.mt}px;
+    padding-bottom: ${props => props.mb}px;
+    padding-left: ${props => props.ml}px;
   }
 `;
 const initValue = { patientReport: {}, body: '', context: '', data: {} };
@@ -97,7 +98,10 @@ function ReportPrintout() {
           }
         } else {
           const name = context + '_' + key;
-          const val = { name: name, value: value };
+          const val =
+            key === 'date'
+              ? { name: name, value: formatDate(value) }
+              : { name: name, value: value };
           dataMap.push(val);
         }
       }
@@ -150,6 +154,7 @@ function ReportPrintout() {
   }, [formValue]);
   useEffect(() => {
     const { data } = formValue;
+    const CurrentDate = formatDate(new Date());
     let dataMap = [];
     if (Object.keys(data).length !== 0) {
       dataMap = structureValues.concat(updatedFields);
@@ -160,6 +165,8 @@ function ReportPrintout() {
         const value = element.value;
         newBody = newBody.replaceAll(name, value);
       });
+      newBody = newBody.replaceAll('appointment_current_date', CurrentDate);
+      newBody = newBody.replaceAll('patient_current_date', CurrentDate);
       setFormValue({ ...formValue, body: newBody });
     }
   }, [formValue.data]);
@@ -223,10 +230,10 @@ function ReportPrintout() {
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <StyledDiv
           ref={ref}
-          mt={pageSetupData?.top || 0}
-          mr={pageSetupData?.right || 0}
-          mb={pageSetupData?.bottom || 0}
-          ml={pageSetupData?.left || 0}
+          mt={pageSetupData?.top * 37.7952755906 || 0}
+          mr={pageSetupData?.right * 37.7952755906 || 0}
+          mb={pageSetupData?.bottom * 37.7952755906 || 0}
+          ml={pageSetupData?.left * 37.7952755906 || 0}
         >
           <pre
             dangerouslySetInnerHTML={{ __html: formValue.body }}

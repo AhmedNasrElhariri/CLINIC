@@ -30,12 +30,14 @@ export default ({ patientId, appointment = {} }) => {
       patientId,
     },
   });
+  const View = views[0]['Examination'];
+  const groups = useMemo(() => R.propOr([], 'fieldGroups')(View), [View]);
 
-  const groups = useMemo(() => R.propOr([], 'fieldGroups')(views), [views]);
   const viewFields = useMemo(
     () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),
     [groups]
   );
+
   const appointmentHistory = useMemo(
     () => R.pathOr([], ['appointmentHistory'])(history),
     [history]

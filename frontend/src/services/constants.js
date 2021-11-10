@@ -2,11 +2,13 @@ export const patientValues = [
   { id: 1, value: 'name' },
   { id: 2, value: 'age' },
   { id: 3, value: 'phoneNo' },
+  { id: 4, value: 'current_date' },
 ];
 export const surgeriesValues = [
   { id: 1, value: 'name' },
   { id: 2, value: 'fees' },
   { id: 3, value: 'hospital_name' },
+  { id: 4, value: 'current_date' },
 ];
 export const appointmentValues = [
   { id: 1, value: 'date' },
@@ -17,6 +19,7 @@ export const appointmentValues = [
   { id: 6, value: 'patient_phoneNo' },
   { id: 7, value: 'branch_name' },
   { id: 8, value: 'doctor_name' },
+  { id: 9, value: 'current_date' },
 ];
 export const another = [{ id: 1, value: 'current_date' }];
 

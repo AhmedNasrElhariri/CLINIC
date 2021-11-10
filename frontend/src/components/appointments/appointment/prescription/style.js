@@ -53,6 +53,33 @@ export const Medicine = styled.div`
   left: 8px;
   top: 10px;
 `;
+
+export const PrintContainer = styled.div`
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  background-color: ${props => props.color};
+  position: relative;
+  margin: ${props => props.margin};
+`;
+export const PrintMedicine = styled.div`
+  font-size: 12px;
+  padding: 5px;
+  direction: ${props => props.direction}
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  padding-left: 8px;
+  color: #727272;
+  position: absolute;
+  display: inline;
+  left: 8px;
+  top: 10px;
+`;
+
 export const Button = styled.button`
   width: 40px;
   font-family: SegoeUI;
@@ -91,20 +118,19 @@ export const FooterButton = styled.button`
   margin-bottom: 35px;
 `;
 export const PrescriptionPrintout = styled.div`
-  width: 420px;
-  height: 595px;
+  width: 100%;
+  height: 100%;
   position: relative;
   @media print and (max-width: 499px) {
-    margin-right: ${props => props.mr}px;
-    margin-top: ${props => props.mt}px;
-    margin-bottom: ${props => props.mb}px;
-    margin-left: ${props => props.ml}px;
+    padding-right: ${props => props.mr}px;
+    padding-top: ${props => props.mt}px;
+    padding-bottom: ${props => props.mb}px;
+    padding-left: ${props => props.ml}px;
   }
 `;
 export const StyledFooterData = styled.div`
   position: absolute;
   bottom: 20px;
-  left: 20px;
   display: flex;
 `;
 export const MedicineName = styled.h4`

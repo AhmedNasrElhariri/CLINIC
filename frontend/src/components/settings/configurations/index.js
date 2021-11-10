@@ -181,7 +181,7 @@ const Configurations = () => {
         <Div display="flex" justifyContent="space-between">
           <Div display="flex" justifyContent="space-around">
             <H3 mb={64} mr={20}>
-              Page Setup Control
+              Page Setup Control (By Centimeter)
             </H3>
           </Div>
           <Div>
@@ -196,25 +196,25 @@ const Configurations = () => {
               name="top"
               label="Top"
               layout="inline"
-              placeholder="By Milmitter"
+              placeholder="By Centimeter"
             />
             <CRNumberInput
               name="right"
               label="Right"
               layout="inline"
-              placeholder="By Milmitter"
+              placeholder="By Centimeter"
             />
             <CRNumberInput
               name="bottom"
               label="Bottom"
               layout="inline"
-              placeholder="By Milmitter"
+              placeholder="By Centimeter"
             />
             <CRNumberInput
               name="left"
               label="Left"
               layout="inline"
-              placeholder="By Milmitter"
+              placeholder="By Centimeter"
             />
           </Div>
         </Form>

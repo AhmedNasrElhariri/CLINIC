@@ -105,6 +105,7 @@ class Editor extends Component {
     mention: {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ['@', '#'],
+      positioningStrategy: 'fixed',
       source: this.handleSource,
       onSelect: this.handleSelect,
     },
