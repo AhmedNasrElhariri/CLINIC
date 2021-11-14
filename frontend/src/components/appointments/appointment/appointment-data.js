@@ -32,6 +32,7 @@ import {
   useSessionDefinition,
   useLabDefinitions,
   useImageDefinition,
+  useMedicineDefinitions,
 } from 'hooks';
 import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
@@ -93,6 +94,9 @@ const initalCategoryImage = {
   categoryId: null,
   imageId: null,
 };
+const initialSelectedMedicine = {
+  medicineId: null,
+};
 function AppointmentData({
   formValue,
   groups,
@@ -109,9 +113,13 @@ function AppointmentData({
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
   const { labsCategory } = useLabCategory();
   const { imagesCategory } = useImageCategory();
+  const { medicineDefinitions } = useMedicineDefinitions();
   const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryAndLab);
   const [categoryImageForm, setCategoryImageForm] =
     useState(initalCategoryImage);
+  const [selectedMedicine, setSelectedMedicine] = useState(
+    initialSelectedMedicine
+  );
   const { sessionsDefinition } = useSessionDefinition();
   const [session, SetSession] = useState({});
   const choices = useMemo(() => {
@@ -190,6 +198,16 @@ function AppointmentData({
       });
     }
   };
+  const addMedicine = () => {
+    const { medicineId } = selectedMedicine;
+    if (medicineId) {
+      const { selectedMedicines } = appointmentFormValue;
+      onChange({
+        ...appointmentFormValue,
+        selectedMedicines: [...selectedMedicines, medicineId],
+      });
+    }
+  };
   return (
     <>
       <Div display="flex">
@@ -215,8 +233,28 @@ function AppointmentData({
             </>
           )}
           <SectionContainer title="Prescription" name="prescription">
+            <Form formValue={selectedMedicine} onChange={setSelectedMedicine}>
+              <Div
+                mb={10}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <CRSelectInput
+                  name="medicineId"
+                  data={medicineDefinitions}
+                  label="Medicine"
+                  style={{ width: '300px', marginRight: '20px' }}
+                />
+                <CRButton ml={20} mt={40} onClick={addMedicine}>
+                  Add
+                </CRButton>
+              </Div>
+            </Form>
             <AppointmentMedicines
               prescription={appointmentFormValue.prescription}
+              medicineDefinitions={medicineDefinitions}
+              selectedMedicines={appointmentFormValue.selectedMedicines}
               onChange={handleMedicineChange}
             />
           </SectionContainer>

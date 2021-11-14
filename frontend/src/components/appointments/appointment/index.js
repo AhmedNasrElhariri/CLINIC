@@ -48,8 +48,9 @@ function Appointment() {
     powerOne: 0,
     powerTwo: 0,
     pulses: 0,
+    selectedMedicines: [],
   });
-
+  console.log(apptFormValue.selectedMedicines, 'selectedMedicines');
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
   const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {

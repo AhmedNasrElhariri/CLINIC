@@ -1,18 +1,36 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import * as R from 'ramda';
 
 import { Div } from 'components';
 import MedicineRow from './medicine-row';
 import { useTimings } from 'hooks';
-import { useMedicineDefinitions } from 'hooks';
-
-const AppointmentMedicines = ({ prescription, onChange }) => {
-  const { medicineDefinitions } = useMedicineDefinitions();
+const existedMed = (id, prescription) => {
+  let exist = false;
+  prescription.forEach(element => {
+    if (element.medicineId === id) {
+      exist = true;
+    }
+  });
+  return exist;
+};
+const AppointmentMedicines = ({
+  prescription,
+  medicineDefinitions,
+  selectedMedicines,
+  onChange,
+}) => {
   const [formValue, setFormValue] = useState([]);
   const { timings } = useTimings();
-
+  const finalMedicines = useMemo(() => {
+    const meds = medicineDefinitions.filter(m => {
+      if (selectedMedicines.includes(m.id) || existedMed(m.id, prescription)) {
+        return m;
+      }
+    });
+    return meds;
+  }, [selectedMedicines, prescription, medicineDefinitions]);
   useEffect(() => {
-    const newFormValue = medicineDefinitions.map((m, idx) => {
+    const newFormValue = finalMedicines.map((m, idx) => {
       const formMedicine = prescription.find(f => f.medicineId === m.id) || {};
       const { dose, medicineId, timingId, duration, period } = formMedicine;
       return {
@@ -26,7 +44,7 @@ const AppointmentMedicines = ({ prescription, onChange }) => {
       };
     });
     setFormValue(newFormValue);
-  }, [medicineDefinitions, prescription]);
+  }, [finalMedicines, prescription]);
 
   const handleOnClick = useCallback(
     ({ required }, idx) => {
@@ -47,7 +65,6 @@ const AppointmentMedicines = ({ prescription, onChange }) => {
       return newFormVal;
     });
   }, []);
-
 
   return (
     <Div>

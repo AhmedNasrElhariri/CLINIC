@@ -29,10 +29,12 @@ function Appointments() {
   const [status, setStatus] = useState(APPT_STATUS.SCHEDULED);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
+
   const { visible, close, open } = useModal({});
   const {
     appointments,
     appointmentsCount,
+    appointmentsCountNumber,
     refetchAppointments,
     filterBranches,
   } = useAppointments({
@@ -44,7 +46,7 @@ function Appointments() {
     patient: R.propOr('', 'patient')(formValue),
     action: ACTIONS.List_Appointment,
   });
-  const pages = Math.ceil(appointmentsCount / 20);
+  const pages = Math.ceil(appointmentsCountNumber / 20);
   const [popUp, setPopUp] = useState('');
   const [appointment, setAppointment] = useState(null);
   const { refetchRevenues, refetchExpenses } = useAccounting();

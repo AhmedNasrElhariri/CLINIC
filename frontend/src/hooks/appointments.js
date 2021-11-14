@@ -37,6 +37,7 @@ function useAppointments({
     ),
   });
   const appointmentsdata = data?.appointments;
+  const appointmentsCountNumber = data?.appointmentsCount;
   const appointments = useMemo(
     () =>
       R.pipe(
@@ -48,7 +49,6 @@ function useAppointments({
       )(appointmentsdata),
     [data, includeSurgery]
   );
-
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: {
       date: date,
@@ -98,6 +98,7 @@ function useAppointments({
       },
       branches: [],
       specialties,
+      appointmentsCountNumber,
       doctors,
     }),
     [
@@ -105,6 +106,7 @@ function useAppointments({
       appointmentsCount,
       todayAppointments,
       specialties,
+      appointmentsCountNumber,
       doctors,
       filterBranches,
     ]

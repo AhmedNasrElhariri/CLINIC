@@ -9,7 +9,7 @@ const appointments = async (
   {
     offset,
     type,
-    patient,
+    patient = '',
     limit,
     dateFrom,
     dateTo,
@@ -152,7 +152,7 @@ const appointments = async (
 
   const data = {
     appointments: finalAppointments,
-    appointmentsCount: finalAppointments.length,
+    appointmentsCount: filteredAppointments.length,
   };
   return data;
 };
