@@ -14,6 +14,8 @@ enum CourseStatus {
   InProgress
   Finished
   EarlyFinished
+  Cancelled
+  Rejected
 }
 
 enum AnesthesiaType {
@@ -183,7 +185,7 @@ type Query {
   myPatientReports: [PatientReport!]
   getActions: [String!]
   getPulseControl: PulseControl
-  getPageSetup: PageSetup!
+  getPageSetup: [PageSetup!]
   listBranches: [Branch!]
   listSpecialties: [Specialty!]
   listUsers: [User!]
@@ -379,6 +381,7 @@ type Mutation {
   editCourseUnits(courseId: ID!, consumed: Int!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
   finishCourse(courseId: ID!): Course!
+  deleteCourse(courseId: ID!, refund: Int!): Course!
   addPayrollUser(payrollUser: PayrollUserInput!): PayrollUser!
   addTransaction(
     payrollTransaction: PayrollTransactionInput!

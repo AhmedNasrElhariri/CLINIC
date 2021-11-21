@@ -15,6 +15,8 @@ export const COURSE_STATUS = Object.freeze({
   FINISHED: 'Finished',
   INPROGRESS: 'InProgress',
   EARLY_FINISHED: 'EarlyFinished',
+  CANCELLED: 'Cancelled',
+  REJECTED: 'Rejected',
 });
 export const APPOINTMENTS_TYPES = Object.freeze({
   Examination: 'Examination',
@@ -124,8 +126,8 @@ export const ACTIONS = Object.freeze({
   ViewImages_Patient: 'ViewImages_Patient',
   ViewCourses_Patient: 'ViewCourses_Patient',
   ViewSessionsPulses_Patient: 'ViewSessionsPulses_Patient',
-  GenerateMonthly_PulsesReport:'GenerateMonthly_PulsesReport',
-  GenerateDaily_PulsesReport:'GenerateDaily_PulsesReport',
-  View_Medicine:'View_Medicine',
-  View_Permission:'View_Permission',
+  GenerateMonthly_PulsesReport: 'GenerateMonthly_PulsesReport',
+  GenerateDaily_PulsesReport: 'GenerateDaily_PulsesReport',
+  View_Medicine: 'View_Medicine',
+  View_Permission: 'View_Permission',
 });

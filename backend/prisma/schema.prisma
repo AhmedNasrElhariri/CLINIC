@@ -32,6 +32,8 @@ enum CourseStatus {
   InProgress
   Finished
   EarlyFinished
+  Cancelled
+  Rejected
 }
 
 enum PayrollStatus {
@@ -157,6 +159,7 @@ model Organization {
   id                        String                      @id @default(uuid())
   name                      String
   invoiceCounter            Int                         @default(1)
+  maxNumberOfUsers          Int                         @default(6)
   patientCode               Int                         @default(1000)
   createdAt                 DateTime                    @default(now())
   updatedAt                 DateTime                    @default(now()) @updatedAt

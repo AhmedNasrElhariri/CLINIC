@@ -17,7 +17,7 @@ const AvatarBox = ({ patient }) => (
 const Detail = ({ patient }) => (
   <Div display="flex" flexDirection="column" ml={4}>
     <Div display="flex" alignItems="center" mt={3}>
-      <PatientDetails>{patient.name}</PatientDetails>
+      <PatientDetails>{patient?.name}</PatientDetails>
       <SpanTitle>Primary</SpanTitle>
     </Div>
   </Div>

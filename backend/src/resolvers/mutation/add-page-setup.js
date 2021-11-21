@@ -1,9 +1,11 @@
 import { prisma } from '@';
 
 const addPageSetup = async (_, { pageSetup }, { organizationId, userId }) => {
+  const { type } = pageSetup;
   const pageSetupRows = await prisma.pageSetup.findMany({
     where: {
       organizationId,
+      type,
     },
   });
   const pageSetupRow = pageSetupRows[0];

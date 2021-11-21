@@ -34,6 +34,9 @@ function Prescription({
   const refTwo = useRef();
   const { medicineDefinitions } = useMedicineDefinitions();
   const { pageSetupData } = useConfigurations();
+  const pageSetupRow = pageSetupData.find(
+    element => element.type === 'prescription'
+  );
   const [direction, setDirection] = useState('rtl');
   const { timings } = useTimings();
   const header = useMemo(() => 'Prescription', []);
@@ -140,10 +143,10 @@ function Prescription({
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <PrescriptionPrintout
           ref={ref}
-          mt={pageSetupData?.top * 37.7952755906 || 0}
-          mr={pageSetupData?.right * 37.7952755906 || 0}
-          mb={pageSetupData?.bottom * 37.7952755906 || 0}
-          ml={pageSetupData?.left * 37.7952755906 || 0}
+          mt={pageSetupRow?.top * 37.7952755906 || 0}
+          mr={pageSetupRow?.right * 37.7952755906 || 0}
+          mb={pageSetupRow?.bottom * 37.7952755906 || 0}
+          ml={pageSetupRow?.left * 37.7952755906 || 0}
         >
           {newMedicine?.length === '0' ? (
             <Div>No Medicines</Div>
@@ -182,10 +185,10 @@ function Prescription({
           )}
         </PrescriptionPrintout>
         <PrescriptionPrintout
-          mt={pageSetupData?.top * 37.7952755906 || 0}
-          mr={pageSetupData?.right * 37.7952755906 || 0}
-          mb={pageSetupData?.bottom * 37.7952755906 || 0}
-          ml={pageSetupData?.left * 37.7952755906 || 0}
+          mt={pageSetupRow?.top * 37.7952755906 || 0}
+          mr={pageSetupRow?.right * 37.7952755906 || 0}
+          mb={pageSetupRow?.bottom * 37.7952755906 || 0}
+          ml={pageSetupRow?.left * 37.7952755906 || 0}
           ref={refTwo}
         >
           {newMedicine?.length === '0' ? (

@@ -77,6 +77,7 @@ export { default as editCourse } from './edit-course';
 export { default as editCourseUnits } from './edit-course-units';
 export { default as editCourseDoctor } from './edit-course-doctor';
 export { default as finishCourse } from './finish-course';
+export { default as deleteCourse } from './delete-course';
 export { default as addPayrollUser } from './add-payroll-user';
 export { default as addTransaction } from './add-payroll-transaction';
 export { default as addPayroll } from './add-payroll';

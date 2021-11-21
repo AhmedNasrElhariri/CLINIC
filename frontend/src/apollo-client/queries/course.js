@@ -221,3 +221,12 @@ export const FINISH_COURSE = gql`
     }
   }
 `;
+
+export const DELETE_COURSE = gql`
+  mutation deleteCourse($courseId: ID!, $refund: Int!) {
+    deleteCourse(courseId: $courseId, refund: $refund) {
+      id
+      price
+    }
+  }
+`;

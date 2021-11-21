@@ -11,6 +11,7 @@ import {
   LIST_USERS,
   EDIT_COURSE_DOCTOR,
   FINISH_COURSE,
+  DELETE_COURSE,
   LIST_APPOINTMENTS,
   LIST_REVENUES,
   EDIT_COURSE_UNITS,
@@ -35,6 +36,7 @@ function useCourses({
   patientId,
   courseId,
   onFinishCourse,
+  onDeleteCourse,
 } = {}) {
   const { data } = useQuery(LIST_COURSES, { variables: { patientId } });
   const courses = useMemo(() => R.propOr([], 'myCourses')(data), [data]);
@@ -56,7 +58,7 @@ function useCourses({
     [dataPayment]
   );
 
-  const [addCourse,{loading}] = useMutation(ADD_COURSE, {
+  const [addCourse, { loading }] = useMutation(ADD_COURSE, {
     onCompleted() {
       Alert.success('the Course has been Added Successfully');
       onCreate && onCreate();
@@ -145,7 +147,21 @@ function useCourses({
       Alert.error('Failed to Finish the Course');
     },
   });
-
+  const [deleteCourse] = useMutation(DELETE_COURSE, {
+    onCompleted() {
+      Alert.success('the Course has been deleted Successfully');
+      onDeleteCourse && onDeleteCourse();
+    },
+    refetchQueries: [
+      {
+        query: LIST_COURSES,
+        variables: { patientId: patientId },
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete this Course');
+    },
+  });
   return useMemo(
     () => ({
       courses,
@@ -153,6 +169,7 @@ function useCourses({
       addCourse,
       editCourse,
       editCourseDoctor,
+      deleteCourse,
       users,
       loading,
       editCourseUnits,
@@ -165,6 +182,7 @@ function useCourses({
       patientCourses,
       addCourse,
       editCourse,
+      deleteCourse,
       loading,
       editCourseUnits,
       editCourseDoctor,

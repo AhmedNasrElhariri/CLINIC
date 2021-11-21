@@ -13,8 +13,6 @@ import middlewares from './middlewares';
 import { getContextData } from './services/auth.service';
 import cron from 'node-cron';
 
-import { todayAppointments } from './resolvers/query';
-
 import initUploadConfig from './conf/upload';
 import initReportsConfig from './conf/reports';
 
@@ -75,6 +73,19 @@ cron.schedule('00 06 * * *', async function () {
     },
   });
 });
+
+const accountSid = 'AC09bda433375a5645246e6bacd9588605';
+const authToken = '6262a4cebde03d1fac0f5d1a207766ed';
+const client = require('twilio')(accountSid, authToken);
+
+client.messages
+  .create({
+    body: 'Your clinicR appointment is coming up on today 1!',
+    from: 'whatsapp:+14155238886',
+    to: 'whatsapp:+201142267762',
+  })
+  .then(message => console.log(message))
+  .done();
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend')));

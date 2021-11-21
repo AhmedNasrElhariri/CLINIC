@@ -74,7 +74,7 @@ class Editor extends Component {
   };
   handleSource = (searchTerm, renderItem, mentionChar) => {
     let values;
-    if (mentionChar === '@' || mentionChar === '#') {
+    if (mentionChar === '$' || mentionChar === '#') {
       values = this.props.mentionValues;
     }
     if (searchTerm.length === 0) {
@@ -104,7 +104,7 @@ class Editor extends Component {
     ],
     mention: {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      mentionDenotationChars: ['@', '#'],
+      mentionDenotationChars: ['$', '#'],
       positioningStrategy: 'fixed',
       source: this.handleSource,
       onSelect: this.handleSelect,

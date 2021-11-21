@@ -16,6 +16,7 @@ const CourseData = ({
   onEditDoctor,
   onFinishCourse,
   onEditUnits,
+  onDeleteCourse,
 }) => {
   const history = useHistory();
   let course = courses[indx];
@@ -34,6 +35,16 @@ const CourseData = ({
   return (
     <>
       <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
+        {course.status !== 'Cancelled' && course.status !== 'Rejected' && (
+          <CRButton
+            variant="primary"
+            mt={2}
+            mr={1}
+            onClick={() => onDeleteCourse(course)}
+          >
+            Delete This Course
+          </CRButton>
+        )}
         <CRButton
           variant="primary"
           mt={2}
@@ -42,12 +53,11 @@ const CourseData = ({
         >
           Assign Doctor
         </CRButton>
-        {course.price > course.paid && (
+        {course.price > course.paid && course.status === 'InProgress' && (
           <CRButton variant="primary" mr={1} onClick={() => onEditPaid(course)}>
             Pay
           </CRButton>
         )}
-
         {course.courseDefinition.type === 'Perunit' && (
           <CRButton
             variant="primary"
@@ -57,7 +67,6 @@ const CourseData = ({
             Add Units
           </CRButton>
         )}
-
         <CRButton variant="danger" onClick={() => onFinishCourse(course)}>
           Finish
         </CRButton>

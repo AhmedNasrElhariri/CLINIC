@@ -14,6 +14,7 @@ const initValue = {
   discount: 0,
   paid: 0,
   consumed: 0,
+  refund: 0,
   doctorId: null,
   sessions: [],
   startDate: null,
@@ -44,6 +45,7 @@ const Course = ({ patient }) => {
     editCourse,
     editCourseDoctor,
     editCourseUnits,
+    deleteCourse,
     users,
     loading,
     finishCourse,
@@ -61,6 +63,10 @@ const Course = ({ patient }) => {
       setFormValue(initValue);
     },
     onFinishCourse: () => {
+      close();
+      setFormValue(initValue);
+    },
+    onDeleteCourse: () => {
       close();
       setFormValue(initValue);
     },
@@ -98,6 +104,16 @@ const Course = ({ patient }) => {
       const course = R.pick(['id', 'doctorId'])(data);
       setType('courseDoctor');
       setHeader('Assign New Doctor');
+      setFormValue(course);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleDeleteCourse = useCallback(
+    data => {
+      const course = R.pick(['id'])(data);
+      setType('deleteCourse');
+      setHeader('Delete The Course');
       setFormValue(course);
       open();
     },
@@ -161,6 +177,13 @@ const Course = ({ patient }) => {
           consumed: formValue.consumed,
         },
       });
+    } else if (type === 'deleteCourse') {
+      deleteCourse({
+        variables: {
+          courseId: formValue.id,
+          refund: formValue.refund,
+        },
+      });
     } else {
       editCourse({
         variables: {
@@ -222,6 +245,7 @@ const Course = ({ patient }) => {
           onEditUnits={handleClickEditUnits}
           onEditDoctor={handleClickEditDoctor}
           onFinishCourse={handleFinishCourse}
+          onDeleteCourse={handleDeleteCourse}
         />
       ) : (
         <H3>No courses</H3>

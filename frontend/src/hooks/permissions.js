@@ -135,8 +135,8 @@ function usePermissions({
     update(cache, { data: { createUser: user } }) {
       updateUsersCache(cache, [...users, user]);
     },
-    onError() {
-      Alert.error('Failed to create new user');
+    onError(err) {
+      Alert.error(err.message);
     },
   });
 

@@ -35,7 +35,7 @@ const useConfigurations = ({ onUpdate } = {}) => {
 
   const { data: pageSetup } = useQuery(GET_PAGE_SETUP);
   const pageSetupData = useMemo(
-    () => R.propOr({}, 'getPageSetup')(pageSetup),
+    () => R.propOr([], 'getPageSetup')(pageSetup),
     [pageSetup]
   );
   const [updateConfiguration] = useMutation(UPDATE_CONFIGURATION, {

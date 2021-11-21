@@ -6,8 +6,7 @@ const getPageSetup = async (_, __, { organizationId }) => {
       organizationId,
     },
   });
-  const pageSetup = pageSetupRows[0] || {};
-  return pageSetup;
+  return pageSetupRows;
 };
 
 export default getPageSetup;

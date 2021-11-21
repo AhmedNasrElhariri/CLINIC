@@ -39,6 +39,9 @@ function ReportPrintout() {
     initValue,
   });
   const { pageSetupData } = useConfigurations();
+  const pageSetupRow = pageSetupData.find(
+    element => element.type === 'reportPrintout'
+  );
   const { userPatientFields } = usePatientView();
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const { searchedPatients } = usePatients({
@@ -230,10 +233,10 @@ function ReportPrintout() {
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <StyledDiv
           ref={ref}
-          mt={pageSetupData?.top * 37.7952755906 || 0}
-          mr={pageSetupData?.right * 37.7952755906 || 0}
-          mb={pageSetupData?.bottom * 37.7952755906 || 0}
-          ml={pageSetupData?.left * 37.7952755906 || 0}
+          mt={pageSetupRow?.top * 37.7952755906 || 0}
+          mr={pageSetupRow?.right * 37.7952755906 || 0}
+          mb={pageSetupRow?.bottom * 37.7952755906 || 0}
+          ml={pageSetupRow?.left * 37.7952755906 || 0}
         >
           <pre
             dangerouslySetInnerHTML={{ __html: formValue.body }}

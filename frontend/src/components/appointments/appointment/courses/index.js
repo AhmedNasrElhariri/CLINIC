@@ -156,7 +156,13 @@ function NewCourse({
 
   const course = formValue?.course;
   return (
-    <CRModal show={visible} header={header} onHide={onClose} onOk={onOk} loading={loading}>
+    <CRModal
+      show={visible}
+      header={header}
+      onHide={onClose}
+      onOk={onOk}
+      loading={loading}
+    >
       <Form fluid formValue={formValue} onChange={onChange}>
         {type === 'create' ? (
           <>
@@ -271,6 +277,17 @@ function NewCourse({
           />
         ) : type === 'finishCourse' ? (
           <Div>Are you sure that you want to finish this course ?</Div>
+        ) : type === 'deleteCourse' ? (
+          <Div>
+            <Div>Are you sure that you want to delete this course ?</Div>
+            <Div>
+              <CRNumberInput
+                label="Refund Money"
+                name="refund"
+                title="Refund Money"
+              />
+            </Div>
+          </Div>
         ) : (
           <CRSelectInput
             label="Doctor Name"

@@ -25,7 +25,11 @@ const tabVsStatus = new Map([
   [2, APPT_STATUS.ARCHIVED],
 ]);
 function Appointments() {
-  const [formValue, setFormValue] = useState({ date: [], patient: '' });
+  const [formValue, setFormValue] = useState({
+    date: [],
+    patient: '',
+    status: 'Scheduled',
+  });
   const [status, setStatus] = useState(APPT_STATUS.SCHEDULED);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
@@ -41,7 +45,7 @@ function Appointments() {
     page,
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
     dateTo: R.pathOr(null, ['date', 1])(formValue),
-    status,
+    status: R.propOr(null, 'status')(formValue),
     type: R.propOr(null, 'type')(formValue),
     patient: R.propOr('', 'patient')(formValue),
     action: ACTIONS.List_Appointment,
@@ -147,31 +151,33 @@ function Appointments() {
     <>
       <H3 mb={64}>Appointments</H3>
       <Div mb={4}>
-        <Filter formValue={formValue} onChange={setFormValue} />
-        <CRTabs onChange={index => setStatus(tabVsStatus.get(index))}>
+        {/* <CRTabs onChange={index => setStatus(tabVsStatus.get(index))}>
           <CRTabs.CRTabsGroup>
             <CRTabs.CRTab>Main Appointments</CRTabs.CRTab>
             <CRTabs.CRTab>Waiting Appointments</CRTabs.CRTab>
             <CRTabs.CRTab>Completed Appointments</CRTabs.CRTab>
           </CRTabs.CRTabsGroup>
           <CRTabs.CRContentGroup>
-            <CRTabs.CRContent>
-              <BranchFilter
-                appointments={appointments}
-                branches={filterBranches}
-                render={apps => (
-                  <ListAppointments
-                    appointments={apps}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    defaultExpanded={true}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    pages={pages}
-                  />
-                )}
+            <CRTabs.CRContent> */}
+        <BranchFilter
+          appointments={appointments}
+          branches={filterBranches}
+          render={apps => (
+            <>
+              <Filter formValue={formValue} onChange={setFormValue} />
+              <ListAppointments
+                appointments={apps}
+                onArchive={onClickDone}
+                onComplete={onCompleteDone}
+                defaultExpanded={true}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                pages={pages}
               />
-            </CRTabs.CRContent>
+            </>
+          )}
+        />
+        {/* </CRTabs.CRContent>
             <CRTabs.CRContent>
               <BranchFilter
                 appointments={appointments}
@@ -203,7 +209,7 @@ function Appointments() {
               />
             </CRTabs.CRContent>
           </CRTabs.CRContentGroup>
-        </CRTabs>
+        </CRTabs> */}
       </Div>
       {popUp === 'archive' && (
         <ArchiveAppointment

@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import * as moment from 'moment';
 import { Form } from 'rsuite';
 import { H3, Div, CRButton, CRNumberInput } from 'components';
+import PageSetup from './page-setup';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
 import { useConfigurations } from 'hooks';
 
@@ -19,20 +20,8 @@ const initialPageSetup = {
   right: 0,
   bottom: 0,
   left: 0,
-  type: 'Letter',
+  type: 'prescription',
 };
-const pageSizeTypes = [
-  { id: 'Letter', name: 'Letter' },
-  { id: 'Tabloid', name: 'Tabloid' },
-  { id: 'Legal', name: 'Legal' },
-  { id: 'Statement', name: 'Statement' },
-  { id: 'Executive', name: 'Executive' },
-  { id: 'A3', name: 'A3' },
-  { id: 'A4', name: 'A4' },
-  { id: 'A5', name: 'A5' },
-  { id: 'B4(JIS)', name: 'B4(JIS)' },
-  { id: 'B5(JIS)', name: 'B5(JIS)' },
-];
 
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
@@ -72,13 +61,14 @@ const Configurations = () => {
     [formValue]
   );
   useEffect(() => {
-    const top = R.propOr(0, 'top')(pageSetupData);
-    const right = R.propOr(0, 'right')(pageSetupData);
-    const bottom = R.propOr(0, 'bottom')(pageSetupData);
-    const left = R.propOr(0, 'left')(pageSetupData);
-    const type = R.propOr('', 'type')(pageSetupData);
-    setPageSetup({ ...pageSetup, top, right, bottom, left, type });
-  }, [pageSetupData]);
+    const { type } = pageSetup;
+    const pageSetupRow = pageSetupData.find(element => element.type === type);
+    const top = R.propOr(0, 'top')(pageSetupRow);
+    const right = R.propOr(0, 'right')(pageSetupRow);
+    const bottom = R.propOr(0, 'bottom')(pageSetupRow);
+    const left = R.propOr(0, 'left')(pageSetupRow);
+    setPageSetup({ ...pageSetup, top, right, bottom, left });
+  }, [pageSetup.type, pageSetupData]);
   const updateSession = useCallback(
     session => {
       setFormValue({
@@ -190,34 +180,7 @@ const Configurations = () => {
             </CRButton>
           </Div>
         </Div>
-        <Form formValue={pageSetup} onChange={setPageSetup}>
-          <Div display="flex" justifyContent="space-between">
-            <CRNumberInput
-              name="top"
-              label="Top"
-              layout="inline"
-              placeholder="By Centimeter"
-            />
-            <CRNumberInput
-              name="right"
-              label="Right"
-              layout="inline"
-              placeholder="By Centimeter"
-            />
-            <CRNumberInput
-              name="bottom"
-              label="Bottom"
-              layout="inline"
-              placeholder="By Centimeter"
-            />
-            <CRNumberInput
-              name="left"
-              label="Left"
-              layout="inline"
-              placeholder="By Centimeter"
-            />
-          </Div>
-        </Form>
+        <PageSetup pageSetup={pageSetup} setPageSetup={setPageSetup} />
       </>
     </>
   );

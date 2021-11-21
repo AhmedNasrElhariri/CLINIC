@@ -152,7 +152,11 @@ export const getDoctorsBySpecialtyId = (doctors, specialtyId) => {
 
 export const getAppointmentTypes = () => Object.values(APPT_TYPE);
 
+export const getAppointmentStatus = () => Object.values(APPT_STATUS);
+
 export const appointmentTypes = mapArrToChoices(getAppointmentTypes());
+
+export const appointmentStatus = mapArrToChoices(getAppointmentStatus());
 
 export const isArchived = appointment =>
   appointment.status === APPT_STATUS.ARCHIVED;
