@@ -8,7 +8,7 @@ import {
   PatientDetails,
 } from './style';
 
-const AvatarBox = ({ patient }) => (
+const AvatarBox = ({}) => (
   <PatientAvatarStyled>
     <AvatarImg src="https://cdn.icon-icons.com/icons2/1674/PNG/512/person_110935.png"></AvatarImg>
   </PatientAvatarStyled>
@@ -26,7 +26,7 @@ const Detail = ({ patient }) => (
 export default function AvatarWithName({ patient }) {
   return (
     <PatientInfoStyled>
-      <AvatarBox patient={patient} />
+      <AvatarBox />
       <Detail patient={patient} />
     </PatientInfoStyled>
   );

@@ -47,6 +47,7 @@ export const LIST_USERS = gql`
       id
       name
       email
+      allowedViews
       position
       specialty {
         id
@@ -112,6 +113,14 @@ export const CREATE_SPECIALITY = gql`
 export const CREATE_USER = gql`
   mutation createUser($user: UserInput!) {
     createUser(user: $user) {
+      id
+    }
+  }
+`;
+
+export const EDIT_USER = gql`
+  mutation editUser($user: UserInput!) {
+    editUser(user: $user) {
       id
     }
   }

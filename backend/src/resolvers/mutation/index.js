@@ -61,6 +61,7 @@ export { default as createOrUpdateRole } from './create-or-update-role';
 export { default as createBranch } from './create-branch';
 export { default as createSpecialty } from './create-specialty';
 export { default as createUser } from './create-user';
+export { default as editUser } from './edit-user';
 export { default as addSpecialty } from './add-specialty';
 export { default as addDoctor } from './add-doctor';
 export { default as assignRoleToUser } from './assign-role-to-user';

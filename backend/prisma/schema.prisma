@@ -207,6 +207,7 @@ model User {
   id                        String                      @id @default(uuid())
   name                      String
   email                     String                      @unique
+  allowedViews              Json                        @default("[]")
   password                  String
   organization              Organization                @relation(fields: [organizationId], references: [id])
   organizationId            String

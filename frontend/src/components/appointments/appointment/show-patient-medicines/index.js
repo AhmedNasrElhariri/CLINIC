@@ -1,12 +1,4 @@
-import React, {
-  useMemo,
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-} from 'react';
-import * as htmlToImage from 'html-to-image';
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+import React, { useMemo } from 'react';
 import { Div } from 'components';
 import { CRModal } from 'components';
 import { useQuery } from '@apollo/client';
@@ -14,15 +6,54 @@ import * as R from 'ramda';
 import { useMedicineDefinitions, useTimings } from 'hooks';
 import { LIST_PATIENT_APPOINTMENTS } from 'apollo-client/queries';
 import { APPT_STATUS } from 'utils/constants';
-import { CRButton } from 'components/widgets';
 import { formatDate } from 'utils/date';
-import { ButtonsContainer, StyledImage, ContainerStyled } from './style';
+import { ContainerStyled } from './style';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: 'block',
+        background: '#1787e8',
+        padding: '2px 0px 0px 0px',
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: 'block',
+        background: '#1787e8',
+        padding: '2px 0px 0px 0px',
+      }}
+      onClick={onClick}
+    />
+  );
+}
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />,
+};
 
 function ShowMedicinines({ visible, onClose, patient }) {
   const header = useMemo(() => 'Show Medicines', []);
-  const ref = useRef();
-  const [url, setUrl] = useState();
-  const [med, setMed] = useState([]);
   const { medicineDefinitions } = useMedicineDefinitions();
   const { timings } = useTimings();
   const { data } = useQuery(LIST_PATIENT_APPOINTMENTS, {
@@ -60,18 +91,7 @@ function ShowMedicinines({ visible, onClose, patient }) {
       };
     });
   });
-  useEffect(() => {
-    if (FinishedMedicines.length > 0) {
-      setMed(FinishedMedicines[0]);
-    }
-  }, [FinishedMedicines.length]);
-  const onButtonClick = useCallback(async () => {
-    if (ref?.current === null) {
-      return;
-    }
-    const link = await toPng(ref?.current, { cacheBust: true });
-    setUrl(link);
-  }, [url, ref, med]);
+
   return (
     <>
       <CRModal
@@ -83,60 +103,46 @@ function ShowMedicinines({ visible, onClose, patient }) {
         CancelFooter={true}
         CRContainer={ContainerStyled}
       >
-        <ButtonsContainer>
-          {FinishedMedicines.map((m, indx) => (
-            <CRButton
-              onClick={() => {
-                setMed(FinishedMedicines[indx]);
-                onButtonClick();
-              }}
-              mr={10}
-            >
-              {indx}
-            </CRButton>
-          ))}
-        </ButtonsContainer>
-        <Div style={{ overflow: 'hidden', height: '0px' }}>
-          <Div ref={ref}>
-            {med?.length === '0' ? (
-              <Div>No Medicines</Div>
-            ) : (
-              med?.map((element, indx) => (
-                <Div mb={10}>
-                  {indx === 0 && <Div mb={20}>Date: {element.date}</Div>}
-                  <Div>{element.medicine.name}</Div>
-                  <Div display="flex">
-                    <Div>
-                      {element.period}
-                      &nbsp;
+        <Slider {...settings}>
+          {FinishedMedicines.map(med => (
+            <div>
+              {med?.length === '0' ? (
+                <Div>No Medicines</Div>
+              ) : (
+                med?.map((element, indx) => (
+                  <Div mb={50}>
+                    {indx === 0 && <Div mb={20}>Date: {element.date}</Div>}
+                    <Div>{element.medicine.name}</Div>
+                    <Div display="flex">
+                      <Div>
+                        {element.period}
+                        &nbsp;
+                      </Div>
+                      <Div>{element.duration}&nbsp;</Div>
+                      <Div>لمده &nbsp;</Div>
+                      {element.tE?.includes(' ') ? (
+                        <>
+                          <Div>{element.tE.split(' ')[1]}&nbsp;</Div>
+                          <Div>{element.tE.split(' ')[0]}&nbsp;</Div>
+                        </>
+                      ) : (
+                        <Div>{element.tA}&nbsp;</Div>
+                      )}
+                      {element.dose?.includes(' ') ? (
+                        <>
+                          <Div>{element.dose.split(' ')[1]}&nbsp;</Div>
+                          <Div>{element.dose.split(' ')[0]}&nbsp;</Div>
+                        </>
+                      ) : (
+                        <Div>{element.dose}&nbsp;</Div>
+                      )}
                     </Div>
-                    <Div>{element.duration}&nbsp;</Div>
-                    <Div>لمده &nbsp;</Div>
-                    {element.tE?.includes(' ') ? (
-                      <>
-                        <Div>{element.tE.split(' ')[1]}&nbsp;</Div>
-                        <Div>{element.tE.split(' ')[0]}&nbsp;</Div>
-                      </>
-                    ) : (
-                      <Div>{element.tA}&nbsp;</Div>
-                    )}
-                    {element.dose?.includes(' ') ? (
-                      <>
-                        <Div>{element.dose.split(' ')[1]}&nbsp;</Div>
-                        <Div>{element.dose.split(' ')[0]}&nbsp;</Div>
-                      </>
-                    ) : (
-                      <Div>{element.dose}&nbsp;</Div>
-                    )}
                   </Div>
-                </Div>
-              ))
-            )}
-          </Div>
-        </Div>
-        <Div ml={10} mb={20}>
-          {<StyledImage src={url} alt="image" />}
-        </Div>
+                ))
+              )}
+            </div>
+          ))}
+        </Slider>
       </CRModal>
     </>
   );

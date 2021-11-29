@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRTextInput, CRModal } from 'components';
+import { CRTextInput, CRModal, CRCheckBoxGroup } from 'components';
 import { CRSelectInput } from 'components/widgets';
 import { POSITIONS } from 'utils/constants';
 import { mapObjValuesToChoices } from 'utils/misc';
+
+const viewsList = [
+  { name: 'Dental', value: 'Dental' },
+  { name: 'Dermatology', value: 'Dermatology' },
+  { name: 'Obstetrics and Gynecology', value: 'ObstetricsAndGynecology' },
+  { name: 'Pediatrics', value: 'Pediatrics' },
+  { name: 'Orthopedics', value: 'Orthopedics' },
+  { name: 'Plastic surgery', value: 'PlasticSurgery' },
+];
 
 const { StringType } = Schema.Types;
 
@@ -20,31 +29,32 @@ const model = Schema.Model({
   specialtyId: StringType().isRequired('Specialty is required'),
 });
 
-const initialValues = {
-  name: '',
-  email: '',
-  password: '',
-  position: '',
-};
-
-export default function NewUser({ show, onCancel, onCreate, specialties }) {
-  const [formValue, setFormValue] = useState(initialValues);
-
-  useEffect(() => {
-    if (!show) {
-      setFormValue(initialValues);
+export default function NewUser({
+  show,
+  onCancel,
+  onCreate,
+  specialties,
+  onOk,
+  formValue,
+  onChange,
+  type,
+}) {
+  const header = useMemo(() => {
+    if (type === 'create') {
+      return 'Create New User';
+    } else {
+      return 'Edit the User';
     }
-  }, [show]);
-
+  }, [type]);
   return (
     <CRModal
       show={show}
-      header="New User"
+      header={header}
       onHide={onCancel}
       onCancel={onCancel}
-      onOk={() => onCreate(formValue)}
+      onOk={() => onOk(formValue)}
     >
-      <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
+      <Form fluid model={model} formValue={formValue} onChange={onChange}>
         <CRTextInput label="Name" name="name" />
         <CRTextInput label="Email" name="email" />
         <CRTextInput label="Password" name="password" type="password" />
@@ -53,6 +63,14 @@ export default function NewUser({ show, onCancel, onCreate, specialties }) {
           label="Position"
           block
           data={positions}
+        />
+        <CRCheckBoxGroup
+          options={viewsList}
+          name="allowedViews"
+          label="Views allowed to User"
+          value={formValue.views}
+          onChange={val => onChange({ ...formValue, allowedViews: val })}
+          inline
         />
       </Form>
     </CRModal>

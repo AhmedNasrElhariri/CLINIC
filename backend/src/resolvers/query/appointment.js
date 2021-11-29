@@ -1,9 +1,10 @@
 import { prisma } from '@';
 
 const appointment = async (_, { id }) => {
-  return prisma.appointment.findUnique({
+  const app = await prisma.appointment.findUnique({
     where: { id },
   });
+  return app;
 };
 
 export default appointment;

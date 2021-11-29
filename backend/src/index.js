@@ -12,12 +12,14 @@ import resolvers from './resolvers';
 import middlewares from './middlewares';
 import { getContextData } from './services/auth.service';
 import cron from 'node-cron';
-
-import { todayAppointments } from './resolvers/query';
-
 import initUploadConfig from './conf/upload';
 import initReportsConfig from './conf/reports';
-
+import {
+  tomorrowAppointmentsReminder,
+  before3daysSurgeriesReminder,
+  beforeOneDaySurgeryReminder,
+  every6HoursAppointmentReminder,
+} from './services/cron-jobs';
 export const UPLOAD_DIR = '/uploads';
 
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
@@ -76,6 +78,19 @@ cron.schedule('00 06 * * *', async function () {
   });
 });
 
+///////////////   whatsApp Messages   ////////
+
+cron.schedule('00 06 * * *', async function () {
+  tomorrowAppointmentsReminder();
+  before3daysSurgeriesReminder();
+  beforeOneDaySurgeryReminder();
+});
+
+cron.schedule('00 00,06,12,18 * * *', async function () {
+  every6HoursAppointmentReminder();
+});
+
+//////////////////////////////////////////////////////////
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend')));
   app.get('*', (req, res, next) => {

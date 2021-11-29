@@ -9,6 +9,7 @@ import {
   EDIT_PATIENT,
   LIST_PATIENTS_SUMMARY,
   LIST_PATIENTS_REPORT,
+  GET_PATIENT,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -29,6 +30,7 @@ function usePatients({
   area,
   reference,
   patientSearchValue,
+  patientId,
 } = {}) {
   const { data: patientData } = useQuery(LIST_PATIENTS, {
     variables: {
@@ -66,6 +68,14 @@ function usePatients({
     () => R.propOr([], 'searchedPatients')(searchedPatientsData),
     [searchedPatientsData]
   );
+
+  const { data: onePatientData } = useQuery(GET_PATIENT, {
+    variables: {
+      id: patientId,
+    },
+  });
+  const onePatient = R.propOr({}, 'patient')(onePatientData);
+
   const [editPatient] = useMutation(EDIT_PATIENT, {
     update(cache, { data: { editPatient: patient } }) {
       const newPatients = patients.map(p =>
@@ -106,6 +116,7 @@ function usePatients({
       patientsSummary,
       patientsReports,
       pages,
+      onePatient,
       edit: patient =>
         editPatient({
           variables: { patient },
@@ -115,6 +126,7 @@ function usePatients({
       editPatient,
       patients,
       pages,
+      onePatient,
       patientsSummary,
       searchedPatients,
       patientsReports,

@@ -6,6 +6,7 @@ export const USER = gql`
       id
       name
       email
+      allowedViews
       role {
         permissions {
           subject
@@ -25,6 +26,7 @@ export const LOGIN = gql`
         id
         avatar
         position
+        allowedViews
         role {
           permissions {
             subject
@@ -43,6 +45,7 @@ export const VERIFY = gql`
       id
       avatar
       position
+      allowedViews
       role {
         permissions {
           subject
@@ -144,7 +147,6 @@ export const ADD_PULSES_CONTROL = gql`
     }
   }
 `;
-
 
 export const ADD_PAGE_SETUP = gql`
   mutation addPageSetup($pageSetup: PageSetupInput!) {

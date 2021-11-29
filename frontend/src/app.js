@@ -4,10 +4,10 @@ import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { Font } from '@react-pdf/renderer';
-
+import useGlobalState from 'state';
 import client from './apollo-client/client';
 import 'rsuite/dist/styles/rsuite-default.css';
-
+import * as R from 'ramda';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
@@ -29,6 +29,7 @@ export default function App() {
       src: font,
     });
   }, []);
+
   return (
     <>
       <GlobalStyle />

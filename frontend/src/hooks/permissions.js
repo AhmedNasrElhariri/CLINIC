@@ -18,6 +18,7 @@ import {
   LIST_ACTION_USERS,
   LIST_ACTION_DOCTORS,
   DELETE_ROLE_TO_USER,
+  EDIT_USER,
 } from 'apollo-client/queries';
 import { POSITIONS, ACTIONS } from 'utils/constants';
 
@@ -57,6 +58,7 @@ function usePermissions({
   onCreateBranch,
   onCreateSpecialty,
   onCreateUser,
+  onEditUser,
   onAddSpecialty,
   onAddDoctor,
   onAssignRoleToUser,
@@ -137,6 +139,19 @@ function usePermissions({
     },
     onError() {
       Alert.error('Failed to create new user');
+    },
+  });
+
+  const [editUser] = useMutation(EDIT_USER, {
+    onCompleted() {
+      Alert.success('The user has been edited Successfully');
+      onEditUser && onEditUser();
+    },
+    update(cache, { data: { editUser: user } }) {
+      updateUsersCache(cache, [...users, user]);
+    },
+    onError() {
+      Alert.error('Failed to edit user');
     },
   });
 
@@ -224,6 +239,7 @@ function usePermissions({
       createSpecialty: specialty =>
         createSpecialty({ variables: { specialty } }),
       createUser: user => createUser({ variables: { user } }),
+      editUser: user => editUser({ variables: { user } }),
       addSpecialty: data => addSpecialty({ variables: data }),
       addDoctor: data => addDoctor({ variables: data }),
       assignRoleToUser: data => assignRoleToUser({ variables: data }),
@@ -251,6 +267,7 @@ function usePermissions({
       createBranch,
       createSpecialty,
       createUser,
+      editUser,
       addSpecialty,
       addDoctor,
       assignRoleToUser,

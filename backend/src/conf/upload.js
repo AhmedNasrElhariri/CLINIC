@@ -1,7 +1,5 @@
 import fileUpload from 'express-fileupload';
-
 import { upload } from '@/services/upload.service';
-
 const init = app => {
   app.use(fileUpload());
   app.post('/upload', async function (req, res) {
