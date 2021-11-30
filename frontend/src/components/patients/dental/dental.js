@@ -23,7 +23,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       <NumberHeader
         src="/icons/dentalNumberHeader.png"
         top="285px"
-        left="249px"
+        left="415px"
         width="609px"
         height="19px"
       />
@@ -37,7 +37,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="7px"
         height="22px"
         top="318px"
-        left="250px"
+        left="415px"
         onClick={() => onAddDiagnosis({ toothNumber: 1, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -49,7 +49,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="21px"
         height="30px"
         top="323px"
-        left="244px"
+        left="409px"
         onClick={() => onAddDiagnosis({ toothNumber: 1, toothPartNumber: 2 })}
       />
       <DentalIcon
@@ -61,7 +61,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="23px"
         top="352px"
-        left="241px"
+        left="406px"
         onClick={() => onAddDiagnosis({ toothNumber: 1, toothPartNumber: 3 })}
       />
 
@@ -75,7 +75,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="7px"
         height="22px"
         top="318px"
-        left="290px"
+        left="455px"
         onClick={() => onAddDiagnosis({ toothNumber: 2, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -87,7 +87,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="30px"
         top="323px"
-        left="284px"
+        left="449px"
         onClick={() => onAddDiagnosis({ toothNumber: 2, toothPartNumber: 2 })}
       />
       <DentalIcon
@@ -99,7 +99,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="23px"
         top="352px"
-        left="281px"
+        left="446px"
         onClick={() => onAddDiagnosis({ toothNumber: 2, toothPartNumber: 3 })}
       />
       {/* 3 */}
@@ -112,7 +112,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="7px"
         height="22px"
         top="318px"
-        left="328px"
+        left="493px"
         onClick={() => onAddDiagnosis({ toothNumber: 3, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -124,7 +124,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="30px"
         top="323px"
-        left="323px"
+        left="488px"
         onClick={() => onAddDiagnosis({ toothNumber: 3, toothPartNumber: 2 })}
       />
       <DentalIcon
@@ -136,7 +136,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="27px"
         height="26px"
         top="354px"
-        left="319px"
+        left="484px"
         onClick={() => onAddDiagnosis({ toothNumber: 3, toothPartNumber: 3 })}
       />
       {/* 4 */}
@@ -149,7 +149,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="17px"
         height="36px"
         top="320px"
-        left="365px"
+        left="530px"
         onClick={() => onAddDiagnosis({ toothNumber: 4, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -161,7 +161,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="6px"
         height="22px"
         top="320px"
-        left="373px"
+        left="538px"
         onClick={() => onAddDiagnosis({ toothNumber: 4, toothPartNumber: 2 })}
       />
       <DentalIcon
@@ -173,7 +173,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="25px"
         top="356px"
-        left="361px"
+        left="526px"
         onClick={() => onAddDiagnosis({ toothNumber: 4, toothPartNumber: 3 })}
       />
 
@@ -187,7 +187,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="16px"
         height="36px"
         top="320px"
-        left="404px"
+        left="569px"
         onClick={() => onAddDiagnosis({ toothNumber: 5, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -199,7 +199,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="27px"
         top="352px"
-        left="401px"
+        left="566px"
         onClick={() => onAddDiagnosis({ toothNumber: 5, toothPartNumber: 2 })}
       />
 
@@ -213,7 +213,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="16px"
         height="42px"
         top="312px"
-        left="444px"
+        left="609px"
         onClick={() => onAddDiagnosis({ toothNumber: 6, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -225,7 +225,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="23px"
         height="28px"
         top="353px"
-        left="441px"
+        left="606px"
         onClick={() => onAddDiagnosis({ toothNumber: 6, toothPartNumber: 2 })}
       />
 
@@ -239,7 +239,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="18px"
         height="37px"
         top="319px"
-        left="482px"
+        left="647px"
         onClick={() => onAddDiagnosis({ toothNumber: 7, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -251,7 +251,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="21px"
         height="25px"
         top="355px"
-        left="479px"
+        left="644px"
         onClick={() => onAddDiagnosis({ toothNumber: 7, toothPartNumber: 2 })}
       />
       {/* 8 */}
@@ -264,7 +264,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="18px"
         height="40px"
         top="319px"
-        left="520px"
+        left="685px"
         onClick={() => onAddDiagnosis({ toothNumber: 8, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -276,7 +276,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="30px"
         top="353px"
-        left="518px"
+        left="683px"
         onClick={() => onAddDiagnosis({ toothNumber: 8, toothPartNumber: 2 })}
       />
 
@@ -290,7 +290,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="19px"
         height="38px"
         top="319px"
-        left="564px"
+        left="729px"
         onClick={() => onAddDiagnosis({ toothNumber: 9, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -302,7 +302,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="30px"
         top="353px"
-        left="561px"
+        left="726px"
         onClick={() => onAddDiagnosis({ toothNumber: 9, toothPartNumber: 2 })}
       />
 
@@ -316,7 +316,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="16px"
         height="37px"
         top="320px"
-        left="605px"
+        left="770px"
         onClick={() => onAddDiagnosis({ toothNumber: 10, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -328,7 +328,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="25px"
         top="355px"
-        left="603px"
+        left="768px"
         onClick={() => onAddDiagnosis({ toothNumber: 10, toothPartNumber: 2 })}
       />
 
@@ -342,7 +342,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="16px"
         height="42px"
         top="311px"
-        left="644px"
+        left="809px"
         onClick={() => onAddDiagnosis({ toothNumber: 11, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -354,7 +354,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="23px"
         height="28px"
         top="352px"
-        left="641px"
+        left="807px"
         onClick={() => onAddDiagnosis({ toothNumber: 11, toothPartNumber: 2 })}
       />
 
@@ -368,7 +368,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="16px"
         height="36px"
         top="320px"
-        left="683px"
+        left="848px"
         onClick={() => onAddDiagnosis({ toothNumber: 12, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -380,7 +380,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="27px"
         top="352px"
-        left="680px"
+        left="845px"
         onClick={() => onAddDiagnosis({ toothNumber: 12, toothPartNumber: 2 })}
       />
 
@@ -394,7 +394,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="17px"
         height="36px"
         top="320px"
-        left="723px"
+        left="888px"
         onClick={() => onAddDiagnosis({ toothNumber: 13, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -406,7 +406,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="6px"
         height="22px"
         top="320px"
-        left="725px"
+        left="890px"
         onClick={() => onAddDiagnosis({ toothNumber: 13, toothPartNumber: 2 })}
       />
       <DentalIcon
@@ -418,7 +418,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="25px"
         top="356px"
-        left="721px"
+        left="886px"
         onClick={() => onAddDiagnosis({ toothNumber: 13, toothPartNumber: 3 })}
       />
 
@@ -432,7 +432,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="6px"
         height="23px"
         top="320px"
-        left="767px"
+        left="932px"
         onClick={() => onAddDiagnosis({ toothNumber: 14, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -444,7 +444,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="32px"
         top="326px"
-        left="758px"
+        left="923px"
         onClick={() => onAddDiagnosis({ toothNumber: 14, toothPartNumber: 2 })}
       />
       <DentalIcon
@@ -456,7 +456,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="27px"
         height="26px"
         top="355px"
-        left="757px"
+        left="922px"
         onClick={() => onAddDiagnosis({ toothNumber: 14, toothPartNumber: 3 })}
       />
 
@@ -470,7 +470,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="7px"
         height="22px"
         top="320px"
-        left="807px"
+        left="972px"
         onClick={() => onAddDiagnosis({ toothNumber: 15, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -482,7 +482,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="30px"
         top="326px"
-        left="799px"
+        left="964px"
         onClick={() => onAddDiagnosis({ toothNumber: 15, toothPartNumber: 2 })}
       />
       <DentalIcon
@@ -494,7 +494,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="24px"
         top="355px"
-        left="798px"
+        left="963px"
         onClick={() => onAddDiagnosis({ toothNumber: 15, toothPartNumber: 3 })}
       />
 
@@ -508,7 +508,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="7px"
         height="22px"
         top="320px"
-        left="847px"
+        left="1012px"
         onClick={() => onAddDiagnosis({ toothNumber: 16, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -520,7 +520,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="30px"
         top="325px"
-        left="839px"
+        left="1004px"
         onClick={() => onAddDiagnosis({ toothNumber: 16, toothPartNumber: 2 })}
       />
       <DentalIcon
@@ -532,14 +532,14 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="23px"
         top="353px"
-        left="838px"
+        left="1003px"
         onClick={() => onAddDiagnosis({ toothNumber: 16, toothPartNumber: 3 })}
       />
       {/* //////////// */}
 
       {/* 2-1 */}
       <Tooth
-        toothLeftArray={['240px', '256px', '240px', '238px', '247px']}
+        toothLeftArray={['405px', '421px', '405px', '403px', '412px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={1}
         onAddDiagnosis={onAddDiagnosis}
@@ -548,7 +548,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-2 */}
       <Tooth
-        toothLeftArray={['280px', '296px', '279px', '278px', '286px']}
+        toothLeftArray={['445px', '461px', '444px', '443px', '451px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={2}
         onAddDiagnosis={onAddDiagnosis}
@@ -557,7 +557,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-3 */}
       <Tooth
-        toothLeftArray={['321px', '337px', '321px', '318px', '327px']}
+        toothLeftArray={['486px', '502px', '486px', '483px', '492px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={3}
         onAddDiagnosis={onAddDiagnosis}
@@ -566,7 +566,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-4 */}
       <Tooth
-        toothLeftArray={['360px', '376px', '360px', '358px', '366px']}
+        toothLeftArray={['525px', '541px', '525px', '523px', '531px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={4}
         onAddDiagnosis={onAddDiagnosis}
@@ -575,7 +575,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-5 */}
       <Tooth
-        toothLeftArray={['401px', '417px', '400px', '398px', '407px']}
+        toothLeftArray={['566px', '582px', '565px', '563px', '572px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={5}
         onAddDiagnosis={onAddDiagnosis}
@@ -585,7 +585,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
 
       {/* 2-6 */}
       <ToothTypeTwo
-        toothLeftArray={['439px', '458px', '439px', '438px', '446px']}
+        toothLeftArray={['604px', '623px', '604px', '603px', '611px']}
         toothTopArray={['386px', '388px', '406px', '388px', '396px']}
         toothNumber={6}
         onAddDiagnosis={onAddDiagnosis}
@@ -594,7 +594,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-7 */}
       <ToothTypeTwo
-        toothLeftArray={['478px', '496px', '478px', '476px', '484px']}
+        toothLeftArray={['643px', '661px', '643px', '642px', '649px']}
         toothTopArray={['386px', '388px', '406px', '388px', '396px']}
         toothNumber={7}
         onAddDiagnosis={onAddDiagnosis}
@@ -603,7 +603,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-8 */}
       <ToothTypeTwo
-        toothLeftArray={['519px', '537px', '519px', '517px', '525px']}
+        toothLeftArray={['684px', '702px', '684px', '682px', '690px']}
         toothTopArray={['386px', '388px', '406px', '388px', '396px']}
         toothNumber={8}
         onAddDiagnosis={onAddDiagnosis}
@@ -613,7 +613,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
 
       {/* 2-9 */}
       <ToothTypeTwo
-        toothLeftArray={['560px', '578px', '560px', '558px', '567px']}
+        toothLeftArray={['725px', '743px', '725px', '723px', '732px']}
         toothTopArray={['386px', '388px', '406px', '388px', '396px']}
         toothNumber={9}
         onAddDiagnosis={onAddDiagnosis}
@@ -622,7 +622,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-10 */}
       <ToothTypeTwo
-        toothLeftArray={['601px', '619px', '601px', '599px', '607px']}
+        toothLeftArray={['766px', '784px', '766px', '764px', '772px']}
         toothTopArray={['386px', '388px', '406px', '388px', '396px']}
         toothNumber={10}
         onAddDiagnosis={onAddDiagnosis}
@@ -631,7 +631,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-11 */}
       <ToothTypeTwo
-        toothLeftArray={['639px', '657px', '639px', '637px', '646px']}
+        toothLeftArray={['804px', '822px', '804px', '802px', '811px']}
         toothTopArray={['386px', '388px', '406px', '388px', '396px']}
         toothNumber={11}
         onAddDiagnosis={onAddDiagnosis}
@@ -640,7 +640,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-12 */}
       <Tooth
-        toothLeftArray={['677px', '694px', '678px', '675px', '684px']}
+        toothLeftArray={['842px', '859px', '843px', '840px', '849px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={12}
         onAddDiagnosis={onAddDiagnosis}
@@ -649,7 +649,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-13 */}
       <Tooth
-        toothLeftArray={['717px', '734px', '718px', '716px', '724px']}
+        toothLeftArray={['882px', '899px', '883px', '881px', '889px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={13}
         onAddDiagnosis={onAddDiagnosis}
@@ -658,7 +658,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-14 */}
       <Tooth
-        toothLeftArray={['757px', '774px', '757px', '755px', '764px']}
+        toothLeftArray={['922px', '939px', '922px', '920px', '929px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={14}
         onAddDiagnosis={onAddDiagnosis}
@@ -667,7 +667,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-15 */}
       <Tooth
-        toothLeftArray={['798px', '814px', '798px', '796px', '804px']}
+        toothLeftArray={['963px', '979px', '963px', '961px', '969px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={15}
         onAddDiagnosis={onAddDiagnosis}
@@ -676,7 +676,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 2-16 */}
       <Tooth
-        toothLeftArray={['837px', '854px', '836px', '835px', '844px']}
+        toothLeftArray={['1002px', '1019px', '1001px', '1000px', '1009px']}
         toothTopArray={['387px', '389px', '405px', '389px', '395px']}
         toothNumber={16}
         onAddDiagnosis={onAddDiagnosis}
@@ -688,7 +688,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
 
       {/* 3-1 */}
       <Tooth
-        toothLeftArray={['240px', '256px', '240px', '238px', '247px']}
+        toothLeftArray={['405px', '421px', '405px', '403px', '412px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={32}
         onAddDiagnosis={onAddDiagnosis}
@@ -697,7 +697,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-2 */}
       <Tooth
-        toothLeftArray={['280px', '296px', '279px', '278px', '286px']}
+        toothLeftArray={['445px', '461px', '444px', '443px', '451px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={31}
         onAddDiagnosis={onAddDiagnosis}
@@ -706,7 +706,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-3 */}
       <Tooth
-        toothLeftArray={['321px', '337px', '321px', '318px', '327px']}
+        toothLeftArray={['486px', '502px', '486px', '483px', '492px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={30}
         onAddDiagnosis={onAddDiagnosis}
@@ -715,7 +715,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-4 */}
       <Tooth
-        toothLeftArray={['360px', '376px', '360px', '358px', '366px']}
+        toothLeftArray={['525px', '541px', '525px', '523px', '531px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={29}
         onAddDiagnosis={onAddDiagnosis}
@@ -724,7 +724,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-5 */}
       <Tooth
-        toothLeftArray={['401px', '417px', '400px', '398px', '407px']}
+        toothLeftArray={['566px', '582px', '565px', '563px', '572px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={28}
         onAddDiagnosis={onAddDiagnosis}
@@ -734,7 +734,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
 
       {/* 3-6 */}
       <ToothTypeTwo
-        toothLeftArray={['439px', '458px', '439px', '438px', '446px']}
+        toothLeftArray={['604px', '623px', '604px', '603px', '611px']}
         toothTopArray={['427px', '429px', '446px', '429px', '436px']}
         toothNumber={27}
         onAddDiagnosis={onAddDiagnosis}
@@ -743,7 +743,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-7 */}
       <ToothTypeTwo
-        toothLeftArray={['478px', '496px', '478px', '476px', '484px']}
+        toothLeftArray={['643px', '661px', '643px', '642px', '649px']}
         toothTopArray={['427px', '429px', '446px', '429px', '436px']}
         toothNumber={26}
         onAddDiagnosis={onAddDiagnosis}
@@ -752,7 +752,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-8 */}
       <ToothTypeTwo
-        toothLeftArray={['519px', '537px', '519px', '517px', '525px']}
+        toothLeftArray={['684px', '702px', '684px', '682px', '690px']}
         toothTopArray={['427px', '429px', '446px', '429px', '436px']}
         toothNumber={25}
         onAddDiagnosis={onAddDiagnosis}
@@ -762,7 +762,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
 
       {/* 3-9 */}
       <ToothTypeTwo
-        toothLeftArray={['560px', '578px', '560px', '558px', '567px']}
+        toothLeftArray={['725px', '743px', '725px', '723px', '732px']}
         toothTopArray={['427px', '429px', '446px', '429px', '436px']}
         toothNumber={24}
         onAddDiagnosis={onAddDiagnosis}
@@ -771,7 +771,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-10 */}
       <ToothTypeTwo
-        toothLeftArray={['601px', '619px', '601px', '599px', '607px']}
+        toothLeftArray={['766px', '784px', '766px', '764px', '772px']}
         toothTopArray={['427px', '429px', '446px', '429px', '436px']}
         toothNumber={23}
         onAddDiagnosis={onAddDiagnosis}
@@ -780,7 +780,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-11 */}
       <ToothTypeTwo
-        toothLeftArray={['639px', '657px', '639px', '637px', '646px']}
+        toothLeftArray={['804px', '822px', '804px', '802px', '811px']}
         toothTopArray={['427px', '429px', '446px', '429px', '436px']}
         toothNumber={22}
         onAddDiagnosis={onAddDiagnosis}
@@ -790,7 +790,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
 
       {/* 3-12 */}
       <Tooth
-        toothLeftArray={['677px', '694px', '678px', '675px', '684px']}
+        toothLeftArray={['842px', '859px', '843px', '840px', '849px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={21}
         onAddDiagnosis={onAddDiagnosis}
@@ -799,7 +799,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-13 */}
       <Tooth
-        toothLeftArray={['717px', '734px', '718px', '716px', '724px']}
+        toothLeftArray={['882px', '899px', '883px', '881px', '889px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={20}
         onAddDiagnosis={onAddDiagnosis}
@@ -808,7 +808,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-14 */}
       <Tooth
-        toothLeftArray={['757px', '774px', '757px', '755px', '764px']}
+        toothLeftArray={['922px', '939px', '922px', '920px', '929px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={19}
         onAddDiagnosis={onAddDiagnosis}
@@ -817,7 +817,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-15 */}
       <Tooth
-        toothLeftArray={['798px', '814px', '798px', '796px', '804px']}
+        toothLeftArray={['963px', '979px', '963px', '961px', '969px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={18}
         onAddDiagnosis={onAddDiagnosis}
@@ -826,7 +826,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
       />
       {/* 3-16 */}
       <Tooth
-        toothLeftArray={['837px', '854px', '836px', '835px', '844px']}
+        toothLeftArray={['1002px', '1019px', '1001px', '1000px', '1009px']}
         toothTopArray={['427px', '430px', '446px', '430px', '436px']}
         toothNumber={17}
         onAddDiagnosis={onAddDiagnosis}
@@ -844,7 +844,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="24px"
         height="22px"
         top="472px"
-        left="838px"
+        left="1003px"
         onClick={() => onAddDiagnosis({ toothNumber: 17, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -856,7 +856,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="34px"
         top="495px"
-        left="841px"
+        left="1006px"
         onClick={() => onAddDiagnosis({ toothNumber: 17, toothPartNumber: 2 })}
       />
 
@@ -870,7 +870,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="23px"
         top="470px"
-        left="798px"
+        left="963px"
         onClick={() => onAddDiagnosis({ toothNumber: 18, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -882,7 +882,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="38px"
         top="490px"
-        left="801px"
+        left="966px"
         onClick={() => onAddDiagnosis({ toothNumber: 18, toothPartNumber: 2 })}
       />
 
@@ -896,7 +896,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="24px"
         top="471px"
-        left="758px"
+        left="923px"
         onClick={() => onAddDiagnosis({ toothNumber: 19, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -908,7 +908,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="37px"
         top="491px"
-        left="761px"
+        left="926px"
         onClick={() => onAddDiagnosis({ toothNumber: 19, toothPartNumber: 2 })}
       />
 
@@ -922,7 +922,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="24px"
         top="470px"
-        left="720px"
+        left="885px"
         onClick={() => onAddDiagnosis({ toothNumber: 20, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -934,7 +934,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="17px"
         height="38px"
         top="493px"
-        left="723px"
+        left="888px"
         onClick={() => onAddDiagnosis({ toothNumber: 20, toothPartNumber: 2 })}
       />
 
@@ -948,7 +948,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="21px"
         height="24px"
         top="470px"
-        left="681px"
+        left="846px"
         onClick={() => onAddDiagnosis({ toothNumber: 21, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -960,7 +960,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="19px"
         height="38px"
         top="493px"
-        left="682px"
+        left="847px"
         onClick={() => onAddDiagnosis({ toothNumber: 21, toothPartNumber: 2 })}
       />
 
@@ -974,7 +974,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="27px"
         top="468px"
-        left="640px"
+        left="805px"
         onClick={() => onAddDiagnosis({ toothNumber: 22, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -986,7 +986,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="19px"
         height="45px"
         top="491px"
-        left="642px"
+        left="807px"
         onClick={() => onAddDiagnosis({ toothNumber: 22, toothPartNumber: 2 })}
       />
 
@@ -1000,7 +1000,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="17px"
         height="23px"
         top="467px"
-        left="605px"
+        left="770px"
         onClick={() => onAddDiagnosis({ toothNumber: 23, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1012,7 +1012,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="17px"
         height="40px"
         top="485px"
-        left="605px"
+        left="770px"
         onClick={() => onAddDiagnosis({ toothNumber: 23, toothPartNumber: 2 })}
       />
 
@@ -1026,7 +1026,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="18px"
         height="24px"
         top="467px"
-        left="564px"
+        left="729px"
         onClick={() => onAddDiagnosis({ toothNumber: 24, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1038,7 +1038,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="16px"
         height="39px"
         top="487px"
-        left="565px"
+        left="730px"
         onClick={() => onAddDiagnosis({ toothNumber: 24, toothPartNumber: 2 })}
       />
 
@@ -1052,7 +1052,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="18px"
         height="24px"
         top="467px"
-        left="521px"
+        left="686px"
         onClick={() => onAddDiagnosis({ toothNumber: 25, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1064,7 +1064,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="15px"
         height="40px"
         top="487px"
-        left="523px"
+        left="688px"
         onClick={() => onAddDiagnosis({ toothNumber: 25, toothPartNumber: 2 })}
       />
 
@@ -1078,7 +1078,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="18px"
         height="23px"
         top="467px"
-        left="482px"
+        left="647px"
         onClick={() => onAddDiagnosis({ toothNumber: 26, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1090,7 +1090,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="16px"
         height="40px"
         top="485px"
-        left="483px"
+        left="648px"
         onClick={() => onAddDiagnosis({ toothNumber: 26, toothPartNumber: 2 })}
       />
 
@@ -1104,7 +1104,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="21px"
         height="27px"
         top="468px"
-        left="442px"
+        left="607px"
         onClick={() => onAddDiagnosis({ toothNumber: 27, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1116,7 +1116,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="19px"
         height="45px"
         top="490px"
-        left="443px"
+        left="608px"
         onClick={() => onAddDiagnosis({ toothNumber: 27, toothPartNumber: 2 })}
       />
 
@@ -1130,7 +1130,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="24px"
         top="470px"
-        left="402px"
+        left="567px"
         onClick={() => onAddDiagnosis({ toothNumber: 28, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1142,7 +1142,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="18px"
         height="38px"
         top="493px"
-        left="404px"
+        left="569px"
         onClick={() => onAddDiagnosis({ toothNumber: 28, toothPartNumber: 2 })}
       />
 
@@ -1156,7 +1156,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="22px"
         height="24px"
         top="470px"
-        left="362px"
+        left="527px"
         onClick={() => onAddDiagnosis({ toothNumber: 29, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1168,7 +1168,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="18px"
         height="38px"
         top="493px"
-        left="364px"
+        left="529px"
         onClick={() => onAddDiagnosis({ toothNumber: 29, toothPartNumber: 2 })}
       />
 
@@ -1182,7 +1182,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="26px"
         height="24px"
         top="470px"
-        left="321px"
+        left="486px"
         onClick={() => onAddDiagnosis({ toothNumber: 30, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1194,7 +1194,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="35px"
         top="492px"
-        left="323px"
+        left="488px"
         onClick={() => onAddDiagnosis({ toothNumber: 30, toothPartNumber: 2 })}
       />
 
@@ -1208,7 +1208,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="25px"
         height="22px"
         top="470px"
-        left="281px"
+        left="446px"
         onClick={() => onAddDiagnosis({ toothNumber: 31, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1220,7 +1220,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="36px"
         top="493px"
-        left="282px"
+        left="447px"
         onClick={() => onAddDiagnosis({ toothNumber: 31, toothPartNumber: 2 })}
       />
 
@@ -1234,7 +1234,7 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="24px"
         height="22px"
         top="472px"
-        left="241px"
+        left="406px"
         onClick={() => onAddDiagnosis({ toothNumber: 32, toothPartNumber: 1 })}
       />
       <DentalIcon
@@ -1246,14 +1246,14 @@ const Dental = ({ onAddDiagnosis, tooths }) => {
         width="20px"
         height="34px"
         top="494px"
-        left="242px"
+        left="407px"
         onClick={() => onAddDiagnosis({ toothNumber: 32, toothPartNumber: 2 })}
       />
 
       <NumberHeader
         src="/icons/dentalNumberHeader2.png"
         top="546px"
-        left="245px"
+        left="410px"
         width="613px"
         height="19px"
       />
