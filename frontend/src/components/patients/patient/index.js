@@ -5,7 +5,13 @@ import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Can } from 'components/user/can';
 import { GET_PATIENT } from 'apollo-client/queries';
-import { CRVNav, CRButton, MainContainer, PatientSummary } from 'components';
+import {
+  CRVNav,
+  CRButton,
+  MainContainer,
+  PatientSummary,
+  AllowedViews,
+} from 'components';
 import AvatarWithName from '../patient-avatar-with-name/index';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
@@ -18,7 +24,7 @@ import PatientCourses from 'components/appointments/appointment/patient-courses'
 import PatientSurgries from 'components/appointments/appointment/surgries';
 import SessionsPulses from '../sessions-pulses';
 import PatientProgress from '../progress';
-import { useQueryParams, useHospitals } from 'hooks';
+import { useQueryParams, useHospitals, usePatients } from 'hooks';
 import PatientInformationCreation from '../patient-information-creation';
 
 const tabs = [
@@ -42,25 +48,19 @@ const Container = styled.div`
 const TabContainer = styled.div`
   width: 100%;
 `;
+const tabularFields = [
+  { id: 'name', name: 'name' },
+  { id: 'address', name: 'address' },
+];
 function Appointment() {
   const history = useHistory();
   let { patientId } = useParams();
   let { appointmentId } = useQueryParams();
-  const { data } = useQuery(GET_PATIENT, {
-    variables: {
-      id: patientId,
-    },
-  });
-  const [activeTab, setActiveTab] = useState('0');
-  const showComp = useCallback(idx => activeTab === idx, [activeTab]);
-  const patient = R.propOr({}, 'patient')(data);
+  const { onePatient: patient } = usePatients({ patientId });
   const { viewFields, appointmentHistory } = usePatientHistory({ patientId });
   const { hospitals } = useHospitals({});
-  const tabularFields = [
-    { id: 'name', name: 'name' },
-    { id: 'address', name: 'address' },
-  ];
-
+  const [activeTab, setActiveTab] = useState('0');
+  const showComp = useCallback(idx => activeTab === idx, [activeTab]);
   return (
     <>
       <MainContainer
@@ -128,7 +128,7 @@ function Appointment() {
                 {showComp('5') && <History patient={patient} />}
                 {showComp('6') && (
                   <Can I="ViewCourses" an="Patient">
-                    <PatientCourses patient={patient} />
+                    <PatientCourses patientId={patient?.id} />
                   </Can>
                 )}
                 {showComp('7') && (
@@ -136,7 +136,11 @@ function Appointment() {
                     <SessionsPulses summary={appointmentHistory} />
                   </Can>
                 )}
-                {showComp('8') && <Dental patient={patient} />}
+                {showComp('8') && (
+                  <AllowedViews part="Dental">
+                    <Dental patient={patient} />
+                  </AllowedViews>
+                )}
                 {showComp('9') && <FaceOperations patient={patient} />}
                 {showComp('10') && (
                   <PatientProgress

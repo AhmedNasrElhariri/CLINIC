@@ -12,10 +12,14 @@ import resolvers from './resolvers';
 import middlewares from './middlewares';
 import { getContextData } from './services/auth.service';
 import cron from 'node-cron';
-
 import initUploadConfig from './conf/upload';
 import initReportsConfig from './conf/reports';
-
+import {
+  tomorrowAppointmentsReminder,
+  before3daysSurgeriesReminder,
+  beforeOneDaySurgeryReminder,
+  every6HoursAppointmentReminder,
+} from './services/cron-jobs';
 export const UPLOAD_DIR = '/uploads';
 
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
@@ -74,19 +78,19 @@ cron.schedule('00 06 * * *', async function () {
   });
 });
 
-const accountSid = 'AC09bda433375a5645246e6bacd9588605';
-const authToken = '6262a4cebde03d1fac0f5d1a207766ed';
-const client = require('twilio')(accountSid, authToken);
+///////////////   whatsApp Messages   ////////
 
-client.messages
-  .create({
-    body: 'Your clinicR appointment is coming up on today 1!',
-    from: 'whatsapp:+14155238886',
-    to: 'whatsapp:+201142267762',
-  })
-  .then(message => console.log(message))
-  .done();
+cron.schedule('00 06 * * *', async function () {
+  tomorrowAppointmentsReminder();
+  before3daysSurgeriesReminder();
+  beforeOneDaySurgeryReminder();
+});
 
+cron.schedule('00 00,06,12,18 * * *', async function () {
+  every6HoursAppointmentReminder();
+});
+
+//////////////////////////////////////////////////////////
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend')));
   app.get('*', (req, res, next) => {

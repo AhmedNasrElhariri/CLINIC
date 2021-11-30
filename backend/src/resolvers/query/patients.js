@@ -1,6 +1,5 @@
 import { prisma } from '@';
 import CryptoJS from 'crypto-js';
-
 const patients = async (
   _,
   { offset, limit, name = '', phoneNo = '' },
@@ -13,6 +12,7 @@ const patients = async (
       organizationId,
     },
   });
+
   const updatedPatients = orgPatients.map(p => {
     const { name: name1, phoneNo: phone1, ...rest } = p;
     const decryptedName = CryptoJS.AES.decrypt(name1, 'secret key 123');
@@ -25,12 +25,14 @@ const patients = async (
       phoneNo: originalPhoneNo,
     };
   });
+
   const filteredPatients = updatedPatients.filter(
     p =>
       (p.name.toLowerCase().includes(name.toLowerCase()) ||
         p.code.toLowerCase().includes(name.toLowerCase())) &&
       p.phoneNo.includes(phoneNo)
   );
+
   // const patientsCount = await prisma.patient.count({
   //   where: {
   //     organizationId,
@@ -75,10 +77,11 @@ const patients = async (
   //   skip: offset,
   //   take: limit,
   // });
+
   const finalPatients = filteredPatients.slice(offset, offset2);
   const data = {
     patients: finalPatients,
-    patientsCount: filteredPatients.length,
+    patientsCount: updatedPatients.length,
   };
   return data;
 };

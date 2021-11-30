@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import * as R from 'ramda';
 import Fab from 'components/appointments/new-appointment/fab';
+import UserAllowedViewsContext from '../../../services/allowed-views-context';
+import useGlobalState from 'state';
 import { AppRouter, Login, NewPatient } from 'components';
 import { UserIcon, CalendarIcon } from 'components/icons';
 import {
@@ -19,6 +21,7 @@ import { useModal } from 'hooks';
 const initialvalues = {
   branchId: null,
 };
+
 function Root() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
@@ -32,13 +35,11 @@ function Root() {
     isVerified,
     isAuthenticated,
     notifications,
-    user,
+    user: User,
   } = useUserProfile();
 
-  if (!isVerified) {
-    return <div>Loading ...</div>;
-  }
-
+  const [user] = useGlobalState('user');
+  const allowedViews = R.propOr([], 'allowedViews')(user);
   const items = [
     {
       to: '/appointments/today',
@@ -99,42 +100,51 @@ function Root() {
     },
   ];
 
+  if (!isVerified) {
+    return <div>Loading ...</div>;
+  }
+
   return (
-    <ContainerStyled>
-      {isAuthenticated ? (
-        <>
-          <Sidebar items={items} />
-          <MainStyled>
-            <Navbar
-              onLogout={logout}
-              onClickAvatar={() => history.push('/me')}
-              avatar={R.prop('avatar')(user)}
-              notifications={notifications}
-              onClear={clearNotifications}
-              formValue={formValue}
-              setFormValue={setFormValue}
-            />
-            <ContentStyled>
-              <AppRouter></AppRouter>
-            </ContentStyled>
-          </MainStyled>
-          <NewAppointment show={visbleAppointment} onHide={toggleAppointment} />
-          <NewPatient show={visblePatient} onHide={togglePatient} />
-        </>
-      ) : (
-        <>
-          <Route path="/login">
-            <LoginContainerStyled>
-              <Login
-                onLoginSucceeded={onLoginSucceeded}
-                onLoginFailed={onLoginFailed}
+    <UserAllowedViewsContext.Provider value={allowedViews}>
+      <ContainerStyled>
+        {isAuthenticated ? (
+          <>
+            <Sidebar items={items} />
+            <MainStyled>
+              <Navbar
+                onLogout={logout}
+                onClickAvatar={() => history.push('/me')}
+                avatar={R.prop('avatar')(User)}
+                notifications={notifications}
+                onClear={clearNotifications}
+                formValue={formValue}
+                setFormValue={setFormValue}
               />
-            </LoginContainerStyled>
-          </Route>
-          <Redirect to="/login"></Redirect>
-        </>
-      )}
-    </ContainerStyled>
+              <ContentStyled>
+                <AppRouter></AppRouter>
+              </ContentStyled>
+            </MainStyled>
+            <NewAppointment
+              show={visbleAppointment}
+              onHide={toggleAppointment}
+            />
+            <NewPatient show={visblePatient} onHide={togglePatient} />
+          </>
+        ) : (
+          <>
+            <Route path="/login">
+              <LoginContainerStyled>
+                <Login
+                  onLoginSucceeded={onLoginSucceeded}
+                  onLoginFailed={onLoginFailed}
+                />
+              </LoginContainerStyled>
+            </Route>
+            <Redirect to="/login"></Redirect>
+          </>
+        )}
+      </ContainerStyled>
+    </UserAllowedViewsContext.Provider>
   );
 }
 

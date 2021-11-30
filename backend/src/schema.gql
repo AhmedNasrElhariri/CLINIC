@@ -359,6 +359,7 @@ type Mutation {
   createBranch(branch: BranchInput!): Branch!
   createSpecialty(specialty: SpecialtyInput!): Specialty!
   createUser(user: UserInput!): User!
+  editUser(user: UserInput!): User!
   addSpecialty(branchId: ID!, specialtyId: ID!): Branch!
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
@@ -434,6 +435,7 @@ type User {
   avatar: String
   specialty: [Specialty]
   role: Role
+  allowedViews: [String!]
 }
 
 type Permission {
@@ -509,10 +511,12 @@ input SpecialtyInput {
 
 input UserInput {
   specialtyId: ID
+  id: ID
   name: String!
   email: String!
   password: String!
-  position: Position!
+  position: Position
+  allowedViews: [String!]
 }
 
 type Configuration {

@@ -1,17 +1,37 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { Div, Img, H6 } from 'components';
-
+import path from 'path';
+import crypto from 'crypto';
+import fs from 'fs';
+const filePath = './uploads';
 const MAX_COUNT = 3;
-
+let image11 = '';
 const ListPicturesThumbnails = ({ pictures, onClick }) => {
   const count = pictures.length;
   const displayedCount = count >= MAX_COUNT ? MAX_COUNT : pictures.length;
+  image11 = pictures[0]?.url;
   const rest = count - displayedCount;
-  const renderedPictures = useMemo(() => pictures.slice(0, displayedCount), [
-    displayedCount,
-    pictures,
-  ]);
+  const renderedPictures = useMemo(
+    () => pictures.slice(0, displayedCount),
+    [displayedCount, pictures]
+  );
+  // useEffect(() => {
+  //   var image = fs.createReadStream(image11);
+  //   var decryptedImage = fs.createWriteStream(filePath);
+  //   const secret = 'shezhuansauce';
+  //   const algorithm = 'aes-256-cbc';
+  //   let key = crypto
+  //     .createHash('sha256')
+  //     .update(String(secret))
+  //     .digest('base64')
+  //     .substr(0, 32);
+  //   const iv = Buffer.from('26ae5cc854e36b6bdfca366848dea6bb', 'hex');
+  //   var encrypt = crypto.createCipheriv(algorithm, key, iv);
+  //   var decrypt = crypto.createDecipheriv(algorithm, key, iv);
+  //   image.pipe(encrypt).pipe(decrypt).pipe(decryptedImage);
+  // }, [image11]);
+
   return (
     <Div title="Add pictures" display="flex">
       {renderedPictures.map((i, idx) => (

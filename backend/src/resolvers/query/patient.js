@@ -7,12 +7,12 @@ const patient = async (_, { id }) => {
   const originalName = await decryptedName.toString(CryptoJS.enc.Utf8);
   const decryptedPhoneNo = await CryptoJS.AES.decrypt(phone1, 'secret key 123');
   const originalPhoneNo = await decryptedPhoneNo.toString(CryptoJS.enc.Utf8);
-  const newPatient = {
+  const updatedPatient = {
     ...rest,
     name: originalName,
     phoneNo: originalPhoneNo,
   };
-  return newPatient;
+  return updatedPatient;
 };
 
 export default patient;

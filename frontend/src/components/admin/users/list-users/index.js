@@ -1,9 +1,8 @@
 import React from 'react';
-import { Tag } from 'rsuite';
-
+import { Tag, Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
 
-export default function Users({ users }) {
+export default function Users({ users, onEdit }) {
   return (
     <>
       <CRCard borderless>
@@ -32,6 +31,20 @@ export default function Users({ users }) {
                     <Tag key={index}>{name}</Tag>
                   ))}
                 </div>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <CRTable.CRCellStyled bold>
+                  <Icon icon="edit" onClick={() => onEdit(data)}>
+                    {' '}
+                    Edit
+                  </Icon>
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

@@ -27,3 +27,4 @@ export { default as CRNestedSelector } from './nested-selector';
 export { default as CRLabel } from './label';
 export { default as CRTabs } from './tabs';
 export { default as CRBrancheTree } from './branch-tree';
+export { default as AllowedViews } from './allowed-views';

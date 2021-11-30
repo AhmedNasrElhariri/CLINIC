@@ -25,7 +25,7 @@ const createUser = async (_, { user }, { userId, organizationId }) => {
   if (currentUser.position !== POSITION.Admin) {
     throw new APIExceptcion('not authorized user');
   }
-  const { password, ...rest } = user;
+  const { password, id, ...rest } = user;
   const hashingPassword = bcrypt.hashSync(password, 10);
   return prisma.user.create({
     data: {

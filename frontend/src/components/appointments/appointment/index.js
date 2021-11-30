@@ -50,7 +50,6 @@ function Appointment() {
     pulses: 0,
     selectedMedicines: [],
   });
-  console.log(apptFormValue.selectedMedicines, 'selectedMedicines');
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
   const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
@@ -239,9 +238,9 @@ function Appointment() {
   const appointId = R.propOr('', 'id')(appoint);
   const indx = sortedPatientAppointments.findIndex(pA => pA.id === appointId);
   const nextAppointment = patientAppointments[indx + 1];
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
   return (
     <Div display="flex">
       <Div flexGrow={1}>

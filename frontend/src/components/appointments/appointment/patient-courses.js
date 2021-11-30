@@ -32,7 +32,7 @@ const CourseButton = styled.button`
   cursor: pointer;
   height: 35px;
 `;
-const Course = ({ patient }) => {
+const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
   const [index, setIndex] = useState(0);
   const [header, setHeader] = useState('');
@@ -70,7 +70,7 @@ const Course = ({ patient }) => {
       close();
       setFormValue(initValue);
     },
-    patientId: patient.id,
+    patientId: patientId,
     courseId: formValue?.id,
   });
   const handleClickCreate = useCallback(() => {
@@ -142,7 +142,7 @@ const Course = ({ patient }) => {
       } = formValue;
       const finalFormValue = {
         price: course.price - discount,
-        patientId: patient.id,
+        patientId: patientId,
         courseDefinitionId: course.id,
         doctorId,
         sessions,
@@ -198,7 +198,7 @@ const Course = ({ patient }) => {
   }, [
     type,
     formValue,
-    patient.id,
+    patientId,
     addCourse,
     editCourseDoctor,
     editCourse,

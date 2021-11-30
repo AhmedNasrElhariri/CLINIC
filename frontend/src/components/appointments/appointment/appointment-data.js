@@ -114,13 +114,13 @@ function AppointmentData({
   const { labsCategory } = useLabCategory();
   const { imagesCategory } = useImageCategory();
   const { medicineDefinitions } = useMedicineDefinitions();
+  const { sessionsDefinition } = useSessionDefinition();
   const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryAndLab);
   const [categoryImageForm, setCategoryImageForm] =
     useState(initalCategoryImage);
   const [selectedMedicine, setSelectedMedicine] = useState(
     initialSelectedMedicine
   );
-  const { sessionsDefinition } = useSessionDefinition();
   const [session, SetSession] = useState({});
   const choices = useMemo(() => {
     return sessionsDefinition.map(s => ({

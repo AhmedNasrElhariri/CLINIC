@@ -80,6 +80,7 @@ const appointments = async (
       p.patient.phoneNo.includes(patient)
   );
   const finalAppointments = filteredAppointments.slice(offset, offset2);
+
   // const appointmentsCount = await prisma.appointment.count({
   //   where: {
   //     date: {

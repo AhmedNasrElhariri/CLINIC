@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import { FlexboxGrid } from 'rsuite';
-
+import axios from 'axios';
 import { Div, CRModal, CRButton } from 'components';
 import CRUploader from './uploader';
 import AppointmentGallery from './gallery';
@@ -16,7 +16,6 @@ import ImgBox from './img-box';
 const AppointmentPictures = ({ formValue, onChange: setFormValue }) => {
   const { visible, open, close } = useModal();
   const [galleryVisibility] = useState(false);
-
   const ref = useRef();
 
   useEffect(() => {

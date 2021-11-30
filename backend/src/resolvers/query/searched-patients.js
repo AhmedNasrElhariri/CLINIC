@@ -23,6 +23,25 @@ const patients = async (_, { name }, { user, organizationId }) => {
       p.name.toLowerCase().includes(name.toLowerCase()) ||
       p.phoneNo.includes(name)
   );
+
+  // const patients = await prisma.patient.findMany({
+  //   where: {
+  //     organizationId,
+  //     OR: [
+  //       {
+  //         name: {
+  //           contains: name,
+  //           mode: 'insensitive',
+  //         },
+  //       },
+  //       {
+  //         phoneNo: {
+  //           contains: name,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // });
   return filteredPatients;
 };
 
