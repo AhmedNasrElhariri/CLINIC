@@ -1,6 +1,5 @@
 /******************       Admin    *********************************/
 export { default as PermissionContainer } from './admin/admin-container';
-export { default as Example } from './example';
 export { default as Labs } from './labs';
 export { default as UploadImage } from './uploadImage';
 export { default as Csv } from './csv';
@@ -87,7 +86,6 @@ export { default as BankAccountingContainer } from './bank-accounting/accounting
 export { default as InsuranceAccountingContainer } from './insurance-accounting/accounting-container';
 
 /******************     Permissions    *******************************/
-// export { default as UserPermissions } from './permissions/user-permissions';
 export { default as RolePermissions } from './permissions/role-permissions';
 export { default as Assign } from './permissions/assign';
 
@@ -100,10 +98,7 @@ export { default as PatientSurgeriesContainer } from './patient-surgery/patient-
 /******************     Report Printouts    *********************************/
 export { default as ReportPrintout } from './report-printouts';
 
-/******************     Report Printouts    *********************************/
-export { default as Test } from './test';
-
 /******************     Payroll   *********************************/
 export { default as EmployeePayroll } from './payroll/employee-payroll';
 
-export { default as Payroll} from './payroll';
+export { default as Payroll } from './payroll';

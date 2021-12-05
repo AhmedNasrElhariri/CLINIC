@@ -55,7 +55,6 @@ const PatientSurgeriesContainer = lazy(() =>
 const ReportPrintout = lazy(() =>
   import('../../../components/report-printouts')
 );
-const Example = lazy(() => import('../../../components/example'));
 const ListPatientViews = lazy(() =>
   import('../../../components/patient-views/list-views')
 );
@@ -68,7 +67,6 @@ const EditPatientView = lazy(() =>
 const CreatePatientView = lazy(() =>
   import('../../../components/patient-views/create-view')
 );
-const Test = lazy(() => import('../../../components/test'));
 const Csv = lazy(() => import('../../../components/csv'));
 const Payroll = lazy(() => import('../../../components/payroll'));
 const Sales = lazy(() => import('../../../components/sales'));
@@ -100,12 +98,10 @@ const CreateDefaultView = lazy(() =>
 //   InventoryPage,
 //   PatientSurgeriesContainer,
 //   ReportPrintout,
-//   Example,
 //   ListPatientViews,
 //   UpdatePatientView,
 //   EditPatientView,
 //   CreatePatientView,
-//   Test,
 //   Csv,
 //   Payroll,
 //   Sales,
@@ -196,15 +192,9 @@ function AppRouter() {
         <Route path="/me">
           <Profile />
         </Route>
-        <Route path="/example">
-          <Example />
-        </Route>
         <Route path="/sales">
           <Sales />
         </Route>
-        {/* <Route path="/test">
-          <Test />
-      </Route> */}
         {/* <Route path="/csv">
         <Csv />
       </Route> */}

@@ -28,19 +28,29 @@ const ImageDefinition = () => {
     initValue,
     model,
   });
-  const { addImageDefinition, imagesDefinition, editImageDefinition, loading } =
-    useImageDefinition({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addImageDefinition,
+    imagesDefinition,
+    editImageDefinition,
+    deleteImageDefinition,
+    loading,
+  } = useImageDefinition({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -57,6 +67,16 @@ const ImageDefinition = () => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickDelete = useCallback(
+    data => {
+      const image = R.pick(['id', 'name'])(data);
+      const categoryId = data?.category.id;
+      setType('delete');
+      setFormValue({ ...image, categoryId: categoryId });
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       addImageDefinition({
@@ -64,10 +84,18 @@ const ImageDefinition = () => {
           imageDefinition: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteImageDefinition({
+        variables: {
+          imageDefinition: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editImageDefinition({
         variables: {
           imageDefinition: formValue,
+          type: 'edit',
         },
       });
     }
@@ -96,6 +124,7 @@ const ImageDefinition = () => {
       <ListImagesDefinition
         images={imagesDefinition}
         onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
       />
     </>
   );

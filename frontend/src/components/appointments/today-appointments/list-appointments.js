@@ -25,6 +25,7 @@ function ListAppointments({
   currentPage,
   setCurrentPage,
 }) {
+  console.log(pages, 'pagesssssss');
   const history = useHistory();
   const componentRef = useRef();
   const ref = useRef();

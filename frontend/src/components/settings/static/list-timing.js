@@ -3,7 +3,7 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListTimings({ timings, onEdit }) {
+function ListTimings({ timings, onEdit, onDelete }) {
   return (
     <>
       <CRCard borderless>
@@ -53,7 +53,7 @@ function ListTimings({ timings, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon icon="trash" onClick={() => onEdit(data)}>
+                <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
                   Delete
                 </Icon>

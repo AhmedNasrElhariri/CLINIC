@@ -15,7 +15,7 @@ const updateCache = myTimings => {
   });
 };
 
-function useTimings({ onCreate, onEdit } = {}) {
+function useTimings({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_TIMINGS);
   const timings = useMemo(() => R.propOr([], 'myTimings')(data), [data]);
   const [addTiming, { loading }] = useMutation(ADD_TIMING, {
@@ -39,16 +39,31 @@ function useTimings({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Timing');
     },
   });
+  const [deleteTiming] = useMutation(EDIT_TIMING, {
+    onCompleted() {
+      Alert.success('the Timing has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_TIMINGS,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Timing');
+    },
+  });
 
   return useMemo(
     () => ({
       timings,
       addTiming,
       editTiming,
+      deleteTiming,
       updateCache,
       loading,
     }),
-    [timings, addTiming, editTiming, loading]
+    [timings, addTiming, editTiming, deleteTiming, loading]
   );
 }
 

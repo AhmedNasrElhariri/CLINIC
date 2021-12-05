@@ -1,6 +1,5 @@
 import React from 'react';
 import { CRPanel, Div, H5, CRButton } from 'components';
-
 import { SinppetBodyStyled } from './style';
 
 export default function Snippets({ snippets, onEdit, onDelete }) {

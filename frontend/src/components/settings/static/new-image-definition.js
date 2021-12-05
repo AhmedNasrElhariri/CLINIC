@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
-
-import { CRModal, CRTextInput, CRSelectInput } from 'components';
+import { Form } from 'rsuite';
+import { CRModal, CRTextInput, CRSelectInput, Div, H3 } from 'components';
 import { useImageCategory } from 'hooks';
-const model = Schema.Model({});
 
 function NewImageDefinition({
   formValue,
@@ -19,7 +17,12 @@ function NewImageDefinition({
   loading,
 }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Image' : 'Edit Image '),
+    () =>
+      type === 'create'
+        ? 'Add New Image Definition'
+        : type === 'edit'
+        ? 'Edit Image Definition'
+        : 'Delete Image Definition',
     [type]
   );
   const { imagesCategory } = useImageCategory();
@@ -36,23 +39,31 @@ function NewImageDefinition({
       loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        <CRTextInput
-          label="Image Name"
-          name="name"
-          errorMessage={
-            show && checkResult['name'].hasError
-              ? checkResult['name'].errorMessage
-              : ''
-          }
-          placeholder="Type Image"
-          block
-        />
-        <CRSelectInput
-          label="Image Category"
-          name="categoryId"
-          block
-          data={imagesCategory}
-        />
+        {type === 'delete' ? (
+          <Div>
+            <H3>Are you sure that you want to delete the Image ? </H3>
+          </Div>
+        ) : (
+          <>
+            <CRTextInput
+              label="Image Name"
+              name="name"
+              errorMessage={
+                show && checkResult['name'].hasError
+                  ? checkResult['name'].errorMessage
+                  : ''
+              }
+              placeholder="Type Image"
+              block
+            />
+            <CRSelectInput
+              label="Image Category"
+              name="categoryId"
+              block
+              data={imagesCategory}
+            />
+          </>
+        )}
       </Form>
     </CRModal>
   );

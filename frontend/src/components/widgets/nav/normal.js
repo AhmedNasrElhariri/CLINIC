@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Nav } from 'rsuite';
-
 import CRItem from './item';
 import CRVItem from './vertical-item';
 import CRScoll from './scroll-item';

@@ -19,7 +19,7 @@ const updateCache = myImagesCategory => {
   });
 };
 
-function useImagesCategory({ onCreate, onEdit } = {}) {
+function useImagesCategory({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_IMAGES_CATEGORY);
   const imagesCategory = useMemo(
     () => R.propOr([], 'myImagesCategory')(data),
@@ -47,16 +47,37 @@ function useImagesCategory({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Image');
     },
   });
+  const [deleteImageCategory] = useMutation(EDIT_IMAGE_CATEGORY, {
+    onCompleted() {
+      Alert.success('the Image has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_IMAGES_CATEGORY,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Image');
+    },
+  });
 
   return useMemo(
     () => ({
       imagesCategory,
       addImageCategory,
       editImageCategory,
+      deleteImageCategory,
       updateCache,
       loading,
     }),
-    [imagesCategory, addImageCategory, editImageCategory, loading]
+    [
+      imagesCategory,
+      addImageCategory,
+      editImageCategory,
+      deleteImageCategory,
+      loading,
+    ]
   );
 }
 

@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
-
-import { CRModal, CRTextInput, CRSelectInput, CRNumberInput } from 'components';
+import { Form } from 'rsuite';
+import {
+  CRModal,
+  CRTextInput,
+  CRSelectInput,
+  CRNumberInput,
+  Div,
+  H3,
+} from 'components';
 
 const coursesType = [
   { name: 'Session', id: 'Session' },
@@ -21,7 +27,12 @@ function NewCourseDefinition({
   loading,
 }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Course' : 'Edit Course '),
+    () =>
+      type === 'create'
+        ? 'Add New Course'
+        : type === 'edit'
+        ? 'Edit Course'
+        : 'Delete Course',
     [type]
   );
   return (
@@ -37,53 +48,61 @@ function NewCourseDefinition({
       loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        <CRTextInput
-          label="Name"
-          name="name"
-          errorMessage={
-            show && checkResult['name'].hasError
-              ? checkResult['name'].errorMessage
-              : ''
-          }
-          placeholder="Type Course"
-          block
-        />
-        <CRSelectInput
-          label="Type"
-          name="type"
-          errorMessage={
-            show && checkResult['type'].hasError
-              ? checkResult['type'].errorMessage
-              : ''
-          }
-          block
-          data={coursesType}
-        />
-        <CRNumberInput
-          label="Price"
-          name="price"
-          errorMessage={
-            show && checkResult['price'].hasError
-              ? checkResult['price'].errorMessage
-              : ''
-          }
-        />
-        <CRNumberInput
-          label="Number of Sessions/Units"
-          name="units"
-          errorMessage={
-            show && checkResult['units'].hasError
-              ? checkResult['units'].errorMessage
-              : ''
-          }
-        />
-        {formValue.type === 'Perunit' && (
-          <CRTextInput
-            label="Messure Of Units"
-            name="messureOfUnits"
-            placeholder="Type Messure Of Units"
-            block
-          />
+        {type === 'delete' ? (
+          <Div>
+            <H3>Are you sure that you want to delete the Course ? </H3>
+          </Div>
+        ) : (
+          <>
+            <CRTextInput
+              label="Name"
+              name="name"
+              errorMessage={
+                show && checkResult['name'].hasError
+                  ? checkResult['name'].errorMessage
+                  : ''
+              }
+              placeholder="Type Course"
+              block
+            />
+            <CRSelectInput
+              label="Type"
+              name="type"
+              errorMessage={
+                show && checkResult['type'].hasError
+                  ? checkResult['type'].errorMessage
+                  : ''
+              }
+              block
+              data={coursesType}
+            />
+            <CRNumberInput
+              label="Price"
+              name="price"
+              errorMessage={
+                show && checkResult['price'].hasError
+                  ? checkResult['price'].errorMessage
+                  : ''
+              }
+            />
+            <CRNumberInput
+              label="Number of Sessions/Units"
+              name="units"
+              errorMessage={
+                show && checkResult['units'].hasError
+                  ? checkResult['units'].errorMessage
+                  : ''
+              }
+            />
+            {formValue.type === 'Perunit' && (
+              <CRTextInput
+                label="Messure Of Units"
+                name="messureOfUnits"
+                placeholder="Type Messure Of Units"
+                block
+              />
+            )}
+          </>
         )}
       </Form>
     </CRModal>

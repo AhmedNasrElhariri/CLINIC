@@ -1,10 +1,9 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 import { Form, Schema } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import {
   CRModal,
-  CRSelectInput,
   CRNumberInput,
   Div,
   CRButton,
@@ -31,7 +30,7 @@ function NewSales({
   handleAdd,
   handleDelete,
   selectedItems,
-  loading
+  loading,
 }) {
   const header = useMemo(
     () => (type === 'create' ? 'Add New Sales' : 'Edit Sales '),

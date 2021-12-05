@@ -19,8 +19,9 @@ const updateCache = myPatientReports => {
   });
 };
 
-function usePatientReports({ onCreate, onEdit } = {}) {
+function usePatientReports({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_PATIENT_REPORTS);
+
   const patientReports = useMemo(
     () => R.propOr([], 'myPatientReports')(data),
     [data]
@@ -47,16 +48,37 @@ function usePatientReports({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Patient Report');
     },
   });
+  const [deletePatientReport] = useMutation(EDIT_PATIENT_REPORT, {
+    onCompleted() {
+      Alert.success('the Patient Report has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_PATIENT_REPORTS,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Patient Report');
+    },
+  });
 
   return useMemo(
     () => ({
       patientReports,
       addPatientReport,
       editPatientReport,
+      deletePatientReport,
       updateCache,
       loading,
     }),
-    [patientReports, addPatientReport, editPatientReport, loading]
+    [
+      patientReports,
+      addPatientReport,
+      editPatientReport,
+      deletePatientReport,
+      loading,
+    ]
   );
 }
 

@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { Uploader, Loader, Icon, Alert } from 'rsuite';
 import * as R from 'ramda';
 import { useMutation } from '@apollo/client';
-
 import { Div, CRCard, H6, CRButton, Img } from 'components';
 import useGlobalState from 'state';
 import { SET_AVATAR } from 'apollo-client/queries';
@@ -27,10 +26,10 @@ const ChangePassword = () => {
   });
   const [user, setUser] = useGlobalState('user');
 
-  const avatar = useMemo(() => fileInfo || R.prop('avatar')(user), [
-    fileInfo,
-    user,
-  ]);
+  const avatar = useMemo(
+    () => fileInfo || R.prop('avatar')(user),
+    [fileInfo, user]
+  );
 
   return (
     <Div mb={20}>

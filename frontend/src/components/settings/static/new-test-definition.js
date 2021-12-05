@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput, CRSelectInput } from 'components';
+import { CRModal, CRTextInput, CRSelectInput, Div, H3 } from 'components';
 import { useLabCategory } from 'hooks';
 
 const model = Schema.Model({});
@@ -20,7 +20,12 @@ function NewLabDefinition({
   loading,
 }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Lab' : 'Edit Lab '),
+    () =>
+      type === 'create'
+        ? 'Add New Lab Definition'
+        : type === 'edit'
+        ? 'Edit Lab Definition'
+        : 'Delete Lab Definition',
     [type]
   );
   const { labsCategory } = useLabCategory();
@@ -37,23 +42,31 @@ function NewLabDefinition({
       loading={loading}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
-        <CRTextInput
-          label="Lab Name"
-          name="name"
-          errorMessage={
-            show && checkResult['name'].hasError
-              ? checkResult['name'].errorMessage
-              : ''
-          }
-          placeholder="Type Lab"
-          block
-        />
-        <CRSelectInput
-          label="Lab Category"
-          name="categoryId"
-          block
-          data={labsCategory}
-        />
+        {type === 'delete' ? (
+          <Div>
+            <H3>Are you sure that you want to delete the Lab ? </H3>
+          </Div>
+        ) : (
+          <>
+            <CRTextInput
+              label="Lab Name"
+              name="name"
+              errorMessage={
+                show && checkResult['name'].hasError
+                  ? checkResult['name'].errorMessage
+                  : ''
+              }
+              placeholder="Type Lab"
+              block
+            />
+            <CRSelectInput
+              label="Lab Category"
+              name="categoryId"
+              block
+              data={labsCategory}
+            />
+          </>
+        )}
       </Form>
     </CRModal>
   );

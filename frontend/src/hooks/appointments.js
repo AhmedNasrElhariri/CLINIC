@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import * as R from 'ramda';
-import moment from 'moment';
 import { useQuery } from '@apollo/client';
-import { ACTIONS } from 'utils/constants';
 import { APPT_TYPE, APPT_STATUS } from 'utils/constants';
 import {
   LIST_APPOINTMENTS,
@@ -36,8 +34,13 @@ function useAppointments({
       type && { type }
     ),
   });
+
   const appointmentsdata = data?.appointments;
-  const appointmentsCountNumber = data?.appointmentsCount;
+  const appointmentsCountNumber = useMemo(() => {
+    const Data = R.propOr({}, 'appointments')(data);
+    const pagesNumber = Data?.appointmentsCount;
+    return pagesNumber;
+  }, [data]);
   const appointments = useMemo(
     () =>
       R.pipe(

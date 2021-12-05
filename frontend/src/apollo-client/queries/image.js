@@ -23,8 +23,11 @@ export const ADD_IMAGE_DEFINITION = gql`
 `;
 
 export const EDIT_IMAGE_DEFINITION = gql`
-  mutation editImageDefinition($imageDefinition: ImageInputDefinition!) {
-    editImageDefinition(imageDefinition: $imageDefinition) {
+  mutation editImageDefinition(
+    $imageDefinition: ImageInputDefinition!
+    $type: String!
+  ) {
+    editImageDefinition(imageDefinition: $imageDefinition, type: $type) {
       id
       name
     }
@@ -50,8 +53,11 @@ export const ADD_IMAGE_CATEGORY = gql`
 `;
 
 export const EDIT_IMAGE_CATEGORY = gql`
-  mutation editImageCategory($imageCategory: ImageInputCategory!) {
-    editImageCategory(imageCategory: $imageCategory) {
+  mutation editImageCategory(
+    $imageCategory: ImageInputCategory!
+    $type: String!
+  ) {
+    editImageCategory(imageCategory: $imageCategory, type: $type) {
       id
       name
     }

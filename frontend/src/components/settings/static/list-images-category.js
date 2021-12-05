@@ -3,7 +3,7 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListImagesCategory({ imagesCategory, onEdit }) {
+function ListImagesCategory({ imagesCategory, onEdit, onDelete }) {
   return (
     <>
       <CRCard borderless>
@@ -33,7 +33,7 @@ function ListImagesCategory({ imagesCategory, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon icon="trash" onClick={() => onEdit(data)}>
+                <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
                   Delete
                 </Icon>

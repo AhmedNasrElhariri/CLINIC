@@ -30,13 +30,18 @@ const Timing = () => {
     initValue,
     model,
   });
-  const { addTiming, timings, editTiming, loading } = useTimings({
+  const { addTiming, timings, editTiming, deleteTiming, loading } = useTimings({
     onCreate: () => {
       close();
       setShow(false);
       setFormValue(initValue);
     },
     onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
       close();
       setShow(false);
       setFormValue(initValue);
@@ -62,6 +67,20 @@ const Timing = () => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickDelete = useCallback(
+    data => {
+      const timing = R.pick([
+        'id',
+        'name',
+        'englishPrintValue',
+        'arabicPrintValue',
+      ])(data);
+      setType('delete');
+      setFormValue(timing);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
@@ -70,14 +89,22 @@ const Timing = () => {
           timing: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteTiming({
+        variables: {
+          timing: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editTiming({
         variables: {
           timing: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [addTiming, editTiming, formValue, type]);
+  }, [addTiming, editTiming, deleteTiming, formValue, type]);
 
   return (
     <>
@@ -99,7 +126,11 @@ const Timing = () => {
         setShow={setShow}
         loading={loading}
       />
-      <ListTiming timings={timings} onEdit={handleClickEdit} />
+      <ListTiming
+        timings={timings}
+        onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
+      />
     </>
   );
 };

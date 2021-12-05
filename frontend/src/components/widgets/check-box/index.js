@@ -3,14 +3,6 @@ import { FormGroup, FormControl } from 'rsuite';
 import { Checkbox } from 'rsuite';
 import Label from '../label';
 
-// const CustomInput = memo(({ value, onChange, options, ...props }) => {
-//   return (
-//     <Checkbox key={index} value={o.value || o}>
-//       {o.name || o}
-//     </Checkbox>
-//   );
-// });
-
 const CRCheckBox = ({ label, value, ...rest }) => {
   return (
     <FormGroup>

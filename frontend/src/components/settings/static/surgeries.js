@@ -9,6 +9,7 @@ import { ACTIONS } from 'utils/constants';
 import { useForm, useModal, useSurgeries, useAppointments } from 'hooks';
 import { Validate } from 'services/form';
 import { Schema } from 'rsuite';
+
 const initValue = { name: '', branchId: null, specialtyId: null, userId: null };
 const { StringType } = Schema.Types;
 const model = Schema.Model({
@@ -32,18 +33,25 @@ function Surgeries() {
     initValue,
     model,
   });
-  const { defineSurgery, editSurgery, surgeries } = useSurgeries({
-    onCreate: () => {
-      close();
-      setShow(false);
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setShow(false);
-      setFormValue(initValue);
-    },
-  });
+  const { defineSurgery, editSurgery, surgeries, deleteSurgery } = useSurgeries(
+    {
+      onCreate: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+      onDelete: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+    }
+  );
 
   const handleonClickCreate = useCallback(() => {
     setType('create');
@@ -60,7 +68,15 @@ function Surgeries() {
     },
     [open, setFormValue, setType]
   );
-
+  const handleClickDelete = useCallback(
+    data => {
+      const surgery = R.pick(['id', 'name'])(data);
+      setType('delete');
+      setFormValue(surgery);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create' && Validate(model, formValue)) {
       defineSurgery({
@@ -68,14 +84,22 @@ function Surgeries() {
           surgery: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteSurgery({
+        variables: {
+          surgery: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editSurgery({
         variables: {
           surgery: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [defineSurgery, editSurgery, formValue, type]);
+  }, [defineSurgery, editSurgery, deleteSurgery, formValue, type]);
 
   return (
     <>
@@ -96,12 +120,17 @@ function Surgeries() {
         validate={validate}
         show={show}
         setShow={setShow}
+        type={type}
       />
       <Filter
         appointments={surgeries}
         branches={filterBranches}
         render={surgs => (
-          <ListSurgeries surgeries={surgs} onEdit={handleClickEdit} />
+          <ListSurgeries
+            surgeries={surgs}
+            onEdit={handleClickEdit}
+            onDelete={handleClickDelete}
+          />
         )}
       />
     </>

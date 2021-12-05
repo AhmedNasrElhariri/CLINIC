@@ -8,8 +8,8 @@ import {
   ControlLabel,
   SelectPicker,
 } from 'rsuite';
-import { useQuery, useMutation } from '@apollo/client';
-import { CREATE_VIEW ,MY_VIEW} from 'apollo-client/queries';
+import { useMutation } from '@apollo/client';
+import { CREATE_VIEW } from 'apollo-client/queries';
 import { useLocation } from 'react-router';
 import useGlobalState from 'state';
 import { mapLanesToGroupFields } from 'utils/view';
@@ -22,7 +22,7 @@ const width = 300;
 export default function CreateView({}) {
   const [lanes, setLanes] = useGlobalState('lanes');
   const [formValue, setFormValue] = useState({ name: '', type: null });
-  
+
   const location = useLocation();
   const viewId = location?.state?.id || null;
   useEffect(() => setLanes(json), [setLanes]);

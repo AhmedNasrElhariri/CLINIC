@@ -31,8 +31,8 @@ export const DEFINE_SURGERY = gql`
 `;
 
 export const EDIT_SURGERY = gql`
-  mutation editSurgery($surgery: SurgeryInput!) {
-    editSurgery(surgery: $surgery) {
+  mutation editSurgery($surgery: SurgeryInput!, $type: String!) {
+    editSurgery(surgery: $surgery, type: $type) {
       id
       name
     }

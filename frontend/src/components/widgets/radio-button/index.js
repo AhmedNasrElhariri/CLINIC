@@ -8,6 +8,7 @@ const RadioStyled = styled(Radio)`
     background-color: ${props => props.theme.colors.primary};
   }
 `;
+
 const CRRadio = ({ label, options, ...rest }) => {
   return (
     <FormGroup>

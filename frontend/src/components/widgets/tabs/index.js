@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
-
 import CRTab from './tab-item';
 import CRContent from './tab-content';
 import CRTabsGroup from './tabs-group';
 import CRContentGroup from './content-group';
-
 import { CRNav } from 'components';
-
 import useTabs from './use-tabs';
 import Context from './context';
 

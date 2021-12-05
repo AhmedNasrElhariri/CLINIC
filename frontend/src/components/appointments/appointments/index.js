@@ -51,6 +51,13 @@ function Appointments() {
     action: ACTIONS.List_Appointment,
   });
   const pages = Math.ceil(appointmentsCountNumber / 20);
+  console.log(
+    '//',
+    pages,
+    appointmentsCountNumber,
+    'appointmentsCountNumber',
+    appointmentsCount
+  );
   const [popUp, setPopUp] = useState('');
   const [appointment, setAppointment] = useState(null);
   const { refetchRevenues, refetchExpenses } = useAccounting();

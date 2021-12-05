@@ -8,19 +8,19 @@ export const LIST_MEDICINES_DEFINITION = gql`
       concentration
       form
       level
-      branch{
+      branch {
         id
         name
       }
-      specialty{
+      specialty {
         id
         name
       }
-      user{
+      user {
         id
         name
       }
-      doctor{
+      doctor {
         id
         name
       }
@@ -44,8 +44,12 @@ export const ADD_MEDICINE_DEFINITION = gql`
 export const EDIT_MEDICINE_DEFINITION = gql`
   mutation editMedicineDefinition(
     $medicineDefinition: MedicineInputDefinition!
+    $type: String!
   ) {
-    editMedicineDefinition(medicineDefinition: $medicineDefinition) {
+    editMedicineDefinition(
+      medicineDefinition: $medicineDefinition
+      type: $type
+    ) {
       id
       name
       concentration

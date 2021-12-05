@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-
 import { FormGroup, FormControl } from 'rsuite';
 import Label from '../label';
 import CustomCascader from './custom';

@@ -3,7 +3,7 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListMedicines({ medicines, onEdit }) {
+function ListMedicines({ medicines, onEdit, onDelete }) {
   return (
     <>
       <CRCard borderless>
@@ -62,7 +62,7 @@ function ListMedicines({ medicines, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon icon="trash" onClick={() => onEdit(data)}>
+                <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
                   Delete
                 </Icon>

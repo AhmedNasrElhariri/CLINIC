@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
-
 import {
   ADD_PAYROLL_USER,
   LIST_PAY_ROLL_USERS,
@@ -17,6 +16,7 @@ import {
   USER_COURSE_PAYMENT,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
+
 function usePayroll({
   userId,
   period,

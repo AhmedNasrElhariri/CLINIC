@@ -1,10 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import * as R from 'ramda';
 import { useParams, useHistory, Switch, Route } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
 import { Can } from 'components/user/can';
-import { GET_PATIENT } from 'apollo-client/queries';
 import {
   CRVNav,
   CRButton,

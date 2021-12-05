@@ -20,7 +20,7 @@ const updateCache = mySalesesDefinition => {
   });
 };
 
-function useSalesDefinition({ onCreate, onEdit } = {}) {
+function useSalesDefinition({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_SALESES_DEFINITION);
   const salesesDefinition = useMemo(
     () => R.propOr([], 'mySalesesDefinition')(data),
@@ -47,6 +47,20 @@ function useSalesDefinition({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Item');
     },
   });
+  const [deleteSalesDefinition] = useMutation(EDIT_SALES_DEFINITION, {
+    onCompleted() {
+      Alert.success('the Item has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_SALESES_DEFINITION,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Item');
+    },
+  });
   const [addSalesDefinitionQuantity] = useMutation(
     ADD_SALES_DEFINITION_QUENTITY,
     {
@@ -66,6 +80,7 @@ function useSalesDefinition({ onCreate, onEdit } = {}) {
       addSalesDefinitionQuantity,
       addSalesDefinition,
       editSalesDefinition,
+      deleteSalesDefinition,
       updateCache,
       loading,
     }),
@@ -73,6 +88,7 @@ function useSalesDefinition({ onCreate, onEdit } = {}) {
       salesesDefinition,
       addSalesDefinition,
       editSalesDefinition,
+      deleteSalesDefinition,
       addSalesDefinitionQuantity,
       loading,
     ]

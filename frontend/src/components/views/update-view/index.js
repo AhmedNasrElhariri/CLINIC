@@ -17,7 +17,6 @@ import { ViewForm } from 'components';
 import { appointmentTypes } from 'services/appointment';
 import * as R from 'ramda';
 
-const json = [];
 const width = 300;
 
 export default function CreateView({}) {

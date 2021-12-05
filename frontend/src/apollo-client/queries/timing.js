@@ -23,8 +23,8 @@ export const ADD_TIMING = gql`
 `;
 
 export const EDIT_TIMING = gql`
-  mutation editTiming($timing: TimingInput!) {
-    editTiming(timing: $timing) {
+  mutation editTiming($timing: TimingInput!, $type: String!) {
+    editTiming(timing: $timing, type: $type) {
       id
       name
       englishPrintValue

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styled from 'styled-components';
 import { ControlLabel } from 'rsuite';
 import { byTheme } from 'services/theme';

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { pdf } from '@react-pdf/renderer';
 import * as R from 'ramda';
 import { saveAs } from 'file-saver';
-
 import { CRModal, Div, H7 } from 'components';
 import PdfDocument from './pdf-document';
 import { Checkbox } from 'rsuite';
@@ -39,16 +38,7 @@ const Print = ({ appoitnments, patient, fields, appoitnmentsWithGroups }) => {
   const [selected, setSelected] = useState(false);
   const [checked, setChecked] = useState({});
   const [allChecked, setAllChecked] = useState(false);
-  const { visible, open, close } = useModal();
-
-  const handleClick = React.useCallback(
-    e => {
-      e.preventDefault();
-      e.stopPropagation();
-      open();
-    },
-    [open]
-  );
+  const { visible, close } = useModal();
 
   const { data, details } = React.useMemo(() => {
     const checkedIds = Object.entries(checked)
@@ -63,9 +53,6 @@ const Print = ({ appoitnments, patient, fields, appoitnmentsWithGroups }) => {
 
   return (
     <>
-      {/* <CRButton variant="primary"  ml={1} onClick={handleClick}>
-        Print
-      </CRButton> */}
       <CRModal
         header="Print Patient History"
         show={visible}

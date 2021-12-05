@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 
-import { CRModal, CRTextInput } from 'components';
+import { CRModal, CRTextInput, Div, H3 } from 'components';
 
 function NewLabCategory({
   formValue,
@@ -17,7 +17,12 @@ function NewLabCategory({
   loading,
 }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Lab Category' : 'Edit Lab Category '),
+    () =>
+      type === 'create'
+        ? 'Add New Lab Category'
+        : type === 'edit'
+        ? 'Edit Lab Category'
+        : 'Delete Lab Category',
     [type]
   );
 
@@ -34,17 +39,28 @@ function NewLabCategory({
       loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        <CRTextInput
-          label="Lab Category Name"
-          name="name"
-          errorMessage={
-            show && checkResult['name'].hasError
-              ? checkResult['name'].errorMessage
-              : ''
-          }
-          placeholder="Type Lab Category"
-          block
-        />
+        {type === 'delete' ? (
+          <Div>
+            <H3>
+              Are you sure that you want to delete the Lab Category and all
+              related labs ?{' '}
+            </H3>
+          </Div>
+        ) : (
+          <>
+            <CRTextInput
+              label="Lab Category Name"
+              name="name"
+              errorMessage={
+                show && checkResult['name'].hasError
+                  ? checkResult['name'].errorMessage
+                  : ''
+              }
+              placeholder="Type Lab Category"
+              block
+            />
+          </>
+        )}
       </Form>
     </CRModal>
   );

@@ -27,19 +27,29 @@ const ImageCategory = () => {
     initValue,
     model,
   });
-  const { addImageCategory, imagesCategory, editImageCategory, loading } =
-    useImageCategory({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addImageCategory,
+    imagesCategory,
+    editImageCategory,
+    deleteImageCategory,
+    loading,
+  } = useImageCategory({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -55,6 +65,15 @@ const ImageCategory = () => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickDelete = useCallback(
+    data => {
+      const image = R.pick(['id', 'name'])(data);
+      setType('delete');
+      setFormValue(image);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
@@ -63,14 +82,28 @@ const ImageCategory = () => {
           imageCategory: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteImageCategory({
+        variables: {
+          imageCategory: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editImageCategory({
         variables: {
           imageCategory: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [addImageCategory, editImageCategory, formValue, type]);
+  }, [
+    addImageCategory,
+    editImageCategory,
+    deleteImageCategory,
+    formValue,
+    type,
+  ]);
 
   return (
     <>
@@ -95,6 +128,7 @@ const ImageCategory = () => {
       <ListImagesCategory
         imagesCategory={imagesCategory}
         onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
       />
     </>
   );

@@ -9,15 +9,15 @@ export const LIST_SALESES_DEFINITION = gql`
       price
       cost
       level
-      user{
+      user {
         id
-        name 
+        name
       }
-      branch{
+      branch {
         id
-        name 
+        name
       }
-      specialty{
+      specialty {
         id
         name
       }
@@ -38,8 +38,11 @@ export const ADD_SALES_DEFINITION = gql`
 `;
 
 export const EDIT_SALES_DEFINITION = gql`
-  mutation editSalesDefinition($salesDefinition: SalesInputDefinition!) {
-    editSalesDefinition(salesDefinition: $salesDefinition) {
+  mutation editSalesDefinition(
+    $salesDefinition: SalesInputDefinition!
+    $type: String!
+  ) {
+    editSalesDefinition(salesDefinition: $salesDefinition, type: $type) {
       id
       name
       totalQuantity
@@ -69,7 +72,7 @@ export const LIST_SALESES = gql`
       totalCost
       quantity
       date
-      user{
+      user {
         id
         name
       }
@@ -78,11 +81,11 @@ export const LIST_SALESES = gql`
         name
         price
       }
-      branch{
+      branch {
         id
         name
       }
-      specialty{
+      specialty {
         id
         name
       }
@@ -113,7 +116,7 @@ export const EDIT_SALES = gql`
     editSales(sales: $sales) {
       id
       quantity
-      totalPrice 
+      totalPrice
     }
   }
 `;

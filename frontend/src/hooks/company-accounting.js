@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import * as R from 'ramda';
 import { useQuery } from '@apollo/client';
-import client from 'apollo-client/client';
-
 import { LIST_COMPANY_REVENUES } from 'apollo-client/queries';
 import { filterAccountingList } from 'utils/accounting';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
@@ -13,7 +11,7 @@ import {
   getQuarterStartAndEnd,
   getYearStartAndEnd,
 } from 'utils/date';
-import { ACTIONS } from 'utils/constants';
+
 const useAccounting = ({ view, period } = {}) => {
   const { data: revenueData } = useQuery(LIST_COMPANY_REVENUES);
 

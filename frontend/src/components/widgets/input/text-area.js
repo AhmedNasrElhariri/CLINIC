@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-
 import { FormGroup, FormControl } from 'rsuite';
 import Label from '../label';
 import { TextAreaStyled, InputGroupStyled, ImportButtonStyled } from './style';
 import { Div } from 'components';
-
 import SnippetsModal from './import-snippet';
 
 const CustomInput = ({ onChange, importable, ...props }) => {

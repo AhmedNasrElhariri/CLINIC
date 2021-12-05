@@ -35,7 +35,6 @@ export { default as useCourses } from './courses';
 export { default as usePayroll } from './payroll';
 export { default as useSalesDefinition } from './sales-definition';
 export { default as useSales } from './sales';
-export { default as usePrice } from './price';
 export { default as useBankDefinition } from './banks-definition';
 export { default as useBankAccounting } from './bank-accounting';
 export { default as useCompanyDefinition } from './company-definition';

@@ -68,11 +68,6 @@ const link = split(
     cleanTypeName,
     createUploadLink({ uri: '/graphql' }),
   ])
-  // errorLink.concat(
-  //   cleanTypeName.concat(authLink.concat(createUploadLink({ uri: '/graphql' })))
-  // )
-  // errorLink.concat(authLink.concat(createUploadLink({ uri: '/graphql' })))
-  // .concat(httpLink)
 );
 
 const client = new ApolloClient({

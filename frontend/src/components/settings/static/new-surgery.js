@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRBrancheTree } from 'components';
+import { Div, H3 } from 'components';
 
 function NewSurgery({
   formValue,
@@ -16,7 +17,12 @@ function NewSurgery({
   setShow,
 }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Surgery' : 'Edit Surgery'),
+    () =>
+      type === 'create'
+        ? 'Add New Surgery'
+        : type === 'edit'
+        ? 'Edit Surgery'
+        : 'Delete Surgery',
     [type]
   );
 
@@ -32,21 +38,29 @@ function NewSurgery({
       onCancel={onClose}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        <CRTextInput
-          label="Name"
-          name="name"
-          errorMessage={
-            show && checkResult['name'].hasError
-              ? checkResult['name'].errorMessage
-              : ''
-          }
-          block
-        />
-        <CRBrancheTree
-          formValue={formValue}
-          onChange={onChange}
-          action={ACTIONS.Create_Surgery}
-        />
+        {type === 'delete' ? (
+          <Div>
+            <H3>Are you sure that you want to delete the Surgery ? </H3>
+          </Div>
+        ) : (
+          <>
+            <CRTextInput
+              label="Name"
+              name="name"
+              errorMessage={
+                show && checkResult['name'].hasError
+                  ? checkResult['name'].errorMessage
+                  : ''
+              }
+              block
+            />
+            <CRBrancheTree
+              formValue={formValue}
+              onChange={onChange}
+              action={ACTIONS.Create_Surgery}
+            />
+          </>
+        )}
       </Form>
     </CRModal>
   );

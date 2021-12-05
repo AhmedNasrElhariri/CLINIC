@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Alert } from 'rsuite';
 import { useMutation } from '@apollo/client';
-
 import { CREATE_DEFAULT_VIEW } from 'apollo-client/queries';
 
 export default function CreateDefaultView() {

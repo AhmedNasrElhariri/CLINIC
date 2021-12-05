@@ -1,5 +1,4 @@
 import React from 'react';
-
 import CRCell from './cell';
 import { formatDate } from 'utils/date';
 

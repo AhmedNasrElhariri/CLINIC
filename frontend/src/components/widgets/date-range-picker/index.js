@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-
 import { FormGroup, FormControl, DateRangePicker } from 'rsuite';
 import Label from '../label';
 
@@ -63,7 +62,7 @@ const CustomDatePicker = ({
 export default ({ label, children, ...rest }) => {
   return (
     <FormGroup>
-      <Label >{label}</Label>
+      <Label>{label}</Label>
       <FormControl {...rest} accepter={CustomDatePicker} />
       {children}
     </FormGroup>

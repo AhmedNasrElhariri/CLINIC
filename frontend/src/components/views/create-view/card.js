@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Panel, Form, Input, SelectPicker, Icon } from 'rsuite';
+import { Panel, Form, Input, Icon } from 'rsuite';
 import { InputField } from 'components';
 import useGlobalState from 'state';
 import { FIELD_TYPES } from 'utils/constants';

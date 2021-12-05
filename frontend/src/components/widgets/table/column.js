@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 import { Table } from 'rsuite';
 
 const CRColumn = styled(Table.Column)`

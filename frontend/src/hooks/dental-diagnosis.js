@@ -11,7 +11,6 @@ import {
   DELETE_DENTAL_DIAGNOSIS,
   LIST_ALL_TOOTH_TRANSACTIONS,
 } from 'apollo-client/queries';
-import client from 'apollo-client/client';
 
 function useDentalDiagnosis({
   toothNumber,
@@ -78,9 +77,6 @@ function useDentalDiagnosis({
         },
       },
     ],
-    // update(cache, { data: { addDentalDiagnosis: dentalDiagnosis} }) {
-    //   updateCache([...dentalDiagnosiss, dentalDiagnosis]);
-    // },
     onError() {
       Alert.error('Failed to add new Dental Diagnosis');
     },

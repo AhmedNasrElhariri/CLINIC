@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import Label from '../../widgets/label';
-import 'react-quill/dist/quill.snow.css';
 import Editor from './editor';
 import { useConfigurations, usePatientView } from 'hooks';
-import { CRModal, CRTextInput, CRSelectInput } from 'components';
+import { CRModal, CRTextInput, CRSelectInput, Div, H3 } from 'components';
 import {
   patientValues,
   appointmentValues,
@@ -12,6 +11,7 @@ import {
   another,
   contextData,
 } from 'services/constants';
+import 'react-quill/dist/quill.snow.css';
 
 function NewPatientReport({
   formValue,
@@ -28,7 +28,11 @@ function NewPatientReport({
 }) {
   const header = useMemo(
     () =>
-      type === 'create' ? 'Add New Patient Report' : 'Edit Patient Report',
+      type === 'create'
+        ? 'Add New Patient Report'
+        : type === 'edit'
+        ? 'Edit Patient Report'
+        : 'Delete Patient Report',
     [type]
   );
   const { pageSetupData } = useConfigurations();
@@ -70,31 +74,39 @@ function NewPatientReport({
       width={1000}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        <CRTextInput
-          label="Name"
-          name="name"
-          errorMessage={
-            show && checkResult['name'].hasError
-              ? checkResult['name'].errorMessage
-              : ''
-          }
-          block
-        />
-        <Label>Body</Label>
+        {type === 'delete' ? (
+          <Div>
+            <H3>Are you sure that you want to delete the Patient Report ? </H3>
+          </Div>
+        ) : (
+          <>
+            <CRTextInput
+              label="Name"
+              name="name"
+              errorMessage={
+                show && checkResult['name'].hasError
+                  ? checkResult['name'].errorMessage
+                  : ''
+              }
+              block
+            />
+            <Label>Body</Label>
 
-        <CRSelectInput
-          label="Context"
-          name="context"
-          block
-          data={contextData}
-        />
-        <Label>Body</Label>
-        <Editor
-          onChange={handleText}
-          formValue={formValue}
-          pageSetupData={pageSetupData}
-          mentionValues={mentions}
-        />
+            <CRSelectInput
+              label="Context"
+              name="context"
+              block
+              data={contextData}
+            />
+            <Label>Body</Label>
+            <Editor
+              onChange={handleText}
+              formValue={formValue}
+              pageSetupData={pageSetupData}
+              mentionValues={mentions}
+            />
+          </>
+        )}
       </Form>
     </CRModal>
   );

@@ -4,21 +4,16 @@ import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { Font } from '@react-pdf/renderer';
-import useGlobalState from 'state';
 import client from './apollo-client/client';
-import 'rsuite/dist/styles/rsuite-default.css';
-import * as R from 'ramda';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-image-gallery/styles/css/image-gallery.css';
-
 import { Root } from 'components';
-import './state';
-
-import './global-style.js';
 import GlobalStyle from './global-style';
 import lightTheme from 'styles/light';
+import 'rsuite/dist/styles/rsuite-default.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'react-image-gallery/styles/css/image-gallery.css';
+import './state';
+import './global-style.js';
 import font from './fonts/Tajawal-Regular.ttf';
-
 import { AbilityContext } from 'components/user/can/index';
 
 export default function App() {

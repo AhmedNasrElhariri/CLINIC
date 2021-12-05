@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import { MainContainer, CRTable, Div, CRButton, H3, H4 } from 'components';
@@ -37,36 +37,7 @@ function Patients() {
     },
     [setCurrentPage]
   );
-  // const updatedPatients = patients.map(p => {
-  //   return { ...p, reference: p.reference.join(' ') };
-  // });
-  // const filteredPatient = useMemo(
-  //   () =>
-  //     updatedPatients.filter(
-  //       p =>
-  //         p.name.toLowerCase().includes(filter.name.toLowerCase()) ||
-  //         p.code.toLowerCase().includes(filter.name.toLowerCase())
-  //     ),
-  //   [filter, updatedPatients]
-  // );
-  // const filteredPatients = useMemo(
-  //   () => filteredPatient.filter(p => p.phoneNo.includes(filter.phoneNo)),
-  //   [filter, filteredPatient]
-  // );
-  // const filteredPatientByArea = useMemo(
-  //   () =>
-  //     filteredPatients.filter(p =>
-  //       p.area.toLowerCase().includes(filter?.area?.toLowerCase())
-  //     ),
-  //   [filter, filteredPatients]
-  // );
-  // const filteredPatientByReference = useMemo(
-  //   () =>
-  //     filteredPatientByArea.filter(p =>
-  //       p.reference?.toLowerCase().includes(filter?.reference.toLowerCase())
-  //     ),
-  //   [filter, filteredPatientByArea]
-  // );
+
   const ref = useRef();
   const refTwo = useRef();
   return (

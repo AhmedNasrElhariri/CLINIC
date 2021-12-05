@@ -13,7 +13,6 @@ import ImageCategory from './image-category';
 import Course from './course';
 import SalesDefinition from './sales-definition';
 import SessionDefinition from './session-definition';
-import { Can } from 'components/user/can';
 import BanksDefinition from './banks-definition';
 import CompanysDefinition from './companys-definition';
 import CompanysSessions from './companys-sessions-definition';

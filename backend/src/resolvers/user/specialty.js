@@ -8,7 +8,6 @@ const specialty = ({ id }) => {
         userId: id,
       },
       include: { specialty: true },
-      // distinct: ['userId'],
     })
     .then(uSpecialties => {
       const specialties = [];
@@ -19,10 +18,6 @@ const specialty = ({ id }) => {
         )(uSpecialties[index]);
         specialties.push(spe);
       }
-
-      // uSpecialties.length
-      //   ? R.pipe(R.prop('specialty'), R.pick(['id', 'name']))(uSpecialties)
-      //   : null
       return specialties;
     });
 };

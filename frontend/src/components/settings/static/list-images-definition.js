@@ -3,7 +3,7 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListImagesDefinition({ images, onEdit }) {
+function ListImagesDefinition({ images, onEdit, onDelete }) {
   return (
     <>
       <CRCard borderless>
@@ -20,7 +20,9 @@ function ListImagesDefinition({ images, onEdit }) {
             <CRTable.CRHeaderCell>Category Name</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ category }) => (
-                <CRTable.CRCellStyled bold>{category.name}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>
+                  {category.name}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -41,7 +43,7 @@ function ListImagesDefinition({ images, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon icon="trash" onClick={() => onEdit(data)}>
+                <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
                   Delete
                 </Icon>

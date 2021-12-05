@@ -21,6 +21,7 @@ const model = Schema.Model({
   concentration: StringType().isRequired('concentration name is required'),
   form: StringType().isRequired('form name is required'),
 });
+
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
   const {
@@ -36,19 +37,28 @@ const MedicineDefinition = () => {
     initValue,
     model,
   });
-  const { addMedicineDefinition, medicineDefinitions, editMedicineDefinition } =
-    useMedicineDefinitions({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addMedicineDefinition,
+    medicineDefinitions,
+    editMedicineDefinition,
+    deleteMedicineDefinition,
+  } = useMedicineDefinitions({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -65,6 +75,16 @@ const MedicineDefinition = () => {
     [open, setFormValue, setType]
   );
 
+  const handleClickDelete = useCallback(
+    data => {
+      const medicine = R.pick(['id', 'name', 'concentration', 'form'])(data);
+      setType('delete');
+      setFormValue(medicine);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       addMedicineDefinition({
@@ -72,14 +92,28 @@ const MedicineDefinition = () => {
           medicineDefinition: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteMedicineDefinition({
+        variables: {
+          medicineDefinition: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editMedicineDefinition({
         variables: {
           medicineDefinition: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [addMedicineDefinition, editMedicineDefinition, formValue, type]);
+  }, [
+    addMedicineDefinition,
+    editMedicineDefinition,
+    deleteMedicineDefinition,
+    formValue,
+    type,
+  ]);
   return (
     <>
       <Div textAlign="right">
@@ -102,6 +136,7 @@ const MedicineDefinition = () => {
       <ListMedicinesDefinition
         medicines={medicineDefinitions}
         onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
       />
     </>
   );

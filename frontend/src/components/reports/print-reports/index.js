@@ -46,20 +46,6 @@ const Test = props => {
         setDataTwo(res.data);
       })
       .catch(err => {});
-
-    // const data = res.data; // or res.blob() if using blob responses
-
-    // const url = window.URL.createObjectURL(
-    //   new Blob([data], {
-    //     type: res.headers['content-type'],
-    //   })
-    // );
-    // const link = document.createElement('a');
-    // link.href = url;
-    // link.setAttribute('download', 'monthlyReport.pdf');
-    // document.body.appendChild(link);
-    // link.click();
-    // link.parentNode.removeChild(link);
   };
   const handleDailyReport = async day => {
     setLoading(true);
@@ -77,20 +63,6 @@ const Test = props => {
         setData(res.data);
       })
       .catch(err => {});
-
-    // const data = res.data; // or res.blob() if using blob responses
-
-    // const url = window.URL.createObjectURL(
-    //   new Blob([data], {
-    //     type: res.headers['content-type'],
-    //   })
-    // );
-    // const link = document.createElement('a');
-    // link.href = url;
-    // link.setAttribute('download', 'dailyReport.pdf');
-    // document.body.appendChild(link);
-    // link.click();
-    // link.parentNode.removeChild(link);
   };
   const { Column, HeaderCell, Cell, Pagination } = Table;
   const refOne = useRef();

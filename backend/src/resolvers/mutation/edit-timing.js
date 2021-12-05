@@ -1,14 +1,17 @@
 import { prisma } from '@';
 
-const editTiming = async (_, { timing }) => {
+const editTiming = async (_, { timing, type }) => {
   const { id, ...rest } = timing;
-
-  return prisma.timing.update({
-    data: rest,
-    where: {
-      id,
-    },
-  });
+  if (type === 'edit') {
+    return prisma.timing.update({
+      data: rest,
+      where: {
+        id,
+      },
+    });
+  } else {
+    return prisma.timing.delete({ where: { id } });
+  }
 };
 
 export default editTiming;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { ControlLabel } from 'rsuite';
-
 import { FormGroup, FormControl } from 'rsuite';
 import Label from '../label';
 import { TextAreaStyled, InputGroupStyled } from './style';

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Table } from 'rsuite';
-
 import CRHeaderCell from './header-cell';
 import CRCell from './cell';
 import { BarStyled, CRCellStyled } from './style';
@@ -13,7 +12,6 @@ const CRTableStyled = styled(Table).attrs(({ data }) => ({
 }))`
   cursor: pointer;
   & .rs-table-row {
-    
   }
   & .rs-table-row-header {
     border-left: none;

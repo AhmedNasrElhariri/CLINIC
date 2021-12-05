@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Checkbox } from 'rsuite';
-
 import Range from './range';
 import { Div } from 'components/widgets/html';
 import { DAYS } from 'utils/constants';

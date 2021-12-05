@@ -1,14 +1,18 @@
 import { prisma } from '@';
 
-const editSalesDefinition = async (_, { salesDefinition }) => {
+const editSalesDefinition = async (_, { salesDefinition, type }) => {
   const { id, ...rest } = salesDefinition;
-
-  return prisma.salesDefinition.update({
-    data: rest,
-    where: {
-      id,
-    },
-  });
+  if (type === 'edit') {
+    return prisma.salesDefinition.update({
+      data: rest,
+      where: {
+        id,
+      },
+    });
+  } else {
+    await prisma.sales.deleteMany({ where: { salesDefinitionId: id } });
+    return prisma.salesDefinition.delete({ where: { id } });
+  }
 };
 
 export default editSalesDefinition;

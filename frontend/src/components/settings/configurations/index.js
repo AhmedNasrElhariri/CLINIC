@@ -123,11 +123,6 @@ const Configurations = () => {
           </CRButton>
         </Div>
       </Div>
-      {/* <SessionDefinitions
-        sessions={sessions}
-        onChange={updateSession}
-        onDelete={handleDelete}
-      /> */}
       <EnableInvoiceCounter
         onChange={updateEnable}
         value={formValue?.enableInvoiceCounter}

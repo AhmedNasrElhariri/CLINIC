@@ -5,7 +5,7 @@ export const LIST_TESTS_DEFINITION = gql`
     myLabsDefinitions(categoryId: $categoryId) {
       id
       name
-      category{
+      category {
         id
         name
       }
@@ -23,8 +23,11 @@ export const ADD_TEST_DEFINITION = gql`
 `;
 
 export const EDIT_TEST_DEFINITION = gql`
-  mutation editLabDefinition($labDefinition: LabInputDefinition!) {
-    addLabDefinition(labDefinition: $labDefinition) {
+  mutation editLabDefinition(
+    $labDefinition: LabInputDefinition!
+    $type: String!
+  ) {
+    editLabDefinition(labDefinition: $labDefinition, type: $type) {
       id
       name
     }
@@ -49,8 +52,8 @@ export const ADD_LAB_CATEGORY = gql`
 `;
 
 export const EDIT_LAB_CATEGORY = gql`
-  mutation editLabCategory($labCategory: LabCategoryInput!) {
-    editLabCategory(labCategory: $labCategory) {
+  mutation editLabCategory($labCategory: LabCategoryInput!, $type: String!) {
+    editLabCategory(labCategory: $labCategory, type: $type) {
       id
       name
     }

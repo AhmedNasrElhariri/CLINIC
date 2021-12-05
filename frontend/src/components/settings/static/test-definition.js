@@ -5,6 +5,7 @@ import NewLabDefinition from './new-test-definition';
 import ListLabsDefinition from './list-tests-definition';
 import { useForm, useModal, useLabDefinitions } from 'hooks';
 import { Schema } from 'rsuite';
+
 const initValue = { name: '', categoryId: null };
 const { StringType } = Schema.Types;
 const model = Schema.Model({
@@ -25,19 +26,29 @@ const LabDefinition = () => {
     initValue,
     model,
   });
-  const { addLabDefinition, labsDefinition, editLabDefinition, loading } =
-    useLabDefinitions({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addLabDefinition,
+    labsDefinition,
+    editLabDefinition,
+    deleteLabDefinition,
+    loading,
+  } = useLabDefinitions({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -53,6 +64,16 @@ const LabDefinition = () => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickDelete = useCallback(
+    data => {
+      const labDefinition = R.pick(['id', 'name'])(data);
+      const categoryId = data?.category.id;
+      setType('delete');
+      setFormValue({ ...labDefinition, categoryId: categoryId });
+      open();
+    },
+    [open, setFormValue, setType]
+  );
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
@@ -61,14 +82,28 @@ const LabDefinition = () => {
           labDefinition: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteLabDefinition({
+        variables: {
+          labDefinition: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editLabDefinition({
         variables: {
           labDefinition: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [addLabDefinition, editLabDefinition, formValue, type]);
+  }, [
+    addLabDefinition,
+    editLabDefinition,
+    deleteLabDefinition,
+    formValue,
+    type,
+  ]);
 
   return (
     <>
@@ -90,7 +125,11 @@ const LabDefinition = () => {
         setShow={setShow}
         loading={loading}
       />
-      <ListLabsDefinition labs={labsDefinition} onEdit={handleClickEdit} />
+      <ListLabsDefinition
+        labs={labsDefinition}
+        onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
+      />
     </>
   );
 };

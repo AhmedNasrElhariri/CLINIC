@@ -3,7 +3,7 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListSalesesDefinition({ saless, onEdit }) {
+function ListSalesesDefinition({ saless, onEdit, onDelete }) {
   return (
     <>
       <CRCard borderless>
@@ -70,7 +70,7 @@ function ListSalesesDefinition({ saless, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon icon="trash" onClick={() => onEdit(data)}>
+                <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
                   Delete
                 </Icon>

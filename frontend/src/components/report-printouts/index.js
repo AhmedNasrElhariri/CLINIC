@@ -55,13 +55,6 @@ function ReportPrintout() {
     onCreate: () => {},
     onEdit: () => {},
   });
-  // const patientMentionsValue = useMemo(() => {
-  //   const fields = userPatientFields.map(pF => {
-  //     return { id: pF.id, value: pF.field.name };
-  //   });
-  //   const allFields = patientValues.concat(fields);
-  //   return allFields;
-  // }, [userPatientFields]);
   const values = patientReports.map(pR => {
     return {
       name: pR.name,
@@ -111,17 +104,6 @@ function ReportPrintout() {
     }
     return dataMap;
   }, [formValue.context, formValue.data]);
-  const handlePrint = useReactToPrint({
-    content: () => ref.current,
-  });
-  const CustomButton = styled(CRButton)`
-    float: right;
-    margin-bottom: 3px;
-  `;
-  const CustomCRSelector = styled(CRSelectInput)`
-    width: 40%;
-    float: left;
-  `;
   const handleText = content => {
     setFormValue({ ...formValue, body: content });
   };

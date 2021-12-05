@@ -77,19 +77,15 @@ cron.schedule('00 06 * * *', async function () {
     },
   });
 });
-
 ///////////////   whatsApp Messages   ////////
-
 cron.schedule('00 06 * * *', async function () {
   tomorrowAppointmentsReminder();
   before3daysSurgeriesReminder();
   beforeOneDaySurgeryReminder();
 });
-
 cron.schedule('00 00,06,12,18 * * *', async function () {
   every6HoursAppointmentReminder();
 });
-
 //////////////////////////////////////////////////////////
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend')));
@@ -104,7 +100,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
   });
 }
-
 server.start(options, ({ port }) => {
   console.log(`Server is running on localhost:${port}`);
   if (process.env.init) {

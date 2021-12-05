@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRModal, CRTextInput } from 'components';
+import { CRModal, CRTextInput, Div, H3 } from 'components';
 
 const model = Schema.Model({});
 function NewImageCategory({
@@ -19,7 +19,11 @@ function NewImageCategory({
 }) {
   const header = useMemo(
     () =>
-      type === 'create' ? 'Add New Image Category' : 'Edit Image Category',
+      type === 'create'
+        ? 'Add New Image Category'
+        : type === 'edit'
+        ? 'Edit Image Category'
+        : 'Delete Image Category',
     [type]
   );
   return (
@@ -35,17 +39,28 @@ function NewImageCategory({
       loading={loading}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        <CRTextInput
-          label="Name"
-          name="name"
-          errorMessage={
-            show && checkResult['name'].hasError
-              ? checkResult['name'].errorMessage
-              : ''
-          }
-          placeholder="Type Name"
-          block
-        />
+        {type === 'delete' ? (
+          <Div>
+            <H3>
+              Are you sure that you want to delete the Image Category and all
+              related images ?{' '}
+            </H3>
+          </Div>
+        ) : (
+          <>
+            <CRTextInput
+              label="Name"
+              name="name"
+              errorMessage={
+                show && checkResult['name'].hasError
+                  ? checkResult['name'].errorMessage
+                  : ''
+              }
+              placeholder="Type Name"
+              block
+            />
+          </>
+        )}
       </Form>
     </CRModal>
   );

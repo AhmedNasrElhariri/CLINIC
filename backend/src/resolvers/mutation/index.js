@@ -89,8 +89,6 @@ export { default as editSalesDefinition } from './edit-sales-definition';
 export { default as addSales } from './add-sales';
 export { default as editSales } from './edit-sales';
 export { default as deleteSales } from './delete-sales';
-export { default as addPrice } from './add-price';
-export { default as editPrice } from './edit-price';
 export { default as addBankDefinition } from './add-bank-definition';
 export { default as editBankDefinition } from './edit-bank-definition';
 export { default as addCompanyDefinition } from './add-company-definition';

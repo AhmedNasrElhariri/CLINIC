@@ -10,7 +10,7 @@ function CompleteAppointment({ show, onOk, onCancel, appointment }) {
   return (
     <CRModal show={show} onOk={handleOk} onHide={onCancel} onCancel={onCancel}>
       <Div>
-        <H3>Are U sure that U want to complete the Appointment</H3>
+        <H3>Are you sure that you want to finish the Appointment ?</H3>
       </Div>
     </CRModal>
   );

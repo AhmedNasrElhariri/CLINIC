@@ -7,7 +7,6 @@ import { Panel } from 'rsuite';
 import * as R from 'ramda';
 import useGlobalState from 'state';
 import { Div } from 'components';
-
 import {
   LIST_MY_VIEWS_SUMMARY,
   LIST_MY_VIEWS_STATUS,

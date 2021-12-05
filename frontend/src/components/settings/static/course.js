@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import NewCourseDefinition from './new-course-definition';
@@ -43,6 +42,7 @@ const CourseDefinition = () => {
     addCourseDefinition,
     coursesDefinitions,
     editCourseDefinition,
+    deleteCourseDefinition,
     loading,
   } = useCoursesDefinition({
     onCreate: () => {
@@ -51,6 +51,11 @@ const CourseDefinition = () => {
       setFormValue(initValue);
     },
     onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
       close();
       setShow(false);
       setFormValue(initValue);
@@ -78,6 +83,22 @@ const CourseDefinition = () => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickDelete = useCallback(
+    data => {
+      const course = R.pick([
+        'id',
+        'name',
+        'type',
+        'price',
+        'units',
+        'messureOfUnits',
+      ])(data);
+      setType('delete');
+      setFormValue(course);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
@@ -86,14 +107,28 @@ const CourseDefinition = () => {
           courseDefinition: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteCourseDefinition({
+        variables: {
+          courseDefinition: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editCourseDefinition({
         variables: {
           courseDefinition: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [addCourseDefinition, editCourseDefinition, formValue, type]);
+  }, [
+    addCourseDefinition,
+    editCourseDefinition,
+    deleteCourseDefinition,
+    formValue,
+    type,
+  ]);
 
   return (
     <>
@@ -118,6 +153,7 @@ const CourseDefinition = () => {
       <ListCoursesDefinition
         courses={coursesDefinitions}
         onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
       />
     </>
   );

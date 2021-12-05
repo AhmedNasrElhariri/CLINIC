@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const addPageSetup = async (_, { pageSetup }, { organizationId, userId }) => {
+const addPageSetup = async (_, { pageSetup }, { organizationId }) => {
   const { type } = pageSetup;
   const pageSetupRows = await prisma.pageSetup.findMany({
     where: {

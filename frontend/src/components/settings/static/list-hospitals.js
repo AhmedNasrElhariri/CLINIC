@@ -3,12 +3,12 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListHospitals({ hospitals, onEdit }) {
+function ListHospitals({ hospitals, onEdit, onDelete }) {
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={hospitals}>
-        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
@@ -52,7 +52,9 @@ function ListHospitals({ hospitals, onEdit }) {
             <CRTable.CRHeaderCell>Hospital Specialty</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ specialty }) => (
-                <CRTable.CRCellStyled bold>{specialty?.name}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>
+                  {specialty?.name}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -81,7 +83,7 @@ function ListHospitals({ hospitals, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon icon="trash" onClick={() => onEdit(data)}>
+                <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
                   Delete
                 </Icon>

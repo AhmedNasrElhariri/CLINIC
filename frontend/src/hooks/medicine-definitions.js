@@ -19,7 +19,7 @@ const updateCache = myMedicinesDefinition => {
   });
 };
 
-function useMedicineDefinitions({ onCreate, onEdit } = {}) {
+function useMedicineDefinitions({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_MEDICINES_DEFINITION);
   const medicineDefinitions = useMemo(
     () => R.propOr([], 'myMedicinesDefinition')(data),
@@ -47,15 +47,35 @@ function useMedicineDefinitions({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Medicine');
     },
   });
+  const [deleteMedicineDefinition] = useMutation(EDIT_MEDICINE_DEFINITION, {
+    onCompleted() {
+      Alert.success('the Medicine has been deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_MEDICINES_DEFINITION,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Medicine');
+    },
+  });
 
   return useMemo(
     () => ({
       medicineDefinitions,
       addMedicineDefinition,
       editMedicineDefinition,
+      deleteMedicineDefinition,
       updateCache,
     }),
-    [addMedicineDefinition, editMedicineDefinition, medicineDefinitions]
+    [
+      addMedicineDefinition,
+      editMedicineDefinition,
+      deleteMedicineDefinition,
+      medicineDefinitions,
+    ]
   );
 }
 

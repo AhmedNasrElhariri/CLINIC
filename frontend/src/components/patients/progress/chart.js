@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as R from 'ramda';
-
 import YAxis from '@rsuite/charts/lib/components/YAxis';
-
 import BarChart from '@rsuite/charts/lib/charts/BarChart';
-import PieChart from '@rsuite/charts/lib/charts/PieChart';
 import LineChart from '@rsuite/charts/lib/charts/LineChart';
 import Bars from '@rsuite/charts/lib/series/Bars';
 import Line from '@rsuite/charts/lib/series/Line';
@@ -34,7 +31,6 @@ function PropProgress({ values }) {
         <YAxis />
         <Bars barWidth={6} />
       </BarChart>
-      {/* <PieChart name="Pie Chart" data={data} /> */}
       <LineChart data={data}>
         <Line name="date" area />
         <Line name="value" area />

@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Nav } from 'rsuite';
-
 import { Link as ScrollLink } from 'react-scroll';
 
 const activeStyles = css`

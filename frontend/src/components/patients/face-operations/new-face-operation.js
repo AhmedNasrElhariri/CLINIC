@@ -1,17 +1,10 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import {
-  CRModal,
-  CRNumberInput,
-  CRSelectInput,
-  CRTextInput,
-  Div,
-} from 'components';
+import { CRModal, CRSelectInput, CRTextInput, Div } from 'components';
 import { useMaterialDefinition } from 'hooks';
 
 const model = Schema.Model({});
-
 
 function NewFaceOperation({
   formValue,
@@ -22,7 +15,8 @@ function NewFaceOperation({
   onClose,
 }) {
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Face Operation' : 'Delete Face Operation '),
+    () =>
+      type === 'create' ? 'Add New Face Operation' : 'Delete Face Operation ',
     [type]
   );
   const { materialsDefinition } = useMaterialDefinition({});
@@ -37,13 +31,6 @@ function NewFaceOperation({
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         {type === 'create' ? (
           <>
-            {/* <CRNumberInput
-              label="Face Partation Number"
-              name="facePartationNumber"
-              placeholder="Type Face Partation Number"
-              disabled
-              block
-            /> */}
             <CRTextInput
               label="Partation Name"
               name="facePartationName"

@@ -28,19 +28,30 @@ const PatientReport = () => {
     model,
   });
 
-  const { addPatientReport, patientReports, editPatientReport, loading } =
-    usePatientReports({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addPatientReport,
+    patientReports,
+    editPatientReport,
+    deletePatientReport,
+    loading,
+  } = usePatientReports({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
+
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -49,8 +60,18 @@ const PatientReport = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const report = R.pick(['id', 'name', 'body'])(data);
+      console.log(data, 'DD');
+      const report = R.pick(['id', 'name', 'body', 'context'])(data);
       setType('edit');
+      setFormValue(report);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleClickDelete = useCallback(
+    data => {
+      const report = R.pick(['id', 'name', 'body', 'context'])(data);
+      setType('delete');
       setFormValue(report);
       open();
     },
@@ -63,17 +84,26 @@ const PatientReport = () => {
       body: bodyFinal,
       context: formValue.context,
     };
+    const updatedFormValueTwo = { ...updatedFormValue, id: formValue.id };
     if (type === 'create') {
       addPatientReport({
         variables: {
-          patientReport: updatedFormValue,
+          patientReport: updatedFormValueTwo,
+          type: 'edit',
+        },
+      });
+    } else if (type === 'delete') {
+      deletePatientReport({
+        variables: {
+          patientReport: updatedFormValueTwo,
+          type: 'delete',
         },
       });
     } else {
-      const updatedFormValueTwo = { ...updatedFormValue, id: formValue.id };
       editPatientReport({
         variables: {
           patientReport: updatedFormValueTwo,
+          type: 'edit',
         },
       });
     }
@@ -98,7 +128,11 @@ const PatientReport = () => {
         setShow={setShow}
         loading={loading}
       />
-      <ListPatientReports reports={patientReports} onEdit={handleClickEdit} />
+      <ListPatientReports
+        reports={patientReports}
+        onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
+      />
     </>
   );
 };

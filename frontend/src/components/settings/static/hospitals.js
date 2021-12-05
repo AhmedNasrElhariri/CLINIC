@@ -39,18 +39,25 @@ const Hospitals = () => {
     initValue,
     model,
   });
-  const { addHospital, hospitals, editHospital } = useHospitals({
-    onCreate: () => {
-      close();
-      setShow(false);
-      setFormValue(initValue);
-    },
-    onEdit: () => {
-      close();
-      setShow(false);
-      setFormValue(initValue);
-    },
-  });
+  const { addHospital, hospitals, editHospital, deleteHospital } = useHospitals(
+    {
+      onCreate: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+      onEdit: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+      onDelete: () => {
+        close();
+        setShow(false);
+        setFormValue(initValue);
+      },
+    }
+  );
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -68,6 +75,15 @@ const Hospitals = () => {
     [open, setFormValue, setType]
   );
 
+  const handleClickDelete = useCallback(
+    data => {
+      const hospital = R.pick(['id', 'name', 'phoneNo', 'address'])(data);
+      setType('delete');
+      setFormValue(hospital);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       addHospital({
@@ -75,14 +91,22 @@ const Hospitals = () => {
           hospital: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteHospital({
+        variables: {
+          hospital: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editHospital({
         variables: {
           hospital: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [addHospital, editHospital, formValue, type]);
+  }, [addHospital, editHospital, formValue, type, deleteHospital]);
 
   return (
     <>
@@ -103,12 +127,17 @@ const Hospitals = () => {
         validate={validate}
         show={show}
         setShow={setShow}
+        type={type}
       />
       <Filter
         appointments={hospitals}
         branches={filterBranches}
         render={hosps => (
-          <ListHospitals hospitals={hosps} onEdit={handleClickEdit} />
+          <ListHospitals
+            hospitals={hosps}
+            onEdit={handleClickEdit}
+            onDelete={handleClickDelete}
+          />
         )}
       />
     </>

@@ -19,7 +19,7 @@ const updateCache = mySurgeries => {
   });
 };
 
-function useSurgeries({ onCreate, onEdit } = {}) {
+function useSurgeries({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_SURGERIES);
   const surgeries = useMemo(() => R.propOr([], 'mySurgeries')(data), [data]);
 
@@ -45,15 +45,30 @@ function useSurgeries({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the surgery');
     },
   });
+  const [deleteSurgery] = useMutation(EDIT_SURGERY, {
+    onCompleted() {
+      Alert.success('the Surgery has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_SURGERIES,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Surgery');
+    },
+  });
 
   return useMemo(
     () => ({
       surgeries,
       defineSurgery,
+      deleteSurgery,
       updateCache,
       editSurgery,
     }),
-    [defineSurgery, editSurgery, surgeries]
+    [defineSurgery, editSurgery, deleteSurgery, surgeries]
   );
 }
 

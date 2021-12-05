@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Schema, Alert } from 'rsuite';
-
 import { CRCard, CRTextInput, Div, H6, CRButton } from 'components';
 import { CHANGE_PASSWORD } from 'apollo-client/queries';
 import { useMutation } from '@apollo/client';

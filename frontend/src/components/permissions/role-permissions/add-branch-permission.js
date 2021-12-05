@@ -1,6 +1,5 @@
 import React, { useState, memo, useMemo, useCallback } from 'react';
 import { FlexboxGrid } from 'rsuite';
-
 import { CRSelectInput, CRButton } from 'components';
 import ListSelectionItems from '../../permissions/list-selections-items/index';
 import { ALL_CHOICE } from 'utils/constants';

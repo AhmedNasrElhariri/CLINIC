@@ -19,7 +19,7 @@ const updateCache = myCoursesDefinition => {
   });
 };
 
-function useCoursesDefinition({ onCreate, onEdit } = {}) {
+function useCoursesDefinition({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_COURSES_DEFINITION);
   const coursesDefinitions = useMemo(
     () => R.propOr([], 'myCoursesDefinition')(data),
@@ -50,16 +50,37 @@ function useCoursesDefinition({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Course');
     },
   });
+  const [deleteCourseDefinition] = useMutation(EDIT_COURSE_DEFINITION, {
+    onCompleted() {
+      Alert.success('the Course has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_COURSES_DEFINITION,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Course');
+    },
+  });
 
   return useMemo(
     () => ({
       coursesDefinitions,
       addCourseDefinition,
       editCourseDefinition,
+      deleteCourseDefinition,
       updateCache,
       loading,
     }),
-    [coursesDefinitions, addCourseDefinition, editCourseDefinition, loading]
+    [
+      coursesDefinitions,
+      addCourseDefinition,
+      editCourseDefinition,
+      deleteCourseDefinition,
+      loading,
+    ]
   );
 }
 

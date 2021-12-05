@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Board from 'react-trello';
 import { useMutation } from '@apollo/client';
 import { EDIT_VIEW } from 'apollo-client/queries';
-
 import Card from './card';
 import useGlobalState from 'state';
 import { mapLanesToGroupFields } from 'utils/view';

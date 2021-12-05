@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 import moment from 'moment';
 import { mapArrToChoices } from 'utils/misc';
-import { isDateBefore } from 'utils/date';
 import { filterPatientBy } from 'utils/patient';
 import { APPT_STATUS, APPT_TYPE } from 'utils/constants';
 

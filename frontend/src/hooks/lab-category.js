@@ -19,7 +19,7 @@ const updateCache = myLabsCategory => {
   });
 };
 
-function useLabCategory({ onCreate, onEdit } = {}) {
+function useLabCategory({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_LABS_CATEGORY);
   const labsCategory = useMemo(
     () => R.propOr([], 'myLabsCategory')(data),
@@ -39,11 +39,25 @@ function useLabCategory({ onCreate, onEdit } = {}) {
   });
   const [editLabCategory] = useMutation(EDIT_LAB_CATEGORY, {
     onCompleted() {
-      Alert.success('the Test has been Edited Successfully');
+      Alert.success('the Lab Category has been Edited Successfully');
       onEdit && onEdit();
     },
     onError() {
-      Alert.error('Failed to edit the Test');
+      Alert.error('Failed to edit the Lab Category');
+    },
+  });
+  const [deleteLabCategory] = useMutation(EDIT_LAB_CATEGORY, {
+    onCompleted() {
+      Alert.success('the Lab Category has been deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_LABS_CATEGORY,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Lab Category');
     },
   });
 
@@ -51,11 +65,12 @@ function useLabCategory({ onCreate, onEdit } = {}) {
     () => ({
       labsCategory,
       addLabCategory,
+      deleteLabCategory,
       editLabCategory,
       updateCache,
       loading,
     }),
-    [labsCategory, addLabCategory, editLabCategory, loading]
+    [labsCategory, addLabCategory, editLabCategory, deleteLabCategory, loading]
   );
 }
 

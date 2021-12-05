@@ -74,7 +74,10 @@ const NewAppointment = ({ show: showModel, onHide }) => {
     patients,
     loading,
   } = useNewAppointment({
-    onCreate: onHide,
+    onCreate: () => {
+      onHide();
+      setPatientSearchValue('');
+    },
   });
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
@@ -153,19 +156,6 @@ const NewAppointment = ({ show: showModel, onHide }) => {
       duration,
     });
   }, [createAppointment, formValue]);
-  // const notify = () => {
-  //   toast(
-  //     <CustomizedNotification
-  //       totalAppointment={appointmentsCount.totalAppointment}
-  //       totalWaiting={appointmentsCount.totalWaiting}
-  //     />,
-  //     {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //       autoClose: 5000,
-  //       style: { backgroundColor: '#00b1cc', color: '#ffffff' },
-  //     }
-  //   );
-  // };
   return (
     <>
       <NewPatient

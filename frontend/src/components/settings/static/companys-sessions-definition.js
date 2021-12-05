@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewCompanySessionDefinition from './new-company-session-definition';
 import ListCompanysSessionDefinition from './list-companys-session-definition';

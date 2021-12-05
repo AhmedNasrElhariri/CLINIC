@@ -27,19 +27,29 @@ const LabCategory = () => {
     initValue,
     model,
   });
-  const { addLabCategory, labsCategory, editLabCategory, loading } =
-    useLabCategory({
-      onCreate: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-      onEdit: () => {
-        close();
-        setShow(false);
-        setFormValue(initValue);
-      },
-    });
+  const {
+    addLabCategory,
+    labsCategory,
+    editLabCategory,
+    deleteLabCategory,
+    loading,
+  } = useLabCategory({
+    onCreate: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+  });
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -56,6 +66,15 @@ const LabCategory = () => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickDelete = useCallback(
+    data => {
+      const labCategory = R.pick(['id', 'name'])(data);
+      setType('delete');
+      setFormValue(labCategory);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
@@ -64,14 +83,22 @@ const LabCategory = () => {
           labCategory: formValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteLabCategory({
+        variables: {
+          labCategory: formValue,
+          type: 'delete',
+        },
+      });
     } else {
       editLabCategory({
         variables: {
           labCategory: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [addLabCategory, editLabCategory, formValue, type]);
+  }, [addLabCategory, editLabCategory, deleteLabCategory, formValue, type]);
 
   return (
     <>
@@ -93,7 +120,11 @@ const LabCategory = () => {
         setShow={setShow}
         loading={loading}
       />
-      <ListLabsCategory labsCategory={labsCategory} onEdit={handleClickEdit} />
+      <ListLabsCategory
+        labsCategory={labsCategory}
+        onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
+      />
     </>
   );
 };

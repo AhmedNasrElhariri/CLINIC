@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { FormGroup, FormControl } from 'rsuite';
 import Label from '../label';
 import { DatePickerStyled } from './style';

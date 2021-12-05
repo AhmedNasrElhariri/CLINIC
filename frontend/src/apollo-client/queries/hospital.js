@@ -8,15 +8,15 @@ export const LIST_HOSPITALS = gql`
       phoneNo
       address
       level
-      user{
+      user {
         id
         name
       }
-      branch{
+      branch {
         id
         name
       }
-      specialty{
+      specialty {
         id
         name
       }
@@ -36,8 +36,8 @@ export const ADD_HOSPITAL = gql`
 `;
 
 export const EDIT_HOSPITAL = gql`
-  mutation editHospital($hospital: HospitalInput!) {
-    editHospital(hospital: $hospital) {
+  mutation editHospital($hospital: HospitalInput!, $type: String!) {
+    editHospital(hospital: $hospital, type: $type) {
       id
       name
       phoneNo

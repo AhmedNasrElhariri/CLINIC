@@ -7,6 +7,7 @@ import ListSalesesDefinition from './list-saleses-definition';
 import { useForm, useSalesDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+
 const initValue = {
   name: '',
   price: 0,
@@ -44,6 +45,7 @@ const SalesDefinition = () => {
     addSalesDefinition,
     salesesDefinition,
     editSalesDefinition,
+    deleteSalesDefinition,
     addSalesDefinitionQuantity,
     loading,
   } = useSalesDefinition({
@@ -53,6 +55,11 @@ const SalesDefinition = () => {
       setFormValue(initValue);
     },
     onEdit: () => {
+      close();
+      setShow(false);
+      setFormValue(initValue);
+    },
+    onDelete: () => {
       close();
       setShow(false);
       setFormValue(initValue);
@@ -74,6 +81,15 @@ const SalesDefinition = () => {
     data => {
       const sales = R.pick(['id', 'name', 'price', 'cost'])(data);
       setType('edit');
+      setFormValue(sales);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleClickDelete = useCallback(
+    data => {
+      const sales = R.pick(['id', 'name', 'price', 'cost'])(data);
+      setType('delete');
       setFormValue(sales);
       open();
     },
@@ -102,14 +118,28 @@ const SalesDefinition = () => {
           salesDefinition: updatedFormValue,
         },
       });
+    } else if (type === 'delete') {
+      deleteSalesDefinition({
+        variables: {
+          salesDefinition: formValue,
+          type: 'delete',
+        },
+      });
     } else if (type === 'edit') {
       editSalesDefinition({
         variables: {
           salesDefinition: formValue,
+          type: 'edit',
         },
       });
     }
-  }, [addSalesDefinition, editSalesDefinition, formValue, type]);
+  }, [
+    addSalesDefinition,
+    editSalesDefinition,
+    deleteSalesDefinition,
+    formValue,
+    type,
+  ]);
 
   return (
     <>
@@ -140,6 +170,7 @@ const SalesDefinition = () => {
       <ListSalesesDefinition
         saless={salesesDefinition}
         onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
       />
     </>
   );

@@ -3,7 +3,6 @@ import { APIExceptcion } from '@/services/erros.service';
 import { GetLevel } from '@/services/get-level';
 import { storeHistoryOfAddition } from '@/services/inventory.service';
 import * as R from 'ramda';
-import { createInventoryExpense } from '../../services/expense.service';
 
 const addItem = async (_, { item: input }, { userId, organizationId }) => {
   if (R.isNil(userId) || R.isNil(input.itemId)) {
@@ -32,13 +31,6 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
   )(persistedInventoryItem.length > 0 ? persistedInventoryItem[0] : {});
   const totalQuantity = R.propOr(0, 'quantity')(persistedItem);
   const newtotalQuantity = inventoryItemQuantity + totalQuantity * input.amount;
-
-  // await createInventoryExpense({
-  //   name: `${persistedItem.name} X ${input.amount}`,
-  //   price: input.amount * input.price,
-  //   userId,
-  //   organizationId,
-  // });
 
   await storeHistoryOfAddition({
     itemId,

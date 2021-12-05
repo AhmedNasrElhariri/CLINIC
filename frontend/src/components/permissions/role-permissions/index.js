@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import * as R from 'ramda';
 import { Toggle, Panel, Form } from 'rsuite';
-
 import { Div, H6, H5, CRTextInput, CRPanelGroup, CRModal } from 'components';
-
 import PermissionRules from '../permission-rules';
 import { usePermissions } from 'hooks';
 import { ALL_CHOICE, CRUD } from 'utils/constants';
@@ -14,7 +12,6 @@ const normalizePermisson = (permissions = []) =>
       const action = `${p.action}_${p.subject}`;
       return { ...p, visibility: true, id: action, action };
     }),
-    // R.map(p => ({ ...p, visibility: true, id: p.action })),
     R.indexBy(R.prop('action'))
   )(permissions);
 

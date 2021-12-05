@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { ModalStyled, ModalHeaderStyled, ModalBodyStyled } from './style';
-
 import CRHeader from './header';
 import CRFooter from './footer';
 

@@ -1,13 +1,9 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
-import { CRModal, CRTextInput, CRNumberInput } from 'components';
+import { CRModal, CRTextInput, CRNumberInput, Div, H3 } from 'components';
 import { useSalesDefinition } from 'hooks';
-import {
-  CRSelectInput,
-  CRBrancheTree,
-  CRDocSelectInput,
-} from 'components/widgets';
+import { CRBrancheTree, CRDocSelectInput } from 'components/widgets';
 
 function NewSalesDefinition({
   formValue,
@@ -28,6 +24,8 @@ function NewSalesDefinition({
         ? 'Add New Item'
         : type === 'addQuentity'
         ? 'Add new Quantity '
+        : type === 'delete'
+        ? 'Delete Sales Item'
         : 'Edit Sales Item ',
     [type]
   );
@@ -55,6 +53,13 @@ function NewSalesDefinition({
             />
             <CRNumberInput label="Add Quantity" name="quantity" block />
           </>
+        ) : type === 'delete' ? (
+          <Div>
+            <H3>
+              Are you sure that you want to delete the Sales Item and all
+              related items?{' '}
+            </H3>
+          </Div>
         ) : (
           <>
             <CRTextInput

@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
-
 import {
   ADD_COMPANY_DEFINITION,
   EDIT_COMPANY_DEFINITION,

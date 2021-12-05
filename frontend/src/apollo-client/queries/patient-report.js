@@ -23,8 +23,11 @@ export const ADD_PATIENT_REPORT = gql`
 `;
 
 export const EDIT_PATIENT_REPORT = gql`
-  mutation editPatientReport($patientReport: PatientReportInput!) {
-    editPatientReport(patientReport: $patientReport) {
+  mutation editPatientReport(
+    $patientReport: PatientReportInput!
+    $type: String!
+  ) {
+    editPatientReport(patientReport: $patientReport, type: $type) {
       id
       name
       body

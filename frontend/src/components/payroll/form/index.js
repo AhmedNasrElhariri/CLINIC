@@ -1,17 +1,9 @@
 import React, { useState, useRef, useCallback, memo } from 'react';
 import { Form } from 'rsuite';
-import {
-  CRModal,
-  CRNumberInput,
-  CRSelectInput,
-  CRRadio,
-  CRBrancheTree,
-} from 'components';
-import { ACTIONS } from 'utils/constants';
+import { CRModal, CRNumberInput, CRSelectInput, CRRadio } from 'components';
 import { usePayroll } from 'hooks';
 import styled from 'styled-components';
 import { CRTextInput } from 'components/widgets';
-import Toolbar from './toolbar';
 import CourseToolbar from './toolbar-courses';
 
 const DeleteMessage = styled.div`
@@ -27,7 +19,6 @@ const DeleteMessage = styled.div`
 
 const options = [
   { name: 'Amount Only', value: 'amount' },
-  // { name: 'Percentage of Revenue', value: 'percentage' },
   { name: 'Hours', value: 'hours' },
   { name: 'Courses', value: 'courses' },
 ];
@@ -214,48 +205,14 @@ const PayrollForm = ({
                   block
                 ></CRNumberInput>
               </>
-            ) : // : formValue.option === 'percentage' ? (
-            //   <>
-            //     <CRNumberInput
-            //       label="Percentage from 0 - 100"
-            //       name="percentage"
-            //       block
-            //     ></CRNumberInput>
-            //     {/* <InputNumber
-            //       max={100}
-            //       min={0}
-            //       name="percentage"
-            //       onChange={val => onChange({ ...formValue, percentage: val })}
-            //     /> */}
-            //     <CRRadio
-            //       label="Select one Choice"
-            //       name="choice"
-            //       options={options2}
-            //       style={{ marginBottom: '10px' }}
-            //     />
-            //     <CRBrancheTree
-            //       formValue={formValue}
-            //       onChange={onChange}
-            //       action={ACTIONS.CreateCommission_Payroll}
-            //     />
-            //     <Toolbar
-            //       onChangePeriod={setPeriod}
-            //       lastTimeFrameDay={lastRevenueDay}
-            //     />
-            //   </>
-            // )
-            formValue.option === 'courses' ? (
+            ) : formValue.option === 'courses' ? (
               <>
                 <CRNumberInput
                   label="Percentage from 0 - 100"
                   name="percentage"
                   block
                 ></CRNumberInput>
-                {/* <CRBrancheTree
-                  formValue={formValue}
-                  onChange={onChange}
-                  action={ACTIONS.CreateCommission_Payroll}
-                /> */}
+
                 <CourseToolbar
                   onChangePeriod={setPeriod}
                   lastTimeFrameDay={lastDay}

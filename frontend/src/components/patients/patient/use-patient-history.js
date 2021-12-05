@@ -122,7 +122,6 @@ export default ({ patientId, appointment = {} }) => {
     viewFields,
     groups,
     patientGroups,
-
     patientViewFields,
     normalizedPatientFields,
     tabularFields,

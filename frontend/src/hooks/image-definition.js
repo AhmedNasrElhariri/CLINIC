@@ -19,7 +19,7 @@ const updateCache = myImagesDefinition => {
   });
 };
 
-function useImageDefinition({ onCreate, onEdit, categoryId } = {}) {
+function useImageDefinition({ onCreate, onEdit, categoryId, onDelete } = {}) {
   const { data } = useQuery(LIST_IMAGES_DEFINITION, {
     variables: {
       categoryId: categoryId,
@@ -51,16 +51,37 @@ function useImageDefinition({ onCreate, onEdit, categoryId } = {}) {
       Alert.error('Failed to edit the Image');
     },
   });
+  const [deleteImageDefinition] = useMutation(EDIT_IMAGE_DEFINITION, {
+    onCompleted() {
+      Alert.success('the Image has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_IMAGES_DEFINITION,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Image');
+    },
+  });
 
   return useMemo(
     () => ({
       imagesDefinition,
       addImageDefinition,
       editImageDefinition,
+      deleteImageDefinition,
       updateCache,
       loading,
     }),
-    [imagesDefinition, addImageDefinition, editImageDefinition, loading]
+    [
+      imagesDefinition,
+      addImageDefinition,
+      editImageDefinition,
+      deleteImageDefinition,
+      loading,
+    ]
   );
 }
 

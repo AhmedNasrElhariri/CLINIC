@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { CRCard } from 'components';
 
 const Tabs = ({ children }) => {

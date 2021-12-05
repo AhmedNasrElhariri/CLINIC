@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import Nav from '@rsuite/responsive-nav';
-
 import { ItemStyled } from './style';
 
 export default ({ children, active, onSelect, eventKey, ...props }) => {

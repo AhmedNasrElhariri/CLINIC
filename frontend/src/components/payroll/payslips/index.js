@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { CRTable } from 'components';
-import { CRModal } from 'components/widgets';
 
-const Payslips = ({ visible, payslips }) => {
+const Payslips = ({ payslips }) => {
   return (
     <CRTable autoHeight data={payslips}>
       <CRTable.CRColumn flexGrow={1}>

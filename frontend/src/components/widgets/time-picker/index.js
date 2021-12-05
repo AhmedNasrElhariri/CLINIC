@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import DatePicker from '../date-picker';
 import { MIN_EXAMINATION_DURATION } from 'utils/constants';
 

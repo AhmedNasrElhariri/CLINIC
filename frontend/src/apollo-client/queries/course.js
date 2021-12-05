@@ -27,8 +27,11 @@ export const ADD_COURSE_DEFINITION = gql`
 `;
 
 export const EDIT_COURSE_DEFINITION = gql`
-  mutation editCourseDefinition($courseDefinition: CourseInputDefinition!) {
-    editCourseDefinition(courseDefinition: $courseDefinition) {
+  mutation editCourseDefinition(
+    $courseDefinition: CourseInputDefinition!
+    $type: String!
+  ) {
+    editCourseDefinition(courseDefinition: $courseDefinition, type: $type) {
       id
       name
       type

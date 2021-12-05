@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Div, CRModal } from 'components';
+import { Div, CRModal, H3 } from 'components';
 
 const CancelAppointment = ({ visible, onOk, onClose }) => {
   return (
@@ -11,7 +11,9 @@ const CancelAppointment = ({ visible, onOk, onClose }) => {
       show={visible}
       header="Cancel Appointment"
     >
-      <Div textAlign="center">Are you Sure you want to Cancel Appointment?</Div>
+      <Div textAlign="center">
+        <H3>Are you sure that you want to cancel the Appointment ?</H3>
+      </Div>
     </CRModal>
   );
 };

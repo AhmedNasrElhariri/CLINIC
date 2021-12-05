@@ -3,7 +3,7 @@ import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 
-function ListCoursesDefinition({ courses, onEdit }) {
+function ListCoursesDefinition({ courses, onEdit, onDelete }) {
   return (
     <>
       <CRCard borderless>
@@ -44,7 +44,9 @@ function ListCoursesDefinition({ courses, onEdit }) {
             <CRTable.CRHeaderCell>Messure Of Units</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ messureOfUnits }) => (
-                <CRTable.CRCellStyled bold>{messureOfUnits}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>
+                  {messureOfUnits}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -65,7 +67,7 @@ function ListCoursesDefinition({ courses, onEdit }) {
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
-                <Icon icon="trash" onClick={() => onEdit(data)}>
+                <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
                   Delete
                 </Icon>

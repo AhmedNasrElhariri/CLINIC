@@ -170,7 +170,6 @@ type Query {
   myFaceOperations(patientId: ID!): [FaceOperation!]
   listOrganizationDoctors: [User!]
   mySessionsDefinition: [SessionDefinition!]
-  myPrices: [Price!]
   myBanksDefinition: [BankDefinition!]
   myExpenseTypesDefinition: [ExpenseTypeDefinition!]
   myCompanysDefinition: [CompanyDefinition!]
@@ -287,18 +286,24 @@ type Mutation {
   addItem(item: AddToInventoryInput!): InventoryItem
   removeItem(itemId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
-  editHospital(hospital: HospitalInput!): Hospital
+  editHospital(hospital: HospitalInput!, type: String!): Hospital
   defineSurgery(surgery: SurgeryInput!): Surgery
-  editSurgery(surgery: SurgeryInput!): Surgery
+  editSurgery(surgery: SurgeryInput!, type: String!): Surgery
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
   addLabDefinition(labDefinition: LabInputDefinition!): LabDefinition
-  editLabDefinition(labDefinition: LabInputDefinition!): LabDefinition
+  editLabDefinition(
+    labDefinition: LabInputDefinition!
+    type: String!
+  ): LabDefinition
   addLabCategory(labCategory: LabCategoryInput!): LabCategory
-  editLabCategory(labCategory: LabCategoryInput!): LabCategory
+  editLabCategory(labCategory: LabCategoryInput!, type: String!): LabCategory
   addTiming(timing: TimingInput!): Timing
-  editTiming(timing: TimingInput!): Timing
+  editTiming(timing: TimingInput!, type: String!): Timing
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
-  editImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
+  editImageDefinition(
+    imageDefinition: ImageInputDefinition!
+    type: String!
+  ): ImageDefinition
   addMaterialDefinition(
     materialDefinition: MaterialInputDefinition!
   ): MaterialDefinition
@@ -321,10 +326,8 @@ type Mutation {
   editSessionDefinition(
     sessionDefinition: SessionInputDefinition!
   ): SessionDefinition
-  addPrice(price: PriceInput!): Price
   addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
   addPageSetup(pageSetup: PageSetupInput!): PageSetup!
-  editPrice(price: PriceInput!): Price
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   addExpenseTypeDefinition(
@@ -346,15 +349,22 @@ type Mutation {
     companySessionDefinition: CompanySessionInputDefinition!
   ): CompanySessionDefinition
   addImageCategory(imageCategory: ImageInputCategory!): ImageCategory
-  editImageCategory(imageCategory: ImageInputCategory!): ImageCategory
+  editImageCategory(
+    imageCategory: ImageInputCategory!
+    type: String!
+  ): ImageCategory
   addMedicineDefinition(
     medicineDefinition: MedicineInputDefinition!
   ): MedicineDefinition
   editMedicineDefinition(
     medicineDefinition: MedicineInputDefinition!
+    type: String!
   ): MedicineDefinition
   addPatientReport(patientReport: PatientReportInput!): PatientReport
-  editPatientReport(patientReport: PatientReportInput!): PatientReport
+  editPatientReport(
+    patientReport: PatientReportInput!
+    type: String!
+  ): PatientReport
   createOrUpdateRole(role: RoleInput!): Role!
   createBranch(branch: BranchInput!): Branch!
   createSpecialty(specialty: SpecialtyInput!): Specialty!
@@ -370,6 +380,7 @@ type Mutation {
   ): CourseDefinition
   editCourseDefinition(
     courseDefinition: CourseInputDefinition!
+    type: String!
   ): CourseDefinition
   addCourse(course: CourseInput!): Course!
   editCourse(
@@ -391,7 +402,10 @@ type Mutation {
   deletePayrollUser(userId: ID!): PayrollUser!
   updateNotes(id: ID!, notes: String!): Appointment!
   addSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
-  editSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
+  editSalesDefinition(
+    salesDefinition: SalesInputDefinition!
+    type: String!
+  ): SalesDefinition
   addSalesDefinitionQuantity(
     salesDefinition: SalesInputDefinition!
   ): SalesDefinition
@@ -1404,27 +1418,6 @@ input ToothDiagnosisInput {
   diagnosisId: ID!
   patientId: ID!
   doctorId: ID!
-}
-########################### Price ##################################
-
-type Price {
-  id: ID!
-  Apptype: String!
-  level: String!
-  price: Int!
-  user: User!
-  branch: Branch
-  specialty: Specialty
-}
-
-input PriceInput {
-  id: ID
-  Apptype: String!
-  price: Int!
-  level: String!
-  userId: ID
-  branchId: ID
-  specialtyId: ID
 }
 
 ########################### Bank Definition ##################################

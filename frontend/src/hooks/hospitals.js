@@ -19,7 +19,7 @@ const updateCache = myHospitals => {
   });
 };
 
-function useHospitals({ onCreate, onEdit } = {}) {
+function useHospitals({ onCreate, onEdit, onDelete } = {}) {
   const { data } = useQuery(LIST_HOSPITALS);
   const hospitals = useMemo(() => R.propOr([], 'myHospitals')(data), [data]);
 
@@ -45,15 +45,30 @@ function useHospitals({ onCreate, onEdit } = {}) {
       Alert.error('Failed to edit the Hospital');
     },
   });
+  const [deleteHospital] = useMutation(EDIT_HOSPITAL, {
+    onCompleted() {
+      Alert.success('the Hospital has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_HOSPITALS,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the Hospital');
+    },
+  });
 
   return useMemo(
     () => ({
       hospitals,
       addHospital,
       editHospital,
+      deleteHospital,
       updateCache,
     }),
-    [addHospital, editHospital, hospitals]
+    [addHospital, editHospital, deleteHospital, hospitals]
   );
 }
 
