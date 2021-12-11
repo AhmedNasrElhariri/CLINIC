@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 
 import { CRModal, CRTextInput, CRSelectInput, Div, H3 } from 'components';
 import { useLabCategory } from 'hooks';
 
-const model = Schema.Model({});
 
 function NewLabDefinition({
   formValue,

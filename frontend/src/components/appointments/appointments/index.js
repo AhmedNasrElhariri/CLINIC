@@ -30,17 +30,17 @@ function Appointments() {
     patient: '',
     status: 'Scheduled',
   });
-  const [status, setStatus] = useState(APPT_STATUS.SCHEDULED);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
 
   const { visible, close, open } = useModal({});
   const {
     appointments,
-    appointmentsCount,
     appointmentsCountNumber,
     refetchAppointments,
     filterBranches,
+    archive,
+    complete,
   } = useAppointments({
     page,
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
@@ -51,17 +51,8 @@ function Appointments() {
     action: ACTIONS.List_Appointment,
   });
   const pages = Math.ceil(appointmentsCountNumber / 20);
-  console.log(
-    '//',
-    pages,
-    appointmentsCountNumber,
-    'appointmentsCountNumber',
-    appointmentsCount
-  );
   const [popUp, setPopUp] = useState('');
   const [appointment, setAppointment] = useState(null);
-  const { refetchRevenues, refetchExpenses } = useAccounting();
-  const { refetchInventory, refetchInventoryHistory } = useInventory();
   const onClickDone = useCallback(
     appointment => {
       setAppointment(appointment);
@@ -78,24 +69,7 @@ function Appointments() {
     },
     [open]
   );
-  const [archive] = useMutation(ARCHIVE_APPOINTMENT, {
-    refetchQueries: () => [
-      refetchRevenues,
-      refetchExpenses,
-      refetchInventory,
-      refetchInventoryHistory,
-      refetchAppointments,
-    ],
-    onCompleted: () => {
-      Alert.success('Appointment has been Archived successfully');
-    },
-  });
-  const [complete] = useMutation(COMPLETE_APPOINTMENT, {
-    refetchQueries: () => [refetchAppointments],
-    onCompleted: () => {
-      Alert.success('Appointment has been Completed successfully');
-    },
-  });
+
   const handleArchive = useCallback(
     ({
       sessions,

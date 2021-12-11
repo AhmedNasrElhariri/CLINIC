@@ -63,7 +63,6 @@ const NewAppointment = ({ show: showModel, onHide }) => {
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const {
-    branches,
     formValue,
     setFormValue,
     checkResult,
@@ -71,7 +70,6 @@ const NewAppointment = ({ show: showModel, onHide }) => {
     show,
     setShow,
     createAppointment,
-    patients,
     loading,
   } = useNewAppointment({
     onCreate: () => {
@@ -85,31 +83,34 @@ const NewAppointment = ({ show: showModel, onHide }) => {
   const { patientCourses } = useCourses({
     patientId: formValue.patientId,
   });
+  const { sessionsDefinition } = useSessionDefinition();
+  const { appointmentsCount } = useAppointments({
+    date: formValue?.date,
+    userId: formValue?.userId,
+  });
+  const { disabledMinutes, hideHours } = useAppointmentForm({
+    date: formValue.date,
+    type: formValue.type,
+    appointments: appointmentsCount?.appointments || [],
+  });
+
   const updatedPatientCourses = patientCourses.map(course => ({
     name: course.courseDefinition.name,
     IDBTransaction: course.id,
   }));
-  const { sessionsDefinition } = useSessionDefinition();
   const updatedSessionsDefinition = sessionsDefinition.map(s => {
     return {
       name: s.name,
       id: s,
     };
   });
-  const { appointmentsCount } = useAppointments({
-    date: formValue?.date,
-    userId: formValue?.userId,
-  });
+
   useEffect(() => {
     return () => {
       setFormValue(initialValues);
     };
   }, [setFormValue]);
-  const { disabledMinutes, hideHours } = useAppointmentForm({
-    date: formValue.date,
-    type: formValue.type,
-    appointments: appointmentsCount?.appointments || [],
-  });
+
   const handleCreate = useCallback(() => {
     setShow(true);
     if (!validate) {

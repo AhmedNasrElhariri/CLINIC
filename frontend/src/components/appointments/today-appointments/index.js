@@ -1,22 +1,12 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import * as R from 'ramda';
-import { useMutation } from '@apollo/client';
-import { Alert } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRTabs } from 'components';
-
-import {
-  ARCHIVE_APPOINTMENT,
-  LIST_APPOINTMENTS,
-  LIST_TODAY_APPOINTMENTS,
-  UPDATE_BUSINESS_NOTES,
-  COMPLETE_APPOINTMENT,
-} from 'apollo-client/queries';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
 import CompleteAppointment from '../complete-appointment';
-import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
+import { useAppointments, useModal } from 'hooks';
 import BusinessNotes from './business-notes';
 import {
   filterTodayAppointments,
@@ -27,53 +17,34 @@ import { APPT_STATUS } from 'utils/constants';
 const initialValue = {
   businessNotes: '',
 };
+
 function TodayAppointments() {
-  const { todayAppointments: appointments, filterBranches } = useAppointments({
-    action: ACTIONS.List_Appointment,
-  });
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
+  const { visible, close, open } = useModal({});
+  const [appointment, setAppointment] = useState(null);
+  const {
+    todayAppointments: appointments,
+    filterBranches,
+    archive,
+    complete,
+    archiveLoading: loading,
+    updateNotes,
+  } = useAppointments({
+    action: ACTIONS.List_Appointment,
+  });
   const filteredAppointments = useMemo(
     () => filterTodayAppointments(appointments, formValue),
     [appointments, formValue]
   );
 
-  const { refetchRevenues, refetchExpenses } = useAccounting();
-  const { refetchInventory, refetchInventoryHistory } = useInventory();
-  const { visible, close, open } = useModal({});
-  const [appointment, setAppointment] = useState(null);
   useEffect(() => {
     setNotes(val => ({
       businessNotes: R.propOr('', 'businessNotes')(appointment),
     }));
   }, [appointment]);
-  const [archive, { loading }] = useMutation(ARCHIVE_APPOINTMENT, {
-    refetchQueries: () => [
-      refetchRevenues,
-      refetchExpenses,
-      refetchInventory,
-      refetchInventoryHistory,
-    ],
-    refetchQueries: [
-      {
-        query: LIST_TODAY_APPOINTMENTS,
-      },
-    ],
-    onCompleted: () => {
-      Alert.success('Appointment has been Archived successfully');
-    },
-  });
-  const [complete] = useMutation(COMPLETE_APPOINTMENT, {
-    onCompleted: () => {
-      Alert.success('Appointment has been Completed successfully');
-    },
-  });
-  const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
-    onCompleted: () => {
-      Alert.success('Business Notes Added Successfully');
-    },
-  });
+
   const upcomingAppointments = useMemo(
     () =>
       R.pipe(

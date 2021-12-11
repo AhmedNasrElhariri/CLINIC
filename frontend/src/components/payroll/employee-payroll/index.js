@@ -12,6 +12,7 @@ import {
   TotalCell,
 } from './style';
 import { Div,CRButton } from 'components';
+
 export default function EmployeePayroll(props) {
   const location = useLocation();
   const userId = location.state.id;

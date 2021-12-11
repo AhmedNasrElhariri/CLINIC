@@ -7,6 +7,7 @@ import { Can } from 'components/user/can';
 import EmployeesPayroll from './list-payrolls';
 import { useModal, usePayroll, useAccounting, useForm } from 'hooks';
 import { formatDate } from 'utils/date';
+
 const initialPayrollusers = [];
 const initValue = {
   employeeId: null,

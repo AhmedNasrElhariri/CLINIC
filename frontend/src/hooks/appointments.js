@@ -1,13 +1,21 @@
 import React, { useMemo } from 'react';
 import * as R from 'ramda';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { APPT_TYPE, APPT_STATUS } from 'utils/constants';
 import {
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
   LIST_TODAY_APPOINTMENTS,
   APPOINTMENTS_DAY_COUNT,
+  ARCHIVE_APPOINTMENT,
+  COMPLETE_APPOINTMENT,
+  LIST_REVENUES,
+  LIST_EXPENSES,
+  LIST_INVENTORY,
+  LIST_INVENTORY_HISTORY,
+  UPDATE_BUSINESS_NOTES,
 } from 'apollo-client/queries';
+import { Alert } from 'rsuite';
 
 function useAppointments({
   includeSurgery,
@@ -90,6 +98,45 @@ function useAppointments({
     () => R.propOr([], 'listBranchesTree')(branchesTreeData),
     [branchesTreeData]
   );
+
+  const [archive, { loading: archiveLoading }] = useMutation(
+    ARCHIVE_APPOINTMENT,
+    {
+      onCompleted: () => {
+        Alert.success('Appointment has been Archived successfully');
+      },
+      refetchQueries: [
+        {
+          query: LIST_TODAY_APPOINTMENTS,
+        },
+        {
+          query: LIST_REVENUES,
+        },
+        {
+          query: LIST_EXPENSES,
+        },
+        { query: LIST_INVENTORY },
+        { query: LIST_INVENTORY_HISTORY },
+      ],
+    }
+  );
+  const [complete] = useMutation(COMPLETE_APPOINTMENT, {
+    onCompleted: () => {
+      Alert.success('Appointment has been Completed successfully');
+    },
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
+        variables: { offset: 0, limit: 20 },
+      },
+    ],
+  });
+  const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
+    onCompleted: () => {
+      Alert.success('Business Notes Added Successfully');
+    },
+  });
+
   return useMemo(
     () => ({
       appointments,
@@ -103,6 +150,10 @@ function useAppointments({
       specialties,
       appointmentsCountNumber,
       doctors,
+      archive,
+      complete,
+      archiveLoading,
+      updateNotes,
     }),
     [
       appointments,
@@ -112,6 +163,10 @@ function useAppointments({
       appointmentsCountNumber,
       doctors,
       filterBranches,
+      archive,
+      complete,
+      archiveLoading,
+      updateNotes,
     ]
   );
 }

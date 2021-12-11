@@ -2,6 +2,7 @@ import { prisma } from '@';
 import { PAYROLL_STATUS, PAYROLL_TRANSACTION_TYPE } from '@/utils/constants';
 import { normalizeArray } from '@/utils/common';
 import { getAllTransactionForCurrentOpenPayslips } from '@/services/payroll.service';
+
 const addPayroll = async (_, { payment }, { userId, organizationId }) => {
   let currentPayroll;
   const expenseType = 'Salary';

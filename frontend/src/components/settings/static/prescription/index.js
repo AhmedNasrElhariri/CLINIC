@@ -1,6 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { Schema } from 'rsuite';
-
 import { CRModal } from 'components';
 import {
   Title,
@@ -11,7 +9,7 @@ import {
   Li,
   FooterButton,
 } from './style';
-const model = Schema.Model({});
+
 const medicine = [
   {
     id: 1,

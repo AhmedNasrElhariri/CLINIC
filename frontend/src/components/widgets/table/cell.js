@@ -1,7 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
 import { Table } from 'rsuite';
-
 import { CRCellStyled } from './style';
 import { Div } from '../html';
 
