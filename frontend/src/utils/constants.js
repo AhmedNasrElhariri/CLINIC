@@ -141,6 +141,7 @@ export const ACTIONS = Object.freeze({
   GenerateDaily_PulsesReport:'GenerateDaily_PulsesReport',
   View_Medicine:'View_Medicine',
   View_Permission:'View_Permission',
+  ViewFilters_Accounting:'ViewFilters_Accounting',
 });
 
 export const LAB_STATUS = Object.freeze({

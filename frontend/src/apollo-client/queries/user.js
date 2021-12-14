@@ -25,6 +25,7 @@ export const LOGIN = gql`
         id
         avatar
         position
+        name
         role {
           permissions {
             subject
@@ -43,6 +44,7 @@ export const VERIFY = gql`
       id
       avatar
       position
+      name
       role {
         permissions {
           subject

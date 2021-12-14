@@ -32,7 +32,8 @@ const Navbar = ({
   notifications,
   onClear,
   formValue,
-  setFormValue
+  setFormValue,
+  user,
 }) => {
   const notificationsRef = useRef();
   const settingsRef = useRef();
@@ -69,8 +70,8 @@ const Navbar = ({
           justifyContent="space-between"
           alignItems="center"
           cursor="pointer"
-          width={180}
         >
+          <Div mr={10} mt={1} fs={18} fontWeight="bold">{user?.name}</Div>
           <Whisper
             trigger="click"
             ref={notificationsRef}
@@ -104,7 +105,6 @@ const Navbar = ({
           >
             <SettingsIcon />
           </Whisper>
-
           <Avatar onClick={onClickAvatar} url={avatar} />
         </Div>
       </Div>

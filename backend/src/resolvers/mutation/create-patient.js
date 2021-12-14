@@ -21,7 +21,7 @@ const createPatient = async (
       id,
     },
   });
-  const areaName = getArea(area);
+  const areaName = area ? getArea(area) : '';
   return prisma.patient.create({
     data: {
       area: areaName,
