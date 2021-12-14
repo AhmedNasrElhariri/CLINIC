@@ -72,6 +72,7 @@ const Navbar = ({
           cursor="pointer"
         >
           <Div mr={10} mt={1} fs={18} fontWeight="bold">{user?.name}</Div>
+          <Avatar onClick={onClickAvatar} url={avatar} />
           <Whisper
             trigger="click"
             ref={notificationsRef}
@@ -105,7 +106,6 @@ const Navbar = ({
           >
             <SettingsIcon />
           </Whisper>
-          <Avatar onClick={onClickAvatar} url={avatar} />
         </Div>
       </Div>
     </NavStyled>
