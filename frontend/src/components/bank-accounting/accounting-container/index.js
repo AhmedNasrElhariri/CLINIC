@@ -9,7 +9,7 @@ import { useBankAccounting, useAppointments } from 'hooks';
 import Filter from './filter';
 import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
-
+import { Can } from 'components/user/can';
 import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
@@ -20,7 +20,9 @@ const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
-  const { filterBranches } = useAppointments({action:ACTIONS.ViewBank_Accounting});
+  const { filterBranches } = useAppointments({
+    action: ACTIONS.ViewBank_Accounting,
+  });
   const { revenues, timeFrame } = useBankAccounting({
     view,
     period,
@@ -36,19 +38,21 @@ const BankAccountingContainer = () => {
     <>
       <MainContainer title="Banking" nobody></MainContainer>
       <CRCard borderless>
-        <Toolbar
-          activeKey={view}
-          onSelect={setView}
-          data={{ revenues, revenues }}
-          onChangePeriod={setPeriod}
-        />
+        <Can I="ViewFilters" an="Accounting">
+          <Toolbar
+            activeKey={view}
+            onSelect={setView}
+            data={{ revenues, revenues }}
+            onChangePeriod={setPeriod}
+          />
 
-        <Div display="flex" my={4}>
-          <H6>Showing for :</H6>
-          <H6 variant="primary" ml={2} fontWeight="bold">
-            {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
-          </H6>
-        </Div>
+          <Div display="flex" my={4}>
+            <H6>Showing for :</H6>
+            <H6 variant="primary" ml={2} fontWeight="bold">
+              {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
+            </H6>
+          </Div>
+        </Can>
         <Filter formValue={filter} setFormValue={setFilter} />
         <Div>
           <Div display="flex">
@@ -69,7 +73,7 @@ const BankAccountingContainer = () => {
                       alignItems="center"
                     >
                       <PdfView
-                        data={{ revenues, expenses:[] }}
+                        data={{ revenues, expenses: [] }}
                         period={timeFrame}
                       />
                     </Div>
