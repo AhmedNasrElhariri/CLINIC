@@ -40,7 +40,7 @@ function NewLabDefinition({
       onCancel={onClose}
       loading={loading}
     >
-      <Form formValue={formValue} model={model} onChange={onChange} fluid>
+      <Form formValue={formValue}  onChange={onChange} fluid>
         {type === 'delete' ? (
           <Div>
             <H3>Are you sure that you want to delete the Lab ? </H3>

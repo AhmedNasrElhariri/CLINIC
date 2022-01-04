@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
 const editCourse = async (
   _,
-  { courseId, paid, branchId, specialtyId, userId: userID },
+  { courseId, paid, branchId, specialtyId, userId: userID, bank = null },
   { userId, organizationId }
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
@@ -15,50 +15,17 @@ const editCourse = async (
       patient: true,
     },
   });
-  const payment =
-    'C' + '/' + data.courseDefinition.name + '/' + data.patient.name;
+  const payment = bank
+    ? 'C' +
+      '/' +
+      data.courseDefinition.name +
+      '/' +
+      data.patient.name +
+      '/' +
+      'Bank_Payment'
+    : 'C' + '/' + data.courseDefinition.name + '/' + data.patient.name;
+
   const salerId = data.userId;
-  await prisma.revenue.create({
-    data: Object.assign(
-      {
-        level,
-        name: payment,
-        date: new Date(),
-        amount: paid,
-        organization: {
-          connect: {
-            id: organizationId,
-          },
-        },
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-      },
-      specialtyId && {
-        specialty: {
-          connect: {
-            id: specialtyId,
-          },
-        },
-      },
-      branchId && {
-        branch: {
-          connect: {
-            id: branchId,
-          },
-        },
-      },
-      userID && {
-        doctor: {
-          connect: {
-            id: userID,
-          },
-        },
-      }
-    ),
-  });
   await prisma.coursePayment.create({
     data: Object.assign(
       {
@@ -98,6 +65,97 @@ const editCourse = async (
       }
     ),
   });
+  if (bank != null) {
+    await prisma.bankRevenue.create({
+      data: Object.assign(
+        {
+          level,
+          name: payment,
+          date: new Date(),
+          amount: paid,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          bank: {
+            connect: {
+              id: bank,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: userID,
+            },
+          },
+        }
+      ),
+    });
+  } else {
+    await prisma.revenue.create({
+      data: Object.assign(
+        {
+          level,
+          name: payment,
+          date: new Date(),
+          amount: paid,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: userID,
+            },
+          },
+        }
+      ),
+    });
+  }
+
   return prisma.course.update({
     where: {
       id: courseId,

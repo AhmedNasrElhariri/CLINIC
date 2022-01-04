@@ -70,6 +70,7 @@ const CreatePatientView = lazy(() =>
 const Csv = lazy(() => import('../../../components/csv'));
 const Payroll = lazy(() => import('../../../components/payroll'));
 const Sales = lazy(() => import('../../../components/sales'));
+const Courses = lazy(() => import('../../../components/courses'));
 const TodayAppointment = lazy(() =>
   import('../../../components/appointments/today-appointments')
 );
@@ -194,6 +195,9 @@ function AppRouter() {
         </Route>
         <Route path="/sales">
           <Sales />
+        </Route>
+        <Route path="/courses">
+          <Courses />
         </Route>
         {/* <Route path="/csv">
         <Csv />

@@ -10,9 +10,8 @@ import {
 } from './style';
 import { FormGroupStyled } from '../form-group';
 
-const CustomInput = memo(({ value, onChange, ...props }) => {
+const CustomInput = memo(({ value, onChange, fractional, ...props }) => {
   const setValue = useCallback(val => onChange(val), [onChange]);
-
   const onChangeValue = useCallback(
     e => {
       const val = Number(e.target.value);

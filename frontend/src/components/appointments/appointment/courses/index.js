@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import * as R from 'ramda';
 import { ACTIONS } from 'utils/constants';
 
-import { useCoursesDefinition, usePermissions } from 'hooks';
+import { useCoursesDefinition, usePermissions,useBankDefinition } from 'hooks';
 import {
   CRNumberInput,
   CRSelectInput,
@@ -95,8 +95,13 @@ function NewCourse({
   loading,
   type,
   users,
+  bank,
+  setBank,
+  visa,
+  setVisa,
 }) {
   const { coursesDefinitions } = useCoursesDefinition();
+  const { banksDefinition } = useBankDefinition({});
   const [checkedDays, setCheckedDays] = useState(options);
   const { listActionDoctors, actionDoctors } = usePermissions();
 
@@ -262,6 +267,27 @@ function NewCourse({
           </>
         ) : type === 'edit' ? (
           <>
+            <CRButton
+              onClick={() => {
+                setVisa(true);
+              }}
+              mr={10}
+            >
+              Pay By Visa
+            </CRButton>
+            {visa && (
+              <Form>
+                <CRSelectInput
+                  label="Bank Name"
+                  name="bank"
+                  data={banksDefinition}
+                  value={bank}
+                  onChange={setBank}
+                  placeholder="Select One Bank "
+                  style={{ width: '230px' }}
+                />
+              </Form>
+            )}
             <CRNumberInput label="Paid" name="paid" title="Paid" />
             <CRBrancheTree
               formValue={formValue}

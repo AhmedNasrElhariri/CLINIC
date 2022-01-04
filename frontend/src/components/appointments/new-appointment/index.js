@@ -59,7 +59,8 @@ const searchBy = (text, _, patient) => {
   return filterPatientBy(text, patient);
 };
 
-const NewAppointment = ({ show: showModel, onHide }) => {
+const NewAppointment = ({ show: showModel, onHide, appointment }) => {
+  console.log(appointment, 'AA');
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const {
@@ -105,12 +106,23 @@ const NewAppointment = ({ show: showModel, onHide }) => {
     };
   });
 
-  useEffect(() => {
-    return () => {
-      setFormValue(initialValues);
-    };
-  }, [setFormValue]);
+  // useEffect(() => {
+  //   return () => {
+  //     setFormValue(initialValues);
+  //   };
+  // }, [setFormValue]);
 
+  useEffect(() => {
+    if (appointment) {
+      setFormValue({
+        branchId: appointment.branch.id,
+        type: appointment.type,
+        patientId: appointment.patient.id,
+        specialtyId: appointment.specialty.id,
+        userId: appointment.doctor.id,
+      });
+    }
+  }, [appointment]);
   const handleCreate = useCallback(() => {
     setShow(true);
     if (!validate) {

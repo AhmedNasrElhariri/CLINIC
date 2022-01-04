@@ -8,6 +8,7 @@ import { getName } from 'services/accounting';
 import CompleteAppointment from '../complete-appointment';
 import { useAppointments, useModal } from 'hooks';
 import BusinessNotes from './business-notes';
+import NewAppointment from 'components/appointments/new-appointment';
 import {
   filterTodayAppointments,
   sortAppointmentsByUpdatedAt,
@@ -91,6 +92,14 @@ function TodayAppointments() {
   const onAddBusinessNotes = useCallback(
     appointment => {
       setPopUp('notes');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
+  const onDuplicateAppointments = useCallback(
+    appointment => {
+      setPopUp('newAppointment');
       setAppointment(appointment);
       open();
     },
@@ -183,6 +192,7 @@ function TodayAppointments() {
                   onArchive={onClickDone}
                   onComplete={onCompleteDone}
                   onAddBusinessNotes={onAddBusinessNotes}
+                  onDuplicateAppointments={onDuplicateAppointments}
                   defaultExpanded={true}
                 />
               )}
@@ -246,6 +256,9 @@ function TodayAppointments() {
           setNotes={setNotes}
           onOk={addBusinessNotes}
         />
+      )}
+      {popUp === 'newAppointment' && (
+      <NewAppointment show={visible} onHide={close} appointment={appointment}/>
       )}
     </>
   );

@@ -49,6 +49,7 @@ function NewSessionDefinition({
         <CRNumberInput
           label="Price"
           name="price"
+          fractional={true}
           errorMessage={
             show && checkResult['price'].hasError
               ? checkResult['price'].errorMessage

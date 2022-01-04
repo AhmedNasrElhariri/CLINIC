@@ -16,7 +16,7 @@ const initValue = {
 const { StringType, NumberType } = Schema.Types;
 const model = Schema.Model({
   name: StringType().isRequired('Session name is required'),
-  price: NumberType().range(1, 1000000).isRequired('price is required'),
+  price: NumberType().isRequired('price is required'),
 });
 
 const SessionDefinition = () => {

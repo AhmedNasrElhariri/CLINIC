@@ -389,6 +389,7 @@ type Mutation {
     branchId: ID
     specialtyId: ID
     userId: ID
+    bank: ID
   ): Course!
   editCourseUnits(courseId: ID!, consumed: Int!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
@@ -1307,14 +1308,14 @@ input TimingInput {
 type SessionDefinition {
   id: ID!
   name: String!
-  price: Int!
+  price: Float!
   duration: Int!
 }
 
 input SessionInputDefinition {
   id: ID
   name: String!
-  price: Int!
+  price: Float!
   duration: Int!
 }
 

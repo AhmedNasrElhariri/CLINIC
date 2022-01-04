@@ -1,17 +1,16 @@
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import CoursePayment from './course-payment-history';
-import CourseSession from './course-sessions';
+import CoursePayment from '../appointments/appointment/courses/course-payment-history';
+import CourseSession from '../appointments/appointment/courses/course-sessions';
 import * as moment from 'moment';
 import * as R from 'ramda';
 import { Div, CRButton, CRTabs } from 'components';
 import { useCourses } from 'hooks';
-import { Data, DataName, DataValue } from './style';
+import { Data, DataName, DataValue } from '../appointments/appointment/courses/style';
 import { formatDate } from 'utils/date';
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const CourseData = ({
-  courses,
-  indx,
+  course,
   onEditPaid,
   onEditDoctor,
   onFinishCourse,
@@ -19,7 +18,6 @@ const CourseData = ({
   onDeleteCourse,
 }) => {
   const history = useHistory();
-  let course = courses[indx];
   let { sessions } = course;
   const updatedSessions = sortByDate(sessions);
   const { coursePayments } = useCourses({ courseId: course.id });
@@ -34,7 +32,7 @@ const CourseData = ({
 
   return (
     <>
-      <Div  border="1px solid #eef1f1" m="5px" p="5px">
+      <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
         {course.status !== 'Cancelled' && course.status !== 'Rejected' && (
           <CRButton
             variant="primary"

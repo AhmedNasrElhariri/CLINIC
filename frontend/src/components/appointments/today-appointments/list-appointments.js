@@ -22,6 +22,7 @@ function ListAppointments({
   onComplete,
   waiting,
   onAddBusinessNotes,
+  onDuplicateAppointments,
   currentPage,
   setCurrentPage,
 }) {
@@ -202,6 +203,16 @@ function ListAppointments({
                   width={70}
                 >
                   Notes
+                </CRButton>
+                <CRButton
+                  variant="primary"
+                  onClick={e => {
+                    e.stopPropagation();
+                    onDuplicateAppointments(appointment);
+                  }}
+                  width={70}
+                >
+                  Duplicates
                 </CRButton>
                 <Div onClick={e => e.stopPropagation()}>
                   <ReactToPrint

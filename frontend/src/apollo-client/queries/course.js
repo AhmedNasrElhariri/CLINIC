@@ -151,6 +151,7 @@ export const EDIT_COURSE = gql`
     $specialtyId: ID
     $userId: ID
     $paid: Int!
+    $bank: ID
   ) {
     editCourse(
       courseId: $courseId
@@ -158,6 +159,7 @@ export const EDIT_COURSE = gql`
       branchId: $branchId
       specialtyId: $specialtyId
       userId: $userId
+      bank: $bank
     ) {
       id
       price
