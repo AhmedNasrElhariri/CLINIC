@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form } from 'rsuite';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import {
   CRSelectInput,
   CRTextInput,
@@ -7,6 +9,8 @@ import {
   CRDatePicker,
   ShowIf,
   CRCheckBoxGroup,
+  Div,
+  CRLabel,
 } from 'components';
 import moment from 'moment';
 
@@ -61,10 +65,24 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
       />
 
       <ShowIf show={isPrimary(formValue)}>
-        <CRTextInput
+        {/* <CRTextInput
           label="Phone no"
           name="phoneNo"
           errorMessage={
+            show && checkResult['phoneNo'].hasError
+              ? checkResult['phoneNo'].errorMessage
+              : ''
+          }
+        /> */}
+        <CRLabel>Phone No</CRLabel>
+        <PhoneInput
+          country={'eg'}
+          name="phoneNo"
+          value={formValue.phoneNo}
+          onChange={phone => onChange({ ...formValue, phoneNo: phone })}
+          containerStyle={{ marginTop: '10px' }}
+          inputStyle={{ width: '100%', borderRadius: '0px' }}
+          defaultErrorMessage={
             show && checkResult['phoneNo'].hasError
               ? checkResult['phoneNo'].errorMessage
               : ''
@@ -86,6 +104,7 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
             : ''
         }
       />
+
       <CRDatePicker label="Birth of Date" block name="date" />
 
       <CRSelectInput

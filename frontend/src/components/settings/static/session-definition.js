@@ -70,7 +70,10 @@ const SessionDefinition = () => {
     if (type === 'create') {
       addSessionDefinition({
         variables: {
-          sessionDefinition: formValue,
+          sessionDefinition: {
+            ...formValue,
+            price: parseFloat(formValue.price),
+          },
         },
       });
     } else {

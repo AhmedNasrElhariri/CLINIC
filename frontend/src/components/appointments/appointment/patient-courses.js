@@ -47,6 +47,7 @@ const Course = ({ patientId }) => {
     editCourseDoctor,
     editCourseUnits,
     deleteCourse,
+    editCoursePaymentHistory,
     users,
     loading,
     finishCourse,
@@ -71,10 +72,13 @@ const Course = ({ patientId }) => {
       close();
       setFormValue(initValue);
     },
+    onEditCoursePaymentHistory: () => {
+      close();
+      setFormValue(initValue);
+    },
     patientId: patientId,
     courseId: formValue?.id,
   });
-  console.log(courses, 'CCCCCPP');
   const handleClickCreate = useCallback(() => {
     setType('create');
     setHeader('Create New Course');
@@ -96,6 +100,16 @@ const Course = ({ patientId }) => {
       const course = R.pick(['id', 'paid'])(data);
       setType('edit');
       setHeader('Add New Payment');
+      setFormValue(course);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleClickEditHistoryPayment = useCallback(
+    data => {
+      const course = R.pick(['id', 'paid', 'paymentId'])(data);
+      setType('editPaymentHistory');
+      setHeader('Edit History Payment');
       setFormValue(course);
       open();
     },
@@ -186,6 +200,17 @@ const Course = ({ patientId }) => {
           refund: formValue.refund,
         },
       });
+    } else if (type === 'editPaymentHistory') {
+      editCoursePaymentHistory({
+        variables: {
+          courseId: formValue.id,
+          paid: formValue.paid,
+          paymentId: formValue.paymentId,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
+          branchId: formValue.branchId,
+        },
+      });
     } else {
       editCourse({
         variables: {
@@ -204,6 +229,7 @@ const Course = ({ patientId }) => {
     addCourse,
     editCourseDoctor,
     editCourse,
+    editCoursePaymentHistory,
     finishCourse,
   ]);
   const InprogressCourses = useMemo(
@@ -257,6 +283,7 @@ const Course = ({ patientId }) => {
                       onEditDoctor={handleClickEditDoctor}
                       onFinishCourse={handleFinishCourse}
                       onDeleteCourse={handleDeleteCourse}
+                      onEditHistoryPayment={handleClickEditHistoryPayment}
                     />
                   ) : (
                     <H3>No courses</H3>
@@ -294,6 +321,7 @@ const Course = ({ patientId }) => {
                           onEditDoctor={handleClickEditDoctor}
                           onFinishCourse={handleFinishCourse}
                           onDeleteCourse={handleDeleteCourse}
+                          onEditHistoryPayment={handleClickEditHistoryPayment}
                         />
                       ) : (
                         <H3>No courses</H3>

@@ -86,3 +86,4 @@ export { default as myFaceOperations } from './myFace-operations';
 export { default as getPatientField } from './get-patient-field';
 export { default as getUserPatientFields } from './get-user-patient-fields';
 export { default as getPageSetup } from './get-page-setup';
+export { default as myAppointmentTypesDefinition } from './my-appointment-types-definition';

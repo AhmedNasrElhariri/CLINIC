@@ -16,6 +16,7 @@ import {
   LIST_REVENUES,
   EDIT_COURSE_UNITS,
   LIST_COURSE_PAYMENTS,
+  EDIT_COURSE_PAYMENT_HISTORY,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -37,6 +38,7 @@ function useCourses({
   courseId,
   onFinishCourse,
   onDeleteCourse,
+  onEditCoursePaymentHistory,
 } = {}) {
   const { data } = useQuery(LIST_COURSES, { variables: { patientId } });
   const courses = useMemo(() => R.propOr([], 'myCourses')(data), [data]);
@@ -99,6 +101,28 @@ function useCourses({
     ],
     onError() {
       Alert.error('Failed to edit the Course');
+    },
+  });
+  const [editCoursePaymentHistory] = useMutation(EDIT_COURSE_PAYMENT_HISTORY, {
+    onCompleted() {
+      Alert.success('The Payment History has been Edited Successfully');
+      onEditCoursePaymentHistory && onEditCoursePaymentHistory();
+    },
+    refetchQueries: [
+      {
+        query: LIST_COURSES,
+        variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSE_PAYMENTS,
+        variables: { courseId: courseId },
+      },
+      {
+        query: LIST_REVENUES,
+      },
+    ],
+    onError() {
+      Alert.error('Failed to edit the Payment History ');
     },
   });
   const [editCourseUnits] = useMutation(EDIT_COURSE_UNITS, {
@@ -176,6 +200,7 @@ function useCourses({
       finishCourse,
       updateCache,
       coursePayments,
+      editCoursePaymentHistory,
     }),
     [
       courses,
@@ -189,6 +214,7 @@ function useCourses({
       finishCourse,
       users,
       coursePayments,
+      editCoursePaymentHistory,
     ]
   );
 }

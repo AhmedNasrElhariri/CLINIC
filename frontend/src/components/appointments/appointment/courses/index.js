@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import * as R from 'ramda';
 import { ACTIONS } from 'utils/constants';
 
-import { useCoursesDefinition, usePermissions,useBankDefinition } from 'hooks';
+import { useCoursesDefinition, usePermissions, useBankDefinition } from 'hooks';
 import {
   CRNumberInput,
   CRSelectInput,
@@ -265,7 +265,7 @@ function NewCourse({
               </>
             )}
           </>
-        ) : type === 'edit' ? (
+        ) : type === 'edit' || type === 'editPaymentHistory' ? (
           <>
             <CRButton
               onClick={() => {

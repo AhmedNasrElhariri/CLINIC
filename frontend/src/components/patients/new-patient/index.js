@@ -25,8 +25,8 @@ const model = Schema.Model({
     .maxLength(30, 'The field cannot be greater than 30 characters')
     .isRequired('User name is required'),
   phoneNo: StringType()
-    .isRequired('Phone No is  Required')
-    .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
+    .isRequired('Phone No is  Required'),
+    // .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
   age: NumberType('Age should be a number').range(
     0,
     100,

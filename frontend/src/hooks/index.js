@@ -46,3 +46,4 @@ export { default as useMaterialDefinition } from './material-definition';
 export { default as useFaceOperation } from './face-operation';
 export { default as useValidationForm } from './validation-form';
 export { default as usePatientView } from './patient-view';
+export { default as useAppointmentTypesDefinition } from './use-appointmentTypes-definition';

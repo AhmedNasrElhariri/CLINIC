@@ -182,6 +182,7 @@ model Organization {
   SalesDefinition           SalesDefinition[]
   Sales                     Sales[]
   CourseDefinition          CourseDefinition[]
+  AppointmentTypeDefinition AppointmentTypeDefinition[]
   BankDefinition            BankDefinition[]
   CompanyDefinition         CompanyDefinition[]
   CompanySessionDefinition  CompanySessionDefinition[]
@@ -693,7 +694,7 @@ model Revenue {
   id             String       @id @default(uuid())
   name           String
   date           DateTime
-  amount         Int
+  amount         Float
   invoiceNo      String?
   level          String?
   specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
@@ -1018,7 +1019,7 @@ model Price {
 model SessionDefinition {
   id             String        @id @default(uuid())
   name           String
-  price          Int
+  price          Float
   duration       Int           @default(5)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @default(now()) @updatedAt
@@ -1123,6 +1124,16 @@ model CourseDefinition {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now()) @updatedAt
   Course         Course[]
+}
+
+model AppointmentTypeDefinition {
+  id             String       @id @default(uuid())
+  name           String
+  urgent         Boolean
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
 }
 
 model Course {

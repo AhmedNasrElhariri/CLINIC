@@ -89,6 +89,15 @@ export const LIST_BANK_REVENUES = gql`
   }
 `;
 
+export const EDIT_BANK_TRANSITION = gql`
+  mutation editBankTransition($bankTransition: BankTransitionInput!) {
+    editBankTransition(bankTransition: $bankTransition) {
+      id
+      amount
+    }
+  }
+`;
+
 export const LIST_COMPANY_REVENUES = gql`
   query companyRevenues {
     companyRevenues {

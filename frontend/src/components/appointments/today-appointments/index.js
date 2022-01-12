@@ -194,6 +194,7 @@ function TodayAppointments() {
                   onAddBusinessNotes={onAddBusinessNotes}
                   onDuplicateAppointments={onDuplicateAppointments}
                   defaultExpanded={true}
+                  close={close}
                 />
               )}
             />

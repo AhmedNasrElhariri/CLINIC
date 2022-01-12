@@ -1,7 +1,11 @@
 import { useMemo } from 'react';
 import * as R from 'ramda';
-import { useQuery } from '@apollo/client';
-import { LIST_BANK_REVENUES } from 'apollo-client/queries';
+import { useMutation, useQuery } from '@apollo/client';
+import { Alert } from 'rsuite';
+import {
+  LIST_BANK_REVENUES,
+  EDIT_BANK_TRANSITION,
+} from 'apollo-client/queries';
 import { filterAccountingList } from 'utils/accounting';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import {
@@ -12,7 +16,7 @@ import {
   getYearStartAndEnd,
 } from 'utils/date';
 
-const useAccounting = ({ view, period } = {}) => {
+const useAccounting = ({ view, period,onEdit } = {}) => {
   const { data: revenueData } = useQuery(LIST_BANK_REVENUES);
 
   const allRevenues = useMemo(
@@ -48,16 +52,27 @@ const useAccounting = ({ view, period } = {}) => {
     [period, view]
   );
 
+  const [editBankTransition] = useMutation(EDIT_BANK_TRANSITION, {
+    onCompleted() {
+      Alert.success('the Bank Transition has been Edited Successfully');
+      onEdit && onEdit();
+    },
+    onError() {
+      Alert.error('Failed to edit the Bank Transition');
+    },
+  });
+
   return useMemo(
     () => ({
       revenues,
       totalRevenues,
       timeFrame,
+      editBankTransition,
       refetchRevenues: {
         query: LIST_BANK_REVENUES,
       },
     }),
-    [revenues, timeFrame, totalRevenues]
+    [revenues, timeFrame, totalRevenues, editBankTransition]
   );
 };
 

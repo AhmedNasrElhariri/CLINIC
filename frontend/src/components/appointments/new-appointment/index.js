@@ -60,7 +60,6 @@ const searchBy = (text, _, patient) => {
 };
 
 const NewAppointment = ({ show: showModel, onHide, appointment }) => {
-  console.log(appointment, 'AA');
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const {

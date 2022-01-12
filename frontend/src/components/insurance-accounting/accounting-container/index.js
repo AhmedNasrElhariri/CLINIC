@@ -15,7 +15,7 @@ const initialval = {
   company: '',
 };
 const BankAccountingContainer = () => {
-  const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
+  const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
   const { filterBranches } = useAppointments({action:ACTIONS.ViewInsurance_Accounting});

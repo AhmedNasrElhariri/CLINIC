@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Form } from 'rsuite';
-import { CRModal, CRNumberInput, CRTextInput } from 'components';
+import { Form, InputNumber } from 'rsuite';
+import { CRModal, CRNumberInput, CRTextInput, CRLabel } from 'components';
 function NewSessionDefinition({
   formValue,
   onChange,
@@ -21,7 +21,6 @@ function NewSessionDefinition({
         : 'Edit Session Definition ',
     [type]
   );
-
   return (
     <CRModal
       show={visible}
@@ -46,10 +45,24 @@ function NewSessionDefinition({
           placeholder="Type Name"
           block
         />
-        <CRNumberInput
+        <CRLabel>Price</CRLabel>
+        <InputNumber
+          // defaultValue={0.01}
+          // step={0.01}
+          value={formValue.price}
+          onChange={val => {
+            onChange({ ...formValue, price: val });
+          }}
+          errorMessage={
+            show && checkResult['price'].hasError
+              ? checkResult['price'].errorMessage
+              : ''
+          }
+          placeholder="Type Price"
+        />
+        {/* <CRNumberInput
           label="Price"
           name="price"
-          fractional={true}
           errorMessage={
             show && checkResult['price'].hasError
               ? checkResult['price'].errorMessage
@@ -57,7 +70,7 @@ function NewSessionDefinition({
           }
           placeholder="Type Price"
           block
-        />
+        /> */}
         <CRNumberInput
           label="Duration"
           name="duration"

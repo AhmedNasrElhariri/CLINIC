@@ -30,6 +30,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [others, setOthers] = useState(0);
   const [othersName, setOthersName] = useState('');
   const [bank, setBank] = useState(null);
+  const [cashPayment, setCashPayment] = useState(0);
   const [company, setCompany] = useState(null);
   const [option, setOption] = useState(initlOption);
   const value = useRef(initValue);
@@ -149,6 +150,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
             setBank={setBank}
             company={company}
             setCompany={setCompany}
+            cashPayment={cashPayment}
+            onCashPaymentChange={setCashPayment}
             onOthersChange={setOthers}
             onOthersNameChange={setOthersName}
             onDiscountChange={setDiscount}

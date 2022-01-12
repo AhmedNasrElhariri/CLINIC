@@ -1,11 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 
 import * as R from 'ramda';
 import { MainContainer, Div, CRCard, H6 } from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../../accounting/profit';
-import { useBankAccounting, useAppointments } from 'hooks';
+import BankModel from '../bank-model';
+import { useBankAccounting, useAppointments, useModal, useForm } from 'hooks';
 import Filter from './filter';
 import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
@@ -16,14 +17,33 @@ const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initialval = {
   bank: '',
 };
+const initValue = { id: null, amount: 0 };
 const BankAccountingContainer = () => {
-  const [view, setView] = useState(ACCOUNTING_VIEWS.WEEK);
+  const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
+  const { visible, open, close } = useModal();
+  const {
+    formValue,
+    setFormValue,
+    type,
+    setType,
+    checkResult,
+    validate,
+    show,
+    setShow,
+  } = useForm({
+    initValue,
+  });
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
-  const { filterBranches } = useAppointments({action:ACTIONS.ViewBank_Accounting});
-  const { revenues, timeFrame } = useBankAccounting({
+  const { filterBranches } = useAppointments({
+    action: ACTIONS.ViewBank_Accounting,
+  });
+  const { revenues, timeFrame, editBankTransition } = useBankAccounting({
     view,
     period,
+    onEdit: () => {
+      close();
+    },
   });
   const updatedRevenues = useMemo(
     () =>
@@ -32,6 +52,24 @@ const BankAccountingContainer = () => {
       ),
     [filter, revenues]
   );
+  const handleClickEdit = useCallback(
+    data => {
+      const row = R.pick(['id', 'amount'])(data);
+      setType('edit');
+      setFormValue(row);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleAdd = useCallback(() => {
+    if (type === 'edit') {
+      editBankTransition({
+        variables: {
+          bankTransition: formValue,
+        },
+      });
+    }
+  }, [editBankTransition, formValue, type]);
   return (
     <>
       <MainContainer title="Banking" nobody></MainContainer>
@@ -60,7 +98,11 @@ const BankAccountingContainer = () => {
                 branches={filterBranches}
                 render={(revenues, totalRevenues) => (
                   <>
-                    <ListData title="Banking Revenues" data={revenues} />
+                    <ListData
+                      title="Banking Revenues"
+                      data={revenues}
+                      onEdit={handleClickEdit}
+                    />
                     <Profit expenses={0} revenues={totalRevenues} />
                     <Div
                       mt={10}
@@ -69,7 +111,7 @@ const BankAccountingContainer = () => {
                       alignItems="center"
                     >
                       <PdfView
-                        data={{ revenues, expenses:[] }}
+                        data={{ revenues, expenses: [] }}
                         period={timeFrame}
                       />
                     </Div>
@@ -79,6 +121,19 @@ const BankAccountingContainer = () => {
             </Div>
           </Div>
         </Div>
+        <BankModel
+          visible={visible}
+          formValue={formValue}
+          onChange={setFormValue}
+          onOk={handleAdd}
+          onClose={close}
+          type={type}
+          // checkResult={checkResult}
+          // validate={validate}
+          show={show}
+          setShow={setShow}
+          // loading={loading}
+        />
       </CRCard>
     </>
   );

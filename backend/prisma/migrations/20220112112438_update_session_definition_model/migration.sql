@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "SessionDefinition" ALTER COLUMN "price" SET DATA TYPE DOUBLE PRECISION;

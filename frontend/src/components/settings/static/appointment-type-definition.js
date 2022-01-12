@@ -1,18 +1,23 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
 import { Div, CRButton } from 'components';
-import NewPatientReport from './new-patient-report';
-import ListPatientReports from './list-patient-report';
-import { useForm, useModal, usePatientReports } from 'hooks';
+import useFrom from 'hooks/form';
+import NewAppointmentTypeDefinition from './new-appointmentType-definition';
+import ListAppointmentTypesDefinition from './list-appointmentTypes-definition';
+import { useAppointmentTypesDefinition } from 'hooks';
 import { Schema } from 'rsuite';
+import { useModal } from 'hooks';
 
-const initValue = { name: '', body: '', context: '' };
+const initValue = {
+  name: '',
+  urgent: false,
+};
 const { StringType } = Schema.Types;
 const model = Schema.Model({
-  name: StringType().isRequired('patient report name is required'),
+  name: StringType().isRequired('Appointment Type name is required'),
 });
 
-const PatientReport = () => {
+const AppointmentTypeDefinition = () => {
   const { visible, open, close } = useModal();
   const {
     formValue,
@@ -23,18 +28,17 @@ const PatientReport = () => {
     validate,
     show,
     setShow,
-  } = useForm({
+  } = useFrom({
     initValue,
     model,
   });
-
   const {
-    addPatientReport,
-    patientReports,
-    editPatientReport,
-    deletePatientReport,
+    addAppointmentTypeDefinition,
+    appointmentTypesDefinitions,
+    editAppointmentTypeDefinition,
+    deleteAppointmentTypeDefinition,
     loading,
-  } = usePatientReports({
+  } = useAppointmentTypesDefinition({
     onCreate: () => {
       close();
       setShow(false);
@@ -51,7 +55,6 @@ const PatientReport = () => {
       setFormValue(initValue);
     },
   });
-
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -60,61 +63,60 @@ const PatientReport = () => {
 
   const handleClickEdit = useCallback(
     data => {
-      const report = R.pick(['id', 'name', 'body', 'context'])(data);
+      const appointmentType = R.pick(['id', 'name', 'urgent'])(data);
       setType('edit');
-      setFormValue(report);
+      setFormValue(appointmentType);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickDelete = useCallback(
     data => {
-      const report = R.pick(['id', 'name', 'body', 'context'])(data);
+      const appointmentType = R.pick(['id', 'name', 'urgent'])(data);
       setType('delete');
-      setFormValue(report);
+      setFormValue(appointmentType);
       open();
     },
     [open, setFormValue, setType]
   );
+
   const handleAdd = useCallback(() => {
-    const bodyFinal = '<pre>' + formValue.body + '</pre>';
-    const updatedFormValue = {
-      name: formValue.name,
-      body: bodyFinal,
-      context: formValue.context,
-    };
-    const updatedFormValueTwo = { ...updatedFormValue, id: formValue.id };
     if (type === 'create') {
-      addPatientReport({
+      addAppointmentTypeDefinition({
         variables: {
-          patientReport: updatedFormValueTwo,
-          type: 'edit',
+          appointmentTypeDefinition: formValue,
         },
       });
     } else if (type === 'delete') {
-      deletePatientReport({
+      deleteAppointmentTypeDefinition({
         variables: {
-          patientReport: updatedFormValueTwo,
+          appointmentTypeDefinition: formValue,
           type: 'delete',
         },
       });
     } else {
-      editPatientReport({
+      editAppointmentTypeDefinition({
         variables: {
-          patientReport: updatedFormValueTwo,
+          appointmentTypeDefinition: formValue,
           type: 'edit',
         },
       });
     }
-  }, [addPatientReport, editPatientReport, formValue, type]);
+  }, [
+    addAppointmentTypeDefinition,
+    editAppointmentTypeDefinition,
+    deleteAppointmentTypeDefinition,
+    formValue,
+    type,
+  ]);
   return (
     <>
       <Div textAlign="right">
-        <CRButton variant="primary" onClick={handleClickCreate}>
-          New Patient Report +
+        <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
+          Add New AppointmentType+
         </CRButton>
       </Div>
-      <NewPatientReport
+      <NewAppointmentTypeDefinition
         visible={visible}
         formValue={formValue}
         onChange={setFormValue}
@@ -127,8 +129,8 @@ const PatientReport = () => {
         setShow={setShow}
         loading={loading}
       />
-      <ListPatientReports
-        reports={patientReports}
+      <ListAppointmentTypesDefinition
+        appointmentTypes={appointmentTypesDefinitions}
         onEdit={handleClickEdit}
         onDelete={handleClickDelete}
       />
@@ -136,4 +138,4 @@ const PatientReport = () => {
   );
 };
 
-export default PatientReport;
+export default AppointmentTypeDefinition;

@@ -183,6 +183,47 @@ export const EDIT_COURSE = gql`
   }
 `;
 
+export const EDIT_COURSE_PAYMENT_HISTORY = gql`
+  mutation editCoursePaymentHistory(
+    $courseId: ID!
+    $branchId: ID
+    $specialtyId: ID
+    $userId: ID
+    $paid: Int!
+    $bank: ID
+    $paymentId: ID!
+  ) {
+    editCoursePaymentHistory(
+      courseId: $courseId
+      paid: $paid
+      branchId: $branchId
+      specialtyId: $specialtyId
+      userId: $userId
+      bank: $bank
+      paymentId: $paymentId
+    ) {
+      id
+      price
+      discount
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
+      courseDefinition {
+        id
+        name
+        type
+        price
+        units
+        messureOfUnits
+      }
+    }
+  }
+`;
+
 export const EDIT_COURSE_UNITS = gql`
   mutation editCourseUnits($courseId: ID!, $consumed: Int!) {
     editCourseUnits(courseId: $courseId, consumed: $consumed) {

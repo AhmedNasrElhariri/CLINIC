@@ -179,6 +179,7 @@ type Query {
   myCoursesDefinition: [CourseDefinition!]
   myCourses(patientId: ID): [Course!]
   myDoctors(appointmentId: ID): [User!]
+  myAppointmentTypesDefinition: [AppointmentTypeDefinition!]
   myImagesCategory: [ImageCategory!]
   myMedicinesDefinition: [MedicineDefinition!]
   myPatientReports: [PatientReport!]
@@ -375,6 +376,13 @@ type Mutation {
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
   deleteRoleToUser(userId: ID!, roleId: ID!): Boolean
   updateConfiguration(configuration: ConfigurationInput): Configuration!
+  addAppointmentTypeDefinition(
+    appointmentTypeDefinition: AppointmentTypeInputDefinition!
+  ): AppointmentTypeDefinition
+  editAppointmentTypeDefinition(
+    appointmentTypeDefinition: AppointmentTypeInputDefinition!
+    type: String!
+  ): AppointmentTypeDefinition
   addCourseDefinition(
     courseDefinition: CourseInputDefinition!
   ): CourseDefinition
@@ -390,6 +398,15 @@ type Mutation {
     specialtyId: ID
     userId: ID
     bank: ID
+  ): Course!
+  editCoursePaymentHistory(
+    courseId: ID!
+    paid: Int!
+    branchId: ID
+    specialtyId: ID
+    userId: ID
+    bank: ID
+    paymentId: ID!
   ): Course!
   editCourseUnits(courseId: ID!, consumed: Int!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
@@ -413,6 +430,7 @@ type Mutation {
   addSales(sales: [SalesItemsInput!]!): [Sales!]!
   editSales(sales: SalesInput!): Sales
   deleteSales(id: ID!): Sales
+  editBankTransition(bankTransition: BankTransitionInput!): BankRevenue
 }
 
 ########################### Auth ##################################
@@ -875,7 +893,7 @@ type Session {
 
 input SessionInput {
   name: String!
-  price: Int!
+  price: Float!
   number: Int!
 }
 
@@ -1082,7 +1100,7 @@ type Revenue {
   doctor: User
   branch: Branch
   specialty: Specialty
-  amount: Int!
+  amount: Float!
   date: Date!
   invoiceNo: String
 }
@@ -1099,6 +1117,11 @@ type BankRevenue {
   specialty: Specialty
   invoiceNo: String
   bank: BankDefinition!
+}
+
+input BankTransitionInput {
+  id: ID!
+  amount: Int!
 }
 
 type InsuranceRevenue {
@@ -1628,6 +1651,20 @@ type CoursePayment {
   branch: Branch
   specialty: Specialty
 }
+
+########################### Appointment Type Definition ##################################
+type AppointmentTypeDefinition {
+  id: ID!
+  name: String!
+  urgent: Boolean!
+}
+
+input AppointmentTypeInputDefinition {
+  id: ID
+  name: String!
+  urgent: Boolean!
+}
+##########################################################################################
 
 ########################### Patient Surgeries ##################################
 

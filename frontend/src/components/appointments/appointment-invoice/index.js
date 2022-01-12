@@ -59,6 +59,8 @@ function AppointmentInvoice({
   othersName,
   onOthersNameChange,
   onDiscountChange,
+  cashPayment,
+  onCashPaymentChange,
   sessions,
   company,
   setCompany,
@@ -260,26 +262,41 @@ function AppointmentInvoice({
             </Form>
           </Div>
           <CRDivider />
-          {company !== null && (
+          {company !== null ||
+            (bank !== null && (
+              <>
+                <Form formValue={option} onChange={setOption}>
+                  <CRRadio options={payOptions} name="option" />
+                  {(option.option === 'fixed' && company !== null) ||
+                  bank !== null ? (
+                    <CRNumberInput label="Fixed Payment" name="amount" />
+                  ) : (
+                    (option.option === 'percentage' && company !== null) ||
+                    (bank !== null && (
+                      <CRNumberInput
+                        label="Percentage from 0 : 100"
+                        name="price"
+                        name="amount"
+                      />
+                    ))
+                  )}
+                </Form>
+                <CRDivider />
+              </>
+            ))}
+          {/* {bank !== null && (
             <>
-              <Form formValue={option} onChange={setOption}>
-                <CRRadio options={payOptions} name="option" />
-                {option.option === 'fixed' && company !== null ? (
-                  <CRNumberInput label="Fixed Payment" name="amount" />
-                ) : (
-                  option.option === 'percentage' &&
-                  company !== null && (
-                    <CRNumberInput
-                      label="Percentage from 0 : 100"
-                      name="price"
-                      name="amount"
-                    />
-                  )
-                )}
+              <Form fluid>
+                <CRNumberInput
+                  label="Cash Payment Part"
+                  name="cashPayment"
+                  value={cashPayment}
+                  onChange={val => onCashPaymentChange(val)}
+                />
               </Form>
               <CRDivider />
             </>
-          )}
+          )} */}
           <H5 fontWeight={400}>Session Summary</H5>
           <Div background="#f0f1f1" p="6px 8px">
             <Price name="Others" price={others} overriden variant="primary" />

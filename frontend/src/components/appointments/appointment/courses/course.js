@@ -17,6 +17,7 @@ const CourseData = ({
   onFinishCourse,
   onEditUnits,
   onDeleteCourse,
+  onEditHistoryPayment,
 }) => {
   const history = useHistory();
   let course = courses[indx];
@@ -34,7 +35,7 @@ const CourseData = ({
 
   return (
     <>
-      <Div  border="1px solid #eef1f1" m="5px" p="5px">
+      <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
         {course.status !== 'Cancelled' && course.status !== 'Rejected' && (
           <CRButton
             variant="primary"
@@ -150,7 +151,11 @@ const CourseData = ({
                 />
               </CRTabs.CRContent>
               <CRTabs.CRContent>
-                <CoursePayment coursePayments={coursePayments} />
+                <CoursePayment
+                  coursePayments={coursePayments}
+                  onEdit={onEditHistoryPayment}
+                  courseId={course.id}
+                />
               </CRTabs.CRContent>
             </CRTabs.CRContentGroup>
           </CRTabs>

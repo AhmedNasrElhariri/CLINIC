@@ -8,6 +8,7 @@ import {
   CRButton,
   CRTable,
 } from 'components';
+import { Tooltip, Whisper } from 'rsuite';
 import { isScheduled, isWaiting } from 'services/appointment';
 import { canAjdust } from 'services/appointment';
 import { Can } from 'components/user/can';
@@ -25,8 +26,8 @@ function ListAppointments({
   onDuplicateAppointments,
   currentPage,
   setCurrentPage,
+  close,
 }) {
-  console.log(pages, 'pagesssssss');
   const history = useHistory();
   const componentRef = useRef();
   const ref = useRef();
@@ -194,16 +195,23 @@ function ListAppointments({
                     </Can>
                   </>
                 )}
-                <CRButton
-                  variant="primary"
-                  onClick={e => {
-                    e.stopPropagation();
-                    onAddBusinessNotes(appointment);
-                  }}
-                  width={70}
+                <Whisper
+                  placement="top"
+                  controlId="control-id-hover"
+                  trigger="hover"
+                  speaker={<Tooltip>{appointment?.businessNotes}</Tooltip>}
                 >
-                  Notes
-                </CRButton>
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onAddBusinessNotes(appointment);
+                    }}
+                    width={70}
+                  >
+                    Notes
+                  </CRButton>
+                </Whisper>
                 <CRButton
                   variant="primary"
                   onClick={e => {

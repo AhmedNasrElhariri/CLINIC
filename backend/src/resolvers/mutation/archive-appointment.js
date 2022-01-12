@@ -107,52 +107,148 @@ const archiveAppointment = async (
     );
     sub = subRed + others.amount - discount.amount;
     const name = 'Bank Payment - ' + patientName;
-    await prisma.bankRevenue.create({
-      data: Object.assign(
-        {
-          date: new Date(date),
-          name,
-          amount: sub,
-          level,
-          organization: {
-            connect: {
-              id: organizationId,
+    if (option.amount > 0) {
+      let cashAmount = option.amount;
+      let bankAmount = 0;
+      if (option.option === 'percentage') {
+        cashAmount = option.amount * sub * 0.01;
+      }
+      bankAmount = sub - cashAmount;
+      await prisma.revenue.create({
+        data: Object.assign(
+          {
+            date: new Date(date),
+            name: 'Cash Payment - ' + patientName,
+            amount: cashAmount,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          bank: {
-            connect: {
-              id: bank,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-          user: {
-            connect: {
-              id: userId,
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
             },
           },
-        },
-        specialtyId && {
-          specialty: {
-            connect: {
-              id: specialtyId,
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
+          }
+        ),
+      });
+      await prisma.bankRevenue.create({
+        data: Object.assign(
+          {
+            date: new Date(date),
+            name,
+            amount: bankAmount,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            bank: {
+              connect: {
+                id: bank,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-        },
-        branchId && {
-          branch: {
-            connect: {
-              id: branchId,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-        },
-        userID && {
-          doctor: {
-            connect: {
-              id: userID,
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
             },
           },
-        }
-      ),
-    });
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
+          }
+        ),
+      });
+    } else {
+      await prisma.bankRevenue.create({
+        data: Object.assign(
+          {
+            date: new Date(date),
+            name,
+            amount: sub,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            bank: {
+              connect: {
+                id: bank,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
+            },
+          },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
+          }
+        ),
+      });
+    }
   }
   if (company != null) {
     const totalSessionAmount = sessions.reduce(

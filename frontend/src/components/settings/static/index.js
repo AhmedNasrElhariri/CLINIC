@@ -19,6 +19,7 @@ import CompanysSessions from './companys-sessions-definition';
 import ExpensesTypes from './expenses-types-definition';
 import DentalDiagnosis from './dental-diagnosis-definition';
 import FaceMaterials from './face-materials';
+import AppointmentTypeDefinition from './appointment-type-definition';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -57,6 +58,7 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="15">Dental Diagnosis</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="16">Face Materials</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="17">Patient Report</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="18">Appointment Type</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -95,8 +97,10 @@ function StaticSettings() {
               return <DentalDiagnosis />;
             case '16':
               return <FaceMaterials />;
-            default:
+            case '17':
               return <PatientReport />;
+            default:
+              return <AppointmentTypeDefinition />;
           }
         })()}
       </TabContainer>

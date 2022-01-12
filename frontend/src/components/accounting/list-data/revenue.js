@@ -21,11 +21,12 @@ const ListData = ({ title, data, onEdit }) => {
           <CRTable.CRCell>
             {({ amount }) => (
               <CRTable.CRCellStyled bold>
-                <NumberFormat
+                {/* <NumberFormat
                   value={amount}
                   displayType="text"
                   thousandSeparator
-                />
+                /> */}
+                {amount}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>

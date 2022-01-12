@@ -4,7 +4,7 @@ import { H5, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
 
-const ListData = ({ title, data, onEdit, canEdit }) => {
+const ListData = ({ title, data, onEdit }) => {
   return (
     <div>
       <H5 mb={3} textAlign="center">
@@ -35,9 +35,7 @@ const ListData = ({ title, data, onEdit, canEdit }) => {
           <CRTable.CRHeaderCell>Bank</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ bank }) => (
-              <CRTable.CRCellStyled bold>
-                {bank.name}
-              </CRTable.CRCellStyled>
+              <CRTable.CRCellStyled bold>{bank.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
@@ -51,14 +49,12 @@ const ListData = ({ title, data, onEdit, canEdit }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        {canEdit && (
-          <CRTable.CRColumn width={35}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        )}
+        <CRTable.CRColumn width={35}>
+          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
       </CRTable>
     </div>
   );
