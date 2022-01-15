@@ -1,5 +1,6 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
+import CryptoJS from 'crypto-js';
 const editCoursePaymentHistory = async (
   _,
   {
@@ -23,19 +24,25 @@ const editCoursePaymentHistory = async (
       patient: true,
     },
   });
+  const decryptedName = await CryptoJS.AES.decrypt(
+    data.patient.name,
+    'secret key 123'
+  );
+  const originalName = await decryptedName.toString(CryptoJS.enc.Utf8);
   const payment = bank
     ? 'C' +
       '/' +
       data.courseDefinition.name +
       '/' +
-      data.patient.name +
+      originalName +
       '/' +
       'Bank_Update_Payment'
     : 'C' +
       '/' +
       data.courseDefinition.name +
       '/' +
-      data.patient.name +
+      originalName +
+      '/' +
       'Update_Payment';
 
   const salerId = data.userId;
@@ -181,8 +188,8 @@ const editCoursePaymentHistory = async (
     data: Object.assign(
       {
         level,
-        name: 'old_course_payment',
-        expenseType:'old_course_payment',
+        name: 'Refund_course_payment',
+        expenseType: 'old_course_payment',
         date: new Date(),
         amount: oldPayment.payment,
         organization: {

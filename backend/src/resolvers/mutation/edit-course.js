@@ -1,5 +1,6 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
+import CryptoJS from 'crypto-js';
 const editCourse = async (
   _,
   { courseId, paid, branchId, specialtyId, userId: userID, bank = null },
@@ -15,15 +16,20 @@ const editCourse = async (
       patient: true,
     },
   });
+  const decryptedName = await CryptoJS.AES.decrypt(
+    data.patient.name,
+    'secret key 123'
+  );
+  const originalName = await decryptedName.toString(CryptoJS.enc.Utf8);
   const payment = bank
     ? 'C' +
       '/' +
       data.courseDefinition.name +
       '/' +
-      data.patient.name +
+      originalName +
       '/' +
       'Bank_Payment'
-    : 'C' + '/' + data.courseDefinition.name + '/' + data.patient.name;
+    : 'C' + '/' + data.courseDefinition.name + '/' + originalName;
 
   const salerId = data.userId;
   await prisma.coursePayment.create({

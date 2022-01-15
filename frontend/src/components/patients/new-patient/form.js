@@ -79,14 +79,22 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
           country={'eg'}
           name="phoneNo"
           value={formValue.phoneNo}
+          enableSearch
           onChange={phone => onChange({ ...formValue, phoneNo: phone })}
           containerStyle={{ marginTop: '10px' }}
           inputStyle={{ width: '100%', borderRadius: '0px' }}
-          defaultErrorMessage={
-            show && checkResult['phoneNo'].hasError
-              ? checkResult['phoneNo'].errorMessage
-              : ''
-          }
+          isValid={(value, country) => {
+            if (!value.match(/^(01(0|1|2|5)\d{8})$/) && show) {
+              return 'Invalid value: ' + value + ', ' + country.name;
+            } else {
+              return true;
+            }
+          }}
+          // errorMessage={
+          //   show && checkResult['phoneNo'].hasError
+          //     ? checkResult['phoneNo'].errorMessage
+          //     : ''
+          // }
         />
       </ShowIf>
 

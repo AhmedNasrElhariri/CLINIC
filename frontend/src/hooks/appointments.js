@@ -135,6 +135,12 @@ function useAppointments({
     onCompleted: () => {
       Alert.success('Business Notes Added Successfully');
     },
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
+        variables: { offset: 0, limit: 20 },
+      },
+    ],
   });
 
   return useMemo(

@@ -12,12 +12,16 @@ import {
 } from 'apollo-client/queries';
 import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
 import { getName } from 'services/accounting';
+import BusinessNotes from '../today-appointments/business-notes';
 import ArchiveAppointment from '../archive-appointment';
 import CompleteAppointment from '../complete-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
 import { ACTIONS, APPT_STATUS, APPT_TYPE } from 'utils/constants';
 const inialCurrentPage = {
   activePage: 1,
+};
+const initialValue = {
+  businessNotes: '',
 };
 const tabVsStatus = new Map([
   [0, APPT_STATUS.SCHEDULED],
@@ -32,7 +36,7 @@ function Appointments() {
   });
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
-
+  const [notes, setNotes] = useState(initialValue);
   const { visible, close, open } = useModal({});
   const {
     appointments,
@@ -41,6 +45,7 @@ function Appointments() {
     filterBranches,
     archive,
     complete,
+    updateNotes,
   } = useAppointments({
     page,
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
@@ -65,6 +70,14 @@ function Appointments() {
     appointment => {
       setAppointment(appointment);
       setPopUp('complete');
+      open();
+    },
+    [open]
+  );
+  const onAddBusinessNotes = useCallback(
+    appointment => {
+      setPopUp('notes');
+      setAppointment(appointment);
       open();
     },
     [open]
@@ -117,6 +130,15 @@ function Appointments() {
     },
     [appointment, archive, close]
   );
+  const addBusinessNotes = useCallback(() => {
+    close();
+    updateNotes({
+      variables: {
+        id: appointment.id,
+        notes: notes.businessNotes,
+      },
+    });
+  }, [appointment, updateNotes, notes]);
   const handleComplete = useCallback(
     ({ appointment }) => {
       close();
@@ -150,6 +172,7 @@ function Appointments() {
                 appointments={apps}
                 onArchive={onClickDone}
                 onComplete={onCompleteDone}
+                onAddBusinessNotes={onAddBusinessNotes}
                 defaultExpanded={true}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
@@ -206,6 +229,16 @@ function Appointments() {
           show={visible}
           onCancel={close}
           onOk={handleComplete}
+        />
+      )}
+      {popUp === 'notes' && (
+        <BusinessNotes
+          appointment={appointment}
+          show={visible}
+          onCancel={close}
+          notes={notes}
+          setNotes={setNotes}
+          onOk={addBusinessNotes}
         />
       )}
     </>

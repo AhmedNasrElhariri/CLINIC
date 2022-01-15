@@ -6,18 +6,28 @@ import * as moment from 'moment';
 import * as R from 'ramda';
 import { Div, CRButton, CRTabs } from 'components';
 import { useCourses } from 'hooks';
-import { Data, DataName, DataValue } from '../appointments/appointment/courses/style';
+import {
+  Data,
+  DataName,
+  DataValue,
+} from '../appointments/appointment/courses/style';
 import { formatDate } from 'utils/date';
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const CourseData = ({
-  course,
+  courseId,
+  courses,
   onEditPaid,
   onEditDoctor,
   onFinishCourse,
   onEditUnits,
   onDeleteCourse,
+  onEditHistoryPayment,
 }) => {
   const history = useHistory();
+  const course = useMemo(() => {
+    const FilteredCourse = courses?.filter(c => c.id === courseId);
+    return FilteredCourse[0] || {};
+  }, [courses, courseId]);
   let { sessions } = course;
   const updatedSessions = sortByDate(sessions);
   const { coursePayments } = useCourses({ courseId: course.id });
@@ -148,7 +158,11 @@ const CourseData = ({
                 />
               </CRTabs.CRContent>
               <CRTabs.CRContent>
-                <CoursePayment coursePayments={coursePayments} />
+                <CoursePayment
+                  coursePayments={coursePayments}
+                  onEdit={onEditHistoryPayment}
+                  courseId={courseId}
+                />
               </CRTabs.CRContent>
             </CRTabs.CRContentGroup>
           </CRTabs>

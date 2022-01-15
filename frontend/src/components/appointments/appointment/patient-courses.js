@@ -37,6 +37,8 @@ const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
   const [index, setIndex] = useState(0);
   const [header, setHeader] = useState('');
+  const [visa, setVisa] = useState(false);
+  const [bank, setBank] = useState(null);
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
@@ -219,6 +221,7 @@ const Course = ({ patientId }) => {
           specialtyId: formValue.specialtyId,
           userId: formValue.userId,
           branchId: formValue.branchId,
+          bank: bank,
         },
       });
     }
@@ -231,6 +234,7 @@ const Course = ({ patientId }) => {
     editCourse,
     editCoursePaymentHistory,
     finishCourse,
+    bank,
   ]);
   const InprogressCourses = useMemo(
     () => courses.filter(c => c.status === 'InProgress'),
@@ -344,6 +348,10 @@ const Course = ({ patientId }) => {
         type={type}
         loading={loading}
         users={users}
+        bank={bank}
+        setBank={setBank}
+        visa={visa}
+        setVisa={setVisa}
       />
     </>
   );

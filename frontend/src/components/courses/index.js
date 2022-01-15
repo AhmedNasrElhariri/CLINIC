@@ -47,6 +47,7 @@ const Courses = () => {
     editCourseDoctor,
     editCourseUnits,
     deleteCourse,
+    editCoursePaymentHistory,
     users,
     loading,
     finishCourse,
@@ -58,6 +59,8 @@ const Courses = () => {
     onEdit: () => {
       close();
       setFormValue(initValue);
+      setBank(null);
+      setVisa(false);
     },
     onEditDoctor: () => {
       close();
@@ -71,7 +74,7 @@ const Courses = () => {
       close();
       setFormValue(initValue);
     },
-    patientId: filter.patientId,
+    patientId: filter?.patientId,
     courseId: formValue?.id,
   });
 
@@ -119,6 +122,16 @@ const Courses = () => {
     course => {
       setType('finishCourse');
       setHeader('Finish the course');
+      setFormValue(course);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleClickEditHistoryPayment = useCallback(
+    data => {
+      const course = R.pick(['id', 'paid', 'paymentId'])(data);
+      setType('editPaymentHistory');
+      setHeader('Edit History Payment');
       setFormValue(course);
       open();
     },
@@ -174,6 +187,17 @@ const Courses = () => {
           consumed: formValue.consumed,
         },
       });
+    } else if (type === 'editPaymentHistory') {
+      editCoursePaymentHistory({
+        variables: {
+          courseId: formValue.id,
+          paid: formValue.paid,
+          paymentId: formValue.paymentId,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
+          branchId: formValue.branchId,
+        },
+      });
     } else if (type === 'deleteCourse') {
       deleteCourse({
         variables: {
@@ -201,6 +225,8 @@ const Courses = () => {
     editCourseDoctor,
     editCourse,
     finishCourse,
+    editCoursePaymentHistory,
+    bank,
   ]);
 
   const filteredCourses = useMemo(() => {
@@ -264,12 +290,14 @@ const Courses = () => {
         />
       ) : (
         <CourseData
-          course={course}
+          courseId={course?.id}
+          courses={courses}
           onEditPaid={handleClickEditPaid}
           onEditUnits={handleClickEditUnits}
           onEditDoctor={handleClickEditDoctor}
           onFinishCourse={handleFinishCourse}
           onDeleteCourse={handleDeleteCourse}
+          onEditHistoryPayment={handleClickEditHistoryPayment}
         />
       )}
     </>

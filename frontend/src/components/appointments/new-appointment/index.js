@@ -112,7 +112,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
   // }, [setFormValue]);
 
   useEffect(() => {
-    if (appointment) {
+    if (appointment && appointment.type === 'Examination') {
       setFormValue({
         branchId: appointment.branch.id,
         type: appointment.type,

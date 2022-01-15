@@ -106,7 +106,7 @@ function useCourses({
   const [editCoursePaymentHistory] = useMutation(EDIT_COURSE_PAYMENT_HISTORY, {
     onCompleted() {
       Alert.success('The Payment History has been Edited Successfully');
-      onEditCoursePaymentHistory && onEditCoursePaymentHistory();
+      onEdit && onEdit();
     },
     refetchQueries: [
       {

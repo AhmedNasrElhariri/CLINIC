@@ -196,11 +196,12 @@ function TodayAppointments() {
                   defaultExpanded={true}
                   close={close}
                 />
+                
               )}
             />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
-            <Filter
+            {/* <Filter
               appointments={waitingAppointments}
               branches={filterBranches}
               render={apps => (
@@ -213,10 +214,10 @@ function TodayAppointments() {
                   waiting={true}
                 />
               )}
-            />
+            /> */}
           </CRTabs.CRContent>
           <CRTabs.CRContent>
-            <Filter
+            {/* <Filter
               appointments={completedAppointments}
               branches={filterBranches}
               render={apps => (
@@ -227,7 +228,7 @@ function TodayAppointments() {
                   defaultExpanded={true}
                 />
               )}
-            />
+            /> */}
           </CRTabs.CRContent>
         </CRTabs.CRContentGroup>
       </CRTabs>
@@ -259,7 +260,11 @@ function TodayAppointments() {
         />
       )}
       {popUp === 'newAppointment' && (
-      <NewAppointment show={visible} onHide={close} appointment={appointment}/>
+        <NewAppointment
+          show={visible}
+          onHide={close}
+          appointment={appointment}
+        />
       )}
     </>
   );
