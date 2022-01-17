@@ -394,6 +394,7 @@ type Mutation {
   editCourse(
     courseId: ID!
     paid: Int!
+    visaPaid: Int
     branchId: ID
     specialtyId: ID
     userId: ID
@@ -408,7 +409,7 @@ type Mutation {
     bank: ID
     paymentId: ID!
   ): Course!
-  editCourseUnits(courseId: ID!, consumed: Int!): Course!
+  editCourseUnits(courseId: ID!, consumed: Int!, type: String!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
   finishCourse(courseId: ID!): Course!
   deleteCourse(courseId: ID!, refund: Int!): Course!

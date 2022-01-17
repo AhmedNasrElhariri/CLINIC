@@ -201,7 +201,7 @@ function TodayAppointments() {
             />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
-            {/* <Filter
+            <Filter
               appointments={waitingAppointments}
               branches={filterBranches}
               render={apps => (
@@ -214,10 +214,10 @@ function TodayAppointments() {
                   waiting={true}
                 />
               )}
-            /> */}
+            />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
-            {/* <Filter
+            <Filter
               appointments={completedAppointments}
               branches={filterBranches}
               render={apps => (
@@ -228,7 +228,7 @@ function TodayAppointments() {
                   defaultExpanded={true}
                 />
               )}
-            /> */}
+            />
           </CRTabs.CRContent>
         </CRTabs.CRContentGroup>
       </CRTabs>

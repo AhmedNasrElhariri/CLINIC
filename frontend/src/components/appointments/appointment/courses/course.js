@@ -16,6 +16,7 @@ const CourseData = ({
   onEditDoctor,
   onFinishCourse,
   onEditUnits,
+  onAddUnits,
   onDeleteCourse,
   onEditHistoryPayment,
 }) => {
@@ -63,9 +64,18 @@ const CourseData = ({
           <CRButton
             variant="primary"
             mr={1}
-            onClick={() => onEditUnits(course)}
+            onClick={() => onAddUnits(course)}
           >
             Add Units
+          </CRButton>
+        )}
+        {course.courseDefinition.type === 'Perunit' && (
+          <CRButton
+            variant="primary"
+            mr={1}
+            onClick={() => onEditUnits(course)}
+          >
+            Edit Units
           </CRButton>
         )}
         <CRButton variant="danger" onClick={() => onFinishCourse(course)}>

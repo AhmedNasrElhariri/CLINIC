@@ -15,6 +15,7 @@ const initValue = {
   course: null,
   discount: 0,
   paid: 0,
+  visaPaid: 0,
   consumed: 0,
   refund: 0,
   doctorId: null,
@@ -81,7 +82,17 @@ const Courses = () => {
   const handleClickEditUnits = useCallback(
     data => {
       const course = R.pick(['id', 'consumed'])(data);
-      setType('consumed');
+      setType('editConsumedUnits');
+      setHeader('Edit Consumed Units');
+      setFormValue(course);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleClickAddUnits = useCallback(
+    data => {
+      const course = R.pick(['id', 'consumed'])(data);
+      setType('addNewUnits');
       setHeader('Add New Units');
       setFormValue(course);
       open();
@@ -90,10 +101,10 @@ const Courses = () => {
   );
   const handleClickEditPaid = useCallback(
     data => {
-      const course = R.pick(['id', 'paid'])(data);
+      const course = R.pick(['id'])(data);
       setType('edit');
       setHeader('Add New Payment');
-      setFormValue(course);
+      setFormValue({ ...course, paid: 0, visaPaid: 0 });
       open();
     },
     [open, setFormValue, setType]
@@ -180,11 +191,20 @@ const Courses = () => {
           courseId: formValue.id,
         },
       });
-    } else if (type === 'consumed') {
+    } else if (type === 'addNewUnits') {
       editCourseUnits({
         variables: {
           courseId: formValue.id,
           consumed: formValue.consumed,
+          type: 'addNewUnits',
+        },
+      });
+    } else if (type === 'editConsumedUnits') {
+      editCourseUnits({
+        variables: {
+          courseId: formValue.id,
+          consumed: formValue.consumed,
+          type: 'editConsumedUnits',
         },
       });
     } else if (type === 'editPaymentHistory') {
@@ -210,6 +230,7 @@ const Courses = () => {
         variables: {
           courseId: formValue.id,
           paid: formValue.paid,
+          visaPaid: formValue.visaPaid,
           specialtyId: formValue.specialtyId,
           userId: formValue.userId,
           branchId: formValue.branchId,
@@ -294,6 +315,7 @@ const Courses = () => {
           courses={courses}
           onEditPaid={handleClickEditPaid}
           onEditUnits={handleClickEditUnits}
+          onAddUnits={handleClickAddUnits}
           onEditDoctor={handleClickEditDoctor}
           onFinishCourse={handleFinishCourse}
           onDeleteCourse={handleDeleteCourse}

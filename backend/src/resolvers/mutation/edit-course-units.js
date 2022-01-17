@@ -1,5 +1,5 @@
 import { prisma } from '@';
-const editCourseUnits = async (_, { courseId, consumed }, { userId }) => {
+const editCourseUnits = async (_, { courseId, consumed, type }, { userId }) => {
   const data = await prisma.course.findUnique({
     where: {
       id: courseId,
@@ -9,34 +9,65 @@ const editCourseUnits = async (_, { courseId, consumed }, { userId }) => {
       patient: true,
     },
   });
-  return prisma.course.update({
-    where: {
-      id: courseId,
-    },
-    data: {
-      patient: {
-        connect: {
-          id: data.patientId,
-        },
+  if (type === 'addNewUnits') {
+    return prisma.course.update({
+      where: {
+        id: courseId,
       },
-      courseDefinition: {
-        connect: {
-          id: data.courseDefinitionId,
+      data: {
+        patient: {
+          connect: {
+            id: data.patientId,
+          },
         },
-      },
-      user: {
-        connect: {
-          id: data.userId,
+        courseDefinition: {
+          connect: {
+            id: data.courseDefinitionId,
+          },
         },
-      },
-      doctor: {
-        connect: {
-          id: data.doctorId,
+        user: {
+          connect: {
+            id: data.userId,
+          },
         },
+        doctor: {
+          connect: {
+            id: data.doctorId,
+          },
+        },
+        consumed: data.consumed + consumed,
       },
-      consumed: data.consumed + consumed,
-    },
-  });
+    });
+  } else {
+    return prisma.course.update({
+      where: {
+        id: courseId,
+      },
+      data: {
+        patient: {
+          connect: {
+            id: data.patientId,
+          },
+        },
+        courseDefinition: {
+          connect: {
+            id: data.courseDefinitionId,
+          },
+        },
+        user: {
+          connect: {
+            id: data.userId,
+          },
+        },
+        doctor: {
+          connect: {
+            id: data.doctorId,
+          },
+        },
+        consumed: consumed,
+      },
+    });
+  }
 };
 
 export default editCourseUnits;

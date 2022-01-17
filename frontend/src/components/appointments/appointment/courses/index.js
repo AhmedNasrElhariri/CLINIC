@@ -104,7 +104,7 @@ function NewCourse({
   const { banksDefinition } = useBankDefinition({});
   const [checkedDays, setCheckedDays] = useState(options);
   const { listActionDoctors, actionDoctors } = usePermissions();
-
+  console.log(formValue,'FFFFFFFFF');
   useEffect(() => {
     listActionDoctors(ACTIONS.Create_Course);
   }, []);
@@ -288,14 +288,22 @@ function NewCourse({
                 />
               </Form>
             )}
-            <CRNumberInput label="Paid" name="paid" title="Paid" />
+            <CRNumberInput label="Cash Payment" name="paid" title="Paid" />
+            {bank != null && (
+              <CRNumberInput
+                label="Bank Payment"
+                name="visaPaid"
+                value={formValue.visaPaid}
+                title="visaPaid"
+              />
+            )}
             <CRBrancheTree
               formValue={formValue}
               onChange={onChange}
               action={ACTIONS.ViewCourses_Patient}
             />
           </>
-        ) : type === 'consumed' ? (
+        ) : type === 'addNewUnits' || type === 'editConsumedUnits' ? (
           <CRNumberInput
             label="Consumed Units"
             name="consumed"

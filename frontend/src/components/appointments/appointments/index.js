@@ -154,34 +154,38 @@ function Appointments() {
     <>
       <H3 mb={64}>Appointments</H3>
       <Div mb={4}>
-        {/* <CRTabs onChange={index => setStatus(tabVsStatus.get(index))}>
+        <CRTabs
+          onChange={index =>
+            setFormValue({ ...formValue, status: tabVsStatus.get(index) })
+          }
+        >
           <CRTabs.CRTabsGroup>
             <CRTabs.CRTab>Main Appointments</CRTabs.CRTab>
             <CRTabs.CRTab>Waiting Appointments</CRTabs.CRTab>
             <CRTabs.CRTab>Completed Appointments</CRTabs.CRTab>
           </CRTabs.CRTabsGroup>
           <CRTabs.CRContentGroup>
-            <CRTabs.CRContent> */}
-        <BranchFilter
-          appointments={appointments}
-          branches={filterBranches}
-          render={apps => (
-            <>
-              <Filter formValue={formValue} onChange={setFormValue} />
-              <ListAppointments
-                appointments={apps}
-                onArchive={onClickDone}
-                onComplete={onCompleteDone}
-                onAddBusinessNotes={onAddBusinessNotes}
-                defaultExpanded={true}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                pages={pages}
+            <CRTabs.CRContent>
+              <BranchFilter
+                appointments={appointments}
+                branches={filterBranches}
+                render={apps => (
+                  <>
+                    <Filter formValue={formValue} onChange={setFormValue} />
+                    <ListAppointments
+                      appointments={apps}
+                      onArchive={onClickDone}
+                      onComplete={onCompleteDone}
+                      onAddBusinessNotes={onAddBusinessNotes}
+                      defaultExpanded={true}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      pages={pages}
+                    />
+                  </>
+                )}
               />
-            </>
-          )}
-        />
-        {/* </CRTabs.CRContent>
+            </CRTabs.CRContent>
             <CRTabs.CRContent>
               <BranchFilter
                 appointments={appointments}
@@ -213,7 +217,7 @@ function Appointments() {
               />
             </CRTabs.CRContent>
           </CRTabs.CRContentGroup>
-        </CRTabs> */}
+        </CRTabs>
       </Div>
       {popUp === 'archive' && (
         <ArchiveAppointment

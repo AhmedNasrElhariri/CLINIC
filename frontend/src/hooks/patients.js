@@ -81,7 +81,7 @@ function usePatients({
       const newPatients = patients.map(p =>
         p.id === patient.id ? patient : p
       );
-      updateCache(newPatients);
+      // updateCache(newPatients);
       onEdit && onEdit();
     },
     onCompleted: ({ createPatient: patient }) => {

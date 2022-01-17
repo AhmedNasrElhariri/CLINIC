@@ -151,11 +151,13 @@ export const EDIT_COURSE = gql`
     $specialtyId: ID
     $userId: ID
     $paid: Int!
+    $visaPaid: Int
     $bank: ID
   ) {
     editCourse(
       courseId: $courseId
       paid: $paid
+      visaPaid: $visaPaid
       branchId: $branchId
       specialtyId: $specialtyId
       userId: $userId
@@ -225,8 +227,8 @@ export const EDIT_COURSE_PAYMENT_HISTORY = gql`
 `;
 
 export const EDIT_COURSE_UNITS = gql`
-  mutation editCourseUnits($courseId: ID!, $consumed: Int!) {
-    editCourseUnits(courseId: $courseId, consumed: $consumed) {
+  mutation editCourseUnits($courseId: ID!, $consumed: Int!, $type: String!) {
+    editCourseUnits(courseId: $courseId, consumed: $consumed, type: $type) {
       id
       price
       discount

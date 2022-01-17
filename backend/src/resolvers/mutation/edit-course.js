@@ -3,7 +3,15 @@ import { GetLevel } from '@/services/get-level';
 import CryptoJS from 'crypto-js';
 const editCourse = async (
   _,
-  { courseId, paid, branchId, specialtyId, userId: userID, bank = null },
+  {
+    courseId,
+    paid,
+    visaPaid = 0,
+    branchId,
+    specialtyId,
+    userId: userID,
+    bank = null,
+  },
   { userId, organizationId }
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
@@ -21,21 +29,22 @@ const editCourse = async (
     'secret key 123'
   );
   const originalName = await decryptedName.toString(CryptoJS.enc.Utf8);
-  const payment = bank
-    ? 'C' +
-      '/' +
-      data.courseDefinition.name +
-      '/' +
-      originalName +
-      '/' +
-      'Bank_Payment'
-    : 'C' + '/' + data.courseDefinition.name + '/' + originalName;
+  const bankPayment =
+    'C' +
+    '/' +
+    data.courseDefinition.name +
+    '/' +
+    originalName +
+    '/' +
+    'Bank_Payment';
+  const cashPayment =
+    'C' + '/' + data.courseDefinition.name + '/' + originalName;
 
   const salerId = data.userId;
   await prisma.coursePayment.create({
     data: Object.assign(
       {
-        payment: paid,
+        payment: bank != null ? paid + visaPaid : paid,
         date: new Date(),
         user: {
           connect: {
@@ -72,13 +81,56 @@ const editCourse = async (
     ),
   });
   if (bank != null) {
+    if (paid > 0) {
+      await prisma.revenue.create({
+        data: Object.assign(
+          {
+            level,
+            name: cashPayment,
+            date: new Date(),
+            amount: paid,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
+            },
+          },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
+          }
+        ),
+      });
+    }
     await prisma.bankRevenue.create({
       data: Object.assign(
         {
           level,
-          name: payment,
+          name: bankPayment,
           date: new Date(),
-          amount: paid,
+          amount: visaPaid,
           organization: {
             connect: {
               id: organizationId,
@@ -123,7 +175,7 @@ const editCourse = async (
       data: Object.assign(
         {
           level,
-          name: payment,
+          name: cashPayment,
           date: new Date(),
           amount: paid,
           organization: {
@@ -190,6 +242,8 @@ const editCourse = async (
       paid:
         paid === data.price || paid >= data.price
           ? data.price
+          : bank != null
+          ? paid + data.paid + visaPaid
           : paid + data.paid,
       price: data.price,
     },

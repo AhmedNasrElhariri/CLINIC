@@ -27,10 +27,11 @@ const model = Schema.Model({
   ),
 });
 
-const isPrimary = ({ type }) => type === membershipTypes[0].value;
-const isSecondary = ({ type }) => type === membershipTypes[1].value;
+const isPrimary = ({ type }) => type === membershipTypes[0].id;
+const isSecondary = ({ type }) => type === membershipTypes[1].id;
 
 const NewPatient = ({ formValue, onChange }) => {
+  
   return (
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput

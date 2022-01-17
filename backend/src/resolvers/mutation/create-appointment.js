@@ -55,7 +55,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
       throw new APIExceptcion('Can not set to past time');
     }
   }
-  
+
   let appointmentType = APPOINTMENTS_STATUS.SCHEDULED;
   if (waiting) {
     appointmentType = APPOINTMENTS_STATUS.WAITING;
@@ -66,6 +66,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
       {
         ...rest,
         status: appointmentType,
+        businessNotes: 'No Notes',
         patient: {
           connect: {
             id: patientId,
@@ -111,7 +112,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
             },
           ],
         },
-      },
+      }
     ),
   });
 
