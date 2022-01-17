@@ -11,6 +11,7 @@ import {
   CRCheckBoxGroup,
   Div,
   CRLabel,
+  CRRadio,
 } from 'components';
 import moment from 'moment';
 
@@ -23,6 +24,10 @@ const SEX = ['Male', 'Female'].map(s => ({
   name: s,
   value: s,
 }));
+const ageOptions = [
+  { name: 'Age', value: 'age' },
+  { name: 'Birth Of Date', value: 'birthOfDate' },
+];
 
 const options = [
   { name: 'FaceBook', value: 'facebook' },
@@ -83,13 +88,13 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
           onChange={phone => onChange({ ...formValue, phoneNo: phone })}
           containerStyle={{ marginTop: '10px' }}
           inputStyle={{ width: '100%', borderRadius: '0px' }}
-          isValid={(value, country) => {
-            if (!value.match(/^(01(0|1|2|5)\d{8})$/) && show) {
-              return 'Invalid value: ' + value + ', ' + country.name;
-            } else {
-              return true;
-            }
-          }}
+          // isValid={(value, country) => {
+          //   if (!value.match(/^(01(0|1|2|5)\d{8})$/) && show) {
+          //     return 'Invalid value: ' + value + ', ' + country.name;
+          //   } else {
+          //     return true;
+          //   }
+          // }}
           // errorMessage={
           //   show && checkResult['phoneNo'].hasError
           //     ? checkResult['phoneNo'].errorMessage
@@ -102,18 +107,22 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
         <CRTextInput label="Guardian's Name" name="guardianName" />
         <CRTextInput label="Guardian's Phone No" name="phoneNo" />
       </ShowIf>
+      <CRRadio options={ageOptions} name="ageOption" />
+      {formValue.ageOption === 'age' && (
+        <CRNumberInput
+          label="Age"
+          name="age"
+          errorMessage={
+            show && checkResult['age'].hasError
+              ? checkResult['age'].errorMessage
+              : ''
+          }
+        />
+      )}
 
-      <CRNumberInput
-        label="Age"
-        name="age"
-        errorMessage={
-          show && checkResult['age'].hasError
-            ? checkResult['age'].errorMessage
-            : ''
-        }
-      />
-
-      <CRDatePicker label="Birth of Date" block name="date" />
+      {formValue.ageOption === 'birthOfDate' && (
+        <CRDatePicker label="Birth of Date" block name="date" />
+      )}
 
       <CRSelectInput
         label="Sex"

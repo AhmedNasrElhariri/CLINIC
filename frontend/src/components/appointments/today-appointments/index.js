@@ -118,6 +118,7 @@ function TodayAppointments() {
       othersName,
     }) => {
       close();
+      console.log(sessions, 'SSSSSSSSSSSS');
       archive({
         variables: {
           id: appointment.id,
@@ -129,6 +130,7 @@ function TodayAppointments() {
             name: getName({ session, appointment }),
             price: session.price,
             number: session.number,
+            id: session.id,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,
@@ -152,6 +154,7 @@ function TodayAppointments() {
     },
     [appointment, archive, close]
   );
+
   const addBusinessNotes = useCallback(() => {
     close();
     updateNotes({
@@ -196,7 +199,6 @@ function TodayAppointments() {
                   defaultExpanded={true}
                   close={close}
                 />
-                
               )}
             />
           </CRTabs.CRContent>

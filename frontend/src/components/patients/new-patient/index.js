@@ -12,6 +12,7 @@ const initialValues = {
   name: '',
   phoneNo: '',
   area: '',
+  ageOption: 'age',
   reference: [],
   age: 0,
   date: new Date(),
@@ -24,9 +25,8 @@ const model = Schema.Model({
     .minLength(6, 'The field cannot be less than 6 characters')
     .maxLength(30, 'The field cannot be greater than 30 characters')
     .isRequired('User name is required'),
-  phoneNo: StringType()
-    .isRequired('Phone No is  Required'),
-    // .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
+  phoneNo: StringType().isRequired('Phone No is  Required'),
+  // .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
   age: NumberType('Age should be a number').range(
     0,
     100,
@@ -78,9 +78,10 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       onOk={() => {
         setShow(true);
         if (validate) {
+          const { ageOption, ...rest } = formValue;
           createPatient({
             variables: {
-              input: { ...formValue },
+              input: { ...rest },
             },
           });
         }

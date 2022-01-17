@@ -205,6 +205,7 @@ model Organization {
   Tooth                     Tooth[]
   ToothTransaction          ToothTransaction[]
   PageSetup                 PageSetup[]
+  SessionTransaction        SessionTransaction[]
 }
 
 model User {
@@ -272,6 +273,7 @@ model User {
   ToothTransactionDoctors   ToothTransaction[]          @relation("toothDoctor")
   PatientViewStatus         PatientViewStatus[]
   PatientField              PatientField[]
+  SessionTransaction        SessionTransaction[]
 }
 
 model Patient {
@@ -1017,15 +1019,29 @@ model Price {
 }
 
 model SessionDefinition {
-  id             String        @id @default(uuid())
-  name           String
+  id                 String               @id @default(uuid())
+  name               String
+  price              Float
+  duration           Int                  @default(5)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
+  organization       Organization         @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  Appointment        Appointment[]
+  SessionTransaction SessionTransaction[]
+}
+
+model SessionTransaction {
+  id             String            @id @default(uuid())
+  number         Int
   price          Float
-  duration       Int           @default(5)
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @default(now()) @updatedAt
-  organization   Organization  @relation(fields: [organizationId], references: [id])
+  date           DateTime
+  session        SessionDefinition @relation(fields: [sessionId], references: [id])
+  sessionId      String
+  user           User              @relation(fields: [userId], references: [id])
+  userId         String
+  organization   Organization      @relation(fields: [organizationId], references: [id])
   organizationId String
-  Appointment    Appointment[]
 }
 
 model BankDefinition {

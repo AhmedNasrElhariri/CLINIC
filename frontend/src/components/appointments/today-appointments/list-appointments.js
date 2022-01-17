@@ -8,11 +8,11 @@ import {
   CRButton,
   CRTable,
 } from 'components';
-import { Tooltip, Whisper } from 'rsuite';
+import { Tooltip, Whisper, Dropdown } from 'rsuite';
 import { isScheduled, isWaiting } from 'services/appointment';
 import { canAjdust } from 'services/appointment';
 import { Can } from 'components/user/can';
-import { PrintOLIcon } from 'components/icons';
+import { PrintOLIcon, MoreIcon } from 'components/icons';
 import { formatDate } from 'utils/date';
 import { FULL_DATE_FORMAT, STANDARD_DATE_FORMAT } from 'utils/constants';
 
@@ -59,7 +59,7 @@ function ListAppointments({
         }}
         affixHorizontalScrollbar
       >
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }, indx) => (
@@ -67,7 +67,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (
@@ -77,7 +77,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (
@@ -87,7 +87,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ patient }) => (
@@ -96,7 +96,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ patient }) => (
@@ -116,7 +116,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ doctor }) => (
@@ -124,7 +124,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ user }) => (
@@ -132,7 +132,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ specialty }) => (
@@ -140,7 +140,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn >
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ branch }) => (
@@ -196,6 +196,18 @@ function ListAppointments({
                     </Can>
                   </>
                 )}
+                {/* <Dropdown
+                  
+                  icon={<MoreIcon width="25px" height="25px"/>}
+                >
+                  <Dropdown.Item>New File</Dropdown.Item>
+                  <Dropdown.Item>New File with Current Profile</Dropdown.Item>
+                  <Dropdown.Item>Download As...</Dropdown.Item>
+                  <Dropdown.Item>Export PDF</Dropdown.Item>
+                  <Dropdown.Item>Export HTML</Dropdown.Item>
+                  <Dropdown.Item>Settings</Dropdown.Item>
+                  <Dropdown.Item>About</Dropdown.Item>
+                </Dropdown> */}
                 <Whisper
                   placement="top"
                   controlId="control-id-hover"

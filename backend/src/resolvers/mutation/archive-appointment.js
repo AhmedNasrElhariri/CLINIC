@@ -30,6 +30,30 @@ const archiveAppointment = async (
   { userId, organizationId }
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
+  sessions.forEach(async ({ price, number, id }) => {
+    await prisma.sessionTransaction.create({
+      data: {
+        number,
+        price,
+        date: new Date(),
+        session: {
+          connect: {
+            id,
+          },
+        },
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+  });
   if (bank == null && company == null) {
     await createAppointmentRevenue(
       createAppointmentRevenueFromSessions(

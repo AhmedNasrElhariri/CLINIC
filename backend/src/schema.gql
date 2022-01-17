@@ -896,6 +896,7 @@ input SessionInput {
   name: String!
   price: Float!
   number: Int!
+  id: ID!
 }
 
 input Discount {
