@@ -66,7 +66,6 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
       {
         ...rest,
         status: appointmentType,
-        businessNotes: 'No Notes',
         patient: {
           connect: {
             id: patientId,

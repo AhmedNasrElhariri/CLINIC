@@ -45,6 +45,14 @@ const CoursePayment = ({ coursePayments, onEdit, courseId }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ type }) => (
+              <CRTable.CRCellStyled bold>{type}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Payment</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ payment }) => (
@@ -57,7 +65,7 @@ const CoursePayment = ({ coursePayments, onEdit, courseId }) => {
           <CRTable.CRCell>
             {data => (
               <CRTable.CRCellStyled bold>
-                {toDay(data.date) && (
+                {toDay(data.date) && data?.type === 'Payment' && (
                   <Icon
                     icon="edit"
                     onClick={() => {

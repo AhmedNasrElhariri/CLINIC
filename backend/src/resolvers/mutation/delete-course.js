@@ -15,6 +15,23 @@ const deleteCourse = async (
     new Date() < data.startDate
       ? COURSE_STATUS.REJECTED
       : COURSE_STATUS.CANCELLED;
+  await prisma.coursePayment.create({
+    data: Object.assign({
+      payment: refund,
+      type:'Refund',
+      date: new Date(),
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+      course: {
+        connect: {
+          id: courseId,
+        },
+      },
+    }),
+  });
   await prisma.expense.create({
     data: {
       name: 'Refund',

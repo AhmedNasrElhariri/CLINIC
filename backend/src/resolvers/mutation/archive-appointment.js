@@ -2,6 +2,8 @@ import { prisma } from '@';
 import {
   createAppointmentRevenue,
   createAppointmentRevenueFromSessions,
+  createAppointmentBankRevenue,
+  createAppointmentBankRevenueFromSessions,
 } from '@/services/revenue.service';
 import { GetLevel } from '@/services/get-level';
 import { createAppointmentExpense } from '@/services/expense.service';
@@ -226,52 +228,65 @@ const archiveAppointment = async (
         ),
       });
     } else {
-      await prisma.bankRevenue.create({
-        data: Object.assign(
-          {
-            date: new Date(date),
-            name,
-            amount: sub,
-            level,
-            organization: {
-              connect: {
-                id: organizationId,
-              },
-            },
-            bank: {
-              connect: {
-                id: bank,
-              },
-            },
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
-          },
-          specialtyId && {
-            specialty: {
-              connect: {
-                id: specialtyId,
-              },
-            },
-          },
-          branchId && {
-            branch: {
-              connect: {
-                id: branchId,
-              },
-            },
-          },
-          userID && {
-            doctor: {
-              connect: {
-                id: userID,
-              },
-            },
-          }
-        ),
-      });
+      ///
+      await createAppointmentBankRevenue(
+        createAppointmentBankRevenueFromSessions(
+          userId,
+          sessions,
+          organizationId,
+          branchId,
+          date,
+          specialtyId,
+          userID,
+          bank
+        )
+      );
+      // await prisma.bankRevenue.create({
+      //   data: Object.assign(
+      //     {
+      //       date: new Date(date),
+      //       name,
+      //       amount: sub,
+      //       level,
+      //       organization: {
+      //         connect: {
+      //           id: organizationId,
+      //         },
+      //       },
+      //       bank: {
+      //         connect: {
+      //           id: bank,
+      //         },
+      //       },
+      //       user: {
+      //         connect: {
+      //           id: userId,
+      //         },
+      //       },
+      //     },
+      //     specialtyId && {
+      //       specialty: {
+      //         connect: {
+      //           id: specialtyId,
+      //         },
+      //       },
+      //     },
+      //     branchId && {
+      //       branch: {
+      //         connect: {
+      //           id: branchId,
+      //         },
+      //       },
+      //     },
+      //     userID && {
+      //       doctor: {
+      //         connect: {
+      //           id: userID,
+      //         },
+      //       },
+      //     }
+      //   ),
+      // });
     }
   }
   if (company != null) {

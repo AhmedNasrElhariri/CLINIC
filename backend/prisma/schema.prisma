@@ -1179,6 +1179,7 @@ model CoursePayment {
   id          String     @id @default(uuid())
   payment     Int
   date        DateTime
+  type        String     @default("Payment")
   user        User       @relation("coursePaymentUser", fields: [userId], references: [id])
   userId      String
   doctor      User?      @relation("coursePaymentDoctor", fields: [doctorId], references: [id])

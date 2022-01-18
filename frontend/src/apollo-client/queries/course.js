@@ -111,6 +111,7 @@ export const LIST_COURSE_PAYMENTS = gql`
       id
       payment
       date
+      type
       user {
         id
         name

@@ -44,7 +44,7 @@ const CourseData = ({
             mr={1}
             onClick={() => onDeleteCourse(course)}
           >
-            Delete This Course
+            Cancel This Course
           </CRButton>
         )}
         <CRButton
@@ -61,11 +61,7 @@ const CourseData = ({
           </CRButton>
         )}
         {course.courseDefinition.type === 'Perunit' && (
-          <CRButton
-            variant="primary"
-            mr={1}
-            onClick={() => onAddUnits(course)}
-          >
+          <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
             Add Units
           </CRButton>
         )}
@@ -78,9 +74,11 @@ const CourseData = ({
             Edit Units
           </CRButton>
         )}
-        <CRButton variant="danger" onClick={() => onFinishCourse(course)}>
-          Finish
-        </CRButton>
+        {course.status === 'InProgress' && (
+          <CRButton variant="danger" onClick={() => onFinishCourse(course)}>
+            Finish
+          </CRButton>
+        )}
         <Data>
           <DataName>Name : </DataName>
           <DataValue>{course?.courseDefinition?.name}</DataValue>

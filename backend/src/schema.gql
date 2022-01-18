@@ -1646,6 +1646,7 @@ input CourseInput {
 type CoursePayment {
   id: ID!
   payment: Int!
+  type: String!
   date: Date!
   user: User!
   course: Course!

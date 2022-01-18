@@ -8,7 +8,7 @@ import CRDateCell from './date-cell';
 
 const CRTableStyled = styled(Table).attrs(({ data }) => ({
   rowHeight: 37,
-  minHeight: data.length * 37 + 40,
+  // minHeight: data.length * 37 + 40,
 }))`
   cursor: pointer;
   & .rs-table-row {

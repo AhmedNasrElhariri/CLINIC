@@ -142,7 +142,7 @@ const Course = ({ patientId }) => {
     data => {
       const course = R.pick(['id'])(data);
       setType('deleteCourse');
-      setHeader('Delete The Course');
+      setHeader('Cancel The Course');
       setFormValue(course);
       open();
     },
@@ -264,24 +264,28 @@ const Course = ({ patientId }) => {
   const FinishedCourses = useMemo(
     () =>
       courses.filter(
-        c =>
-          c.status === 'Finished' ||
-          c.status === 'Rejected' ||
-          c.status === 'EarlyFinished'
+        c => c.status === 'Finished' || c.status === 'EarlyFinished'
       ),
     [courses]
   );
+  const CancelledCourses = useMemo(
+    () =>
+      courses.filter(c => c.status === 'Cancelled' || c.status === 'Rejected'),
+    [courses]
+  );
+  console.log(CancelledCourses, 'CancelledCourses');
   return (
     <>
       <CRTabs>
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>InProgress Courses</CRTabs.CRTab>
           <CRTabs.CRTab>Finished Courses</CRTabs.CRTab>
+          <CRTabs.CRTab>Cancelled Courses</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
             <Div display="flex" justifyContent="space-between">
-              <Div width={800}>
+              <Div width={900}>
                 <>
                   {InprogressCourses.map((course, idx) => (
                     <CourseButton
@@ -320,9 +324,9 @@ const Course = ({ patientId }) => {
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Div display="flex" justifyContent="space-between">
-              <Div width={800}>
-                {FinishedCourses.map((course, idx) => (
-                  <>
+              <Div width={900}>
+                <>
+                  {FinishedCourses.map((course, idx) => (
                     <CourseButton
                       variant="primary"
                       onClick={() => setIndex(idx)}
@@ -330,31 +334,69 @@ const Course = ({ patientId }) => {
                     >
                       {course.courseDefinition.name}
                     </CourseButton>
-                    <Div width={200}>
-                      <Can I="Create" an="Course">
-                        <CRButton variant="primary" onClick={handleClickCreate}>
-                          Add New Course+
-                        </CRButton>
-                      </Can>
-                    </Div>
-                    <Div>
-                      {FinishedCourses.length > 0 ? (
-                        <CourseData
-                          courses={FinishedCourses}
-                          indx={index}
-                          onEditPaid={handleClickEditPaid}
-                          onEditUnits={handleClickEditUnits}
-                          onEditDoctor={handleClickEditDoctor}
-                          onFinishCourse={handleFinishCourse}
-                          onDeleteCourse={handleDeleteCourse}
-                          onEditHistoryPayment={handleClickEditHistoryPayment}
-                        />
-                      ) : (
-                        <H3>No courses</H3>
-                      )}
-                    </Div>
-                  </>
-                ))}
+                  ))}
+                  <Div width={200}>
+                    <Can I="Create" an="Course">
+                      <CRButton variant="primary" onClick={handleClickCreate}>
+                        Add New Course+
+                      </CRButton>
+                    </Can>
+                  </Div>
+                  {FinishedCourses.length > 0 ? (
+                    <CourseData
+                      courses={FinishedCourses}
+                      indx={index}
+                      onEditPaid={handleClickEditPaid}
+                      onEditUnits={handleClickEditUnits}
+                      onAddUnits={handleClickAddUnits}
+                      onEditDoctor={handleClickEditDoctor}
+                      onFinishCourse={handleFinishCourse}
+                      onDeleteCourse={handleDeleteCourse}
+                      onEditHistoryPayment={handleClickEditHistoryPayment}
+                    />
+                  ) : (
+                    <H3>No courses</H3>
+                  )}
+                </>
+              </Div>
+            </Div>
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <Div display="flex" justifyContent="space-between">
+              <Div width={900}>
+                <>
+                  {CancelledCourses.map((course, idx) => (
+                    <CourseButton
+                      variant="primary"
+                      onClick={() => setIndex(idx)}
+                      key={idx}
+                    >
+                      {course.courseDefinition.name}
+                    </CourseButton>
+                  ))}
+                  <Div width={200}>
+                    <Can I="Create" an="Course">
+                      <CRButton variant="primary" onClick={handleClickCreate}>
+                        Add New Course+
+                      </CRButton>
+                    </Can>
+                  </Div>
+                  {CancelledCourses.length > 0 ? (
+                    <CourseData
+                      courses={CancelledCourses}
+                      indx={index}
+                      onEditPaid={handleClickEditPaid}
+                      onEditUnits={handleClickEditUnits}
+                      onAddUnits={handleClickAddUnits}
+                      onEditDoctor={handleClickEditDoctor}
+                      onFinishCourse={handleFinishCourse}
+                      onDeleteCourse={handleDeleteCourse}
+                      onEditHistoryPayment={handleClickEditHistoryPayment}
+                    />
+                  ) : (
+                    <H3>No courses</H3>
+                  )}
+                </>
               </Div>
             </Div>
           </CRTabs.CRContent>
