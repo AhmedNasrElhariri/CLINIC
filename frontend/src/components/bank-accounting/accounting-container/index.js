@@ -10,7 +10,7 @@ import { useBankAccounting, useAppointments, useModal, useForm } from 'hooks';
 import Filter from './filter';
 import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
-
+import { Can } from 'components/user/can';
 import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
@@ -74,19 +74,21 @@ const BankAccountingContainer = () => {
     <>
       <MainContainer title="Banking" nobody></MainContainer>
       <CRCard borderless>
-        <Toolbar
-          activeKey={view}
-          onSelect={setView}
-          data={{ revenues, revenues }}
-          onChangePeriod={setPeriod}
-        />
+        <Can I="ViewFilters" an="Accounting">
+          <Toolbar
+            activeKey={view}
+            onSelect={setView}
+            data={{ revenues, revenues }}
+            onChangePeriod={setPeriod}
+          />
 
-        <Div display="flex" my={4}>
-          <H6>Showing for :</H6>
-          <H6 variant="primary" ml={2} fontWeight="bold">
-            {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
-          </H6>
-        </Div>
+          <Div display="flex" my={4}>
+            <H6>Showing for :</H6>
+            <H6 variant="primary" ml={2} fontWeight="bold">
+              {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
+            </H6>
+          </Div>
+        </Can>
         <Filter formValue={filter} setFormValue={setFilter} />
         <Div>
           <Div display="flex">

@@ -126,8 +126,9 @@ export const ACTIONS = Object.freeze({
   ViewImages_Patient: 'ViewImages_Patient',
   ViewCourses_Patient: 'ViewCourses_Patient',
   ViewSessionsPulses_Patient: 'ViewSessionsPulses_Patient',
-  GenerateMonthly_PulsesReport: 'GenerateMonthly_PulsesReport',
-  GenerateDaily_PulsesReport: 'GenerateDaily_PulsesReport',
-  View_Medicine: 'View_Medicine',
-  View_Permission: 'View_Permission',
+  GenerateMonthly_PulsesReport:'GenerateMonthly_PulsesReport',
+  GenerateDaily_PulsesReport:'GenerateDaily_PulsesReport',
+  View_Medicine:'View_Medicine',
+  View_Permission:'View_Permission',
+  ViewFilters_Accounting:'ViewFilters_Accounting',
 });

@@ -584,8 +584,8 @@ type Patient implements Searchable {
   phoneNo: String!
   code: String!
   codeNumber: Int!
-  reference: [String!]
-  area: String!
+  reference: [String]
+  area: String
   age: Int!
   date: Date
   sex: Sex!

@@ -124,6 +124,7 @@ function Root() {
                 onClear={clearNotifications}
                 formValue={formValue}
                 setFormValue={setFormValue}
+                user={user}
               />
               <ContentStyled>
                 <AppRouter></AppRouter>

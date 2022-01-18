@@ -53,7 +53,7 @@ const createPatient = async (
       id,
     },
   });
-  const areaName = getArea(area);
+  const areaName = area ? getArea(area) : '';
   const cryptedName = await CryptoJS.AES.encrypt(
     name,
     'secret key 123'

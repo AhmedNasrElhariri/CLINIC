@@ -2355,4 +2355,16 @@ export const areas = [
     city_name_ar: 'الكوثر',
     city_name_en: 'Alkawthar',
   },
+  {
+    id: '397',
+    governorate_id: '1',
+    city_name_ar: 'جسر السويس',
+    city_name_en: 'jisr alsuways',
+  },
+  {
+    id: '398',
+    governorate_id: '1',
+    city_name_ar: 'هليوبوليس',
+    city_name_en: 'Heliopolis',
+  },
 ];

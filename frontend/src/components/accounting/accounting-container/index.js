@@ -217,21 +217,22 @@ const AccountingContainer = () => {
       ></MainContainer>
       <Tabs onSelect={setActiveTab} activeTab={activeTab} />
       <CRCard borderless>
-        <Toolbar
-          onAddRevenue={createRevenueForm.show}
-          onAddExpense={createExpenseForm.show}
-          activeKey={view}
-          onSelect={setView}
-          data={{ revenues, expenses }}
-          onChangePeriod={setPeriod}
-        />
-        <Div display="flex" my={4}>
-          <H6>Showing for :</H6>
-          <H6 variant="primary" ml={2} fontWeight="bold">
-            {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
-          </H6>
-        </Div>
-
+        <Can I="ViewFilters" an="Accounting">
+          <Toolbar
+            onAddRevenue={createRevenueForm.show}
+            onAddExpense={createExpenseForm.show}
+            activeKey={view}
+            onSelect={setView}
+            data={{ revenues, expenses }}
+            onChangePeriod={setPeriod}
+          />
+          <Div display="flex" my={4}>
+            <H6>Showing for :</H6>
+            <H6 variant="primary" ml={2} fontWeight="bold">
+              {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
+            </H6>
+          </Div>
+        </Can>
         <Div>
           {activeTab === '0' ? (
             <Div display="flex">

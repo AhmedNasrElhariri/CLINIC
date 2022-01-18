@@ -4,6 +4,7 @@ import { MainContainer, Div, CRCard, H6 } from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../../accounting/profit';
+import { Can } from 'components/user/can';
 import { useInsuranceAccounting, useAppointments } from 'hooks';
 import Filter from './filter';
 import BranchFilter from '../../filters';
@@ -18,7 +19,9 @@ const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
-  const { filterBranches } = useAppointments({action:ACTIONS.ViewInsurance_Accounting});
+  const { filterBranches } = useAppointments({
+    action: ACTIONS.ViewInsurance_Accounting,
+  });
   const { revenues, timeFrame } = useInsuranceAccounting({
     view,
     period,
@@ -34,19 +37,21 @@ const BankAccountingContainer = () => {
     <>
       <MainContainer title="Insurance" nobody></MainContainer>
       <CRCard borderless>
-        <Toolbar
-          activeKey={view}
-          onSelect={setView}
-          data={{ revenues, revenues }}
-          onChangePeriod={setPeriod}
-        />
+        <Can I="ViewFilters" an="Accounting">
+          <Toolbar
+            activeKey={view}
+            onSelect={setView}
+            data={{ revenues, revenues }}
+            onChangePeriod={setPeriod}
+          />
 
-        <Div display="flex" my={4}>
-          <H6>Showing for :</H6>
-          <H6 variant="primary" ml={2} fontWeight="bold">
-            {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
-          </H6>
-        </Div>
+          <Div display="flex" my={4}>
+            <H6>Showing for :</H6>
+            <H6 variant="primary" ml={2} fontWeight="bold">
+              {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
+            </H6>
+          </Div>
+        </Can>
         <Filter formValue={filter} setFormValue={setFilter} />
         <Div>
           <Div display="flex">
@@ -67,7 +72,7 @@ const BankAccountingContainer = () => {
                       alignItems="center"
                     >
                       <PdfView
-                        data={{ revenues, expenses:[] }}
+                        data={{ revenues, expenses: [] }}
                         period={timeFrame}
                       />
                     </Div>
