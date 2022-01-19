@@ -10,6 +10,10 @@ import YAxis from '@rsuite/charts/lib/components/YAxis';
 import { Div, MainContainer } from 'components';
 import { useAppointments } from 'hooks';
 import { Can } from 'components/user/can';
+import { useQuery } from '@apollo/client';
+import {
+  LIST_ALL_APPOINTMENTS,
+} from 'apollo-client/queries';
 
 const groupByAge = R.groupBy(({ age }) =>
   age <= 10
@@ -38,8 +42,10 @@ const groupByMoths = R.groupBy(appointment =>
 );
 
 function Reports() {
-  const { appointments } = useAppointments();
-
+  // const { appointments } = useAppointments();
+  const { data } = useQuery(LIST_ALL_APPOINTMENTS);
+  const appointments = R.propOr({}, 'allAppointments')(data);
+  console.log(appointments,'appointmentsdataappointmentsdata');
   const appointmentsByMonth = R.pipe(
     R.sortBy(R.prop('date')),
     groupByMoths,

@@ -112,6 +112,7 @@ type Query {
     dateFrom: Date
     dateTo: Date
   ): AppointmentData!
+  allAppointments: [Appointment!]
   patientsReport(area: String, reference: String): PatientsCount!
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
   todayAppointments: [Appointment!]

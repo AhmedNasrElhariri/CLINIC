@@ -87,3 +87,4 @@ export { default as getPatientField } from './get-patient-field';
 export { default as getUserPatientFields } from './get-user-patient-fields';
 export { default as getPageSetup } from './get-page-setup';
 export { default as myAppointmentTypesDefinition } from './my-appointment-types-definition';
+export { default as allAppointments } from './all-appointments';

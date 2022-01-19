@@ -24,125 +24,139 @@ import { formatDate } from 'utils/date';
 import { Table } from 'rsuite';
 import { FULL_DATE_FORMAT, STANDARD_DATE_FORMAT } from 'utils/constants';
 
-const renderMenu = (
-  { onClose, left, top, className, appointment, ...props },
-  ref
-) => {
-  console.log(appointment, 'HAMASA');
-  const handleSelect = eventKey => {
-    onClose();
-    console.log(eventKey);
-  };
-  return (
-    <Popover ref={ref} className={className} style={{ left, top }} full>
-      <Dropdown.Menu onSelect={handleSelect}>
-        <Dropdown.Item eventKey={3}>
-          <CRButton
-            variant="success"
-            mr={1}
-            // onClick={e => {
-            //   e.stopPropagation();
-            //   onArchive(appointment);
-            // }}
-            width={70}
-          >
-            ACC
-          </CRButton>
-        </Dropdown.Item>
-        <Dropdown.Item eventKey={4}>
-          <Can I="Archive" an="Appointment">
-            <CRButton
-              variant="primary"
-              mr={1}
-              // onClick={e => {
-              //   e.stopPropagation();
-              //   onComplete(appointment);
-              // }}
-            >
-              Archive
-            </CRButton>
-          </Can>
-        </Dropdown.Item>
-        <Dropdown.Item eventKey={5}>
-          <Whisper
-            placement="top"
-            controlId="control-id-hover"
-            trigger="hover"
-            speaker={<Tooltip>{appointment?.businessNotes}</Tooltip>}
-          >
-            <CRButton
-              variant="primary"
-              // onClick={e => {
-              //   e.stopPropagation();
-              //   onAddBusinessNotes(appointment);
-              // }}
-              width={70}
-            >
-              Notes
-            </CRButton>
-          </Whisper>
-        </Dropdown.Item>
-        <Dropdown.Item eventKey={6}>
-          <CRButton
-            variant="primary"
-            // onClick={e => {
-            //   e.stopPropagation();
-            //   onDuplicateAppointments(appointment);
-            // }}
-            width={70}
-            ml={1}
-          >
-            Duplicates
-          </CRButton>
-        </Dropdown.Item>
-        <Dropdown.Item eventKey={7}>
-          <Div onClick={e => e.stopPropagation()}>
-            <ReactToPrint
-              trigger={() => <PrintOLIcon ml={2} />}
-              // content={() => componentRef.current}
-            />
-            <Div display="none">
-              <AppointmentPrintout
-                // ref={componentRef}
-                appointment={appointment}
-                patient={appointment?.patient}
-              />
-            </Div>
-          </Div>
-        </Dropdown.Item>
-        {/* <Dropdown.Item eventKey={7}>
-          <Div onClick={e => e.stopPropagation()}>
-            {canAjdust(appointment) && (
-              <AdjustAppointment appointment={appointment} />
-            )}
-          </Div>
-        </Dropdown.Item> */}
-      </Dropdown.Menu>
-    </Popover>
-  );
-};
 const ActionCell = ({ rowData, dataKey, ...rest }) => {
   function handleAction() {
     alert(`id:${rowData[dataKey]}`);
   }
-  console.log(rest, 'APAACTION');
+  const {
+    appointment,
+    onArchive,
+    onComplete,
+    onAddBusinessNotes,
+    onDuplicateAppointments,
+  } = rest;
   return (
     <Div
-      {...rest}
       className="link-group"
       onClick={e => {
         e.stopPropagation();
       }}
     >
-      {/* <IconButton appearance="subtle" onClick={handleAction} />
-      <Divider vertical /> */}
       <Whisper
-        {...rest}
+        appointment={appointment}
         placement="autoVerticalStart"
         trigger="click"
-        speaker={renderMenu}
+        speaker={
+          <Popover full>
+            <Dropdown.Menu>
+              <Dropdown.Item eventKey={3}>
+                <Can I="Acc" an="Appointment">
+                  {appointment.accounted ? (
+                    <CRButton
+                      variant="success"
+                      mr={1}
+                      onClick={e => {
+                        e.stopPropagation();
+                        onArchive(appointment);
+                      }}
+                      width={100}
+                    >
+                      ACC
+                    </CRButton>
+                  ) : (
+                    <CRButton
+                      variant="primary"
+                      mr={1}
+                      onClick={e => {
+                        e.stopPropagation();
+                        onArchive(appointment);
+                      }}
+                      width={100}
+                    >
+                      ACC
+                    </CRButton>
+                  )}
+                </Can>
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={4}>
+                <Can I="Archive" an="Appointment">
+                  <CRButton
+                    variant="primary"
+                    mr={1}
+                    onClick={e => {
+                      e.stopPropagation();
+                      onComplete(appointment);
+                    }}
+                    width={100}
+                  >
+                    Archive
+                  </CRButton>
+                </Can>
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={5}>
+                <Whisper
+                  placement="top"
+                  controlId="control-id-hover"
+                  trigger="hover"
+                  speaker={
+                    <Tooltip>
+                      {appointment?.businessNotes.length > 0
+                        ? appointment?.businessNotes
+                        : 'No Notes'}
+                    </Tooltip>
+                  }
+                >
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onAddBusinessNotes(appointment);
+                    }}
+                    width={100}
+                  >
+                    Notes
+                  </CRButton>
+                </Whisper>
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={6}>
+                <CRButton
+                  variant="primary"
+                  onClick={e => {
+                    e.stopPropagation();
+                    onDuplicateAppointments(appointment);
+                  }}
+                  width={100}
+                  ml={1}
+                >
+                  Duplicates
+                </CRButton>
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={7}>
+                <Div onClick={e => e.stopPropagation()}>
+                  <ReactToPrint
+                    trigger={() => <PrintOLIcon ml={2} />}
+                    // content={() => componentRef.current}
+                  />
+                  <Div display="none">
+                    <AppointmentPrintout
+                      // ref={componentRef}
+                      appointment={appointment}
+                      patient={appointment?.patient}
+                    />
+                  </Div>
+                </Div>
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={8}>
+                <Div onClick={e => e.stopPropagation()}>
+                  {canAjdust(appointment) && (
+                    <AdjustAppointment appointment={appointment} />
+                  )}
+                </Div>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Popover>
+        }
       >
-        {/* <IconButton appearance="subtle" icon={<MoreIcon />} /> */}
         <MoreIcon width="25px" height="25px" />
       </Whisper>
     </Div>
@@ -396,7 +410,15 @@ function ListAppointments({
         {/* <Table.Column width={200}>
           <Table.HeaderCell>Action</Table.HeaderCell>
           <Table.Cell>
-            {appointment => <ActionCell appointment={appointment} />}
+            {appointment => (
+              <ActionCell
+                appointment={appointment}
+                onArchive={onArchive}
+                onComplete={onComplete}
+                onAddBusinessNotes={onAddBusinessNotes}
+                onDuplicateAppointments={onDuplicateAppointments}
+              />
+            )}
           </Table.Cell>
         </Table.Column> */}
       </CRTable>

@@ -124,6 +124,29 @@ export const LIST_TODAY_APPOINTMENTS = gql`
   }
 `;
 
+export const LIST_ALL_APPOINTMENTS = gql`
+  {
+    allAppointments {
+      id
+      type
+      date
+      status
+      date
+      accounted
+      duration
+      businessNotes
+      updatedAt
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
+    }
+  }
+`;
+
 export const LIST_PATIENT_APPOINTMENTS = gql`
   query ($patientId: ID!, $status: AppointmentStatus!) {
     patientAppointments(patientId: $patientId, status: $status) {
