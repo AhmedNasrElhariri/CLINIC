@@ -1,15 +1,23 @@
 import React, { useState, useRef } from 'react';
 import ReactToPrint from 'react-to-print';
-import { CRButton, CRSelectInput, CRDatePicker, Div } from 'components/widgets';
+import {
+  CRButton,
+  CRSelectInput,
+  CRDatePicker,
+  Div,
+  CRDateRangePicker,
+} from 'components/widgets';
 import { Can } from 'components/user/can';
 import axios from 'axios';
 import { Form, DatePicker, Table } from 'rsuite';
 import { Container, Report, Name } from './style';
+import { useSessionDefinition } from 'hooks';
 import moment from 'moment';
 
 const initialValue = {
   month: '',
   date: new Date(),
+  sessionDate: [],
 };
 const getMonths = () => {
   let dateStart = moment().startOf('year');
@@ -32,6 +40,7 @@ const Test = props => {
   const [data, setData] = useState([]);
   const [dataTwo, setDataTwo] = useState({});
   let monthes = getMonths();
+  const { sessionsDefinition } = useSessionDefinition({});
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
@@ -47,6 +56,7 @@ const Test = props => {
       })
       .catch(err => {});
   };
+  console.log(formValue,'FFF');
   const handleDailyReport = async day => {
     setLoading(true);
     setError(null);
@@ -115,6 +125,30 @@ const Test = props => {
             />
           </Report>
         </Can>
+      </Container>
+      <Container>
+        {/* <Can I="GenerateDaily" an="PulsesReport"> */}
+        <Report>
+          <Name>Session Report</Name>
+          <Form formValue={formValue} onChange={setFormValue}>
+            <Div display="flex" justifyContent="space-between">
+              <CRDateRangePicker
+                name="sessionDate"
+                placeholder="Timeframe"
+                style={{ width: '230px',marginRight:'30px' }}
+              />
+              <CRSelectInput
+                name="sessionId"
+                data={sessionsDefinition}
+                style={{ width: '230px' }}
+              />
+            </Div>
+          </Form>
+          <CRButton onClick={() => handleDailyReport(formValue.date)}>
+            Show
+          </CRButton>
+        </Report>
+        {/* </Can> */}
       </Container>
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>

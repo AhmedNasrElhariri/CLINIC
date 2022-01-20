@@ -97,6 +97,34 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Assistant Fees</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ assistantFees }) => (
+                <CRTable.CRCellStyled bold>
+                  <NumberFormat
+                    value={assistantFees}
+                    displayType="text"
+                    thousandSeparator
+                  />
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Anesthesia Fees</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ anesthesiaFees }) => (
+                <CRTable.CRCellStyled bold>
+                  <NumberFormat
+                    value={anesthesiaFees}
+                    displayType="text"
+                    thousandSeparator
+                  />
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
         </CRTable>
       </CRCard>
     </>

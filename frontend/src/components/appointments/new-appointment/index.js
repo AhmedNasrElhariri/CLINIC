@@ -112,13 +112,14 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
   // }, [setFormValue]);
 
   useEffect(() => {
-    if (appointment && appointment.type === 'Examination') {
+    if (appointment && appointment?.branch?.id != null) {
       setFormValue({
         branchId: appointment.branch.id,
         type: appointment.type,
         patientId: appointment.patient.id,
         specialtyId: appointment.specialty.id,
         userId: appointment.doctor.id,
+        date: new Date(),
       });
     }
   }, [appointment]);

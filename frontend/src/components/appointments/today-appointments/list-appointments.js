@@ -59,7 +59,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                         e.stopPropagation();
                         onArchive(appointment);
                       }}
-                      width={100}
+                      style={{width:'108px'}}
                     >
                       ACC
                     </CRButton>
@@ -71,7 +71,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                         e.stopPropagation();
                         onArchive(appointment);
                       }}
-                      width={100}
+                      style={{width:'108px'}}
                     >
                       ACC
                     </CRButton>
@@ -87,7 +87,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                       e.stopPropagation();
                       onComplete(appointment);
                     }}
-                    width={100}
+                    style={{width:'108px'}}
                   >
                     Archive
                   </CRButton>
@@ -112,7 +112,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                       e.stopPropagation();
                       onAddBusinessNotes(appointment);
                     }}
-                    width={100}
+                    style={{width:'108px'}}
                   >
                     Notes
                   </CRButton>
@@ -125,8 +125,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                     e.stopPropagation();
                     onDuplicateAppointments(appointment);
                   }}
-                  width={100}
-                  ml={1}
+                  style={{width:'108px'}}
                 >
                   Duplicates
                 </CRButton>
@@ -206,7 +205,7 @@ function ListAppointments({
         }}
         affixHorizontalScrollbar
       >
-        <CRTable.CRColumn>
+        <CRTable.CRColumn width={50}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }, indx) => (
@@ -234,7 +233,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn>
+        <CRTable.CRColumn width={150}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ patient }) => (
@@ -252,7 +251,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn width={150}>
+        <CRTable.CRColumn width={170}>
           <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ type, session }) => (
@@ -295,7 +294,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn width={550}>
+        {/* <CRTable.CRColumn width={550}>
           <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (
@@ -399,7 +398,7 @@ function ListAppointments({
               </Div>
             )}
           </CRTable.CRCell>
-        </CRTable.CRColumn>
+        </CRTable.CRColumn> */}
 
         {/* <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Action</CRTable.CRHeaderCell>
@@ -407,7 +406,7 @@ function ListAppointments({
           
         </CRTable.CRColumn> */}
 
-        {/* <Table.Column width={200}>
+        <Table.Column width={200}>
           <Table.HeaderCell>Action</Table.HeaderCell>
           <Table.Cell>
             {appointment => (
@@ -420,7 +419,7 @@ function ListAppointments({
               />
             )}
           </Table.Cell>
-        </Table.Column> */}
+        </Table.Column>
       </CRTable>
       <CRTable.CRPagination
         lengthMenu={[

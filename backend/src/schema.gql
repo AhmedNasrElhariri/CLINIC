@@ -1345,6 +1345,18 @@ input SessionInputDefinition {
   duration: Int!
 }
 
+type SessionTransaction {
+  number: Int!
+  price: Float!
+  date: Date!
+  sessionDefinition: SessionDefinition!
+}
+type SessionStatistics {
+  sessionTransaction: SessionTransaction!
+  totalNumber: Int!
+  totalPrice: Int!
+}
+
 ########################### Images Definition ##################################
 
 type ImageDefinition {
