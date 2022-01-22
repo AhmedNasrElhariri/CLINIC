@@ -5,10 +5,7 @@ CREATE TYPE "AppointmentType" AS ENUM ('Examination', 'Followup', 'Course', 'Urg
 CREATE TYPE "CourseType" AS ENUM ('Session', 'Perunit');
 
 -- CreateEnum
-CREATE TYPE "AnesthesiaType" AS ENUM ('General', 'Regional', 'Local');
-
--- CreateEnum
-CREATE TYPE "CourseStatus" AS ENUM ('InProgress', 'Finished', 'EarlyFinished', 'Cancelled', 'Rejected');
+CREATE TYPE "CourseStatus" AS ENUM ('InProgress', 'Finished', 'EarlyFinished');
 
 -- CreateEnum
 CREATE TYPE "PayrollStatus" AS ENUM ('Open', 'Close');
@@ -51,8 +48,6 @@ CREATE TABLE "Organization" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "invoiceCounter" INTEGER NOT NULL DEFAULT 1,
-    "maxNumberOfUsers" INTEGER NOT NULL DEFAULT 6,
-    "patientCode" INTEGER NOT NULL DEFAULT 1000,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -64,7 +59,6 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "allowedViews" JSONB NOT NULL DEFAULT E'[]',
     "password" TEXT NOT NULL,
     "organizationId" TEXT NOT NULL,
     "avatar" TEXT,
@@ -83,7 +77,6 @@ CREATE TABLE "Patient" (
     "phoneNo" TEXT NOT NULL,
     "type" "PatientMembershipType" NOT NULL,
     "age" INTEGER NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "codeNumber" SERIAL NOT NULL,
     "code" TEXT,
     "sex" "Sex" NOT NULL,
@@ -164,30 +157,7 @@ CREATE TABLE "View" (
 );
 
 -- CreateTable
-CREATE TABLE "PatientView" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "doctorId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "ViewStatus" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "activeViewId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "PatientViewStatus" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "activeViewId" TEXT NOT NULL,
@@ -202,10 +172,9 @@ CREATE TABLE "FieldGroup" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "order" INTEGER NOT NULL,
-    "viewId" TEXT,
+    "viewId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "patientViewId" TEXT,
 
     PRIMARY KEY ("id")
 );
@@ -216,7 +185,7 @@ CREATE TABLE "Field" (
     "name" TEXT NOT NULL,
     "order" INTEGER NOT NULL,
     "type" "FieldType" NOT NULL,
-    "choices" JSONB,
+    "choices" JSONB NOT NULL,
     "fieldGroupId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -229,19 +198,6 @@ CREATE TABLE "AppointmentField" (
     "id" TEXT NOT NULL,
     "appointmentId" TEXT NOT NULL,
     "fieldId" TEXT NOT NULL,
-    "value" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "PatientField" (
-    "id" TEXT NOT NULL,
-    "patientId" TEXT NOT NULL,
-    "fieldId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
     "value" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -341,19 +297,6 @@ CREATE TABLE "Configuration" (
     "enableInvoiceCounter" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "PageSetup" (
-    "id" TEXT NOT NULL,
-    "organizationId" TEXT NOT NULL,
-    "top" INTEGER NOT NULL DEFAULT 0,
-    "right" INTEGER NOT NULL DEFAULT 0,
-    "bottom" INTEGER NOT NULL DEFAULT 0,
-    "left" INTEGER NOT NULL DEFAULT 0,
-    "type" TEXT NOT NULL DEFAULT E'Letter',
 
     PRIMARY KEY ("id")
 );
@@ -477,7 +420,7 @@ CREATE TABLE "Revenue" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
-    "amount" DOUBLE PRECISION NOT NULL,
+    "amount" INTEGER NOT NULL,
     "invoiceNo" TEXT,
     "level" TEXT,
     "specialtyId" TEXT,
@@ -680,88 +623,6 @@ CREATE TABLE "ImageDefinition" (
 );
 
 -- CreateTable
-CREATE TABLE "MaterialDefinition" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "organizationId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "DentalDiagnosisDefinition" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "organizationId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Tooth" (
-    "id" TEXT NOT NULL,
-    "toothNumber" INTEGER NOT NULL,
-    "toothPartNumber" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "patientId" TEXT NOT NULL,
-    "organizationId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "FacePartation" (
-    "id" TEXT NOT NULL,
-    "number" INTEGER NOT NULL,
-    "name" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "patientId" TEXT NOT NULL,
-    "organizationId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "FaceOperation" (
-    "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "units" TEXT NOT NULL,
-    "patientId" TEXT NOT NULL,
-    "materialId" TEXT NOT NULL,
-    "organizationId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "partationId" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "ToothTransaction" (
-    "id" TEXT NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "depth" TEXT NOT NULL,
-    "toothId" TEXT NOT NULL,
-    "diagnosisId" TEXT NOT NULL,
-    "organizationId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "doctorId" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Price" (
     "id" TEXT NOT NULL,
     "Apptype" TEXT NOT NULL,
@@ -781,7 +642,7 @@ CREATE TABLE "Price" (
 CREATE TABLE "SessionDefinition" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "price" DOUBLE PRECISION NOT NULL,
+    "price" INTEGER NOT NULL,
     "duration" INTEGER NOT NULL DEFAULT 5,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -889,18 +750,6 @@ CREATE TABLE "CourseDefinition" (
 );
 
 -- CreateTable
-CREATE TABLE "AppointmentTypeDefinition" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "urgent" BOOLEAN NOT NULL,
-    "organizationId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Course" (
     "id" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
@@ -968,7 +817,6 @@ CREATE TABLE "PatientReport" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "body" TEXT NOT NULL,
-    "context" TEXT NOT NULL DEFAULT E'',
     "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1002,11 +850,6 @@ CREATE TABLE "PatientSurgery" (
     "date" TIMESTAMP(3) NOT NULL,
     "fees" INTEGER,
     "hospitalFees" INTEGER,
-    "anesthesia" "AnesthesiaType",
-    "anesthesiaDoctorName" TEXT,
-    "assistantFees" INTEGER,
-    "anesthesiaFees" INTEGER,
-    "others" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -1130,13 +973,10 @@ CREATE UNIQUE INDEX "order_fieldGroupId_unique_constraint" ON "Field"("order", "
 CREATE UNIQUE INDEX "appointment_fieldId_unique_constraint" ON "AppointmentField"("appointmentId", "fieldId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "patient_fieldId_unique_constraint" ON "PatientField"("patientId", "fieldId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "payrollUserId_unique_constraint" ON "TransactionCoursesTimeFrame"("payrollUserId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "payrollUserId_Revenues_unique_constraint" ON "TransactionRevenuesTimeFrame"("payrollUserId");
+CREATE UNIQUE INDEX "payrollUserId Revenues_unique_constraint" ON "TransactionRevenuesTimeFrame"("payrollUserId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "organizationId_unique_constraint" ON "Configuration"("organizationId");
@@ -1151,13 +991,10 @@ CREATE UNIQUE INDEX "Snippet.title_unique" ON "Snippet"("title");
 CREATE UNIQUE INDEX "Item.name_unique" ON "Item"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "toothNumber_toothPartNumber_patientId_unique_constraint" ON "Tooth"("toothNumber", "toothPartNumber", "patientId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "action_roleId_unique_constraint" ON "Permission"("action", "roleId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "userId_specialtyId_branchId_unique_constraint" ON "UserSpecialty"("userId", "specialtyId", "branchId");
+CREATE UNIQUE INDEX "userId_branchId_unique_constraint" ON "UserSpecialty"("userId", "branchId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_AppointmentToCourse_AB_unique" ON "_AppointmentToCourse"("A", "B");
@@ -1226,28 +1063,13 @@ ALTER TABLE "Prescription" ADD FOREIGN KEY ("appointmentId") REFERENCES "Appoint
 ALTER TABLE "View" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PatientView" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PatientView" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "ViewStatus" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ViewStatus" ADD FOREIGN KEY ("activeViewId") REFERENCES "View"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PatientViewStatus" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PatientViewStatus" ADD FOREIGN KEY ("activeViewId") REFERENCES "PatientView"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FieldGroup" ADD FOREIGN KEY ("viewId") REFERENCES "View"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FieldGroup" ADD FOREIGN KEY ("patientViewId") REFERENCES "PatientView"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "FieldGroup" ADD FOREIGN KEY ("viewId") REFERENCES "View"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Field" ADD FOREIGN KEY ("fieldGroupId") REFERENCES "FieldGroup"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -1257,15 +1079,6 @@ ALTER TABLE "AppointmentField" ADD FOREIGN KEY ("appointmentId") REFERENCES "App
 
 -- AddForeignKey
 ALTER TABLE "AppointmentField" ADD FOREIGN KEY ("fieldId") REFERENCES "Field"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PatientField" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PatientField" ADD FOREIGN KEY ("fieldId") REFERENCES "Field"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PatientField" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AppointmentFile" ADD FOREIGN KEY ("appointmentId") REFERENCES "Appointment"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -1293,9 +1106,6 @@ ALTER TABLE "Payroll" ADD FOREIGN KEY ("organizationId") REFERENCES "Organizatio
 
 -- AddForeignKey
 ALTER TABLE "Configuration" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "PageSetup" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "WorkingHours" ADD FOREIGN KEY ("weekId") REFERENCES "Week"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -1478,66 +1288,6 @@ ALTER TABLE "ImageDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Org
 ALTER TABLE "ImageDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MaterialDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "MaterialDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "DentalDiagnosisDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "DentalDiagnosisDefinition" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Tooth" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Tooth" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Tooth" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FacePartation" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FacePartation" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FacePartation" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FaceOperation" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FaceOperation" ADD FOREIGN KEY ("materialId") REFERENCES "MaterialDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FaceOperation" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FaceOperation" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "FaceOperation" ADD FOREIGN KEY ("partationId") REFERENCES "FacePartation"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ToothTransaction" ADD FOREIGN KEY ("toothId") REFERENCES "Tooth"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ToothTransaction" ADD FOREIGN KEY ("diagnosisId") REFERENCES "DentalDiagnosisDefinition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ToothTransaction" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ToothTransaction" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ToothTransaction" ADD FOREIGN KEY ("doctorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Price" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1596,9 +1346,6 @@ ALTER TABLE "Sales" ADD FOREIGN KEY ("salesDefinitionId") REFERENCES "SalesDefin
 
 -- AddForeignKey
 ALTER TABLE "CourseDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "AppointmentTypeDefinition" ADD FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Course" ADD FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "BankRevenue" ALTER COLUMN "amount" SET DATA TYPE DOUBLE PRECISION;
