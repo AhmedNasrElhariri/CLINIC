@@ -1,6 +1,5 @@
 import { prisma } from '@';
 import { APPOINTMENTS_STATUS, COURSE_STATUS } from '@/utils/constants';
-import CryptoJS from 'crypto-js';
 const deleteCourse = async (
   _,
   { courseId, refund },
@@ -19,13 +18,7 @@ const deleteCourse = async (
     new Date() < data.startDate
       ? COURSE_STATUS.REJECTED
       : COURSE_STATUS.CANCELLED;
-  console.log(data, 'DDDDDDDDDDDDD');
   const { patient, courseDefinition } = data;
-  const decryptedName = await CryptoJS.AES.decrypt(
-    patient.name,
-    'secret key 123'
-  );
-  const originalName = await decryptedName.toString(CryptoJS.enc.Utf8);
   await prisma.coursePayment.create({
     data: Object.assign({
       payment: refund,
@@ -45,7 +38,7 @@ const deleteCourse = async (
   });
   await prisma.expense.create({
     data: {
-      name: 'C/'+courseDefinition.name + '/Refund/' + originalName,
+      name: 'C/' + courseDefinition.name + '/Refund/' + patient.name,
       amount: refund,
       expenseType: 'refund',
       date: new Date(),
