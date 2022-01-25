@@ -22,7 +22,11 @@ import { Can } from 'components/user/can';
 import { PrintOLIcon, MoreIcon } from 'components/icons';
 import { formatDate } from 'utils/date';
 import { Table } from 'rsuite';
-import { FULL_DATE_FORMAT, STANDARD_DATE_FORMAT } from 'utils/constants';
+import {
+  FULL_DATE_FORMAT,
+  STANDARD_DATE_FORMAT,
+  FULL_DAY_FORMAT,
+} from 'utils/constants';
 
 const ActionCell = ({ rowData, dataKey, ...rest }) => {
   function handleAction() {
@@ -49,7 +53,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
         speaker={
           <Popover full>
             <Dropdown.Menu>
-              <Dropdown.Item eventKey={3}>
+              {/* <Dropdown.Item eventKey={3}>
                 <Can I="Acc" an="Appointment">
                   {appointment.accounted ? (
                     <CRButton
@@ -59,7 +63,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                         e.stopPropagation();
                         onArchive(appointment);
                       }}
-                      style={{width:'108px'}}
+                      style={{ width: '108px' }}
                     >
                       ACC
                     </CRButton>
@@ -71,13 +75,13 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                         e.stopPropagation();
                         onArchive(appointment);
                       }}
-                      style={{width:'108px'}}
+                      style={{ width: '108px' }}
                     >
                       ACC
                     </CRButton>
                   )}
                 </Can>
-              </Dropdown.Item>
+              </Dropdown.Item> */}
               <Dropdown.Item eventKey={4}>
                 <Can I="Archive" an="Appointment">
                   <CRButton
@@ -87,13 +91,13 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                       e.stopPropagation();
                       onComplete(appointment);
                     }}
-                    style={{width:'108px'}}
+                    style={{ width: '108px' }}
                   >
                     Archive
                   </CRButton>
                 </Can>
               </Dropdown.Item>
-              <Dropdown.Item eventKey={5}>
+              {/* <Dropdown.Item eventKey={5}>
                 <Whisper
                   placement="top"
                   controlId="control-id-hover"
@@ -112,12 +116,12 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                       e.stopPropagation();
                       onAddBusinessNotes(appointment);
                     }}
-                    style={{width:'108px'}}
+                    style={{ width: '108px' }}
                   >
                     Notes
                   </CRButton>
                 </Whisper>
-              </Dropdown.Item>
+              </Dropdown.Item> */}
               <Dropdown.Item eventKey={6}>
                 <CRButton
                   variant="primary"
@@ -125,7 +129,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                     e.stopPropagation();
                     onDuplicateAppointments(appointment);
                   }}
-                  style={{width:'108px'}}
+                  style={{ width: '108px' }}
                 >
                   Duplicates
                 </CRButton>
@@ -205,7 +209,7 @@ function ListAppointments({
         }}
         affixHorizontalScrollbar
       >
-        <CRTable.CRColumn width={50}>
+        <CRTable.CRColumn width={30}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }, indx) => (
@@ -213,45 +217,33 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn>
+        <CRTable.CRColumn width={130}>
           <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (
               <CRTable.CRCellStyled>
-                {waiting ? '' : formatDate(date, FULL_DATE_FORMAT)}
+                {waiting ? '' : formatDate(date, FULL_DAY_FORMAT)}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn>
-          <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ date }) => (
-              <CRTable.CRCellStyled>
-                {formatDate(date, STANDARD_DATE_FORMAT)}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn width={150}>
+        <CRTable.CRColumn width={200}>
           <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ patient }) => (
-              <CRTable.CRCellStyled bold>{patient.name}</CRTable.CRCellStyled>
+              <Whisper
+                placement="top"
+                controlId="control-id-hover"
+                trigger="hover"
+                speaker={<Tooltip>Phone:{patient.phoneNo}</Tooltip>}
+              >
+                <CRTable.CRCellStyled bold>{patient.name}</CRTable.CRCellStyled>
+              </Whisper>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn>
-          <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ patient }) => (
-              <CRTable.CRCellStyled>{patient.phoneNo}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-
-        <CRTable.CRColumn width={170}>
+        <CRTable.CRColumn width={200}>
           <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ type, session }) => (
@@ -262,7 +254,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn>
+        <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ doctor }) => (
@@ -270,15 +262,15 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn>
+        {/* <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ user }) => (
               <CRTable.CRCellStyled>{user?.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn>
+        </CRTable.CRColumn> */}
+        <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ specialty }) => (
@@ -286,7 +278,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn>
+        <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ branch }) => (
@@ -405,8 +397,70 @@ function ListAppointments({
 
           
         </CRTable.CRColumn> */}
+        <CRTable.CRColumn width={100}>
+          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {appointment => (
+              <Can I="Acc" an="Appointment">
+                {appointment.accounted ? (
+                  <CRButton
+                    variant="success"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onArchive(appointment);
+                    }}
+                    block
+                  >
+                    ACC
+                  </CRButton>
+                ) : (
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onArchive(appointment);
+                    }}
+                    block
+                  >
+                    ACC
+                  </CRButton>
+                )}
+              </Can>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn width={100}>
+          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {appointment => (
+              <Whisper
+                placement="top"
+                controlId="control-id-hover"
+                trigger="hover"
+                speaker={
+                  <Tooltip>
+                    {appointment?.businessNotes.length > 0
+                      ? appointment?.businessNotes
+                      : 'No Notes'}
+                  </Tooltip>
+                }
+              >
+                <CRButton
+                  variant="primary"
+                  onClick={e => {
+                    e.stopPropagation();
+                    onAddBusinessNotes(appointment);
+                  }}
+                  block
+                >
+                  Notes
+                </CRButton>
+              </Whisper>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
 
-        <Table.Column width={200}>
+        <Table.Column>
           <Table.HeaderCell>Action</Table.HeaderCell>
           <Table.Cell>
             {appointment => (
