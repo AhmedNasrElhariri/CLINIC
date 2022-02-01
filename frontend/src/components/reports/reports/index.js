@@ -45,7 +45,6 @@ function Reports() {
   // const { appointments } = useAppointments();
   const { data } = useQuery(LIST_ALL_APPOINTMENTS);
   const appointments = R.propOr({}, 'allAppointments')(data);
-  console.log(appointments,'appointmentsdataappointmentsdata');
   const appointmentsByMonth = R.pipe(
     R.sortBy(R.prop('date')),
     groupByMoths,

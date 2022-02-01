@@ -28,6 +28,12 @@ enum AnesthesiaType {
   Local
 }
 
+enum CouponStatus {
+  Active
+  Used
+  Expired
+}
+
 enum CourseStatus {
   InProgress
   Finished
@@ -207,6 +213,8 @@ model Organization {
   ToothTransaction          ToothTransaction[]
   PageSetup                 PageSetup[]
   SessionTransaction        SessionTransaction[]
+  Points                    Points[]
+  Coupon                    Coupon[]
 }
 
 model User {
@@ -287,6 +295,7 @@ model Patient {
   date             DateTime              @default(now())
   codeNumber       Int                   @default(autoincrement())
   code             String?
+  points           Int                   @default(0)
   sex              Sex
   reference        Json                  @default("[]")
   area             String                @default("")
@@ -308,6 +317,7 @@ model Patient {
   FaceOperation    FaceOperation[]
   FacePartation    FacePartation[]
   PatientField     PatientField[]
+  Coupon           Coupon[]
 }
 
 model Appointment {
@@ -353,6 +363,19 @@ model PulseControl {
   date      DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Coupon {
+  id             String       @id @default(uuid())
+  date           DateTime
+  status         CouponStatus
+  value          Int
+  patient        Patient      @relation(fields: [patientId], references: [id])
+  patientId      String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
 }
 
 model Prescription {
@@ -1030,6 +1053,14 @@ model SessionDefinition {
   organizationId     String
   Appointment        Appointment[]
   SessionTransaction SessionTransaction[]
+}
+
+model Points {
+  id             String       @id @default(uuid())
+  points         Int
+  couponValue    Int
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
 }
 
 model SessionTransaction {

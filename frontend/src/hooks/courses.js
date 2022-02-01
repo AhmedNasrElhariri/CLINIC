@@ -38,10 +38,40 @@ function useCourses({
   courseId,
   onFinishCourse,
   onDeleteCourse,
-  onEditCoursePaymentHistory,
+  page,
+  courseID,
+  status,
+  sortType,
 } = {}) {
-  const { data } = useQuery(LIST_COURSES, { variables: { patientId } });
-  const courses = useMemo(() => R.propOr([], 'myCourses')(data), [data]);
+  const { data } = useQuery(LIST_COURSES, {
+    variables: Object.assign(
+      {
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+      patientId && { patientId },
+      status && { status },
+      courseID && { courseId: courseID },
+      sortType && { sortType: sortType }
+    ),
+  });
+  console.log(data, 'dataCOURSESSS');
+  // const appointmentsdata = data?.appointments;
+  // const appointmentsCountNumber = useMemo(() => {
+  //   const Data = R.propOr({}, 'appointments')(data);
+  //   const pagesNumber = Data?.appointmentsCount;
+  //   return pagesNumber;
+  // }, [data]);
+  const coursesData = useMemo(() => R.propOr({}, 'myCourses')(data), [data]);
+  const courses = useMemo(
+    () => R.propOr([], 'courses')(coursesData),
+    [coursesData]
+  );
+  const coursesCount = useMemo(
+    () => R.propOr(0, 'coursesCount')(coursesData),
+    [coursesData]
+  );
+  console.log(courses, coursesCount, 'coursesCount');
   const { data: patientData } = useQuery(LIST_PATIENT_COURSES, {
     variables: { patientId },
   });
@@ -189,6 +219,7 @@ function useCourses({
   return useMemo(
     () => ({
       courses,
+      coursesCount,
       patientCourses,
       addCourse,
       editCourse,
@@ -204,6 +235,7 @@ function useCourses({
     }),
     [
       courses,
+      coursesCount,
       patientCourses,
       addCourse,
       editCourse,

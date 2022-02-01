@@ -67,6 +67,11 @@ enum PayrollStatus {
   Open
   Close
 }
+enum CouponStatus {
+  Active
+  Used
+  Expired
+}
 
 enum FieldType {
   Text
@@ -123,6 +128,7 @@ type Query {
   ): [Appointment!]
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
+  patientCoupons(patientId: ID!): [Coupon!]
   getPatientField(patientId: ID!): [PatientField!]
   getUserPatientFields: [PatientField!]
   listMyViews: [View!]
@@ -171,6 +177,11 @@ type Query {
   myFaceOperations(patientId: ID!): [FaceOperation!]
   listOrganizationDoctors: [User!]
   mySessionsDefinition: [SessionDefinition!]
+  mySessionStatistic(
+    sessionId: ID!
+    dateFrom: Date
+    dateTo: Date
+  ): SessionStatistics
   myBanksDefinition: [BankDefinition!]
   myExpenseTypesDefinition: [ExpenseTypeDefinition!]
   myCompanysDefinition: [CompanyDefinition!]
@@ -178,7 +189,14 @@ type Query {
   mySalesesDefinition: [SalesDefinition!]
   mySaleses: [Sales!]
   myCoursesDefinition: [CourseDefinition!]
-  myCourses(patientId: ID): [Course!]
+  myCourses(
+    patientId: ID
+    offset: Int
+    limit: Int
+    status: CourseStatus
+    courseId: ID
+    sortType: String
+  ): CourseData
   myDoctors(appointmentId: ID): [User!]
   myAppointmentTypesDefinition: [AppointmentTypeDefinition!]
   myImagesCategory: [ImageCategory!]
@@ -187,6 +205,7 @@ type Query {
   getActions: [String!]
   getPulseControl: PulseControl
   getPageSetup: [PageSetup!]
+  points: Points
   listBranches: [Branch!]
   listSpecialties: [Specialty!]
   listUsers: [User!]
@@ -235,6 +254,7 @@ type Mutation {
     items: [FinishAppointmentItemInput!]
     discount: Discount
     patientName: String!
+    patientId: ID!
     others: Others
     bank: ID
     date: Date!
@@ -243,6 +263,8 @@ type Mutation {
     branchId: ID
     specialtyId: ID
     userId: ID
+    couponsValue: Int
+    coupons: [ID]
   ): Appointment!
   createView(view: ViewInput!): Boolean
   updateView(view: ViewInput!, viewId: ID!): Boolean
@@ -330,6 +352,7 @@ type Mutation {
   ): SessionDefinition
   addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
   addPageSetup(pageSetup: PageSetupInput!): PageSetup!
+  editPoints(points: Int!, couponValue: Int!): Points
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   addExpenseTypeDefinition(
@@ -790,6 +813,19 @@ type Area {
   governorate_id: String!
   city_name_ar: String!
   city_name_en: String!
+}
+
+########################### Points ##################################
+type Points {
+  id: ID!
+  points: Int!
+  couponValue: Int!
+}
+type Coupon {
+  id: ID!
+  value: Int!
+  status: CouponStatus!
+  date: Date!
 }
 ########################### views ##################################
 type View {
@@ -1352,7 +1388,7 @@ type SessionTransaction {
   sessionDefinition: SessionDefinition!
 }
 type SessionStatistics {
-  sessionTransaction: SessionTransaction!
+  session: SessionDefinition!
   totalNumber: Int!
   totalPrice: Int!
 }
@@ -1640,6 +1676,38 @@ type Course {
   user: User!
   doctor: User!
   courseDefinition: CourseDefinition!
+}
+type EditablePatient {
+  name: String!
+  phoneNo: String!
+}
+type EditableUser {
+  id: ID!
+  name: String!
+}
+type EditableDoctor {
+  id: ID!
+  name: String!
+}
+type EditableCourse {
+  id: ID!
+  price: Int!
+  paid: Int!
+  consumed: Int!
+  discount: Int!
+  startDate: Date!
+  endDate: Date!
+  status: CourseStatus!
+  courseDefinition: CourseDefinition!
+  patient: EditablePatient!
+  user: EditableUser!
+  doctor: EditableDoctor!
+}
+
+
+type CourseData {
+  courses: [Course!]
+  coursesCount: Int!
 }
 
 input CourseInput {

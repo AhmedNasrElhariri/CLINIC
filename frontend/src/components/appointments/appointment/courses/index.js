@@ -104,7 +104,6 @@ function NewCourse({
   const { banksDefinition } = useBankDefinition({});
   const [checkedDays, setCheckedDays] = useState(options);
   const { listActionDoctors, actionDoctors } = usePermissions();
-  console.log(formValue,'FFFFFFFFF');
   useEffect(() => {
     listActionDoctors(ACTIONS.Create_Course);
   }, []);

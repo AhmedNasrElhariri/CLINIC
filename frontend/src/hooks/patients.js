@@ -10,6 +10,7 @@ import {
   LIST_PATIENTS_SUMMARY,
   LIST_PATIENTS_REPORT,
   GET_PATIENT,
+  PATIENT_COUPONS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -76,6 +77,13 @@ function usePatients({
   });
   const onePatient = R.propOr({}, 'patient')(onePatientData);
 
+  const { data: patientCouponData } = useQuery(PATIENT_COUPONS, {
+    variables: {
+      patientId: patientId,
+    },
+  });
+  const patientCoupons = R.propOr([], 'patientCoupons')(patientCouponData);
+
   const [editPatient] = useMutation(EDIT_PATIENT, {
     update(cache, { data: { editPatient: patient } }) {
       const newPatients = patients.map(p =>
@@ -117,6 +125,7 @@ function usePatients({
       patientsReports,
       pages,
       onePatient,
+      patientCoupons,
       edit: patient =>
         editPatient({
           variables: { patient },
@@ -130,6 +139,7 @@ function usePatients({
       patientsSummary,
       searchedPatients,
       patientsReports,
+      patientCoupons
     ]
   );
 }

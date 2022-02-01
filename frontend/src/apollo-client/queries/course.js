@@ -43,37 +43,59 @@ export const EDIT_COURSE_DEFINITION = gql`
 `;
 
 export const LIST_COURSES = gql`
-  query ($patientId: ID!) {
-    myCourses(patientId: $patientId) {
-      id
-      price
-      paid
-      discount
-      consumed
-      startDate
-      endDate
-      status
-      sessions {
+  query (
+    $patientId: ID
+    $offset: Int
+    $limit: Int
+    $status: CourseStatus
+    $courseId: ID
+    $sortType: String
+  ) {
+    myCourses(
+      patientId: $patientId
+      offset: $offset
+      limit: $limit
+      status: $status
+      courseId: $courseId
+      sortType: $sortType
+    ) {
+      courses {
         id
-        date
-        status
-      }
-      courseDefinition {
-        id
-        name
-        type
         price
-        units
-        messureOfUnits
+        paid
+        discount
+        consumed
+        startDate
+        endDate
+        status
+        courseDefinition {
+          id
+          name
+          type
+          price
+          units
+          messureOfUnits
+        }
+        doctor {
+          id
+          name
+        }
+        user {
+          id
+          name
+        }
+        patient {
+          name
+          phoneNo
+        }
+        sessions {
+          id
+          type
+          date
+          status
+        }
       }
-      doctor {
-        id
-        name
-      }
-      user {
-        id
-        name
-      }
+      coursesCount
     }
   }
 `;

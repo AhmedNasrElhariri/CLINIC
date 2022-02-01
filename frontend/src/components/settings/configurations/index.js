@@ -15,6 +15,10 @@ const initialPulsesValue = {
   before: 0,
   after: 0,
 };
+const initialPointsValue = {
+  points: 0,
+  couponValue: 0,
+};
 const initialPageSetup = {
   top: 0,
   right: 0,
@@ -26,6 +30,7 @@ const initialPageSetup = {
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
   const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
+  const [pointsValue, setPointsValues] = useState(initialPointsValue);
   const [pageSetup, setPageSetup] = useState(initialPageSetup);
   const {
     configurations,
@@ -34,6 +39,8 @@ const Configurations = () => {
     getPulseControl,
     addPageSetup,
     pageSetupData,
+    editPoints,
+    points,
   } = useConfigurations();
   useEffect(() => {
     const sessions = R.pipe(
@@ -52,6 +59,9 @@ const Configurations = () => {
     const after = R.propOr(0, 'after')(getPulseControl);
     setPulseValues({ ...pulsesValue, before, after });
   }, [configurations, getPulseControl]);
+  useEffect(() => {
+    setPointsValues({ points: points.points, couponValue: points.couponValue });
+  }, [points, setPointsValues]);
   const handleSave = useCallback(() => {
     update(formValue);
   }, [formValue, update]);
@@ -95,6 +105,7 @@ const Configurations = () => {
       },
     });
   }, [pulsesValue, addPulsesControl]);
+
   const handlePageSetupSave = useCallback(() => {
     addPageSetup({
       variables: {
@@ -102,6 +113,14 @@ const Configurations = () => {
       },
     });
   }, [pageSetup, addPageSetup]);
+  const handlePointsSave = useCallback(() => {
+    editPoints({
+      variables: {
+        points: pointsValue.points,
+        couponValue: pointsValue.couponValue,
+      },
+    });
+  }, [pointsValue, editPoints]);
 
   const handleDelete = useCallback(
     idx => {
@@ -127,6 +146,37 @@ const Configurations = () => {
         onChange={updateEnable}
         value={formValue?.enableInvoiceCounter}
       />
+      <>
+        <hr></hr>
+        <Div display="flex" justifyContent="space-between">
+          <Div display="flex" justifyContent="space-around">
+            <H3 mb={64} mr={20}>
+              Points Control
+            </H3>
+          </Div>
+          <Div>
+            <CRButton onClick={handlePointsSave} variant="primary">
+              Save
+            </CRButton>
+          </Div>
+        </Div>
+        <Form formValue={pointsValue} onChange={setPointsValues}>
+          <Div display="flex" justifyContent="space-between">
+            <CRNumberInput
+              name="points"
+              label="The number of points to get coupon"
+              layout="inline"
+              placeholder="Points"
+            />
+            <CRNumberInput
+              name="couponValue"
+              label="Coupon Value"
+              layout="inline"
+              placeholder="Coupon Value"
+            />
+          </Div>
+        </Form>
+      </>
       <>
         <hr></hr>
         <Div display="flex" justifyContent="space-between">

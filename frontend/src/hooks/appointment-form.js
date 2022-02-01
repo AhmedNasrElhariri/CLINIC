@@ -3,7 +3,6 @@ import * as moment from 'moment';
 import { isUrgent } from 'services/appointment';
 
 function useAppointmentForm({ date, type, appointments }) {
-  console.log(type,'TTTTYpe');
   const selectedDayAppointments = useMemo(
     () => appointments?.filter(({ date }) => moment(date).isSame(date, 'day')),
     [appointments]
@@ -43,7 +42,6 @@ function useAppointmentForm({ date, type, appointments }) {
 
       const isBeforeNow = newDate.isBefore(moment(), 'minute');
       if (isBeforeNow) {
-        console.log('isBeforeNow');
         return true;
       }
 

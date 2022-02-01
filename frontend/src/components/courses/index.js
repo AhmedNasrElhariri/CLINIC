@@ -10,6 +10,7 @@ import { Form } from 'rsuite';
 const initFilter = {
   patientId: null,
   courseId: null,
+  status: 'InProgress',
 };
 const initValue = {
   course: null,
@@ -25,6 +26,14 @@ const initValue = {
   specialtyId: null,
   userId: null,
 };
+const inialCurrentPage = {
+  activePage: 1,
+};
+const courseStatus = [
+  { id: 'InProgress', name: 'InProgress' },
+  { id: 'Finished', name: 'Finished' },
+  { id: 'Cancelled', name: 'Cancelled' },
+];
 const Courses = () => {
   const { visible, open, close } = useModal();
   const [filter, setFilter] = useState(initFilter);
@@ -32,6 +41,9 @@ const Courses = () => {
   const [header, setHeader] = useState('');
   const [bank, setBank] = useState(null);
   const [visa, setVisa] = useState(false);
+  const [sortType, setSortType] = React.useState();
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const page = currentPage?.activePage;
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
@@ -44,6 +56,7 @@ const Courses = () => {
   const {
     addCourse,
     courses,
+    coursesCount,
     editCourse,
     editCourseDoctor,
     editCourseUnits,
@@ -77,8 +90,13 @@ const Courses = () => {
     },
     patientId: filter?.patientId,
     courseId: formValue?.id,
+    page: page,
+    courseID: filter.courseId,
+    status: filter.status,
+    sortType: sortType,
   });
-
+  console.log(courses, 'CCCCCCC');
+  const pages = Math.ceil(coursesCount / 20);
   const handleClickEditUnits = useCallback(
     data => {
       const course = R.pick(['id', 'consumed'])(data);
@@ -249,14 +267,7 @@ const Courses = () => {
     editCoursePaymentHistory,
     bank,
   ]);
-
-  const filteredCourses = useMemo(() => {
-    if (filter.courseId == null) {
-      return courses;
-    } else {
-      return courses.filter(c => c?.courseDefinition?.id == filter?.courseId);
-    }
-  }, [courses, filter.courseId]);
+  console.log(course, 'CCCCCOOOURSE', showCourseData);
   return (
     <>
       <Div mb={50} display="flex" justifyContent="space-around">
@@ -266,6 +277,13 @@ const Courses = () => {
               label="Course"
               data={coursesDefinitions}
               name="courseId"
+              placement="auto"
+              style={{ width: '300px', marginRight: '30px' }}
+            />
+            <CRSelectInput
+              label="Course Status"
+              data={courseStatus}
+              name="status"
               placement="auto"
               style={{ width: '300px' }}
             />
@@ -277,14 +295,19 @@ const Courses = () => {
                 data={searchedPatients}
                 onChange={val => setFilter({ ...filter, patientId: val })}
                 value={filter.patientId}
-                //   searchBy={searchBy}
                 virtualized={false}
                 style={{ width: '300px' }}
               />
             </Div>
           </Div>
         </Form>
-        <CRButton mt={42} onClick={() => setShowCourseData(false)}>
+        <CRButton
+          mt={42}
+          onClick={() => {
+            setShowCourseData(false);
+            setFilter(initFilter);
+          }}
+        >
           All Courses
         </CRButton>
       </Div>
@@ -305,14 +328,16 @@ const Courses = () => {
       />
       {!showCourseData ? (
         <ListCourses
-          courses={filteredCourses}
+          courses={courses}
           setCourse={setCourse}
           setShowCourseData={setShowCourseData}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pages={pages}
         />
       ) : (
         <CourseData
-          courseId={course?.id}
-          courses={courses}
+          course={course}
           onEditPaid={handleClickEditPaid}
           onEditUnits={handleClickEditUnits}
           onAddUnits={handleClickAddUnits}

@@ -11,6 +11,7 @@ import {
   createSubstractHistoryForMultipleItems,
   updatedUsedMaterials,
 } from '@/services/inventory.service';
+import { couponService, couponAccounting } from '@/services/coupon.service';
 
 const archiveAppointment = async (
   _,
@@ -25,9 +26,12 @@ const archiveAppointment = async (
     others = {},
     date,
     patientName,
+    patientId,
     branchId,
     specialtyId,
     userId: userID,
+    coupons,
+    couponsValue,
   },
   { userId, organizationId }
 ) => {
@@ -56,6 +60,7 @@ const archiveAppointment = async (
       },
     });
   });
+
   if (bank == null && company == null) {
     await createAppointmentRevenue(
       createAppointmentRevenueFromSessions(
@@ -123,6 +128,8 @@ const archiveAppointment = async (
         userID,
         level
       );
+    }
+    if (couponsValue > 0) {
     }
   }
   if (bank != null && company == null) {
@@ -486,6 +493,32 @@ const archiveAppointment = async (
       });
     }
   }
+  if (couponsValue > 0) {
+    await couponAccounting(
+      userId,
+      organizationId,
+      branchId,
+      date,
+      specialtyId,
+      userID,
+      patientName,
+      coupons,
+      couponsValue
+    );
+  }
+  await couponService(
+    patientId,
+    userId,
+    sessions,
+    discount,
+    organizationId,
+    branchId,
+    date,
+    specialtyId,
+    userID,
+    others,
+    patientName
+  );
   const appointment = await prisma.appointment.update({
     data: { accounted: true },
     where: { id },

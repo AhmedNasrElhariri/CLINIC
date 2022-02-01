@@ -6,7 +6,11 @@ import styled from 'styled-components';
 import { CRModal, Div } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
-import { useConfigurations, useCompanySessionDefinition } from 'hooks';
+import {
+  useConfigurations,
+  useCompanySessionDefinition,
+  usePatients,
+} from 'hooks';
 import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 
 const initValue = {
@@ -32,8 +36,13 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [bank, setBank] = useState(null);
   const [cashPayment, setCashPayment] = useState(0);
   const [company, setCompany] = useState(null);
+  const [coupons, setCoupons] = useState([]);
+  const [couponsValue, setCouponsValue] = useState(0);
   const [option, setOption] = useState(initlOption);
   const value = useRef(initValue);
+  const { patientCoupons } = usePatients({
+    patientId: appointment?.patient.id,
+  });
   const { data } = useQuery(GET_INVOICE_COUNTER, {
     fetchPolicy: 'network-only',
   });
@@ -60,6 +69,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         bank,
         company,
         option,
+        coupons,
+        couponsValue,
       });
       setActiveStep(0);
       setOthers(0);
@@ -67,12 +78,25 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       setCompany(null);
       setOthersName('');
       setDiscount(0);
+      setCoupons([]);
+      setCouponsValue(0);
       value.current = {
         sessions: [],
         items: [],
       };
     }
-  }, [activeStep, onOk, discount, others, othersName, bank, company, option]);
+  }, [
+    activeStep,
+    onOk,
+    discount,
+    others,
+    othersName,
+    bank,
+    company,
+    option,
+    coupons,
+    couponsValue,
+  ]);
   const handleFinish = useCallback(() => {
     onOk({
       ...value.current,
@@ -82,6 +106,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       bank,
       company,
       option,
+      coupons,
+      couponsValue,
     });
     setActiveStep(0);
     setOthers(0);
@@ -89,11 +115,23 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     setCompany(null);
     setOthersName('');
     setDiscount(0);
+    setCoupons([]);
+    setCouponsValue(0);
     value.current = {
       sessions: [],
       items: [],
     };
-  }, [onOk, discount, others, othersName, bank, company, option]);
+  }, [
+    onOk,
+    discount,
+    others,
+    othersName,
+    bank,
+    company,
+    option,
+    coupons,
+    couponsValue,
+  ]);
 
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
@@ -160,9 +198,14 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
             setOption={setOption}
             sessions={updatedCompanySessions}
             organization={organization}
+            patientCoupons={patientCoupons}
             handleOk={handleOk}
             onCancel={handleCancel}
             handleFinish={handleFinish}
+            coupons={coupons}
+            setCoupons={setCoupons}
+            setCouponsValue={setCouponsValue}
+            couponsValue={couponsValue}
             loading={loading}
           />
         )}

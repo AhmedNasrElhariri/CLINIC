@@ -273,7 +273,6 @@ const Course = ({ patientId }) => {
       courses.filter(c => c.status === 'Cancelled' || c.status === 'Rejected'),
     [courses]
   );
-  console.log(CancelledCourses, 'CancelledCourses');
   return (
     <>
       <CRTabs>

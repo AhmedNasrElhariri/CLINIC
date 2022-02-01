@@ -6,6 +6,7 @@ import {
   ADD_SESSION_DEFINITION,
   EDIT_SESSION_DEFINITION,
   LIST_SESSIONS_DEFINITION,
+  LIST_SESSION_STATISTICS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -18,11 +19,28 @@ const updateCache = mySessionsDefinition => {
   });
 };
 
-function useSessionDefinition({ onCreate, onEdit } = {}) {
+function useSessionDefinition({
+  onCreate,
+  onEdit,
+  sessionId,
+  dateFrom,
+  dateTo,
+} = {}) {
   const { data } = useQuery(LIST_SESSIONS_DEFINITION);
   const sessionsDefinition = useMemo(
     () => R.propOr([], 'mySessionsDefinition')(data),
     [data]
+  );
+  const { data: sessionData } = useQuery(LIST_SESSION_STATISTICS, {
+    variables: Object.assign(
+      { sessionId: sessionId },
+      dateFrom && { dateFrom },
+      dateTo && { dateTo }
+    ),
+  });
+  const sessionStatistics = useMemo(
+    () => R.propOr({}, 'mySessionStatistic')(sessionData),
+    [sessionData]
   );
 
   const [addSessionDefinition, { loading }] = useMutation(
@@ -55,10 +73,17 @@ function useSessionDefinition({ onCreate, onEdit } = {}) {
       sessionsDefinition,
       addSessionDefinition,
       editSessionDefinition,
+      sessionStatistics,
       updateCache,
       loading,
     }),
-    [sessionsDefinition, addSessionDefinition, editSessionDefinition, loading]
+    [
+      sessionsDefinition,
+      addSessionDefinition,
+      editSessionDefinition,
+      sessionStatistics,
+      loading,
+    ]
   );
 }
 

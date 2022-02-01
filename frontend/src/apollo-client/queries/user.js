@@ -157,6 +157,21 @@ export const ADD_PAGE_SETUP = gql`
     }
   }
 `;
+export const EDIT_POINTS = gql`
+  mutation editPoints($points: Int!, $couponValue: Int!) {
+    editPoints(points: $points, couponValue: $couponValue) {
+      id
+    }
+  }
+`;
+export const GET_POINTS = gql`
+  {
+    points {
+      points
+      couponValue
+    }
+  }
+`;
 export const GET_PAGE_SETUP = gql`
   query getPageSetup {
     getPageSetup {

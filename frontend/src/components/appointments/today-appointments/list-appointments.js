@@ -235,7 +235,17 @@ function ListAppointments({
                 placement="top"
                 controlId="control-id-hover"
                 trigger="hover"
-                speaker={<Tooltip>Phone:{patient.phoneNo}</Tooltip>}
+                speaker={
+                  <Tooltip>
+                    <Div>
+                      <Div>Phone:{patient.phoneNo}</Div>
+                      <Div>
+                        Sex:{'   '}
+                        {patient.sex}
+                      </Div>
+                    </Div>
+                  </Tooltip>
+                }
               >
                 <CRTable.CRCellStyled bold>{patient.name}</CRTable.CRCellStyled>
               </Whisper>

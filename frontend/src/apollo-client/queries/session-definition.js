@@ -7,15 +7,15 @@ export const LIST_PRICES = gql`
       Apptype
       price
       level
-      user{
+      user {
         id
         name
       }
-      branch{
+      branch {
         id
         name
       }
-      specialty{
+      specialty {
         id
         name
       }
@@ -48,6 +48,22 @@ export const LIST_SESSIONS_DEFINITION = gql`
       name
       price
       duration
+    }
+  }
+`;
+export const LIST_SESSION_STATISTICS = gql`
+  query ($sessionId: ID!, $dateFrom: Date, $dateTo: Date) {
+    mySessionStatistic(
+      sessionId: $sessionId
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+    ) {
+      session {
+        id
+        name
+      }
+      totalNumber
+      totalPrice
     }
   }
 `;

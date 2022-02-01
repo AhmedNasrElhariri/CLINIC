@@ -112,3 +112,4 @@ export { default as addPageSetup } from './add-page-setup';
 export { default as addAppointmentTypeDefinition } from './add-appointment-type-definition';
 export { default as editAppointmentTypeDefinition } from './edit-appointment-type-definition';
 export { default as editBankTransition } from './edit-bank-transition';
+export { default as editPoints } from './edit-points';

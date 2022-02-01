@@ -1,5 +1,5 @@
-import React, { useMemo, useState, useCallback } from 'react';
-import { Form } from 'rsuite';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import { Form, CheckboxGroup, Checkbox } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import { Spinner } from 'components/widgets/button/spinner';
 import * as R from 'ramda';
@@ -11,6 +11,7 @@ import {
   CRButton,
   CRNumberInput,
   CRTextInput,
+  CRCheckBoxGroup,
 } from 'components';
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
@@ -66,16 +67,22 @@ function AppointmentInvoice({
   setCompany,
   option,
   setOption,
+  patientCoupons,
   handleOk,
   bank,
   setBank,
   organization,
   handleFinish,
+  coupons,
+  setCoupons,
+  setCouponsValue,
+  couponsValue,
   loading,
 }) {
   const [session, setSession] = useState({});
   const [sessionNumber, setSessionNumber] = useState(0);
   const [visa, setVisa] = useState(false);
+  const [coupon, setCoupon] = useState(false);
   const [insurance, setInsurance] = useState(false);
   const [formValue, setFormValue] = useState(initValue);
   const [selectedSessions, setSelectedSessions] = useState([]);
@@ -92,6 +99,9 @@ function AppointmentInvoice({
     const allChoices = [...sessions];
     return allChoices.map(s => ({ name: s.name, id: s }));
   }, [sessions]);
+  const updatedPatientCoupons = useMemo(() => {
+    return patientCoupons.map(c => ({ name: `Coupon -- ${c.value}`, id: c }));
+  }, [patientCoupons]);
   const handleOnChange = useCallback(
     sessions => {
       setSelectedSessions(sessions);
@@ -126,7 +136,21 @@ function AppointmentInvoice({
     sub = subRed + others;
     return sub;
   }, [selectedSessions, option, others]);
-  const total = useMemo(() => subtotal - discount, [discount, subtotal]);
+  const totalCoupons = useMemo(() => {
+    let totalSum = 0;
+    coupons.forEach(c => {
+      const Co = patientCoupons.find(co => co.id === c);
+      totalSum += Co.value;
+    });
+    return totalSum;
+  }, [coupons, patientCoupons]);
+  const total = useMemo(
+    () => subtotal - discount - totalCoupons,
+    [discount, subtotal, totalCoupons]
+  );
+  useEffect(() => {
+    setCouponsValue(totalCoupons);
+  }, [setCouponsValue, totalCoupons]);
   return (
     <>
       <Div mt={20}>
@@ -135,6 +159,7 @@ function AppointmentInvoice({
             onClick={() => {
               setVisa(true);
               setInsurance(false);
+              setCoupon(false);
             }}
             mr={10}
           >
@@ -144,10 +169,21 @@ function AppointmentInvoice({
             onClick={() => {
               setInsurance(true);
               setVisa(false);
+              setCoupon(false);
             }}
             mr={10}
           >
             Insurance Pay
+          </CRButton>
+          <CRButton
+            onClick={() => {
+              setInsurance(false);
+              setVisa(false);
+              setCoupon(true);
+            }}
+            mr={10}
+          >
+            Coupon Pay
           </CRButton>
         </Div>
         {visa && (
@@ -161,6 +197,20 @@ function AppointmentInvoice({
               placeholder="Select One Bank "
               style={{ width: '230px' }}
             />
+          </Form>
+        )}
+        {coupon && (
+          <Form>
+            <CheckboxGroup
+              value={coupons}
+              onChange={value => {
+                setCoupons(value);
+              }}
+            >
+              {patientCoupons.map(c => (
+                <Checkbox value={c.id}>Coupon -- {c.value}</Checkbox>
+              ))}
+            </CheckboxGroup>
           </Form>
         )}
         {insurance && (
@@ -301,6 +351,14 @@ function AppointmentInvoice({
           <Div background="#f0f1f1" p="6px 8px">
             <Price name="Others" price={others} overriden variant="primary" />
             <Price name="Subtotal " price={subtotal} overriden />
+            {couponsValue > 0 && (
+              <Price
+                name="Coupon Values"
+                price={couponsValue}
+                overriden
+                variant="danger"
+              />
+            )}
             <Price
               name="Discount"
               price={discount}
@@ -325,6 +383,7 @@ function AppointmentInvoice({
           othersName={othersName}
           discount={discount}
           organization={organization}
+          couponsValue={couponsValue}
         />
         <CRButton onClick={handleFinish}>
           {loading ? <Spinner /> : 'Finish'}

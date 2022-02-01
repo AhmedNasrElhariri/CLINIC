@@ -35,6 +35,7 @@ function TodayAppointments() {
   } = useAppointments({
     action: ACTIONS.List_Appointment,
   });
+
   const filteredAppointments = useMemo(
     () => filterTodayAppointments(appointments, formValue),
     [appointments, formValue]
@@ -116,6 +117,8 @@ function TodayAppointments() {
       option,
       appPrice,
       othersName,
+      coupons,
+      couponsValue,
     }) => {
       close();
       console.log(sessions, 'SSSSSSSSSSSS');
@@ -145,10 +148,13 @@ function TodayAppointments() {
             amount: others,
           },
           patientName: appointment.patient.name,
+          patientId: appointment.patient.id,
           bank,
           appPrice,
           company,
           option,
+          coupons,
+          couponsValue,
         },
       });
     },

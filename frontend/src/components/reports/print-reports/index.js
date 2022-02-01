@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import ReactToPrint from 'react-to-print';
 import {
   CRButton,
@@ -6,6 +6,8 @@ import {
   CRDatePicker,
   Div,
   CRDateRangePicker,
+  H5,
+  H3,
 } from 'components/widgets';
 import { Can } from 'components/user/can';
 import axios from 'axios';
@@ -13,6 +15,7 @@ import { Form, DatePicker, Table } from 'rsuite';
 import { Container, Report, Name } from './style';
 import { useSessionDefinition } from 'hooks';
 import moment from 'moment';
+import * as R from 'ramda';
 
 const initialValue = {
   month: '',
@@ -40,7 +43,15 @@ const Test = props => {
   const [data, setData] = useState([]);
   const [dataTwo, setDataTwo] = useState({});
   let monthes = getMonths();
-  const { sessionsDefinition } = useSessionDefinition({});
+  const { sessionsDefinition, sessionStatistics } = useSessionDefinition({
+    sessionId: formValue.sessionId,
+    dateFrom: formValue.sessionDate[0],
+    dateTo: formValue.sessionDate[1],
+  });
+  const totalNumber = R.propOr(0, 'totalNumber')(sessionStatistics);
+  const totalPrice = R.propOr(0, 'totalPrice')(sessionStatistics);
+  const session = R.propOr({}, 'session')(sessionStatistics);
+  
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
@@ -56,7 +67,6 @@ const Test = props => {
       })
       .catch(err => {});
   };
-  console.log(formValue,'FFF');
   const handleDailyReport = async day => {
     setLoading(true);
     setError(null);
@@ -77,7 +87,9 @@ const Test = props => {
   const { Column, HeaderCell, Cell, Pagination } = Table;
   const refOne = useRef();
   const refTwo = useRef();
+  const refThree = useRef();
   let monthlyData = dataTwo?.data || [];
+
   return (
     <>
       <Container>
@@ -135,7 +147,7 @@ const Test = props => {
               <CRDateRangePicker
                 name="sessionDate"
                 placeholder="Timeframe"
-                style={{ width: '230px',marginRight:'30px' }}
+                style={{ width: '230px', marginRight: '30px' }}
               />
               <CRSelectInput
                 name="sessionId"
@@ -144,9 +156,10 @@ const Test = props => {
               />
             </Div>
           </Form>
-          <CRButton onClick={() => handleDailyReport(formValue.date)}>
-            Show
-          </CRButton>
+          <ReactToPrint
+            trigger={() => <CRButton primary>Print</CRButton>}
+            content={() => refThree.current}
+          />
         </Report>
         {/* </Can> */}
       </Container>
@@ -255,6 +268,19 @@ const Test = props => {
                 <Cell dataKey="numOfPulses" />
               </Column>
             </Table>
+          </Div>
+        </Div>
+      </Div>
+
+      <Div>
+        <Div style={{ overflow: 'hidden', height: '0px' }}>
+          <Div ref={refThree}>
+            <H3 display="flex" justifyContent="center" mt={20} mb={20} >
+              Session Report 
+            </H3>
+            <H5>Session Name : {session?.name}</H5>
+            <H5>TotalNumber: {totalNumber}</H5>
+            <H5>TotalPrice:{totalPrice}</H5>
           </Div>
         </Div>
       </Div>

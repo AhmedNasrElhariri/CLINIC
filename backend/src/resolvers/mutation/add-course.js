@@ -50,6 +50,7 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
           id: courseDefinitionId,
         },
       },
+
       sessions: {
         create: sessions.map(date => ({
           type: APPOINTMENTS_TYPES.Session,

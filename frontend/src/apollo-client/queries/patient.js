@@ -94,6 +94,16 @@ export const GET_PATIENT = gql`
     }
   }
 `;
+export const PATIENT_COUPONS = gql`
+  query ($patientId: ID!) {
+    patientCoupons(patientId: $patientId) {
+      id
+      value
+      status
+      date
+    }
+  }
+`;
 
 export const INSRET_LAB_RESULT = gql`
   mutation insertLabResult($lab: LabInput!) {

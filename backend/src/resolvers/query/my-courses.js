@@ -1,12 +1,73 @@
 import { prisma } from '@';
+import * as R from 'ramda';
 
-const myCourses = async (_, { patientId }) => {
-  const courses = await prisma.course.findMany({
+const sortByCourseId = (courseIds, courses) => {
+  let newCourses = [];
+  courseIds.forEach(cId => {
+    newCourses.push(courses.find(c => c.id === cId));
+  });
+  return newCourses;
+};
+const myCourses = async (
+  _,
+  { patientId, offset, limit, status, courseId, sortType },
+  { organizationId }
+) => {
+  const coursesNumber = await prisma.course.count({
     where: {
-      patientId: patientId,
+      patient: {
+        organization: {
+          id: organizationId,
+        },
+      },
     },
   });
-  return courses;
+
+  // const courses = await prisma.course.findMany({
+  //   where: Object.assign(
+  //     {
+  //       patient: {
+  //         organization: {
+  //           id: organizationId,
+  //         },
+  //       },
+  //     },
+  //     patientId && { patientId: patientId },
+  //     status && { status: status },
+  //     courseId && {
+  //       courseDefinition: {
+  //         id: courseId,
+  //       },
+  //     }
+  //   ),
+  //   orderBy: {
+  //     paid: sortType,
+  //   },
+  //   skip: offset,
+  //   take: limit,
+  // });
+  const courses = await prisma.$queryRaw`SELECT C."id" As "courseId" FROM public."Course" AS C INNER JOIN public."Patient" AS P on C."patientId" = P."id"  INNER JOIN "CourseDefinition" AS CD on C."courseDefinitionId" = CD."id"  WHERE P."organizationId" = ${organizationId} AND (CASE WHEN ${patientId} like '_%' THEN P."id" = ${patientId} ELSE P."id" like '_%' END) AND (CASE WHEN ${courseId} like '_%' THEN CD."id" = ${courseId} ELSE CD."id" like '_%' END) AND (CASE WHEN ${status} like '_%' THEN C."status" = ${status} ELSE C."status" = 'InProgress' END) ORDER BY (C.price - C.paid) DESC LIMIT ${limit} OFFSET ${offset}`;
+
+  let coursesIds = [];
+  courses.forEach(c => {
+    coursesIds.push(c.courseId);
+  });
+  const newCourses = await prisma.course.findMany({
+    where: { id: { in: coursesIds } },
+    include: {
+      courseDefinition: true,
+      user: true,
+      doctor: true,
+      sessions: true,
+      patient: true,
+    },
+  });
+  const sortedCourses = sortByCourseId(coursesIds,newCourses);
+  const data = {
+    courses: sortedCourses,
+    coursesCount: coursesNumber,
+  };
+  return data;
 };
 
 export default myCourses;

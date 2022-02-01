@@ -51,7 +51,6 @@ const PatientSurgeriesContainer = () => {
       },
     });
 
-  console.log(patientSurgeries,'patientSurgeries');
 
   const handleOnClickCreate = useCallback(() => {
     open();

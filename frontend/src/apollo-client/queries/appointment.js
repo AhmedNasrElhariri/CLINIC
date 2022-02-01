@@ -327,11 +327,14 @@ export const ARCHIVE_APPOINTMENT = gql`
     $others: Others
     $bank: ID
     $patientName: String!
+    $patientId: ID!
     $company: ID
     $option: optionInput!
     $branchId: ID
     $specialtyId: ID
     $userId: ID
+    $coupons: [ID]
+    $couponsValue: Int
   ) {
     archiveAppointment(
       id: $id
@@ -339,6 +342,7 @@ export const ARCHIVE_APPOINTMENT = gql`
       items: $items
       discount: $discount
       patientName: $patientName
+      patientId: $patientId
       others: $others
       date: $date
       bank: $bank
@@ -347,6 +351,8 @@ export const ARCHIVE_APPOINTMENT = gql`
       branchId: $branchId
       specialtyId: $specialtyId
       userId: $userId
+      coupons: $coupons
+      couponsValue: $couponsValue
     ) {
       id
       status

@@ -88,3 +88,6 @@ export { default as getUserPatientFields } from './get-user-patient-fields';
 export { default as getPageSetup } from './get-page-setup';
 export { default as myAppointmentTypesDefinition } from './my-appointment-types-definition';
 export { default as allAppointments } from './all-appointments';
+export { default as mySessionStatistic } from './my-session-statistics';
+export { default as points } from './points';
+export { default as patientCoupons }from './patient-coupons';

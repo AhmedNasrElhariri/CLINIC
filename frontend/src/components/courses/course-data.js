@@ -14,8 +14,7 @@ import {
 import { formatDate } from 'utils/date';
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const CourseData = ({
-  courseId,
-  courses,
+  course,
   onEditPaid,
   onEditDoctor,
   onFinishCourse,
@@ -25,10 +24,6 @@ const CourseData = ({
   onEditHistoryPayment,
 }) => {
   const history = useHistory();
-  const course = useMemo(() => {
-    const FilteredCourse = courses?.filter(c => c.id === courseId);
-    return FilteredCourse[0] || {};
-  }, [courses, courseId]);
   let { sessions } = course;
   const updatedSessions = sortByDate(sessions);
   const { coursePayments } = useCourses({ courseId: course.id });
@@ -171,7 +166,7 @@ const CourseData = ({
                 <CoursePayment
                   coursePayments={coursePayments}
                   onEdit={onEditHistoryPayment}
-                  courseId={courseId}
+                  courseId={course.id}
                 />
               </CRTabs.CRContent>
             </CRTabs.CRContentGroup>
