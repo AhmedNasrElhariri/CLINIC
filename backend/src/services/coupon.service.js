@@ -33,12 +33,20 @@ export const couponService = async (
     },
     where: { id: patientId },
   });
-  if (totalPoints > pointsToGetCoupon) {
+  if (totalPoints > pointsToGetCoupon || totalPoints == pointsToGetCoupon) {
+    console.log(totalPoints, 'totalPointstotalPoints');
     let couponNumbers = 0;
     couponNumbers = Math.floor(totalPoints / pointsToGetCoupon);
-    if (couponNumbers > 0) {
-      const couponPrice = couponNumbers * valueOfCoupon;
-      const usedPoints = couponNumbers * pointsToGetCoupon;
+    if (couponNumbers > 0 || couponNumbers == 0) {
+      const couponPrice =
+        totalPoints === pointsToGetCoupon
+          ? valueOfCoupon
+          : couponNumbers * valueOfCoupon;
+      const usedPoints =
+        totalPoints === pointsToGetCoupon
+          ? pointsToGetCoupon
+          : couponNumbers * pointsToGetCoupon;
+      console.log(couponPrice, 'couponPricecouponPrice');
       await prisma.coupon.create({
         data: {
           date: new Date(),
@@ -77,47 +85,7 @@ export const couponAccounting = async (
   couponsValue
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
-  await prisma.revenue.create({
-    data: Object.assign(
-      {
-        name: 'Coupon/' + patientName,
-        date: new Date(date),
-        amount: couponsValue,
-        level,
-        organization: {
-          connect: {
-            id: organizationId,
-          },
-        },
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-      },
-      specialtyId && {
-        specialty: {
-          connect: {
-            id: specialtyId,
-          },
-        },
-      },
-      branchId && {
-        branch: {
-          connect: {
-            id: branchId,
-          },
-        },
-      },
-      userID && {
-        doctor: {
-          connect: {
-            id: userID,
-          },
-        },
-      }
-    ),
-  });
+
   await prisma.expense.create({
     data: Object.assign(
       {
@@ -160,14 +128,30 @@ export const couponAccounting = async (
       }
     ),
   });
-  coupons.forEach(async c => {
-    await prisma.coupon.update({
-      data: {
-        status: 'Used',
-      },
-      where: {
-        id: c,
-      },
-    });
+};
+
+export const updateCoupons = async (coupons, organizationId) => {
+  let ids = [];
+  coupons.forEach(el => {
+    ids.push(el.id);
   });
+  const realCoupons = await prisma.coupon.findMany({
+    where: { id: { in: ids } },
+  });
+  const updatedCoupons = coupons.map(c => {
+    const coupon = realCoupons.find(rc => rc.id === c.id);
+    const remainingValue = coupon.remaining - c.value;
+    const status = remainingValue <= 0 ? 'Used' : 'Remaining';
+    return {
+      where: {
+        organizationId: organizationId,
+        id: c.id,
+      },
+      data: {
+        status: status,
+        remaining: remainingValue,
+      },
+    };
+  });
+  await Promise.all(updatedCoupons.map(uc => prisma.coupon.updateMany(uc)));
 };

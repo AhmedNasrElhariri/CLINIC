@@ -54,6 +54,7 @@ export const LIST_APPOINTMENTS = gql`
           age
           sex
           phoneNo
+          points
         }
         user {
           id
@@ -99,6 +100,7 @@ export const LIST_TODAY_APPOINTMENTS = gql`
         age
         sex
         phoneNo
+        points
       }
       user {
         id
@@ -333,7 +335,7 @@ export const ARCHIVE_APPOINTMENT = gql`
     $branchId: ID
     $specialtyId: ID
     $userId: ID
-    $coupons: [ID]
+    $coupons: [couponInput]
     $couponsValue: Int
   ) {
     archiveAppointment(

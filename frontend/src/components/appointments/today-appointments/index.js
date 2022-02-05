@@ -34,6 +34,7 @@ function TodayAppointments() {
     updateNotes,
   } = useAppointments({
     action: ACTIONS.List_Appointment,
+    patientId:appointment?.patient?.id,
   });
 
   const filteredAppointments = useMemo(
@@ -121,7 +122,6 @@ function TodayAppointments() {
       couponsValue,
     }) => {
       close();
-      console.log(sessions, 'SSSSSSSSSSSS');
       archive({
         variables: {
           id: appointment.id,

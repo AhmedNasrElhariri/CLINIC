@@ -101,20 +101,15 @@ export const LIST_COURSES = gql`
 `;
 export const LIST_PATIENT_COURSES = gql`
   query ($patientId: ID!) {
-    myCourses(patientId: $patientId) {
+    myPatientCourses(patientId: $patientId) {
       id
-      courseDefinition {
-        name
-      }
       price
+      paid
       discount
-      patient {
-        id
-        name
-        age
-        sex
-        phoneNo
-      }
+      consumed
+      startDate
+      endDate
+      status
       courseDefinition {
         id
         name
@@ -122,6 +117,24 @@ export const LIST_PATIENT_COURSES = gql`
         price
         units
         messureOfUnits
+      }
+      doctor {
+        id
+        name
+      }
+      user {
+        id
+        name
+      }
+      patient {
+        name
+        phoneNo
+      }
+      sessions {
+        id
+        type
+        date
+        status
       }
     }
   }

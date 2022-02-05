@@ -12,6 +12,8 @@ import {
   CRNumberInput,
   CRTextInput,
   CRCheckBoxGroup,
+  H3,
+  H4,
 } from 'components';
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
@@ -29,6 +31,19 @@ const OTHER = 'Other';
 const initValue = {
   name: '',
   price: 1,
+};
+const initialCouponObject = {
+  id: null,
+  val: 0,
+};
+const checkCouponExists = (id, coupons) => {
+  if (coupons.length == 0) {
+    return -1;
+  } else {
+    const exist = coupon => coupon.id === id;
+    const existValue = coupons.findIndex(exist);
+    return existValue;
+  }
 };
 
 const Price = ({ name, price, variant }) => (
@@ -99,9 +114,6 @@ function AppointmentInvoice({
     const allChoices = [...sessions];
     return allChoices.map(s => ({ name: s.name, id: s }));
   }, [sessions]);
-  const updatedPatientCoupons = useMemo(() => {
-    return patientCoupons.map(c => ({ name: `Coupon -- ${c.value}`, id: c }));
-  }, [patientCoupons]);
   const handleOnChange = useCallback(
     sessions => {
       setSelectedSessions(sessions);
@@ -138,12 +150,16 @@ function AppointmentInvoice({
   }, [selectedSessions, option, others]);
   const totalCoupons = useMemo(() => {
     let totalSum = 0;
-    coupons.forEach(c => {
-      const Co = patientCoupons.find(co => co.id === c);
-      totalSum += Co.value;
-    });
+    const values = Object.values(coupons);
+    if (values.length == 0) {
+      totalSum = 0;
+    } else {
+      values.forEach(v => {
+        totalSum += v;
+      });
+    }
     return totalSum;
-  }, [coupons, patientCoupons]);
+  }, [coupons]);
   const total = useMemo(
     () => subtotal - discount - totalCoupons,
     [discount, subtotal, totalCoupons]
@@ -200,18 +216,46 @@ function AppointmentInvoice({
           </Form>
         )}
         {coupon && (
-          <Form>
-            <CheckboxGroup
-              value={coupons}
-              onChange={value => {
-                setCoupons(value);
-              }}
-            >
-              {patientCoupons.map(c => (
-                <Checkbox value={c.id}>Coupon -- {c.value}</Checkbox>
+          <>
+            <Div mt={20} color="bold">
+              Points: {appointment?.patient.points}
+            </Div>
+            {patientCoupons.length == 0 && (
+              <Div mt={20} color="bold">
+                No Coupons Exists
+              </Div>
+            )}
+            {/* <Form>
+              <CheckboxGroup
+                value={coupons}
+                onChange={value => {
+                  setCoupons(value);
+                }}
+              >
+                {patientCoupons.map(c => (
+                  <Checkbox value={c.id}>Coupon -- {c.value}</Checkbox>
+                ))}
+              </CheckboxGroup>
+            </Form> */}
+            <Form onChange={setCoupons} formValue={coupons}>
+              {patientCoupons.map((c, index) => (
+                <Div display="flex" key={c.id}>
+                  <Div mt={17}>Coupon -- </Div>
+                  <Div mt={17} mr={3}>{c.value}</Div>
+                  <Div mt={17}>Remaining -- </Div>
+                  <Div mt={17} mr={3}>{c.remaining}</Div>
+                  <Div>
+                    <CRNumberInput
+                      name={c.id}
+                      min={0}
+                      max={c.value}
+                      value={coupons[c.id] ? coupons[c.id] : 0}
+                    />
+                  </Div>
+                </Div>
               ))}
-            </CheckboxGroup>
-          </Form>
+            </Form>
+          </>
         )}
         {insurance && (
           <Form>

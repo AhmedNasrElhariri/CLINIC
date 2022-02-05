@@ -71,6 +71,7 @@ enum CouponStatus {
   Active
   Used
   Expired
+  Remaining
 }
 
 enum FieldType {
@@ -197,6 +198,7 @@ type Query {
     courseId: ID
     sortType: String
   ): CourseData
+  myPatientCourses(patientId: ID): [Course!]
   myDoctors(appointmentId: ID): [User!]
   myAppointmentTypesDefinition: [AppointmentTypeDefinition!]
   myImagesCategory: [ImageCategory!]
@@ -264,7 +266,7 @@ type Mutation {
     specialtyId: ID
     userId: ID
     couponsValue: Int
-    coupons: [ID]
+    coupons: [couponInput]
   ): Appointment!
   createView(view: ViewInput!): Boolean
   updateView(view: ViewInput!, viewId: ID!): Boolean
@@ -606,6 +608,7 @@ type Patient implements Searchable {
   name: String!
   searchName: String!
   phoneNo: String!
+  points: Int
   code: String!
   codeNumber: Int!
   reference: [String]
@@ -824,6 +827,7 @@ type Points {
 type Coupon {
   id: ID!
   value: Int!
+  remaining: Int!
   status: CouponStatus!
   date: Date!
 }
@@ -950,6 +954,10 @@ input optionInput {
   option: String
   payMethod: String!
   amount: Int
+}
+input couponInput {
+  id: ID
+  value: Int
 }
 
 type CourseSessions {
@@ -1677,33 +1685,6 @@ type Course {
   doctor: User!
   courseDefinition: CourseDefinition!
 }
-type EditablePatient {
-  name: String!
-  phoneNo: String!
-}
-type EditableUser {
-  id: ID!
-  name: String!
-}
-type EditableDoctor {
-  id: ID!
-  name: String!
-}
-type EditableCourse {
-  id: ID!
-  price: Int!
-  paid: Int!
-  consumed: Int!
-  discount: Int!
-  startDate: Date!
-  endDate: Date!
-  status: CourseStatus!
-  courseDefinition: CourseDefinition!
-  patient: EditablePatient!
-  user: EditableUser!
-  doctor: EditableDoctor!
-}
-
 
 type CourseData {
   courses: [Course!]

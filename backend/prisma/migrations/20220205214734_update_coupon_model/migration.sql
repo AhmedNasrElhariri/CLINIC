@@ -1,0 +1,6 @@
+-- AlterEnum
+ALTER TYPE "CouponStatus" ADD VALUE 'Remaining';
+
+-- AlterTable
+ALTER TABLE "Coupon" ADD COLUMN     "remaining" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "expireDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

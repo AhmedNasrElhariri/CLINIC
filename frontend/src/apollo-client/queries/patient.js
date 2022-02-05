@@ -99,6 +99,7 @@ export const PATIENT_COUPONS = gql`
     patientCoupons(patientId: $patientId) {
       id
       value
+      remaining
       status
       date
     }

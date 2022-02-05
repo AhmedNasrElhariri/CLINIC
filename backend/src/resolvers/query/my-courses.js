@@ -1,5 +1,4 @@
 import { prisma } from '@';
-import * as R from 'ramda';
 
 const sortByCourseId = (courseIds, courses) => {
   let newCourses = [];
@@ -22,7 +21,13 @@ const myCourses = async (
       },
     },
   });
-
+  let newStatus = [];
+  newStatus =
+    status === 'Finished'
+      ? ['Finished', 'EarlyFinished']
+      : status === 'Cancelled'
+      ? ['Cancelled', 'Rejected']
+      : ['InProgress', 'InProgress'];
   // const courses = await prisma.course.findMany({
   //   where: Object.assign(
   //     {
@@ -46,7 +51,7 @@ const myCourses = async (
   //   skip: offset,
   //   take: limit,
   // });
-  const courses = await prisma.$queryRaw`SELECT C."id" As "courseId" FROM public."Course" AS C INNER JOIN public."Patient" AS P on C."patientId" = P."id"  INNER JOIN "CourseDefinition" AS CD on C."courseDefinitionId" = CD."id"  WHERE P."organizationId" = ${organizationId} AND (CASE WHEN ${patientId} like '_%' THEN P."id" = ${patientId} ELSE P."id" like '_%' END) AND (CASE WHEN ${courseId} like '_%' THEN CD."id" = ${courseId} ELSE CD."id" like '_%' END) AND (CASE WHEN ${status} like '_%' THEN C."status" = ${status} ELSE C."status" = 'InProgress' END) ORDER BY (C.price - C.paid) DESC LIMIT ${limit} OFFSET ${offset}`;
+  const courses = await prisma.$queryRaw`SELECT C."id" As "courseId" FROM public."Course" AS C INNER JOIN public."Patient" AS P on C."patientId" = P."id"  INNER JOIN "CourseDefinition" AS CD on C."courseDefinitionId" = CD."id"  WHERE P."organizationId" = ${organizationId} AND (CASE WHEN ${patientId} like '_%' THEN P."id" = ${patientId} ELSE P."id" like '_%' END) AND (CASE WHEN ${courseId} like '_%' THEN CD."id" = ${courseId} ELSE CD."id" like '_%' END) AND (CASE WHEN ${status} like '_%' THEN (C."status" = ${newStatus[0]} OR C."status" = ${newStatus[1]}) ELSE C."status" = 'InProgress' END) ORDER BY (C.price - C.paid) DESC LIMIT ${limit} OFFSET ${offset}`;
 
   let coursesIds = [];
   courses.forEach(c => {
@@ -62,7 +67,7 @@ const myCourses = async (
       patient: true,
     },
   });
-  const sortedCourses = sortByCourseId(coursesIds,newCourses);
+  const sortedCourses = sortByCourseId(coursesIds, newCourses);
   const data = {
     courses: sortedCourses,
     coursesCount: coursesNumber,

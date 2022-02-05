@@ -11,7 +11,11 @@ import {
   createSubstractHistoryForMultipleItems,
   updatedUsedMaterials,
 } from '@/services/inventory.service';
-import { couponService, couponAccounting } from '@/services/coupon.service';
+import {
+  couponService,
+  couponAccounting,
+  updateCoupons,
+} from '@/services/coupon.service';
 
 const archiveAppointment = async (
   _,
@@ -36,6 +40,7 @@ const archiveAppointment = async (
   { userId, organizationId }
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
+  console.log(coupons,'couponscouponscouponscoupons');
   sessions.forEach(async ({ price, number, id }) => {
     await prisma.sessionTransaction.create({
       data: {
@@ -117,7 +122,7 @@ const archiveAppointment = async (
         ),
       });
     }
-    if (discount) {
+    if (discount && discount.amount > 0 ) {
       await createAppointmentExpense(
         userId,
         discount,
@@ -129,8 +134,6 @@ const archiveAppointment = async (
         level
       );
     }
-    if (couponsValue > 0) {
-    }
   }
   if (bank != null && company == null) {
     let sub = 0;
@@ -138,9 +141,9 @@ const archiveAppointment = async (
       (sum, { price, number }) => sum + number * price,
       0
     );
-    sub = subRed + others.amount - discount.amount;
+    sub = subRed + others.amount - discount.amount - couponsValue;
     const name = 'Bank Payment - ' + patientName;
-    if (option.amount > 0) {
+    if (option.amount > 0 || couponsValue > 0) {
       let cashAmount = option.amount;
       let bankAmount = 0;
       if (option.option === 'percentage') {
@@ -494,17 +497,20 @@ const archiveAppointment = async (
     }
   }
   if (couponsValue > 0) {
-    await couponAccounting(
-      userId,
-      organizationId,
-      branchId,
-      date,
-      specialtyId,
-      userID,
-      patientName,
-      coupons,
-      couponsValue
-    );
+    await updateCoupons(coupons,organizationId);
+    if (bank == null && company == null) {
+      await couponAccounting(
+        userId,
+        organizationId,
+        branchId,
+        date,
+        specialtyId,
+        userID,
+        patientName,
+        coupons,
+        couponsValue
+      );
+    }
   }
   await couponService(
     patientId,

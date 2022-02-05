@@ -14,6 +14,7 @@ import {
   LIST_INVENTORY,
   LIST_INVENTORY_HISTORY,
   UPDATE_BUSINESS_NOTES,
+  PATIENT_COUPONS,
 } from 'apollo-client/queries';
 import { Alert } from 'rsuite';
 
@@ -28,6 +29,7 @@ function useAppointments({
   date,
   userId,
   action,
+  patientId,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -114,6 +116,10 @@ function useAppointments({
         },
         {
           query: LIST_EXPENSES,
+        },
+        {
+          query: PATIENT_COUPONS,
+          variables: { patientId: patientId, },
         },
         { query: LIST_INVENTORY },
         { query: LIST_INVENTORY_HISTORY },

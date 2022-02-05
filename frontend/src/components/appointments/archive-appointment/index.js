@@ -43,9 +43,18 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const { patientCoupons } = usePatients({
     patientId: appointment?.patient.id,
   });
+  const newCoupons = useMemo(() => {
+    let newCouponsObject = [];
+    for (const [key, value] of Object.entries(coupons)) {
+      const object = { id: key, value: value };
+      newCouponsObject.push(object);
+    }
+    return newCouponsObject;
+  }, [coupons]);
   const { data } = useQuery(GET_INVOICE_COUNTER, {
     fetchPolicy: 'network-only',
   });
+  console.log(coupons, 'COCOCOC');
   const organization = useMemo(
     () => R.propOr([], 'myInvoiceCounter')(data),
     [data]
@@ -69,7 +78,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         bank,
         company,
         option,
-        coupons,
+        coupons: newCoupons,
         couponsValue,
       });
       setActiveStep(0);
@@ -106,7 +115,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       bank,
       company,
       option,
-      coupons,
+      coupons: newCoupons,
       couponsValue,
     });
     setActiveStep(0);

@@ -14,7 +14,8 @@ import {
 import { formatDate } from 'utils/date';
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const CourseData = ({
-  course,
+  courseId,
+  courses,
   onEditPaid,
   onEditDoctor,
   onFinishCourse,
@@ -24,6 +25,10 @@ const CourseData = ({
   onEditHistoryPayment,
 }) => {
   const history = useHistory();
+  const course = useMemo(() => {
+    const filteredCourses = courses.filter(c => c.id === courseId);
+    return filteredCourses[0];
+  }, [courseId, courses]);
   let { sessions } = course;
   const updatedSessions = sortByDate(sessions);
   const { coursePayments } = useCourses({ courseId: course.id });
@@ -63,11 +68,7 @@ const CourseData = ({
           </CRButton>
         )}
         {course.courseDefinition.type === 'Perunit' && (
-          <CRButton
-            variant="primary"
-            mr={1}
-            onClick={() => onAddUnits(course)}
-          >
+          <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
             Add Units
           </CRButton>
         )}
@@ -80,7 +81,12 @@ const CourseData = ({
             Edit Units
           </CRButton>
         )}
-        <CRButton variant="danger" onClick={() => onFinishCourse(course)}>
+        <CRButton
+          variant="danger"
+          onClick={() => {
+            onFinishCourse(course);
+          }}
+        >
           Finish
         </CRButton>
         <Data>

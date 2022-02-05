@@ -83,10 +83,14 @@ const Courses = () => {
     onFinishCourse: () => {
       close();
       setFormValue(initValue);
+      setShowCourseData(false);
+      setFilter({ patientId: null, courseId: null, status: 'Finished' });
     },
     onDeleteCourse: () => {
       close();
       setFormValue(initValue);
+      setShowCourseData(false);
+      setFilter({ patientId: null, courseId: null, status: 'Cancelled' });
     },
     patientId: filter?.patientId,
     courseId: formValue?.id,
@@ -95,7 +99,6 @@ const Courses = () => {
     status: filter.status,
     sortType: sortType,
   });
-  console.log(courses, 'CCCCCCC');
   const pages = Math.ceil(coursesCount / 20);
   const handleClickEditUnits = useCallback(
     data => {
@@ -267,40 +270,42 @@ const Courses = () => {
     editCoursePaymentHistory,
     bank,
   ]);
-  console.log(course, 'CCCCCOOOURSE', showCourseData);
   return (
     <>
       <Div mb={50} display="flex" justifyContent="space-around">
-        <Form formValue={filter} onChange={setFilter}>
-          <Div display="flex" justifyContent="space-between">
-            <CRSelectInput
-              label="Course"
-              data={coursesDefinitions}
-              name="courseId"
-              placement="auto"
-              style={{ width: '300px', marginRight: '30px' }}
-            />
-            <CRSelectInput
-              label="Course Status"
-              data={courseStatus}
-              name="status"
-              placement="auto"
-              style={{ width: '300px' }}
-            />
-            <Div ml={60}>
+        {!showCourseData && (
+          <Form formValue={filter} onChange={setFilter}>
+            <Div display="flex" justifyContent="space-between">
               <CRSelectInput
-                label="Patient"
-                onSearch={v => setPatientSearchValue(v)}
-                placeholder="Name / Phone no"
-                data={searchedPatients}
-                onChange={val => setFilter({ ...filter, patientId: val })}
-                value={filter.patientId}
-                virtualized={false}
+                label="Course"
+                data={coursesDefinitions}
+                name="courseId"
+                placement="auto"
+                style={{ width: '300px', marginRight: '30px' }}
+              />
+              <CRSelectInput
+                label="Course Status"
+                data={courseStatus}
+                name="status"
+                placement="auto"
                 style={{ width: '300px' }}
               />
+              <Div ml={60}>
+                <CRSelectInput
+                  label="Patient"
+                  onSearch={v => setPatientSearchValue(v)}
+                  placeholder="Name / Phone no"
+                  data={searchedPatients}
+                  onChange={val => setFilter({ ...filter, patientId: val })}
+                  value={filter.patientId}
+                  virtualized={false}
+                  style={{ width: '300px' }}
+                />
+              </Div>
             </Div>
-          </Div>
-        </Form>
+          </Form>
+        )}
+
         <CRButton
           mt={42}
           onClick={() => {
@@ -337,7 +342,8 @@ const Courses = () => {
         />
       ) : (
         <CourseData
-          course={course}
+          courseId={course.id}
+          courses={courses}
           onEditPaid={handleClickEditPaid}
           onEditUnits={handleClickEditUnits}
           onAddUnits={handleClickAddUnits}

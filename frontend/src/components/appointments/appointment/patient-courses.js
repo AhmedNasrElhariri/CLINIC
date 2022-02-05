@@ -45,7 +45,7 @@ const Course = ({ patientId }) => {
   });
   const {
     addCourse,
-    courses,
+    patientCourses,
     editCourse,
     editCourseDoctor,
     editCourseUnits,
@@ -58,6 +58,7 @@ const Course = ({ patientId }) => {
     onCreate: () => {
       close();
       setFormValue(initValue);
+      setIndex(0);
     },
     onEdit: () => {
       close();
@@ -70,10 +71,12 @@ const Course = ({ patientId }) => {
     onFinishCourse: () => {
       close();
       setFormValue(initValue);
+      setIndex(0);
     },
     onDeleteCourse: () => {
       close();
       setFormValue(initValue);
+      setIndex(0);
     },
     onEditCoursePaymentHistory: () => {
       close();
@@ -258,21 +261,22 @@ const Course = ({ patientId }) => {
     bank,
   ]);
   const InprogressCourses = useMemo(
-    () => courses.filter(c => c.status === 'InProgress'),
-    [courses]
+    () => patientCourses.filter(c => c.status === 'InProgress'),
+    [patientCourses]
   );
   const FinishedCourses = useMemo(
     () =>
-      courses.filter(
+      patientCourses.filter(
         c => c.status === 'Finished' || c.status === 'EarlyFinished'
       ),
-    [courses]
+    [patientCourses]
   );
   const CancelledCourses = useMemo(
     () =>
-      courses.filter(c => c.status === 'Cancelled' || c.status === 'Rejected'),
-    [courses]
+      patientCourses.filter(c => c.status === 'Cancelled' || c.status === 'Rejected'),
+    [patientCourses]
   );
+ 
   return (
     <>
       <CRTabs>

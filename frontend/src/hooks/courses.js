@@ -55,7 +55,6 @@ function useCourses({
       sortType && { sortType: sortType }
     ),
   });
-  console.log(data, 'dataCOURSESSS');
   // const appointmentsdata = data?.appointments;
   // const appointmentsCountNumber = useMemo(() => {
   //   const Data = R.propOr({}, 'appointments')(data);
@@ -71,12 +70,11 @@ function useCourses({
     () => R.propOr(0, 'coursesCount')(coursesData),
     [coursesData]
   );
-  console.log(courses, coursesCount, 'coursesCount');
   const { data: patientData } = useQuery(LIST_PATIENT_COURSES, {
     variables: { patientId },
   });
   const patientCourses = useMemo(
-    () => R.propOr([], 'myCourses')(patientData),
+    () => R.propOr([], 'myPatientCourses')(patientData),
     [patientData]
   );
   const { data: userData } = useQuery(LIST_USERS);
@@ -97,8 +95,21 @@ function useCourses({
     },
     refetchQueries: [
       {
-        query: LIST_COURSES,
+        query: LIST_PATIENT_COURSES,
         variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          patientId && { patientId },
+          status && { status },
+          courseID && { courseId: courseID },
+          sortType && { sortType: sortType }
+        ),
       },
       {
         query: LIST_APPOINTMENTS,
@@ -118,8 +129,21 @@ function useCourses({
     },
     refetchQueries: [
       {
-        query: LIST_COURSES,
+        query: LIST_PATIENT_COURSES,
         variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          patientId && { patientId },
+          status && { status },
+          courseID && { courseId: courseID },
+          sortType && { sortType: sortType }
+        ),
       },
       {
         query: LIST_COURSE_PAYMENTS,
@@ -140,8 +164,21 @@ function useCourses({
     },
     refetchQueries: [
       {
-        query: LIST_COURSES,
+        query: LIST_PATIENT_COURSES,
         variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          patientId && { patientId },
+          status && { status },
+          courseID && { courseId: courseID },
+          sortType && { sortType: sortType }
+        ),
       },
       {
         query: LIST_COURSE_PAYMENTS,
@@ -162,8 +199,21 @@ function useCourses({
     },
     refetchQueries: [
       {
-        query: LIST_COURSES,
+        query: LIST_PATIENT_COURSES,
         variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          patientId && { patientId },
+          status && { status },
+          courseID && { courseId: courseID },
+          sortType && { sortType: sortType }
+        ),
       },
     ],
     onError() {
@@ -177,8 +227,21 @@ function useCourses({
     },
     refetchQueries: [
       {
-        query: LIST_COURSES,
+        query: LIST_PATIENT_COURSES,
         variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          patientId && { patientId },
+          status && { status },
+          courseID && { courseId: courseID },
+          sortType && { sortType: sortType }
+        ),
       },
     ],
     onError() {
@@ -193,8 +256,21 @@ function useCourses({
     },
     refetchQueries: [
       {
-        query: LIST_COURSES,
+        query: LIST_PATIENT_COURSES,
         variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          patientId && { patientId },
+          status && { status },
+          courseID && { courseId: courseID },
+          sortType && { sortType: sortType }
+        ),
       },
     ],
     onError() {
@@ -208,8 +284,21 @@ function useCourses({
     },
     refetchQueries: [
       {
-        query: LIST_COURSES,
+        query: LIST_PATIENT_COURSES,
         variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          patientId && { patientId },
+          status && { status },
+          courseID && { courseId: courseID },
+          sortType && { sortType: sortType }
+        ),
       },
     ],
     onError() {

@@ -54,6 +54,7 @@ export { default as patientAppointments } from './patient-appointments';
 export { default as patientImageDocs } from './patient-image-docs';
 export { default as myCoursesDefinition } from './my-courses-definition';
 export { default as myCourses } from './my-courses';
+export { default as myPatientCourses } from './my-patient-courses';
 export { default as myDoctors } from './my-doctors';
 export { default as payrollUsers } from './payroll-users';
 export { default as userTransactions } from './user-transactions';
@@ -90,4 +91,4 @@ export { default as myAppointmentTypesDefinition } from './my-appointment-types-
 export { default as allAppointments } from './all-appointments';
 export { default as mySessionStatistic } from './my-session-statistics';
 export { default as points } from './points';
-export { default as patientCoupons }from './patient-coupons';
+export { default as patientCoupons } from './patient-coupons';
