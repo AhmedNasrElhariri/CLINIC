@@ -6,14 +6,10 @@ import PieChart from '@rsuite/charts/lib/charts/PieChart';
 import BarChart from '@rsuite/charts/lib/charts/BarChart';
 import Bars from '@rsuite/charts/lib/series/Bars';
 import YAxis from '@rsuite/charts/lib/components/YAxis';
-
 import { Div, MainContainer } from 'components';
-import { useAppointments } from 'hooks';
+import {  usePatients } from 'hooks';
 import { Can } from 'components/user/can';
-import { useQuery } from '@apollo/client';
-import {
-  LIST_ALL_APPOINTMENTS,
-} from 'apollo-client/queries';
+
 
 const groupByAge = R.groupBy(({ age }) =>
   age <= 10
@@ -42,39 +38,37 @@ const groupByMoths = R.groupBy(appointment =>
 );
 
 function Reports() {
-  // const { appointments } = useAppointments();
-  const { data } = useQuery(LIST_ALL_APPOINTMENTS);
-  const appointments = R.propOr({}, 'allAppointments')(data);
-  const appointmentsByMonth = R.pipe(
+  
+  const { allPatients } = usePatients({});
+  const patientsByMonth = R.pipe(
     R.sortBy(R.prop('date')),
     groupByMoths,
     R.map(R.length),
     R.toPairs
-  )(appointments);
+  )(allPatients);
 
   const genderData = R.pipe(
-    R.uniqBy(R.path(['patient', 'id'])),
-    R.map(R.path(['patient', 'sex'])),
+    R.uniqBy(R.path(['id'])),
+    R.map(R.path(['sex'])),
     R.groupBy(R.identity),
     R.map(R.length),
     R.toPairs
-  )(appointments);
+  )(allPatients);
 
   const ageData = R.pipe(
-    R.uniqBy(R.path(['patient', 'id'])),
-    R.map(R.path(['patient'])),
+    R.uniqBy(R.path(['id'])),
     R.sortBy(R.prop('age')),
     groupByAge,
     R.map(R.length),
     R.toPairs
-  )(appointments);
+  )(allPatients);
 
   return (
     <>
       <Can I="view" an="Report">
         <MainContainer title="Statistical Reports" nobody></MainContainer>
         <Div maxWidth={800}>
-          <LineChart name="No of patients" data={appointmentsByMonth} />
+          <LineChart name="No of patients" data={patientsByMonth} />
           <PieChart
             name="Genders"
             data={genderData}

@@ -108,6 +108,7 @@ type Query {
   hello(name: String): Boolean
   patients(offset: Int, limit: Int, name: String, phoneNo: String): PatientData
   searchedPatients(name: String): [Patient!]
+  allPatients: [Patient!]
   appointments(
     input: AppointmentQueryInput
     offset: Int
@@ -129,7 +130,7 @@ type Query {
   ): [Appointment!]
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
-  patientCoupons(patientId: ID!): [Coupon!]
+  patientCoupons(patientId: ID!, all: Boolean): [Coupon!]
   getPatientField(patientId: ID!): [PatientField!]
   getUserPatientFields: [PatientField!]
   listMyViews: [View!]
@@ -830,6 +831,7 @@ type Coupon {
   remaining: Int!
   status: CouponStatus!
   date: Date!
+  expireDate: Date!
 }
 ########################### views ##################################
 type View {

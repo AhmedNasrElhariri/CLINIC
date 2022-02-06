@@ -42,6 +42,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const value = useRef(initValue);
   const { patientCoupons } = usePatients({
     patientId: appointment?.patient.id,
+    all: false,
   });
   const newCoupons = useMemo(() => {
     let newCouponsObject = [];

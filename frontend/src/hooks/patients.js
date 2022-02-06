@@ -11,6 +11,7 @@ import {
   LIST_PATIENTS_REPORT,
   GET_PATIENT,
   PATIENT_COUPONS,
+  LIST_ALL_PATIENTS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -32,6 +33,7 @@ function usePatients({
   reference,
   patientSearchValue,
   patientId,
+  all = false,
 } = {}) {
   const { data: patientData } = useQuery(LIST_PATIENTS, {
     variables: {
@@ -70,6 +72,12 @@ function usePatients({
     [searchedPatientsData]
   );
 
+  const { data: allPatientsData } = useQuery(LIST_ALL_PATIENTS);
+  const allPatients = useMemo(
+    () => R.propOr([], 'allPatients')(allPatientsData),
+    [allPatientsData]
+  );
+
   const { data: onePatientData } = useQuery(GET_PATIENT, {
     variables: {
       id: patientId,
@@ -80,6 +88,7 @@ function usePatients({
   const { data: patientCouponData } = useQuery(PATIENT_COUPONS, {
     variables: {
       patientId: patientId,
+      all: all,
     },
   });
   const patientCoupons = R.propOr([], 'patientCoupons')(patientCouponData);
@@ -126,6 +135,7 @@ function usePatients({
       pages,
       onePatient,
       patientCoupons,
+      allPatients,
       edit: patient =>
         editPatient({
           variables: { patient },
@@ -139,7 +149,8 @@ function usePatients({
       patientsSummary,
       searchedPatients,
       patientsReports,
-      patientCoupons
+      patientCoupons,
+      allPatients,
     ]
   );
 }

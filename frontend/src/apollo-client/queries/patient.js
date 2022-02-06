@@ -72,6 +72,18 @@ export const LIST_SEARCHED_PATIENTS = gql`
   }
 `;
 
+export const LIST_ALL_PATIENTS = gql`
+  {
+    allPatients {
+      id
+      name
+      age
+      sex
+      date
+    }
+  }
+`;
+
 export const LIST_PATIENTS_SUMMARY = gql`
   query ($offset: Int, $limit: Int) {
     patients(offset: $offset, limit: $limit) {
@@ -95,13 +107,14 @@ export const GET_PATIENT = gql`
   }
 `;
 export const PATIENT_COUPONS = gql`
-  query ($patientId: ID!) {
-    patientCoupons(patientId: $patientId) {
+  query ($patientId: ID!, $all: Boolean) {
+    patientCoupons(patientId: $patientId, all: $all) {
       id
       value
       remaining
       status
       date
+      expireDate
     }
   }
 `;

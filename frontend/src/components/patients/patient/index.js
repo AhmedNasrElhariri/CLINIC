@@ -23,6 +23,7 @@ import SessionsPulses from '../sessions-pulses';
 import PatientProgress from '../progress';
 import { useQueryParams, useHospitals, usePatients } from 'hooks';
 import PatientInformationCreation from '../patient-information-creation';
+import PatientCoupons from '../patient-coupons';
 
 const tabs = [
   'Patient Info',
@@ -37,6 +38,7 @@ const tabs = [
   'Face Operation',
   'Progress',
   'Patient Information Creation',
+  'Patient Coupons',
 ];
 const Container = styled.div`
   display: flex;
@@ -148,6 +150,7 @@ function Appointment() {
                 {showComp('11') && (
                   <PatientInformationCreation patient={patient} />
                 )}
+                {showComp('12') && <PatientCoupons patient={patient} />}
               </TabContainer>
             </Container>
           )}

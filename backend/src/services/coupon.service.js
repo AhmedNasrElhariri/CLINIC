@@ -11,7 +11,8 @@ export const couponService = async (
   specialtyId,
   userID,
   others,
-  patientName
+  patientName,
+  couponsValue
 ) => {
   const patient = await prisma.patient.findUnique({ where: { id: patientId } });
   const points = await prisma.points.findMany({
@@ -25,7 +26,7 @@ export const couponService = async (
     (sum, { price, number }) => sum + number * price,
     0
   );
-  totalPaid = subRed + others.amount - discount.amount;
+  totalPaid = subRed + others.amount - discount.amount - couponsValue;
   totalPoints = patient.points + totalPaid;
   await prisma.patient.update({
     data: {
@@ -46,12 +47,12 @@ export const couponService = async (
         totalPoints === pointsToGetCoupon
           ? pointsToGetCoupon
           : couponNumbers * pointsToGetCoupon;
-      console.log(couponPrice, 'couponPricecouponPrice');
       await prisma.coupon.create({
         data: {
           date: new Date(),
           status: 'Active',
           value: couponPrice,
+          remaining: couponPrice,
           patient: {
             connect: {
               id: patientId,

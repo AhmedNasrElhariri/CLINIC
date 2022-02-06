@@ -119,7 +119,7 @@ function useAppointments({
         },
         {
           query: PATIENT_COUPONS,
-          variables: { patientId: patientId, },
+          variables: { patientId: patientId, all: false },
         },
         { query: LIST_INVENTORY },
         { query: LIST_INVENTORY_HISTORY },

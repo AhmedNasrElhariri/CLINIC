@@ -40,7 +40,6 @@ const archiveAppointment = async (
   { userId, organizationId }
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
-  console.log(coupons,'couponscouponscouponscoupons');
   sessions.forEach(async ({ price, number, id }) => {
     await prisma.sessionTransaction.create({
       data: {
@@ -523,7 +522,8 @@ const archiveAppointment = async (
     specialtyId,
     userID,
     others,
-    patientName
+    patientName,
+    couponsValue
   );
   const appointment = await prisma.appointment.update({
     data: { accounted: true },

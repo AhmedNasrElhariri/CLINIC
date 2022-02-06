@@ -240,15 +240,17 @@ function AppointmentInvoice({
             <Form onChange={setCoupons} formValue={coupons}>
               {patientCoupons.map((c, index) => (
                 <Div display="flex" key={c.id}>
-                  <Div mt={17}>Coupon -- </Div>
-                  <Div mt={17} mr={3}>{c.value}</Div>
-                  <Div mt={17}>Remaining -- </Div>
-                  <Div mt={17} mr={3}>{c.remaining}</Div>
-                  <Div>
+                  <Div mt={17} width={150}>
+                    Coupon -- {c.value}
+                  </Div>
+                  <Div mt={17} width={150}>
+                    Remaining --{c.remaining}{' '}
+                  </Div>
+                  <Div width={150}>
                     <CRNumberInput
                       name={c.id}
                       min={0}
-                      max={c.value}
+                      max={c.remaining}
                       value={coupons[c.id] ? coupons[c.id] : 0}
                     />
                   </Div>
