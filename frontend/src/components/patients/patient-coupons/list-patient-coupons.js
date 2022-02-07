@@ -34,11 +34,11 @@ function ListPatientCoupons({ coupons }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Expire Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>Expiry Date</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ expireDate }) => (
+              {({ expiryDate }) => (
                 <CRTable.CRCellStyled bold>
-                  {formatDate(expireDate)}
+                  {expiryDate ? formatDate(expiryDate) : ''}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

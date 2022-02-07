@@ -372,7 +372,7 @@ model Coupon {
   status         CouponStatus
   value          Int
   remaining      Int          @default(0)
-  expireDate     DateTime     @default(now())
+  expiryDate     DateTime?
   patient        Patient      @relation(fields: [patientId], references: [id])
   patientId      String
   organization   Organization @relation(fields: [organizationId], references: [id])

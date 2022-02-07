@@ -831,7 +831,7 @@ type Coupon {
   remaining: Int!
   status: CouponStatus!
   date: Date!
-  expireDate: Date!
+  expiryDate: Date
 }
 ########################### views ##################################
 type View {

@@ -114,7 +114,7 @@ export const PATIENT_COUPONS = gql`
       remaining
       status
       date
-      expireDate
+      expiryDate
     }
   }
 `;
