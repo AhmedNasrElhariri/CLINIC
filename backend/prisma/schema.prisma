@@ -367,18 +367,27 @@ model PulseControl {
 }
 
 model Coupon {
-  id             String       @id @default(uuid())
-  date           DateTime
-  status         CouponStatus
-  value          Int
-  remaining      Int          @default(0)
-  expiryDate     DateTime?
-  patient        Patient      @relation(fields: [patientId], references: [id])
-  patientId      String
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now()) @updatedAt
+  id                 String               @id @default(uuid())
+  date               DateTime
+  status             CouponStatus
+  value              Int
+  remaining          Int                  @default(0)
+  expiryDate         DateTime?
+  patient            Patient              @relation(fields: [patientId], references: [id])
+  patientId          String
+  organization       Organization         @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
+  PointsTransactions PointsTransactions[]
+}
+
+model PointsTransactions {
+  id       String   @id @default(uuid())
+  date     DateTime
+  amount   Int
+  coupon   Coupon   @relation(fields: [couponId], references: [id])
+  couponId String
 }
 
 model Prescription {

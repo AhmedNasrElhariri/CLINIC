@@ -40,31 +40,32 @@ const archiveAppointment = async (
   { userId, organizationId }
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
-  sessions.forEach(async ({ price, number, id }) => {
-    await prisma.sessionTransaction.create({
-      data: {
-        number,
-        price,
-        date: new Date(),
-        session: {
-          connect: {
-            id,
+  if (company == null) {
+    sessions.forEach(async ({ price, number, id }) => {
+      await prisma.sessionTransaction.create({
+        data: {
+          number,
+          price,
+          date: new Date(),
+          session: {
+            connect: {
+              id,
+            },
+          },
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
           },
         },
-        organization: {
-          connect: {
-            id: organizationId,
-          },
-        },
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-      },
+      });
     });
-  });
-
+  }
   if (bank == null && company == null) {
     await createAppointmentRevenue(
       createAppointmentRevenueFromSessions(
@@ -121,7 +122,7 @@ const archiveAppointment = async (
         ),
       });
     }
-    if (discount && discount.amount > 0 ) {
+    if (discount && discount.amount > 0) {
       await createAppointmentExpense(
         userId,
         discount,
@@ -250,6 +251,54 @@ const archiveAppointment = async (
           bank
         )
       );
+      if (others.amount > 0) {
+        await prisma.bankRevenue.create({
+          data: Object.assign(
+            {
+              date: new Date(date),
+              name: others.name,
+              amount: others.amount - discount.amount,
+              level,
+              organization: {
+                connect: {
+                  id: organizationId,
+                },
+              },
+              bank: {
+                connect: {
+                  id: bank,
+                },
+              },
+              user: {
+                connect: {
+                  id: userId,
+                },
+              },
+            },
+            specialtyId && {
+              specialty: {
+                connect: {
+                  id: specialtyId,
+                },
+              },
+            },
+            branchId && {
+              branch: {
+                connect: {
+                  id: branchId,
+                },
+              },
+            },
+            userID && {
+              doctor: {
+                connect: {
+                  id: userID,
+                },
+              },
+            }
+          ),
+        });
+      }
       // await prisma.bankRevenue.create({
       //   data: Object.assign(
       //     {
@@ -303,7 +352,8 @@ const archiveAppointment = async (
       (sum, { price, number }) => sum + price * number,
       0
     );
-    const totalAmount = totalSessionAmount + others.amount - discount.amount;
+    const totalAmount =
+      totalSessionAmount + others.amount - discount.amount - couponsValue;
     let subtotal = 0;
     let amount = 0;
     subtotal = totalAmount - option.amount;
@@ -496,7 +546,7 @@ const archiveAppointment = async (
     }
   }
   if (couponsValue > 0) {
-    await updateCoupons(coupons,organizationId);
+    await updateCoupons(coupons, organizationId);
     if (bank == null && company == null) {
       await couponAccounting(
         userId,

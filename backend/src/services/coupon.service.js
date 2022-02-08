@@ -35,7 +35,6 @@ export const couponService = async (
     where: { id: patientId },
   });
   if (totalPoints > pointsToGetCoupon || totalPoints == pointsToGetCoupon) {
-    console.log(totalPoints, 'totalPointstotalPoints');
     let couponNumbers = 0;
     couponNumbers = Math.floor(totalPoints / pointsToGetCoupon);
     if (couponNumbers > 0 || couponNumbers == 0) {
@@ -47,7 +46,7 @@ export const couponService = async (
         totalPoints === pointsToGetCoupon
           ? pointsToGetCoupon
           : couponNumbers * pointsToGetCoupon;
-      await prisma.coupon.create({
+      const coupon = await prisma.coupon.create({
         data: {
           date: new Date(),
           status: 'Active',
@@ -61,6 +60,17 @@ export const couponService = async (
           organization: {
             connect: {
               id: organizationId,
+            },
+          },
+        },
+      });
+      await prisma.pointsTransactions.create({
+        data: {
+          amount: usedPoints,
+          date: new Date(),
+          coupon: {
+            connect: {
+              id: coupon.id,
             },
           },
         },

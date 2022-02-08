@@ -162,6 +162,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     return {
       name: cS.name,
       price: cS.price,
+      id: cS.id,
     };
   });
   return (

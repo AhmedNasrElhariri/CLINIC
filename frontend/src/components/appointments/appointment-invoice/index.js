@@ -358,28 +358,27 @@ function AppointmentInvoice({
             </Form>
           </Div>
           <CRDivider />
-          {company !== null ||
-            (bank !== null && (
-              <>
-                <Form formValue={option} onChange={setOption}>
-                  <CRRadio options={payOptions} name="option" />
-                  {(option.option === 'fixed' && company !== null) ||
-                  bank !== null ? (
-                    <CRNumberInput label="Fixed Payment" name="amount" />
-                  ) : (
-                    (option.option === 'percentage' && company !== null) ||
-                    (bank !== null && (
-                      <CRNumberInput
-                        label="Percentage from 0 : 100"
-                        name="price"
-                        name="amount"
-                      />
-                    ))
-                  )}
-                </Form>
-                <CRDivider />
-              </>
-            ))}
+          {(company !== null || bank !== null) && (
+            <>
+              <Form formValue={option} onChange={setOption}>
+                <CRRadio options={payOptions} name="option" />
+                {(option.option === 'fixed' && company !== null) ||
+                bank !== null ? (
+                  <CRNumberInput label="Fixed Payment" name="amount" />
+                ) : (
+                  option.option === 'percentage' &&
+                  (company !== null || bank !== null) && (
+                    <CRNumberInput
+                      label="Percentage from 0 : 100"
+                      name="price"
+                      name="amount"
+                    />
+                  )
+                )}
+              </Form>
+              <CRDivider />
+            </>
+          )}
           {/* {bank !== null && (
             <>
               <Form fluid>
