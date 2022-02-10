@@ -131,6 +131,7 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   patientCoupons(patientId: ID!, all: Boolean): [Coupon!]
+  couponPointsTransactions(couponId: ID!): [PointsTransactions!]
   getPatientField(patientId: ID!): [PatientField!]
   getUserPatientFields: [PatientField!]
   listMyViews: [View!]
@@ -832,6 +833,12 @@ type Coupon {
   status: CouponStatus!
   date: Date!
   expiryDate: Date
+}
+type PointsTransactions {
+  id: ID!
+  date: Date!
+  amount: Int!
+  coupon: Coupon!
 }
 ########################### views ##################################
 type View {

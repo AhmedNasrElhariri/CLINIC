@@ -93,3 +93,4 @@ export { default as mySessionStatistic } from './my-session-statistics';
 export { default as points } from './points';
 export { default as patientCoupons } from './patient-coupons';
 export { default as allPatients } from './all-patients';
+export { default as couponPointsTransactions } from './coupon-points-transactions';

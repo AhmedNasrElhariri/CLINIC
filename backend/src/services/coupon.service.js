@@ -64,17 +64,6 @@ export const couponService = async (
           },
         },
       });
-      await prisma.pointsTransactions.create({
-        data: {
-          amount: usedPoints,
-          date: new Date(),
-          coupon: {
-            connect: {
-              id: coupon.id,
-            },
-          },
-        },
-      });
       await prisma.patient.update({
         data: { points: totalPoints - usedPoints },
         where: {
@@ -164,5 +153,20 @@ export const updateCoupons = async (coupons, organizationId) => {
       },
     };
   });
+  const couponsTransactions = coupons.map(c => {
+    const coupon = realCoupons.find(rc => rc.id === c.id);
+    const value = c.value;
+    const couponId = coupon.id;
+    return {
+      data: {
+        amount: value,
+        date: new Date(),
+        couponId: couponId,
+      },
+    };
+  });
   await Promise.all(updatedCoupons.map(uc => prisma.coupon.updateMany(uc)));
+  await Promise.all(
+    couponsTransactions.map(ct => prisma.pointsTransactions.createMany(ct))
+  );
 };

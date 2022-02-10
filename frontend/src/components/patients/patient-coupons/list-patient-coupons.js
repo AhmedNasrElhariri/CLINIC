@@ -2,11 +2,22 @@ import React from 'react';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 
-function ListPatientCoupons({ coupons }) {
+function ListPatientCoupons({
+  coupons,
+  setCouponId,
+  setShowCouponTransactions,
+}) {
   return (
     <>
       <CRCard borderless>
-        <CRTable autoHeight data={coupons}>
+        <CRTable
+          autoHeight
+          data={coupons}
+          onRowClick={coupon => {
+            setCouponId(coupon.id);
+            setShowCouponTransactions(true);
+          }}
+        >
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
             <CRTable.CRCell>

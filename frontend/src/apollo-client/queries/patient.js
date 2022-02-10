@@ -118,6 +118,18 @@ export const PATIENT_COUPONS = gql`
     }
   }
 `;
+export const COUPON_POINTS_TRANSACTIONS = gql`
+  query ($couponId: ID!) {
+    couponPointsTransactions(couponId: $couponId) {
+      id
+      amount
+      date
+      coupon {
+        value
+      }
+    }
+  }
+`;
 
 export const INSRET_LAB_RESULT = gql`
   mutation insertLabResult($lab: LabInput!) {

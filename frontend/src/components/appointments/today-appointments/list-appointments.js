@@ -239,10 +239,7 @@ function ListAppointments({
                   <Tooltip>
                     <Div>
                       <Div>Phone:{patient.phoneNo}</Div>
-                      <Div>
-                        Sex:{'   '}
-                        {patient.sex}
-                      </Div>
+                      <Div>Sex:{patient.sex}</Div>
                     </Div>
                   </Tooltip>
                 }
