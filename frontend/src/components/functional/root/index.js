@@ -18,14 +18,18 @@ import NewAppointment from 'components/appointments/new-appointment';
 import useUserProfile from './fetch-user';
 import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
+import '../../../translations/i18n';
 const initialvalues = {
   branchId: null,
+  language: 'ar',
 };
 
 function Root() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
   const history = useHistory();
+  const { t } = useTranslation();
   const [formValue, setFormValue] = useState(initialvalues);
   const {
     clearNotifications,
@@ -40,20 +44,30 @@ function Root() {
 
   const [user] = useGlobalState('user');
   const allowedViews = R.propOr([], 'allowedViews')(user);
+  const appointmentsName = t('appointments'),
+    todayAppointmentsName = t('todayAppointments'),
+    calenderName = t('calendar'),
+    salesName = t('sales'),
+    reportsName = t('reports'),
+    patientsName = t('patients'),
+    surgeriesName = t('surgeries'),
+    reportPrintoutName = t('reportsPrintout'),
+    permissionsName = t('permissions'),
+    coursesName = t('courses');
   const items = [
     {
       to: '/appointments/today',
-      name: `Today's Appointments`,
+      name: todayAppointmentsName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/calendar',
-      name: 'Calendar',
+      name: calenderName,
       icon: <CalendarIcon width={11.8} height={14.1} />,
     },
     {
       to: '/appointments',
-      name: 'Appointments',
+      name: appointmentsName,
       extra: (
         <Can I="Create" an="Appointment">
           <Fab open={visbleAppointment} onClick={toggleAppointment} />
@@ -63,7 +77,7 @@ function Root() {
     },
     {
       to: '/patients',
-      name: 'Patients',
+      name: patientsName,
       extra: (
         <Can I="Create" an="Patient">
           <Fab open={visblePatient} onClick={togglePatient} />
@@ -74,33 +88,33 @@ function Root() {
 
     {
       to: '/reports',
-      name: 'Reports',
+      name: reportsName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
 
     {
       to: '/surgeries',
-      name: 'Surgeries',
+      name: surgeriesName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/report-printouts',
-      name: 'Report Printouts',
+      name: reportPrintoutName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/sales',
-      name: 'Sales',
+      name: salesName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/courses',
-      name: 'Courses',
+      name: coursesName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
       to: '/permissions',
-      name: 'Permissions',
+      name: permissionsName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
   ];

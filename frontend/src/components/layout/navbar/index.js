@@ -11,6 +11,11 @@ import Avatar from './avatar';
 import Navigator from './navigator';
 import { CRSelectInput } from 'components/widgets';
 import { useNewAppointment } from 'hooks';
+import { i18n } from '../../../translations/i18n';
+const languages = [
+  { id: 'ar', name: 'اللغه العربيه' },
+  { id: 'en', name: 'English' },
+];
 const NotificatinBadge = ({ count }) => (
   <Div position="relative">
     {!!count && (
@@ -38,27 +43,38 @@ const Navbar = ({
   const notificationsRef = useRef();
   const settingsRef = useRef();
   const { organizationBranches } = useNewAppointment({});
+
   useEffect(() => {
     setFormValue(val => ({
       ...val,
       branchId: get('branch'),
     }));
   }, []);
+  useEffect(() => {
+    i18n.changeLanguage(formValue.language);
+  }, [formValue.language]);
   return (
     <NavStyled>
       <Navigator />
       {/* {renderSearch()} */}
-      <Div ml={200} width={300}>
-        <Form formValue={formValue} onChange={setFormValue}>
+
+      <Form formValue={formValue} onChange={setFormValue}>
+        <Div ml={100} width={450} display="flex">
           <CRSelectInput
             name="branchId"
-            block
             data={organizationBranches}
             onSelect={val => set('branch', val)}
-            style={{ width: '250px' }}
+            style={{ width: '200px', marginRight: '20px' }}
           />
-        </Form>
-      </Div>
+          <CRSelectInput
+            name="language"
+            data={languages}
+            onSelect={val => set('language', val)}
+            style={{ width: '200px' }}
+          />
+        </Div>
+      </Form>
+
       <Div
         flexGrow={1}
         display="flex"
