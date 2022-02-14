@@ -43,7 +43,10 @@ const PatientSurgeriesContainer = () => {
     useForm({
       surgery: null,
       hospital: null,
+      patientId: null,
+      time: [],
     });
+  console.log(filterFormValue,'filterFormValuefilterFormValue');
   const { createPatientSurgery, patientSurgeries, loading } =
     usePatientSurgeries({
       onCreate: () => {
@@ -51,11 +54,10 @@ const PatientSurgeriesContainer = () => {
       },
     });
 
-
   const handleOnClickCreate = useCallback(() => {
     open();
   }, [open]);
-
+  console.log(patientSurgeries,'PPPSUU');
   const handleAdd = useCallback(() => {
     const { time, date, ...rest } = formValue;
     const timeDate = moment(formValue.time);

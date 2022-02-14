@@ -35,7 +35,7 @@ const saveFile = url => {
   Axios({
     url: url,
     method: 'GET',
-    responseType: 'blob', 
+    responseType: 'blob',
   }).then(response => {
     FileDownload(response.data, 'report.pdf');
   });
@@ -48,11 +48,20 @@ function ListLabDocs({ labs, labId }) {
     return files;
   }, [documents]);
   const imagesFiles = useMemo(() => {
-    const files = documents?.filter(d =>
-      d.url.includes('.png' || '.jpeg' || '.jpg')
+    const files = documents?.filter(
+      d =>
+        d.url.includes('.png') ||
+        d.url.includes('.jpeg') ||
+        d.url.includes('.jpg')
     );
     return files;
   }, [documents]);
+  console.log(
+    imagesFiles,
+    'imagesFilesimagesFiles',
+    documents,
+    'documentsdocuments'
+  );
   return (
     <>
       <CRCard borderless>

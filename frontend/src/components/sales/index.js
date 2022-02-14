@@ -16,6 +16,7 @@ import {
   useAppointments,
   useModal,
   useSalesDefinition,
+  useConfigurations,
 } from 'hooks';
 import { formatDate } from 'utils/date';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
@@ -61,6 +62,12 @@ const Sales = () => {
     view,
     period,
   });
+  const { pageSetupData } = useConfigurations();
+  const pageSetupRow = pageSetupData.find(element => element.type === 'sales');
+  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
+  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
+  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
+  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
   const updatedUsers = organizationusers.map(u => {
     return {
       id: u.id,
@@ -224,7 +231,15 @@ const Sales = () => {
               justifyContent="center"
               alignItems="center"
             >
-              <PdfView data={sales} period={timeFrame} sales={true} />
+              <PdfView
+                data={sales}
+                period={timeFrame}
+                sales={true}
+                marginTop={marginTop}
+                marginRight={marginRight}
+                marginBottom={marginBottom}
+                marginLeft={marginLeft}
+              />
             </Div>
           </>
         )}

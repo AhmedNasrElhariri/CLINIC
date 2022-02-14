@@ -5,6 +5,9 @@ const types = [
   { id: 'prescription', name: 'Prescription' },
   { id: 'reportPrintout', name: 'ReportPrintout' },
   { id: 'sales', name: 'Sales' },
+  {id:'visa',name:'Visa'},
+  {id:'accounting',name:'Accounting'},
+  {id:'insurance',name:'Insurance'},
 ];
 const PageSetup = ({ pageSetup, setPageSetup }) => {
   return (

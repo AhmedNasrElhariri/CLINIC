@@ -14,7 +14,7 @@ const AppointmentGallery = ({ pictures }) => {
       ref.current.fullScreen();
     }
   }, [galleryVisibility]);
-
+console.log(pictures,'picturespicturespictures');
   return (
     <Div>
       <ListImagesThumbnails

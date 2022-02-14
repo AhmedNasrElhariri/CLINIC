@@ -6,7 +6,13 @@ import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../../accounting/profit';
 import BankModel from '../bank-model';
-import { useBankAccounting, useAppointments, useModal, useForm } from 'hooks';
+import {
+  useBankAccounting,
+  useAppointments,
+  useModal,
+  useForm,
+  useConfigurations,
+} from 'hooks';
 import Filter from './filter';
 import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
@@ -35,6 +41,12 @@ const BankAccountingContainer = () => {
   });
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
+  const { pageSetupData } = useConfigurations();
+  const pageSetupRow = pageSetupData.find(element => element.type === 'visa');
+  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
+  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
+  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
+  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
   const { filterBranches } = useAppointments({
     action: ACTIONS.ViewBank_Accounting,
   });
@@ -115,6 +127,10 @@ const BankAccountingContainer = () => {
                       <PdfView
                         data={{ revenues, expenses: [] }}
                         period={timeFrame}
+                        marginTop={marginTop}
+                        marginRight={marginRight}
+                        marginBottom={marginBottom}
+                        marginLeft={marginLeft}
                       />
                     </Div>
                   </>

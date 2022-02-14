@@ -5,7 +5,11 @@ import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../../accounting/profit';
 import { Can } from 'components/user/can';
-import { useInsuranceAccounting, useAppointments } from 'hooks';
+import {
+  useInsuranceAccounting,
+  useAppointments,
+  useConfigurations,
+} from 'hooks';
 import Filter from './filter';
 import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
@@ -26,6 +30,14 @@ const BankAccountingContainer = () => {
     view,
     period,
   });
+  const { pageSetupData } = useConfigurations();
+  const pageSetupRow = pageSetupData.find(
+    element => element.type === 'accounting'
+  );
+  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
+  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
+  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
+  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
   const updatedRevenues = useMemo(
     () =>
       revenues.filter(r =>
@@ -74,6 +86,10 @@ const BankAccountingContainer = () => {
                       <PdfView
                         data={{ revenues, expenses: [] }}
                         period={timeFrame}
+                        marginTop={marginTop}
+                        marginRight={marginRight}
+                        marginBottom={marginBottom}
+                        marginLeft={marginLeft}
                       />
                     </Div>
                   </>

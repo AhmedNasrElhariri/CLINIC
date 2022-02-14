@@ -4,13 +4,27 @@ import { pdf } from '@react-pdf/renderer';
 import { CRButton } from 'components';
 import PdfDocument from './pdf-document';
 
-const PdfView = ({ data, period }) => {
+const PdfView = ({
+  data,
+  period,
+  marginTop,
+  marginRight,
+  marginBottom,
+  marginLeft,
+}) => {
   const [pdfData, setPdfData] = useState({ loaded: false });
 
   useEffect(() => {
     (async () => {
       let blob = await pdf(
-        <PdfDocument data={data} period={period} />
+        <PdfDocument
+          data={data}
+          period={period}
+          marginTop={marginTop}
+          marginRight={marginRight}
+          marginBottom={marginBottom}
+          marginLeft={marginLeft}
+        />
       ).toBlob();
       const url = URL.createObjectURL(blob);
 

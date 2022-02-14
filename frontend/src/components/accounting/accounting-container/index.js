@@ -10,7 +10,7 @@ import ListRevenueData from '../list-data/revenue.js';
 import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
-import { useAccounting, useAppointments } from 'hooks';
+import { useAccounting, useAppointments, useConfigurations } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -39,6 +39,14 @@ const AccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const [formValue, setFormValue] = useState(initalVal);
+  const { pageSetupData } = useConfigurations();
+  const pageSetupRow = pageSetupData.find(
+    element => element.type === 'accounting'
+  );
+  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
+  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
+  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
+  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
   const [createExpense, { loading: createExpensesLoading }] = useMutation(
     CREATE_EXPENSE,
     {
@@ -293,6 +301,10 @@ const AccountingContainer = () => {
                                 <PdfView
                                   data={{ revenues, expenses }}
                                   period={timeFrame}
+                                  marginTop={marginTop}
+                                  marginRight={marginRight}
+                                  marginBottom={marginBottom}
+                                  marginLeft={marginLeft}
                                 />
                               </Div>
                             </>
