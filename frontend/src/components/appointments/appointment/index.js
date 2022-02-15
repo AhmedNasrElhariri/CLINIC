@@ -78,7 +78,6 @@ function Appointment() {
     () => R.propOr({}, 'appointment')(appointmentRes),
     [appointmentRes]
   );
-  console.log(appointmentId, 'appointmentIdappointmentId', appointmentRes);
   const patient = useMemo(
     () => R.propOr({}, 'patient')(appointment),
     [appointment]
@@ -183,7 +182,7 @@ function Appointment() {
 
   useEffect(() => {
     setSessionsPulses(R.propOr([], 'sessionsPulses')(appointment));
-    setDynamicTextInput(R.propOr("{}", 'dynamicTextInput')(appointment));
+    setDynamicTextInput(R.propOr({}, 'dynamicTextInput')(appointment));
   }, [appointment]);
   console.log(dynamicTextInput,'dynamicT');
   useEffect(() => {

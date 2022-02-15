@@ -53,7 +53,6 @@ const renderItem = ({
   updatedSessions,
   ...props
 }) => {
-  console.log(props, 'PPPPPPPPPPPP', choicesType, dynamic);
   let newChoices = [];
   if (type === 'SelectorWithInput') {
     if (dynamic) {
