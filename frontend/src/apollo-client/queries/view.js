@@ -16,6 +16,8 @@ export const ACTIVE_VIEWS = gql`
           order
           type
           choices
+          dynamic
+          choicesType
         }
       }
     }

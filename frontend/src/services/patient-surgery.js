@@ -19,7 +19,6 @@ const filterByDate = (data, filter) => {
   const time = R.propOr([], 'time')(filter);
   const startOfDate = moment(time[0]).startOf('day').toDate();
   const endOfDate = moment(time[1]).endOf('day').toDate();
-  console.log(time, startOfDate, endOfDate, 'endOfDate');
   return data.filter(
     ({ date }) =>
       time.length == 0 ||

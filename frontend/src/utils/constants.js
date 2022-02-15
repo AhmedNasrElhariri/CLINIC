@@ -6,6 +6,7 @@ export const LONG_TEXT_FIELD_TYPE = 'LongText';
 export const RADIO_FIELD_TYPE = 'Radio';
 export const CHECK_FIELD_TYPE = 'Check';
 export const NESTED_SELECTOR_FIELD_TYPE = 'NestedSelector';
+export const SELECTOR_WITH_INPUT = 'SelectorWithInput';
 
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
 export const FULL_DATE_FORMAT = 'hh:mm a';
@@ -17,6 +18,7 @@ export const FIELD_TYPES = [
   { label: 'Text Area', value: LONG_TEXT_FIELD_TYPE },
   { label: 'Radio', value: RADIO_FIELD_TYPE },
   { label: 'Check', value: CHECK_FIELD_TYPE },
+  { label: 'Selector With Input', value: SELECTOR_WITH_INPUT },
   { label: 'Nested Selector', value: NESTED_SELECTOR_FIELD_TYPE },
 ];
 
@@ -137,11 +139,11 @@ export const ACTIONS = Object.freeze({
   ViewImages_Patient: 'ViewImages_Patient',
   ViewCourses_Patient: 'ViewCourses_Patient',
   ViewSessionsPulses_Patient: 'ViewSessionsPulses_Patient',
-  GenerateMonthly_PulsesReport:'GenerateMonthly_PulsesReport',
-  GenerateDaily_PulsesReport:'GenerateDaily_PulsesReport',
-  View_Medicine:'View_Medicine',
-  View_Permission:'View_Permission',
-  ViewFilters_Accounting:'ViewFilters_Accounting',
+  GenerateMonthly_PulsesReport: 'GenerateMonthly_PulsesReport',
+  GenerateDaily_PulsesReport: 'GenerateDaily_PulsesReport',
+  View_Medicine: 'View_Medicine',
+  View_Permission: 'View_Permission',
+  ViewFilters_Accounting: 'ViewFilters_Accounting',
 });
 
 export const LAB_STATUS = Object.freeze({

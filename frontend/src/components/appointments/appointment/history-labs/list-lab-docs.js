@@ -56,12 +56,6 @@ function ListLabDocs({ labs, labId }) {
     );
     return files;
   }, [documents]);
-  console.log(
-    imagesFiles,
-    'imagesFilesimagesFiles',
-    documents,
-    'documentsdocuments'
-  );
   return (
     <>
       <CRCard borderless>

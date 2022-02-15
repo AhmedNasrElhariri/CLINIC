@@ -29,6 +29,7 @@ import useAppointmentHistory from './fetch-appointment-history';
 import { HeaderStyled } from './style';
 import { useForm, useModal } from 'hooks';
 import { APPT_STATUS } from 'utils/constants';
+
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 function Appointment() {
   const { visible, open, close } = useModal();
@@ -38,6 +39,7 @@ function Appointment() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
 
   const [formValue, setFormValue] = useState({});
+  const [dynamicTextInput, setDynamicTextInput] = useState({});
   const [apptFormValue, setApptFormValue] = useState({
     notes: '',
     prescription: [],
@@ -52,14 +54,7 @@ function Appointment() {
   });
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
-  const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
-    variables: {
-      id: appointmentId,
-    },
-    onCompleted: ({ appointment }) => {
-      setDisabled(isArchived(appointment));
-    },
-  });
+
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -71,11 +66,19 @@ function Appointment() {
       },
     ],
   });
-
+  const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
+    variables: {
+      id: appointmentId,
+    },
+    onCompleted: ({ appointment }) => {
+      setDisabled(isArchived(appointment));
+    },
+  });
   const appointment = useMemo(
-    () => R.prop('appointment')(appointmentRes) || {},
+    () => R.propOr({}, 'appointment')(appointmentRes),
     [appointmentRes]
   );
+  console.log(appointmentId, 'appointmentIdappointmentId', appointmentRes);
   const patient = useMemo(
     () => R.propOr({}, 'patient')(appointment),
     [appointment]
@@ -84,11 +87,13 @@ function Appointment() {
     appointmentId,
     appointment,
   });
+  console.log(normalizedFields, 'normalizedFieldsnormalizedFields', groups);
   const handleUpdate = useCallback(() => {
     update({
       variables: {
         appointment: {
           data: mapFormValueToAppointmentData(normalizedFields, formValue),
+          dynamicTextInput: dynamicTextInput,
           notes: apptFormValue.notes,
           prescription: apptFormValue.prescription,
           labIds: apptFormValue.labIds,
@@ -111,6 +116,7 @@ function Appointment() {
     apptFormValue,
     appointmentId,
     sessionsPulses,
+    dynamicTextInput,
     sessionFormValue,
   ]);
   const [popup, setPopup] = useState(false);
@@ -177,7 +183,9 @@ function Appointment() {
 
   useEffect(() => {
     setSessionsPulses(R.propOr([], 'sessionsPulses')(appointment));
+    setDynamicTextInput(R.propOr("{}", 'dynamicTextInput')(appointment));
   }, [appointment]);
+  console.log(dynamicTextInput,'dynamicT');
   useEffect(() => {
     const sessionsFormValueUpdated = sessionsPulses.reduce(function (
       result,
@@ -306,6 +314,8 @@ function Appointment() {
                 setSessionsPulses={setSessionsPulses}
                 sessionFormValue={sessionFormValue}
                 setSessionFormValue={setSessionFormValue}
+                dynamicTextInput={dynamicTextInput}
+                setDynamicTextInput={setDynamicTextInput}
               />
               {popup && (
                 <Prescription

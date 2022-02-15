@@ -55,7 +55,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const { data } = useQuery(GET_INVOICE_COUNTER, {
     fetchPolicy: 'network-only',
   });
-  console.log(coupons, 'COCOCOC');
   const organization = useMemo(
     () => R.propOr([], 'myInvoiceCounter')(data),
     [data]

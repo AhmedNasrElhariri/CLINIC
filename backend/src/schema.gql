@@ -81,6 +81,7 @@ enum FieldType {
   Radio
   Check
   NestedSelector
+  SelectorWithInput
 }
 
 enum AppointmentStatus {
@@ -123,7 +124,7 @@ type Query {
   patientsReport(area: String, reference: String): PatientsCount!
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
   todayAppointments: [Appointment!]
-  appointment(id: ID!): Appointment
+  appointment(id: ID!): Appointment!
   patientAppointments(
     patientId: ID!
     status: AppointmentStatus!
@@ -656,6 +657,7 @@ type Appointment {
   updatedAt: Date
   accounted: Boolean
   sessionsPulses: [SessionPulse!]
+  dynamicTextInput: JSON
   session: SessionDefinition
   user: User!
   doctor: User!
@@ -763,6 +765,7 @@ input UpdateAppointmentInput {
   powerTwo: Int
   pulses: Int
   data: [AppointmentFieldInput!]
+  dynamicTextInput: JSON
   notes: String
   prescription: [PrescriptionInput!]
   pictures: [AppointmentPictureInput!]
@@ -874,6 +877,8 @@ type Field {
   order: Int!
   type: FieldType!
   choices: JSON
+  dynamic: Boolean
+  choicesType: String
 }
 
 type ViewStatus {
@@ -923,6 +928,8 @@ input FieldInput {
   order: Int!
   type: FieldType!
   choices: JSON
+  dynamic: Boolean
+  choicesType: String
 }
 
 ########################### File ##################################

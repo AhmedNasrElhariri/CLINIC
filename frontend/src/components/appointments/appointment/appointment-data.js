@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Form } from 'rsuite';
+import { Form, Toggle } from 'rsuite';
 import { Element } from 'react-scroll';
 
 import {
@@ -23,6 +23,7 @@ import {
   RADIO_FIELD_TYPE,
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
+  SELECTOR_WITH_INPUT,
 } from 'utils/constants';
 
 import AppointmentPictures from '../pictures';
@@ -40,7 +41,29 @@ import Images from './appointment-images';
 import { useConfigurations } from 'hooks';
 import Pulses from './pulses';
 
-const renderItem = ({ type, id, name, choices = [], ...props }) => {
+const renderItem = ({
+  type,
+  choicesType,
+  dynamic,
+  id,
+  name,
+  choices = [],
+  setDynamicTextInput,
+  dynamicTextInput,
+  updatedSessions,
+  ...props
+}) => {
+  console.log(props, 'PPPPPPPPPPPP', choicesType, dynamic);
+  let newChoices = [];
+  if (type === 'SelectorWithInput') {
+    if (dynamic) {
+      newChoices = choices.map(c => {
+        return { name: c, id: c };
+      });
+    } else {
+      newChoices = updatedSessions;
+    }
+  }
   switch (type) {
     case NUMBER_FIELD_TYPE:
       return <CRNumberInput label={name} name={id} {...props} />;
@@ -51,6 +74,21 @@ const renderItem = ({ type, id, name, choices = [], ...props }) => {
     case RADIO_FIELD_TYPE:
       return (
         <CRRadio label={name} name={id} options={choices} {...props} inline />
+      );
+    case SELECTOR_WITH_INPUT:
+      return (
+        <Div display="flex">
+          <CRSelectInput
+            style={{ width: '300px', marginRight: '30px' }}
+            label={name}
+            name={id}
+            data={newChoices}
+            {...props}
+          />
+          <Form formValue={dynamicTextInput} onChange={setDynamicTextInput}>
+            <CRTextInput label="Selector Text Input" name={id} />
+          </Form>
+        </Div>
       );
     case CHECK_FIELD_TYPE:
       return (
@@ -109,6 +147,8 @@ function AppointmentData({
   sessionFormValue,
   appointmentFormValue,
   setSessionFormValue,
+  dynamicTextInput,
+  setDynamicTextInput,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
   const { labsCategory } = useLabCategory();
@@ -116,6 +156,7 @@ function AppointmentData({
   const { medicineDefinitions } = useMedicineDefinitions();
   const { sessionsDefinition } = useSessionDefinition();
   const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryAndLab);
+
   const [categoryImageForm, setCategoryImageForm] =
     useState(initalCategoryImage);
   const [selectedMedicine, setSelectedMedicine] = useState(
@@ -137,7 +178,11 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-
+  const updatedSessions = useMemo(() => {
+    return sessionsDefinition.map(s => {
+      return { name: s.name, id: s.name };
+    });
+  }, [sessionsDefinition]);
   const handleMedicineChange = useCallback(
     prescription => {
       onChange({
@@ -224,7 +269,13 @@ function AppointmentData({
                   >
                     {v.fields.map(f => (
                       <Div mb={4} key={f.id}>
-                        {renderItem({ ...f, disabled })}
+                        {renderItem({
+                          ...f,
+                          disabled,
+                          dynamicTextInput,
+                          setDynamicTextInput,
+                          updatedSessions,
+                        })}
                       </Div>
                     ))}
                   </SectionContainer>

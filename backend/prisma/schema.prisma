@@ -89,6 +89,7 @@ enum FieldType {
   Radio
   Check
   NestedSelector
+  SelectorWithInput
 }
 
 enum PatientMembershipType {
@@ -347,6 +348,7 @@ model Appointment {
   powerOne         Int?
   powerTwo         Int?
   sessionsPulses   Json?              @default("[]")
+  dynamicTextInput Json               @default("{}")
   branch           Branch?            @relation(fields: [branchId], references: [id])
   branchId         String?
   specialty        Specialty?         @relation(fields: [specialtyId], references: [id])
@@ -472,6 +474,8 @@ model Field {
   order             Int
   type              FieldType
   choices           Json?
+  dynamic           Boolean            @default(false)
+  choicesType       String?
   fieldGroup        FieldGroup?        @relation(fields: [fieldGroupId], references: [id])
   fieldGroupId      String?
   appointmentFields AppointmentField[]

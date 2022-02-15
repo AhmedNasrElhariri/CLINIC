@@ -7,6 +7,7 @@ import {
   RADIO_FIELD_TYPE,
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
+  SELECTOR_WITH_INPUT,
 } from 'utils/constants';
 import Choices from './choices';
 import NestedChoices from './nested-choices';
@@ -17,10 +18,10 @@ const Card = ({ laneId, index }) => {
   const [editLane, setEditLane] = useGlobalState('editLane');
   const lane = lanes?.find(l => l.id === laneId);
   const [popup, setPopup] = useState(0);
-
+  const [toggle, setToggle] = useState(false);
   const cards = lane?.cards;
 
-  const formValue = cards[index] ;
+  const formValue = cards[index];
   const { visible, open, close } = useModal();
 
   const update = useCallback(
@@ -53,7 +54,7 @@ const Card = ({ laneId, index }) => {
   }, [open]);
 
   const handleSetChoices = choices => {
-    update({ ...formValue, choices });
+    update({ ...formValue, choices, dynamic: toggle, choicesType: 'sessions' });
     close();
   };
 
@@ -67,6 +68,7 @@ const Card = ({ laneId, index }) => {
       RADIO_FIELD_TYPE,
       CHECK_FIELD_TYPE,
       NESTED_SELECTOR_FIELD_TYPE,
+      SELECTOR_WITH_INPUT,
     ].includes(fieldType);
   }, [fieldType]);
 
@@ -129,6 +131,8 @@ const Card = ({ laneId, index }) => {
             visible={visible}
             onOk={handleSetChoices}
             onClose={handleClose}
+            toggle={toggle}
+            setToggle={setToggle}
           />
         )}
         {popup === 2 && (

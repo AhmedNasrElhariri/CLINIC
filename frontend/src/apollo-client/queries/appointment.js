@@ -186,6 +186,7 @@ export const GET_APPOINTMENT = gql`
       pulses
       powerOne
       powerTwo
+      dynamicTextInput
       sessionsPulses {
         name
         value
@@ -377,6 +378,7 @@ export const GET_APPOINTMENT_HISTORY = gql`
       date
       status
       notes
+      dynamicTextInput
       prescription {
         medicineId
         dose
