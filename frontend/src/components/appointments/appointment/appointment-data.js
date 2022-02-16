@@ -85,7 +85,9 @@ const renderItem = ({
             {...props}
           />
           <Form formValue={dynamicTextInput} onChange={setDynamicTextInput}>
-            <CRTextInput label="Selector Text Input" name={id} />
+            <Div mt={41}>
+              <CRTextInput name={id} />
+            </Div>
           </Form>
         </Div>
       );

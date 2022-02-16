@@ -18,7 +18,7 @@ import { KeyStyled, ValueStyled } from './style';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
 import { useModal } from 'hooks';
 
-const renderProp = (key, value) => {
+const renderProp = (key, value, textValue) => {
   return (
     <Div display="flex" alignItems="center" minHeight={60}>
       <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
@@ -26,12 +26,18 @@ const renderProp = (key, value) => {
       </Whisper>
       <CRVDivider vertical />
       <ValueStyled>{value}</ValueStyled>
+      {textValue && (
+        <>
+          <CRVDivider vertical />
+          <ValueStyled>{textValue}</ValueStyled>
+        </>
+      )}
     </Div>
   );
 };
 
 const renderAppointment = data => {
-  return data.map(({ value, field }, idx) => (
+  return data.map(({ value, field, textValue }, idx) => (
     <React.Fragment key={idx}>
       {value && field.type === 'NestedSelector'
         ? renderProp(
@@ -44,7 +50,7 @@ const renderAppointment = data => {
               />
             </Form>
           )
-        : renderProp(field.name, value)}
+        : renderProp(field.name, value, textValue)}
     </React.Fragment>
   ));
 };
@@ -61,16 +67,31 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
     [activeSession]
   );
 
+  const dynamicTextInput = useMemo(
+    () => R.propOr({}, 'dynamicTextInput')(activeSession),
+    [activeSession]
+  );
   const data = useMemo(
     () => R.propOr([], 'data')(activeSession),
     [activeSession]
   );
-
   const sessionId = useMemo(
     () => R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(summary),
     [activeSession, summary]
   );
-
+  const updatedData = useMemo(() => {
+    let newData = [];
+    if (dynamicTextInput) {
+      newData = data.map(d => {
+        let value = '';
+        value = dynamicTextInput[d.field.id] || '';
+        return { ...d, textValue: value };
+      });
+    } else {
+      newData = data;
+    }
+    return newData;
+  }, [data, dynamicTextInput]);
   const { visible, open, close } = useModal();
 
   const pictures = useMemo(
@@ -101,7 +122,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
             <H3 mb={4}>Session {summary.length - sessionId}</H3>
             <Div>
               {renderProp('Date', formatDate(date))}
-              {renderAppointment(data)}
+              {renderAppointment(updatedData)}
               {activeSession.notes && renderProp('Notes', activeSession.notes)}
               {pictures.length > 0 &&
                 renderProp(
