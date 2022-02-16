@@ -12,13 +12,16 @@ import {
 import Choices from './choices';
 import NestedChoices from './nested-choices';
 import { useModal } from 'hooks';
-
+const choicesTypes = [{ name: 'Sessions-Definition', id: 'sessions' }];
+const initialChoicesType = { choicesType: 'sessions' };
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState('lanes');
   const [editLane, setEditLane] = useGlobalState('editLane');
   const lane = lanes?.find(l => l.id === laneId);
   const [popup, setPopup] = useState(0);
   const [toggle, setToggle] = useState(false);
+  const [choicesType, setChoicesType] = useState(initialChoicesType);
+  console.log(choicesType, 'choicesTypechoicesType');
   const cards = lane?.cards;
 
   const formValue = cards[index];
@@ -54,7 +57,12 @@ const Card = ({ laneId, index }) => {
   }, [open]);
 
   const handleSetChoices = choices => {
-    update({ ...formValue, choices, dynamic: toggle, choicesType: 'sessions' });
+    update({
+      ...formValue,
+      choices,
+      dynamic: toggle,
+      choicesType: choicesType.choicesType,
+    });
     close();
   };
 
@@ -133,6 +141,9 @@ const Card = ({ laneId, index }) => {
             onClose={handleClose}
             toggle={toggle}
             setToggle={setToggle}
+            choicesTypes={choicesTypes}
+            choicesType={choicesType}
+            setChoicesType={setChoicesType}
           />
         )}
         {popup === 2 && (

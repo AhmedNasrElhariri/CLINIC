@@ -1,9 +1,18 @@
 import React, { useCallback, useState } from 'react';
-import { Input, Icon, Button, IconButton, Toggle } from 'rsuite';
+import { Input, Icon, Button, IconButton, Toggle, Form } from 'rsuite';
 
-import { CRModal, Div } from 'components';
+import { CRModal, CRSelectInput, Div } from 'components';
 
-function Choices({ visible, onOk, onClose, toggle, setToggle }) {
+function Choices({
+  visible,
+  onOk,
+  onClose,
+  toggle,
+  setToggle,
+  choicesTypes,
+  choicesType,
+  setChoicesType,
+}) {
   const [formValue, setFormValue] = useState([]);
   const handleOnClick = useCallback(() => {
     setFormValue([...formValue, '']);
@@ -69,6 +78,13 @@ function Choices({ visible, onOk, onClose, toggle, setToggle }) {
             </Div>
           ))}
         </>
+      )}
+      {!toggle && (
+        <Form formValue={choicesType} onChange={setChoicesType}>
+          
+            <CRSelectInput data={choicesTypes} name="choicesType" style={{width:'300px',marginTop:'10px'}} />
+          
+        </Form>
       )}
     </CRModal>
   );
