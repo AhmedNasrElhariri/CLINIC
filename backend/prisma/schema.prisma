@@ -348,7 +348,7 @@ model Appointment {
   powerOne         Int?
   powerTwo         Int?
   sessionsPulses   Json?              @default("[]")
-  dynamicTextInput Json               @default("{}")
+  dynamicTextInput Json?
   branch           Branch?            @relation(fields: [branchId], references: [id])
   branchId         String?
   specialty        Specialty?         @relation(fields: [specialtyId], references: [id])

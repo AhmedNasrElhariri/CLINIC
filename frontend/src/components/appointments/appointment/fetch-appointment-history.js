@@ -8,6 +8,7 @@ import { useQuery } from '@apollo/client';
 import { GET_APPOINTMENT_HISTORY } from 'apollo-client/queries';
 
 export default ({ appointmentId, appointment }) => {
+  console.log(appointmentId, appointment, '!!!');
   if (!appointmentId || !appointment) {
     return {
       normalizedFields: {},
@@ -24,7 +25,7 @@ export default ({ appointmentId, appointment }) => {
       appointmentId,
     },
   });
-
+  console.log(views, 'VVVVVININ');
   const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
   const viewFields = useMemo(
     () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),

@@ -78,6 +78,7 @@ function Appointment() {
     () => R.propOr({}, 'appointment')(appointmentRes),
     [appointmentRes]
   );
+  console.log(appointment,appointmentRes,'APAPAPAPAP');
   const patient = useMemo(
     () => R.propOr({}, 'patient')(appointment),
     [appointment]
