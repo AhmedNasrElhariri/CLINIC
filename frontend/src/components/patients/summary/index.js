@@ -93,7 +93,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
     return newData;
   }, [data, dynamicTextInput]);
   const { visible, open, close } = useModal();
-
+  useEffect(() => console.log('hii'));
   const pictures = useMemo(
     () => R.propOr([], 'pictures')(activeSession),
     [activeSession]
@@ -102,7 +102,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   if (!activeSession) {
     return '...No History';
   }
-
+ 
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>
