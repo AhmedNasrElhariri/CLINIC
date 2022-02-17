@@ -24,6 +24,7 @@ import PatientProgress from '../progress';
 import { useQueryParams, useHospitals, usePatients } from 'hooks';
 import PatientInformationCreation from '../patient-information-creation';
 import PatientCoupons from '../patient-coupons';
+import PatientRevenue from '../patient-revenue';
 
 const tabs = [
   'Patient Info',
@@ -39,6 +40,7 @@ const tabs = [
   'Progress',
   'Patient Information Creation',
   'Patient Coupons',
+  'Patient Revenue',
 ];
 const Container = styled.div`
   display: flex;
@@ -151,6 +153,7 @@ function Appointment() {
                   <PatientInformationCreation patient={patient} />
                 )}
                 {showComp('12') && <PatientCoupons patient={patient} />}
+                {showComp('13') && <PatientRevenue patient={patient} />}
               </TabContainer>
             </Container>
           )}

@@ -132,6 +132,7 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   patientCoupons(patientId: ID!, all: Boolean): [Coupon!]
+  patientRevenue(patientId: ID!): [Revenue!]
   couponPointsTransactions(couponId: ID!): [PointsTransactions!]
   getPatientField(patientId: ID!): [PatientField!]
   getUserPatientFields: [PatientField!]
@@ -1162,6 +1163,7 @@ type Revenue {
   user: User!
   doctor: User
   branch: Branch
+  payer: String
   specialty: Specialty
   amount: Float!
   date: Date!
@@ -1174,6 +1176,7 @@ type BankRevenue {
   amount: Float!
   date: Date!
   level: String
+  payer: String
   user: User
   branch: Branch
   doctor: User
@@ -1193,6 +1196,7 @@ type InsuranceRevenue {
   amount: Int!
   date: Date!
   level: String
+  payer: String
   user: User
   branch: Branch
   specialty: Specialty

@@ -75,7 +75,8 @@ const archiveAppointment = async (
         branchId,
         date,
         specialtyId,
-        userID
+        userID,
+        patientId
       )
     );
 
@@ -116,6 +117,13 @@ const archiveAppointment = async (
             doctor: {
               connect: {
                 id: userID,
+              },
+            },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
               },
             },
           }
@@ -188,6 +196,13 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
@@ -234,6 +249,13 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
@@ -248,7 +270,8 @@ const archiveAppointment = async (
           date,
           specialtyId,
           userID,
-          bank
+          bank,
+          patientId
         )
       );
       if (others.amount > 0) {
@@ -293,6 +316,13 @@ const archiveAppointment = async (
               doctor: {
                 connect: {
                   id: userID,
+                },
+              },
+            },
+            patientId && {
+              patient: {
+                connect: {
+                  id: patientId,
                 },
               },
             }
@@ -401,6 +431,13 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
@@ -445,6 +482,13 @@ const archiveAppointment = async (
             doctor: {
               connect: {
                 id: userID,
+              },
+            },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
               },
             },
           }
@@ -494,6 +538,13 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
@@ -538,6 +589,13 @@ const archiveAppointment = async (
             doctor: {
               connect: {
                 id: userID,
+              },
+            },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
               },
             },
           }

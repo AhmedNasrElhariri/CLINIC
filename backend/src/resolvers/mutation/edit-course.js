@@ -35,6 +35,7 @@ const editCourse = async (
     'C' + '/' + data.courseDefinition.name + '/' + data.patient.name;
 
   const salerId = data.userId;
+  const patientId = data.patient.id;
   await prisma.coursePayment.create({
     data: Object.assign(
       {
@@ -114,6 +115,13 @@ const editCourse = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
@@ -161,6 +169,13 @@ const editCourse = async (
               id: userID,
             },
           },
+        },
+        patientId && {
+          patient: {
+            connect: {
+              id: patientId,
+            },
+          },
         }
       ),
     });
@@ -201,6 +216,13 @@ const editCourse = async (
           doctor: {
             connect: {
               id: userID,
+            },
+          },
+        },
+        patientId && {
+          patient: {
+            connect: {
+              id: patientId,
             },
           },
         }

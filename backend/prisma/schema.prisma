@@ -320,6 +320,9 @@ model Patient {
   FacePartation    FacePartation[]
   PatientField     PatientField[]
   Coupon           Coupon[]
+  Revenue          Revenue[]
+  BankRevenue      BankRevenue[]
+  InsuranceRevenue InsuranceRevenue[]
 }
 
 model Appointment {
@@ -739,6 +742,8 @@ model Revenue {
   amount         Float
   invoiceNo      String?
   level          String?
+  patient        Patient?     @relation(fields: [patientId], references: [id])
+  patientId      String?
   specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
   branch         Branch?      @relation(fields: [branchId], references: [id])
@@ -766,6 +771,8 @@ model BankRevenue {
   doctor         User?          @relation("bankDoctor", fields: [doctorId], references: [id])
   doctorId       String?
   level          String?
+  patient        Patient?       @relation(fields: [patientId], references: [id])
+  patientId      String?
   specialty      Specialty?     @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
   branch         Branch?        @relation(fields: [branchId], references: [id])
@@ -789,6 +796,8 @@ model InsuranceRevenue {
   doctor         User?             @relation("insuranceDoctor", fields: [doctorId], references: [id])
   doctorId       String?
   level          String?
+  patient        Patient?          @relation(fields: [patientId], references: [id])
+  patientId      String?
   specialty      Specialty?        @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
   branch         Branch?           @relation(fields: [branchId], references: [id])
