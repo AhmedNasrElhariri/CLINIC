@@ -42,7 +42,6 @@ export default ({ patientId, appointment = {} }) => {
     () => R.pathOr([], ['appointmentHistory'])(history),
     [history]
   );
-  console.log(appointmentHistory,'appointmentHistoryappointmentHistory');
   const patientViews = useGlobalState('activePatientViews');
   const patientGroups = useMemo(
     () => R.propOr([], 'fieldGroups')(patientViews[0]['0']),

@@ -8,12 +8,13 @@ import {
   CRDateRangePicker,
   H5,
   H3,
+  H4,
 } from 'components/widgets';
 import { Can } from 'components/user/can';
 import axios from 'axios';
 import { Form, DatePicker, Table } from 'rsuite';
 import { Container, Report, Name } from './style';
-import { useSessionDefinition } from 'hooks';
+import { useCourses, useSessionDefinition } from 'hooks';
 import moment from 'moment';
 import * as R from 'ramda';
 
@@ -48,10 +49,12 @@ const Test = props => {
     dateFrom: formValue.sessionDate[0],
     dateTo: formValue.sessionDate[1],
   });
+  const { totalUnpaidOfCourses } = useCourses({});
+  const totalUnpaid = R.propOr(0, 'totalUnpaid')(totalUnpaidOfCourses);
   const totalNumber = R.propOr(0, 'totalNumber')(sessionStatistics);
   const totalPrice = R.propOr(0, 'totalPrice')(sessionStatistics);
   const session = R.propOr({}, 'session')(sessionStatistics);
-  
+
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
@@ -88,6 +91,7 @@ const Test = props => {
   const refOne = useRef();
   const refTwo = useRef();
   const refThree = useRef();
+  const refFour = useRef();
   let monthlyData = dataTwo?.data || [];
 
   return (
@@ -162,6 +166,16 @@ const Test = props => {
           />
         </Report>
         {/* </Can> */}
+      </Container>
+      <Container>
+        <Report>
+          <Name>Total Unpaid of courses Report</Name>
+
+          <ReactToPrint
+            trigger={() => <CRButton primary>Print</CRButton>}
+            content={() => refFour.current}
+          />
+        </Report>
       </Container>
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>
@@ -275,12 +289,27 @@ const Test = props => {
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>
           <Div ref={refThree}>
-            <H3 display="flex" justifyContent="center" mt={20} mb={20} >
-              Session Report 
+            <H3 display="flex" justifyContent="center" mt={20} mb={20}>
+              Session Report
             </H3>
             <H5>Session Name : {session?.name}</H5>
             <H5>TotalNumber: {totalNumber}</H5>
             <H5>TotalPrice:{totalPrice}</H5>
+          </Div>
+        </Div>
+      </Div>
+
+      <Div>
+        <Div style={{ overflow: 'hidden', height: '0px' }}>
+          <Div ref={refFour}>
+            <H3 display="flex" justifyContent="center" mt={20} mb={20}>
+              Total Unpaid of courses Report
+            </H3>
+            <Div display="flex">
+              <H3 mr="150px">Total</H3>
+              <H3 mr="5px">{totalUnpaid}</H3>
+              <H3>Egy</H3>
+            </Div>
           </Div>
         </Div>
       </Div>

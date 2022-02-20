@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { CRModal, Div } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
+import DoctorsTab from '../doctors-tab';
 import {
   useConfigurations,
   useCompanySessionDefinition,
@@ -21,6 +22,10 @@ const initlOption = {
   option: '',
   amount: 0,
   payMethod: 'cash',
+};
+const initialDoctorFess = {
+  doctorId: null,
+  fees: 0,
 };
 
 const StepsDev = styled.div`
@@ -39,6 +44,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [coupons, setCoupons] = useState([]);
   const [couponsValue, setCouponsValue] = useState(0);
   const [option, setOption] = useState(initlOption);
+  const [selectedSessions, setSelectedSessions] = useState([]);
+  const [doctorFees, setDoctorFees] = useState(initialDoctorFess);
   const value = useRef(initValue);
   const { patientCoupons } = usePatients({
     patientId: appointment?.patient.id,
@@ -80,6 +87,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         option,
         coupons: newCoupons,
         couponsValue,
+        doctorFees,
       });
       setActiveStep(0);
       setOthers(0);
@@ -89,6 +97,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       setDiscount(0);
       setCoupons([]);
       setCouponsValue(0);
+      setDoctorFees(initialDoctorFess);
       value.current = {
         sessions: [],
         items: [],
@@ -105,6 +114,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     option,
     coupons,
     couponsValue,
+    doctorFees,
   ]);
   const handleFinish = useCallback(() => {
     onOk({
@@ -117,6 +127,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       option,
       coupons: newCoupons,
       couponsValue,
+      doctorFees,
     });
     setActiveStep(0);
     setOthers(0);
@@ -126,6 +137,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     setDiscount(0);
     setCoupons([]);
     setCouponsValue(0);
+    setDoctorFees(initialDoctorFess);
     value.current = {
       sessions: [],
       items: [],
@@ -140,6 +152,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     option,
     coupons,
     couponsValue,
+    doctorFees,
   ]);
 
   const handleCancel = useCallback(() => {
@@ -185,6 +198,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         <Steps current={activeStep}>
           <Steps.Item title="Invoice" onClick={() => setActiveStep(0)} />
           <Steps.Item title="Inventory" onClick={() => setActiveStep(1)} />
+          <Steps.Item title="Doctor" onClick={() => setActiveStep(2)} />
         </Steps>
       </StepsDev>
       <Div>
@@ -217,12 +231,21 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
             setCouponsValue={setCouponsValue}
             couponsValue={couponsValue}
             loading={loading}
+            selectedSessions={selectedSessions}
+            setSelectedSessions={setSelectedSessions}
           />
         )}
         {activeStep === 1 && (
           <InventoryUsage
             onChange={handleInventoryChange}
             handleCancel={handleCancel}
+          />
+        )}
+        {activeStep === 2 && (
+          <DoctorsTab
+            appointment={appointment}
+            doctorFees={doctorFees}
+            setDoctorFees={setDoctorFees}
           />
         )}
       </Div>

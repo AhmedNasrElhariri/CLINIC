@@ -17,6 +17,7 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
     branchId,
     specialtyId,
     userId: userID,
+    bank,
   } = course;
   const level = GetLevel(branchId, specialtyId, userID);
   const startDate = sessions.length > 0 ? sessions[0] : new Date();
@@ -97,47 +98,97 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
   });
   const payment =
     'C' + '/' + courseDef.courseDefinition.name + '/' + courseDef.patient.name;
-  await prisma.revenue.create({
-    data: Object.assign(
-      {
-        level,
-        name: payment,
-        date: new Date(),
-        amount: paid,
-        organization: {
-          connect: {
-            id: organizationId,
+  if (bank) {
+    await prisma.bankRevenue.create({
+      data: Object.assign(
+        {
+          date: new Date(),
+          name: payment,
+          amount: paid,
+          level,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          bank: {
+            connect: {
+              id: bank,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
           },
         },
-        user: {
-          connect: {
-            id: userId,
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
           },
         },
-      },
-      specialtyId && {
-        specialty: {
-          connect: {
-            id: specialtyId,
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
           },
         },
-      },
-      branchId && {
-        branch: {
-          connect: {
-            id: branchId,
+        userID && {
+          doctor: {
+            connect: {
+              id: userID,
+            },
+          },
+        }
+      ),
+    });
+  } else {
+    await prisma.revenue.create({
+      data: Object.assign(
+        {
+          level,
+          name: payment,
+          date: new Date(),
+          amount: paid,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
           },
         },
-      },
-      userID && {
-        doctor: {
-          connect: {
-            id: userID,
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
           },
         },
-      }
-    ),
-  });
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: userID,
+            },
+          },
+        }
+      ),
+    });
+  }
+
   return courseDef;
 };
 

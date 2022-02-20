@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import * as R from 'ramda';
+import moment from 'moment';
 import { ACTIONS } from 'utils/constants';
 import { CRTabs } from 'components';
 import ListAppointments from './list-appointments';
@@ -9,6 +10,8 @@ import CompleteAppointment from '../complete-appointment';
 import { useAppointments, useModal } from 'hooks';
 import BusinessNotes from './business-notes';
 import NewAppointment from 'components/appointments/new-appointment';
+import EditAppointment from '../edit-appointment';
+import CancelAppointment from '../cancel-appointment';
 import {
   filterTodayAppointments,
   sortAppointmentsByUpdatedAt,
@@ -18,7 +21,15 @@ import { APPT_STATUS } from 'utils/constants';
 const initialValue = {
   businessNotes: '',
 };
-
+const calcDate = ({ date, time }) =>
+  moment(date)
+    .set({
+      hour: moment(time).get('hour'),
+      minute: moment(time).get('minute'),
+      second: 0,
+      millisecond: 0,
+    })
+    .toDate();
 function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
   const [formValue] = useState({});
@@ -32,9 +43,11 @@ function TodayAppointments() {
     complete,
     archiveLoading: loading,
     updateNotes,
+    adjust,
+    cancel,
   } = useAppointments({
     action: ACTIONS.List_Appointment,
-    patientId:appointment?.patient?.id,
+    patientId: appointment?.patient?.id,
   });
 
   const filteredAppointments = useMemo(
@@ -107,6 +120,22 @@ function TodayAppointments() {
     },
     [open]
   );
+  const onEditAppointments = useCallback(
+    appointment => {
+      setPopUp('editAppointment');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
+  const onCancelAppointments = useCallback(
+    appointment => {
+      setPopUp('cancelAppointment');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
   const handleArchive = useCallback(
     ({
       sessions,
@@ -120,6 +149,7 @@ function TodayAppointments() {
       othersName,
       coupons,
       couponsValue,
+      doctorFees,
     }) => {
       close();
       archive({
@@ -155,6 +185,7 @@ function TodayAppointments() {
           option,
           coupons,
           couponsValue,
+          doctorFees: doctorFees,
         },
       });
     },
@@ -170,6 +201,25 @@ function TodayAppointments() {
       },
     });
   }, [appointment, updateNotes, notes]);
+  const handleEdit = useCallback(
+    formValue => {
+      close();
+      adjust({
+        variables: {
+          id: appointment.id,
+          date: calcDate(formValue),
+          branchId: formValue.branchId,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
+        },
+      });
+    },
+    [adjust, appointment]
+  );
+  const handleCancel = useCallback(() => {
+    close();
+    cancel({ variables: { id: appointment.id } });
+  }, [cancel, appointment]);
   const handleComplete = useCallback(
     ({ appointment }) => {
       close();
@@ -202,6 +252,8 @@ function TodayAppointments() {
                   onComplete={onCompleteDone}
                   onAddBusinessNotes={onAddBusinessNotes}
                   onDuplicateAppointments={onDuplicateAppointments}
+                  onEditAppointments={onEditAppointments}
+                  onCancelAppointments={onCancelAppointments}
                   defaultExpanded={true}
                   close={close}
                 />
@@ -274,6 +326,28 @@ function TodayAppointments() {
           appointment={appointment}
         />
       )}
+      {popUp === 'editAppointment' && (
+        <EditAppointment
+          onOk={handleEdit}
+          show={visible}
+          onCancel={close}
+          appointment={appointment}
+        />
+      )}
+      {popUp === 'cancelAppointment' && (
+        <CancelAppointment
+          onOk={handleCancel}
+          show={visible}
+          onCancel={close}
+          appointment={appointment}
+        />
+      )}
+      {/* <CancelAppointment
+        visible={visible.cancel}
+        appointment={appointment}
+        onOk={cancel}
+        onClose={() => onClose('cancel')}
+      /> */}
     </>
   );
 }

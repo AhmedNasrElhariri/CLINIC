@@ -25,6 +25,7 @@ const initValue = {
   branchId: null,
   specialtyId: null,
   userId: null,
+  bankCreate:null,
 };
 const inialCurrentPage = {
   activePage: 1,

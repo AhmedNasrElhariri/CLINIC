@@ -154,6 +154,13 @@ export const LIST_COURSE_PAYMENTS = gql`
     }
   }
 `;
+export const TOTAL_UNPAID_OF_COURSES = gql`
+  {
+    totalUnpaidOfCourses {
+      totalUnpaid
+    }
+  }
+`;
 
 export const ADD_COURSE = gql`
   mutation addCourse($course: CourseInput!) {

@@ -338,6 +338,7 @@ export const ARCHIVE_APPOINTMENT = gql`
     $userId: ID
     $coupons: [couponInput]
     $couponsValue: Int
+    $doctorFees: doctorFeesInput
   ) {
     archiveAppointment(
       id: $id
@@ -356,6 +357,7 @@ export const ARCHIVE_APPOINTMENT = gql`
       userId: $userId
       coupons: $coupons
       couponsValue: $couponsValue
+      doctorFees: $doctorFees
     ) {
       id
       status

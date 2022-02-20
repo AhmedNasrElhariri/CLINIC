@@ -14,7 +14,7 @@ import { formatDate, isBeforeToday } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { useAppointmentForm, useAppointments } from 'hooks';
 
-const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
+const EditAppointment = ({ show, onCancel, onOk, appointment }) => {
   const [formValue, setFormValue] = useState({
     date: null,
     time: null,
@@ -39,15 +39,15 @@ const EditAppointment = ({ visible, onOk, onClose, appointment }) => {
 
   return (
     <CRModal
-      show={visible}
+    show={show}
       header="Adjust Appointment"
       bodyStyle={{
         padding: '10px 89px ',
       }}
       okTitle="Adjust"
       onOk={() => onOk(formValue)}
-      onCancel={onClose}
-      onHide={onClose}
+      onCancel={onCancel}
+      onHide={onCancel}
     >
       <Form formValue={formValue} onChange={setFormValue} fluid>
         <Div my={1}>

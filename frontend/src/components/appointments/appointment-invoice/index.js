@@ -93,6 +93,8 @@ function AppointmentInvoice({
   setCouponsValue,
   couponsValue,
   loading,
+  selectedSessions,
+  setSelectedSessions
 }) {
   const [session, setSession] = useState({});
   const [sessionNumber, setSessionNumber] = useState(0);
@@ -100,7 +102,6 @@ function AppointmentInvoice({
   const [coupon, setCoupon] = useState(false);
   const [insurance, setInsurance] = useState(false);
   const [formValue, setFormValue] = useState(initValue);
-  const [selectedSessions, setSelectedSessions] = useState([]);
   const { banksDefinition } = useBankDefinition({});
   const { companysDefinition } = useCompanyDefinition({});
   const { sessionsDefinition } = useSessionDefinition({});

@@ -21,7 +21,6 @@ const Card = ({ laneId, index }) => {
   const [popup, setPopup] = useState(0);
   const [toggle, setToggle] = useState(false);
   const [choicesType, setChoicesType] = useState(initialChoicesType);
-  console.log(choicesType, 'choicesTypechoicesType');
   const cards = lane?.cards;
 
   const formValue = cards[index];

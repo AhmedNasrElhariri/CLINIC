@@ -79,7 +79,10 @@ const SessionDefinition = () => {
     } else {
       editSessionDefinition({
         variables: {
-          sessionDefinition: formValue,
+          sessionDefinition: {
+            ...formValue,
+            price: parseFloat(formValue.price),
+          },
         },
       });
     }

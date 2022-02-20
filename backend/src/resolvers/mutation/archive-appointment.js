@@ -36,6 +36,7 @@ const archiveAppointment = async (
     userId: userID,
     coupons,
     couponsValue,
+    doctorFees,
   },
   { userId, organizationId }
 ) => {
@@ -544,6 +545,51 @@ const archiveAppointment = async (
         ),
       });
     }
+  }
+  if (doctorFees.fees > 0) {
+    const { fees, doctorId } = doctorFees;
+    await prisma.expense.create({
+      data: Object.assign(
+        {
+          date: new Date(date),
+          name: 'Doctor-fees',
+          expenseType: 'Doctor',
+          amount: fees,
+          level,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: doctorId,
+            },
+          },
+        }
+      ),
+    });
   }
   if (couponsValue > 0) {
     await updateCoupons(coupons, organizationId);

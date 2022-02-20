@@ -14,26 +14,30 @@ import {
 const PatientInfo = ({ patient }) => {
   return (
     <PatientInfoStyled>
-      <CRCard  borderless>
-        <Cell  height={64}>
+      <CRCard borderless>
+        <Cell height={64}>
           <H3>Information</H3>
-          <EditPatient patient={patient}/>
+          <EditPatient patient={patient} />
           <EditButton>Expand</EditButton>
         </Cell>
-        <Cell >
+        <Cell>
           <CellTitle>Name</CellTitle>
-          <StrongStyled>
-            {patient.name}
-          </StrongStyled>
+          <StrongStyled>{patient.name}</StrongStyled>
         </Cell>
-        <Cell >
+        <Cell>
           <CellTitle>Age</CellTitle>
           <AddressStyled>{patient.age}</AddressStyled>
         </Cell>
-        <Cell >
+        <Cell>
           <CellTitle>Phone Number</CellTitle>
           <AddressStyled>{patient.phoneNo}</AddressStyled>
         </Cell>
+        {patient.phoneNoTwo && (
+          <Cell>
+            <CellTitle>Phone Number Two</CellTitle>
+            <AddressStyled>{patient.phoneNoTwo}</AddressStyled>
+          </Cell>
+        )}
       </CRCard>
     </PatientInfoStyled>
   );

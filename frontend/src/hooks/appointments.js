@@ -15,6 +15,8 @@ import {
   LIST_INVENTORY_HISTORY,
   UPDATE_BUSINESS_NOTES,
   PATIENT_COUPONS,
+  ADJUST_APPOINTMENT,
+  CANCEL_APPOINTMENT,
 } from 'apollo-client/queries';
 import { Alert } from 'rsuite';
 
@@ -148,6 +150,26 @@ function useAppointments({
       },
     ],
   });
+  const [adjust] = useMutation(ADJUST_APPOINTMENT, {
+    onCompleted: ({ adjustAppointment }) => {
+      Alert.success('Appointment has been changed successfully');
+    },
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
+      },
+    ],
+  });
+  const [cancel] = useMutation(CANCEL_APPOINTMENT, {
+    onCompleted: () => {
+      Alert.success('Appointment has been cancelled successfully');
+    },
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
+      },
+    ],
+  });
 
   return useMemo(
     () => ({
@@ -166,6 +188,8 @@ function useAppointments({
       complete,
       archiveLoading,
       updateNotes,
+      adjust,
+      cancel,
     }),
     [
       appointments,
@@ -179,6 +203,8 @@ function useAppointments({
       complete,
       archiveLoading,
       updateNotes,
+      adjust,
+      cancel,
     ]
   );
 }

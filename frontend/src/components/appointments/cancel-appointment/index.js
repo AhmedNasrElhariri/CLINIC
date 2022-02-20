@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Div, CRModal, H3 } from 'components';
 
-const CancelAppointment = ({ visible, onOk, onClose }) => {
+const CancelAppointment = ({ show, onOk, onCancel }) => {
   return (
     <CRModal
       onOk={onOk}
-      onCancel={onClose}
-      onHide={onClose}
-      show={visible}
+      onCancel={onCancel}
+      onHide={onCancel}
+      show={show}
       header="Cancel Appointment"
     >
       <Div textAlign="center">

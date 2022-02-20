@@ -191,6 +191,27 @@ function NewCourse({
               action={ACTIONS.Create_Course}
             />
             <CRNumberInput label="Discount" name="discount" />
+            <CRButton
+              onClick={() => {
+                setVisa(true);
+              }}
+              mt={10}
+            >
+              Pay By Visa
+            </CRButton>
+            {visa && (
+              <Form>
+                <CRSelectInput
+                  label="Bank Name"
+                  name="bank"
+                  data={banksDefinition}
+                  value={bank}
+                  onChange={setBank}
+                  placeholder="Select One Bank "
+                  style={{ width: '230px' }}
+                />
+              </Form>
+            )}
             <CRNumberInput label="Paid" name="paid" />
             <CRSelectInput
               label="Doctor"

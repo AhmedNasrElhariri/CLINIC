@@ -17,6 +17,7 @@ import {
   EDIT_COURSE_UNITS,
   LIST_COURSE_PAYMENTS,
   EDIT_COURSE_PAYMENT_HISTORY,
+  TOTAL_UNPAID_OF_COURSES,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -86,6 +87,12 @@ function useCourses({
   const coursePayments = useMemo(
     () => R.propOr([], 'coursePayments')(dataPayment),
     [dataPayment]
+  );
+
+  const { data: totalUnpaidOfCoursesData } = useQuery(TOTAL_UNPAID_OF_COURSES);
+  const totalUnpaidOfCourses = useMemo(
+    () => R.propOr({}, 'totalUnpaidOfCourses')(totalUnpaidOfCoursesData),
+    [totalUnpaidOfCoursesData]
   );
 
   const [addCourse, { loading }] = useMutation(ADD_COURSE, {
@@ -321,6 +328,7 @@ function useCourses({
       updateCache,
       coursePayments,
       editCoursePaymentHistory,
+      totalUnpaidOfCourses,
     }),
     [
       courses,
@@ -336,6 +344,7 @@ function useCourses({
       users,
       coursePayments,
       editCoursePaymentHistory,
+      totalUnpaidOfCourses
     ]
   );
 }

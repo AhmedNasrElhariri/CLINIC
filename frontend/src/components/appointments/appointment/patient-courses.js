@@ -183,6 +183,7 @@ const Course = ({ patientId }) => {
         specialtyId,
         userId,
         branchId,
+        bank: bank,
       };
       addCourse({
         variables: {
@@ -276,7 +277,6 @@ const Course = ({ patientId }) => {
       patientCourses.filter(c => c.status === 'Cancelled' || c.status === 'Rejected'),
     [patientCourses]
   );
- 
   return (
     <>
       <CRTabs>

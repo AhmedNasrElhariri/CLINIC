@@ -78,7 +78,6 @@ function Appointment() {
     () => R.propOr({}, 'appointment')(appointmentRes),
     [appointmentRes]
   );
-  console.log(appointment,appointmentRes,'APAPAPAPAP');
   const patient = useMemo(
     () => R.propOr({}, 'patient')(appointment),
     [appointment]
@@ -87,7 +86,6 @@ function Appointment() {
     appointmentId,
     appointment,
   });
-  console.log(normalizedFields, 'normalizedFieldsnormalizedFields', groups);
   const handleUpdate = useCallback(() => {
     update({
       variables: {
@@ -185,7 +183,6 @@ function Appointment() {
     setSessionsPulses(R.propOr([], 'sessionsPulses')(appointment));
     setDynamicTextInput(R.propOr({}, 'dynamicTextInput')(appointment));
   }, [appointment]);
-  console.log(dynamicTextInput,'dynamicT');
   useEffect(() => {
     const sessionsFormValueUpdated = sessionsPulses.reduce(function (
       result,

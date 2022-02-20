@@ -239,6 +239,7 @@ type Query {
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
   transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
   areas: [Area]
+  totalUnpaidOfCourses: TotalUnpaidOfCourses
 }
 
 ########################### Mutation ##################################
@@ -270,6 +271,7 @@ type Mutation {
     userId: ID
     couponsValue: Int
     coupons: [couponInput]
+    doctorFees: doctorFeesInput
   ): Appointment!
   createView(view: ViewInput!): Boolean
   updateView(view: ViewInput!, viewId: ID!): Boolean
@@ -611,6 +613,7 @@ type Patient implements Searchable {
   name: String!
   searchName: String!
   phoneNo: String!
+  phoneNoTwo: String
   points: Int
   code: String!
   codeNumber: Int!
@@ -626,6 +629,7 @@ input PatientInput {
   id: ID
   name: String!
   phoneNo: String!
+  phoneNoTwo: String
   age: Int!
   date: Date
   sex: Sex!
@@ -965,6 +969,10 @@ input Others {
   name: String!
   amount: Int!
 }
+input doctorFeesInput {
+  doctorId: ID
+  fees: Int
+}
 
 input optionInput {
   option: String
@@ -984,6 +992,10 @@ type CourseSessions {
 input CourseSessionsInput {
   date: Date!
   time: Date!
+}
+
+type TotalUnpaidOfCourses {
+  totalUnpaid: Int
 }
 
 ########################### Snippet ##################################
@@ -1719,6 +1731,7 @@ input CourseInput {
   branchId: ID
   specialtyId: ID
   userId: ID
+  bank: ID
 }
 
 type CoursePayment {

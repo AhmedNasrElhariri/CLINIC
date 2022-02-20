@@ -1,22 +1,16 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { filterAppointments, sortAppointments } from 'services/appointment';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Div, H3, CRTabs } from 'components';
 import Filter from './filter';
 import BranchFilter from '../../filters';
-import { Alert } from 'rsuite';
 import * as R from 'ramda';
-import { useMutation } from '@apollo/client';
-import {
-  ARCHIVE_APPOINTMENT,
-  COMPLETE_APPOINTMENT,
-} from 'apollo-client/queries';
-import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
+
+import { useAppointments, useModal } from 'hooks';
 import { getName } from 'services/accounting';
 import BusinessNotes from '../today-appointments/business-notes';
 import ArchiveAppointment from '../archive-appointment';
 import CompleteAppointment from '../complete-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
-import { ACTIONS, APPT_STATUS, APPT_TYPE } from 'utils/constants';
+import { ACTIONS, APPT_STATUS } from 'utils/constants';
 const inialCurrentPage = {
   activePage: 1,
 };
@@ -150,6 +144,11 @@ function Appointments() {
     },
     [appointment, complete, close]
   );
+  useEffect(() => {
+    setNotes(val => ({
+      businessNotes: R.propOr('', 'businessNotes')(appointment),
+    }));
+  }, [appointment]);
   return (
     <>
       <H3 mb={64}>Appointments</H3>

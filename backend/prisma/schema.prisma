@@ -291,6 +291,7 @@ model Patient {
   id               String                @id @default(uuid())
   name             String
   phoneNo          String                @unique
+  phoneNoTwo       String?               
   type             PatientMembershipType
   appointments     Appointment[]
   age              Int

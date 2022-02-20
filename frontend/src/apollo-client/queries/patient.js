@@ -7,6 +7,7 @@ export const CREATE_PATIENT = gql`
       name
       type
       phoneNo
+      phoneNoTwo
       sex
       age
       reference
@@ -40,6 +41,7 @@ export const LIST_PATIENTS = gql`
         name
         type
         phoneNo
+        phoneNoTwo
         sex
         age
         reference
@@ -103,6 +105,7 @@ export const GET_PATIENT = gql`
       age
       sex
       phoneNo
+      phoneNoTwo
     }
   }
 `;

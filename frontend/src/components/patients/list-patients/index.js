@@ -108,7 +108,14 @@ function Patients() {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Phone No Two</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ phoneNoTwo }) => (
+                <CRTable.CRCellStyled bold>{phoneNoTwo}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Code</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="code" />

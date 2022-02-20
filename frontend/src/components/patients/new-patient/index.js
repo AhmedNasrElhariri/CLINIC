@@ -11,8 +11,10 @@ import { usePatients, useForm } from 'hooks';
 const initialValues = {
   name: '',
   phoneNo: '',
+  phoneNoTwo: '',
   area: '',
   ageOption: 'age',
+  phoneOption: 'one',
   reference: [],
   age: 0,
   date: new Date(),
@@ -78,7 +80,7 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       onOk={() => {
         setShow(true);
         if (validate) {
-          const { ageOption, ...rest } = formValue;
+          const { ageOption, phoneOption, ...rest } = formValue;
           createPatient({
             variables: {
               input: { ...rest },

@@ -38,6 +38,8 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
     onComplete,
     onAddBusinessNotes,
     onDuplicateAppointments,
+    onEditAppointments,
+    onCancelAppointments,
   } = rest;
   return (
     <Div
@@ -134,12 +136,60 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                   Duplicates
                 </CRButton>
               </Dropdown.Item>
+              <Dropdown.Item eventKey={8}>
+                {canAjdust(appointment) && (
+                  <Div>
+                    <Can I="Reschedule" an="Appointment">
+                      <CRButton
+                        variant="primary"
+                        onClick={e => {
+                          e.stopPropagation();
+                          onEditAppointments(appointment);
+                        }}
+                        style={{ width: '108px' }}
+                      >
+                        Edit
+                      </CRButton>
+                    </Can>
+                    {/* {canAjdust(appointment) && (
+                      <AdjustAppointment appointment={appointment} />
+                    )} */}
+                  </Div>
+                )}
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={9}>
+                {canAjdust(appointment) && (
+                  <Div>
+                    <Can I="Cancel" an="Appointment">
+                      <CRButton
+                        variant="primary"
+                        onClick={e => {
+                          e.stopPropagation();
+                          onCancelAppointments(appointment);
+                        }}
+                        style={{ width: '108px' }}
+                      >
+                        Cancel
+                      </CRButton>
+                    </Can>
+                  </Div>
+                )}
+              </Dropdown.Item>
               <Dropdown.Item eventKey={7}>
                 <Div onClick={e => e.stopPropagation()}>
-                  <ReactToPrint
+                  {/* <ReactToPrint
                     trigger={() => <PrintOLIcon ml={2} />}
                     // content={() => componentRef.current}
-                  />
+                  /> */}
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                    }}
+                    style={{ width: '108px' }}
+                  >
+                    Print
+                  </CRButton>
                   <Div display="none">
                     <AppointmentPrintout
                       // ref={componentRef}
@@ -147,13 +197,6 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                       patient={appointment?.patient}
                     />
                   </Div>
-                </Div>
-              </Dropdown.Item>
-              <Dropdown.Item eventKey={8}>
-                <Div onClick={e => e.stopPropagation()}>
-                  {canAjdust(appointment) && (
-                    <AdjustAppointment appointment={appointment} />
-                  )}
                 </Div>
               </Dropdown.Item>
             </Dropdown.Menu>
@@ -174,6 +217,8 @@ function ListAppointments({
   waiting,
   onAddBusinessNotes,
   onDuplicateAppointments,
+  onEditAppointments,
+  onCancelAppointments,
   currentPage,
   setCurrentPage,
   close,
@@ -477,6 +522,8 @@ function ListAppointments({
                 onComplete={onComplete}
                 onAddBusinessNotes={onAddBusinessNotes}
                 onDuplicateAppointments={onDuplicateAppointments}
+                onEditAppointments={onEditAppointments}
+                onCancelAppointments={onCancelAppointments}
               />
             )}
           </Table.Cell>
