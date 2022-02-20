@@ -184,11 +184,17 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
               id: userID,
             },
           },
+        },
+        patientId && {
+          patient: {
+            connect: {
+              id: patientId,
+            },
+          },
         }
       ),
     });
   }
-
   return courseDef;
 };
 

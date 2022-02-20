@@ -18,6 +18,9 @@ import * as fromCourse from './course';
 import * as fromPayroll from './payroll-user';
 import * as fromPayrollTransaction from './payroll-transaction';
 import * as fromPermission from './permission';
+import * as fromRevenue from './revenue';
+import * as fromBankRevenue from './bankRevenue';
+import * as fromInsuranceRevenue from './insuranceRevenue';
 
 export default {
   Query: fromQuery,
@@ -39,4 +42,7 @@ export default {
   Permission: fromPermission,
   ...fromCustomResolvers,
   Course: fromCourse,
+  Revenue: fromRevenue,
+  BankRevenue: fromBankRevenue,
+  InsuranceRevenue: fromInsuranceRevenue,
 };

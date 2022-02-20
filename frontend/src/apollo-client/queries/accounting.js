@@ -37,6 +37,7 @@ export const LIST_REVENUES = gql`
       amount
       date
       invoiceNo
+      payer
       user {
         id
         name
@@ -69,6 +70,7 @@ export const LIST_BANK_REVENUES = gql`
       }
       date
       invoiceNo
+      payer
       user {
         id
         name
@@ -104,6 +106,7 @@ export const LIST_COMPANY_REVENUES = gql`
       id
       name
       amount
+      payer
       company {
         id
         name

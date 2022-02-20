@@ -134,6 +134,17 @@ export const COUPON_POINTS_TRANSACTIONS = gql`
   }
 `;
 
+export const PATIENT_REVENUE = gql`
+  query ($patientId: ID!) {
+    patientRevenue(patientId: $patientId) {
+      id
+      name
+      amount
+      date
+    }
+  }
+`;
+
 export const INSRET_LAB_RESULT = gql`
   mutation insertLabResult($lab: LabInput!) {
     insertLabResult(lab: $lab) {
