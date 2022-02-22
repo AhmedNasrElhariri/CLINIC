@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Patient" ALTER COLUMN "phoneNoTwo" DROP NOT NULL,
+ALTER COLUMN "phoneNoTwo" DROP DEFAULT;
