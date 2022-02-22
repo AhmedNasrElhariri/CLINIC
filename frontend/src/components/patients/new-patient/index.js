@@ -5,7 +5,11 @@ import { ALL_AREAS } from 'apollo-client/queries';
 import { CRModal } from 'components';
 import { useMutation, useQuery } from '@apollo/client';
 import Form from './form';
-import { CREATE_PATIENT, LIST_SEARCHED_PATIENTS } from 'apollo-client/queries';
+import {
+  CREATE_PATIENT,
+  LIST_SEARCHED_PATIENTS,
+  LIST_PATIENTS,
+} from 'apollo-client/queries';
 import { usePatients, useForm } from 'hooks';
 
 const initialValues = {
@@ -41,7 +45,6 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       initValue: initialValues,
       model,
     });
-  const { patients, updateCache } = usePatients();
   const { data } = useQuery(ALL_AREAS);
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const newAreas = areas.map(a => {
@@ -51,9 +54,6 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
     };
   });
   const [createPatient, { loading }] = useMutation(CREATE_PATIENT, {
-    update(cache, { data: { createPatient: patient } }) {
-      updateCache(patients.concat([patient]));
-    },
     onCompleted: ({ createPatient: patient }) => {
       Alert.success('Patient Created Successfully');
       onHide();
@@ -66,6 +66,15 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
         query: LIST_SEARCHED_PATIENTS,
         variables: {
           name: '0',
+        },
+      },
+      {
+        query: LIST_PATIENTS,
+        variables: {
+          offset: 0,
+          limit: 20,
+          name: '',
+          phoneNo: '',
         },
       },
     ],

@@ -173,7 +173,6 @@ const AccountingContainer = () => {
     view,
     period,
   });
-  console.log(revenues,'RRRRRR');
   const updatedExpenses = useMemo(
     () =>
       expenses.filter(e =>

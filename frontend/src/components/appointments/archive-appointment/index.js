@@ -26,6 +26,7 @@ const initlOption = {
 const initialDoctorFess = {
   doctorId: null,
   fees: 0,
+  doctorName: '',
 };
 
 const StepsDev = styled.div`
@@ -74,7 +75,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     value.current = { ...value.current, items };
   }, []);
   const handleOk = useCallback(() => {
-    if (activeStep !== 1) {
+    if (activeStep !== 2) {
       setActiveStep(activeStep + 1);
     } else {
       onOk({
@@ -162,7 +163,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     }
   }, [activeStep, discount, others]);
   const okTitle = useMemo(
-    () => (activeStep === 0 ? 'Next' : 'Ok'),
+    () => (activeStep === 0 || activeStep === 1 ? 'Next' : 'Ok'),
     [activeStep]
   );
   const { companysSessionDefinition } = useCompanySessionDefinition({});
@@ -197,8 +198,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       <StepsDev>
         <Steps current={activeStep}>
           <Steps.Item title="Invoice" onClick={() => setActiveStep(0)} />
-          <Steps.Item title="Inventory" onClick={() => setActiveStep(1)} />
-          <Steps.Item title="Doctor" onClick={() => setActiveStep(2)} />
+          <Steps.Item title="Doctor" onClick={() => setActiveStep(1)} />
+          <Steps.Item title="Inventory" onClick={() => setActiveStep(2)} />
         </Steps>
       </StepsDev>
       <Div>
@@ -236,16 +237,16 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
           />
         )}
         {activeStep === 1 && (
-          <InventoryUsage
-            onChange={handleInventoryChange}
-            handleCancel={handleCancel}
-          />
-        )}
-        {activeStep === 2 && (
           <DoctorsTab
             appointment={appointment}
             doctorFees={doctorFees}
             setDoctorFees={setDoctorFees}
+          />
+        )}
+        {activeStep === 2 && (
+          <InventoryUsage
+            onChange={handleInventoryChange}
+            handleCancel={handleCancel}
           />
         )}
       </Div>

@@ -291,7 +291,7 @@ model Patient {
   id               String                @id @default(uuid())
   name             String
   phoneNo          String                @unique
-  phoneNoTwo       String?               
+  phoneNoTwo       String                @default("")               
   type             PatientMembershipType
   appointments     Appointment[]
   age              Int
@@ -352,7 +352,6 @@ model Appointment {
   powerOne         Int?
   powerTwo         Int?
   sessionsPulses   Json?              @default("[]")
-  dynamicTextInput Json?
   branch           Branch?            @relation(fields: [branchId], references: [id])
   branchId         String?
   specialty        Specialty?         @relation(fields: [specialtyId], references: [id])

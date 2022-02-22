@@ -132,7 +132,7 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   patientCoupons(patientId: ID!, all: Boolean): [Coupon!]
-  patientRevenue(patientId: ID!): [Revenue!]
+  patientRevenue(patientId: ID!): [PatientRevenue!]
   couponPointsTransactions(couponId: ID!): [PointsTransactions!]
   getPatientField(patientId: ID!): [PatientField!]
   getUserPatientFields: [PatientField!]
@@ -626,6 +626,14 @@ type Patient implements Searchable {
   appointments: [Appointment!]
 }
 
+type PatientRevenue {
+  id: ID!
+  name: String!
+  amount: Float!
+  date: Date!
+  type: String
+}
+
 input PatientInput {
   id: ID
   name: String!
@@ -662,7 +670,6 @@ type Appointment {
   updatedAt: Date
   accounted: Boolean
   sessionsPulses: [SessionPulse!]
-  dynamicTextInput: JSON
   session: SessionDefinition
   user: User!
   doctor: User!
@@ -770,7 +777,6 @@ input UpdateAppointmentInput {
   powerTwo: Int
   pulses: Int
   data: [AppointmentFieldInput!]
-  dynamicTextInput: JSON
   notes: String
   prescription: [PrescriptionInput!]
   pictures: [AppointmentPictureInput!]
@@ -973,6 +979,7 @@ input Others {
 input doctorFeesInput {
   doctorId: ID
   fees: Int
+  doctorName: String
 }
 
 input optionInput {

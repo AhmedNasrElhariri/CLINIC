@@ -4,7 +4,11 @@ import { Form } from 'rsuite';
 const DoctorsTab = ({ appointment, doctorFees, setDoctorFees }) => {
   const { doctor } = appointment;
   useEffect(() => {
-    setDoctorFees({ ...doctorFees, doctorId: doctor.id });
+    setDoctorFees({
+      ...doctorFees,
+      doctorId: doctor.id,
+      doctorName: doctor.name,
+    });
   }, [appointment]);
   return (
     <Form formValue={doctorFees} onChange={setDoctorFees}>

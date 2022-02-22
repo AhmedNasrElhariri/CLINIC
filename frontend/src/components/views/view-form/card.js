@@ -22,7 +22,6 @@ const Card = ({ laneId, index }) => {
   const [toggle, setToggle] = useState(false);
   const [choicesType, setChoicesType] = useState(initialChoicesType);
   const cards = lane?.cards;
-
   const formValue = cards[index];
   const { visible, open, close } = useModal();
 
@@ -47,6 +46,10 @@ const Card = ({ laneId, index }) => {
 
   const handleClickCreate = useCallback(() => {
     setPopup(1);
+    open();
+  }, [open]);
+  const handleClickCreateMultipleChoices = useCallback(() => {
+    setPopup(3);
     open();
   }, [open]);
 

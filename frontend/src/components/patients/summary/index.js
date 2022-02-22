@@ -35,6 +35,24 @@ const renderProp = (key, value, textValue) => {
     </Div>
   );
 };
+const renderProp2 = (key, value) => {
+  console.log(value, 'VV');
+  return (
+    <Div display="flex" alignItems="center" minHeight={60}>
+      <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
+        <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
+      </Whisper>
+      <Div display="flex">
+        <CRVDivider vertical />
+        <ValueStyled>{value[0]}</ValueStyled>
+      </Div>
+      <Div ml={10} display="flex">
+        <CRVDivider vertical />
+        <ValueStyled>{value[1]}</ValueStyled>
+      </Div>
+    </Div>
+  );
+};
 
 const renderAppointment = data => {
   return data.map(({ value, field, textValue }, idx) => (
@@ -50,6 +68,8 @@ const renderAppointment = data => {
               />
             </Form>
           )
+        : value && field.type === 'SelectorWithInput'
+        ? renderProp2(field.name, value, textValue)
         : renderProp(field.name, value, textValue)}
     </React.Fragment>
   ));
@@ -67,10 +87,6 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
     [activeSession]
   );
 
-  const dynamicTextInput = useMemo(
-    () => R.propOr({}, 'dynamicTextInput')(activeSession),
-    [activeSession]
-  );
   const data = useMemo(
     () => R.propOr([], 'data')(activeSession),
     [activeSession]
@@ -79,21 +95,20 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
     () => R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(summary),
     [activeSession, summary]
   );
-  const updatedData = useMemo(() => {
-    let newData = [];
-    if (dynamicTextInput) {
-      newData = data.map(d => {
-        let value = '';
-        value = dynamicTextInput[d.field.id] || '';
-        return { ...d, textValue: value };
-      });
-    } else {
-      newData = data;
-    }
-    return newData;
-  }, [data, dynamicTextInput]);
+  // const updatedData = useMemo(() => {
+  //   let newData = [];
+  //   if (dynamicTextInput) {
+  //     newData = data.map(d => {
+  //       let value = '';
+  //       value = dynamicTextInput[d.field.id] || '';
+  //       return { ...d, textValue: value };
+  //     });
+  //   } else {
+  //     newData = data;
+  //   }
+  //   return newData;
+  // }, [data, dynamicTextInput]);
   const { visible, open, close } = useModal();
-  useEffect(() => console.log('hii'));
   const pictures = useMemo(
     () => R.propOr([], 'pictures')(activeSession),
     [activeSession]
@@ -102,7 +117,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   if (!activeSession) {
     return '...No History';
   }
- 
+
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>
@@ -122,7 +137,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
             <H3 mb={4}>Session {summary.length - sessionId}</H3>
             <Div>
               {renderProp('Date', formatDate(date))}
-              {renderAppointment(updatedData)}
+              {renderAppointment(data)}
               {activeSession.notes && renderProp('Notes', activeSession.notes)}
               {pictures.length > 0 &&
                 renderProp(

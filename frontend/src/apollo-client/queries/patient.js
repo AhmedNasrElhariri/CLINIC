@@ -140,6 +140,7 @@ export const PATIENT_REVENUE = gql`
       id
       name
       amount
+      type
       date
     }
   }

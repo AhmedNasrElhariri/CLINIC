@@ -81,9 +81,11 @@ function Choices({
       )}
       {!toggle && (
         <Form formValue={choicesType} onChange={setChoicesType}>
-          
-            <CRSelectInput data={choicesTypes} name="choicesType" style={{width:'300px',marginTop:'10px'}} />
-          
+          <CRSelectInput
+            data={choicesTypes}
+            name="choicesType"
+            style={{ width: '300px', marginTop: '10px' }}
+          />
         </Form>
       )}
     </CRModal>

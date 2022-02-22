@@ -9,7 +9,6 @@ import { AddLaneLink as DAddLaneLink } from 'react-trello/dist/styles/Elements';
 import Card from './card';
 import useGlobalState from 'state';
 
-
 const addCard = ({ onAdd }) => {
   onAdd({
     id: nanoid(),

@@ -449,7 +449,7 @@ function ListAppointments({
 
           
         </CRTable.CRColumn> */}
-        <CRTable.CRColumn width={100}>
+        <CRTable.CRColumn width={80}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (
@@ -481,7 +481,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn width={100}>
+        <CRTable.CRColumn width={80}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (

@@ -39,13 +39,15 @@ const EditAppointment = ({ show, onCancel, onOk, appointment }) => {
 
   return (
     <CRModal
-    show={show}
+      show={show}
       header="Adjust Appointment"
       bodyStyle={{
         padding: '10px 89px ',
       }}
       okTitle="Adjust"
-      onOk={() => onOk(formValue)}
+      onOk={() => {
+        onOk(formValue);
+      }}
       onCancel={onCancel}
       onHide={onCancel}
     >

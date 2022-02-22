@@ -148,6 +148,9 @@ function useAppointments({
         query: LIST_APPOINTMENTS,
         variables: { offset: 0, limit: 20 },
       },
+      {
+        query: LIST_TODAY_APPOINTMENTS,
+      },
     ],
   });
   const [adjust] = useMutation(ADJUST_APPOINTMENT, {

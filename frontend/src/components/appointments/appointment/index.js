@@ -39,7 +39,6 @@ function Appointment() {
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
 
   const [formValue, setFormValue] = useState({});
-  const [dynamicTextInput, setDynamicTextInput] = useState({});
   const [apptFormValue, setApptFormValue] = useState({
     notes: '',
     prescription: [],
@@ -91,7 +90,6 @@ function Appointment() {
       variables: {
         appointment: {
           data: mapFormValueToAppointmentData(normalizedFields, formValue),
-          dynamicTextInput: dynamicTextInput,
           notes: apptFormValue.notes,
           prescription: apptFormValue.prescription,
           labIds: apptFormValue.labIds,
@@ -114,7 +112,6 @@ function Appointment() {
     apptFormValue,
     appointmentId,
     sessionsPulses,
-    dynamicTextInput,
     sessionFormValue,
   ]);
   const [popup, setPopup] = useState(false);
@@ -181,7 +178,6 @@ function Appointment() {
 
   useEffect(() => {
     setSessionsPulses(R.propOr([], 'sessionsPulses')(appointment));
-    setDynamicTextInput(R.propOr({}, 'dynamicTextInput')(appointment));
   }, [appointment]);
   useEffect(() => {
     const sessionsFormValueUpdated = sessionsPulses.reduce(function (
@@ -311,8 +307,6 @@ function Appointment() {
                 setSessionsPulses={setSessionsPulses}
                 sessionFormValue={sessionFormValue}
                 setSessionFormValue={setSessionFormValue}
-                dynamicTextInput={dynamicTextInput}
-                setDynamicTextInput={setDynamicTextInput}
               />
               {popup && (
                 <Prescription

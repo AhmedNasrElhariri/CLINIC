@@ -20,57 +20,59 @@ export const couponService = async (
   });
   if (points.length > 0) {
     const pointsToGetCoupon = points[0].points;
-    const valueOfCoupon = points[0].couponValue;
-    let totalPaid = 0;
-    let totalPoints = 0;
-    const subRed = sessions.reduce(
-      (sum, { price, number }) => sum + number * price,
-      0
-    );
-    totalPaid = subRed + others.amount - discount.amount - couponsValue;
-    totalPoints = patient.points + totalPaid;
-    await prisma.patient.update({
-      data: {
-        points: totalPoints,
-      },
-      where: { id: patientId },
-    });
-    if (totalPoints > pointsToGetCoupon || totalPoints == pointsToGetCoupon) {
-      let couponNumbers = 0;
-      couponNumbers = Math.floor(totalPoints / pointsToGetCoupon);
-      if (couponNumbers > 0 || couponNumbers == 0) {
-        const couponPrice =
-          totalPoints === pointsToGetCoupon
-            ? valueOfCoupon
-            : couponNumbers * valueOfCoupon;
-        const usedPoints =
-          totalPoints === pointsToGetCoupon
-            ? pointsToGetCoupon
-            : couponNumbers * pointsToGetCoupon;
-        const coupon = await prisma.coupon.create({
-          data: {
-            date: new Date(),
-            status: 'Active',
-            value: couponPrice,
-            remaining: couponPrice,
-            patient: {
-              connect: {
-                id: patientId,
+    if (pointsToGetCoupon > 0) {
+      const valueOfCoupon = points[0].couponValue;
+      let totalPaid = 0;
+      let totalPoints = 0;
+      const subRed = sessions.reduce(
+        (sum, { price, number }) => sum + number * price,
+        0
+      );
+      totalPaid = subRed + others.amount - discount.amount - couponsValue;
+      totalPoints = patient.points + totalPaid;
+      await prisma.patient.update({
+        data: {
+          points: totalPoints,
+        },
+        where: { id: patientId },
+      });
+      if (totalPoints > pointsToGetCoupon || totalPoints == pointsToGetCoupon) {
+        let couponNumbers = 0;
+        couponNumbers = Math.floor(totalPoints / pointsToGetCoupon);
+        if (couponNumbers > 0 || couponNumbers == 0) {
+          const couponPrice =
+            totalPoints === pointsToGetCoupon
+              ? valueOfCoupon
+              : couponNumbers * valueOfCoupon;
+          const usedPoints =
+            totalPoints === pointsToGetCoupon
+              ? pointsToGetCoupon
+              : couponNumbers * pointsToGetCoupon;
+          const coupon = await prisma.coupon.create({
+            data: {
+              date: new Date(),
+              status: 'Active',
+              value: couponPrice,
+              remaining: couponPrice,
+              patient: {
+                connect: {
+                  id: patientId,
+                },
+              },
+              organization: {
+                connect: {
+                  id: organizationId,
+                },
               },
             },
-            organization: {
-              connect: {
-                id: organizationId,
-              },
+          });
+          await prisma.patient.update({
+            data: { points: totalPoints - usedPoints },
+            where: {
+              id: patientId,
             },
-          },
-        });
-        await prisma.patient.update({
-          data: { points: totalPoints - usedPoints },
-          where: {
-            id: patientId,
-          },
-        });
+          });
+        }
       }
     }
   }

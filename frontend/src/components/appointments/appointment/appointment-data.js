@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Toggle } from 'rsuite';
+import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
 
 import {
@@ -13,6 +13,7 @@ import {
   CRCheckBoxGroup,
   CRButton,
   CRNestedSelector,
+  CRMultipleSelector,
   CRSelectInput,
 } from 'components';
 import { convertGroupFieldsToNavs } from 'services/appointment';
@@ -38,19 +39,16 @@ import {
 import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
-import { useConfigurations } from 'hooks';
 import Pulses from './pulses';
 
 const renderItem = ({
   type,
   choicesType,
-  dynamic,
+  dynamic = false,
   id,
   name,
   choices = [],
-  setDynamicTextInput,
-  dynamicTextInput,
-  updatedSessions,
+  updatedSessions = [],
   ...props
 }) => {
   let newChoices = [];
@@ -63,6 +61,7 @@ const renderItem = ({
       newChoices = updatedSessions;
     }
   }
+
   switch (type) {
     case NUMBER_FIELD_TYPE:
       return <CRNumberInput label={name} name={id} {...props} />;
@@ -76,21 +75,14 @@ const renderItem = ({
       );
     case SELECTOR_WITH_INPUT:
       return (
-        <Div display="flex">
-          <CRSelectInput
-            style={{ width: '300px', marginRight: '30px' }}
-            label={name}
-            name={id}
-            data={newChoices}
-            {...props}
-          />
-          <Form formValue={dynamicTextInput} onChange={setDynamicTextInput}>
-            <Div mt={41}>
-              <CRTextInput name={id} />
-            </Div>
-          </Form>
-        </Div>
+        <CRMultipleSelector
+          label={name}
+          name={id}
+          choices={newChoices}
+          {...props}
+        />
       );
+
     case CHECK_FIELD_TYPE:
       return (
         <CRCheckBoxGroup
@@ -148,8 +140,6 @@ function AppointmentData({
   sessionFormValue,
   appointmentFormValue,
   setSessionFormValue,
-  dynamicTextInput,
-  setDynamicTextInput,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
   const { labsCategory } = useLabCategory();
@@ -273,8 +263,6 @@ function AppointmentData({
                         {renderItem({
                           ...f,
                           disabled,
-                          dynamicTextInput,
-                          setDynamicTextInput,
                           updatedSessions,
                         })}
                       </Div>

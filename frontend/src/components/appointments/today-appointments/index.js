@@ -270,6 +270,9 @@ function TodayAppointments() {
                   onArchive={onClickDone}
                   onComplete={onCompleteDone}
                   onAddBusinessNotes={onAddBusinessNotes}
+                  onDuplicateAppointments={onDuplicateAppointments}
+                  onEditAppointments={onEditAppointments}
+                  onCancelAppointments={onCancelAppointments}
                   defaultExpanded={true}
                   waiting={true}
                 />

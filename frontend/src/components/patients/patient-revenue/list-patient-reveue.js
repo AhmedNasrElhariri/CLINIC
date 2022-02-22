@@ -23,6 +23,14 @@ function ListPatientRevenue({ data }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ type }) => (
+                <CRTable.CRCellStyled bold>{type}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (

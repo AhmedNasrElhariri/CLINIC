@@ -605,12 +605,13 @@ const archiveAppointment = async (
     }
   }
   if (doctorFees.fees > 0) {
-    const { fees, doctorId } = doctorFees;
+    const { fees, doctorId, doctorName } = doctorFees;
+    const name = 'Doctor-fees / ' + doctorName;
     await prisma.expense.create({
       data: Object.assign(
         {
           date: new Date(date),
-          name: 'Doctor-fees',
+          name: name,
           expenseType: 'Doctor',
           amount: fees,
           level,
