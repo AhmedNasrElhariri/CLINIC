@@ -9,6 +9,7 @@ import {
   H5,
   H3,
   H4,
+  CRCheckBoxGroup,
 } from 'components/widgets';
 import { Can } from 'components/user/can';
 import axios from 'axios';
@@ -22,6 +23,7 @@ const initialValue = {
   month: '',
   date: new Date(),
   sessionDate: [],
+  sessionsIds: [],
 };
 const getMonths = () => {
   let dateStart = moment().startOf('year');
@@ -45,16 +47,18 @@ const Test = props => {
   const [dataTwo, setDataTwo] = useState({});
   let monthes = getMonths();
   const { sessionsDefinition, sessionStatistics } = useSessionDefinition({
-    sessionId: formValue.sessionId,
+    sessionsIds: formValue.sessionsIds,
     dateFrom: formValue.sessionDate[0],
     dateTo: formValue.sessionDate[1],
   });
   const { totalUnpaidOfCourses } = useCourses({});
   const totalUnpaid = R.propOr(0, 'totalUnpaid')(totalUnpaidOfCourses);
-  const totalNumber = R.propOr(0, 'totalNumber')(sessionStatistics);
-  const totalPrice = R.propOr(0, 'totalPrice')(sessionStatistics);
-  const session = R.propOr({}, 'session')(sessionStatistics);
-
+  // const totalNumber = R.propOr(0, 'totalNumber')(sessionStatistics);
+  // const totalPrice = R.propOr(0, 'totalPrice')(sessionStatistics);
+  // const session = R.propOr({}, 'session')(sessionStatistics);
+  const updatedSessionsDefinitions = sessionsDefinition.map(s => {
+    return { name: s.name, value: s.id };
+  });
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
@@ -93,7 +97,7 @@ const Test = props => {
   const refThree = useRef();
   const refFour = useRef();
   let monthlyData = dataTwo?.data || [];
-
+  console.log(formValue, 'FF');
   return (
     <>
       <Container>
@@ -153,10 +157,15 @@ const Test = props => {
                 placeholder="Timeframe"
                 style={{ width: '230px', marginRight: '30px' }}
               />
-              <CRSelectInput
+              {/* <CRSelectInput
                 name="sessionId"
                 data={sessionsDefinition}
                 style={{ width: '230px' }}
+              /> */}
+              <CRCheckBoxGroup
+                options={updatedSessionsDefinitions}
+                name="sessionsIds"
+                inline
               />
             </Div>
           </Form>
@@ -292,9 +301,15 @@ const Test = props => {
             <H3 display="flex" justifyContent="center" mt={20} mb={20}>
               Session Report
             </H3>
-            <H5>Session Name : {session?.name}</H5>
-            <H5>TotalNumber: {totalNumber}</H5>
-            <H5>TotalPrice:{totalPrice}</H5>
+            <Div>
+              {sessionStatistics.map(st => (
+                <Div mb={20} ml={20}>
+                  <H5>Session Name : {st.name}</H5>
+                  <H5>TotalNumber: {st.totalNumber}</H5>
+                  <H5>TotalPrice:{st.totalPrice}</H5>
+                </Div>
+              ))}
+            </Div>
           </Div>
         </Div>
       </Div>

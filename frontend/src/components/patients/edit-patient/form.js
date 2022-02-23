@@ -45,6 +45,7 @@ const NewPatient = ({ formValue, onChange }) => {
 
       <ShowIf show={isPrimary(formValue)}>
         <CRTextInput label="Phone no" name="phoneNo" />
+        <CRTextInput label="Phone no Two" name="phoneNoTwo" />
       </ShowIf>
 
       <ShowIf show={isSecondary(formValue)}>

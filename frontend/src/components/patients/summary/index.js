@@ -36,20 +36,23 @@ const renderProp = (key, value, textValue) => {
   );
 };
 const renderProp2 = (key, value) => {
-  console.log(value, 'VV');
   return (
     <Div display="flex" alignItems="center" minHeight={60}>
       <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
         <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
       </Whisper>
-      <Div display="flex">
-        <CRVDivider vertical />
-        <ValueStyled>{value[0]}</ValueStyled>
-      </Div>
-      <Div ml={10} display="flex">
-        <CRVDivider vertical />
-        <ValueStyled>{value[1]}</ValueStyled>
-      </Div>
+      {value.length > 0 &&
+        value.map(v => (
+          <Div display="flex">
+             <CRVDivider vertical />
+            <Div display="flex">
+              <ValueStyled>{v[0]}</ValueStyled>
+            </Div>
+            <Div ml={10} display="flex" mr={10}>
+              <ValueStyled>{v[1]}</ValueStyled>
+            </Div>
+          </Div>
+        ))}
     </Div>
   );
 };

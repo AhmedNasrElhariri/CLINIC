@@ -183,10 +183,10 @@ type Query {
   listOrganizationDoctors: [User!]
   mySessionsDefinition: [SessionDefinition!]
   mySessionStatistic(
-    sessionId: ID!
+    sessionsIds: [ID!]
     dateFrom: Date
     dateTo: Date
-  ): SessionStatistics
+  ): [SessionStatistics!]
   myBanksDefinition: [BankDefinition!]
   myExpenseTypesDefinition: [ExpenseTypeDefinition!]
   myCompanysDefinition: [CompanyDefinition!]
@@ -640,6 +640,7 @@ input PatientInput {
   phoneNo: String!
   phoneNoTwo: String
   age: Int!
+  code: String
   date: Date
   sex: Sex!
   reference: [String]
@@ -1435,7 +1436,7 @@ type SessionTransaction {
   sessionDefinition: SessionDefinition!
 }
 type SessionStatistics {
-  session: SessionDefinition!
+  name: String!
   totalNumber: Int!
   totalPrice: Int!
 }

@@ -11,6 +11,7 @@ import { usePatients, useModal } from 'hooks';
 const initialValues = {
   name: '',
   phoneNo: '',
+  phoneNoTwo: '',
   age: '',
   guardianName: '',
 };
@@ -28,7 +29,7 @@ const EditPatient = ({ patient }) => {
     setFormValue(R.omit(['__typename'])(patient));
   }, [patient]);
   const handleEditPatient = useCallback(() => {
-    const { code , ...rest} = formValue;
+    const { code, ...rest } = formValue;
     edit(rest);
   }, [edit, formValue]);
 
@@ -39,9 +40,7 @@ const EditPatient = ({ patient }) => {
   return (
     <>
       <Div onClick={handleOpen}>
-        <EditButton onClick={open}>
-          Edit
-        </EditButton>
+        <EditButton onClick={open}>Edit</EditButton>
         <CRModal
           show={visible}
           onHide={close}

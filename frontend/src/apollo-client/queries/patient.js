@@ -25,6 +25,7 @@ export const EDIT_PATIENT = gql`
       name
       type
       phoneNo
+      phoneNoTwo
       sex
       age
       reference
@@ -34,8 +35,18 @@ export const EDIT_PATIENT = gql`
 `;
 
 export const LIST_PATIENTS = gql`
-  query ($offset: Int, $limit: Int, $name: String, $phoneNo: String) {
-    patients(offset: $offset, limit: $limit, name: $name, phoneNo: $phoneNo) {
+  query (
+    $offset: Int
+    $limit: Int
+    $name: String
+    $phoneNo: String
+  ) {
+    patients(
+      offset: $offset
+      limit: $limit
+      name: $name
+      phoneNo: $phoneNo
+    ) {
       patients {
         id
         name
@@ -69,6 +80,7 @@ export const LIST_SEARCHED_PATIENTS = gql`
       id
       name
       phoneNo
+      phoneNoTwo
       age
     }
   }

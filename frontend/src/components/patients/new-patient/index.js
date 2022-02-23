@@ -46,6 +46,14 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       model,
     });
   const { data } = useQuery(ALL_AREAS);
+  const { createPatient, createPatientLoading } = usePatients({
+    onCreate: () => {
+      onHide();
+      setFormValue(initialValues);
+      setShow(false);
+      // onCreate(patient);
+    },
+  });
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const newAreas = areas.map(a => {
     return {
@@ -53,33 +61,7 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       name: a.city_name_en,
     };
   });
-  const [createPatient, { loading }] = useMutation(CREATE_PATIENT, {
-    onCompleted: ({ createPatient: patient }) => {
-      Alert.success('Patient Created Successfully');
-      onHide();
-      setFormValue(initialValues);
-      setShow(false);
-      onCreate(patient);
-    },
-    refetchQueries: [
-      {
-        query: LIST_SEARCHED_PATIENTS,
-        variables: {
-          name: '0',
-        },
-      },
-      {
-        query: LIST_PATIENTS,
-        variables: {
-          offset: 0,
-          limit: 20,
-          name: '',
-          phoneNo: '',
-        },
-      },
-    ],
-    onError: () => Alert.error('Invalid Input'),
-  });
+
   return (
     <CRModal
       show={showModel}
@@ -97,7 +79,7 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
           });
         }
       }}
-      loading={loading}
+      loading={createPatientLoading}
     >
       <Form
         onChange={setFormValue}

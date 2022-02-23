@@ -22,7 +22,7 @@ const updateCache = mySessionsDefinition => {
 function useSessionDefinition({
   onCreate,
   onEdit,
-  sessionId,
+  sessionsIds,
   dateFrom,
   dateTo,
 } = {}) {
@@ -33,13 +33,13 @@ function useSessionDefinition({
   );
   const { data: sessionData } = useQuery(LIST_SESSION_STATISTICS, {
     variables: Object.assign(
-      { sessionId: sessionId },
+      { sessionsIds: sessionsIds },
       dateFrom && { dateFrom },
       dateTo && { dateTo }
     ),
   });
   const sessionStatistics = useMemo(
-    () => R.propOr({}, 'mySessionStatistic')(sessionData),
+    () => R.propOr([], 'mySessionStatistic')(sessionData),
     [sessionData]
   );
 

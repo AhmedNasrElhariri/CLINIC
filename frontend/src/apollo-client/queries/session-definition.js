@@ -52,16 +52,13 @@ export const LIST_SESSIONS_DEFINITION = gql`
   }
 `;
 export const LIST_SESSION_STATISTICS = gql`
-  query ($sessionId: ID!, $dateFrom: Date, $dateTo: Date) {
+  query ($sessionsIds: [ID!], $dateFrom: Date, $dateTo: Date) {
     mySessionStatistic(
-      sessionId: $sessionId
+      sessionsIds: $sessionsIds
       dateFrom: $dateFrom
       dateTo: $dateTo
     ) {
-      session {
-        id
-        name
-      }
+      name
       totalNumber
       totalPrice
     }

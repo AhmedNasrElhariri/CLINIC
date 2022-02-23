@@ -98,6 +98,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       setDiscount(0);
       setCoupons([]);
       setCouponsValue(0);
+      setSelectedSessions([]);
       setDoctorFees(initialDoctorFess);
       value.current = {
         sessions: [],
@@ -138,6 +139,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     setDiscount(0);
     setCoupons([]);
     setCouponsValue(0);
+    setSelectedSessions([]);
     setDoctorFees(initialDoctorFess);
     value.current = {
       sessions: [],

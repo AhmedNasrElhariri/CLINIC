@@ -1,19 +1,26 @@
 import { prisma } from '@';
 
 const patients = async (_, { name }, { user, organizationId }) => {
+  console.log(name, 'NANANANAME');
   return prisma.patient.findMany({
     where: {
       organizationId,
       OR: [
         {
-          phoneNo: {
-            contains: name,
-          },
-        },
-        {
           name: {
             contains: name,
             mode: 'insensitive',
+          },
+        },
+        {
+          phoneNoTwo: {
+            contains: name,
+          },
+        },
+
+        {
+          phoneNo: {
+            contains: name,
           },
         },
       ],

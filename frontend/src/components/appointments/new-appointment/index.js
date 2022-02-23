@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState,useMemo } from 'react';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
@@ -77,9 +77,14 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
       setPatientSearchValue('');
     },
   });
+  console.log(patientSearchValue, 'patientSearchValue');
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
   });
+  const returnedPatientsOfSearch = useMemo(() => {
+    return searchedPatients;
+  }, [searchedPatients]);
+  console.log(searchedPatients, 'searchedPatients');
   const { patientCourses } = useCourses({
     patientId: formValue.patientId,
   });
@@ -264,7 +269,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
                   label="Patient"
                   onSearch={v => setPatientSearchValue(v)}
                   placeholder="Name / Phone no"
-                  data={searchedPatients}
+                  data={returnedPatientsOfSearch}
                   onChange={val =>
                     setFormValue({ ...formValue, patientId: val })
                   }

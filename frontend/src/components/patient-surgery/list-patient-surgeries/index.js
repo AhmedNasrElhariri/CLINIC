@@ -3,8 +3,11 @@ import NumberFormat from 'react-number-format';
 
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
-
+import {
+  FULL_DAY_FORMAT,
+} from 'utils/constants';
 function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
+  console.log(patientSurgeries, 'patientSurgeries');
   return (
     <>
       <CRCard borderless>
@@ -36,13 +39,13 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1.5}>
             <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) =>
                 date ? (
                   <CRTable.CRCellStyled>
-                    {formatDate(date)}
+                    {formatDate(date, FULL_DAY_FORMAT)}
                   </CRTable.CRCellStyled>
                 ) : null
               }
@@ -118,6 +121,20 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
                 <CRTable.CRCellStyled bold>
                   <NumberFormat
                     value={anesthesiaFees}
+                    displayType="text"
+                    thousandSeparator
+                  />
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Others Fees</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ others }) => (
+                <CRTable.CRCellStyled bold>
+                  <NumberFormat
+                    value={others}
                     displayType="text"
                     thousandSeparator
                   />

@@ -151,6 +151,7 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
         data={SEX}
         block
       />
+      <CRTextInput label="Code" name="code" />
       <CRSelectInput label="Area" name="area" data={newAreas} block />
       <CRCheckBoxGroup
         label="Refernce"

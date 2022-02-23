@@ -1,29 +1,70 @@
-import React, { memo, useEffect, useMemo } from 'react';
-import { CRTextInput, CRSelectInput, Div } from 'components';
+import React, { memo, useEffect, useState } from 'react';
+import { CRTextInput, CRSelectInput, Div, CRButton } from 'components';
+import {
+  ChoiceContainerStyled,
+  ChoiceName,
+  ButtonDiv,
+  Container,
+} from './style';
+import { Form } from 'rsuite';
 
+const initialValue = {
+  choice: '',
+  text: '',
+};
 const MultipleSelector = ({ choices, onChange, value, disabled, ...props }) => {
-  useEffect(() => {
-    let newValue = value || [];
+  const [formValue, setFormValue] = useState(initialValue);
+  const handleOnChange = () => {
+    const { choice, text } = formValue;
+    const choicedValue = [choice, text];
+    const newValue = [...value, choicedValue];
     onChange(newValue);
-  }, []);
-  const handleOnChange = (valueIndex, val) => {
-    let newValue = [...value];
-    newValue[valueIndex] = val;
+    setFormValue(initialValue);
+  };
+  const handleDelete = indx => {
+    const newValue = value.filter((v, index) => index != indx);
     onChange(newValue);
   };
+
   return (
     <Div>
-      <Div display="flex">
-        <CRSelectInput
-          value={value ? value[0] : ''}
-          onChange={val => handleOnChange(0, val)}
-          data={choices}
-          style={{ width: '200px', marginRight: '30px' }}
-        />
-        <CRTextInput
-          value={value ? value[1] : ''}
-          onChange={val => handleOnChange(1, val)}
-        />
+      <Form formValue={formValue} onChange={setFormValue}>
+        <Div display="flex">
+          <CRSelectInput
+            name="choice"
+            data={choices}
+            style={{ width: '200px', marginRight: '30px' }}
+          />
+          <CRTextInput name="text" />
+
+          <CRButton onClick={() => handleOnChange()} mt={10} ml={20}>
+            Add
+          </CRButton>
+        </Div>
+      </Form>
+      <Div mt={10}>
+        {value.length > 0 &&
+          value?.map(
+            ([choice, text], indx) =>
+              choice && (
+                <ChoiceContainerStyled>
+                  <Container>
+                    <ChoiceName>{choice}</ChoiceName>
+                    <ChoiceName ml="20px">{text}</ChoiceName>
+                    <ButtonDiv>
+                      <CRButton
+                        variant="dark"
+                        width={150}
+                        m="auto"
+                        onClick={() => handleDelete(indx)}
+                      >
+                        Delete
+                      </CRButton>
+                    </ButtonDiv>
+                  </Container>
+                </ChoiceContainerStyled>
+              )
+          )}
       </Div>
     </Div>
   );

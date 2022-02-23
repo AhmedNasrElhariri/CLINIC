@@ -14,6 +14,7 @@ import {
   LIST_ALL_PATIENTS,
   COUPON_POINTS_TRANSACTIONS,
   PATIENT_REVENUE,
+  CREATE_PATIENT,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -37,6 +38,7 @@ function usePatients({
   patientId,
   all = false,
   couponId,
+  onCreate,
 } = {}) {
   const { data: patientData } = useQuery(LIST_PATIENTS, {
     variables: {
@@ -96,7 +98,6 @@ function usePatients({
   });
   const patientCoupons = R.propOr([], 'patientCoupons')(patientCouponData);
 
-
   const { data: couponTransactionsData } = useQuery(
     COUPON_POINTS_TRANSACTIONS,
     {
@@ -115,18 +116,44 @@ function usePatients({
       patientId: patientId,
     },
   });
-  const patientRevenue= R.propOr([], 'patientRevenue')(patientRevenueData);
+  const patientRevenue = R.propOr([], 'patientRevenue')(patientRevenueData);
+
+  const [createPatient, { loading }] = useMutation(CREATE_PATIENT, {
+    onCompleted: ({ createPatient: patient }) => {
+      Alert.success('Patient Created Successfully');
+      onCreate && onCreate();
+    },
+    refetchQueries: [
+      {
+        query: LIST_PATIENTS,
+        variables: {
+          offset: 0,
+          limit: 20,
+          name: '',
+          phoneNo: '',
+          phoneNoTwo: '',
+        },
+      },
+      {
+        query: LIST_SEARCHED_PATIENTS,
+        variables: {
+          name: '',
+        },
+      },
+    ],
+    onError: () => Alert.error('Invalid Input'),
+  });
 
   const [editPatient] = useMutation(EDIT_PATIENT, {
+    onCompleted: ({ createPatient: patient }) => {
+      Alert.success('Patient updated Successfully');
+    },
     update(cache, { data: { editPatient: patient } }) {
       const newPatients = patients.map(p =>
         p.id === patient.id ? patient : p
       );
-      // updateCache(newPatients);
+      updateCache(newPatients);
       onEdit && onEdit();
-    },
-    onCompleted: ({ createPatient: patient }) => {
-      Alert.success('Patient Created Successfully');
     },
     onError: () => Alert.error('Invalid Input'),
   });
@@ -162,6 +189,8 @@ function usePatients({
       allPatients,
       couponPointsTransactions,
       patientRevenue,
+      createPatient,
+      createPatientLoading: loading,
       edit: patient =>
         editPatient({
           variables: { patient },
@@ -169,8 +198,10 @@ function usePatients({
     }),
     [
       editPatient,
+      createPatient,
       patients,
       pages,
+      loading,
       onePatient,
       patientsSummary,
       searchedPatients,

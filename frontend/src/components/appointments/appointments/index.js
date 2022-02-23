@@ -194,6 +194,7 @@ function Appointments() {
                     appointments={apps}
                     onArchive={onClickDone}
                     onComplete={onCompleteDone}
+                    onAddBusinessNotes={onAddBusinessNotes}
                     defaultExpanded={true}
                     waiting={true}
                   />
@@ -209,6 +210,7 @@ function Appointments() {
                     appointments={apps}
                     onArchive={onClickDone}
                     onComplete={onCompleteDone}
+                    onAddBusinessNotes={onAddBusinessNotes}
                     defaultExpanded={true}
                     waiting={true}
                   />
