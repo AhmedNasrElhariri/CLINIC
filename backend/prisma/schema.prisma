@@ -217,6 +217,7 @@ model Organization {
   SessionTransaction        SessionTransaction[]
   Points                    Points[]
   Coupon                    Coupon[]
+  BankExpense               BankExpense[]
 }
 
 model User {
@@ -285,13 +286,15 @@ model User {
   PatientViewStatus         PatientViewStatus[]
   PatientField              PatientField[]
   SessionTransaction        SessionTransaction[]
+  BankExpense               BankExpense[]               @relation("bankExpenseUser")
+  BankExpenseDoctor         BankExpense[]               @relation("bankExpenseDoctor")
 }
 
 model Patient {
   id               String                @id @default(uuid())
   name             String
   phoneNo          String                @unique
-  phoneNoTwo       String?                               
+  phoneNoTwo       String?
   type             PatientMembershipType
   appointments     Appointment[]
   age              Int
@@ -324,6 +327,7 @@ model Patient {
   Revenue          Revenue[]
   BankRevenue      BankRevenue[]
   InsuranceRevenue InsuranceRevenue[]
+  BankExpense      BankExpense[]
 }
 
 model Appointment {
@@ -764,11 +768,39 @@ model BankRevenue {
   date           DateTime
   amount         Float
   invoiceNo      String?
+  checkNumber    String?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @default(now()) @updatedAt
   user           User           @relation("bankUser", fields: [userId], references: [id])
   userId         String
   doctor         User?          @relation("bankDoctor", fields: [doctorId], references: [id])
+  doctorId       String?
+  level          String?
+  patient        Patient?       @relation(fields: [patientId], references: [id])
+  patientId      String?
+  specialty      Specialty?     @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?        @relation(fields: [branchId], references: [id])
+  branchId       String?
+  bank           BankDefinition @relation(fields: [bankId], references: [id])
+  bankId         String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
+model BankExpense {
+  id             String         @id @default(uuid())
+  name           String
+  date           DateTime
+  amount         Float
+  expenseType    String
+  invoiceNo      String?
+  checkNumber    String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @default(now()) @updatedAt
+  user           User           @relation("bankExpenseUser", fields: [userId], references: [id])
+  userId         String
+  doctor         User?          @relation("bankExpenseDoctor", fields: [doctorId], references: [id])
   doctorId       String?
   level          String?
   patient        Patient?       @relation(fields: [patientId], references: [id])
@@ -1109,6 +1141,7 @@ model BankDefinition {
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
   BankRevenue    BankRevenue[]
+  BankExpense    BankExpense[]
 }
 
 model ExpenseTypeDefinition {
@@ -1410,6 +1443,7 @@ model Branch {
   BankRevenue        BankRevenue[]
   InsuranceRevenue   InsuranceRevenue[]
   CoursePayment      CoursePayment[]
+  BankExpense        BankExpense[]
 }
 
 model Specialty {
@@ -1435,6 +1469,7 @@ model Specialty {
   BankRevenue        BankRevenue[]
   InsuranceRevenue   InsuranceRevenue[]
   CoursePayment      CoursePayment[]
+  BankExpense        BankExpense[]
 }
 
 model UserSpecialty {

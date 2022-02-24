@@ -224,6 +224,7 @@ const Course = ({ patientId }) => {
         variables: {
           courseId: formValue.id,
           refund: formValue.refund,
+          bank: bank,
         },
       });
     } else if (type === 'editPaymentHistory') {
@@ -274,7 +275,9 @@ const Course = ({ patientId }) => {
   );
   const CancelledCourses = useMemo(
     () =>
-      patientCourses.filter(c => c.status === 'Cancelled' || c.status === 'Rejected'),
+      patientCourses.filter(
+        c => c.status === 'Cancelled' || c.status === 'Rejected'
+      ),
     [patientCourses]
   );
   return (

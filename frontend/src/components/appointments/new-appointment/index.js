@@ -77,14 +77,12 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
       setPatientSearchValue('');
     },
   });
-  console.log(patientSearchValue, 'patientSearchValue');
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
   });
   const returnedPatientsOfSearch = useMemo(() => {
     return searchedPatients;
   }, [searchedPatients]);
-  console.log(searchedPatients, 'searchedPatients');
   const { patientCourses } = useCourses({
     patientId: formValue.patientId,
   });

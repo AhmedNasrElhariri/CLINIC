@@ -7,7 +7,6 @@ import {
   FULL_DAY_FORMAT,
 } from 'utils/constants';
 function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
-  console.log(patientSurgeries, 'patientSurgeries');
   return (
     <>
       <CRCard borderless>

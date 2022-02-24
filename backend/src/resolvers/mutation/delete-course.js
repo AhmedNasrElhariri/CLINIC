@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { APPOINTMENTS_STATUS, COURSE_STATUS } from '@/utils/constants';
 const deleteCourse = async (
   _,
-  { courseId, refund },
+  { courseId, refund, bank },
   { userId, organizationId }
 ) => {
   const data = await prisma.course.findUnique({
@@ -36,24 +36,55 @@ const deleteCourse = async (
       },
     }),
   });
-  await prisma.expense.create({
-    data: {
-      name: 'C/' + courseDefinition.name + '/Refund/' + patient.name,
-      amount: refund,
-      expenseType: 'refund',
-      date: new Date(),
-      organization: {
-        connect: {
-          id: organizationId,
+  if (bank) {
+    await prisma.bankExpense.create({
+      data: {
+        name: 'C/' + courseDefinition.name + '/Refund/' + patient.name,
+        amount: refund,
+        expenseType: 'refund',
+        date: new Date(),
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        bank: {
+          connect: {
+            id: bank,
+          },
+        },
+        patient: {
+          connect: {
+            id: patient.id,
+          },
         },
       },
-      user: {
-        connect: {
-          id: userId,
+    });
+  } else {
+    await prisma.expense.create({
+      data: {
+        name: 'C/' + courseDefinition.name + '/Refund/' + patient.name,
+        amount: refund,
+        expenseType: 'refund',
+        date: new Date(),
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
         },
       },
-    },
-  });
+    });
+  }
   return prisma.course.update({
     where: {
       id: courseId,

@@ -82,6 +82,9 @@ const PdfDocument = ({
             Revenues = {calculateTotal(revenues)}
           </Text>
           <Text style={styles.header}>
+            Expenses = {calculateTotal(expenses)}
+          </Text>
+          <Text style={styles.header}>
             Profit = {calculateTotal(revenues) - calculateTotal(expenses)}
           </Text>
         </View>
@@ -90,6 +93,12 @@ const PdfDocument = ({
           <View style={styles.section}>
             <Text>Revenue</Text>
             <PdfTable data={revenues} />
+          </View>
+        </View>
+        <View style={styles.tableContainer}>
+          <View style={styles.section}>
+            <Text>Expenses</Text>
+            <PdfTable data={expenses} />
           </View>
         </View>
       </Page>

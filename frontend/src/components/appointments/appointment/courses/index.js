@@ -334,6 +334,27 @@ function NewCourse({
         ) : type === 'deleteCourse' ? (
           <Div>
             <Div>Are you sure that you want to delete this course ?</Div>
+            <CRButton
+              onClick={() => {
+                setVisa(true);
+              }}
+              mt={10}
+            >
+              Pay By Visa
+            </CRButton>
+            {visa && (
+              <Form>
+                <CRSelectInput
+                  label="Bank Name"
+                  name="bank"
+                  data={banksDefinition}
+                  value={bank}
+                  onChange={setBank}
+                  placeholder="Select One Bank "
+                  style={{ width: '230px' }}
+                />
+              </Form>
+            )}
             <Div>
               <CRNumberInput
                 label="Refund Money"

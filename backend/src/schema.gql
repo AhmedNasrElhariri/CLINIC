@@ -150,6 +150,7 @@ type Query {
   expenses: [Expense!]
   revenues: [Revenue!]
   bankRevenues: [BankRevenue!]
+  bankExpenses: [BankExpense!]
   companyRevenues: [InsuranceRevenue!]
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
@@ -444,7 +445,7 @@ type Mutation {
   editCourseUnits(courseId: ID!, consumed: Int!, type: String!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
   finishCourse(courseId: ID!): Course!
-  deleteCourse(courseId: ID!, refund: Int!): Course!
+  deleteCourse(courseId: ID!, refund: Int!, bank: ID): Course!
   addPayrollUser(payrollUser: PayrollUserInput!): PayrollUser!
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
@@ -463,7 +464,10 @@ type Mutation {
   addSales(sales: [SalesItemsInput!]!): [Sales!]!
   editSales(sales: SalesInput!): Sales
   deleteSales(id: ID!): Sales
-  editBankTransition(bankTransition: BankTransitionInput!): BankRevenue
+  editBankRevenue(bankTransition: BankTransitionInput!): BankRevenue
+  editBankExpense(bankTransition: BankExpenseTransitionInput!): BankExpense
+  createBankRevenue(bankTransition: BankTransitionInput!): BankRevenue
+  createBankExpense(bankTransition: BankExpenseTransitionInput!): BankExpense
 }
 
 ########################### Auth ##################################
@@ -1197,6 +1201,7 @@ type BankRevenue {
   date: Date!
   level: String
   payer: String
+  checkNumber: String
   user: User
   branch: Branch
   doctor: User
@@ -1206,8 +1211,47 @@ type BankRevenue {
 }
 
 input BankTransitionInput {
-  id: ID!
+  id: ID
   amount: Int!
+  date: Date!
+  bankId: ID!
+  branchId: ID
+  specialtyId: ID
+  userId: ID
+  invoiceNo: String
+  checkNumber: String
+  name: String!
+}
+
+type BankExpense {
+  id: ID!
+  name: String!
+  amount: Float!
+  date: Date!
+  expenseType: String!
+  level: String
+  payer: String
+  user: User
+  branch: Branch
+  doctor: User
+  specialty: Specialty
+  invoiceNo: String
+  checkNumber: String
+  bank: BankDefinition!
+}
+
+input BankExpenseTransitionInput {
+  id: ID
+  amount: Int!
+  date: Date!
+  bankId: ID!
+  expenseType: String!
+  branchId: ID
+  specialtyId: ID
+  userId: ID
+  invoiceNo: String
+  checkNumber: String
+  name: String!
 }
 
 type InsuranceRevenue {

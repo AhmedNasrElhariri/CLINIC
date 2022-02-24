@@ -66,6 +66,7 @@ export { default as mySaleses } from './my-sales';
 export { default as getPulseControl } from './get-pulse-control';
 export { default as myBanksDefinition } from './get-banks-definition';
 export { default as bankRevenues } from './bank-revenues';
+export { default as bankExpenses } from './bank-expenses';
 export { default as myCompanysDefinition } from './get-companys-definition';
 export { default as myCompanysSessionDefinition } from './get-companys-session-definition';
 export { default as companyRevenues } from './company-revenues';
@@ -96,3 +97,4 @@ export { default as allPatients } from './all-patients';
 export { default as couponPointsTransactions } from './coupon-points-transactions';
 export { default as totalUnpaidOfCourses } from './total-unpaid-of-courses';
 export { default as patientRevenue } from './patient-revenue';
+

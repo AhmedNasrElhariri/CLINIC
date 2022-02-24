@@ -3,6 +3,7 @@ import NumberFormat from 'react-number-format';
 import { H5, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
+import { Can } from 'components/user/can';
 
 const ListData = ({ title, data, onEdit }) => {
   return (
@@ -16,10 +17,13 @@ const ListData = ({ title, data, onEdit }) => {
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Payer</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="payer" semiBold />
+          <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ expenseType }) => (
+              <CRTable.CRCellStyled bold>{expenseType}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
         </CRTable.CRColumn>
-
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -36,15 +40,6 @@ const ListData = ({ title, data, onEdit }) => {
         </CRTable.CRColumn>
 
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Bank</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ bank }) => (
-              <CRTable.CRCellStyled bold>{bank.name}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-
-        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (
@@ -52,11 +47,30 @@ const ListData = ({ title, data, onEdit }) => {
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-
-        <CRTable.CRColumn width={35}>
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>Payer</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ payer }) => (
+              <CRTable.CRCellStyled>{payer}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>Check Number</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ checkNumber }) => (
+              <CRTable.CRCellStyled>{checkNumber}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
+            {data => (
+              <Can I="EditExpense" an="Accounting">
+                <Icon icon="edit" onClick={() => onEdit(data)} />
+              </Can>
+            )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
       </CRTable>

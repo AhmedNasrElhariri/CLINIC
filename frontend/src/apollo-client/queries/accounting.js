@@ -71,6 +71,7 @@ export const LIST_BANK_REVENUES = gql`
       date
       invoiceNo
       payer
+      checkNumber
       user {
         id
         name
@@ -91,9 +92,72 @@ export const LIST_BANK_REVENUES = gql`
   }
 `;
 
-export const EDIT_BANK_TRANSITION = gql`
-  mutation editBankTransition($bankTransition: BankTransitionInput!) {
-    editBankTransition(bankTransition: $bankTransition) {
+export const LIST_BANK_EXPENSES = gql`
+  query bankExpenses {
+    bankExpenses {
+      id
+      name
+      amount
+      bank {
+        id
+        name
+      }
+      date
+      invoiceNo
+      checkNumber
+      expenseType
+      payer
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty {
+        id
+        name
+      }
+      doctor {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const EDIT_BANK_REVENUE = gql`
+  mutation editBankRevenue(
+    $bankTransition: BankTransitionInput!
+  ) {
+    editBankRevenue(bankTransition: $bankTransition) {
+      id
+      amount
+    }
+  }
+`;
+export const EDIT_BANK_EXPENSE = gql`
+  mutation editBankExpense(
+    $bankTransition: BankExpenseTransitionInput!
+  ) {
+    editBankExpense(bankTransition: $bankTransition) {
+      id
+      amount
+    }
+  }
+`;
+export const CREATE_BANK_REVENUE = gql`
+  mutation createBankRevenue($bankTransition: BankTransitionInput!) {
+    createBankRevenue(bankTransition: $bankTransition) {
+      id
+      amount
+    }
+  }
+`;
+export const CREATE_BANK_EXPENSE = gql`
+  mutation createBankExpense($bankTransition: BankExpenseTransitionInput!) {
+    createBankExpense(bankTransition: $bankTransition) {
       id
       amount
     }

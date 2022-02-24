@@ -21,7 +21,7 @@ import * as fromPermission from './permission';
 import * as fromRevenue from './revenue';
 import * as fromBankRevenue from './bankRevenue';
 import * as fromInsuranceRevenue from './insuranceRevenue';
-
+import * as fromBankExpense from './bankExpense';
 export default {
   Query: fromQuery,
   Mutation: fromMutation,
@@ -44,5 +44,6 @@ export default {
   Course: fromCourse,
   Revenue: fromRevenue,
   BankRevenue: fromBankRevenue,
+  BankExpense:fromBankExpense,
   InsuranceRevenue: fromInsuranceRevenue,
 };

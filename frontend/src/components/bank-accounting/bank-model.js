@@ -1,7 +1,16 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
-import { CRModal, Div, H3, CRNumberInput } from 'components';
-
+import {
+  CRModal,
+  Div,
+  H3,
+  CRNumberInput,
+  CRTextInput,
+  CRSelectInput,
+  CRDatePicker,
+  CRBrancheTree,
+} from 'components';
+import { ACTIONS } from 'utils/constants';
 function BankModel({
   formValue,
   onChange,
@@ -9,6 +18,8 @@ function BankModel({
   visible,
   onOk,
   onClose,
+  banksDefinition,
+  updatedexpenseType,
   checkResult,
   validate,
   show,
@@ -17,13 +28,14 @@ function BankModel({
 }) {
   const header = useMemo(
     () =>
-      type === 'create'
-        ? 'Add New Bank Transition'
-        : type === 'edit'
-        ? 'Edit Bank Transition'
-        : 'Delete Bank Transition',
+      type === 'createBankRevenue'
+        ? 'Add New Bank Revenue Transition'
+        : type === 'createBankExpense'
+        ? 'Add New Bank Expense Transition'
+        : 'edit Bank Transition',
     [type]
   );
+
   return (
     <CRModal
       show={visible}
@@ -33,20 +45,48 @@ function BankModel({
       onCancel={onClose}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        {type === 'delete' ? (
-          <Div>
-            <H3>Are you sure that you want to delete the Bank Transition ? </H3>
-          </Div>
-        ) : (
+        <CRTextInput label="Name" name="name" block></CRTextInput>
+        <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
+        <CRSelectInput
+          label="Bank Name"
+          name="bankId"
+          data={banksDefinition}
+          placeholder="Select One Bank "
+          block
+        />
+        {header === 'Add New Bank Expense Transition' && (
           <>
-            <CRNumberInput
-              label="Amount"
-              name="amount"
-              placeholder="Type The Amount"
+            <CRSelectInput
+              label="Expense Type"
+              name="expenseType"
               block
+              data={updatedexpenseType}
+            />
+            <CRBrancheTree
+              formValue={formValue}
+              onChange={onChange}
+              action={ACTIONS.AddExpense_Accounting}
             />
           </>
         )}
+        {header === 'Add New Bank Revenue Transition' && (
+          <CRBrancheTree
+            formValue={formValue}
+            onChange={onChange}
+            action={ACTIONS.AddRevenue_Accounting}
+          />
+        )}
+        {type === 'editBankExpense' && (
+          <CRSelectInput
+            label="Expense Type"
+            name="expenseType"
+            block
+            data={updatedexpenseType}
+          />
+        )}
+        <CRDatePicker label="Date" name="date" block></CRDatePicker>
+        <CRTextInput label="Check No" name="checkNumber" block></CRTextInput>
+        <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
       </Form>
     </CRModal>
   );

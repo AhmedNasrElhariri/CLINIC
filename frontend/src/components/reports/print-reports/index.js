@@ -97,7 +97,6 @@ const Test = props => {
   const refThree = useRef();
   const refFour = useRef();
   let monthlyData = dataTwo?.data || [];
-  console.log(formValue, 'FF');
   return (
     <>
       <Container>

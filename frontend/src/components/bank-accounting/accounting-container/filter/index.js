@@ -2,15 +2,8 @@ import React from 'react';
 import { Div } from 'components';
 import { Form } from 'rsuite';
 import { CRSelectInput } from 'components/widgets';
-import { useBankDefinition } from 'hooks';
-const AccountingFilter = ({ formValue, setFormValue }) => {
-  const { banksDefinition } = useBankDefinition({});
-  const updatedBankDefinitions = banksDefinition.map(b => {
-    return {
-      id: b.name,
-      name: b.name,
-    };
-  });
+const AccountingFilter = ({ formValue, setFormValue,banksDefinition }) => {
+  
   return (
     <Form
       style={{ width: 276, marginBottom: 64 }}
@@ -22,7 +15,7 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
           <CRSelectInput
             label="Bank"
             name="bank"
-            data={updatedBankDefinitions}
+            data={banksDefinition}
             onChange={val =>
               val == null ? setFormValue({ bank: '' }) : setFormValue({ bank: val })
             }
