@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { Modal, Whisper, Tooltip, Form } from 'rsuite';
-
+import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import {
   Div,
   H6,
@@ -44,7 +44,7 @@ const renderProp2 = (key, value) => {
       {value.length > 0 &&
         value.map(v => (
           <Div display="flex">
-             <CRVDivider vertical />
+            <CRVDivider vertical />
             <Div display="flex">
               <ValueStyled>{v[0]}</ValueStyled>
             </Div>
@@ -80,7 +80,7 @@ const renderAppointment = data => {
 
 const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   const [activeSession, setActiveSession] = useState(null);
-
+  const history = useHistory();
   useEffect(() => {
     setActiveSession(R.propOr({}, '0')(summary));
   }, [summary]);
@@ -120,7 +120,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   if (!activeSession) {
     return '...No History';
   }
-
+  console.log(activeSession, 'AAAA');
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>
@@ -160,7 +160,15 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
           </Div>
         )}
       </Div>
+
       <Div position="absolute" top={0} right={3}>
+        <CRButton
+          onClick={() => history.push(`/appointments/${activeSession.id}`)}
+          variant="primary"
+          mr={10}
+        >
+          Edit
+        </CRButton>
         <CRButton onClick={open} variant="primary">
           Table View
         </CRButton>

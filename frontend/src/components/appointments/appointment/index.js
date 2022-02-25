@@ -276,6 +276,16 @@ function Appointment() {
             >
               PrintLabs <Icon icon="print" />
             </CRButton>
+            {disabled && (
+              <CRButton
+                variant="primary"
+                onClick={handleUpdate}
+                onClick={() => setDisabled(false)}
+              >
+                Edit <Icon icon="save" />
+              </CRButton>
+            )}
+
             <CRButton
               variant="primary"
               onClick={handleUpdate}

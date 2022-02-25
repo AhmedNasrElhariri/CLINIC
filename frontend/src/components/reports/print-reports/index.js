@@ -18,6 +18,7 @@ import { Container, Report, Name } from './style';
 import { useCourses, useSessionDefinition } from 'hooks';
 import moment from 'moment';
 import * as R from 'ramda';
+import { MultiCascader } from 'rsuite';
 
 const initialValue = {
   month: '',
@@ -45,6 +46,7 @@ const Test = props => {
   const [formValue, setFormValue] = useState(initialValue);
   const [data, setData] = useState([]);
   const [dataTwo, setDataTwo] = useState({});
+  const [showSessionData, setShowSessionData] = useState(false);
   let monthes = getMonths();
   const { sessionsDefinition, sessionStatistics } = useSessionDefinition({
     sessionsIds: formValue.sessionsIds,
@@ -57,8 +59,9 @@ const Test = props => {
   // const totalPrice = R.propOr(0, 'totalPrice')(sessionStatistics);
   // const session = R.propOr({}, 'session')(sessionStatistics);
   const updatedSessionsDefinitions = sessionsDefinition.map(s => {
-    return { name: s.name, value: s.id };
+    return { label: s.name, value: s.id };
   });
+  console.log(formValue, 'FFFF');
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
@@ -161,13 +164,24 @@ const Test = props => {
                 data={sessionsDefinition}
                 style={{ width: '230px' }}
               /> */}
-              <CRCheckBoxGroup
+              {/* <CRCheckBoxGroup
                 options={updatedSessionsDefinitions}
                 name="sessionsIds"
                 inline
+              /> */}
+              <MultiCascader
+                data={updatedSessionsDefinitions}
+                style={{ width: 224 }}
+                onChange={val =>
+                  setFormValue({ ...formValue, sessionsIds: val })
+                }
+                style={{ marginTop: '10px', width: '250px' }}
               />
             </Div>
           </Form>
+          <CRButton onClick={() => setShowSessionData(!showSessionData)}>
+            {showSessionData ? 'Close' : 'Show'}
+          </CRButton>
           <ReactToPrint
             trigger={() => <CRButton primary>Print</CRButton>}
             content={() => refThree.current}
@@ -175,6 +189,26 @@ const Test = props => {
         </Report>
         {/* </Can> */}
       </Container>
+      <Div>
+        <Div
+          style={!showSessionData ? { overflow: 'hidden', height: '0px' } : {}}
+        >
+          <Div ref={refThree}>
+            <H3 display="flex" justifyContent="center" mt={20} mb={20}>
+              Session Report
+            </H3>
+            <Div>
+              {sessionStatistics.map(st => (
+                <Div mb={20} ml={20}>
+                  <H5>Session Name : {st.name}</H5>
+                  <H5>TotalNumber: {st.totalNumber}</H5>
+                  <H5>TotalPrice:{st.totalPrice}</H5>
+                </Div>
+              ))}
+            </Div>
+          </Div>
+        </Div>
+      </Div>
       <Container>
         <Report>
           <Name>Total Unpaid of courses Report</Name>
@@ -293,26 +327,6 @@ const Test = props => {
           </Div>
         </Div>
       </Div>
-
-      <Div>
-        <Div style={{ overflow: 'hidden', height: '0px' }}>
-          <Div ref={refThree}>
-            <H3 display="flex" justifyContent="center" mt={20} mb={20}>
-              Session Report
-            </H3>
-            <Div>
-              {sessionStatistics.map(st => (
-                <Div mb={20} ml={20}>
-                  <H5>Session Name : {st.name}</H5>
-                  <H5>TotalNumber: {st.totalNumber}</H5>
-                  <H5>TotalPrice:{st.totalPrice}</H5>
-                </Div>
-              ))}
-            </Div>
-          </Div>
-        </Div>
-      </Div>
-
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>
           <Div ref={refFour}>
