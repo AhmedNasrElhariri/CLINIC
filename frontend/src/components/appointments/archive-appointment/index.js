@@ -47,6 +47,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [option, setOption] = useState(initlOption);
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [doctorFees, setDoctorFees] = useState(initialDoctorFess);
+  const [selectedItems, setSelectedItems] = useState([]);
   const value = useRef(initValue);
   const { patientCoupons } = usePatients({
     patientId: appointment?.patient.id,
@@ -249,6 +250,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
           <InventoryUsage
             onChange={handleInventoryChange}
             handleCancel={handleCancel}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
           />
         )}
       </Div>

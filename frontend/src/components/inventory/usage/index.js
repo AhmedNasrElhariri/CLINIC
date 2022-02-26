@@ -23,13 +23,11 @@ const initValue = {
   userId: null,
 };
 
-function InventoryUsage({ onChange }) {
+function InventoryUsage({ onChange, selectedItems, setSelectedItems }) {
   const { formValue, setFormValue } = useForm({
     initValue,
     model,
   });
-  const [selectedItems, setSelectedItems] = useState([]);
-
   const { items, inventoryWithAmount } = useInventory();
   const handleDelete = useCallback(
     idx => {
