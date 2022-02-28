@@ -16,6 +16,8 @@ import {
   CRMultipleSelector,
   CRSelectInput,
 } from 'components';
+import { Card } from './style';
+
 import { convertGroupFieldsToNavs } from 'services/appointment';
 import {
   NUMBER_FIELD_TYPE,
@@ -40,7 +42,7 @@ import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
 import Pulses from './pulses';
-
+import { ArrowIcon } from 'components/icons';
 const renderItem = ({
   type,
   choicesType,
@@ -140,6 +142,7 @@ function AppointmentData({
   sessionFormValue,
   appointmentFormValue,
   setSessionFormValue,
+  handleShowPatientInfo,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
   const { labsCategory } = useLabCategory();
@@ -147,13 +150,13 @@ function AppointmentData({
   const { medicineDefinitions } = useMedicineDefinitions();
   const { sessionsDefinition } = useSessionDefinition();
   const [categoryLabForm, setCategoryLabForm] = useState(initalCategoryAndLab);
-
   const [categoryImageForm, setCategoryImageForm] =
     useState(initalCategoryImage);
   const [selectedMedicine, setSelectedMedicine] = useState(
     initialSelectedMedicine
   );
   const [session, SetSession] = useState({});
+  const { patient } = appointment;
   const choices = useMemo(() => {
     return sessionsDefinition.map(s => ({
       name: s.name,
@@ -248,6 +251,36 @@ function AppointmentData({
     <>
       <Div display="flex">
         <Div flexGrow={1}>
+          <SectionContainer title="Patient Info">
+            <Card>
+              <Div display="flex" p="10px">
+                <Div width="50px" ml="30px" mr="30px">
+                  Name
+                </Div>
+                <Div>{patient?.name}</Div>
+              </Div>
+              <Div display="flex" p="10px">
+                <Div width="50px" ml="30px" mr="30px">
+                  Phone
+                </Div>
+                <Div>{patient?.phoneNo}</Div>
+              </Div>
+              <Div display="flex" p="10px">
+                <Div width="50px" ml="30px" mr="30px">
+                  Sex
+                </Div>
+                <Div>{patient?.sex}</Div>
+              </Div>
+              <Div display="flex" p="10px">
+                <Div width="50px" ml="30px" mr="30px">
+                  More
+                </Div>
+                <Div>
+                  <ArrowIcon width="25px"  onClick={() => handleShowPatientInfo()}/>
+                </Div>
+              </Div>
+            </Card>
+          </SectionContainer>
           {Object.keys(formValue).length > 0 && (
             <>
               <Form formValue={formValue} onChange={onDataChange} fluid>

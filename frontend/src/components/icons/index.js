@@ -18,6 +18,9 @@ export const IconStyled = styled.img.attrs(({ props }) => ({
 export const PrintOLIcon = props => (
   <IconStyled src="/icons/print-outline.png" {...props} />
 );
+export const ArrowIcon = props => (
+  <IconStyled src="/icons/arrowIcon.png" {...props} />
+);
 export const MoreIcon = props => (
   <IconStyled src="/icons/moreIcon.png" {...props} />
 );

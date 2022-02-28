@@ -9,6 +9,7 @@ import Prescription from './prescription';
 import Labs from './labs/index';
 import Images from './images';
 import ShowMedicinines from './show-patient-medicines';
+import ShowPatientInfo from './show-patient-info';
 import NewAppointment from './new-appointment';
 import { Div, H3, CRButton } from 'components';
 import AppointmentData from './appointment-data';
@@ -118,6 +119,7 @@ function Appointment() {
   const [popupTwo, setPopupTwo] = useState(false);
   const [popupThree, setPopupThree] = useState(false);
   const [popupFour, setPopupFour] = useState(false);
+  const [popupFive, setPopupFive] = useState(false);
   const handleClickCreate = useCallback(() => {
     setPopupTwo(false);
     setPopupThree(false);
@@ -149,6 +151,15 @@ function Appointment() {
     setPopupThree(false);
     setPopupFour(true);
     setType('create');
+    open();
+  }, [open, setType]);
+  const handleShowPatientInfo = useCallback(() => {
+    setPopupTwo(false);
+    setPopup(false);
+    setPopupThree(false);
+    setPopupFour(false);
+    setPopupFive(true);
+    setType('patientInfo');
     open();
   }, [open, setType]);
 
@@ -317,6 +328,7 @@ function Appointment() {
                 setSessionsPulses={setSessionsPulses}
                 sessionFormValue={sessionFormValue}
                 setSessionFormValue={setSessionFormValue}
+                handleShowPatientInfo={handleShowPatientInfo}
               />
               {popup && (
                 <Prescription
@@ -348,6 +360,14 @@ function Appointment() {
               )}
               {popupFour && (
                 <ShowMedicinines
+                  visible={visible}
+                  onClose={close}
+                  type={type}
+                  patient={patient}
+                />
+              )}
+              {popupFive && (
+                <ShowPatientInfo
                   visible={visible}
                   onClose={close}
                   type={type}
