@@ -34,10 +34,16 @@ const MultipleSelector = ({ choices, onChange, value, disabled, ...props }) => {
             name="choice"
             data={choices}
             style={{ width: '200px', marginRight: '30px' }}
+            disabled={disabled}
           />
-          <CRTextInput name="text" />
+          <CRTextInput name="text" disabled={disabled} />
 
-          <CRButton onClick={() => handleOnChange()} mt={10} ml={20}>
+          <CRButton
+            onClick={() => handleOnChange()}
+            disabled={disabled}
+            mt={10}
+            ml={20}
+          >
             Add
           </CRButton>
         </Div>
@@ -57,6 +63,7 @@ const MultipleSelector = ({ choices, onChange, value, disabled, ...props }) => {
                         width={150}
                         m="auto"
                         onClick={() => handleDelete(indx)}
+                        disabled={disabled}
                       >
                         Delete
                       </CRButton>

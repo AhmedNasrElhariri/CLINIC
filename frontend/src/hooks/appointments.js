@@ -18,7 +18,17 @@ import {
   ADJUST_APPOINTMENT,
   CANCEL_APPOINTMENT,
 } from 'apollo-client/queries';
+import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
+
+const updateCache = myAppointments => {
+  client.writeQuery({
+    query: LIST_APPOINTMENTS,
+    data: {
+      myAppointments,
+    },
+  });
+};
 
 function useAppointments({
   includeSurgery,
@@ -143,11 +153,19 @@ function useAppointments({
     onCompleted: () => {
       Alert.success('Business Notes Added Successfully');
     },
+    update(cache, { data: { updateNotes: appointment } }) {
+      const app = appointments.find(a => a.id == appointment.id);
+      const newApp = { ...app, businessNotes: appointment.businessNotes };
+      const allNewApp = appointments.map(oldApp => {
+        if (oldApp.id == appointment.id) {
+          return newApp;
+        } else {
+          return oldApp;
+        }
+      });
+      updateCache(allNewApp);
+    },
     refetchQueries: [
-      {
-        query: LIST_APPOINTMENTS,
-        variables: { offset: 0, limit: 20 },
-      },
       {
         query: LIST_TODAY_APPOINTMENTS,
       },

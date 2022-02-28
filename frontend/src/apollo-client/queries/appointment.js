@@ -367,6 +367,7 @@ export const UPDATE_BUSINESS_NOTES = gql`
   mutation updateNotes($id: ID!, $notes: String!) {
     updateNotes(id: $id, notes: $notes) {
       id
+      businessNotes
     }
   }
 `;
