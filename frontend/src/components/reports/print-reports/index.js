@@ -61,7 +61,6 @@ const Test = props => {
   const updatedSessionsDefinitions = sessionsDefinition.map(s => {
     return { label: s.name, value: s.id };
   });
-  console.log(formValue, 'FFFF');
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);

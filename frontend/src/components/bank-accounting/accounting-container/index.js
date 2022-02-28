@@ -27,7 +27,7 @@ const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalFilterVal = {
   expenseType: '',
   revenueName: '',
-  bank: '',
+  bank: null,
 };
 const initValue = {
   id: null,
@@ -93,14 +93,14 @@ const BankAccountingContainer = () => {
     },
   });
 
-  const updatedRevenues = useMemo(
-    () =>
-      revenues.filter(r =>
-        r.bank.name.toLowerCase().includes(filter.bank.toLowerCase())
-      ),
-    [filter, revenues]
-  );
-  console.log(revenues, updatedRevenues, 'RRR');
+  const updatedRevenues = useMemo(() => {
+    if (filter.bank == null) {
+      return revenues;
+    } else {
+      return revenues.filter(r => r.bank.id == filter.bank);
+    }
+  }, [filter, revenues]);
+  console.log(revenues, 'RRRRR', filter);
   const updatedExpenses = useMemo(
     () =>
       expenses.filter(e =>

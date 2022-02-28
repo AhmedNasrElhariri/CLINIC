@@ -120,7 +120,6 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   if (!activeSession) {
     return '...No History';
   }
-  console.log(activeSession, 'AAAA');
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>

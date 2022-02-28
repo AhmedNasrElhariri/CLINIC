@@ -2,7 +2,7 @@ import React from 'react';
 import { Div } from 'components';
 import { Form } from 'rsuite';
 import { CRSelectInput } from 'components/widgets';
-const AccountingFilter = ({ formValue, setFormValue,banksDefinition }) => {
+const AccountingFilter = ({ formValue, setFormValue, banksDefinition }) => {
   
   return (
     <Form
@@ -16,9 +16,6 @@ const AccountingFilter = ({ formValue, setFormValue,banksDefinition }) => {
             label="Bank"
             name="bank"
             data={banksDefinition}
-            onChange={val =>
-              val == null ? setFormValue({ bank: '' }) : setFormValue({ bank: val })
-            }
             placeholder="Search"
             style={{ width: '230px' }}
           />
