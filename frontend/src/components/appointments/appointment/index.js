@@ -2,8 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader, Icon } from 'rsuite';
-
+import { Alert, Loader, Icon, Panel } from 'rsuite';
 import Prescription from './prescription';
 
 import Labs from './labs/index';
@@ -11,7 +10,7 @@ import Images from './images';
 import ShowMedicinines from './show-patient-medicines';
 import ShowPatientInfo from './show-patient-info';
 import NewAppointment from './new-appointment';
-import { Div, H3, CRButton } from 'components';
+import { Div, H3, CRButton, Img } from 'components';
 import AppointmentData from './appointment-data';
 import {
   getFormInitValues,
@@ -19,7 +18,7 @@ import {
   mapSessionValues,
   isArchived,
 } from 'services/appointment';
-
+import { ArrowIcon } from 'components/icons';
 import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
@@ -313,6 +312,46 @@ function Appointment() {
             </CRButton> */}
           </Div>
         </HeaderStyled>
+        <Div style={{ float: 'right' }}>
+          <Panel
+            shaded
+            bordered
+            bodyFill
+            style={{ display: 'inline-block', width: 240 }}
+          >
+            {/* <Img src={patient?.url} width={240} height={150} /> */}
+            <Panel header={patient?.name}>
+              <p>
+                <small>
+                  <Div display="flex">
+                    <Div width="50px" mr="30px">
+                      Phone
+                    </Div>
+                    <Div>{patient?.phoneNo}</Div>
+                  </Div>
+                  <Div display="flex">
+                    <Div width="50px" mr="30px">
+                      Sex
+                    </Div>
+                    <Div>{patient?.sex}</Div>
+                  </Div>
+                  <Div
+                    display="flex"
+                    onClick={() => handleShowPatientInfo()}
+                    mt="2px"
+                  >
+                    <Div width="50px" mr="30px" mt={10}>
+                      <a>More</a>
+                    </Div>
+                    {/* <Div>
+                      <ArrowIcon width="25px" />
+                    </Div> */}
+                  </Div>
+                </small>
+              </p>
+            </Panel>
+          </Panel>
+        </Div>
         <Div display="flex">
           <Div flexGrow={1}>
             <Div py={3} bg="white">

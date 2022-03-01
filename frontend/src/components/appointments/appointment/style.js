@@ -127,10 +127,4 @@ export const PatientInfoStyled = styled(Div)`
     margin-left: 20px;
   }
 `;
-export const Card = styled.div`
-  width: 250px;
-  height: 180px;
-  background-color: #51c6f3;
-  color: #ffffff;
-`;
 

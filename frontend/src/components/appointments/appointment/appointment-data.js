@@ -15,8 +15,9 @@ import {
   CRNestedSelector,
   CRMultipleSelector,
   CRSelectInput,
+  Img,
 } from 'components';
-import { Card } from './style';
+
 
 import { convertGroupFieldsToNavs } from 'services/appointment';
 import {
@@ -42,7 +43,7 @@ import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
 import Pulses from './pulses';
-import { ArrowIcon } from 'components/icons';
+
 const renderItem = ({
   type,
   choicesType,
@@ -247,40 +248,11 @@ function AppointmentData({
       });
     }
   };
+  console.log(patient, 'PP');
   return (
     <>
       <Div display="flex">
         <Div flexGrow={1}>
-          <SectionContainer title="Patient Info">
-            <Card>
-              <Div display="flex" p="10px">
-                <Div width="50px" ml="30px" mr="30px">
-                  Name
-                </Div>
-                <Div>{patient?.name}</Div>
-              </Div>
-              <Div display="flex" p="10px">
-                <Div width="50px" ml="30px" mr="30px">
-                  Phone
-                </Div>
-                <Div>{patient?.phoneNo}</Div>
-              </Div>
-              <Div display="flex" p="10px">
-                <Div width="50px" ml="30px" mr="30px">
-                  Sex
-                </Div>
-                <Div>{patient?.sex}</Div>
-              </Div>
-              <Div display="flex" p="10px">
-                <Div width="50px" ml="30px" mr="30px">
-                  More
-                </Div>
-                <Div>
-                  <ArrowIcon width="25px"  onClick={() => handleShowPatientInfo()}/>
-                </Div>
-              </Div>
-            </Card>
-          </SectionContainer>
           {Object.keys(formValue).length > 0 && (
             <>
               <Form formValue={formValue} onChange={onDataChange} fluid>
