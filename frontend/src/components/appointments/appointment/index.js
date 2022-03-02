@@ -2,8 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader, Icon } from 'rsuite';
-
+import { Alert, Loader, Icon, Panel } from 'rsuite';
 import Prescription from './prescription';
 
 import Labs from './labs/index';
@@ -11,7 +10,7 @@ import Images from './images';
 import ShowMedicinines from './show-patient-medicines';
 import ShowPatientInfo from './show-patient-info';
 import NewAppointment from './new-appointment';
-import { Div, H3, CRButton } from 'components';
+import { Div, H3, CRButton, Img } from 'components';
 import AppointmentData from './appointment-data';
 import {
   getFormInitValues,
@@ -19,7 +18,7 @@ import {
   mapSessionValues,
   isArchived,
 } from 'services/appointment';
-
+import { ArrowIcon } from 'components/icons';
 import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
@@ -254,136 +253,176 @@ function Appointment() {
   //   return <Loader />;
   // }
   return (
-    <Div display="flex">
-      <Div flexGrow={1}>
-        <HeaderStyled>
-          <H3 mb={64}>Appointment</H3>
-          <Div>
-            <CRButton
-              variant="primary"
-              onClick={handleClickCreateFour}
-              disabled={disabled}
-            >
-              Show Medicines <Icon icon="print" />
-            </CRButton>
-            <CRButton
-              variant="primary"
-              onClick={handleClickCreate}
-              disabled={disabled}
-            >
-              PrintMedicine <Icon icon="print" />
-            </CRButton>
-            <CRButton
-              variant="primary"
-              onClick={handleClickCreateThree}
-              disabled={disabled}
-            >
-              images <Icon icon="print" />
-            </CRButton>
-            <CRButton
-              variant="primary"
-              onClick={handleClickCreateTwo}
-              disabled={disabled}
-            >
-              PrintLabs <Icon icon="print" />
-            </CRButton>
-            {disabled && (
+    <>
+      <Div display="flex">
+        <Div flexGrow={1}>
+          <HeaderStyled>
+            <H3 mb={64}>Appointment</H3>
+            <Div>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreateFour}
+                disabled={disabled}
+              >
+                Show Medicines <Icon icon="print" />
+              </CRButton>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreate}
+                disabled={disabled}
+              >
+                PrintMedicine <Icon icon="print" />
+              </CRButton>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreateThree}
+                disabled={disabled}
+              >
+                images <Icon icon="print" />
+              </CRButton>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreateTwo}
+                disabled={disabled}
+              >
+                PrintLabs <Icon icon="print" />
+              </CRButton>
+              {disabled && (
+                <CRButton
+                  variant="primary"
+                  onClick={handleUpdate}
+                  onClick={() => setDisabled(false)}
+                >
+                  Edit <Icon icon="save" />
+                </CRButton>
+              )}
+
               <CRButton
                 variant="primary"
                 onClick={handleUpdate}
-                onClick={() => setDisabled(false)}
+                disabled={disabled}
               >
-                Edit <Icon icon="save" />
+                Save <Icon icon="save" />
               </CRButton>
-            )}
-
-            <CRButton
-              variant="primary"
-              onClick={handleUpdate}
-              disabled={disabled}
-            >
-              Save <Icon icon="save" />
-            </CRButton>
-            {/* <CRButton
+              {/* <CRButton
               variant="primary"
               open={visbleAppointment}
               onClick={toggleAppointment}
             >
               Reverse Appoinment <Icon icon="save" />
             </CRButton> */}
-          </Div>
-        </HeaderStyled>
-        <Div display="flex">
-          <Div flexGrow={1}>
-            <Div py={3} bg="white">
-              <AppointmentData
-                disabled={disabled}
-                formValue={formValue}
-                appointmentFormValue={apptFormValue}
-                onDataChange={setFormValue}
-                onChange={setApptFormValue}
-                groups={groups}
-                appointment={appointment}
-                sessionsPulses={sessionsPulses}
-                setSessionsPulses={setSessionsPulses}
-                sessionFormValue={sessionFormValue}
-                setSessionFormValue={setSessionFormValue}
-                handleShowPatientInfo={handleShowPatientInfo}
-              />
-              {popup && (
-                <Prescription
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  medicine={apptFormValue.prescription}
-                  onChange={handleMedicineChange}
-                  nextAppointment={nextAppointment}
+            </Div>
+          </HeaderStyled>
+          <Div display="flex">
+            <Div flexGrow={1}>
+              <Div py={3} bg="white">
+                <AppointmentData
+                  disabled={disabled}
+                  formValue={formValue}
+                  appointmentFormValue={apptFormValue}
+                  onDataChange={setFormValue}
+                  onChange={setApptFormValue}
+                  groups={groups}
+                  appointment={appointment}
+                  sessionsPulses={sessionsPulses}
+                  setSessionsPulses={setSessionsPulses}
+                  sessionFormValue={sessionFormValue}
+                  setSessionFormValue={setSessionFormValue}
+                  handleShowPatientInfo={handleShowPatientInfo}
                 />
-              )}
-              {popupTwo && (
-                <Labs
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  labs={apptFormValue.labIds}
-                  onChange={handleLabsChange}
+                {popup && (
+                  <Prescription
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    medicine={apptFormValue.prescription}
+                    onChange={handleMedicineChange}
+                    nextAppointment={nextAppointment}
+                  />
+                )}
+                {popupTwo && (
+                  <Labs
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    labs={apptFormValue.labIds}
+                    onChange={handleLabsChange}
+                  />
+                )}
+                {popupThree && (
+                  <Images
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    images={apptFormValue.imageIds}
+                    onChange={handleImagesChange}
+                  />
+                )}
+                {popupFour && (
+                  <ShowMedicinines
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    patient={patient}
+                  />
+                )}
+                {popupFive && (
+                  <ShowPatientInfo
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    patient={patient}
+                  />
+                )}
+                <NewAppointment
+                  show={visbleAppointment}
+                  onHide={toggleAppointment}
+                  appointment={appointment}
                 />
-              )}
-              {popupThree && (
-                <Images
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  images={apptFormValue.imageIds}
-                  onChange={handleImagesChange}
-                />
-              )}
-              {popupFour && (
-                <ShowMedicinines
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  patient={patient}
-                />
-              )}
-              {popupFive && (
-                <ShowPatientInfo
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  patient={patient}
-                />
-              )}
-              <NewAppointment
-                show={visbleAppointment}
-                onHide={toggleAppointment}
-                appointment={appointment}
-              />
+              </Div>
             </Div>
           </Div>
         </Div>
       </Div>
-    </Div>
+      <Panel
+        shaded
+        bordered
+        bodyFill
+        style={{ position:'absolute',top:'130px' ,right:'20px',width: 240 }}
+      >
+        {/* <Img src={patient?.url} width={240} height={150} /> */}
+        <Panel header={patient?.name}>
+          <p>
+            <small>
+              <Div display="flex">
+                <Div width="50px" mr="30px">
+                  Phone
+                </Div>
+                <Div>{patient?.phoneNo}</Div>
+              </Div>
+              <Div display="flex">
+                <Div width="50px" mr="30px">
+                  Sex
+                </Div>
+                <Div>{patient?.sex}</Div>
+              </Div>
+              <Div
+                display="flex"
+                onClick={() => handleShowPatientInfo()}
+                mt="2px"
+              >
+                <Div width="50px" mr="30px" mt={10}>
+                  <a>More</a>
+                </Div>
+                {/* <Div>
+              <ArrowIcon width="25px" />
+            </Div> */}
+              </Div>
+            </small>
+          </p>
+        </Panel>
+      </Panel>
+    </>
   );
 }
 

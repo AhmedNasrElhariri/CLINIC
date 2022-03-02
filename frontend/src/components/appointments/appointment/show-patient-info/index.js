@@ -5,8 +5,6 @@ import usePatientHistory from 'components/patients/patient/use-patient-history';
 import { GET_PATIENT_FIELD } from 'apollo-client/queries';
 import * as R from 'ramda';
 import {
-  mapFormValueToAppointmentData,
-  getFormInitValues,
   getKeyValuesFromPatientGroups,
 } from 'services/appointment';
 const PatientInfo = ({ visible, onClose, patient }) => {
@@ -55,7 +53,7 @@ const PatientInfo = ({ visible, onClose, patient }) => {
           </Div>
           <Div>{patient?.sex}</Div>
         </Div>
-        {data.length > 0 &&
+        {data && data.length > 0 &&
           data.map(d => (
             <Div display="flex" p="10px">
               <Div width="50px" ml="30px" mr="30px">
