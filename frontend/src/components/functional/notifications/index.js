@@ -3,7 +3,7 @@ import React from 'react';
 import { H4, H7, Div } from 'components';
 import { Container, NotificationStyled } from './style';
 import { H6 } from 'components/widgets';
-
+import { get } from 'services/local-storage';
 const NotificationBody = ({ body, date }) => {
   return (
     <NotificationStyled>
@@ -15,8 +15,11 @@ const NotificationBody = ({ body, date }) => {
 };
 
 const Notifications = ({ onClose, onClear, notifications, ...props }) => {
+  const dir = get('dir');
+  let right = '10px';
+  dir === 'ltr' ? (right = '10px') : (right = '-480px');
   return (
-    <Container>
+    <Container right={right}>
       <Div overflow="scroll">
         <Div
           display="flex"

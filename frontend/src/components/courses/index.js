@@ -281,16 +281,16 @@ const Courses = () => {
                 data={coursesDefinitions}
                 name="courseId"
                 placement="auto"
-                style={{ width: '300px', marginRight: '30px' }}
+                style={{ width: '300px', margin: '0px 5px' }}
               />
               <CRSelectInput
                 label="Course Status"
                 data={courseStatus}
                 name="status"
                 placement="auto"
-                style={{ width: '300px' }}
+                style={{ width: '300px', margin: '0px 5px' }}
               />
-              <Div ml={60}>
+              <Div m="0px 5px">
                 <CRSelectInput
                   label="Patient"
                   onSearch={v => setPatientSearchValue(v)}

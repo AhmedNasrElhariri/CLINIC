@@ -61,7 +61,7 @@ export default function Branches() {
             <CRButton onClick={openBranch} variant="primary">
               New Branch
             </CRButton>
-            <CRButton onClick={openSpecialty} variant="primary" ml={2}>
+            <CRButton onClick={openSpecialty} variant="primary" m="0px 2px">
               Add Specialty
             </CRButton>
           </Div>

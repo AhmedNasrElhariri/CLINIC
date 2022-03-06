@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Img, H6, Div } from 'components';
 import { Container, LinkStyled } from './style';
 import { Can } from 'components/user/can';
-
+import {  get } from 'services/local-storage';
 const Item = ({ name, icon, path, onClick }) => {
   return (
     <LinkStyled to={path} onClick={onClick}>
@@ -16,7 +16,9 @@ const Item = ({ name, icon, path, onClick }) => {
 
 export default function Settings({ onClose, ...props }) {
   const history = useHistory();
-
+  const dir = get('dir');
+  let right = '30px';
+  dir === 'ltr' ?  right = '30px' : right = '-480px';
   const items = [
     {
       name: 'Configurations',
@@ -53,7 +55,7 @@ export default function Settings({ onClose, ...props }) {
   ];
 
   return (
-    <Container>
+    <Container right={right}>
       {items.map(({ path, action, permission, ...item }, idx) => (
         <Div key={idx}>
           {permission ? (

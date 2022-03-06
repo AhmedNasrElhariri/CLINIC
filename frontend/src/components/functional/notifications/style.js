@@ -11,7 +11,7 @@ export const Container = styled.div`
   border: solid 1px rgba(40, 49, 72, 0.1);
   background-color: #ffffff;
   position: absolute;
-  right: 10px;
+  right: ${props => props.right};
   top: 40px;
   border-radius: 17px;
 `;

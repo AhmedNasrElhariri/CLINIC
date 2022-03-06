@@ -4,6 +4,7 @@ import { Form } from 'rsuite';
 import * as R from 'ramda';
 import { useQuery } from '@apollo/client';
 import { ALL_AREAS } from 'apollo-client/queries';
+import { useTranslation } from 'react-i18next';
 const options = [
   { name: 'FaceBook', id: 'facebook' },
   { name: 'Instagram', id: 'instagram' },
@@ -22,6 +23,7 @@ const PatientsFilter = ({
 }) => {
   const { data } = useQuery(ALL_AREAS);
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
+  const { t } = useTranslation();
   const newAreas = areas.map(a => {
     return {
       id: a.id,
@@ -40,23 +42,23 @@ const PatientsFilter = ({
       onChange={setFormValue}
     >
       <Div display="flex" justifyContent="space-between">
-        <Div mr={3} >
+        <Div mr={3} ml={3}>
           <CRTextInput
-            label="Name  Or  Code"
+            label={t('nameOrCode')}
             name="name"
             placeholder="Search"
             style={{width:"200px"}}
           />
         </Div>
         <CRTextInput
-          label="Phone Number"
+          label={t('phoneNo')}
           name="phoneNo"
           placeholder="Search"
           style={{width:"200px"}}
         />
         <Div ml={3} mr={3}>
           <CRSelectInput
-            label="Reference"
+            label={t('reference')}
             name="reference"
             data={options}
             onChange={val =>
@@ -67,7 +69,7 @@ const PatientsFilter = ({
         </Div>
         <Div>
           <CRSelectInput
-            label="Area"
+            label={t('area')}
             name="area"
             data={newAreas}
             value={areaFormValue.areaId}

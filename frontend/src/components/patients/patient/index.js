@@ -24,6 +24,7 @@ import PatientProgress from '../progress';
 import { useQueryParams, useHospitals, usePatients } from 'hooks';
 import PatientInformationCreation from '../patient-information-creation';
 import PatientCoupons from '../patient-coupons';
+import { get } from 'services/local-storage';
 
 const tabs = [
   'Patient Info',
@@ -60,6 +61,17 @@ function Appointment() {
   const { hospitals } = useHospitals({});
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
+  const dir = get('dir');
+  let border = '2px solid #eef1f1';
+  let borderRight = '';
+  let borderLeft = '';
+  if (dir === 'ltr') {
+    borderRight = border;
+    borderLeft = 'none';
+  } else {
+    borderRight = 'none';
+    borderLeft = border;
+  }
   return (
     <>
       <MainContainer
@@ -89,6 +101,8 @@ function Appointment() {
                 onSelect={setActiveTab}
                 justified
                 vertical
+                borderRight={borderRight}
+                borderLeft={borderLeft}
               >
                 {tabs.map((t, idx) => (
                   <CRVNav.CRItem eventKey={idx + ''} key={idx}>

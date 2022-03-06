@@ -54,8 +54,8 @@ function Assign() {
   );
   return (
     <>
-      <Div textAlign="right">
-        <CRButton variant="primary" onClick={openPermissions} mr={1}>
+      <Div  m="5px 0px">
+        <CRButton variant="primary" onClick={openPermissions} m="0px 2px">
           Create
         </CRButton>
         <CRButton variant="primary" onClick={handleClickCreate}>

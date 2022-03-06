@@ -206,6 +206,7 @@ const AccountingContainer = () => {
                   variant="primary"
                   onClick={createExpenseForm.show}
                   ml={1}
+                  mr={1}
                 >
                   Expense +
                 </CRButton>

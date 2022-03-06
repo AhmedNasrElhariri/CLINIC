@@ -19,7 +19,7 @@ const EditButton = styled(Button)`
   color: #50c7f2;
   font-size: 18px;
 `;
-const EditPatient = ({ patient }) => {
+const EditPatient = ({ patient,editName }) => {
   const [formValue, setFormValue] = useState(initialValues);
   const { visible, open, close } = useModal();
   const { edit } = usePatients({ onEdit: close });
@@ -40,7 +40,7 @@ const EditPatient = ({ patient }) => {
     <>
       <Div onClick={handleOpen}>
         <EditButton onClick={open}>
-          Edit
+          {editName}
         </EditButton>
         <CRModal
           show={visible}

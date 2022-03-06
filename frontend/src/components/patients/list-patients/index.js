@@ -6,6 +6,7 @@ import { Can } from 'components/user/can';
 import PatientsFilter from '../filter/index';
 import EditPatient from '../edit-patient';
 import { usePatients } from 'hooks';
+import { useTranslation } from 'react-i18next';
 const initialValue = {
   name: '',
   phoneNo: '',
@@ -31,6 +32,7 @@ function Patients() {
     reference: filter.reference,
     area: filter.area,
   });
+  const { t } = useTranslation();
   const handleSelect = useCallback(
     eventKey => {
       setCurrentPage({ activePage: eventKey });
@@ -43,7 +45,7 @@ function Patients() {
   return (
     <>
       <MainContainer
-        title="Patients"
+        title={t('patients')}
         more={
           <Div display="flex">
             <Can I="CreateSocialReport" an="Patient">
@@ -57,7 +59,7 @@ function Patients() {
             <Can I="CreateAreaReport" an="Patient">
               <ReactToPrint
                 trigger={() => (
-                  <CRButton variant="primary" ml={1}>
+                  <CRButton variant="primary" ml={1} mr={1}>
                     Area Report +
                   </CRButton>
                 )}
@@ -145,7 +147,7 @@ function Patients() {
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {data => <EditPatient patient={data} />}
+              {data => <EditPatient patient={data} editName={t('edit')}/>}
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>

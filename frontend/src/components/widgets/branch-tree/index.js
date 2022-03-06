@@ -4,6 +4,7 @@ import { Form } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import { LIST_BRANCHES_TREE } from 'apollo-client/queries';
 import useUserProfile from 'components/functional/root/fetch-user';
+import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
 const options = [
   { name: 'Organization', value: 'organization' },
@@ -18,6 +19,7 @@ const CustomBranchTress = ({
   action,
   showUserAndOrganization,
   NotAutoHideNested,
+  t,
 }) => {
   const [checkFormValue, setCheckFormValue] = useState(intialCheckValue);
   const { data } = useQuery(LIST_BRANCHES_TREE, {
@@ -110,7 +112,7 @@ const CustomBranchTress = ({
           <>
             {(branches.length > 1 || NotAutoHideNested) && (
               <CRSelectInput
-                label="Branch"
+                label={t('branch')}
                 name="branchId"
                 placeholder="Select Branch"
                 block
@@ -120,7 +122,7 @@ const CustomBranchTress = ({
             {((specialties.length > 1 && formValue.branchId) ||
               NotAutoHideNested) && (
               <CRSelectInput
-                label="Specialty"
+                label={t('specialty')}
                 name="specialtyId"
                 placeholder="Select Specialty"
                 block
@@ -130,7 +132,7 @@ const CustomBranchTress = ({
             {((doctors.length > 1 && formValue.specialtyId) ||
               NotAutoHideNested) && (
               <CRSelectInput
-                label="Doctor"
+                label={t('user')}
                 name="userId"
                 placeholder="Select Doctor"
                 block
@@ -151,6 +153,7 @@ const CRBranchTree = ({
   showUserAndOrganization = true,
   NotAutoHideNested = true,
 }) => {
+  const { t } = useTranslation();
   return (
     <CustomBranchTress
       formValue={formValue}
@@ -158,6 +161,7 @@ const CRBranchTree = ({
       action={action}
       showUserAndOrganization={showUserAndOrganization}
       NotAutoHideNested={NotAutoHideNested}
+      t={t}
     />
   );
 };

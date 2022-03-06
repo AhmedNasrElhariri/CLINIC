@@ -27,6 +27,7 @@ const CRTableStyled = styled(Table).attrs(({ data }) => ({
   & .rs-table-body-row-wrapper {
     /* height: 100% !important; */
   }
+
 `;
 
 const CRTable = ({ children, flag, noFlag, ...props }) => (

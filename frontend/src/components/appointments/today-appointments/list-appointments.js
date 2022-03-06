@@ -17,6 +17,7 @@ import {
   Divider,
 } from 'rsuite';
 import { isScheduled, isWaiting } from 'services/appointment';
+import { useTranslation } from 'react-i18next';
 import { canAjdust } from 'services/appointment';
 import { Can } from 'components/user/can';
 import { PrintOLIcon, MoreIcon } from 'components/icons';
@@ -180,6 +181,7 @@ function ListAppointments({
 }) {
   const history = useHistory();
   const componentRef = useRef();
+  const { t } = useTranslation();
   const ref = useRef();
   const handleSelect = useCallback(
     eventKey => {
@@ -193,7 +195,7 @@ function ListAppointments({
         <ReactToPrint
           trigger={() => (
             <CRButton primary mb={20}>
-              Print
+              {t('print')}
             </CRButton>
           )}
           content={() => ref.current}

@@ -20,17 +20,20 @@ import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import '../../../translations/i18n';
+
 const initialvalues = {
   branchId: null,
   language: 'ar',
+  dir: 'rtl',
 };
 
 function Root() {
+  const [formValue, setFormValue] = useState(initialvalues);
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
   const { visible: visblePatient, toggle: togglePatient } = useModal();
   const history = useHistory();
   const { t } = useTranslation();
-  const [formValue, setFormValue] = useState(initialvalues);
+
   const {
     clearNotifications,
     onLoginFailed,
@@ -124,47 +127,49 @@ function Root() {
   }
 
   return (
-    <UserAllowedViewsContext.Provider value={allowedViews}>
-      <ContainerStyled>
-        {isAuthenticated ? (
-          <>
-            <Sidebar items={items} />
-            <MainStyled>
-              <Navbar
-                onLogout={logout}
-                onClickAvatar={() => history.push('/me')}
-                avatar={R.prop('avatar')(User)}
-                notifications={notifications}
-                onClear={clearNotifications}
-                formValue={formValue}
-                setFormValue={setFormValue}
-                user={user}
-              />
-              <ContentStyled>
-                <AppRouter></AppRouter>
-              </ContentStyled>
-            </MainStyled>
-            <NewAppointment
-              show={visbleAppointment}
-              onHide={toggleAppointment}
-            />
-            <NewPatient show={visblePatient} onHide={togglePatient} />
-          </>
-        ) : (
-          <>
-            <Route path="/login">
-              <LoginContainerStyled>
-                <Login
-                  onLoginSucceeded={onLoginSucceeded}
-                  onLoginFailed={onLoginFailed}
+    <div dir={formValue.dir}>
+      <UserAllowedViewsContext.Provider value={allowedViews}>
+        <ContainerStyled>
+          {isAuthenticated ? (
+            <>
+              <Sidebar items={items} />
+              <MainStyled>
+                <Navbar
+                  onLogout={logout}
+                  onClickAvatar={() => history.push('/me')}
+                  avatar={R.prop('avatar')(User)}
+                  notifications={notifications}
+                  onClear={clearNotifications}
+                  formValue={formValue}
+                  setFormValue={setFormValue}
+                  user={user}
                 />
-              </LoginContainerStyled>
-            </Route>
-            <Redirect to="/login"></Redirect>
-          </>
-        )}
-      </ContainerStyled>
-    </UserAllowedViewsContext.Provider>
+                <ContentStyled>
+                  <AppRouter></AppRouter>
+                </ContentStyled>
+              </MainStyled>
+              <NewAppointment
+                show={visbleAppointment}
+                onHide={toggleAppointment}
+              />
+              <NewPatient show={visblePatient} onHide={togglePatient} />
+            </>
+          ) : (
+            <>
+              <Route path="/login">
+                <LoginContainerStyled>
+                  <Login
+                    onLoginSucceeded={onLoginSucceeded}
+                    onLoginFailed={onLoginFailed}
+                  />
+                </LoginContainerStyled>
+              </Route>
+              <Redirect to="/login"></Redirect>
+            </>
+          )}
+        </ContainerStyled>
+      </UserAllowedViewsContext.Provider>
+    </div>
   );
 }
 

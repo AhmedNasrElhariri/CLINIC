@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Ability } from '@casl/ability';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
@@ -15,7 +15,9 @@ import './state';
 import './global-style.js';
 import font from './fonts/Tajawal-Regular.ttf';
 import { AbilityContext } from 'components/user/can/index';
-
+import { set, get } from 'services/local-storage';
+import { StyleSheetManager } from 'styled-components';
+import rtlPlugin from 'stylis-plugin-rtl';
 export default function App() {
   useEffect(() => {
     Font.register({
@@ -24,19 +26,20 @@ export default function App() {
       src: font,
     });
   }, []);
-
   return (
     <>
       <GlobalStyle />
-      <AbilityContext.Provider value={new Ability()}>
-        <ApolloProvider client={client}>
-          <ThemeProvider theme={lightTheme}>
-            <BrowserRouter>
-              <Root />
-            </BrowserRouter>
-          </ThemeProvider>
-        </ApolloProvider>
-      </AbilityContext.Provider>
+      <StyleSheetManager stylisPlugins={[rtlPlugin]}>
+        <AbilityContext.Provider value={new Ability()}>
+            <ApolloProvider client={client}>
+              <ThemeProvider theme={{ ...lightTheme, direction: get('dir') }}>
+                <BrowserRouter>
+                  <Root />
+                </BrowserRouter>
+              </ThemeProvider>
+            </ApolloProvider>
+        </AbilityContext.Provider>
+      </StyleSheetManager>
     </>
   );
 }

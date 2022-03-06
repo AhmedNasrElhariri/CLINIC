@@ -20,16 +20,28 @@ import ExpensesTypes from './expenses-types-definition';
 import DentalDiagnosis from './dental-diagnosis-definition';
 import FaceMaterials from './face-materials';
 import AppointmentTypeDefinition from './appointment-type-definition';
+import { get } from 'services/local-storage';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 const TabContainer = styled.div`
   width: 100%;
+  margin: 0px 3px;
 `;
 function StaticSettings() {
   const [activeTab, setActiveTab] = useState('0');
-
+  const dir = get('dir');
+  let border = '2px solid #eef1f1';
+  let borderRight = '';
+  let borderLeft = '';
+  if (dir === 'ltr') {
+    borderRight = border;
+    borderLeft = 'none';
+  } else {
+    borderRight = 'none';
+    borderLeft = border;
+  }
   return (
     <Container>
       <CRVNav
@@ -37,6 +49,8 @@ function StaticSettings() {
         activeKey={activeTab}
         onSelect={setActiveTab}
         vertical
+        borderRight={borderRight}
+        borderLeft={borderLeft}
       >
         <CRVNav.CRItem eventKey="0">Hospitals</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="1">Surgeries</CRVNav.CRItem>

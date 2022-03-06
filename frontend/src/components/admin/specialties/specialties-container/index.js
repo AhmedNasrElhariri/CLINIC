@@ -63,7 +63,7 @@ export default function SpecialtiesContainer() {
             <CRButton onClick={open} variant="primary">
               New Specialty
             </CRButton>
-            <CRButton onClick={openUser} variant="primary" ml={2}>
+            <CRButton onClick={openUser} variant="primary" m="0px 2px">
               Add Doctor
             </CRButton>
           </Div>

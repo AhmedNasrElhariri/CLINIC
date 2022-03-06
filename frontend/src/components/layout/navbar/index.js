@@ -51,7 +51,15 @@ const Navbar = ({
     }));
   }, []);
   useEffect(() => {
-    i18n.changeLanguage(formValue.language);
+    const { language } = formValue;
+    i18n.changeLanguage(language);
+    if (language === 'ar') {
+      setFormValue({ ...formValue, dir: 'rtl' });
+      set('dir', 'rtl');
+    } else {
+      setFormValue({ ...formValue, dir: 'ltr' });
+      set('dir', 'ltr');
+    }
   }, [formValue.language]);
   return (
     <NavStyled>
@@ -64,7 +72,7 @@ const Navbar = ({
             name="branchId"
             data={organizationBranches}
             onSelect={val => set('branch', val)}
-            style={{ width: '200px', marginRight: '20px' }}
+            style={{ width: '200px', margin: '0px 20px' }}
           />
           <CRSelectInput
             name="language"

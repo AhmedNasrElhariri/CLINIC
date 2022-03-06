@@ -1,9 +1,11 @@
-import React, { useEffect ,useMemo} from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Form, Row, Col } from 'rsuite';
 import { get } from 'services/local-storage';
 import { CRSelectInput } from 'components';
-import * as R from 'ramda' 
+import { useTranslation } from 'react-i18next';
+import * as R from 'ramda';
 function AppointmentsFilter({ formValue, onChange, branches }) {
+  const { t } = useTranslation();
   useEffect(() => {
     onChange({ ...formValue, branch: get('branch') });
   }, [get('branch')]);
@@ -30,16 +32,21 @@ function AppointmentsFilter({ formValue, onChange, branches }) {
         <Col xs={8}>
           <CRSelectInput
             name="specialty"
-            label="Specialty"
+            label={t('specialty')}
             block
             data={specialties}
           />
         </Col>
         <Col xs={8}>
-          <CRSelectInput name="branch" label="Branch" data={branches} block />
+          <CRSelectInput
+            name="branch"
+            label={t('branch')}
+            data={branches}
+            block
+          />
         </Col>
         <Col xs={8}>
-          <CRSelectInput name="doctor" label="User" block data={doctors} />
+          <CRSelectInput name="doctor" label={t('user')} block data={doctors} />
         </Col>
       </Row>
     </Form>
