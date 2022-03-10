@@ -5,7 +5,7 @@ export const patientValues = [
   { id: 4, value: 'current_date' },
 ];
 export const surgeriesValues = [
-  { id: 1, value: 'name' },
+  { id: 1, value: 'surgery_name' },
   { id: 2, value: 'fees' },
   { id: 3, value: 'hospital_name' },
   { id: 4, value: 'current_date' },

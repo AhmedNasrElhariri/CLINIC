@@ -22,6 +22,8 @@ import * as fromRevenue from './revenue';
 import * as fromBankRevenue from './bankRevenue';
 import * as fromInsuranceRevenue from './insuranceRevenue';
 import * as fromBankExpense from './bankExpense';
+import * as fromLabDefinition from './lab-definition';
+import * as fromImageDefinition from './image-definition';
 export default {
   Query: fromQuery,
   Mutation: fromMutation,
@@ -44,6 +46,8 @@ export default {
   Course: fromCourse,
   Revenue: fromRevenue,
   BankRevenue: fromBankRevenue,
-  BankExpense:fromBankExpense,
+  BankExpense: fromBankExpense,
   InsuranceRevenue: fromInsuranceRevenue,
+  LabDefinition: fromLabDefinition,
+  ImageDefinition: fromImageDefinition,
 };

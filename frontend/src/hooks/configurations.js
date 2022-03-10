@@ -61,6 +61,11 @@ const useConfigurations = ({ onUpdate } = {}) => {
     onCompleted: () => {
       Alert.success('Page Setup updated successfully');
     },
+    refetchQueries: [
+      {
+        query: GET_PAGE_SETUP,
+      },
+    ],
   });
   const [editPoints] = useMutation(EDIT_POINTS, {
     onCompleted: () => {

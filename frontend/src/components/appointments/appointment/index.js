@@ -123,6 +123,7 @@ function Appointment() {
     setPopupTwo(false);
     setPopupThree(false);
     setPopupFour(false);
+    setPopupFive(false);
     setPopup(true);
     setType('create');
     open();
@@ -131,6 +132,7 @@ function Appointment() {
     setPopup(false);
     setPopupThree(false);
     setPopupFour(false);
+    setPopupFive(false);
     setPopupTwo(true);
     setType('create');
     open();
@@ -139,6 +141,7 @@ function Appointment() {
     setPopupTwo(false);
     setPopup(false);
     setPopupFour(false);
+    setPopupFive(false);
     setPopupThree(true);
     setType('create');
     open();
@@ -148,6 +151,7 @@ function Appointment() {
     setPopupTwo(false);
     setPopup(false);
     setPopupThree(false);
+    setPopupFive(false);
     setPopupFour(true);
     setType('create');
     open();
@@ -388,7 +392,12 @@ function Appointment() {
         shaded
         bordered
         bodyFill
-        style={{ position:'absolute',top:'130px' ,right:'20px',width: 240 }}
+        style={{
+          position: 'absolute',
+          top: '130px',
+          right: '20px',
+          width: 240,
+        }}
       >
         {/* <Img src={patient?.url} width={240} height={150} /> */}
         <Panel header={patient?.name}>

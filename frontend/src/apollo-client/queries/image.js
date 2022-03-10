@@ -30,6 +30,10 @@ export const EDIT_IMAGE_DEFINITION = gql`
     editImageDefinition(imageDefinition: $imageDefinition, type: $type) {
       id
       name
+      category {
+        id
+        name
+      }
     }
   }
 `;
