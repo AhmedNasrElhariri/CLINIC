@@ -20,7 +20,7 @@ echo 'backend built successfullty'
 cp -Rf dist/. ../../root
 
 prisma migrate deploy
-pm2 stop clinicr1
+pm2 stop clinicr_qa
 pm2 start ecosystem.config.js'
 
 echo 'starting ...'
