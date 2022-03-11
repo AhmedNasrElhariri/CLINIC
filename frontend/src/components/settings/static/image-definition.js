@@ -60,9 +60,10 @@ const ImageDefinition = () => {
 
   const handleClickEdit = useCallback(
     data => {
+      const categoryId = data?.category.id;
       const image = R.pick(['id', 'name'])(data);
       setType('edit');
-      setFormValue(image);
+      setFormValue({ ...image, categoryId: categoryId });
       open();
     },
     [open, setFormValue, setType]

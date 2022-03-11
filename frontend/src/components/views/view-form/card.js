@@ -37,19 +37,17 @@ const Card = ({ laneId, index }) => {
   );
 
   const remove = useCallback(() => {
+    console.log(formValue,lanes,'INOI');
     const newLanes = lanes.map(l => ({
       ...l,
       cards: l.cards.filter(c => c.id !== formValue.id),
     }));
-    setLanes(newLanes);
-  }, [formValue, lanes, setLanes]);
-
+    setLanes(newLanes,lanes,'laneslanes');
+  }, [formValue,lanes, setLanes]);
+  console.log(formValue,lanes,'INOI');
+  console.log(formValue,lanes)
   const handleClickCreate = useCallback(() => {
     setPopup(1);
-    open();
-  }, [open]);
-  const handleClickCreateMultipleChoices = useCallback(() => {
-    setPopup(3);
     open();
   }, [open]);
 
@@ -72,7 +70,7 @@ const Card = ({ laneId, index }) => {
     close();
   }, [close]);
 
-  const fieldType = useMemo(() => formValue.type, [formValue.type]);
+  const fieldType = useMemo(() => formValue?.type, [formValue?.type]);
   const hasChoices = useMemo(() => {
     return [
       RADIO_FIELD_TYPE,

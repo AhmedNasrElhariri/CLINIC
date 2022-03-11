@@ -4,7 +4,6 @@ import ReactToPrint from 'react-to-print';
 import { ACTIONS } from 'utils/constants';
 import 'react-quill/dist/quill.snow.css';
 import { CRSelectInput, CRButton, Div } from 'components';
-import { useReactToPrint } from 'react-to-print';
 import Label from '../widgets/label';
 import styled from 'styled-components';
 import {
@@ -14,6 +13,7 @@ import {
   useAppointments,
   useConfigurations,
   usePatientView,
+  usePatientSurgeries,
 } from 'hooks';
 import Editor from 'components/settings/static/editor';
 import { formatDate } from 'utils/date';
@@ -50,6 +50,7 @@ function ReportPrintout() {
   const { todayAppointments } = useAppointments({
     action: ACTIONS.List_Appointment,
   });
+  const { patientSurgeries } = usePatientSurgeries({});
   const ref = useRef();
   const { patientReports } = usePatientReports({
     onCreate: () => {},
@@ -75,6 +76,13 @@ function ReportPrintout() {
         return {
           name: a.patient.name,
           id: a,
+        };
+      });
+    } else if (context === 'surgeries') {
+      return patientSurgeries.map(s => {
+        return {
+          name: s?.surgery.name,
+          id: s,
         };
       });
     }
@@ -152,10 +160,11 @@ function ReportPrintout() {
       });
       newBody = newBody.replaceAll('appointment_current_date', CurrentDate);
       newBody = newBody.replaceAll('patient_current_date', CurrentDate);
+      newBody = newBody.replaceAll('surgeries_current_date', CurrentDate);
       setFormValue({ ...formValue, body: newBody });
     }
   }, [formValue.data]);
-
+  console.log(patientSurgeries,'SS');
   return (
     <>
       <Div display="flex" justifyContent="space-between">
@@ -194,7 +203,14 @@ function ReportPrintout() {
             block
           />
         ) : (
-          ''
+          <CRSelectInput
+            label="Surgery"
+            name="data"
+            data={dataValue}
+            style={{ width: '1000px' }}
+            virtualized={false}
+            block
+          />
         )}
 
         <CRSelectInput
