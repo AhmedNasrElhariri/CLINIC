@@ -279,6 +279,7 @@ model User {
   UserInventoryItem         InventoryItem[]             @relation("userInventoryItem")
   DoctorInventoryItem       InventoryItem[]             @relation("doctorInventoryItem")
   InventoryHistory          InventoryHistory[]          @relation("userInventory")
+  DoctorInventoryHistory    InventoryHistory[]          @relation("doctorInventory")
   DentalDiagnosisDefinition DentalDiagnosisDefinition[]
   Tooth                     Tooth[]
   ToothTransaction          ToothTransaction[]          @relation("toothUser")
@@ -909,6 +910,12 @@ model InventoryHistory {
   userId         String
   patient        Patient?           @relation(fields: [patientId], references: [id])
   patientId      String?
+  specialty      Specialty?         @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?            @relation(fields: [branchId], references: [id])
+  branchId       String?
+  doctor         User?              @relation("doctorInventory", fields: [doctorId], references: [id])
+  doctorId       String?
   operation      InventoryOperation
   quantity       Int
   price          Int?
@@ -1444,6 +1451,7 @@ model Branch {
   InsuranceRevenue   InsuranceRevenue[]
   CoursePayment      CoursePayment[]
   BankExpense        BankExpense[]
+  InventoryHistory   InventoryHistory[]
 }
 
 model Specialty {
@@ -1470,6 +1478,7 @@ model Specialty {
   InsuranceRevenue   InsuranceRevenue[]
   CoursePayment      CoursePayment[]
   BankExpense        BankExpense[]
+  InventoryHistory   InventoryHistory[]
 }
 
 model UserSpecialty {

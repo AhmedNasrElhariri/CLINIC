@@ -92,3 +92,12 @@ export const REMOVE_ITEM = gql`
     }
   }
 `;
+
+export const CONSUME_INVENTORY_MANUAl = gql`
+  mutation consumeInventoryManual($data: InventoryConsumedItemInput!) {
+    consumeInventoryManual(data: $data) {
+      id
+      quantity
+    }
+  }
+`;

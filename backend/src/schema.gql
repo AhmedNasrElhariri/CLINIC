@@ -317,6 +317,7 @@ type Mutation {
   removeItemDefinition(id: ID!): Item
   editItem(item: ItemUpdateInput!): Item
   addItem(item: AddToInventoryInput!): InventoryItem
+  consumeInventoryManual(data: InventoryConsumedItemInput!): [InventoryItem!]
   removeItem(itemId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
   editHospital(hospital: HospitalInput!, type: String!): Hospital
@@ -1370,6 +1371,12 @@ input AddToInventoryInput {
 input FinishAppointmentItemInput {
   itemId: String!
   quantity: Int!
+}
+input InventoryConsumedItemInput {
+  items: [FinishAppointmentItemInput!]
+  branchId: ID
+  specialtyId: ID
+  userId: ID
 }
 ########################### Organization ##################################
 

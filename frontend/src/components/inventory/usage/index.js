@@ -1,19 +1,12 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import * as R from 'ramda';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { Div, CRNumberInput } from 'components';
 import ListInvoiceItems from './list-invoice-items';
 import { useForm, useInventory } from 'hooks';
 import { CRButton, CRBrancheTree, CRDocSelectInput } from 'components/widgets';
 import { normalize } from 'utils/misc';
-
-const { StringType, NumberType } = Schema.Types;
-
-const model = Schema.Model({
-  itemId: StringType().isRequired('Item is required'),
-  quantity: NumberType().isRequired('Amount Type is required'),
-});
 
 const initValue = {
   itemId: null,
@@ -23,11 +16,13 @@ const initValue = {
   userId: null,
 };
 
-function InventoryUsage({ onChange, selectedItems, setSelectedItems }) {
-  const { formValue, setFormValue } = useForm({
-    initValue,
-    model,
-  });
+function InventoryUsage({
+  onChange,
+  selectedItems,
+  setSelectedItems,
+  formValue,
+  setFormValue,
+}) {
   const { items, inventoryWithAmount } = useInventory();
   const handleDelete = useCallback(
     idx => {

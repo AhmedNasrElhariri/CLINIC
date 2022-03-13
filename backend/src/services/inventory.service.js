@@ -22,7 +22,12 @@ export const updatedUsedMaterials = async (organizationId, items) => {
   });
 
   //eslint-disable-next-line
-  return Promise.all(args.map(d => prisma.inventoryItem.updateMany(d)));
+  await Promise.all(args.map(d => prisma.inventoryItem.updateMany(d)));
+  return prisma.inventoryItem.findMany({
+    where: {
+      organizationId,
+    },
+  });
 };
 
 export const storeHistoryOfAddition = async ({
@@ -79,10 +84,12 @@ export const mapHistoryToMessage = async history => {
 export const createSubstractHistoryForMultipleItems = async ({
   patientId,
   userId,
+  branchId,
+  specialtyId,
+  doctorId,
   organizationId,
   data,
 }) => {
-
   const itemsIds = R.map(R.prop('itemId'))(data);
   const inventoryItems = await prisma.inventoryItem.findMany({
     where: {
@@ -92,11 +99,11 @@ export const createSubstractHistoryForMultipleItems = async ({
     },
   });
   const items = inventoryItems.map(i => {
-    const item = R.find(R.propEq('itemId', i.id))(data)
+    const item = R.find(R.propEq('itemId', i.id))(data);
     return {
-        itemId: i.itemId,
-        quantity: item.quantity,
-    }
+      itemId: i.itemId,
+      quantity: item.quantity,
+    };
   });
   // const args = data.map(i => {
   //   return {
@@ -128,31 +135,56 @@ export const createSubstractHistoryForMultipleItems = async ({
   return Promise.all(
     items.map(i =>
       prisma.inventoryHistory.create({
-        data: {
-          item: {
-            connect: {
-              id: i.itemId,
+        data: Object.assign(
+          {
+            item: {
+              connect: {
+                id: i.itemId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            operation: INVENTORY_OPERATION.SUBSTRACT,
+            quantity: i.quantity,
+            date: new Date(),
+          },
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-          user: {
-            connect: {
-              id: userId,
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
             },
           },
-          patient: {
-            connect: {
-              id: patientId,
+          doctorId && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
             },
           },
-          organization: {
-            connect: {
-              id: organizationId,
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
             },
-          },
-          operation: INVENTORY_OPERATION.SUBSTRACT,
-          quantity: i.quantity,
-          date: new Date(),
-        },
+          }
+        ),
       })
     )
   );

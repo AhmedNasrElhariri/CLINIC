@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { Form, CheckboxGroup, Checkbox } from 'rsuite';
+import { Form } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import { Spinner } from 'components/widgets/button/spinner';
 import * as R from 'ramda';
@@ -11,9 +11,7 @@ import {
   CRButton,
   CRNumberInput,
   CRTextInput,
-  CRCheckBoxGroup,
-  H3,
-  H4,
+  CRRadio,
 } from 'components';
 import ListInvoiceItems from '../list-invoice-items';
 import PrintInvoice from '../print-invoice/index';
@@ -21,10 +19,8 @@ import { CRDivider } from 'components';
 import {
   useBankDefinition,
   useCompanyDefinition,
-  usePrice,
   useSessionDefinition,
 } from 'hooks';
-import { CRRadio, CRDocSelectInput } from 'components/widgets';
 
 const OTHER = 'Other';
 
@@ -75,15 +71,12 @@ function AppointmentInvoice({
   othersName,
   onOthersNameChange,
   onDiscountChange,
-  cashPayment,
-  onCashPaymentChange,
   sessions,
   company,
   setCompany,
   option,
   setOption,
   patientCoupons,
-  handleOk,
   bank,
   setBank,
   organization,
@@ -94,7 +87,10 @@ function AppointmentInvoice({
   couponsValue,
   loading,
   selectedSessions,
-  setSelectedSessions
+  setSelectedSessions,
+  subtotal,
+  totalCoupons,
+  total,
 }) {
   const [session, setSession] = useState({});
   const [sessionNumber, setSessionNumber] = useState(0);
@@ -140,31 +136,7 @@ function AppointmentInvoice({
     },
     [handleOnChange]
   );
-  const subtotal = useMemo(() => {
-    let sub = 0;
-    const subRed = selectedSessions.reduce(
-      (sum, { price, number }) => sum + number * price,
-      0
-    );
-    sub = subRed + others;
-    return sub;
-  }, [selectedSessions, option, others]);
-  const totalCoupons = useMemo(() => {
-    let totalSum = 0;
-    const values = Object.values(coupons);
-    if (values.length == 0) {
-      totalSum = 0;
-    } else {
-      values.forEach(v => {
-        totalSum += v;
-      });
-    }
-    return totalSum;
-  }, [coupons]);
-  const total = useMemo(
-    () => subtotal - discount - totalCoupons,
-    [discount, subtotal, totalCoupons]
-  );
+
   useEffect(() => {
     setCouponsValue(totalCoupons);
   }, [setCouponsValue, totalCoupons]);
