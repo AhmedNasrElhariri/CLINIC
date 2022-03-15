@@ -74,8 +74,18 @@ export const mapHistoryToMessage = async history => {
   return history.map(h => {
     const user = R.find(R.propEq('id', h.userId))(users);
     const patientName = R.pathOr('', ['patient', 'name'])(h);
+    const doctorName = R.pathOr('', ['doctor', 'name'])(h);
+    const branchName = R.pathOr('', ['branch', 'name'])(h);
+    const specialtyName = R.pathOr('', ['specialty', 'name'])(h);
     return {
-      body: createHistoryBody(h, user, patientName),
+      body: createHistoryBody(
+        h,
+        user,
+        patientName,
+        doctorName,
+        branchName,
+        specialtyName
+      ),
       date: h.date,
     };
   });
@@ -173,7 +183,7 @@ export const createSubstractHistoryForMultipleItems = async ({
           doctorId && {
             doctor: {
               connect: {
-                id: userID,
+                id: doctorId,
               },
             },
           },
@@ -193,7 +203,10 @@ export const createSubstractHistoryForMultipleItems = async ({
 export const createHistoryBody = async (
   { operation, price, quantity, item },
   user,
-  patientName
+  patientName,
+  doctorName,
+  branchName,
+  specialtyName
 ) => {
   switch (operation) {
     case INVENTORY_OPERATION.ADD:
@@ -201,6 +214,16 @@ export const createHistoryBody = async (
     case INVENTORY_OPERATION.SUBSTRACT:
       return `${user.name} consumed ${quantity} ${item.unitOfMeasure} from ${
         item.name
-      } ${patientName ? `to ${patientName}` : ''}`;
+      } ${
+        patientName
+          ? `to patient - ${patientName}`
+          : doctorName
+          ? `to doctor - ${doctorName}`
+          : specialtyName
+          ? `to specialty - ${specialtyName}`
+          : branchName
+          ? `to branch - ${branchName}`
+          : ''
+      }`;
   }
 };

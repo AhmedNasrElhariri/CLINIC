@@ -97,4 +97,5 @@ export { default as allPatients } from './all-patients';
 export { default as couponPointsTransactions } from './coupon-points-transactions';
 export { default as totalUnpaidOfCourses } from './total-unpaid-of-courses';
 export { default as patientRevenue } from './patient-revenue';
+export { default as myCourseTypesDefinition } from './my-course-types-definition';
 

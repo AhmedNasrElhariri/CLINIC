@@ -26,6 +26,7 @@ export const EDIT_PATIENT = gql`
       type
       phoneNo
       phoneNoTwo
+      code
       sex
       age
       reference

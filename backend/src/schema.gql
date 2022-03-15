@@ -188,6 +188,7 @@ type Query {
     dateFrom: Date
     dateTo: Date
   ): [SessionStatistics!]
+  myCourseTypesDefinition: [CourseTypeDefinition!]
   myBanksDefinition: [BankDefinition!]
   myExpenseTypesDefinition: [ExpenseTypeDefinition!]
   myCompanysDefinition: [CompanyDefinition!]
@@ -360,6 +361,12 @@ type Mutation {
   editSessionDefinition(
     sessionDefinition: SessionInputDefinition!
   ): SessionDefinition
+  addCourseTypeDefinition(
+    courseTypeDefinition: CourseTypeInputDefinition!
+  ): CourseTypeDefinition
+  editCourseTypeDefinition(
+    courseTypeDefinition: CourseTypeInputDefinition!
+  ): CourseTypeDefinition
   addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
   addPageSetup(pageSetup: PageSetupInput!): PageSetup!
   editPoints(points: Int!, couponValue: Int!): Points
@@ -1759,11 +1766,26 @@ input CourseInputDefinition {
   messureOfUnits: String
 }
 
+type CourseTypeDefinition {
+  id: ID!
+  name: String!
+  price: Int!
+}
+
+input CourseTypeInputDefinition {
+  id: ID
+  name: String!
+  price: Int!
+}
+
 ########################### Course  ##################################
 
 type Course {
   id: ID!
   price: Int!
+  name: String
+  units: Int
+  type: String
   paid: Int!
   consumed: Int!
   discount: Int!
@@ -1774,7 +1796,6 @@ type Course {
   patient: Patient!
   user: User!
   doctor: User!
-  courseDefinition: CourseDefinition!
 }
 
 type CourseData {
@@ -1784,11 +1805,13 @@ type CourseData {
 
 input CourseInput {
   price: Int!
+  customName: String
+  customUnits: Int
   paid: Int
   consumed: Int
   discount: Int
   patientId: ID!
-  courseDefinitionId: ID!
+  courseDefinitionId: ID
   doctorId: ID!
   sessions: [Date!]
   branchId: ID

@@ -19,21 +19,21 @@ const editCourse = async (
       id: courseId,
     },
     include: {
-      courseDefinition: true,
       patient: true,
     },
   });
+  console.log(data, 'NNN');
+  let cName = data.customName;
+  const { courseDefinitionId } = data;
+  if (courseDefinitionId) {
+    const courseDefination = await prisma.courseDefinition.findUnique({
+      where: { id: courseDefinitionId },
+    });
+    cName = courseDefination.name;
+  }
   const bankPayment =
-    'C' +
-    '/' +
-    data.courseDefinition.name +
-    '/' +
-    data.patient.name +
-    '/' +
-    'Bank_Payment';
-  const cashPayment =
-    'C' + '/' + data.courseDefinition.name + '/' + data.patient.name;
-
+    'C' + '/' + cName + '/' + data.patient.name + '/' + 'Bank_Payment';
+  const cashPayment = 'C' + '/' + cName + '/' + data.patient.name;
   const salerId = data.userId;
   const patientId = data.patient.id;
   await prisma.coursePayment.create({
@@ -234,35 +234,39 @@ const editCourse = async (
     where: {
       id: courseId,
     },
-    data: {
-      patient: {
-        connect: {
-          id: data.patientId,
+    data: Object.assign(
+      {
+        patient: {
+          connect: {
+            id: data.patientId,
+          },
         },
-      },
-      courseDefinition: {
-        connect: {
-          id: data.courseDefinitionId,
+        user: {
+          connect: {
+            id: data.userId,
+          },
         },
-      },
-      user: {
-        connect: {
-          id: data.userId,
+        doctor: {
+          connect: {
+            id: data.doctorId,
+          },
         },
+        paid:
+          paid === data.price || paid >= data.price
+            ? data.price
+            : bank != null
+            ? paid + data.paid + visaPaid
+            : paid + data.paid,
+        price: data.price,
       },
-      doctor: {
-        connect: {
-          id: data.doctorId,
+      courseDefinitionId && {
+        courseDefinition: {
+          connect: {
+            id: courseDefinitionId,
+          },
         },
-      },
-      paid:
-        paid === data.price || paid >= data.price
-          ? data.price
-          : bank != null
-          ? paid + data.paid + visaPaid
-          : paid + data.paid,
-      price: data.price,
-    },
+      }
+    ),
   });
 };
 

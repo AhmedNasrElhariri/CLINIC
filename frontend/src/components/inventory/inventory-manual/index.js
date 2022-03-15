@@ -47,6 +47,7 @@ const InventoryManual = () => {
             userId,
           };
           consumeInventoryManual(data);
+          close();
         }}
         onHide={() => {
           close();

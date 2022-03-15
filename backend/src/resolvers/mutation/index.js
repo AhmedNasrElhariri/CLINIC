@@ -117,3 +117,5 @@ export { default as editPoints } from './edit-points';
 export { default as createBankRevenue } from './create-bank-revenue';
 export { default as createBankExpense } from './create-bank-expense';
 export {default as consumeInventoryManual} from './consume-inventory-manual';
+export { default as addCourseTypeDefinition } from './add-course-type-definition';
+export { default as editCourseTypeDefinition } from './edit-course-type-definition';

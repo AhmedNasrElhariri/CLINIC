@@ -218,6 +218,7 @@ model Organization {
   Points                    Points[]
   Coupon                    Coupon[]
   BankExpense               BankExpense[]
+  CourseTypeDefinition      CourseTypeDefinition[]
 }
 
 model User {
@@ -1119,6 +1120,16 @@ model SessionDefinition {
   SessionTransaction SessionTransaction[]
 }
 
+model CourseTypeDefinition {
+  id             String       @id @default(uuid())
+  name           String
+  price          Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
 model Points {
   id             String       @id @default(uuid())
   points         Int
@@ -1250,25 +1261,27 @@ model AppointmentTypeDefinition {
 }
 
 model Course {
-  id                 String           @id @default(uuid())
+  id                 String            @id @default(uuid())
   price              Int
+  customName         String?
+  customUnits        Int?
   paid               Int
-  consumed           Int              @default(0)
+  consumed           Int               @default(0)
   discount           Int
   startDate          DateTime
   endDate            DateTime
   status             CourseStatus
   sessions           Appointment[]
-  patient            Patient          @relation(fields: [patientId], references: [id])
+  patient            Patient           @relation(fields: [patientId], references: [id])
   patientId          String
-  user               User             @relation("user", fields: [userId], references: [id])
+  user               User              @relation("user", fields: [userId], references: [id])
   userId             String
-  courseDefinition   CourseDefinition @relation(fields: [courseDefinitionId], references: [id])
-  courseDefinitionId String
-  doctor             User             @relation("doctor", fields: [doctorId], references: [id])
+  courseDefinition   CourseDefinition? @relation(fields: [courseDefinitionId], references: [id])
+  courseDefinitionId String?
+  doctor             User              @relation("doctor", fields: [doctorId], references: [id])
   doctorId           String
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now()) @updatedAt
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @default(now()) @updatedAt
   CoursePayment      CoursePayment[]
 }
 

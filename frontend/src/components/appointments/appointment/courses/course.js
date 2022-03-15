@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CoursePayment from './course-payment-history';
 import CourseSession from './course-sessions';
@@ -60,12 +60,12 @@ const CourseData = ({
             Pay
           </CRButton>
         )}
-        {course.courseDefinition.type === 'Perunit' && (
+        {(course.type === 'Perunit' || course.type === 'Custom') && (
           <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
             Add Units
           </CRButton>
         )}
-        {course.courseDefinition.type === 'Perunit' && (
+        {(course.type === 'Perunit' || course.type === 'Custom') && (
           <CRButton
             variant="primary"
             mr={1}
@@ -81,7 +81,7 @@ const CourseData = ({
         )}
         <Data>
           <DataName>Name : </DataName>
-          <DataValue>{course?.courseDefinition?.name}</DataValue>
+          <DataValue>{course?.name}</DataValue>
         </Data>
         <Data>
           <DataName>Price : </DataName>
@@ -111,11 +111,11 @@ const CourseData = ({
           <DataName>status : </DataName>
           <DataValue>{course.status}</DataValue>
         </Data>
-        {course.courseDefinition.type === 'Perunit' && (
+        {(course.type === 'Perunit' || course.type === 'Custom') && (
           <>
             <Data>
               <DataName>Total of Units : </DataName>
-              <DataValue>{course.courseDefinition.units}</DataValue>
+              <DataValue>{course.units}</DataValue>
             </Data>
             <Data>
               <DataName>Consumed: </DataName>
@@ -123,9 +123,7 @@ const CourseData = ({
             </Data>
             <Data>
               <DataName>Remaining: </DataName>
-              <DataValue>
-                {course.courseDefinition.units - course.consumed}
-              </DataValue>
+              <DataValue>{course.units - course.consumed}</DataValue>
             </Data>
           </>
         )}

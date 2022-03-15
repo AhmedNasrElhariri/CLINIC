@@ -7,6 +7,7 @@ const finishCourse = async (_, { courseId }) => {
       id: courseId,
     },
   });
+  const { courseDefinitionId } = data;
   let status =
     new Date() > data.endDate
       ? COURSE_STATUS.FINISHED
@@ -17,42 +18,46 @@ const finishCourse = async (_, { courseId }) => {
     where: {
       id: courseId,
     },
-    data: {
-      patient: {
-        connect: {
-          id: data.patientId,
-        },
-      },
-      courseDefinition: {
-        connect: {
-          id: data.courseDefinitionId,
-        },
-      },
-      user: {
-        connect: {
-          id: data.userId,
-        },
-      },
-      doctor: {
-        connect: {
-          id: data.userId,
-        },
-      },
-      sessions: {
-        updateMany: {
-          where: {
-            status: APPOINTMENTS_STATUS.SCHEDULED,
-          },
-          data: {
-            status: APPOINTMENTS_STATUS.CANCELLED,
+    data: Object.assign(
+      {
+        patient: {
+          connect: {
+            id: data.patientId,
           },
         },
+        user: {
+          connect: {
+            id: data.userId,
+          },
+        },
+        doctor: {
+          connect: {
+            id: data.userId,
+          },
+        },
+        sessions: {
+          updateMany: {
+            where: {
+              status: APPOINTMENTS_STATUS.SCHEDULED,
+            },
+            data: {
+              status: APPOINTMENTS_STATUS.CANCELLED,
+            },
+          },
+        },
+        status: status,
+        endDate: new Date(),
+        paid: data.paid,
+        price: data.price,
       },
-      status: status,
-      endDate: new Date(),
-      paid: data.paid,
-      price: data.price,
-    },
+      courseDefinitionId && {
+        courseDefinition: {
+          connect: {
+            id: courseDefinitionId,
+          },
+        },
+      }
+    ),
   });
 };
 

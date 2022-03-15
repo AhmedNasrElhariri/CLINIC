@@ -67,12 +67,12 @@ const CourseData = ({
             Pay
           </CRButton>
         )}
-        {course.courseDefinition.type === 'Perunit' && (
+        {course.type === 'Perunit' && (
           <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
             Add Units
           </CRButton>
         )}
-        {course.courseDefinition.type === 'Perunit' && (
+        {course.type === 'Perunit' && (
           <CRButton
             variant="primary"
             mr={1}
@@ -91,7 +91,7 @@ const CourseData = ({
         </CRButton>
         <Data>
           <DataName>Name : </DataName>
-          <DataValue>{course?.courseDefinition?.name}</DataValue>
+          <DataValue>{course?.name}</DataValue>
         </Data>
         <Data>
           <DataName>Price : </DataName>
@@ -121,11 +121,11 @@ const CourseData = ({
           <DataName>status : </DataName>
           <DataValue>{course.status}</DataValue>
         </Data>
-        {course.courseDefinition.type === 'Perunit' && (
+        {course.type === 'Perunit' && (
           <>
             <Data>
               <DataName>Total of Units : </DataName>
-              <DataValue>{course.courseDefinition.units}</DataValue>
+              <DataValue>{course.units}</DataValue>
             </Data>
             <Data>
               <DataName>Consumed: </DataName>
@@ -134,7 +134,7 @@ const CourseData = ({
             <Data>
               <DataName>Remaining: </DataName>
               <DataValue>
-                {course.courseDefinition.units - course.consumed}
+                {course.units - course.consumed}
               </DataValue>
             </Data>
           </>

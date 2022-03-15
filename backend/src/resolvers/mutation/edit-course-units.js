@@ -5,67 +5,76 @@ const editCourseUnits = async (_, { courseId, consumed, type }, { userId }) => {
       id: courseId,
     },
     include: {
-      courseDefinition: true,
       patient: true,
     },
   });
+  const { courseDefinitionId } = data;
   if (type === 'addNewUnits') {
     return prisma.course.update({
       where: {
         id: courseId,
       },
-      data: {
-        patient: {
-          connect: {
-            id: data.patientId,
+      data: Object.assign(
+        {
+          patient: {
+            connect: {
+              id: data.patientId,
+            },
           },
-        },
-        courseDefinition: {
-          connect: {
-            id: data.courseDefinitionId,
+          user: {
+            connect: {
+              id: data.userId,
+            },
           },
-        },
-        user: {
-          connect: {
-            id: data.userId,
+          doctor: {
+            connect: {
+              id: data.doctorId,
+            },
           },
+          consumed: data.consumed + consumed,
         },
-        doctor: {
-          connect: {
-            id: data.doctorId,
+        courseDefinitionId && {
+          courseDefinition: {
+            connect: {
+              id: courseDefinitionId,
+            },
           },
-        },
-        consumed: data.consumed + consumed,
-      },
+        }
+      ),
     });
   } else {
     return prisma.course.update({
       where: {
         id: courseId,
       },
-      data: {
-        patient: {
-          connect: {
-            id: data.patientId,
+      data: Object.assign(
+        {
+          patient: {
+            connect: {
+              id: data.patientId,
+            },
           },
-        },
-        courseDefinition: {
-          connect: {
-            id: data.courseDefinitionId,
+
+          user: {
+            connect: {
+              id: data.userId,
+            },
           },
-        },
-        user: {
-          connect: {
-            id: data.userId,
+          doctor: {
+            connect: {
+              id: data.doctorId,
+            },
           },
+          consumed: consumed,
         },
-        doctor: {
-          connect: {
-            id: data.doctorId,
+        courseDefinitionId && {
+          courseDefinition: {
+            connect: {
+              id: data.courseDefinitionId,
+            },
           },
-        },
-        consumed: consumed,
-      },
+        }
+      ),
     });
   }
 };
