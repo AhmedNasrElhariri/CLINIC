@@ -98,7 +98,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
   });
 
   const updatedPatientCourses = patientCourses.map(course => ({
-    name: course.courseDefinition.name,
+    name: course.name,
     IDBTransaction: course.id,
   }));
   const updatedSessionsDefinition = sessionsDefinition.map(s => {

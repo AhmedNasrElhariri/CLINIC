@@ -13,6 +13,9 @@ const inventoryHistory = (_, __, { organizationId }) => {
       include: {
         item: true,
         patient: true,
+        doctor: true,
+        branch: true,
+        specialty: true,
       },
     })
     .then(history => {

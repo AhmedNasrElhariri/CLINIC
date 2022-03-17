@@ -62,20 +62,15 @@ export const LIST_COURSES = gql`
       courses {
         id
         price
+        name
+        type
+        units
         paid
         discount
         consumed
         startDate
         endDate
         status
-        courseDefinition {
-          id
-          name
-          type
-          price
-          units
-          messureOfUnits
-        }
         doctor {
           id
           name
@@ -104,20 +99,15 @@ export const LIST_PATIENT_COURSES = gql`
     myPatientCourses(patientId: $patientId) {
       id
       price
+      name
+      type
+      units
       paid
       discount
       consumed
       startDate
       endDate
       status
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
-      }
       doctor {
         id
         name
@@ -175,14 +165,6 @@ export const ADD_COURSE = gql`
         sex
         phoneNo
       }
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
-      }
     }
   }
 `;
@@ -215,14 +197,6 @@ export const EDIT_COURSE = gql`
         age
         sex
         phoneNo
-      }
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
       }
     }
   }
@@ -257,14 +231,6 @@ export const EDIT_COURSE_PAYMENT_HISTORY = gql`
         sex
         phoneNo
       }
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
-      }
     }
   }
 `;
@@ -282,14 +248,6 @@ export const EDIT_COURSE_UNITS = gql`
         age
         sex
         phoneNo
-      }
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
       }
     }
   }

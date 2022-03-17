@@ -5,12 +5,14 @@ import { Can } from 'components/user/can';
 import InventoryStatus from '../status';
 import InventoryHistory from '../history';
 import ItemsDefinitions from '../items-definitions';
+import InventoryManual from '../inventory-manual';
 
 
 const tabs = [
   { name: 'Inventory', key: '0', component: InventoryStatus },
   { name: 'History', key: '1', component: InventoryHistory },
   { name: 'Item Definition', key: '2', component: ItemsDefinitions },
+  { name: 'Inventory Manual', key: '3', component: ItemsDefinitions },
 ];
 
 const InventoryPage = () => {
@@ -23,7 +25,7 @@ const InventoryPage = () => {
         appearance="tabs"
         activeKey={activeTab}
         onSelect={setActiveTab}
-        width={500}
+        width={1000}
         justified
       >
         {tabs.map(({ key, name }) => (
@@ -36,6 +38,7 @@ const InventoryPage = () => {
         {activeTab === '0' && <Can I="AddItem" an="Inventory"><InventoryStatus /></Can>}
         {activeTab === '1' && <Can I="ViewHistory" an="Inventory"><InventoryHistory /></Can>}
         {activeTab === '2' && <Can I="DefineItem" an="Inventory"><ItemsDefinitions /></Can>}
+        {activeTab === '3' && <Can I="DefineItem" an="Inventory"><InventoryManual /></Can>}
       </CRCard>
     </>
   );

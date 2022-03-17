@@ -11,9 +11,16 @@ const deleteCourse = async (
     },
     include: {
       patient: true,
-      courseDefinition: true,
     },
   });
+  let cName = data.customName;
+  const { courseDefinitionId } = data;
+  if (courseDefinitionId) {
+    const courseDefination = await prisma.courseDefinition.findUnique({
+      where: { id: courseDefinitionId },
+    });
+    cName = courseDefination.name;
+  }
   let status =
     new Date() < data.startDate
       ? COURSE_STATUS.REJECTED
@@ -39,7 +46,7 @@ const deleteCourse = async (
   if (bank) {
     await prisma.bankExpense.create({
       data: {
-        name: 'C/' + courseDefinition.name + '/Refund/' + patient.name,
+        name: 'C/' + cName + '/Refund/' + patient.name,
         amount: refund,
         expenseType: 'refund',
         date: new Date(),
@@ -68,7 +75,7 @@ const deleteCourse = async (
   } else {
     await prisma.expense.create({
       data: {
-        name: 'C/' + courseDefinition.name + '/Refund/' + patient.name,
+        name: 'C/' + cName + '/Refund/' + patient.name,
         amount: refund,
         expenseType: 'refund',
         date: new Date(),
@@ -89,42 +96,46 @@ const deleteCourse = async (
     where: {
       id: courseId,
     },
-    data: {
-      patient: {
-        connect: {
-          id: data.patientId,
-        },
-      },
-      courseDefinition: {
-        connect: {
-          id: data.courseDefinitionId,
-        },
-      },
-      user: {
-        connect: {
-          id: data.userId,
-        },
-      },
-      doctor: {
-        connect: {
-          id: data.userId,
-        },
-      },
-      sessions: {
-        updateMany: {
-          where: {
-            status: APPOINTMENTS_STATUS.SCHEDULED,
-          },
-          data: {
-            status: APPOINTMENTS_STATUS.CANCELLED,
+    data: Object.assign(
+      {
+        patient: {
+          connect: {
+            id: data.patientId,
           },
         },
+        user: {
+          connect: {
+            id: data.userId,
+          },
+        },
+        doctor: {
+          connect: {
+            id: data.userId,
+          },
+        },
+        sessions: {
+          updateMany: {
+            where: {
+              status: APPOINTMENTS_STATUS.SCHEDULED,
+            },
+            data: {
+              status: APPOINTMENTS_STATUS.CANCELLED,
+            },
+          },
+        },
+        status: status,
+        endDate: new Date(),
+        paid: data.paid,
+        price: data.price,
       },
-      status: status,
-      endDate: new Date(),
-      paid: data.paid,
-      price: data.price,
-    },
+      courseDefinitionId && {
+        courseDefinition: {
+          connect: {
+            id: courseDefinitionId,
+          },
+        },
+      }
+    ),
   });
 };
 

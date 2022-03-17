@@ -10,6 +10,8 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
     patientId,
     courseDefinitionId,
     price,
+    customName,
+    customUnits,
     paid,
     discount,
     sessions,
@@ -23,63 +25,125 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
   const startDate = sessions.length > 0 ? sessions[0] : new Date();
   const endDate =
     sessions.length > 0 ? sessions[sessions.length - 1] : new Date();
-  const courseDef = await prisma.course.create({
-    data: {
-      price,
-      paid,
-      discount,
-      startDate,
-      endDate,
-      status: COURSE_STATUS.INPROGRESS,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
-      doctor: {
-        connect: {
-          id: doctorId,
-        },
-      },
-      patient: {
-        connect: {
-          id: patientId,
-        },
-      },
-      courseDefinition: {
-        connect: {
-          id: courseDefinitionId,
-        },
-      },
+  let courseDef = {},
+    cName = '';
 
-      sessions: {
-        create: sessions.map(date => ({
-          type: APPOINTMENTS_TYPES.Session,
-          status: APPOINTMENTS_STATUS.SCHEDULED,
-          patient: {
-            connect: {
-              id: patientId,
-            },
+  if (courseDefinitionId) {
+    courseDef = await prisma.course.create({
+      data: {
+        price,
+        paid,
+        discount,
+        startDate,
+        endDate,
+        status: COURSE_STATUS.INPROGRESS,
+        user: {
+          connect: {
+            id: userId,
           },
-          user: {
-            connect: {
-              id: userId,
-            },
+        },
+        doctor: {
+          connect: {
+            id: doctorId,
           },
-          doctor: {
-            connect: {
-              id: doctorId,
-            },
+        },
+        patient: {
+          connect: {
+            id: patientId,
           },
-          date,
-        })),
+        },
+        courseDefinition: {
+          connect: {
+            id: courseDefinitionId,
+          },
+        },
+
+        sessions: {
+          create: sessions.map(date => ({
+            type: APPOINTMENTS_TYPES.Session,
+            status: APPOINTMENTS_STATUS.SCHEDULED,
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+            doctor: {
+              connect: {
+                id: doctorId,
+              },
+            },
+            date,
+          })),
+        },
       },
-    },
-    include: {
-      courseDefinition: true,
-      patient: true,
-    },
-  });
+      include: {
+        patient: true,
+      },
+    });
+    const courseDefination = await prisma.courseDefinition.findUnique({
+      where: { id: courseDefinitionId },
+    });
+    cName = courseDefination.name;
+  } else {
+    courseDef = await prisma.course.create({
+      data: {
+        price,
+        paid,
+        customName,
+        customUnits,
+        discount,
+        startDate,
+        endDate,
+        status: COURSE_STATUS.INPROGRESS,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        doctor: {
+          connect: {
+            id: doctorId,
+          },
+        },
+        patient: {
+          connect: {
+            id: patientId,
+          },
+        },
+        sessions: {
+          create: sessions.map(date => ({
+            type: APPOINTMENTS_TYPES.Session,
+            status: APPOINTMENTS_STATUS.SCHEDULED,
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+            doctor: {
+              connect: {
+                id: doctorId,
+              },
+            },
+            date,
+          })),
+        },
+      },
+      include: {
+        patient: true,
+      },
+    });
+    cName = customName;
+  }
   await prisma.coursePayment.create({
     data: {
       payment: paid,
@@ -96,8 +160,7 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
       },
     },
   });
-  const payment =
-    'C' + '/' + courseDef.courseDefinition.name + '/' + courseDef.patient.name;
+  let payment = 'C' + '/' + cName + '/' + courseDef.patient.name;
   if (bank) {
     await prisma.bankRevenue.create({
       data: Object.assign(

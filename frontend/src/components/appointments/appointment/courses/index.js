@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { Form, DatePicker, Alert } from 'rsuite';
+import NumberFormat from 'react-number-format';
 import * as moment from 'moment';
 import * as R from 'ramda';
 import { ACTIONS } from 'utils/constants';
-
-import { useCoursesDefinition, usePermissions, useBankDefinition } from 'hooks';
+import ListInvoiceItems from 'components/appointments/list-invoice-items';
+import {
+  useCoursesDefinition,
+  usePermissions,
+  useBankDefinition,
+  useCourseTypeDefinition,
+} from 'hooks';
 import {
   CRNumberInput,
   CRSelectInput,
@@ -17,6 +23,8 @@ import {
   CRCard,
   CRBrancheTree,
   CRTable,
+  CRRadio,
+  H6,
 } from 'components';
 
 import { StyledSession, TableDiv } from './style';
@@ -30,6 +38,10 @@ const options = [
   { name: 'Wednesday', checked: false, time: null, day: 3 },
   { name: 'Thursday', checked: false, time: null, day: 4 },
   { name: 'Friday', checked: false, time: null, day: 5 },
+];
+const courseTypes = [
+  { value: 'standard', name: 'Standard' },
+  { value: 'custom', name: 'Custom' },
 ];
 
 const isValidStartDate = (datesMetadata = [], startDate) => {
@@ -99,14 +111,25 @@ function NewCourse({
   setBank,
   visa,
   setVisa,
+  selectedSessions,
+  setSelectedSessions,
 }) {
+  const [session, setSession] = useState({});
+  const [sessionNumber, setSessionNumber] = useState(0);
+  const [sessionPrice, setSessionPrice] = useState(0);
   const { coursesDefinitions } = useCoursesDefinition();
   const { banksDefinition } = useBankDefinition({});
+  const { courseTypesDefinition } = useCourseTypeDefinition({});
   const [checkedDays, setCheckedDays] = useState(options);
   const { listActionDoctors, actionDoctors } = usePermissions();
   useEffect(() => {
     listActionDoctors(ACTIONS.Create_Course);
   }, []);
+  useEffect(() => {
+    if (session) {
+      setSessionPrice(session.price);
+    }
+  }, [session]);
 
   useEffect(() => {
     onChange(formValue);
@@ -145,7 +168,6 @@ function NewCourse({
     },
     [checkedDays]
   );
-
   const handleAddSessions = () => {
     try {
       if (!course) {
@@ -157,7 +179,34 @@ function NewCourse({
       Alert.error(e.message);
     }
   };
-
+  const add = useCallback(() => {
+    if (R.isNil(session) || R.isEmpty(session)) {
+      return;
+    }
+    const updatedSession = {
+      ...session,
+      number: sessionNumber,
+      price: sessionPrice,
+    };
+    setSelectedSessions([...selectedSessions, updatedSession]);
+  }, [
+    formValue,
+    setSelectedSessions,
+    sessionNumber,
+    sessionPrice,
+    selectedSessions,
+    session,
+  ]);
+  const handleDelete = useCallback(
+    idx => {
+      setSelectedSessions(R.remove(idx, 1));
+    },
+    [setSelectedSessions]
+  );
+  const choices = useMemo(() => {
+    const allChoices = [...courseTypesDefinition];
+    return allChoices.map(s => ({ name: s.name, id: s }));
+  }, [courseTypesDefinition]);
   const course = formValue?.course;
   return (
     <CRModal
@@ -170,21 +219,73 @@ function NewCourse({
       <Form fluid formValue={formValue} onChange={onChange}>
         {type === 'create' ? (
           <>
-            <CRSelectInput
-              label="Course Name"
-              name="course"
-              placeholder="Select Course"
-              data={coursesDefinitions}
-              block
-              sameValue
-            />
-            <CRNumberInput
-              label="Price"
-              name="price"
-              title="Price"
-              disabled
-              value={course?.price || ''}
-            />
+            <CRRadio options={courseTypes} name="courseType" />
+            {formValue.courseType === 'custom' ? (
+              <Div width={500} mr={20}>
+                <Form fluid>
+                  <CRButton onClick={() => add()}>add</CRButton>
+                  <Div display="flex" justifyContent="space-around">
+                    <CRSelectInput
+                      label="Course Part Name"
+                      placeholder="Select The Part Of Course"
+                      value={session}
+                      onChange={val =>
+                        val == null ? setSession({}) : setSession(val)
+                      }
+                      data={choices}
+                      style={{ width: '170px' }}
+                    />
+                    <CRNumberInput
+                      label="Number"
+                      name="sessionsNumber"
+                      value={sessionNumber}
+                      onChange={setSessionNumber}
+                      style={{ width: '50px' }}
+                    ></CRNumberInput>
+                    <CRNumberInput
+                      label="Price"
+                      name="coursePartPrice"
+                      value={sessionPrice}
+                      onChange={setSessionPrice}
+                      style={{ width: '70px' }}
+                    ></CRNumberInput>
+                  </Div>
+                </Form>
+                <H6 mt={2} color="texts.2">
+                  <NumberFormat
+                    value={session.price}
+                    displayType="text"
+                    thousandSeparator
+                  />
+                </H6>
+                <Div my={3}>
+                  <ListInvoiceItems
+                    items={selectedSessions}
+                    onDelete={handleDelete}
+                  />
+                </Div>
+                <CRNumberInput label="Units" name="customUnits"></CRNumberInput>
+              </Div>
+            ) : (
+              <>
+                <CRSelectInput
+                  label="Course Name"
+                  name="course"
+                  placeholder="Select Course"
+                  data={coursesDefinitions}
+                  block
+                  sameValue
+                />
+                <CRNumberInput
+                  label="Price"
+                  name="price"
+                  title="Price"
+                  disabled
+                  value={course?.price || ''}
+                />
+              </>
+            )}
+
             <CRBrancheTree
               formValue={formValue}
               onChange={onChange}

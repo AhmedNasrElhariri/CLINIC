@@ -23,11 +23,13 @@ const initValue = {
   branchId: null,
   specialtyId: null,
   userId: null,
+  courseType: 'standard',
+  customUnits: 0,
 };
 
 const CourseButton = styled.button`
   border: 1px solid rgba(81, 198, 243, 0.15);
-  width: 100px;
+  width: content-fit;
   background: transparent;
   color: rgba(40, 49, 72, 0.5);
   font-size: 16px;
@@ -40,6 +42,7 @@ const Course = ({ patientId }) => {
   const [header, setHeader] = useState('');
   const [visa, setVisa] = useState(false);
   const [bank, setBank] = useState(null);
+  const [selectedSessions, setSelectedSessions] = useState([]);
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
@@ -58,6 +61,7 @@ const Course = ({ patientId }) => {
     onCreate: () => {
       close();
       setFormValue(initValue);
+      setSelectedSessions([]);
       setIndex(0);
     },
     onEdit: () => {
@@ -162,6 +166,10 @@ const Course = ({ patientId }) => {
   );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
+      let price = 0;
+      let courseId = null,
+        customName = '';
+
       const {
         discount,
         course,
@@ -171,11 +179,27 @@ const Course = ({ patientId }) => {
         specialtyId,
         userId,
         branchId,
+        courseType,
+        customUnits,
       } = formValue;
+      if (courseType === 'standard' && course) {
+        price = course.price;
+        courseId = course.id;
+      } else {
+        price = selectedSessions.reduce(
+          (sum, { price, number }) => sum + number * price,
+          0
+        );
+        selectedSessions.forEach(({ number, name }) => {
+          customName += number + '-' + name + ' ';
+        });
+      }
       const finalFormValue = {
-        price: course.price - discount,
+        price: price - discount,
+        customName: customName,
+        customUnits,
         patientId: patientId,
-        courseDefinitionId: course.id,
+        courseDefinitionId: courseId,
         doctorId,
         sessions,
         paid,
@@ -299,7 +323,7 @@ const Course = ({ patientId }) => {
                       onClick={() => setIndex(idx)}
                       key={idx}
                     >
-                      {course.courseDefinition.name}
+                      {course.name}
                     </CourseButton>
                   ))}
                   <Div width={200}>
@@ -338,7 +362,7 @@ const Course = ({ patientId }) => {
                       onClick={() => setIndex(idx)}
                       key={idx}
                     >
-                      {course.courseDefinition.name}
+                      {course.name}
                     </CourseButton>
                   ))}
                   <Div width={200}>
@@ -377,7 +401,7 @@ const Course = ({ patientId }) => {
                       onClick={() => setIndex(idx)}
                       key={idx}
                     >
-                      {course.courseDefinition.name}
+                      {course.name}
                     </CourseButton>
                   ))}
                   <Div width={200}>
@@ -422,6 +446,8 @@ const Course = ({ patientId }) => {
         setBank={setBank}
         visa={visa}
         setVisa={setVisa}
+        selectedSessions={selectedSessions}
+        setSelectedSessions={setSelectedSessions}
       />
     </>
   );

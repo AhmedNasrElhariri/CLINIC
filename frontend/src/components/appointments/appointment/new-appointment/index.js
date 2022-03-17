@@ -47,7 +47,7 @@ export default function NewAppointment({ show, onHide, appointment }) {
     patientId: patient?.id,
   });
   const updatedPatientCourses = patientCourses.map(course => ({
-    name: course.courseDefinition.name,
+    name: course?.name,
     IDBTransaction: course.id,
   }));
   useEffect(() => {
