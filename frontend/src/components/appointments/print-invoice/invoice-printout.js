@@ -41,6 +41,8 @@ const InvoicePrintout = React.forwardRef(
     },
     ref
   ) => {
+    console.log(organization, 'organization33');
+    const invoiceNumber = R.propOr(0, 'invoiceCounter')(organization);
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
@@ -49,18 +51,16 @@ const InvoicePrintout = React.forwardRef(
     const pageSetupRow = pageSetupData.find(
       element => element.type === 'invoice'
     );
+
     const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
     const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
     const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
     const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
     let userPayment = 0;
     const fullOthersName = 'Others - ' + othersName;
-    const Count =
-      year + '' + month + '' + day + '/' + organization?.invoiceCounter;
+    const Count = year + '' + month + '' + day + '/' + invoiceNumber;
     const { configurations } = useConfigurations();
-    const enable = R.isEmpty(configurations)
-      ? configurations.enableInvoiceCounter
-      : false;
+    const enable = R.propOr(false, 'enableInvoiceCounter')(configurations);
     if (option.option === 'fixed') {
       userPayment = option.amount;
     } else if (option.option === 'percentage') {

@@ -84,6 +84,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     () => R.propOr([], 'myInvoiceCounter')(data),
     [data]
   );
+  console.log(organization,'organizationorganization');
   const handleInvoiceChange = useCallback(sessions => {
     value.current = { ...value.current, sessions };
   }, []);

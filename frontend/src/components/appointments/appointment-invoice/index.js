@@ -198,18 +198,6 @@ function AppointmentInvoice({
                 No Coupons Exists
               </Div>
             )}
-            {/* <Form>
-              <CheckboxGroup
-                value={coupons}
-                onChange={value => {
-                  setCoupons(value);
-                }}
-              >
-                {patientCoupons.map(c => (
-                  <Checkbox value={c.id}>Coupon -- {c.value}</Checkbox>
-                ))}
-              </CheckboxGroup>
-            </Form> */}
             <Form onChange={setCoupons} formValue={coupons}>
               {patientCoupons.map((c, index) => (
                 <Div display="flex" key={c.id}>
@@ -352,19 +340,6 @@ function AppointmentInvoice({
               <CRDivider />
             </>
           )}
-          {/* {bank !== null && (
-            <>
-              <Form fluid>
-                <CRNumberInput
-                  label="Cash Payment Part"
-                  name="cashPayment"
-                  value={cashPayment}
-                  onChange={val => onCashPaymentChange(val)}
-                />
-              </Form>
-              <CRDivider />
-            </>
-          )} */}
           <H5 fontWeight={400}>Session Summary</H5>
           <Div background="#f0f1f1" p="6px 8px">
             <Price name="Others" price={others} overriden variant="primary" />
