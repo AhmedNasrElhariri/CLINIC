@@ -247,7 +247,6 @@ function AppointmentData({
       });
     }
   };
-  console.log(patient, 'PP');
   return (
     <>
       <Div display="flex">
