@@ -19,62 +19,108 @@ const useAccounting = ({
   specialtyId,
   branchId,
   userId,
+  page,
+  expensePage,
+  doctorId,
+  revenueName,
 } = {}) => {
-  const { data: expensesData } = useQuery(LIST_EXPENSES);
-  const { data: revenueData } = useQuery(LIST_REVENUES, {
-    variables: {
-      action: ACTIONS.View_Accounting,
-    },
+  const { data: expenseData } = useQuery(LIST_EXPENSES, {
+    variables: Object.assign(
+      {
+        action: ACTIONS.View_Accounting,
+        offset: (expensePage - 1) * 20 || 0,
+        limit: 20,
+      },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      view && { view: view },
+      branchId && { branchId: branchId },
+      specialtyId && { specialtyId: specialtyId },
+      doctorId && { doctorId: doctorId }
+    ),
   });
-  const allExpenses = useMemo(
-    () => R.propOr([], 'expenses')(expensesData),
-    [expensesData]
-  );
+  const { data: revenueData } = useQuery(LIST_REVENUES, {
+    variables: Object.assign(
+      {
+        action: ACTIONS.View_Accounting,
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      view && { view: view },
+      branchId && { branchId: branchId },
+      specialtyId && { specialtyId: specialtyId },
+      doctorId && { doctorId: doctorId },
+      revenueName && { revenueName: revenueName }
+    ),
+  });
+  // const allExpenses = useMemo(
+  //   () => R.propOr([], 'expenses')(expensesData),
+  //   [expensesData]
+  // );
+  const revenuesData = revenueData?.revenues;
+  const revenues = R.propOr([], 'revenues')(revenuesData);
 
-  const allRevenues = useMemo(
-    () => R.propOr([], 'revenues')(revenueData),
-    [revenueData]
-  );
+  const expensesData = expenseData?.expenses;
+  const expenses = R.propOr([], 'expenses')(expensesData);
 
-  const expenses = useMemo(
-    () => filterAccountingList(allExpenses, view, period),
-    [allExpenses, period, view]
-  );
+  // const expenses = useMemo(
+  //   () => filterAccountingList(allExpenses, view, period),
+  //   [allExpenses, period, view]
+  // );
+  // const revenues = useMemo(
+  //   () => filterAccountingList(allRevenues, view, period),
+  //   [allRevenues, period, view]
+  // );
 
-  const revenues = useMemo(
-    () => filterAccountingList(allRevenues, view, period),
-    [allRevenues, period, view]
+  // const totalExpenses = useMemo(
+  //   () => expenses.reduce((acc, e) => acc + e.amount, 0),
+  //   [expenses]
+  // );
+
+  // const totalRevenues = useMemo(
+  //   () => revenues.reduce((acc, e) => acc + e.amount, 0),
+  //   [revenues]
+  // );
+
+  const totalRevenues = useMemo(
+    () => R.propOr(0, 'totalRevenues')(revenuesData),
+    [revenuesData]
+  );
+  const RevenuesCount = useMemo(
+    () => R.propOr(0, 'revenuesCount')(revenuesData),
+    [revenuesData]
   );
 
   const totalExpenses = useMemo(
-    () => expenses.reduce((acc, e) => acc + e.amount, 0),
-    [expenses]
+    () => R.propOr(0, 'totalExpenses')(expensesData),
+    [expensesData]
+  );
+  const expensesCount = useMemo(
+    () => R.propOr(0, 'expensesCount')(expensesData),
+    [expensesData]
   );
 
-  const totalRevenues = useMemo(
-    () => revenues.reduce((acc, e) => acc + e.amount, 0),
-    [revenues]
-  );
+  // const BranchTotalExpenses = useMemo(() => {
+  //   const updatedExpenses = expenses.filter(
+  //     e =>
+  //       e.branch?.id == branchId &&
+  //       e.specialty?.id == specialtyId &&
+  //       e.doctor?.id == userId
+  //   );
+  //   return updatedExpenses.reduce((acc, e) => acc + e.amount, 0);
+  // }, [expenses, branchId, specialtyId, userId]);
 
-  const BranchTotalExpenses = useMemo(() => {
-    const updatedExpenses = expenses.filter(
-      e =>
-        e.branch?.id == branchId &&
-        e.specialty?.id == specialtyId &&
-        e.doctor?.id == userId
-    );
-    return updatedExpenses.reduce((acc, e) => acc + e.amount, 0);
-  }, [expenses, branchId, specialtyId, userId]);
-
-  const BranchTotalRevenues = useMemo(() => {
-    const updatedRevenue = revenues.filter(
-      r =>
-        r.branch?.id == branchId &&
-        r.specialty?.id == specialtyId &&
-        r.doctor?.id == userId
-    );
-    return updatedRevenue.reduce((acc, e) => acc + e.amount, 0);
-  }, [revenues, branchId, specialtyId, userId]);
+  // const BranchTotalRevenues = useMemo(() => {
+  //   const updatedRevenue = revenues?.filter(
+  //     r =>
+  //       r.branch?.id == branchId &&
+  //       r.specialty?.id == specialtyId &&
+  //       r.doctor?.id == userId
+  //   );
+  //   return updatedRevenue.reduce((acc, e) => acc + e.amount, 0);
+  // }, [revenues, branchId, specialtyId, userId]);
   const getTimeFrameByView = view => {
     const viewVsFn = {
       [ACCOUNTING_VIEWS.DAY]: getDayStartAndEnd,
@@ -99,8 +145,10 @@ const useAccounting = ({
       revenues,
       totalExpenses,
       totalRevenues,
-      BranchTotalExpenses,
-      BranchTotalRevenues,
+      RevenuesCount,
+      expensesCount,
+      // BranchTotalExpenses,
+      // BranchTotalRevenues,
       timeFrame,
       refetchRevenues: {
         query: LIST_REVENUES,
@@ -115,8 +163,10 @@ const useAccounting = ({
       timeFrame,
       totalExpenses,
       totalRevenues,
-      BranchTotalExpenses,
-      BranchTotalRevenues,
+      RevenuesCount,
+      expensesCount,
+      // BranchTotalExpenses,
+      // BranchTotalRevenues,
     ]
   );
 };

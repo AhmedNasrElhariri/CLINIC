@@ -106,26 +106,20 @@ const AccountingForm = ({
         <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
         {header === 'New Expense' && (
           <>
-          <CRSelectInput
-            label="Expense Type"
-            name="expenseType"
-            block
-            data={updatedexpenseType}
-          />
-          <CRBrancheTree
-            formValue={formValue}
-            onChange={onChange}
-            action={ACTIONS.AddExpense_Accounting}
-          /></>
-        )}
-        {header === 'New Revenue' && (
-          <CRBrancheTree
-            formValue={formValue}
-            onChange={onChange}
-            action={ACTIONS.AddRevenue_Accounting}
-          />
+            <CRSelectInput
+              label="Expense Type"
+              name="expenseType"
+              block
+              data={updatedexpenseType}
+            />
+          </>
         )}
         <CRDatePicker label="Date" name="date" block></CRDatePicker>
+        <CRBrancheTree
+          formValue={formValue}
+          onChange={onChange}
+          action={ACTIONS.AddExpense_Accounting}
+        />
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
       </Form>
     </CRModal>

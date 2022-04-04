@@ -10,6 +10,14 @@ export const APPOINTMENTS_STATUS = Object.freeze({
   ARCHIVED: 'Archived',
   WAITING: 'Waiting',
 });
+export const ACCOUNTING_VIEWS = {
+  DAY: 'DAY',
+  WEEK: 'WEEK',
+  MONTH: 'MONTH',
+  QUARTER: 'QUARTER',
+  YEAR: 'YEAR',
+  TIME_SLOT: 'TIME_SLOT',
+};
 
 export const COURSE_STATUS = Object.freeze({
   FINISHED: 'Finished',

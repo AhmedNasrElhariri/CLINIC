@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import NumberFormat from 'react-number-format';
 
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
-import {
-  FULL_DAY_FORMAT,
-} from 'utils/constants';
-function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
+import { FULL_DAY_FORMAT } from 'utils/constants';
+function ListPatientSurgeries({
+  patientSurgeries,
+  onSurgeryClick,
+  currentPage,
+  setCurrentPage,
+  pages,
+}) {
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <>
       <CRCard borderless>
@@ -142,6 +152,22 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>
+        <CRTable.CRPagination
+          lengthMenu={[
+            {
+              value: 10,
+              label: 10,
+            },
+            {
+              value: 20,
+              label: 20,
+            },
+          ]}
+          activePage={currentPage?.activePage}
+          pages={pages}
+          onSelect={handleSelect}
+          // total={appointments.length}
+        />
       </CRCard>
     </>
   );

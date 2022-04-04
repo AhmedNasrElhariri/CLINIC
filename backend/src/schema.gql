@@ -147,11 +147,57 @@ type Query {
   mySnippets: [Snippet!]
   medicineHistory(patientId: ID!): [MedicineHistory!]
   familyHistory(patientId: ID!): [FamilyHistory!]
-  expenses: [Expense!]
-  revenues: [Revenue!]
-  bankRevenues: [BankRevenue!]
-  bankExpenses: [BankExpense!]
-  companyRevenues: [InsuranceRevenue!]
+  expenses(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+  ): ExpenseData!
+  revenues(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+    revenueName: String
+  ): RevenueData!
+  bankRevenues(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+  ): BankRevenueData!
+  bankExpenses(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+  ): BankExpenseData!
+  companyRevenues(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+  ): InsuranceRevenueData!
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
   myNotifications: [Notification!]
@@ -161,7 +207,15 @@ type Query {
   inventoryHistory: [InventoryHistory!]
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
-  patientSurgeries(patientId: ID): [PatientSurgery!]
+  patientSurgeries(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    patientId: ID
+    surgery: ID
+    hospital: ID
+  ): PatientSurgeryData!
   myPatientSurgeries: [PatientSurgery!]
   myLabsDefinitions(categoryId: ID): [LabDefinition!]
   myLabsCategory: [LabCategory!]
@@ -453,7 +507,14 @@ type Mutation {
   editCourseUnits(courseId: ID!, consumed: Int!, type: String!): Course!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
   finishCourse(courseId: ID!): Course!
-  deleteCourse(courseId: ID!, refund: Int!, bank: ID): Course!
+  deleteCourse(
+    courseId: ID!
+    refund: Int!
+    bank: ID
+    branchId: ID
+    specialtyId: ID
+    userId: ID
+  ): Course!
   addPayrollUser(payrollUser: PayrollUserInput!): PayrollUser!
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
@@ -628,7 +689,7 @@ type Patient implements Searchable {
   phoneNo: String!
   phoneNoTwo: String
   points: Int
-  code: String!
+  code: String
   codeNumber: Int!
   reference: [String]
   area: String
@@ -1166,6 +1227,11 @@ type Expense {
   expenseType: String!
   invoiceNo: String
 }
+type ExpenseData {
+  expenses: [Expense!]
+  totalExpenses: Int
+  expensesCount: Int
+}
 
 input ExpenseInput {
   name: String!
@@ -1183,6 +1249,9 @@ input ExpenseUpdateInput {
   name: String!
   amount: Int!
   date: Date!
+  branchId: ID
+  specialtyId: ID
+  userId: ID
   invoiceNo: String
 }
 
@@ -1202,6 +1271,12 @@ type Revenue {
   invoiceNo: String
 }
 
+type RevenueData {
+  revenues: [Revenue!]
+  totalRevenues: Int
+  revenuesCount: Int
+}
+
 type BankRevenue {
   id: ID!
   name: String!
@@ -1217,7 +1292,11 @@ type BankRevenue {
   invoiceNo: String
   bank: BankDefinition!
 }
-
+type BankRevenueData {
+  bankRevenues: [BankRevenue!]
+  totalRevenues: Int
+  revenuesCount: Int
+}
 input BankTransitionInput {
   id: ID
   amount: Int!
@@ -1247,7 +1326,11 @@ type BankExpense {
   checkNumber: String
   bank: BankDefinition!
 }
-
+type BankExpenseData {
+  bankExpenses: [BankExpense!]
+  totalExpenses: Int!
+  expensesCount: Int!
+}
 input BankExpenseTransitionInput {
   id: ID
   amount: Int!
@@ -1276,7 +1359,11 @@ type InsuranceRevenue {
   invoiceNo: String
   company: CompanyDefinition!
 }
-
+type InsuranceRevenueData {
+  companyRevenues: [InsuranceRevenue!]
+  totalRevenues: Int
+  revenuesCount: Int
+}
 input RevenueInput {
   name: String!
   amount: Int!
@@ -1293,6 +1380,9 @@ input RevenueUpdateInput {
   name: String!
   amount: Int!
   date: Date!
+  branchId: ID
+  specialtyId: ID
+  userId: ID
   invoiceNo: String
 }
 
@@ -1867,6 +1957,11 @@ type PatientSurgery {
   assistantFees: Int
   anesthesiaFees: Int
   others: Int
+}
+
+type PatientSurgeryData {
+  surgeries: [PatientSurgery!]
+  surgeriesCount: Int!
 }
 
 input PatientSurgeryInput {

@@ -1,11 +1,17 @@
-import React from 'react';
+import React,{useCallback} from 'react';
 import NumberFormat from 'react-number-format';
 import { H5, CRTable } from 'components';
 import { Can } from 'components/user/can';
 import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
 
-const ListData = ({ title, data, onEdit }) => {
+const ListData = ({ title, data, onEdit, currentPage, setCurrentPage,pages }) => {
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <div>
       <H5 mb={3} textAlign="center">
@@ -56,6 +62,22 @@ const ListData = ({ title, data, onEdit }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
       </CRTable>
+      <CRTable.CRPagination
+        lengthMenu={[
+          {
+            value: 10,
+            label: 10,
+          },
+          {
+            value: 20,
+            label: 20,
+          },
+        ]}
+        activePage={currentPage?.activePage}
+        pages={pages}
+        onSelect={handleSelect}
+        // total={appointments.length}
+      />
     </div>
   );
 };

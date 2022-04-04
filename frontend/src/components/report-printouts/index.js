@@ -165,7 +165,7 @@ function ReportPrintout() {
     }
   }, [formValue.data]);
   const checkOne = Object.keys(formValue.patientReport).length !== 0;
-  console.log(patientSurgeries, 'SS');
+
   return (
     <>
       <Div display="flex" justifyContent="space-between">

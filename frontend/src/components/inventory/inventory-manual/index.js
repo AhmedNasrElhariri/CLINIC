@@ -29,7 +29,6 @@ const InventoryManual = () => {
     open();
   }, [open]);
   const handleInventoryChange = useCallback(() => {}, []);
-  console.log(selectedItems,formValue.specialtyId,'SSS');
   return (
     <>
       <Div display="flex" justifyContent="right" mt={10}>

@@ -41,7 +41,6 @@ const InvoicePrintout = React.forwardRef(
     },
     ref
   ) => {
-    console.log(organization, 'organization33');
     const invoiceNumber = R.propOr(0, 'invoiceCounter')(organization);
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12

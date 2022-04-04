@@ -20,35 +20,75 @@ import {
   getYearStartAndEnd,
 } from 'utils/date';
 
-const useAccounting = ({ view, period, onEdit, onCreate } = {}) => {
-  const { data: revenueData } = useQuery(LIST_BANK_REVENUES);
+const useAccounting = ({
+  view,
+  period,
+  specialtyId,
+  branchId,
+  onEdit,
+  onCreate,
+  page,
+  expensePage,
+  doctorId,
+} = {}) => {
+  const { data: revenueData } = useQuery(LIST_BANK_REVENUES, {
+    variables: Object.assign(
+      {
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      view && { view: view },
+      branchId && { branchId: branchId },
+      specialtyId && { specialtyId: specialtyId },
+      doctorId && { doctorId: doctorId }
+    ),
+  });
 
-  const allRevenues = useMemo(
-    () => R.propOr([], 'bankRevenues')(revenueData),
-    [revenueData]
-  );
+  // const allRevenues = useMemo(
+  //   () => R.propOr([], 'bankRevenues')(revenueData),
+  //   [revenueData]
+  // );
 
-  const revenues = useMemo(
-    () => filterAccountingList(allRevenues, view, period),
-    [allRevenues, period, view]
-  );
-  const totalRevenues = useMemo(
-    () => revenues.reduce((acc, e) => acc + e.amount, 0),
-    [revenues]
-  );
+  // const revenues = useMemo(
+  //   () => filterAccountingList(allRevenues, view, period),
+  //   [allRevenues, period, view]
+  // );
+  // const totalRevenues = useMemo(
+  //   () => revenues.reduce((acc, e) => acc + e.amount, 0),
+  //   [revenues]
+  // );
 
+  const { data: expenseData } = useQuery(LIST_BANK_EXPENSES, {
+    variables: Object.assign(
+      {
+        offset: (expensePage - 1) * 20 || 0,
+        limit: 20,
+      },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      view && { view: view },
+      branchId && { branchId: branchId },
+      specialtyId && { specialtyId: specialtyId },
+      doctorId && { doctorId: doctorId }
+    ),
+  });
+  const revenuesData = revenueData?.bankRevenues;
+  const revenues = R.propOr([], 'bankRevenues')(revenuesData);
 
-  const { data: expenseData } = useQuery(LIST_BANK_EXPENSES);
+  const expensesData = expenseData?.bankExpenses;
+  const expenses = R.propOr([], 'bankExpenses')(expensesData);
 
-  const allExpenses = useMemo(
-    () => R.propOr([], 'bankExpenses')(expenseData),
-    [expenseData]
-  );
+  // const allExpenses = useMemo(
+  //   () => R.propOr([], 'bankExpenses')(expenseData),
+  //   [expenseData]
+  // );
 
-  const expenses = useMemo(
-    () => filterAccountingList(allExpenses, view, period),
-    [allExpenses, period, view]
-  );
+  // const expenses = useMemo(
+  //   () => filterAccountingList(allExpenses, view, period),
+  //   [allExpenses, period, view]
+  // );
 
   const getTimeFrameByView = view => {
     const viewVsFn = {
@@ -68,6 +108,23 @@ const useAccounting = ({ view, period, onEdit, onCreate } = {}) => {
     [period, view]
   );
 
+  const totalRevenues = useMemo(
+    () => R.propOr(0, 'totalRevenues')(revenuesData),
+    [revenuesData]
+  );
+  const RevenuesCount = useMemo(
+    () => R.propOr(0, 'revenuesCount')(revenuesData),
+    [revenuesData]
+  );
+
+  const totalExpenses = useMemo(
+    () => R.propOr(0, 'totalExpenses')(expensesData),
+    [expensesData]
+  );
+  const expensesCount = useMemo(
+    () => R.propOr(0, 'expensesCount')(expensesData),
+    [expensesData]
+  );
   const [editBankRevenue] = useMutation(EDIT_BANK_REVENUE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Edited Successfully');
@@ -130,6 +187,9 @@ const useAccounting = ({ view, period, onEdit, onCreate } = {}) => {
       revenues,
       expenses,
       totalRevenues,
+      RevenuesCount,
+      totalExpenses,
+      expensesCount,
       timeFrame,
       editBankRevenue,
       createBankRevenue,
@@ -144,6 +204,9 @@ const useAccounting = ({ view, period, onEdit, onCreate } = {}) => {
       expenses,
       timeFrame,
       totalRevenues,
+      RevenuesCount,
+      totalExpenses,
+      expensesCount,
       editBankRevenue,
       createBankRevenue,
       createBankExpense,

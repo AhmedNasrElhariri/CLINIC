@@ -3,7 +3,14 @@ import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
 import { ACTIONS } from 'utils/constants';
-import { MainContainer, Div, CRCard, CRButton, H6 } from 'components';
+import {
+  MainContainer,
+  Div,
+  CRCard,
+  CRButton,
+  H6,
+  BranchSpecialtyUserFilter,
+} from 'components';
 import Toolbar from '../toolbar';
 import ListExpenseData from '../list-data/expense.js';
 import ListRevenueData from '../list-data/revenue.js';
@@ -31,6 +38,17 @@ const initalVal = {
   expenseType: '',
   revenueName: '',
 };
+const inialCurrentPage = {
+  activePage: 1,
+};
+const inialExpenseCurrentPage = {
+  activePage: 1,
+};
+const initialBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+};
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
   const { filterBranches } = useAppointments({
@@ -38,7 +56,16 @@ const AccountingContainer = () => {
   });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
+  const [branchSpecialtyUser, setBranchSpecialtyUser] =
+    useState(initialBranchValue);
+
   const [formValue, setFormValue] = useState(initalVal);
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const page = currentPage?.activePage;
+  const [expenseCurrentPage, setExpenseCurrentPage] = useState(
+    inialExpenseCurrentPage
+  );
+  const expensePage = expenseCurrentPage?.activePage;
   const { pageSetupData } = useConfigurations();
   const pageSetupRow = pageSetupData.find(
     element => element.type === 'accounting'
@@ -169,34 +196,50 @@ const AccountingContainer = () => {
     header: 'Edit Expense',
     onOk: handleUpdateExpense,
   });
-  const { expenses, revenues, timeFrame } = useAccounting({
+  const {
+    expenses,
+    revenues,
+    totalRevenues,
+    totalExpenses,
+    RevenuesCount,
+    expensesCount,
+    timeFrame,
+  } = useAccounting({
     view,
     period,
+    page,
+    expensePage,
+    branchId: branchSpecialtyUser?.branch,
+    specialtyId: branchSpecialtyUser?.specialty,
+    doctorId: branchSpecialtyUser?.doctor,
+    revenueName: formValue?.revenueName,
   });
+  const revenuesPages = Math.ceil(RevenuesCount / 20);
+  const expensesPages = Math.ceil(expensesCount / 20);
   const updatedExpenses = useMemo(
     () =>
-      expenses.filter(e =>
+      expenses?.filter(e =>
         e.expenseType
           .toLowerCase()
           .includes(formValue.expenseType.toLowerCase())
       ),
     [formValue, expenses]
   );
-  const totalExpenses = useMemo(
-    () => updatedExpenses.reduce((acc, e) => acc + e.amount, 0),
-    [updatedExpenses]
-  );
-  const updatedRevenues = useMemo(
-    () =>
-      revenues.filter(e =>
-        e.name.toLowerCase().includes(formValue.revenueName.toLowerCase())
-      ),
-    [formValue, revenues]
-  );
-  const totalRevenues = useMemo(
-    () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
-    [updatedRevenues]
-  );
+  // const totalExpenses = useMemo(
+  //   () => updatedExpenses.reduce((acc, e) => acc + e.amount, 0),
+  //   [updatedExpenses]
+  // );
+  // const updatedRevenues = useMemo(
+  //   () =>
+  //     revenues?.filter(e =>
+  //       e.name.toLowerCase().includes(formValue.revenueName.toLowerCase())
+  //     ),
+  //   [formValue, revenues]
+  // );
+  // const totalRevenues = useMemo(
+  //   () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
+  //   [updatedRevenues]
+  // );
   return (
     <>
       <MainContainer
@@ -218,6 +261,14 @@ const AccountingContainer = () => {
                   Expense +
                 </CRButton>
               </Can>
+              <PdfView
+                data={{ revenues, expenses, totalRevenues, totalExpenses }}
+                period={timeFrame}
+                marginTop={marginTop}
+                marginRight={marginRight}
+                marginBottom={marginBottom}
+                marginLeft={marginLeft}
+              />
             </>
           </Div>
         }
@@ -249,7 +300,39 @@ const AccountingContainer = () => {
                   formValue={formValue}
                   setFormValue={setFormValue}
                 />
-                <BranchFilter
+                <BranchSpecialtyUserFilter
+                  formValue={branchSpecialtyUser}
+                  onChange={setBranchSpecialtyUser}
+                  branches={filterBranches}
+                />
+                <ListRevenueData
+                  title="Revenues"
+                  data={revenues}
+                  onEdit={revenue => {
+                    editRevenueForm.setFormValue(R.pick(ENTITY_PROPS)(revenue));
+                    editRevenueForm.show();
+                  }}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  pages={revenuesPages}
+                />
+                <ExpenseFilter
+                  formValue={formValue}
+                  setFormValue={setFormValue}
+                />
+                <ListExpenseData
+                  title="Expenses"
+                  data={expenses}
+                  onEdit={expense => {
+                    editExpenseForm.setFormValue(R.pick(ENTITY_PROPS)(expense));
+                    editExpenseForm.show();
+                  }}
+                  currentPage={expenseCurrentPage}
+                  setCurrentPage={setExpenseCurrentPage}
+                  pages={expensesPages}
+                />
+                <Profit expenses={totalExpenses} revenues={totalRevenues} />
+                {/* <BranchFilter
                   appointments={updatedRevenues}
                   type="accounting"
                   method="revenues"
@@ -265,6 +348,9 @@ const AccountingContainer = () => {
                           );
                           editRevenueForm.show();
                         }}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        // pages={pages}
                       />
                       <Div flexGrow={1} ml={2}>
                         <ExpenseFilter
@@ -313,7 +399,7 @@ const AccountingContainer = () => {
                       </Div>
                     </>
                   )}
-                />
+                /> */}
               </Div>
             </Div>
           ) : (

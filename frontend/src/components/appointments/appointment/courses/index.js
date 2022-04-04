@@ -462,6 +462,11 @@ function NewCourse({
                 name="refund"
                 title="Refund Money"
               />
+              <CRBrancheTree
+                formValue={formValue}
+                onChange={onChange}
+                action={ACTIONS.Create_Course}
+              />
             </Div>
           </Div>
         ) : (

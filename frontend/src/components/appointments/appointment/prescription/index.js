@@ -74,7 +74,6 @@ function Prescription({
       required: !R.isEmpty(formMedicine),
     };
   });
-  console.log(newMedicine, 'newMedicinenewMedicine');
   return (
     <CRModal
       show={visible}

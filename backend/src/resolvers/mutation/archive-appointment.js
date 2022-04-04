@@ -696,7 +696,7 @@ const archiveAppointment = async (
   const configuration = await prisma.configuration.findUnique({
     where: { organizationId },
   });
-  if (configuration.enableInvoiceCounter) {
+  if (configuration && configuration.enableInvoiceCounter) {
     const existedOrganization = await prisma.organization.findUnique({
       where: { id: organizationId },
     });
