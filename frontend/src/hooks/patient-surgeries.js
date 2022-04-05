@@ -49,7 +49,7 @@ const usePatientSurgeries = ({
     () => R.propOr([], 'surgeriesCount')(surgeries),
     [surgeries]
   );
-  console.log(data, 'datadata');
+
 
   const [createPatientSurgery, { loading }] = useMutation(
     CREATE_PATIENT_SURGERY,

@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
-function ListPatientRevenue({ data }) {
+function ListPatientRevenue({ data, currentPage, setCurrentPage, pages }) {
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <>
       <CRCard borderless>
@@ -41,6 +47,22 @@ function ListPatientRevenue({ data }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>
+        <CRTable.CRPagination
+          lengthMenu={[
+            {
+              value: 10,
+              label: 10,
+            },
+            {
+              value: 20,
+              label: 20,
+            },
+          ]}
+          activePage={currentPage?.activePage}
+          pages={pages}
+          onSelect={handleSelect}
+          // total={appointments.length}
+        />
       </CRCard>
     </>
   );

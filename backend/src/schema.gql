@@ -132,7 +132,7 @@ type Query {
   appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
   patient(id: ID!): Patient
   patientCoupons(patientId: ID!, all: Boolean): [Coupon!]
-  patientRevenue(patientId: ID!): [PatientRevenue!]
+  patientRevenue(patientId: ID!, offset: Int, limit: Int): PatientRevenueData!
   couponPointsTransactions(couponId: ID!): [PointsTransactions!]
   getPatientField(patientId: ID!): [PatientField!]
   getUserPatientFields: [PatientField!]
@@ -705,6 +705,11 @@ type PatientRevenue {
   amount: Float!
   date: Date!
   type: String
+}
+type PatientRevenueData {
+  patientRevenue: [PatientRevenue!]
+  totalRevenue: Int
+  patientRevenueCounts: Int
 }
 
 input PatientInput {

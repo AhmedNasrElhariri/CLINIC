@@ -114,9 +114,17 @@ function usePatients({
   const { data: patientRevenueData } = useQuery(PATIENT_REVENUE, {
     variables: {
       patientId: patientId,
+      offset: (page - 1) * 20 || 0,
+      limit: 20,
     },
   });
-  const patientRevenue = R.propOr([], 'patientRevenue')(patientRevenueData);
+  const patientRevenuesData = patientRevenueData?.patientRevenue;
+  const patientRevenue = R.propOr([], 'patientRevenue')(patientRevenuesData);
+  const patientTotalRevenue = R.propOr(0, 'totalRevenue')(patientRevenuesData);
+  const patientRevenueCounts = R.propOr(
+    0,
+    'patientRevenueCounts'
+  )(patientRevenuesData);
 
   const [createPatient, { loading }] = useMutation(CREATE_PATIENT, {
     onCompleted: ({ createPatient: patient }) => {
@@ -189,6 +197,8 @@ function usePatients({
       allPatients,
       couponPointsTransactions,
       patientRevenue,
+      patientRevenueCounts,
+      patientTotalRevenue,
       createPatient,
       createPatientLoading: loading,
       edit: patient =>
@@ -210,6 +220,8 @@ function usePatients({
       allPatients,
       couponPointsTransactions,
       patientRevenue,
+      patientRevenueCounts,
+      patientTotalRevenue,
     ]
   );
 }

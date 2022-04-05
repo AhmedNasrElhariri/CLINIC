@@ -68,7 +68,7 @@ function useAppointments({
     () =>
       R.pipe(
         R.propOr([], 'appointments'),
-        R.reject(R.propEq('status', 'Cancelled')),
+        // R.reject(R.propEq('status', 'Cancelled')),
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery))
