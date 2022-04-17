@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Icon } from 'rsuite';
 import { formatDate } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { CRCard, CRTable } from 'components';
 
-function ListSaleses({ saleses, onEdit, onDelete }) {
+function ListSaleses({
+  saleses,
+  onEdit,
+  onDelete,
+  currentPage,
+  setCurrentPage,
+  pages,
+}) {
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <>
       <CRCard borderless>
@@ -41,9 +54,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
-                <CRTable.CRCellStyled bold>
-                  {user?.name}
-                </CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>{user?.name}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -98,6 +109,22 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>
+        <CRTable.CRPagination
+          lengthMenu={[
+            {
+              value: 10,
+              label: 10,
+            },
+            {
+              value: 20,
+              label: 20,
+            },
+          ]}
+          activePage={currentPage?.activePage}
+          pages={pages}
+          onSelect={handleSelect}
+          // total={appointments.length}
+        />
       </CRCard>
     </>
   );

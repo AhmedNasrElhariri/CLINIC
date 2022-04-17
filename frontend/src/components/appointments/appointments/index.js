@@ -258,14 +258,17 @@ function Appointments() {
                 appointments={appointments}
                 branches={filterBranches}
                 render={apps => (
-                  <ListAppointments
-                    appointments={apps}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    onAddBusinessNotes={onAddBusinessNotes}
-                    defaultExpanded={true}
-                    waiting={true}
-                  />
+                  <>
+                    <Filter formValue={formValue} onChange={setFormValue} />
+                    <ListAppointments
+                      appointments={apps}
+                      onArchive={onClickDone}
+                      onComplete={onCompleteDone}
+                      onAddBusinessNotes={onAddBusinessNotes}
+                      defaultExpanded={true}
+                      waiting={true}
+                    />
+                  </>
                 )}
               />
             </CRTabs.CRContent>
@@ -274,14 +277,17 @@ function Appointments() {
                 appointments={appointments}
                 branches={filterBranches}
                 render={apps => (
-                  <ListAppointments
-                    appointments={apps}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    onAddBusinessNotes={onAddBusinessNotes}
-                    defaultExpanded={true}
-                    waiting={true}
-                  />
+                  <>
+                    <Filter formValue={formValue} onChange={setFormValue} />
+                    <ListAppointments
+                      appointments={apps}
+                      onArchive={onClickDone}
+                      onComplete={onCompleteDone}
+                      onAddBusinessNotes={onAddBusinessNotes}
+                      defaultExpanded={true}
+                      waiting={true}
+                    />
+                  </>
                 )}
               />
             </CRTabs.CRContent>

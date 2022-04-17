@@ -3,7 +3,14 @@ import * as R from 'ramda';
 import { Form } from 'rsuite';
 import Profit from './profit';
 import Toolbar from '../accounting/toolbar';
-import { Div, CRButton, CRCard, H6, MainContainer } from 'components';
+import {
+  Div,
+  CRButton,
+  CRCard,
+  H6,
+  MainContainer,
+  BranchSpecialtyUserFilter,
+} from 'components';
 import NewSales from './new-sales';
 import ListSaleses from './list-sales';
 import Filter from '../filters';
@@ -29,12 +36,24 @@ const initFilter = {
   branchId: null,
   userId: null,
 };
+const initialBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+};
+const inialCurrentPage = {
+  activePage: 1,
+};
 const Sales = () => {
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
   const [filter, setFilter] = useState(initFilter);
+  const [branchSpecialtyUser, setBranchSpecialtyUser] =
+    useState(initialBranchValue);
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const page = currentPage?.activePage;
   const { filterBranches } = useAppointments({ action: ACTIONS.View_Sales });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
@@ -42,10 +61,13 @@ const Sales = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const { salesesDefinition } = useSalesDefinition({});
   const {
+    saleses,
+    totalSalesPrice,
+    totalSalesCost,
+    salesCounts,
     addSales,
     editSales,
     deleteSales,
-    filteredSales,
     organizationusers,
     loading,
     editLoading,
@@ -61,7 +83,12 @@ const Sales = () => {
     },
     view,
     period,
+    page,
+    branchId: branchSpecialtyUser?.branch,
+    specialtyId: branchSpecialtyUser?.specialty,
+    doctorId: branchSpecialtyUser?.doctor,
   });
+  const pages = Math.ceil(salesCounts / 20);
   const { pageSetupData } = useConfigurations();
   const pageSetupRow = pageSetupData.find(element => element.type === 'sales');
   const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
@@ -81,26 +108,27 @@ const Sales = () => {
     },
     [selectedItems]
   );
-  const itemFilteredSales = useMemo(() => {
-    if (filter.itemId == null) {
-      return filteredSales;
-    } else {
-      const newSales = filteredSales.filter(
-        s => s?.salesDefinition?.id == filter?.itemId?.id
-      );
-      return newSales;
-    }
-  }, [filter, filteredSales]);
-  const itemFilteredSalesByUser = useMemo(() => {
-    if (filter.userId == null) {
-      return itemFilteredSales;
-    } else {
-      const newSales = itemFilteredSales.filter(
-        s => s?.user?.id == filter.userId
-      );
-      return newSales;
-    }
-  }, [filter, itemFilteredSales]);
+  // const itemFilteredSales = useMemo(() => {
+  //   if (filter.itemId == null) {
+  //     return filteredSales;
+  //   } else {
+  //     const newSales = filteredSales.filter(
+  //       s => s?.salesDefinition?.id == filter?.itemId?.id
+  //     );
+  //     return newSales;
+  //   }
+  // }, [filter, filteredSales]);
+  // const itemFilteredSalesByUser = useMemo(() => {
+  //   if (filter.userId == null) {
+  //     return itemFilteredSales;
+  //   } else {
+  //     const newSales = itemFilteredSales.filter(
+  //       s => s?.user?.id == filter.userId
+  //     );
+  //     return newSales;
+  //   }
+  // }, [filter, itemFilteredSales]);
+
   const handleAddItems = useCallback(() => {
     const newItems = [...selectedItems, formValue];
     setSelectedItems(newItems);
@@ -161,6 +189,17 @@ const Sales = () => {
               <CRButton variant="primary" onClick={handleClickCreate}>
                 Add New Sales +
               </CRButton>
+              <PdfView
+                data={saleses}
+                totalSalesPrice={totalSalesPrice}
+                totalSalesCost={totalSalesCost}
+                period={timeFrame}
+                sales={true}
+                marginTop={marginTop}
+                marginRight={marginRight}
+                marginBottom={marginBottom}
+                marginLeft={marginLeft}
+              />
             </Can>
           </Div>
         }
@@ -213,7 +252,21 @@ const Sales = () => {
           </Div>
         </Form>
       </Div>
-      <Filter
+      <BranchSpecialtyUserFilter
+        formValue={branchSpecialtyUser}
+        onChange={setBranchSpecialtyUser}
+        branches={filterBranches}
+      />
+      <ListSaleses
+        saleses={saleses}
+        onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        pages={pages}
+      />
+      <Profit totalPrice={totalSalesPrice} totalCost={totalSalesCost} />
+      {/* <Filter
         appointments={itemFilteredSalesByUser}
         branches={filterBranches}
         type="sales"
@@ -243,7 +296,7 @@ const Sales = () => {
             </Div>
           </>
         )}
-      />
+      /> */}
     </>
   );
 };

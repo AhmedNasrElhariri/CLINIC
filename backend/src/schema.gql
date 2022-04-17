@@ -248,7 +248,16 @@ type Query {
   myCompanysDefinition: [CompanyDefinition!]
   myCompanysSessionDefinition: [CompanySessionDefinition!]
   mySalesesDefinition: [SalesDefinition!]
-  mySaleses: [Sales!]
+  mySaleses(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+  ): SalesData!
   myCoursesDefinition: [CourseDefinition!]
   myCourses(
     patientId: ID
@@ -1785,6 +1794,12 @@ type Sales {
   branch: Branch
   specialty: Specialty
   user: User
+}
+type SalesData {
+  sales: [Sales!]
+  totalSalesPrice: Int
+  totalSalesCost: Int
+  salesCounts: Int
 }
 
 input SalesInput {
