@@ -1,9 +1,15 @@
 import { prisma } from '@';
 
-const patients = async (_, { name }, { user, organizationId }) => {
-  return prisma.patient.findMany({
+const patients = async (
+  _,
+  { name, organizationId: OrganizationId },
+  { user, organizationId }
+) => {
+  const newOrgId = OrganizationId ? OrganizationId : organizationId;
+  console.log(newOrgId,'newOrgIdnewOrgId',name,'namename');
+  const patients = await prisma.patient.findMany({
     where: {
-      organizationId,
+      organizationId: newOrgId,
       OR: [
         {
           name: {
@@ -32,6 +38,8 @@ const patients = async (_, { name }, { user, organizationId }) => {
     skip: 0,
     take: 20,
   });
+  console.log(patients,'patients');
+  return patients
 };
 
 export default patients;

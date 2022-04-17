@@ -108,7 +108,7 @@ enum UnitOfMeaure {
 type Query {
   hello(name: String): Boolean
   patients(offset: Int, limit: Int, name: String, phoneNo: String): PatientData
-  searchedPatients(name: String): [Patient!]
+  searchedPatients(name: String, organizationId: ID): [Patient!]
   allPatients: [Patient!]
   appointments(
     input: AppointmentQueryInput
@@ -236,7 +236,7 @@ type Query {
   ): [FaceOperation!]
   myFaceOperations(patientId: ID!): [FaceOperation!]
   listOrganizationDoctors: [User!]
-  mySessionsDefinition: [SessionDefinition!]
+  mySessionsDefinition(organizationId: ID): [SessionDefinition!]
   mySessionStatistic(
     sessionsIds: [ID!]
     dateFrom: Date
@@ -273,6 +273,7 @@ type Query {
   listUsers: [User!]
   listRoles: [Role!]
   listBranchesTree(action: String!): [Branch!]
+  listBranchesTreeByOrganizationId(organizationId: ID!): [Branch!]
   organizationBranches: [Branch!]
   listActionUsers(action: String!): [User!]
   listActionDoctors(action: String!): [User!]
@@ -537,6 +538,8 @@ type Mutation {
   editBankExpense(bankTransition: BankExpenseTransitionInput!): BankExpense
   createBankRevenue(bankTransition: BankTransitionInput!): BankRevenue
   createBankExpense(bankTransition: BankExpenseTransitionInput!): BankExpense
+  registerPatient(input: RegisterPatientInput!): Patient!
+  loginPatient(input: RegisterPatientInput!): AuthPatientPayload!
 }
 
 ########################### Auth ##################################
@@ -544,6 +547,11 @@ type Mutation {
 type AuthPayload {
   token: String
   user: User
+}
+
+type AuthPatientPayload {
+  token: String
+  organizationId: ID
 }
 
 input UserLoginInput {
@@ -725,6 +733,10 @@ input PatientInput {
   area: ID
   type: PatientMembershipType!
   guardianName: String
+}
+input RegisterPatientInput {
+  phoneNo: String!
+  password: String!
 }
 
 type PatientData {

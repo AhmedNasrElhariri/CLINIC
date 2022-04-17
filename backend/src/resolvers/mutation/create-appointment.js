@@ -29,7 +29,7 @@ const getDayAppointments = (day, userId) => {
 
 const isBeforeNow = date => moment(date).isBefore(moment(), 'minute');
 
-const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
+const createAppointment = async (_, { appointment }, { userId: creator }) => {
   const {
     patientId,
     userId,
@@ -40,6 +40,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
     sessionId,
     ...rest
   } = appointment;
+  const creatorId = creator ? creator : userId;
   const appointments = await getDayAppointments(appointment.date, userId);
   if (
     !(
