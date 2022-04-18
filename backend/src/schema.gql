@@ -177,6 +177,7 @@ type Query {
     doctorId: ID
     specialtyId: ID
     branchId: ID
+    bankId: ID
   ): BankRevenueData!
   bankExpenses(
     offset: Int
@@ -187,6 +188,7 @@ type Query {
     doctorId: ID
     specialtyId: ID
     branchId: ID
+    bankId: ID
   ): BankExpenseData!
   companyRevenues(
     offset: Int
@@ -528,7 +530,12 @@ type Mutation {
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
   ): PayrollTransaction!
-  addPayroll(payment: [ID!]): Payroll!
+  addPayroll(
+    payment: [ID!]
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+  ): Payroll!
   deletePayrollUser(userId: ID!): PayrollUser!
   updateNotes(id: ID!, notes: String!): Appointment!
   addSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition

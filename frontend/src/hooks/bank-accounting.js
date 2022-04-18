@@ -25,6 +25,7 @@ const useAccounting = ({
   period,
   specialtyId,
   branchId,
+  bankId,
   onEdit,
   onCreate,
   page,
@@ -42,7 +43,8 @@ const useAccounting = ({
       view && { view: view },
       branchId && { branchId: branchId },
       specialtyId && { specialtyId: specialtyId },
-      doctorId && { doctorId: doctorId }
+      doctorId && { doctorId: doctorId },
+      bankId && { bankId: bankId }
     ),
   });
 
@@ -71,7 +73,8 @@ const useAccounting = ({
       view && { view: view },
       branchId && { branchId: branchId },
       specialtyId && { specialtyId: specialtyId },
-      doctorId && { doctorId: doctorId }
+      doctorId && { doctorId: doctorId },
+      bankId && { bankId: bankId }
     ),
   });
   const revenuesData = revenueData?.bankRevenues;

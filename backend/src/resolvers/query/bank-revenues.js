@@ -7,7 +7,17 @@ import {
 
 const bankRevenues = async (
   _,
-  { offset, limit, dateFrom, dateTo, view, doctorId, specialtyId, branchId },
+  {
+    offset,
+    limit,
+    dateFrom,
+    dateTo,
+    view,
+    doctorId,
+    specialtyId,
+    branchId,
+    bankId,
+  },
   { user, organizationId }
 ) => {
   let updatedDateFrom = new Date();
@@ -31,6 +41,9 @@ const bankRevenues = async (
         },
         {
           doctorId: doctorId,
+        },
+        {
+          bankId: bankId,
         },
       ],
       date: {

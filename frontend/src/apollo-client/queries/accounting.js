@@ -114,6 +114,7 @@ export const LIST_BANK_REVENUES = gql`
     $branchId: ID
     $specialtyId: ID
     $doctorId: ID
+    $bankId: ID
   ) {
     bankRevenues(
       offset: $offset
@@ -124,6 +125,7 @@ export const LIST_BANK_REVENUES = gql`
       branchId: $branchId
       specialtyId: $specialtyId
       doctorId: $doctorId
+      bankId: $bankId
     ) {
       bankRevenues {
         id
@@ -170,6 +172,7 @@ export const LIST_BANK_EXPENSES = gql`
     $branchId: ID
     $specialtyId: ID
     $doctorId: ID
+    $bankId: ID
   ) {
     bankExpenses(
       offset: $offset
@@ -180,6 +183,7 @@ export const LIST_BANK_EXPENSES = gql`
       branchId: $branchId
       specialtyId: $specialtyId
       doctorId: $doctorId
+      bankId: $bankId
     ) {
       bankExpenses {
         id

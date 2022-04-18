@@ -65,6 +65,7 @@ const BankAccountingContainer = () => {
   });
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initalFilterVal);
+  console.log(filter, 'filter');
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const [expenseCurrentPage, setExpenseCurrentPage] = useState(
     inialExpenseCurrentPage
@@ -110,6 +111,7 @@ const BankAccountingContainer = () => {
     branchId: branchSpecialtyUser?.branch,
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
+    bankId: filter?.bank,
     onEdit: () => {
       close();
     },

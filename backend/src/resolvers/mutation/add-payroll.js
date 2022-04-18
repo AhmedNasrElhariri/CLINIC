@@ -3,7 +3,11 @@ import { PAYROLL_STATUS, PAYROLL_TRANSACTION_TYPE } from '@/utils/constants';
 import { normalizeArray } from '@/utils/common';
 import { getAllTransactionForCurrentOpenPayslips } from '@/services/payroll.service';
 
-const addPayroll = async (_, { payment }, { userId, organizationId }) => {
+const addPayroll = async (
+  _,
+  { payment, doctorId, specialtyId, branchId },
+  { userId, organizationId }
+) => {
   let currentPayroll;
   const expenseType = 'Salary';
   const payrollRow = await prisma.payroll.findMany({
@@ -91,10 +95,12 @@ const addPayroll = async (_, { payment }, { userId, organizationId }) => {
       name,
       amount,
       expenseType: expenseType,
-      level:'organization',
       date: new Date(),
       organizationId,
       userId,
+      branchId: branchId,
+      specialtyId: specialtyId,
+      doctorId: doctorId,
     })),
   });
 

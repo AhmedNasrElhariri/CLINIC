@@ -30,11 +30,11 @@ const fontTheme200 = {
   },
 };
 
-const paddingLeft = css `
+const paddingLeft = css`
   padding-left: 22px;
 `;
 
-const borderCss = css `
+const borderCss = css`
   border: solid 1px ${props => props.theme.colors.primary} !important;
 `;
 
@@ -78,7 +78,6 @@ const SelectPickerStyled = styled(SelectPicker)`
       ${borderCss}
     }
   }
-
   & a.rs-picker-toggle.active {
     ${borderCss}
   }
@@ -122,17 +121,14 @@ const CustomSelect = ({
   sameValue,
   ...props
 }) => {
-  const internalValue = useMemo(() => (sameValue&& value ? value[valueKey] : value), [
-    sameValue,
-    value,
-    valueKey,
-  ]);
+  const internalValue = useMemo(
+    () => (sameValue && value ? value[valueKey] : value),
+    [sameValue, value, valueKey]
+  );
 
   const handleChange = useCallback(
     val => {
-      const formVal = sameValue
-        ? data.find(d => d[valueKey] === val)
-        : val;
+      const formVal = sameValue ? data.find(d => d[valueKey] === val) : val;
       onChange(formVal);
     },
     [data, onChange, sameValue, valueKey]

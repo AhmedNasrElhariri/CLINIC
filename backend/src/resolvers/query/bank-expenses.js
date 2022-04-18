@@ -9,7 +9,17 @@ import {
 
 const bankExpenses = async (
   _,
-  { offset, limit, dateFrom, dateTo, view, doctorId, specialtyId, branchId },
+  {
+    offset,
+    limit,
+    dateFrom,
+    dateTo,
+    view,
+    doctorId,
+    specialtyId,
+    branchId,
+    bankId,
+  },
   { user, organizationId }
 ) => {
   // const ids = await listFlattenUsersTreeIds(
@@ -58,6 +68,9 @@ const bankExpenses = async (
         },
         {
           doctorId: doctorId,
+        },
+        {
+          bankId: bankId,
         },
       ],
       date: {

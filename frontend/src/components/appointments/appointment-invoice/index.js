@@ -93,7 +93,7 @@ function AppointmentInvoice({
   total,
 }) {
   const [session, setSession] = useState({});
-  const [sessionNumber, setSessionNumber] = useState(0);
+  const [sessionNumber, setSessionNumber] = useState(1);
   const [visa, setVisa] = useState(false);
   const [coupon, setCoupon] = useState(false);
   const [insurance, setInsurance] = useState(false);
