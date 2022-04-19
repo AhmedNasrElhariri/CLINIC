@@ -121,3 +121,4 @@ export { default as addCourseTypeDefinition } from './add-course-type-definition
 export { default as editCourseTypeDefinition } from './edit-course-type-definition';
 export { default as registerPatient } from './register-patient';
 export { default as loginPatient } from './login-patient';
+export { default as verifyPatient } from './verify-patient';

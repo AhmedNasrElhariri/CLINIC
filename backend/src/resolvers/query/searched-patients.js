@@ -6,7 +6,6 @@ const patients = async (
   { user, organizationId }
 ) => {
   const newOrgId = OrganizationId ? OrganizationId : organizationId;
-  console.log(newOrgId,'newOrgIdnewOrgId',name,'namename');
   const patients = await prisma.patient.findMany({
     where: {
       organizationId: newOrgId,
@@ -38,7 +37,6 @@ const patients = async (
     skip: 0,
     take: 20,
   });
-  console.log(patients,'patients');
   return patients
 };
 

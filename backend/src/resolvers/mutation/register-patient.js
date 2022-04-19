@@ -3,10 +3,10 @@ import bcrypt from 'bcryptjs';
 
 import { APIExceptcion } from '@/services/erros.service';
 
-const registerPatient = async (_, { input: patient }) =>
+const registerPatient = async (_, { input: patientInput }) =>
   //   { userId, organizationId }
   {
-    const { phoneNo, password } = patient;
+    const { phoneNo, password } = patientInput;
     const patients = await prisma.patient.findMany({
       where: {
         phoneNo: {

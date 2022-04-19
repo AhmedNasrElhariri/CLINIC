@@ -338,6 +338,7 @@ type Mutation {
   createPatientView(view: PatientViewInput!): Boolean
   login(email: String!, password: String!): AuthPayload
   verify(token: String): User
+  verifyPatient(token: String): VerifiedPatient
   changePassword(currentPassword: String!, newPassword: String!): AuthPayload
   activateView(viewId: ID!): ViewStatus!
   activatePatientView(viewId: ID!): PatientViewStatus!
@@ -705,6 +706,11 @@ type Patient implements Searchable {
   date: Date
   sex: Sex!
   appointments: [Appointment!]
+}
+
+type VerifiedPatient {
+  patientId: ID
+  organizationId: ID
 }
 
 type PatientRevenue {
