@@ -69,6 +69,7 @@ const revenues = async (
         gte: updatedDateFrom,
         lte: updatedDateTo,
       },
+      organizationId: organizationId,
       name: {
         contains: revenueName,
         mode: 'insensitive',

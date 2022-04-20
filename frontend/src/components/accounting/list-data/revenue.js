@@ -1,11 +1,17 @@
-import React,{useCallback} from 'react';
-import NumberFormat from 'react-number-format';
+import React, { useCallback } from 'react';
 import { H5, CRTable } from 'components';
 import { Can } from 'components/user/can';
 import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
 
-const ListData = ({ title, data, onEdit, currentPage, setCurrentPage,pages }) => {
+const ListData = ({
+  title,
+  data,
+  onEdit,
+  currentPage,
+  setCurrentPage,
+  pages,
+}) => {
   const handleSelect = useCallback(
     eventKey => {
       setCurrentPage({ activePage: eventKey });

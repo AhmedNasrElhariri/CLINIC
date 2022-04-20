@@ -56,6 +56,7 @@ const expenses = async (
           doctorId: doctorId,
         },
       ],
+      organizationId: organizationId,
       date: {
         gte: updatedDateFrom,
         lte: updatedDateTo,
@@ -89,6 +90,7 @@ const expenses = async (
           doctorId: doctorId,
         },
       ],
+      organizationId: organizationId,
       date: {
         gte: updatedDateFrom,
         lte: updatedDateTo,
