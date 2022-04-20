@@ -87,7 +87,10 @@ const Sales = () => {
     branchId: branchSpecialtyUser?.branch,
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
+    itemId: filter?.itemId,
+    creatorId: filter?.userId,
   });
+  console.log(filter,'FFFF');
   const pages = Math.ceil(salesCounts / 20);
   const { pageSetupData } = useConfigurations();
   const pageSetupRow = pageSetupData.find(element => element.type === 'sales');
@@ -95,12 +98,12 @@ const Sales = () => {
   const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
   const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
   const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
-  const updatedUsers = organizationusers.map(u => {
-    return {
-      id: u.id,
-      name: u.name,
-    };
-  });
+  // const updatedUsers = organizationusers.map(u => {
+  //   return {
+  //     id: u.id,
+  //     name: u.name,
+  //   };
+  // });
   const handleDelete = useCallback(
     idx => {
       const newItems = R.remove(idx, 1)(selectedItems);
@@ -235,7 +238,7 @@ const Sales = () => {
       <Div mb={50}>
         <Form formValue={filter} onChange={setFilter}>
           <Div display="flex" justifyContent="space-around">
-            <CRDocSelectInput
+            <CRSelectInput
               label="Item"
               data={salesesDefinition}
               name="itemId"
@@ -246,7 +249,7 @@ const Sales = () => {
               label="Creator"
               name="userId"
               placement="auto"
-              data={updatedUsers}
+              data={organizationusers}
               style={{ width: '300px' }}
             />
           </Div>

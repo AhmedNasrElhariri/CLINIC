@@ -31,6 +31,8 @@ function useSales({
   doctorId,
   userId,
   page,
+  itemId,
+  creatorId,
 } = {}) {
   const { data } = useQuery(LIST_SALESES, {
     variables: Object.assign(
@@ -43,7 +45,9 @@ function useSales({
       view && { view: view },
       branchId && { branchId: branchId },
       specialtyId && { specialtyId: specialtyId },
-      doctorId && { doctorId: doctorId }
+      doctorId && { doctorId: doctorId },
+      itemId && { itemId: itemId },
+      creatorId && { creatorId: creatorId }
     ),
   });
   const salesData = data?.mySaleses;

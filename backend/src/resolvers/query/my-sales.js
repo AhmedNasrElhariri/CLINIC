@@ -8,7 +8,18 @@ import {
 } from '@/services/date.service';
 const mySaleses = async (
   _,
-  { offset, limit, dateFrom, dateTo, view, doctorId, specialtyId, branchId },
+  {
+    offset,
+    limit,
+    dateFrom,
+    dateTo,
+    view,
+    doctorId,
+    specialtyId,
+    branchId,
+    itemId,
+    creatorId,
+  },
   { user, organizationId }
 ) => {
   // const ids = await listFlattenUsersTreeIds(
@@ -59,6 +70,12 @@ const mySaleses = async (
         {
           doctorId: doctorId,
         },
+        {
+          salesDefinitionId: itemId,
+        },
+        {
+          userId: creatorId,
+        },
       ],
       date: {
         gte: updatedDateFrom,
@@ -92,6 +109,12 @@ const mySaleses = async (
         },
         {
           doctorId: doctorId,
+        },
+        {
+          salesDefinitionId: itemId,
+        },
+        {
+          userId: creatorId,
         },
       ],
       date: {

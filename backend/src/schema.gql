@@ -259,6 +259,8 @@ type Query {
     doctorId: ID
     specialtyId: ID
     branchId: ID
+    itemId: ID
+    creatorId: ID
   ): SalesData!
   myCoursesDefinition: [CourseDefinition!]
   myCourses(

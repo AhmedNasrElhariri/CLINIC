@@ -74,6 +74,8 @@ export const LIST_SALESES = gql`
     $branchId: ID
     $specialtyId: ID
     $doctorId: ID
+    $itemId: ID
+    $creatorId: ID
   ) {
     mySaleses(
       offset: $offset
@@ -84,6 +86,8 @@ export const LIST_SALESES = gql`
       branchId: $branchId
       specialtyId: $specialtyId
       doctorId: $doctorId
+      itemId: $itemId
+      creatorId: $creatorId
     ) {
       sales {
         id
