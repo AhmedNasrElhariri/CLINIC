@@ -54,6 +54,7 @@ const revenues = async (
   }
   const revenues = await prisma.revenue.findMany({
     where: {
+      organizationId: organizationId,
       AND: [
         {
           branchId: branchId,
@@ -91,6 +92,7 @@ const revenues = async (
       id: true,
     },
     where: {
+      organizationId: organizationId,
       AND: [
         {
           branchId: branchId,

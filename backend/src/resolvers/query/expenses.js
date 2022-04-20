@@ -45,6 +45,7 @@ const expenses = async (
   }
   const expenses = await prisma.expense.findMany({
     where: {
+      organizationId: organizationId,
       AND: [
         {
           branchId: branchId,
@@ -78,6 +79,7 @@ const expenses = async (
       id: true,
     },
     where: {
+      organizationId: organizationId,
       AND: [
         {
           branchId: branchId,
