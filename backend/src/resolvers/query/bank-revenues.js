@@ -32,6 +32,7 @@ const bankRevenues = async (
   }
   const bankRevenues = await prisma.bankRevenue.findMany({
     where: {
+      organizationId,
       AND: [
         {
           branchId: branchId,
@@ -50,7 +51,6 @@ const bankRevenues = async (
         gte: updatedDateFrom,
         lte: updatedDateTo,
       },
-      organizationId,
     },
     include: {
       bank: true,
@@ -71,6 +71,7 @@ const bankRevenues = async (
       id: true,
     },
     where: {
+      organizationId: organizationId,
       AND: [
         {
           branchId: branchId,

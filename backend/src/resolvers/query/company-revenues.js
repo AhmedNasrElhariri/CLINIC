@@ -67,6 +67,7 @@ const CompanyRevenues = async (
       id: true,
     },
     where: {
+      organizationId,
       AND: [
         {
           branchId: branchId,

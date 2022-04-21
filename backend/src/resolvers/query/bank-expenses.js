@@ -98,6 +98,7 @@ const bankExpenses = async (
       id: true,
     },
     where: {
+      organizationId,
       AND: [
         {
           branchId: branchId,

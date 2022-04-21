@@ -51,6 +51,11 @@ const initialBranchValue = {
   specialty: null,
   doctor: null,
 };
+const initialExpenseBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+};
 const inialCurrentPage = {
   activePage: 1,
 };
@@ -72,6 +77,9 @@ const BankAccountingContainer = () => {
   );
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
+  const [expenseBranchSpecialtyUser, setExpenseBranchSpecialtyUser] = useState(
+    initialExpenseBranchValue
+  );
   const { pageSetupData } = useConfigurations();
   const { banksDefinition } = useBankDefinition({});
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
@@ -111,6 +119,9 @@ const BankAccountingContainer = () => {
     branchId: branchSpecialtyUser?.branch,
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
+    expenseBranchId: expenseBranchSpecialtyUser?.branch,
+    expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+    expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
     bankId: filter?.bank,
     onEdit: () => {
       close();
@@ -286,6 +297,11 @@ const BankAccountingContainer = () => {
               <ExpenseFilter
                 formValue={formValue}
                 setFormValue={setFormValue}
+              />
+              <BranchSpecialtyUserFilter
+                formValue={expenseBranchSpecialtyUser}
+                onChange={setExpenseBranchSpecialtyUser}
+                branches={filterBranches}
               />
               <ListExpenseData
                 title="Expenses"

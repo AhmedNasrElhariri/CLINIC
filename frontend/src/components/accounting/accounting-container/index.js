@@ -49,6 +49,11 @@ const initialBranchValue = {
   specialty: null,
   doctor: null,
 };
+const initialExpenseBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+};
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
   const { filterBranches } = useAppointments({
@@ -58,7 +63,9 @@ const AccountingContainer = () => {
   const [period, setPeriod] = useState([]);
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
-
+  const [expenseBranchSpecialtyUser, setExpenseBranchSpecialtyUser] = useState(
+    initialExpenseBranchValue
+  );
   const [formValue, setFormValue] = useState(initalVal);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
@@ -212,6 +219,9 @@ const AccountingContainer = () => {
     branchId: branchSpecialtyUser?.branch,
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
+    expenseBranchId: expenseBranchSpecialtyUser?.branch,
+    expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+    expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
     revenueName: formValue?.revenueName,
   });
   const revenuesPages = Math.ceil(RevenuesCount / 20);
@@ -319,6 +329,11 @@ const AccountingContainer = () => {
                 <ExpenseFilter
                   formValue={formValue}
                   setFormValue={setFormValue}
+                />
+                <BranchSpecialtyUserFilter
+                  formValue={expenseBranchSpecialtyUser}
+                  onChange={setExpenseBranchSpecialtyUser}
+                  branches={filterBranches}
                 />
                 <ListExpenseData
                   title="Expenses"

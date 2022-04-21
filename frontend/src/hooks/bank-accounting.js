@@ -31,6 +31,9 @@ const useAccounting = ({
   page,
   expensePage,
   doctorId,
+  expenseSpecialtyId,
+  expenseBranchId,
+  expenseDoctorId,
 } = {}) => {
   const { data: revenueData } = useQuery(LIST_BANK_REVENUES, {
     variables: Object.assign(
@@ -71,9 +74,9 @@ const useAccounting = ({
       period && { dateFrom: period[0] },
       period && { dateTo: period[1] },
       view && { view: view },
-      branchId && { branchId: branchId },
-      specialtyId && { specialtyId: specialtyId },
-      doctorId && { doctorId: doctorId },
+      expenseBranchId && { branchId: expenseBranchId },
+      expenseSpecialtyId && { specialtyId: expenseSpecialtyId },
+      expenseDoctorId && { doctorId: expenseDoctorId },
       bankId && { bankId: bankId }
     ),
   });
