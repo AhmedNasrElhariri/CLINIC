@@ -78,19 +78,19 @@ const listBranchesTree = async (_, { action }, { user, organizationId }) => {
   //       },
   //     },
   //   });
-    const role = await prisma.user.findUnique({ where: { id: user.id } }).role({
-      include: {
-        permissions: {
-          where: {
-            action,
-          },
-          include: {
-            rules: true,
-          },
+  const role = await prisma.user.findUnique({ where: { id: user.id } }).role({
+    include: {
+      permissions: {
+        where: {
+          action,
+        },
+        include: {
+          rules: true,
         },
       },
-    });
-    
+    },
+  });
+
   const permission = R.pathOr(null, ['permissions', '0'])(role);
   if (!permission) {
     return [];

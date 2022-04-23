@@ -98,4 +98,5 @@ export { default as couponPointsTransactions } from './coupon-points-transaction
 export { default as totalUnpaidOfCourses } from './total-unpaid-of-courses';
 export { default as patientRevenue } from './patient-revenue';
 export { default as myCourseTypesDefinition } from './my-course-types-definition';
+export { default as listBranchesTreeByOrganizationId} from './listBranchesTree-by-organization-id';
 
