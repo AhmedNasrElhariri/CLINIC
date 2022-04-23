@@ -4,8 +4,6 @@ import {
   getStartOfDay,
   getEndOfDay,
 } from '@/services/date.service';
-// import { listFlattenUsersTreeIds } from '@/services/permission.service';
-// import { ACTIONS } from '@/utils/constants';
 
 const bankExpenses = async (
   _,
@@ -20,16 +18,8 @@ const bankExpenses = async (
     branchId,
     bankId,
   },
-  { user, organizationId }
+  { organizationId }
 ) => {
-  // const ids = await listFlattenUsersTreeIds(
-  //   {
-  //     user,
-  //     organizationId,
-  //     action: ACTIONS.ViewBank_Accounting,
-  //   },
-  //   true
-  // );
   let updatedDateFrom = new Date();
   let updatedDateTo = new Date();
   if (dateFrom && dateTo) {
@@ -42,24 +32,7 @@ const bankExpenses = async (
   }
   const bankExpenses = await prisma.bankExpense.findMany({
     where: {
-      // OR: [
-      //   {
-      //     userId: {
-      //       in: ids,
-      //     },
-      //   },
-      //   {
-      //     branchId: {
-      //       in: ids,
-      //     },
-      //   },
-      //   {
-      //     specialtyId: {
-      //       in: ids,
-      //     },
-      //   },
-      // ],
-      organizationId: organizationId,
+      organizationId,
       AND: [
         {
           branchId: branchId,
@@ -78,7 +51,6 @@ const bankExpenses = async (
         gte: updatedDateFrom,
         lte: updatedDateTo,
       },
-      organizationId,
     },
     include: {
       bank: true,
@@ -99,11 +71,7 @@ const bankExpenses = async (
       id: true,
     },
     where: {
-<<<<<<< HEAD
       organizationId,
-=======
-      organizationId: organizationId,
->>>>>>> 536684a807dd6d5572d7eff8ce134107af2f27be
       AND: [
         {
           branchId: branchId,
