@@ -59,6 +59,7 @@ const bankExpenses = async (
       //     },
       //   },
       // ],
+      organizationId: organizationId,
       AND: [
         {
           branchId: branchId,
@@ -98,7 +99,11 @@ const bankExpenses = async (
       id: true,
     },
     where: {
+<<<<<<< HEAD
       organizationId,
+=======
+      organizationId: organizationId,
+>>>>>>> 536684a807dd6d5572d7eff8ce134107af2f27be
       AND: [
         {
           branchId: branchId,

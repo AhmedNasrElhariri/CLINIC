@@ -18,7 +18,7 @@ const bankRevenues = async (
     branchId,
     bankId,
   },
-  { user, organizationId }
+  { organizationId }
 ) => {
   let updatedDateFrom = new Date();
   let updatedDateTo = new Date();
@@ -71,7 +71,7 @@ const bankRevenues = async (
       id: true,
     },
     where: {
-      organizationId: organizationId,
+      organizationId,
       AND: [
         {
           branchId: branchId,
