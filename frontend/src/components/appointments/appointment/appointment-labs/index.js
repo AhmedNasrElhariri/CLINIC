@@ -20,13 +20,11 @@ const AppointmentLabs = ({ selectedLabs, onChange, categoryId }) => {
 
   const handleOnClick = useCallback(
     ({ id, required }) => {
-      console.log('CLICK');
       const newState = !required;
       const selectedLabsIds = formValue
         .filter(lf => (lf.id === id ? newState : lf.required))
         .map(lf => lf.id);
       onChange(selectedLabsIds);
-      console.log('CLICK',formValue,'FF',selectedLabsIds);
     },
     [formValue, onChange]
   );
