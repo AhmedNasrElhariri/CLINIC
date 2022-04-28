@@ -43,6 +43,12 @@ enum CourseStatus {
   Rejected
 }
 
+enum SupplierInvoiceStatus {
+  InProgress
+  Finished
+  Cancelled
+}
+
 enum PayrollStatus {
   Open
   Close
@@ -219,77 +225,82 @@ model Organization {
   Coupon                    Coupon[]
   BankExpense               BankExpense[]
   CourseTypeDefinition      CourseTypeDefinition[]
+  SupplierAccount           SupplierAccount[]
+  SupplierInvoice           SupplierInvoice[]
 }
 
 model User {
-  id                        String                      @id @default(uuid())
-  name                      String
-  email                     String                      @unique
-  allowedViews              Json                        @default("[]")
-  password                  String
-  organization              Organization                @relation(fields: [organizationId], references: [id])
-  organizationId            String
-  avatar                    String?
-  role                      PermissionRole?             @relation(fields: [roleId], references: [id])
-  roleId                    String?
-  createdAt                 DateTime                    @default(now())
-  updatedAt                 DateTime                    @default(now()) @updatedAt
-  views                     View[]
-  viewStatus                ViewStatus[]
-  patientViews              PatientView[]               @relation("userPatientView")
-  patientDoctorsViews       PatientView[]               @relation("doctorPatientView")
-  workingHours              WorkingHours[]
-  snippets                  Snippet[]
-  position                  Position
-  events                    Event[]
-  user                      Appointment[]               @relation("userApp")
-  doctor                    Appointment[]               @relation("doctorApp")
-  rules                     Rule[]
-  specialties               UserSpecialty[]
-  labDefinitions            LabDefinition[]
-  imageDefinitions          ImageDefinition[]
-  facePartation             FacePartation[]
-  faceOperation             FaceOperation[]
-  materialDefinitions       MaterialDefinition[]
-  medicineDefinitions       MedicineDefinition[]        @relation("medicineUser")
-  medicineDefinitionsDoctor MedicineDefinition[]        @relation("medicineDoctor")
-  patientReports            PatientReport[]
-  patients                  Patient[]
-  expenses                  Expense[]                   @relation("expenseUser")
-  expensesDoctor            Expense[]                   @relation("expenseDoctor")
-  revenues                  Revenue[]                   @relation("revenueUser")
-  revenuesDoctor            Revenue[]                   @relation("revenueDoctor")
-  item                      Item[]
-  timing                    Timing[]
-  labCategories             LabCategory[]
-  imageCategories           ImageCategory[]
-  users                     Course[]                    @relation("user")
-  doctors                   Course[]                    @relation("doctor")
-  BankRevenue               BankRevenue[]               @relation("bankUser")
-  BankRevenueDoctor         BankRevenue[]               @relation("bankDoctor")
-  InsuranceRevenue          InsuranceRevenue[]          @relation("insuranceUser")
-  InsuranceRevenueDoctor    InsuranceRevenue[]          @relation("insuranceDoctor")
-  CoursePayment             CoursePayment[]             @relation("coursePaymentUser")
-  CoursePaymentDoctor       CoursePayment[]             @relation("coursePaymentDoctor")
-  PayrollUser               PayrollUser[]
-  Sales                     Sales[]
-  Price                     Price[]
-  Hospital                  Hospital[]
-  Surgery                   Surgery[]
-  SalesDefinition           SalesDefinition[]
-  UserInventoryItem         InventoryItem[]             @relation("userInventoryItem")
-  DoctorInventoryItem       InventoryItem[]             @relation("doctorInventoryItem")
-  InventoryHistory          InventoryHistory[]          @relation("userInventory")
-  DoctorInventoryHistory    InventoryHistory[]          @relation("doctorInventory")
-  DentalDiagnosisDefinition DentalDiagnosisDefinition[]
-  Tooth                     Tooth[]
-  ToothTransaction          ToothTransaction[]          @relation("toothUser")
-  ToothTransactionDoctors   ToothTransaction[]          @relation("toothDoctor")
-  PatientViewStatus         PatientViewStatus[]
-  PatientField              PatientField[]
-  SessionTransaction        SessionTransaction[]
-  BankExpense               BankExpense[]               @relation("bankExpenseUser")
-  BankExpenseDoctor         BankExpense[]               @relation("bankExpenseDoctor")
+  id                         String                       @id @default(uuid())
+  name                       String
+  email                      String                       @unique
+  allowedViews               Json                         @default("[]")
+  password                   String
+  organization               Organization                 @relation(fields: [organizationId], references: [id])
+  organizationId             String
+  avatar                     String?
+  role                       PermissionRole?              @relation(fields: [roleId], references: [id])
+  roleId                     String?
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now()) @updatedAt
+  views                      View[]
+  viewStatus                 ViewStatus[]
+  patientViews               PatientView[]                @relation("userPatientView")
+  patientDoctorsViews        PatientView[]                @relation("doctorPatientView")
+  workingHours               WorkingHours[]
+  snippets                   Snippet[]
+  position                   Position
+  events                     Event[]
+  user                       Appointment[]                @relation("userApp")
+  doctor                     Appointment[]                @relation("doctorApp")
+  rules                      Rule[]
+  specialties                UserSpecialty[]
+  labDefinitions             LabDefinition[]
+  imageDefinitions           ImageDefinition[]
+  facePartation              FacePartation[]
+  faceOperation              FaceOperation[]
+  materialDefinitions        MaterialDefinition[]
+  medicineDefinitions        MedicineDefinition[]         @relation("medicineUser")
+  medicineDefinitionsDoctor  MedicineDefinition[]         @relation("medicineDoctor")
+  patientReports             PatientReport[]
+  patients                   Patient[]
+  expenses                   Expense[]                    @relation("expenseUser")
+  expensesDoctor             Expense[]                    @relation("expenseDoctor")
+  revenues                   Revenue[]                    @relation("revenueUser")
+  revenuesDoctor             Revenue[]                    @relation("revenueDoctor")
+  item                       Item[]
+  timing                     Timing[]
+  labCategories              LabCategory[]
+  imageCategories            ImageCategory[]
+  users                      Course[]                     @relation("user")
+  doctors                    Course[]                     @relation("doctor")
+  BankRevenue                BankRevenue[]                @relation("bankUser")
+  BankRevenueDoctor          BankRevenue[]                @relation("bankDoctor")
+  InsuranceRevenue           InsuranceRevenue[]           @relation("insuranceUser")
+  InsuranceRevenueDoctor     InsuranceRevenue[]           @relation("insuranceDoctor")
+  CoursePayment              CoursePayment[]              @relation("coursePaymentUser")
+  CoursePaymentDoctor        CoursePayment[]              @relation("coursePaymentDoctor")
+  PayrollUser                PayrollUser[]
+  Sales                      Sales[]
+  Price                      Price[]
+  Hospital                   Hospital[]
+  Surgery                    Surgery[]
+  SalesDefinition            SalesDefinition[]
+  UserInventoryItem          InventoryItem[]              @relation("userInventoryItem")
+  DoctorInventoryItem        InventoryItem[]              @relation("doctorInventoryItem")
+  InventoryHistory           InventoryHistory[]           @relation("userInventory")
+  DoctorInventoryHistory     InventoryHistory[]           @relation("doctorInventory")
+  DentalDiagnosisDefinition  DentalDiagnosisDefinition[]
+  Tooth                      Tooth[]
+  ToothTransaction           ToothTransaction[]           @relation("toothUser")
+  ToothTransactionDoctors    ToothTransaction[]           @relation("toothDoctor")
+  PatientViewStatus          PatientViewStatus[]
+  PatientField               PatientField[]
+  SessionTransaction         SessionTransaction[]
+  BankExpense                BankExpense[]                @relation("bankExpenseUser")
+  BankExpenseDoctor          BankExpense[]                @relation("bankExpenseDoctor")
+  SupplierAccount            SupplierAccount[]
+  SupplierInvoice            SupplierInvoice[]
+  SupplierInvoiceTransaction SupplierInvoiceTransaction[]
 }
 
 model Patient {
@@ -984,6 +995,48 @@ model Timing {
   user              User           @relation(fields: [userId], references: [id])
   userId            String
   prescriptions     Prescription[]
+}
+
+model SupplierAccount {
+  id              String            @id @default(uuid())
+  name            String
+  phoneNo         String?
+  organization    Organization      @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  user            User              @relation(fields: [userId], references: [id])
+  userId          String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+  SupplierInvoice SupplierInvoice[]
+}
+
+model SupplierInvoice {
+  id                         String                       @id @default(uuid())
+  name                       String
+  amount                     Int
+  description                String
+  invoiceNumber              String
+  paid                       Int                          @default(0)
+  status                     SupplierInvoiceStatus
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now()) @updatedAt
+  supplierAccount            SupplierAccount              @relation(fields: [supplierId], references: [id])
+  supplierId                 String
+  organization               Organization                 @relation(fields: [organizationId], references: [id])
+  organizationId             String
+  user                       User                         @relation(fields: [userId], references: [id])
+  userId                     String
+  SupplierInvoiceTransaction SupplierInvoiceTransaction[]
+}
+
+model SupplierInvoiceTransaction {
+  id                String          @id @default(uuid())
+  paid              Int
+  date              DateTime
+  supplierInvoice   SupplierInvoice @relation(fields: [supplierInvoiceId], references: [id])
+  supplierInvoiceId String
+  user              User            @relation(fields: [userId], references: [id])
+  userId            String
 }
 
 model ImageDefinition {

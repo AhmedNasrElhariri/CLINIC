@@ -24,6 +24,7 @@ import * as fromInsuranceRevenue from './insuranceRevenue';
 import * as fromBankExpense from './bankExpense';
 import * as fromLabDefinition from './lab-definition';
 import * as fromImageDefinition from './image-definition';
+import * as fromSupplierAccount from './supplier-account';
 export default {
   Query: fromQuery,
   Mutation: fromMutation,
@@ -50,4 +51,5 @@ export default {
   InsuranceRevenue: fromInsuranceRevenue,
   LabDefinition: fromLabDefinition,
   ImageDefinition: fromImageDefinition,
+  SupplierAccount: fromSupplierAccount,
 };

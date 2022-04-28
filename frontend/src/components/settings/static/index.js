@@ -21,6 +21,7 @@ import DentalDiagnosis from './dental-diagnosis-definition';
 import FaceMaterials from './face-materials';
 import AppointmentTypeDefinition from './appointment-type-definition';
 import CourseTypeDefinition from './course-types-definition';
+import SupplierAccount from './supplier-account';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -61,6 +62,7 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="17">Patient Report</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="18">Appointment Type</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="19">Course Type</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="20">Supplier Account</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -103,8 +105,10 @@ function StaticSettings() {
               return <PatientReport />;
             case '18':
               return <AppointmentTypeDefinition />;
-            default:
+            case '19':
               return <CourseTypeDefinition />;
+            default:
+              return <SupplierAccount />;
           }
         })()}
       </TabContainer>
