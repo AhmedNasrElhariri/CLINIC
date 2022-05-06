@@ -26,7 +26,7 @@ module.exports = merge(common, {
           to: 'frontend',
         },
         {
-          from: '../frontend/build/',
+          from: '../patient-app/build/',
           to: 'patient-app',
         },
         {
