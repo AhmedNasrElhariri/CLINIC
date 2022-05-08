@@ -90,7 +90,6 @@ const Sales = () => {
     itemId: filter?.itemId,
     creatorId: filter?.userId,
   });
-  console.log(filter,'FFFF');
   const pages = Math.ceil(salesCounts / 20);
   const { pageSetupData } = useConfigurations();
   const pageSetupRow = pageSetupData.find(element => element.type === 'sales');

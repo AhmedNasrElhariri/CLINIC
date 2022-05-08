@@ -335,7 +335,6 @@ function Payroll() {
     });
     close();
   }, [addPayroll, formValue, checkedPayLipsUsers]);
-  console.log(formValue, 'FFF');
   return (
     <>
       <Can I="View" an="Payroll">
