@@ -10,12 +10,12 @@ echo 'start building...'
 yarn build
 echo 'frontend built successfullty'
 
-echo 'start patient app build'
-cd ./patient-app
+echo 'start patients app build'
+cd ./patients-app
 yarn install --frozen-lockfile
 echo 'start building...'
 REACT_APP_GRAPHQL_URL=http://167.71.42.148:8000 yarn build
-echo 'patient app built successfullty'
+echo 'patients app built successfullty'
 
 cd ../backend
 cp ../../root/.env ./
