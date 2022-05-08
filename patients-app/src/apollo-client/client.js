@@ -1,96 +1,39 @@
-import { onError } from "@apollo/client/link/error";
-import { InMemoryCache } from "@apollo/client/cache";
-import { ApolloClient, ApolloLink, split } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-import { createUploadLink } from "apollo-upload-client";
-import { WebSocketLink } from "@apollo/client/link/ws";
-import { getMainDefinition } from "@apollo/client/utilities";
-// import * as ls from 'services/local-storage';
+import {
+  ApolloClient,
+  HttpLink,
+  ApolloLink,
+  InMemoryCache,
+  from,
+} from '@apollo/client';
 
-export const ACCESS_TOKEN = "access-token";
-// export const getToken = () => get(ACCESS_TOKEN);
+export const ACCESS_TOKEN = 'access-token';
 
-// const authLink = setContext((_, { headers }) => {
-//   // const token = getToken();
-//   const token = {};
-//   return {
-//     headers: {
-//       ...headers,
-//       authorization: token ? `Bearer ${token}` : "",
-//     },
-//   };
-// });
+const authMiddleware = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  operation.setContext(({ headers = {} }) => ({
+    headers: {
+      ...headers,
+      authorization: localStorage.getItem(ACCESS_TOKEN) || null,
+    },
+  }));
 
-// const errorLink = onError(({ graphQLErrors, operation }) => {
-//   // if (graphQLErrors)
-//   //   graphQLErrors.map(({ extensions }) => {
-//   //     if (R.propOr('', 'code') === 'UNAUTHENTICATED') {
-//   //     }
-//   //   });
-// });
-
-const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/`,
-  // options: {
-  //   reconnect: true,
-    // connectionParams: async () => {
-    //   // const token = getToken();
-    //   const token = {};
-    //   return {
-    //     headers: {
-    //       authorization: token ? `Bearer ${token}` : "",
-    //     },
-    //   };
-    // },
-  // },
+  return forward(operation);
 });
 
-const cleanTypeName = new ApolloLink((operation, forward) => {
-  if (operation.variables) {
-    const omitTypename = (key, value) =>
-      key === "__typename" ? undefined : value;
-    operation.variables = JSON.parse(
-      JSON.stringify(operation.variables),
-      omitTypename
-    );
-  }
-  return forward(operation).map((data) => {
-    return data;
-  });
+const httpLink = new HttpLink({
+  uri: `${
+    process.env.REACT_APP_GRAPHQL_URL || 'http://localhost:4000'
+  }/graphql`,
 });
 
-const link = split(
-  // split based on operation type
-  ({ query }) => {
-    
-    const { kind, operation } = getMainDefinition(query);
-    return kind === "OperationDefinition" ;
-  },
-  wsLink,
-  ApolloLink.from([
-    // errorLink,
-    // authLink,
-    // cleanTypeName,
-    createUploadLink({ uri: "/graphql" }),
-  ])
-);
 const client = new ApolloClient({
-  link,
+  link: from([authMiddleware, httpLink]),
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network',
     },
   },
 });
-// const client = new ApolloClient({
-//   uri: `ws://localhost:4000/`,
-//   cache: new InMemoryCache(),
-//   defaultOptions: {
-//     watchQuery: {
-//       fetchPolicy: "cache-and-network",
-//     },
-//   },
-// });
 
 export default client;
