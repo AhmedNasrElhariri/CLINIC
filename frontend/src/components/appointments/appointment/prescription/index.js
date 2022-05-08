@@ -20,7 +20,12 @@ import {
   StyledFooterData,
 } from './style';
 import PrescriptionPrinting from './prescription';
-
+const peridos = [
+  { id: 'year', arbiceValue: 'سنة' },
+  { id: 'month', arbiceValue: 'شهر' },
+  { id: 'week', arbiceValue: 'أسبوع' },
+  { id: 'day', arbiceValue: 'يوم' },
+];
 let newPrescription = [];
 function Prescription({
   visible,
@@ -51,9 +56,11 @@ function Prescription({
       medicineDefinitions.find(f => f.id === m.medicineId) || {};
     const { dose, medicineId, timingId, duration, period } = m;
     let specificTiming = timings.find(t => t.id === timingId);
+    let specificPeriod = peridos.find(p => p.id === period);
     const tN = R.propOr('', 'name')(specificTiming);
     const tA = R.propOr('', 'arabicPrintValue')(specificTiming);
     const tE = R.propOr('', 'englishPrintValue')(specificTiming);
+    const periodAr = R.propOr('', 'arbiceValue')(specificPeriod);
     return {
       medicine: formMedicine,
       dose: dose || undefined,
@@ -63,10 +70,10 @@ function Prescription({
       medicineId: medicineId || m.id || null,
       duration: duration || '',
       period: period || null,
+      periodAr: periodAr || null,
       required: !R.isEmpty(formMedicine),
     };
   });
-
   return (
     <CRModal
       show={visible}
@@ -152,25 +159,23 @@ function Prescription({
             <Div>No Medicines</Div>
           ) : (
             newMedicine?.map((element, indx) => (
-              <PrintContainer margin="0px">
-                <PrintMedicine direction={direction}>
-                  <Ul>
-                    <Li>{element.medicine.name}</Li>
-                    <Div display="flex">
-                      <Div>
-                        {element.period}
-                        &nbsp;
-                      </Div>
-                      <Div>{element.duration}&nbsp;</Div>
-                      <Div>لمده &nbsp;</Div>
-
-                      <Div>{element.tA}&nbsp;</Div>
-
-                      <Div>{element.dose}&nbsp;</Div>
+              <PrintMedicine direction={direction}>
+                <Ul>
+                  <Li>{element.medicine.name}</Li>
+                  <Div display="flex">
+                    <Div>
+                      {element.periodAr}
+                      &nbsp;
                     </Div>
-                  </Ul>
-                </PrintMedicine>
-              </PrintContainer>
+                    <Div>{element.duration}&nbsp;</Div>
+                    <Div>لمده &nbsp;</Div>
+
+                    <Div>{element.tA}&nbsp;</Div>
+
+                    <Div>{element.dose}&nbsp;</Div>
+                  </Div>
+                </Ul>
+              </PrintMedicine>
             ))
           )}
           {enable ? (
@@ -195,21 +200,19 @@ function Prescription({
             <Div>No Medicines</Div>
           ) : (
             newMedicine?.map((element, indx) => (
-              <PrintContainer>
-                <PrintMedicine>
-                  <Div>{element.medicine.name}</Div>
-                  <Div display="flex">
-                    <Div>
-                      {element.dose}
-                      &nbsp;
-                    </Div>
-                    <Div>{element.tE}&nbsp;</Div>
-                    <Div>for&nbsp;</Div>
-                    <Div>{element.duration}&nbsp;</Div>
-                    <Div>{element.period}</Div>
+              <PrintMedicine>
+                <Div>{element.medicine.name}</Div>
+                <Div display="flex">
+                  <Div>
+                    {element.dose}
+                    &nbsp;
                   </Div>
-                </PrintMedicine>
-              </PrintContainer>
+                  <Div>{element.tE}&nbsp;</Div>
+                  <Div>for&nbsp;</Div>
+                  <Div>{element.duration}&nbsp;</Div>
+                  <Div>{element.period}</Div>
+                </Div>
+              </PrintMedicine>
             ))
           )}
           {enable ? (

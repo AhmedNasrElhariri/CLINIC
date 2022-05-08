@@ -22,7 +22,6 @@ const editCourse = async (
       patient: true,
     },
   });
-  console.log(data, 'NNN');
   let cName = data.customName;
   const { courseDefinitionId } = data;
   if (courseDefinitionId) {

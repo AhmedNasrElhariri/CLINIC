@@ -1,6 +1,5 @@
 import { prisma } from '@';
 import moment from 'moment';
-import * as R from 'ramda';
 
 function groupArrayOfObjects(list, key) {
   return list.reduce(function(rv, x) {
@@ -16,7 +15,6 @@ const sessionStatistics = async (
 ) => {
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
-  let totalPrice = 0;
   const sessions = await prisma.sessionDefinition.findMany({
     where: {
       id: {

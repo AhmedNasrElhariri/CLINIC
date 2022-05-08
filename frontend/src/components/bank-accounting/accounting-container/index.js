@@ -1,7 +1,14 @@
 import React, { useState, useMemo, useCallback } from 'react';
 
 import * as R from 'ramda';
-import { MainContainer, Div, CRCard, H6, CRButton } from 'components';
+import {
+  MainContainer,
+  Div,
+  CRCard,
+  H6,
+  CRButton,
+  BranchSpecialtyUserFilter,
+} from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data/revenue';
 import ListExpenseData from './list-data/expense';
@@ -39,23 +46,40 @@ const initValue = {
   date: null,
   name: '',
 };
+const initialBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+};
+const initialExpenseBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+};
+const inialCurrentPage = {
+  activePage: 1,
+};
+const inialExpenseCurrentPage = {
+  activePage: 1,
+};
 const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const { visible, open, close } = useModal();
-  const {
-    formValue,
-    setFormValue,
-    type,
-    setType,
-    checkResult,
-    validate,
-    show,
-    setShow,
-  } = useForm({
+  const { formValue, setFormValue, type, setType, show, setShow } = useForm({
     initValue,
   });
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initalFilterVal);
+  console.log(filter, 'filter');
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const [expenseCurrentPage, setExpenseCurrentPage] = useState(
+    inialExpenseCurrentPage
+  );
+  const [branchSpecialtyUser, setBranchSpecialtyUser] =
+    useState(initialBranchValue);
+  const [expenseBranchSpecialtyUser, setExpenseBranchSpecialtyUser] = useState(
+    initialExpenseBranchValue
+  );
   const { pageSetupData } = useConfigurations();
   const { banksDefinition } = useBankDefinition({});
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
@@ -65,6 +89,8 @@ const BankAccountingContainer = () => {
       name: e.name,
     };
   });
+  const page = currentPage?.activePage;
+  const expensePage = expenseCurrentPage?.activePage;
   const pageSetupRow = pageSetupData.find(element => element.type === 'visa');
   const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
   const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
@@ -76,6 +102,10 @@ const BankAccountingContainer = () => {
   const {
     revenues,
     expenses,
+    totalRevenues,
+    totalExpenses,
+    RevenuesCount,
+    expensesCount,
     timeFrame,
     editBankRevenue,
     createBankRevenue,
@@ -84,6 +114,15 @@ const BankAccountingContainer = () => {
   } = useBankAccounting({
     view,
     period,
+    page,
+    expensePage,
+    branchId: branchSpecialtyUser?.branch,
+    specialtyId: branchSpecialtyUser?.specialty,
+    doctorId: branchSpecialtyUser?.doctor,
+    expenseBranchId: expenseBranchSpecialtyUser?.branch,
+    expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+    expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+    bankId: filter?.bank,
     onEdit: () => {
       close();
     },
@@ -92,6 +131,8 @@ const BankAccountingContainer = () => {
       setFormValue(initValue);
     },
   });
+  const revenuesPages = Math.ceil(RevenuesCount / 20);
+  const expensesPages = Math.ceil(expensesCount / 20);
 
   const updatedRevenues = useMemo(() => {
     if (filter.bank == null) {
@@ -100,7 +141,6 @@ const BankAccountingContainer = () => {
       return revenues.filter(r => r.bank.id == filter.bank);
     }
   }, [filter, revenues]);
-  console.log(revenues, 'RRRRR', filter);
   const updatedExpenses = useMemo(
     () =>
       expenses.filter(e =>
@@ -204,6 +244,14 @@ const BankAccountingContainer = () => {
                   Expense +
                 </CRButton>
               </Can>
+              <PdfView
+                data={{ revenues, expenses, totalRevenues, totalExpenses }}
+                period={timeFrame}
+                marginTop={marginTop}
+                marginRight={marginRight}
+                marginBottom={marginBottom}
+                marginLeft={marginLeft}
+              />
             </>
           </Div>
         }
@@ -233,7 +281,38 @@ const BankAccountingContainer = () => {
         <Div>
           <Div display="flex">
             <Div flexGrow={1} mr={2}>
-              <BranchFilter
+              <BranchSpecialtyUserFilter
+                formValue={branchSpecialtyUser}
+                onChange={setBranchSpecialtyUser}
+                branches={filterBranches}
+              />
+              <ListData
+                title="Banking Revenues"
+                data={revenues}
+                onEdit={handleClickEditRevenue}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                pages={revenuesPages}
+              />
+              <ExpenseFilter
+                formValue={formValue}
+                setFormValue={setFormValue}
+              />
+              <BranchSpecialtyUserFilter
+                formValue={expenseBranchSpecialtyUser}
+                onChange={setExpenseBranchSpecialtyUser}
+                branches={filterBranches}
+              />
+              <ListExpenseData
+                title="Expenses"
+                data={expenses}
+                onEdit={handleClickEditExpense}
+                currentPage={expenseCurrentPage}
+                setCurrentPage={setExpenseCurrentPage}
+                pages={expensesPages}
+              />
+              <Profit expenses={totalExpenses} revenues={totalRevenues} />
+              {/* <BranchFilter
                 appointments={updatedRevenues}
                 type="accounting"
                 method="revenues"
@@ -287,7 +366,7 @@ const BankAccountingContainer = () => {
                     </Div>
                   </>
                 )}
-              />
+              /> */}
             </Div>
           </Div>
         </Div>
@@ -300,11 +379,8 @@ const BankAccountingContainer = () => {
           type={type}
           banksDefinition={banksDefinition}
           updatedexpenseType={updatedexpenseType}
-          // checkResult={checkResult}
-          // validate={validate}
           show={show}
           setShow={setShow}
-          // loading={loading}
         />
       </CRCard>
     </>

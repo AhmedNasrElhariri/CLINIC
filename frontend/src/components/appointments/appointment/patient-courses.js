@@ -249,6 +249,9 @@ const Course = ({ patientId }) => {
           courseId: formValue.id,
           refund: formValue.refund,
           bank: bank,
+          branchId: formValue.branchId,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
         },
       });
     } else if (type === 'editPaymentHistory') {

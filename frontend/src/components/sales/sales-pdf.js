@@ -6,6 +6,8 @@ import PdfSalesDocument from './pdf-sales';
 
 const PdfView = ({
   data,
+  totalSalesPrice,
+  totalSalesCost,
   period,
   marginTop,
   marginRight,
@@ -24,6 +26,8 @@ const PdfView = ({
           marginRight={marginRight}
           marginBottom={marginBottom}
           marginLeft={marginLeft}
+          totalSalesPrice={totalSalesPrice}
+          totalSalesCost={totalSalesCost}
         />
       ).toBlob();
       const url = URL.createObjectURL(blob);

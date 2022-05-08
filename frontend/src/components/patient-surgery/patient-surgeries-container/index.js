@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Can } from 'components/user/can';
 import { Schema } from 'rsuite';
@@ -24,6 +24,9 @@ const initValue = {
   fees: 0,
   hospitalFees: 0,
 };
+const inialCurrentPage = {
+  activePage: 1,
+};
 const { StringType, DateType } = Schema.Types;
 const model = Schema.Model({
   patientId: StringType().isRequired('patient is required'),
@@ -34,6 +37,8 @@ const model = Schema.Model({
 const PatientSurgeriesContainer = () => {
   const { visible, open, close } = useModal();
   const history = useHistory();
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const page = currentPage?.activePage;
   const { formValue, setFormValue, checkResult, validate, show, setShow } =
     useForm({
       initValue,
@@ -46,13 +51,22 @@ const PatientSurgeriesContainer = () => {
       patientId: null,
       time: [],
     });
-  const { createPatientSurgery, patientSurgeries, loading } =
-    usePatientSurgeries({
-      onCreate: () => {
-        close();
-      },
-    });
-
+  const {
+    createPatientSurgery,
+    patientSurgeries,
+    patientSurgeriesCount,
+    loading,
+  } = usePatientSurgeries({
+    surgery: filterFormValue?.surgery,
+    hospital: filterFormValue?.hospital,
+    patientId: filterFormValue?.patientId,
+    time: filterFormValue?.time,
+    page: page,
+    onCreate: () => {
+      close();
+    },
+  });
+  const pages = Math.ceil(patientSurgeriesCount / 20);
   const handleOnClickCreate = useCallback(() => {
     open();
   }, [open]);
@@ -113,6 +127,9 @@ const PatientSurgeriesContainer = () => {
         <ListPatientSurgeries
           patientSurgeries={filteredList}
           onSurgeryClick={handleSurgeryClick}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pages={pages}
         />
       </MainContainer>
     </>

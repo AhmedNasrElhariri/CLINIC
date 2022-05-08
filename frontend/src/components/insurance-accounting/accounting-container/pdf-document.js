@@ -54,12 +54,14 @@ const calculateTotal = data =>
 
 const PdfDocument = ({
   period,
-  data: { revenues, expenses },
+  data: { revenues, expenses, totalRevenues },
   marginTop,
   marginRight,
   marginBottom,
   marginLeft,
 }) => {
+  let TotalRevenues = 0;
+  TotalRevenues = totalRevenues ? totalRevenues : calculateTotal(revenues);
   return (
     <Document>
       <Page
@@ -78,12 +80,8 @@ const PdfDocument = ({
           from {formatDate(period[0])} to {formatDate(period[1])}
         </Text>
         <View style={styles.profit}>
-          <Text style={styles.header}>
-            Revenues = {calculateTotal(revenues)}
-          </Text>
-          <Text style={styles.header}>
-            Profit = {calculateTotal(revenues) - calculateTotal(expenses)}
-          </Text>
+          <Text style={styles.header}>Revenues = {TotalRevenues}</Text>
+          <Text style={styles.header}>Profit = {TotalRevenues - 0}</Text>
         </View>
 
         <View style={styles.tableContainer}>

@@ -12,22 +12,52 @@ import {
   getYearStartAndEnd,
 } from 'utils/date';
 
-const useAccounting = ({ view, period } = {}) => {
-  const { data: revenueData } = useQuery(LIST_COMPANY_REVENUES);
+const useAccounting = ({
+  view,
+  period,
+  specialtyId,
+  branchId,
+  page,
+  doctorId,
+} = {}) => {
+  const { data: revenueData } = useQuery(LIST_COMPANY_REVENUES, {
+    variables: Object.assign(
+      {
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      view && { view: view },
+      branchId && { branchId: branchId },
+      specialtyId && { specialtyId: specialtyId },
+      doctorId && { doctorId: doctorId }
+    ),
+  });
 
-  const allRevenues = useMemo(
-    () => R.propOr([], 'companyRevenues')(revenueData),
-    [revenueData]
-  );
+  // const allRevenues = useMemo(
+  //   () => R.propOr([], 'companyRevenues')(revenueData),
+  //   [revenueData]
+  // );
 
-  const revenues = useMemo(
-    () => filterAccountingList(allRevenues, view, period),
-    [allRevenues, period, view]
-  );
+  // const revenues = useMemo(
+  //   () => filterAccountingList(allRevenues, view, period),
+  //   [allRevenues, period, view]
+  // );
 
+  // const totalRevenues = useMemo(
+  //   () => revenues.reduce((acc, e) => acc + e.amount, 0),
+  //   [revenues]
+  // );
+  const revenuesData = revenueData?.companyRevenues;
+  const revenues = R.propOr([], 'companyRevenues')(revenuesData);
   const totalRevenues = useMemo(
-    () => revenues.reduce((acc, e) => acc + e.amount, 0),
-    [revenues]
+    () => R.propOr(0, 'totalRevenues')(revenuesData),
+    [revenuesData]
+  );
+  const RevenuesCount = useMemo(
+    () => R.propOr(0, 'revenuesCount')(revenuesData),
+    [revenuesData]
   );
 
   const getTimeFrameByView = view => {
@@ -52,12 +82,13 @@ const useAccounting = ({ view, period } = {}) => {
     () => ({
       revenues,
       totalRevenues,
+      RevenuesCount,
       timeFrame,
       refetchRevenues: {
         query: LIST_COMPANY_REVENUES,
       },
     }),
-    [revenues, timeFrame, totalRevenues]
+    [revenues, RevenuesCount, timeFrame, totalRevenues]
   );
 };
 

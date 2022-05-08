@@ -17,6 +17,7 @@ import {
   PATIENT_COUPONS,
   ADJUST_APPOINTMENT,
   CANCEL_APPOINTMENT,
+  GET_INVOICE_COUNTER,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
@@ -67,7 +68,7 @@ function useAppointments({
     () =>
       R.pipe(
         R.propOr([], 'appointments'),
-        R.reject(R.propEq('status', 'Cancelled')),
+        // R.reject(R.propEq('status', 'Cancelled')),
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery))
@@ -135,6 +136,9 @@ function useAppointments({
         },
         { query: LIST_INVENTORY },
         { query: LIST_INVENTORY_HISTORY },
+        {
+          query: GET_INVOICE_COUNTER,
+        },
       ],
     }
   );

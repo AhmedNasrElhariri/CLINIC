@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
+import moment from 'moment';
 import { Modal, Whisper, Tooltip, Form } from 'rsuite';
 import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import {
@@ -79,11 +80,16 @@ const renderAppointment = data => {
 };
 
 const PatientSummary = ({ summary, tabularFields, tabularData }) => {
+  const updatedSummary = useMemo(() => {
+    const today = moment(new Date()).endOf('day');
+    const ss = summary.filter(s => moment(s.date) <= today);
+    return ss;
+  }, [summary]);
   const [activeSession, setActiveSession] = useState(null);
   const history = useHistory();
   useEffect(() => {
-    setActiveSession(R.propOr({}, '0')(summary));
-  }, [summary]);
+    setActiveSession(R.propOr({}, '0')(updatedSummary));
+  }, [updatedSummary]);
 
   const date = useMemo(
     () => R.propOr(new Date(), 'date')(activeSession),
@@ -95,8 +101,9 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
     [activeSession]
   );
   const sessionId = useMemo(
-    () => R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(summary),
-    [activeSession, summary]
+    () =>
+      R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(updatedSummary),
+    [activeSession, updatedSummary]
   );
   // const updatedData = useMemo(() => {
   //   let newData = [];
@@ -123,20 +130,20 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>
-        {summary.map((session, idx) => (
+        {updatedSummary.map((session, idx) => (
           <CRNav.CRVItem
             key={session.id}
             eventKey={session}
             active={activeSession.id === session.id}
           >
-            Session {summary.length - idx}
+            Session {updatedSummary.length - idx}
           </CRNav.CRVItem>
         ))}
       </CRNav>
       <Div m={4} flexGrow={1}>
-        {summary.length ? (
+        {updatedSummary.length ? (
           <>
-            <H3 mb={4}>Session {summary.length - sessionId}</H3>
+            <H3 mb={4}>Session {updatedSummary.length - sessionId}</H3>
             <Div>
               {renderProp('Date', formatDate(date))}
               {renderAppointment(data)}

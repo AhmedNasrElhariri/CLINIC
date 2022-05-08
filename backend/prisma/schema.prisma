@@ -307,6 +307,7 @@ model Patient {
   sex              Sex
   reference        Json                  @default("[]")
   area             String                @default("")
+  password         String?
   organization     Organization          @relation(fields: [organizationId], references: [id])
   organizationId   String
   user             User                  @relation(fields: [userId], references: [id])

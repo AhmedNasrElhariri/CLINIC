@@ -17,6 +17,7 @@ const initialValues = {
   phoneNo: '',
   phoneNoTwo: '',
   area: '',
+  code: '',
   ageOption: 'age',
   phoneOption: 'one',
   reference: [],

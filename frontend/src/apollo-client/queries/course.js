@@ -272,8 +272,22 @@ export const FINISH_COURSE = gql`
 `;
 
 export const DELETE_COURSE = gql`
-  mutation deleteCourse($courseId: ID!, $refund: Int!, $bank: ID) {
-    deleteCourse(courseId: $courseId, refund: $refund, bank: $bank) {
+  mutation deleteCourse(
+    $courseId: ID!
+    $refund: Int!
+    $bank: ID
+    $branchId: ID
+    $specialtyId: ID
+    $userId: ID
+  ) {
+    deleteCourse(
+      courseId: $courseId
+      refund: $refund
+      bank: $bank
+      branchId: $branchId
+      specialtyId: $specialtyId
+      userId: $userId
+    ) {
       id
       price
     }

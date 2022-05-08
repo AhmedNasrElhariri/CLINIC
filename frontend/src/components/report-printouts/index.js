@@ -164,7 +164,8 @@ function ReportPrintout() {
       setFormValue({ ...formValue, body: newBody });
     }
   }, [formValue.data]);
-  console.log(patientSurgeries,'SS');
+  const checkOne = Object.keys(formValue.patientReport).length !== 0;
+
   return (
     <>
       <Div display="flex" justifyContent="space-between">
@@ -183,7 +184,7 @@ function ReportPrintout() {
           style={{ width: '1000px' }}
           block
         />
-        {formValue.context === 'patient' ? (
+        {formValue.context && checkOne && formValue.context === 'patient' ? (
           <CRSelectInput
             label="Patient"
             name="data"
@@ -193,7 +194,9 @@ function ReportPrintout() {
             virtualized={false}
             block
           />
-        ) : formValue.context === 'appointment' ? (
+        ) : formValue.context &&
+          checkOne &&
+          formValue.context === 'appointment' ? (
           <CRSelectInput
             label="Appointment"
             name="data"
@@ -203,14 +206,17 @@ function ReportPrintout() {
             block
           />
         ) : (
-          <CRSelectInput
-            label="Surgery"
-            name="data"
-            data={dataValue}
-            style={{ width: '1000px' }}
-            virtualized={false}
-            block
-          />
+          formValue.context &&
+          checkOne && (
+            <CRSelectInput
+              label="Surgery"
+              name="data"
+              data={dataValue}
+              style={{ width: '1000px' }}
+              virtualized={false}
+              block
+            />
+          )
         )}
 
         <CRSelectInput

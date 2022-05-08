@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { APPOINTMENTS_STATUS, COURSE_STATUS } from '@/utils/constants';
 const deleteCourse = async (
   _,
-  { courseId, refund, bank },
+  { courseId, refund, bank, branchId, specialtyId, userId: USERID },
   { userId, organizationId }
 ) => {
   const data = await prisma.course.findUnique({
@@ -45,51 +45,97 @@ const deleteCourse = async (
   });
   if (bank) {
     await prisma.bankExpense.create({
-      data: {
-        name: 'C/' + cName + '/Refund/' + patient.name,
-        amount: refund,
-        expenseType: 'refund',
-        date: new Date(),
-        organization: {
-          connect: {
-            id: organizationId,
+      data: Object.assign(
+        {
+          name: 'C/' + cName + '/Refund/' + patient.name,
+          amount: refund,
+          expenseType: 'refund',
+          date: new Date(),
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          bank: {
+            connect: {
+              id: bank,
+            },
+          },
+          patient: {
+            connect: {
+              id: patient.id,
+            },
           },
         },
-        user: {
-          connect: {
-            id: userId,
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
           },
         },
-        bank: {
-          connect: {
-            id: bank,
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
           },
         },
-        patient: {
-          connect: {
-            id: patient.id,
+        USERID && {
+          doctor: {
+            connect: {
+              id: USERID,
+            },
           },
-        },
-      },
+        }
+      ),
     });
   } else {
     await prisma.expense.create({
-      data: {
-        name: 'C/' + cName + '/Refund/' + patient.name,
-        amount: refund,
-        expenseType: 'refund',
-        date: new Date(),
-        organization: {
-          connect: {
-            id: organizationId,
+      data: Object.assign(
+        {
+          name: 'C/' + cName + '/Refund/' + patient.name,
+          amount: refund,
+          expenseType: 'refund',
+          date: new Date(),
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
           },
         },
-        user: {
-          connect: {
-            id: userId,
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
           },
         },
-      },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        USERID && {
+          doctor: {
+            connect: {
+              id: USERID,
+            },
+          },
+        }
+      ),
     });
   }
   return prisma.course.update({

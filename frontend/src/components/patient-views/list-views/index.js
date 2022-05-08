@@ -4,7 +4,6 @@ import { useQuery, useMutation } from '@apollo/client';
 import { Link, useHistory } from 'react-router-dom';
 import { Panel } from 'rsuite';
 import * as R from 'ramda';
-import useGlobalState from 'state';
 import { Div } from 'components';
 
 import {

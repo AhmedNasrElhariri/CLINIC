@@ -18,7 +18,6 @@ import {
   Img,
 } from 'components';
 
-
 import { convertGroupFieldsToNavs } from 'services/appointment';
 import {
   NUMBER_FIELD_TYPE,
@@ -188,7 +187,7 @@ function AppointmentData({
     [appointmentFormValue, onChange]
   );
   const categoryId = categoryLabForm?.categoryId;
-  const { labsDefinition } = useLabDefinitions({ categoryId });
+  const { labsDefinition } = useLabDefinitions({});
   const handleLabsChange = useCallback(
     labIds => {
       const cateLabs = labsDefinition.map(l => l.id);
@@ -202,7 +201,7 @@ function AppointmentData({
     [appointmentFormValue, onChange, categoryLabForm]
   );
   const imageId = categoryImageForm?.categoryId;
-  const { imagesDefinition } = useImageDefinition({ categoryId: imageId });
+  const { imagesDefinition } = useImageDefinition({});
   const handleImagesChange = useCallback(
     imageIds => {
       const cateImages = imagesDefinition.map(i => i.id);
@@ -248,7 +247,6 @@ function AppointmentData({
       });
     }
   };
-  console.log(patient, 'PP');
   return (
     <>
       <Div display="flex">

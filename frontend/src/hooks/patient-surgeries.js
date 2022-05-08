@@ -19,12 +19,37 @@ const updateCache = patientSurgeries => {
   });
 };
 
-const usePatientSurgeries = ({ onCreate } = {}) => {
-  const { data } = useQuery(LIST_PATIENT_SURGERIES);
+const usePatientSurgeries = ({
+  onCreate,
+  surgery,
+  hospital,
+  patientId,
+  time,
+  page,
+}) => {
+  const { data } = useQuery(LIST_PATIENT_SURGERIES, {
+    variables: Object.assign(
+      {
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+      time && { dateFrom: time[0] },
+      time && { dateTo: time[1] },
+      hospital && { hospital: hospital },
+      surgery && { surgery: surgery },
+      patientId && { patientId: patientId }
+    ),
+  });
+  const surgeries = data?.patientSurgeries;
   const patientSurgeries = useMemo(
-    () => R.propOr([], 'patientSurgeries')(data),
-    [data]
+    () => R.propOr([], 'surgeries')(surgeries),
+    [surgeries]
   );
+  const patientSurgeriesCount = useMemo(
+    () => R.propOr([], 'surgeriesCount')(surgeries),
+    [surgeries]
+  );
+
 
   const [createPatientSurgery, { loading }] = useMutation(
     CREATE_PATIENT_SURGERY,
@@ -50,6 +75,7 @@ const usePatientSurgeries = ({ onCreate } = {}) => {
   return useMemo(
     () => ({
       patientSurgeries,
+      patientSurgeriesCount,
       createPatientSurgery: patientSurgery => {
         createPatientSurgery({
           variables: {
@@ -60,7 +86,7 @@ const usePatientSurgeries = ({ onCreate } = {}) => {
       updateCache,
       loading,
     }),
-    [createPatientSurgery, patientSurgeries, loading]
+    [createPatientSurgery, patientSurgeries, patientSurgeriesCount, loading]
   );
 };
 

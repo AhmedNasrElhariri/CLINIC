@@ -40,32 +40,51 @@ export const EDIT_SURGERY = gql`
 `;
 
 export const LIST_PATIENT_SURGERIES = gql`
-  query patientSurgeries($patientId: ID) {
-    patientSurgeries(patientId: $patientId) {
-      id
-      date
-      fees
-      hospitalFees
-      anesthesia
-      anesthesiaDoctorName
-      assistantFees
-      anesthesiaFees
-      others
-      patient {
+  query patientSurgeries(
+    $patientId: ID
+    $surgery: ID
+    $hospital: ID
+    $offset: Int
+    $limit: Int
+    $dateFrom: Date
+    $dateTo: Date
+  ) {
+    patientSurgeries(
+      patientId: $patientId
+      surgery: $surgery
+      hospital: $hospital
+      offset: $offset
+      limit: $limit
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+    ) {
+      surgeries {
         id
-        name
+        date
+        fees
+        hospitalFees
+        anesthesia
+        anesthesiaDoctorName
+        assistantFees
+        anesthesiaFees
+        others
+        patient {
+          id
+          name
+        }
+        surgery {
+          id
+          name
+        }
+        hospital {
+          id
+          name
+        }
+        appointment {
+          id
+        }
       }
-      surgery {
-        id
-        name
-      }
-      hospital {
-        id
-        name
-      }
-      appointment {
-        id
-      }
+      surgeriesCount
     }
   }
 `;

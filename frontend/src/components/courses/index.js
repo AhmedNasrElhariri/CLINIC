@@ -100,7 +100,6 @@ const Courses = () => {
     status: filter.status,
     sortType: sortType,
   });
-  console.log(courses,'CCC');
   const pages = Math.ceil(coursesCount / 20);
   const handleClickEditUnits = useCallback(
     data => {

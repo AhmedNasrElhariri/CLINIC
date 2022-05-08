@@ -37,15 +37,12 @@ const Card = ({ laneId, index }) => {
   );
 
   const remove = useCallback(() => {
-    console.log(formValue,lanes,'INOI');
     const newLanes = lanes.map(l => ({
       ...l,
       cards: l.cards.filter(c => c.id !== formValue.id),
     }));
     setLanes(newLanes,lanes,'laneslanes');
   }, [formValue,lanes, setLanes]);
-  console.log(formValue,lanes,'INOI');
-  console.log(formValue,lanes)
   const handleClickCreate = useCallback(() => {
     setPopup(1);
     open();

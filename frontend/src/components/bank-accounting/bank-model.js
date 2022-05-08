@@ -2,8 +2,6 @@ import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import {
   CRModal,
-  Div,
-  H3,
   CRNumberInput,
   CRTextInput,
   CRSelectInput,
@@ -20,11 +18,6 @@ function BankModel({
   onClose,
   banksDefinition,
   updatedexpenseType,
-  checkResult,
-  validate,
-  show,
-  setShow,
-  loading,
 }) {
   const header = useMemo(
     () =>
@@ -62,19 +55,7 @@ function BankModel({
               block
               data={updatedexpenseType}
             />
-            <CRBrancheTree
-              formValue={formValue}
-              onChange={onChange}
-              action={ACTIONS.AddExpense_Accounting}
-            />
           </>
-        )}
-        {header === 'Add New Bank Revenue Transition' && (
-          <CRBrancheTree
-            formValue={formValue}
-            onChange={onChange}
-            action={ACTIONS.AddRevenue_Accounting}
-          />
         )}
         {type === 'editBankExpense' && (
           <CRSelectInput
@@ -85,6 +66,11 @@ function BankModel({
           />
         )}
         <CRDatePicker label="Date" name="date" block></CRDatePicker>
+        <CRBrancheTree
+          formValue={formValue}
+          onChange={onChange}
+          action={ACTIONS.AddExpense_Accounting}
+        />
         <CRTextInput label="Check No" name="checkNumber" block></CRTextInput>
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
       </Form>

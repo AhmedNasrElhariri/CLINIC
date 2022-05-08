@@ -116,6 +116,7 @@ export const PrescriptionPrintout = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
+  padding: 1px;
   @media print and (max-width: 499px) {
     padding-right: ${props => props.mr}px;
     padding-top: ${props => props.mt}px;
@@ -125,7 +126,7 @@ export const PrescriptionPrintout = styled.div`
 `;
 export const StyledFooterData = styled.div`
   display: flex;
-  margin-top:10px;
+  margin-top: 10px;
 `;
 export const MedicineName = styled.h4`
   color: blue;

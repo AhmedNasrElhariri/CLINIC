@@ -693,21 +693,21 @@ const archiveAppointment = async (
     organizationId: organizationId,
   });
 
-  // const configuration = await prisma.configuration.findUnique({
-  //   where: { organizationId },
-  // });
-  // if (configuration.enableInvoiceCounter) {
-  //   const existedOrganization = await prisma.organization.findUnique({
-  //     where: { id: organizationId },
-  //   });
-  //   const newInvoiceCounter = existedOrganization.invoiceCounter + 1;
-  //   await prisma.organization.update({
-  //     where: { id: organizationId },
-  //     data: {
-  //       invoiceCounter: newInvoiceCounter,
-  //     },
-  //   });
-  // }
+  const configuration = await prisma.configuration.findUnique({
+    where: { organizationId },
+  });
+  if (configuration && configuration.enableInvoiceCounter) {
+    const existedOrganization = await prisma.organization.findUnique({
+      where: { id: organizationId },
+    });
+    const newInvoiceCounter = existedOrganization.invoiceCounter + 1;
+    await prisma.organization.update({
+      where: { id: organizationId },
+      data: {
+        invoiceCounter: newInvoiceCounter,
+      },
+    });
+  }
   return appointment;
 };
 

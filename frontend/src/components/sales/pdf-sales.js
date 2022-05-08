@@ -63,6 +63,8 @@ const calculateTotalCost = data =>
 const PdfDocument = ({
   period,
   data,
+  totalSalesPrice,
+  totalSalesCost,
   marginTop,
   marginRight,
   marginBottom,
@@ -86,14 +88,10 @@ const PdfDocument = ({
           from {formatDate(period[0])} to {formatDate(period[1])}
         </Text>
         <View style={styles.profit}>
+          <Text style={styles.header}>Total Sales = {totalSalesPrice}</Text>
+          <Text style={styles.header}>Total Cost = {totalSalesCost}</Text>
           <Text style={styles.header}>
-            Total Sales = {calculateTotalSales(data)}
-          </Text>
-          <Text style={styles.header}>
-            Total Cost = {calculateTotalCost(data)}
-          </Text>
-          <Text style={styles.header}>
-            Profit = {calculateTotalSales(data) - calculateTotalCost(data)}
+            Profit = {totalSalesPrice - totalSalesCost}
           </Text>
         </View>
 

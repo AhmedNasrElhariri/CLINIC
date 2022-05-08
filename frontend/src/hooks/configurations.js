@@ -22,11 +22,6 @@ const useConfigurations = ({ onUpdate } = {}) => {
     () => R.propOr({}, 'configuration')(data),
     [data]
   );
-  const sessions = useMemo(
-    () => R.propOr([], 'sessions')(configurations),
-    [configurations]
-  );
-
   const { data: PulseData } = useQuery(GET_PULSE_CONTROL, {
     fetchPolicy: 'network-only',
   });
@@ -81,7 +76,6 @@ const useConfigurations = ({ onUpdate } = {}) => {
   return useMemo(
     () => ({
       configurations,
-      sessions,
       update: handleUpdateConfiguration,
       addPulsesControl,
       getPulseControl,
@@ -93,7 +87,6 @@ const useConfigurations = ({ onUpdate } = {}) => {
     [
       configurations,
       handleUpdateConfiguration,
-      sessions,
       addPulsesControl,
       getPulseControl,
       addPageSetup,

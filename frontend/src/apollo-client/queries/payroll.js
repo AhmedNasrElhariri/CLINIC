@@ -104,8 +104,18 @@ export const ADD_PAYROLL_TRANSACTION = gql`
 `;
 
 export const ADD_PAY_ROLL = gql`
-  mutation addPayroll($payment: [ID!]) {
-    addPayroll(payment: $payment) {
+  mutation addPayroll(
+    $payment: [ID!]
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
+  ) {
+    addPayroll(
+      payment: $payment
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+    ) {
       id
     }
   }

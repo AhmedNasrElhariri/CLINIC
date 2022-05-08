@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const patientRevenue = async (_, { patientId }) => {
+const patientRevenue = async (_, { patientId, offset, limit }) => {
   const revenues = await prisma.revenue.findMany({
     where: {
       patientId,
@@ -43,12 +43,22 @@ const patientRevenue = async (_, { patientId }) => {
       date: r.date,
     };
   });
-  const finialRevenues = [
+  const allRevenues = [
     ...updatedRevenues,
     ...updatedBankRevenues,
     ...updatedInsuranceRevenues,
   ];
-  return finialRevenues;
+  const limit2 = limit + offset;
+  const finialRevenues = allRevenues.slice(offset, limit2);
+  let total = 0;
+  total = allRevenues.reduce((acc, e) => acc + e.amount, 0);
+  const counts = allRevenues.length;
+  const data = {
+    patientRevenue: finialRevenues,
+    totalRevenue: total,
+    patientRevenueCounts: counts,
+  };
+  return data;
 };
 
 export default patientRevenue;

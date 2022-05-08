@@ -126,6 +126,9 @@ function Appointments() {
       option,
       appPrice,
       othersName,
+      coupons,
+      couponsValue,
+      doctorFees,
     }) => {
       close();
       archive({
@@ -139,6 +142,7 @@ function Appointments() {
             name: getName({ session, appointment }),
             price: session.price,
             number: session.number,
+            id: session.id,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,
@@ -153,10 +157,14 @@ function Appointments() {
             amount: others,
           },
           patientName: appointment.patient.name,
+          patientId: appointment.patient.id,
           bank,
           appPrice,
           company,
           option,
+          coupons,
+          couponsValue,
+          doctorFees: doctorFees,
         },
       });
     },
@@ -250,14 +258,17 @@ function Appointments() {
                 appointments={appointments}
                 branches={filterBranches}
                 render={apps => (
-                  <ListAppointments
-                    appointments={apps}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    onAddBusinessNotes={onAddBusinessNotes}
-                    defaultExpanded={true}
-                    waiting={true}
-                  />
+                  <>
+                    <Filter formValue={formValue} onChange={setFormValue} />
+                    <ListAppointments
+                      appointments={apps}
+                      onArchive={onClickDone}
+                      onComplete={onCompleteDone}
+                      onAddBusinessNotes={onAddBusinessNotes}
+                      defaultExpanded={true}
+                      waiting={true}
+                    />
+                  </>
                 )}
               />
             </CRTabs.CRContent>
@@ -266,14 +277,17 @@ function Appointments() {
                 appointments={appointments}
                 branches={filterBranches}
                 render={apps => (
-                  <ListAppointments
-                    appointments={apps}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    onAddBusinessNotes={onAddBusinessNotes}
-                    defaultExpanded={true}
-                    waiting={true}
-                  />
+                  <>
+                    <Filter formValue={formValue} onChange={setFormValue} />
+                    <ListAppointments
+                      appointments={apps}
+                      onArchive={onClickDone}
+                      onComplete={onCompleteDone}
+                      onAddBusinessNotes={onAddBusinessNotes}
+                      defaultExpanded={true}
+                      waiting={true}
+                    />
+                  </>
                 )}
               />
             </CRTabs.CRContent>

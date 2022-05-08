@@ -137,7 +137,19 @@ const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
         </>
       )}
 
-      
+      <EditAppointment
+        onOk={edit}
+        visible={visible}
+        appointment={appointment}
+        // onClose={() => onClose('edit')}
+      />
+
+      <CancelAppointment
+        visible={visible.cancel}
+        appointment={appointment}
+        onOk={cancel}
+        onClose={() => onClose('cancel')}
+      />
     </Div>
   );
 };
