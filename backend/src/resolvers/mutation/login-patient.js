@@ -7,7 +7,7 @@ import { APP_SECRET } from '../../utils/constants';
 const loginPatient = async (_, { input: patientInput }) =>
   //   { userId, organizationId }
   {
-    console.log(patientInput,'patientInputpatientInputpatientInput');
+    console.log(patientInput, 'patientInputpatientInputpatientInput');
     const { phoneNo, password } = patientInput;
     const patients = await prisma.patient.findMany({
       where: {
@@ -22,7 +22,7 @@ const loginPatient = async (_, { input: patientInput }) =>
       const patient = patients[0];
       const { id, password: patientPassword } = patient;
       const valid = await bcrypt.compare(password, patientPassword);
-      console.log(patient,'patient110');
+      console.log(patient, 'patient110');
       if (!valid) {
         throw new APIExceptcion('Invalid password');
       }
@@ -31,7 +31,11 @@ const loginPatient = async (_, { input: patientInput }) =>
         { patientId: PATIENTID, organizationId: organizationId },
         APP_SECRET
       );
-      const payload = { token: token, organizationId: organizationId };
+      const payload = {
+        token: token,
+        organizationId: organizationId,
+        patientId: PATIENTID,
+      };
       return payload;
     }
   };

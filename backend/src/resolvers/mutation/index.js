@@ -122,3 +122,5 @@ export { default as editCourseTypeDefinition } from './edit-course-type-definiti
 export { default as registerPatient } from './register-patient';
 export { default as loginPatient } from './login-patient';
 export { default as verifyPatient } from './verify-patient';
+export { default as forgetPatientPassword } from './forget-patient-password';
+

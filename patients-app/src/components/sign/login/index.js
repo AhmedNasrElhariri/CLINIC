@@ -13,8 +13,9 @@ const LoginPage = () => {
   const { isAuthenticated, setAuthenticated } = useAuth();
   const history = useNavigate();
   const onLoginSucceeded = useCallback(
-    ({ token }) => {
+    ({ token, patientId }) => {
       ls.setUserToken(token);
+      ls.setPatientId(patientId);
       setAuthenticated(true);
     },
     [setAuthenticated]

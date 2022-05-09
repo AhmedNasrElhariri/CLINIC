@@ -1,7 +1,11 @@
 import React, { useMemo, useCallback } from "react";
 import { useMutation } from "@apollo/client";
 import { Message, toaster } from "rsuite";
-import { REGISTER, LOGIN } from "../apollo-client/queries";
+import {
+  REGISTER,
+  LOGIN,
+  FORGET_PATIENT_PASSWORD,
+} from "../apollo-client/queries";
 import { useNavigate } from "react-router-dom";
 import * as ls from "../services/local-storage";
 import { useAuth } from "./index";
@@ -29,16 +33,33 @@ const PatientRegistrations = ({ onLoginSucceeded, isAuthenticated }) => {
     },
   });
   const [login] = useMutation(LOGIN, {
-    onCompleted({ loginPatient: { token, organizationId } }) {
+    onCompleted({ loginPatient: { token, organizationId, patientId } }) {
       toaster.push(
         <Message showIcon type="success" header="Success">
           Your Logged Successfully'
         </Message>
       );
-      onLoginSucceeded({ token });
+      onLoginSucceeded({ token, patientId });
       history(`/create-appointment/${organizationId}`);
     },
     // update(cache, { data: { loginPatient: patient } }) {},
+    onError(err) {
+      toaster.push(
+        <Message showIcon type="error" header="Error">
+          {err.message}
+        </Message>
+      );
+    },
+  });
+  const [forgetPatientPassword] = useMutation(FORGET_PATIENT_PASSWORD, {
+    onCompleted() {
+      toaster.push(
+        <Message showIcon type="success" header="Success">
+          The Password has been Changed Successfully
+        </Message>
+      );
+      history("/login");
+    },
     onError(err) {
       toaster.push(
         <Message showIcon type="error" header="Error">
@@ -55,8 +76,8 @@ const PatientRegistrations = ({ onLoginSucceeded, isAuthenticated }) => {
   }, [setAuthenticated]);
 
   return useMemo(
-    () => ({ register, login, logout }),
-    [register, login, logout]
+    () => ({ register, login, logout, forgetPatientPassword }),
+    [register, login, logout, forgetPatientPassword]
   );
 };
 

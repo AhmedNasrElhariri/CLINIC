@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const REGISTER = gql`
   mutation registerPatient($input: RegisterPatientInput!) {
@@ -16,7 +16,15 @@ export const LOGIN = gql`
     loginPatient(input: $input) {
       token
       organizationId
+      patientId
     }
   }
 `;
-
+export const FORGET_PATIENT_PASSWORD = gql`
+  mutation forgetPatientPassword($input: ForgetPatientPasswordInput!) {
+    forgetPatientPassword(input: $input) {
+      id
+      name
+    }
+  }
+`;

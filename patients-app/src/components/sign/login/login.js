@@ -38,11 +38,7 @@ const Login = ({ formValue, onChange, signIn, history }) => {
                   <Form.Group>
                     <Form.ControlLabel>Phone Number</Form.ControlLabel>
                     <div style={{ display: "flex" }}>
-                      <Form.Control
-                        name="phoneNo"
-                        type="text"
-                        block
-                      />
+                      <Form.Control name="phoneNo" type="text" block />
                     </div>
                   </Form.Group>
 
@@ -69,6 +65,14 @@ const Login = ({ formValue, onChange, signIn, history }) => {
                         }}
                       >
                         Sign Up?
+                      </Button>
+                      <Button
+                        appearance="link"
+                        onClick={() => {
+                          history("/forget-password");
+                        }}
+                      >
+                        Forget Password?
                       </Button>
                     </ButtonToolbar>
                   </Form.Group>

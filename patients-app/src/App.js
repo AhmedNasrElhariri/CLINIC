@@ -4,6 +4,7 @@ import "rsuite/dist/rsuite.min.css";
 import Login from "./components/sign/login";
 import CreateAppointment from "./components/appointment/create-appointment";
 import Register from "./components/sign/register";
+import ForgetPassword from "./components/forget-password";
 import {
   BrowserRouter,
   Routes,
@@ -33,6 +34,7 @@ function App() {
             <>
               <Route path="/register/:organizationId" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/forget-password" element={<ForgetPassword />} />
               <Route path="/" element={<Login />} />
             </>
           )}

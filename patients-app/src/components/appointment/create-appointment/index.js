@@ -22,6 +22,7 @@ const initialValues = {
 const CreateAppointment = () => {
   const { organizationId } = useParams();
   const [formValue, setFormValue] = useState(initialValues);
+  console.log(formValue,'FFF');
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -60,7 +61,7 @@ const CreateAppointment = () => {
     }
     const sessionId = session?.id;
     const duration = session?.duration;
-    const reference = "O";
+    const reference = "Online";
     createAppointment({
       patientId,
       type,

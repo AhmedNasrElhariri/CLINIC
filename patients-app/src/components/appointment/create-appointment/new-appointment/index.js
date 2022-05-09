@@ -1,16 +1,8 @@
-import React, { useCallback, useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import * as moment from "moment";
-// import { ACTIONS } from "utils/constants";
-import {
-  SelectPicker,
-  DatePicker,
-  Checkbox,
-  Form,
-  Modal,
-  Button,
-} from "rsuite";
+import { SelectPicker, DatePicker, Form, Modal, Button } from "rsuite";
 import { Container, LeftContainer, RightContainer } from "./style";
-
+import * as ls from "../../../../services/local-storage";
 import { getCreatableApptTypes } from "../../../../services/constants";
 import CRBrancheTree from "../../../../services/branch-tree";
 import { useAppointmentForm, allHooks } from "../../../../hooks";
@@ -39,7 +31,9 @@ const NewAppointment = ({
     const data = searchedPatients.map((d) => {
       return { label: d.name, value: d.id };
     });
-    return data;
+    const patientId = ls.getPatientId();
+    const filteredData = data.filter((d) => d.value === patientId);
+    return filteredData;
   }, [searchedPatients]);
 
   const { patientCourses } = allHooks({
@@ -57,7 +51,7 @@ const NewAppointment = ({
   const updatedSessionsDefinition = sessionsDefinition.map((s) => {
     return {
       label: s.name,
-      value: s,
+      value: s.id,
     };
   });
 
@@ -174,17 +168,17 @@ const NewAppointment = ({
               )}{" "}
             </RightContainer>
           </Container>
-          <Checkbox
+          {/* <Checkbox
             name="waiting"
             value={true}
             onChange={(val) => setFormValue({ ...formValue, waiting: val })}
           >
             {" "}
             Add to waiting list
-          </Checkbox>
+          </Checkbox> */}
         </Form>
         <Modal.Footer>
-          <Button onClick={handleOk} appearance="primary" >
+          <Button onClick={handleOk} appearance="primary">
             Ok
           </Button>
           <Button onClick={handleClose} appearance="subtle">
