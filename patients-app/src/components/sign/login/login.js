@@ -41,7 +41,7 @@ const Login = ({ formValue, onChange, signIn, history }) => {
                       <Form.Control
                         name="phoneNo"
                         type="text"
-                        style={{ width: "300px" }}
+                        block
                       />
                     </div>
                   </Form.Group>
@@ -52,7 +52,7 @@ const Login = ({ formValue, onChange, signIn, history }) => {
                       name="password"
                       type="password"
                       autoComplete="off"
-                      style={{ width: "300px" }}
+                      block
                     />
                   </Form.Group>
                   <Form.Group>

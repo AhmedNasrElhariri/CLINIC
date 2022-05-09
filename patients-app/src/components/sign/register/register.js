@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Container,
   Header,
@@ -9,11 +9,14 @@ import {
   Navbar,
   FlexboxGrid,
   Panel,
+  SelectPicker,
+  InputNumber,
 } from "rsuite";
-const patientTypes = [
-  { label: "Female", value: "Female" },
-  { label: "Male", value: "Male" },
-];
+
+const SEXVALUES = ["Male", "Female"].map((s) => ({
+  label: s,
+  value: s,
+}));
 const Register = ({
   formValue,
   onChange,
@@ -24,6 +27,15 @@ const Register = ({
   signUp,
   history,
 }) => {
+  const onChangeValue = useCallback(
+    (value) => {
+      const val = Number(value);
+      if (Number.isInteger(val)) {
+        onChange({ ...formValue, age: val });
+      }
+    },
+    [onChange, formValue]
+  );
   return (
     <div className="show-fake-browser login-page">
       <Container>
@@ -48,40 +60,46 @@ const Register = ({
               <Panel header={<h3>Register</h3>} bordered>
                 <Form fluid formValue={formValue} onChange={onChange}>
                   <Form.Group>
+                    <Form.ControlLabel>Patient Name</Form.ControlLabel>
+                    <div style={{ display: "flex" }}>
+                      <Form.Control name="name" type="text" block />
+                    </div>
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.ControlLabel>Patient Age</Form.ControlLabel>
+                    <div style={{ display: "flex" }}>
+                      <InputNumber
+                        label="Age"
+                        value={formValue.age}
+                        onChange={onChangeValue}
+                        block
+                        style={{ marginBottom: "10px", width: "100%" }}
+                      />
+                    </div>
+                  </Form.Group>
+                  <Form.Group>
                     <Form.ControlLabel>Phone Number</Form.ControlLabel>
                     <div style={{ display: "flex" }}>
-                      <Form.Control
-                        name="phoneNo"
-                        type="text"
-                        style={{ width: "300px" }}
-                      />
-                      
+                      <Form.Control name="phoneNo" type="text" block />
+                      {!confirm && (
                         <Button
                           appearance="primary"
-                          style={{ width: "200px" }}
                           onClick={sendOtp}
+                          style={{ marginLeft: "10px" }}
                         >
-                          Get Verification Code
+                          Next
                         </Button>
-                      
+                      )}
                     </div>
                   </Form.Group>
                   {show && (
                     <Form.Group>
                       <Form.ControlLabel>Code</Form.ControlLabel>
                       <div style={{ display: "flex" }}>
-                        <Form.Control
-                          name="code"
-                          type="text"
-                          style={{ width: "300px" }}
-                        />
-                        <Button
-                          appearance="primary"
-                          style={{ width: "200px" }}
-                          onClick={ValidateOtp}
-                        >
+                        <Form.Control name="code" type="text" block />
+                        {/* <Button appearance="primary" onClick={ValidateOtp}>
                           Confirm Verification Code
-                        </Button>
+                        </Button> */}
                       </div>
                     </Form.Group>
                   )}
@@ -92,9 +110,17 @@ const Register = ({
                       name="password"
                       type="password"
                       autoComplete="off"
-                      style={{ width: "300px" }}
                     />
                   </Form.Group>
+                  <Form.ControlLabel>Sex</Form.ControlLabel>
+                  <SelectPicker
+                    label="Sex"
+                    value={formValue.sex}
+                    onChange={(val) => onChange({ ...formValue, sex: val })}
+                    block
+                    data={SEXVALUES}
+                    style={{ marginBottom: "10px" }}
+                  />
                   <Form.Group>
                     <ButtonToolbar>
                       {confirm && (

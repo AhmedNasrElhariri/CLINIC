@@ -16,7 +16,7 @@ export const SecondRowContainer = styled.div`
 `;
 export const Header = styled.div`
   text-align: center;
-  margin-top: 30px;
+  margin-top: ${(props) => props.mt};
   font-size: 30px;
 `;
 export const ButtonContainer = styled.div`

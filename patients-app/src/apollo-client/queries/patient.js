@@ -12,7 +12,7 @@ export const REGISTER = gql`
 `;
 
 export const LOGIN = gql`
-  mutation loginPatient($input: RegisterPatientInput!) {
+  mutation loginPatient($input: LoginPatientInput!) {
     loginPatient(input: $input) {
       token
       organizationId

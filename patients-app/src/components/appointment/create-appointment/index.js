@@ -77,8 +77,8 @@ const CreateAppointment = () => {
   return (
     <>
       <LogOutButton onClick={logout}>Log Out</LogOutButton>
-      <Header>ClinicR</Header>
-      <Header>Online Booking</Header>
+      <Header mt="70px">ClinicR</Header>
+      <Header mt="30px">Online Booking</Header>
       <ButtonContainer>
         <Button onClick={handleOpen} appearance="primary">
           New Appointment

@@ -558,7 +558,7 @@ type Mutation {
   createBankRevenue(bankTransition: BankTransitionInput!): BankRevenue
   createBankExpense(bankTransition: BankExpenseTransitionInput!): BankExpense
   registerPatient(input: RegisterPatientInput!): Patient!
-  loginPatient(input: RegisterPatientInput!): AuthPatientPayload!
+  loginPatient(input: LoginPatientInput!): AuthPatientPayload!
 }
 
 ########################### Auth ##################################
@@ -759,6 +759,14 @@ input PatientInput {
   guardianName: String
 }
 input RegisterPatientInput {
+  phoneNo: String!
+  password: String!
+  name: String!
+  age: Int!
+  sex: Sex!
+  organizationId: ID!
+}
+input LoginPatientInput {
   phoneNo: String!
   password: String!
 }

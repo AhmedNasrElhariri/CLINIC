@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import { app } from "../../../services/firebase";
 import { Message, toaster } from "rsuite";
 import { patientRegistrations } from "../../../hooks";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getAuth,
   signInWithPhoneNumber,
@@ -14,11 +14,12 @@ const initialFormValue = {
   phoneNo: "",
   name: "",
   age: 0,
-  type: "",
+  sex: "",
   password: "",
   code: "",
 };
 const RegisterPage = () => {
+  const { organizationId } = useParams();
   const [formValue, setFormValue] = useState(initialFormValue);
   const [otp, setotp] = useState("");
   const [show, setshow] = useState(false);
@@ -32,8 +33,7 @@ const RegisterPage = () => {
       "recaptcha-container",
       {
         size: "invisible",
-        callback: (response) => {
-        },
+        callback: (response) => {},
         defaultCountry: "IN",
       },
       auth
@@ -55,26 +55,32 @@ const RegisterPage = () => {
         toaster.push(<Message>Code Unsent</Message>);
       });
   };
-  const ValidateOtp = () => {
+  const codeLength = useMemo(() => {
     const { code } = formValue;
-    if (code === null || final === null) return;
-    final
-      .confirm(code)
-      .then((result) => {
-        toaster.push(<Message>Success</Message>);
-        setConfirm(true);
-        setshow(false);
-      })
-      .catch((err) => {
-        toaster.push(<Message>Fail</Message>);
-      });
-  };
+    return code.length;
+  }, [formValue.code]);
+  useEffect(() => {
+    if (codeLength === 6) {
+      const { code } = formValue;
+      if (code === null || final === null) return;
+      final
+        .confirm(code)
+        .then((result) => {
+          toaster.push(<Message>Success</Message>);
+          setConfirm(true);
+          setshow(false);
+        })
+        .catch((err) => {
+          toaster.push(<Message>Fail</Message>);
+        });
+    }
+    console.log('HDHDHD');
+  }, [codeLength]);
   const signUp = useCallback(() => {
-    const { phoneNo, password } = formValue;
-    const patientInput = { phoneNo: phoneNo, password: password };
+    const { code, ...rest } = formValue;
     register({
       variables: {
-        input: patientInput,
+        input: { ...rest, organizationId: organizationId },
       },
     });
   }, [formValue, register]);
@@ -84,7 +90,7 @@ const RegisterPage = () => {
         formValue={formValue}
         onChange={setFormValue}
         sendOtp={sendOtp}
-        ValidateOtp={ValidateOtp}
+        // ValidateOtp={ValidateOtp}
         show={show}
         confirm={confirm}
         signUp={signUp}

@@ -31,8 +31,9 @@ function App() {
             </>
           ) : (
             <>
+              <Route path="/register/:organizationId" element={<Register />} />
               <Route path="/login" element={<Login />} />
-              <Route path="" element={<Register />} />
+              <Route path="/" element={<Login />} />
             </>
           )}
         </Routes>
