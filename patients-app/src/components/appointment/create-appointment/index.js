@@ -60,6 +60,7 @@ const CreateAppointment = () => {
     }
     const sessionId = session?.id;
     const duration = session?.duration;
+    const reference = "O";
     createAppointment({
       patientId,
       type,
@@ -71,6 +72,7 @@ const CreateAppointment = () => {
       waiting,
       sessionId,
       duration,
+      reference,
     });
   }, [createAppointment, formValue]);
   const { isAuthenticated } = useAuth();

@@ -306,6 +306,16 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
+        <CRTable.CRColumn width={50}>
+          <CRTable.CRHeaderCell>Reference</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ reference }) => (
+              <CRTable.CRCellStyled>
+                <Div fontWeight="Bold">{reference}</Div>
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
         <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
           <CRTable.CRCell>

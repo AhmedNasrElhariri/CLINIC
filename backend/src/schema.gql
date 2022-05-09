@@ -786,6 +786,7 @@ type Appointment {
   patient: Patient!
   branch: Branch
   specialty: Specialty
+  reference: String
   pulses: Int
   powerOne: Int
   powerTwo: Int
@@ -877,6 +878,7 @@ input AppointmentInput {
   patientId: ID!
   date: Date!
   type: AppointmentType!
+  reference: String
   userId: ID!
   branchId: ID
   duration: Int

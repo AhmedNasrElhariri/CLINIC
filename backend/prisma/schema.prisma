@@ -346,6 +346,7 @@ model Appointment {
   businessNotes    String             @default("")
   accounted        Boolean            @default(false)
   duration         Int                @default(5)
+  reference        String?
   status           AppointmentStatus
   data             AppointmentField[]
   notes            String?            @default("")

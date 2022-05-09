@@ -48,6 +48,7 @@ export const LIST_APPOINTMENTS = gql`
         businessNotes
         accounted
         duration
+        reference
         patient {
           id
           name
@@ -93,6 +94,7 @@ export const LIST_TODAY_APPOINTMENTS = gql`
       accounted
       duration
       businessNotes
+      reference
       updatedAt
       patient {
         id
