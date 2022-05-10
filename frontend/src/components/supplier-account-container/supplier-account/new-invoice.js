@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'rsuite';
-import { CRModal, CRTextInput, CRNumberInput } from 'components';
+import { CRModal, CRTextInput, CRNumberInput ,CRTextArea} from 'components';
 
 function NewInvoice({
   formValue,
@@ -41,7 +41,7 @@ function NewInvoice({
                 placeholder="Type Invoice Number"
                 block
               />
-              <CRTextInput
+              <CRTextArea
                 label="Description"
                 name="description"
                 placeholder="Type the Description"

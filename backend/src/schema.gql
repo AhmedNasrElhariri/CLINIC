@@ -229,8 +229,17 @@ type Query {
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
   mySupplierAccounts: [SupplierAccount!]
-  mySupplierInvoices(supplierId: ID!): [SupplierInvoice!]
-  myDetailedSupplierAccounts: [SupplierAccount!]
+  mySupplierInvoices(
+    offset: Int
+    limit: Int
+    name: String
+    supplierId: ID
+  ): SupplierInvoiceData!
+  myDetailedSupplierAccounts(
+    offset: Int
+    limit: Int
+    name: String
+  ): SupplierAccountData!
   myInvoiceTransactions(invoiceId: ID!): [SupplierInvoiceTransaction!]
   myImagesDefinition(categoryId: ID): [ImageDefinition!]
   myMaterialsDefinition: [MaterialDefinition!]
@@ -1639,6 +1648,10 @@ type SupplierAccount {
   totalUnpaid: Int
   invoiceCount: Int
 }
+type SupplierAccountData {
+  supplierAccounts: [SupplierAccount!]
+  supplierAccountsCount: Int
+}
 
 input SupplierAccountInput {
   id: ID
@@ -1662,6 +1675,10 @@ type SupplierInvoice {
   invoiceNumber: String
   paid: Int
   status: SupplierInvoiceStatus
+}
+type SupplierInvoiceData {
+  invoices: [SupplierInvoice!]
+  invoicesCount: Int
 }
 type SupplierInvoiceTransaction {
   id: ID!

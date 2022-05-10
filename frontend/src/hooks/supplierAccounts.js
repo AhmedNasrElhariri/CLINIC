@@ -23,14 +23,15 @@ const updateCache = mySupplierAccounts => {
     },
   });
 };
-// const updateInvoiceCache = mySupplierInvoices => {
-//   client.writeQuery({
-//     query: LIST_SUPPLIER_INVOICES,
-//     data: {
-//       mySupplierInvoices,
-//     },
-//   });
-// };
+const updateInvoiceCache = mySupplierInvoices => {
+  
+  client.writeQuery({
+    query: LIST_SUPPLIER_INVOICES,
+    data: {
+      mySupplierInvoices,
+    },
+  });
+};
 
 function useSupplierAccounts({
   onCreate,
@@ -38,6 +39,10 @@ function useSupplierAccounts({
   onDelete,
   supplierId,
   invoiceId,
+  name,
+  page,
+  invoiceFilterName,
+  invoicePage,
 } = {}) {
   const { data } = useQuery(LIST_SUPPLIER_ACCOUNTS);
   const supplierAccounts = useMemo(
@@ -46,22 +51,53 @@ function useSupplierAccounts({
   );
 
   const { data: detailedSupplierAccountData } = useQuery(
-    LIST_DETAILED_SUPPLIER_ACCOUNTS
+    LIST_DETAILED_SUPPLIER_ACCOUNTS,
+    {
+      variables: Object.assign(
+        {
+          offset: (page - 1) * 20 || 0,
+          limit: 20,
+        },
+        name && { name: name }
+      ),
+    }
   );
+  const detailedSupplierAccountDataa = detailedSupplierAccountData?.myDetailedSupplierAccounts;
+  // R.propOr(
+  //   {},
+  //   'myDetailedSupplierAccounts'
+  // )(detailedSupplierAccountData);
+
   const detailedSupplierAccounts = useMemo(
-    () =>
-      R.propOr([], 'myDetailedSupplierAccounts')(detailedSupplierAccountData),
-    [detailedSupplierAccountData]
+    () => R.propOr([], 'supplierAccounts')(detailedSupplierAccountDataa),
+    [detailedSupplierAccountDataa]
+  );
+  const detailedSupplierAccountsCount = useMemo(
+    () => R.propOr(0, 'supplierAccountsCount')(detailedSupplierAccountDataa),
+    [detailedSupplierAccountDataa]
   );
 
   const { data: supplierInvoicesData } = useQuery(LIST_SUPPLIER_INVOICES, {
-    variables: {
-      supplierId: supplierId,
-    },
+    variables: Object.assign(
+      {
+        offset: (invoicePage - 1) * 20 || 0,
+        limit: 20,
+        supplierId: supplierId,
+      },
+      invoiceFilterName && { name: invoiceFilterName }
+    ),
   });
+  const supplierInvoicesDataa = R.propOr(
+    {},
+    'mySupplierInvoices'
+  )(supplierInvoicesData);
   const supplierInvoices = useMemo(
-    () => R.propOr([], 'mySupplierInvoices')(supplierInvoicesData),
-    [supplierInvoicesData]
+    () => R.propOr([], 'invoices')(supplierInvoicesDataa),
+    [supplierInvoicesDataa]
+  );
+  const supplierInvoicesCount = useMemo(
+    () => R.propOr(0, 'invoicesCount')(supplierInvoicesDataa),
+    [supplierInvoicesDataa]
   );
 
   const { data: InvoicesTransactionsData } = useQuery(
@@ -114,17 +150,21 @@ function useSupplierAccounts({
   });
   const [addSupplierInvoice] = useMutation(ADD_SUPPLIER_INVOICE, {
     onCompleted() {
+      console.log(supplierId,'supplierId;supplierId');
       Alert.success('the Supplier Invoice has been Added Successfully');
       onCreate && onCreate();
     },
     // update(cache, { data: { addSupplierInvoice: supplierInvoice } }) {
-    //   console.log(supplierInvoice,'supplierInvoice');
-    //   updateInvoiceCache([...supplierInvoices, supplierInvoice]);
+      
+    //   updateInvoiceCache({
+    //     invoices: [...supplierInvoices, supplierInvoice],
+    //     invoicesCount: supplierInvoicesCount + 1,
+    //   });
     // },
     refetchQueries: [
       {
         query: LIST_SUPPLIER_INVOICES,
-        variables: { supplierId: supplierId },
+        variables: { supplierId: supplierId, offset: 0, limit: 20, name: '' },
       },
     ],
     onError() {
@@ -139,7 +179,7 @@ function useSupplierAccounts({
     refetchQueries: [
       {
         query: LIST_SUPPLIER_INVOICES,
-        variables: { supplierId: supplierId },
+        variables: { supplierId: supplierId, offset: 0, limit: 20, name: '' },
       },
       {
         query: LIST_INVOICE_TRANSACTIONS,
@@ -162,6 +202,8 @@ function useSupplierAccounts({
       addSupplierInvoice,
       editInvoice,
       invoiceTransactions,
+      detailedSupplierAccountsCount,
+      supplierInvoicesCount,
       updateCache,
       loading,
     }),
@@ -175,6 +217,8 @@ function useSupplierAccounts({
       addSupplierInvoice,
       editInvoice,
       invoiceTransactions,
+      detailedSupplierAccountsCount,
+      supplierInvoicesCount,
       loading,
     ]
   );

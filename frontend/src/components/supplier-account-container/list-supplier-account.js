@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Icon } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 import { CRCard, CRTable } from 'components';
 
-function ListSupplierAccount({ supplierAccounts, onEdit, onDelete }) {
+function ListSupplierAccount({
+  supplierAccounts,
+  onEdit,
+  currentPage,
+  setCurrentPage,
+  pages,
+}) {
   const history = useHistory();
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <>
       <CRCard borderless>
@@ -70,18 +82,22 @@ function ListSupplierAccount({ supplierAccounts, onEdit, onDelete }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => (
-                <Icon icon="trash" onClick={() => onDelete(data)}>
-                  {' '}
-                  Delete
-                </Icon>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
         </CRTable>
+        <CRTable.CRPagination
+          lengthMenu={[
+            {
+              value: 10,
+              label: 10,
+            },
+            {
+              value: 20,
+              label: 20,
+            },
+          ]}
+          activePage={currentPage?.activePage}
+          pages={pages}
+          onSelect={handleSelect}
+        />
       </CRCard>
     </>
   );

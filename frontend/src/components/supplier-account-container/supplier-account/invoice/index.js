@@ -1,15 +1,17 @@
-import React from 'react';
-import { Div } from 'components';
+import React, { useRef, useState } from 'react';
+import ReactToPrint from 'react-to-print';
 import {
   Data,
   DataName,
   DataValue,
 } from '../../../appointments/appointment/courses/style';
-import { CRButton } from 'components';
+import { CRButton, Div } from 'components';
 import ListInvoiceTransactions from './list-invoice-transactions';
+
 
 const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices }) => {
   const { paid, amount, status } = invoice;
+  const ref = useRef();
   return (
     <>
       <Div textAlign="right">
@@ -18,24 +20,6 @@ const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices }) => {
         </CRButton>
       </Div>
       <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
-        {/* {course.status !== 'Cancelled' && course.status !== 'Rejected' && (
-          <CRButton
-            variant="primary"
-            mt={2}
-            mr={1}
-            onClick={() => onDeleteCourse(course)}
-          >
-            Delete This Course
-          </CRButton>
-        )} */}
-        {/* <CRButton
-          variant="primary"
-          mt={2}
-          mr={1}
-          onClick={() => onEditDoctor(course)}
-        >
-          Assign Doctor
-        </CRButton> */}
         {amount > paid && status === 'InProgress' && (
           <CRButton
             variant="primary"
@@ -45,28 +29,16 @@ const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices }) => {
             Pay
           </CRButton>
         )}
-        {/* {course.type === 'Perunit' && (
-          <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
-            Add Units
-          </CRButton>
-        )} */}
-        {/* {course.type === 'Perunit' && (
-          <CRButton
-            variant="primary"
-            mr={1}
-            onClick={() => onEditUnits(course)}
-          >
-            Edit Units
-          </CRButton>
-        )}
-        <CRButton
-          variant="danger"
-          onClick={() => {
-            onFinishCourse(course);
-          }}
-        >
-          Finish
-        </CRButton> */}
+
+        <ReactToPrint
+          trigger={() => (
+            <CRButton primary mb={20}>
+              Print
+            </CRButton>
+          )}
+          content={() => ref.current}
+        />
+
         <Data>
           <DataName>Name : </DataName>
           <DataValue>{invoice?.name}</DataValue>
@@ -88,9 +60,43 @@ const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices }) => {
           <DataName>status : </DataName>
           <DataValue>{invoice.status}</DataValue>
         </Data>
+        <Data>
+          <DataName>Description : </DataName>
+          <DataValue>{invoice.description}</DataValue>
+        </Data>
 
         <Div textAlign="left" mt={20}>
           <ListInvoiceTransactions invoiceTransactions={invoiceTransactions} />
+        </Div>
+
+        <Div style={{ overflow: 'hidden', height: '0px' }}>
+          <Div ref={ref} mt={20} mr={10}>
+            <Data>
+              <DataName>Name : </DataName>
+              <DataValue>{invoice?.name}</DataValue>
+            </Data>
+            <Data>
+              <DataName>Amount : </DataName>
+              <DataValue>{invoice.amount}</DataValue>
+            </Data>
+            <Data>
+              <DataName>Paid : </DataName>
+              <DataValue>{invoice.paid}</DataValue>
+            </Data>
+            <Data>
+              <DataName>Unpaid : </DataName>
+              <DataValue>{invoice.amount - invoice.paid}</DataValue>
+            </Data>
+
+            <Data>
+              <DataName>status : </DataName>
+              <DataValue>{invoice.status}</DataValue>
+            </Data>
+            <Data>
+              <DataName>Description : </DataName>
+              <DataValue>{invoice.description}</DataValue>
+            </Data>
+          </Div>
         </Div>
       </Div>
     </>

@@ -1,10 +1,20 @@
-import React from 'react';
-import { Icon } from 'rsuite';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CRCard, CRTable } from 'components';
 
-function ListSupplierInvoices({ invoices, onEdit, onDelete, setInvoice }) {
-  const history = useHistory();
+function ListSupplierInvoices({
+  invoices,
+  setInvoice,
+  currentPage,
+  setCurrentPage,
+  pages,
+}) {
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <>
       <CRCard borderless>
@@ -52,31 +62,22 @@ function ListSupplierInvoices({ invoices, onEdit, onDelete, setInvoice }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => (
-                <CRTable.CRCellStyled bold>
-                  <Icon icon="edit" onClick={() => onEdit(data)}>
-                    {' '}
-                    Edit
-                  </Icon>
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => (
-                <Icon icon="trash" onClick={() => onDelete(data)}>
-                  {' '}
-                  Delete
-                </Icon>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
         </CRTable>
+        <CRTable.CRPagination
+          lengthMenu={[
+            {
+              value: 10,
+              label: 10,
+            },
+            {
+              value: 20,
+              label: 20,
+            },
+          ]}
+          activePage={currentPage?.activePage}
+          pages={pages}
+          onSelect={handleSelect}
+        />
       </CRCard>
     </>
   );

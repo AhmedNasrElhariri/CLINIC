@@ -6,7 +6,7 @@ import InvoiceData from './invoice';
 import { CRButton, Div } from 'components';
 import NewInvoice from './new-invoice';
 import * as R from 'ramda';
-
+import Filter from './filter';
 const initValue = {
   name: '',
   amount: 0,
@@ -14,18 +14,28 @@ const initValue = {
   description: '',
   paid: 0,
 };
+const initialFilter = {
+  name: '',
+};
+const inialCurrentPage = {
+  activePage: 1,
+};
 
 const SupplierAccount = () => {
   const [formValue, setFormValue] = useState(initValue);
+  const [filter, setFilter] = useState(initialFilter);
   const [header, setHeader] = useState('');
   const [type, setType] = useState('');
   const { supplierId } = useParams();
   const [invoice, setInvoice] = useState({});
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const page = currentPage?.activePage;
   const {
     supplierInvoices,
     addSupplierInvoice,
     editInvoice,
     invoiceTransactions,
+    supplierInvoicesCount,
   } = useSupplierAccounts({
     onCreate: () => {
       close();
@@ -33,7 +43,10 @@ const SupplierAccount = () => {
     },
     supplierId: supplierId,
     invoiceId: invoice?.id,
+    invoicePage:page,
+    invoiceFilterName: filter.name,
   });
+  const pages = Math.ceil(supplierInvoicesCount / 20);
   const { visible, open, close } = useModal();
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -75,7 +88,6 @@ const SupplierAccount = () => {
     const upIn = supplierInvoices.find(i => i.id === invoice.id);
     return upIn;
   }, [supplierInvoices, invoice]);
-  console.log(updatedInvoice, 'updatedInvoice');
   return (
     <>
       {Object.keys(invoice).length !== 0 ? (
@@ -87,14 +99,18 @@ const SupplierAccount = () => {
         />
       ) : (
         <>
-          <Div textAlign="right">
-            <CRButton mb="10px" onClick={handleClickCreate}>
+          <Div display="flex" justifyContent="space-between">
+            <Filter formValue={filter} onChange={setFilter} />
+            <CRButton mb="10px" mt="40px" onClick={handleClickCreate}>
               Add New Invoice
             </CRButton>
           </Div>
           <ListSupplierInvoices
             invoices={supplierInvoices}
             setInvoice={setInvoice}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            pages={pages}
           />
         </>
       )}

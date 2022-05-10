@@ -12,12 +12,12 @@ const Navigator = () => {
     <Div display="flex" width={50} justifyContent="space-between">
       <Icon
         icon="angle-left"
-        style={{ fontSize: 35, cursor: 'pointer' ,color:'#eef1f1'}}
+        style={{ fontSize: 35, cursor: 'pointer' ,color:'#575757'}}
         onClick={history.goBack}
       />
       <Icon
         icon="angle-right"
-        style={{ fontSize: 35, cursor: 'pointer' ,color:'#eef1f1'}}
+        style={{ fontSize: 35, cursor: 'pointer' ,color:'#575757'}}
         onClick={history.goForward}
       />
     </Div>

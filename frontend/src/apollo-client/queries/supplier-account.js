@@ -11,28 +11,44 @@ export const LIST_SUPPLIER_ACCOUNTS = gql`
 `;
 
 export const LIST_DETAILED_SUPPLIER_ACCOUNTS = gql`
-  {
-    myDetailedSupplierAccounts {
-      id
-      name
-      phoneNo
-      totalPaid
-      totalUnpaid
-      invoiceCount
+  query myDetailedSupplierAccounts($offset: Int, $limit: Int, $name: String) {
+    myDetailedSupplierAccounts(offset: $offset, limit: $limit, name: $name) {
+      supplierAccounts {
+        id
+        name
+        phoneNo
+        totalPaid
+        totalUnpaid
+        invoiceCount
+      }
+      supplierAccountsCount
     }
   }
 `;
 
 export const LIST_SUPPLIER_INVOICES = gql`
-  query ($supplierId: ID!) {
-    mySupplierInvoices(supplierId: $supplierId) {
-      id
-      name
-      amount
-      paid
-      invoiceNumber
-      description
-      status
+  query mySupplierInvoices(
+    $offset: Int
+    $limit: Int
+    $name: String
+    $supplierId: ID
+  ) {
+    mySupplierInvoices(
+      offset: $offset
+      limit: $limit
+      name: $name
+      supplierId: $supplierId
+    ) {
+      invoices {
+        id
+        name
+        amount
+        paid
+        invoiceNumber
+        description
+        status
+      }
+      invoicesCount
     }
   }
 `;
@@ -82,6 +98,7 @@ export const ADD_SUPPLIER_INVOICE = gql`
       paid
       invoiceNumber
       description
+      status
     }
   }
 `;
