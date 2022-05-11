@@ -48,11 +48,11 @@ const RegisterPage = () => {
     signInWithPhoneNumber(auth, newPhoneNo, appVerifier)
       .then((result) => {
         setfinal(result);
-        toaster.push(<Message>Code Sent</Message>);
+        toaster.push(<Message showIcon type="success" header="Success">Code Sent</Message>);
         setshow(true);
       })
       .catch((err) => {
-        toaster.push(<Message>Code Unsent</Message>);
+        toaster.push(<Message showIcon type="error" header="Error">Code Unsent</Message>);
       });
   };
   const codeLength = useMemo(() => {
@@ -66,15 +66,14 @@ const RegisterPage = () => {
       final
         .confirm(code)
         .then((result) => {
-          toaster.push(<Message>Success</Message>);
+          toaster.push(<Message showIcon type="success" header="Success">Success</Message>);
           setConfirm(true);
           setshow(false);
         })
         .catch((err) => {
-          toaster.push(<Message>Fail</Message>);
+          toaster.push(<Message showIcon type="error" header="Error">Fail</Message>);
         });
     }
-    console.log('HDHDHD');
   }, [codeLength]);
   const signUp = useCallback(() => {
     const { code, ...rest } = formValue;

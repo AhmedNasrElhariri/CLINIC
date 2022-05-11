@@ -119,10 +119,10 @@ const Register = ({
                     onChange={(val) => onChange({ ...formValue, sex: val })}
                     block
                     data={SEXVALUES}
-                    style={{ marginBottom: "10px" }}
+                    style={{ marginBottom: "30px" }}
                   />
                   <Form.Group>
-                    <ButtonToolbar>
+                    <ButtonToolbar mt="20px">
                       {confirm && (
                         <Button appearance="primary" onClick={() => signUp()}>
                           Sign Up
