@@ -36,6 +36,7 @@ const SupplierAccount = () => {
     editInvoice,
     invoiceTransactions,
     supplierInvoicesCount,
+    editInvoiceTransaction,
   } = useSupplierAccounts({
     onCreate: () => {
       close();
@@ -43,7 +44,7 @@ const SupplierAccount = () => {
     },
     supplierId: supplierId,
     invoiceId: invoice?.id,
-    invoicePage:page,
+    invoicePage: page,
     invoiceFilterName: filter.name,
   });
   const pages = Math.ceil(supplierInvoicesCount / 20);
@@ -64,12 +65,29 @@ const SupplierAccount = () => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickEditTransaction = useCallback(
+    data => {
+      const invoice = R.pick(['id', 'paid'])(data);
+      setType('editTransaction');
+      setHeader('Edit Paid Transaction');
+      setFormValue({ ...invoice });
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       const newFormValue = { ...formValue, supplierId: supplierId };
       addSupplierInvoice({
         variables: {
           supplierInvoice: newFormValue,
+        },
+      });
+    } else if (type === 'editTransaction') {
+      editInvoiceTransaction({
+        variables: {
+          transactionId: formValue.id,
+          paid: formValue.paid,
         },
       });
     } else {
@@ -80,7 +98,13 @@ const SupplierAccount = () => {
         },
       });
     }
-  }, [addSupplierInvoice, editInvoice, formValue, type]);
+  }, [
+    addSupplierInvoice,
+    editInvoice,
+    editInvoiceTransaction,
+    formValue,
+    type,
+  ]);
   const allInvoices = useCallback(() => {
     setInvoice({});
   }, [setInvoice]);
@@ -88,6 +112,7 @@ const SupplierAccount = () => {
     const upIn = supplierInvoices.find(i => i.id === invoice.id);
     return upIn;
   }, [supplierInvoices, invoice]);
+  console.log(formValue, 'formValue');
   return (
     <>
       {Object.keys(invoice).length !== 0 ? (
@@ -96,6 +121,7 @@ const SupplierAccount = () => {
           onEditPaid={handleClickEditPaid}
           invoiceTransactions={invoiceTransactions}
           allInvoices={allInvoices}
+          onEditTransaction={handleClickEditTransaction}
         />
       ) : (
         <>

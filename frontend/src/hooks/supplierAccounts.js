@@ -12,6 +12,7 @@ import {
   ADD_SUPPLIER_INVOICE,
   EDIT_INVOICE,
   LIST_INVOICE_TRANSACTIONS,
+  EDIT_INVOICE_TRANSACTION,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -42,7 +43,7 @@ function useSupplierAccounts({
   name,
   page,
   invoiceFilterName,
-  invoicePage,
+  invoicePage=0,
 } = {}) {
   const { data } = useQuery(LIST_SUPPLIER_ACCOUNTS);
   const supplierAccounts = useMemo(
@@ -164,13 +165,14 @@ function useSupplierAccounts({
     refetchQueries: [
       {
         query: LIST_SUPPLIER_INVOICES,
-        variables: { supplierId: supplierId, offset: 0, limit: 20, name: '' },
+        variables: { supplierId: supplierId, offset: 0, limit: 20},
       },
     ],
     onError() {
       Alert.error('Failed to add new Supplier Invoice');
     },
   });
+  console.log(supplierInvoices,'SSSINVOICE');
   const [editInvoice] = useMutation(EDIT_INVOICE, {
     onCompleted() {
       Alert.success('the Invoice has been Edited Successfully');
@@ -190,6 +192,25 @@ function useSupplierAccounts({
       Alert.error('Failed to edit the Invoice');
     },
   });
+  const [editInvoiceTransaction] = useMutation(EDIT_INVOICE_TRANSACTION, {
+    onCompleted() {
+      Alert.success('the Transaction has been Edited Successfully');
+      onCreate && onCreate();
+    },
+    refetchQueries: [
+      {
+        query: LIST_INVOICE_TRANSACTIONS,
+        variables: { invoiceId: invoiceId },
+      },
+      {
+        query: LIST_SUPPLIER_INVOICES,
+        variables: { supplierId: supplierId, offset: 0, limit: 20, name: '' },
+      },
+    ],
+    onError() {
+      Alert.error('Failed to edit the Transaction');
+    },
+  });
 
   return useMemo(
     () => ({
@@ -204,6 +225,7 @@ function useSupplierAccounts({
       invoiceTransactions,
       detailedSupplierAccountsCount,
       supplierInvoicesCount,
+      editInvoiceTransaction,
       updateCache,
       loading,
     }),
@@ -219,6 +241,7 @@ function useSupplierAccounts({
       invoiceTransactions,
       detailedSupplierAccountsCount,
       supplierInvoicesCount,
+      editInvoiceTransaction,
       loading,
     ]
   );

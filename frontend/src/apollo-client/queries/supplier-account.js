@@ -110,6 +110,13 @@ export const EDIT_INVOICE = gql`
     }
   }
 `;
+export const EDIT_INVOICE_TRANSACTION = gql`
+  mutation editInvoiceTransaction($transactionId: ID!, $paid: Int!) {
+    editInvoiceTransaction(transactionId: $transactionId, paid: $paid) {
+      id
+    }
+  }
+`;
 
 export const EDIT_SUPPLIER_ACCOUNT = gql`
   mutation editSupplierAccount(

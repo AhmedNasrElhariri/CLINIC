@@ -423,6 +423,10 @@ type Mutation {
   addSupplierAccount(supplierAccount: SupplierAccountInput!): SupplierAccount
   addSupplierInvoice(supplierInvoice: SupplierInvoiceInput!): SupplierInvoice
   editInvoice(invoiceId: ID!, paid: Int!): SupplierInvoice
+  editInvoiceTransaction(
+    transactionId: ID!
+    paid: Int!
+  ): SupplierInvoiceTransaction
   editSupplierAccount(
     supplierAccount: SupplierAccountInput!
     type: String!

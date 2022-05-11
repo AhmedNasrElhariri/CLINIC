@@ -8,8 +8,7 @@ import {
 import { CRButton, Div } from 'components';
 import ListInvoiceTransactions from './list-invoice-transactions';
 
-
-const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices }) => {
+const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices,onEditTransaction }) => {
   const { paid, amount, status } = invoice;
   const ref = useRef();
   return (
@@ -66,7 +65,10 @@ const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices }) => {
         </Data>
 
         <Div textAlign="left" mt={20}>
-          <ListInvoiceTransactions invoiceTransactions={invoiceTransactions} />
+          <ListInvoiceTransactions
+            invoiceTransactions={invoiceTransactions}
+            onEdit={onEditTransaction}
+          />
         </Div>
 
         <Div style={{ overflow: 'hidden', height: '0px' }}>

@@ -123,3 +123,4 @@ export { default as addSupplierAccount } from './add-supplierAccount';
 export { default as editSupplierAccount } from './edit-supplierAccount';
 export { default as addSupplierInvoice } from './add-supplier-invoice';
 export { default as editInvoice } from './edit-invoice';
+export { default as editInvoiceTransaction } from './edit-invoice-transaction';

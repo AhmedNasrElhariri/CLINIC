@@ -17,6 +17,7 @@ const SupplierAccount = () => {
       page,
       name: formValue.name,
     });
+    const pages = Math.ceil(detailedSupplierAccountsCount / 20);
   return (
     <>
       <Filter formValue={formValue} onChange={setFormValue} />
@@ -24,7 +25,7 @@ const SupplierAccount = () => {
         supplierAccounts={detailedSupplierAccounts}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        pages={detailedSupplierAccountsCount}
+        pages={pages}
       />
     </>
   );

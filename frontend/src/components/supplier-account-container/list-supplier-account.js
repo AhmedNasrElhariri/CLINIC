@@ -69,19 +69,7 @@ function ListSupplierAccount({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => (
-                <CRTable.CRCellStyled bold>
-                  <Icon icon="edit" onClick={() => onEdit(data)}>
-                    {' '}
-                    Edit
-                  </Icon>
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
+          
         </CRTable>
         <CRTable.CRPagination
           lengthMenu={[
