@@ -71,6 +71,15 @@ const Csv = lazy(() => import('../../../components/csv'));
 const Payroll = lazy(() => import('../../../components/payroll'));
 const Sales = lazy(() => import('../../../components/sales'));
 const Courses = lazy(() => import('../../../components/courses'));
+const SupplierAccountContainer = lazy(() =>
+  import('../../supplier-account-container')
+);
+const SupplierAccount = lazy(() =>
+  import('../../supplier-account-container/supplier-account')
+);
+const SupplierInvoice = lazy(() =>
+import('../../supplier-account-container/supplier-account/invoice')
+);
 const TodayAppointment = lazy(() =>
   import('../../../components/appointments/today-appointments')
 );
@@ -198,6 +207,15 @@ function AppRouter() {
         </Route>
         <Route path="/courses">
           <Courses />
+        </Route>
+        <Route path="/supplier-account/:supplierId">
+          <SupplierAccount />
+        </Route>
+        <Route path="/supplier-invoice/:supplierInvoiceId">
+          <SupplierInvoice />
+        </Route>
+        <Route path="/supplier-account">
+          <SupplierAccountContainer />
         </Route>
         {/* <Route path="/csv">
         <Csv />

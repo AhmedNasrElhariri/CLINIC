@@ -99,4 +99,7 @@ export { default as totalUnpaidOfCourses } from './total-unpaid-of-courses';
 export { default as patientRevenue } from './patient-revenue';
 export { default as myCourseTypesDefinition } from './my-course-types-definition';
 export { default as listBranchesTreeByOrganizationId} from './listBranchesTree-by-organization-id';
-
+export { default as mySupplierAccounts } from './my-supplierAccounts';
+export { default as myDetailedSupplierAccounts } from './my-detailed-supplier-accounts';
+export { default as mySupplierInvoices } from './my-supplier-invoices';
+export { default as myInvoiceTransactions } from './my-invoice-transactions';

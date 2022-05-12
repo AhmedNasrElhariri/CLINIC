@@ -103,6 +103,12 @@ enum UnitOfMeaure {
   Stripe
 }
 
+enum SupplierInvoiceStatus {
+  InProgress
+  Finished
+  Cancelled
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -222,6 +228,19 @@ type Query {
   myLabsDefinitions(categoryId: ID): [LabDefinition!]
   myLabsCategory: [LabCategory!]
   myTimings: [Timing!]
+  mySupplierAccounts: [SupplierAccount!]
+  mySupplierInvoices(
+    offset: Int
+    limit: Int
+    name: String
+    supplierId: ID
+  ): SupplierInvoiceData!
+  myDetailedSupplierAccounts(
+    offset: Int
+    limit: Int
+    name: String
+  ): SupplierAccountData!
+  myInvoiceTransactions(invoiceId: ID!): [SupplierInvoiceTransaction!]
   myImagesDefinition(categoryId: ID): [ImageDefinition!]
   myMaterialsDefinition: [MaterialDefinition!]
   myDentalDiagnosissDefinition: [DentalDiagnosisDefinition!]
@@ -403,6 +422,17 @@ type Mutation {
   editLabCategory(labCategory: LabCategoryInput!, type: String!): LabCategory
   addTiming(timing: TimingInput!): Timing
   editTiming(timing: TimingInput!, type: String!): Timing
+  addSupplierAccount(supplierAccount: SupplierAccountInput!): SupplierAccount
+  addSupplierInvoice(supplierInvoice: SupplierInvoiceInput!): SupplierInvoice
+  editInvoice(invoiceId: ID!, paid: Int!): SupplierInvoice
+  editInvoiceTransaction(
+    transactionId: ID!
+    paid: Int!
+  ): SupplierInvoiceTransaction
+  editSupplierAccount(
+    supplierAccount: SupplierAccountInput!
+    type: String!
+  ): SupplierAccount
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(
     imageDefinition: ImageInputDefinition!
@@ -1646,6 +1676,54 @@ type SessionStatistics {
   totalPrice: Int!
 }
 
+########################### SupplierAccount ##################################
+
+type SupplierAccount {
+  id: ID!
+  name: String!
+  phoneNo: String
+  totalPaid: Int
+  totalUnpaid: Int
+  invoiceCount: Int
+}
+type SupplierAccountData {
+  supplierAccounts: [SupplierAccount!]
+  supplierAccountsCount: Int
+}
+
+input SupplierAccountInput {
+  id: ID
+  name: String!
+  phoneNo: String
+}
+input SupplierInvoiceInput {
+  name: String!
+  supplierId: ID!
+  amount: Int!
+  paid: Int
+  description: String
+  invoiceNumber: String
+}
+
+type SupplierInvoice {
+  id: ID!
+  name: String!
+  amount: Int!
+  description: String
+  invoiceNumber: String
+  paid: Int
+  status: SupplierInvoiceStatus
+}
+type SupplierInvoiceData {
+  invoices: [SupplierInvoice!]
+  invoicesCount: Int
+}
+type SupplierInvoiceTransaction {
+  id: ID!
+  paid: Int!
+  date: Date!
+  user: User
+}
 ########################### Images Definition ##################################
 
 type ImageDefinition {

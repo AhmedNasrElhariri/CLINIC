@@ -99,6 +99,11 @@ function Root() {
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
+      to: '/supplier-account',
+      name: 'Supplier Account',
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
       to: '/permissions',
       name: 'Permissions',
       icon: <UserIcon width={11.8} height={14.1} />,

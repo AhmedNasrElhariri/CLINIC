@@ -123,4 +123,8 @@ export { default as registerPatient } from './register-patient';
 export { default as loginPatient } from './login-patient';
 export { default as verifyPatient } from './verify-patient';
 export { default as forgetPatientPassword } from './forget-patient-password';
-
+export { default as addSupplierAccount } from './add-supplierAccount';
+export { default as editSupplierAccount } from './edit-supplierAccount';
+export { default as addSupplierInvoice } from './add-supplier-invoice';
+export { default as editInvoice } from './edit-invoice';
+export { default as editInvoiceTransaction } from './edit-invoice-transaction';
