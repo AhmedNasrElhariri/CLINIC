@@ -78,11 +78,12 @@ cron.schedule('00 06 * * *', async function () {
   });
 });
 ///////////////   whatsApp Messages   ////////
-// cron.schedule('00 06 * * *', async function () {
-//   tomorrowAppointmentsReminder();
-//   before3daysSurgeriesReminder();
-//   beforeOneDaySurgeryReminder();
-// });
+cron.schedule('31 14 * * *', async function () {
+  console.log('REEEEEEEEEEEEEEEEEEEEEE');
+  tomorrowAppointmentsReminder();
+  // before3daysSurgeriesReminder();
+  // beforeOneDaySurgeryReminder();
+});
 // cron.schedule('00 00,06,12,18 * * *', async function () {
 //   every6HoursAppointmentReminder();
 // });
