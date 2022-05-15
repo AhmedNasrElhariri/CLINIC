@@ -6,6 +6,11 @@ import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
 import { onAppointmentCreate } from '@/services/notification.service';
 import { APPOINTMENTS_STATUS, APPOINTMENTS_TYPES } from '@/utils/constants';
+import { formatDateFull } from '@/services/date.service';
+
+// const accountSid = 'AC09bda433375a5645246e6bacd9588605';
+// const authToken = '6262a4cebde03d1fac0f5d1a207766ed';
+// const client = require('twilio')(accountSid, authToken);
 
 const getDayAppointments = (day, userId) => {
   const start = getStartOfDay(day);
@@ -115,7 +120,25 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       }
     ),
   });
-
+  const PATIENT = await prisma.patient.findUnique({
+    where: {
+      id: patientId,
+    },
+  });
+  // const updatedDate = formatDateFull(appointment.date);
+  // const { phoneNo } = PATIENT;
+  // const receiverPhoneNo = '+2' + phoneNo;
+  // const originalMessage = 'You have Appointment at ' + updatedDate;
+  // client.messages
+  //   .create({
+  //     from: '+19853154551', // the phone number of the application owner // add 'whatsapp:+...'
+  //     body: originalMessage,
+  //     to: receiverPhoneNo, // add 'whatsapp:+...'
+  //   })
+  //   .then(message => console.log(message))
+  //   .catch(err => {
+  //     console.log(err, 'EEEEEEEEEEEE');
+  //   });
   if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {
     onAppointmentCreate({
       userId,
