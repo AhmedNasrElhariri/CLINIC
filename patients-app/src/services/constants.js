@@ -1,11 +1,11 @@
 import * as R from "ramda";
 export const APPT_TYPE = Object.freeze({
-  Examination: "Examination",
-  Followup: "Followup",
-  Course: "Course",
-  Urgent: "Urgent",
+  // Examination: "Examination",
+  // Followup: "Followup",
+  // Course: "Course",
+  // Urgent: "Urgent",
   Session: "Session",
-  Surgery: "Surgery",
+  // Surgery: "Surgery",
 });
 
 export const getCreatableApptTypes = () => {

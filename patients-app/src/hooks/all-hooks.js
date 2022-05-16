@@ -8,6 +8,7 @@ import {
 } from "../apollo-client/queries";
 import { useQuery, useMutation } from "@apollo/client";
 import * as R from "ramda";
+import { useTranslation } from "react-i18next";
 import { Message, toaster } from "rsuite";
 
 const AllHooks = ({
@@ -18,6 +19,7 @@ const AllHooks = ({
   userId,
   onCreate,
 }) => {
+  const { t } = useTranslation();
   const { data: searchedPatientsData } = useQuery(LIST_SEARCHED_PATIENTS, {
     variables: {
       name: patientSearchValue,
@@ -63,7 +65,7 @@ const AllHooks = ({
       onCreate && onCreate();
       toaster.push(
         <Message showIcon type="success" header="Success">
-          The Appointment has been Created Successfully
+          {t("CREATE_APPOINTMENT_MESSAGE")}
         </Message>
       );
     },

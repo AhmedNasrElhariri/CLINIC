@@ -5,9 +5,11 @@ import { Button } from "rsuite";
 import { allHooks, useAuth, patientRegistrations } from "../../../hooks";
 import moment from "moment";
 import { Header, ButtonContainer, LogOutButton } from "./new-appointment/style";
+import { useTranslation } from "react-i18next";
+import HeaderContainer from "../../shared-components/header";
 
 const initialValues = {
-  type: "Examination",
+  type: "Session",
   patientId: "",
   courseId: null,
   branchId: null,
@@ -21,17 +23,18 @@ const initialValues = {
 
 const CreateAppointment = () => {
   const { organizationId } = useParams();
+  const { t } = useTranslation();
   const [formValue, setFormValue] = useState(initialValues);
-  console.log(formValue,'FFF');
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { createAppointment, loading } = allHooks({
+  const { createAppointment, loading, sessionsDefinition } = allHooks({
     onCreate: () => {
       setFormValue(initialValues);
     },
+    organizationId,
   });
-  const { logout } = patientRegistrations({});
+  const { logout } = patientRegistrations({ organizationId });
   const handleCreate = useCallback(() => {
     setOpen(false);
     const {
@@ -42,9 +45,9 @@ const CreateAppointment = () => {
       branchId,
       specialtyId,
       waiting,
-      session,
+      sessionId,
     } = formValue;
-
+    const session = sessionsDefinition.find((s) => s.id === sessionId);
     const timeDate = moment(formValue.time);
 
     let date = moment(formValue.date).set({
@@ -59,7 +62,6 @@ const CreateAppointment = () => {
         second: "00",
       });
     }
-    const sessionId = session?.id;
     const duration = session?.duration;
     const reference = "Online";
     createAppointment({
@@ -79,12 +81,12 @@ const CreateAppointment = () => {
   const { isAuthenticated } = useAuth();
   return (
     <>
-      <LogOutButton onClick={logout}>Log Out</LogOutButton>
-      <Header mt="70px">ClinicR</Header>
-      <Header mt="30px">Online Booking</Header>
+      <LogOutButton onClick={logout}>{t("LOG_OUT")}</LogOutButton>
+      <HeaderContainer />
+      <Header mt="50px">{t("ONLINE_BOOKING")}</Header>
       <ButtonContainer>
         <Button onClick={handleOpen} appearance="primary">
-          New Appointment
+          {t("ADD_NEW_APPOINTMENT")}
         </Button>
       </ButtonContainer>
       <NewAppointment
@@ -94,7 +96,7 @@ const CreateAppointment = () => {
         handleOk={handleCreate}
         formValue={formValue}
         setFormValue={setFormValue}
-        loading={loading}
+        createAppointmentLoading={loading}
       />
     </>
   );
