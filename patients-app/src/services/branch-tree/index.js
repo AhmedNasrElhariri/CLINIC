@@ -1,12 +1,13 @@
 import React, { useMemo, useEffect } from "react";
 import { Form, SelectPicker } from "rsuite";
 import { useQuery } from "@apollo/client";
-
+import { useTranslation } from "react-i18next";
 import { LIST_BRANCHES_TREE_BY_ORGANIZATIONID } from "../../apollo-client/queries";
 
 import * as R from "ramda";
 
 const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
+  const { t } = useTranslation();
   const { data } = useQuery(LIST_BRANCHES_TREE_BY_ORGANIZATIONID, {
     variables: { organizationId: organizationId },
   });
@@ -80,7 +81,7 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
         <>
           {branches.length > 1 && (
             <>
-              <Form.ControlLabel>Branch</Form.ControlLabel>
+              <Form.ControlLabel>{t("BRANCH")}</Form.ControlLabel>
               <SelectPicker
                 label="Branch"
                 value={formValue.branchId}
@@ -88,13 +89,13 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
                 placeholder="Select Branch"
                 block
                 data={branches}
-                style={{ marginBottom: "10px" }}
+                style={{ marginBottom: "10px", marginTop: "10px" }}
               />
             </>
           )}
           {formValue.branchId && (
             <>
-              <Form.ControlLabel>Specialty</Form.ControlLabel>
+              <Form.ControlLabel>{t("SPECIALTY")}</Form.ControlLabel>
               <SelectPicker
                 label="Specialty"
                 value={formValue.specialtyId}
@@ -102,13 +103,13 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
                 placeholder="Select Specialty"
                 block
                 data={specialties}
-                style={{ marginBottom: "10px" }}
+                style={{ marginBottom: "10px", marginTop: "10px" }}
               />
             </>
           )}
           {formValue.specialtyId && (
             <>
-              <Form.ControlLabel>Doctor</Form.ControlLabel>
+              <Form.ControlLabel>{t("DOCTOR")}</Form.ControlLabel>
               <SelectPicker
                 label="Doctor"
                 value={formValue.userId}
@@ -116,7 +117,7 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
                 placeholder="Select Doctor"
                 block
                 data={doctors}
-                style={{ marginBottom: "10px" }}
+                style={{ marginBottom: "10px", marginTop: "10px" }}
               />
             </>
           )}

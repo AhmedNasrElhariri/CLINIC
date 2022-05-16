@@ -2,13 +2,14 @@ import React, { useCallback, useState } from "react";
 import { patientRegistrations, useAuth } from "../../../hooks";
 import * as ls from "../../../services/local-storage";
 import Login from "./login";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const initialFormValue = {
   phoneNo: "",
   password: "",
 };
 const LoginPage = () => {
+  const { organizationId } = useParams();
   const [formValue, setFormValue] = useState(initialFormValue);
   const { isAuthenticated, setAuthenticated } = useAuth();
   const history = useNavigate();
@@ -20,7 +21,10 @@ const LoginPage = () => {
     },
     [setAuthenticated]
   );
-  const { login } = patientRegistrations({ onLoginSucceeded, isAuthenticated });
+  const { login, loginLoading } = patientRegistrations({
+    onLoginSucceeded,
+    isAuthenticated,
+  });
 
   const signIn = useCallback(() => {
     const { phoneNo, password } = formValue;
@@ -38,6 +42,8 @@ const LoginPage = () => {
         onChange={setFormValue}
         signIn={signIn}
         history={history}
+        loginLoading={loginLoading}
+        organizationId={organizationId}
       />
     </>
   );

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Button } from "rsuite";
 export const Container = styled.div`
   display: flex;
+  direction: ${(props) => props.dir};
 `;
 export const LeftContainer = styled.div`
   width: 320px;
@@ -26,6 +27,6 @@ export const ButtonContainer = styled.div`
 `;
 export const LogOutButton = styled(Button)`
   position: absolute;
-  top: 10px;
+  top: 20px;
   right: 10px;
 `;

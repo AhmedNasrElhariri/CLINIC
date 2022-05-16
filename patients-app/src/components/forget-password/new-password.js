@@ -1,15 +1,15 @@
 import React, { useCallback } from "react";
 import {
   Container,
-  Header,
   Content,
   Form,
   ButtonToolbar,
   Button,
-  Navbar,
   FlexboxGrid,
   Panel,
 } from "rsuite";
+import Header from "../shared-components/header";
+import { useTranslation } from "react-i18next";
 
 const NewPassword = ({
   formValue,
@@ -19,31 +19,18 @@ const NewPassword = ({
   confirm,
   changePatientPassword,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="show-fake-browser login-page">
       <Container>
-        <Header>
-          <Navbar
-            appearance="inverse"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              paddingTop: "20px",
-              fontSize: "25px",
-            }}
-          >
-            <Navbar.Header>
-              <a className="navbar-brand logo">ClinicR</a>
-            </Navbar.Header>
-          </Navbar>
-        </Header>
+        <Header />
         <Content style={{ marginTop: "100px" }}>
           <FlexboxGrid justify="center">
             <FlexboxGrid.Item colspan={12}>
-              <Panel header={<h3>Forget Password</h3>} bordered>
+              <Panel header={<h3>{t("FORGET_PASSWORD_NAME")}</h3>} bordered>
                 <Form fluid formValue={formValue} onChange={onChange}>
                   <Form.Group>
-                    <Form.ControlLabel>Phone Number</Form.ControlLabel>
+                    <Form.ControlLabel>{t("PHONENO")}</Form.ControlLabel>
                     <div style={{ display: "flex" }}>
                       <Form.Control name="phoneNo" type="text" block />
                       {!confirm && (
@@ -52,14 +39,14 @@ const NewPassword = ({
                           onClick={sendOtp}
                           style={{ marginLeft: "10px" }}
                         >
-                          Next
+                          {t("NEXT")}
                         </Button>
                       )}
                     </div>
                   </Form.Group>
                   {show && (
                     <Form.Group>
-                      <Form.ControlLabel>Code</Form.ControlLabel>
+                      <Form.ControlLabel>{t("CODE")}</Form.ControlLabel>
                       <div style={{ display: "flex" }}>
                         <Form.Control name="code" type="text" block />
                       </div>
@@ -67,7 +54,7 @@ const NewPassword = ({
                   )}
                   {confirm && (
                     <Form.Group>
-                      <Form.ControlLabel>New Password</Form.ControlLabel>
+                      <Form.ControlLabel>{t("NEW_PASSWORD")}</Form.ControlLabel>
                       <Form.Control
                         name="password"
                         type="password"

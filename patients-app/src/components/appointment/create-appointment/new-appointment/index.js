@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useContext } from "react";
 import * as moment from "moment";
 import { SelectPicker, DatePicker, Form, Modal, Button } from "rsuite";
 import { Container, LeftContainer, RightContainer } from "./style";
@@ -6,6 +6,8 @@ import * as ls from "../../../../services/local-storage";
 import { getCreatableApptTypes } from "../../../../services/constants";
 import CRBrancheTree from "../../../../services/branch-tree";
 import { useAppointmentForm, allHooks } from "../../../../hooks";
+import { useTranslation } from "react-i18next";
+import { LangContext } from "../../../../services/context";
 export const isBeforeToday = (date) => moment(date).isBefore(moment(), "days");
 
 const appointmentTypes = getCreatableApptTypes().map((type) => ({
@@ -20,8 +22,10 @@ const NewAppointment = ({
   handleOk,
   formValue,
   setFormValue,
-  loading,
+  createAppointmentLoading,
 }) => {
+  const { t } = useTranslation();
+  const dir = useContext(LangContext);
   const [patientSearchValue, setPatientSearchValue] = useState("");
   const { searchedPatients } = allHooks({
     patientSearchValue: patientSearchValue,
@@ -64,51 +68,50 @@ const NewAppointment = ({
     type: formValue.type,
     appointments: appointmentsCount?.appointments || [],
   });
-
   return (
     <Modal open={open} onClose={handleClose}>
       <Modal.Header style={{ textAlign: "center", margin: "20px 0px" }}>
-        <Modal.Title>ADD NEW APPOINTMENT</Modal.Title>
+        <Modal.Title>{t("ADD_NEW_APPOINTMENT")}</Modal.Title>
       </Modal.Header>
       <div>
         <Form fluid formValue={formValue} onChange={setFormValue}>
-          <Container>
+          <Container dir={dir}>
             <LeftContainer>
-              <Form.ControlLabel>Type</Form.ControlLabel>
-              <SelectPicker
+              {/* <Form.ControlLabel>Type</Form.ControlLabel> */}
+              {/* <SelectPicker
                 label="Examination/Followup"
                 value={formValue.type}
                 onChange={(val) => setFormValue({ ...formValue, type: val })}
                 block
                 data={appointmentTypes}
                 style={{ marginBottom: "10px" }}
-              />
+              /> */}
 
               {formValue.type === "Course" && (
                 <>
-                  <Form.ControlLabel>Course</Form.ControlLabel>
+                  <Form.ControlLabel>{t("COURSE")}</Form.ControlLabel>
                   <SelectPicker
                     label="Course"
                     name="courseId"
                     valueKey="IDBTransaction"
                     block
                     data={updatedPatientCourses}
-                    style={{ marginBottom: "10px" }}
+                    style={{ marginBottom: "10px",marginTop:'10px' }}
                   />
                 </>
               )}
               {formValue.type === "Session" && (
                 <>
-                  <Form.ControlLabel>Session</Form.ControlLabel>
+                  <Form.ControlLabel>{t("SESSION")}</Form.ControlLabel>
                   <SelectPicker
                     label="Session Name"
                     onChange={(val) =>
-                      setFormValue({ ...formValue, session: val })
+                      setFormValue({ ...formValue, sessionId: val })
                     }
-                    value={formValue.session.name}
+                    value={formValue.sessionId}
                     block
                     data={updatedSessionsDefinition}
-                    style={{ marginBottom: "10px" }}
+                    style={{ marginBottom: "10px",marginTop:'10px' }}
                   />
                 </>
               )}
@@ -119,7 +122,7 @@ const NewAppointment = ({
               />
             </LeftContainer>
             <RightContainer>
-              <Form.ControlLabel>Patient</Form.ControlLabel>
+              <Form.ControlLabel>{t("PATIENT_NAME")}</Form.ControlLabel>
               <SelectPicker
                 label="Patient"
                 onSearch={(v) => setPatientSearchValue(v)}
@@ -131,19 +134,19 @@ const NewAppointment = ({
                 value={formValue.patientId}
                 virtualized={false}
                 block
-                style={{ marginBottom: "10px" }}
+                style={{ marginBottom: "10px",marginTop:'10px' }}
               />
-              <Form.ControlLabel>Date</Form.ControlLabel>
+              <Form.ControlLabel>{t("DATE")}</Form.ControlLabel>
               <DatePicker
                 label="Date"
                 block
                 name="date"
                 disabledDate={isBeforeToday}
-                style={{ marginBottom: "10px" }}
+                style={{ marginBottom: "10px",marginTop:'10px' }}
               />
               {!formValue.waiting && formValue?.userId && (
                 <>
-                  <Form.ControlLabel>Time</Form.ControlLabel>
+                  <Form.ControlLabel>{t("TIME")}</Form.ControlLabel>
                   <DatePicker
                     label="Time"
                     block
@@ -162,7 +165,7 @@ const NewAppointment = ({
                     hideMinutes={(minute) => minute % 5 !== 0}
                     startHour={8}
                     onSelectTrigger
-                    style={{ marginBottom: "10px" }}
+                    style={{ marginBottom: "10px",marginTop:'10px' }}
                   />
                 </>
               )}{" "}
@@ -178,11 +181,15 @@ const NewAppointment = ({
           </Checkbox> */}
         </Form>
         <Modal.Footer>
-          <Button onClick={handleOk} appearance="primary">
-            Ok
+          <Button
+            onClick={handleOk}
+            appearance="primary"
+            loading={createAppointmentLoading}
+          >
+            {t("OK_APPOINTMENT")}
           </Button>
           <Button onClick={handleClose} appearance="subtle">
-            Cancel
+            {t("CANCEL")}
           </Button>
         </Modal.Footer>
       </div>

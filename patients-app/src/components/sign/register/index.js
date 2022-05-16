@@ -9,6 +9,7 @@ import {
   RecaptchaVerifier,
 } from "firebase/auth";
 import Register from "./register";
+import { useTranslation } from "react-i18next";
 
 const initialFormValue = {
   phoneNo: "",
@@ -18,8 +19,9 @@ const initialFormValue = {
   password: "",
   code: "",
 };
-const RegisterPage = () => {
+const RegisterPage = ({}) => {
   const { organizationId } = useParams();
+  const { t } = useTranslation();
   const [formValue, setFormValue] = useState(initialFormValue);
   const [otp, setotp] = useState("");
   const [show, setshow] = useState(false);
@@ -27,7 +29,9 @@ const RegisterPage = () => {
   const [confirm, setConfirm] = useState(false);
   const auth = getAuth(app);
   const history = useNavigate();
-  const { register } = patientRegistrations({});
+  const { register, registerLoading } = patientRegistrations(
+    {organizationId}
+  );
   const configureCaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
@@ -48,11 +52,19 @@ const RegisterPage = () => {
     signInWithPhoneNumber(auth, newPhoneNo, appVerifier)
       .then((result) => {
         setfinal(result);
-        toaster.push(<Message showIcon type="success" header="Success">Code Sent</Message>);
+        toaster.push(
+          <Message showIcon type="success" header="Success">
+            {t('CODE_SENT')}
+          </Message>
+        );
         setshow(true);
       })
       .catch((err) => {
-        toaster.push(<Message showIcon type="error" header="Error">Code Unsent</Message>);
+        toaster.push(
+          <Message showIcon type="error" header="Error">
+            {t('CODE_UNSENT')}
+          </Message>
+        );
       });
   };
   const codeLength = useMemo(() => {
@@ -66,12 +78,20 @@ const RegisterPage = () => {
       final
         .confirm(code)
         .then((result) => {
-          toaster.push(<Message showIcon type="success" header="Success">Success</Message>);
+          toaster.push(
+            <Message showIcon type="success" header="Success">
+              {t('PHONE_NO_VERIFY_MESSAGE')}
+            </Message>
+          );
           setConfirm(true);
           setshow(false);
         })
         .catch((err) => {
-          toaster.push(<Message showIcon type="error" header="Error">Fail</Message>);
+          toaster.push(
+            <Message showIcon type="error" header="Error">
+              {t('FAIL')}
+            </Message>
+          );
         });
     }
   }, [codeLength]);
@@ -89,11 +109,12 @@ const RegisterPage = () => {
         formValue={formValue}
         onChange={setFormValue}
         sendOtp={sendOtp}
-        // ValidateOtp={ValidateOtp}
         show={show}
         confirm={confirm}
         signUp={signUp}
         history={history}
+        registerLoading={registerLoading}
+        organizationId={organizationId}
       />
     </>
   );

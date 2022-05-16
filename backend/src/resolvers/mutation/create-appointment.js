@@ -5,12 +5,15 @@ import { getStartOfDay, getEndOfDay } from '@/services/date.service';
 import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
 import { onAppointmentCreate } from '@/services/notification.service';
-import { APPOINTMENTS_STATUS, APPOINTMENTS_TYPES } from '@/utils/constants';
-import { formatDateFull } from '@/services/date.service';
 
 // const accountSid = 'AC09bda433375a5645246e6bacd9588605';
 // const authToken = '6262a4cebde03d1fac0f5d1a207766ed';
 // const client = require('twilio')(accountSid, authToken);
+import {
+  APPOINTMENTS_STATUS,
+  APPOINTMENTS_TYPES,
+  MAX_NUMBER_APPS,
+} from '@/utils/constants';
 
 const getDayAppointments = (day, userId) => {
   const start = getStartOfDay(day);
@@ -66,7 +69,18 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
   if (waiting) {
     appointmentType = APPOINTMENTS_STATUS.WAITING;
   }
-
+  const numOfAppsOfThePatient = await prisma.appointment.count({
+    where: {
+      patientId,
+      reference: 'Online',
+      status: APPOINTMENTS_STATUS.SCHEDULED,
+    },
+  });
+  if (numOfAppsOfThePatient > MAX_NUMBER_APPS) {
+    throw new APIExceptcion(
+      'You have been reached the max number of Appointments'
+    );
+  }
   const createdAppointment = await prisma.appointment.create({
     data: Object.assign(
       {

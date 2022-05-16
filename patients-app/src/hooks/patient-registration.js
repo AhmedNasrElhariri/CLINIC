@@ -10,18 +10,20 @@ import { useNavigate } from "react-router-dom";
 import * as ls from "../services/local-storage";
 import { useAuth } from "./index";
 import { ACCESS_TOKEN } from "../services/local-storage";
+import { useTranslation } from "react-i18next";
 
-const PatientRegistrations = ({ onLoginSucceeded, isAuthenticated }) => {
+const PatientRegistrations = ({ onLoginSucceeded, organizationId }) => {
   const history = useNavigate();
+  const { t } = useTranslation();
   const { setAuthenticated } = useAuth({});
-  const [register] = useMutation(REGISTER, {
+  const [register, { loading: registerLoading }] = useMutation(REGISTER, {
     onCompleted() {
       toaster.push(
         <Message showIcon type="success" header="Success">
-          The user has been Registered Successfully
+          {t("REGISTER_MESSAGE")}
         </Message>
       );
-      history("/login");
+      history(`/login/${organizationId}`);
     },
     // update(cache, { data: { registerPatient: patient } }) {},
     onError(err) {
@@ -32,15 +34,15 @@ const PatientRegistrations = ({ onLoginSucceeded, isAuthenticated }) => {
       );
     },
   });
-  const [login] = useMutation(LOGIN, {
-    onCompleted({ loginPatient: { token, organizationId, patientId } }) {
+  const [login, { loading: loginLoading }] = useMutation(LOGIN, {
+    onCompleted({ loginPatient: { token, organizationId: ORGID, patientId } }) {
       toaster.push(
         <Message showIcon type="success" header="Success">
-          Your Logged Successfully'
+          {t("LOGIN_MESSAGE")}
         </Message>
       );
       onLoginSucceeded({ token, patientId });
-      history(`/create-appointment/${organizationId}`);
+      history(`/create-appointment/${ORGID}`);
     },
     // update(cache, { data: { loginPatient: patient } }) {},
     onError(err) {
@@ -51,33 +53,50 @@ const PatientRegistrations = ({ onLoginSucceeded, isAuthenticated }) => {
       );
     },
   });
-  const [forgetPatientPassword] = useMutation(FORGET_PATIENT_PASSWORD, {
-    onCompleted() {
-      toaster.push(
-        <Message showIcon type="success" header="Success">
-          The Password has been Changed Successfully
-        </Message>
-      );
-      history("/login");
-    },
-    onError(err) {
-      toaster.push(
-        <Message showIcon type="error" header="Error">
-          {err.message}
-        </Message>
-      );
-    },
-  });
+  const [forgetPatientPassword, { loading: forgetPasswordLoading }] =
+    useMutation(FORGET_PATIENT_PASSWORD, {
+      onCompleted() {
+        toaster.push(
+          <Message showIcon type="success" header="Success">
+            {t("CHANGE_PASSWORD_MESSAGE")}
+          </Message>
+        );
+        history(`/login/${organizationId}`);
+      },
+      onError(err) {
+        toaster.push(
+          <Message showIcon type="error" header="Error">
+            {err.message}
+          </Message>
+        );
+      },
+    });
   const logout = useCallback(() => {
     ls.removeUserToken(ACCESS_TOKEN);
     setAuthenticated(false);
-    history("/login");
+    history(`/login/${organizationId}`);
     window.location.reload();
   }, [setAuthenticated]);
 
   return useMemo(
-    () => ({ register, login, logout, forgetPatientPassword }),
-    [register, login, logout, forgetPatientPassword]
+    () => ({
+      register,
+      login,
+      logout,
+      forgetPatientPassword,
+      registerLoading,
+      loginLoading,
+      forgetPasswordLoading,
+    }),
+    [
+      register,
+      login,
+      logout,
+      forgetPatientPassword,
+      registerLoading,
+      loginLoading,
+      forgetPasswordLoading,
+    ]
   );
 };
 

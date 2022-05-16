@@ -1,19 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from "@apollo/client";
 import reportWebVitals from "./reportWebVitals";
 import client from "./apollo-client/client";
+import "./i18n";
+
 function AppWithCallbackAfterRender() {
   useEffect(() => {});
 
   return (
     <React.StrictMode>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
+      <Suspense fallback={<span>Loading...</span>}>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </Suspense>
     </React.StrictMode>
   );
 }
