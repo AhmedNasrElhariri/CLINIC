@@ -109,6 +109,7 @@ export const GET_PATIENT = gql`
       sex
       phoneNo
       phoneNoTwo
+      remainingOfPayment
     }
   }
 `;

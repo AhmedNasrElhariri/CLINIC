@@ -352,6 +352,8 @@ type Mutation {
     patientName: String!
     patientId: ID!
     others: Others
+    remaining: Int
+    payOfRemaining: Int
     bank: ID
     date: Date!
     company: ID
@@ -748,6 +750,7 @@ type Patient implements Searchable {
   phoneNo: String!
   phoneNoTwo: String
   points: Int
+  remainingOfPayment: Int
   code: String
   codeNumber: Int!
   reference: [String]

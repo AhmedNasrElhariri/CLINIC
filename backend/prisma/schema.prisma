@@ -304,44 +304,45 @@ model User {
 }
 
 model Patient {
-  id               String                @id @default(uuid())
-  name             String
-  phoneNo          String                @unique
-  phoneNoTwo       String?
-  type             PatientMembershipType
-  appointments     Appointment[]
-  age              Int
-  date             DateTime              @default(now())
-  codeNumber       Int                   @default(autoincrement())
-  code             String?
-  points           Int                   @default(0)
-  sex              Sex
-  reference        Json                  @default("[]")
-  area             String                @default("")
-  password         String?
-  organization     Organization          @relation(fields: [organizationId], references: [id])
-  organizationId   String
-  user             User                  @relation(fields: [userId], references: [id])
-  userId           String
-  guardianName     String?
-  createdAt        DateTime              @default(now())
-  updatedAt        DateTime              @default(now()) @updatedAt
-  medicineHistory  MedicineHistory[]
-  familyHistory    FamilyHistory[]
-  inventoryHistory InventoryHistory[]
-  patientSurgeries PatientSurgery[]
-  labs             Lab[]
-  images           Image[]
-  Course           Course[]
-  Tooth            Tooth[]
-  FaceOperation    FaceOperation[]
-  FacePartation    FacePartation[]
-  PatientField     PatientField[]
-  Coupon           Coupon[]
-  Revenue          Revenue[]
-  BankRevenue      BankRevenue[]
-  InsuranceRevenue InsuranceRevenue[]
-  BankExpense      BankExpense[]
+  id                 String                @id @default(uuid())
+  name               String
+  phoneNo            String                @unique
+  phoneNoTwo         String?
+  type               PatientMembershipType
+  appointments       Appointment[]
+  age                Int
+  date               DateTime              @default(now())
+  codeNumber         Int                   @default(autoincrement())
+  code               String?
+  points             Int                   @default(0)
+  sex                Sex
+  reference          Json                  @default("[]")
+  area               String                @default("")
+  password           String?
+  remainingOfPayment Int?                  @default(0)
+  organization       Organization          @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  user               User                  @relation(fields: [userId], references: [id])
+  userId             String
+  guardianName       String?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @default(now()) @updatedAt
+  medicineHistory    MedicineHistory[]
+  familyHistory      FamilyHistory[]
+  inventoryHistory   InventoryHistory[]
+  patientSurgeries   PatientSurgery[]
+  labs               Lab[]
+  images             Image[]
+  Course             Course[]
+  Tooth              Tooth[]
+  FaceOperation      FaceOperation[]
+  FacePartation      FacePartation[]
+  PatientField       PatientField[]
+  Coupon             Coupon[]
+  Revenue            Revenue[]
+  BankRevenue        BankRevenue[]
+  InsuranceRevenue   InsuranceRevenue[]
+  BankExpense        BankExpense[]
 }
 
 model Appointment {

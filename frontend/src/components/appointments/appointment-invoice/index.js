@@ -65,9 +65,11 @@ const payMethods = [
 function AppointmentInvoice({
   onChange,
   discount,
+  remaining,
   appointment,
   others,
   onOthersChange,
+  onRemainingChange,
   othersName,
   onOthersNameChange,
   onDiscountChange,
@@ -91,11 +93,15 @@ function AppointmentInvoice({
   subtotal,
   totalCoupons,
   total,
+  payOfRemaining,
+  setPayOfRemaining,
+  totalRemainingOfPayment,
 }) {
   const [session, setSession] = useState({});
   const [sessionNumber, setSessionNumber] = useState(1);
   const [visa, setVisa] = useState(false);
   const [coupon, setCoupon] = useState(false);
+  const [remainingOperation, setRemainingOperation] = useState(false);
   const [insurance, setInsurance] = useState(false);
   const [formValue, setFormValue] = useState(initValue);
   const { banksDefinition } = useBankDefinition({});
@@ -149,6 +155,7 @@ function AppointmentInvoice({
               setVisa(true);
               setInsurance(false);
               setCoupon(false);
+              setRemainingOperation(false);
             }}
             mr={10}
           >
@@ -159,6 +166,7 @@ function AppointmentInvoice({
               setInsurance(true);
               setVisa(false);
               setCoupon(false);
+              setRemainingOperation(false);
             }}
             mr={10}
           >
@@ -169,10 +177,22 @@ function AppointmentInvoice({
               setInsurance(false);
               setVisa(false);
               setCoupon(true);
+              setRemainingOperation(false);
             }}
             mr={10}
           >
             Coupon Pay
+          </CRButton>
+          <CRButton
+            onClick={() => {
+              setInsurance(false);
+              setVisa(false);
+              setCoupon(false);
+              setRemainingOperation(true);
+            }}
+            mr={10}
+          >
+            Remaining Pay
           </CRButton>
         </Div>
         {visa && (
@@ -223,7 +243,7 @@ function AppointmentInvoice({
         {insurance && (
           <Form>
             <CRSelectInput
-              label="Compance Name"
+              label="Company Name"
               name="bank"
               data={companysDefinition}
               value={company}
@@ -232,6 +252,20 @@ function AppointmentInvoice({
               style={{ width: '230px' }}
             />
           </Form>
+        )}
+        {remainingOperation && (
+          <>
+            <Div m="10px 0px">The Remaining : {totalRemainingOfPayment}</Div>
+            <Form>
+              <CRNumberInput
+                label="Pay Of Remaining"
+                name="payOfRemaining"
+                value={payOfRemaining}
+                onChange={setPayOfRemaining}
+                style={{ width: '230px' }}
+              />
+            </Form>
+          </>
         )}
       </Div>
       <Div display="flex" mt={40}>
@@ -316,6 +350,13 @@ function AppointmentInvoice({
                   onChange={val => onOthersNameChange(val)}
                 />
               </Div>
+              <CRTextInput
+                label="Remainig"
+                name="remaining"
+                value={remaining}
+                onChange={val => onRemainingChange(Number(val))}
+                width={210}
+              />
             </Form>
           </Div>
           <CRDivider />
@@ -342,7 +383,17 @@ function AppointmentInvoice({
           )}
           <H5 fontWeight={400}>Session Summary</H5>
           <Div background="#f0f1f1" p="6px 8px">
-            <Price name="Others" price={others} overriden variant="primary" />
+            {others > 0 && (
+              <Price name="Others" price={others} overriden variant="primary" />
+            )}
+            {payOfRemaining > 0 && (
+              <Price
+                name="The Pay of the remaining"
+                price={payOfRemaining}
+                overriden
+                variant="primary"
+              />
+            )}
             <Price name="Subtotal " price={subtotal} overriden />
             {couponsValue > 0 && (
               <Price
@@ -352,12 +403,23 @@ function AppointmentInvoice({
                 variant="danger"
               />
             )}
-            <Price
-              name="Discount"
-              price={discount}
-              overriden
-              variant="danger"
-            />
+            {discount > 0 && (
+              <Price
+                name="Discount"
+                price={discount}
+                overriden
+                variant="danger"
+              />
+            )}
+
+            {remaining > 0 && (
+              <Price
+                name="Remaining"
+                price={remaining}
+                overriden
+                variant="danger"
+              />
+            )}
           </Div>
           <CRDivider />
           <Div pr="8px">
@@ -372,6 +434,8 @@ function AppointmentInvoice({
           total={total}
           patientName={appointment?.patient.name}
           others={others}
+          remaining={remaining}
+          payOfRemaining={payOfRemaining}
           option={option}
           othersName={othersName}
           discount={discount}

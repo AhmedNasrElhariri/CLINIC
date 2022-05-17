@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
-import { Steps,Schema } from 'rsuite';
+import { Steps, Schema } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import styled from 'styled-components';
@@ -49,6 +49,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
+  const [remaining, setRemaining] = useState(0);
   const [othersName, setOthersName] = useState('');
   const [bank, setBank] = useState(null);
   const [cashPayment, setCashPayment] = useState(0);
@@ -60,15 +61,17 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [doctorFees, setDoctorFees] = useState(initialDoctorFess);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [payOfRemaining, setPayOfRemaining] = useState(0);
   const value = useRef(initValue);
   const { formValue, setFormValue } = useForm({
     initValue: initInventoryValue,
     model,
   });
-  const { patientCoupons } = usePatients({
+  const { patientCoupons, onePatient } = usePatients({
     patientId: appointment?.patient.id,
     all: false,
   });
+  const totalRemainingOfPayment = onePatient?.remainingOfPayment;
   const newCoupons = useMemo(() => {
     let newCouponsObject = [];
     for (const [key, value] of Object.entries(coupons)) {
@@ -113,8 +116,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     return totalSum;
   }, [coupons]);
   const total = useMemo(
-    () => subtotal - discount - totalCoupons,
-    [discount, subtotal, totalCoupons]
+    () => subtotal - discount - totalCoupons - remaining + payOfRemaining,
+    [discount, subtotal, totalCoupons, remaining, payOfRemaining]
   );
   const handleOk = useCallback(() => {
     if (activeStep !== 2) {
@@ -131,6 +134,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         ...value.current,
         discount,
         others,
+        remaining,
+        payOfRemaining,
         othersName,
         bank,
         company,
@@ -148,6 +153,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       setCoupons([]);
       setCouponsValue(0);
       setSelectedSessions([]);
+      setRemaining(0);
+      setPayOfRemaining(0);
       setDoctorFees(initialDoctorFess);
       value.current = {
         sessions: [],
@@ -160,6 +167,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     discount,
     others,
     othersName,
+    remaining,
+    payOfRemaining,
     bank,
     company,
     option,
@@ -179,7 +188,9 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       ...value.current,
       discount,
       others,
+      remaining,
       othersName,
+      payOfRemaining,
       bank,
       company,
       option,
@@ -189,6 +200,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     });
     setActiveStep(0);
     setOthers(0);
+    setRemaining(0);
+    setPayOfRemaining(0);
     setBank(null);
     setCompany(null);
     setOthersName('');
@@ -205,6 +218,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     onOk,
     discount,
     others,
+    remaining,
+    payOfRemaining,
     othersName,
     bank,
     company,
@@ -265,6 +280,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
           <AppointmentInvoice
             onChange={handleInvoiceChange}
             discount={discount}
+            remaining={remaining}
             others={others}
             othersName={othersName}
             bank={bank}
@@ -274,6 +290,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
             cashPayment={cashPayment}
             onCashPaymentChange={setCashPayment}
             onOthersChange={setOthers}
+            onRemainingChange={setRemaining}
             onOthersNameChange={setOthersName}
             onDiscountChange={setDiscount}
             appointment={appointment}
@@ -295,6 +312,9 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
             subtotal={subtotal}
             totalCoupons={totalCoupons}
             total={total}
+            payOfRemaining={payOfRemaining}
+            setPayOfRemaining={setPayOfRemaining}
+            totalRemainingOfPayment={totalRemainingOfPayment}
           />
         )}
         {activeStep === 1 && (

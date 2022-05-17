@@ -329,6 +329,8 @@ export const ARCHIVE_APPOINTMENT = gql`
     $discount: Discount
     $date: Date!
     $others: Others
+    $remaining: Int
+    $payOfRemaining: Int
     $bank: ID
     $patientName: String!
     $patientId: ID!
@@ -349,6 +351,8 @@ export const ARCHIVE_APPOINTMENT = gql`
       patientName: $patientName
       patientId: $patientId
       others: $others
+      remaining: $remaining
+      payOfRemaining: $payOfRemaining
       date: $date
       bank: $bank
       company: $company

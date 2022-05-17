@@ -28,6 +28,8 @@ const archiveAppointment = async (
     items = [],
     discount = {},
     others = {},
+    remaining = 0,
+    payOfRemaining = 0,
     date,
     patientName,
     patientId,
@@ -665,6 +667,113 @@ const archiveAppointment = async (
         couponsValue
       );
     }
+  }
+  if (remaining > 0) {
+    const pa = await prisma.patient.findUnique({ where: { id: patientId } });
+    const N = 'Payment Remaining of the patient/' + patientName;
+    await prisma.expense.create({
+      data: Object.assign(
+        {
+          date: new Date(date),
+          name: N,
+          expenseType: 'Patient',
+          amount: remaining,
+          level,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: userID,
+            },
+          },
+        }
+      ),
+    });
+    await prisma.patient.update({
+      data: {
+        remainingOfPayment: pa.remainingOfPayment + remaining,
+      },
+      where: {
+        id: patientId,
+      },
+    });
+  }
+  if (payOfRemaining > 0) {
+    const pa = await prisma.patient.findUnique({ where: { id: patientId } });
+    const N = 'Payment of the patient remaining /' + patientName;
+    await prisma.revenue.create({
+      data: Object.assign(
+        {
+          date: new Date(date),
+          name: N,
+          amount: payOfRemaining,
+          level,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: userID,
+            },
+          },
+        }
+      ),
+    });
+    await prisma.patient.update({
+      data: {
+        remainingOfPayment: pa.remainingOfPayment - payOfRemaining,
+      },
+      where: {
+        id: patientId,
+      },
+    });
   }
   await couponService(
     patientId,

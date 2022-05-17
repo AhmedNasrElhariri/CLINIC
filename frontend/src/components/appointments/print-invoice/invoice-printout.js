@@ -34,6 +34,8 @@ const InvoicePrintout = React.forwardRef(
       total,
       organization,
       others,
+      remaining,
+      payOfRemaining,
       patientName,
       othersName,
       option,
@@ -87,6 +89,8 @@ const InvoicePrintout = React.forwardRef(
           <Divider />
           <TotalPrice name="Subtotal" price={subtotal} />
           <TotalPrice name="Discount" price={discount} />
+          <TotalPrice name="Remaining" price={remaining} />
+          <TotalPrice name="Pay Of Remaining" price={payOfRemaining} />
           <TotalPrice name="Coupons Value" price={couponsValue} />
           <TotalPrice name="Total" price={total} />
           {userPayment > 0 && (
