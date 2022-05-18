@@ -1,9 +1,7 @@
 import React from 'react';
-import { Div } from 'components';
 import { Form } from 'rsuite';
-import { CRSelectInput } from 'components/widgets';
+import { CRSelectInput, CRTextInput, Div } from 'components/widgets';
 const AccountingFilter = ({ formValue, setFormValue, banksDefinition }) => {
-  
   return (
     <Form
       style={{ width: 276, marginBottom: 64 }}
@@ -20,6 +18,11 @@ const AccountingFilter = ({ formValue, setFormValue, banksDefinition }) => {
             style={{ width: '230px' }}
           />
         </Div>
+        <CRTextInput
+          label="Revenue Name"
+          name="revenueName"
+          style={{ width: '230px' }}
+        />
       </Div>
     </Form>
   );

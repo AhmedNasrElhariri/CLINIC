@@ -83,6 +83,9 @@ const revenues = async (
     },
     skip: offset,
     take: limit,
+    orderBy: {
+      date: 'asc',
+    },
   });
   const totalRevenues = await prisma.revenue.aggregate({
     sum: {

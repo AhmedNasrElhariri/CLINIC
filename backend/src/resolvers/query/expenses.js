@@ -10,7 +10,17 @@ import {
 
 const expenses = async (
   _,
-  { offset, limit, dateFrom, dateTo, view, doctorId, specialtyId, branchId },
+  {
+    offset,
+    limit,
+    dateFrom,
+    dateTo,
+    view,
+    expenseType,
+    doctorId,
+    specialtyId,
+    branchId,
+  },
   { user, organizationId }
 ) => {
   // const ids = await listFlattenUsersTreeIds(
@@ -57,6 +67,10 @@ const expenses = async (
           doctorId: doctorId,
         },
       ],
+      expenseType: {
+        contains: expenseType,
+        mode: 'insensitive',
+      },
       date: {
         gte: updatedDateFrom,
         lte: updatedDateTo,
@@ -70,6 +84,9 @@ const expenses = async (
     },
     skip: offset,
     take: limit,
+    orderBy: {
+      date: 'asc',
+    },
   });
   const totalExpenses = await prisma.expense.aggregate({
     sum: {
@@ -94,6 +111,10 @@ const expenses = async (
       date: {
         gte: updatedDateFrom,
         lte: updatedDateTo,
+      },
+      expenseType: {
+        contains: expenseType,
+        mode: 'insensitive',
       },
     },
   });

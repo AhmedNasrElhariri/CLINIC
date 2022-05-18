@@ -61,6 +61,9 @@ const bankExpenses = async (
     },
     skip: offset,
     take: limit,
+    orderBy: {
+      date: 'asc',
+    },
   });
 
   const totalExpenses = await prisma.bankExpense.aggregate({

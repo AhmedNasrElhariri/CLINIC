@@ -67,6 +67,7 @@ const AccountingContainer = () => {
     initialExpenseBranchValue
   );
   const [formValue, setFormValue] = useState(initalVal);
+  console.log(formValue, 'FFFFF');
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const [expenseCurrentPage, setExpenseCurrentPage] = useState(
@@ -223,6 +224,7 @@ const AccountingContainer = () => {
     expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
     expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
     revenueName: formValue?.revenueName,
+    expenseType: formValue?.expenseType,
   });
   const revenuesPages = Math.ceil(RevenuesCount / 20);
   const expensesPages = Math.ceil(expensesCount / 20);
@@ -235,21 +237,6 @@ const AccountingContainer = () => {
       ),
     [formValue, expenses]
   );
-  // const totalExpenses = useMemo(
-  //   () => updatedExpenses.reduce((acc, e) => acc + e.amount, 0),
-  //   [updatedExpenses]
-  // );
-  // const updatedRevenues = useMemo(
-  //   () =>
-  //     revenues?.filter(e =>
-  //       e.name.toLowerCase().includes(formValue.revenueName.toLowerCase())
-  //     ),
-  //   [formValue, revenues]
-  // );
-  // const totalRevenues = useMemo(
-  //   () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
-  //   [updatedRevenues]
-  // );
   return (
     <>
       <MainContainer

@@ -7,6 +7,7 @@ export const LIST_EXPENSES = gql`
     $dateFrom: Date
     $dateTo: Date
     $view: String
+    $expenseType: String
     $branchId: ID
     $specialtyId: ID
     $doctorId: ID
@@ -17,6 +18,7 @@ export const LIST_EXPENSES = gql`
       dateFrom: $dateFrom
       dateTo: $dateTo
       view: $view
+      expenseType: $expenseType
       branchId: $branchId
       specialtyId: $specialtyId
       doctorId: $doctorId
@@ -115,6 +117,7 @@ export const LIST_BANK_REVENUES = gql`
     $specialtyId: ID
     $doctorId: ID
     $bankId: ID
+    $revenueName: String
   ) {
     bankRevenues(
       offset: $offset
@@ -126,6 +129,7 @@ export const LIST_BANK_REVENUES = gql`
       specialtyId: $specialtyId
       doctorId: $doctorId
       bankId: $bankId
+      revenueName: $revenueName
     ) {
       bankRevenues {
         id

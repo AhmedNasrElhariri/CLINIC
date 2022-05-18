@@ -7,6 +7,7 @@ export const Container = styled.div`
 export const LeftContainer = styled.div`
   width: 320px;
   margin-right: 20px;
+  margin-left: 20px;
 `;
 export const RightContainer = styled.div`
   width: 320px;

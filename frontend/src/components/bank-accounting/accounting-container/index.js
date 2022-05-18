@@ -122,6 +122,7 @@ const BankAccountingContainer = () => {
     expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
     expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
     bankId: filter?.bank,
+    revenueName: filter?.revenueName,
     onEdit: () => {
       close();
     },
@@ -140,13 +141,6 @@ const BankAccountingContainer = () => {
       return revenues.filter(r => r.bank.id == filter.bank);
     }
   }, [filter, revenues]);
-  const updatedExpenses = useMemo(
-    () =>
-      expenses.filter(e =>
-        e.expenseType.toLowerCase().includes(filter.expenseType.toLowerCase())
-      ),
-    [filter, expenses]
-  );
   const handleClickEditRevenue = useCallback(
     data => {
       const { bank } = data;

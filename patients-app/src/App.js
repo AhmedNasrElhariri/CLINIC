@@ -5,7 +5,8 @@ import Login from "./components/sign/login";
 import CreateAppointment from "./components/appointment/create-appointment";
 import Register from "./components/sign/register";
 import ForgetPassword from "./components/forget-password";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RefTCreateComponent from "./components/ref-toCreateAppointment";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
 import { useAuth } from "./hooks";
 import LangSelector from "./components/lang/langSelector";
 import { useTranslation } from "react-i18next";
@@ -36,7 +37,10 @@ function App() {
                     path="/create-appointment/:organizationId"
                     element={<CreateAppointment />}
                   />
-                  <Route path="" element={<CreateAppointment />} />
+                  <Route
+                    path="/login/:organizationId"
+                    element={<RefTCreateComponent />}
+                  />
                 </>
               ) : (
                 <>
@@ -46,7 +50,6 @@ function App() {
                   />
                   <Route path="/login/:organizationId" element={<Login />} />
                   <Route path="/forget-password" element={<ForgetPassword />} />
-                  <Route path="/" element={<Login />} />
                 </>
               )}
             </Routes>

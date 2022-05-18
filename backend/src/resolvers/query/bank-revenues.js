@@ -17,6 +17,7 @@ const bankRevenues = async (
     specialtyId,
     branchId,
     bankId,
+    revenueName,
   },
   { organizationId }
 ) => {
@@ -46,6 +47,12 @@ const bankRevenues = async (
         {
           bankId: bankId,
         },
+        {
+          name: {
+            contains: revenueName,
+            mode: 'insensitive',
+          },
+        },
       ],
       date: {
         gte: updatedDateFrom,
@@ -62,6 +69,9 @@ const bankRevenues = async (
     },
     skip: offset,
     take: limit,
+    orderBy: {
+      date: 'asc',
+    },
   });
   const totalRevenues = await prisma.bankRevenue.aggregate({
     sum: {

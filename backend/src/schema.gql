@@ -159,6 +159,7 @@ type Query {
     dateFrom: Date
     dateTo: Date
     view: String
+    expenseType: String
     doctorId: ID
     specialtyId: ID
     branchId: ID
@@ -184,6 +185,7 @@ type Query {
     specialtyId: ID
     branchId: ID
     bankId: ID
+    revenueName: String
   ): BankRevenueData!
   bankExpenses(
     offset: Int

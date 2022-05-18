@@ -16,7 +16,6 @@ const HeaderContainer = () => {
           <Navbar.Header>
             <a>ClinicR</a>
           </Navbar.Header>
-          {/* <LangSelector /> */}
         </Navbar>
       </Header>
     </>
