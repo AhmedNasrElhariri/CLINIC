@@ -75,6 +75,7 @@ function useAppointments({
       )(appointmentsdata),
     [data, includeSurgery]
   );
+  console.log(date,'DateCCLL',userId,'userIduserIdCCLL');
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: {
       date: date,

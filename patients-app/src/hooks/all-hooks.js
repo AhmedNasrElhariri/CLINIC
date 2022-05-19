@@ -48,7 +48,7 @@ const AllHooks = ({
     () => R.propOr([], "mySessionsDefinition")(sessionsDefinitionsData),
     [sessionsDefinitionsData]
   );
-
+  console.log(date,'DateBook',userId,'userIduserIdBook');
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: {
       date: date,

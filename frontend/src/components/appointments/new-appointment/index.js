@@ -97,6 +97,8 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
     appointments: appointmentsCount?.appointments || [],
   });
 
+  console.log(appointmentsCount?.appointments,'disabledMinutes;;CLIN');
+
   const updatedPatientCourses = patientCourses.map(course => ({
     name: course.name,
     IDBTransaction: course.id,

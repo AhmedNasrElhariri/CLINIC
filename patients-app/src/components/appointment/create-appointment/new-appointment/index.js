@@ -68,6 +68,7 @@ const NewAppointment = ({
     type: formValue.type,
     appointments: appointmentsCount?.appointments || [],
   });
+  console.log(appointmentsCount?.appointments, "disabledMinutes;;Boo");
   return (
     <Modal open={open} onClose={handleClose}>
       <Modal.Header style={{ textAlign: "center", margin: "20px 0px" }}>
@@ -96,7 +97,7 @@ const NewAppointment = ({
                     valueKey="IDBTransaction"
                     block
                     data={updatedPatientCourses}
-                    style={{ marginBottom: "10px",marginTop:'10px' }}
+                    style={{ marginBottom: "10px", marginTop: "10px" }}
                   />
                 </>
               )}
@@ -111,7 +112,7 @@ const NewAppointment = ({
                     value={formValue.sessionId}
                     block
                     data={updatedSessionsDefinition}
-                    style={{ marginBottom: "10px",marginTop:'10px' }}
+                    style={{ marginBottom: "10px", marginTop: "10px" }}
                   />
                 </>
               )}
@@ -134,15 +135,15 @@ const NewAppointment = ({
                 value={formValue.patientId}
                 virtualized={false}
                 block
-                style={{ marginBottom: "10px",marginTop:'10px' }}
+                style={{ marginBottom: "10px", marginTop: "10px" }}
               />
               <Form.ControlLabel>{t("DATE")}</Form.ControlLabel>
               <DatePicker
                 label="Date"
                 block
-                name="date"
+                onChange={(val) => setFormValue({ ...formValue, date: val })}
                 disabledDate={isBeforeToday}
-                style={{ marginBottom: "10px",marginTop:'10px' }}
+                style={{ marginBottom: "10px", marginTop: "10px" }}
               />
               {!formValue.waiting && formValue?.userId && (
                 <>
@@ -165,7 +166,7 @@ const NewAppointment = ({
                     hideMinutes={(minute) => minute % 5 !== 0}
                     startHour={8}
                     onSelectTrigger
-                    style={{ marginBottom: "10px",marginTop:'10px' }}
+                    style={{ marginBottom: "10px", marginTop: "10px" }}
                   />
                 </>
               )}{" "}
