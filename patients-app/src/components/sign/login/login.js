@@ -18,6 +18,10 @@ const Login = ({
   history,
   organizationId,
   loginLoading,
+  checkResult,
+  validate,
+  showTwo,
+  setShowTwo,
 }) => {
   const { t } = useTranslation();
   return (
@@ -32,7 +36,14 @@ const Login = ({
                   <Form.Group>
                     <Form.ControlLabel>{t("PHONENO")}</Form.ControlLabel>
                     <div style={{ display: "flex" }}>
-                      <Form.Control name="phoneNo" type="text" block />
+                      <Form.Control
+                        name="phoneNo"
+                        type="text"
+                        block
+                        errorMessage={
+                          showTwo ? checkResult["phoneNo"]?.errorMessage : ""
+                        }
+                      />
                     </div>
                   </Form.Group>
 
@@ -43,13 +54,19 @@ const Login = ({
                       type="password"
                       autoComplete="off"
                       block
+                      errorMessage={
+                        showTwo ? checkResult["password"]?.errorMessage : ""
+                      }
                     />
                   </Form.Group>
                   <Form.Group>
                     <ButtonToolbar>
                       <Button
                         appearance="primary"
-                        onClick={() => signIn()}
+                        onClick={() => {
+                          setShowTwo(true);
+                          validate && signIn();
+                        }}
                         loading={loginLoading}
                       >
                         {t("SIGN_IN")}

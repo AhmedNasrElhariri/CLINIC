@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useMemo } from "react";
 import { app } from "../../../services/firebase";
-import { Message, toaster } from "rsuite";
-import { patientRegistrations } from "../../../hooks";
+import { Message, toaster, Schema } from "rsuite";
+import { patientRegistrations, useForm } from "../../../hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   getAuth,
@@ -19,19 +19,38 @@ const initialFormValue = {
   password: "",
   code: "",
 };
+const { StringType, NumberType } = Schema.Types;
+
 const RegisterPage = ({}) => {
   const { organizationId } = useParams();
   const { t } = useTranslation();
-  const [formValue, setFormValue] = useState(initialFormValue);
-  const [otp, setotp] = useState("");
+  const model = Schema.Model({
+    phoneNo: StringType().isRequired(t("PHONE_NO_ERROR")),
+    name: StringType().isRequired(t("NAME_ERROR")),
+    age: NumberType().range(1, 100, t("AGE_ERROR")),
+    sex: StringType().isRequired(t("SEX_ERROR")),
+    password: StringType().isRequired(t("PASSWORD_ERROR")),
+  });
   const [show, setshow] = useState(false);
   const [final, setfinal] = useState("");
   const [confirm, setConfirm] = useState(false);
+  const {
+    formValue,
+    setFormValue,
+    checkResult,
+    validate,
+    show: showTwo,
+    setShow: setShowTwo,
+  } = useForm({
+    initValue: initialFormValue,
+    model,
+  });
+  console.log(checkResult, "checkResult", showTwo, "showTwo");
   const auth = getAuth(app);
   const history = useNavigate();
-  const { register, registerLoading } = patientRegistrations(
-    {organizationId}
-  );
+  const { register, registerLoading } = patientRegistrations({
+    organizationId,
+  });
   const configureCaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
@@ -54,7 +73,7 @@ const RegisterPage = ({}) => {
         setfinal(result);
         toaster.push(
           <Message showIcon type="success" header="Success">
-            {t('CODE_SENT')}
+            {t("CODE_SENT")}
           </Message>
         );
         setshow(true);
@@ -62,7 +81,7 @@ const RegisterPage = ({}) => {
       .catch((err) => {
         toaster.push(
           <Message showIcon type="error" header="Error">
-            {t('CODE_UNSENT')}
+            {t("CODE_UNSENT")}
           </Message>
         );
       });
@@ -80,7 +99,7 @@ const RegisterPage = ({}) => {
         .then((result) => {
           toaster.push(
             <Message showIcon type="success" header="Success">
-              {t('PHONE_NO_VERIFY_MESSAGE')}
+              {t("PHONE_NO_VERIFY_MESSAGE")}
             </Message>
           );
           setConfirm(true);
@@ -89,7 +108,7 @@ const RegisterPage = ({}) => {
         .catch((err) => {
           toaster.push(
             <Message showIcon type="error" header="Error">
-              {t('FAIL')}
+              {t("FAIL")}
             </Message>
           );
         });
@@ -115,6 +134,10 @@ const RegisterPage = ({}) => {
         history={history}
         registerLoading={registerLoading}
         organizationId={organizationId}
+        checkResult={checkResult}
+        validate={validate}
+        showTwo={showTwo}
+        setShowTwo={setShowTwo}
       />
     </>
   );

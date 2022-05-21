@@ -8,6 +8,7 @@
   "PATIENT_NAME": "ألاسم",
   "CODE": "الكود",
   "PATIENT_AGE": "السن",
+  "SEX": "النوع",
   "NEXT": "التالي",
   "New_APPOINTMENT": "حجز جديد",
   "LOG_OUT": "تسجيل الخروج",
@@ -31,6 +32,18 @@
   "LOGIN_MESSAGE": "تم الدخول بنجاح",
   "CHANGE_PASSWORD_MESSAGE": "تم تغير كلمه السر",
   "CREATE_APPOINTMENT_MESSAGE": "تم حجز كشف بنجاح",
-  "SIGN_IN_QESTION":"تسجيل الدخول؟",
-  "PHONE_NO_VERIFY_MESSAGE": "تم التأكد من رقم التليفون بنجاح"
+  "SIGN_IN_QESTION": "تسجيل الدخول؟",
+  "PHONE_NO_VERIFY_MESSAGE": "تم التأكد من رقم التليفون بنجاح",
+  "PATIENT_NAME_ERROR": "اسم المريض *",
+  "SESSION_NAME_ERROR": "الكشف *",
+  "BRANCH_NAME_ERROR": "الفرع *",
+  "SPECIALTY_NAME_ERROR": "التخصص *",
+  "DOCTOR_NAME_ERROR": " الدكتور * ",
+  "TIME_NAME_ERROR": "الوقت *",
+  "DATE_NAME_ERROR": "التاريخ *",
+  "PHONE_NO_ERROR": "رقم التليفون *",
+  "AGE_ERROR": "السن يجب ان يكون من 1-100",
+  "NAME_ERROR": "الاسم *",
+  "SEX_ERROR": "النوع *",
+  "PASSWORD_ERROR": "كلمه السر *"
 }

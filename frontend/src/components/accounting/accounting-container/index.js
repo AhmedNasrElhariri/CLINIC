@@ -67,7 +67,6 @@ const AccountingContainer = () => {
     initialExpenseBranchValue
   );
   const [formValue, setFormValue] = useState(initalVal);
-  console.log(formValue, 'FFFFF');
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const [expenseCurrentPage, setExpenseCurrentPage] = useState(

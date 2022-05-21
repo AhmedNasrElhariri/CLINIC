@@ -31,3 +31,6 @@ export const LogOutButton = styled(Button)`
   top: 20px;
   right: 10px;
 `;
+export const InputContainer = styled.div`
+  margin-bottom: 30px;
+`;

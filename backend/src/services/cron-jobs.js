@@ -25,7 +25,7 @@ export const tomorrowAppointmentsReminder = async () => {
       patient: true,
     },
   });
-  console.log(tomorrowAppointments, 'tomorrowAppointments');
+  
   tomorrowAppointments.forEach(a => {
     const { patient, date } = a;
     const phoneNo = patient.phoneNo;
@@ -34,7 +34,7 @@ export const tomorrowAppointmentsReminder = async () => {
     const originalPhoneNo = decryptedPhoneNo.toString(CryptoJS.enc.Utf8);
     const receiverPhoneNo = '+2' + phoneNo;
     const originalMessage = 'You have Appointment at ' + updatedDate;
-    console.log('AAAAAAAAAAAAAAAAAAAAAAPPPPP');
+    
     client.messages
       .create({
         from: 'whatsapp+9853154551 ', // the phone number of the application owner // add 'whatsapp:+...'

@@ -1,7 +1,7 @@
 export const EXMATION_STARTING_HOUR = 19;
 export const EXMAINTATION_LENGTH = 15;
 export const APP_SECRET = 'sdfsdf39f';
-
+export const MAX_NUMBERAPPS = 5;
 export const APPOINTMENTS_STATUS = Object.freeze({
   SCHEDULED: 'Scheduled',
   CANCELLED: 'Cancelled',
@@ -134,9 +134,9 @@ export const ACTIONS = Object.freeze({
   ViewImages_Patient: 'ViewImages_Patient',
   ViewCourses_Patient: 'ViewCourses_Patient',
   ViewSessionsPulses_Patient: 'ViewSessionsPulses_Patient',
-  GenerateMonthly_PulsesReport:'GenerateMonthly_PulsesReport',
-  GenerateDaily_PulsesReport:'GenerateDaily_PulsesReport',
-  View_Medicine:'View_Medicine',
-  View_Permission:'View_Permission',
-  ViewFilters_Accounting:'ViewFilters_Accounting',
+  GenerateMonthly_PulsesReport: 'GenerateMonthly_PulsesReport',
+  GenerateDaily_PulsesReport: 'GenerateDaily_PulsesReport',
+  View_Medicine: 'View_Medicine',
+  View_Permission: 'View_Permission',
+  ViewFilters_Accounting: 'ViewFilters_Accounting',
 });

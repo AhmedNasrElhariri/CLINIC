@@ -1,7 +1,12 @@
 import React, { useState, useMemo, useContext } from "react";
 import * as moment from "moment";
 import { SelectPicker, DatePicker, Form, Modal, Button } from "rsuite";
-import { Container, LeftContainer, RightContainer } from "./style";
+import {
+  Container,
+  LeftContainer,
+  RightContainer,
+  InputContainer,
+} from "./style";
 import * as ls from "../../../../services/local-storage";
 import { getCreatableApptTypes } from "../../../../services/constants";
 import CRBrancheTree from "../../../../services/branch-tree";
@@ -22,6 +27,10 @@ const NewAppointment = ({
   handleOk,
   formValue,
   setFormValue,
+  checkResult,
+  validate,
+  show,
+  setShow,
   createAppointmentLoading,
 }) => {
   const { t } = useTranslation();
@@ -43,11 +52,6 @@ const NewAppointment = ({
   const { patientCourses } = allHooks({
     patientId: formValue.patientId,
   });
-  const updatedPatientCourses = patientCourses.map((course) => ({
-    label: course.name,
-    value: course.id,
-  }));
-
   const { sessionsDefinition } = allHooks({
     organizationId,
   });
@@ -68,7 +72,7 @@ const NewAppointment = ({
     type: formValue.type,
     appointments: appointmentsCount?.appointments || [],
   });
-  console.log(appointmentsCount?.appointments, "disabledMinutes;;Boo");
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Modal.Header style={{ textAlign: "center", margin: "20px 0px" }}>
@@ -78,31 +82,8 @@ const NewAppointment = ({
         <Form fluid formValue={formValue} onChange={setFormValue}>
           <Container dir={dir}>
             <LeftContainer>
-              {/* <Form.ControlLabel>Type</Form.ControlLabel> */}
-              {/* <SelectPicker
-                label="Examination/Followup"
-                value={formValue.type}
-                onChange={(val) => setFormValue({ ...formValue, type: val })}
-                block
-                data={appointmentTypes}
-                style={{ marginBottom: "10px" }}
-              /> */}
-
-              {formValue.type === "Course" && (
-                <>
-                  <Form.ControlLabel>{t("COURSE")}</Form.ControlLabel>
-                  <SelectPicker
-                    label="Course"
-                    name="courseId"
-                    valueKey="IDBTransaction"
-                    block
-                    data={updatedPatientCourses}
-                    style={{ marginBottom: "10px", marginTop: "10px" }}
-                  />
-                </>
-              )}
               {formValue.type === "Session" && (
-                <>
+                <InputContainer>
                   <Form.ControlLabel>{t("SESSION")}</Form.ControlLabel>
                   <SelectPicker
                     label="Session Name"
@@ -112,41 +93,67 @@ const NewAppointment = ({
                     value={formValue.sessionId}
                     block
                     data={updatedSessionsDefinition}
-                    style={{ marginBottom: "10px", marginTop: "10px" }}
                   />
-                </>
+                  {show && checkResult["sessionId"].hasError && (
+                    <div className={"rs-form-control-wrapper"}>
+                      <Form.ErrorMessage show={show}>
+                        {checkResult["sessionId"].errorMessage}
+                      </Form.ErrorMessage>
+                    </div>
+                  )}
+                </InputContainer>
               )}
               <CRBrancheTree
                 formValue={formValue}
                 onChange={setFormValue}
                 organizationId={organizationId}
+                checkResult={checkResult}
+                validate={validate}
+                show={show}
+                setShow={setShow}
               />
             </LeftContainer>
             <RightContainer>
-              <Form.ControlLabel>{t("PATIENT_NAME")}</Form.ControlLabel>
-              <SelectPicker
-                label="Patient"
-                onSearch={(v) => setPatientSearchValue(v)}
-                placeholder="Name / Phone no"
-                data={returnedPatientsOfSearch}
-                onChange={(val) =>
-                  setFormValue({ ...formValue, patientId: val })
-                }
-                value={formValue.patientId}
-                virtualized={false}
-                block
-                style={{ marginBottom: "10px", marginTop: "10px" }}
-              />
-              <Form.ControlLabel>{t("DATE")}</Form.ControlLabel>
-              <DatePicker
-                label="Date"
-                block
-                onChange={(val) => setFormValue({ ...formValue, date: val })}
-                disabledDate={isBeforeToday}
-                style={{ marginBottom: "10px", marginTop: "10px" }}
-              />
+              <InputContainer>
+                <Form.ControlLabel>{t("PATIENT_NAME")}</Form.ControlLabel>
+                <SelectPicker
+                  label="Patient"
+                  onSearch={(v) => setPatientSearchValue(v)}
+                  placeholder="Name / Phone no"
+                  data={returnedPatientsOfSearch}
+                  onChange={(val) =>
+                    setFormValue({ ...formValue, patientId: val })
+                  }
+                  value={formValue.patientId}
+                  virtualized={false}
+                  block
+                />
+                {show && checkResult["patientId"].hasError && (
+                  <div className={"rs-form-control-wrapper"}>
+                    <Form.ErrorMessage show={show}>
+                      {checkResult["patientId"].errorMessage}
+                    </Form.ErrorMessage>
+                  </div>
+                )}
+              </InputContainer>
+              <InputContainer>
+                <Form.ControlLabel>{t("DATE")}</Form.ControlLabel>
+                <DatePicker
+                  label="Date"
+                  block
+                  onChange={(val) => setFormValue({ ...formValue, date: val })}
+                  disabledDate={isBeforeToday}
+                />
+                {show && checkResult["date"].hasError && (
+                  <div className={"rs-form-control-wrapper"}>
+                    <Form.ErrorMessage show={show}>
+                      {checkResult["date"].errorMessage}
+                    </Form.ErrorMessage>
+                  </div>
+                )}
+              </InputContainer>
               {!formValue.waiting && formValue?.userId && (
-                <>
+                <InputContainer>
                   <Form.ControlLabel>{t("TIME")}</Form.ControlLabel>
                   <DatePicker
                     label="Time"
@@ -166,24 +173,25 @@ const NewAppointment = ({
                     hideMinutes={(minute) => minute % 5 !== 0}
                     startHour={8}
                     onSelectTrigger
-                    style={{ marginBottom: "10px", marginTop: "10px" }}
                   />
-                </>
+                  {show && checkResult["time"].hasError && (
+                    <div className={"rs-form-control-wrapper"}>
+                      <Form.ErrorMessage show={show}>
+                        {checkResult["time"].errorMessage}
+                      </Form.ErrorMessage>
+                    </div>
+                  )}
+                </InputContainer>
               )}{" "}
             </RightContainer>
           </Container>
-          {/* <Checkbox
-            name="waiting"
-            value={true}
-            onChange={(val) => setFormValue({ ...formValue, waiting: val })}
-          >
-            {" "}
-            Add to waiting list
-          </Checkbox> */}
         </Form>
         <Modal.Footer>
           <Button
-            onClick={handleOk}
+            onClick={() => {
+              setShow(true);
+              validate && handleOk();
+            }}
             appearance="primary"
             loading={createAppointmentLoading}
           >

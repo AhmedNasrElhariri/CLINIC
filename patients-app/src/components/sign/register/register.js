@@ -27,6 +27,10 @@ const Register = ({
   history,
   registerLoading,
   organizationId,
+  checkResult,
+  validate,
+  showTwo,
+  setShowTwo,
 }) => {
   const { t } = useTranslation();
   const onChangeValue = useCallback(
@@ -54,21 +58,35 @@ const Register = ({
                           {t("PATIENT_NAME")}
                         </Form.ControlLabel>
                         <div style={{ display: "flex" }}>
-                          <Form.Control name="name" type="text" block />
+                          <Form.Control
+                            name="name"
+                            type="text"
+                            block
+                            errorMessage={
+                              showTwo ? checkResult["name"]?.errorMessage : ""
+                            }
+                          />
                         </div>
                       </Form.Group>
                       <Form.Group>
                         <Form.ControlLabel>
                           {t("PATIENT_AGE")}
                         </Form.ControlLabel>
-                        <div style={{ display: "flex" }}>
+                        <div>
                           <InputNumber
                             label="Age"
                             value={formValue.age}
                             onChange={onChangeValue}
+                            style={{ width: "100%" }}
                             block
-                            style={{ marginBottom: "10px", width: "100%" }}
                           />
+                          {showTwo && checkResult["age"].hasError && (
+                            <div className={"rs-form-control-wrapper"}>
+                              <Form.ErrorMessage show={showTwo}>
+                                {checkResult["age"].errorMessage}
+                              </Form.ErrorMessage>
+                            </div>
+                          )}
                         </div>
                       </Form.Group>
                     </>
@@ -76,7 +94,14 @@ const Register = ({
                   <Form.Group>
                     <Form.ControlLabel>{t("PHONENO")}</Form.ControlLabel>
                     <div style={{ display: "flex" }}>
-                      <Form.Control name="phoneNo" type="text" block />
+                      <Form.Control
+                        name="phoneNo"
+                        type="text"
+                        block
+                        errorMessage={
+                          showTwo ? checkResult["phoneNo"]?.errorMessage : ""
+                        }
+                      />
                       {!confirm && (
                         <Button
                           appearance="primary"
@@ -93,9 +118,6 @@ const Register = ({
                       <Form.ControlLabel>{t("CODE")}</Form.ControlLabel>
                       <div style={{ display: "flex" }}>
                         <Form.Control name="code" type="text" block />
-                        {/* <Button appearance="primary" onClick={ValidateOtp}>
-                          Confirm Verification Code
-                        </Button> */}
                       </div>
                     </Form.Group>
                   )}
@@ -107,17 +129,30 @@ const Register = ({
                           name="password"
                           type="password"
                           autoComplete="off"
+                          errorMessage={
+                            showTwo ? checkResult["password"]?.errorMessage : ""
+                          }
                         />
                       </Form.Group>
-                      <Form.ControlLabel>{t("SEX")}</Form.ControlLabel>
-                      <SelectPicker
-                        label="Sex"
-                        value={formValue.sex}
-                        onChange={(val) => onChange({ ...formValue, sex: val })}
-                        block
-                        data={SEXVALUES}
-                        style={{ marginBottom: "30px" }}
-                      />
+                      <div style={{ marginBottom: "30px" }}>
+                        <Form.ControlLabel>{t("SEX")}</Form.ControlLabel>
+                        <SelectPicker
+                          label="Sex"
+                          value={formValue.sex}
+                          onChange={(val) =>
+                            onChange({ ...formValue, sex: val })
+                          }
+                          block
+                          data={SEXVALUES}
+                        />
+                        {showTwo && checkResult["sex"].hasError && (
+                            <div className={"rs-form-control-wrapper"}>
+                              <Form.ErrorMessage show={showTwo}>
+                                {checkResult["sex"].errorMessage}
+                              </Form.ErrorMessage>
+                            </div>
+                          )}
+                      </div>
                     </>
                   )}
 
@@ -126,7 +161,10 @@ const Register = ({
                       {confirm && (
                         <Button
                           appearance="primary"
-                          onClick={() => signUp()}
+                          onClick={() => {
+                            setShowTwo(true);
+                            validate && signUp();
+                          }}
                           loading={registerLoading}
                         >
                           {t("SIGN_UP")}

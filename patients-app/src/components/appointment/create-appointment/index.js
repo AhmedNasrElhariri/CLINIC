@@ -2,35 +2,57 @@ import React, { useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import NewAppointment from "./new-appointment";
 import { Button } from "rsuite";
-import { allHooks, useAuth, patientRegistrations } from "../../../hooks";
+import {
+  allHooks,
+  useAuth,
+  patientRegistrations,
+  useForm,
+} from "../../../hooks";
 import moment from "moment";
 import { Header, ButtonContainer, LogOutButton } from "./new-appointment/style";
 import { useTranslation } from "react-i18next";
 import HeaderContainer from "../../shared-components/header";
+import { Schema } from "rsuite";
 
 const initialValues = {
   type: "Session",
   patientId: "",
   courseId: null,
   branchId: null,
-  session: {},
   specialtyId: null,
+  sessionId: null,
   userId: null,
-  date: new Date(),
+  date: null,
   time: null,
   waiting: false,
 };
+const { StringType, DateType } = Schema.Types;
 
 const CreateAppointment = () => {
   const { organizationId } = useParams();
   const { t } = useTranslation();
-  const [formValue, setFormValue] = useState(initialValues);
+  const model = Schema.Model({
+    patientId: StringType().isRequired(t("PATIENT_NAME_ERROR")),
+    branchId: StringType().isRequired(t("BRANCH_NAME_ERROR")),
+    specialtyId: StringType().isRequired(t("SPECIALTY_NAME_ERROR")),
+    sessionId: StringType().isRequired(t("SESSION_NAME_ERROR")),
+    userId: StringType().isRequired(t("DOCTOR_NAME_ERROR")),
+    date: DateType().isRequired(t("DATE_NAME_ERROR")),
+    time: DateType().isRequired(t("TIME_NAME_ERROR")),
+  });
+  const { formValue, setFormValue, checkResult, validate, show, setShow } =
+    useForm({
+      initValue: initialValues,
+      model,
+    });
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const { createAppointment, loading, sessionsDefinition } = allHooks({
     onCreate: () => {
       setFormValue(initialValues);
+      setShow(false);
     },
     organizationId,
   });
@@ -97,6 +119,10 @@ const CreateAppointment = () => {
         formValue={formValue}
         setFormValue={setFormValue}
         createAppointmentLoading={loading}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
       />
     </>
   );

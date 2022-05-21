@@ -9,7 +9,6 @@ const editInvoiceTransaction = async (
   const oldTransaction = await prisma.supplierInvoiceTransaction.findUnique({
     where: { id: transactionId },
   });
-  console.log(transactionId,'transacionId',oldTransaction);
   const { paid: oldTransactionPaid, supplierInvoiceId } = oldTransaction;
   const data = await prisma.supplierInvoice.findUnique({
     where: {

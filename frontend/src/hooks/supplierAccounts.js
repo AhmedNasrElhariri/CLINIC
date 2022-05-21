@@ -151,17 +151,9 @@ function useSupplierAccounts({
   });
   const [addSupplierInvoice] = useMutation(ADD_SUPPLIER_INVOICE, {
     onCompleted() {
-      console.log(supplierId,'supplierId;supplierId');
       Alert.success('the Supplier Invoice has been Added Successfully');
       onCreate && onCreate();
     },
-    // update(cache, { data: { addSupplierInvoice: supplierInvoice } }) {
-      
-    //   updateInvoiceCache({
-    //     invoices: [...supplierInvoices, supplierInvoice],
-    //     invoicesCount: supplierInvoicesCount + 1,
-    //   });
-    // },
     refetchQueries: [
       {
         query: LIST_SUPPLIER_INVOICES,
@@ -172,7 +164,6 @@ function useSupplierAccounts({
       Alert.error('Failed to add new Supplier Invoice');
     },
   });
-  console.log(supplierInvoices,'SSSINVOICE');
   const [editInvoice] = useMutation(EDIT_INVOICE, {
     onCompleted() {
       Alert.success('the Invoice has been Edited Successfully');

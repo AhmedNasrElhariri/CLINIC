@@ -8,6 +8,7 @@
   "PATIENT_NAME": "Patient Name",
   "CODE": "Code",
   "PATIENT_AGE": "Age",
+  "SEX": "Sex",
   "NEXT": "Next",
   "New_APPOINTMENT": "New Appointment",
   "LOG_OUT": "Log Out",
@@ -32,5 +33,17 @@
   "CHANGE_PASSWORD_MESSAGE": "The Password has been Changed Successfully",
   "CREATE_APPOINTMENT_MESSAGE": "The Appointment has been Created Successfully",
   "SIGN_IN_QESTION": "Sign In?",
-  "PHONE_NO_VERIFY_MESSAGE": "The Phone Number Verified"
+  "PHONE_NO_VERIFY_MESSAGE": "The Phone Number Verified",
+  "PATIENT_NAME_ERROR": "patient name is required",
+  "SESSION_NAME_ERROR": "session name is required",
+  "BRANCH_NAME_ERROR": "branch name is required",
+  "SPECIALTY_NAME_ERROR": "specialty name is required",
+  "DOCTOR_NAME_ERROR": "doctor name is required",
+  "TIME_NAME_ERROR": "time is required",
+  "DATE_NAME_ERROR": "date is required",
+  "PHONE_NO_ERROR": "Phone is required",
+  "AGE_ERROR": "Age should be between 1 and 100 years old",
+  "NAME_ERROR": "Name is required",
+  "SEX_ERROR": "Sex is required",
+  "PASSWORD_ERROR": "Passord is required"
 }

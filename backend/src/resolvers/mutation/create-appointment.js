@@ -1,18 +1,13 @@
 import { prisma } from '@';
-
 import moment from 'moment';
 import { getStartOfDay, getEndOfDay } from '@/services/date.service';
 import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
 import { onAppointmentCreate } from '@/services/notification.service';
-
-// const accountSid = 'AC09bda433375a5645246e6bacd9588605';
-// const authToken = '6262a4cebde03d1fac0f5d1a207766ed';
-// const client = require('twilio')(accountSid, authToken);
 import {
   APPOINTMENTS_STATUS,
   APPOINTMENTS_TYPES,
-  MAX_NUMBER_APPS,
+  MAX_NUMBERAPPS,
 } from '@/utils/constants';
 
 const getDayAppointments = (day, userId) => {
@@ -76,7 +71,7 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       status: APPOINTMENTS_STATUS.SCHEDULED,
     },
   });
-  if (numOfAppsOfThePatient > MAX_NUMBER_APPS) {
+  if (numOfAppsOfThePatient >= MAX_NUMBERAPPS) {
     throw new APIExceptcion(
       'You have been reached the max number of Appointments'
     );
@@ -139,20 +134,6 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       id: patientId,
     },
   });
-  // const updatedDate = formatDateFull(appointment.date);
-  // const { phoneNo } = PATIENT;
-  // const receiverPhoneNo = '+2' + phoneNo;
-  // const originalMessage = 'You have Appointment at ' + updatedDate;
-  // client.messages
-  //   .create({
-  //     from: '+19853154551', // the phone number of the application owner // add 'whatsapp:+...'
-  //     body: originalMessage,
-  //     to: receiverPhoneNo, // add 'whatsapp:+...'
-  //   })
-  //   .then(message => console.log(message))
-  //   .catch(err => {
-  //     console.log(err, 'EEEEEEEEEEEE');
-  //   });
   if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {
     onAppointmentCreate({
       userId,

@@ -3,10 +3,22 @@ import { Form, SelectPicker } from "rsuite";
 import { useQuery } from "@apollo/client";
 import { useTranslation } from "react-i18next";
 import { LIST_BRANCHES_TREE_BY_ORGANIZATIONID } from "../../apollo-client/queries";
-
+import styled from "styled-components";
 import * as R from "ramda";
 
-const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
+export const InputContainer = styled.div`
+  margin-bottom: 30px;
+`;
+
+const CustomBranchTress = ({
+  onChange,
+  formValue,
+  organizationId,
+  checkResult,
+  validate,
+  show,
+  setShow,
+}) => {
   const { t } = useTranslation();
   const { data } = useQuery(LIST_BRANCHES_TREE_BY_ORGANIZATIONID, {
     variables: { organizationId: organizationId },
@@ -51,36 +63,13 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
     });
     return updatedDoctors;
   }, [formValue?.specialtyId, specialties]);
-  // useEffect(() => {
-  //   if (branches.length == 1) {
-  //     onChange({
-  //       ...formValue,
-  //       branchId: branches[0]?.id,
-  //     });
-  //   }
-  // }, [branches, formValue?.branchId]);
-  // useEffect(() => {
-  //   if (specialties.length == 1) {
-  //     onChange({
-  //       ...formValue,
-  //       specialtyId: specialties[0]?.id,
-  //     });
-  //   }
-  // }, [specialties, formValue.branchId]);
-  // useEffect(() => {
-  //   if (doctors.length == 1) {
-  //     onChange({
-  //       ...formValue,
-  //       userId: doctors[0]?.id,
-  //     });
-  //   }
-  // }, [doctors, formValue.specialtyId]);
+
   return (
     <>
       <Form formValue={formValue} onChange={onChange}>
         <>
           {branches.length > 1 && (
-            <>
+            <InputContainer>
               <Form.ControlLabel>{t("BRANCH")}</Form.ControlLabel>
               <SelectPicker
                 label="Branch"
@@ -89,12 +78,18 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
                 placeholder="Select Branch"
                 block
                 data={branches}
-                style={{ marginBottom: "10px", marginTop: "10px" }}
               />
-            </>
+              {show && checkResult["branchId"].hasError && (
+                <div className={"rs-form-control-wrapper"}>
+                  <Form.ErrorMessage show={show}>
+                    {checkResult["branchId"].errorMessage}
+                  </Form.ErrorMessage>
+                </div>
+              )}
+            </InputContainer>
           )}
           {formValue.branchId && (
-            <>
+            <InputContainer>
               <Form.ControlLabel>{t("SPECIALTY")}</Form.ControlLabel>
               <SelectPicker
                 label="Specialty"
@@ -103,12 +98,18 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
                 placeholder="Select Specialty"
                 block
                 data={specialties}
-                style={{ marginBottom: "10px", marginTop: "10px" }}
               />
-            </>
+              {show && checkResult["specialtyId"].hasError && (
+                <div className={"rs-form-control-wrapper"}>
+                  <Form.ErrorMessage show={show}>
+                    {checkResult["specialtyId"].errorMessage}
+                  </Form.ErrorMessage>
+                </div>
+              )}
+            </InputContainer>
           )}
           {formValue.specialtyId && (
-            <>
+            <InputContainer>
               <Form.ControlLabel>{t("DOCTOR")}</Form.ControlLabel>
               <SelectPicker
                 label="Doctor"
@@ -117,9 +118,15 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
                 placeholder="Select Doctor"
                 block
                 data={doctors}
-                style={{ marginBottom: "10px", marginTop: "10px" }}
               />
-            </>
+              {show && checkResult["userId"].hasError && (
+                <div className={"rs-form-control-wrapper"}>
+                  <Form.ErrorMessage show={show}>
+                    {checkResult["userId"].errorMessage}
+                  </Form.ErrorMessage>
+                </div>
+              )}
+            </InputContainer>
           )}
         </>
       </Form>
@@ -127,12 +134,24 @@ const CustomBranchTress = ({ onChange, formValue, organizationId }) => {
   );
 };
 
-const CRBranchTree = ({ formValue, onChange, organizationId }) => {
+const CRBranchTree = ({
+  formValue,
+  onChange,
+  organizationId,
+  checkResult,
+  validate,
+  show,
+  setShow,
+}) => {
   return (
     <CustomBranchTress
       formValue={formValue}
       onChange={onChange}
       organizationId={organizationId}
+      checkResult={checkResult}
+      validate={validate}
+      show={show}
+      setShow={setShow}
     />
   );
 };

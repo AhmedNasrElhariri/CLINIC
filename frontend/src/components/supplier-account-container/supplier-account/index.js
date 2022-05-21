@@ -112,7 +112,6 @@ const SupplierAccount = () => {
     const upIn = supplierInvoices.find(i => i.id === invoice.id);
     return upIn;
   }, [supplierInvoices, invoice]);
-  console.log(formValue, 'formValue');
   return (
     <>
       {Object.keys(invoice).length !== 0 ? (
