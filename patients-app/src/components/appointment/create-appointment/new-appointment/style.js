@@ -3,14 +3,25 @@ import { Button } from "rsuite";
 export const Container = styled.div`
   display: flex;
   direction: ${(props) => props.dir};
+  @media screen and (max-width: 600px) {
+    font-size: 20px;
+  }
 `;
 export const LeftContainer = styled.div`
   width: 320px;
-  margin-right: 20px;
-  margin-left: 20px;
+  margin: 0px 20px;
+  @media screen and (max-width: 600px) {
+    width: 50%;
+    margin: 0px 10px;
+  }
 `;
 export const RightContainer = styled.div`
   width: 320px;
+  margin: 0px 20px;
+  @media screen and (max-width: 600px) {
+    width: 50%;
+    margin: 0px 10px;
+  }
 `;
 export const SecondRowContainer = styled.div`
   display: flex;
@@ -29,7 +40,7 @@ export const ButtonContainer = styled.div`
 export const LogOutButton = styled(Button)`
   position: absolute;
   top: 20px;
-  right: 10px;
+  right: 20px;
 `;
 export const InputContainer = styled.div`
   margin-bottom: 30px;

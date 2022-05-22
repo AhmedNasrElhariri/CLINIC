@@ -12,42 +12,6 @@ export const LIST_SEARCHED_PATIENTS = gql`
   }
 `;
 
-export const LIST_PATIENT_COURSES = gql`
-  query ($patientId: ID!) {
-    myPatientCourses(patientId: $patientId) {
-      id
-      price
-      name
-      type
-      units
-      paid
-      discount
-      consumed
-      startDate
-      endDate
-      status
-      doctor {
-        id
-        name
-      }
-      user {
-        id
-        name
-      }
-      patient {
-        name
-        phoneNo
-      }
-      sessions {
-        id
-        type
-        date
-        status
-      }
-    }
-  }
-`;
-
 export const LIST_SESSIONS_DEFINITION = gql`
   query ($organizationId: ID) {
     mySessionsDefinition(organizationId: $organizationId) {

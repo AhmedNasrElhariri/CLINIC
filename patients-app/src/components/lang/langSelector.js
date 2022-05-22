@@ -7,13 +7,10 @@ const LangContainer = styled.div`
   position: absolute;
   top: 20px;
   left: 20px;
-  font-size: 25px;
 `;
 const LangSelector = () => {
   const { i18n } = useTranslation();
-  //   const [selectedLang, setSelectedLang] = useState("ar");
   const changeTheLanguage = (value) => {
-    // setSelectedLang(value);
     i18n.changeLanguage(value);
   };
   const lang = i18n.language;

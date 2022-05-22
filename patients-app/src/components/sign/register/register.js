@@ -1,11 +1,8 @@
 import React, { useCallback } from "react";
 import {
-  Container,
-  Content,
   Form,
   ButtonToolbar,
   Button,
-  FlexboxGrid,
   Panel,
   SelectPicker,
   InputNumber,
@@ -45,10 +42,9 @@ const Register = ({
   );
   return (
     <div className="show-fake-browser login-page">
-      {/* <Container> */}
       <Header />
       <ComponentContainer>
-        <Panel header={<h3>{t("SIGN_UP")}</h3>} bordered >
+        <Panel header={<h3>{t("SIGN_UP")}</h3>} bordered>
           <Form fluid formValue={formValue} onChange={onChange}>
             {confirm && (
               <>
@@ -77,7 +73,7 @@ const Register = ({
                     />
                     {showTwo && checkResult["age"].hasError && (
                       <div className={"rs-form-control-wrapper"}>
-                        <Form.ErrorMessage show={showTwo}>
+                        <Form.ErrorMessage show={showTwo} placement="bottomStart">
                           {checkResult["age"].errorMessage}
                         </Form.ErrorMessage>
                       </div>
@@ -140,7 +136,7 @@ const Register = ({
                   />
                   {showTwo && checkResult["sex"].hasError && (
                     <div className={"rs-form-control-wrapper"}>
-                      <Form.ErrorMessage show={showTwo}>
+                      <Form.ErrorMessage show={showTwo} placement="bottomStart">
                         {checkResult["sex"].errorMessage}
                       </Form.ErrorMessage>
                     </div>
@@ -163,7 +159,6 @@ const Register = ({
                     {t("SIGN_UP")}
                   </Button>
                 )}
-                {/* <Button appearance="link">Forgot password?</Button> */}
                 <Button
                   appearance="link"
                   onClick={() => {
@@ -177,8 +172,6 @@ const Register = ({
           </Form>
         </Panel>
       </ComponentContainer>
-      {/* <Footer>Footer</Footer> */}
-      {/* </Container> */}
     </div>
   );
 };

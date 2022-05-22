@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import {
   LIST_SEARCHED_PATIENTS,
-  LIST_PATIENT_COURSES,
   LIST_SESSIONS_DEFINITION,
   APPOINTMENTS_DAY_COUNT,
   CREATE_APPOINTMENT,
@@ -29,14 +28,6 @@ const AllHooks = ({
   const searchedPatients = useMemo(
     () => R.propOr([], "searchedPatients")(searchedPatientsData),
     [searchedPatientsData]
-  );
-
-  const { data: patientData } = useQuery(LIST_PATIENT_COURSES, {
-    variables: { patientId },
-  });
-  const patientCourses = useMemo(
-    () => R.propOr([], "myPatientCourses")(patientData),
-    [patientData]
   );
 
   const { data: sessionsDefinitionsData } = useQuery(LIST_SESSIONS_DEFINITION, {
@@ -79,7 +70,6 @@ const AllHooks = ({
   return useMemo(
     () => ({
       searchedPatients,
-      patientCourses,
       sessionsDefinition,
       appointmentsCount,
       createAppointment: (appointment) =>
@@ -88,7 +78,6 @@ const AllHooks = ({
     }),
     [
       searchedPatients,
-      patientCourses,
       sessionsDefinition,
       appointmentsCount,
       createAppointment,

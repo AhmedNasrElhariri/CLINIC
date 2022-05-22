@@ -15,10 +15,6 @@ import { useTranslation } from "react-i18next";
 import { LangContext } from "../../../../services/context";
 export const isBeforeToday = (date) => moment(date).isBefore(moment(), "days");
 
-const appointmentTypes = getCreatableApptTypes().map((type) => ({
-  label: type,
-  value: type,
-}));
 
 const NewAppointment = ({
   organizationId,
@@ -49,9 +45,6 @@ const NewAppointment = ({
     return filteredData;
   }, [searchedPatients]);
 
-  const { patientCourses } = allHooks({
-    patientId: formValue.patientId,
-  });
   const { sessionsDefinition } = allHooks({
     organizationId,
   });
@@ -143,6 +136,7 @@ const NewAppointment = ({
                   block
                   onChange={(val) => setFormValue({ ...formValue, date: val })}
                   disabledDate={isBeforeToday}
+                  placement="auto"
                 />
                 {show && checkResult["date"].hasError && (
                   <div className={"rs-form-control-wrapper"}>
@@ -173,6 +167,7 @@ const NewAppointment = ({
                     hideMinutes={(minute) => minute % 5 !== 0}
                     startHour={8}
                     onSelectTrigger
+                    placement="auto"
                   />
                   {show && checkResult["time"].hasError && (
                     <div className={"rs-form-control-wrapper"}>

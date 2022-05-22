@@ -100,7 +100,6 @@ const CreateAppointment = () => {
       reference,
     });
   }, [createAppointment, formValue]);
-  const { isAuthenticated } = useAuth();
   return (
     <>
       <LogOutButton onClick={logout}>{t("LOG_OUT")}</LogOutButton>
