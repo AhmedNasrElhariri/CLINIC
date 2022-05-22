@@ -26,75 +26,75 @@ const Login = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="show-fake-browser login-page">
-      <Container>
-        <Header />
-        <ComponentContainer>
-          <Panel header={<h3>{t("LOGIN")}</h3>} bordered>
-            <Form fluid formValue={formValue} onChange={onChange}>
-              <Form.Group>
-                <Form.ControlLabel>{t("PHONENO")}</Form.ControlLabel>
-                <div style={{ display: "flex" }}>
-                  <Form.Control
-                    name="phoneNo"
-                    type="text"
-                    block
-                    errorMessage={
-                      showTwo ? checkResult["phoneNo"]?.errorMessage : ""
-                    }
-                  />
-                </div>
-              </Form.Group>
-
-              <Form.Group>
-                <Form.ControlLabel>{t("PASSWORD")}</Form.ControlLabel>
+    <div>
+      {/* <Container> */}
+      <Header />
+      <ComponentContainer>
+        <Panel header={<h3>{t("LOGIN")}</h3>} bordered>
+          <Form fluid formValue={formValue} onChange={onChange}>
+            <Form.Group>
+              <Form.ControlLabel>{t("PHONENO")}</Form.ControlLabel>
+              <div style={{ display: "flex" }}>
                 <Form.Control
-                  name="password"
-                  type="password"
-                  autoComplete="off"
+                  name="phoneNo"
+                  type="text"
                   block
                   errorMessage={
-                    showTwo ? checkResult["password"]?.errorMessage : ""
+                    showTwo ? checkResult["phoneNo"]?.errorMessage : ""
                   }
                 />
-              </Form.Group>
-              <Form.Group>
-                <ButtonToolbar>
-                  <Button
-                    appearance="primary"
-                    onClick={() => {
-                      setShowTwo(true);
-                      validate && signIn();
-                    }}
-                    loading={loginLoading}
-                  >
-                    {t("SIGN_IN")}
-                  </Button>
+              </div>
+            </Form.Group>
 
-                  {/* <Button appearance="link">Forgot password?</Button> */}
-                  <Button
-                    appearance="link"
-                    onClick={() => {
-                      history(`/register/${organizationId}`);
-                    }}
-                  >
-                    {t("SIGN_UP")}
-                  </Button>
-                  <Button
-                    appearance="link"
-                    onClick={() => {
-                      history("/forget-password");
-                    }}
-                  >
-                    {t("FORGET_PASSWORD")}
-                  </Button>
-                </ButtonToolbar>
-              </Form.Group>
-            </Form>
-          </Panel>
-        </ComponentContainer>
-        {/* <Footer>Footer</Footer> */}
-      </Container>
+            <Form.Group>
+              <Form.ControlLabel>{t("PASSWORD")}</Form.ControlLabel>
+              <Form.Control
+                name="password"
+                type="password"
+                autoComplete="off"
+                block
+                errorMessage={
+                  showTwo ? checkResult["password"]?.errorMessage : ""
+                }
+              />
+            </Form.Group>
+            <Form.Group>
+              <ButtonToolbar>
+                <Button
+                  appearance="primary"
+                  onClick={() => {
+                    setShowTwo(true);
+                    validate && signIn();
+                  }}
+                  loading={loginLoading}
+                >
+                  {t("SIGN_IN")}
+                </Button>
+
+                {/* <Button appearance="link">Forgot password?</Button> */}
+                <Button
+                  appearance="link"
+                  onClick={() => {
+                    history(`/register/${organizationId}`);
+                  }}
+                >
+                  {t("SIGN_UP")}
+                </Button>
+                <Button
+                  appearance="link"
+                  onClick={() => {
+                    history("/forget-password");
+                  }}
+                >
+                  {t("FORGET_PASSWORD")}
+                </Button>
+              </ButtonToolbar>
+            </Form.Group>
+          </Form>
+        </Panel>
+      </ComponentContainer>
+      {/* <Footer>Footer</Footer> */}
+      {/* </Container> */}
     </div>
   );
 };
