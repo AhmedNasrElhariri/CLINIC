@@ -79,7 +79,7 @@ cron.schedule('00 06 * * *', async function () {
 });
 ///////////////   whatsApp Messages   ////////
 // cron.schedule('31 14 * * *', async function () {
-//   // tomorrowAppointmentsReminder();
+  // tomorrowAppointmentsReminder();
 //   // before3daysSurgeriesReminder();
 //   // beforeOneDaySurgeryReminder();
 // });

@@ -3,11 +3,11 @@ import moment from 'moment';
 import { PrismaClient } from '@prisma/client';
 import { formatDateFull } from './date.service';
 
-export const prisma = new PrismaClient();
 const accountSid = 'AC09bda433375a5645246e6bacd9588605';
 const authToken = '6262a4cebde03d1fac0f5d1a207766ed';
 const client = require('twilio')(accountSid, authToken);
 
+export const prisma = new PrismaClient();
 export const tomorrowAppointmentsReminder = async () => {
   const day = moment(new Date()).add(1, 'days').toDate();
   const from = moment(day).startOf('day').toDate();
@@ -25,7 +25,7 @@ export const tomorrowAppointmentsReminder = async () => {
       patient: true,
     },
   });
-  
+
   tomorrowAppointments.forEach(a => {
     const { patient, date } = a;
     const phoneNo = patient.phoneNo;
@@ -34,7 +34,7 @@ export const tomorrowAppointmentsReminder = async () => {
     const originalPhoneNo = decryptedPhoneNo.toString(CryptoJS.enc.Utf8);
     const receiverPhoneNo = '+2' + phoneNo;
     const originalMessage = 'You have Appointment at ' + updatedDate;
-    
+
     client.messages
       .create({
         from: 'whatsapp+9853154551 ', // the phone number of the application owner // add 'whatsapp:+...'
@@ -46,6 +46,29 @@ export const tomorrowAppointmentsReminder = async () => {
         console.log(err, 'EEEEEEEEEEEE');
       });
   });
+};
+export const createAppointmentMessage = async appointment => {
+  const { date, patientId } = appointment;
+  const patient = await prisma.patient.findUnique({
+    where: {
+      id: patientId,
+    },
+  });
+  const receiverPhoneNo = '+2' + patient.phoneNo;
+  const updatedDate = formatDateFull(date);
+  const originalMessage = 'You have Appointment at ' + updatedDate;
+  client.messages
+    .create({
+      // from: '+9853154551',
+      // the phone number of the application owner // add 'whatsapp:+...'
+      messagingServiceSid: 'MG93cfd5400b8563cefc681cb68ee935b3',
+      body: originalMessage,
+      to: receiverPhoneNo, // add 'whatsapp:+...'
+    })
+    .then(message => console.log(message))
+    .catch(err => {
+      console.log(err, 'EEEEEEEEEEEE');
+    });
 };
 
 export const before3daysSurgeriesReminder = async () => {
