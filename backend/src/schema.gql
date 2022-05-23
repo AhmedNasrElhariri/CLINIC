@@ -777,7 +777,7 @@ type PatientRevenue {
 }
 type PatientRevenueData {
   patientRevenue: [PatientRevenue!]
-  totalRevenue: Int
+  totalRevenue: Float
   patientRevenueCounts: Int
 }
 
@@ -1169,7 +1169,7 @@ input CourseSessionsInput {
 }
 
 type TotalUnpaidOfCourses {
-  totalUnpaid: Int
+  totalUnpaid: Float
 }
 
 ########################### Snippet ##################################
@@ -1321,7 +1321,7 @@ type Expense {
 }
 type ExpenseData {
   expenses: [Expense!]
-  totalExpenses: Int
+  totalExpenses: Float
   expensesCount: Int
 }
 
@@ -1365,7 +1365,7 @@ type Revenue {
 
 type RevenueData {
   revenues: [Revenue!]
-  totalRevenues: Int
+  totalRevenues: Float
   revenuesCount: Int
 }
 
@@ -1386,7 +1386,7 @@ type BankRevenue {
 }
 type BankRevenueData {
   bankRevenues: [BankRevenue!]
-  totalRevenues: Int
+  totalRevenues: Float
   revenuesCount: Int
 }
 input BankTransitionInput {
@@ -1420,7 +1420,7 @@ type BankExpense {
 }
 type BankExpenseData {
   bankExpenses: [BankExpense!]
-  totalExpenses: Int!
+  totalExpenses: Float!
   expensesCount: Int!
 }
 input BankExpenseTransitionInput {
@@ -1453,7 +1453,7 @@ type InsuranceRevenue {
 }
 type InsuranceRevenueData {
   companyRevenues: [InsuranceRevenue!]
-  totalRevenues: Int
+  totalRevenues: Float
   revenuesCount: Int
 }
 input RevenueInput {
@@ -1687,8 +1687,8 @@ type SupplierAccount {
   id: ID!
   name: String!
   phoneNo: String
-  totalPaid: Int
-  totalUnpaid: Int
+  totalPaid: Float
+  totalUnpaid: Float
   invoiceCount: Int
 }
 type SupplierAccountData {
