@@ -627,6 +627,9 @@ model Configuration {
   organization         Organization @relation(fields: [organizationId], references: [id])
   organizationId       String
   enableInvoiceCounter Boolean      @default(false)
+  enableSMS            Boolean?     @default(false)
+  orgName              String?
+  orgPhoneNo           String?
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @default(now()) @updatedAt
 

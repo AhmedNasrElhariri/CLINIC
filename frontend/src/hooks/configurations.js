@@ -12,6 +12,7 @@ import {
   GET_PAGE_SETUP,
   EDIT_POINTS,
   GET_POINTS,
+  UPDATE_SMS_CONF,
 } from 'apollo-client/queries';
 
 const useConfigurations = ({ onUpdate } = {}) => {
@@ -73,6 +74,18 @@ const useConfigurations = ({ onUpdate } = {}) => {
     [updateConfiguration]
   );
 
+  const [updateSMSConf] = useMutation(UPDATE_SMS_CONF, {
+    onCompleted: () => {
+      Alert.success('SMS Configuration has been updated successfully');
+      onUpdate && onUpdate();
+    },
+    refetchQueries: [
+      {
+        query: LIST_CONFIGURATIONS,
+      },
+    ],
+  });
+
   return useMemo(
     () => ({
       configurations,
@@ -83,6 +96,7 @@ const useConfigurations = ({ onUpdate } = {}) => {
       pageSetupData,
       editPoints,
       points,
+      updateSMSConf,
     }),
     [
       configurations,
@@ -93,6 +107,7 @@ const useConfigurations = ({ onUpdate } = {}) => {
       pageSetupData,
       editPoints,
       points,
+      updateSMSConf
     ]
   );
 };

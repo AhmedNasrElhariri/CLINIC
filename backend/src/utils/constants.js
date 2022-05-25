@@ -2,6 +2,9 @@ export const EXMATION_STARTING_HOUR = 19;
 export const EXMAINTATION_LENGTH = 15;
 export const APP_SECRET = 'sdfsdf39f';
 export const MAX_NUMBERAPPS = 5;
+export const accountSidTwilio = 'AC09bda433375a5645246e6bacd9588605';
+export const authTokenTwilio = '6262a4cebde03d1fac0f5d1a207766ed';
+
 export const APPOINTMENTS_STATUS = Object.freeze({
   SCHEDULED: 'Scheduled',
   CANCELLED: 'Cancelled',

@@ -2,13 +2,20 @@ import CryptoJS from 'crypto-js';
 import moment from 'moment';
 import { PrismaClient } from '@prisma/client';
 import { formatDateFull } from './date.service';
+import { accountSidTwilio, authTokenTwilio } from '@/utils/constants';
 
-const accountSid = 'AC09bda433375a5645246e6bacd9588605';
-const authToken = '6262a4cebde03d1fac0f5d1a207766ed';
-const client = require('twilio')(accountSid, authToken);
+const client = require('twilio')(accountSidTwilio, authTokenTwilio);
 
 export const prisma = new PrismaClient();
-export const tomorrowAppointmentsReminder = async () => {
+export const tomorrowAppointmentsReminder = async (
+  _,
+  __,
+  { userId, organizationId }
+) => {
+  // const config = await prisma.configuration.findUnique({
+  //   where: { organizationId: organizationId },
+  // });
+  console.log(organizationId,'OOOOOO');
   const day = moment(new Date()).add(1, 'days').toDate();
   const from = moment(day).startOf('day').toDate();
   const to = moment(day).endOf('day').toDate();
@@ -30,21 +37,17 @@ export const tomorrowAppointmentsReminder = async () => {
     const { patient, date } = a;
     const phoneNo = patient.phoneNo;
     const updatedDate = formatDateFull(date);
-    const decryptedPhoneNo = CryptoJS.AES.decrypt(phoneNo, 'secret key 123');
-    const originalPhoneNo = decryptedPhoneNo.toString(CryptoJS.enc.Utf8);
     const receiverPhoneNo = '+2' + phoneNo;
-    const originalMessage = 'You have Appointment at ' + updatedDate;
-
+    const originalMessage =
+      'You have Appointment at ' + updatedDate + ' tomorrow';
     client.messages
       .create({
-        from: 'whatsapp+9853154551 ', // the phone number of the application owner // add 'whatsapp:+...'
+        messagingServiceSid: 'MG93cfd5400b8563cefc681cb68ee935b3',
         body: originalMessage,
-        to: `whatsapp:${receiverPhoneNo}`, // add 'whatsapp:+...'
+        to: receiverPhoneNo,
       })
-      .then(message => console.log(message))
-      .catch(err => {
-        console.log(err, 'EEEEEEEEEEEE');
-      });
+      .then(message => {})
+      .catch(err => {});
   });
 };
 export const createAppointmentMessage = async appointment => {
@@ -59,8 +62,6 @@ export const createAppointmentMessage = async appointment => {
   const originalMessage = 'You have Appointment at ' + updatedDate;
   client.messages
     .create({
-      // from: '+9853154551',
-      // the phone number of the application owner // add 'whatsapp:+...'
       messagingServiceSid: 'MG93cfd5400b8563cefc681cb68ee935b3',
       body: originalMessage,
       to: receiverPhoneNo, // add 'whatsapp:+...'

@@ -43,6 +43,7 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
     courseId,
     sessionId,
     reference,
+    sendSMS,
     ...rest
   } = appointment;
   const creatorId = creator ? creator : userId;
@@ -132,8 +133,9 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       }
     ),
   });
-
-  createAppointmentMessage(createdAppointment);
+  if (sendSMS) {
+    createAppointmentMessage(createdAppointment);
+  }
   if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {
     onAppointmentCreate({
       userId,

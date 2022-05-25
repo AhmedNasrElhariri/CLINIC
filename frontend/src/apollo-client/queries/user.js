@@ -112,6 +112,9 @@ export const LIST_CONFIGURATIONS = gql`
   query configuration {
     configuration {
       enableInvoiceCounter
+      enableSMS
+      orgName
+      orgPhoneNo
     }
   }
 `;
@@ -135,6 +138,18 @@ export const UPDATE_CONFIGURATION = gql`
     }
   }
 `;
+
+export const UPDATE_SMS_CONF = gql`
+  mutation updateSMSConf($smsConfig: SMSConfigurationInput!) {
+    updateSMSConf(smsConfig: $smsConfig) {
+      id
+      enableSMS
+      orgName
+      orgPhoneNo
+    }
+  }
+`;
+
 export const ADD_PULSES_CONTROL = gql`
   mutation addPulsesControl($pulsesControl: PulseControlInput!) {
     addPulsesControl(pulsesControl: $pulsesControl) {
