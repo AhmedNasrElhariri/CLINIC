@@ -25,6 +25,7 @@ const appointments = async (
     },
     true
   );
+  console.log(ids, 'IDDDSSSSSSSSSSSSSS');
   const sortingObj =
     type === APPOINTMENTS_STATUS.WAITING
       ? { updatedAt: 'asc' }
@@ -42,9 +43,23 @@ const appointments = async (
       },
       status,
       type,
-      userId: {
-        in: ids,
-      },
+      OR: [
+        {
+          userId: {
+            in: ids,
+          },
+        },
+        {
+          branchId: {
+            in: ids,
+          },
+        },
+        {
+          specialtyId: {
+            in: ids,
+          },
+        },
+      ],
       OR: [
         {
           patient: {
@@ -72,9 +87,23 @@ const appointments = async (
       },
       status,
       type,
-      userId: {
-        in: ids,
-      },
+      OR: [
+        {
+          userId: {
+            in: ids,
+          },
+        },
+        {
+          branchId: {
+            in: ids,
+          },
+        },
+        {
+          specialtyId: {
+            in: ids,
+          },
+        },
+      ],
       OR: [
         {
           patient: {

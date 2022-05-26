@@ -172,7 +172,7 @@ export const LIST_BRANCHES_TREE = gql`
 `;
 
 export const APPOINTMENTS_DAY_COUNT = gql`
-  query appointmentsDayCount($date: Date!, $userId: ID) {
+  query appointmentsDayCount($date: Date, $userId: ID) {
     appointmentsDayCount(date: $date, userId: $userId) {
       appointments {
         id

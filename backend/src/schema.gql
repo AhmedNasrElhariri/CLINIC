@@ -326,7 +326,7 @@ type Query {
     specialtyId: ID
     branchId: ID
   ): [CoursePayment!]
-  appointmentsDayCount(date: Date!, userId: ID): AppointmentsDayCount!
+  appointmentsDayCount(date: Date, userId: ID): AppointmentsDayCount!
   coursePayments(courseId: ID!): [CoursePayment!]
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
   transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
