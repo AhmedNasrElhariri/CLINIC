@@ -1,14 +1,29 @@
 import { prisma } from '@';
 
-const addSales = async (_, { sales }, { userId }) => {
+const editSales = async (_, { sales }, { userId }) => {
   const { id, salesDefinitionId, quantity } = sales;
   const salesDefinitionRow = await prisma.salesDefinition.findUnique({
     where: {
       id: salesDefinitionId,
     },
   });
+  const salesRow = await prisma.sales.findUnique({
+    where: {
+      id: id,
+    },
+  });
   const totalPrice = salesDefinitionRow.price * quantity;
   const totalCost = salesDefinitionRow.cost * quantity;
+  const totalQaun =
+    salesDefinitionRow.totalQuantity + salesRow.quantity - quantity;
+  await prisma.salesDefinition.update({
+    data: {
+      totalQuantity: totalQaun,
+    },
+    where: {
+      id: salesDefinitionId,
+    },
+  });
   return prisma.sales.update({
     data: {
       quantity: quantity,
@@ -32,4 +47,4 @@ const addSales = async (_, { sales }, { userId }) => {
   });
 };
 
-export default addSales;
+export default editSales;

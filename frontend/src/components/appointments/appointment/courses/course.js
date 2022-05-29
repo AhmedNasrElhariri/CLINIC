@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CoursePayment from './course-payment-history';
+import CourseUnitsHistoryPage from './course-units-history';
 import CourseSession from './course-sessions';
 import * as moment from 'moment';
 import * as R from 'ramda';
@@ -19,12 +20,15 @@ const CourseData = ({
   onAddUnits,
   onDeleteCourse,
   onEditHistoryPayment,
+  onEditUnitsHistory,
 }) => {
   const history = useHistory();
   let course = courses[indx];
   let { sessions } = course;
   const updatedSessions = sortByDate(sessions);
-  const { coursePayments } = useCourses({ courseId: course.id });
+  const { coursePayments, courseUnitsHistory } = useCourses({
+    courseId: course.id,
+  });
   const handleClick = appointment => {
     if (
       moment(new Date()).endOf('day').toDate() >
@@ -148,6 +152,7 @@ const CourseData = ({
             <CRTabs.CRTabsGroup>
               <CRTabs.CRTab>Course Session</CRTabs.CRTab>
               <CRTabs.CRTab>Course Payment History</CRTabs.CRTab>
+              <CRTabs.CRTab>Course Units History</CRTabs.CRTab>
             </CRTabs.CRTabsGroup>
             <CRTabs.CRContentGroup>
               <CRTabs.CRContent>
@@ -160,6 +165,13 @@ const CourseData = ({
                 <CoursePayment
                   coursePayments={coursePayments}
                   onEdit={onEditHistoryPayment}
+                  courseId={course.id}
+                />
+              </CRTabs.CRContent>
+              <CRTabs.CRContent>
+                <CourseUnitsHistoryPage
+                  courseUnitsHistory={courseUnitsHistory}
+                  onEdit={onEditUnitsHistory}
                   courseId={course.id}
                 />
               </CRTabs.CRContent>

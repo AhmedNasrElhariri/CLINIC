@@ -95,6 +95,7 @@ export const LIST_SALESES = gql`
         totalCost
         quantity
         date
+        salesDefinitionId
         user {
           id
           name

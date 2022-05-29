@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import CoursePayment from '../appointments/appointment/courses/course-payment-history';
 import CourseSession from '../appointments/appointment/courses/course-sessions';
+import CourseUnitsHistoryPage from '../appointments/appointment/courses/course-units-history';
 import * as moment from 'moment';
 import * as R from 'ramda';
 import { Div, CRButton, CRTabs } from 'components';
@@ -23,6 +24,7 @@ const CourseData = ({
   onAddUnits,
   onDeleteCourse,
   onEditHistoryPayment,
+  onEditUnitsHistory,
 }) => {
   const history = useHistory();
   const course = useMemo(() => {
@@ -31,7 +33,9 @@ const CourseData = ({
   }, [courseId, courses]);
   let { sessions } = course;
   const updatedSessions = sortByDate(sessions);
-  const { coursePayments } = useCourses({ courseId: course.id });
+  const { coursePayments, courseUnitsHistory } = useCourses({
+    courseId: course.id,
+  });
   const handleClick = appointment => {
     if (
       moment(new Date()).endOf('day').toDate() >
@@ -133,9 +137,7 @@ const CourseData = ({
             </Data>
             <Data>
               <DataName>Remaining: </DataName>
-              <DataValue>
-                {course.units - course.consumed}
-              </DataValue>
+              <DataValue>{course.units - course.consumed}</DataValue>
             </Data>
           </>
         )}
@@ -160,6 +162,7 @@ const CourseData = ({
             <CRTabs.CRTabsGroup>
               <CRTabs.CRTab>Course Session</CRTabs.CRTab>
               <CRTabs.CRTab>Course Payment History</CRTabs.CRTab>
+              <CRTabs.CRTab>Course Units History</CRTabs.CRTab>
             </CRTabs.CRTabsGroup>
             <CRTabs.CRContentGroup>
               <CRTabs.CRContent>
@@ -172,6 +175,13 @@ const CourseData = ({
                 <CoursePayment
                   coursePayments={coursePayments}
                   onEdit={onEditHistoryPayment}
+                  courseId={course.id}
+                />
+              </CRTabs.CRContent>
+              <CRTabs.CRContent>
+                <CourseUnitsHistoryPage
+                  courseUnitsHistory={courseUnitsHistory}
+                  onEdit={onEditUnitsHistory}
                   courseId={course.id}
                 />
               </CRTabs.CRContent>

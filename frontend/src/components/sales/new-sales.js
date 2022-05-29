@@ -16,10 +16,7 @@ import { useSalesDefinition } from 'hooks';
 import ListInvoiceItems from './list-invoice-items';
 import { normalize } from 'utils/misc';
 const model = Schema.Model({});
-const initValue = {
-  itemId: null,
-  quantity: 1,
-};
+
 function NewSales({
   formValue,
   onChange,
@@ -61,33 +58,40 @@ function NewSales({
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         {type === 'delete' ? (
-          'Are you sure that you want delete this sales'
+          <h3>Are you sure that you want delete this sales</h3>
         ) : (
           <>
             <ReactToPrint
               trigger={() => <CRButton>Print</CRButton>}
               content={() => ref.current}
             />
-            <CRBrancheTree
-              formValue={formValue}
-              onChange={onChange}
-              action={ACTIONS.Create_Sales}
-            />
+            {type === 'create' && (
+              <CRBrancheTree
+                formValue={formValue}
+                onChange={onChange}
+                action={ACTIONS.Create_Sales}
+              />
+            )}
+
             <Div display="flex" justifyContent="space-between" mt={3}>
-              <Div>
-                <CRDocSelectInput
-                  formValue={formValue}
-                  branchId={formValue?.branchId}
-                  specialtyId={formValue?.specialtyId}
-                  userId={formValue?.userId}
-                  onChange={val => onChange({ ...formValue, itemId: val?.id })}
-                  label="Item"
-                  data={salesesDefinition}
-                  placement="left"
-                  style={{ width: '240px' }}
-                  block
-                />
-              </Div>
+              {type === 'create' && (
+                <Div>
+                  <CRDocSelectInput
+                    formValue={formValue}
+                    branchId={formValue?.branchId}
+                    specialtyId={formValue?.specialtyId}
+                    userId={formValue?.userId}
+                    onChange={val =>
+                      onChange({ ...formValue, itemId: val?.id })
+                    }
+                    label="Item"
+                    data={salesesDefinition}
+                    placement="left"
+                    style={{ width: '240px' }}
+                    block
+                  />
+                </Div>
+              )}
               <Div display="flex">
                 <CRNumberInput
                   name="quantity"
@@ -95,9 +99,11 @@ function NewSales({
                   value={formValue.quantity}
                 />
               </Div>
-              <CRButton variant="primary" onClick={handleAdd}>
-                add
-              </CRButton>
+              {type === 'create' && (
+                <CRButton variant="primary" onClick={handleAdd}>
+                  add
+                </CRButton>
+              )}
             </Div>
             <ListInvoiceItems items={itemsList} onDelete={handleDelete} />
             <Div style={{ overflow: 'hidden', height: '0px' }}>

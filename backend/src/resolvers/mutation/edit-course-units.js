@@ -10,6 +10,27 @@ const editCourseUnits = async (_, { courseId, consumed, type }, { userId }) => {
   });
   const { courseDefinitionId } = data;
   if (type === 'addNewUnits') {
+    await prisma.courseUnitsHistory.create({
+      data: {
+        user: {
+          connect: {
+            id: data.userId,
+          },
+        },
+        doctor: {
+          connect: {
+            id: data.doctorId,
+          },
+        },
+        course: {
+          connect: {
+            id: courseId,
+          },
+        },
+        units: consumed,
+        date: new Date(),
+      },
+    });
     return prisma.course.update({
       where: {
         id: courseId,

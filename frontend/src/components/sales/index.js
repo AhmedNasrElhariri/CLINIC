@@ -181,6 +181,7 @@ const Sales = () => {
       });
     }
   }, [addSales, editSales, formValue, type]);
+  console.log(saleses, 'saleses');
   return (
     <>
       <MainContainer
