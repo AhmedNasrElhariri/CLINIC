@@ -57,6 +57,7 @@ const Course = ({ patientId }) => {
     users,
     loading,
     finishCourse,
+    editCourseUnitHistory,
   } = useCourses({
     onCreate: () => {
       close();
@@ -164,6 +165,21 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickEditUnitsHistory = useCallback(
+    data => {
+      const unitTransaction = R.pick(['id', 'units', 'transactionId'])(data);
+      const updatedUnitTransaction = {
+        id: unitTransaction.id,
+        consumed: unitTransaction.units,
+        transactionId: unitTransaction.transactionId,
+      };
+      setType('editUnitsTransactions');
+      setHeader('Edit Unit Transaction');
+      setFormValue(updatedUnitTransaction);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       let price = 0;
@@ -243,6 +259,14 @@ const Course = ({ patientId }) => {
           type: 'editConsumedUnits',
         },
       });
+    } else if (type === 'editUnitsTransactions') {
+      editCourseUnitHistory({
+        variables: {
+          transactionId: formValue.transactionId,
+          consumed: formValue.consumed,
+          courseId: formValue.id,
+        },
+      });
     } else if (type === 'deleteCourse') {
       deleteCourse({
         variables: {
@@ -287,6 +311,7 @@ const Course = ({ patientId }) => {
     editCourse,
     editCoursePaymentHistory,
     finishCourse,
+    editCourseUnitHistory,
     bank,
   ]);
   const InprogressCourses = useMemo(
@@ -318,7 +343,7 @@ const Course = ({ patientId }) => {
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
             <Div display="flex" justifyContent="space-between">
-              <Div width={900}>
+              <Div width={1000}>
                 <>
                   {InprogressCourses.map((course, idx) => (
                     <CourseButton
@@ -347,6 +372,7 @@ const Course = ({ patientId }) => {
                       onFinishCourse={handleFinishCourse}
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
+                      onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
                     <H3>No courses</H3>
@@ -357,7 +383,7 @@ const Course = ({ patientId }) => {
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Div display="flex" justifyContent="space-between">
-              <Div width={900}>
+              <Div width={1000}>
                 <>
                   {FinishedCourses.map((course, idx) => (
                     <CourseButton
@@ -386,6 +412,7 @@ const Course = ({ patientId }) => {
                       onFinishCourse={handleFinishCourse}
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
+                      onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
                     <H3>No courses</H3>
@@ -396,7 +423,7 @@ const Course = ({ patientId }) => {
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Div display="flex" justifyContent="space-between">
-              <Div width={900}>
+              <Div width={1000}>
                 <>
                   {CancelledCourses.map((course, idx) => (
                     <CourseButton
@@ -425,6 +452,7 @@ const Course = ({ patientId }) => {
                       onFinishCourse={handleFinishCourse}
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
+                      onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
                     <H3>No courses</H3>

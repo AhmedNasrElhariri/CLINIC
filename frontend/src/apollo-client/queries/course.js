@@ -144,6 +144,23 @@ export const LIST_COURSE_PAYMENTS = gql`
     }
   }
 `;
+export const LIST_COURSE_UNITS_HISTORY = gql`
+  query ($courseId: ID!) {
+    courseUnitsHistory(courseId: $courseId) {
+      id
+      units
+      date
+      doctor {
+        id
+        name
+      }
+      user {
+        id
+        name
+      }
+    }
+  }
+`;
 export const TOTAL_UNPAID_OF_COURSES = gql`
   {
     totalUnpaidOfCourses {
@@ -249,6 +266,24 @@ export const EDIT_COURSE_UNITS = gql`
         sex
         phoneNo
       }
+    }
+  }
+`;
+
+export const EDIT_COURSE_UNIT_HISTORY = gql`
+  mutation editCourseUnitHistory(
+    $transactionId: ID
+    $consumed: Int
+    $courseId: ID
+  ) {
+    editCourseUnitHistory(
+      transactionId: $transactionId
+      consumed: $consumed
+      courseId: $courseId
+    ) {
+      id
+      units
+      date
     }
   }
 `;

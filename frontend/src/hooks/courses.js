@@ -18,6 +18,8 @@ import {
   LIST_COURSE_PAYMENTS,
   EDIT_COURSE_PAYMENT_HISTORY,
   TOTAL_UNPAID_OF_COURSES,
+  LIST_COURSE_UNITS_HISTORY,
+  EDIT_COURSE_UNIT_HISTORY,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -87,6 +89,14 @@ function useCourses({
   const coursePayments = useMemo(
     () => R.propOr([], 'coursePayments')(dataPayment),
     [dataPayment]
+  );
+
+  const { data: courseUnitsHistoryData } = useQuery(LIST_COURSE_UNITS_HISTORY, {
+    variables: { courseId },
+  });
+  const courseUnitsHistory = useMemo(
+    () => R.propOr([], 'courseUnitsHistory')(courseUnitsHistoryData),
+    [courseUnitsHistoryData]
   );
 
   const { data: totalUnpaidOfCoursesData } = useQuery(TOTAL_UNPAID_OF_COURSES);
@@ -210,6 +220,10 @@ function useCourses({
         variables: { patientId: patientId },
       },
       {
+        query: LIST_COURSE_UNITS_HISTORY,
+        variables: { courseId: courseId },
+      },
+      {
         query: LIST_COURSES,
         variables: Object.assign(
           {
@@ -312,6 +326,34 @@ function useCourses({
       Alert.error('Failed to delete this Course');
     },
   });
+  const [editCourseUnitHistory] = useMutation(EDIT_COURSE_UNIT_HISTORY, {
+    onCompleted() {
+      Alert.success('the Transaction has been Edited Successfully');
+      onEdit && onEdit();
+    },
+    refetchQueries: [
+      {
+        query: LIST_PATIENT_COURSES,
+        variables: { patientId: patientId },
+      },
+      {
+        query: LIST_COURSES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          patientId && { patientId },
+          status && { status },
+          courseID && { courseId: courseID },
+          sortType && { sortType: sortType }
+        ),
+      },
+    ],
+    onError() {
+      Alert.error('Failed to edit the Transaction');
+    },
+  });
   return useMemo(
     () => ({
       courses,
@@ -329,6 +371,8 @@ function useCourses({
       coursePayments,
       editCoursePaymentHistory,
       totalUnpaidOfCourses,
+      courseUnitsHistory,
+      editCourseUnitHistory,
     }),
     [
       courses,
@@ -344,7 +388,9 @@ function useCourses({
       users,
       coursePayments,
       editCoursePaymentHistory,
-      totalUnpaidOfCourses
+      totalUnpaidOfCourses,
+      courseUnitsHistory,
+      editCourseUnitHistory,
     ]
   );
 }

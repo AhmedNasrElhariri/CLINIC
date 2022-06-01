@@ -328,6 +328,7 @@ type Query {
   ): [CoursePayment!]
   appointmentsDayCount(date: Date, userId: ID): AppointmentsDayCount!
   coursePayments(courseId: ID!): [CoursePayment!]
+  courseUnitsHistory(courseId: ID!): [CourseUnitsHistory!]
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
   transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
   areas: [Area]
@@ -554,6 +555,11 @@ type Mutation {
     paymentId: ID!
   ): Course!
   editCourseUnits(courseId: ID!, consumed: Int!, type: String!): Course!
+  editCourseUnitHistory(
+    transactionId: ID
+    consumed: Int
+    courseId: ID
+  ): CourseUnitsHistory!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
   finishCourse(courseId: ID!): Course!
   deleteCourse(
@@ -1913,6 +1919,7 @@ type Sales {
   id: ID!
   date: Date!
   salesDefinition: SalesDefinition!
+  salesDefinitionId: ID
   quantity: Int!
   totalPrice: Int!
   totalCost: Int!
@@ -1930,7 +1937,7 @@ type SalesData {
 
 input SalesInput {
   id: ID
-  items: ID!
+  salesDefinitionId: ID
   quantity: Int!
 }
 
@@ -2066,6 +2073,13 @@ type CoursePayment {
   doctor: User
   branch: Branch
   specialty: Specialty
+}
+type CourseUnitsHistory {
+  id: ID!
+  units: Int!
+  date: Date!
+  user: User
+  doctor: User
 }
 
 ########################### Appointment Type Definition ##################################

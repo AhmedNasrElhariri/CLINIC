@@ -424,7 +424,7 @@ function NewCourse({
               action={ACTIONS.ViewCourses_Patient}
             />
           </>
-        ) : type === 'addNewUnits' || type === 'editConsumedUnits' ? (
+        ) : type === 'addNewUnits' || type === 'editConsumedUnits' || type === 'editUnitsTransactions' ? (
           <CRNumberInput
             label="Consumed Units"
             name="consumed"

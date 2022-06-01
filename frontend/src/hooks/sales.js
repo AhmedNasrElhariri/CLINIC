@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
-import { filterAccountingList } from 'utils/accounting';
 import {
   ADD_SALES,
   EDIT_SALES,
@@ -30,7 +29,7 @@ function useSales({
   branchId,
   doctorId,
   userId,
-  page,
+  page = 1,
   itemId,
   creatorId,
 } = {}) {
@@ -53,6 +52,7 @@ function useSales({
   const salesData = data?.mySaleses;
 
   const saleses = useMemo(() => R.propOr([], 'sales')(salesData), [salesData]);
+  console.log(saleses, 'HSHSHSHS', salesData, 'salesData');
   const totalSalesPrice = useMemo(
     () => R.propOr(0, 'totalSalesPrice')(salesData),
     [salesData]
@@ -71,20 +71,6 @@ function useSales({
     () => R.propOr([], 'listUsers')(OrgUsers),
     [OrgUsers]
   );
-
-  // const filteredSales = useMemo(
-  //   () => filterAccountingList(saleses, view, period),
-  //   [saleses, period, view]
-  // );
-  // const totalSalesPrice = useMemo(
-  //   () => filteredSales.reduce((acc, s) => acc + s.totalPrice, 0),
-  //   [filteredSales]
-  // );
-
-  // const totalSalesCost = useMemo(
-  //   () => filteredSales.reduce((acc, s) => acc + s.totalCost, 0),
-  //   [filteredSales]
-  // );
 
   const [addSales, { loading }] = useMutation(ADD_SALES, {
     onCompleted() {
@@ -119,6 +105,7 @@ function useSales({
     refetchQueries: [
       {
         query: LIST_SALESES,
+        variables: { offset: 0, limit: 20 },
       },
     ],
     onError() {
