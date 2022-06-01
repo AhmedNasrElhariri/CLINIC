@@ -4,6 +4,8 @@ import {
   getStartOfDay,
   getEndOfDay,
 } from '@/services/date.service';
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { ACTIONS } from '@/utils/constants';
 
 const bankExpenses = async (
   _,
@@ -18,7 +20,7 @@ const bankExpenses = async (
     branchId,
     bankId,
   },
-  { organizationId }
+  { user, organizationId }
 ) => {
   let updatedDateFrom = new Date();
   let updatedDateTo = new Date();
@@ -30,21 +32,53 @@ const bankExpenses = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.ViewBank_Accounting,
+    },
+    false
+  );
+
   const bankExpenses = await prisma.bankExpense.findMany({
     where: {
       organizationId,
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
-        },
-        {
-          bankId: bankId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              bankId: bankId,
+            },
+          ],
         },
       ],
       date: {
@@ -77,13 +111,39 @@ const bankExpenses = async (
       organizationId,
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              bankId: bankId,
+            },
+          ],
         },
       ],
       date: {

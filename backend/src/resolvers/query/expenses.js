@@ -4,8 +4,8 @@ import {
   getStartOfDay,
   getEndOfDay,
 } from '@/services/date.service';
-// import { listFlattenUsersTreeIds } from '@/services/permission.service';
-// import { ACTIONS,POSITION } from '@/utils/constants';
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { ACTIONS, POSITION } from '@/utils/constants';
 // import { action } from '../permission';
 
 const expenses = async (
@@ -23,14 +23,14 @@ const expenses = async (
   },
   { user, organizationId }
 ) => {
-  // const ids = await listFlattenUsersTreeIds(
-  //   {
-  //     user,
-  //     organizationId,
-  //     action: ACTIONS.View_Accounting,
-  //   },
-  //   true
-  // );
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.View_Accounting,
+    },
+    false
+  );
   // const condition =
   //   user.position === POSITION.Admin || user.position === POSITION.Assistant
   //     ? {
@@ -58,13 +58,36 @@ const expenses = async (
       organizationId: organizationId,
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+          ],
         },
       ],
       expenseType: {
@@ -99,13 +122,36 @@ const expenses = async (
       organizationId: organizationId,
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+          ],
         },
       ],
       date: {

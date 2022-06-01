@@ -46,11 +46,11 @@ function Root() {
       name: `Today's Appointments`,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
-    {
-      to: '/calendar',
-      name: 'Calendar',
-      icon: <CalendarIcon width={11.8} height={14.1} />,
-    },
+    // {
+    //   to: '/calendar',
+    //   name: 'Calendar',
+    //   icon: <CalendarIcon width={11.8} height={14.1} />,
+    // },
     {
       to: '/appointments',
       name: 'Appointments',

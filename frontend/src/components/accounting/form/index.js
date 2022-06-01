@@ -31,7 +31,7 @@ const model = Schema.Model({
   date: DateType().isRequired('date is required'),
 });
 
-export const useAccountingForm = ({ header, onOk }) => {
+export const useAccountingForm = ({ header, onOk, action }) => {
   const [formValue, setFormValue] = useState(initValue);
   const [visible, setVisible] = useState(false);
   const onCancel = useCallback(() => {
@@ -58,6 +58,7 @@ export const useAccountingForm = ({ header, onOk }) => {
     onCancel,
     onChange: setFormValue,
     model,
+    action,
   };
 };
 
@@ -70,6 +71,7 @@ const AccountingForm = ({
   header,
   model,
   loading,
+  action,
 }) => {
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
   const updatedexpenseType = expenseTypesDefinition.map(e => {
@@ -118,7 +120,7 @@ const AccountingForm = ({
         <CRBrancheTree
           formValue={formValue}
           onChange={onChange}
-          action={ACTIONS.AddExpense_Accounting}
+          action={action}
         />
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
       </Form>

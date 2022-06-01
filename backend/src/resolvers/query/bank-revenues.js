@@ -4,6 +4,8 @@ import {
   getStartOfDay,
   getEndOfDay,
 } from '@/services/date.service';
+import { ACTIONS } from '@/utils/constants';
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
 
 const bankRevenues = async (
   _,
@@ -19,7 +21,7 @@ const bankRevenues = async (
     bankId,
     revenueName,
   },
-  { organizationId }
+  { organizationId, user }
 ) => {
   let updatedDateFrom = new Date();
   let updatedDateTo = new Date();
@@ -31,27 +33,59 @@ const bankRevenues = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.ViewBank_Accounting,
+    },
+    false
+  );
+  console.log(ids, 'idspppppppppppppp');
   const bankRevenues = await prisma.bankRevenue.findMany({
     where: {
       organizationId,
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
-        },
-        {
-          bankId: bankId,
-        },
-        {
-          name: {
-            contains: revenueName,
-            mode: 'insensitive',
-          },
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              bankId: bankId,
+            },
+            {
+              name: {
+                contains: revenueName,
+                mode: 'insensitive',
+              },
+            },
+          ],
         },
       ],
       date: {
@@ -84,13 +118,45 @@ const bankRevenues = async (
       organizationId,
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              bankId: bankId,
+            },
+            {
+              name: {
+                contains: revenueName,
+                mode: 'insensitive',
+              },
+            },
+          ],
         },
       ],
       date: {

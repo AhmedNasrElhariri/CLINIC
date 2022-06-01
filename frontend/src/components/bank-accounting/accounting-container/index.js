@@ -64,6 +64,7 @@ const inialExpenseCurrentPage = {
 };
 const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
+  const [action, setAction] = useState('');
   const { visible, open, close } = useModal();
   const { formValue, setFormValue, type, setType, show, setShow } = useForm({
     initValue,
@@ -146,10 +147,11 @@ const BankAccountingContainer = () => {
       const { bank } = data;
       const row = R.pick(['id', 'amount', 'name', 'date', 'checkNumber'])(data);
       setType('editBankRevenue');
+      setAction(ACTIONS.EditBankRevenue_Accounting);
       setFormValue({ ...row, bankId: bank.id });
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, setAction]
   );
   const handleClickEditExpense = useCallback(
     data => {
@@ -163,19 +165,22 @@ const BankAccountingContainer = () => {
         'checkNumber',
       ])(data);
       setType('editBankExpense');
+      setAction(ACTIONS.EditBankExpense_Accounting);
       setFormValue({ ...row, bankId: bank.id });
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, setAction]
   );
   const handleClickCreateRevenue = useCallback(() => {
     setType('createBankRevenue');
+    setAction(ACTIONS.AddBankRevenue_Accounting);
     open();
-  }, [open, setType]);
+  }, [open, setType, setAction]);
   const handleClickCreateExpense = useCallback(() => {
     setType('createBankExpense');
+    setAction(ACTIONS.AddBankExpense_Accounting);
     open();
-  }, [open, setType]);
+  }, [open, setType, setAction]);
 
   const handleAdd = useCallback(() => {
     if (type === 'editBankRevenue') {
@@ -220,7 +225,7 @@ const BankAccountingContainer = () => {
         more={
           <Div display="flex" mt={20}>
             <>
-              <Can I="AddRevenue" an="Accounting">
+              <Can I="AddBankRevenue" an="Accounting">
                 <CRButton
                   variant="primary"
                   onClick={() => handleClickCreateRevenue()}
@@ -228,7 +233,7 @@ const BankAccountingContainer = () => {
                   Reveneue +
                 </CRButton>
               </Can>
-              <Can I="AddExpense" an="Accounting">
+              <Can I="AddBankExpense" an="Accounting">
                 <CRButton
                   variant="primary"
                   ml={1}
@@ -374,6 +379,7 @@ const BankAccountingContainer = () => {
           updatedexpenseType={updatedexpenseType}
           show={show}
           setShow={setShow}
+          action={action}
         />
       </CRCard>
     </>

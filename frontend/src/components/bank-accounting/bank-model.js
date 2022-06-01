@@ -8,7 +8,7 @@ import {
   CRDatePicker,
   CRBrancheTree,
 } from 'components';
-import { ACTIONS } from 'utils/constants';
+
 function BankModel({
   formValue,
   onChange,
@@ -18,6 +18,7 @@ function BankModel({
   onClose,
   banksDefinition,
   updatedexpenseType,
+  action
 }) {
   const header = useMemo(
     () =>
@@ -69,7 +70,7 @@ function BankModel({
         <CRBrancheTree
           formValue={formValue}
           onChange={onChange}
-          action={ACTIONS.AddExpense_Accounting}
+          action={action}
         />
         <CRTextInput label="Check No" name="checkNumber" block></CRTextInput>
         <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>

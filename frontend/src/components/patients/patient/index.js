@@ -99,7 +99,11 @@ function Appointment() {
                 ))}
               </CRVNav>
               <TabContainer>
-                {showComp('0') && <PatientInfo patient={patient} />}
+                {showComp('0') && (
+                  <Can I="ViewPatientInfo" an="Patient">
+                    <PatientInfo patient={patient} />
+                  </Can>
+                )}
                 {showComp('1') && (
                   <Can I="ViewSessions" an="Patient">
                     <PatientSummary
@@ -110,11 +114,13 @@ function Appointment() {
                   </Can>
                 )}
                 {showComp('2') && (
-                  <PatientSurgries
-                    history={[]}
-                    viewFields={viewFields}
-                    patientId={patient?.id}
-                  />
+                  <Can I="ViewSurgeries" an="Patient">
+                    <PatientSurgries
+                      history={[]}
+                      viewFields={viewFields}
+                      patientId={patient?.id}
+                    />
+                  </Can>
                 )}
                 {showComp('3') && (
                   <Can I="ViewLabs" an="Patient">
@@ -126,7 +132,11 @@ function Appointment() {
                     <PatientImages patient={patient} />
                   </Can>
                 )}
-                {showComp('5') && <History patient={patient} />}
+                {showComp('5') && (
+                  <Can I="ViewHistory" an="Patient">
+                    <History patient={patient} />
+                  </Can>
+                )}
                 {showComp('6') && (
                   <Can I="ViewCourses" an="Patient">
                     <PatientCourses patientId={patient?.id} />
@@ -138,22 +148,40 @@ function Appointment() {
                   </Can>
                 )}
                 {showComp('8') && (
-                  <AllowedViews part="Dental">
-                    <Dental patient={patient} />
-                  </AllowedViews>
+                  <Can I="ViewDental" an="Patient">
+                    <AllowedViews part="Dental">
+                      <Dental patient={patient} />
+                    </AllowedViews>
+                  </Can>
                 )}
-                {showComp('9') && <FaceOperations patient={patient} />}
+                {showComp('9') && (
+                  <Can I="ViewFaseOperation" an="Patient">
+                    <FaceOperations patient={patient} />
+                  </Can>
+                )}
                 {showComp('10') && (
-                  <PatientProgress
-                    history={appointmentHistory}
-                    viewFields={viewFields}
-                  />
+                  <Can I="ViewProgress" an="Patient">
+                    <PatientProgress
+                      history={appointmentHistory}
+                      viewFields={viewFields}
+                    />
+                  </Can>
                 )}
                 {showComp('11') && (
-                  <PatientInformationCreation patient={patient} />
+                  <Can I="ViewPatientInformationCreation" an="Patient">
+                    <PatientInformationCreation patient={patient} />
+                  </Can>
                 )}
-                {showComp('12') && <PatientCoupons patient={patient} />}
-                {showComp('13') && <PatientRevenue patient={patient} />}
+                {showComp('12') && (
+                  <Can I="ViewCoupons" an="Patient">
+                    <PatientCoupons patient={patient} />
+                  </Can>
+                )}
+                {showComp('13') && (
+                  <Can I="ViewPatientRevenue" an="Patient">
+                    <PatientRevenue patient={patient} />
+                  </Can>
+                )}
               </TabContainer>
             </Container>
           )}

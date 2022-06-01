@@ -23,9 +23,8 @@ const appointments = async (
       organizationId,
       action: ACTIONS.List_Appointment,
     },
-    true
+    false
   );
-  console.log(ids, 'IDDDSSSSSSSSSSSSSS');
   const sortingObj =
     type === APPOINTMENTS_STATUS.WAITING
       ? { updatedAt: 'asc' }
@@ -43,38 +42,44 @@ const appointments = async (
       },
       status,
       type,
-      OR: [
+      AND: [
         {
-          userId: {
-            in: ids,
-          },
-        },
-        {
-          branchId: {
-            in: ids,
-          },
-        },
-        {
-          specialtyId: {
-            in: ids,
-          },
-        },
-      ],
-      OR: [
-        {
-          patient: {
-            name: {
-              contains: patient,
-              mode: 'insensitive',
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
             },
-          },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          patient: {
-            phoneNo: {
-              contains: patient,
+          OR: [
+            {
+              patient: {
+                name: {
+                  contains: patient,
+                  mode: 'insensitive',
+                },
+              },
             },
-          },
+            {
+              patient: {
+                phoneNo: {
+                  contains: patient,
+                },
+              },
+            },
+          ],
         },
       ],
     },
@@ -87,41 +92,48 @@ const appointments = async (
       },
       status,
       type,
-      OR: [
+      AND: [
         {
-          userId: {
-            in: ids,
-          },
-        },
-        {
-          branchId: {
-            in: ids,
-          },
-        },
-        {
-          specialtyId: {
-            in: ids,
-          },
-        },
-      ],
-      OR: [
-        {
-          patient: {
-            name: {
-              contains: patient,
-              mode: 'insensitive',
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
             },
-          },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          patient: {
-            phoneNo: {
-              contains: patient,
+          OR: [
+            {
+              patient: {
+                name: {
+                  contains: patient,
+                  mode: 'insensitive',
+                },
+              },
             },
-          },
+            {
+              patient: {
+                phoneNo: {
+                  contains: patient,
+                },
+              },
+            },
+          ],
         },
       ],
     },
+
     orderBy: [sortingObj],
     include: {
       specialty: true,

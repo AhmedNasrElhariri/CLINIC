@@ -1,6 +1,6 @@
 import { prisma } from '@';
-// import { ACTIONS } from '@/utils/constants';
-// import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { ACTIONS } from '@/utils/constants';
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import {
   getDateFromAndDateToFromView,
   getStartOfDay,
@@ -22,14 +22,14 @@ const mySaleses = async (
   },
   { user, organizationId }
 ) => {
-  // const ids = await listFlattenUsersTreeIds(
-  //   {
-  //     user,
-  //     organizationId,
-  //     action: ACTIONS.View_Sales,
-  //   },
-  //   true
-  // );
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.View_Sales,
+    },
+    false
+  );
   let updatedDateFrom = new Date();
   let updatedDateTo = new Date();
   if (dateFrom && dateTo) {
@@ -43,38 +43,44 @@ const mySaleses = async (
 
   const sales = await prisma.sales.findMany({
     where: {
-      // OR: [
-      //   {
-      //     userId: {
-      //       in: ids,
-      //     },
-      //   },
-      //   {
-      //     branchId: {
-      //       in: ids,
-      //     },
-      //   },
-      //   {
-      //     specialtyId: {
-      //       in: ids,
-      //     },
-      //   },
-      // ],
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              userId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
-        },
-        {
-          salesDefinitionId: itemId,
-        },
-        {
-          userId: creatorId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              salesDefinitionId: itemId,
+            },
+            {
+              userId: creatorId,
+            },
+          ],
         },
       ],
       date: {
@@ -102,19 +108,42 @@ const mySaleses = async (
     where: {
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              userId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
-        },
-        {
-          salesDefinitionId: itemId,
-        },
-        {
-          userId: creatorId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              salesDefinitionId: itemId,
+            },
+            {
+              userId: creatorId,
+            },
+          ],
         },
       ],
       date: {

@@ -190,18 +190,22 @@ const AccountingContainer = () => {
   const createRevenueForm = useAccountingForm({
     header: 'New Revenue',
     onOk: handleCreateRevenue,
+    action: ACTIONS.AddRevenue_Accounting,
   });
   const createExpenseForm = useAccountingForm({
     header: 'New Expense',
     onOk: handleCreateExpense,
+    action: ACTIONS.AddExpense_Accounting,
   });
   const editRevenueForm = useAccountingForm({
     header: 'Edit Revenue',
     onOk: handleUpdateRevenue,
+    action: ACTIONS.EditRevenue_Accounting,
   });
   const editExpenseForm = useAccountingForm({
     header: 'Edit Expense',
     onOk: handleUpdateExpense,
+    action: ACTIONS.EditExpense_Accounting,
   });
   const {
     expenses,

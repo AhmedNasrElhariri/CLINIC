@@ -7,7 +7,6 @@ import InventoryHistory from '../history';
 import ItemsDefinitions from '../items-definitions';
 import InventoryManual from '../inventory-manual';
 
-
 const tabs = [
   { name: 'Inventory', key: '0', component: InventoryStatus },
   { name: 'History', key: '1', component: InventoryHistory },
@@ -35,10 +34,26 @@ const InventoryPage = () => {
         ))}
       </CRNav>
       <CRCard borderless>
-        {activeTab === '0' && <Can I="AddItem" an="Inventory"><InventoryStatus /></Can>}
-        {activeTab === '1' && <Can I="ViewHistory" an="Inventory"><InventoryHistory /></Can>}
-        {activeTab === '2' && <Can I="DefineItem" an="Inventory"><ItemsDefinitions /></Can>}
-        {activeTab === '3' && <Can I="DefineItem" an="Inventory"><InventoryManual /></Can>}
+        {activeTab === '0' && (
+          <Can I="View" an="Inventory">
+            <InventoryStatus />
+          </Can>
+        )}
+        {activeTab === '1' && (
+          <Can I="ViewHistory" an="Inventory">
+            <InventoryHistory />
+          </Can>
+        )}
+        {activeTab === '2' && (
+          <Can I="DefineItem" an="Inventory">
+            <ItemsDefinitions />
+          </Can>
+        )}
+        {activeTab === '3' && (
+          <Can I="AddCustom" an="Inventory">
+            <InventoryManual />
+          </Can>
+        )}
       </CRCard>
     </>
   );

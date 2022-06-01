@@ -85,13 +85,10 @@ const AddUserPermissions = ({ branches, doctors, rules, onAdd, onDelete }) => {
     if (!userId) {
       return [];
     }
-
-    const specialtyId = doctors.find(d => d.id === userId)?.specialty?.id;
-
+    const specialtyId = doctors.find(d => d.id === userId).specialty[0].id;
     const filteredBranches = branches.filter(b =>
       b.specialties.some(s => s.id === specialtyId)
     );
-
     return rules.length || !filteredBranches.length
       ? filteredBranches
       : [{ id: ALL_CHOICE, name: ALL_CHOICE }, ...filteredBranches];

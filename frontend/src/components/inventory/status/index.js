@@ -18,7 +18,7 @@ const InventoryStatus = () => {
     return newInventory;
   }, [inventoryWithAmount]);
   const { filterBranches } = useAppointments({
-    action: ACTIONS.AddItem_Inventory,
+    action: ACTIONS.View_Inventory,
   });
   return (
     <>

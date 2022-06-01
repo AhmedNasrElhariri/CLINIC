@@ -8,7 +8,7 @@ import * as fromAppointmentField from './appointment-field/';
 import * as fromSnippet from './snippet';
 import * as fromCustomResolvers from './custom-resolvers';
 import * as formPatientSurgery from './patient-surgery';
-import * as formBranch from './branch';
+// import * as formBranch from './branch';
 import * as formSpecialty from './specialty';
 import * as fromUser from './user';
 import * as fromRole from './role';
@@ -34,7 +34,7 @@ export default {
   AppointmentField: fromAppointmentField,
   Snippet: fromSnippet,
   PatientSurgery: formPatientSurgery,
-  Branch: formBranch,
+  // Branch: formBranch,
   Specialty: formSpecialty,
   User: fromUser,
   Role: fromRole,

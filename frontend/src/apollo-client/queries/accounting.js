@@ -259,8 +259,26 @@ export const CREATE_BANK_EXPENSE = gql`
 `;
 
 export const LIST_COMPANY_REVENUES = gql`
-  query companyRevenues {
-    companyRevenues {
+  query companyRevenues(
+    $offset: Int
+    $limit: Int
+    $dateFrom: Date
+    $dateTo: Date
+    $view: String
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
+  ) {
+    companyRevenues(
+      offset: $offset
+      limit: $limit
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      view: $view
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+    ) {
       companyRevenues {
         id
         name

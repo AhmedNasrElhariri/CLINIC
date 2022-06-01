@@ -80,7 +80,7 @@ const ListData = ({
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {data => (
-              <Can I="EditExpense" an="Accounting">
+              <Can I="EditBankExpense" an="Accounting">
                 <Icon icon="edit" onClick={() => onEdit(data)} />
               </Can>
             )}

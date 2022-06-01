@@ -59,7 +59,7 @@ function InventoryUsage({
       <CRBrancheTree
         formValue={formValue}
         onChange={setFormValue}
-        action={ACTIONS.AddItem_Inventory}
+        action={ACTIONS.AddCustom_Inventory}
       />
       <Div display="flex" padding={30}>
         <Div width={396} mr={30}>

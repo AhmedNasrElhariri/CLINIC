@@ -3,8 +3,10 @@ import * as R from 'ramda';
 import { Toggle, Panel, Form } from 'rsuite';
 import { Div, H6, H5, CRTextInput, CRPanelGroup, CRModal } from 'components';
 import PermissionRules from '../permission-rules';
+import PermissionRulesRelatedByOrganizationOnly from '../permission-rules/organization-only';
 import { usePermissions } from 'hooks';
 import { ALL_CHOICE, CRUD } from 'utils/constants';
+import { PermissionExist } from 'services/permissions';
 
 const normalizePermisson = (permissions = []) =>
   R.pipe(
@@ -138,7 +140,7 @@ const RolePermissions = ({
     };
     createOrUpdateRole(role);
   }, [defaultFormValue?.id, ff, formValue.name]);
-
+  console.log(groupedPermissions, 'groupedPermissionsgroupedPermissions');
   return (
     <CRModal
       header="Role Permissions"
@@ -169,35 +171,51 @@ const RolePermissions = ({
                       const f = ff[id];
                       return (
                         <React.Fragment key={id}>
-                          <Div
-                            key={id}
-                            display="flex"
-                            justifyContent="space-between"
-                            height={60}
-                            cursor="pointer"
-                            onClick={() => toggle(id)}
-                          >
-                            <H6>{name}</H6>
-                            <Toggle
-                              size="md"
-                              checked={f.visibility}
-                              onChange={() => toggle(id)}
-                            />
+                          <Div mb={30}>
+                            <Div
+                              key={id}
+                              display="flex"
+                              justifyContent="space-between"
+                              // height={30}
+                              cursor="pointer"
+                              onClick={() => toggle(id)}
+                            >
+                              <H6>{name}</H6>
+                              <Toggle
+                                size="md"
+                                checked={f.visibility}
+                                onChange={() => toggle(id)}
+                              />
+                            </Div>
+                            {f.visibility && PermissionExist(id) ? (
+                              <PermissionRulesRelatedByOrganizationOnly
+                                label="Permission Level"
+                                level={f.level}
+                                onChange={level => handleLevelChange(id, level)}
+                                onAdd={value => handleAddMapping(id, value)}
+                                onDelete={mappingIndex =>
+                                  handleDeleteMapping(id, mappingIndex)
+                                }
+                              />
+                            ) : (
+                              f.visibility && (
+                                <PermissionRules
+                                  label="Permission Level"
+                                  level={f.level}
+                                  branches={branches}
+                                  doctors={doctors}
+                                  rules={f.rules}
+                                  onChange={level =>
+                                    handleLevelChange(id, level)
+                                  }
+                                  onAdd={value => handleAddMapping(id, value)}
+                                  onDelete={mappingIndex =>
+                                    handleDeleteMapping(id, mappingIndex)
+                                  }
+                                />
+                              )
+                            )}
                           </Div>
-                          {f.visibility && (
-                            <PermissionRules
-                              label="Permission Level"
-                              level={f.level}
-                              branches={branches}
-                              doctors={doctors}
-                              rules={f.rules}
-                              onChange={level => handleLevelChange(id, level)}
-                              onAdd={value => handleAddMapping(id, value)}
-                              onDelete={mappingIndex =>
-                                handleDeleteMapping(id, mappingIndex)
-                              }
-                            />
-                          )}
                         </React.Fragment>
                       );
                     })}

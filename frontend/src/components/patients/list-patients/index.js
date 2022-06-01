@@ -42,170 +42,171 @@ function Patients() {
   const refTwo = useRef();
   return (
     <>
-      <MainContainer
-        title="Patients"
-        more={
-          <Div display="flex">
-            <Can I="CreateSocialReport" an="Patient">
-              <ReactToPrint
-                trigger={() => (
-                  <CRButton variant="primary">Social Report +</CRButton>
-                )}
-                content={() => ref.current}
-              />
-            </Can>
-            <Can I="CreateAreaReport" an="Patient">
-              <ReactToPrint
-                trigger={() => (
-                  <CRButton variant="primary" ml={1}>
-                    Area Report +
-                  </CRButton>
-                )}
-                content={() => refTwo.current}
-              />
-            </Can>
-          </Div>
-        }
-      >
-        <Div display="flex">
-          <Div mr={3}>
-            <PatientsFilter
-              formValue={filter}
-              setFormValue={setFilter}
-              areaFormValue={area}
-              setAreaFormValue={setArea}
-            ></PatientsFilter>
-          </Div>
-        </Div>
-
-        <CRTable
-          data={patients}
-          autoHeight
-          onRowClick={({ id }) => {
-            history.push(`/patients/${id}`);
-          }}
-          bordered={false}
+      <Can I="View" an="Patient">
+        <MainContainer
+          title="Patients"
+          more={
+            <Div display="flex">
+              <Can I="CreateSocialReport" an="Patient">
+                <ReactToPrint
+                  trigger={() => (
+                    <CRButton variant="primary">Social Report +</CRButton>
+                  )}
+                  content={() => ref.current}
+                />
+              </Can>
+              <Can I="CreateAreaReport" an="Patient">
+                <ReactToPrint
+                  trigger={() => (
+                    <CRButton variant="primary" ml={1}>
+                      Area Report +
+                    </CRButton>
+                  )}
+                  content={() => refTwo.current}
+                />
+              </Can>
+            </Div>
+          }
         >
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ name }) => (
-                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Membership Type</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="type" semiBold />
-          </CRTable.CRColumn>
-
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>PhoneNo</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ phoneNo }) => (
-                <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Phone No Two</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ phoneNoTwo }) => (
-                <CRTable.CRCellStyled bold>{phoneNoTwo}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Code</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="code" />
-          </CRTable.CRColumn>
-
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Area</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ area }) => (
-                <CRTable.CRCellStyled bold>{area}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Reference</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ reference }) => (
-                <CRTable.CRCellStyled bold>
-                  <Div display="flex">
-                    {reference.map(r => (
-                      <Div>
-                        {' - '}
-                        {r}
-                        {'  '}
-                      </Div>
-                    ))}
-                  </Div>
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => <EditPatient patient={data} />}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        </CRTable>
-
-        <CRTable.CRPagination
-          lengthMenu={[
-            {
-              value: 10,
-              label: 10,
-            },
-            {
-              value: 20,
-              label: 20,
-            },
-          ]}
-          activePage={currentPage?.activePage}
-          pages={pages}
-          onSelect={handleSelect}
-          total={patients && patients.length}
-          onChangePage={p => setCurrentPage(p)}
-        />
-        {/* </Can> */}
-        <Div style={{ overflow: 'hidden', height: '0px' }}>
-          <Div ref={ref}>
-            <H3 textAlign="center" margin="10px">
-              Social Report
-            </H3>
-            <Div display="flex">
-              <H4 margin="0px 10px">Reference By:</H4>
-              <H4>{filter.reference}</H4>
-            </Div>
-            <Div display="flex">
-              <H4 margin="0px 10px">Total Number Of Patients:</H4>
-              <H4>{patientsReports.patientsReferenceCount}</H4>
+          <Div display="flex">
+            <Div mr={3}>
+              <PatientsFilter
+                formValue={filter}
+                setFormValue={setFilter}
+                areaFormValue={area}
+                setAreaFormValue={setArea}
+              ></PatientsFilter>
             </Div>
           </Div>
-        </Div>
-        <Div style={{ overflow: 'hidden', height: '0px' }}>
-          <Div ref={refTwo}>
-            <H3 textAlign="center" margin="10px">
-              Area Report
-            </H3>
-            <Div display="flex">
-              <H4 margin="0px 10px">The Area:</H4>
-              <H4>{filter.area}</H4>
-            </Div>
-            <Div display="flex">
-              <H4 margin="0px 10px">Total Number Of Patients:</H4>
-              <H4>{patientsReports.patientsAreaCount}</H4>
+          <CRTable
+            data={patients}
+            autoHeight
+            onRowClick={({ id }) => {
+              history.push(`/patients/${id}`);
+            }}
+            bordered={false}
+          >
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ name }) => (
+                  <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Membership Type</CRTable.CRHeaderCell>
+              <CRTable.CRCell dataKey="type" semiBold />
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>PhoneNo</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ phoneNo }) => (
+                  <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Phone No Two</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ phoneNoTwo }) => (
+                  <CRTable.CRCellStyled bold>{phoneNoTwo}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Code</CRTable.CRHeaderCell>
+              <CRTable.CRCell dataKey="code" />
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Area</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ area }) => (
+                  <CRTable.CRCellStyled bold>{area}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>Reference</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ reference }) => (
+                  <CRTable.CRCellStyled bold>
+                    <Div display="flex">
+                      {reference.map(r => (
+                        <Div>
+                          {' - '}
+                          {r}
+                          {'  '}
+                        </Div>
+                      ))}
+                    </Div>
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {data => <EditPatient patient={data} />}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+          </CRTable>
+
+          <CRTable.CRPagination
+            lengthMenu={[
+              {
+                value: 10,
+                label: 10,
+              },
+              {
+                value: 20,
+                label: 20,
+              },
+            ]}
+            activePage={currentPage?.activePage}
+            pages={pages}
+            onSelect={handleSelect}
+            total={patients && patients.length}
+            onChangePage={p => setCurrentPage(p)}
+          />
+
+          <Div style={{ overflow: 'hidden', height: '0px' }}>
+            <Div ref={ref}>
+              <H3 textAlign="center" margin="10px">
+                Social Report
+              </H3>
+              <Div display="flex">
+                <H4 margin="0px 10px">Reference By:</H4>
+                <H4>{filter.reference}</H4>
+              </Div>
+              <Div display="flex">
+                <H4 margin="0px 10px">Total Number Of Patients:</H4>
+                <H4>{patientsReports.patientsReferenceCount}</H4>
+              </Div>
             </Div>
           </Div>
-        </Div>
-      </MainContainer>
+          <Div style={{ overflow: 'hidden', height: '0px' }}>
+            <Div ref={refTwo}>
+              <H3 textAlign="center" margin="10px">
+                Area Report
+              </H3>
+              <Div display="flex">
+                <H4 margin="0px 10px">The Area:</H4>
+                <H4>{filter.area}</H4>
+              </Div>
+              <Div display="flex">
+                <H4 margin="0px 10px">Total Number Of Patients:</H4>
+                <H4>{patientsReports.patientsAreaCount}</H4>
+              </Div>
+            </Div>
+          </Div>
+        </MainContainer>
+      </Can>
     </>
   );
 }

@@ -3,6 +3,16 @@ import * as R from 'ramda';
 
 import { PERMISSION_LEVEL, POSITION } from '@/utils/constants';
 
+export const specialtyExisted = (id, specialtiesId) => {
+  let exist = false;
+  specialtiesId.forEach(s => {
+    if (s === id) {
+      exist = true;
+    }
+  });
+  return exist;
+};
+
 export const byBranches = async (organizationId, rules) => {
   const branches = await prisma.branch.findMany({
     where: { organizationId, id: { in: rules.map(r => r.branchId) } },
@@ -12,7 +22,18 @@ export const byBranches = async (organizationId, rules) => {
       },
     },
   });
-  return branches;
+  const updatedBranches = branches.map(b => {
+    const { specialties } = b;
+    const returnedSpecialties = specialties.map(s => {
+      const { userSpecialties } = s;
+      const doctors = userSpecialties.map(({ user }) =>
+        R.pick(['id', 'name'])(user)
+      );
+      return { ...s, doctors: doctors };
+    });
+    return { ...b, specialties: returnedSpecialties };
+  });
+  return updatedBranches;
 };
 
 export const bySpecialties = async (organizationId, rules) => {
@@ -24,7 +45,25 @@ export const bySpecialties = async (organizationId, rules) => {
       },
     },
   });
-  return branches;
+  const updatedBranches = branches.map(b => {
+    const { specialties } = b;
+    const rulesSpecialtiesId = rules.map(r => r.specialtyId);
+    const returnedSpecialties = specialties.filter(s => {
+      const returned = specialtyExisted(s.id, rulesSpecialtiesId);
+      if (returned) {
+        return s;
+      }
+    });
+    const returnedSpecialties2 = returnedSpecialties.map(s => {
+      const { userSpecialties } = s;
+      const doctors = userSpecialties.map(({ user }) =>
+        R.pick(['id', 'name'])(user)
+      );
+      return { ...s, doctors: doctors };
+    });
+    return { ...b, specialties: returnedSpecialties2 };
+  });
+  return updatedBranches;
 };
 
 export const byUsers = async rules => {
@@ -41,11 +80,30 @@ export const byUsers = async rules => {
       },
     },
   });
-  return branches;
+  const updatedBranches = branches.map(b => {
+    const { specialties } = b;
+    const rulesUsersId = rules.map(r => r.userId);
+    const returnedSpecialties = specialties.map(s => {
+      const { userSpecialties } = s;
+      const updatedUserSpecialties = userSpecialties.filter(us => {
+        const { user } = us;
+        const returned = specialtyExisted(user.id, rulesUsersId);
+        if (returned) {
+          return us;
+        }
+      });
+      const doctors = updatedUserSpecialties.map(({ user }) =>
+        R.pick(['id', 'name'])(user)
+      );
+      return { ...s, doctors: doctors };
+    });
+    return { ...b, specialties: returnedSpecialties };
+  });
+  return updatedBranches;
 };
 
-const byOrganization = organizationId =>
-  prisma.branch.findMany({
+const byOrganization = async organizationId => {
+  const branches = await prisma.branch.findMany({
     where: { organizationId },
     include: {
       specialties: {
@@ -53,6 +111,19 @@ const byOrganization = organizationId =>
       },
     },
   });
+  const updatedBranches = branches.map(b => {
+    const { specialties } = b;
+    const returnedSpecialties = specialties.map(s => {
+      const { userSpecialties } = s;
+      const doctors = userSpecialties.map(({ user }) =>
+        R.pick(['id', 'name'])(user)
+      );
+      return { ...s, doctors: doctors };
+    });
+    return { ...b, specialties: returnedSpecialties };
+  });
+  return updatedBranches;
+};
 
 const listBranchesTree = async (_, { action }, { user, organizationId }) => {
   if (user.position === POSITION.Admin) {
@@ -97,6 +168,7 @@ const listBranchesTree = async (_, { action }, { user, organizationId }) => {
   }
 
   const { level, all, rules } = permission;
+
   switch (level) {
     case PERMISSION_LEVEL.ORGANIZATION:
       return byOrganization(organizationId);

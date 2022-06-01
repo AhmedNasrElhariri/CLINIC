@@ -1,11 +1,11 @@
 import { prisma } from '@';
-// import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import {
   getDateFromAndDateToFromView,
   getStartOfDay,
   getEndOfDay,
 } from '@/services/date.service';
-// import { ACTIONS, POSITION } from '@/utils/constants';
+import { ACTIONS } from '@/utils/constants';
 
 const revenues = async (
   _,
@@ -24,26 +24,14 @@ const revenues = async (
 ) => {
   let updatedDateFrom = new Date();
   let updatedDateTo = new Date();
-  // const ids = await listFlattenUsersTreeIds(
-  //   {
-  //     user,
-  //     organizationId,
-  //     action: ACTIONS.View_Accounting,
-  //   },
-  //   true
-  // );
-  // const condition =
-  //   user.position === POSITION.Admin || user.position === POSITION.Assistant
-  //     ? {
-  //         userId: {
-  //           in: ids,
-  //         },
-  //       }
-  //     : {
-  //         doctorId: {
-  //           in: ids,
-  //         },
-  //       };
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.View_Accounting,
+    },
+    false
+  );
   if (dateFrom && dateTo) {
     updatedDateFrom = getStartOfDay(dateFrom);
     updatedDateTo = getEndOfDay(dateTo);
@@ -52,18 +40,42 @@ const revenues = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
+  console.log(ids,'IDIIDDDSS');
   const revenues = await prisma.revenue.findMany({
     where: {
       organizationId: organizationId,
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+          ],
         },
       ],
       date: {
@@ -98,13 +110,36 @@ const revenues = async (
       organizationId: organizationId,
       AND: [
         {
-          branchId: branchId,
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          specialtyId: specialtyId,
-        },
-        {
-          doctorId: doctorId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+          ],
         },
       ],
       date: {
@@ -117,6 +152,7 @@ const revenues = async (
       },
     },
   });
+  console.log(revenues, 'RRRRRRRREVENUES');
   const sum = totalRevenues.sum.amount;
   const count = totalRevenues.count.id;
   const data = {
