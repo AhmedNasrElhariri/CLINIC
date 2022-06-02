@@ -40,7 +40,6 @@ const revenues = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
-  console.log(ids,'IDIIDDDSS');
   const revenues = await prisma.revenue.findMany({
     where: {
       organizationId: organizationId,
@@ -152,7 +151,6 @@ const revenues = async (
       },
     },
   });
-  console.log(revenues, 'RRRRRRRREVENUES');
   const sum = totalRevenues.sum.amount;
   const count = totalRevenues.count.id;
   const data = {

@@ -83,7 +83,20 @@ export const byUsers = async rules => {
   const updatedBranches = branches.map(b => {
     const { specialties } = b;
     const rulesUsersId = rules.map(r => r.userId);
-    const returnedSpecialties = specialties.map(s => {
+    const returnedSpecialties = specialties.filter(s => {
+      const { userSpecialties } = s;
+      const updatedUserSpecialties = userSpecialties.filter(us => {
+        const { user } = us;
+        const returned = specialtyExisted(user.id, rulesUsersId);
+        if (returned) {
+          return us;
+        }
+      });
+      if (updatedUserSpecialties.length > 0) {
+        return s;
+      }
+    });
+    const updatedSpecialties = returnedSpecialties.map(s => {
       const { userSpecialties } = s;
       const updatedUserSpecialties = userSpecialties.filter(us => {
         const { user } = us;
@@ -97,7 +110,8 @@ export const byUsers = async rules => {
       );
       return { ...s, doctors: doctors };
     });
-    return { ...b, specialties: returnedSpecialties };
+
+    return { ...b, specialties: updatedSpecialties };
   });
   return updatedBranches;
 };

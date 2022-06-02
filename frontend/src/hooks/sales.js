@@ -52,7 +52,6 @@ function useSales({
   const salesData = data?.mySaleses;
 
   const saleses = useMemo(() => R.propOr([], 'sales')(salesData), [salesData]);
-  console.log(saleses, 'HSHSHSHS', salesData, 'salesData');
   const totalSalesPrice = useMemo(
     () => R.propOr(0, 'totalSalesPrice')(salesData),
     [salesData]

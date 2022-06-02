@@ -125,16 +125,18 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                 </Whisper>
               </Dropdown.Item> */}
               <Dropdown.Item eventKey={6}>
-                <CRButton
-                  variant="primary"
-                  onClick={e => {
-                    e.stopPropagation();
-                    onDuplicateAppointments(appointment);
-                  }}
-                  style={{ width: '108px' }}
-                >
-                  Duplicates
-                </CRButton>
+                <Can I="Create" an="Appointment">
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onDuplicateAppointments(appointment);
+                    }}
+                    style={{ width: '108px' }}
+                  >
+                    Duplicates
+                  </CRButton>
+                </Can>
               </Dropdown.Item>
               <Dropdown.Item eventKey={8}>
                 {canAjdust(appointment) && (

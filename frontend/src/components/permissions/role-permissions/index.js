@@ -140,7 +140,6 @@ const RolePermissions = ({
     };
     createOrUpdateRole(role);
   }, [defaultFormValue?.id, ff, formValue.name]);
-  console.log(groupedPermissions, 'groupedPermissionsgroupedPermissions');
   return (
     <CRModal
       header="Role Permissions"

@@ -41,7 +41,6 @@ const bankRevenues = async (
     },
     false
   );
-  console.log(ids, 'idspppppppppppppp');
   const bankRevenues = await prisma.bankRevenue.findMany({
     where: {
       organizationId,

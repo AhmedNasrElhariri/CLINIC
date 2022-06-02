@@ -30,7 +30,6 @@ const CompanyRevenues = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
-  console.log(ids,specialtyId,'SSSSSSSSSSSSSSSSSSSSSSSSSSSSIDS');
   const companyRevenues = await prisma.insuranceRevenue.findMany({
     where: {
       AND: [

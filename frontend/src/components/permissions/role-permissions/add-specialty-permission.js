@@ -29,17 +29,32 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
       ),
     [branches]
   );
+  const specialties = useMemo(() => {
+    return (
+      R.pipe(
+        R.map(R.prop('specialties')),
+        R.flatten,
+        R.uniqBy(R.prop('id'))
+      )(branches) || []
+    );
+  }, [branches]);
   const specialtiesNames = useMemo(
     () =>
-      R.flatten(branches.map(b => b.specialties)).reduce(
+      specialties.reduce(
         (obj, { id, name }) => ({
           ...obj,
           [id]: name,
-        })
+        }),
+        {}
       ),
-    [branches]
+    [specialties]
   );
-
+  console.log(
+    specialtiesNames,
+    'specialtiesNames,specialtiesNames',
+    branches,
+    'branches,branches'
+  );
   const items = useMemo(
     () =>
       rules.map(
@@ -59,16 +74,6 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
     [formValue]
   );
 
-  const specialties = useMemo(() => {
-    return (
-      R.pipe(
-        R.map(R.prop('specialties')),
-        R.flatten,
-        R.uniqBy(R.prop('id'))
-      )(branches) || []
-    );
-  }, [branches]);
-
   const branchChoices = useMemo(() => {
     const specialtyId = formValue.specialtyId;
     const filteredBranches = branches.filter(b =>
@@ -79,6 +84,7 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
       : [{ id: ALL_CHOICE, name: ALL_CHOICE }, ...filteredBranches];
   }, [branches, formValue.specialtyId, rules.length]);
 
+  console.log(items, 'ISISIEMMMS');
   return (
     <FlexboxGrid align="middle" justify="space-between">
       <FlexboxGrid.Item colspan={9}>
