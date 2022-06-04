@@ -75,6 +75,7 @@ export const LIST_ROLES = gql`
         level
         action
         subject
+        all
         rules {
           organizationId
           branchId
