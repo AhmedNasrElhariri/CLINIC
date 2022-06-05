@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
 import { CRCard, CRTable } from 'components';
+import { Icon } from 'rsuite';
 
 function ListSupplierInvoices({
   invoices,
@@ -8,6 +8,7 @@ function ListSupplierInvoices({
   currentPage,
   setCurrentPage,
   pages,
+  onEdit,
 }) {
   const handleSelect = useCallback(
     eventKey => {
@@ -58,6 +59,25 @@ function ListSupplierInvoices({
               {({ invoiceNumber }) => (
                 <CRTable.CRCellStyled bold>
                   {invoiceNumber}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <CRTable.CRCellStyled bold>
+                  <Icon
+                    icon="edit"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onEdit(data);
+                    }}
+                  >
+                    {' '}
+                    Edit
+                  </Icon>
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

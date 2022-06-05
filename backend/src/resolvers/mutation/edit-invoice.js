@@ -2,7 +2,7 @@ import { prisma } from '@';
 
 const editInvoice = async (
   _,
-  { invoiceId, paid },
+  { invoiceId, paid, checkNumber },
   { userId, organizationId }
 ) => {
   const data = await prisma.supplierInvoice.findUnique({
@@ -16,6 +16,7 @@ const editInvoice = async (
     data: {
       paid: paid,
       date: new Date(),
+      checkNumber: checkNumber,
       supplierInvoice: {
         connect: {
           id: invoiceId,

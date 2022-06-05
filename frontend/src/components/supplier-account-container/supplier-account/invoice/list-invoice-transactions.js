@@ -25,6 +25,14 @@ function ListInvoiceTransactions({ invoiceTransactions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Check Number</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ checkNumber }) => (
+                <CRTable.CRCellStyled bold>{checkNumber}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (

@@ -13,6 +13,7 @@ import {
   EDIT_INVOICE,
   LIST_INVOICE_TRANSACTIONS,
   EDIT_INVOICE_TRANSACTION,
+  EDIT_INVOICE_SUPPLIER,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -183,6 +184,22 @@ function useSupplierAccounts({
       Alert.error('Failed to edit the Invoice');
     },
   });
+  const [editInvoiceSupplier] = useMutation(EDIT_INVOICE_SUPPLIER, {
+    onCompleted() {
+      Alert.success('the Supplier has been Changed Successfully');
+      onCreate && onCreate();
+    },
+    refetchQueries: [
+      {
+        query: LIST_SUPPLIER_INVOICES,
+        variables: { supplierId: supplierId, offset: 0, limit: 20, name: '' },
+      },
+      
+    ],
+    onError() {
+      Alert.error('Failed to change The Supplier');
+    },
+  });
   const [editInvoiceTransaction] = useMutation(EDIT_INVOICE_TRANSACTION, {
     onCompleted() {
       Alert.success('the Transaction has been Edited Successfully');
@@ -217,6 +234,7 @@ function useSupplierAccounts({
       detailedSupplierAccountsCount,
       supplierInvoicesCount,
       editInvoiceTransaction,
+      editInvoiceSupplier,
       updateCache,
       loading,
     }),
@@ -233,6 +251,7 @@ function useSupplierAccounts({
       detailedSupplierAccountsCount,
       supplierInvoicesCount,
       editInvoiceTransaction,
+      editInvoiceSupplier,
       loading,
     ]
   );

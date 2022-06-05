@@ -25,6 +25,7 @@ const SupplierAccount = () => {
   const [formValue, setFormValue] = useState(initValue);
   const [filter, setFilter] = useState(initialFilter);
   const [header, setHeader] = useState('');
+  const [payByCheck, setPayByCheck] = useState(false);
   const [type, setType] = useState('');
   const { supplierId } = useParams();
   const [invoice, setInvoice] = useState({});
@@ -37,6 +38,7 @@ const SupplierAccount = () => {
     invoiceTransactions,
     supplierInvoicesCount,
     editInvoiceTransaction,
+    editInvoiceSupplier,
   } = useSupplierAccounts({
     onCreate: () => {
       close();
@@ -75,6 +77,16 @@ const SupplierAccount = () => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickEditInvoice = useCallback(
+    data => {
+      const id = data.id;
+      setType('editInvoiceSupplier');
+      setHeader('Change the Supplier');
+      setFormValue({ id: id });
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       const newFormValue = { ...formValue, supplierId: supplierId };
@@ -90,11 +102,19 @@ const SupplierAccount = () => {
           paid: formValue.paid,
         },
       });
+    } else if (type === 'editInvoiceSupplier') {
+      editInvoiceSupplier({
+        variables: {
+          id: formValue.id,
+          supplierId: formValue.supplierId,
+        },
+      });
     } else {
       editInvoice({
         variables: {
           invoiceId: formValue.id,
           paid: formValue.paid,
+          checkNumber: formValue?.checkNumber,
         },
       });
     }
@@ -102,6 +122,7 @@ const SupplierAccount = () => {
     addSupplierInvoice,
     editInvoice,
     editInvoiceTransaction,
+    editInvoiceSupplier,
     formValue,
     type,
   ]);
@@ -136,6 +157,7 @@ const SupplierAccount = () => {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             pages={pages}
+            onEdit={handleClickEditInvoice}
           />
         </>
       )}
@@ -147,6 +169,8 @@ const SupplierAccount = () => {
         onClose={close}
         header={header}
         type={type}
+        setPayByCheck={setPayByCheck}
+        payByCheck={payByCheck}
       />
     </>
   );

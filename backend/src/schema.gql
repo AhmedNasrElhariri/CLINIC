@@ -428,7 +428,8 @@ type Mutation {
   editTiming(timing: TimingInput!, type: String!): Timing
   addSupplierAccount(supplierAccount: SupplierAccountInput!): SupplierAccount
   addSupplierInvoice(supplierInvoice: SupplierInvoiceInput!): SupplierInvoice
-  editInvoice(invoiceId: ID!, paid: Int!): SupplierInvoice
+  editInvoice(invoiceId: ID!, paid: Int!, checkNumber: String): SupplierInvoice
+  editInvoiceSupplier(id: ID!, supplierId: ID!): SupplierInvoice
   editInvoiceTransaction(
     transactionId: ID!
     paid: Int!
@@ -1727,6 +1728,8 @@ type SupplierInvoiceTransaction {
   id: ID!
   paid: Int!
   date: Date!
+  checkNumber: String
+  type: String
   user: User
 }
 ########################### Images Definition ##################################

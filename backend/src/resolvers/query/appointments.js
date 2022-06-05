@@ -33,66 +33,76 @@ const appointments = async (
         };
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
-
+  console.log(dateFrom, 'start', dateTo, 'END');
   const appointmentsCount = await prisma.appointment.count({
-    where: {
-      date: {
-        gte: startDay,
-        lte: endDay,
-      },
-      status,
-      type,
-      userId: {
-        in: ids,
-      },
-      OR: [
-        {
-          patient: {
-            name: {
-              contains: patient,
-              mode: 'insensitive',
+    where: Object.assign(
+      {
+        status,
+        type,
+        userId: {
+          in: ids,
+        },
+        OR: [
+          {
+            patient: {
+              name: {
+                contains: patient,
+                mode: 'insensitive',
+              },
             },
           },
-        },
-        {
-          patient: {
-            phoneNo: {
-              contains: patient,
+          {
+            patient: {
+              phoneNo: {
+                contains: patient,
+              },
             },
           },
-        },
-      ],
-    },
+        ],
+      },
+      dateTo &&
+        dateFrom && {
+          date: {
+            gte: startDay,
+            lte: endDay,
+          },
+        }
+    ),
   });
   const appointments = await prisma.appointment.findMany({
-    where: {
-      date: {
-        gte: startDay,
-        lte: endDay,
-      },
-      status,
-      type,
-      userId: {
-        in: ids,
-      },
-      OR: [
-        {
-          patient: {
-            name: {
-              contains: patient,
-              mode: 'insensitive',
+    where: Object.assign(
+      {
+        status,
+        type,
+        userId: {
+          in: ids,
+        },
+        OR: [
+          {
+            patient: {
+              name: {
+                contains: patient,
+                mode: 'insensitive',
+              },
             },
           },
-        },
-        {
-          patient: {
-            phoneNo: {
-              contains: patient,
+          {
+            patient: {
+              phoneNo: {
+                contains: patient,
+              },
             },
           },
-        },
-      ],
-    },
+        ],
+      },
+      dateTo &&
+        dateFrom && {
+          date: {
+            gte: startDay,
+            lte: endDay,
+          },
+        }
+    ),
     orderBy: [sortingObj],
     include: {
       specialty: true,

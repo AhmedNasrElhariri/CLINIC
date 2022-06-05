@@ -1036,6 +1036,7 @@ model SupplierInvoiceTransaction {
   id                String          @id @default(uuid())
   paid              Int
   date              DateTime
+  checkNumber       String?
   supplierInvoice   SupplierInvoice @relation(fields: [supplierInvoiceId], references: [id])
   supplierInvoiceId String
   user              User            @relation(fields: [userId], references: [id])
