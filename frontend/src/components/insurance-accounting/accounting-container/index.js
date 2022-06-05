@@ -53,7 +53,7 @@ const BankAccountingContainer = () => {
       specialtyId: branchSpecialtyUser?.specialty,
       doctorId: branchSpecialtyUser?.doctor,
     });
-  console.log(branchSpecialtyUser,'branchSpecialtyUser');
+  
   const { pageSetupData } = useConfigurations();
   const revenuesPages = Math.ceil(RevenuesCount / 20);
   const pageSetupRow = pageSetupData.find(

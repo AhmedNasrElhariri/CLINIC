@@ -49,12 +49,6 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
       ),
     [specialties]
   );
-  console.log(
-    specialtiesNames,
-    'specialtiesNames,specialtiesNames',
-    branches,
-    'branches,branches'
-  );
   const items = useMemo(
     () =>
       rules.map(
@@ -84,7 +78,6 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
       : [{ id: ALL_CHOICE, name: ALL_CHOICE }, ...filteredBranches];
   }, [branches, formValue.specialtyId, rules.length]);
 
-  console.log(items, 'ISISIEMMMS');
   return (
     <FlexboxGrid align="middle" justify="space-between">
       <FlexboxGrid.Item colspan={9}>

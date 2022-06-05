@@ -10,7 +10,6 @@ const initValue = {
 
 const AddBranchPermissions = ({ branches, rules, onAdd, onDelete }) => {
   const [formValue, setFormValue] = useState(initValue);
-
   const add = useCallback(() => {
     onAdd(formValue);
     setFormValue(initValue);
@@ -41,12 +40,11 @@ const AddBranchPermissions = ({ branches, rules, onAdd, onDelete }) => {
 
   const branchChoices = useMemo(
     () =>
-      rules.length
+      rules.length > 0
         ? branches
         : [{ id: ALL_CHOICE, name: ALL_CHOICE }, ...branches],
     [branches, rules.length]
   );
-
   const selectedAll = useMemo(
     () => rules.some(({ branchId }) => branchId === ALL_CHOICE),
     [rules]

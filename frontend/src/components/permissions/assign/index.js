@@ -35,7 +35,6 @@ function Assign() {
       deleteRoleToUser(formValue);
     }
   }, [assignRoleToUser, deleteRoleToUser, formValue]);
-
   const handleEdit = useCallback(
     index => {
       setRole(roles[index]);

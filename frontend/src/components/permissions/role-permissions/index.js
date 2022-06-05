@@ -12,7 +12,20 @@ const normalizePermisson = (permissions = []) =>
   R.pipe(
     R.map(p => {
       const action = `${p.action}_${p.subject}`;
-      return { ...p, visibility: true, id: action, action };
+      if (p.all) {
+        if (p.level === 'User') {
+          const ru = [{ userId: ALL_CHOICE }];
+          return { ...p, visibility: true, id: action, action, rules: ru };
+        } else if (p.level === 'Specialty') {
+          const ru = [{ specialtyId: ALL_CHOICE }];
+          return { ...p, visibility: true, id: action, action, rules: ru };
+        } else if (p.level === 'Branch') {
+          const ru = [{ branchId: ALL_CHOICE }];
+          return { ...p, visibility: true, id: action, action, rules: ru };
+        }
+      } else {
+        return { ...p, visibility: true, id: action, action };
+      }
     }),
     R.indexBy(R.prop('action'))
   )(permissions);
@@ -48,7 +61,6 @@ const RolePermissions = ({
       onEdit && onEdit();
     },
   });
-
   const ff = useMemo(() => formValue.permissions, [formValue.permissions]);
 
   useEffect(() => {
@@ -204,6 +216,7 @@ const RolePermissions = ({
                                   branches={branches}
                                   doctors={doctors}
                                   rules={f.rules}
+                                  all={f.all}
                                   onChange={level =>
                                     handleLevelChange(id, level)
                                   }

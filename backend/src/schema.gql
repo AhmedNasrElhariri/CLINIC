@@ -648,6 +648,7 @@ type User {
 
 type Permission {
   id: ID!
+  all: Boolean
   action: String
   subject: String
   level: PermissionLevel!
