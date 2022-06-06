@@ -429,7 +429,13 @@ type Mutation {
   editTiming(timing: TimingInput!, type: String!): Timing
   addSupplierAccount(supplierAccount: SupplierAccountInput!): SupplierAccount
   addSupplierInvoice(supplierInvoice: SupplierInvoiceInput!): SupplierInvoice
-  editInvoice(invoiceId: ID!, paid: Int!): SupplierInvoice
+  editInvoice(
+    invoiceId: ID!
+    paid: Int!
+    checkNumber: String
+    checkDate: Date
+  ): SupplierInvoice
+  editInvoiceSupplier(id: ID!, supplierId: ID!): SupplierInvoice
   editInvoiceTransaction(
     transactionId: ID!
     paid: Int!
@@ -573,6 +579,10 @@ type Mutation {
   addPayrollUser(payrollUser: PayrollUserInput!): PayrollUser!
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
+  ): PayrollTransaction!
+  editPayrollTransaction(
+    id: ID!
+    amount:Int
   ): PayrollTransaction!
   addPayroll(
     payment: [ID!]
@@ -1734,6 +1744,9 @@ type SupplierInvoiceTransaction {
   id: ID!
   paid: Int!
   date: Date!
+  checkNumber: String
+  checkDate: Date
+  type: String
   user: User
 }
 ########################### Images Definition ##################################

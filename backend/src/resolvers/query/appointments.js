@@ -33,107 +33,116 @@ const appointments = async (
         };
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
-
+  
   const appointmentsCount = await prisma.appointment.count({
-    where: {
-      date: {
-        gte: startDay,
-        lte: endDay,
+    where: Object.assign(
+      {
+        status,
+        type,
+        AND: [
+          {
+            OR: [
+              {
+                doctorId: {
+                  in: ids,
+                },
+              },
+              {
+                branchId: {
+                  in: ids,
+                },
+              },
+              {
+                specialtyId: {
+                  in: ids,
+                },
+              },
+            ],
+          },
+          {
+            OR: [
+              {
+                patient: {
+                  name: {
+                    contains: patient,
+                    mode: 'insensitive',
+                  },
+                },
+              },
+              {
+                patient: {
+                  phoneNo: {
+                    contains: patient,
+                  },
+                },
+              },
+            ],
+          },
+        ],
       },
-      status,
-      type,
-      AND: [
-        {
-          OR: [
-            {
-              doctorId: {
-                in: ids,
-              },
-            },
-            {
-              branchId: {
-                in: ids,
-              },
-            },
-            {
-              specialtyId: {
-                in: ids,
-              },
-            },
-          ],
-        },
-        {
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
-                },
-              },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
-                },
-              },
-            },
-          ],
-        },
-      ],
-    },
+      dateTo &&
+        dateFrom && {
+          date: {
+            gte: startDay,
+            lte: endDay,
+          },
+        }
+    ),
   });
   const appointments = await prisma.appointment.findMany({
-    where: {
-      date: {
-        gte: startDay,
-        lte: endDay,
+    where: Object.assign(
+      {
+        status,
+        type,
+        AND: [
+          {
+            OR: [
+              {
+                doctorId: {
+                  in: ids,
+                },
+              },
+              {
+                branchId: {
+                  in: ids,
+                },
+              },
+              {
+                specialtyId: {
+                  in: ids,
+                },
+              },
+            ],
+          },
+          {
+            OR: [
+              {
+                patient: {
+                  name: {
+                    contains: patient,
+                    mode: 'insensitive',
+                  },
+                },
+              },
+              {
+                patient: {
+                  phoneNo: {
+                    contains: patient,
+                  },
+                },
+              },
+            ],
+          },
+        ],
       },
-      status,
-      type,
-      AND: [
-        {
-          OR: [
-            {
-              doctorId: {
-                in: ids,
-              },
-            },
-            {
-              branchId: {
-                in: ids,
-              },
-            },
-            {
-              specialtyId: {
-                in: ids,
-              },
-            },
-          ],
-        },
-        {
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
-                },
-              },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
-                },
-              },
-            },
-          ],
-        },
-      ],
-    },
-
+      dateTo &&
+        dateFrom && {
+          date: {
+            gte: startDay,
+            lte: endDay,
+          },
+        }
+    ),
     orderBy: [sortingObj],
     include: {
       specialty: true,
@@ -144,6 +153,7 @@ const appointments = async (
     skip: offset,
     take: limit,
   });
+
   const data = {
     appointments: appointments,
     appointmentsCount: appointmentsCount,

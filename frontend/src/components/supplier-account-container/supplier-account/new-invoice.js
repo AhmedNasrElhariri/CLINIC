@@ -1,6 +1,15 @@
 import React from 'react';
 import { Form } from 'rsuite';
-import { CRModal, CRTextInput, CRNumberInput ,CRTextArea} from 'components';
+import {
+  CRModal,
+  CRTextInput,
+  CRNumberInput,
+  CRTextArea,
+  CRSelectInput,
+  CRButton,
+  CRDatePicker,
+} from 'components';
+import { useSupplierAccounts } from 'hooks';
 
 function NewInvoice({
   formValue,
@@ -10,7 +19,10 @@ function NewInvoice({
   onClose,
   header,
   type,
+  setPayByCheck,
+  payByCheck,
 }) {
+  const { supplierAccounts } = useSupplierAccounts({});
   return (
     <CRModal
       show={visible}
@@ -48,8 +60,31 @@ function NewInvoice({
                 block
               />
             </>
+          ) : type === 'editInvoiceSupplier' ? (
+            <CRSelectInput
+              name="supplierId"
+              value={formValue.supplierId}
+              data={supplierAccounts}
+              block
+            />
           ) : (
-            <CRNumberInput name="paid" label="Paid" value={formValue.paid} />
+            <>
+              <CRButton onClick={() => setPayByCheck(!payByCheck)}>
+                Pay by Check
+              </CRButton>
+              <CRNumberInput name="paid" label="Paid" value={formValue.paid} />
+              {payByCheck && (
+                <>
+                  <CRTextInput
+                    label="Check Number"
+                    name="checkNumber"
+                    placeholder="Type Check Number"
+                    block
+                  />
+                  <CRDatePicker label="Check Due Date" block name="checkDate" />
+                </>
+              )}
+            </>
           )}
         </>
       </Form>

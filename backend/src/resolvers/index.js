@@ -25,6 +25,7 @@ import * as fromBankExpense from './bankExpense';
 import * as fromLabDefinition from './lab-definition';
 import * as fromImageDefinition from './image-definition';
 import * as fromSupplierAccount from './supplier-account';
+import * as fromSupplierInvoiceTransaction from './supplierInvoiceTransaction';
 export default {
   Query: fromQuery,
   Mutation: fromMutation,
@@ -52,4 +53,5 @@ export default {
   LabDefinition: fromLabDefinition,
   ImageDefinition: fromImageDefinition,
   SupplierAccount: fromSupplierAccount,
+  SupplierInvoiceTransaction: fromSupplierInvoiceTransaction,
 };

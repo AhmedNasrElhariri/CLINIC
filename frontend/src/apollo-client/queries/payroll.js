@@ -103,6 +103,21 @@ export const ADD_PAYROLL_TRANSACTION = gql`
   }
 `;
 
+export const EDIT_PAYROLL_TRANSACTION = gql`
+  mutation editPayrollTransaction($id: ID!, $amount: Int!) {
+    editPayrollTransaction(id: $id, amount: $amount) {
+      id
+      amount
+      type
+      date
+      reason
+      payrollUser {
+        salary
+      }
+    }
+  }
+`;
+
 export const ADD_PAY_ROLL = gql`
   mutation addPayroll(
     $payment: [ID!]

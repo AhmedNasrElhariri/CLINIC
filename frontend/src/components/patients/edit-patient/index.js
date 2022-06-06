@@ -12,7 +12,7 @@ const initialValues = {
   name: '',
   phoneNo: '',
   phoneNoTwo: '',
-  code:'',
+  code: '',
   age: '',
   guardianName: '',
 };
@@ -30,7 +30,8 @@ const EditPatient = ({ patient }) => {
     setFormValue(R.omit(['__typename'])(patient));
   }, [patient]);
   const handleEditPatient = useCallback(() => {
-    edit(formValue);
+    const { remainingOfPayment, ...rest } = formValue;
+    edit(rest);
   }, [edit, formValue]);
 
   const handleOpen = useCallback(e => {
