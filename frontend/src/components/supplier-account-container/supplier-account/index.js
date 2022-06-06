@@ -115,6 +115,7 @@ const SupplierAccount = () => {
           invoiceId: formValue.id,
           paid: formValue.paid,
           checkNumber: formValue?.checkNumber,
+          checkDate: formValue?.checkDate,
         },
       });
     }

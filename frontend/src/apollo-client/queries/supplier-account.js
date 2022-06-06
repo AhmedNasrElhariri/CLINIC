@@ -60,6 +60,7 @@ export const LIST_INVOICE_TRANSACTIONS = gql`
       paid
       date
       checkNumber
+      checkDate
       type
       user {
         id
@@ -106,8 +107,18 @@ export const ADD_SUPPLIER_INVOICE = gql`
 `;
 
 export const EDIT_INVOICE = gql`
-  mutation editInvoice($invoiceId: ID!, $paid: Int!, $checkNumber: String) {
-    editInvoice(invoiceId: $invoiceId, paid: $paid, checkNumber: $checkNumber) {
+  mutation editInvoice(
+    $invoiceId: ID!
+    $paid: Int!
+    $checkNumber: String
+    $checkDate: Date
+  ) {
+    editInvoice(
+      invoiceId: $invoiceId
+      paid: $paid
+      checkNumber: $checkNumber
+      checkDate: $checkDate
+    ) {
       id
     }
   }

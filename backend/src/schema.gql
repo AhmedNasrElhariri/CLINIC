@@ -428,7 +428,12 @@ type Mutation {
   editTiming(timing: TimingInput!, type: String!): Timing
   addSupplierAccount(supplierAccount: SupplierAccountInput!): SupplierAccount
   addSupplierInvoice(supplierInvoice: SupplierInvoiceInput!): SupplierInvoice
-  editInvoice(invoiceId: ID!, paid: Int!, checkNumber: String): SupplierInvoice
+  editInvoice(
+    invoiceId: ID!
+    paid: Int!
+    checkNumber: String
+    checkDate: Date
+  ): SupplierInvoice
   editInvoiceSupplier(id: ID!, supplierId: ID!): SupplierInvoice
   editInvoiceTransaction(
     transactionId: ID!
@@ -568,6 +573,10 @@ type Mutation {
   addPayrollUser(payrollUser: PayrollUserInput!): PayrollUser!
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
+  ): PayrollTransaction!
+  editPayrollTransaction(
+    id: ID!
+    amount:Int
   ): PayrollTransaction!
   addPayroll(
     payment: [ID!]
@@ -1729,6 +1738,7 @@ type SupplierInvoiceTransaction {
   paid: Int!
   date: Date!
   checkNumber: String
+  checkDate: Date
   type: String
   user: User
 }

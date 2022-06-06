@@ -6,7 +6,8 @@ import {
   CRNumberInput,
   CRTextArea,
   CRSelectInput,
-  CRButton
+  CRButton,
+  CRDatePicker,
 } from 'components';
 import { useSupplierAccounts } from 'hooks';
 
@@ -73,12 +74,15 @@ function NewInvoice({
               </CRButton>
               <CRNumberInput name="paid" label="Paid" value={formValue.paid} />
               {payByCheck && (
-                <CRTextInput
-                  label="Check Number"
-                  name="checkNumber"
-                  placeholder="Type Check Number"
-                  block
-                />
+                <>
+                  <CRTextInput
+                    label="Check Number"
+                    name="checkNumber"
+                    placeholder="Type Check Number"
+                    block
+                  />
+                  <CRDatePicker label="Check Due Date" block name="checkDate" />
+                </>
               )}
             </>
           )}
