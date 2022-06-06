@@ -269,7 +269,9 @@ function ListAppointments({
           <CRTable.CRCell>
             {({ date }) => (
               <CRTable.CRCellStyled>
-                {waiting ? '' : formatDate(date, FULL_DAY_FORMAT)}
+                {waiting
+                  ? formatDate(date, STANDARD_DATE_FORMAT)
+                  : formatDate(date, FULL_DAY_FORMAT)}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
