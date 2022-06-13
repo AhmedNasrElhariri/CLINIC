@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
+import { useTranslation } from 'react-i18next';
 import {
   CRSelectInput,
   CRTimePicker,
@@ -62,6 +63,7 @@ const searchBy = (text, _, patient) => {
 const NewAppointment = ({ show: showModel, onHide, appointment }) => {
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -194,21 +196,25 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
         }}
       >
         <Div>
-          Total Appointments: {appointmentsCount?.totalAppointment} Patient
+          Total Appointments: {appointmentsCount?.totalAppointment}{' '}
+          {t('patient')}
         </Div>
         <SecondRowContainer>
           <Div>
-            Total Waiting List: {appointmentsCount?.totalWaiting} Patient
+            Total Waiting List: {appointmentsCount?.totalWaiting}{' '}
+            {t(t('patient'))}
           </Div>
           <Div>View All</Div>
         </SecondRowContainer>
       </CRModal>
       <CRModal
         show={showModel}
-        header="New Appointment"
+        header={t('newAppointment')}
         CRContainer={ContainerStyled}
         CRBody={ModalBodyStyled}
         onOk={handleCreate}
+        okTitle={t('ok')}
+        cancelTitle={t('cancel')}
         loading={loading}
         onHide={() => {
           onHide();
@@ -261,7 +267,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
               </LeftContainer>
               <RightContainer>
                 <CRSelectInput
-                  label="Patient"
+                  label={t('patient')}
                   onSearch={v => setPatientSearchValue(v)}
                   placeholder="Name / Phone no"
                   data={searchedPatients}
@@ -282,12 +288,12 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
                       className="cursor-pointer"
                       mt={2}
                     >
-                      Create New Patient
+                      {t('createNewPatient')}
                     </H5>
                   </Div>
                 </CRSelectInput>
                 <CRDatePicker
-                  label="Date"
+                  label={t('date')}
                   block
                   name="date"
                   errorMessage={
@@ -299,7 +305,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
                 />
                 {!formValue.waiting && formValue?.userId && (
                   <CRTimePicker
-                    label="Time"
+                    label={t('time')}
                     block
                     name="time"
                     disabledMinutes={minute =>
@@ -318,7 +324,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
               onChange={val => setFormValue({ ...formValue, waiting: val })}
             >
               {' '}
-              Add to waiting list
+              {t('addToWaitingList')}
             </Checkbox>
           </Form>
         </Div>

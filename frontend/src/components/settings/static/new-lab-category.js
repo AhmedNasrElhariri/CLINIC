@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 
 import { CRModal, CRTextInput, Div, H3 } from 'components';
+import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 function NewLabCategory({
   formValue,
@@ -16,12 +18,13 @@ function NewLabCategory({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Lab Category'
+        ? t('addNewLabCategory')
         : type === 'edit'
-        ? 'Edit Lab Category'
+        ? t('editLabCategory')
         : 'Delete Lab Category',
     [type]
   );
@@ -49,14 +52,13 @@ function NewLabCategory({
         ) : (
           <>
             <CRTextInput
-              label="Lab Category Name"
+              label={t('labCategory')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
                   ? checkResult['name'].errorMessage
                   : ''
               }
-              placeholder="Type Lab Category"
               block
             />
           </>

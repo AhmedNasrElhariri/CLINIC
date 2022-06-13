@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Form } from 'rsuite';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { useTranslation } from 'react-i18next';
 import {
   CRSelectInput,
   CRTextInput,
@@ -44,6 +45,7 @@ const isPrimary = ({ type }) => type === membershipTypes[0].value;
 const isSecondary = ({ type }) => type === membershipTypes[1].value;
 
 const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
+  const { t } = useTranslation();
   useEffect(() => {
     if (formValue.date) {
       const years = moment().diff(formValue.date, 'years');
@@ -53,14 +55,14 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
   return (
     <Form fluid formValue={formValue} onChange={onChange}>
       <CRSelectInput
-        label="Membership Type"
+        label={t('membershipType')}
         valueKey="value"
         name="type"
         data={membershipTypes}
         block
       />
       <CRTextInput
-        label="Patient Name"
+        label={t('patient')}
         name="name"
         errorMessage={
           show && checkResult['name'].hasError
@@ -79,7 +81,7 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
               : ''
           }
         /> */}
-        <CRLabel>Phone No</CRLabel>
+        <CRLabel>{t('phoneNo')}</CRLabel>
         <PhoneInput
           country={'eg'}
           name="phoneNo"
@@ -110,7 +112,7 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
       <CRRadio options={ageOptions} name="ageOption" />
       {formValue.ageOption === 'age' && (
         <CRNumberInput
-          label="Age"
+          label={t('age')}
           name="age"
           errorMessage={
             show && checkResult['age'].hasError
@@ -121,20 +123,20 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
       )}
 
       {formValue.ageOption === 'birthOfDate' && (
-        <CRDatePicker label="Birth of Date" block name="date" />
+        <CRDatePicker label={t('birthOfDate')} block name="date" />
       )}
 
       <CRSelectInput
-        label="Sex"
+        label={t('type')}
         name="sex"
         valueKey="value"
         searchable={false}
         data={SEX}
         block
       />
-      <CRSelectInput label="Area" name="area" data={newAreas} block />
+      <CRSelectInput label={t('area')} name="area" data={newAreas} block />
       <CRCheckBoxGroup
-        label="Refernce"
+        label={t('reference')}
         options={options}
         value={formValue.reference}
         onChange={val => onChange({ ...formValue, reference: val })}

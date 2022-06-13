@@ -1,27 +1,17 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { CRModal, Div, H3, CRNumberInput } from 'components';
+import { useTranslation } from 'react-i18next';
 
-function BankModel({
-  formValue,
-  onChange,
-  type,
-  visible,
-  onOk,
-  onClose,
-  checkResult,
-  validate,
-  show,
-  setShow,
-  loading,
-}) {
+function BankModel({ formValue, onChange, type, visible, onOk, onClose }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Bank Transition'
+        ? t('addNewBankTransition')
         : type === 'edit'
-        ? 'Edit Bank Transition'
-        : 'Delete Bank Transition',
+        ? t('editBankTransition')
+        : t('deleteBankTransition'),
     [type]
   );
   return (
@@ -35,7 +25,7 @@ function BankModel({
       <Form formValue={formValue} onChange={onChange} fluid>
         {type === 'delete' ? (
           <Div>
-            <H3>Are you sure that you want to delete the Bank Transition ? </H3>
+            <H3>{t('deleteBankMessage')} </H3>
           </Div>
         ) : (
           <>

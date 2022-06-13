@@ -11,6 +11,8 @@ import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import PdfView from './pdf';
 import { formatDate } from 'utils/date';
+import { useTranslation } from 'react-i18next';
+
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initialval = {
   company: '',
@@ -19,6 +21,7 @@ const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
+  const { t } = useTranslation();
   const { filterBranches } = useAppointments({
     action: ACTIONS.ViewInsurance_Accounting,
   });
@@ -35,7 +38,7 @@ const BankAccountingContainer = () => {
   );
   return (
     <>
-      <MainContainer title="Insurance" nobody></MainContainer>
+      <MainContainer title={t('insurance')} nobody></MainContainer>
       <CRCard borderless>
         <Can I="ViewFilters" an="Accounting">
           <Toolbar
@@ -46,7 +49,7 @@ const BankAccountingContainer = () => {
           />
 
           <Div display="flex" my={4}>
-            <H6>Showing for :</H6>
+            <H6>{t('showingFor')} :</H6>
             <H6 variant="primary" ml={2} fontWeight="bold">
               {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
             </H6>
@@ -63,7 +66,7 @@ const BankAccountingContainer = () => {
                 method="revenues"
                 render={(revenues, totalRevenues) => (
                   <>
-                    <ListData title="Insurance Revenues" data={revenues} />
+                    <ListData title={t('insuranceRevenues')} data={revenues} />
                     <Profit expenses={0} revenues={totalRevenues} />
                     <Div
                       mt={10}

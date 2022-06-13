@@ -14,7 +14,7 @@ const ReportsContainer = () => {
       <CRTabs>
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>{t('accounting')}</CRTabs.CRTab>
-          <CRTabs.CRTab>Bank and Insurance Accounting</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('bankAndInsuranceAccounting')}</CRTabs.CRTab>
           <CRTabs.CRTab>{t('statistics')}</CRTabs.CRTab>
           <CRTabs.CRTab>{t('reports')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>

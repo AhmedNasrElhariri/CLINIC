@@ -9,6 +9,8 @@ import {
   Div,
 } from 'components';
 import { usePermissions, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
+
 export default function Branches() {
   const {
     visible: branchVisible,
@@ -26,6 +28,7 @@ export default function Branches() {
   });
   const [branchIds, setBranchIds] = useState([]);
   const [specialtyIds, setSpecialtyIds] = useState([]);
+  const { t } = useTranslation();
   const handleCreate = useCallback(
     branch => {
       createBranch(branch);
@@ -54,15 +57,15 @@ export default function Branches() {
   return (
     <>
       <MainContainer
-        title="Branches"
+        title={t('branches')}
         nobody
         more={
           <Div>
             <CRButton onClick={openBranch} variant="primary">
-              New Branch
+              {t('newBranch')}
             </CRButton>
             <CRButton onClick={openSpecialty} variant="primary" m="0px 2px">
-              Add Specialty
+              {t('addSpecialty')}
             </CRButton>
           </Div>
         }

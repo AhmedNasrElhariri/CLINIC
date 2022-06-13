@@ -6,6 +6,7 @@ import { H3, Div, CRButton, CRNumberInput } from 'components';
 import PageSetup from './page-setup';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
 import { useConfigurations } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   sessions: [],
@@ -32,6 +33,7 @@ const Configurations = () => {
   const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
   const [pointsValue, setPointsValues] = useState(initialPointsValue);
   const [pageSetup, setPageSetup] = useState(initialPageSetup);
+  const { t } = useTranslation();
   const {
     configurations,
     update,
@@ -135,10 +137,10 @@ const Configurations = () => {
   return (
     <>
       <Div display="flex" justifyContent="space-between">
-        <H3 mb={64}>Configurations</H3>
+        <H3 mb={64}>{t('configurations')}</H3>
         <Div>
           <CRButton onClick={handleSave} variant="primary">
-            Save
+            {t('save')}
           </CRButton>
         </Div>
       </Div>
@@ -151,12 +153,12 @@ const Configurations = () => {
         <Div display="flex" justifyContent="space-between">
           <Div display="flex" justifyContent="space-around">
             <H3 mb={64} mr={20}>
-              Points Control
+              {t('pointsControl')}
             </H3>
           </Div>
           <Div>
             <CRButton onClick={handlePointsSave} variant="primary">
-              Save
+              {t('save')}
             </CRButton>
           </Div>
         </Div>
@@ -164,13 +166,13 @@ const Configurations = () => {
           <Div display="flex" justifyContent="space-between">
             <CRNumberInput
               name="points"
-              label="The number of points to get coupon"
+              label={t('theNumberOfPointsToGetCoupon')}
               layout="inline"
               placeholder="Points"
             />
             <CRNumberInput
               name="couponValue"
-              label="Coupon Value"
+              label={t('couponValue')}
               layout="inline"
               placeholder="Coupon Value"
             />
@@ -182,13 +184,13 @@ const Configurations = () => {
         <Div display="flex" justifyContent="space-between">
           <Div display="flex" justifyContent="space-around">
             <H3 mb={64} mr={20}>
-              Pulses Control
+              {t('pulsesControl')}
             </H3>
             <H3>{today}</H3>
           </Div>
           <Div>
             <CRButton onClick={handlePulsesSave} variant="primary">
-              Save
+              {t('save')}
             </CRButton>
           </Div>
         </Div>
@@ -196,14 +198,14 @@ const Configurations = () => {
           <Div display="flex" justifyContent="space-between">
             <CRNumberInput
               name="before"
-              label="before"
+              label={t('before')}
               layout="inline"
               disabled
               placeholder="Pulses"
             />
             <CRNumberInput
               name="after"
-              label="after"
+              label={t('after')}
               layout="inline"
               placeholder="Pulses"
             />
@@ -216,12 +218,12 @@ const Configurations = () => {
         <Div display="flex" justifyContent="space-between">
           <Div display="flex" justifyContent="space-around">
             <H3 mb={64} mr={20}>
-              Page Setup Control (By Centimeter)
+              {t('pageSetupControl')}
             </H3>
           </Div>
           <Div>
             <CRButton onClick={handlePageSetupSave} variant="primary">
-              Save
+              {t('save')}
             </CRButton>
           </Div>
         </Div>

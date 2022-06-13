@@ -2,14 +2,16 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListSurgeries({ surgeries, onEdit, onDelete }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={surgeries}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -17,7 +19,7 @@ function ListSurgeries({ surgeries, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Surgeries Level</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('level')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ level }) => (
                 <CRTable.CRCellStyled bold>{level}</CRTable.CRCellStyled>
@@ -25,7 +27,7 @@ function ListSurgeries({ surgeries, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Surgeries Branch</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('branch')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ branch }) => (
                 <CRTable.CRCellStyled bold>{branch?.name}</CRTable.CRCellStyled>
@@ -33,7 +35,7 @@ function ListSurgeries({ surgeries, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Surgeries Specialty</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ specialty }) => (
                 <CRTable.CRCellStyled bold>
@@ -43,7 +45,7 @@ function ListSurgeries({ surgeries, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Surgeries User</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('user')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
                 <CRTable.CRCellStyled bold>{user?.name}</CRTable.CRCellStyled>
@@ -57,7 +59,7 @@ function ListSurgeries({ surgeries, onEdit, onDelete }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -69,7 +71,7 @@ function ListSurgeries({ surgeries, onEdit, onDelete }) {
               {data => (
                 <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>

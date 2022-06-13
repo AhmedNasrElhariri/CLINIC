@@ -6,6 +6,7 @@ import ListImagesDefinition from './list-images-definition';
 import { useForm, useImageDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const { StringType } = Schema.Types;
 const model = Schema.Model({
@@ -15,6 +16,7 @@ const initValue = { name: '', categoryId: null };
 
 const ImageDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -105,7 +107,7 @@ const ImageDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Image+
+          {t('addNewImageDefinition')}+
         </CRButton>
       </Div>
       <NewImageDefinition

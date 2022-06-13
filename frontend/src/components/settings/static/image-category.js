@@ -5,6 +5,7 @@ import NewImageCategory from './new-image-category';
 import ListImagesCategory from './list-images-category';
 import { useImageCategory, useModal, useForm } from 'hooks';
 import { Schema } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '' };
 const { StringType } = Schema.Types;
@@ -14,6 +15,7 @@ const model = Schema.Model({
 
 const ImageCategory = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -109,7 +111,7 @@ const ImageCategory = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Image Category+
+          {t('addNewImageCategory')}+
         </CRButton>
       </Div>
       <NewImageCategory

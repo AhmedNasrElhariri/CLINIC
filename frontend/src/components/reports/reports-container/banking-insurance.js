@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useTranslation } from 'react-i18next';
 import {
   MainContainer,
   BankAccountingContainer,
@@ -7,18 +7,17 @@ import {
   CRTabs,
 } from 'components';
 
-
 const ReportsContainer = () => {
+  const { t } = useTranslation();
   return (
     <>
-      <MainContainer title="Reports" nobody></MainContainer>
+      <MainContainer title={t('reports')} nobody></MainContainer>
       <CRTabs>
         <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>Bank Accounting</CRTabs.CRTab>
-          <CRTabs.CRTab>Insurance Accounting</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('bankAccounting')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('insuranceAccounting')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
-          
           <CRTabs.CRContent>
             <BankAccountingContainer />
           </CRTabs.CRContent>

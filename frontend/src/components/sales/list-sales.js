@@ -3,14 +3,16 @@ import { Icon } from 'rsuite';
 import { formatDate } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListSaleses({ saleses, onEdit, onDelete }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={saleses}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Number</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('number')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }, index) => (
                 <CRTable.CRCellStyled bold>{index + 1}</CRTable.CRCellStyled>
@@ -18,7 +20,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (
                 <CRTable.CRCellStyled bold>
@@ -28,7 +30,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ salesDefinition }) => (
                 <CRTable.CRCellStyled bold>
@@ -38,17 +40,15 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('creator')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
-                <CRTable.CRCellStyled bold>
-                  {user?.name}
-                </CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>{user?.name}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Price</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ salesDefinition }) => (
                 <CRTable.CRCellStyled bold>
@@ -58,7 +58,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Quantity</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('quantity')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ quantity }) => (
                 <CRTable.CRCellStyled bold>{quantity}</CRTable.CRCellStyled>
@@ -66,7 +66,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Total Price</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('totalPrice')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ totalPrice }) => (
                 <CRTable.CRCellStyled bold>{totalPrice}</CRTable.CRCellStyled>
@@ -80,7 +80,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -92,7 +92,7 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
               {data => (
                 <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>

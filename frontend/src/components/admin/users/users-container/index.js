@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import * as R from 'ramda';
 import { NewUser, MainContainer, CRButton, Users } from 'components';
 import { usePermissions, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   name: '',
@@ -14,6 +15,7 @@ export default function UsersContainer() {
   const { visible, open, close } = useModal();
   const [formValue, setFormValue] = useState(initialValues);
   const [type, setType] = useState('');
+  const { t } = useTranslation();
   const { users, createUser, editUser } = usePermissions({
     onCreateUser: close,
     onEditUser: close,
@@ -42,11 +44,11 @@ export default function UsersContainer() {
   return (
     <>
       <MainContainer
-        title="Users"
+        title={t('users')}
         nobody
         more={
           <CRButton onClick={handleClickCreate} variant="primary">
-            New User
+            {t('newUser')}
           </CRButton>
         }
       ></MainContainer>

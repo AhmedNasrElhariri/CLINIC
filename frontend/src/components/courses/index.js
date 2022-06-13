@@ -7,6 +7,8 @@ import ListCourses from './list-courses';
 import CourseData from './course-data';
 import NewCourse from '../../components/appointments/appointment/courses';
 import { Form } from 'rsuite';
+import { useTranslation } from 'react-i18next';
+
 const initFilter = {
   patientId: null,
   courseId: null,
@@ -41,6 +43,7 @@ const Courses = () => {
   const [header, setHeader] = useState('');
   const [bank, setBank] = useState(null);
   const [visa, setVisa] = useState(false);
+  const { t } = useTranslation();
   const [sortType, setSortType] = React.useState();
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
@@ -277,14 +280,14 @@ const Courses = () => {
           <Form formValue={filter} onChange={setFilter}>
             <Div display="flex" justifyContent="space-between">
               <CRSelectInput
-                label="Course"
+                label={t('course')}
                 data={coursesDefinitions}
                 name="courseId"
                 placement="auto"
                 style={{ width: '300px', margin: '0px 5px' }}
               />
               <CRSelectInput
-                label="Course Status"
+                label={t('courseStatus')}
                 data={courseStatus}
                 name="status"
                 placement="auto"
@@ -292,9 +295,9 @@ const Courses = () => {
               />
               <Div m="0px 5px">
                 <CRSelectInput
-                  label="Patient"
+                  label={t('patient')}
                   onSearch={v => setPatientSearchValue(v)}
-                  placeholder="Name / Phone no"
+                  placeholder={t('patient')}
                   data={searchedPatients}
                   onChange={val => setFilter({ ...filter, patientId: val })}
                   value={filter.patientId}
@@ -313,7 +316,7 @@ const Courses = () => {
             setFilter(initFilter);
           }}
         >
-          All Courses
+          {t('allCourses')}
         </CRButton>
       </Div>
       <NewCourse

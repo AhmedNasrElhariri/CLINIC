@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tag } from 'rsuite';
-
+import { useTranslation } from 'react-i18next';
 import { CRCard, CRTable } from 'components';
 export default function ListSpecialties({
   specialties,
@@ -8,6 +8,7 @@ export default function ListSpecialties({
   branchIds,
   specialtyIds,
 }) {
+  const { t } = useTranslation();
   const checkSpecialty = specialtyId => {
     if (specialtyIds.includes(specialtyId)) {
       return true;
@@ -27,12 +28,12 @@ export default function ListSpecialties({
       <CRCard borderless>
         <CRTable autoHeight data={specialties} bordered={false}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="name" bold />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Branches</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('branches')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ branches, id: specialtyId }) => (
                 <div>
@@ -59,7 +60,7 @@ export default function ListSpecialties({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Doctors</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('doctors')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ doctors, id: specialtyId }) =>
                 checkSpecialty(specialtyId) ? (

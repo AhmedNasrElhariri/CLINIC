@@ -1,16 +1,17 @@
 import React from 'react';
 import NumberFormat from 'react-number-format';
-
+import { useTranslation } from 'react-i18next';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 
 function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={patientSurgeries} onRowClick={onSurgeryClick}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Patient</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ patient }) => (
                 <CRTable.CRCellStyled>{patient.name}</CRTable.CRCellStyled>
@@ -19,7 +20,7 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Surgery</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('surgery')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ surgery }) => (
                 <CRTable.CRCellStyled>{surgery.name}</CRTable.CRCellStyled>
@@ -28,7 +29,7 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Hospital</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('hospital')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ hospital }) => (
                 <CRTable.CRCellStyled>{hospital.name}</CRTable.CRCellStyled>
@@ -37,7 +38,7 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) =>
                 date ? (
@@ -50,7 +51,7 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Anesthesia Type</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('anesthesiaType')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ anesthesia }) => (
                 <CRTable.CRCellStyled>{anesthesia}</CRTable.CRCellStyled>
@@ -69,7 +70,7 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Fees</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('fees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ fees }) => (
                 <CRTable.CRCellStyled bold>
@@ -84,7 +85,7 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Hospital Fees</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('hospitalFees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ hospitalFees }) => (
                 <CRTable.CRCellStyled bold>
@@ -98,7 +99,7 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Assistant Fees</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('assistantFees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ assistantFees }) => (
                 <CRTable.CRCellStyled bold>
@@ -112,7 +113,7 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Anesthesia Fees</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('anesthesiaFees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ anesthesiaFees }) => (
                 <CRTable.CRCellStyled bold>

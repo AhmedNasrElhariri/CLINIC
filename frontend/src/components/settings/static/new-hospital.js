@@ -3,6 +3,7 @@ import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRTextArea, CRBrancheTree } from 'components';
 import { Div, H3 } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function NewHospital({
   formValue,
@@ -16,12 +17,13 @@ function NewHospital({
   show,
   setShow,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Hospital'
+        ? t('addNewHospital')
         : type === 'edit'
-        ? 'Edit Hospital'
+        ? t('editHospital')
         : 'Delete Hospital',
     [type]
   );
@@ -45,7 +47,7 @@ function NewHospital({
           <>
             {' '}
             <CRTextInput
-              label="Name"
+              label={t('name')}
               name="name"
               block
               errorMessage={
@@ -54,8 +56,8 @@ function NewHospital({
                   : ''
               }
             />
-            <CRTextInput label="Phone No" name="phoneNo" block />
-            <CRTextArea label="Address" name="address" block />
+            <CRTextInput label={t('phoneNo')} name="phoneNo" block />
+            <CRTextArea label={t('address')} name="address" block />
             <CRBrancheTree
               formValue={formValue}
               onChange={onChange}

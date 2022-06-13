@@ -8,6 +8,8 @@ import NewHospital from './new-hospital';
 import { useForm, useModal, useHospitals, useAppointments } from 'hooks';
 import Filter from '../../filters';
 import { ACTIONS } from 'utils/constants';
+import { useTranslation } from 'react-i18next';
+
 const { StringType } = Schema.Types;
 const model = Schema.Model({
   name: StringType().isRequired('Hospital name is required'),
@@ -23,6 +25,7 @@ const initValue = {
 
 const Hospitals = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const { filterBranches } = useAppointments({
     action: ACTIONS.Create_Hospital,
   });
@@ -113,7 +116,7 @@ const Hospitals = () => {
       <Div textAlign="right">
         <Can I="Create" an="Hospital">
           <CRButton variant="primary" onClick={handleClickCreate}>
-            Hospital +
+            {t('hospital')} +
           </CRButton>
         </Can>
       </Div>

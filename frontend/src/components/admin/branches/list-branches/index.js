@@ -2,6 +2,8 @@ import React from 'react';
 import { Tag } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
+
 export default function ListBranches({
   branches,
   onSpecilatyClick,
@@ -15,22 +17,23 @@ export default function ListBranches({
       return false;
     }
   };
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={branches} bordered={false}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="name" bold />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="phoneNo" />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Specialties</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('specialties')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ specialties, id: branchId }) => (
                 <div>
@@ -62,7 +65,7 @@ export default function ListBranches({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Doctors</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('doctors')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ specialties, id: branchId }) => (
                 <div>

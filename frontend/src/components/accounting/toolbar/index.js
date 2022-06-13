@@ -3,25 +3,27 @@ import React from 'react';
 import { CRButtonGroup, Div, CRDateRangePicker } from 'components';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import { Form } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const Toolbar = ({ activeKey, onSelect, onChangePeriod }) => {
+  const { t } = useTranslation();
   return (
     <Div display="flex">
       <CRButtonGroup onSelect={onSelect} activeKey={activeKey}>
         <CRButtonGroup.CRButton eventKey={ACCOUNTING_VIEWS.DAY}>
-          Today
+          {t('today')}
         </CRButtonGroup.CRButton>
         <CRButtonGroup.CRButton eventKey={ACCOUNTING_VIEWS.WEEK}>
-          Week
+          {t('week')}
         </CRButtonGroup.CRButton>
         <CRButtonGroup.CRButton eventKey={ACCOUNTING_VIEWS.MONTH}>
-          Month
+          {t('month')}
         </CRButtonGroup.CRButton>
         <CRButtonGroup.CRButton eventKey={ACCOUNTING_VIEWS.QUARTER}>
-          Quarter
+          {t('quarter')}
         </CRButtonGroup.CRButton>
         <CRButtonGroup.CRButton eventKey={ACCOUNTING_VIEWS.YEAR}>
-          Year
+          {t('year')}
         </CRButtonGroup.CRButton>
       </CRButtonGroup>
 

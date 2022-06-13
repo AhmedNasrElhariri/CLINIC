@@ -50,9 +50,7 @@ function TodayAppointments() {
   } = useAppointments({
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
-    onAdjust:() => {
-      
-    }
+    onAdjust: () => {},
   });
 
   const filteredAppointments = useMemo(
@@ -242,7 +240,7 @@ function TodayAppointments() {
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>{t('mainAppointments')}</CRTabs.CRTab>
           <CRTabs.CRTab>{t('waitingAppointments')}</CRTabs.CRTab>
-          <CRTabs.CRTab>Completed Appointments</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('completedAppointments')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>

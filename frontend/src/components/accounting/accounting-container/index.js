@@ -11,6 +11,7 @@ import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
 import { useAccounting, useAppointments } from 'hooks';
+import { useTranslation } from 'react-i18next';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -33,6 +34,7 @@ const initalVal = {
 };
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
+  const { t } = useTranslation();
   const { filterBranches } = useAppointments({
     action: ACTIONS.View_Accounting,
   });
@@ -146,19 +148,19 @@ const AccountingContainer = () => {
   );
 
   const createRevenueForm = useAccountingForm({
-    header: 'New Revenue',
+    header: t('newRevenue'),
     onOk: handleCreateRevenue,
   });
   const createExpenseForm = useAccountingForm({
-    header: 'New Expense',
+    header: t('newExpense'),
     onOk: handleCreateExpense,
   });
   const editRevenueForm = useAccountingForm({
-    header: 'Edit Revenue',
+    header: t('editRevenue'),
     onOk: handleUpdateRevenue,
   });
   const editExpenseForm = useAccountingForm({
-    header: 'Edit Expense',
+    header: t('editExpense'),
     onOk: handleUpdateExpense,
   });
   const { expenses, revenues, timeFrame } = useAccounting({
@@ -192,13 +194,13 @@ const AccountingContainer = () => {
   return (
     <>
       <MainContainer
-        title="Accounting"
+        title={t('accounting')}
         more={
           <Div display="flex">
             <>
               <Can I="AddRevenue" an="Accounting">
                 <CRButton variant="primary" onClick={createRevenueForm.show}>
-                  Reveneue +
+                  {t('newRevenue')} +
                 </CRButton>
               </Can>
               <Can I="AddExpense" an="Accounting">
@@ -208,7 +210,7 @@ const AccountingContainer = () => {
                   ml={1}
                   mr={1}
                 >
-                  Expense +
+                  {t('newExpense')} +
                 </CRButton>
               </Can>
             </>
@@ -228,7 +230,7 @@ const AccountingContainer = () => {
             onChangePeriod={setPeriod}
           />
           <Div display="flex" my={4}>
-            <H6>Showing for :</H6>
+            <H6>{t('showingFor')} :</H6>
             <H6 variant="primary" ml={2} fontWeight="bold">
               {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
             </H6>
@@ -250,7 +252,7 @@ const AccountingContainer = () => {
                   render={(revenues, totalRevenues) => (
                     <>
                       <ListRevenueData
-                        title="Revenues"
+                        title={t('revenues')}
                         data={revenues}
                         onEdit={revenue => {
                           editRevenueForm.setFormValue(
@@ -272,7 +274,7 @@ const AccountingContainer = () => {
                           render={(expenses, __, totalExpenses) => (
                             <>
                               <ListExpenseData
-                                title="Expenses"
+                                title={t('expenses')}
                                 data={expenses}
                                 onEdit={expense => {
                                   editExpenseForm.setFormValue(

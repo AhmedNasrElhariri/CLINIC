@@ -8,17 +8,19 @@ import {
   Assign,
   CRTabs,
 } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const AdminContainer = () => {
+  const { t } = useTranslation();
   return (
     <>
-      <MainContainer title="Admin" nobody></MainContainer>
+      <MainContainer title={t('admin')} nobody></MainContainer>
       <CRTabs defaultValue={3}>
         <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>Branches</CRTabs.CRTab>
-          <CRTabs.CRTab>Specialties</CRTabs.CRTab>
-          <CRTabs.CRTab>Users</CRTabs.CRTab>
-          <CRTabs.CRTab>Role Permission</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('branches')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('specialties')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('users')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('rolePermission')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>

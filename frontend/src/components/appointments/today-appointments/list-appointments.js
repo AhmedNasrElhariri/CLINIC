@@ -33,6 +33,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
   function handleAction() {
     alert(`id:${rowData[dataKey]}`);
   }
+  const { t } = useTranslation();
   const {
     appointment,
     onArchive,
@@ -94,7 +95,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                     }}
                     style={{ width: '108px' }}
                   >
-                    Archive
+                    {t('archive')}
                   </CRButton>
                 </Can>
               </Dropdown.Item>
@@ -132,7 +133,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                   }}
                   style={{ width: '108px' }}
                 >
-                  Duplicates
+                  {t('duplicates')}
                 </CRButton>
               </Dropdown.Item>
               <Dropdown.Item eventKey={7}>
@@ -220,7 +221,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={130}>
-          <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('time')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (
               <CRTable.CRCellStyled>
@@ -230,7 +231,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={200}>
-          <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ patient }) => (
               <Whisper
@@ -240,8 +241,12 @@ function ListAppointments({
                 speaker={
                   <Tooltip>
                     <Div>
-                      <Div>Phone:{patient.phoneNo}</Div>
-                      <Div>Sex:{patient.sex}</Div>
+                      <Div>
+                        {t('phoneNo')}:{patient.phoneNo}
+                      </Div>
+                      <Div>
+                        {t('type')}:{patient.sex}
+                      </Div>
                     </Div>
                   </Tooltip>
                 }
@@ -253,7 +258,7 @@ function ListAppointments({
         </CRTable.CRColumn>
 
         <CRTable.CRColumn width={200}>
-          <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ type, session }) => (
               <CRTable.CRCellStyled>
@@ -264,7 +269,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={120}>
-          <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ doctor }) => (
               <CRTable.CRCellStyled>{doctor?.name}</CRTable.CRCellStyled>
@@ -280,7 +285,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn> */}
         <CRTable.CRColumn width={120}>
-          <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ specialty }) => (
               <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
@@ -288,7 +293,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={120}>
-          <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('branch')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ branch }) => (
               <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>
@@ -420,7 +425,7 @@ function ListAppointments({
                     }}
                     block
                   >
-                    ACC
+                    {t('acc')}
                   </CRButton>
                 ) : (
                   <CRButton
@@ -431,7 +436,7 @@ function ListAppointments({
                     }}
                     block
                   >
-                    ACC
+                    {t('acc')}
                   </CRButton>
                 )}
               </Can>
@@ -462,7 +467,7 @@ function ListAppointments({
                   }}
                   block
                 >
-                  Notes
+                  {t('notes')}
                 </CRButton>
               </Whisper>
             )}
@@ -470,7 +475,7 @@ function ListAppointments({
         </CRTable.CRColumn>
 
         <Table.Column>
-          <Table.HeaderCell>Action</Table.HeaderCell>
+          <Table.HeaderCell>{t('actions')}</Table.HeaderCell>
           <Table.Cell>
             {appointment => (
               <ActionCell

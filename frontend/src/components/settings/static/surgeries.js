@@ -9,6 +9,7 @@ import { ACTIONS } from 'utils/constants';
 import { useForm, useModal, useSurgeries, useAppointments } from 'hooks';
 import { Validate } from 'services/form';
 import { Schema } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '', branchId: null, specialtyId: null, userId: null };
 const { StringType } = Schema.Types;
@@ -17,6 +18,7 @@ const model = Schema.Model({
 });
 function Surgeries() {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const { filterBranches } = useAppointments({
     action: ACTIONS.Create_Surgery,
   });
@@ -106,7 +108,7 @@ function Surgeries() {
       <Div textAlign="right">
         <Can I="Create" an="Surgery">
           <CRButton variant="primary" onClick={handleonClickCreate}>
-            Surgery +
+            {t('surgery')} +
           </CRButton>
         </Can>
       </Div>

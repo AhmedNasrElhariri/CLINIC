@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { CRModal, CRTextInput, Div, H3 } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function NewTiming({
   formValue,
@@ -15,12 +16,13 @@ function NewTiming({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Timing'
+        ? t('addNewTiming')
         : type === 'edit'
-        ? 'Edit Timing'
+        ? t('editTiming')
         : 'Delete Timing',
     [type]
   );
@@ -45,7 +47,7 @@ function NewTiming({
         ) : (
           <>
             <CRTextInput
-              label="Timing Name"
+              label={t('name')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
@@ -56,18 +58,17 @@ function NewTiming({
               block
             />
             <CRTextInput
-              label="English Print Value"
+              label={t('englishPrintValue')}
               name="englishPrintValue"
               errorMessage={
                 show && checkResult['englishPrintValue'].hasError
                   ? checkResult['englishPrintValue'].errorMessage
                   : ''
               }
-              placeholder="Print Value"
               block
             />
             <CRTextInput
-              label="Arabic Print Value"
+              label={t('arabicPrintValue')}
               name="arabicPrintValue"
               errorMessage={
                 show && checkResult['arabicPrintValue'].hasError

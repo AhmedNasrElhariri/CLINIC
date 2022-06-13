@@ -2,14 +2,16 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListHospitals({ hospitals, onEdit, onDelete }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={hospitals}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -17,7 +19,7 @@ function ListHospitals({ hospitals, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ phoneNo }) => (
                 <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
@@ -25,7 +27,7 @@ function ListHospitals({ hospitals, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Address</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('address')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ address }) => (
                 <CRTable.CRCellStyled bold>{address}</CRTable.CRCellStyled>
@@ -33,7 +35,7 @@ function ListHospitals({ hospitals, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Hospital Level</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('level')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ level }) => (
                 <CRTable.CRCellStyled bold>{level}</CRTable.CRCellStyled>
@@ -41,7 +43,7 @@ function ListHospitals({ hospitals, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Hospital Branch</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('branch')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ branch }) => (
                 <CRTable.CRCellStyled bold>{branch?.name}</CRTable.CRCellStyled>
@@ -49,7 +51,7 @@ function ListHospitals({ hospitals, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Hospital Specialty</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ specialty }) => (
                 <CRTable.CRCellStyled bold>
@@ -59,7 +61,7 @@ function ListHospitals({ hospitals, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Hospital User</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('user')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
                 <CRTable.CRCellStyled bold>{user?.name}</CRTable.CRCellStyled>
@@ -73,7 +75,7 @@ function ListHospitals({ hospitals, onEdit, onDelete }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -85,7 +87,7 @@ function ListHospitals({ hospitals, onEdit, onDelete }) {
               {data => (
                 <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>

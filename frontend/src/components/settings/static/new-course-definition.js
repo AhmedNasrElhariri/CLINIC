@@ -8,6 +8,7 @@ import {
   Div,
   H3,
 } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const coursesType = [
   { name: 'Session', id: 'Session' },
@@ -26,12 +27,13 @@ function NewCourseDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Course'
+        ? t('addNewCourse')
         : type === 'edit'
-        ? 'Edit Course'
+        ? t('editCourse')
         : 'Delete Course',
     [type]
   );
@@ -55,7 +57,7 @@ function NewCourseDefinition({
         ) : (
           <>
             <CRTextInput
-              label="Name"
+              label={t('name')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
@@ -66,7 +68,7 @@ function NewCourseDefinition({
               block
             />
             <CRSelectInput
-              label="Type"
+              label={t('type')}
               name="type"
               errorMessage={
                 show && checkResult['type'].hasError
@@ -77,7 +79,7 @@ function NewCourseDefinition({
               data={coursesType}
             />
             <CRNumberInput
-              label="Price"
+              label={t('price')}
               name="price"
               errorMessage={
                 show && checkResult['price'].hasError
@@ -86,7 +88,7 @@ function NewCourseDefinition({
               }
             />
             <CRNumberInput
-              label="Number of Sessions/Units"
+              label={t('numberofSessionsUnits')}
               name="units"
               errorMessage={
                 show && checkResult['units'].hasError
@@ -96,7 +98,7 @@ function NewCourseDefinition({
             />
             {formValue.type === 'Perunit' && (
               <CRTextInput
-                label="Messure Of Units"
+                label={t('messureOfUnits')}
                 name="messureOfUnits"
                 placeholder="Type Messure Of Units"
                 block

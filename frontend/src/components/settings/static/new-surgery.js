@@ -3,6 +3,7 @@ import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRBrancheTree } from 'components';
 import { Div, H3 } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function NewSurgery({
   formValue,
@@ -16,12 +17,13 @@ function NewSurgery({
   show,
   setShow,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Surgery'
+        ? t('addNewSurgery')
         : type === 'edit'
-        ? 'Edit Surgery'
+        ? t('editSurgery')
         : 'Delete Surgery',
     [type]
   );
@@ -45,7 +47,7 @@ function NewSurgery({
         ) : (
           <>
             <CRTextInput
-              label="Name"
+              label={t('name')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError

@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import Form from './form';
 import { CREATE_PATIENT, LIST_SEARCHED_PATIENTS } from 'apollo-client/queries';
 import { usePatients, useForm } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   name: '',
@@ -42,6 +43,7 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
   const { patients, updateCache } = usePatients();
   const { data } = useQuery(ALL_AREAS);
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
+  const { t } = useTranslation();
   const newAreas = areas.map(a => {
     return {
       id: a.id,
@@ -73,7 +75,7 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
     <CRModal
       show={showModel}
       onHide={onHide}
-      header="New Patient"
+      header={t('newPatient')}
       onCancel={onHide}
       onOk={() => {
         setShow(true);
@@ -87,6 +89,8 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
         }
       }}
       loading={loading}
+      okTitle={t('ok')}
+      cancelTitle={t('cancel')}
     >
       <Form
         onChange={setFormValue}

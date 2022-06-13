@@ -17,7 +17,7 @@ import font from './fonts/Tajawal-Regular.ttf';
 import { AbilityContext } from 'components/user/can/index';
 import { set, get } from 'services/local-storage';
 import { StyleSheetManager } from 'styled-components';
-import rtlPlugin from 'stylis-plugin-rtl';
+// import rtlPlugin from 'stylis-plugin-rtl';
 export default function App() {
   useEffect(() => {
     Font.register({
@@ -29,7 +29,7 @@ export default function App() {
   return (
     <>
       <GlobalStyle />
-      <StyleSheetManager stylisPlugins={[rtlPlugin]}>
+      {/* <StyleSheetManager stylisPlugins={[rtlPlugin]}> */}
         <AbilityContext.Provider value={new Ability()}>
             <ApolloProvider client={client}>
               <ThemeProvider theme={{ ...lightTheme, direction: get('dir') }}>
@@ -39,7 +39,7 @@ export default function App() {
               </ThemeProvider>
             </ApolloProvider>
         </AbilityContext.Provider>
-      </StyleSheetManager>
+      {/* </StyleSheetManager> */}
     </>
   );
 }

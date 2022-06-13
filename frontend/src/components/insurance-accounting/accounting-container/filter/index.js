@@ -3,7 +3,10 @@ import { Div } from 'components';
 import { Form } from 'rsuite';
 import { CRSelectInput } from 'components/widgets';
 import { useCompanyDefinition } from 'hooks';
+import { useTranslation } from 'react-i18next';
+
 const AccountingFilter = ({ formValue, setFormValue }) => {
+  const { t } = useTranslation();
   const { companysDefinition } = useCompanyDefinition({});
   const updatedCompanysDefinitions = companysDefinition.map(c => {
     return {
@@ -20,11 +23,13 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
       <Div display="flex">
         <Div mr={3}>
           <CRSelectInput
-            label="Company"
+            label={t('companyName')}
             name="company"
             data={updatedCompanysDefinitions}
             onChange={val =>
-              val == null ? setFormValue({ company: '' }) : setFormValue({ company: val })
+              val == null
+                ? setFormValue({ company: '' })
+                : setFormValue({ company: val })
             }
             placeholder="Search"
             style={{ width: '230px' }}

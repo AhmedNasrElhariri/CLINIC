@@ -9,9 +9,11 @@ import {
   Div,
 } from 'components';
 import { usePermissions, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 export default function SpecialtiesContainer() {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     visible: userVisible,
     open: openUser,
@@ -56,15 +58,15 @@ export default function SpecialtiesContainer() {
   return (
     <>
       <MainContainer
-        title="Specialties"
+        title={t('specialties')}
         nobody
         more={
           <Div>
             <CRButton onClick={open} variant="primary">
-              New Specialty
+              {t('newSpecialty')}
             </CRButton>
             <CRButton onClick={openUser} variant="primary" m="0px 2px">
-              Add Doctor
+              {t('addDoctor')}
             </CRButton>
           </Div>
         }

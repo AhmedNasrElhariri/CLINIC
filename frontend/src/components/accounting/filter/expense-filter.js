@@ -3,7 +3,10 @@ import { Div } from 'components';
 import { Form } from 'rsuite';
 import { CRSelectInput } from 'components/widgets';
 import { useExpenseTypeDefinition } from 'hooks';
+import { useTranslation } from 'react-i18next';
+
 const AccountingFilter = ({ formValue, setFormValue }) => {
+  const { t } = useTranslation();
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
   const updatedExpenseTypeDefinitions = expenseTypesDefinition.map(b => {
     return {
@@ -22,10 +25,12 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
       <Div display="flex">
         <Div mr={3}>
           <CRSelectInput
-            label="Expense Type"
+            label={t('expenseType')}
             name="expenseType"
             data={updatedExpenseTypeDefinitions}
-            onChange={val => val == null ? setFormValue({...formValue,expenseType:''}):''}
+            onChange={val =>
+              val == null ? setFormValue({ ...formValue, expenseType: '' }) : ''
+            }
             placeholder="Search"
             style={{ width: '230px' }}
           />

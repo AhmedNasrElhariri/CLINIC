@@ -5,6 +5,8 @@ import { Img, H6, Div } from 'components';
 import { Container, LinkStyled } from './style';
 import { Can } from 'components/user/can';
 import {  get } from 'services/local-storage';
+import { useTranslation } from 'react-i18next';
+
 const Item = ({ name, icon, path, onClick }) => {
   return (
     <LinkStyled to={path} onClick={onClick}>
@@ -16,39 +18,40 @@ const Item = ({ name, icon, path, onClick }) => {
 
 export default function Settings({ onClose, ...props }) {
   const history = useHistory();
+  const { t } = useTranslation();
   const dir = get('dir');
   let right = '30px';
   dir === 'ltr' ?  right = '30px' : right = '-480px';
   const items = [
     {
-      name: 'Configurations',
+      name: t('configurations'),
       icon: '/icons/config.png',
       path: '/settings/configurations',
     },
     {
-      name: 'Static Info',
+      name: t('staticInfo'),
       icon: '/icons/static.png',
       path: '/settings/static',
     },
 
     {
-      name: 'Payroll',
+      name: t('payroll'),
       icon: '/icons/static.png',
       path: '/payroll',
     },
 
     {
-      name: 'Snippets',
+      name: t('snippets'),
       icon: '/icons/snippets.png',
       path: '/snippets',
     },
     {
-      name: 'Inventory',
+      name: t('inventory'),
       icon: '/icons/static.png',
       path: '/inventory',
     },
     {
-      name: 'Logout',
+      name: t('logout'),
       icon: '/icons/logout.png',
       action: 'onLogout',
     },

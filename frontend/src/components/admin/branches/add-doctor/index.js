@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 import { CRModal, CRSelectInput } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const { StringType } = Schema.Types;
-
 const model = Schema.Model({
   branchId: StringType().isRequired('Branch is required'),
   specialtyId: StringType().isRequired('Specialty is required'),
@@ -24,7 +24,7 @@ export default function AddDoctor({
   doctors,
 }) {
   const [formValue, setFormValue] = useState(initialValues);
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (!show) {
       setFormValue(initialValues);
@@ -39,31 +39,28 @@ export default function AddDoctor({
   return (
     <CRModal
       show={show}
-      header="Add Doctor"
+      header={t('addDoctor')}
       onHide={onCancel}
       onCancel={onCancel}
       onOk={() => onCreate(formValue)}
+      okTitle={t('ok')}
+      cancelTitle={t('cancel')}
     >
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
         <CRSelectInput
           name="specialtyId"
-          label="Specialty"
+          label={t('specialty')}
           data={specialties}
           block
         />
         <CRSelectInput
           name="branchId"
-          label="Branch"
+          label={t('branch')}
           data={branches}
           disabled={!formValue.specialtyId}
           block
         />
-        <CRSelectInput
-          name="userId"
-          label="Doctor"
-          data={doctors}
-          block
-        />
+        <CRSelectInput name="userId" label={t('doctor')} data={doctors} block />
       </Form>
     </CRModal>
   );

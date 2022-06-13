@@ -2,14 +2,16 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListTimings({ timings, onEdit, onDelete }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={timings}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -17,7 +19,9 @@ function ListTimings({ timings, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>English Print Value</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>
+              {t('englishPrintValue')}
+            </CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ englishPrintValue }) => (
                 <CRTable.CRCellStyled bold>
@@ -27,7 +31,7 @@ function ListTimings({ timings, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Arabic Print Value</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('arabicPrintValue')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ arabicPrintValue }) => (
                 <CRTable.CRCellStyled bold>

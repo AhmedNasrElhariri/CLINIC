@@ -7,6 +7,7 @@ import ListCoursesDefinition from './list-courses-definition';
 import { useCoursesDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   name: '',
@@ -25,6 +26,7 @@ const model = Schema.Model({
 
 const CourseDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -134,7 +136,7 @@ const CourseDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Course+
+          {t('addNewCourse')}+
         </CRButton>
       </Div>
       <NewCourseDefinition

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Schema } from 'rsuite';
 import { CRModal, CRSelectInput } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const { StringType } = Schema.Types;
 
@@ -21,7 +22,7 @@ export default function AddSpecialty({
   specialties,
 }) {
   const [formValue, setFormValue] = useState(initialValues);
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (!show) {
       setFormValue(initialValues);
@@ -31,21 +32,23 @@ export default function AddSpecialty({
   return (
     <CRModal
       show={show}
-      header="Add Specialty"
+      header={t('addSpecialty')}
       onHide={onCancel}
       onCancel={onCancel}
       onOk={() => onAdd(formValue)}
+      okTitle={t('ok')}
+      cancelTitle={t('cancel')}
     >
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
         <CRSelectInput
           name="branchId"
-          label="Branch"
+          label={t('branch')}
           data={branches}
           block
         />
         <CRSelectInput
           name="specialtyId"
-          label="Specialty"
+          label={t('specialty')}
           data={specialties}
           block
         />

@@ -3,7 +3,7 @@ import { Form } from 'rsuite';
 
 import { CRModal, CRTextInput, CRSelectInput, Div, H3 } from 'components';
 import { useLabCategory } from 'hooks';
-
+import { useTranslation } from 'react-i18next';
 
 function NewLabDefinition({
   formValue,
@@ -18,12 +18,13 @@ function NewLabDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Lab Definition'
+        ? t('addNewLabDefinition')
         : type === 'edit'
-        ? 'Edit Lab Definition'
+        ? t('editLabDefinition')
         : 'Delete Lab Definition',
     [type]
   );
@@ -40,7 +41,7 @@ function NewLabDefinition({
       onCancel={onClose}
       loading={loading}
     >
-      <Form formValue={formValue}  onChange={onChange} fluid>
+      <Form formValue={formValue} onChange={onChange} fluid>
         {type === 'delete' ? (
           <Div>
             <H3>Are you sure that you want to delete the Lab ? </H3>
@@ -48,7 +49,7 @@ function NewLabDefinition({
         ) : (
           <>
             <CRTextInput
-              label="Lab Name"
+              label={t('name')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
@@ -59,7 +60,7 @@ function NewLabDefinition({
               block
             />
             <CRSelectInput
-              label="Lab Category"
+              label={t('labCategory')}
               name="categoryId"
               block
               data={labsCategory}

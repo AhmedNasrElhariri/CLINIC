@@ -51,7 +51,7 @@ function Patients() {
             <Can I="CreateSocialReport" an="Patient">
               <ReactToPrint
                 trigger={() => (
-                  <CRButton variant="primary">Social Report +</CRButton>
+                  <CRButton variant="primary">{t('socialReport')} +</CRButton>
                 )}
                 content={() => ref.current}
               />
@@ -60,7 +60,7 @@ function Patients() {
               <ReactToPrint
                 trigger={() => (
                   <CRButton variant="primary" ml={1} mr={1}>
-                    Area Report +
+                    {t('areaReport')} +
                   </CRButton>
                 )}
                 content={() => refTwo.current}
@@ -89,7 +89,7 @@ function Patients() {
           bordered={false}
         >
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -98,12 +98,12 @@ function Patients() {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Membership Type</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('membershipType')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="type" semiBold />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>PhoneNo</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ phoneNo }) => (
                 <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
@@ -112,12 +112,12 @@ function Patients() {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Code</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('code')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="code" />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Area</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('area')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ area }) => (
                 <CRTable.CRCellStyled bold>{area}</CRTable.CRCellStyled>
@@ -126,7 +126,7 @@ function Patients() {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Reference</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('reference')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ reference }) => (
                 <CRTable.CRCellStyled bold>
@@ -147,7 +147,7 @@ function Patients() {
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {data => <EditPatient patient={data} editName={t('edit')}/>}
+              {data => <EditPatient patient={data} editName={t('edit')} />}
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>

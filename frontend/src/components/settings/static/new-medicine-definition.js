@@ -9,6 +9,7 @@ import {
   H3,
 } from 'components';
 import { Form } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const options = [
   {
@@ -69,12 +70,13 @@ function NewMedicine({
   show,
   setShow,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Medicine'
+        ? t('addNewMedicine')
         : type === 'edit'
-        ? 'Edit Medicine'
+        ? t('editMedicine')
         : 'Delete Medicine',
     [type]
   );
@@ -97,7 +99,7 @@ function NewMedicine({
         ) : (
           <>
             <CRTextInput
-              label="Medicine Name"
+              label={t('name')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
@@ -108,7 +110,7 @@ function NewMedicine({
               block
             />
             <CRTextInput
-              label="Concentration"
+              label={t('concentration')}
               name="concentration"
               errorMessage={
                 show && checkResult['concentration'].hasError
@@ -124,7 +126,7 @@ function NewMedicine({
               action={ACTIONS.View_Medicine}
             />
             <CRRadio
-              label="Medicine Form"
+              label={t('medicineForm')}
               name="form"
               errorMessage={
                 show && checkResult['form'].hasError

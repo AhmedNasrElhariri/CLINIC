@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Form, Schema } from 'rsuite';
-
+import { useTranslation } from 'react-i18next';
 import {
   CRModal,
   CRSelectInput,
@@ -34,11 +34,12 @@ const NewPatientSurgery = ({
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const { surgeries } = useSurgeries();
   const { hospitals } = useHospitals();
+  const { t } = useTranslation();
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
   });
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Surgery' : 'Edit Surgery'),
+    () => (type === 'create' ? t('addNewSurgery') : t('editSurgery')),
     [type]
   );
 
@@ -56,7 +57,7 @@ const NewPatientSurgery = ({
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRSelectInput
-          label="Patient"
+          label={t('patient')}
           name="patientId"
           errorMessage={
             show && checkResult['patientId'].hasError
@@ -68,7 +69,7 @@ const NewPatientSurgery = ({
           block
         />
         <CRSelectInput
-          label="Surgery"
+          label={t('surgery')}
           name="surgeryId"
           errorMessage={
             show && checkResult['surgeryId'].hasError
@@ -79,7 +80,7 @@ const NewPatientSurgery = ({
           block
         />
         <CRSelectInput
-          label="Hospital"
+          label={t('hospital')}
           name="hospitalId"
           errorMessage={
             show && checkResult['hospitalId'].hasError
@@ -91,7 +92,7 @@ const NewPatientSurgery = ({
         />
         <CRDatePicker
           name="date"
-          label="Date"
+          label={t('date')}
           block
           errorMessage={
             show && checkResult['date'].hasError
@@ -100,29 +101,33 @@ const NewPatientSurgery = ({
           }
         />
         <CRTimePicker
-          label="Time of Admision"
+          label={t('timeOfAdmision')}
           block
           name="time"
           startHour={8}
           onSelectTrigger
         />
         <CRSelectInput
-          label="Anesthesia"
+          label={t('anesthesiaType')}
           name="anesthesia"
           data={AnesthesiaData}
           block
         />
         <CRTextInput
-          label="Anesthesia Doctor Name"
+          label={t('anesthesiaDoctorName')}
           name="anesthesiaDoctorName"
           placeholder="Type Anesthesia Doctor Name"
           block
         />
-        <CRNumberInput label="Doctor Fees" name="fees" block />
-        <CRNumberInput label="Assistant Fees" name="assistantFees" block />
-        <CRNumberInput label="Anesthesia Fees" name="anesthesiaFees" block />
-        <CRNumberInput label="Hospital fees" name="hospitalFees" block />
-        <CRNumberInput label="others" name="others" block />
+        <CRNumberInput label={t('doctorFees')} name="fees" block />
+        <CRNumberInput label={t('assistantFees')} name="assistantFees" block />
+        <CRNumberInput
+          label={t('anesthesiaFees')}
+          name="anesthesiaFees"
+          block
+        />
+        <CRNumberInput label={t('hospitalFees')} name="hospitalFees" block />
+        <CRNumberInput label={t('others')} name="others" block />
       </Form>
     </CRModal>
   );

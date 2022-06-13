@@ -4,6 +4,7 @@ import ReactToPrint from 'react-to-print';
 import { ACTIONS } from 'utils/constants';
 import 'react-quill/dist/quill.snow.css';
 import { CRSelectInput, CRButton, Div } from 'components';
+import { useTranslation } from 'react-i18next';
 import { useReactToPrint } from 'react-to-print';
 import Label from '../widgets/label';
 import styled from 'styled-components';
@@ -39,6 +40,7 @@ function ReportPrintout() {
     initValue,
   });
   const { pageSetupData } = useConfigurations();
+  const { t } = useTranslation();
   const pageSetupRow = pageSetupData.find(
     element => element.type === 'reportPrintout'
   );
@@ -159,9 +161,9 @@ function ReportPrintout() {
   return (
     <>
       <Div display="flex" justifyContent="space-between">
-        <Label>Patient Reports </Label>
+        <Label>{t('patientReports')}</Label>
         <ReactToPrint
-          trigger={() => <CRButton variant="primary">Print</CRButton>}
+          trigger={() => <CRButton variant="primary">{t('print')}</CRButton>}
           content={() => ref.current}
         />
       </Div>
@@ -169,14 +171,14 @@ function ReportPrintout() {
       <Form fluid formValue={formValue} onChange={setFormValue}>
         <CRSelectInput
           name="patientReport"
-          placeholder="Patient Reports"
+          placeholder={t('patientReports')}
           data={values}
           style={{ width: '1000px' }}
           block
         />
         {formValue.context === 'patient' ? (
           <CRSelectInput
-            label="Patient"
+            label={t('patient')}
             name="data"
             onSearch={v => setPatientSearchValue(v)}
             style={{ width: '1000px' }}
@@ -186,7 +188,7 @@ function ReportPrintout() {
           />
         ) : formValue.context === 'appointment' ? (
           <CRSelectInput
-            label="Appointment"
+            label={t('appointment')}
             name="data"
             data={dataValue}
             style={{ width: '1000px' }}
@@ -198,7 +200,7 @@ function ReportPrintout() {
         )}
 
         <CRSelectInput
-          label="Context Data"
+          label={t('contextData')}
           name="context"
           style={{ width: '1000px' }}
           block

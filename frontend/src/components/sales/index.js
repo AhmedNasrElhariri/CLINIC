@@ -20,6 +20,8 @@ import {
 import { formatDate } from 'utils/date';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import { CRDocSelectInput, CRSelectInput } from 'components/widgets';
+import { useTranslation } from 'react-i18next';
+
 const initValue = { itemId: '', quantity: 0 };
 const initFilter = {
   itemId: null,
@@ -30,6 +32,7 @@ const initFilter = {
 };
 const Sales = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
@@ -147,12 +150,12 @@ const Sales = () => {
   return (
     <>
       <MainContainer
-        title="Sales"
+        title={t('sales')}
         more={
           <Div display="flex">
             <Can I="Create" an="Sales">
               <CRButton variant="primary" onClick={handleClickCreate}>
-                Add New Sales +
+                {t('addNewSales')} +
               </CRButton>
             </Can>
           </Div>
@@ -167,7 +170,7 @@ const Sales = () => {
         />
 
         <Div display="flex" my={4}>
-          <H6>Showing for :</H6>
+          <H6>{t('showingFor')} :</H6>
           <H6 variant="primary" ml={2} fontWeight="bold">
             {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
           </H6>
@@ -190,14 +193,14 @@ const Sales = () => {
         <Form formValue={filter} onChange={setFilter}>
           <Div display="flex" justifyContent="space-around">
             <CRDocSelectInput
-              label="Item"
+              label={t('item')}
               data={salesesDefinition}
               name="itemId"
               placement="auto"
               style={{ width: '300px' }}
             />
             <CRSelectInput
-              label="Creator"
+              label={t('creator')}
               name="userId"
               placement="auto"
               data={updatedUsers}

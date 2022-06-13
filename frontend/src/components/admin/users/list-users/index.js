@@ -1,29 +1,31 @@
 import React from 'react';
 import { Tag, Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 export default function Users({ users, onEdit }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={users} bordered={false}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="name" bold />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Email</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('email')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="email" />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Position</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('position')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="position" />
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ specialty }) => (
                 <div>
@@ -42,7 +44,7 @@ export default function Users({ users, onEdit }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}

@@ -5,6 +5,7 @@ import NewLabCategory from './new-lab-category';
 import ListLabsCategory from './list-labs-category';
 import { Schema } from 'rsuite';
 import { useForm, useLabCategory, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const { StringType } = Schema.Types;
 const model = Schema.Model({
@@ -14,6 +15,7 @@ const initValue = { name: '' };
 
 const LabCategory = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -104,7 +106,7 @@ const LabCategory = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate}>
-          Add New Lab Category+
+          {t('addNewLabCategory')}+
         </CRButton>
       </Div>
       <NewLabCategory

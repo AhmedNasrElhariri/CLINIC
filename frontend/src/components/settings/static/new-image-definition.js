@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { CRModal, CRTextInput, CRSelectInput, Div, H3 } from 'components';
 import { useImageCategory } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 function NewImageDefinition({
   formValue,
@@ -16,12 +17,13 @@ function NewImageDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Image Definition'
+        ? t('addNewImageDefinition')
         : type === 'edit'
-        ? 'Edit Image Definition'
+        ? t('editImageDefinition')
         : 'Delete Image Definition',
     [type]
   );
@@ -46,7 +48,7 @@ function NewImageDefinition({
         ) : (
           <>
             <CRTextInput
-              label="Image Name"
+              label={t('name')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
@@ -57,7 +59,7 @@ function NewImageDefinition({
               block
             />
             <CRSelectInput
-              label="Image Category"
+              label={t('imageCategory')}
               name="categoryId"
               block
               data={imagesCategory}

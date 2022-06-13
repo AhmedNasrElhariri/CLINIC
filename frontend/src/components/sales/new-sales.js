@@ -15,6 +15,8 @@ import {
 import { useSalesDefinition } from 'hooks';
 import ListInvoiceItems from './list-invoice-items';
 import { normalize } from 'utils/misc';
+import { useTranslation } from 'react-i18next';
+
 const model = Schema.Model({});
 const initValue = {
   itemId: null,
@@ -32,8 +34,9 @@ function NewSales({
   selectedItems,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Sales' : 'Edit Sales '),
+    () => (type === 'create' ? t('addNewSales') : t('editSales')),
     [type]
   );
   const ref = useRef();
@@ -58,14 +61,16 @@ function NewSales({
       onOk={onOk}
       onHide={onClose}
       onCancel={onClose}
+      okTitle={t('ok')}
+      cancelTitle={t('cancel')}
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         {type === 'delete' ? (
-          'Are you sure that you want delete this sales'
+          t('deleteSalesMessage')
         ) : (
           <>
             <ReactToPrint
-              trigger={() => <CRButton>Print</CRButton>}
+              trigger={() => <CRButton>{t('print')}</CRButton>}
               content={() => ref.current}
             />
             <CRBrancheTree
@@ -81,7 +86,7 @@ function NewSales({
                   specialtyId={formValue?.specialtyId}
                   userId={formValue?.userId}
                   onChange={val => onChange({ ...formValue, itemId: val?.id })}
-                  label="Item"
+                  label={t('item')}
                   data={salesesDefinition}
                   placement="left"
                   style={{ width: '240px' }}
@@ -91,12 +96,12 @@ function NewSales({
               <Div display="flex">
                 <CRNumberInput
                   name="quantity"
-                  label="Quantity"
+                  label={t('quantity')}
                   value={formValue.quantity}
                 />
               </Div>
               <CRButton variant="primary" onClick={handleAdd}>
-                add
+                {t('add')}
               </CRButton>
             </Div>
             <ListInvoiceItems items={itemsList} onDelete={handleDelete} />

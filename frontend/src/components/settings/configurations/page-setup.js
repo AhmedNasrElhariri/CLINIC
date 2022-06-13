@@ -1,17 +1,20 @@
 import React from 'react';
 import { CRSelectInput, CRNumberInput, Div } from 'components';
 import { Form } from 'rsuite';
+import { useTranslation } from 'react-i18next';
+
 const types = [
   { id: 'prescription', name: 'Prescription' },
   { id: 'reportPrintout', name: 'ReportPrintout' },
   { id: 'sales', name: 'Sales' },
 ];
 const PageSetup = ({ pageSetup, setPageSetup }) => {
+  const { t } = useTranslation();
   return (
     <Form formValue={pageSetup} onChange={setPageSetup}>
       <CRSelectInput
         data={types}
-        label="Type"
+        label={t('type')}
         name="type"
         block
         placement="top"
@@ -20,25 +23,25 @@ const PageSetup = ({ pageSetup, setPageSetup }) => {
       <Div display="flex" justifyContent="space-between">
         <CRNumberInput
           name="top"
-          label="Top"
+          label={t('top')}
           layout="inline"
           placeholder="By Centimeter"
         />
         <CRNumberInput
           name="right"
-          label="Right"
+          label={t('right')}
           layout="inline"
           placeholder="By Centimeter"
         />
         <CRNumberInput
           name="bottom"
-          label="Bottom"
+          label={t('bottom')}
           layout="inline"
           placeholder="By Centimeter"
         />
         <CRNumberInput
           name="left"
-          label="Left"
+          label={t('left')}
           layout="inline"
           placeholder="By Centimeter"
         />

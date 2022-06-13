@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-
+import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
 import { MainContainer, Div, CRCard, H6 } from 'components';
 import Toolbar from '../../accounting/toolbar';
@@ -20,6 +20,7 @@ const initialval = {
 const initValue = { id: null, amount: 0 };
 const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
+  const { t } = useTranslation();
   const { visible, open, close } = useModal();
   const {
     formValue,
@@ -72,7 +73,7 @@ const BankAccountingContainer = () => {
   }, [editBankTransition, formValue, type]);
   return (
     <>
-      <MainContainer title="Banking" nobody></MainContainer>
+      <MainContainer title={t('banking')} nobody></MainContainer>
       <CRCard borderless>
         <Can I="ViewFilters" an="Accounting">
           <Toolbar
@@ -83,7 +84,7 @@ const BankAccountingContainer = () => {
           />
 
           <Div display="flex" my={4}>
-            <H6>Showing for :</H6>
+            <H6>{t('showingFor')} :</H6>
             <H6 variant="primary" ml={2} fontWeight="bold">
               {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
             </H6>
@@ -101,7 +102,7 @@ const BankAccountingContainer = () => {
                 render={(revenues, totalRevenues) => (
                   <>
                     <ListData
-                      title="Banking Revenues"
+                      title={t('bankingRevenues')}
                       data={revenues}
                       onEdit={handleClickEdit}
                     />

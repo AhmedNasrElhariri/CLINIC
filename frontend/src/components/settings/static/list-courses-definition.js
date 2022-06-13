@@ -2,14 +2,16 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListCoursesDefinition({ courses, onEdit, onDelete }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={courses}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Course Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -17,7 +19,7 @@ function ListCoursesDefinition({ courses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ type }) => (
                 <CRTable.CRCellStyled bold>{type}</CRTable.CRCellStyled>
@@ -25,7 +27,7 @@ function ListCoursesDefinition({ courses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Price</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price }) => (
                 <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
@@ -33,7 +35,7 @@ function ListCoursesDefinition({ courses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Units</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('units')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ units }) => (
                 <CRTable.CRCellStyled bold>{units}</CRTable.CRCellStyled>
@@ -41,7 +43,7 @@ function ListCoursesDefinition({ courses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Messure Of Units</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('messureOfUnits')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ messureOfUnits }) => (
                 <CRTable.CRCellStyled bold>
@@ -57,7 +59,7 @@ function ListCoursesDefinition({ courses, onEdit, onDelete }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -69,7 +71,7 @@ function ListCoursesDefinition({ courses, onEdit, onDelete }) {
               {data => (
                 <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>

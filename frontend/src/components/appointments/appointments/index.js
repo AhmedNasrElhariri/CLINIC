@@ -3,20 +3,17 @@ import { filterAppointments, sortAppointments } from 'services/appointment';
 import { Div, H3, CRTabs } from 'components';
 import Filter from './filter';
 import BranchFilter from '../../filters';
-import { Alert } from 'rsuite';
+
 import * as R from 'ramda';
-import { useMutation } from '@apollo/client';
-import {
-  ARCHIVE_APPOINTMENT,
-  COMPLETE_APPOINTMENT,
-} from 'apollo-client/queries';
-import { useInventory, useAppointments, useAccounting, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
+
+import {  useAppointments, useModal } from 'hooks';
 import { getName } from 'services/accounting';
 import BusinessNotes from '../today-appointments/business-notes';
 import ArchiveAppointment from '../archive-appointment';
 import CompleteAppointment from '../complete-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
-import { ACTIONS, APPT_STATUS, APPT_TYPE } from 'utils/constants';
+import { ACTIONS, APPT_STATUS } from 'utils/constants';
 const inialCurrentPage = {
   activePage: 1,
 };
@@ -37,6 +34,7 @@ function Appointments() {
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const [notes, setNotes] = useState(initialValue);
+  const { t } = useTranslation();
   const { visible, close, open } = useModal({});
   const {
     appointments,
@@ -152,7 +150,7 @@ function Appointments() {
   );
   return (
     <>
-      <H3 mb={64}>Appointments</H3>
+      <H3 mb={64}>{t('appointments')}</H3>
       <Div mb={4}>
         <CRTabs
           onChange={index =>
@@ -160,9 +158,9 @@ function Appointments() {
           }
         >
           <CRTabs.CRTabsGroup>
-            <CRTabs.CRTab>Main Appointments</CRTabs.CRTab>
-            <CRTabs.CRTab>Waiting Appointments</CRTabs.CRTab>
-            <CRTabs.CRTab>Completed Appointments</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('mainAppointments')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('waitingAppointments')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('completedAppointments')}</CRTabs.CRTab>
           </CRTabs.CRTabsGroup>
           <CRTabs.CRContentGroup>
             <CRTabs.CRContent>

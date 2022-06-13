@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Icon } from 'rsuite';
-
+import { useTranslation } from 'react-i18next';
 import { CRCard, CRTable } from 'components';
 
 function ListCourses({
@@ -17,6 +17,7 @@ function ListCourses({
     },
     [setCurrentPage]
   );
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
@@ -29,7 +30,7 @@ function ListCourses({
           }}
         >
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Course Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('courseName')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ courseDefinition }) => (
                 <CRTable.CRCellStyled bold>
@@ -39,7 +40,7 @@ function ListCourses({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Patient Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ patient }) => (
                 <CRTable.CRCellStyled bold>{patient.name}</CRTable.CRCellStyled>
@@ -47,7 +48,7 @@ function ListCourses({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Patient Phone</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ patient }) => (
                 <CRTable.CRCellStyled bold>
@@ -57,7 +58,7 @@ function ListCourses({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Course Price</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('coursePrice')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price }) => (
                 <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
@@ -65,7 +66,7 @@ function ListCourses({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Course Unpaid</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('courseUnpaid')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price, paid }) => (
                 <CRTable.CRCellStyled bold>{price - paid}</CRTable.CRCellStyled>

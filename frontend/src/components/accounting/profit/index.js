@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import NumberFormat from 'react-number-format';
-
+import { useTranslation } from 'react-i18next';
 import { Div, H6 } from 'components';
 import { ContainerStyled } from './style';
 
@@ -14,11 +14,12 @@ const Box = ({ name, value }) => (
 );
 
 const Profit = ({ expenses, revenues }) => {
+  const { t } = useTranslation();
   return (
     <ContainerStyled>
-      <Box name="Revenues" value={revenues} />
-      <Box name="Expenses" value={expenses} />
-      <Box name="Profit" value={revenues - expenses} />
+      <Box name={t('revenues')} value={revenues} />
+      <Box name={t('expenses')} value={expenses} />
+      <Box name={t('profit')} value={revenues - expenses} />
     </ContainerStyled>
   );
 };

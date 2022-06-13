@@ -21,6 +21,8 @@ import DentalDiagnosis from './dental-diagnosis-definition';
 import FaceMaterials from './face-materials';
 import AppointmentTypeDefinition from './appointment-type-definition';
 import { get } from 'services/local-storage';
+import { useTranslation } from 'react-i18next';
+
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -31,6 +33,8 @@ const TabContainer = styled.div`
 `;
 function StaticSettings() {
   const [activeTab, setActiveTab] = useState('0');
+  const { t } = useTranslation();
+
   const dir = get('dir');
   let border = '2px solid #eef1f1';
   let borderRight = '';
@@ -52,27 +56,27 @@ function StaticSettings() {
         borderRight={borderRight}
         borderLeft={borderLeft}
       >
-        <CRVNav.CRItem eventKey="0">Hospitals</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="1">Surgeries</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="2">Medicine Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="3">Lab Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="4">Lab Category</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="5">Image Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="6">Image Category</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="7">Timing</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="8">Courses and Packages</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="9">Sales Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="10">Bank Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="11">Insurance Companies</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="0">{t('hospitals')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="1">{t('surgeries')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="2">{t('medicineDefinition')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="3">{t('labDefinition')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="4">{t('labCategory')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="5">{t('imageDefinition')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="6">{t('imageCategory')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="7">{t('timing')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="8">{t('coursesAndPackages')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="9">{t('salesDefinition')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="10">{t('bankDefinition')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="11">{t('insuranceCompanies')}</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="12">
-          Insurance Companies Sessions
+          {t('insuranceCompaniesSessions')}
         </CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="13">Expenses Types</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="14">Sessions Definition</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="15">Dental Diagnosis</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="16">Face Materials</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="17">Patient Report</CRVNav.CRItem>
-        <CRVNav.CRItem eventKey="18">Appointment Type</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="13">{t('expensesTypes')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="14">{t('sessionsDefinition')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="15">{t('dentalDiagnosis')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="16">{t('faceMaterials')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="17">{t('patientReport')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="18">{t('appointmentType')}</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {

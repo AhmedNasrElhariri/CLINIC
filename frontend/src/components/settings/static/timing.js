@@ -6,6 +6,7 @@ import NewTiming from './new-timing';
 import ListTiming from './list-timing';
 import { useForm, useModal, useTimings } from 'hooks';
 import { Schema } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '', englishPrintValue: '', arabicPrintValue: '' };
 const { StringType } = Schema.Types;
@@ -17,6 +18,7 @@ const model = Schema.Model({
 
 const Timing = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -110,7 +112,7 @@ const Timing = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate}>
-          Add New Timing +
+          {t('addNewTiming')} +
         </CRButton>
       </Div>
       <NewTiming

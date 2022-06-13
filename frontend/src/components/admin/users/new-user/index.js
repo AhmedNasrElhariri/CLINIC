@@ -5,6 +5,7 @@ import { CRTextInput, CRModal, CRCheckBoxGroup } from 'components';
 import { CRSelectInput } from 'components/widgets';
 import { POSITIONS } from 'utils/constants';
 import { mapObjValuesToChoices } from 'utils/misc';
+import { useTranslation } from 'react-i18next';
 
 const viewsList = [
   { name: 'Dental', value: 'Dental' },
@@ -39,11 +40,12 @@ export default function NewUser({
   onChange,
   type,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(() => {
     if (type === 'create') {
-      return 'Create New User';
+      return t('newUser');
     } else {
-      return 'Edit the User';
+      return t('editUser');
     }
   }, [type]);
   return (
@@ -55,19 +57,19 @@ export default function NewUser({
       onOk={() => onOk(formValue)}
     >
       <Form fluid model={model} formValue={formValue} onChange={onChange}>
-        <CRTextInput label="Name" name="name" />
-        <CRTextInput label="Email" name="email" />
-        <CRTextInput label="Password" name="password" type="password" />
+        <CRTextInput label={t('name')} name="name" />
+        <CRTextInput label={t('email')} name="email" />
+        <CRTextInput label={t('password')} name="password" type="password" />
         <CRSelectInput
           name="position"
-          label="Position"
+          label={t('position')}
           block
           data={positions}
         />
         <CRCheckBoxGroup
           options={viewsList}
           name="allowedViews"
-          label="Views allowed to User"
+          label={t('viewsAllowedToUser')}
           value={formValue.views}
           onChange={val => onChange({ ...formValue, allowedViews: val })}
           inline

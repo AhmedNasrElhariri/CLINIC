@@ -9,6 +9,7 @@ import NewPatientSurgery from '../new-patient-surgery';
 import PatientSurgeryFilter from './filter';
 import { filterPatientSurgery } from 'services/patient-surgery';
 import { useForm, usePatientSurgeries, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   patientId: null,
@@ -33,6 +34,7 @@ const model = Schema.Model({
 });
 const PatientSurgeriesContainer = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const history = useHistory();
   const { formValue, setFormValue, checkResult, validate, show, setShow } =
     useForm({
@@ -50,7 +52,6 @@ const PatientSurgeriesContainer = () => {
         close();
       },
     });
-
 
   const handleOnClickCreate = useCallback(() => {
     open();
@@ -83,12 +84,12 @@ const PatientSurgeriesContainer = () => {
   return (
     <>
       <MainContainer
-        title="Patients Surgeries"
+        title={t('patientsSurgeries')}
         more={
           <Div display="flex">
             <Can I="Create" an="Surgery">
               <CRButton variant="primary" onClick={handleOnClickCreate}>
-                Surgery +
+                {t('surgery')} +
               </CRButton>
             </Can>
           </Div>

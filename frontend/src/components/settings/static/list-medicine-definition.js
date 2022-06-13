@@ -2,14 +2,16 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListMedicines({ medicines, onEdit, onDelete }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={medicines}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name, branch, specialty, doctor, level }) => (
                 <CRTable.CRCellStyled bold>
@@ -28,7 +30,7 @@ function ListMedicines({ medicines, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Concentration</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('concentration')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ concentration }) => (
                 <CRTable.CRCellStyled bold>
@@ -38,7 +40,7 @@ function ListMedicines({ medicines, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Form</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('medicineForm')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ form }) => (
                 <CRTable.CRCellStyled bold>{form}</CRTable.CRCellStyled>
@@ -52,7 +54,7 @@ function ListMedicines({ medicines, onEdit, onDelete }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -64,7 +66,7 @@ function ListMedicines({ medicines, onEdit, onDelete }) {
               {data => (
                 <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>

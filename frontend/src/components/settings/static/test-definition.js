@@ -5,6 +5,7 @@ import NewLabDefinition from './new-test-definition';
 import ListLabsDefinition from './list-tests-definition';
 import { useForm, useModal, useLabDefinitions } from 'hooks';
 import { Schema } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '', categoryId: null };
 const { StringType } = Schema.Types;
@@ -13,6 +14,7 @@ const model = Schema.Model({
 });
 const LabDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -109,7 +111,7 @@ const LabDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate}>
-          Add New Lab +
+          {t('addNewLabDefinition')} +
         </CRButton>
       </Div>
       <NewLabDefinition

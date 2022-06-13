@@ -6,6 +6,7 @@ import NewMedicineDefinition from './new-medicine-definition';
 import ListMedicinesDefinition from './list-medicine-definition';
 import { useMedicineDefinitions } from 'hooks';
 import { useForm, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   name: '',
@@ -24,6 +25,7 @@ const model = Schema.Model({
 
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -118,7 +120,7 @@ const MedicineDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate}>
-          New Medicine +
+          {t('addNewMedicine')} +
         </CRButton>
       </Div>
       <NewMedicineDefinition
