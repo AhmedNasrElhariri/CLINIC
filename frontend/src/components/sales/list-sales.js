@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Icon } from 'rsuite';
 import { formatDate } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { CRCard, CRTable } from 'components';
 import { useTranslation } from 'react-i18next';
 
-function ListSaleses({ saleses, onEdit, onDelete }) {
+  
+function ListSaleses({
+  saleses,
+  onEdit,
+  onDelete,
+  currentPage,
+  setCurrentPage,
+  pages,
+}) {
   const { t } = useTranslation();
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <>
       <CRCard borderless>
@@ -98,6 +112,22 @@ function ListSaleses({ saleses, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>
+        <CRTable.CRPagination
+          lengthMenu={[
+            {
+              value: 10,
+              label: 10,
+            },
+            {
+              value: 20,
+              label: 20,
+            },
+          ]}
+          activePage={currentPage?.activePage}
+          pages={pages}
+          onSelect={handleSelect}
+          // total={appointments.length}
+        />
       </CRCard>
     </>
   );

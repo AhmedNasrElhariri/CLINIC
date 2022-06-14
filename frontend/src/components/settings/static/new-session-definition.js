@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import { Form, InputNumber } from 'rsuite';
 import { CRModal, CRNumberInput, CRTextInput, CRLabel } from 'components';
+import { useTranslation } from 'react-i18next';
+
 function NewSessionDefinition({
   formValue,
   onChange,
@@ -14,11 +16,12 @@ function NewSessionDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Session Definition'
-        : 'Edit Session Definition ',
+        ? t('addNewSessionDefinition')
+        : t('editSessionDefinition'),
     [type]
   );
   return (
@@ -35,17 +38,17 @@ function NewSessionDefinition({
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
-          label="Name"
+          label={t('name')}
           name="name"
           errorMessage={
             show && checkResult['name'].hasError
               ? checkResult['name'].errorMessage
               : ''
           }
-          placeholder="Type Name"
+          // placeholder="Type Name"
           block
         />
-        <CRLabel>Price</CRLabel>
+        <CRLabel>{t('price')}</CRLabel>
         <InputNumber
           // defaultValue={0.01}
           // step={0.01}
@@ -58,7 +61,7 @@ function NewSessionDefinition({
               ? checkResult['price'].errorMessage
               : ''
           }
-          placeholder="Type Price"
+          // placeholder="Type Price"
         />
         {/* <CRNumberInput
           label="Price"
@@ -72,9 +75,9 @@ function NewSessionDefinition({
           block
         /> */}
         <CRNumberInput
-          label="Duration"
+          label={t('duration')}
           name="duration"
-          placeholder="Type Duration"
+          // placeholder="Type Duration"
           block
         />
       </Form>

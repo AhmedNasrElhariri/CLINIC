@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
+import moment from 'moment';
 import { Modal, Whisper, Tooltip, Form } from 'rsuite';
-
+import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import {
   Div,
   H6,
@@ -17,8 +18,9 @@ import { capitalize } from 'utils/text';
 import { KeyStyled, ValueStyled } from './style';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
-const renderProp = (key, value) => {
+const renderProp = (key, value, textValue) => {
   return (
     <Div display="flex" alignItems="center" minHeight={60}>
       <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
@@ -26,12 +28,39 @@ const renderProp = (key, value) => {
       </Whisper>
       <CRVDivider vertical />
       <ValueStyled>{value}</ValueStyled>
+      {textValue && (
+        <>
+          <CRVDivider vertical />
+          <ValueStyled>{textValue}</ValueStyled>
+        </>
+      )}
+    </Div>
+  );
+};
+const renderProp2 = (key, value) => {
+  return (
+    <Div display="flex" alignItems="center" minHeight={60}>
+      <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
+        <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
+      </Whisper>
+      {value.length > 0 &&
+        value.map(v => (
+          <Div display="flex">
+            <CRVDivider vertical />
+            <Div display="flex">
+              <ValueStyled>{v[0]}</ValueStyled>
+            </Div>
+            <Div ml={10} display="flex" mr={10}>
+              <ValueStyled>{v[1]}</ValueStyled>
+            </Div>
+          </Div>
+        ))}
     </Div>
   );
 };
 
 const renderAppointment = data => {
-  return data.map(({ value, field }, idx) => (
+  return data.map(({ value, field, textValue }, idx) => (
     <React.Fragment key={idx}>
       {value && field.type === 'NestedSelector'
         ? renderProp(
@@ -44,17 +73,25 @@ const renderAppointment = data => {
               />
             </Form>
           )
-        : renderProp(field.name, value)}
+        : value && field.type === 'SelectorWithInput'
+        ? renderProp2(field.name, value, textValue)
+        : renderProp(field.name, value, textValue)}
     </React.Fragment>
   ));
 };
 
 const PatientSummary = ({ summary, tabularFields, tabularData }) => {
-  const [activeSession, setActiveSession] = useState(null);
-
-  useEffect(() => {
-    setActiveSession(R.propOr({}, '0')(summary));
+  const { t } = useTranslation();
+  const updatedSummary = useMemo(() => {
+    const today = moment(new Date()).endOf('day');
+    const ss = summary.filter(s => moment(s.date) <= today);
+    return ss;
   }, [summary]);
+  const [activeSession, setActiveSession] = useState(null);
+  const history = useHistory();
+  useEffect(() => {
+    setActiveSession(R.propOr({}, '0')(updatedSummary));
+  }, [updatedSummary]);
 
   const date = useMemo(
     () => R.propOr(new Date(), 'date')(activeSession),
@@ -65,14 +102,25 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
     () => R.propOr([], 'data')(activeSession),
     [activeSession]
   );
-
   const sessionId = useMemo(
-    () => R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(summary),
-    [activeSession, summary]
+    () =>
+      R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(updatedSummary),
+    [activeSession, updatedSummary]
   );
-
+  // const updatedData = useMemo(() => {
+  //   let newData = [];
+  //   if (dynamicTextInput) {
+  //     newData = data.map(d => {
+  //       let value = '';
+  //       value = dynamicTextInput[d.field.id] || '';
+  //       return { ...d, textValue: value };
+  //     });
+  //   } else {
+  //     newData = data;
+  //   }
+  //   return newData;
+  // }, [data, dynamicTextInput]);
   const { visible, open, close } = useModal();
-
   const pictures = useMemo(
     () => R.propOr([], 'pictures')(activeSession),
     [activeSession]
@@ -81,24 +129,25 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
   if (!activeSession) {
     return '...No History';
   }
-
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>
-        {summary.map((session, idx) => (
+        {updatedSummary.map((session, idx) => (
           <CRNav.CRVItem
             key={session.id}
             eventKey={session}
             active={activeSession.id === session.id}
           >
-            Session {summary.length - idx}
+            {t('session')} {updatedSummary.length - idx}
           </CRNav.CRVItem>
         ))}
       </CRNav>
       <Div m={4} flexGrow={1}>
-        {summary.length ? (
+        {updatedSummary.length ? (
           <>
-            <H3 mb={4}>Session {summary.length - sessionId}</H3>
+            <H3 mb={4}>
+              {t('session')} {updatedSummary.length - sessionId}
+            </H3>
             <Div>
               {renderProp('Date', formatDate(date))}
               {renderAppointment(data)}
@@ -117,14 +166,24 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
             alignItems="center"
             height={200}
           >
-            <H6 color="texts.2">No Summary</H6>
+            <H6 color="texts.2">{t('noData')}</H6>
           </Div>
         )}
       </Div>
+
       <Div position="absolute" top={0} right={3}>
-        <CRButton onClick={open} variant="primary">
-          Table View
-        </CRButton>
+        <Div mb={5}>
+          <CRButton
+            onClick={() => history.push(`/appointments/${activeSession.id}`)}
+            variant="primary"
+            mr={10}
+          >
+            {t('edit')}
+          </CRButton>
+          <CRButton onClick={open} variant="primary">
+            {t('tableView')}
+          </CRButton>
+        </Div>
         <Modal show={visible} full onHide={close}>
           <Modal.Body>
             <SummaryTable data={tabularData} fields={tabularFields} />

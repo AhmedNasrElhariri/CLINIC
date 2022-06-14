@@ -19,21 +19,28 @@ const editCoursePaymentHistory = async (
       id: courseId,
     },
     include: {
-      courseDefinition: true,
       patient: true,
     },
   });
+  let cName = data.customName;
+  const { courseDefinitionId } = data;
+  if (courseDefinitionId) {
+    const courseDefination = await prisma.courseDefinition.findUnique({
+      where: { id: courseDefinitionId },
+    });
+    cName = courseDefination.name;
+  }
   const payment = bank
     ? 'C' +
       '/' +
-      data.courseDefinition.name +
+      data.cName +
       '/' +
       data.patient.name +
       '/' +
       'Bank_Update_Payment'
     : 'C' +
       '/' +
-      data.courseDefinition.name +
+      data.cName +
       '/' +
       data.patient.name +
       'Update_Payment';

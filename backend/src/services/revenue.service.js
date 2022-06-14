@@ -15,7 +15,8 @@ export const createAppointmentRevenueFromSessions = (
   branchId,
   date,
   specialtyId,
-  userID
+  userID,
+  patientId
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
   return sessions.map(({ name, price, number }) =>
@@ -30,7 +31,8 @@ export const createAppointmentRevenueFromSessions = (
       },
       specialtyId && { specialtyId },
       branchId && { branchId },
-      userID && { doctorId: userID }
+      userID && { doctorId: userID },
+      patientId && { patientId: patientId }
     )
   );
 };
@@ -43,7 +45,8 @@ export const createAppointmentBankRevenueFromSessions = (
   date,
   specialtyId,
   userID,
-  bank
+  bank,
+  patientId
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
   return sessions.map(({ name, price, number }) =>
@@ -59,9 +62,8 @@ export const createAppointmentBankRevenueFromSessions = (
       },
       specialtyId && { specialtyId },
       branchId && { branchId },
-      userID && { doctorId: userID }
+      userID && { doctorId: userID },
+      patientId && { patientId: patientId }
     )
   );
 };
-
-

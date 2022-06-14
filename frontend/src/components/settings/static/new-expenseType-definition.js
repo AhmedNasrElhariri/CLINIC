@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { CRModal, CRTextInput } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function NewExpenseTypeDefinition({
   formValue,
@@ -15,8 +16,9 @@ function NewExpenseTypeDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Expense Type' : 'Edit Expense Type '),
+    () => (type === 'create' ? t('addNewExpenseType') : t('editExpenseType')),
     [type]
   );
 
@@ -34,14 +36,14 @@ function NewExpenseTypeDefinition({
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
-          label="Expense Type Name"
+          label={t('name')}
           name="name"
           errorMessage={
             show && checkResult['name'].hasError
               ? checkResult['name'].errorMessage
               : ''
           }
-          placeholder="Type Expense Type"
+          // placeholder="Type Expense Type"
           block
         />
       </Form>

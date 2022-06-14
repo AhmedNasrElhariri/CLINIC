@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 
 import { FormGroup, RadioGroup, FlexboxGrid } from 'rsuite';
 import { CRLabel } from 'components';
@@ -15,10 +15,12 @@ const PermissionRules = ({
   level,
   branches,
   rules,
+  all,
   onAdd,
   doctors,
   onDelete,
 }) => {
+  
   return (
     <FormGroup>
       <CRLabel>{label}</CRLabel>

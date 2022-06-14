@@ -7,6 +7,7 @@ import { useForm, useSessionDefinition } from 'hooks';
 import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
 import { Schema } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   name: '',
@@ -21,6 +22,7 @@ const model = Schema.Model({
 
 const SessionDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -79,7 +81,10 @@ const SessionDefinition = () => {
     } else {
       editSessionDefinition({
         variables: {
-          sessionDefinition: formValue,
+          sessionDefinition: {
+            ...formValue,
+            price: parseFloat(formValue.price),
+          },
         },
       });
     }
@@ -90,7 +95,7 @@ const SessionDefinition = () => {
       <Div textAlign="right">
         <Can I="Create" an="SessionDefinition">
           <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-            Add New Session Definition+
+            {t('addNewSessionDefinition')}+
           </CRButton>
         </Can>
       </Div>

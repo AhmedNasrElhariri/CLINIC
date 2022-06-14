@@ -13,6 +13,7 @@ import {
 import { EditOLIcon, DeleteOLIcon } from 'components/icons';
 import EditAppointment from '../edit-appointment';
 import CancelAppointment from '../cancel-appointment';
+import { useModal } from 'hooks';
 
 const calcDate = ({ date, time }) =>
   moment(date)
@@ -82,18 +83,17 @@ export const useAdjustAppointment = ({
 };
 
 const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
-  const { edit, cancel, visible, setVisible, setAppointment } =
-    useAdjustAppointment();
-
+  const { edit, cancel, setVisible, setAppointment } = useAdjustAppointment();
+  const { visible, close, open } = useModal({});
   useEffect(() => {
     setAppointment(appointment);
   }, [appointment, setAppointment]);
 
   const onOpen = useCallback(
     type => {
-      setVisible({ [type]: true });
+      open();
     },
-    [setVisible]
+    [open]
   );
 
   const onClose = useCallback(
@@ -118,23 +118,30 @@ const AdjustAppointment = ({ appointment, children, onCancel, onAdjust }) => {
         <>
           <Can I="Reschedule" an="Appointment">
             <EditOLIcon
-              onClick={() => {
+              onClick={e => {
+                e.stopPropagation();
                 onOpen('edit');
               }}
               ml={2}
             />
           </Can>
           <Can I="Cancel" an="Appointment">
-            <DeleteOLIcon onClick={() => onOpen('cancel')} ml={2} />
+            <DeleteOLIcon
+              onClick={e => {
+                e.stopPropagation();
+                onOpen('cancel');
+              }}
+              ml={2}
+            />
           </Can>
         </>
       )}
 
       <EditAppointment
         onOk={edit}
-        visible={visible.edit}
+        visible={visible}
         appointment={appointment}
-        onClose={() => onClose('edit')}
+        // onClose={() => onClose('edit')}
       />
 
       <CancelAppointment

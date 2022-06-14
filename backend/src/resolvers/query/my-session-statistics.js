@@ -1,60 +1,85 @@
 import { prisma } from '@';
 import moment from 'moment';
 
+function groupArrayOfObjects(list, key) {
+  return list.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
+
 const sessionStatistics = async (
   _,
-  { sessionId, dateFrom, dateTo },
+  { sessionsIds, dateFrom, dateTo },
   { user, organizationId }
 ) => {
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
-  let totalPrice = 0;
-  const session = await prisma.sessionDefinition.findUnique({
+  const sessions = await prisma.sessionDefinition.findMany({
     where: {
-      id: sessionId,
-    },
-  });
-  const sessionTransactions = await prisma.sessionTransaction.findMany({
-    where: {
-      sessionId,
-      date: {
-        gte: startDay,
-        lte: endDay,
-      },
-    },
-  });
-  const totalNumber = await prisma.sessionTransaction.aggregate({
-    sum: { number: true },
-    where: {
-      sessionId,
-      date: {
-        gte: startDay,
-        lte: endDay,
+      id: {
+        in: sessionsIds,
       },
     },
   });
 
-  //   const totalPrice = await prisma.sessionTransaction.aggregate({
-  //     sum: { price: true },
-  //     where: {
-  //       sessionId,
-  //       date: {
-  //         gte: startDay,
-  //         lte: endDay,
-  //       },
+  // const stat = await prisma.sessionTransaction.groupBy({
+  //   by: ['sessionId'],
+  //   sum: {
+  //     price: true,
+  //     number: true,
+  //   },
+
+  //   where: {
+  //     date: {
+  //       gte: startDay,
+  //       lte: endDay,
   //     },
-  //   });
-  await sessionTransactions.forEach(s => {
-    let sum = s.number * s.price;
-    totalPrice += sum;
+  //     sessionId: {
+  //       in: sessionsIds,
+  //     },
+  //   },
+  // });
+  const sessionsTransactions = await prisma.sessionTransaction.findMany({
+    where: {
+      sessionId: {
+        in: sessionsIds,
+      },
+      date: {
+        gte: startDay,
+        lte: endDay,
+      },
+    },
+  });
+  const updatedSessionsTransactions = sessionsTransactions.map(s => {
+    return { ...s, totalPrice: s.number * s.price };
+  });
+  
+  const groups = groupArrayOfObjects(updatedSessionsTransactions,'sessionId');
+  const groupsValue = Object.values(groups);
+  const totalsessions = groupsValue.map(g => {
+    let totalNumber = 0;
+    let totalPrice = 0;
+    g.forEach(s => {
+      totalNumber += s.number;
+      totalPrice += s.totalPrice;
+    });
+    return {
+      sessionId: g[0].sessionId,
+      totalNumber: totalNumber,
+      totalPrice: totalPrice,
+    };
+  });
+  const statistics = totalsessions.map(ts => {
+    const session = sessions.find(s => s.id == ts.sessionId);
+    return {
+      name: session.name,
+      totalNumber: ts.totalNumber,
+      totalPrice: ts.totalPrice,
+    };
   });
 
-  const data = {
-    session: session,
-    totalNumber: totalNumber.sum.number,
-    totalPrice: totalPrice,
-  };
-  return data;
+  return statistics;
 };
 
 export default sessionStatistics;

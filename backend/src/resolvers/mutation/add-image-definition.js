@@ -1,11 +1,11 @@
 import { prisma } from '@';
-
 const addImageDefinition = async (
   _,
   { imageDefinition },
   { userId, organizationId }
 ) => {
   const { categoryId, ...rest } = imageDefinition;
+
   return prisma.imageDefinition.create({
     data: {
       ...rest,

@@ -9,7 +9,6 @@ import { useConfigurations } from 'hooks';
 import { useTranslation } from 'react-i18next';
 
 const initialValues = {
-  sessions: [],
   enableInvoiceCounter: false,
 };
 const initialPulsesValue = {
@@ -45,16 +44,11 @@ const Configurations = () => {
     points,
   } = useConfigurations();
   useEffect(() => {
-    const sessions = R.pipe(
-      R.propOr([], 'sessions'),
-      R.map(R.pick(['name', 'price']))
-    )(configurations);
     const enableInvoiceCounter = R.propOr(
       false,
       'enableInvoiceCounter'
     )(configurations);
     setFormValue({
-      sessions,
       enableInvoiceCounter,
     });
     const before = R.propOr(0, 'before')(getPulseControl);
@@ -68,10 +62,6 @@ const Configurations = () => {
     update(formValue);
   }, [formValue, update]);
 
-  const sessions = useMemo(
-    () => R.propOr([], 'sessions')(formValue),
-    [formValue]
-  );
   useEffect(() => {
     const { type } = pageSetup;
     const pageSetupRow = pageSetupData.find(element => element.type === type);
@@ -81,16 +71,7 @@ const Configurations = () => {
     const left = R.propOr(0, 'left')(pageSetupRow);
     setPageSetup({ ...pageSetup, top, right, bottom, left });
   }, [pageSetup.type, pageSetupData]);
-  const updateSession = useCallback(
-    session => {
-      setFormValue({
-        ...formValue,
-        sessions: [...sessions, session],
-      });
-    },
-    [formValue, sessions]
-  );
-
+  
   const updateEnable = useCallback(
     enable => {
       setFormValue({
@@ -124,15 +105,7 @@ const Configurations = () => {
     });
   }, [pointsValue, editPoints]);
 
-  const handleDelete = useCallback(
-    idx => {
-      setFormValue({
-        ...formValue,
-        sessions: R.remove(idx, 1)(sessions),
-      });
-    },
-    [formValue, sessions]
-  );
+  
   const today = moment(new Date()).format('DD/MM/YYYY');
   return (
     <>

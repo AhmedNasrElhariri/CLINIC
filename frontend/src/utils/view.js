@@ -7,7 +7,7 @@ export const mapLanesToGroupFields = lanes => {
       order: idx,
       fields: cards.map((c, cIdx) =>
         Object.assign({}, !c.isNew && { id: c.id }, {
-          ...R.pick(['name', 'type', 'choices'])(c),
+          ...R.pick(['name', 'type', 'choices','dynamic','choicesType'])(c),
           order: cIdx,
         })
       ),

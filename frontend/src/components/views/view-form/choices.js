@@ -1,9 +1,18 @@
 import React, { useCallback, useState } from 'react';
-import { Input, Icon, Button, IconButton } from 'rsuite';
+import { Input, Icon, Button, IconButton, Toggle, Form } from 'rsuite';
 
-import { CRModal, Div } from 'components';
+import { CRModal, CRSelectInput, Div } from 'components';
 
-function Choices({ visible, onOk, onClose }) {
+function Choices({
+  visible,
+  onOk,
+  onClose,
+  toggle,
+  setToggle,
+  choicesTypes,
+  choicesType,
+  setChoicesType,
+}) {
   const [formValue, setFormValue] = useState([]);
   const handleOnClick = useCallback(() => {
     setFormValue([...formValue, '']);
@@ -39,24 +48,46 @@ function Choices({ visible, onOk, onClose }) {
       onHide={onClose}
       onCancel={onClose}
     >
-      <Div display="flex" justifyContent="flex-end" mb={3}>
-        <Button onClick={handleOnClick}>Add</Button>
+      <Div mr={20} mt={45} width={100}>
+        <Toggle
+          checkedChildren="static"
+          unCheckedChildren="dynamic"
+          size="md"
+          onChange={v => setToggle(v)}
+          mt={10}
+        />
       </Div>
-      {formValue.map((val, index) => (
-        <Div display="flex" mb={3} key={index}>
-          <Input
-            value={val}
-            onChange={val => handleOnChange(val, index)}
-          ></Input>
-          <Div ml={2}>
-            <IconButton
-              icon={<Icon icon="trash" />}
-              color="red"
-              onClick={() => handleOnDelete(index)}
-            />
+      {toggle && (
+        <>
+          <Div display="flex" justifyContent="flex-end" mb={3}>
+            <Button onClick={handleOnClick}>Add</Button>
           </Div>
-        </Div>
-      ))}
+          {formValue.map((val, index) => (
+            <Div display="flex" mb={3} key={index}>
+              <Input
+                value={val}
+                onChange={val => handleOnChange(val, index)}
+              ></Input>
+              <Div ml={2}>
+                <IconButton
+                  icon={<Icon icon="trash" />}
+                  color="red"
+                  onClick={() => handleOnDelete(index)}
+                />
+              </Div>
+            </Div>
+          ))}
+        </>
+      )}
+      {!toggle && (
+        <Form formValue={choicesType} onChange={setChoicesType}>
+          <CRSelectInput
+            data={choicesTypes}
+            name="choicesType"
+            style={{ width: '300px', marginTop: '10px' }}
+          />
+        </Form>
+      )}
     </CRModal>
   );
 }

@@ -5,6 +5,7 @@ import NewPatientReport from './new-patient-report';
 import ListPatientReports from './list-patient-report';
 import { useForm, useModal, usePatientReports } from 'hooks';
 import { Schema } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '', body: '', context: '' };
 const { StringType } = Schema.Types;
@@ -14,6 +15,7 @@ const model = Schema.Model({
 
 const PatientReport = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -111,7 +113,7 @@ const PatientReport = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate}>
-          New Patient Report +
+          {t('addNewPatientReport')} +
         </CRButton>
       </Div>
       <NewPatientReport

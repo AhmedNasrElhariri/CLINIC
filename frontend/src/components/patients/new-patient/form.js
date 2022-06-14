@@ -29,6 +29,10 @@ const ageOptions = [
   { name: 'Age', value: 'age' },
   { name: 'Birth Of Date', value: 'birthOfDate' },
 ];
+const phoneOptions = [
+  { name: 'One Phone Number', value: 'one' },
+  { name: 'Two Phone Numbers', value: 'two' },
+];
 
 const options = [
   { name: 'FaceBook', value: 'facebook' },
@@ -81,6 +85,8 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
               : ''
           }
         /> */}
+        
+        <CRRadio options={phoneOptions} name="phoneOption" />
         <CRLabel>{t('phoneNo')}</CRLabel>
         <PhoneInput
           country={'eg'}
@@ -103,6 +109,20 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
           //     : ''
           // }
         />
+        {formValue.phoneOption === 'two' && (
+          <>
+            <CRLabel>Phone No Two</CRLabel>
+            <PhoneInput
+              country={'eg'}
+              name="phoneNoTwo"
+              value={formValue.phoneNoTwo}
+              enableSearch
+              onChange={phone => onChange({ ...formValue, phoneNoTwo: phone })}
+              containerStyle={{ marginTop: '10px' }}
+              inputStyle={{ width: '100%', borderRadius: '0px' }}
+            />
+          </>
+        )}
       </ShowIf>
 
       <ShowIf show={isSecondary(formValue)}>
@@ -135,6 +155,7 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
         block
       />
       <CRSelectInput label={t('area')} name="area" data={newAreas} block />
+      <CRTextInput label="Code" name="code" />
       <CRCheckBoxGroup
         label={t('reference')}
         options={options}

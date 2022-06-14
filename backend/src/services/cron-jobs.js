@@ -25,21 +25,26 @@ export const tomorrowAppointmentsReminder = async () => {
       patient: true,
     },
   });
+  
   tomorrowAppointments.forEach(a => {
     const { patient, date } = a;
     const phoneNo = patient.phoneNo;
     const updatedDate = formatDateFull(date);
     const decryptedPhoneNo = CryptoJS.AES.decrypt(phoneNo, 'secret key 123');
     const originalPhoneNo = decryptedPhoneNo.toString(CryptoJS.enc.Utf8);
-    const receiverPhoneNo = '+2' + originalPhoneNo;
+    const receiverPhoneNo = '+2' + phoneNo;
     const originalMessage = 'You have Appointment at ' + updatedDate;
+    
     client.messages
       .create({
-        from: '+18067794081', // the phone number of the application owner // add 'whatsapp:+...'
+        from: 'whatsapp+9853154551 ', // the phone number of the application owner // add 'whatsapp:+...'
         body: originalMessage,
-        to: receiverPhoneNo, // add 'whatsapp:+...'
+        to: `whatsapp:${receiverPhoneNo}`, // add 'whatsapp:+...'
       })
-      .then(message => console.log(message));
+      .then(message => console.log(message))
+      .catch(err => {
+        console.log(err, 'EEEEEEEEEEEE');
+      });
   });
 };
 
@@ -76,7 +81,7 @@ export const before3daysSurgeriesReminder = async () => {
       hospital.name;
     client.messages
       .create({
-        from: '+18067794081', // the phone number of the application owner // add 'whatsapp:+...'
+        from: '+19853154551', // the phone number of the application owner // add 'whatsapp:+...'
         body: originalMessage,
         to: receiverPhoneNo, // add 'whatsapp:+...'
       })

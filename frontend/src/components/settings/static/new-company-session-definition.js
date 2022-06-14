@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { CRModal, CRSelectInput, CRNumberInput } from 'components';
 import { useCompanyDefinition, useSessionDefinition } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 function NewCompanySessionDefinition({
   formValue,
@@ -16,9 +17,10 @@ function NewCompanySessionDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
-      type === 'create' ? 'Add New Company Session' : 'Edit Company Session',
+      type === 'create' ? t('addNewCompanySession') : t('editCompanySession'),
     [type]
   );
   const { companysDefinition } = useCompanyDefinition({});
@@ -41,26 +43,26 @@ function NewCompanySessionDefinition({
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRSelectInput
-          label="Company Name"
+          label={t('companyName')}
           name="companyId"
           placeholder="Type Company"
           data={companysDefinition}
           block
         />
         <CRSelectInput
-          label="Session Name"
+          label={t('sessionName')}
           name="name"
           errorMessage={
             show && checkResult['name'].hasError
               ? checkResult['name'].errorMessage
               : ''
           }
-          placeholder="Select Type"
+          // placeholder="Select Type"
           data={choices}
           block
         />
         <CRNumberInput
-          label="price"
+          label={t('price')}
           name="price"
           errorMessage={
             show && checkResult['price'].hasError

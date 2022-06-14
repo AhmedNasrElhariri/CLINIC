@@ -7,6 +7,7 @@ import ListSalesesDefinition from './list-saleses-definition';
 import { useForm, useSalesDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   name: '',
@@ -28,6 +29,7 @@ const model = Schema.Model({
 
 const SalesDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -146,10 +148,10 @@ const SalesDefinition = () => {
       <Div textAlign="right">
         <Can I="Define" an="Sales">
           <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-            Add New Sales Definition+
+            {t('addNewSalesDefinition')}+
           </CRButton>
           <CRButton variant="primary" onClick={handleAddQuantity} mt={2} ml={1}>
-            Add Sales Quantity+
+            {t('addSalesQuantity')}+
           </CRButton>
         </Can>
       </Div>

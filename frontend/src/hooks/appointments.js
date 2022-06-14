@@ -15,8 +15,21 @@ import {
   LIST_INVENTORY_HISTORY,
   UPDATE_BUSINESS_NOTES,
   PATIENT_COUPONS,
+  ADJUST_APPOINTMENT,
+  CANCEL_APPOINTMENT,
+  GET_INVOICE_COUNTER,
 } from 'apollo-client/queries';
+import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
+
+const updateCache = myAppointments => {
+  client.writeQuery({
+    query: LIST_APPOINTMENTS,
+    data: {
+      myAppointments,
+    },
+  });
+};
 
 function useAppointments({
   includeSurgery,
@@ -55,7 +68,7 @@ function useAppointments({
     () =>
       R.pipe(
         R.propOr([], 'appointments'),
-        R.reject(R.propEq('status', 'Cancelled')),
+        // R.reject(R.propEq('status', 'Cancelled')),
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery))
@@ -123,6 +136,9 @@ function useAppointments({
         },
         { query: LIST_INVENTORY },
         { query: LIST_INVENTORY_HISTORY },
+        {
+          query: GET_INVOICE_COUNTER,
+        },
       ],
     }
   );
@@ -141,10 +157,41 @@ function useAppointments({
     onCompleted: () => {
       Alert.success('Business Notes Added Successfully');
     },
+    update(cache, { data: { updateNotes: appointment } }) {
+      const app = appointments.find(a => a.id == appointment.id);
+      const newApp = { ...app, businessNotes: appointment.businessNotes };
+      const allNewApp = appointments.map(oldApp => {
+        if (oldApp.id == appointment.id) {
+          return newApp;
+        } else {
+          return oldApp;
+        }
+      });
+      updateCache(allNewApp);
+    },
+    refetchQueries: [
+      {
+        query: LIST_TODAY_APPOINTMENTS,
+      },
+    ],
+  });
+  const [adjust] = useMutation(ADJUST_APPOINTMENT, {
+    onCompleted: ({ adjustAppointment }) => {
+      Alert.success('Appointment has been changed successfully');
+    },
     refetchQueries: [
       {
         query: LIST_APPOINTMENTS,
-        variables: { offset: 0, limit: 20 },
+      },
+    ],
+  });
+  const [cancel] = useMutation(CANCEL_APPOINTMENT, {
+    onCompleted: () => {
+      Alert.success('Appointment has been cancelled successfully');
+    },
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
       },
     ],
   });
@@ -166,6 +213,8 @@ function useAppointments({
       complete,
       archiveLoading,
       updateNotes,
+      adjust,
+      cancel,
     }),
     [
       appointments,
@@ -179,6 +228,8 @@ function useAppointments({
       complete,
       archiveLoading,
       updateNotes,
+      adjust,
+      cancel,
     ]
   );
 }

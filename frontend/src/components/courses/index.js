@@ -27,6 +27,7 @@ const initValue = {
   branchId: null,
   specialtyId: null,
   userId: null,
+  bankCreate: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -68,6 +69,7 @@ const Courses = () => {
     users,
     loading,
     finishCourse,
+    editCourseUnitHistory,
   } = useCourses({
     onCreate: () => {
       close();
@@ -172,7 +174,21 @@ const Courses = () => {
     },
     [open, setFormValue, setType]
   );
-
+  const handleClickEditUnitsHistory = useCallback(
+    data => {
+      const unitTransaction = R.pick(['id', 'units', 'transactionId'])(data);
+      const updatedUnitTransaction = {
+        id: unitTransaction.id,
+        consumed: unitTransaction.units,
+        transactionId: unitTransaction.transactionId,
+      };
+      setType('editUnitsTransactions');
+      setHeader('Edit Unit Transaction');
+      setFormValue(updatedUnitTransaction);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       const {
@@ -240,6 +256,14 @@ const Courses = () => {
           specialtyId: formValue.specialtyId,
           userId: formValue.userId,
           branchId: formValue.branchId,
+        },
+      });
+    } else if (type === 'editUnitsTransactions') {
+      editCourseUnitHistory({
+        variables: {
+          transactionId: formValue.transactionId,
+          consumed: formValue.consumed,
+          courseId: formValue.id,
         },
       });
     } else if (type === 'deleteCourse') {
@@ -354,6 +378,7 @@ const Courses = () => {
           onFinishCourse={handleFinishCourse}
           onDeleteCourse={handleDeleteCourse}
           onEditHistoryPayment={handleClickEditHistoryPayment}
+          onEditUnitsHistory={handleClickEditUnitsHistory}
         />
       )}
     </>

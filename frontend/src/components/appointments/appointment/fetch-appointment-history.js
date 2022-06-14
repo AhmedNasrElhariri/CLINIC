@@ -24,7 +24,6 @@ export default ({ appointmentId, appointment }) => {
       appointmentId,
     },
   });
-
   const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
   const viewFields = useMemo(
     () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),

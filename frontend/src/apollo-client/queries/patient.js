@@ -7,6 +7,7 @@ export const CREATE_PATIENT = gql`
       name
       type
       phoneNo
+      phoneNoTwo
       sex
       age
       reference
@@ -24,6 +25,8 @@ export const EDIT_PATIENT = gql`
       name
       type
       phoneNo
+      phoneNoTwo
+      code
       sex
       age
       reference
@@ -40,6 +43,7 @@ export const LIST_PATIENTS = gql`
         name
         type
         phoneNo
+        phoneNoTwo
         sex
         age
         reference
@@ -67,6 +71,7 @@ export const LIST_SEARCHED_PATIENTS = gql`
       id
       name
       phoneNo
+      phoneNoTwo
       age
     }
   }
@@ -103,6 +108,8 @@ export const GET_PATIENT = gql`
       age
       sex
       phoneNo
+      phoneNoTwo
+      remainingOfPayment
     }
   }
 `;
@@ -127,6 +134,22 @@ export const COUPON_POINTS_TRANSACTIONS = gql`
       coupon {
         value
       }
+    }
+  }
+`;
+
+export const PATIENT_REVENUE = gql`
+  query patientRevenue($patientId: ID!, $offset: Int, $limit: Int) {
+    patientRevenue(patientId: $patientId, offset: $offset, limit: $limit) {
+      patientRevenue {
+        id
+        name
+        amount
+        type
+        date
+      }
+      totalRevenue
+      patientRevenueCounts
     }
   }
 `;

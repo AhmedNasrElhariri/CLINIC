@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import NumberFormat from 'react-number-format';
 import { useTranslation } from 'react-i18next';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
-
-function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
+import { FULL_DAY_FORMAT } from 'utils/constants';
+function ListPatientSurgeries({
+  patientSurgeries,
+  onSurgeryClick,
+  currentPage,
+  setCurrentPage,
+  pages,
+}) {
   const { t } = useTranslation();
+  const handleSelect = useCallback(
+    eventKey => {
+      setCurrentPage({ activePage: eventKey });
+    },
+    [setCurrentPage]
+  );
   return (
     <>
       <CRCard borderless>
@@ -37,13 +49,13 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1.5}>
             <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) =>
                 date ? (
                   <CRTable.CRCellStyled>
-                    {formatDate(date)}
+                    {formatDate(date, FULL_DAY_FORMAT)}
                   </CRTable.CRCellStyled>
                 ) : null
               }
@@ -126,7 +138,37 @@ function ListPatientSurgeries({ patientSurgeries, onSurgeryClick }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>Others Fees</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ others }) => (
+                <CRTable.CRCellStyled bold>
+                  <NumberFormat
+                    value={others}
+                    displayType="text"
+                    thousandSeparator
+                  />
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
         </CRTable>
+        <CRTable.CRPagination
+          lengthMenu={[
+            {
+              value: 10,
+              label: 10,
+            },
+            {
+              value: 20,
+              label: 20,
+            },
+          ]}
+          activePage={currentPage?.activePage}
+          pages={pages}
+          onSelect={handleSelect}
+          // total={appointments.length}
+        />
       </CRCard>
     </>
   );

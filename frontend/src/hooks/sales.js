@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import * as R from 'ramda';
 import { Alert } from 'rsuite';
-import { filterAccountingList } from 'utils/accounting';
 import {
   ADD_SALES,
   EDIT_SALES,
@@ -21,26 +20,55 @@ const updateCache = mySaleses => {
   });
 };
 
-function useSales({ onCreate, onEdit, view, period } = {}) {
-  const { data } = useQuery(LIST_SALESES);
-  const saleses = useMemo(() => R.propOr([], 'mySaleses')(data), [data]);
+function useSales({
+  onCreate,
+  onEdit,
+  view,
+  period,
+  specialtyId,
+  branchId,
+  doctorId,
+  userId,
+  page = 1,
+  itemId,
+  creatorId,
+} = {}) {
+  const { data } = useQuery(LIST_SALESES, {
+    variables: Object.assign(
+      {
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      view && { view: view },
+      branchId && { branchId: branchId },
+      specialtyId && { specialtyId: specialtyId },
+      doctorId && { doctorId: doctorId },
+      itemId && { itemId: itemId },
+      creatorId && { creatorId: creatorId }
+    ),
+  });
+  const salesData = data?.mySaleses;
+
+  const saleses = useMemo(() => R.propOr([], 'sales')(salesData), [salesData]);
+  const totalSalesPrice = useMemo(
+    () => R.propOr(0, 'totalSalesPrice')(salesData),
+    [salesData]
+  );
+  const totalSalesCost = useMemo(
+    () => R.propOr(0, 'totalSalesCost')(salesData),
+    [salesData]
+  );
+  const salesCounts = useMemo(
+    () => R.propOr(0, 'salesCounts')(salesData),
+    [salesData]
+  );
+
   const { data: OrgUsers } = useQuery(LIST_USERS);
   const organizationusers = useMemo(
     () => R.propOr([], 'listUsers')(OrgUsers),
     [OrgUsers]
-  );
-  const filteredSales = useMemo(
-    () => filterAccountingList(saleses, view, period),
-    [saleses, period, view]
-  );
-  const totalSalesPrice = useMemo(
-    () => filteredSales.reduce((acc, s) => acc + s.totalPrice, 0),
-    [filteredSales]
-  );
-
-  const totalSalesCost = useMemo(
-    () => filteredSales.reduce((acc, s) => acc + s.totalCost, 0),
-    [filteredSales]
   );
 
   const [addSales, { loading }] = useMutation(ADD_SALES, {
@@ -76,6 +104,7 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
     refetchQueries: [
       {
         query: LIST_SALESES,
+        variables: { offset: 0, limit: 20 },
       },
     ],
     onError() {
@@ -85,9 +114,9 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
   return useMemo(
     () => ({
       saleses,
-      filteredSales,
       totalSalesPrice,
       totalSalesCost,
+      salesCounts,
       organizationusers,
       addSales,
       editSales,
@@ -103,9 +132,9 @@ function useSales({ onCreate, onEdit, view, period } = {}) {
       editSales,
       deleteSales,
       organizationusers,
-      filteredSales,
       totalSalesPrice,
       totalSalesCost,
+      salesCounts,
       loading,
       editLoading,
       deleteLoading,

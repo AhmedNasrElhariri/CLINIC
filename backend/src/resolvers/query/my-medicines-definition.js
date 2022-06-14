@@ -1,6 +1,6 @@
 import { prisma } from '@';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS, POSITION } from '@/utils/constants';
+import { ACTIONS } from '@/utils/constants';
 
 const myMedicinesDefinition = async (
   _,
@@ -17,6 +17,7 @@ const myMedicinesDefinition = async (
   );
   return prisma.medicineDefinition.findMany({
     where: {
+      
       OR: [
         {
           branchId: {

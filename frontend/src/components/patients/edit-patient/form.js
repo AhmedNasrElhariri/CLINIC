@@ -31,7 +31,6 @@ const isPrimary = ({ type }) => type === membershipTypes[0].id;
 const isSecondary = ({ type }) => type === membershipTypes[1].id;
 
 const NewPatient = ({ formValue, onChange }) => {
-  
   return (
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput
@@ -45,6 +44,7 @@ const NewPatient = ({ formValue, onChange }) => {
 
       <ShowIf show={isPrimary(formValue)}>
         <CRTextInput label="Phone no" name="phoneNo" />
+        <CRTextInput label="Phone no Two" name="phoneNoTwo" />
       </ShowIf>
 
       <ShowIf show={isSecondary(formValue)}>
@@ -53,7 +53,7 @@ const NewPatient = ({ formValue, onChange }) => {
       </ShowIf>
 
       <CRNumberInput label="Age" name="age" />
-
+      <CRTextInput label="Code" name="code" />
       <CRSelectInput
         label="Sex"
         name="sex"

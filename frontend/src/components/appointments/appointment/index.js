@@ -2,15 +2,15 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader, Icon } from 'rsuite';
-
+import { Alert, Loader, Icon, Panel } from 'rsuite';
 import Prescription from './prescription';
 
 import Labs from './labs/index';
 import Images from './images';
 import ShowMedicinines from './show-patient-medicines';
+import ShowPatientInfo from './show-patient-info';
 import NewAppointment from './new-appointment';
-import { Div, H3, CRButton } from 'components';
+import { Div, H3, CRButton, Img } from 'components';
 import AppointmentData from './appointment-data';
 import {
   getFormInitValues,
@@ -18,7 +18,7 @@ import {
   mapSessionValues,
   isArchived,
 } from 'services/appointment';
-
+import { ArrowIcon } from 'components/icons';
 import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
@@ -29,6 +29,7 @@ import useAppointmentHistory from './fetch-appointment-history';
 import { HeaderStyled } from './style';
 import { useForm, useModal } from 'hooks';
 import { APPT_STATUS } from 'utils/constants';
+
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 function Appointment() {
   const { visible, open, close } = useModal();
@@ -52,14 +53,7 @@ function Appointment() {
   });
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
-  const { data: appointmentRes, loading } = useQuery(GET_APPOINTMENT, {
-    variables: {
-      id: appointmentId,
-    },
-    onCompleted: ({ appointment }) => {
-      setDisabled(isArchived(appointment));
-    },
-  });
+
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -71,9 +65,16 @@ function Appointment() {
       },
     ],
   });
-
+  const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
+    variables: {
+      id: appointmentId,
+    },
+    onCompleted: ({ appointment }) => {
+      setDisabled(isArchived(appointment));
+    },
+  });
   const appointment = useMemo(
-    () => R.prop('appointment')(appointmentRes) || {},
+    () => R.propOr({}, 'appointment')(appointmentRes),
     [appointmentRes]
   );
   const patient = useMemo(
@@ -117,10 +118,12 @@ function Appointment() {
   const [popupTwo, setPopupTwo] = useState(false);
   const [popupThree, setPopupThree] = useState(false);
   const [popupFour, setPopupFour] = useState(false);
+  const [popupFive, setPopupFive] = useState(false);
   const handleClickCreate = useCallback(() => {
     setPopupTwo(false);
     setPopupThree(false);
     setPopupFour(false);
+    setPopupFive(false);
     setPopup(true);
     setType('create');
     open();
@@ -129,6 +132,7 @@ function Appointment() {
     setPopup(false);
     setPopupThree(false);
     setPopupFour(false);
+    setPopupFive(false);
     setPopupTwo(true);
     setType('create');
     open();
@@ -137,6 +141,7 @@ function Appointment() {
     setPopupTwo(false);
     setPopup(false);
     setPopupFour(false);
+    setPopupFive(false);
     setPopupThree(true);
     setType('create');
     open();
@@ -146,8 +151,18 @@ function Appointment() {
     setPopupTwo(false);
     setPopup(false);
     setPopupThree(false);
+    setPopupFive(false);
     setPopupFour(true);
     setType('create');
+    open();
+  }, [open, setType]);
+  const handleShowPatientInfo = useCallback(() => {
+    setPopupTwo(false);
+    setPopup(false);
+    setPopupThree(false);
+    setPopupFour(false);
+    setPopupFive(true);
+    setType('patientInfo');
     open();
   }, [open, setType]);
 
@@ -242,117 +257,181 @@ function Appointment() {
   //   return <Loader />;
   // }
   return (
-    <Div display="flex">
-      <Div flexGrow={1}>
-        <HeaderStyled>
-          <H3 mb={64}>Appointment</H3>
-          <Div>
-            <CRButton
-              variant="primary"
-              onClick={handleClickCreateFour}
-              disabled={disabled}
-            >
-              Show Medicines <Icon icon="print" />
-            </CRButton>
-            <CRButton
-              variant="primary"
-              onClick={handleClickCreate}
-              disabled={disabled}
-            >
-              PrintMedicine <Icon icon="print" />
-            </CRButton>
-            <CRButton
-              variant="primary"
-              onClick={handleClickCreateThree}
-              disabled={disabled}
-            >
-              images <Icon icon="print" />
-            </CRButton>
-            <CRButton
-              variant="primary"
-              onClick={handleClickCreateTwo}
-              disabled={disabled}
-            >
-              PrintLabs <Icon icon="print" />
-            </CRButton>
-            <CRButton
-              variant="primary"
-              onClick={handleUpdate}
-              disabled={disabled}
-            >
-              Save <Icon icon="save" />
-            </CRButton>
-            {/* <CRButton
+    <>
+      <Div display="flex">
+        <Div flexGrow={1}>
+          <HeaderStyled>
+            <H3 mb={64}>Appointment</H3>
+            <Div>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreateFour}
+                disabled={disabled}
+              >
+                Show Medicines <Icon icon="print" />
+              </CRButton>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreate}
+                disabled={disabled}
+              >
+                PrintMedicine <Icon icon="print" />
+              </CRButton>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreateThree}
+                disabled={disabled}
+              >
+                images <Icon icon="print" />
+              </CRButton>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreateTwo}
+                disabled={disabled}
+              >
+                PrintLabs <Icon icon="print" />
+              </CRButton>
+              {disabled && (
+                <CRButton
+                  variant="primary"
+                  onClick={handleUpdate}
+                  onClick={() => setDisabled(false)}
+                >
+                  Edit <Icon icon="save" />
+                </CRButton>
+              )}
+
+              <CRButton
+                variant="primary"
+                onClick={handleUpdate}
+                disabled={disabled}
+              >
+                Save <Icon icon="save" />
+              </CRButton>
+              {/* <CRButton
               variant="primary"
               open={visbleAppointment}
               onClick={toggleAppointment}
             >
               Reverse Appoinment <Icon icon="save" />
             </CRButton> */}
-          </Div>
-        </HeaderStyled>
-        <Div display="flex">
-          <Div flexGrow={1}>
-            <Div py={3} bg="white">
-              <AppointmentData
-                disabled={disabled}
-                formValue={formValue}
-                appointmentFormValue={apptFormValue}
-                onDataChange={setFormValue}
-                onChange={setApptFormValue}
-                groups={groups}
-                appointment={appointment}
-                sessionsPulses={sessionsPulses}
-                setSessionsPulses={setSessionsPulses}
-                sessionFormValue={sessionFormValue}
-                setSessionFormValue={setSessionFormValue}
-              />
-              {popup && (
-                <Prescription
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  medicine={apptFormValue.prescription}
-                  onChange={handleMedicineChange}
-                  nextAppointment={nextAppointment}
+            </Div>
+          </HeaderStyled>
+          <Div display="flex">
+            <Div flexGrow={1}>
+              <Div py={3} bg="white">
+                <AppointmentData
+                  disabled={disabled}
+                  formValue={formValue}
+                  appointmentFormValue={apptFormValue}
+                  onDataChange={setFormValue}
+                  onChange={setApptFormValue}
+                  groups={groups}
+                  appointment={appointment}
+                  sessionsPulses={sessionsPulses}
+                  setSessionsPulses={setSessionsPulses}
+                  sessionFormValue={sessionFormValue}
+                  setSessionFormValue={setSessionFormValue}
+                  handleShowPatientInfo={handleShowPatientInfo}
                 />
-              )}
-              {popupTwo && (
-                <Labs
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  labs={apptFormValue.labIds}
-                  onChange={handleLabsChange}
+                {popup && (
+                  <Prescription
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    medicine={apptFormValue.prescription}
+                    onChange={handleMedicineChange}
+                    nextAppointment={nextAppointment}
+                  />
+                )}
+                {popupTwo && (
+                  <Labs
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    labs={apptFormValue.labIds}
+                    onChange={handleLabsChange}
+                  />
+                )}
+                {popupThree && (
+                  <Images
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    images={apptFormValue.imageIds}
+                    onChange={handleImagesChange}
+                  />
+                )}
+                {popupFour && (
+                  <ShowMedicinines
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    patient={patient}
+                  />
+                )}
+                {popupFive && (
+                  <ShowPatientInfo
+                    visible={visible}
+                    onClose={close}
+                    type={type}
+                    patient={patient}
+                  />
+                )}
+                <NewAppointment
+                  show={visbleAppointment}
+                  onHide={toggleAppointment}
+                  appointment={appointment}
                 />
-              )}
-              {popupThree && (
-                <Images
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  images={apptFormValue.imageIds}
-                  onChange={handleImagesChange}
-                />
-              )}
-              {popupFour && (
-                <ShowMedicinines
-                  visible={visible}
-                  onClose={close}
-                  type={type}
-                  patient={patient}
-                />
-              )}
-              <NewAppointment
-                show={visbleAppointment}
-                onHide={toggleAppointment}
-                appointment={appointment}
-              />
+              </Div>
             </Div>
           </Div>
         </Div>
       </Div>
-    </Div>
+      <Panel
+        shaded
+        bordered
+        bodyFill
+        style={{
+          position: 'absolute',
+          top: '130px',
+          right: '20px',
+          width: 240,
+        }}
+      >
+        {/* <Img src={patient?.url} width={240} height={150} /> */}
+        <Panel header={patient?.name}>
+          <p>
+            <small>
+              <Div display="flex">
+                <Div width="50px" mr="30px">
+                  Phone
+                </Div>
+                <Div>{patient?.phoneNo}</Div>
+              </Div>
+              <Div display="flex">
+                <Div width="50px" mr="30px">
+                  Sex
+                </Div>
+                <Div>{patient?.sex}</Div>
+              </Div>
+              <Div
+                display="flex"
+                onClick={() => handleShowPatientInfo()}
+                mt="2px"
+              >
+                <Div width="50px" mr="30px" mt={10}>
+                  <a>More</a>
+                </Div>
+                {/* <Div>
+              <ArrowIcon width="25px" />
+            </Div> */}
+              </Div>
+            </small>
+          </p>
+        </Panel>
+      </Panel>
+    </>
   );
 }
 

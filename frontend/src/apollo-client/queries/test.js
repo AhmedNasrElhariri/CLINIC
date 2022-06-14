@@ -30,6 +30,10 @@ export const EDIT_TEST_DEFINITION = gql`
     editLabDefinition(labDefinition: $labDefinition, type: $type) {
       id
       name
+      category {
+        id
+        name
+      }
     }
   }
 `;

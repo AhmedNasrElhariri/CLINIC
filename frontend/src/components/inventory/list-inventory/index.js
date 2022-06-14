@@ -4,12 +4,14 @@ import NumberFormat from 'react-number-format';
 import { CRTable } from 'components';
 import { getUnitOfMeasureShortCut } from 'services/inventory';
 import RemoveItem from '../remove-item';
+import { useTranslation } from 'react-i18next';
 
 const ListInventory = ({ items }) => {
+  const { t } = useTranslation();
   return (
     <CRTable autoHeight data={items}>
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
           {({ name, branch, specialty, user, level }) => (
             <CRTable.CRCellStyled>
@@ -29,7 +31,7 @@ const ListInventory = ({ items }) => {
       </CRTable.CRColumn>
 
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('amount')}</CRTable.CRHeaderCell>
         <CRTable.CRCell dataKey="amount" semiBold>
           {({ amount }) => (
             <CRTable.CRCellStyled semiBold>
@@ -44,7 +46,7 @@ const ListInventory = ({ items }) => {
       </CRTable.CRColumn>
 
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>Total Quantity</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('totalQuantity')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
           {({ quantity, item }) => (
             <CRTable.CRCellStyled semiBold>
@@ -61,7 +63,7 @@ const ListInventory = ({ items }) => {
         </CRTable.CRCell>
       </CRTable.CRColumn>
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
           {({ user }) => (
             <CRTable.CRCellStyled>{user?.name}</CRTable.CRCellStyled>
@@ -69,7 +71,7 @@ const ListInventory = ({ items }) => {
         </CRTable.CRCell>
       </CRTable.CRColumn>
       <CRTable.CRColumn flexGrow={0.8}>
-        <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
           {({ specialty }) => (
             <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
@@ -77,7 +79,7 @@ const ListInventory = ({ items }) => {
         </CRTable.CRCell>
       </CRTable.CRColumn>
       <CRTable.CRColumn flexGrow={0.8}>
-        <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('branch')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
           {({ branch }) => (
             <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>

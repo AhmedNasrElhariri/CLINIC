@@ -8,19 +8,23 @@ import {
   CRDateRangePicker,
   H5,
   H3,
+  H4,
+  CRCheckBoxGroup,
 } from 'components/widgets';
 import { Can } from 'components/user/can';
 import axios from 'axios';
 import { Form, DatePicker, Table } from 'rsuite';
 import { Container, Report, Name } from './style';
-import { useSessionDefinition } from 'hooks';
+import { useCourses, useSessionDefinition } from 'hooks';
 import moment from 'moment';
 import * as R from 'ramda';
+import { MultiCascader } from 'rsuite';
 
 const initialValue = {
   month: '',
   date: new Date(),
   sessionDate: [],
+  sessionsIds: [],
 };
 const getMonths = () => {
   let dateStart = moment().startOf('year');
@@ -42,16 +46,21 @@ const Test = props => {
   const [formValue, setFormValue] = useState(initialValue);
   const [data, setData] = useState([]);
   const [dataTwo, setDataTwo] = useState({});
+  const [showSessionData, setShowSessionData] = useState(false);
   let monthes = getMonths();
   const { sessionsDefinition, sessionStatistics } = useSessionDefinition({
-    sessionId: formValue.sessionId,
+    sessionsIds: formValue.sessionsIds,
     dateFrom: formValue.sessionDate[0],
     dateTo: formValue.sessionDate[1],
   });
-  const totalNumber = R.propOr(0, 'totalNumber')(sessionStatistics);
-  const totalPrice = R.propOr(0, 'totalPrice')(sessionStatistics);
-  const session = R.propOr({}, 'session')(sessionStatistics);
-  
+  const { totalUnpaidOfCourses } = useCourses({});
+  const totalUnpaid = R.propOr(0, 'totalUnpaid')(totalUnpaidOfCourses);
+  // const totalNumber = R.propOr(0, 'totalNumber')(sessionStatistics);
+  // const totalPrice = R.propOr(0, 'totalPrice')(sessionStatistics);
+  // const session = R.propOr({}, 'session')(sessionStatistics);
+  const updatedSessionsDefinitions = sessionsDefinition.map(s => {
+    return { label: s.name, value: s.id };
+  });
   const handleMonthlyReport = async month => {
     setLoading(true);
     setError(null);
@@ -88,8 +97,8 @@ const Test = props => {
   const refOne = useRef();
   const refTwo = useRef();
   const refThree = useRef();
+  const refFour = useRef();
   let monthlyData = dataTwo?.data || [];
-
   return (
     <>
       <Container>
@@ -149,19 +158,65 @@ const Test = props => {
                 placeholder="Timeframe"
                 style={{ width: '230px', marginRight: '30px' }}
               />
-              <CRSelectInput
+              {/* <CRSelectInput
                 name="sessionId"
                 data={sessionsDefinition}
                 style={{ width: '230px' }}
+              /> */}
+              {/* <CRCheckBoxGroup
+                options={updatedSessionsDefinitions}
+                name="sessionsIds"
+                inline
+              /> */}
+              <MultiCascader
+                data={updatedSessionsDefinitions}
+                style={{ width: 224 }}
+                onChange={val =>
+                  setFormValue({ ...formValue, sessionsIds: val })
+                }
+                style={{ marginTop: '10px', width: '250px' }}
               />
             </Div>
           </Form>
+          <CRButton onClick={() => setShowSessionData(!showSessionData)}>
+            {showSessionData ? 'Close' : 'Show'}
+          </CRButton>
           <ReactToPrint
             trigger={() => <CRButton primary>Print</CRButton>}
             content={() => refThree.current}
           />
         </Report>
         {/* </Can> */}
+      </Container>
+      <Div>
+        <Div
+          style={!showSessionData ? { overflow: 'hidden', height: '0px' } : {}}
+        >
+          <Div ref={refThree}>
+            <H3 display="flex" justifyContent="center" mt={20} mb={20}>
+              Session Report
+            </H3>
+            <Div>
+              {sessionStatistics.map(st => (
+                <Div mb={20} ml={20}>
+                  <H5>Session Name : {st.name}</H5>
+                  <H5>TotalNumber: {st.totalNumber}</H5>
+                  <H5>TotalPrice:{st.totalPrice}</H5>
+                </Div>
+              ))}
+            </Div>
+          </Div>
+        </Div>
+      </Div>
+      <Container>
+        <Report>
+          <Name>Total Unpaid of courses Report</Name>
+
+          <ReactToPrint
+            trigger={() => <CRButton primary>Print</CRButton>}
+            content={() => refFour.current}
+          />
+        </Report>
       </Container>
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>
@@ -271,16 +326,17 @@ const Test = props => {
           </Div>
         </Div>
       </Div>
-
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>
-          <Div ref={refThree}>
-            <H3 display="flex" justifyContent="center" mt={20} mb={20} >
-              Session Report 
+          <Div ref={refFour}>
+            <H3 display="flex" justifyContent="center" mt={20} mb={20}>
+              Total Unpaid of courses Report
             </H3>
-            <H5>Session Name : {session?.name}</H5>
-            <H5>TotalNumber: {totalNumber}</H5>
-            <H5>TotalPrice:{totalPrice}</H5>
+            <Div display="flex">
+              <H3 mr="150px">Total</H3>
+              <H3 mr="5px">{totalUnpaid}</H3>
+              <H3>Egy</H3>
+            </Div>
           </Div>
         </Div>
       </Div>

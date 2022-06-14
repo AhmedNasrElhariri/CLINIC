@@ -5,6 +5,7 @@ import { usePayroll } from 'hooks';
 import styled from 'styled-components';
 import { CRTextInput } from 'components/widgets';
 import CourseToolbar from './toolbar-courses';
+import { useTranslation } from 'react-i18next';
 
 const DeleteMessage = styled.div`
   font-size: 10px;
@@ -111,6 +112,7 @@ const PayrollForm = ({
   setShow,
 }) => {
   const ref = useRef();
+  const { t } = useTranslation();
   const { organizationusers } = usePayroll({});
   const updatedPayrollUsers = payrollUsers?.map(u => {
     return {
@@ -139,19 +141,19 @@ const PayrollForm = ({
         ) : type === 'addNewUser' ? (
           <>
             <CRSelectInput
-              label="User"
+              label={t('user')}
               name="orgUserId"
               errorMessage={
                 showError && checkResult['orgUserId']?.hasError
                   ? checkResult['orgUserId']?.errorMessage
                   : ''
               }
-              placeholder="Select User"
+              // placeholder="Select User"
               block
               data={organizationusers}
             />
             <CRNumberInput
-              label="Salary"
+              label={t('salary')}
               name="salary"
               errorMessage={
                 showError && checkResult['salary']?.hasError
@@ -164,7 +166,7 @@ const PayrollForm = ({
         ) : (
           <>
             <CRSelectInput
-              label="User"
+              label={t('user')}
               name="employeeId"
               errorMessage={
                 showError && checkResult['employeeId']?.hasError
@@ -177,7 +179,7 @@ const PayrollForm = ({
             />
             <CRTextInput label="Reason" name="reason" block></CRTextInput>
             <CRRadio
-              label="Select one Option"
+              label={t('selectOneOption')}
               name="option"
               options={options}
             />
@@ -187,7 +189,7 @@ const PayrollForm = ({
                 type === 'Incentive' ||
                 type === 'Advance') && (
                 <CRNumberInput
-                  label="Amount"
+                  label={t('revenueAmount')}
                   name="amount"
                   block
                 ></CRNumberInput>
@@ -195,12 +197,12 @@ const PayrollForm = ({
             ) : formValue.option === 'hours' ? (
               <>
                 <CRNumberInput
-                  label="Number of Hourse"
+                  label={t('numberOfHourse')}
                   name="hoursNumber"
                   block
                 ></CRNumberInput>
                 <CRNumberInput
-                  label="Price of Hours"
+                  label={t('priceOfHours')}
                   name="hourPrice"
                   block
                 ></CRNumberInput>

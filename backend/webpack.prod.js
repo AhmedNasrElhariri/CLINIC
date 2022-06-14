@@ -21,13 +21,13 @@ module.exports = merge(common, {
       patterns: [
         { from: 'node_modules/.prisma/client/schema.prisma', to: '' },
         { from: 'node_modules/.prisma/client/index.js', to: '' },
-        // {
-        //   from: 'node_modules/.prisma/client/query-engine-debian-openssl-1.1.x',
-        //   to: '',
-        // },
         {
           from: '../frontend/build/',
           to: 'frontend',
+        },
+        {
+          from: '../patients-app/build/',
+          to: 'patients-app',
         },
         {
           from: './prisma/migrations/',

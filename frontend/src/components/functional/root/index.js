@@ -56,18 +56,19 @@ function Root() {
     surgeriesName = t('surgeries'),
     reportPrintoutName = t('reportsPrintout'),
     permissionsName = t('permissions'),
-    coursesName = t('courses');
+    coursesName = t('courses'),
+    supplierAccount = t('supplierAccount');
   const items = [
     {
       to: '/appointments/today',
       name: todayAppointmentsName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
-    {
-      to: '/calendar',
-      name: calenderName,
-      icon: <CalendarIcon width={11.8} height={14.1} />,
-    },
+    // {
+    //   to: '/calendar',
+    //   name: 'Calendar',
+    //   icon: <CalendarIcon width={11.8} height={14.1} />,
+    // },
     {
       to: '/appointments',
       name: appointmentsName,
@@ -113,6 +114,11 @@ function Root() {
     {
       to: '/courses',
       name: coursesName,
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/supplier-account',
+      name: supplierAccount,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {

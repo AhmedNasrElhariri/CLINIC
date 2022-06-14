@@ -32,9 +32,9 @@ function ListCourses({
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('courseName')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ courseDefinition }) => (
+              {({ name }) => (
                 <CRTable.CRCellStyled bold>
-                  {courseDefinition?.name}
+                  {name}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

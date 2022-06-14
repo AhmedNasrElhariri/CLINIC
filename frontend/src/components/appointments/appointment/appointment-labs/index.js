@@ -5,8 +5,7 @@ import { useLabDefinitions } from 'hooks';
 import LabRow from './lab-row';
 
 const AppointmentLabs = ({ selectedLabs, onChange, categoryId }) => {
-  
-  const { labsDefinition } = useLabDefinitions({ categoryId });
+  const { labsDefinition } = useLabDefinitions({});
   const [formValue, setFormValue] = useState([]);
 
   useEffect(() => {

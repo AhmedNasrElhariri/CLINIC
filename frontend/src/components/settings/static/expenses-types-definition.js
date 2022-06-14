@@ -6,6 +6,7 @@ import ListExpenseTypesDefinition from './list-expenseTypes-definition';
 import { useForm, useExpenseTypeDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '' };
 const { StringType } = Schema.Types;
@@ -15,6 +16,7 @@ const model = Schema.Model({
 
 const ExpenseTypeDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -81,7 +83,7 @@ const ExpenseTypeDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Expense Type+
+          {t('addNewExpenseType')}+
         </CRButton>
       </Div>
       <NewExpenseTypeDefinition

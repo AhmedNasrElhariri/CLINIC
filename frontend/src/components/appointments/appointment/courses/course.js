@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import CoursePayment from './course-payment-history';
+import CourseUnitsHistoryPage from './course-units-history';
 import CourseSession from './course-sessions';
 import * as moment from 'moment';
 import * as R from 'ramda';
@@ -8,6 +9,8 @@ import { Div, CRButton, CRTabs } from 'components';
 import { useCourses } from 'hooks';
 import { Data, DataName, DataValue } from './style';
 import { formatDate } from 'utils/date';
+import { useTranslation } from 'react-i18next';
+
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const CourseData = ({
   courses,
@@ -19,12 +22,16 @@ const CourseData = ({
   onAddUnits,
   onDeleteCourse,
   onEditHistoryPayment,
+  onEditUnitsHistory,
 }) => {
   const history = useHistory();
+  const { t } = useTranslation();
   let course = courses[indx];
   let { sessions } = course;
   const updatedSessions = sortByDate(sessions);
-  const { coursePayments } = useCourses({ courseId: course.id });
+  const { coursePayments, courseUnitsHistory } = useCourses({
+    courseId: course.id,
+  });
   const handleClick = appointment => {
     if (
       moment(new Date()).endOf('day').toDate() >
@@ -44,7 +51,7 @@ const CourseData = ({
             mr={1}
             onClick={() => onDeleteCourse(course)}
           >
-            Cancel This Course
+            {t('cancelThisCourse')}
           </CRButton>
         )}
         <CRButton
@@ -53,90 +60,88 @@ const CourseData = ({
           mr={1}
           onClick={() => onEditDoctor(course)}
         >
-          Assign Doctor
+          {t('assignDoctor')}
         </CRButton>
         {course.price > course.paid && course.status === 'InProgress' && (
           <CRButton variant="primary" mr={1} onClick={() => onEditPaid(course)}>
-            Pay
+            {t('pay')}
           </CRButton>
         )}
-        {course.courseDefinition.type === 'Perunit' && (
+        {(course.type === 'Perunit' || course.type === 'Custom') && (
           <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
-            Add Units
+            {t('addUnits')}
           </CRButton>
         )}
-        {course.courseDefinition.type === 'Perunit' && (
+        {(course.type === 'Perunit' || course.type === 'Custom') && (
           <CRButton
             variant="primary"
             mr={1}
             onClick={() => onEditUnits(course)}
           >
-            Edit Units
+            {t('editUnits')}
           </CRButton>
         )}
         {course.status === 'InProgress' && (
           <CRButton variant="danger" onClick={() => onFinishCourse(course)}>
-            Finish
+            {t('finish')}
           </CRButton>
         )}
         <Data>
-          <DataName>Name : </DataName>
-          <DataValue>{course?.courseDefinition?.name}</DataValue>
+          <DataName>{t('name')} : </DataName>
+          <DataValue>{course?.name}</DataValue>
         </Data>
         <Data>
-          <DataName>Price : </DataName>
+          <DataName>{t('price')} : </DataName>
           <DataValue>{course.price}</DataValue>
         </Data>
         <Data>
-          <DataName>Paid : </DataName>
+          <DataName>{t('paid')} : </DataName>
           <DataValue>{course.paid}</DataValue>
         </Data>
         <Data>
-          <DataName>Unpaid : </DataName>
+          <DataName>{t('courseUnpaid')} : </DataName>
           <DataValue>{course.price - course.paid}</DataValue>
         </Data>
         <Data>
-          <DataName>Discount : </DataName>
+          <DataName>{t('discount')} : </DataName>
           <DataValue>{course.discount}</DataValue>
         </Data>
         <Data>
-          <DataName>Doctor : </DataName>
+          <DataName>{t('doctor')} : </DataName>
           <DataValue>{course?.doctor?.name}</DataValue>
         </Data>
         <Data>
-          <DataName>Creator : </DataName>
+          <DataName>{t('creator')} : </DataName>
           <DataValue>{course?.user?.name}</DataValue>
         </Data>
         <Data>
-          <DataName>status : </DataName>
+          <DataName>{t('status')} : </DataName>
           <DataValue>{course.status}</DataValue>
         </Data>
-        {course.courseDefinition.type === 'Perunit' && (
+        {(course.type === 'Perunit' || course.type === 'Custom') && (
           <>
             <Data>
-              <DataName>Total of Units : </DataName>
-              <DataValue>{course.courseDefinition.units}</DataValue>
+              <DataName>{t('totalOfUnits')} : </DataName>
+              <DataValue>{course.units}</DataValue>
             </Data>
             <Data>
-              <DataName>Consumed: </DataName>
+              <DataName>{t('consumed')}: </DataName>
               <DataValue>{course.consumed}</DataValue>
             </Data>
             <Data>
-              <DataName>Remaining: </DataName>
-              <DataValue>
-                {course.courseDefinition.units - course.consumed}
-              </DataValue>
+              <DataName>{t('remaining')}: </DataName>
+              <DataValue>{course.units - course.consumed}</DataValue>
             </Data>
           </>
         )}
         <Data>
-          <DataName>Start of Date : </DataName>
+          <DataName>{t('startDate')} : </DataName>
           <DataValue>
             {formatDate(course.startDate, 'dddd, DD-MM-YYYY')}
           </DataValue>
         </Data>
         <Data>
-          <DataName>End of Date : </DataName>
+          <DataName>{t('endOfDate')} : </DataName>
           {course.status !== 'InProgress' ? (
             <DataValue>
               {formatDate(course.endDate, 'dddd, DD-MM-YYYY')}
@@ -148,8 +153,9 @@ const CourseData = ({
         <Div textAlign="left" mt={20}>
           <CRTabs>
             <CRTabs.CRTabsGroup>
-              <CRTabs.CRTab>Course Session</CRTabs.CRTab>
-              <CRTabs.CRTab>Course Payment History</CRTabs.CRTab>
+              <CRTabs.CRTab>{t('courseSession')}</CRTabs.CRTab>
+              <CRTabs.CRTab>{t('coursePaymentHistory')}</CRTabs.CRTab>
+              <CRTabs.CRTab>{t('courseUnitsHistory')}</CRTabs.CRTab>
             </CRTabs.CRTabsGroup>
             <CRTabs.CRContentGroup>
               <CRTabs.CRContent>
@@ -162,6 +168,13 @@ const CourseData = ({
                 <CoursePayment
                   coursePayments={coursePayments}
                   onEdit={onEditHistoryPayment}
+                  courseId={course.id}
+                />
+              </CRTabs.CRContent>
+              <CRTabs.CRContent>
+                <CourseUnitsHistoryPage
+                  courseUnitsHistory={courseUnitsHistory}
+                  onEdit={onEditUnitsHistory}
                   courseId={course.id}
                 />
               </CRTabs.CRContent>

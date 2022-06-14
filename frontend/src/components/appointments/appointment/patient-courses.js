@@ -9,6 +9,7 @@ import CourseData from 'components/appointments/appointment/courses/course';
 import { useCourses } from 'hooks';
 import { useModal } from 'hooks';
 import { CRTabs } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   course: null,
@@ -23,11 +24,13 @@ const initValue = {
   branchId: null,
   specialtyId: null,
   userId: null,
+  courseType: 'standard',
+  customUnits: 0,
 };
 
 const CourseButton = styled.button`
   border: 1px solid rgba(81, 198, 243, 0.15);
-  width: 100px;
+  width: content-fit;
   background: transparent;
   color: rgba(40, 49, 72, 0.5);
   font-size: 16px;
@@ -36,10 +39,12 @@ const CourseButton = styled.button`
 `;
 const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const [index, setIndex] = useState(0);
   const [header, setHeader] = useState('');
   const [visa, setVisa] = useState(false);
   const [bank, setBank] = useState(null);
+  const [selectedSessions, setSelectedSessions] = useState([]);
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
@@ -54,10 +59,12 @@ const Course = ({ patientId }) => {
     users,
     loading,
     finishCourse,
+    editCourseUnitHistory,
   } = useCourses({
     onCreate: () => {
       close();
       setFormValue(initValue);
+      setSelectedSessions([]);
       setIndex(0);
     },
     onEdit: () => {
@@ -160,8 +167,27 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickEditUnitsHistory = useCallback(
+    data => {
+      const unitTransaction = R.pick(['id', 'units', 'transactionId'])(data);
+      const updatedUnitTransaction = {
+        id: unitTransaction.id,
+        consumed: unitTransaction.units,
+        transactionId: unitTransaction.transactionId,
+      };
+      setType('editUnitsTransactions');
+      setHeader('Edit Unit Transaction');
+      setFormValue(updatedUnitTransaction);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
+      let price = 0;
+      let courseId = null,
+        customName = '';
+
       const {
         discount,
         course,
@@ -171,11 +197,27 @@ const Course = ({ patientId }) => {
         specialtyId,
         userId,
         branchId,
+        courseType,
+        customUnits,
       } = formValue;
+      if (courseType === 'standard' && course) {
+        price = course.price;
+        courseId = course.id;
+      } else {
+        price = selectedSessions.reduce(
+          (sum, { price, number }) => sum + number * price,
+          0
+        );
+        selectedSessions.forEach(({ number, name }) => {
+          customName += number + '-' + name + ' ';
+        });
+      }
       const finalFormValue = {
-        price: course.price - discount,
+        price: price - discount,
+        customName: customName,
+        customUnits,
         patientId: patientId,
-        courseDefinitionId: course.id,
+        courseDefinitionId: courseId,
         doctorId,
         sessions,
         paid,
@@ -183,6 +225,7 @@ const Course = ({ patientId }) => {
         specialtyId,
         userId,
         branchId,
+        bank: bank,
       };
       addCourse({
         variables: {
@@ -218,11 +261,23 @@ const Course = ({ patientId }) => {
           type: 'editConsumedUnits',
         },
       });
+    } else if (type === 'editUnitsTransactions') {
+      editCourseUnitHistory({
+        variables: {
+          transactionId: formValue.transactionId,
+          consumed: formValue.consumed,
+          courseId: formValue.id,
+        },
+      });
     } else if (type === 'deleteCourse') {
       deleteCourse({
         variables: {
           courseId: formValue.id,
           refund: formValue.refund,
+          bank: bank,
+          branchId: formValue.branchId,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
         },
       });
     } else if (type === 'editPaymentHistory') {
@@ -258,6 +313,7 @@ const Course = ({ patientId }) => {
     editCourse,
     editCoursePaymentHistory,
     finishCourse,
+    editCourseUnitHistory,
     bank,
   ]);
   const InprogressCourses = useMemo(
@@ -273,22 +329,23 @@ const Course = ({ patientId }) => {
   );
   const CancelledCourses = useMemo(
     () =>
-      patientCourses.filter(c => c.status === 'Cancelled' || c.status === 'Rejected'),
+      patientCourses.filter(
+        c => c.status === 'Cancelled' || c.status === 'Rejected'
+      ),
     [patientCourses]
   );
- 
   return (
     <>
       <CRTabs>
         <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>InProgress Courses</CRTabs.CRTab>
-          <CRTabs.CRTab>Finished Courses</CRTabs.CRTab>
-          <CRTabs.CRTab>Cancelled Courses</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('inProgressCourses')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('finishedCourses')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('cancelledCourses')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
             <Div display="flex" justifyContent="space-between">
-              <Div width={900}>
+              <Div width={1000}>
                 <>
                   {InprogressCourses.map((course, idx) => (
                     <CourseButton
@@ -296,13 +353,13 @@ const Course = ({ patientId }) => {
                       onClick={() => setIndex(idx)}
                       key={idx}
                     >
-                      {course.courseDefinition.name}
+                      {course.name}
                     </CourseButton>
                   ))}
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        Add New Course+
+                        {t('addNewCourse')}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -317,9 +374,10 @@ const Course = ({ patientId }) => {
                       onFinishCourse={handleFinishCourse}
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
+                      onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>No courses</H3>
+                    <H3>{t('noCourses')}</H3>
                   )}
                 </>
               </Div>
@@ -327,7 +385,7 @@ const Course = ({ patientId }) => {
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Div display="flex" justifyContent="space-between">
-              <Div width={900}>
+              <Div width={1000}>
                 <>
                   {FinishedCourses.map((course, idx) => (
                     <CourseButton
@@ -335,13 +393,13 @@ const Course = ({ patientId }) => {
                       onClick={() => setIndex(idx)}
                       key={idx}
                     >
-                      {course.courseDefinition.name}
+                      {course.name}
                     </CourseButton>
                   ))}
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        Add New Course+
+                        {t('addNewCourse')}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -356,9 +414,10 @@ const Course = ({ patientId }) => {
                       onFinishCourse={handleFinishCourse}
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
+                      onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>No courses</H3>
+                    <H3>{t('noCourses')}</H3>
                   )}
                 </>
               </Div>
@@ -366,7 +425,7 @@ const Course = ({ patientId }) => {
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Div display="flex" justifyContent="space-between">
-              <Div width={900}>
+              <Div width={1000}>
                 <>
                   {CancelledCourses.map((course, idx) => (
                     <CourseButton
@@ -374,13 +433,13 @@ const Course = ({ patientId }) => {
                       onClick={() => setIndex(idx)}
                       key={idx}
                     >
-                      {course.courseDefinition.name}
+                      {course.name}
                     </CourseButton>
                   ))}
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        Add New Course+
+                        {t('addNewCourse')}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -395,9 +454,10 @@ const Course = ({ patientId }) => {
                       onFinishCourse={handleFinishCourse}
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
+                      onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>No courses</H3>
+                    <H3>{t('noCourses')}</H3>
                   )}
                 </>
               </Div>
@@ -419,6 +479,8 @@ const Course = ({ patientId }) => {
         setBank={setBank}
         visa={visa}
         setVisa={setVisa}
+        selectedSessions={selectedSessions}
+        setSelectedSessions={setSelectedSessions}
       />
     </>
   );

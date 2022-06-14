@@ -1,19 +1,30 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { filterAppointments, sortAppointments } from 'services/appointment';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Div, H3, CRTabs } from 'components';
 import Filter from './filter';
 import BranchFilter from '../../filters';
 
 import * as R from 'ramda';
 import { useTranslation } from 'react-i18next';
-
-import {  useAppointments, useModal } from 'hooks';
+import moment from 'moment';
+import { useAppointments, useModal } from 'hooks';
 import { getName } from 'services/accounting';
 import BusinessNotes from '../today-appointments/business-notes';
 import ArchiveAppointment from '../archive-appointment';
 import CompleteAppointment from '../complete-appointment';
 import ListAppointments from './../today-appointments/list-appointments';
+import NewAppointment from 'components/appointments/new-appointment';
+import EditAppointment from 'components/appointments/edit-appointment';
+import CancelAppointment from 'components/appointments/cancel-appointment';
 import { ACTIONS, APPT_STATUS } from 'utils/constants';
+const calcDate = ({ date, time }) =>
+  moment(date)
+    .set({
+      hour: moment(time).get('hour'),
+      minute: moment(time).get('minute'),
+      second: 0,
+      millisecond: 0,
+    })
+    .toDate();
 const inialCurrentPage = {
   activePage: 1,
 };
@@ -44,6 +55,8 @@ function Appointments() {
     archive,
     complete,
     updateNotes,
+    adjust,
+    cancel,
   } = useAppointments({
     page,
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
@@ -80,6 +93,30 @@ function Appointments() {
     },
     [open]
   );
+  const onDuplicateAppointments = useCallback(
+    appointment => {
+      setPopUp('newAppointment');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
+  const onEditAppointments = useCallback(
+    appointment => {
+      setPopUp('editAppointment');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
+  const onCancelAppointments = useCallback(
+    appointment => {
+      setPopUp('cancelAppointment');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
 
   const handleArchive = useCallback(
     ({
@@ -87,11 +124,16 @@ function Appointments() {
       items,
       discount,
       others,
+      remaining,
+      payOfRemaining,
       bank,
       company,
       option,
       appPrice,
       othersName,
+      coupons,
+      couponsValue,
+      doctorFees,
     }) => {
       close();
       archive({
@@ -105,6 +147,7 @@ function Appointments() {
             name: getName({ session, appointment }),
             price: session.price,
             number: session.number,
+            id: session.id,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,
@@ -118,11 +161,17 @@ function Appointments() {
             name: 'others - ' + othersName + ' - ' + appointment.patient.name,
             amount: others,
           },
+          remaining: remaining,
+          payOfRemaining: payOfRemaining,
           patientName: appointment.patient.name,
+          patientId: appointment.patient.id,
           bank,
           appPrice,
           company,
           option,
+          coupons,
+          couponsValue,
+          doctorFees: doctorFees,
         },
       });
     },
@@ -137,6 +186,25 @@ function Appointments() {
       },
     });
   }, [appointment, updateNotes, notes]);
+  const handleEdit = useCallback(
+    formValue => {
+      close();
+      adjust({
+        variables: {
+          id: appointment.id,
+          date: calcDate(formValue),
+          branchId: formValue.branchId,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
+        },
+      });
+    },
+    [adjust, appointment]
+  );
+  const handleCancel = useCallback(() => {
+    close();
+    cancel({ variables: { id: appointment.id } });
+  }, [cancel, appointment]);
   const handleComplete = useCallback(
     ({ appointment }) => {
       close();
@@ -148,6 +216,11 @@ function Appointments() {
     },
     [appointment, complete, close]
   );
+  useEffect(() => {
+    setNotes(val => ({
+      businessNotes: R.propOr('', 'businessNotes')(appointment),
+    }));
+  }, [appointment]);
   return (
     <>
       <H3 mb={64}>{t('appointments')}</H3>
@@ -175,6 +248,9 @@ function Appointments() {
                       onArchive={onClickDone}
                       onComplete={onCompleteDone}
                       onAddBusinessNotes={onAddBusinessNotes}
+                      onDuplicateAppointments={onDuplicateAppointments}
+                      onEditAppointments={onEditAppointments}
+                      onCancelAppointments={onCancelAppointments}
                       defaultExpanded={true}
                       currentPage={currentPage}
                       setCurrentPage={setCurrentPage}
@@ -189,13 +265,17 @@ function Appointments() {
                 appointments={appointments}
                 branches={filterBranches}
                 render={apps => (
-                  <ListAppointments
-                    appointments={apps}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    defaultExpanded={true}
-                    waiting={true}
-                  />
+                  <>
+                    <Filter formValue={formValue} onChange={setFormValue} />
+                    <ListAppointments
+                      appointments={apps}
+                      onArchive={onClickDone}
+                      onComplete={onCompleteDone}
+                      onAddBusinessNotes={onAddBusinessNotes}
+                      defaultExpanded={true}
+                      waiting={true}
+                    />
+                  </>
                 )}
               />
             </CRTabs.CRContent>
@@ -204,13 +284,17 @@ function Appointments() {
                 appointments={appointments}
                 branches={filterBranches}
                 render={apps => (
-                  <ListAppointments
-                    appointments={apps}
-                    onArchive={onClickDone}
-                    onComplete={onCompleteDone}
-                    defaultExpanded={true}
-                    waiting={true}
-                  />
+                  <>
+                    <Filter formValue={formValue} onChange={setFormValue} />
+                    <ListAppointments
+                      appointments={apps}
+                      onArchive={onClickDone}
+                      onComplete={onCompleteDone}
+                      onAddBusinessNotes={onAddBusinessNotes}
+                      defaultExpanded={true}
+                      waiting={true}
+                    />
+                  </>
                 )}
               />
             </CRTabs.CRContent>
@@ -241,6 +325,29 @@ function Appointments() {
           notes={notes}
           setNotes={setNotes}
           onOk={addBusinessNotes}
+        />
+      )}
+      {popUp === 'newAppointment' && (
+        <NewAppointment
+          show={visible}
+          onHide={close}
+          appointment={appointment}
+        />
+      )}
+      {popUp === 'editAppointment' && (
+        <EditAppointment
+          onOk={handleEdit}
+          show={visible}
+          onCancel={close}
+          appointment={appointment}
+        />
+      )}
+      {popUp === 'cancelAppointment' && (
+        <CancelAppointment
+          onOk={handleCancel}
+          show={visible}
+          onCancel={close}
+          appointment={appointment}
         />
       )}
     </>

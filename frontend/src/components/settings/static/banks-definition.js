@@ -7,6 +7,7 @@ import ListBanksDefinition from './list-banks-definition';
 import { useForm, useBankDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '' };
 const { StringType } = Schema.Types;
@@ -16,6 +17,7 @@ const model = Schema.Model({
 
 const BankDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -78,7 +80,7 @@ const BankDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Bank+
+          {t('addNewBank')}+
         </CRButton>
       </Div>
       <NewBankDefinition

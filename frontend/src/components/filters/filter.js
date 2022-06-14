@@ -31,20 +31,21 @@ function AppointmentsFilter({ formValue, onChange, branches }) {
       <Row gutter={16}>
         <Col xs={8}>
           <CRSelectInput
-            name="specialty"
-            label={t('specialty')}
-            block
-            data={specialties}
-          />
-        </Col>
-        <Col xs={8}>
-          <CRSelectInput
             name="branch"
             label={t('branch')}
             data={branches}
             block
           />
         </Col>
+        <Col xs={8}>
+          <CRSelectInput
+            name="specialty"
+            label={t('specialty')}
+            block
+            data={specialties}
+          />
+        </Col>
+
         <Col xs={8}>
           <CRSelectInput name="doctor" label={t('user')} block data={doctors} />
         </Col>

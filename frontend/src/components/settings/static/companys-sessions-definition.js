@@ -6,6 +6,7 @@ import ListCompanysSessionDefinition from './list-companys-session-definition';
 import { useForm, useCompanySessionDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { companyId: null, name: '', price: 0 };
 const { StringType, NumberType } = Schema.Types;
@@ -16,6 +17,7 @@ const model = Schema.Model({
 
 const CompanySessionDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -87,7 +89,7 @@ const CompanySessionDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Company Session+
+          {t('addNewCompanySession')}+
         </CRButton>
       </Div>
       <NewCompanySessionDefinition

@@ -1,19 +1,10 @@
 import React from 'react';
-import { Div } from 'components';
 import { Form } from 'rsuite';
-import { CRSelectInput } from 'components/widgets';
-import { useBankDefinition } from 'hooks';
+import { CRSelectInput, CRTextInput, Div } from 'components/widgets';
 import { useTranslation } from 'react-i18next';
 
-const AccountingFilter = ({ formValue, setFormValue }) => {
-  const { banksDefinition } = useBankDefinition({});
+const AccountingFilter = ({ formValue, setFormValue, banksDefinition }) => {
   const { t } = useTranslation();
-  const updatedBankDefinitions = banksDefinition.map(b => {
-    return {
-      id: b.name,
-      name: b.name,
-    };
-  });
   return (
     <Form
       style={{ width: 276, marginBottom: 64 }}
@@ -25,16 +16,16 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
           <CRSelectInput
             label={t('bank')}
             name="bank"
-            data={updatedBankDefinitions}
-            onChange={val =>
-              val == null
-                ? setFormValue({ bank: '' })
-                : setFormValue({ bank: val })
-            }
+            data={banksDefinition}
             placeholder="Search"
             style={{ width: '230px' }}
           />
         </Div>
+        <CRTextInput
+          label={t('revenueName')}
+          name="revenueName"
+          style={{ width: '230px' }}
+        />
       </Div>
     </Form>
   );

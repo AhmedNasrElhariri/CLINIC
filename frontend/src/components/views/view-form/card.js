@@ -7,20 +7,22 @@ import {
   RADIO_FIELD_TYPE,
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
+  SELECTOR_WITH_INPUT,
 } from 'utils/constants';
 import Choices from './choices';
 import NestedChoices from './nested-choices';
 import { useModal } from 'hooks';
-
+const choicesTypes = [{ name: 'Sessions-Definition', id: 'sessions' }];
+const initialChoicesType = { choicesType: 'sessions' };
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState('lanes');
   const [editLane, setEditLane] = useGlobalState('editLane');
   const lane = lanes?.find(l => l.id === laneId);
   const [popup, setPopup] = useState(0);
-
+  const [toggle, setToggle] = useState(false);
+  const [choicesType, setChoicesType] = useState(initialChoicesType);
   const cards = lane?.cards;
-
-  const formValue = cards[index] ;
+  const formValue = cards[index];
   const { visible, open, close } = useModal();
 
   const update = useCallback(
@@ -39,9 +41,8 @@ const Card = ({ laneId, index }) => {
       ...l,
       cards: l.cards.filter(c => c.id !== formValue.id),
     }));
-    setLanes(newLanes);
-  }, [formValue, lanes, setLanes]);
-
+    setLanes(newLanes,lanes,'laneslanes');
+  }, [formValue,lanes, setLanes]);
   const handleClickCreate = useCallback(() => {
     setPopup(1);
     open();
@@ -53,7 +54,12 @@ const Card = ({ laneId, index }) => {
   }, [open]);
 
   const handleSetChoices = choices => {
-    update({ ...formValue, choices });
+    update({
+      ...formValue,
+      choices,
+      dynamic: toggle,
+      choicesType: choicesType.choicesType,
+    });
     close();
   };
 
@@ -61,12 +67,13 @@ const Card = ({ laneId, index }) => {
     close();
   }, [close]);
 
-  const fieldType = useMemo(() => formValue.type, [formValue.type]);
+  const fieldType = useMemo(() => formValue?.type, [formValue?.type]);
   const hasChoices = useMemo(() => {
     return [
       RADIO_FIELD_TYPE,
       CHECK_FIELD_TYPE,
       NESTED_SELECTOR_FIELD_TYPE,
+      SELECTOR_WITH_INPUT,
     ].includes(fieldType);
   }, [fieldType]);
 
@@ -129,6 +136,11 @@ const Card = ({ laneId, index }) => {
             visible={visible}
             onOk={handleSetChoices}
             onClose={handleClose}
+            toggle={toggle}
+            setToggle={setToggle}
+            choicesTypes={choicesTypes}
+            choicesType={choicesType}
+            setChoicesType={setChoicesType}
           />
         )}
         {popup === 2 && (

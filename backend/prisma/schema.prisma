@@ -43,6 +43,12 @@ enum CourseStatus {
   Rejected
 }
 
+enum SupplierInvoiceStatus {
+  InProgress
+  Finished
+  Cancelled
+}
+
 enum PayrollStatus {
   Open
   Close
@@ -89,6 +95,7 @@ enum FieldType {
   Radio
   Check
   NestedSelector
+  SelectorWithInput
 }
 
 enum PatientMembershipType {
@@ -116,6 +123,7 @@ enum PermissionAction {
   Create_Appointment
   Reschedule_Appointment
   Acc_Appointment
+  Duplicates_Appointment
   Cancel_Appointment
   Archive_Appointment
   View_Patient
@@ -126,6 +134,10 @@ enum PermissionAction {
   EditExpense_Accounting
   ViewBank_Accounting
   ViewInsurance_Accounting
+  AddBankRevenue_Accounting
+  AddBankExpense_Accounting
+  EditBankRevenue_Accounting
+  EditBankExpense_Accounting
   Print_Accounting
   View_Calendar
   CreateEvent_Calendar
@@ -133,6 +145,7 @@ enum PermissionAction {
   AddItem_Inventory
   ViewHistory_Inventory
   DefineItem_Inventory
+  AddCustom_Inventory
   Create_Course
   Create_SessionDefinition
   Create_Hospital
@@ -153,12 +166,22 @@ enum PermissionAction {
   ViewLabs_Patient
   ViewImages_Patient
   ViewCourses_Patient
+  ViewHistory_Patient
+  ViewDental_Patient
+  ViewFaseOperation_Patient
+  ViewProgress_Patient
+  ViewPatientInformationCreation_Patient
+  ViewCoupons_Patient
+  ViewPatientRevenue_Patient
+  ViewPatientInfo_Patient
+  ViewSurgeries_Patient
   ViewSessionsPulses_Patient
   GenerateMonthly_PulsesReport
   GenerateDaily_PulsesReport
   View_Medicine
   View_Permission
   ViewFilters_Accounting
+  View_SupplierAccount
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,109 +239,128 @@ model Organization {
   SessionTransaction        SessionTransaction[]
   Points                    Points[]
   Coupon                    Coupon[]
+  BankExpense               BankExpense[]
+  CourseTypeDefinition      CourseTypeDefinition[]
+  SupplierAccount           SupplierAccount[]
+  SupplierInvoice           SupplierInvoice[]
 }
 
 model User {
-  id                        String                      @id @default(uuid())
-  name                      String
-  email                     String                      @unique
-  allowedViews              Json                        @default("[]")
-  password                  String
-  organization              Organization                @relation(fields: [organizationId], references: [id])
-  organizationId            String
-  avatar                    String?
-  role                      PermissionRole?             @relation(fields: [roleId], references: [id])
-  roleId                    String?
-  createdAt                 DateTime                    @default(now())
-  updatedAt                 DateTime                    @default(now()) @updatedAt
-  views                     View[]
-  viewStatus                ViewStatus[]
-  patientViews              PatientView[]               @relation("userPatientView")
-  patientDoctorsViews       PatientView[]               @relation("doctorPatientView")
-  workingHours              WorkingHours[]
-  snippets                  Snippet[]
-  position                  Position
-  events                    Event[]
-  user                      Appointment[]               @relation("userApp")
-  doctor                    Appointment[]               @relation("doctorApp")
-  rules                     Rule[]
-  specialties               UserSpecialty[]
-  labDefinitions            LabDefinition[]
-  imageDefinitions          ImageDefinition[]
-  facePartation             FacePartation[]
-  faceOperation             FaceOperation[]
-  materialDefinitions       MaterialDefinition[]
-  medicineDefinitions       MedicineDefinition[]        @relation("medicineUser")
-  medicineDefinitionsDoctor MedicineDefinition[]        @relation("medicineDoctor")
-  patientReports            PatientReport[]
-  patients                  Patient[]
-  expenses                  Expense[]                   @relation("expenseUser")
-  expensesDoctor            Expense[]                   @relation("expenseDoctor")
-  revenues                  Revenue[]                   @relation("revenueUser")
-  revenuesDoctor            Revenue[]                   @relation("revenueDoctor")
-  item                      Item[]
-  timing                    Timing[]
-  labCategories             LabCategory[]
-  imageCategories           ImageCategory[]
-  users                     Course[]                    @relation("user")
-  doctors                   Course[]                    @relation("doctor")
-  BankRevenue               BankRevenue[]               @relation("bankUser")
-  BankRevenueDoctor         BankRevenue[]               @relation("bankDoctor")
-  InsuranceRevenue          InsuranceRevenue[]          @relation("insuranceUser")
-  InsuranceRevenueDoctor    InsuranceRevenue[]          @relation("insuranceDoctor")
-  CoursePayment             CoursePayment[]             @relation("coursePaymentUser")
-  CoursePaymentDoctor       CoursePayment[]             @relation("coursePaymentDoctor")
-  PayrollUser               PayrollUser[]
-  Sales                     Sales[]
-  Price                     Price[]
-  Hospital                  Hospital[]
-  Surgery                   Surgery[]
-  SalesDefinition           SalesDefinition[]
-  UserInventoryItem         InventoryItem[]             @relation("userInventoryItem")
-  DoctorInventoryItem       InventoryItem[]             @relation("doctorInventoryItem")
-  InventoryHistory          InventoryHistory[]          @relation("userInventory")
-  DentalDiagnosisDefinition DentalDiagnosisDefinition[]
-  Tooth                     Tooth[]
-  ToothTransaction          ToothTransaction[]          @relation("toothUser")
-  ToothTransactionDoctors   ToothTransaction[]          @relation("toothDoctor")
-  PatientViewStatus         PatientViewStatus[]
-  PatientField              PatientField[]
-  SessionTransaction        SessionTransaction[]
+  id                         String                       @id @default(uuid())
+  name                       String
+  email                      String                       @unique
+  allowedViews               Json                         @default("[]")
+  password                   String
+  organization               Organization                 @relation(fields: [organizationId], references: [id])
+  organizationId             String
+  avatar                     String?
+  role                       PermissionRole?              @relation(fields: [roleId], references: [id])
+  roleId                     String?
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now()) @updatedAt
+  views                      View[]
+  viewStatus                 ViewStatus[]
+  patientViews               PatientView[]                @relation("userPatientView")
+  patientDoctorsViews        PatientView[]                @relation("doctorPatientView")
+  workingHours               WorkingHours[]
+  snippets                   Snippet[]
+  position                   Position
+  events                     Event[]
+  user                       Appointment[]                @relation("userApp")
+  doctor                     Appointment[]                @relation("doctorApp")
+  rules                      Rule[]
+  specialties                UserSpecialty[]
+  labDefinitions             LabDefinition[]
+  imageDefinitions           ImageDefinition[]
+  facePartation              FacePartation[]
+  faceOperation              FaceOperation[]
+  materialDefinitions        MaterialDefinition[]
+  medicineDefinitions        MedicineDefinition[]         @relation("medicineUser")
+  medicineDefinitionsDoctor  MedicineDefinition[]         @relation("medicineDoctor")
+  patientReports             PatientReport[]
+  patients                   Patient[]
+  expenses                   Expense[]                    @relation("expenseUser")
+  expensesDoctor             Expense[]                    @relation("expenseDoctor")
+  revenues                   Revenue[]                    @relation("revenueUser")
+  revenuesDoctor             Revenue[]                    @relation("revenueDoctor")
+  item                       Item[]
+  timing                     Timing[]
+  labCategories              LabCategory[]
+  imageCategories            ImageCategory[]
+  users                      Course[]                     @relation("user")
+  doctors                    Course[]                     @relation("doctor")
+  BankRevenue                BankRevenue[]                @relation("bankUser")
+  BankRevenueDoctor          BankRevenue[]                @relation("bankDoctor")
+  InsuranceRevenue           InsuranceRevenue[]           @relation("insuranceUser")
+  InsuranceRevenueDoctor     InsuranceRevenue[]           @relation("insuranceDoctor")
+  CoursePayment              CoursePayment[]              @relation("coursePaymentUser")
+  CoursePaymentDoctor        CoursePayment[]              @relation("coursePaymentDoctor")
+  PayrollUser                PayrollUser[]
+  Sales                      Sales[]
+  Price                      Price[]
+  Hospital                   Hospital[]
+  Surgery                    Surgery[]
+  SalesDefinition            SalesDefinition[]
+  UserInventoryItem          InventoryItem[]              @relation("userInventoryItem")
+  DoctorInventoryItem        InventoryItem[]              @relation("doctorInventoryItem")
+  InventoryHistory           InventoryHistory[]           @relation("userInventory")
+  DoctorInventoryHistory     InventoryHistory[]           @relation("doctorInventory")
+  DentalDiagnosisDefinition  DentalDiagnosisDefinition[]
+  Tooth                      Tooth[]
+  ToothTransaction           ToothTransaction[]           @relation("toothUser")
+  ToothTransactionDoctors    ToothTransaction[]           @relation("toothDoctor")
+  PatientViewStatus          PatientViewStatus[]
+  PatientField               PatientField[]
+  SessionTransaction         SessionTransaction[]
+  BankExpense                BankExpense[]                @relation("bankExpenseUser")
+  BankExpenseDoctor          BankExpense[]                @relation("bankExpenseDoctor")
+  SupplierAccount            SupplierAccount[]
+  SupplierInvoice            SupplierInvoice[]
+  SupplierInvoiceTransaction SupplierInvoiceTransaction[]
+  UserCourseUnitsHistory     CourseUnitsHistory[]         @relation("userUnitHistory")
+  DoctorCourseUnitsHistory   CourseUnitsHistory[]         @relation("doctorUnitHistory")
 }
 
 model Patient {
-  id               String                @id @default(uuid())
-  name             String
-  phoneNo          String                @unique
-  type             PatientMembershipType
-  appointments     Appointment[]
-  age              Int
-  date             DateTime              @default(now())
-  codeNumber       Int                   @default(autoincrement())
-  code             String?
-  points           Int                   @default(0)
-  sex              Sex
-  reference        Json                  @default("[]")
-  area             String                @default("")
-  organization     Organization          @relation(fields: [organizationId], references: [id])
-  organizationId   String
-  user             User                  @relation(fields: [userId], references: [id])
-  userId           String
-  guardianName     String?
-  createdAt        DateTime              @default(now())
-  updatedAt        DateTime              @default(now()) @updatedAt
-  medicineHistory  MedicineHistory[]
-  familyHistory    FamilyHistory[]
-  inventoryHistory InventoryHistory[]
-  patientSurgeries PatientSurgery[]
-  labs             Lab[]
-  images           Image[]
-  Course           Course[]
-  Tooth            Tooth[]
-  FaceOperation    FaceOperation[]
-  FacePartation    FacePartation[]
-  PatientField     PatientField[]
-  Coupon           Coupon[]
+  id                 String                @id @default(uuid())
+  name               String
+  phoneNo            String                @unique
+  phoneNoTwo         String?
+  type               PatientMembershipType
+  appointments       Appointment[]
+  age                Int
+  date               DateTime              @default(now())
+  codeNumber         Int                   @default(autoincrement())
+  code               String?
+  points             Int                   @default(0)
+  sex                Sex
+  reference          Json                  @default("[]")
+  area               String                @default("")
+  password           String?
+  remainingOfPayment Int?                  @default(0)
+  organization       Organization          @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  user               User                  @relation(fields: [userId], references: [id])
+  userId             String
+  guardianName       String?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @default(now()) @updatedAt
+  medicineHistory    MedicineHistory[]
+  familyHistory      FamilyHistory[]
+  inventoryHistory   InventoryHistory[]
+  patientSurgeries   PatientSurgery[]
+  labs               Lab[]
+  images             Image[]
+  Course             Course[]
+  Tooth              Tooth[]
+  FaceOperation      FaceOperation[]
+  FacePartation      FacePartation[]
+  PatientField       PatientField[]
+  Coupon             Coupon[]
+  Revenue            Revenue[]
+  BankRevenue        BankRevenue[]
+  InsuranceRevenue   InsuranceRevenue[]
+  BankExpense        BankExpense[]
 }
 
 model Appointment {
@@ -334,6 +376,7 @@ model Appointment {
   businessNotes    String             @default("")
   accounted        Boolean            @default(false)
   duration         Int                @default(5)
+  reference        String?
   status           AppointmentStatus
   data             AppointmentField[]
   notes            String?            @default("")
@@ -472,6 +515,8 @@ model Field {
   order             Int
   type              FieldType
   choices           Json?
+  dynamic           Boolean            @default(false)
+  choicesType       String?
   fieldGroup        FieldGroup?        @relation(fields: [fieldGroupId], references: [id])
   fieldGroupId      String?
   appointmentFields AppointmentField[]
@@ -735,6 +780,8 @@ model Revenue {
   amount         Float
   invoiceNo      String?
   level          String?
+  patient        Patient?     @relation(fields: [patientId], references: [id])
+  patientId      String?
   specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
   branch         Branch?      @relation(fields: [branchId], references: [id])
@@ -755,6 +802,7 @@ model BankRevenue {
   date           DateTime
   amount         Float
   invoiceNo      String?
+  checkNumber    String?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @default(now()) @updatedAt
   user           User           @relation("bankUser", fields: [userId], references: [id])
@@ -762,6 +810,35 @@ model BankRevenue {
   doctor         User?          @relation("bankDoctor", fields: [doctorId], references: [id])
   doctorId       String?
   level          String?
+  patient        Patient?       @relation(fields: [patientId], references: [id])
+  patientId      String?
+  specialty      Specialty?     @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?        @relation(fields: [branchId], references: [id])
+  branchId       String?
+  bank           BankDefinition @relation(fields: [bankId], references: [id])
+  bankId         String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
+model BankExpense {
+  id             String         @id @default(uuid())
+  name           String
+  date           DateTime
+  amount         Float
+  expenseType    String
+  invoiceNo      String?
+  checkNumber    String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @default(now()) @updatedAt
+  user           User           @relation("bankExpenseUser", fields: [userId], references: [id])
+  userId         String
+  doctor         User?          @relation("bankExpenseDoctor", fields: [doctorId], references: [id])
+  doctorId       String?
+  level          String?
+  patient        Patient?       @relation(fields: [patientId], references: [id])
+  patientId      String?
   specialty      Specialty?     @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
   branch         Branch?        @relation(fields: [branchId], references: [id])
@@ -785,6 +862,8 @@ model InsuranceRevenue {
   doctor         User?             @relation("insuranceDoctor", fields: [doctorId], references: [id])
   doctorId       String?
   level          String?
+  patient        Patient?          @relation(fields: [patientId], references: [id])
+  patientId      String?
   specialty      Specialty?        @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
   branch         Branch?           @relation(fields: [branchId], references: [id])
@@ -864,6 +943,12 @@ model InventoryHistory {
   userId         String
   patient        Patient?           @relation(fields: [patientId], references: [id])
   patientId      String?
+  specialty      Specialty?         @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
+  branch         Branch?            @relation(fields: [branchId], references: [id])
+  branchId       String?
+  doctor         User?              @relation("doctorInventory", fields: [doctorId], references: [id])
+  doctorId       String?
   operation      InventoryOperation
   quantity       Int
   price          Int?
@@ -931,6 +1016,50 @@ model Timing {
   user              User           @relation(fields: [userId], references: [id])
   userId            String
   prescriptions     Prescription[]
+}
+
+model SupplierAccount {
+  id              String            @id @default(uuid())
+  name            String
+  phoneNo         String?
+  organization    Organization      @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  user            User              @relation(fields: [userId], references: [id])
+  userId          String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+  SupplierInvoice SupplierInvoice[]
+}
+
+model SupplierInvoice {
+  id                         String                       @id @default(uuid())
+  name                       String
+  amount                     Int
+  description                String
+  invoiceNumber              String
+  paid                       Int                          @default(0)
+  status                     SupplierInvoiceStatus
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now()) @updatedAt
+  supplierAccount            SupplierAccount              @relation(fields: [supplierId], references: [id])
+  supplierId                 String
+  organization               Organization                 @relation(fields: [organizationId], references: [id])
+  organizationId             String
+  user                       User                         @relation(fields: [userId], references: [id])
+  userId                     String
+  SupplierInvoiceTransaction SupplierInvoiceTransaction[]
+}
+
+model SupplierInvoiceTransaction {
+  id                String          @id @default(uuid())
+  paid              Int
+  date              DateTime
+  checkNumber       String?
+  checkDate         DateTime?
+  supplierInvoice   SupplierInvoice @relation(fields: [supplierInvoiceId], references: [id])
+  supplierInvoiceId String
+  user              User            @relation(fields: [userId], references: [id])
+  userId            String
 }
 
 model ImageDefinition {
@@ -1067,6 +1196,16 @@ model SessionDefinition {
   SessionTransaction SessionTransaction[]
 }
 
+model CourseTypeDefinition {
+  id             String       @id @default(uuid())
+  name           String
+  price          Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
 model Points {
   id             String       @id @default(uuid())
   points         Int
@@ -1096,6 +1235,7 @@ model BankDefinition {
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
   BankRevenue    BankRevenue[]
+  BankExpense    BankExpense[]
 }
 
 model ExpenseTypeDefinition {
@@ -1197,26 +1337,29 @@ model AppointmentTypeDefinition {
 }
 
 model Course {
-  id                 String           @id @default(uuid())
+  id                 String               @id @default(uuid())
   price              Int
+  customName         String?
+  customUnits        Int?
   paid               Int
-  consumed           Int              @default(0)
+  consumed           Int                  @default(0)
   discount           Int
   startDate          DateTime
   endDate            DateTime
   status             CourseStatus
   sessions           Appointment[]
-  patient            Patient          @relation(fields: [patientId], references: [id])
+  patient            Patient              @relation(fields: [patientId], references: [id])
   patientId          String
-  user               User             @relation("user", fields: [userId], references: [id])
+  user               User                 @relation("user", fields: [userId], references: [id])
   userId             String
-  courseDefinition   CourseDefinition @relation(fields: [courseDefinitionId], references: [id])
-  courseDefinitionId String
-  doctor             User             @relation("doctor", fields: [doctorId], references: [id])
+  courseDefinition   CourseDefinition?    @relation(fields: [courseDefinitionId], references: [id])
+  courseDefinitionId String?
+  doctor             User                 @relation("doctor", fields: [doctorId], references: [id])
   doctorId           String
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now()) @updatedAt
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
   CoursePayment      CoursePayment[]
+  CourseUnitsHistory CourseUnitsHistory[]
 }
 
 model CoursePayment {
@@ -1234,6 +1377,18 @@ model CoursePayment {
   branchId    String?
   course      Course     @relation(fields: [courseId], references: [id])
   courseId    String
+}
+
+model CourseUnitsHistory {
+  id       String   @id @default(uuid())
+  units    Int
+  date     DateTime
+  user     User     @relation("userUnitHistory", fields: [userId], references: [id])
+  userId   String
+  doctor   User?    @relation("doctorUnitHistory", fields: [doctorId], references: [id])
+  doctorId String?
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId String
 }
 
 model ImageCategory {
@@ -1397,6 +1552,8 @@ model Branch {
   BankRevenue        BankRevenue[]
   InsuranceRevenue   InsuranceRevenue[]
   CoursePayment      CoursePayment[]
+  BankExpense        BankExpense[]
+  InventoryHistory   InventoryHistory[]
 }
 
 model Specialty {
@@ -1422,6 +1579,8 @@ model Specialty {
   BankRevenue        BankRevenue[]
   InsuranceRevenue   InsuranceRevenue[]
   CoursePayment      CoursePayment[]
+  BankExpense        BankExpense[]
+  InventoryHistory   InventoryHistory[]
 }
 
 model UserSpecialty {

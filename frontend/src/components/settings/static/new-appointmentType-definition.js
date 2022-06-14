@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { CRModal, CRTextInput, Div, H3, CRRadio } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const options = [{ name: 'Uregent', value: true }];
 function NewAppointmentTypeDefinition({
@@ -16,12 +17,13 @@ function NewAppointmentTypeDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New AppointmentType'
+        ? t('addNewAppointmentType')
         : type === 'edit'
-        ? 'Edit AppointmentType'
+        ? t('editAppointmentType')
         : 'Delete AppointmentType',
     [type]
   );
@@ -45,17 +47,17 @@ function NewAppointmentTypeDefinition({
         ) : (
           <>
             <CRTextInput
-              label="Name"
+              label={t('name')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
                   ? checkResult['name'].errorMessage
                   : ''
               }
-              placeholder="Type AppointmentType"
+              // placeholder="Type AppointmentType"
               block
             />
-            <CRRadio name="urgent" options={options} label="Urgent"/>
+            <CRRadio name="urgent" options={options} label={t('urgent')} />
           </>
         )}
       </Form>

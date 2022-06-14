@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-} from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 import {
   Table,
@@ -37,7 +31,6 @@ const styles = StyleSheet.create({
   profit: {
     marginTop: 30,
   },
-  
 });
 
 const PdfTable = ({ data }) => (
@@ -67,24 +60,38 @@ const calculateTotalSales = data =>
 const calculateTotalCost = data =>
   data.reduce((sum, { totalCost }) => sum + totalCost, 0);
 
-const PdfDocument = ({ period, data }) => {
+const PdfDocument = ({
+  period,
+  data,
+  totalSalesPrice,
+  totalSalesCost,
+  marginTop,
+  marginRight,
+  marginBottom,
+  marginLeft,
+}) => {
   return (
-    
     <Document>
-      <Page size="A4" orientation="landscape" style={styles.page}>
+      <Page
+        size="A4"
+        orientation="landscape"
+        style={{
+          ...styles.page,
+          marginTop: marginTop,
+          marginRight: marginRight,
+          marginBottom: marginBottom,
+          marginLeft: marginLeft,
+        }}
+      >
         <Text>Sales Report</Text>
         <Text>
           from {formatDate(period[0])} to {formatDate(period[1])}
         </Text>
         <View style={styles.profit}>
+          <Text style={styles.header}>Total Sales = {totalSalesPrice}</Text>
+          <Text style={styles.header}>Total Cost = {totalSalesCost}</Text>
           <Text style={styles.header}>
-            Total Sales = {calculateTotalSales(data)}
-          </Text>
-          <Text style={styles.header}>
-            Total Cost = {calculateTotalCost(data)}
-          </Text>
-          <Text style={styles.header}>
-            Profit = {calculateTotalSales(data) - calculateTotalCost(data)}
+            Profit = {totalSalesPrice - totalSalesCost}
           </Text>
         </View>
 

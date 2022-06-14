@@ -90,7 +90,6 @@ function usePermissions({
     () => R.propOr([], 'listRoles')(rolesData),
     [rolesData]
   );
-
   /* mutations */
   const [createOrUpdateRole] = useMutation(CREATE_OR_UPDATE_ROLE, {
     onCompleted() {

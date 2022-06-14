@@ -33,6 +33,5 @@ export const upload = async file => {
   const id = shortid.generate();
   const url = `${UPLOAD_DIR}/${id}-${name}`;
   await file.mv(path.join(__dirname, url));
-
   return recordFile2(file, url);
 };

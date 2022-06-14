@@ -7,6 +7,10 @@ const types = [
   { id: 'prescription', name: 'Prescription' },
   { id: 'reportPrintout', name: 'ReportPrintout' },
   { id: 'sales', name: 'Sales' },
+  { id: 'visa', name: 'Visa' },
+  { id: 'accounting', name: 'Accounting' },
+  { id: 'insurance', name: 'Insurance' },
+  { id: 'invoice', name: 'Invoice' },
 ];
 const PageSetup = ({ pageSetup, setPageSetup }) => {
   const { t } = useTranslation();

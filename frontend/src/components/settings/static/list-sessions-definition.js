@@ -1,15 +1,16 @@
 import React from 'react';
 import { Icon } from 'rsuite';
-
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListSessions({ sessions, onEdit }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={sessions}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -17,7 +18,7 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Price</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price }) => (
                 <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
@@ -25,7 +26,7 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Duration</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('duration')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ duration }) => (
                 <CRTable.CRCellStyled bold>{duration}</CRTable.CRCellStyled>
@@ -39,7 +40,7 @@ function ListSessions({ sessions, onEdit }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -51,7 +52,7 @@ function ListSessions({ sessions, onEdit }) {
               {data => (
                 <Icon icon="trash" onClick={() => onEdit(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>

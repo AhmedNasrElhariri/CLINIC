@@ -35,9 +35,9 @@ function useImageDefinition({ onCreate, onEdit, categoryId, onDelete } = {}) {
       Alert.success('the Image has been Added Successfully');
       onCreate && onCreate();
     },
-    update(cache, { data: { addImageDefinition: imageDefinition } }) {
-      updateCache([...imagesDefinition, imageDefinition]);
-    },
+      update(cache, { data: { addImageDefinition: imageDefinition } }) {
+        updateCache([...imagesDefinition, imageDefinition]);
+      },
     onError() {
       Alert.error('Failed to add new Image');
     },

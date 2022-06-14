@@ -5,6 +5,8 @@ import { formatDate } from 'utils/date';
 import Axios from 'axios';
 import FileDownload from 'js-file-download';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
+import { useTranslation } from 'react-i18next';
+
 const StyledImage = styled.img`
   width: 100%;
 `;
@@ -41,6 +43,7 @@ const saveFile = url => {
   });
 };
 function ListImageDocs({ images, imageId }) {
+  const { t } = useTranslation();
   const image = images.filter(ele => ele.id === imageId);
   const documents = image[0]?.documents;
   const pdfFiles = useMemo(() => {
@@ -58,7 +61,7 @@ function ListImageDocs({ images, imageId }) {
       <CRCard borderless>
         <CRTable autoHeight data={image}>
           <CRTable.CRColumn flexGrow={0.5}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled semiBold>{name}</CRTable.CRCellStyled>
@@ -66,7 +69,7 @@ function ListImageDocs({ images, imageId }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (
                 <CRTable.CRCellStyled>{formatDate(date)}</CRTable.CRCellStyled>
@@ -74,7 +77,7 @@ function ListImageDocs({ images, imageId }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Value</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('value')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="value" semiBold />
           </CRTable.CRColumn>
         </CRTable>
@@ -86,7 +89,9 @@ function ListImageDocs({ images, imageId }) {
         {pdfFiles?.map(d => (
           <Div display="flex">
             <Div mr={10}>{'File'}</Div>
-            <CRButton onClick={() => saveFile(d?.url)}>Download File</CRButton>
+            <CRButton onClick={() => saveFile(d?.url)}>
+              {t('downloadFile')}
+            </CRButton>
           </Div>
         ))}
       </Div>

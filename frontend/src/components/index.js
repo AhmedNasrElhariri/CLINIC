@@ -102,3 +102,5 @@ export { default as ReportPrintout } from './report-printouts';
 export { default as EmployeePayroll } from './payroll/employee-payroll';
 
 export { default as Payroll } from './payroll';
+
+export { default as BranchSpecialtyUserFilter } from './branch-specialty-user-filter';

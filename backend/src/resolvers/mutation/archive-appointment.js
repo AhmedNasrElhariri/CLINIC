@@ -28,6 +28,8 @@ const archiveAppointment = async (
     items = [],
     discount = {},
     others = {},
+    remaining = 0,
+    payOfRemaining = 0,
     date,
     patientName,
     patientId,
@@ -36,6 +38,7 @@ const archiveAppointment = async (
     userId: userID,
     coupons,
     couponsValue,
+    doctorFees,
   },
   { userId, organizationId }
 ) => {
@@ -75,7 +78,8 @@ const archiveAppointment = async (
         branchId,
         date,
         specialtyId,
-        userID
+        userID,
+        patientId
       )
     );
 
@@ -118,8 +122,75 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
+      });
+    }
+    if (payOfRemaining > 0) {
+      const pa = await prisma.patient.findUnique({ where: { id: patientId } });
+      const N = 'Payment of the patient remaining /' + patientName;
+      await prisma.revenue.create({
+        data: Object.assign(
+          {
+            date: new Date(date),
+            name: N,
+            amount: payOfRemaining,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
+            },
+          },
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
+          }
+        ),
+      });
+      await prisma.patient.update({
+        data: {
+          remainingOfPayment: pa.remainingOfPayment - payOfRemaining,
+        },
+        where: {
+          id: patientId,
+        },
       });
     }
     if (discount && discount.amount > 0) {
@@ -141,7 +212,8 @@ const archiveAppointment = async (
       (sum, { price, number }) => sum + number * price,
       0
     );
-    sub = subRed + others.amount - discount.amount - couponsValue;
+    sub =
+      subRed + others.amount + payOfRemaining - discount.amount - couponsValue;
     const name = 'Bank Payment - ' + patientName;
     if (option.amount > 0 || couponsValue > 0) {
       let cashAmount = option.amount;
@@ -186,6 +258,13 @@ const archiveAppointment = async (
             doctor: {
               connect: {
                 id: userID,
+              },
+            },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
               },
             },
           }
@@ -234,6 +313,13 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
@@ -248,7 +334,8 @@ const archiveAppointment = async (
           date,
           specialtyId,
           userID,
-          bank
+          bank,
+          patientId
         )
       );
       if (others.amount > 0) {
@@ -295,56 +382,84 @@ const archiveAppointment = async (
                   id: userID,
                 },
               },
+            },
+            patientId && {
+              patient: {
+                connect: {
+                  id: patientId,
+                },
+              },
             }
           ),
         });
       }
-      // await prisma.bankRevenue.create({
-      //   data: Object.assign(
-      //     {
-      //       date: new Date(date),
-      //       name,
-      //       amount: sub,
-      //       level,
-      //       organization: {
-      //         connect: {
-      //           id: organizationId,
-      //         },
-      //       },
-      //       bank: {
-      //         connect: {
-      //           id: bank,
-      //         },
-      //       },
-      //       user: {
-      //         connect: {
-      //           id: userId,
-      //         },
-      //       },
-      //     },
-      //     specialtyId && {
-      //       specialty: {
-      //         connect: {
-      //           id: specialtyId,
-      //         },
-      //       },
-      //     },
-      //     branchId && {
-      //       branch: {
-      //         connect: {
-      //           id: branchId,
-      //         },
-      //       },
-      //     },
-      //     userID && {
-      //       doctor: {
-      //         connect: {
-      //           id: userID,
-      //         },
-      //       },
-      //     }
-      //   ),
-      // });
+      if (payOfRemaining > 0) {
+        const pa = await prisma.patient.findUnique({
+          where: { id: patientId },
+        });
+        const N = 'Payment of the patient remaining /' + patientName;
+        await prisma.bankRevenue.create({
+          data: Object.assign(
+            {
+              date: new Date(date),
+              name: N,
+              amount: payOfRemaining,
+              level,
+              organization: {
+                connect: {
+                  id: organizationId,
+                },
+              },
+              user: {
+                connect: {
+                  id: userId,
+                },
+              },
+              bank: {
+                connect: {
+                  id: bank,
+                },
+              },
+            },
+            specialtyId && {
+              specialty: {
+                connect: {
+                  id: specialtyId,
+                },
+              },
+            },
+            branchId && {
+              branch: {
+                connect: {
+                  id: branchId,
+                },
+              },
+            },
+            userID && {
+              doctor: {
+                connect: {
+                  id: userID,
+                },
+              },
+            },
+            patientId && {
+              patient: {
+                connect: {
+                  id: patientId,
+                },
+              },
+            }
+          ),
+        });
+        await prisma.patient.update({
+          data: {
+            remainingOfPayment: pa.remainingOfPayment - payOfRemaining,
+          },
+          where: {
+            id: patientId,
+          },
+        });
+      }
     }
   }
   if (company != null) {
@@ -353,7 +468,11 @@ const archiveAppointment = async (
       0
     );
     const totalAmount =
-      totalSessionAmount + others.amount - discount.amount - couponsValue;
+      totalSessionAmount +
+      others.amount +
+      payOfRemaining -
+      discount.amount -
+      couponsValue;
     let subtotal = 0;
     let amount = 0;
     subtotal = totalAmount - option.amount;
@@ -401,6 +520,13 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
@@ -445,6 +571,13 @@ const archiveAppointment = async (
             doctor: {
               connect: {
                 id: userID,
+              },
+            },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
               },
             },
           }
@@ -494,6 +627,13 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
@@ -540,10 +680,63 @@ const archiveAppointment = async (
                 id: userID,
               },
             },
+          },
+          patientId && {
+            patient: {
+              connect: {
+                id: patientId,
+              },
+            },
           }
         ),
       });
     }
+  }
+  if (doctorFees.fees > 0) {
+    const { fees, doctorId, doctorName } = doctorFees;
+    const name = 'Doctor-fees / ' + doctorName;
+    await prisma.expense.create({
+      data: Object.assign(
+        {
+          date: new Date(date),
+          name: name,
+          expenseType: 'Doctor',
+          amount: fees,
+          level,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: doctorId,
+            },
+          },
+        }
+      ),
+    });
   }
   if (couponsValue > 0) {
     await updateCoupons(coupons, organizationId);
@@ -561,6 +754,61 @@ const archiveAppointment = async (
       );
     }
   }
+  if (remaining > 0) {
+    const pa = await prisma.patient.findUnique({ where: { id: patientId } });
+    const N = 'Payment Remaining of the patient/' + patientName;
+    await prisma.expense.create({
+      data: Object.assign(
+        {
+          date: new Date(date),
+          name: N,
+          expenseType: 'Patient',
+          amount: remaining,
+          level,
+          organization: {
+            connect: {
+              id: organizationId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        userID && {
+          doctor: {
+            connect: {
+              id: userID,
+            },
+          },
+        }
+      ),
+    });
+    await prisma.patient.update({
+      data: {
+        remainingOfPayment: pa.remainingOfPayment + remaining,
+      },
+      where: {
+        id: patientId,
+      },
+    });
+  }
+
   await couponService(
     patientId,
     userId,
@@ -588,21 +836,21 @@ const archiveAppointment = async (
     organizationId: organizationId,
   });
 
-  // const configuration = await prisma.configuration.findUnique({
-  //   where: { organizationId },
-  // });
-  // if (configuration.enableInvoiceCounter) {
-  //   const existedOrganization = await prisma.organization.findUnique({
-  //     where: { id: organizationId },
-  //   });
-  //   const newInvoiceCounter = existedOrganization.invoiceCounter + 1;
-  //   await prisma.organization.update({
-  //     where: { id: organizationId },
-  //     data: {
-  //       invoiceCounter: newInvoiceCounter,
-  //     },
-  //   });
-  // }
+  const configuration = await prisma.configuration.findUnique({
+    where: { organizationId },
+  });
+  if (configuration && configuration.enableInvoiceCounter) {
+    const existedOrganization = await prisma.organization.findUnique({
+      where: { id: organizationId },
+    });
+    const newInvoiceCounter = existedOrganization.invoiceCounter + 1;
+    await prisma.organization.update({
+      where: { id: organizationId },
+      data: {
+        invoiceCounter: newInvoiceCounter,
+      },
+    });
+  }
   return appointment;
 };
 

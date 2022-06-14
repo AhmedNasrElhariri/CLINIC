@@ -22,7 +22,8 @@ import FaceMaterials from './face-materials';
 import AppointmentTypeDefinition from './appointment-type-definition';
 import { get } from 'services/local-storage';
 import { useTranslation } from 'react-i18next';
-
+import CourseTypeDefinition from './course-types-definition';
+import SupplierAccount from './supplier-account';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -77,6 +78,8 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="16">{t('faceMaterials')}</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="17">{t('patientReport')}</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="18">{t('appointmentType')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="19">{t('courseType')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="20">{t('supplierAccount')}</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -117,8 +120,12 @@ function StaticSettings() {
               return <FaceMaterials />;
             case '17':
               return <PatientReport />;
-            default:
+            case '18':
               return <AppointmentTypeDefinition />;
+            case '19':
+              return <CourseTypeDefinition />;
+            default:
+              return <SupplierAccount />;
           }
         })()}
       </TabContainer>

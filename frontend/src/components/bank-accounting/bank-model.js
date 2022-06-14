@@ -1,19 +1,37 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
-import { CRModal, Div, H3, CRNumberInput } from 'components';
+import {
+  CRModal,
+  CRNumberInput,
+  CRTextInput,
+  CRSelectInput,
+  CRDatePicker,
+  CRBrancheTree,
+} from 'components';
 import { useTranslation } from 'react-i18next';
 
-function BankModel({ formValue, onChange, type, visible, onOk, onClose }) {
+function BankModel({
+  formValue,
+  onChange,
+  type,
+  visible,
+  onOk,
+  onClose,
+  banksDefinition,
+  updatedexpenseType,
+  action,
+}) {
   const { t } = useTranslation();
   const header = useMemo(
     () =>
-      type === 'create'
-        ? t('addNewBankTransition')
-        : type === 'edit'
-        ? t('editBankTransition')
-        : t('deleteBankTransition'),
+      type === 'createBankRevenue'
+        ? t('addNewBankRevenueTransition')
+        : type === 'createBankExpense'
+        ? t('addNewBankExpenseTransition')
+        : t('editBankTransition'),
     [type]
   );
+
   return (
     <CRModal
       show={visible}
@@ -23,20 +41,53 @@ function BankModel({ formValue, onChange, type, visible, onOk, onClose }) {
       onCancel={onClose}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        {type === 'delete' ? (
-          <Div>
-            <H3>{t('deleteBankMessage')} </H3>
-          </Div>
-        ) : (
+        <CRTextInput label={t('name')} name="name" block></CRTextInput>
+        <CRNumberInput
+          label={t('revenueAmount')}
+          name="amount"
+          block
+        ></CRNumberInput>
+        <CRSelectInput
+          label={t('bank')}
+          name="bankId"
+          data={banksDefinition}
+          placeholder="Select One Bank "
+          block
+        />
+        {header === 'Add New Bank Expense Transition' && (
           <>
-            <CRNumberInput
-              label="Amount"
-              name="amount"
-              placeholder="Type The Amount"
+            <CRSelectInput
+              label={t('expenseType')}
+              name="expenseType"
               block
+              data={updatedexpenseType}
             />
           </>
         )}
+        {type === 'editBankExpense' && (
+          <CRSelectInput
+            label={t('expenseType')}
+            name="expenseType"
+            block
+            data={updatedexpenseType}
+          />
+        )}
+        <CRDatePicker label={t('date')} name="date" block></CRDatePicker>
+        <CRBrancheTree
+          formValue={formValue}
+          onChange={onChange}
+          action={action}
+        />
+        <CRTextInput
+          label={t('checkNo')}
+          name="checkNumber"
+          block
+        ></CRTextInput>
+        <CRTextInput
+          label={t('invoiceNo')}
+          name="invoiceNo"
+          block
+        ></CRTextInput>
       </Form>
     </CRModal>
   );

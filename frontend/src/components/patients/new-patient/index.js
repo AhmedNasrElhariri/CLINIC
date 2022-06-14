@@ -5,15 +5,22 @@ import { ALL_AREAS } from 'apollo-client/queries';
 import { CRModal } from 'components';
 import { useMutation, useQuery } from '@apollo/client';
 import Form from './form';
-import { CREATE_PATIENT, LIST_SEARCHED_PATIENTS } from 'apollo-client/queries';
+import {
+  CREATE_PATIENT,
+  LIST_SEARCHED_PATIENTS,
+  LIST_PATIENTS,
+} from 'apollo-client/queries';
 import { usePatients, useForm } from 'hooks';
 import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   name: '',
   phoneNo: '',
+  phoneNoTwo: '',
   area: '',
+  code: '',
   ageOption: 'age',
+  phoneOption: 'one',
   reference: [],
   age: 0,
   date: new Date(),
@@ -40,8 +47,15 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       initValue: initialValues,
       model,
     });
-  const { patients, updateCache } = usePatients();
   const { data } = useQuery(ALL_AREAS);
+  const { createPatient, createPatientLoading } = usePatients({
+    onCreate: () => {
+      onHide();
+      setFormValue(initialValues);
+      setShow(false);
+      // onCreate(patient);
+    },
+  });
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const { t } = useTranslation();
   const newAreas = areas.map(a => {
@@ -50,27 +64,7 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       name: a.city_name_en,
     };
   });
-  const [createPatient, { loading }] = useMutation(CREATE_PATIENT, {
-    update(cache, { data: { createPatient: patient } }) {
-      updateCache(patients.concat([patient]));
-    },
-    onCompleted: ({ createPatient: patient }) => {
-      Alert.success('Patient Created Successfully');
-      onHide();
-      setFormValue(initialValues);
-      setShow(false);
-      onCreate(patient);
-    },
-    refetchQueries: [
-      {
-        query: LIST_SEARCHED_PATIENTS,
-        variables: {
-          name: '0',
-        },
-      },
-    ],
-    onError: () => Alert.error('Invalid Input'),
-  });
+
   return (
     <CRModal
       show={showModel}
@@ -80,7 +74,7 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       onOk={() => {
         setShow(true);
         if (validate) {
-          const { ageOption, ...rest } = formValue;
+          const { ageOption, phoneOption, ...rest } = formValue;
           createPatient({
             variables: {
               input: { ...rest },
@@ -88,9 +82,9 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
           });
         }
       }}
-      loading={loading}
       okTitle={t('ok')}
       cancelTitle={t('cancel')}
+      loading={createPatientLoading}
     >
       <Form
         onChange={setFormValue}

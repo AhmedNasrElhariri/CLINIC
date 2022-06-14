@@ -2,14 +2,16 @@ import React from 'react';
 import { Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListSalesesDefinition({ saless, onEdit, onDelete }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={saless}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Item Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name, level, branch, specialty, user }) => (
                 <CRTable.CRCellStyled bold>
@@ -28,7 +30,7 @@ function ListSalesesDefinition({ saless, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Unit Cost</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('cost')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ cost }) => (
                 <CRTable.CRCellStyled bold>{cost}</CRTable.CRCellStyled>
@@ -36,7 +38,7 @@ function ListSalesesDefinition({ saless, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Unit Price</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price }) => (
                 <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
@@ -44,7 +46,7 @@ function ListSalesesDefinition({ saless, onEdit, onDelete }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Total Quantity</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('totalQauantity')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ totalQuantity }) => (
                 <CRTable.CRCellStyled bold>
@@ -60,7 +62,7 @@ function ListSalesesDefinition({ saless, onEdit, onDelete }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -72,7 +74,7 @@ function ListSalesesDefinition({ saless, onEdit, onDelete }) {
               {data => (
                 <Icon icon="trash" onClick={() => onDelete(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>

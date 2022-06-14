@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 import { Div } from 'components';
 import { CRTextArea, CRTextInput, CRModal } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const { StringType } = Schema.Types;
 
@@ -18,13 +19,14 @@ export default function NewSnippet({
   formValue,
   onChange,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Snippet'
+        ? t('addNewSnippet')
         : type === 'edit'
-        ? 'Edit Snippet'
-        : 'delete Snippet',
+        ? t('editSnippet')
+        : t('deleteSnippet'),
     [type]
   );
   return (
@@ -37,11 +39,11 @@ export default function NewSnippet({
     >
       <Form fluid model={model} formValue={formValue} onChange={onChange}>
         {type === 'delete' ? (
-          <Div>are you sure that you want to delete the Snippet</Div>
+          <Div>{t('deleteSnippetMessage')}</Div>
         ) : (
           <>
-            <CRTextInput label="Title" name="title" />
-            <CRTextArea label="body" name="body"></CRTextArea>
+            <CRTextInput label={t('title')} name="title" />
+            <CRTextArea label={t('body')} name="body"></CRTextArea>
           </>
         )}
       </Form>

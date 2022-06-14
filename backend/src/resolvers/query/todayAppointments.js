@@ -1,6 +1,5 @@
 import { prisma } from '@';
 import moment from 'moment';
-
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
@@ -11,15 +10,16 @@ const todayAppointments = async (_, __, { user, organizationId }) => {
       organizationId,
       action: ACTIONS.List_Appointment,
     },
-    true
+    false
   );
+  
   const from = moment(new Date()).startOf('day').toDate();
   const to = moment(new Date()).endOf('day').toDate();
   const appointments = await prisma.appointment.findMany({
     where: {
       OR: [
         {
-          userId: {
+          doctorId: {
             in: ids,
           },
         },

@@ -7,6 +7,7 @@ import { isValid } from 'services/form';
 import { useInventory } from 'hooks';
 import { CRSelectInput, CRBrancheTree } from 'components/widgets';
 import { useForm, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const { StringType, NumberType } = Schema.Types;
 const initValue = {
@@ -25,6 +26,7 @@ const model = Schema.Model({
 
 const AddItem = ({ items }) => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -54,12 +56,12 @@ const AddItem = ({ items }) => {
   return (
     <>
       <CRButton variant="primary" onClick={open}>
-        Add +
+        {t('add')} +
       </CRButton>
 
       <CRModal
         show={visible}
-        header="Add To Inventory"
+        header={t('addToInventory')}
         loading={addItemLoading}
         onOk={() => {
           setShow(true);
@@ -70,7 +72,7 @@ const AddItem = ({ items }) => {
       >
         <Form formValue={formValue} model={model} onChange={setFormValue} fluid>
           <CRSelectInput
-            label="Item"
+            label={t('item')}
             name="itemId"
             errorMessage={
               show && checkResult['itemId'].hasError
@@ -81,7 +83,7 @@ const AddItem = ({ items }) => {
             block
           ></CRSelectInput>
           <CRNumberInput
-            label="Amount"
+            label={t('amount')}
             name="amount"
             errorMessage={
               show && checkResult['amount'].hasError
@@ -90,7 +92,11 @@ const AddItem = ({ items }) => {
             }
             block
           ></CRNumberInput>
-          <CRNumberInput label="Unit Price" name="price" block></CRNumberInput>
+          <CRNumberInput
+            label={t('unitPrice')}
+            name="price"
+            block
+          ></CRNumberInput>
           <CRBrancheTree
             formValue={formValue}
             onChange={setFormValue}
@@ -99,7 +105,7 @@ const AddItem = ({ items }) => {
         </Form>
         <Div mt={3} display="flex">
           <H5 color="texts.2" fontWeight={400}>
-            Total :{' '}
+            {t('total')} :{' '}
           </H5>
           <H5 ml={3}>
             <NumberFormat

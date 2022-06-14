@@ -1,10 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Icon } from 'rsuite';
-
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
+  const { t } = useTranslation();
   const history = useHistory();
   return (
     <>
@@ -18,7 +19,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
           }}
         >
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>User Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
                 <CRTable.CRCellStyled bold>{user.name}</CRTable.CRCellStyled>
@@ -27,7 +28,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Position</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('position')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
                 <CRTable.CRCellStyled bold>
@@ -38,7 +39,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Salary</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('salary')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ salary }) => (
                 <CRTable.CRCellStyled bold>{salary}</CRTable.CRCellStyled>
@@ -56,7 +57,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
                     }}
                     style={{ paddingRight: '25px' }}
                   >
-                    Open Details
+                    {t('openDetails')}
                   </Icon>
                   <Icon
                     onClick={e => {
@@ -65,7 +66,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
                     }}
                     icon="trash"
                   >
-                    Delete
+                    {t('delete')}
                   </Icon>
                 </>
               )}

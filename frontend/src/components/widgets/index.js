@@ -24,6 +24,7 @@ export { default as CRRadio } from './radio-button';
 export { default as CRCheckBoxGroup } from './check-box-group';
 export { default as CRCheckBox } from './check-box';
 export { default as CRNestedSelector } from './nested-selector';
+export { default as CRMultipleSelector } from './multiple-selector';
 export { default as CRLabel } from './label';
 export { default as CRTabs } from './tabs';
 export { default as CRBrancheTree } from './branch-tree';

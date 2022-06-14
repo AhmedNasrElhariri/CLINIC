@@ -74,7 +74,7 @@ const PatientInformationCreation = ({ patient }) => {
   const [formValue, setFormValue] = useState({});
   const { data: patientFieldData } = useQuery(GET_PATIENT_FIELD, {
     variables: {
-      patientId: patient?.id,
+      patientId: patient.id,
     },
   });
   const fields = useMemo(
@@ -85,6 +85,7 @@ const PatientInformationCreation = ({ patient }) => {
     patientId: patient?.id,
     appointment: { data: fields },
   });
+
   const navs = useMemo(
     () => convertGroupFieldsToNavs(patientGroups),
     [patientGroups]
@@ -104,7 +105,7 @@ const PatientInformationCreation = ({ patient }) => {
   useEffect(() => {
     const mapData = getFormInitValues(normalizedPatientFields);
     setFormValue(mapData);
-  }, []);
+  }, [patientFieldData]);
   return (
     <>
       <CRButton onClick={handleSave}>Save</CRButton>

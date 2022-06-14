@@ -34,6 +34,8 @@ const InvoicePrintout = React.forwardRef(
       total,
       organization,
       others,
+      remaining,
+      payOfRemaining,
       patientName,
       othersName,
       option,
@@ -41,18 +43,25 @@ const InvoicePrintout = React.forwardRef(
     },
     ref
   ) => {
+    const invoiceNumber = R.propOr(0, 'invoiceCounter')(organization);
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
+    const { pageSetupData } = useConfigurations();
+    const pageSetupRow = pageSetupData.find(
+      element => element.type === 'invoice'
+    );
+
+    const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
+    const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
+    const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
+    const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
     let userPayment = 0;
     const fullOthersName = 'Others - ' + othersName;
-    const Count =
-      year + '' + month + '' + day + '/' + organization?.invoiceCounter;
+    const Count = year + '' + month + '' + day + '/' + invoiceNumber;
     const { configurations } = useConfigurations();
-    const enable = R.isEmpty(configurations)
-      ? configurations.enableInvoiceCounter
-      : false;
+    const enable = R.propOr(false, 'enableInvoiceCounter')(configurations);
     if (option.option === 'fixed') {
       userPayment = option.amount;
     } else if (option.option === 'percentage') {
@@ -60,7 +69,15 @@ const InvoicePrintout = React.forwardRef(
     }
     return (
       <Div height={0} overflow="hidden">
-        <StyledContainer ref={ref}>
+        <StyledContainer
+          ref={ref}
+          style={{
+            marginTop: marginTop,
+            marginRight: marginRight,
+            marginBottom: marginBottom,
+            marginLeft: marginLeft,
+          }}
+        >
           {enable ? <StyledHeader>{organization.name}</StyledHeader> : <></>}
           <H5 mb={3}>Invoice {enable ? Count : ''}</H5>
           <H5 mb={3}>Patient Name {' : ' + patientName}</H5>
@@ -72,6 +89,8 @@ const InvoicePrintout = React.forwardRef(
           <Divider />
           <TotalPrice name="Subtotal" price={subtotal} />
           <TotalPrice name="Discount" price={discount} />
+          <TotalPrice name="Remaining" price={remaining} />
+          <TotalPrice name="Pay Of Remaining" price={payOfRemaining} />
           <TotalPrice name="Coupons Value" price={couponsValue} />
           <TotalPrice name="Total" price={total} />
           {userPayment > 0 && (

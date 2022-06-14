@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
-
 import { CRModal, CRTextInput } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function NewCompanyDefinition({
   formValue,
@@ -16,8 +16,9 @@ function NewCompanyDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Company' : 'Edit Company '),
+    () => (type === 'create' ? t('addNewCompany') : t('editCompany')),
     [type]
   );
 
@@ -35,14 +36,14 @@ function NewCompanyDefinition({
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
-          label="Company Name"
+          label={t('name')}
           name="name"
           errorMessage={
             show && checkResult['name'].hasError
               ? checkResult['name'].errorMessage
               : ''
           }
-          placeholder="Type Company"
+          // placeholder="Type Company"
           block
         />
       </Form>

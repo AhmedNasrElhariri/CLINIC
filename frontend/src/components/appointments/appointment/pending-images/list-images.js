@@ -2,20 +2,25 @@ import React from 'react';
 import { Icon } from 'rsuite';
 import { formatDate } from 'utils/date';
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
+
 function ListLabDocs({ images, onEdit }) {
+  const { t } = useTranslation();
   return (
     <CRCard borderless>
       <CRTable autoHeight data={images}>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ imageDefinition }) => (
-              <CRTable.CRCellStyled>{imageDefinition.name}</CRTable.CRCellStyled>
+              <CRTable.CRCellStyled>
+                {imageDefinition.name}
+              </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name">
             {({ date }) => (
               <CRTable.CRCellStyled>{formatDate(date)}</CRTable.CRCellStyled>
@@ -23,7 +28,7 @@ function ListLabDocs({ images, onEdit }) {
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('actions')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {data => (
               <>

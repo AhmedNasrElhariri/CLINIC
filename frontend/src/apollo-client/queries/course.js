@@ -62,20 +62,15 @@ export const LIST_COURSES = gql`
       courses {
         id
         price
+        name
+        type
+        units
         paid
         discount
         consumed
         startDate
         endDate
         status
-        courseDefinition {
-          id
-          name
-          type
-          price
-          units
-          messureOfUnits
-        }
         doctor {
           id
           name
@@ -104,20 +99,15 @@ export const LIST_PATIENT_COURSES = gql`
     myPatientCourses(patientId: $patientId) {
       id
       price
+      name
+      type
+      units
       paid
       discount
       consumed
       startDate
       endDate
       status
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
-      }
       doctor {
         id
         name
@@ -154,6 +144,30 @@ export const LIST_COURSE_PAYMENTS = gql`
     }
   }
 `;
+export const LIST_COURSE_UNITS_HISTORY = gql`
+  query ($courseId: ID!) {
+    courseUnitsHistory(courseId: $courseId) {
+      id
+      units
+      date
+      doctor {
+        id
+        name
+      }
+      user {
+        id
+        name
+      }
+    }
+  }
+`;
+export const TOTAL_UNPAID_OF_COURSES = gql`
+  {
+    totalUnpaidOfCourses {
+      totalUnpaid
+    }
+  }
+`;
 
 export const ADD_COURSE = gql`
   mutation addCourse($course: CourseInput!) {
@@ -167,14 +181,6 @@ export const ADD_COURSE = gql`
         age
         sex
         phoneNo
-      }
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
       }
     }
   }
@@ -209,14 +215,6 @@ export const EDIT_COURSE = gql`
         sex
         phoneNo
       }
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
-      }
     }
   }
 `;
@@ -250,14 +248,6 @@ export const EDIT_COURSE_PAYMENT_HISTORY = gql`
         sex
         phoneNo
       }
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
-      }
     }
   }
 `;
@@ -276,14 +266,24 @@ export const EDIT_COURSE_UNITS = gql`
         sex
         phoneNo
       }
-      courseDefinition {
-        id
-        name
-        type
-        price
-        units
-        messureOfUnits
-      }
+    }
+  }
+`;
+
+export const EDIT_COURSE_UNIT_HISTORY = gql`
+  mutation editCourseUnitHistory(
+    $transactionId: ID
+    $consumed: Int
+    $courseId: ID
+  ) {
+    editCourseUnitHistory(
+      transactionId: $transactionId
+      consumed: $consumed
+      courseId: $courseId
+    ) {
+      id
+      units
+      date
     }
   }
 `;
@@ -307,8 +307,22 @@ export const FINISH_COURSE = gql`
 `;
 
 export const DELETE_COURSE = gql`
-  mutation deleteCourse($courseId: ID!, $refund: Int!) {
-    deleteCourse(courseId: $courseId, refund: $refund) {
+  mutation deleteCourse(
+    $courseId: ID!
+    $refund: Int!
+    $bank: ID
+    $branchId: ID
+    $specialtyId: ID
+    $userId: ID
+  ) {
+    deleteCourse(
+      courseId: $courseId
+      refund: $refund
+      bank: $bank
+      branchId: $branchId
+      specialtyId: $specialtyId
+      userId: $userId
+    ) {
       id
       price
     }

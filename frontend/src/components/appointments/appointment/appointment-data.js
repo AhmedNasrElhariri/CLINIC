@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
@@ -13,8 +13,11 @@ import {
   CRCheckBoxGroup,
   CRButton,
   CRNestedSelector,
+  CRMultipleSelector,
   CRSelectInput,
+  Img,
 } from 'components';
+
 import { convertGroupFieldsToNavs } from 'services/appointment';
 import {
   NUMBER_FIELD_TYPE,
@@ -23,6 +26,7 @@ import {
   RADIO_FIELD_TYPE,
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
+  SELECTOR_WITH_INPUT,
 } from 'utils/constants';
 
 import AppointmentPictures from '../pictures';
@@ -37,10 +41,29 @@ import {
 import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
-import { useConfigurations } from 'hooks';
 import Pulses from './pulses';
 
-const renderItem = ({ type, id, name, choices = [], ...props }) => {
+const renderItem = ({
+  type,
+  choicesType,
+  dynamic = false,
+  id,
+  name,
+  choices = [],
+  updatedSessions = [],
+  ...props
+}) => {
+  let newChoices = [];
+  if (type === 'SelectorWithInput') {
+    if (dynamic) {
+      newChoices = choices.map(c => {
+        return { name: c, id: c };
+      });
+    } else {
+      newChoices = updatedSessions;
+    }
+  }
+
   switch (type) {
     case NUMBER_FIELD_TYPE:
       return <CRNumberInput label={name} name={id} {...props} />;
@@ -52,6 +75,16 @@ const renderItem = ({ type, id, name, choices = [], ...props }) => {
       return (
         <CRRadio label={name} name={id} options={choices} {...props} inline />
       );
+    case SELECTOR_WITH_INPUT:
+      return (
+        <CRMultipleSelector
+          label={name}
+          name={id}
+          choices={newChoices}
+          {...props}
+        />
+      );
+
     case CHECK_FIELD_TYPE:
       return (
         <CRCheckBoxGroup
@@ -109,6 +142,7 @@ function AppointmentData({
   sessionFormValue,
   appointmentFormValue,
   setSessionFormValue,
+  handleShowPatientInfo,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
   const { labsCategory } = useLabCategory();
@@ -122,6 +156,7 @@ function AppointmentData({
     initialSelectedMedicine
   );
   const [session, SetSession] = useState({});
+  const { patient } = appointment;
   const choices = useMemo(() => {
     return sessionsDefinition.map(s => ({
       name: s.name,
@@ -137,7 +172,11 @@ function AppointmentData({
     },
     [appointmentFormValue, onChange]
   );
-
+  const updatedSessions = useMemo(() => {
+    return sessionsDefinition.map(s => {
+      return { name: s.name, id: s.name };
+    });
+  }, [sessionsDefinition]);
   const handleMedicineChange = useCallback(
     prescription => {
       onChange({
@@ -148,7 +187,7 @@ function AppointmentData({
     [appointmentFormValue, onChange]
   );
   const categoryId = categoryLabForm?.categoryId;
-  const { labsDefinition } = useLabDefinitions({ categoryId });
+  const { labsDefinition } = useLabDefinitions({});
   const handleLabsChange = useCallback(
     labIds => {
       const cateLabs = labsDefinition.map(l => l.id);
@@ -162,7 +201,7 @@ function AppointmentData({
     [appointmentFormValue, onChange, categoryLabForm]
   );
   const imageId = categoryImageForm?.categoryId;
-  const { imagesDefinition } = useImageDefinition({ categoryId: imageId });
+  const { imagesDefinition } = useImageDefinition({});
   const handleImagesChange = useCallback(
     imageIds => {
       const cateImages = imagesDefinition.map(i => i.id);
@@ -224,7 +263,11 @@ function AppointmentData({
                   >
                     {v.fields.map(f => (
                       <Div mb={4} key={f.id}>
-                        {renderItem({ ...f, disabled })}
+                        {renderItem({
+                          ...f,
+                          disabled,
+                          updatedSessions,
+                        })}
                       </Div>
                     ))}
                   </SectionContainer>

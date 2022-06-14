@@ -10,30 +10,36 @@ import {
   StrongStyled,
   EditButton,
 } from './style';
+import { useTranslation } from 'react-i18next';
 
 const PatientInfo = ({ patient }) => {
+  const { t } = useTranslation();
   return (
     <PatientInfoStyled>
-      <CRCard  borderless>
-        <Cell  height={64}>
-          <H3>Information</H3>
-          <EditPatient patient={patient}/>
-          <EditButton>Expand</EditButton>
+      <CRCard borderless>
+        <Cell height={64}>
+          <H3>{t('information')}</H3>
+          <EditPatient patient={patient} editName={t('edit')}/>
+          <EditButton>{t('expand')}</EditButton>
         </Cell>
-        <Cell >
-          <CellTitle>Name</CellTitle>
-          <StrongStyled>
-            {patient.name}
-          </StrongStyled>
+        <Cell>
+          <CellTitle>{t('name')}</CellTitle>
+          <StrongStyled>{patient.name}</StrongStyled>
         </Cell>
-        <Cell >
-          <CellTitle>Age</CellTitle>
+        <Cell>
+          <CellTitle>{t('age')}</CellTitle>
           <AddressStyled>{patient.age}</AddressStyled>
         </Cell>
-        <Cell >
-          <CellTitle>Phone Number</CellTitle>
+        <Cell>
+          <CellTitle>{t('phoneNo')}</CellTitle>
           <AddressStyled>{patient.phoneNo}</AddressStyled>
         </Cell>
+        {patient.phoneNoTwo && (
+          <Cell>
+            <CellTitle>{t('phoneNoTwo')}</CellTitle>
+            <AddressStyled>{patient.phoneNoTwo}</AddressStyled>
+          </Cell>
+        )}
       </CRCard>
     </PatientInfoStyled>
   );

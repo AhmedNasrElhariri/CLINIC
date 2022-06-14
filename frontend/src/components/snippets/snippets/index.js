@@ -10,6 +10,7 @@ import {
   DELETE_SNIPPET,
 } from 'apollo-client/queries';
 import { NewSnippet, MainContainer, CRButton, ListSnippets } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   title: '',
@@ -18,6 +19,7 @@ const initialValues = {
 
 export default function Snippets() {
   const [visible, setVisible] = useState(false);
+  const { t } = useTranslation();
   const { formValue, setFormValue, type, setType } = useForm({
     initValue: initialValues,
   });
@@ -107,11 +109,11 @@ export default function Snippets() {
   return (
     <>
       <MainContainer
-        title="Snippets"
+        title={t('snippets')}
         nobody
         more={
           <CRButton onClick={handleClickCreate} variant="primary">
-            New Snippet
+            {t('addNewSnippet')}
           </CRButton>
         }
       ></MainContainer>

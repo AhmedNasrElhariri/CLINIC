@@ -127,3 +127,4 @@ export const PatientInfoStyled = styled(Div)`
     margin-left: 20px;
   }
 `;
+

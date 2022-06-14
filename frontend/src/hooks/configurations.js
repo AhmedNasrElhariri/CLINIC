@@ -22,11 +22,6 @@ const useConfigurations = ({ onUpdate } = {}) => {
     () => R.propOr({}, 'configuration')(data),
     [data]
   );
-  const sessions = useMemo(
-    () => R.propOr([], 'sessions')(configurations),
-    [configurations]
-  );
-
   const { data: PulseData } = useQuery(GET_PULSE_CONTROL, {
     fetchPolicy: 'network-only',
   });
@@ -61,6 +56,11 @@ const useConfigurations = ({ onUpdate } = {}) => {
     onCompleted: () => {
       Alert.success('Page Setup updated successfully');
     },
+    refetchQueries: [
+      {
+        query: GET_PAGE_SETUP,
+      },
+    ],
   });
   const [editPoints] = useMutation(EDIT_POINTS, {
     onCompleted: () => {
@@ -76,7 +76,6 @@ const useConfigurations = ({ onUpdate } = {}) => {
   return useMemo(
     () => ({
       configurations,
-      sessions,
       update: handleUpdateConfiguration,
       addPulsesControl,
       getPulseControl,
@@ -88,7 +87,6 @@ const useConfigurations = ({ onUpdate } = {}) => {
     [
       configurations,
       handleUpdateConfiguration,
-      sessions,
       addPulsesControl,
       getPulseControl,
       addPageSetup,

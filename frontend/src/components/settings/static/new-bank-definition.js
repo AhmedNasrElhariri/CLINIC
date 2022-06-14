@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
-
 import { CRModal, CRTextInput } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function NewBankDefinition({
   formValue,
@@ -16,8 +16,9 @@ function NewBankDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Bank' : 'Edit Bank '),
+    () => (type === 'create' ? t('addNewBank') : t('editBank')),
     [type]
   );
 
@@ -35,14 +36,14 @@ function NewBankDefinition({
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
-          label="Bank Name"
+          label={t('name')}
           name="name"
           errorMessage={
             show && checkResult['name'].hasError
               ? checkResult['name'].errorMessage
               : ''
           }
-          placeholder="Type Bank"
+          // placeholder="Type Bank"
           block
         />
       </Form>

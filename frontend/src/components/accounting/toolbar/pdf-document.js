@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-} from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 import {
   Table,
@@ -57,23 +51,41 @@ const PdfTable = ({ data }) => (
 const calculateTotal = data =>
   data.reduce((sum, { amount }) => sum + amount, 0);
 
-const PdfDocument = ({ period, data: { revenues, expenses } }) => {
+const PdfDocument = ({
+  period,
+  data: { revenues, expenses, totalRevenues, totalExpenses },
+  marginTop,
+  marginRight,
+  marginBottom,
+  marginLeft,
+}) => {
+  let TotalRevenues = 0,
+    TotalExpenses = 0;
+  TotalRevenues = totalRevenues ? totalRevenues : calculateTotal(revenues);
+  TotalExpenses = totalExpenses ? totalExpenses : calculateTotal(expenses);
+
   return (
     <Document>
-      <Page size="A4" orientation="landscape" style={styles.page}>
+      <Page
+        size="A4"
+        orientation="landscape"
+        style={{
+          ...styles.page,
+          marginTop: marginTop,
+          marginRight: marginRight,
+          marginBottom: marginBottom,
+          marginLeft: marginLeft,
+        }}
+      >
         <Text>Accounting Report</Text>
         <Text>
           from {formatDate(period[0])} to {formatDate(period[1])}
         </Text>
         <View style={styles.profit}>
+          <Text style={styles.header}>Revenues = {TotalRevenues}</Text>
+          <Text style={styles.header}>Expenses = {TotalExpenses}</Text>
           <Text style={styles.header}>
-            Revenues = {calculateTotal(revenues)}
-          </Text>
-          <Text style={styles.header}>
-            Expenses = {calculateTotal(expenses)}
-          </Text>
-          <Text style={styles.header}>
-            Profit = {calculateTotal(revenues) - calculateTotal(expenses)}
+            Profit = {TotalRevenues - TotalExpenses}
           </Text>
         </View>
 

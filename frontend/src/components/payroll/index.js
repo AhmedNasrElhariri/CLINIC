@@ -1,12 +1,27 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Div, MainContainer, CRButton, CRModal, H4 } from 'components';
-import { ACCOUNTING_VIEWS } from 'utils/constants';
-import { CheckboxGroup, Checkbox, Schema } from 'rsuite';
+import {
+  Div,
+  MainContainer,
+  CRButton,
+  CRModal,
+  H4,
+  CRBrancheTree,
+} from 'components';
+import styled from 'styled-components';
+import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
+import { CheckboxGroup, Checkbox, Schema, Form } from 'rsuite';
 import PayrollForm, { usePayrollForm } from './form';
 import { Can } from 'components/user/can';
 import EmployeesPayroll from './list-payrolls';
 import { useModal, usePayroll, useAccounting, useForm } from 'hooks';
 import { formatDate } from 'utils/date';
+import { useTranslation } from 'react-i18next';
+
+const StyledDiv = styled.div`
+  & .rs-form-control-wrapper {
+    display: block;
+  }
+`;
 
 const initialPayrollusers = [];
 const initValue = {
@@ -61,6 +76,7 @@ const getAmount = (
 
 function Payroll() {
   const [validModel, setValidModel] = useState(model1);
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -215,7 +231,7 @@ function Payroll() {
   };
 
   const addAdvanceForm = usePayrollForm({
-    header: 'Add Advance',
+    header: t('addAdvance'),
     onOk: handleAddAdvance,
     formValue: formValue,
     type: 'Advance',
@@ -231,7 +247,7 @@ function Payroll() {
     setShow,
   });
   const addIncentiveForm = usePayrollForm({
-    header: 'Add Incentives',
+    header: t('addIncentives'),
     onOk: handleAddIncentive,
     lastDay: lastTransactionDate,
     lastRevenueDay: lastTransactionRevenueDate,
@@ -247,7 +263,7 @@ function Payroll() {
     setShow,
   });
   const addCommissionForm = usePayrollForm({
-    header: 'Add Commission',
+    header: t('addCommission'),
     onOk: handleAddCommision,
     lastDay: lastTransactionDate,
     lastRevenueDay: lastTransactionRevenueDate,
@@ -263,7 +279,7 @@ function Payroll() {
     setShow,
   });
   const addDeductionForm = usePayrollForm({
-    header: 'Add Deduction',
+    header: t('addDeduction'),
     onOk: handleAddDeduction,
     type: 'Deduction',
     lastDay: lastTransactionDate,
@@ -279,7 +295,7 @@ function Payroll() {
     setShow,
   });
   const deletePayrollUser = usePayrollForm({
-    header: 'Delete Payroll User',
+    header: t('deletePayrollUser'),
     onOk: () => deletePayrollUserFun.handleDeleteUser,
     type: 'Delete',
     formValue: formValue,
@@ -293,7 +309,7 @@ function Payroll() {
     setShow,
   });
   const addNewUser = usePayrollForm({
-    header: 'Add New User',
+    header: t('addNewUser'),
     onOk: handleAddUser,
     formValue: formValue,
     period: period,
@@ -306,23 +322,30 @@ function Payroll() {
     setShow,
   });
   const handlePayPayslips = useCallback(() => {
+    const { branchId, specialtyId, userId } = formValue;
+
     addPayroll({
-      variables: {
-        payment: checkedPayLipsUsers,
-      },
+      variables: Object.assign(
+        {
+          payment: checkedPayLipsUsers,
+        },
+        branchId && { branchId: branchId },
+        specialtyId && { specialtyId: specialtyId },
+        userId && { doctorId: userId }
+      ),
     });
     close();
-  }, [addPayroll, checkedPayLipsUsers]);
+  }, [addPayroll, formValue, checkedPayLipsUsers]);
   return (
     <>
       <Can I="View" an="Payroll">
         <MainContainer
-          title="Payroll Reports"
+          title={t('payrollReports')}
           more={
             <Div display="flex">
               <Can I="CreatePayslips" an="Payroll">
                 <CRButton variant="primary" onClick={open} ml={1}>
-                  Pay Payslips
+                  {t('payPayslips')}
                 </CRButton>
               </Can>
               <CRButton
@@ -333,7 +356,7 @@ function Payroll() {
                 }}
                 ml={1}
               >
-                Add New User
+                {t('addNewUser')}
               </CRButton>
               <Can I="CreateAdvance" an="Payroll">
                 <CRButton
@@ -344,7 +367,7 @@ function Payroll() {
                   }}
                   ml={1}
                 >
-                  Add Advance
+                  {t('addAdvance')}
                 </CRButton>
               </Can>
               <Can I="CreateIncentives" an="Payroll">
@@ -356,7 +379,7 @@ function Payroll() {
                   }}
                   ml={1}
                 >
-                  Add Incentives
+                  {t('addIncentives')}
                 </CRButton>
               </Can>
               <Can I="CreateCommission" an="Payroll">
@@ -368,7 +391,7 @@ function Payroll() {
                   }}
                   ml={1}
                 >
-                  Add Commission
+                  {t('addCommission')}
                 </CRButton>
               </Can>
               <Can I="CreateDeduction" an="Payroll">
@@ -380,7 +403,7 @@ function Payroll() {
                   }}
                   ml={1}
                 >
-                  Add Deduction
+                  {t('addDeduction')}
                 </CRButton>
               </Can>
             </Div>
@@ -405,51 +428,62 @@ function Payroll() {
             onCancel={close}
             loading={addPayrollLoading}
             header="Payslips"
-            bodyStyle={{ minWidth: 300 }}
+            // bodyStyle={{ minWidth: 300 }}
           >
-            <H4>{formatDate(new Date())}</H4>
-            <CheckboxGroup
-              inline
-              name="payrolluserIds"
-              value={checkedPayLipsUsers}
-              onChange={val => setCheckPayLipsUsers(val)}
-            >
-              {payslips.map(pa => (
-                <Div
-                  display="flex"
-                  backgroundColor="#eef1f1"
-                  borderBottom="2px solid #ffffff"
-                  borderLeft="5px solid #51C6F3"
+            <>
+              <H4>{formatDate(new Date())}</H4>
+              <Div>
+                <CheckboxGroup
+                  inline
+                  name="payrolluserIds"
+                  value={checkedPayLipsUsers}
+                  onChange={val => setCheckPayLipsUsers(val)}
                 >
-                  <Div
-                    width={200}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    borderRight="2px solid #ffffff"
-                  >
-                    {pa.name}
-                  </Div>
-                  <Div
-                    width={200}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    borderRight="2px solid #ffffff"
-                  >
-                    {pa.amount}
-                  </Div>
-                  <Div
-                    width={200}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Checkbox value={pa.id}></Checkbox>
-                  </Div>
-                </Div>
-              ))}
-            </CheckboxGroup>
+                  {payslips.map(pa => (
+                    <Div
+                      display="flex"
+                      backgroundColor="#eef1f1"
+                      borderBottom="2px solid #ffffff"
+                      borderLeft="5px solid #51C6F3"
+                    >
+                      <Div
+                        width={200}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        borderRight="2px solid #ffffff"
+                      >
+                        {pa.name}
+                      </Div>
+                      <Div
+                        width={200}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        borderRight="2px solid #ffffff"
+                      >
+                        {pa.amount}
+                      </Div>
+                      <Div
+                        width={200}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Checkbox value={pa.id}></Checkbox>
+                      </Div>
+                    </Div>
+                  ))}
+                </CheckboxGroup>
+              </Div>
+              <Form formValue={formValue} onChange={setFormValue} fluid>
+                <CRBrancheTree
+                  formValue={formValue}
+                  onChange={setFormValue}
+                  action={ACTIONS.CreatePayslips_Payroll}
+                />
+              </Form>
+            </>
           </CRModal>
         }
       </Can>

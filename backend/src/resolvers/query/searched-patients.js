@@ -1,22 +1,30 @@
 import { prisma } from '@';
 
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
-
-const patients = async (_, { name }, { user, organizationId }) => {
-  return prisma.patient.findMany({
+const patients = async (
+  _,
+  { name, organizationId: OrganizationId },
+  { user, organizationId }
+) => {
+  const newOrgId = OrganizationId ? OrganizationId : organizationId;
+  const patients = await prisma.patient.findMany({
     where: {
-      organizationId,
+      organizationId: newOrgId,
       OR: [
-        {
-          phoneNo: {
-            contains: name,
-          },
-        },
         {
           name: {
             contains: name,
             mode: 'insensitive',
+          },
+        },
+        {
+          phoneNoTwo: {
+            contains: name,
+          },
+        },
+
+        {
+          phoneNo: {
+            contains: name,
           },
         },
       ],
@@ -29,6 +37,7 @@ const patients = async (_, { name }, { user, organizationId }) => {
     skip: 0,
     take: 20,
   });
+  return patients
 };
 
 export default patients;

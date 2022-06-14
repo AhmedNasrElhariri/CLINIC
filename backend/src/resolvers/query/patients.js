@@ -14,37 +14,63 @@ const patients = async (
             contains: name,
             mode: 'insensitive',
           },
+        },
+        {
           code: {
             contains: name,
             mode: 'insensitive',
           },
         },
       ],
-      phoneNo: {
-        contains: phoneNo,
-      },
+      OR: [
+        {
+          phoneNo: {
+            contains: phoneNo,
+          },
+        },
+        {
+          phoneNoTwo: {
+            contains: phoneNo,
+          },
+        },
+      ],
     },
   });
   const patients = await prisma.patient.findMany({
     where: {
       organizationId,
-      OR: [
+      AND: [
         {
-          name: {
-            contains: name,
-            mode: 'insensitive',
-          },
+          OR: [
+            {
+              phoneNo: {
+                contains: phoneNo,
+              },
+            },
+            {
+              phoneNoTwo: {
+                contains: phoneNo,
+              },
+            },
+          ],
         },
         {
-          code: {
-            contains: name,
-            mode: 'insensitive',
-          },
+          OR: [
+            {
+              code: {
+                contains: name,
+                mode: 'insensitive',
+              },
+            },
+            {
+              name: {
+                contains: name,
+                mode: 'insensitive',
+              },
+            },
+          ],
         },
       ],
-      phoneNo: {
-        contains: phoneNo,
-      },
     },
     skip: offset,
     take: limit,

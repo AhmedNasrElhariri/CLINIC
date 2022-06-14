@@ -14,6 +14,7 @@ import {
   TRANSCTION_COURSES_TIMEFRAME,
   TRANSCTION_REVENUES_TIMEFRAME,
   USER_COURSE_PAYMENT,
+  EDIT_PAYROLL_TRANSACTION,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -24,6 +25,7 @@ function usePayroll({
   specialtyId,
   branchId,
   onCreate,
+  onEdit,
 } = {}) {
   const updateTransactionsCache = userTransactions => {
     client.writeQuery({
@@ -145,6 +147,25 @@ function usePayroll({
       },
     }
   );
+  const [editPayrollTransaction] = useMutation(EDIT_PAYROLL_TRANSACTION, {
+    onCompleted() {
+      Alert.success('The transaction has been Edit successfully');
+      onEdit && onEdit();
+    },
+    update(cache, { data: { editPayrollTransaction: transaction } }) {
+      const newTransactions = userTransactions.map(t => {
+        if (t.id === transaction.id) {
+          return transaction;
+        } else {
+          return t;
+        }
+      });
+      updateTransactionsCache(newTransactions);
+    },
+    onError() {
+      Alert.error('Failed to edit The Transaction');
+    },
+  });
 
   return useMemo(
     () => ({
@@ -161,6 +182,7 @@ function usePayroll({
       deleteUser,
       addUserLoading,
       deleteUserLoading,
+      editPayrollTransaction,
       addTransactionLoading,
       addPayrollLoading,
     }),
@@ -178,6 +200,7 @@ function usePayroll({
       deleteUser,
       addUserLoading,
       deleteUserLoading,
+      editPayrollTransaction,
       addTransactionLoading,
       addPayrollLoading,
     ]

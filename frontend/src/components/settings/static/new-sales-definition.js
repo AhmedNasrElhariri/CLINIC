@@ -4,6 +4,7 @@ import { ACTIONS } from 'utils/constants';
 import { CRModal, CRTextInput, CRNumberInput, Div, H3 } from 'components';
 import { useSalesDefinition } from 'hooks';
 import { CRBrancheTree, CRDocSelectInput } from 'components/widgets';
+import { useTranslation } from 'react-i18next';
 
 function NewSalesDefinition({
   formValue,
@@ -18,15 +19,16 @@ function NewSalesDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Item'
+        ? t('addNewSalesDefinition')
         : type === 'addQuentity'
-        ? 'Add new Quantity '
+        ? t('addSalesQuantity')
         : type === 'delete'
-        ? 'Delete Sales Item'
-        : 'Edit Sales Item ',
+        ? t('deleteSalesItem')
+        : t('editSalesDefinition'),
     [type]
   );
   const { salesesDefinition } = useSalesDefinition({});
@@ -46,12 +48,16 @@ function NewSalesDefinition({
         {type === 'addQuentity' ? (
           <>
             <CRDocSelectInput
-              label="Sales Item"
+              label={t('item')}
               data={salesesDefinition}
               name="salesId"
               block
             />
-            <CRNumberInput label="Add Quantity" name="quantity" block />
+            <CRNumberInput
+              label={t('addSalesQuantity')}
+              name="quantity"
+              block
+            />
           </>
         ) : type === 'delete' ? (
           <Div>
@@ -63,7 +69,7 @@ function NewSalesDefinition({
         ) : (
           <>
             <CRTextInput
-              label="Item Name"
+              label={t('item')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
@@ -74,7 +80,7 @@ function NewSalesDefinition({
               block
             />
             <CRNumberInput
-              label="Item Cost"
+              label={t('cost')}
               name="cost"
               errorMessage={
                 show && checkResult['cost'].hasError
@@ -84,7 +90,7 @@ function NewSalesDefinition({
               block
             />
             <CRNumberInput
-              label="Item Price"
+              label={t('price')}
               name="price"
               errorMessage={
                 show && checkResult['price'].hasError

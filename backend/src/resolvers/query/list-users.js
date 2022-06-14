@@ -5,6 +5,10 @@ const listUsers = (_, __,{ organizationId }) => {
     where: {
       organizationId,
     },
+    include:{
+      specialties:true,
+      role:true,
+    }
   });
 };
 

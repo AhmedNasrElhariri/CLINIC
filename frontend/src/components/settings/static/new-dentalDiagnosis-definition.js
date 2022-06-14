@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { CRModal, CRTextInput } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function NewDentalDiagnosisDefinition({
   formValue,
@@ -15,9 +16,10 @@ function NewDentalDiagnosisDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
-      type === 'create' ? 'Add New Dental Diagnosis' : 'Edit Dental Diagnosis ',
+      type === 'create' ? t('addNewDentalDiagnosis') : t('editDentalDiagnosis'),
     [type]
   );
   return (
@@ -34,14 +36,14 @@ function NewDentalDiagnosisDefinition({
     >
       <Form formValue={formValue} onChange={onChange} fluid>
         <CRTextInput
-          label="Dental Diagnosis Name"
+          label={t('name')}
           name="name"
           errorMessage={
             show && checkResult['name'].hasError
               ? checkResult['name'].errorMessage
               : ''
           }
-          placeholder="Type Dental Diagnosis"
+          // placeholder="Type Dental Diagnosis"
           block
         />
       </Form>

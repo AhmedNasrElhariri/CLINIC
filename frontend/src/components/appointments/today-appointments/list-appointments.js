@@ -34,6 +34,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
     alert(`id:${rowData[dataKey]}`);
   }
   const { t } = useTranslation();
+  
   const {
     appointment,
     onArchive,

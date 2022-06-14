@@ -1,15 +1,16 @@
 import React from 'react';
 import { Icon } from 'rsuite';
-
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListCompanysDefinition({ companysSession, onEdit }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={companysSession}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Session Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('sessionName')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -17,7 +18,7 @@ function ListCompanysDefinition({ companysSession, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Company Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('companyName')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ company }) => (
                 <CRTable.CRCellStyled bold>{company.name}</CRTable.CRCellStyled>
@@ -25,7 +26,7 @@ function ListCompanysDefinition({ companysSession, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Price</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price }) => (
                 <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
@@ -39,7 +40,7 @@ function ListCompanysDefinition({ companysSession, onEdit }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -51,7 +52,7 @@ function ListCompanysDefinition({ companysSession, onEdit }) {
               {data => (
                 <Icon icon="trash" onClick={() => onEdit(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>
@@ -63,4 +64,3 @@ function ListCompanysDefinition({ companysSession, onEdit }) {
 }
 
 export default ListCompanysDefinition;
-

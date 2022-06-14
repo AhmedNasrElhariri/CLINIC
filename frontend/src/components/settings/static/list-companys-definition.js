@@ -1,15 +1,16 @@
 import React from 'react';
 import { Icon } from 'rsuite';
-
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListCompanysDefinition({ companys, onEdit }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={companys}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Company Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -23,7 +24,7 @@ function ListCompanysDefinition({ companys, onEdit }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -35,7 +36,7 @@ function ListCompanysDefinition({ companys, onEdit }) {
               {data => (
                 <Icon icon="trash" onClick={() => onEdit(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>
@@ -47,4 +48,3 @@ function ListCompanysDefinition({ companys, onEdit }) {
 }
 
 export default ListCompanysDefinition;
-

@@ -48,6 +48,7 @@ export const LIST_APPOINTMENTS = gql`
         businessNotes
         accounted
         duration
+        reference
         patient {
           id
           name
@@ -93,6 +94,7 @@ export const LIST_TODAY_APPOINTMENTS = gql`
       accounted
       duration
       businessNotes
+      reference
       updatedAt
       patient {
         id
@@ -327,6 +329,8 @@ export const ARCHIVE_APPOINTMENT = gql`
     $discount: Discount
     $date: Date!
     $others: Others
+    $remaining: Int
+    $payOfRemaining: Int
     $bank: ID
     $patientName: String!
     $patientId: ID!
@@ -337,6 +341,7 @@ export const ARCHIVE_APPOINTMENT = gql`
     $userId: ID
     $coupons: [couponInput]
     $couponsValue: Int
+    $doctorFees: doctorFeesInput
   ) {
     archiveAppointment(
       id: $id
@@ -346,6 +351,8 @@ export const ARCHIVE_APPOINTMENT = gql`
       patientName: $patientName
       patientId: $patientId
       others: $others
+      remaining: $remaining
+      payOfRemaining: $payOfRemaining
       date: $date
       bank: $bank
       company: $company
@@ -355,6 +362,7 @@ export const ARCHIVE_APPOINTMENT = gql`
       userId: $userId
       coupons: $coupons
       couponsValue: $couponsValue
+      doctorFees: $doctorFees
     ) {
       id
       status
@@ -365,6 +373,7 @@ export const UPDATE_BUSINESS_NOTES = gql`
   mutation updateNotes($id: ID!, $notes: String!) {
     updateNotes(id: $id, notes: $notes) {
       id
+      businessNotes
     }
   }
 `;

@@ -1,19 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import * as R from 'ramda';
-import { Form, Schema } from 'rsuite';
+import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { Div, CRNumberInput } from 'components';
 import ListInvoiceItems from './list-invoice-items';
-import { useForm, useInventory } from 'hooks';
+import { useInventory } from 'hooks';
 import { CRButton, CRBrancheTree, CRDocSelectInput } from 'components/widgets';
 import { normalize } from 'utils/misc';
-
-const { StringType, NumberType } = Schema.Types;
-
-const model = Schema.Model({
-  itemId: StringType().isRequired('Item is required'),
-  quantity: NumberType().isRequired('Amount Type is required'),
-});
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   itemId: null,
@@ -23,14 +17,15 @@ const initValue = {
   userId: null,
 };
 
-function InventoryUsage({ onChange }) {
-  const { formValue, setFormValue } = useForm({
-    initValue,
-    model,
-  });
-  const [selectedItems, setSelectedItems] = useState([]);
-
+function InventoryUsage({
+  onChange,
+  selectedItems,
+  setSelectedItems,
+  formValue,
+  setFormValue,
+}) {
   const { items, inventoryWithAmount } = useInventory();
+  const { t } = useTranslation();
   const handleDelete = useCallback(
     idx => {
       const newItems = R.remove(idx, 1)(selectedItems);
@@ -66,12 +61,12 @@ function InventoryUsage({ onChange }) {
       <CRBrancheTree
         formValue={formValue}
         onChange={setFormValue}
-        action={ACTIONS.AddItem_Inventory}
+        action={ACTIONS.AddCustom_Inventory}
       />
       <Div display="flex" padding={30}>
         <Div width={396} mr={30}>
           <CRDocSelectInput
-            label="Item"
+            label={t('item')}
             name="itemId"
             specialtyId={formValue?.specialtyId}
             branchId={formValue?.branchId}
@@ -82,10 +77,14 @@ function InventoryUsage({ onChange }) {
           ></CRDocSelectInput>
         </Div>
         <Div width={200}>
-          <CRNumberInput name="quantity" label="Quantity" name="quantity" />
+          <CRNumberInput
+            name="quantity"
+            label={t('quantity')}
+            name="quantity"
+          />
         </Div>
         <CRButton variant="primary" onClick={handleAdd}>
-          add
+          {t('add')}
         </CRButton>
       </Div>
       <ListInvoiceItems items={itemsList} onDelete={handleDelete} />

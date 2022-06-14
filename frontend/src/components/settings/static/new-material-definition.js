@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
-
 import { CRModal, CRTextInput, CRSelectInput } from 'components';
+import { useTranslation } from 'react-i18next';
+
 const model = Schema.Model({});
 
 function NewMaterialDefinition({
@@ -17,8 +18,9 @@ function NewMaterialDefinition({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
-    () => (type === 'create' ? 'Add New Material' : 'Edit Material '),
+    () => (type === 'create' ? t('addNewFaceMaterial') : t('editFaceMaterial')),
     [type]
   );
   return (
@@ -35,14 +37,14 @@ function NewMaterialDefinition({
     >
       <Form formValue={formValue} model={model} onChange={onChange} fluid>
         <CRTextInput
-          label="Material Name"
+          label={t('name')}
           name="name"
           errorMessage={
             show && checkResult['name'].hasError
               ? checkResult['name'].errorMessage
               : ''
           }
-          placeholder="Type Material"
+          // placeholder="Type Material"
           block
         />
       </Form>

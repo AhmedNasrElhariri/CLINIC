@@ -11,6 +11,8 @@ import { usePatients, useModal } from 'hooks';
 const initialValues = {
   name: '',
   phoneNo: '',
+  phoneNoTwo: '',
+  code: '',
   age: '',
   guardianName: '',
 };
@@ -19,7 +21,7 @@ const EditButton = styled(Button)`
   color: #50c7f2;
   font-size: 18px;
 `;
-const EditPatient = ({ patient,editName }) => {
+const EditPatient = ({ patient, editName }) => {
   const [formValue, setFormValue] = useState(initialValues);
   const { visible, open, close } = useModal();
   const { edit } = usePatients({ onEdit: close });
@@ -28,7 +30,7 @@ const EditPatient = ({ patient,editName }) => {
     setFormValue(R.omit(['__typename'])(patient));
   }, [patient]);
   const handleEditPatient = useCallback(() => {
-    const { code , ...rest} = formValue;
+    const { remainingOfPayment, ...rest } = formValue;
     edit(rest);
   }, [edit, formValue]);
 
@@ -39,9 +41,7 @@ const EditPatient = ({ patient,editName }) => {
   return (
     <>
       <Div onClick={handleOpen}>
-        <EditButton onClick={open}>
-          {editName}
-        </EditButton>
+        <EditButton onClick={open}>{editName}</EditButton>
         <CRModal
           show={visible}
           onHide={close}

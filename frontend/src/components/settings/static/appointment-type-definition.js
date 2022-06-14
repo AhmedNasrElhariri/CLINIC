@@ -7,6 +7,7 @@ import ListAppointmentTypesDefinition from './list-appointmentTypes-definition';
 import { useAppointmentTypesDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   name: '',
@@ -19,6 +20,7 @@ const model = Schema.Model({
 
 const AppointmentTypeDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -113,7 +115,7 @@ const AppointmentTypeDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New AppointmentType+
+          {t('addNewAppointmentType')}+
         </CRButton>
       </Div>
       <NewAppointmentTypeDefinition

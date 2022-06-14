@@ -6,6 +6,7 @@ import ListDentalDiagnosissDefinition from './list-dentalDiagnosiss-definition';
 import { useForm, useDentalDiagnosisDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '' };
 const { StringType } = Schema.Types;
@@ -15,6 +16,7 @@ const model = Schema.Model({
 
 const DentalDiagnosisDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -86,7 +88,7 @@ const DentalDiagnosisDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Dental Diagnosis+
+          {t('addNewDentalDiagnosis')}+
         </CRButton>
       </Div>
       <NewDentalDiagnosisDefinition

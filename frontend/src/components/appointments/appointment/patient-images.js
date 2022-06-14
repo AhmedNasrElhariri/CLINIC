@@ -2,13 +2,16 @@ import React from 'react';
 import HistoryImages from './history-images';
 import PendingImages from './pending-images';
 import { CRTabs } from 'components';
+import { useTranslation } from 'react-i18next';
+
 const PatientImages = ({ patient }) => {
+  const { t } = useTranslation();
   return (
     <>
       <CRTabs>
         <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>Pending</CRTabs.CRTab>
-          <CRTabs.CRTab>History</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('pendingLab')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('historyLab')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>

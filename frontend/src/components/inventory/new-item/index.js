@@ -12,6 +12,7 @@ import { isValid } from 'services/form';
 import { CRSelectInput } from 'components/widgets';
 import { UNIT_OF_MEASURES } from 'utils/constants';
 import { useForm, useInventory, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const { StringType } = Schema.Types;
 
@@ -22,6 +23,7 @@ const model = Schema.Model({
 
 const NewItem = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -58,12 +60,12 @@ const NewItem = () => {
   return (
     <>
       <CRButton variant="primary" onClick={open}>
-        New +
+        {t('add')} +
       </CRButton>
 
       <CRModal
         show={visible}
-        header="Add Item"
+        header={t('addItem')}
         loading={createItemLoading}
         onOk={() => {
           setShow(true);
@@ -74,7 +76,7 @@ const NewItem = () => {
       >
         <Form formValue={formValue} model={model} onChange={setFormValue} fluid>
           <CRTextInput
-            label="Name"
+            label={t('name')}
             name="name"
             errorMessage={
               show && checkResult['name'].hasError
@@ -84,7 +86,7 @@ const NewItem = () => {
             block
           ></CRTextInput>
           <CRSelectInput
-            label="Unit Of measure"
+            label={t('messureOfUnits')}
             name="unitOfMeasure"
             errorMessage={
               show && checkResult['unitOfMeasure'].hasError
@@ -95,9 +97,13 @@ const NewItem = () => {
             data={UNIT_OF_MEASURES}
             block
           ></CRSelectInput>
-          <CRNumberInput label="Quantity" name="quantity" block></CRNumberInput>
-          <CRTextInput label="Barcode" name="barcode" block></CRTextInput>
-          <CRTextArea label="Notes" name="notes" block></CRTextArea>
+          <CRNumberInput
+            label={t('quantity')}
+            name="quantity"
+            block
+          ></CRNumberInput>
+          <CRTextInput label={t('barcode')} name="barcode" block></CRTextInput>
+          <CRTextArea label={t('notes')} name="notes" block></CRTextArea>
         </Form>
       </CRModal>
     </>

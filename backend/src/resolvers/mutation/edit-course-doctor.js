@@ -5,34 +5,39 @@ const editCourseDoctor = async (_, { courseId, doctorId }) => {
       id: courseId,
     },
   });
+  const { courseDefinitionId } = data;
   return prisma.course.update({
     where: {
       id: courseId,
     },
-    data: {
-      patient: {
-        connect: {
-          id: data.patientId,
+    data: Object.assign(
+      {
+        patient: {
+          connect: {
+            id: data.patientId,
+          },
         },
-      },
-      courseDefinition: {
-        connect: {
-          id: data.courseDefinitionId,
+        user: {
+          connect: {
+            id: data.userId,
+          },
         },
-      },
-      user: {
-        connect: {
-          id: data.userId,
+        doctor: {
+          connect: {
+            id: doctorId,
+          },
         },
+        paid: data.paid,
+        price: data.price,
       },
-      doctor: {
-        connect: {
-          id: doctorId,
+      courseDefinitionId && {
+        courseDefinition: {
+          connect: {
+            id: courseDefinitionId,
+          },
         },
-      },
-      paid: data.paid,
-      price: data.price,
-    },
+      }
+    ),
   });
 };
 

@@ -59,7 +59,6 @@ export const PrintContainer = styled.div`
   width: 100%;
   height: 100%;
   background-color: ${props => props.color};
-  position: relative;
   margin: ${props => props.margin};
 `;
 export const PrintMedicine = styled.div`
@@ -74,10 +73,6 @@ export const PrintMedicine = styled.div`
   text-align: left;
   padding-left: 8px;
   color: #727272;
-  position: absolute;
-  display: inline;
-  left: 8px;
-  top: 10px;
 `;
 
 export const Button = styled.button`
@@ -121,6 +116,7 @@ export const PrescriptionPrintout = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
+  padding: 1px;
   @media print and (max-width: 499px) {
     padding-right: ${props => props.mr}px;
     padding-top: ${props => props.mt}px;
@@ -129,9 +125,8 @@ export const PrescriptionPrintout = styled.div`
   }
 `;
 export const StyledFooterData = styled.div`
-  position: absolute;
-  bottom: 20px;
   display: flex;
+  margin-top: 10px;
 `;
 export const MedicineName = styled.h4`
   color: blue;

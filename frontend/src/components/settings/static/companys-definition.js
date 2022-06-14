@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import * as R from 'ramda';
-
 import { Div, CRButton } from 'components';
 import NewCompanyDefinition from './new-company-definition';
 import ListCompanysDefinition from './list-companys-definition';
 import { useForm, useCompanyDefinition } from 'hooks';
 import { Schema } from 'rsuite';
 import { useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = { name: '' };
 const { StringType } = Schema.Types;
@@ -16,6 +16,7 @@ const model = Schema.Model({
 
 const CompanyDefinition = () => {
   const { visible, open, close } = useModal();
+  const { t } = useTranslation();
   const {
     formValue,
     setFormValue,
@@ -82,7 +83,7 @@ const CompanyDefinition = () => {
     <>
       <Div textAlign="right">
         <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
-          Add New Company+
+          {t('addNewCompany')}+
         </CRButton>
       </Div>
       <NewCompanyDefinition

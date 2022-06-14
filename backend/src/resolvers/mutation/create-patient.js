@@ -5,7 +5,7 @@ const createPatient = async (
   { input: patient },
   { userId, organizationId }
 ) => {
-  const { area, name, phoneNo, ...rest } = patient;
+  const { area, name, phoneNo, code, ...rest } = patient;
 
   const organization = await prisma.organization.findUnique({
     where: {
@@ -22,12 +22,13 @@ const createPatient = async (
       id,
     },
   });
+  const updatedPatientCode = 'cr' + patientCode;
   const areaName = area ? getArea(area) : '';
-
+  const finalCode = code ? code : updatedPatientCode;
   return prisma.patient.create({
     data: {
       area: areaName,
-      code: 'cr' + patientCode,
+      code: finalCode,
       name,
       phoneNo,
       ...rest,

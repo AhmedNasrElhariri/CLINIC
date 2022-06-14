@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import * as R from 'ramda';
-
+import { Alert } from 'rsuite';
 import {
   CREATE_ITEM,
   UPDATE_ITEM,
@@ -11,6 +11,7 @@ import {
   LIST_INVENTORY_HISTORY,
   REMOVE_DEFINITION,
   REMOVE_ITEM,
+  CONSUME_INVENTORY_MANUAl,
 } from 'apollo-client/queries';
 import { useAccounting } from 'hooks';
 
@@ -168,6 +169,20 @@ function useInventory({
     },
   });
 
+  const [consumeInventoryManual] = useMutation(CONSUME_INVENTORY_MANUAl, {
+    onCompleted() {
+      Alert.success('the Inventory has been Consumed Successfully');
+    },
+    onError() {
+      Alert.error('Failed to consume the Inventory');
+    },
+    refetchQueries: [
+      refetchExpenses,
+      refetchInventoryHistory,
+      refetchInventory,
+    ],
+  });
+
   return useMemo(
     () => ({
       create: item =>
@@ -201,6 +216,12 @@ function useInventory({
           },
         });
       },
+      consumeInventoryManual: data =>
+        consumeInventoryManual({
+          variables: {
+            data,
+          },
+        }),
       items,
       inventoryWithAmount,
       history,
@@ -224,6 +245,7 @@ function useInventory({
       createItemLoading,
       updateItemLoading,
       addItemLoading,
+      consumeInventoryManual,
     ]
   );
 }

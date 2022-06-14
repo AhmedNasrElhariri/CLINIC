@@ -5,6 +5,8 @@ import { formatDate } from 'utils/date';
 import Axios from 'axios';
 import FileDownload from 'js-file-download';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
+import { useTranslation } from 'react-i18next';
+
 const StyledImage = styled.img`
   width: 100%;
 `;
@@ -35,12 +37,13 @@ const saveFile = url => {
   Axios({
     url: url,
     method: 'GET',
-    responseType: 'blob', 
+    responseType: 'blob',
   }).then(response => {
     FileDownload(response.data, 'report.pdf');
   });
 };
 function ListLabDocs({ labs, labId }) {
+  const { t } = useTranslation();
   const lab = labs.filter(ele => ele.id === labId);
   const documents = lab[0]?.documents;
   const pdfFiles = useMemo(() => {
@@ -48,8 +51,11 @@ function ListLabDocs({ labs, labId }) {
     return files;
   }, [documents]);
   const imagesFiles = useMemo(() => {
-    const files = documents?.filter(d =>
-      d.url.includes('.png' || '.jpeg' || '.jpg')
+    const files = documents?.filter(
+      d =>
+        d.url.includes('.png') ||
+        d.url.includes('.jpeg') ||
+        d.url.includes('.jpg')
     );
     return files;
   }, [documents]);
@@ -58,7 +64,7 @@ function ListLabDocs({ labs, labId }) {
       <CRCard borderless>
         <CRTable autoHeight data={lab}>
           <CRTable.CRColumn flexGrow={0.5}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled semiBold>{name}</CRTable.CRCellStyled>
@@ -66,7 +72,7 @@ function ListLabDocs({ labs, labId }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (
                 <CRTable.CRCellStyled>{formatDate(date)}</CRTable.CRCellStyled>
@@ -74,7 +80,7 @@ function ListLabDocs({ labs, labId }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Value</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('value')}</CRTable.CRHeaderCell>
             <CRTable.CRCell dataKey="value" semiBold />
           </CRTable.CRColumn>
         </CRTable>
@@ -87,7 +93,9 @@ function ListLabDocs({ labs, labId }) {
         {pdfFiles?.map(d => (
           <Div display="flex">
             <Div mr={10}>{'File'}</Div>
-            <CRButton onClick={() => saveFile(d?.url)}>Download File</CRButton>
+            <CRButton onClick={() => saveFile(d?.url)}>
+              {t('downloadFile')}
+            </CRButton>
           </Div>
         ))}
       </Div>

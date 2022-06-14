@@ -11,6 +11,7 @@ import {
   another,
   contextData,
 } from 'services/constants';
+import { useTranslation } from 'react-i18next';
 import 'react-quill/dist/quill.snow.css';
 
 function NewPatientReport({
@@ -26,12 +27,13 @@ function NewPatientReport({
   setShow,
   loading,
 }) {
+  const { t } = useTranslation();
   const header = useMemo(
     () =>
       type === 'create'
-        ? 'Add New Patient Report'
+        ? t('addNewPatientReport')
         : type === 'edit'
-        ? 'Edit Patient Report'
+        ? t('editPatientReport')
         : 'Delete Patient Report',
     [type]
   );
@@ -81,7 +83,7 @@ function NewPatientReport({
         ) : (
           <>
             <CRTextInput
-              label="Name"
+              label={t('name')}
               name="name"
               errorMessage={
                 show && checkResult['name'].hasError
@@ -90,15 +92,13 @@ function NewPatientReport({
               }
               block
             />
-            <Label>Body</Label>
-
             <CRSelectInput
-              label="Context"
+              label={t('contextData')}
               name="context"
               block
               data={contextData}
             />
-            <Label>Body</Label>
+            <Label>{t('body')}</Label>
             <Editor
               onChange={handleText}
               formValue={formValue}

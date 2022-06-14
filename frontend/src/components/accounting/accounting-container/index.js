@@ -3,15 +3,21 @@ import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
 import { ACTIONS } from 'utils/constants';
-import { MainContainer, Div, CRCard, CRButton, H6 } from 'components';
+import {
+  MainContainer,
+  Div,
+  CRCard,
+  CRButton,
+  H6,
+  BranchSpecialtyUserFilter,
+} from 'components';
 import Toolbar from '../toolbar';
 import ListExpenseData from '../list-data/expense.js';
 import ListRevenueData from '../list-data/revenue.js';
 import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
-import { useAccounting, useAppointments } from 'hooks';
-import { useTranslation } from 'react-i18next';
+import { useAccounting, useAppointments, useConfigurations } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -27,10 +33,27 @@ import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
+import { useTranslation } from 'react-i18next';
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalVal = {
   expenseType: '',
   revenueName: '',
+};
+const inialCurrentPage = {
+  activePage: 1,
+};
+const inialExpenseCurrentPage = {
+  activePage: 1,
+};
+const initialBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+};
+const initialExpenseBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
 };
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
@@ -40,7 +63,26 @@ const AccountingContainer = () => {
   });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
+  const [branchSpecialtyUser, setBranchSpecialtyUser] =
+    useState(initialBranchValue);
+  const [expenseBranchSpecialtyUser, setExpenseBranchSpecialtyUser] = useState(
+    initialExpenseBranchValue
+  );
   const [formValue, setFormValue] = useState(initalVal);
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const page = currentPage?.activePage;
+  const [expenseCurrentPage, setExpenseCurrentPage] = useState(
+    inialExpenseCurrentPage
+  );
+  const expensePage = expenseCurrentPage?.activePage;
+  const { pageSetupData } = useConfigurations();
+  const pageSetupRow = pageSetupData.find(
+    element => element.type === 'accounting'
+  );
+  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
+  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
+  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
+  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
   const [createExpense, { loading: createExpensesLoading }] = useMutation(
     CREATE_EXPENSE,
     {
@@ -150,46 +192,55 @@ const AccountingContainer = () => {
   const createRevenueForm = useAccountingForm({
     header: t('newRevenue'),
     onOk: handleCreateRevenue,
+    action: ACTIONS.AddRevenue_Accounting,
   });
   const createExpenseForm = useAccountingForm({
     header: t('newExpense'),
     onOk: handleCreateExpense,
+    action: ACTIONS.AddExpense_Accounting,
   });
   const editRevenueForm = useAccountingForm({
     header: t('editRevenue'),
     onOk: handleUpdateRevenue,
+    action: ACTIONS.EditRevenue_Accounting,
   });
   const editExpenseForm = useAccountingForm({
     header: t('editExpense'),
     onOk: handleUpdateExpense,
+    action: ACTIONS.EditExpense_Accounting,
   });
-  const { expenses, revenues, timeFrame } = useAccounting({
+  const {
+    expenses,
+    revenues,
+    totalRevenues,
+    totalExpenses,
+    RevenuesCount,
+    expensesCount,
+    timeFrame,
+  } = useAccounting({
     view,
     period,
+    page,
+    expensePage,
+    branchId: branchSpecialtyUser?.branch,
+    specialtyId: branchSpecialtyUser?.specialty,
+    doctorId: branchSpecialtyUser?.doctor,
+    expenseBranchId: expenseBranchSpecialtyUser?.branch,
+    expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+    expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+    revenueName: formValue?.revenueName,
+    expenseType: formValue?.expenseType,
   });
+  const revenuesPages = Math.ceil(RevenuesCount / 20);
+  const expensesPages = Math.ceil(expensesCount / 20);
   const updatedExpenses = useMemo(
     () =>
-      expenses.filter(e =>
+      expenses?.filter(e =>
         e.expenseType
           .toLowerCase()
           .includes(formValue.expenseType.toLowerCase())
       ),
     [formValue, expenses]
-  );
-  const totalExpenses = useMemo(
-    () => updatedExpenses.reduce((acc, e) => acc + e.amount, 0),
-    [updatedExpenses]
-  );
-  const updatedRevenues = useMemo(
-    () =>
-      revenues.filter(e =>
-        e.name.toLowerCase().includes(formValue.revenueName.toLowerCase())
-      ),
-    [formValue, revenues]
-  );
-  const totalRevenues = useMemo(
-    () => updatedRevenues.reduce((acc, e) => acc + e.amount, 0),
-    [updatedRevenues]
   );
   return (
     <>
@@ -213,6 +264,14 @@ const AccountingContainer = () => {
                   {t('newExpense')} +
                 </CRButton>
               </Can>
+              <PdfView
+                data={{ revenues, expenses, totalRevenues, totalExpenses }}
+                period={timeFrame}
+                marginTop={marginTop}
+                marginRight={marginRight}
+                marginBottom={marginBottom}
+                marginLeft={marginLeft}
+              />
             </>
           </Div>
         }
@@ -244,7 +303,44 @@ const AccountingContainer = () => {
                   formValue={formValue}
                   setFormValue={setFormValue}
                 />
-                <BranchFilter
+                <BranchSpecialtyUserFilter
+                  formValue={branchSpecialtyUser}
+                  onChange={setBranchSpecialtyUser}
+                  branches={filterBranches}
+                />
+                <ListRevenueData
+                  title="Revenues"
+                  data={revenues}
+                  onEdit={revenue => {
+                    editRevenueForm.setFormValue(R.pick(ENTITY_PROPS)(revenue));
+                    editRevenueForm.show();
+                  }}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  pages={revenuesPages}
+                />
+                <ExpenseFilter
+                  formValue={formValue}
+                  setFormValue={setFormValue}
+                />
+                <BranchSpecialtyUserFilter
+                  formValue={expenseBranchSpecialtyUser}
+                  onChange={setExpenseBranchSpecialtyUser}
+                  branches={filterBranches}
+                />
+                <ListExpenseData
+                  title="Expenses"
+                  data={expenses}
+                  onEdit={expense => {
+                    editExpenseForm.setFormValue(R.pick(ENTITY_PROPS)(expense));
+                    editExpenseForm.show();
+                  }}
+                  currentPage={expenseCurrentPage}
+                  setCurrentPage={setExpenseCurrentPage}
+                  pages={expensesPages}
+                />
+                <Profit expenses={totalExpenses} revenues={totalRevenues} />
+                {/* <BranchFilter
                   appointments={updatedRevenues}
                   type="accounting"
                   method="revenues"
@@ -260,6 +356,9 @@ const AccountingContainer = () => {
                           );
                           editRevenueForm.show();
                         }}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        // pages={pages}
                       />
                       <Div flexGrow={1} ml={2}>
                         <ExpenseFilter
@@ -296,6 +395,10 @@ const AccountingContainer = () => {
                                 <PdfView
                                   data={{ revenues, expenses }}
                                   period={timeFrame}
+                                  marginTop={marginTop}
+                                  marginRight={marginRight}
+                                  marginBottom={marginBottom}
+                                  marginLeft={marginLeft}
                                 />
                               </Div>
                             </>
@@ -304,7 +407,7 @@ const AccountingContainer = () => {
                       </Div>
                     </>
                   )}
-                />
+                /> */}
               </Div>
             </Div>
           ) : (

@@ -131,10 +131,6 @@ export const UPDATE_CONFIGURATION = gql`
   mutation updateConfiguration($configuration: ConfigurationInput!) {
     updateConfiguration(configuration: $configuration) {
       id
-      sessions {
-        name
-        price
-      }
       enableInvoiceCounter
     }
   }

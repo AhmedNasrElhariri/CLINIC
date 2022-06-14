@@ -5,8 +5,10 @@ import { CRModal, CRTextInput } from 'components';
 import AddLabImages from '../add-lab-images';
 import { CRSelectInput } from 'components/widgets';
 import { useForm } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const InsertLabResult = ({ visible, onClose, onCreate, id, labs }) => {
+  const { t } = useTranslation();
   const { formValue, setFormValue, updateProp } = useForm({
     initValue: {
       id,
@@ -40,7 +42,12 @@ const InsertLabResult = ({ visible, onClose, onCreate, id, labs }) => {
           data={labs}
           block
         />
-        <CRTextInput virtualized={false} label="Value" name="value" block />
+        <CRTextInput
+          virtualized={false}
+          label={t('value')}
+          name="value"
+          block
+        />
         <AddLabImages
           name="documents"
           onChange={val => updateProp('documents', val)}

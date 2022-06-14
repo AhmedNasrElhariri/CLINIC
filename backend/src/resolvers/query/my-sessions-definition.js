@@ -1,10 +1,14 @@
 import { prisma } from '@';
-import { ACTIONS } from '@/utils/constants';
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-const mySessionsDefinition = async (_, __, { user, organizationId }) => {
+
+const mySessionsDefinition = async (
+  _,
+  { organizationId: OrganizationId },
+  { user, organizationId }
+) => {
+  const newOrgId = OrganizationId ? OrganizationId : organizationId;
   return prisma.sessionDefinition.findMany({
     where: {
-      organizationId: organizationId,
+      organizationId: newOrgId,
     },
   });
 };

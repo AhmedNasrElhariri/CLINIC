@@ -1,1 +1,1 @@
-export { default as specialties } from './specialties';
+// export { default as specialties } from './specialties';

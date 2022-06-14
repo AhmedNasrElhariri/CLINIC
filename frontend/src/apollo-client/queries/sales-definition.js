@@ -65,30 +65,58 @@ export const ADD_SALES_DEFINITION_QUENTITY = gql`
 `;
 
 export const LIST_SALESES = gql`
-  {
-    mySaleses {
-      id
-      totalPrice
-      totalCost
-      quantity
-      date
-      user {
+  query mySaleses(
+    $offset: Int
+    $limit: Int
+    $dateFrom: Date
+    $dateTo: Date
+    $view: String
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
+    $itemId: ID
+    $creatorId: ID
+  ) {
+    mySaleses(
+      offset: $offset
+      limit: $limit
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      view: $view
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+      itemId: $itemId
+      creatorId: $creatorId
+    ) {
+      sales {
         id
-        name
+        totalPrice
+        totalCost
+        quantity
+        date
+        salesDefinitionId
+        user {
+          id
+          name
+        }
+        salesDefinition {
+          id
+          name
+          price
+        }
+        branch {
+          id
+          name
+        }
+        specialty {
+          id
+          name
+        }
       }
-      salesDefinition {
-        id
-        name
-        price
-      }
-      branch {
-        id
-        name
-      }
-      specialty {
-        id
-        name
-      }
+      totalSalesPrice
+      totalSalesCost
+      salesCounts
     }
   }
 `;

@@ -22,7 +22,7 @@ const LabRow = ({ lab, onClick }) => {
               m="auto"
               onClick={onClick}
             >
-              {lab.required ? 'Required' : 'Require'}
+              {lab.required ? 'Delete' : 'Require'}
             </CRButton>
           </ButtonDiv>
         </Container>

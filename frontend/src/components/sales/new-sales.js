@@ -18,10 +18,7 @@ import { normalize } from 'utils/misc';
 import { useTranslation } from 'react-i18next';
 
 const model = Schema.Model({});
-const initValue = {
-  itemId: null,
-  quantity: 1,
-};
+
 function NewSales({
   formValue,
   onChange,
@@ -73,11 +70,14 @@ function NewSales({
               trigger={() => <CRButton>{t('print')}</CRButton>}
               content={() => ref.current}
             />
-            <CRBrancheTree
-              formValue={formValue}
-              onChange={onChange}
-              action={ACTIONS.Create_Sales}
-            />
+            {type === 'create' && (
+              <CRBrancheTree
+                formValue={formValue}
+                onChange={onChange}
+                action={ACTIONS.Create_Sales}
+              />
+            )}
+
             <Div display="flex" justifyContent="space-between" mt={3}>
               <Div>
                 <CRDocSelectInput

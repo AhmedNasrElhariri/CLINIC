@@ -56,6 +56,20 @@ export const getFormInitValues = normFields => {
   }, {});
 };
 
+export const getKeyValuesFromPatientGroups = (patientGroups, normFields) => {
+  const group = patientGroups[0];
+  const fields = group?.fields;
+  if (fields && fields.length > 0) {
+    return fields.map(({ name, id }) => {
+      const fieldData = normFields[id];
+      const value = R.propOr('', 'value')(fieldData);
+      return { name: name, value: value };
+    });
+  } else {
+    return [];
+  }
+};
+
 export const mapFormValueToAppointmentData = (normFields, fromValue) => {
   return Object.keys(normFields).map(id => ({
     id: normFields[id].id || id,

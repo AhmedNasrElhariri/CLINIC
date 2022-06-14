@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import * as moment from 'moment';
 import { Alert, Form, Checkbox } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
@@ -82,6 +82,9 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
   });
+  const returnedPatientsOfSearch = useMemo(() => {
+    return searchedPatients;
+  }, [searchedPatients]);
   const { patientCourses } = useCourses({
     patientId: formValue.patientId,
   });
@@ -97,7 +100,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
   });
 
   const updatedPatientCourses = patientCourses.map(course => ({
-    name: course.courseDefinition.name,
+    name: course.name,
     IDBTransaction: course.id,
   }));
   const updatedSessionsDefinition = sessionsDefinition.map(s => {
@@ -106,12 +109,6 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
       id: s,
     };
   });
-
-  // useEffect(() => {
-  //   return () => {
-  //     setFormValue(initialValues);
-  //   };
-  // }, [setFormValue]);
 
   useEffect(() => {
     if (appointment && appointment?.branch?.id != null) {
@@ -270,7 +267,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
                   label={t('patient')}
                   onSearch={v => setPatientSearchValue(v)}
                   placeholder="Name / Phone no"
-                  data={searchedPatients}
+                  data={returnedPatientsOfSearch}
                   onChange={val =>
                     setFormValue({ ...formValue, patientId: val })
                   }

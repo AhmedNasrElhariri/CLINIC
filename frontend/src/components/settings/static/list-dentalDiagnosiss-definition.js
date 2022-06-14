@@ -1,15 +1,16 @@
 import React from 'react';
 import { Icon } from 'rsuite';
-
 import { CRCard, CRTable } from 'components';
+import { useTranslation } from 'react-i18next';
 
 function ListDentalDiagnosissDefinition({ dentalDiagnosiss, onEdit }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={dentalDiagnosiss}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Dental Diagnosis Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -23,7 +24,7 @@ function ListDentalDiagnosissDefinition({ dentalDiagnosiss, onEdit }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -35,7 +36,7 @@ function ListDentalDiagnosissDefinition({ dentalDiagnosiss, onEdit }) {
               {data => (
                 <Icon icon="trash" onClick={() => onEdit(data)}>
                   {' '}
-                  Delete
+                  {t('delete')}
                 </Icon>
               )}
             </CRTable.CRCell>

@@ -28,3 +28,5 @@ export * from './dental-diagnosis';
 export * from './material';
 export * from './face-operations';
 export * from './appointment-type-definition';
+export * from './couse-type-definition';
+export * from './supplier-account';

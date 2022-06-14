@@ -29,17 +29,26 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
       ),
     [branches]
   );
+  const specialties = useMemo(() => {
+    return (
+      R.pipe(
+        R.map(R.prop('specialties')),
+        R.flatten,
+        R.uniqBy(R.prop('id'))
+      )(branches) || []
+    );
+  }, [branches]);
   const specialtiesNames = useMemo(
     () =>
-      R.flatten(branches.map(b => b.specialties)).reduce(
+      specialties.reduce(
         (obj, { id, name }) => ({
           ...obj,
           [id]: name,
-        })
+        }),
+        {}
       ),
-    [branches]
+    [specialties]
   );
-
   const items = useMemo(
     () =>
       rules.map(
@@ -58,16 +67,6 @@ const AddSpecialtyPermissions = ({ rules, onAdd, onDelete }) => {
     fieldName => val => setFormValue({ ...formValue, [fieldName]: val }),
     [formValue]
   );
-
-  const specialties = useMemo(() => {
-    return (
-      R.pipe(
-        R.map(R.prop('specialties')),
-        R.flatten,
-        R.uniqBy(R.prop('id'))
-      )(branches) || []
-    );
-  }, [branches]);
 
   const branchChoices = useMemo(() => {
     const specialtyId = formValue.specialtyId;

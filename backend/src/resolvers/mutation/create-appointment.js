@@ -1,11 +1,14 @@
 import { prisma } from '@';
-
 import moment from 'moment';
 import { getStartOfDay, getEndOfDay } from '@/services/date.service';
 import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
 import { onAppointmentCreate } from '@/services/notification.service';
-import { APPOINTMENTS_STATUS, APPOINTMENTS_TYPES } from '@/utils/constants';
+import {
+  APPOINTMENTS_STATUS,
+  APPOINTMENTS_TYPES,
+  MAX_NUMBERAPPS,
+} from '@/utils/constants';
 
 const getDayAppointments = (day, userId) => {
   const start = getStartOfDay(day);
@@ -29,7 +32,7 @@ const getDayAppointments = (day, userId) => {
 
 const isBeforeNow = date => moment(date).isBefore(moment(), 'minute');
 
-const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
+const createAppointment = async (_, { appointment }, { userId: creator }) => {
   const {
     patientId,
     userId,
@@ -40,6 +43,7 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
     sessionId,
     ...rest
   } = appointment;
+  const creatorId = creator ? creator : userId;
   const appointments = await getDayAppointments(appointment.date, userId);
   if (
     !(
@@ -60,7 +64,18 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
   if (waiting) {
     appointmentType = APPOINTMENTS_STATUS.WAITING;
   }
-
+  const numOfAppsOfThePatient = await prisma.appointment.count({
+    where: {
+      patientId,
+      reference: 'Online',
+      status: APPOINTMENTS_STATUS.SCHEDULED,
+    },
+  });
+  if (numOfAppsOfThePatient >= MAX_NUMBERAPPS) {
+    throw new APIExceptcion(
+      'You have been reached the max number of Appointments'
+    );
+  }
   const createdAppointment = await prisma.appointment.create({
     data: Object.assign(
       {
@@ -114,7 +129,11 @@ const createAppointment = async (_, { appointment }, { userId: creatorId }) => {
       }
     ),
   });
-
+  const PATIENT = await prisma.patient.findUnique({
+    where: {
+      id: patientId,
+    },
+  });
   if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {
     onAppointmentCreate({
       userId,

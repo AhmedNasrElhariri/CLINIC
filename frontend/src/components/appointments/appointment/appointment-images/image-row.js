@@ -21,7 +21,7 @@ const ImageRow = ({ image, onClick }) => {
               onClick={onClick}
               style={{ padding: '10px' }}
             >
-              {image.required ? 'Required' : 'Require'}
+              {image.required ? 'Delete' : 'Require'}
             </CRButton>
           </ButtonDiv>
         </Container>
