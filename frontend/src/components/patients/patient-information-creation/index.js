@@ -20,6 +20,7 @@ import {
   CRNestedSelector,
   CRButton,
 } from 'components';
+import { useTranslation } from 'react-i18next';
 import {
   NUMBER_FIELD_TYPE,
   TEXT_FIELD_TYPE,
@@ -72,6 +73,7 @@ const renderItem = ({ type, id, name, choices = [], ...props }) => {
 
 const PatientInformationCreation = ({ patient }) => {
   const [formValue, setFormValue] = useState({});
+  const { t } = useTranslation();
   const { data: patientFieldData } = useQuery(GET_PATIENT_FIELD, {
     variables: {
       patientId: patient.id,
@@ -108,7 +110,7 @@ const PatientInformationCreation = ({ patient }) => {
   }, [patientFieldData]);
   return (
     <>
-      <CRButton onClick={handleSave}>Save</CRButton>
+      <CRButton onClick={handleSave}>{t('save')}</CRButton>
 
       <Form formValue={formValue} onChange={setFormValue} fluid>
         {navs.map((v, idx) => (

@@ -42,6 +42,7 @@ import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
 import Pulses from './pulses';
+import { useTranslation } from 'react-i18next';
 
 const renderItem = ({
   type,
@@ -145,6 +146,7 @@ function AppointmentData({
   handleShowPatientInfo,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
+  const { t } = useTranslation();
   const { labsCategory } = useLabCategory();
   const { imagesCategory } = useImageCategory();
   const { medicineDefinitions } = useMedicineDefinitions();
@@ -275,7 +277,7 @@ function AppointmentData({
               </Form>
             </>
           )}
-          <SectionContainer title="Prescription" name="prescription">
+          <SectionContainer title={t('prescription')} name="prescription">
             <Form formValue={selectedMedicine} onChange={setSelectedMedicine}>
               <Div
                 mb={10}
@@ -286,11 +288,15 @@ function AppointmentData({
                 <CRSelectInput
                   name="medicineId"
                   data={medicineDefinitions}
-                  label="Medicine"
-                  style={{ width: '300px', marginRight: '20px' }}
+                  label={t('medicine')}
+                  style={{
+                    width: '300px',
+                    marginRight: '10px',
+                    marginLeft: '10px',
+                  }}
                 />
                 <CRButton ml={20} mt={40} onClick={addMedicine}>
-                  Add
+                  {t('add')}
                 </CRButton>
               </Div>
             </Form>
@@ -302,7 +308,7 @@ function AppointmentData({
             />
           </SectionContainer>
 
-          <SectionContainer title="Pulses" name="pulses">
+          <SectionContainer title={t('sessionsPulses')} name="pulses">
             <Div
               display="flext"
               justifyContent="center"
@@ -312,7 +318,7 @@ function AppointmentData({
               <Form>
                 <CRSelectInput
                   data={choices}
-                  label="Session"
+                  label={t('session')}
                   onChange={val => SetSession(val)}
                   style={{ width: '300px' }}
                 />
@@ -321,9 +327,10 @@ function AppointmentData({
                 primary
                 onClick={() => handleAddSession()}
                 ml={10}
+                mr={10}
                 mt={40}
               >
-                Add
+                {t('add')}
               </CRButton>
             </Div>
             <Pulses
@@ -334,7 +341,7 @@ function AppointmentData({
               setSessionFormValue={setSessionFormValue}
             />
           </SectionContainer>
-          <SectionContainer title="Labs" name="labs">
+          <SectionContainer title={t('labs')} name="labs">
             <Form formValue={categoryLabForm} onChange={setCategoryLabForm}>
               <Div
                 mb={10}
@@ -345,17 +352,21 @@ function AppointmentData({
                 <CRSelectInput
                   name="categoryId"
                   data={labsCategory}
-                  label="Lab Category"
-                  style={{ width: '300px', marginRight: '20px' }}
+                  label={t('labCategory')}
+                  style={{
+                    width: '300px',
+                    marginRight: '10px',
+                    marginLeft: '10px',
+                  }}
                 />
                 <CRSelectInput
                   name="labId"
                   data={labsDefinition}
-                  label="Lab"
+                  label={t('lab')}
                   style={{ width: '300px' }}
                 />
-                <CRButton ml={20} mt={40} onClick={addLab}>
-                  Add
+                <CRButton ml={10} mr={10} mt={40} onClick={addLab}>
+                  {t('add')}
                 </CRButton>
               </Div>
             </Form>
@@ -366,7 +377,7 @@ function AppointmentData({
               categoryId={categoryLabForm?.categoryId}
             />
           </SectionContainer>
-          <SectionContainer title="Images" name="images">
+          <SectionContainer title={t('images')} name="images">
             <Form formValue={categoryImageForm} onChange={setCategoryImageForm}>
               <Div
                 mb={10}
@@ -378,17 +389,21 @@ function AppointmentData({
                   name="categoryId"
                   block
                   data={imagesCategory}
-                  label="Image Category"
-                  style={{ width: '300px', marginRight: '10px' }}
+                  label={t('imageCategory')}
+                  style={{
+                    width: '300px',
+                    marginRight: '10px',
+                    marginLeft: '10px',
+                  }}
                 />
                 <CRSelectInput
                   name="imageId"
                   data={imagesDefinition}
-                  label="Image"
+                  label={t('image')}
                   style={{ width: '300px' }}
                 />
-                <CRButton ml={20} mt={40} onClick={addImage}>
-                  Add
+                <CRButton ml={10} mr={10} mt={40} onClick={addImage}>
+                  {t('add')}
                 </CRButton>
               </Div>
             </Form>
@@ -399,12 +414,12 @@ function AppointmentData({
             />
           </SectionContainer>
 
-          <SectionContainer title="Notes" name="Notes">
+          <SectionContainer title={t('notes')} name="Notes">
             <Form formValue={appointmentFormValue} onChange={onChange}>
               <CRTextArea name="notes" disabled={disabled} importable />
             </Form>
           </SectionContainer>
-          <SectionContainer title="Pictures" name="Pictures">
+          <SectionContainer title={t('pictures')} name="Pictures">
             <AppointmentPictures
               formValue={appointmentFormValue.pictures}
               onChange={handlePicturesChange}

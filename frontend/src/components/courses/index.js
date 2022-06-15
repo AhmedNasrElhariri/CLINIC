@@ -109,7 +109,7 @@ const Courses = () => {
     data => {
       const course = R.pick(['id', 'consumed'])(data);
       setType('editConsumedUnits');
-      setHeader('Edit Consumed Units');
+      setHeader(t('editConsumedUnits'));
       setFormValue(course);
       open();
     },
@@ -119,7 +119,7 @@ const Courses = () => {
     data => {
       const course = R.pick(['id', 'consumed'])(data);
       setType('addNewUnits');
-      setHeader('Add New Units');
+      setHeader(t('addNewUnits'));
       setFormValue(course);
       open();
     },
@@ -129,7 +129,7 @@ const Courses = () => {
     data => {
       const course = R.pick(['id'])(data);
       setType('edit');
-      setHeader('Add New Payment');
+      setHeader(t('addNewPayment'));
       setFormValue({ ...course, paid: 0, visaPaid: 0 });
       open();
     },
@@ -139,7 +139,7 @@ const Courses = () => {
     data => {
       const course = R.pick(['id', 'doctorId'])(data);
       setType('courseDoctor');
-      setHeader('Assign New Doctor');
+      setHeader(t('assignNewDoctor'));
       setFormValue(course);
       open();
     },
@@ -149,7 +149,7 @@ const Courses = () => {
     data => {
       const course = R.pick(['id'])(data);
       setType('deleteCourse');
-      setHeader('Delete The Course');
+      setHeader(t('deleteThisCourse'));
       setFormValue(course);
       open();
     },
@@ -158,7 +158,7 @@ const Courses = () => {
   const handleFinishCourse = useCallback(
     course => {
       setType('finishCourse');
-      setHeader('Finish the course');
+      setHeader(t('finishTheCourse'));
       setFormValue(course);
       open();
     },
@@ -168,7 +168,7 @@ const Courses = () => {
     data => {
       const course = R.pick(['id', 'paid', 'paymentId'])(data);
       setType('editPaymentHistory');
-      setHeader('Edit History Payment');
+      setHeader(t('editHistoryPayment'));
       setFormValue(course);
       open();
     },
@@ -183,7 +183,7 @@ const Courses = () => {
         transactionId: unitTransaction.transactionId,
       };
       setType('editUnitsTransactions');
-      setHeader('Edit Unit Transaction');
+      setHeader(t('editUnitTransaction'));
       setFormValue(updatedUnitTransaction);
       open();
     },

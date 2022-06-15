@@ -7,6 +7,8 @@ import { CRButton, Div } from 'components';
 import NewInvoice from './new-invoice';
 import * as R from 'ramda';
 import Filter from './filter';
+import { useTranslation } from 'react-i18next';
+
 const initValue = {
   name: '',
   amount: 0,
@@ -30,6 +32,8 @@ const SupplierAccount = () => {
   const { supplierId } = useParams();
   const [invoice, setInvoice] = useState({});
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const { t } = useTranslation();
+
   const page = currentPage?.activePage;
   const {
     supplierInvoices,
@@ -53,7 +57,7 @@ const SupplierAccount = () => {
   const { visible, open, close } = useModal();
   const handleClickCreate = useCallback(() => {
     setType('create');
-    setHeader('Add New Invoice');
+    setHeader(t('addNewInvoice'));
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
@@ -61,7 +65,7 @@ const SupplierAccount = () => {
     data => {
       const invoice = R.pick(['id'])(data);
       setType('edit');
-      setHeader('Add New Payment');
+      setHeader(t('addNewPayment'));
       setFormValue({ ...invoice, paid: 0 });
       open();
     },
@@ -71,7 +75,7 @@ const SupplierAccount = () => {
     data => {
       const invoice = R.pick(['id', 'paid'])(data);
       setType('editTransaction');
-      setHeader('Edit Paid Transaction');
+      setHeader(t('editPaidTransaction'));
       setFormValue({ ...invoice });
       open();
     },
@@ -81,7 +85,7 @@ const SupplierAccount = () => {
     data => {
       const id = data.id;
       setType('editInvoiceSupplier');
-      setHeader('Change the Supplier');
+      setHeader(t('changeTheSupplier'));
       setFormValue({ id: id });
       open();
     },
@@ -143,13 +147,14 @@ const SupplierAccount = () => {
           invoiceTransactions={invoiceTransactions}
           allInvoices={allInvoices}
           onEditTransaction={handleClickEditTransaction}
+          t={t}
         />
       ) : (
         <>
           <Div display="flex" justifyContent="space-between">
-            <Filter formValue={filter} onChange={setFilter} />
+            <Filter formValue={filter} onChange={setFilter} t={t} />
             <CRButton mb="10px" mt="40px" onClick={handleClickCreate}>
-              Add New Invoice
+              {t('addNewInvoice')}
             </CRButton>
           </Div>
           <ListSupplierInvoices
@@ -159,6 +164,7 @@ const SupplierAccount = () => {
             setCurrentPage={setCurrentPage}
             pages={pages}
             onEdit={handleClickEditInvoice}
+            t={t}
           />
         </>
       )}
@@ -172,6 +178,7 @@ const SupplierAccount = () => {
         type={type}
         setPayByCheck={setPayByCheck}
         payByCheck={payByCheck}
+        t={t}
       />
     </>
   );

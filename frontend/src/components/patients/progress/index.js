@@ -6,6 +6,7 @@ import { CRNav, Div, CRTable, H6, H3 } from 'components';
 import { formatDate } from 'utils/date';
 import Chart from './chart';
 import { NUMBER_FIELD_TYPE } from 'utils/constants';
+import { useTranslation } from 'react-i18next';
 
 const getFieldValueByViewField = (data, f) => {
   const fieldData = data.find(d => d.field.id === f.id);
@@ -21,6 +22,7 @@ const mapToPropValue = (appointments, field) =>
 function Progress({ history, viewFields }) {
   const [showChart, setShowChart] = useState(false);
   const [activeField, setActiveField] = useState({});
+  const { t } = useTranslation();
   useEffect(() => {
     setActiveField(R.propOr({}, '0')(viewFields));
   }, [viewFields]);
@@ -66,7 +68,7 @@ function Progress({ history, viewFields }) {
           <Div>
             <CRTable autoHeight data={values}>
               <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+                <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
                 <CRTable.CRCell>
                   {({ date }) => (
                     <CRTable.CRCellStyled bold>{date}</CRTable.CRCellStyled>
@@ -75,7 +77,7 @@ function Progress({ history, viewFields }) {
               </CRTable.CRColumn>
 
               <CRTable.CRColumn flexGrow={1}>
-                <CRTable.CRHeaderCell>Value</CRTable.CRHeaderCell>
+                <CRTable.CRHeaderCell>{t('value')}</CRTable.CRHeaderCell>
                 <CRTable.CRCell>
                   {({ value }) => (
                     <CRTable.CRCellStyled bold>{value}</CRTable.CRCellStyled>

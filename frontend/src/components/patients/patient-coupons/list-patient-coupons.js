@@ -1,12 +1,14 @@
 import React from 'react';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
+import { useTranslation } from 'react-i18next';
 
 function ListPatientCoupons({
   coupons,
   setCouponId,
   setShowCouponTransactions,
 }) {
+  const { t } = useTranslation();
   return (
     <>
       <CRCard borderless>
@@ -19,7 +21,7 @@ function ListPatientCoupons({
           }}
         >
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (
                 <CRTable.CRCellStyled bold>
@@ -29,7 +31,7 @@ function ListPatientCoupons({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Value</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('value')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ value }) => (
                 <CRTable.CRCellStyled bold>{value}</CRTable.CRCellStyled>
@@ -37,7 +39,7 @@ function ListPatientCoupons({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Remaing Value</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('remaingValue')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ remaining }) => (
                 <CRTable.CRCellStyled bold>{remaining}</CRTable.CRCellStyled>
@@ -45,7 +47,7 @@ function ListPatientCoupons({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Expiry Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('expiryDate')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ expiryDate }) => (
                 <CRTable.CRCellStyled bold>
@@ -55,7 +57,7 @@ function ListPatientCoupons({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Status</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('status')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ status }) => (
                 <CRTable.CRCellStyled bold>{status}</CRTable.CRCellStyled>

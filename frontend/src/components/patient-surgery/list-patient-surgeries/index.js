@@ -71,7 +71,7 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Anesthesia Doctor Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('anesthesiaDoctorName')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ anesthesiaDoctorName }) => (
                 <CRTable.CRCellStyled>
@@ -139,7 +139,7 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Others Fees</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('othersFees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ others }) => (
                 <CRTable.CRCellStyled bold>

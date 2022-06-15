@@ -16,7 +16,7 @@ const initialValues = {
   newPassword: '',
 };
 
-const ChangePassword = () => {
+const ChangePassword = ({ t }) => {
   const [changePassword] = useMutation(CHANGE_PASSWORD, {
     onCompleted({ createExpense: expnese }) {
       Alert.success('Password Added Successfully');
@@ -30,7 +30,7 @@ const ChangePassword = () => {
   return (
     <CRCard borderless>
       <Div mb={30} display="flex" justifyContent="space-between">
-        <H6 fontWeight="bold">Change Password</H6>
+        <H6 fontWeight="bold">{t('changePassword')}</H6>
         <CRButton
           variant="primary"
           onClick={() =>
@@ -39,19 +39,19 @@ const ChangePassword = () => {
             })
           }
         >
-          Save
+          {t('save')}
         </CRButton>
       </Div>
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
         <CRTextInput
           type="password"
-          label="Current Password"
+          label={t('currentPassword')}
           name="currentPassword"
           block
         />
         <CRTextInput
           type="password"
-          label="New Password"
+          label={t('newPassword')}
           name="newPassword"
           block
         />

@@ -1,16 +1,22 @@
 import React, { useCallback } from 'react';
 import { Div, H3, CRModal } from 'components';
 
-function CompleteAppointment({ show, onOk, onCancel, appointment }) {
+function CompleteAppointment({ show, onOk, onCancel, appointment, t }) {
   const handleOk = useCallback(() => {
     onOk({
       appointment,
     });
   }, [onOk]);
   return (
-    <CRModal show={show} onOk={handleOk} onHide={onCancel} onCancel={onCancel}>
+    <CRModal
+      show={show}
+      onOk={handleOk}
+      onHide={onCancel}
+      onCancel={onCancel}
+      header={t('archiveAppointment')}
+    >
       <Div>
-        <H3>Are you sure that you want to finish the Appointment ?</H3>
+        <H3>{t('completeAppointmentMessage')}</H3>
       </Div>
     </CRModal>
   );

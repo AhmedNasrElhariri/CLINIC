@@ -3,6 +3,7 @@ import NumberFormat from 'react-number-format';
 
 import { Div, H6 } from 'components';
 import { ContainerStyled } from './style';
+import { useTranslation } from 'react-i18next';
 
 const Box = ({ name, value }) => (
   <Div>
@@ -14,11 +15,12 @@ const Box = ({ name, value }) => (
 );
 
 const Profit = ({ totalPrice, totalCost }) => {
+  const { t } = useTranslation();
   return (
     <ContainerStyled>
-      <Box name="Total Sales" value={totalPrice} />
-      <Box name="Total Cost" value={totalCost} />
-      <Box name="Profit" value={totalPrice - totalCost} />
+      <Box name={t('totalSales')} value={totalPrice} />
+      <Box name={t('totalCost')} value={totalCost} />
+      <Box name={t('profit')} value={totalPrice - totalCost} />
     </ContainerStyled>
   );
 };

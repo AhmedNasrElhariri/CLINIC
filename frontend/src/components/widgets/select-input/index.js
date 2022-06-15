@@ -65,6 +65,7 @@ const ItemStyled = styled.div`
 const SelectPickerStyled = styled(SelectPicker)`
   & a.rs-picker-toggle.rs-btn {
     padding: 0;
+    direction: ltr;
     ${paddingLeft}
     display: flex;
     align-items: center;
@@ -108,6 +109,7 @@ const SelectPickerStyled = styled(SelectPicker)`
       padding-top:0px;
       border-radius: 0px;
     }
+    
   `}
 `;
 

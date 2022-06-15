@@ -13,6 +13,7 @@ const PdfView = ({
   marginRight,
   marginBottom,
   marginLeft,
+  t
 }) => {
   const [pdfData, setPdfData] = useState({ loaded: false });
 
@@ -46,7 +47,7 @@ const PdfView = ({
     <div>
       <a href={pdfData.url} download="sales.pdf" type="application/pdf">
         <CRButton variant="primary" ml={1}>
-          Print
+          {t('print')}
         </CRButton>
       </a>
     </div>

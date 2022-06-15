@@ -191,7 +191,7 @@ const Sales = () => {
         more={
           <Div display="flex">
             <Can I="Create" an="Sales">
-              <CRButton variant="primary" onClick={handleClickCreate}>
+              <CRButton variant="primary" onClick={handleClickCreate} mr={1} ml={1}>
                 {t('addNewSales')} +
               </CRButton>
               <PdfView
@@ -204,6 +204,7 @@ const Sales = () => {
                 marginRight={marginRight}
                 marginBottom={marginBottom}
                 marginLeft={marginLeft}
+                t={t}
               />
             </Can>
           </Div>

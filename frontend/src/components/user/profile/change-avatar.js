@@ -14,7 +14,7 @@ function previewFile(file, callback) {
   reader.readAsDataURL(file);
 }
 
-const ChangePassword = () => {
+const ChangePassword = ({ t }) => {
   const [uploading, setUploading] = React.useState(false);
   const [url, setURL] = React.useState(null);
   const [fileInfo, setFileInfo] = React.useState(null);
@@ -35,7 +35,7 @@ const ChangePassword = () => {
     <Div mb={20}>
       <CRCard borderless>
         <Div mb={30} display="flex" justifyContent="space-between">
-          <H6 fontWeight="bold">Change Profile Picture</H6>
+          <H6 fontWeight="bold">{t('changeProfilePicture')}</H6>
           <CRButton
             variant="primary"
             onClick={() =>
@@ -46,7 +46,7 @@ const ChangePassword = () => {
               })
             }
           >
-            Save
+            {t('save')}
           </CRButton>
         </Div>
 

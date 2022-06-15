@@ -12,7 +12,7 @@ const AccountingFilter = ({ formValue, setFormValue, banksDefinition }) => {
       onChange={setFormValue}
     >
       <Div display="flex">
-        <Div mr={3}>
+        <Div mr={3} ml={3}>
           <CRSelectInput
             label={t('bank')}
             name="bank"

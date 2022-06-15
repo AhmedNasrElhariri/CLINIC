@@ -8,14 +8,21 @@ import {
 import { CRButton, Div } from 'components';
 import ListInvoiceTransactions from './list-invoice-transactions';
 
-const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices,onEditTransaction }) => {
+const Invoice = ({
+  invoice,
+  onEditPaid,
+  invoiceTransactions,
+  allInvoices,
+  onEditTransaction,
+  t,
+}) => {
   const { paid, amount, status } = invoice;
   const ref = useRef();
   return (
     <>
       <Div textAlign="right">
         <CRButton mb="10px" onClick={allInvoices}>
-          All Invoices
+          {t('allInvoices')}
         </CRButton>
       </Div>
       <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
@@ -23,44 +30,45 @@ const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices,onEditT
           <CRButton
             variant="primary"
             mr={1}
+            ml={1}
             onClick={() => onEditPaid(invoice)}
           >
-            Pay
+            {t('pay')}
           </CRButton>
         )}
 
         <ReactToPrint
           trigger={() => (
             <CRButton primary mb={20}>
-              Print
+              {t('print')}
             </CRButton>
           )}
           content={() => ref.current}
         />
 
         <Data>
-          <DataName>Name : </DataName>
+          <DataName>{t('name')} : </DataName>
           <DataValue>{invoice?.name}</DataValue>
         </Data>
         <Data>
-          <DataName>Amount : </DataName>
+          <DataName>{t('revenueAmount')} : </DataName>
           <DataValue>{invoice.amount}</DataValue>
         </Data>
         <Data>
-          <DataName>Paid : </DataName>
+          <DataName>{t('paid')} : </DataName>
           <DataValue>{invoice.paid}</DataValue>
         </Data>
         <Data>
-          <DataName>Unpaid : </DataName>
+          <DataName>{t('remaining')} : </DataName>
           <DataValue>{invoice.amount - invoice.paid}</DataValue>
         </Data>
 
         <Data>
-          <DataName>status : </DataName>
+          <DataName>{t('status')} : </DataName>
           <DataValue>{invoice.status}</DataValue>
         </Data>
         <Data>
-          <DataName>Description : </DataName>
+          <DataName>{t('description')} : </DataName>
           <DataValue>{invoice.description}</DataValue>
         </Data>
 
@@ -68,6 +76,7 @@ const Invoice = ({ invoice, onEditPaid, invoiceTransactions, allInvoices,onEditT
           <ListInvoiceTransactions
             invoiceTransactions={invoiceTransactions}
             onEdit={onEditTransaction}
+            t={t}
           />
         </Div>
 

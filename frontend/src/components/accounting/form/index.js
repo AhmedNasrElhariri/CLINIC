@@ -12,6 +12,7 @@ import {
 import { useExpenseTypeDefinition } from 'hooks';
 import { ACTIONS } from 'utils/constants';
 import { isValid } from 'services/form';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   name: '',
@@ -74,6 +75,7 @@ const AccountingForm = ({
   action,
 }) => {
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
+  const { t } = useTranslation();
   const updatedexpenseType = expenseTypesDefinition.map(e => {
     return {
       id: e.name,
@@ -104,25 +106,33 @@ const AccountingForm = ({
         ref={ref}
         fluid
       >
-        <CRTextInput label="Name" name="name" block></CRTextInput>
-        <CRNumberInput label="Amount" name="amount" block></CRNumberInput>
+        <CRTextInput label={t('name')} name="name" block></CRTextInput>
+        <CRNumberInput
+          label={t('revenueAmount')}
+          name="amount"
+          block
+        ></CRNumberInput>
         {header === 'New Expense' && (
           <>
             <CRSelectInput
-              label="Expense Type"
+              label={t('expenseType')}
               name="expenseType"
               block
               data={updatedexpenseType}
             />
           </>
         )}
-        <CRDatePicker label="Date" name="date" block></CRDatePicker>
+        <CRDatePicker label={t('date')} name="date" block></CRDatePicker>
         <CRBrancheTree
           formValue={formValue}
           onChange={onChange}
           action={action}
         />
-        <CRTextInput label="Invoice No" name="invoiceNo" block></CRTextInput>
+        <CRTextInput
+          label={t('invoiceNo')}
+          name="invoiceNo"
+          block
+        ></CRTextInput>
       </Form>
     </CRModal>
   );

@@ -29,11 +29,14 @@ import useAppointmentHistory from './fetch-appointment-history';
 import { HeaderStyled } from './style';
 import { useForm, useModal } from 'hooks';
 import { APPT_STATUS } from 'utils/constants';
+import { useTranslation } from 'react-i18next';
+import { get } from 'services/local-storage';
 
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 function Appointment() {
   const { visible, open, close } = useModal();
   const { type, setType } = useForm({});
+  const { t } = useTranslation();
   const [sessionsPulses, setSessionsPulses] = useState([]);
   const [sessionFormValue, setSessionFormValue] = useState({});
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
@@ -53,7 +56,21 @@ function Appointment() {
   });
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
-
+  const dir = get('dir');
+  let cardPosition = {};
+  dir === 'ltr'
+    ? (cardPosition = {
+        position: 'absolute',
+        top: '130px',
+        right: '20px',
+        width: 240,
+      })
+    : (cardPosition = {
+        position: 'absolute',
+        top: '130px',
+        left: '20px',
+        width: 240,
+      });
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -261,35 +278,35 @@ function Appointment() {
       <Div display="flex">
         <Div flexGrow={1}>
           <HeaderStyled>
-            <H3 mb={64}>Appointment</H3>
+            <H3 mb={64}>{t('appointment')}</H3>
             <Div>
               <CRButton
                 variant="primary"
                 onClick={handleClickCreateFour}
                 disabled={disabled}
               >
-                Show Medicines <Icon icon="print" />
+                {t('showMedicines')} <Icon icon="print" />
               </CRButton>
               <CRButton
                 variant="primary"
                 onClick={handleClickCreate}
                 disabled={disabled}
               >
-                PrintMedicine <Icon icon="print" />
+                {t('printMedicine')} <Icon icon="print" />
               </CRButton>
               <CRButton
                 variant="primary"
                 onClick={handleClickCreateThree}
                 disabled={disabled}
               >
-                images <Icon icon="print" />
+                {t('printImages')} <Icon icon="print" />
               </CRButton>
               <CRButton
                 variant="primary"
                 onClick={handleClickCreateTwo}
                 disabled={disabled}
               >
-                PrintLabs <Icon icon="print" />
+                {t('printLabs')} <Icon icon="print" />
               </CRButton>
               {disabled && (
                 <CRButton
@@ -297,7 +314,7 @@ function Appointment() {
                   onClick={handleUpdate}
                   onClick={() => setDisabled(false)}
                 >
-                  Edit <Icon icon="save" />
+                  {t('edit')} <Icon icon="save" />
                 </CRButton>
               )}
 
@@ -306,7 +323,7 @@ function Appointment() {
                 onClick={handleUpdate}
                 disabled={disabled}
               >
-                Save <Icon icon="save" />
+                {t('save')} <Icon icon="save" />
               </CRButton>
               {/* <CRButton
               variant="primary"
@@ -388,30 +405,20 @@ function Appointment() {
           </Div>
         </Div>
       </Div>
-      <Panel
-        shaded
-        bordered
-        bodyFill
-        style={{
-          position: 'absolute',
-          top: '130px',
-          right: '20px',
-          width: 240,
-        }}
-      >
+      <Panel shaded bordered bodyFill style={cardPosition}>
         {/* <Img src={patient?.url} width={240} height={150} /> */}
         <Panel header={patient?.name}>
           <p>
             <small>
               <Div display="flex">
                 <Div width="50px" mr="30px">
-                  Phone
+                  {t('phoneNo')}
                 </Div>
                 <Div>{patient?.phoneNo}</Div>
               </Div>
               <Div display="flex">
                 <Div width="50px" mr="30px">
-                  Sex
+                  {t('sex')}
                 </Div>
                 <Div>{patient?.sex}</Div>
               </Div>
@@ -421,7 +428,7 @@ function Appointment() {
                 mt="2px"
               >
                 <Div width="50px" mr="30px" mt={10}>
-                  <a>More</a>
+                  <a>{t('more')}</a>
                 </Div>
                 {/* <Div>
               <ArrowIcon width="25px" />

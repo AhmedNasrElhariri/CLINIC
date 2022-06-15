@@ -14,7 +14,7 @@ import { formatDate, isBeforeToday } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { useAppointmentForm, useAppointments } from 'hooks';
 
-const EditAppointment = ({ show, onCancel, onOk, appointment }) => {
+const EditAppointment = ({ show, onCancel, onOk, appointment, t }) => {
   const [formValue, setFormValue] = useState({
     date: null,
     time: null,
@@ -40,11 +40,11 @@ const EditAppointment = ({ show, onCancel, onOk, appointment }) => {
   return (
     <CRModal
       show={show}
-      header="Adjust Appointment"
+      header={t('adjustAppointment')}
       bodyStyle={{
         padding: '10px 89px ',
       }}
-      okTitle="Adjust"
+      okTitle={t('adjust')}
       onOk={() => {
         onOk(formValue);
       }}
@@ -55,7 +55,7 @@ const EditAppointment = ({ show, onCancel, onOk, appointment }) => {
         <Div my={1}>
           <CRCard>
             <H6 color="texts.1" mb={1}>
-              Old Date
+              {t('oldDate')}
             </H6>
             <H6>
               {formatDate(
@@ -67,7 +67,7 @@ const EditAppointment = ({ show, onCancel, onOk, appointment }) => {
 
           <CRCard mt={10} pb={50}>
             <H6 color="texts.1" mb={1}>
-              New Date
+              {t('newDate')}
             </H6>
             <Div px={53}>
               <CRBrancheTree

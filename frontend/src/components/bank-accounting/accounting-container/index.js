@@ -230,17 +230,20 @@ const BankAccountingContainer = () => {
                 <CRButton
                   variant="primary"
                   onClick={() => handleClickCreateRevenue()}
+                  ml={1}
+                  mr={1}
                 >
-                  {t('revenue')} +
+                  {t('newRevenue')} +
                 </CRButton>
               </Can>
               <Can I="AddBankExpense" an="Accounting">
                 <CRButton
                   variant="primary"
                   ml={1}
+                  mr={1}
                   onClick={() => handleClickCreateExpense()}
                 >
-                  {t('expense')} +
+                  {t('newExpense')} +
                 </CRButton>
               </Can>
               <PdfView
@@ -250,6 +253,7 @@ const BankAccountingContainer = () => {
                 marginRight={marginRight}
                 marginBottom={marginBottom}
                 marginLeft={marginLeft}
+                t={t}
               />
             </>
           </Div>
@@ -286,7 +290,7 @@ const BankAccountingContainer = () => {
                 branches={filterBranches}
               />
               <ListData
-                title="Banking Revenues"
+                title={t('bankingRevenues')}
                 data={revenues}
                 onEdit={handleClickEditRevenue}
                 currentPage={currentPage}
@@ -303,7 +307,7 @@ const BankAccountingContainer = () => {
                 branches={filterBranches}
               />
               <ListExpenseData
-                title="Expenses"
+                title={t('bankingExpenses')}
                 data={expenses}
                 onEdit={handleClickEditExpense}
                 currentPage={expenseCurrentPage}

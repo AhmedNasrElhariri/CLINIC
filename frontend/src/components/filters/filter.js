@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Form, Row, Col } from 'rsuite';
 import { get } from 'services/local-storage';
-import { CRSelectInput } from 'components';
+import { CRSelectInput, Div } from 'components';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
 function AppointmentsFilter({ formValue, onChange, branches }) {
@@ -28,28 +28,36 @@ function AppointmentsFilter({ formValue, onChange, branches }) {
   );
   return (
     <Form formValue={formValue} onChange={onChange} fluid>
-      <Row gutter={16}>
-        <Col xs={8}>
+      <Div display="flex" width="100%" justifyContent="space-between">
+        {/* <Row gutter={16} > */}
+        {/* <Col xs={8}> */}
+        <Div width="32%">
           <CRSelectInput
             name="branch"
             label={t('branch')}
             data={branches}
             block
           />
-        </Col>
-        <Col xs={8}>
+        </Div>
+        {/* </Col> */}
+        {/* <Col xs={8}> */}
+        <Div width="32%">
           <CRSelectInput
             name="specialty"
             label={t('specialty')}
             block
             data={specialties}
           />
-        </Col>
+        </Div>
+        {/* </Col> */}
 
-        <Col xs={8}>
+        {/* <Col xs={8}> */}
+        <Div width="32%">
           <CRSelectInput name="doctor" label={t('user')} block data={doctors} />
-        </Col>
-      </Row>
+        </Div>
+        {/* </Col> */}
+        {/* </Row> */}
+      </Div>
     </Form>
   );
 }

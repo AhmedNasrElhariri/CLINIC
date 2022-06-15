@@ -245,7 +245,7 @@ function NewCourse({
                       style={{ width: '50px' }}
                     ></CRNumberInput>
                     <CRNumberInput
-                      label="Price"
+                      label={t('price')}
                       name="coursePartPrice"
                       value={sessionPrice}
                       onChange={setSessionPrice}
@@ -266,12 +266,15 @@ function NewCourse({
                     onDelete={handleDelete}
                   />
                 </Div>
-                <CRNumberInput label="Units" name="customUnits"></CRNumberInput>
+                <CRNumberInput
+                  label={t('units')}
+                  name="customUnits"
+                ></CRNumberInput>
               </Div>
             ) : (
               <>
                 <CRSelectInput
-                  label="Course Name"
+                  label={t('courseName')}
                   name="course"
                   placeholder="Select Course"
                   data={coursesDefinitions}
@@ -279,7 +282,7 @@ function NewCourse({
                   sameValue
                 />
                 <CRNumberInput
-                  label="Price"
+                  label={t('price')}
                   name="price"
                   title="Price"
                   disabled
@@ -300,12 +303,12 @@ function NewCourse({
               }}
               mt={10}
             >
-              Pay By Visa
+              {t('payByVisa')}
             </CRButton>
             {visa && (
               <Form>
                 <CRSelectInput
-                  label="Bank Name"
+                  label={t('bank')}
                   name="bank"
                   data={banksDefinition}
                   value={bank}
@@ -315,16 +318,16 @@ function NewCourse({
                 />
               </Form>
             )}
-            <CRNumberInput label="Paid" name="paid" />
+            <CRNumberInput label={t('paid')} name="paid" />
             <CRSelectInput
-              label="Doctor"
+              label={t('doctor')}
               name="doctorId"
               placeholder="Select Doctor"
               data={actionDoctors}
               block
             />
             <CRDatePicker
-              label="StartDate"
+              label={t('startDate')}
               block
               name="startDate"
               accepter={DatePicker}
@@ -361,7 +364,9 @@ function NewCourse({
                     <CRCard borderless>
                       <CRTable autoHeight data={formValue.sessions || []}>
                         <CRTable.CRColumn flexGrow={1}>
-                          <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+                          <CRTable.CRHeaderCell>
+                            {t('date')}
+                          </CRTable.CRHeaderCell>
                           <CRTable.CRCell>
                             {date => (
                               <CRTable.CRCellStyled bold>
@@ -371,7 +376,9 @@ function NewCourse({
                           </CRTable.CRCell>
                         </CRTable.CRColumn>
                         <CRTable.CRColumn flexGrow={1}>
-                          <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
+                          <CRTable.CRHeaderCell>
+                            {t('time')}
+                          </CRTable.CRHeaderCell>
                           <CRTable.CRCell>
                             {date => (
                               <CRTable.CRCellStyled bold>
@@ -396,12 +403,12 @@ function NewCourse({
               }}
               mr={10}
             >
-              Pay By Visa
+              {t('payByVisa')}
             </CRButton>
             {visa && (
               <Form>
                 <CRSelectInput
-                  label="Bank Name"
+                  label={t('bank')}
                   name="bank"
                   data={banksDefinition}
                   value={bank}
@@ -411,10 +418,10 @@ function NewCourse({
                 />
               </Form>
             )}
-            <CRNumberInput label="Cash Payment" name="paid" title="Paid" />
+            <CRNumberInput label={t('cashPayment')} name="paid" title="Paid" />
             {bank != null && (
               <CRNumberInput
-                label="Bank Payment"
+                label={t('bankPayment')}
                 name="visaPaid"
                 value={formValue.visaPaid}
                 title="visaPaid"
@@ -426,29 +433,31 @@ function NewCourse({
               action={ACTIONS.ViewCourses_Patient}
             />
           </>
-        ) : type === 'addNewUnits' || type === 'editConsumedUnits' || type === 'editUnitsTransactions' ? (
+        ) : type === 'addNewUnits' ||
+          type === 'editConsumedUnits' ||
+          type === 'editUnitsTransactions' ? (
           <CRNumberInput
-            label="Consumed Units"
+            label={t('consumedUnits')}
             name="consumed"
-            title="Consumed Units"
+            title={t('consumedUnits')}
           />
         ) : type === 'finishCourse' ? (
-          <Div>Are you sure that you want to finish this course ?</Div>
+          <Div>{t('finishCourseMessage')} </Div>
         ) : type === 'deleteCourse' ? (
           <Div>
-            <Div>Are you sure that you want to delete this course ?</Div>
+            <Div>{t('deleteCourseMessage')} </Div>
             <CRButton
               onClick={() => {
                 setVisa(true);
               }}
               mt={10}
             >
-              Pay By Visa
+              {t('payByVisa')}
             </CRButton>
             {visa && (
               <Form>
                 <CRSelectInput
-                  label="Bank Name"
+                  label={t('bank')}
                   name="bank"
                   data={banksDefinition}
                   value={bank}
@@ -460,7 +469,7 @@ function NewCourse({
             )}
             <Div>
               <CRNumberInput
-                label="Refund Money"
+                label={t('refundMoney')}
                 name="refund"
                 title="Refund Money"
               />
@@ -473,7 +482,7 @@ function NewCourse({
           </Div>
         ) : (
           <CRSelectInput
-            label="Doctor Name"
+            label={t('doctor')}
             name="doctorId"
             placeholder="Select Doctor"
             block

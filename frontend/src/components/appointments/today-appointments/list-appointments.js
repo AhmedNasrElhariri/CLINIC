@@ -17,7 +17,6 @@ import {
   Divider,
 } from 'rsuite';
 import { isScheduled, isWaiting } from 'services/appointment';
-import { useTranslation } from 'react-i18next';
 import { canAjdust } from 'services/appointment';
 import { Can } from 'components/user/can';
 import { PrintOLIcon, MoreIcon } from 'components/icons';
@@ -28,20 +27,23 @@ import {
   STANDARD_DATE_FORMAT,
   FULL_DAY_FORMAT,
 } from 'utils/constants';
+import { useTranslation } from 'react-i18next';
 
 const ActionCell = ({ rowData, dataKey, ...rest }) => {
+  const { t } = useTranslation();
   function handleAction() {
     alert(`id:${rowData[dataKey]}`);
   }
-  const { t } = useTranslation();
-  
   const {
     appointment,
     onArchive,
     onComplete,
     onAddBusinessNotes,
     onDuplicateAppointments,
+    onEditAppointments,
+    onCancelAppointments,
   } = rest;
+
   return (
     <Div
       className="link-group"
@@ -126,23 +128,73 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                 </Whisper>
               </Dropdown.Item> */}
               <Dropdown.Item eventKey={6}>
-                <CRButton
-                  variant="primary"
-                  onClick={e => {
-                    e.stopPropagation();
-                    onDuplicateAppointments(appointment);
-                  }}
-                  style={{ width: '108px' }}
-                >
-                  {t('duplicates')}
-                </CRButton>
+                <Can I="Create" an="Appointment">
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onDuplicateAppointments(appointment);
+                    }}
+                    style={{ width: '108px' }}
+                  >
+                    {t('duplicates')}
+                  </CRButton>
+                </Can>
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={8}>
+                {canAjdust(appointment) && (
+                  <Div>
+                    <Can I="Reschedule" an="Appointment">
+                      <CRButton
+                        variant="primary"
+                        onClick={e => {
+                          e.stopPropagation();
+                          onEditAppointments(appointment);
+                        }}
+                        style={{ width: '108px' }}
+                      >
+                        {t('edit')}
+                      </CRButton>
+                    </Can>
+                    {/* {canAjdust(appointment) && (
+                      <AdjustAppointment appointment={appointment} />
+                    )} */}
+                  </Div>
+                )}
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={9}>
+                {canAjdust(appointment) && (
+                  <Div>
+                    <Can I="Cancel" an="Appointment">
+                      <CRButton
+                        variant="primary"
+                        onClick={e => {
+                          e.stopPropagation();
+                          onCancelAppointments(appointment);
+                        }}
+                        style={{ width: '108px' }}
+                      >
+                        {t('cancel')}
+                      </CRButton>
+                    </Can>
+                  </Div>
+                )}
               </Dropdown.Item>
               <Dropdown.Item eventKey={7}>
                 <Div onClick={e => e.stopPropagation()}>
-                  <ReactToPrint
+                  {/* <ReactToPrint
                     trigger={() => <PrintOLIcon ml={2} />}
                     // content={() => componentRef.current}
-                  />
+                  /> */}
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                    }}
+                    style={{ width: '108px' }}
+                  >
+                    {t('print')}
+                  </CRButton>
                   <Div display="none">
                     <AppointmentPrintout
                       // ref={componentRef}
@@ -150,13 +202,6 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                       patient={appointment?.patient}
                     />
                   </Div>
-                </Div>
-              </Dropdown.Item>
-              <Dropdown.Item eventKey={8}>
-                <Div onClick={e => e.stopPropagation()}>
-                  {canAjdust(appointment) && (
-                    <AdjustAppointment appointment={appointment} />
-                  )}
                 </Div>
               </Dropdown.Item>
             </Dropdown.Menu>
@@ -177,13 +222,14 @@ function ListAppointments({
   waiting,
   onAddBusinessNotes,
   onDuplicateAppointments,
+  onEditAppointments,
+  onCancelAppointments,
   currentPage,
   setCurrentPage,
   close,
 }) {
   const history = useHistory();
   const componentRef = useRef();
-  const { t } = useTranslation();
   const ref = useRef();
   const handleSelect = useCallback(
     eventKey => {
@@ -191,6 +237,7 @@ function ListAppointments({
     },
     [setCurrentPage]
   );
+  const { t } = useTranslation();
   return (
     <Div padding={20} wd>
       <Div display="flex" justifyContent="space-between">
@@ -226,7 +273,9 @@ function ListAppointments({
           <CRTable.CRCell>
             {({ date }) => (
               <CRTable.CRCellStyled>
-                {waiting ? '' : formatDate(date, FULL_DAY_FORMAT)}
+                {waiting
+                  ? formatDate(date, STANDARD_DATE_FORMAT)
+                  : formatDate(date, FULL_DAY_FORMAT)}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
@@ -242,12 +291,8 @@ function ListAppointments({
                 speaker={
                   <Tooltip>
                     <Div>
-                      <Div>
-                        {t('phoneNo')}:{patient.phoneNo}
-                      </Div>
-                      <Div>
-                        {t('type')}:{patient.sex}
-                      </Div>
+                      <Div>{t('phoneNo')}:{patient.phoneNo}</Div>
+                      <Div>{t('sex')}:{patient.sex}</Div>
                     </Div>
                   </Tooltip>
                 }
@@ -265,6 +310,16 @@ function ListAppointments({
               <CRTable.CRCellStyled>
                 {type === 'Session' ? 'S ' : type}{' '}
                 {type === 'Session' ? session?.name : ''}
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn width={50}>
+          <CRTable.CRHeaderCell>{t('reference')}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ reference }) => (
+              <CRTable.CRCellStyled>
+                <Div fontWeight="Bold">{reference}</Div>
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
@@ -412,7 +467,7 @@ function ListAppointments({
 
           
         </CRTable.CRColumn> */}
-        <CRTable.CRColumn width={100}>
+        <CRTable.CRColumn width={80}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (
@@ -444,7 +499,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn width={100}>
+        <CRTable.CRColumn width={80}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (
@@ -485,6 +540,8 @@ function ListAppointments({
                 onComplete={onComplete}
                 onAddBusinessNotes={onAddBusinessNotes}
                 onDuplicateAppointments={onDuplicateAppointments}
+                onEditAppointments={onEditAppointments}
+                onCancelAppointments={onCancelAppointments}
               />
             )}
           </Table.Cell>

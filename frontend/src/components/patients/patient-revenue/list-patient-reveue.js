@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
+import { useTranslation } from 'react-i18next';
+
 function ListPatientRevenue({ data, currentPage, setCurrentPage, pages }) {
+  const { t } = useTranslation();
   const handleSelect = useCallback(
     eventKey => {
       setCurrentPage({ activePage: eventKey });
@@ -13,7 +16,7 @@ function ListPatientRevenue({ data, currentPage, setCurrentPage, pages }) {
       <CRCard borderless>
         <CRTable autoHeight data={data}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -21,7 +24,7 @@ function ListPatientRevenue({ data, currentPage, setCurrentPage, pages }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('revenueAmount')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ amount }) => (
                 <CRTable.CRCellStyled bold>{amount}</CRTable.CRCellStyled>
@@ -29,7 +32,7 @@ function ListPatientRevenue({ data, currentPage, setCurrentPage, pages }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ type }) => (
                 <CRTable.CRCellStyled bold>{type}</CRTable.CRCellStyled>
@@ -37,7 +40,7 @@ function ListPatientRevenue({ data, currentPage, setCurrentPage, pages }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (
                 <CRTable.CRCellStyled bold>

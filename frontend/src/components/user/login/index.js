@@ -33,7 +33,12 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
   });
 
   return (
-    <Div display="flex" width="100%" height="100vh">
+    <Div
+      display="flex"
+      width="100%"
+      height="100vh"
+      style={{ direction: 'ltr' }}
+    >
       <Div
         flexGrow={1}
         width="100%"

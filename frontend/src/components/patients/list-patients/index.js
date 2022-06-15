@@ -46,7 +46,7 @@ function Patients() {
     <>
       <Can I="View" an="Patient">
         <MainContainer
-          title="Patients"
+          title={t('patients')}
           more={
             <Div display="flex">
               <Can I="CreateSocialReport" an="Patient">
@@ -60,7 +60,7 @@ function Patients() {
               <Can I="CreateAreaReport" an="Patient">
                 <ReactToPrint
                   trigger={() => (
-                    <CRButton variant="primary" ml={1}>
+                    <CRButton variant="primary" ml={1} mr={1}>
                       {t('areaReport')} +
                     </CRButton>
                   )}

@@ -21,6 +21,7 @@ function NewInvoice({
   type,
   setPayByCheck,
   payByCheck,
+  t,
 }) {
   const { supplierAccounts } = useSupplierAccounts({});
   return (
@@ -36,25 +37,29 @@ function NewInvoice({
           {type === 'create' ? (
             <>
               <CRTextInput
-                label="Name"
+                label={t('name')}
                 name="name"
                 placeholder="Type Name"
                 block
               />
               <CRNumberInput
                 name="amount"
-                label="Amount"
+                label={t('revenueAmount')}
                 value={formValue.amount}
               />
-              <CRNumberInput name="paid" label="Paid" value={formValue.paid} />
+              <CRNumberInput
+                name="paid"
+                label={t('paid')}
+                value={formValue.paid}
+              />
               <CRTextInput
-                label="Invoice Number"
+                label={t('invoiceNo')}
                 name="invoiceNumber"
                 placeholder="Type Invoice Number"
                 block
               />
               <CRTextArea
-                label="Description"
+                label={t('description')}
                 name="description"
                 placeholder="Type the Description"
                 block
@@ -70,18 +75,22 @@ function NewInvoice({
           ) : (
             <>
               <CRButton onClick={() => setPayByCheck(!payByCheck)}>
-                Pay by Check
+                {t('payByCheck')}
               </CRButton>
               <CRNumberInput name="paid" label="Paid" value={formValue.paid} />
               {payByCheck && (
                 <>
                   <CRTextInput
-                    label="Check Number"
+                    label={t('checkNo')}
                     name="checkNumber"
                     placeholder="Type Check Number"
                     block
                   />
-                  <CRDatePicker label="Check Due Date" block name="checkDate" />
+                  <CRDatePicker
+                    label={t('checkDueDate')}
+                    block
+                    name="checkDate"
+                  />
                 </>
               )}
             </>

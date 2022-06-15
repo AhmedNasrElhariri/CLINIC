@@ -317,6 +317,7 @@ function TodayAppointments() {
           show={visible}
           onCancel={close}
           onOk={handleComplete}
+          t={t}
         />
       )}
       {popUp === 'notes' && (
@@ -327,6 +328,7 @@ function TodayAppointments() {
           notes={notes}
           setNotes={setNotes}
           onOk={addBusinessNotes}
+          t={t}
         />
       )}
       {popUp === 'newAppointment' && (
@@ -342,6 +344,7 @@ function TodayAppointments() {
           show={visible}
           onCancel={close}
           appointment={appointment}
+          t={t}
         />
       )}
       {popUp === 'cancelAppointment' && (
@@ -350,6 +353,7 @@ function TodayAppointments() {
           show={visible}
           onCancel={close}
           appointment={appointment}
+          t={t}
         />
       )}
       {/* <CancelAppointment

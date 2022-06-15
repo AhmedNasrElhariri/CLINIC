@@ -21,6 +21,7 @@ import {
   useCompanyDefinition,
   useSessionDefinition,
 } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const OTHER = 'Other';
 
@@ -107,6 +108,7 @@ function AppointmentInvoice({
   const { banksDefinition } = useBankDefinition({});
   const { companysDefinition } = useCompanyDefinition({});
   const { sessionsDefinition } = useSessionDefinition({});
+  const { t } = useTranslation();
   const updatedSessionDefinitions = sessionsDefinition.map(s => {
     return {
       name: s.name,
@@ -159,7 +161,7 @@ function AppointmentInvoice({
             }}
             mr={10}
           >
-            Pay By Visa
+            {t('payByVisa')}
           </CRButton>
           <CRButton
             onClick={() => {
@@ -170,7 +172,7 @@ function AppointmentInvoice({
             }}
             mr={10}
           >
-            Insurance Pay
+            {t('insurancePay')}
           </CRButton>
           <CRButton
             onClick={() => {
@@ -181,7 +183,7 @@ function AppointmentInvoice({
             }}
             mr={10}
           >
-            Coupon Pay
+            {t('couponPay')}
           </CRButton>
           <CRButton
             onClick={() => {
@@ -192,13 +194,13 @@ function AppointmentInvoice({
             }}
             mr={10}
           >
-            Remaining Pay
+            {t('remainingPay')}
           </CRButton>
         </Div>
         {visa && (
           <Form>
             <CRSelectInput
-              label="Bank Name"
+              label={t('bank')}
               name="bank"
               data={banksDefinition}
               value={bank}
@@ -211,21 +213,21 @@ function AppointmentInvoice({
         {coupon && (
           <>
             <Div mt={20} color="bold">
-              Points: {appointment?.patient.points}
+              {t('points')}: {appointment?.patient.points}
             </Div>
             {patientCoupons.length == 0 && (
               <Div mt={20} color="bold">
-                No Coupons Exists
+                {t('noCouponsExists')}
               </Div>
             )}
             <Form onChange={setCoupons} formValue={coupons}>
               {patientCoupons.map((c, index) => (
                 <Div display="flex" key={c.id}>
                   <Div mt={17} width={150}>
-                    Coupon -- {c.value}
+                    {t('coupon')} -- {c.value}
                   </Div>
                   <Div mt={17} width={150}>
-                    Remaining --{c.remaining}{' '}
+                    {t('remaining')} --{c.remaining}{' '}
                   </Div>
                   <Div width={150}>
                     <CRNumberInput
@@ -243,7 +245,7 @@ function AppointmentInvoice({
         {insurance && (
           <Form>
             <CRSelectInput
-              label="Company Name"
+              label={t('company')}
               name="bank"
               data={companysDefinition}
               value={company}
@@ -255,10 +257,12 @@ function AppointmentInvoice({
         )}
         {remainingOperation && (
           <>
-            <Div m="10px 0px">The Remaining : {totalRemainingOfPayment}</Div>
+            <Div m="10px 0px">
+              {t('theRemaining')} : {totalRemainingOfPayment}
+            </Div>
             <Form>
               <CRNumberInput
-                label="Pay Of Remaining"
+                label={t('payOfRemaining')}
                 name="payOfRemaining"
                 value={payOfRemaining}
                 onChange={setPayOfRemaining}
@@ -271,7 +275,7 @@ function AppointmentInvoice({
       <Div display="flex" mt={40}>
         <Div width={500} mr={20}>
           <Form fluid>
-            <CRButton onClick={() => add()}>add</CRButton>
+            <CRButton onClick={() => add()}>{t('add')}</CRButton>
             <Div display="flex" justifyContent="space-around">
               {company == null ? (
                 <CRSelectInput
@@ -279,13 +283,13 @@ function AppointmentInvoice({
                     val == null ? setSession({}) : setSession(val)
                   }
                   value={session}
-                  label="session Type"
+                  label={t('session')}
                   data={updatedSessionDefinitions}
                   style={{ width: '230px' }}
                 />
               ) : (
                 <CRSelectInput
-                  label="Session Type"
+                  label={t('session')}
                   placeholder="Select Type"
                   value={session}
                   onChange={val =>
@@ -296,7 +300,7 @@ function AppointmentInvoice({
                 />
               )}
               <CRNumberInput
-                label="Number of Sessions"
+                label={t('numberOfSessions')}
                 name="sessionsNumber"
                 value={sessionNumber}
                 onChange={setSessionNumber}
@@ -306,8 +310,8 @@ function AppointmentInvoice({
           {isOtherType(session) && (
             <Div mt={4}>
               <Form fluid formValue={formValue} onChange={setFormValue}>
-                <CRTextInput label="Name" name="name" />
-                <CRNumberInput label="Price" name="price" />
+                <CRTextInput label={t('name')} name="name" />
+                <CRNumberInput label={t('price')} name="price" />
               </Form>
             </Div>
           )}
@@ -329,29 +333,29 @@ function AppointmentInvoice({
           <Div mb={4}>
             <Form>
               <CRTextInput
-                label="Discount"
+                label={t('discount')}
                 name="amount"
                 value={discount}
                 onChange={val => onDiscountChange(Number(val))}
                 width={210}
-                addOn={<CRButton variant="danger">Applied</CRButton>}
+                addOn={<CRButton variant="danger">{t('applied')}</CRButton>}
               />
               <Div display="flex">
                 <CRTextInput
-                  label="Others"
+                  label={t('others')}
                   name="others"
                   value={others}
                   onChange={val => onOthersChange(Number(val))}
                 />
                 <CRTextInput
-                  label="Others Name"
+                  label={t('name')}
                   name="othersName"
                   value={othersName}
                   onChange={val => onOthersNameChange(val)}
                 />
               </Div>
               <CRTextInput
-                label="Remainig"
+                label={t('remaining')}
                 name="remaining"
                 value={remaining}
                 onChange={val => onRemainingChange(Number(val))}
@@ -366,12 +370,12 @@ function AppointmentInvoice({
                 <CRRadio options={payOptions} name="option" />
                 {(option.option === 'fixed' && company !== null) ||
                 bank !== null ? (
-                  <CRNumberInput label="Fixed Payment" name="amount" />
+                  <CRNumberInput label={t('cashPayment')} name="amount" />
                 ) : (
                   option.option === 'percentage' &&
                   (company !== null || bank !== null) && (
                     <CRNumberInput
-                      label="Percentage from 0 : 100"
+                      label={t('percentagefrom0To100')}
                       name="price"
                       name="amount"
                     />
@@ -381,23 +385,28 @@ function AppointmentInvoice({
               <CRDivider />
             </>
           )}
-          <H5 fontWeight={400}>Session Summary</H5>
+          <H5 fontWeight={400}>{t('summary')}</H5>
           <Div background="#f0f1f1" p="6px 8px">
             {others > 0 && (
-              <Price name="Others" price={others} overriden variant="primary" />
+              <Price
+                name={t('others')}
+                price={others}
+                overriden
+                variant="primary"
+              />
             )}
             {payOfRemaining > 0 && (
               <Price
-                name="The Pay of the remaining"
+                name={t('thePayOfTheRemaining')}
                 price={payOfRemaining}
                 overriden
                 variant="primary"
               />
             )}
-            <Price name="Subtotal " price={subtotal} overriden />
+            <Price name={t('subtotal')} price={subtotal} overriden />
             {couponsValue > 0 && (
               <Price
-                name="Coupon Values"
+                name={t('couponValue')}
                 price={couponsValue}
                 overriden
                 variant="danger"
@@ -405,7 +414,7 @@ function AppointmentInvoice({
             )}
             {discount > 0 && (
               <Price
-                name="Discount"
+                name={t('discount')}
                 price={discount}
                 overriden
                 variant="danger"
@@ -414,7 +423,7 @@ function AppointmentInvoice({
 
             {remaining > 0 && (
               <Price
-                name="Remaining"
+                name={t('remaining')}
                 price={remaining}
                 overriden
                 variant="danger"
@@ -423,7 +432,7 @@ function AppointmentInvoice({
           </Div>
           <CRDivider />
           <Div pr="8px">
-            <Price name="Total" price={total} />
+            <Price name={t('total')} price={total} />
           </Div>
         </Div>
       </Div>
@@ -441,9 +450,10 @@ function AppointmentInvoice({
           discount={discount}
           organization={organization}
           couponsValue={couponsValue}
+          printName={t('print')}
         />
         <CRButton onClick={handleFinish}>
-          {loading ? <Spinner /> : 'Finish'}
+          {loading ? <Spinner /> : t('finish')}
         </CRButton>
       </Div>
     </>

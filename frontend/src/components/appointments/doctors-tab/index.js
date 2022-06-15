@@ -1,6 +1,8 @@
-import { CRNumberInput, Div,CRRadio } from 'components';
+import { CRNumberInput, Div, CRRadio } from 'components';
 import React, { useEffect } from 'react';
 import { Form } from 'rsuite';
+import { useTranslation } from 'react-i18next';
+
 const payOptions = [
   { name: 'Fixed', value: 'fixed' },
   { name: 'Percentage', value: 'percentage' },
@@ -12,6 +14,7 @@ const DoctorsTab = ({
   doctorOption,
   setDoctorOption,
 }) => {
+  const { t } = useTranslation();
   const { doctor } = appointment;
   useEffect(() => {
     setDoctorFees({
@@ -23,7 +26,7 @@ const DoctorsTab = ({
   return (
     <>
       <Div mt={20} display="flex" justifyContent="space-around">
-        <Div>Doctor</Div>
+        <Div>{t('doctor')}</Div>
         <Div>{doctor.name}</Div>
       </Div>
       <Form formValue={doctorOption} onChange={setDoctorOption}>
@@ -31,9 +34,9 @@ const DoctorsTab = ({
         <Form formValue={doctorFees} onChange={setDoctorFees}>
           <>
             {doctorOption.option === 'fixed' ? (
-              <CRNumberInput label="Fixed Doctor Fees" name="fees" />
+              <CRNumberInput label={t('fixedDoctorFees')} name="fees" />
             ) : (
-              <CRNumberInput name="fees" label="Percentage Doctor Fees" />
+              <CRNumberInput name="fees" label={t('percentageDoctorFees')} />
             )}
           </>
         </Form>

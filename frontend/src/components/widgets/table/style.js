@@ -33,6 +33,7 @@ CRCellStyled.defaultProps = {
   display: 'flex',
   alignItems: 'center',
   paddingLeft: 10,
+  paddingRight: 10,
   bgvariant: 'grey',
   height: '100%',
   fontWeight: 600,

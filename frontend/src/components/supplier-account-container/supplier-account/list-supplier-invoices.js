@@ -9,6 +9,7 @@ function ListSupplierInvoices({
   setCurrentPage,
   pages,
   onEdit,
+  t
 }) {
   const handleSelect = useCallback(
     eventKey => {
@@ -30,7 +31,7 @@ function ListSupplierInvoices({
           }}
         >
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -38,7 +39,7 @@ function ListSupplierInvoices({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('revenueAmount')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ amount }) => (
                 <CRTable.CRCellStyled bold>{amount}</CRTable.CRCellStyled>
@@ -46,7 +47,7 @@ function ListSupplierInvoices({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Paid</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('paid')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ paid }) => (
                 <CRTable.CRCellStyled bold>{paid}</CRTable.CRCellStyled>
@@ -54,7 +55,7 @@ function ListSupplierInvoices({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Invoice Number</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('invoiceNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ invoiceNumber }) => (
                 <CRTable.CRCellStyled bold>
@@ -76,7 +77,7 @@ function ListSupplierInvoices({
                     }}
                   >
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}

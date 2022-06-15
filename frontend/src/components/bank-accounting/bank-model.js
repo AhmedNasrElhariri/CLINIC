@@ -25,10 +25,10 @@ function BankModel({
   const header = useMemo(
     () =>
       type === 'createBankRevenue'
-        ? t('addNewBankRevenueTransition')
+        ? t('addNewBankTransaction')
         : type === 'createBankExpense'
-        ? t('addNewBankExpenseTransition')
-        : t('editBankTransition'),
+        ? t('addNewBankTransaction')
+        : t('editBankTransaction'),
     [type]
   );
 

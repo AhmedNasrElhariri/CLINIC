@@ -3,13 +3,13 @@ import { formatDate } from 'utils/date';
 import { CRCard, CRTable } from 'components';
 import { Icon } from 'rsuite';
 
-function ListInvoiceTransactions({ invoiceTransactions, onEdit }) {
+function ListInvoiceTransactions({ invoiceTransactions, onEdit, t }) {
   return (
     <>
       <CRCard borderless>
         <CRTable autoHeight data={invoiceTransactions}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('creator')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
                 <CRTable.CRCellStyled bold>{user.name}</CRTable.CRCellStyled>
@@ -17,7 +17,7 @@ function ListInvoiceTransactions({ invoiceTransactions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Paid</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('paid')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ paid }) => (
                 <CRTable.CRCellStyled bold>{paid}</CRTable.CRCellStyled>
@@ -25,7 +25,7 @@ function ListInvoiceTransactions({ invoiceTransactions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Check Number</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('checkNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ checkNumber }) => (
                 <CRTable.CRCellStyled bold>{checkNumber}</CRTable.CRCellStyled>
@@ -33,7 +33,7 @@ function ListInvoiceTransactions({ invoiceTransactions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Check Due Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('checkDueDate')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ checkDate }) => (
                 <CRTable.CRCellStyled bold>
@@ -43,7 +43,7 @@ function ListInvoiceTransactions({ invoiceTransactions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ type }) => (
                 <CRTable.CRCellStyled bold>{type}</CRTable.CRCellStyled>
@@ -51,7 +51,7 @@ function ListInvoiceTransactions({ invoiceTransactions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) => (
                 <CRTable.CRCellStyled bold>
@@ -67,7 +67,7 @@ function ListInvoiceTransactions({ invoiceTransactions, onEdit }) {
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
-                    Edit
+                    {t('edit')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}

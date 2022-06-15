@@ -2,14 +2,15 @@ import React from 'react';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
-  
+  const { t } = useTranslation();
   return (
     <CRCard borderless>
       <CRTable autoHeight data={courseUnitsHistory}>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Number</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('number')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({}, indx) => (
               <CRTable.CRCellStyled bold>{indx + 1}</CRTable.CRCellStyled>
@@ -17,7 +18,7 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (
               <CRTable.CRCellStyled bold>
@@ -27,7 +28,7 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('creator')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ user }) => (
               <CRTable.CRCellStyled bold>{user.name}</CRTable.CRCellStyled>
@@ -35,7 +36,7 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Units</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('units')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ units }) => (
               <CRTable.CRCellStyled bold>{units}</CRTable.CRCellStyled>
@@ -59,7 +60,7 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
                   }}
                 >
                   {' '}
-                  Edit
+                  {t('edit')}
                 </Icon>
               </CRTable.CRCellStyled>
             )}

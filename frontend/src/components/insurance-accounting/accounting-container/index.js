@@ -101,6 +101,7 @@ const BankAccountingContainer = () => {
             marginRight={marginRight}
             marginBottom={marginBottom}
             marginLeft={marginLeft}
+            t={t}
           />
         </Div>
         <Filter formValue={filter} setFormValue={setFilter} />
@@ -113,7 +114,7 @@ const BankAccountingContainer = () => {
                 branches={filterBranches}
               />
               <ListData
-                title="Insurance Revenues"
+                title={t("insuranceRevenues")}
                 data={revenues}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}

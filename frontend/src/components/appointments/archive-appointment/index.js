@@ -9,6 +9,7 @@ import AppointmentInvoice from '../appointment-invoice';
 import DoctorsTab from '../doctors-tab';
 import { useForm, useCompanySessionDefinition, usePatients } from 'hooks';
 import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
+import { useTranslation } from 'react-i18next';
 
 const { StringType, NumberType } = Schema.Types;
 
@@ -63,6 +64,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [payOfRemaining, setPayOfRemaining] = useState(0);
   const value = useRef(initValue);
+  const { t } = useTranslation();
   const { formValue, setFormValue } = useForm({
     initValue: initInventoryValue,
     model,
@@ -254,7 +256,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   return (
     <CRModal
       show={show}
-      header="Archive Appointment"
+      header={t('archiveAppointment')}
       okTitle={okTitle}
       z
       onOk={handleOk}
@@ -270,9 +272,9 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     >
       <StepsDev>
         <Steps current={activeStep}>
-          <Steps.Item title="Invoice" onClick={() => setActiveStep(0)} />
-          <Steps.Item title="Doctor" onClick={() => setActiveStep(1)} />
-          <Steps.Item title="Inventory" onClick={() => setActiveStep(2)} />
+          <Steps.Item title={t('invoice')} onClick={() => setActiveStep(0)} />
+          <Steps.Item title={t('doctor')} onClick={() => setActiveStep(1)} />
+          <Steps.Item title={t('inventory')} onClick={() => setActiveStep(2)} />
         </Steps>
       </StepsDev>
       <Div>

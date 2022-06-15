@@ -271,6 +271,7 @@ const AccountingContainer = () => {
                 marginRight={marginRight}
                 marginBottom={marginBottom}
                 marginLeft={marginLeft}
+                t={t}
               />
             </>
           </Div>
@@ -309,7 +310,7 @@ const AccountingContainer = () => {
                   branches={filterBranches}
                 />
                 <ListRevenueData
-                  title="Revenues"
+                  title={t('revenues')}
                   data={revenues}
                   onEdit={revenue => {
                     editRevenueForm.setFormValue(R.pick(ENTITY_PROPS)(revenue));
@@ -329,7 +330,7 @@ const AccountingContainer = () => {
                   branches={filterBranches}
                 />
                 <ListExpenseData
-                  title="Expenses"
+                  title={t('expenses')}
                   data={expenses}
                   onEdit={expense => {
                     editExpenseForm.setFormValue(R.pick(ENTITY_PROPS)(expense));

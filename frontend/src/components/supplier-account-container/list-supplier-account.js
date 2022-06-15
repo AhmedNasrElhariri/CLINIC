@@ -9,6 +9,7 @@ function ListSupplierAccount({
   currentPage,
   setCurrentPage,
   pages,
+  t,
 }) {
   const history = useHistory();
   const handleSelect = useCallback(
@@ -30,7 +31,7 @@ function ListSupplierAccount({
           }}
         >
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Supplier Name</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('companyName')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -38,7 +39,7 @@ function ListSupplierAccount({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Phone No</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('phone No')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ phoneNo }) => (
                 <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
@@ -46,7 +47,7 @@ function ListSupplierAccount({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Total Paid</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('totalPaid')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ totalPaid }) => (
                 <CRTable.CRCellStyled bold>{totalPaid}</CRTable.CRCellStyled>
@@ -54,7 +55,7 @@ function ListSupplierAccount({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Total UnPaid</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('totalUnPaid')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ totalUnpaid }) => (
                 <CRTable.CRCellStyled bold>{totalUnpaid}</CRTable.CRCellStyled>
@@ -62,14 +63,13 @@ function ListSupplierAccount({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>Invoice Count</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('invoiceCount')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ invoiceCount }) => (
                 <CRTable.CRCellStyled bold>{invoiceCount}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          
         </CRTable>
         <CRTable.CRPagination
           lengthMenu={[
