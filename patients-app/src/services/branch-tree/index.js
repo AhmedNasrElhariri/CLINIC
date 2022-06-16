@@ -75,7 +75,6 @@ const CustomBranchTress = ({
                 label="Branch"
                 value={formValue.branchId}
                 onChange={(val) => onChange({ ...formValue, branchId: val })}
-                placeholder={t('select')}
                 block
                 data={branches}
               />
@@ -95,7 +94,6 @@ const CustomBranchTress = ({
                 label="Specialty"
                 value={formValue.specialtyId}
                 onChange={(val) => onChange({ ...formValue, specialtyId: val })}
-                placeholder={t('select')}
                 block
                 data={specialties}
               />

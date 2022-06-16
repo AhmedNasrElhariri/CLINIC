@@ -166,6 +166,7 @@ const CRSelectInput = ({
   ...rest
 }) => {
   const { t } = useTranslation();
+  const placeho = t('select');
   return (
     <FormGroupStyled layout={layout}>
       <Label>{label}</Label>
@@ -174,7 +175,7 @@ const CRSelectInput = ({
         accepter={CustomSelect}
         labelKey={labelKey}
         valueKey={valueKey}
-        placeholder={t('select')}
+        placeholder={placeho}
       />
       {children}
     </FormGroupStyled>
