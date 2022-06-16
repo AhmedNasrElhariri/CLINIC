@@ -24,12 +24,16 @@ export default function ListBranches({
         <CRTable autoHeight data={branches} bordered={false}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name" bold />
+            {({ name }) => (
+              <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+            )}
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="phoneNo" />
+            {({ phoneNo }) => (
+              <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
+            )}
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>

@@ -31,15 +31,13 @@ const CRTableStyled = styled(Table).attrs(({ data }) => ({
 
 const CRTable = ({ children, flag, noFlag, ...props }) => (
   <CRTableStyled {...props}>
-    <>
-      {!noFlag && (
-        <CRTable.CRColumn width={7}>
-          <CRTable.CRHeaderCell />
-          <CRTable.CRCell>{() => <BarStyled flag={flag} />}</CRTable.CRCell>
-        </CRTable.CRColumn>
-      )}
-      {children}
-    </>
+    {!noFlag && (
+      <CRTable.CRColumn width={7}>
+        <CRTable.CRHeaderCell />
+        <CRTable.CRCell>{() => <BarStyled flag={flag} />}</CRTable.CRCell>
+      </CRTable.CRColumn>
+    )}
+    {children}
   </CRTableStyled>
 );
 

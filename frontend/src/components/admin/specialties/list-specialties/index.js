@@ -29,7 +29,9 @@ export default function ListSpecialties({
         <CRTable autoHeight data={specialties} bordered={false}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
-            <CRTable.CRCell dataKey="name" bold />
+            {({ name }) => (
+              <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+            )}
           </CRTable.CRColumn>
 
           <CRTable.CRColumn flexGrow={1}>
