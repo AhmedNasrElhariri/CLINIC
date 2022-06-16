@@ -19,6 +19,7 @@ const CRTableStyled = styled(Table).attrs(({ data }) => ({
   & .rs-table-cell-content {
     padding: 0px;
     border-left: 1px solid white;
+    border-right: 1px solid white;
   }
   & .rs-table-row {
     text-align: center;

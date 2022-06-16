@@ -21,8 +21,8 @@ const CRCell = ({
           ) : (
             <CRCellStyled {...props}>
               {getValue
-                ? getValue(R.path(dataKey?.split('.'))(data), data, dataKey)
-                : R.path(dataKey?.split('.'))(data)}
+                ? getValue(R.path(dataKey.split('.'))(data), data, dataKey)
+                : R.path(dataKey.split('.'))(data)}
             </CRCellStyled>
           )}
         </Div>

@@ -27,12 +27,12 @@ const ListData = ({
         {title}
       </H5>
       <CRTable autoHeight data={data} cellBordered>
-        <CRTable.CRColumn flexGrow={1}>
+        {/* <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
           {({ name }) => (
               <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
             )}
-        </CRTable.CRColumn>
+        </CRTable.CRColumn> */}
         <CRTable.CRColumn width={100}>
           <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>

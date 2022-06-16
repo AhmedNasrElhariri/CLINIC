@@ -28,15 +28,11 @@ const ListData = ({
       <CRTable autoHeight data={data} cellBordered>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
-          {({ name }) => (
-              <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
-            )}
+          <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('payer')}</CRTable.CRHeaderCell>
-          {({ payer }) => (
-              <CRTable.CRCellStyled bold>{payer}</CRTable.CRCellStyled>
-            )}
+          <CRTable.CRCell dataKey="payer" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn width={100}>
           <CRTable.CRHeaderCell>{t('revenueAmount')}</CRTable.CRHeaderCell>
