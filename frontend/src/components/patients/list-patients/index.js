@@ -99,7 +99,11 @@ function Patients() {
 
             <CRTable.CRColumn flexGrow={1}>
               <CRTable.CRHeaderCell>{t('membershipType')}</CRTable.CRHeaderCell>
-              <CRTable.CRCell dataKey="type" semiBold />
+              <CRTable.CRCell>
+                {({ type }) => (
+                  <CRTable.CRCellStyled bold>{type}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
@@ -120,7 +124,11 @@ function Patients() {
             </CRTable.CRColumn>
             <CRTable.CRColumn flexGrow={1}>
               <CRTable.CRHeaderCell>{t('code')}</CRTable.CRHeaderCell>
-              <CRTable.CRCell dataKey="code" />
+              <CRTable.CRCell>
+                {({ code }) => (
+                  <CRTable.CRCellStyled bold>{code}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
