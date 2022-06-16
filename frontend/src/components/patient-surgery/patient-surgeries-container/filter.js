@@ -45,7 +45,7 @@ function PatientSurgeryFilter({ formValue, onChange }) {
           <CRDateRangePicker
             name="time"
             label={t('time')}
-            placeholder="Timeframe"
+            placeholder={t('timeframe')}
             block
             placement="left"
           />

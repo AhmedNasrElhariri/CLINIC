@@ -7,8 +7,10 @@ import {
   Container,
 } from '../appointment-labs/style';
 import { CRButton } from 'components';
+import { useTranslation } from 'react-i18next';
 
 const ImageRow = ({ image, onClick }) => {
+  const { t } = useTranslation();
   return (
     <MedicineContainerStyled>
       <Form fluid>
@@ -21,7 +23,7 @@ const ImageRow = ({ image, onClick }) => {
               onClick={onClick}
               style={{ padding: '10px' }}
             >
-              {image.required ? 'Delete' : 'Require'}
+              {image.required ? t('delete') : t('require')}
             </CRButton>
           </ButtonDiv>
         </Container>

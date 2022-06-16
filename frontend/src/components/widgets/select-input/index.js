@@ -7,6 +7,7 @@ import { byTheme } from 'services/theme';
 
 import Label from '../label';
 import { FormGroupStyled } from '../form-group';
+import { useTranslation } from 'react-i18next';
 
 const heightTheme = {
   height: {
@@ -164,6 +165,7 @@ const CRSelectInput = ({
   children,
   ...rest
 }) => {
+  const { t } = useTranslation();
   return (
     <FormGroupStyled layout={layout}>
       <Label>{label}</Label>
@@ -172,6 +174,7 @@ const CRSelectInput = ({
         accepter={CustomSelect}
         labelKey={labelKey}
         valueKey={valueKey}
+        placeholder={t('select')}
       />
       {children}
     </FormGroupStyled>

@@ -51,7 +51,7 @@ function BankModel({
           label={t('bank')}
           name="bankId"
           data={banksDefinition}
-          placeholder="Select One Bank "
+          placeholder={t('select')}
           block
         />
         {header === 'Add New Bank Expense Transition' && (

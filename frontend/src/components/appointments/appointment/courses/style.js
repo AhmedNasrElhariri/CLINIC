@@ -15,7 +15,7 @@ export const Data = styled.div`
 `;
 export const DataName = styled(H5)`
   margin-right: 20px;
-  width: 100px;
+  width: 130px;
   text-align: right;
 `;
 export const DataValue = styled(H6)`

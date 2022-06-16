@@ -172,11 +172,12 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
       </Div>
 
       <Div position="absolute" top={0} right={3}>
-        <Div mb={5}>
+        <Div mb={10}>
           <CRButton
             onClick={() => history.push(`/appointments/${activeSession.id}`)}
             variant="primary"
             mr={10}
+            ml={10}
           >
             {t('edit')}
           </CRButton>
@@ -184,11 +185,13 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
             {t('tableView')}
           </CRButton>
         </Div>
-        <Modal show={visible} full onHide={close}>
-          <Modal.Body>
-            <SummaryTable data={tabularData} fields={tabularFields} />
-          </Modal.Body>
-        </Modal>
+        <Div>
+          <Modal show={visible} full onHide={close}>
+            <Modal.Body>
+              <SummaryTable data={tabularData} fields={tabularFields} />
+            </Modal.Body>
+          </Modal>
+        </Div>
       </Div>
     </Div>
   );

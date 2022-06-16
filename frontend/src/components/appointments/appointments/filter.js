@@ -26,7 +26,7 @@ function AppointmentsFilter({ formValue, onChange }) {
           <CRDateRangePicker
             name="date"
             label={t('range')}
-            placeholder="Timeframe"
+            placeholder={t('timeframe')}
             block
           />
         </Col>

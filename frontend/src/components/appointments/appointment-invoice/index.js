@@ -205,7 +205,7 @@ function AppointmentInvoice({
               data={banksDefinition}
               value={bank}
               onChange={setBank}
-              placeholder="Select One Bank "
+              placeholder={t('select')}
               style={{ width: '230px' }}
             />
           </Form>
@@ -250,7 +250,7 @@ function AppointmentInvoice({
               data={companysDefinition}
               value={company}
               onChange={setCompany}
-              placeholder="Select One Company"
+              placeholder={t('select')}
               style={{ width: '230px' }}
             />
           </Form>
@@ -290,7 +290,7 @@ function AppointmentInvoice({
               ) : (
                 <CRSelectInput
                   label={t('session')}
-                  placeholder="Select Type"
+                  placeholder={t('select')}
                   value={session}
                   onChange={val =>
                     val == null ? setSession({}) : setSession(val)

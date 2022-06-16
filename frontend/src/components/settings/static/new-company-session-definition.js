@@ -57,7 +57,7 @@ function NewCompanySessionDefinition({
               ? checkResult['name'].errorMessage
               : ''
           }
-          // placeholder="Select Type"
+          placeholder={t('select')}
           data={choices}
           block
         />

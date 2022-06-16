@@ -154,7 +154,7 @@ function Patients() {
             <CRTable.CRColumn flexGrow={1}>
               <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
               <CRTable.CRCell>
-                {data => <EditPatient patient={data} />}
+                {data => <EditPatient patient={data} t={t} />}
               </CRTable.CRCell>
             </CRTable.CRColumn>
           </CRTable>

@@ -4,6 +4,7 @@ import { H5, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { Icon } from 'rsuite';
 import { Can } from 'components/user/can';
+import { useTranslation } from 'react-i18next';
 
 const ListData = ({
   title,
@@ -13,6 +14,7 @@ const ListData = ({
   setCurrentPage,
   pages,
 }) => {
+  const { t } = useTranslation();
   const handleSelect = useCallback(
     eventKey => {
       setCurrentPage({ activePage: eventKey });
@@ -26,11 +28,11 @@ const ListData = ({
       </H5>
       <CRTable autoHeight data={data} cellBordered>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Type</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ expenseType }) => (
               <CRTable.CRCellStyled bold>{expenseType}</CRTable.CRCellStyled>
@@ -38,7 +40,7 @@ const ListData = ({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Amount</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('revenueAmount')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ amount }) => (
               <CRTable.CRCellStyled bold>
@@ -53,7 +55,7 @@ const ListData = ({
         </CRTable.CRColumn>
 
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (
               <CRTable.CRCellStyled>{formatDate(date)}</CRTable.CRCellStyled>
@@ -61,7 +63,7 @@ const ListData = ({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Payer</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('payer')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ payer }) => (
               <CRTable.CRCellStyled>{payer}</CRTable.CRCellStyled>
@@ -69,7 +71,7 @@ const ListData = ({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Check Number</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('checkNo')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ checkNumber }) => (
               <CRTable.CRCellStyled>{checkNumber}</CRTable.CRCellStyled>

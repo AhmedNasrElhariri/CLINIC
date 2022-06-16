@@ -33,7 +33,7 @@ function Progress({ history, viewFields }) {
   );
 
   if (!activeField) {
-    return <H6>Loading</H6>;
+    return <H6>{t('loading')}</H6>;
   }
   return (
     <Div display="flex">

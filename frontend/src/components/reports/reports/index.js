@@ -7,9 +7,9 @@ import BarChart from '@rsuite/charts/lib/charts/BarChart';
 import Bars from '@rsuite/charts/lib/series/Bars';
 import YAxis from '@rsuite/charts/lib/components/YAxis';
 import { Div, MainContainer } from 'components';
-import {  usePatients } from 'hooks';
+import { usePatients } from 'hooks';
 import { Can } from 'components/user/can';
-
+import { useTranslation } from 'react-i18next';
 
 const groupByAge = R.groupBy(({ age }) =>
   age <= 10
@@ -38,7 +38,6 @@ const groupByMoths = R.groupBy(appointment =>
 );
 
 function Reports() {
-  
   const { allPatients } = usePatients({});
   const patientsByMonth = R.pipe(
     R.sortBy(R.prop('date')),
@@ -62,13 +61,13 @@ function Reports() {
     R.map(R.length),
     R.toPairs
   )(allPatients);
-
+  const { t } = useTranslation();
   return (
     <>
       <Can I="view" an="Report">
-        <MainContainer title="Statistical Reports" nobody></MainContainer>
+        <MainContainer title={t('statisticalReports')} nobody></MainContainer>
         <Div maxWidth={800}>
-          <LineChart name="No of patients" data={patientsByMonth} />
+          <LineChart name={t('noOfPatients')} data={patientsByMonth} />
           <PieChart
             name="Genders"
             data={genderData}

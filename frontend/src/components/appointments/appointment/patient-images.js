@@ -10,8 +10,8 @@ const PatientImages = ({ patient }) => {
     <>
       <CRTabs>
         <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>{t('pendingLab')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('historyLab')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('pendingImage')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('historyImage')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>

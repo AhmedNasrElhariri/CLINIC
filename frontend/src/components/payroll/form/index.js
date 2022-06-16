@@ -148,7 +148,7 @@ const PayrollForm = ({
                   ? checkResult['orgUserId']?.errorMessage
                   : ''
               }
-              // placeholder="Select User"
+              placeholder={t('select')}
               block
               data={organizationusers}
             />
@@ -173,7 +173,7 @@ const PayrollForm = ({
                   ? checkResult['employeeId']?.errorMessage
                   : ''
               }
-              placeholder="Select User"
+              placeholder={t('select')}
               block
               data={updatedPayrollUsers}
             />
@@ -218,6 +218,7 @@ const PayrollForm = ({
                 <CourseToolbar
                   onChangePeriod={setPeriod}
                   lastTimeFrameDay={lastDay}
+                  t={t}
                 />
               </>
             ) : (

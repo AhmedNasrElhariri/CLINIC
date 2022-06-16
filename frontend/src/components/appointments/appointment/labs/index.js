@@ -14,9 +14,12 @@ import {
   ContainerStyled,
   PrescriptionPrintout,
 } from './style';
+import { useTranslation } from 'react-i18next';
+
 let newLabs = [];
 function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
-  const header = useMemo(() => 'Labs', []);
+  const { t } = useTranslation();
+  const header = useMemo(() => t('labs'), []);
   const { labsDefinition } = useLabDefinitions();
   const Labs = labsDefinition.filter(l => labs.includes(l.id));
   const removeItem = indx => {
@@ -36,7 +39,7 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
       bodyStyle={{ padding: '0px' }}
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
-      <Title>Labs</Title>
+      <Title>{t('labs')}</Title>
       {Labs.map((element, indx) => (
         <Container>
           <Medicine>
@@ -44,7 +47,7 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
               <Li>{element.name}</Li>
             </Ul>
           </Medicine>
-          <Button onClick={() => removeItem(indx)}>Delete</Button>
+          <Button onClick={() => removeItem(indx)}>{t('delete')}</Button>
         </Container>
       ))}
       <ReactToPrint
@@ -55,7 +58,7 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
             color="#fbfbfb"
             width="81px"
           >
-            Print
+            {t('print')}
           </FooterButton>
         )}
         content={() => ref.current}
@@ -63,7 +66,7 @@ function Labs({ visible, onClose, labs, onChange: setFormValue2 }) {
       <Div style={{ height: '0px', overflow: 'hidden' }}>
         <PrescriptionPrintout ref={ref}>
           {Labs.length === '0' ? (
-            <Div>No Labs</Div>
+            <Div>{t('noLabs')}</Div>
           ) : (
             Labs.map(lab => (
               <Div>

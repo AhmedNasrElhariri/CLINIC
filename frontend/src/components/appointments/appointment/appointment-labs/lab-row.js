@@ -8,8 +8,10 @@ import {
   LabName,
   Container,
 } from './style';
+import { useTranslation } from 'react-i18next';
 
 const LabRow = ({ lab, onClick }) => {
+  const { t } = useTranslation();
   return (
     <MedicineContainerStyled>
       <Form fluid>
@@ -22,7 +24,7 @@ const LabRow = ({ lab, onClick }) => {
               m="auto"
               onClick={onClick}
             >
-              {lab.required ? 'Delete' : 'Require'}
+              {lab.required ? t('delete') : t('require')}
             </CRButton>
           </ButtonDiv>
         </Container>

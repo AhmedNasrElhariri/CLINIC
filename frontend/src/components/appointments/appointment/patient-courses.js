@@ -356,7 +356,7 @@ const Course = ({ patientId }) => {
                       {course.name}
                     </CourseButton>
                   ))}
-                  <Div width={200}>
+                  <Div width={200} mt={2}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
                         {t('addNewCourse')}+

@@ -305,6 +305,7 @@ function AppointmentData({
               medicineDefinitions={medicineDefinitions}
               selectedMedicines={appointmentFormValue.selectedMedicines}
               onChange={handleMedicineChange}
+              
             />
           </SectionContainer>
 

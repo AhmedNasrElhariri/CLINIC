@@ -229,7 +229,7 @@ function NewCourse({
                   <Div display="flex" justifyContent="space-around">
                     <CRSelectInput
                       label={t('coursePartName')}
-                      placeholder="Select The Part Of Course"
+                      placeholder={t('select')}
                       value={session}
                       onChange={val =>
                         val == null ? setSession({}) : setSession(val)
@@ -276,7 +276,7 @@ function NewCourse({
                 <CRSelectInput
                   label={t('courseName')}
                   name="course"
-                  placeholder="Select Course"
+                  placeholder={t('select')}
                   data={coursesDefinitions}
                   block
                   sameValue
@@ -313,7 +313,7 @@ function NewCourse({
                   data={banksDefinition}
                   value={bank}
                   onChange={setBank}
-                  placeholder="Select One Bank "
+                  placeholder={t('select')}
                   style={{ width: '230px' }}
                 />
               </Form>
@@ -322,7 +322,7 @@ function NewCourse({
             <CRSelectInput
               label={t('doctor')}
               name="doctorId"
-              placeholder="Select Doctor"
+              placeholder={t('select')}
               data={actionDoctors}
               block
             />
@@ -413,7 +413,7 @@ function NewCourse({
                   data={banksDefinition}
                   value={bank}
                   onChange={setBank}
-                  placeholder="Select One Bank "
+                  placeholder={t('select')}
                   style={{ width: '230px' }}
                 />
               </Form>
@@ -462,7 +462,7 @@ function NewCourse({
                   data={banksDefinition}
                   value={bank}
                   onChange={setBank}
-                  placeholder="Select One Bank "
+                  placeholder={t('select')}
                   style={{ width: '230px' }}
                 />
               </Form>
@@ -484,7 +484,7 @@ function NewCourse({
           <CRSelectInput
             label={t('doctor')}
             name="doctorId"
-            placeholder="Select Doctor"
+            placeholder={t('select')}
             block
             data={users}
           />

@@ -19,7 +19,6 @@ const CRTableStyled = styled(Table).attrs(({ data }) => ({
   & .rs-table-cell-content {
     padding: 0px;
     border-left: 1px solid white;
-    border-right: 1px solid white;
   }
   & .rs-table-row {
     text-align: center;
@@ -28,18 +27,19 @@ const CRTableStyled = styled(Table).attrs(({ data }) => ({
   & .rs-table-body-row-wrapper {
     /* height: 100% !important; */
   }
-
 `;
 
 const CRTable = ({ children, flag, noFlag, ...props }) => (
   <CRTableStyled {...props}>
-    {!noFlag && (
-      <CRTable.CRColumn width={7}>
-        <CRTable.CRHeaderCell />
-        <CRTable.CRCell>{() => <BarStyled flag={flag} />}</CRTable.CRCell>
-      </CRTable.CRColumn>
-    )}
-    {children}
+    <>
+      {!noFlag && (
+        <CRTable.CRColumn width={7}>
+          <CRTable.CRHeaderCell />
+          <CRTable.CRCell>{() => <BarStyled flag={flag} />}</CRTable.CRCell>
+        </CRTable.CRColumn>
+      )}
+      {children}
+    </>
   </CRTableStyled>
 );
 

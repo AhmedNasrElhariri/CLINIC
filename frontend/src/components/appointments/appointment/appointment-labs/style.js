@@ -9,14 +9,11 @@ export const MedicineContainerStyled = styled(Div)`
 `;
 
 export const ButtonDiv = styled.div`
-  position: absolute;
-  right:10px;
+
 `;
 export const Container = styled(Div)`
   display: flex;
   padding: 10px;
-  position: relative;
+  justify-content: space-between;
 `;
-export const LabName = styled.h6`
- 
-`;
+export const LabName = styled.h6``;

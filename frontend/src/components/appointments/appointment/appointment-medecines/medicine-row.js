@@ -4,6 +4,7 @@ import { FlexboxGrid, Form } from 'rsuite';
 import { MedicineContainerStyled, BoxStyled } from './style';
 import { CRButton, Div, H6, H7 } from 'components';
 import { CRNumberInput, CRSelectInput, CRTextInput } from 'components/widgets';
+import { useTranslation } from 'react-i18next';
 
 const peridos = [
   { name: 'Year', id: 'year', arbiceValue: 'سنة', englishValue: 'year' },
@@ -14,6 +15,8 @@ const peridos = [
 const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
   const { name, concentration, form } = medicine;
   const required = formValue.required;
+  const { t } = useTranslation();
+
   return (
     <MedicineContainerStyled>
       <Form fluid formValue={formValue} onChange={onChange}>
@@ -30,7 +33,7 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
               <CRTextInput
                 name="dose"
                 layout="inline"
-                placeholder="Dose"
+                placeholder={t('dose')}
                 disabled={required}
               />
             </BoxStyled>
@@ -38,7 +41,6 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
           <FlexboxGrid.Item colspan={4}>
             <BoxStyled>
               <CRSelectInput
-                placeholder="Timing"
                 name="timingId"
                 data={timings}
                 disabled={required}
@@ -53,8 +55,9 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
                 <CRNumberInput
                   name="duration"
                   layout="inline"
-                  placeholder="Duration"
+                  placeholder={t('duration')}
                   disabled={required}
+                  style={{ width: '100px' }}
                 />
               </Div>
               <CRSelectInput
@@ -63,7 +66,7 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
                 data={peridos}
                 disabled={required}
                 layout="inline"
-                block
+                style={{ width: '150px' }}
               />
             </BoxStyled>
           </FlexboxGrid.Item>
@@ -81,7 +84,7 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
                 p={10}
                 onClick={onClick}
               >
-                {required ? 'Required' : 'Require'}
+                {required ? t('required') : t('require')}
               </CRButton>
             </Div>
           </FlexboxGrid.Item>

@@ -14,8 +14,11 @@ import {
   ContainerStyled,
   PrescriptionPrintout,
 } from '../labs/style';
+import { useTranslation } from 'react-i18next';
+
 let newImages = [];
 function Images({ visible, onClose, images, onChange: setFormValue2 }) {
+  const { t } = useTranslation();
   const header = useMemo(() => 'Images', []);
   const { imagesDefinition } = useImageDefinition();
   const Images = imagesDefinition.filter(i => images.includes(i.id));
@@ -36,7 +39,7 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
       bodyStyle={{ padding: '0px' }}
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
-      <Title>Images</Title>
+      <Title>{t('images')}</Title>
       {Images.map((element, indx) => (
         <Container>
           <Medicine>
@@ -44,7 +47,7 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
               <Li>{element.name}</Li>
             </Ul>
           </Medicine>
-          <Button onClick={() => removeItem(indx)}>Delete</Button>
+          <Button onClick={() => removeItem(indx)}>{t('delete')}</Button>
         </Container>
       ))}
       <ReactToPrint
@@ -55,7 +58,7 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
             color="#fbfbfb"
             width="81px"
           >
-            Print
+            {t('print')}
           </FooterButton>
         )}
         content={() => ref.current}
@@ -63,7 +66,7 @@ function Images({ visible, onClose, images, onChange: setFormValue2 }) {
       <Div style={{ height: '0px', overflow: 'hidden' }}>
         <PrescriptionPrintout ref={ref}>
           {Images.length === '0' ? (
-            <Div>No Pictures</Div>
+            <Div>{t('noPictures')}</Div>
           ) : (
             Images.map(image => (
               <Div>

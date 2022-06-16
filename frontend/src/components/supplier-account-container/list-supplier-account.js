@@ -39,7 +39,7 @@ function ListSupplierAccount({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('phone No')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ phoneNo }) => (
                 <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>

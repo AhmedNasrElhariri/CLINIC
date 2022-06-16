@@ -22,6 +22,7 @@ const paddingLeft = css`
 const DateRangePickerStyled = styled(DateRangePicker)`
   & a.rs-picker-toggle.rs-btn {
     padding: 0;
+    direction: ltr;
     ${paddingLeft}
     display: flex;
     align-items: center;

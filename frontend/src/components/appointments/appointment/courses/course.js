@@ -43,7 +43,7 @@ const CourseData = ({
 
   return (
     <>
-      <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
+      <Div border="1px solid #eef1f1" m="5px" p="5px">
         {course.status !== 'Cancelled' && course.status !== 'Rejected' && (
           <CRButton
             variant="primary"
@@ -82,7 +82,12 @@ const CourseData = ({
           </CRButton>
         )}
         {course.status === 'InProgress' && (
-          <CRButton variant="danger" onClick={() => onFinishCourse(course)}>
+          <CRButton
+            variant="danger"
+            onClick={() => onFinishCourse(course)}
+            mr={1}
+            ml={1}
+          >
             {t('finish')}
           </CRButton>
         )}
@@ -150,7 +155,7 @@ const CourseData = ({
             ''
           )}
         </Data>
-        <Div textAlign="left" mt={20}>
+        <Div mt={20}>
           <CRTabs>
             <CRTabs.CRTabsGroup>
               <CRTabs.CRTab>{t('courseSession')}</CRTabs.CRTab>

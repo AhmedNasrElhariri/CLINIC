@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import { Div, CRDateRangePicker } from 'components';
-import { DateRangePicker ,Form} from 'rsuite';
+import { DateRangePicker, Form } from 'rsuite';
 const { allowedRange } = DateRangePicker;
-const Toolbar = ({ onChangePeriod, lastTimeFrameDay }) => {
+const Toolbar = ({ onChangePeriod, lastTimeFrameDay, t }) => {
   const startDayOfYear = moment().startOf('year').toDate();
   const lastDay = lastTimeFrameDay?.date || startDayOfYear;
   return (
@@ -14,7 +14,7 @@ const Toolbar = ({ onChangePeriod, lastTimeFrameDay }) => {
             name=""
             label=""
             disabledDate={allowedRange(lastDay, new Date())}
-            placeholder="Timeframe"
+            placeholder={t('timeframe')}
             size="sm"
             block
             small
@@ -29,8 +29,7 @@ const Toolbar = ({ onChangePeriod, lastTimeFrameDay }) => {
 };
 
 Toolbar.defaultProps = {
-  data: {
-  },
+  data: {},
 };
 
 export default Toolbar;

@@ -31,7 +31,7 @@ const ListData = ({
           <CRTable.CRCell dataKey="name" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>Payer</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('payer')}</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="payer" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn width={100}>

@@ -5,6 +5,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const NewPatient = lazy(() =>
   import('../../../components/patients/new-patient')
@@ -118,8 +119,9 @@ const CreateDefaultView = lazy(() =>
 // } = lazy(() => import('../../../components/index'));
 
 function AppRouter() {
+  const { t } = useTranslation();
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>{t('loading')}</div>}>
       <Switch>
         <Route path="/patients/new">
           <NewPatient />

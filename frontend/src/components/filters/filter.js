@@ -35,6 +35,7 @@ function AppointmentsFilter({ formValue, onChange, branches }) {
           <CRSelectInput
             name="branch"
             label={t('branch')}
+            placeholder={t('select')}
             data={branches}
             block
           />
@@ -45,6 +46,7 @@ function AppointmentsFilter({ formValue, onChange, branches }) {
           <CRSelectInput
             name="specialty"
             label={t('specialty')}
+            placeholder={t('select')}
             block
             data={specialties}
           />
@@ -53,7 +55,13 @@ function AppointmentsFilter({ formValue, onChange, branches }) {
 
         {/* <Col xs={8}> */}
         <Div width="32%">
-          <CRSelectInput name="doctor" label={t('user')} block data={doctors} />
+          <CRSelectInput
+            name="doctor"
+            label={t('user')}
+            block
+            data={doctors}
+            placeholder={t('select')}
+          />
         </Div>
         {/* </Col> */}
         {/* </Row> */}

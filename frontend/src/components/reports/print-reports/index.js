@@ -19,6 +19,7 @@ import { useCourses, useSessionDefinition } from 'hooks';
 import moment from 'moment';
 import * as R from 'ramda';
 import { MultiCascader } from 'rsuite';
+import { useTranslation } from 'react-i18next';
 
 const initialValue = {
   month: '',
@@ -48,6 +49,7 @@ const Test = props => {
   const [dataTwo, setDataTwo] = useState({});
   const [showSessionData, setShowSessionData] = useState(false);
   let monthes = getMonths();
+  const { t } = useTranslation();
   const { sessionsDefinition, sessionStatistics } = useSessionDefinition({
     sessionsIds: formValue.sessionsIds,
     dateFrom: formValue.sessionDate[0],
@@ -104,10 +106,10 @@ const Test = props => {
       <Container>
         <Can I="GenerateMonthly" an="PulsesReport">
           <Report>
-            <Name>Monthly Report</Name>
+            <Name>{t('monthlyReport')}</Name>
             <Form formValue={formValue} onChange={setFormValue}>
               <CRSelectInput
-                placeholder="Select Month"
+                placeholder={t('select')}
                 name="month"
                 data={monthes}
                 layout="inline"
@@ -116,10 +118,10 @@ const Test = props => {
               />
             </Form>
             <CRButton onClick={() => handleMonthlyReport(formValue.month)}>
-              Generate
+              {t('generate')}
             </CRButton>
             <ReactToPrint
-              trigger={() => <CRButton primary>Print</CRButton>}
+              trigger={() => <CRButton primary>{t('print')}</CRButton>}
               content={() => refTwo.current}
             />
           </Report>
@@ -128,7 +130,7 @@ const Test = props => {
       <Container>
         <Can I="GenerateDaily" an="PulsesReport">
           <Report>
-            <Name>Daily Report</Name>
+            <Name>{t('dailyReport')}</Name>
             <Form formValue={formValue} onChange={setFormValue}>
               <CRDatePicker
                 block
@@ -138,10 +140,10 @@ const Test = props => {
               />
             </Form>
             <CRButton onClick={() => handleDailyReport(formValue.date)}>
-              Generate
+              {t('generate')}
             </CRButton>
             <ReactToPrint
-              trigger={() => <CRButton primary>Print</CRButton>}
+              trigger={() => <CRButton primary>{t('print')}</CRButton>}
               content={() => refOne.current}
             />
           </Report>
@@ -150,12 +152,12 @@ const Test = props => {
       <Container>
         {/* <Can I="GenerateDaily" an="PulsesReport"> */}
         <Report>
-          <Name>Session Report</Name>
+          <Name>{t('sessionReport')}</Name>
           <Form formValue={formValue} onChange={setFormValue}>
             <Div display="flex" justifyContent="space-between">
               <CRDateRangePicker
                 name="sessionDate"
-                placeholder="Timeframe"
+                placeholder={t('timeframe')}
                 style={{ width: '230px', marginRight: '30px' }}
               />
               {/* <CRSelectInput
@@ -179,10 +181,10 @@ const Test = props => {
             </Div>
           </Form>
           <CRButton onClick={() => setShowSessionData(!showSessionData)}>
-            {showSessionData ? 'Close' : 'Show'}
+            {showSessionData ? t('close') : t('show')}
           </CRButton>
           <ReactToPrint
-            trigger={() => <CRButton primary>Print</CRButton>}
+            trigger={() => <CRButton primary>{t('print')}</CRButton>}
             content={() => refThree.current}
           />
         </Report>
@@ -210,10 +212,10 @@ const Test = props => {
       </Div>
       <Container>
         <Report>
-          <Name>Total Unpaid of courses Report</Name>
+          <Name>{t('totalUnpaidOfCoursesReport')}</Name>
 
           <ReactToPrint
-            trigger={() => <CRButton primary>Print</CRButton>}
+            trigger={() => <CRButton primary>{t('print')}</CRButton>}
             content={() => refFour.current}
           />
         </Report>

@@ -193,15 +193,15 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
         }}
       >
         <Div>
-          Total Appointments: {appointmentsCount?.totalAppointment}{' '}
-          {t('patient')}
+          {t('totalAppointments')}: {appointmentsCount?.totalAppointment}{' '}
+          {/* {t('patient')} */}
         </Div>
         <SecondRowContainer>
           <Div>
-            Total Waiting List: {appointmentsCount?.totalWaiting}{' '}
-            {t(t('patient'))}
+            {t('totalWaitingList')}: {appointmentsCount?.totalWaiting}{' '}
+            {/* {t(t('patient'))} */}
           </Div>
-          <Div>View All</Div>
+          <Div>{t('viewAll')}</Div>
         </SecondRowContainer>
       </CRModal>
       <CRModal
@@ -227,7 +227,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
             <Container>
               <LeftContainer>
                 <CRSelectInput
-                  label="Examination/Followup"
+                  label={t('examinationOrFollowup')}
                   name="type"
                   errorMessage={
                     show && checkResult['type']?.hasError

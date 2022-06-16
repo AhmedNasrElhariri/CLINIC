@@ -129,7 +129,7 @@ function Root() {
   ];
 
   if (!isVerified) {
-    return <div>Loading ...</div>;
+    return <div>{t('loading')}</div>;
   }
 
   return (

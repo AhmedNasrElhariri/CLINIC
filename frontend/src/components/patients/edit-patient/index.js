@@ -7,6 +7,7 @@ import { Button } from 'rsuite';
 import Form from './form';
 import styled from 'styled-components';
 import { usePatients, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
   name: '',
@@ -21,11 +22,11 @@ const EditButton = styled(Button)`
   color: #50c7f2;
   font-size: 18px;
 `;
-const EditPatient = ({ patient, editName }) => {
+const EditPatient = ({ patient }) => {
   const [formValue, setFormValue] = useState(initialValues);
   const { visible, open, close } = useModal();
   const { edit } = usePatients({ onEdit: close });
-
+  const { t } = useTranslation();
   useEffect(() => {
     setFormValue(R.omit(['__typename'])(patient));
   }, [patient]);
@@ -41,15 +42,15 @@ const EditPatient = ({ patient, editName }) => {
   return (
     <>
       <Div onClick={handleOpen}>
-        <EditButton onClick={open}>{editName}</EditButton>
+        <EditButton onClick={open}>{t('edit')}</EditButton>
         <CRModal
           show={visible}
           onHide={close}
-          header="Edit Patient"
+          header={t('editPatient')}
           onCancel={close}
           onOk={handleEditPatient}
         >
-          <Form onChange={setFormValue} formValue={formValue} />
+          <Form onChange={setFormValue} formValue={formValue} t={t} />
         </CRModal>
       </Div>
     </>

@@ -20,6 +20,8 @@ import {
   StyledFooterData,
 } from './style';
 import PrescriptionPrinting from './prescription';
+import { useTranslation } from 'react-i18next';
+
 const peridos = [
   { id: 'year', arbiceValue: 'سنة' },
   { id: 'month', arbiceValue: 'شهر' },
@@ -35,6 +37,7 @@ function Prescription({
   nextAppointment,
 }) {
   const [enable, setEnable] = useState(false);
+  const { t } = useTranslation();
   const ref = useRef();
   const refTwo = useRef();
   const { medicineDefinitions } = useMedicineDefinitions();
@@ -44,7 +47,7 @@ function Prescription({
   );
   const [direction, setDirection] = useState('rtl');
   const { timings } = useTimings();
-  const header = useMemo(() => 'Prescription', []);
+  const header = useMemo(() => t('prescription'), []);
   const removeItem = indx => {
     newPrescription = medicine.filter((element, index) => {
       return index !== indx;
@@ -86,7 +89,7 @@ function Prescription({
       bodyStyle={{ padding: '0px' }}
       headerStyle={{ borderBottom: 'none', padding: '27px' }}
     >
-      <Title>Medicine</Title>
+      <Title>{t('medicine')}</Title>
       {newMedicine?.map((element, indx) => (
         <Container color="#f4f4f6" margin="0px 0px 2px 25px">
           <Medicine>
@@ -104,7 +107,7 @@ function Prescription({
               </Div>
             </Ul>
           </Medicine>
-          <Button onClick={() => removeItem(indx)}>Delete</Button>
+          <Button onClick={() => removeItem(indx)}>{t('delete')}</Button>
         </Container>
       ))}
       <Divider />
@@ -115,7 +118,7 @@ function Prescription({
         width="435px"
         ml="26px"
       >
-        <Div>Next Appointment </Div>
+        <Div>{t('nextAppointment')} </Div>
         <Div>{formatFullDay(nextAppointment?.date)}</Div>
         <Toggle onChange={setEnable} />
       </Div>
@@ -125,10 +128,10 @@ function Prescription({
             marginLeft="26px"
             bkColor="#50c7f2"
             color="#fbfbfb"
-            width="95px"
+            width="content-fit"
             onClick={() => setDirection('rtl')}
           >
-            Print Arabic
+            {t('printArabic')}
           </FooterButton>
         )}
         content={() => ref.current}
@@ -139,10 +142,10 @@ function Prescription({
             marginLeft="13px"
             bkColor="#50c7f2"
             color="#fbfbfb"
-            width="95px"
+            width="content-fit"
             onClick={() => setDirection('ltr')}
           >
-            Print English
+            {t('printEnglish')}
           </FooterButton>
         )}
         content={() => refTwo.current}
@@ -156,7 +159,7 @@ function Prescription({
           ml={pageSetupRow?.left * 37.7952755906 || 0}
         >
           {newMedicine?.length === '0' ? (
-            <Div>No Medicines</Div>
+            <Div>{t('noMedicines')}</Div>
           ) : (
             newMedicine?.map((element, indx) => (
               <PrintMedicine direction={direction}>
@@ -183,7 +186,7 @@ function Prescription({
               <H6 style={{ marginRight: '50px' }}>
                 {formatFullDay(nextAppointment?.date)}
               </H6>
-              <H6>{'المعاد القادم'}</H6>
+              <H6>{t('nextAppointment')}</H6>
             </StyledFooterData>
           ) : (
             <></>
@@ -197,7 +200,7 @@ function Prescription({
           ref={refTwo}
         >
           {newMedicine?.length === '0' ? (
-            <Div>No Medicines</Div>
+            <Div>{t('noMedicines')}</Div>
           ) : (
             newMedicine?.map((element, indx) => (
               <PrintMedicine>
@@ -221,7 +224,7 @@ function Prescription({
                 <H6 style={{ marginRight: '50px' }}>
                   {formatFullDay(nextAppointment?.date)}
                 </H6>
-                <H6>{'المعاد القادم'}</H6>
+                <H6>{t('nextAppointment')}</H6>
               </Div>
             </StyledFooterData>
           ) : (

@@ -20,12 +20,12 @@ const Invoice = ({
   const ref = useRef();
   return (
     <>
-      <Div textAlign="right">
+      <Div>
         <CRButton mb="10px" onClick={allInvoices}>
           {t('allInvoices')}
         </CRButton>
       </Div>
-      <Div textAlign="right" border="1px solid #eef1f1" m="5px" p="5px">
+      <Div border="1px solid #eef1f1" m="5px" p="5px">
         {amount > paid && status === 'InProgress' && (
           <CRButton
             variant="primary"

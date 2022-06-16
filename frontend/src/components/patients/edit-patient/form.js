@@ -30,32 +30,32 @@ const model = Schema.Model({
 const isPrimary = ({ type }) => type === membershipTypes[0].id;
 const isSecondary = ({ type }) => type === membershipTypes[1].id;
 
-const NewPatient = ({ formValue, onChange }) => {
+const NewPatient = ({ formValue, onChange, t }) => {
   return (
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput
-        label="Membership Type"
+        label={t('membershipType')}
         name="type"
         data={membershipTypes}
         block
       />
 
-      <CRTextInput label="Patient Name" name="name" />
+      <CRTextInput label={t('patient')} name="name" />
 
       <ShowIf show={isPrimary(formValue)}>
-        <CRTextInput label="Phone no" name="phoneNo" />
-        <CRTextInput label="Phone no Two" name="phoneNoTwo" />
+        <CRTextInput label={t('phoneNo')} name="phoneNo" />
+        <CRTextInput label={t('phoneNoTwo')} name="phoneNoTwo" />
       </ShowIf>
 
       <ShowIf show={isSecondary(formValue)}>
-        <CRTextInput label="Guardian's Name" name="guardianName" />
-        <CRTextInput label="Guardian's Phone No" name="phoneNo" />
+        <CRTextInput label={t('guardiansName')} name="guardianName" />
+        <CRTextInput label={t('guardiansPhoneNo')} name="phoneNo" />
       </ShowIf>
 
-      <CRNumberInput label="Age" name="age" />
-      <CRTextInput label="Code" name="code" />
+      <CRNumberInput label={t('age')} name="age" />
+      <CRTextInput label={t('code')} name="code" />
       <CRSelectInput
-        label="Sex"
+        label={t('sex')}
         name="sex"
         searchable={false}
         data={SEX}

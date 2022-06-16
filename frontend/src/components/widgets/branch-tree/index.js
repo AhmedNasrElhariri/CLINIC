@@ -114,7 +114,7 @@ const CustomBranchTress = ({
               <CRSelectInput
                 label={t('branch')}
                 name="branchId"
-                placeholder="Select Branch"
+                placeholder={t('select')}
                 block
                 data={branches}
               />
@@ -124,7 +124,7 @@ const CustomBranchTress = ({
               <CRSelectInput
                 label={t('specialty')}
                 name="specialtyId"
-                placeholder="Select Specialty"
+                placeholder={t('select')}
                 block
                 data={specialties}
               />
@@ -134,7 +134,7 @@ const CustomBranchTress = ({
               <CRSelectInput
                 label={t('user')}
                 name="userId"
-                placeholder="Select Doctor"
+                placeholder={t('select')}
                 block
                 data={doctors}
               />

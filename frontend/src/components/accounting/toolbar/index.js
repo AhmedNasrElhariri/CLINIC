@@ -32,7 +32,7 @@ const Toolbar = ({ activeKey, onSelect, onChangePeriod }) => {
           <CRDateRangePicker
             name=""
             label=""
-            placeholder="Timeframe"
+            placeholder={t('timeframe')}
             size="sm"
             block
             small
