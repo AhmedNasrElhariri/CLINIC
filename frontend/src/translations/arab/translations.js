@@ -320,7 +320,7 @@ export const TRANSLATIONS_AR = {
   consumed: 'المستهلك',
   remaining: 'المتبقي',
   endOfDate: 'انتهاء في',
-  courseSession: 'وحدات الكورس',
+  courseSession: 'جلسات الكورس',
   coursePaymentHistory: 'مرجع مدفوعات الكورس',
   courseUnitsHistory: 'مرجع وحدات الكورس',
   expiryDate: 'تاريخ انتهاء الصلاحيه',

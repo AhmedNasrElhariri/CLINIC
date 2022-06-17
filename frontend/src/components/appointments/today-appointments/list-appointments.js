@@ -259,7 +259,7 @@ function ListAppointments({
           );
         }}
         affixHorizontalScrollbar
-        style={{direction:'rtl'}}
+        style={{ direction: 'ltr' }}
       >
         <CRTable.CRColumn width={30}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
@@ -292,8 +292,12 @@ function ListAppointments({
                 speaker={
                   <Tooltip>
                     <Div>
-                      <Div>{t('phoneNo')}:{patient.phoneNo}</Div>
-                      <Div>{t('sex')}:{patient.sex}</Div>
+                      <Div>
+                        {t('phoneNo')}:{patient.phoneNo}
+                      </Div>
+                      <Div>
+                        {t('sex')}:{patient.sex}
+                      </Div>
                     </Div>
                   </Tooltip>
                 }
