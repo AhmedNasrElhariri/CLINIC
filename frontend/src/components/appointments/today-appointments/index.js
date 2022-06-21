@@ -309,6 +309,7 @@ function TodayAppointments() {
           onCancel={close}
           onOk={handleArchive}
           loading={loading}
+          
         />
       )}
       {popUp === 'complete' && (

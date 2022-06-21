@@ -164,6 +164,7 @@ const expenses = async (
       },
     },
   });
+  
   const sum = totalExpenses.sum.amount;
   const count = totalExpenses.count.id;
   const data = {

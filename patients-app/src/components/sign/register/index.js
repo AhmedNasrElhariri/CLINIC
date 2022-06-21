@@ -45,7 +45,6 @@ const RegisterPage = ({}) => {
     initValue: initialFormValue,
     model,
   });
-  console.log(checkResult, "checkResult", showTwo, "showTwo");
   const auth = getAuth(app);
   const history = useNavigate();
   const { register, registerLoading } = patientRegistrations({
