@@ -42,6 +42,12 @@ const FaceOperations = ({ patient }) => {
       setFormValue(initValue);
     },
   });
+  console.log(
+    faceOperations,
+    'faceOperations',
+    partationFaceOperations,
+    'partationFaceOperations'
+  );
   const handleAddFaceOperation = useCallback(
     data => {
       const facePartationNumber = R.propOr(1, 'facePartationNumber')(data);
@@ -113,8 +119,11 @@ const FaceOperations = ({ patient }) => {
   }, [filter.date, filteredOperations]);
   return (
     <>
+      <Face
+        onAddFaceOperation={handleAddFaceOperation}
+        faceOperations={faceOperations}
+      />
       <Div display="flex" justifyContent="space-between">
-        <Face onAddFaceOperation={handleAddFaceOperation} />
         <CRButton
           primary
           onClick={() => {

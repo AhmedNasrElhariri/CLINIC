@@ -1,23 +1,88 @@
 import React from 'react';
 import { Container, Partition } from './style';
-const Face = ({ onAddFaceOperation }) => {
+import styled from 'styled-components';
+import { Div } from 'components';
+import {
+  Partation1,
+  Partation2,
+  Partation3,
+  Partation4,
+  Partation5,
+  Partation6,
+  Partation7,
+  Partation8,
+  Partation9,
+  Partation10,
+  Partation11,
+  Partation12,
+  Partation13,
+  Partation14,
+  Partation15,
+  Partation16,
+  Partation17,
+  Partation18,
+  Partation19,
+} from './face-partations';
+export const ImageStyled = styled.img`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+const Face = ({ onAddFaceOperation, faceOperations }) => {
+  const has = number => {
+    let exist = false;
+    faceOperations.forEach(({ facePartation, id }) => {
+      if (facePartation.number === number) {
+        exist = true;
+      }
+    });
+    return exist;
+  };
   return (
-    <Container>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 1 ,facePartationName:'part1'})}>
-        1
-      </Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 2 ,facePartationName:'part2'})}>2</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 3 ,facePartationName:'part3'})}>3</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 4 ,facePartationName:'part4'})}>4</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 5 ,facePartationName:'part5'})}>5</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 6 ,facePartationName:'part6'})}>6</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 7 ,facePartationName:'part7'})}>7</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 8 ,facePartationName:'part8'})}>8</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 9 ,facePartationName:'part9'})}>9</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 10 ,facePartationName:'part10'})}>10</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 11 ,facePartationName:'part11'})}>11</Partition>
-      <Partition onClick={() => onAddFaceOperation({ facePartationNumber: 12 ,facePartationName:'part12'})}>12</Partition>
-    </Container>
+    <>
+      <Div width="735px" height="735px" position="relative" m="45px auto">
+        <ImageStyled src="/face.png" />
+        {/* ...1... */}
+        <Partation1 has={has(1)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...2... */}
+        <Partation2 has={has(2)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...3... */}
+        <Partation3 has={has(3)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...4... */}
+        <Partation4 has={has(4)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...5... */}
+        <Partation5 has={has(5)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...6... */}
+        <Partation6 has={has(6)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...7... */}
+        <Partation7 has={has(7)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...8... */}
+        <Partation8 has={has(8)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...9... */}
+        <Partation9 has={has(9)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...10... */}
+        <Partation10 has={has(10)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...11... */}
+        <Partation11 has={has(11)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...12... */}
+        <Partation12 has={has(12)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...13... */}
+        <Partation13 has={has(13)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...14... */}
+        <Partation14 has={has(14)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...15... */}
+        <Partation15 has={has(15)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...16... */}
+        <Partation16 has={has(16)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...17... */}
+        <Partation17 has={has(17)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...18... */}
+        <Partation18 has={has(18)} onAddFaceOperation={onAddFaceOperation} />
+        {/* ...19... */}
+        <Partation19 has={has(19)} onAddFaceOperation={onAddFaceOperation} />
+      </Div>
+    </>
   );
 };
 

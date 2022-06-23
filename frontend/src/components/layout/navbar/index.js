@@ -61,6 +61,7 @@ const Navbar = ({
       set('dir', 'ltr');
     }
   }, [formValue.language]);
+  console.log(avatar,'AA');
   return (
     <NavStyled>
       <Navigator />
