@@ -46,6 +46,7 @@ function usePatients({
       limit: 20,
       name,
       phoneNo,
+      area,
     },
   });
   const patientsdata = patientData?.patients;

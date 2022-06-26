@@ -5,6 +5,8 @@ import * as R from 'ramda';
 import { useQuery } from '@apollo/client';
 import { ALL_AREAS } from 'apollo-client/queries';
 import { useTranslation } from 'react-i18next';
+import { get } from 'services/local-storage';
+
 const options = [
   { name: 'FaceBook', id: 'facebook' },
   { name: 'Instagram', id: 'instagram' },
@@ -22,17 +24,30 @@ const PatientsFilter = ({
   setAreaFormValue,
 }) => {
   const { data } = useQuery(ALL_AREAS);
+  const dir = get('dir');
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const { t } = useTranslation();
-  const newAreas = areas.map(a => {
-    return {
-      id: a.id,
-      name: a.city_name_en,
-    };
-  });
+  const newAreas = useMemo(() => {
+    let newareas = [];
+    if (dir === 'ltr') {
+      newareas = areas.map(a => {
+        return {
+          id: a.city_name_en,
+          name: a.city_name_en,
+        };
+      });
+    } else {
+      newareas = areas.map(a => {
+        return {
+          id: a.city_name_ar,
+          name: a.city_name_ar,
+        };
+      });
+    }
+    return newareas;
+  }, [dir, areas]);
   const setAreaValue = val => {
-    const area = newAreas.find(a => a.id == val);
-    setFormValue({ ...formValue, area: area.name });
+    setFormValue({ ...formValue, area: val });
     setAreaFormValue({ ...areaFormValue, areaId: val });
   };
   return (
@@ -47,16 +62,16 @@ const PatientsFilter = ({
             label={t('nameOrCode')}
             name="name"
             placeholder="Search"
-            style={{ width: '200px'}}
+            style={{ width: '200px' }}
           />
         </Div>
         <Div ml={3} mr={3}>
-        <CRTextInput
-          label={t('phoneNo')}
-          name="phoneNo"
-          placeholder="Search"
-          style={{ width: '200px' }}
-        />
+          <CRTextInput
+            label={t('phoneNo')}
+            name="phoneNo"
+            placeholder="Search"
+            style={{ width: '200px' }}
+          />
         </Div>
         <Div ml={3} mr={3}>
           <CRSelectInput
@@ -74,7 +89,7 @@ const PatientsFilter = ({
             label={t('area')}
             name="area"
             data={newAreas}
-            value={areaFormValue.areaId}
+            value={formValue.area}
             style={{ width: '200px' }}
             onChange={val =>
               val == null

@@ -113,7 +113,13 @@ enum SupplierInvoiceStatus {
 
 type Query {
   hello(name: String): Boolean
-  patients(offset: Int, limit: Int, name: String, phoneNo: String): PatientData
+  patients(
+    offset: Int
+    limit: Int
+    name: String
+    phoneNo: String
+    area: String
+  ): PatientData
   searchedPatients(name: String, organizationId: ID): [Patient!]
   allPatients: [Patient!]
   appointments(
@@ -580,10 +586,7 @@ type Mutation {
   addTransaction(
     payrollTransaction: PayrollTransactionInput!
   ): PayrollTransaction!
-  editPayrollTransaction(
-    id: ID!
-    amount:Int
-  ): PayrollTransaction!
+  editPayrollTransaction(id: ID!, amount: Int): PayrollTransaction!
   addPayroll(
     payment: [ID!]
     doctorId: ID

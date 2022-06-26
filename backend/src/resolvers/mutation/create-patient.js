@@ -23,11 +23,10 @@ const createPatient = async (
     },
   });
   const updatedPatientCode = 'cr' + patientCode;
-  const areaName = area ? getArea(area) : '';
   const finalCode = code ? code : updatedPatientCode;
   return prisma.patient.create({
     data: {
-      area: areaName,
+      area: area,
       code: finalCode,
       name,
       phoneNo,

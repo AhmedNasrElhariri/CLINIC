@@ -11,6 +11,7 @@ import {
   LIST_PATIENTS,
 } from 'apollo-client/queries';
 import { usePatients, useForm } from 'hooks';
+import { get } from 'services/local-storage';
 import { useTranslation } from 'react-i18next';
 
 const initialValues = {
@@ -47,6 +48,7 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       initValue: initialValues,
       model,
     });
+  console.log(formValue,'FFFFFF');
   const { data } = useQuery(ALL_AREAS);
   const { createPatient, createPatientLoading } = usePatients({
     onCreate: () => {
@@ -58,12 +60,26 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
   });
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const { t } = useTranslation();
-  const newAreas = areas.map(a => {
-    return {
-      id: a.id,
-      name: a.city_name_en,
-    };
-  });
+  const dir = get('dir');
+  const newAreas = useMemo(() => {
+    let newareas = [];
+    if (dir === 'ltr') {
+      newareas = areas.map(a => {
+        return {
+          id: a.city_name_en,
+          name: a.city_name_en,
+        };
+      });
+    } else {
+      newareas = areas.map(a => {
+        return {
+          id: a.city_name_ar,
+          name: a.city_name_ar,
+        };
+      });
+    }
+    return newareas;
+  }, [dir, areas]);
 
   return (
     <CRModal

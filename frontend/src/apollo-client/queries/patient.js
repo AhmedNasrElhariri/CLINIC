@@ -36,8 +36,20 @@ export const EDIT_PATIENT = gql`
 `;
 
 export const LIST_PATIENTS = gql`
-  query ($offset: Int, $limit: Int, $name: String, $phoneNo: String) {
-    patients(offset: $offset, limit: $limit, name: $name, phoneNo: $phoneNo) {
+  query (
+    $offset: Int
+    $limit: Int
+    $name: String
+    $phoneNo: String
+    $area: String
+  ) {
+    patients(
+      offset: $offset
+      limit: $limit
+      name: $name
+      phoneNo: $phoneNo
+      area: $area
+    ) {
       patients {
         id
         name
