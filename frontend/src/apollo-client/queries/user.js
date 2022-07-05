@@ -26,6 +26,7 @@ export const LOGIN = gql`
         id
         avatar
         position
+        language
         allowedViews
         name
         role {
@@ -46,6 +47,7 @@ export const VERIFY = gql`
       id
       avatar
       position
+      language
       allowedViews
       name
       role {
@@ -75,6 +77,15 @@ export const CHANGE_PASSWORD = gql`
       newPassword: $newPassword
     ) {
       token
+    }
+  }
+`;
+
+export const CHANGE_LANGUAGE = gql`
+  mutation changeLanguage($lang: Language!) {
+    changeLanguage(lang: $lang) {
+      id
+      language
     }
   }
 `;

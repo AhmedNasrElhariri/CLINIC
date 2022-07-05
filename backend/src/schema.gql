@@ -109,6 +109,11 @@ enum SupplierInvoiceStatus {
   Cancelled
 }
 
+enum Language {
+  ar
+  en
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -383,6 +388,7 @@ type Mutation {
   verify(token: String): User
   verifyPatient(token: String): VerifiedPatient
   changePassword(currentPassword: String!, newPassword: String!): AuthPayload
+  changeLanguage(lang: Language!): User!
   activateView(viewId: ID!): ViewStatus!
   activatePatientView(viewId: ID!): PatientViewStatus!
   createDefaultView: Boolean
@@ -652,6 +658,7 @@ type User {
   name: String!
   email: String!
   position: Position
+  language: Language
   revenues: [Revenue!]
   avatar: String
   specialty: [Specialty]

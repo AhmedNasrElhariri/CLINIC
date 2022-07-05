@@ -1,12 +1,13 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
 import { Form } from 'rsuite';
-import { H3, Div, CRButton, CRNumberInput } from 'components';
+import { H3, Div, CRButton, CRNumberInput, CRSelectInput } from 'components';
 import PageSetup from './page-setup';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
 import { useConfigurations } from 'hooks';
 import { useTranslation } from 'react-i18next';
+
 
 const initialValues = {
   enableInvoiceCounter: false,
@@ -71,7 +72,7 @@ const Configurations = () => {
     const left = R.propOr(0, 'left')(pageSetupRow);
     setPageSetup({ ...pageSetup, top, right, bottom, left });
   }, [pageSetup.type, pageSetupData]);
-  
+
   const updateEnable = useCallback(
     enable => {
       setFormValue({
@@ -105,7 +106,6 @@ const Configurations = () => {
     });
   }, [pointsValue, editPoints]);
 
-  
   const today = moment(new Date()).format('DD/MM/YYYY');
   return (
     <>
@@ -121,6 +121,7 @@ const Configurations = () => {
         onChange={updateEnable}
         value={formValue?.enableInvoiceCounter}
       />
+      
       <>
         <hr></hr>
         <Div display="flex" justifyContent="space-between">

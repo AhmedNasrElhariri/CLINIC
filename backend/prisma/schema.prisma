@@ -28,6 +28,11 @@ enum AnesthesiaType {
   Local
 }
 
+enum Language {
+  ar
+  en
+}
+
 enum CouponStatus {
   Active
   Used
@@ -251,6 +256,7 @@ model User {
   email                      String                       @unique
   allowedViews               Json                         @default("[]")
   password                   String
+  language                   Language?
   organization               Organization                 @relation(fields: [organizationId], references: [id])
   organizationId             String
   avatar                     String?

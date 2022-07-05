@@ -44,6 +44,7 @@ function useFaceOperation({
       {
         query: LIST_FACE_OPERATIONS,
         variables: {
+          facePartationNumber: facePartationNumber,
           patientId: patientId,
         },
       },

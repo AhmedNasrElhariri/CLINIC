@@ -8,13 +8,6 @@ const patientsReport = async (
   const theArea = areas.find(
     a => a.city_name_ar === area || a.city_name_en === area
   );
-  // console.log(theArea, 'theArea');
-  // const patientsAreaCount = await prisma.patient.count({
-  //   where: {
-  //     area,
-  //     organizationId,
-  //   },
-  // });
   const patients = await prisma.patient.findMany({
     where: {
       organizationId,

@@ -9,16 +9,19 @@ export const ADD_FACE_OPERATION = gql`
 `;
 
 export const LIST_FACE_PARTATION_OPERATIONS = gql`
-  query ($patientId: ID!,$facePartationNumber:Int!) {
-    myFacePartationOperations(patientId: $patientId,facePartationNumber:$facePartationNumber) {
+  query ($patientId: ID!, $facePartationNumber: Int!) {
+    myFacePartationOperations(
+      patientId: $patientId
+      facePartationNumber: $facePartationNumber
+    ) {
       id
       date
       units
-      material{
+      material {
         id
         name
       }
-      facePartation{
+      facePartation {
         id
         number
         name
@@ -33,11 +36,11 @@ export const LIST_FACE_OPERATIONS = gql`
       id
       date
       units
-      material{
+      material {
         id
         name
       }
-      facePartation{
+      facePartation {
         id
         number
         name
@@ -53,5 +56,3 @@ export const DELETE_FACE_OPERATION = gql`
     }
   }
 `;
-
-

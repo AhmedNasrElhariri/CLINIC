@@ -53,7 +53,10 @@ const server = new GraphQLServer({
 });
 
 const app = server.express;
+
 app.use(cors());
+
+
 
 app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
 initUploadConfig(app);

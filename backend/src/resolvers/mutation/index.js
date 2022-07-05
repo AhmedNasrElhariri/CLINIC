@@ -131,3 +131,4 @@ export { default as editInvoiceTransaction } from './edit-invoice-transaction';
 export { default as editCourseUnitHistory } from './edit-course-unit-history';
 export { default as editInvoiceSupplier } from './edit-invoice-supplier';
 export { default as editPayrollTransaction } from './edit-payroll-transaction';
+export { default as changeLanguage } from './change-language';

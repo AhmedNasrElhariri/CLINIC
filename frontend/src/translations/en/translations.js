@@ -431,4 +431,5 @@ export const TRANSLATIONS_EN = {
   noMedicines: 'No Medicines',
   nolabs: 'No Labs',
   noPictures:'No Pictures',
+  changeLanguage:'Change Language',
 };

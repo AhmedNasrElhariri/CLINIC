@@ -16,7 +16,7 @@ const InsertLabResult = ({ visible, onClose, onCreate, id, labs }) => {
       documents: [],
     },
   });
-
+  console.log(formValue, 'FVVV');
   useEffect(() => {
     updateProp('id', id);
   }, [id, updateProp]);
@@ -28,7 +28,7 @@ const InsertLabResult = ({ visible, onClose, onCreate, id, labs }) => {
       onOk={() => {
         onCreate({
           ...formValue,
-          documents: formValue.documents.map(l => l.id),
+          documents: formValue.documents.map(l => l.data[0].id),
         });
       }}
       onCancel={onClose}

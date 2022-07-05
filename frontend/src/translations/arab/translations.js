@@ -426,5 +426,6 @@ export const TRANSLATIONS_AR = {
   printEnglish: 'طباعه بالانجليزي',
   noMedicines: 'لا يوجد ادويه',
   nolabs:'لا يوجد تحاليل',
-  noPictures:'لايوجد اشعه'
+  noPictures:'لايوجد اشعه',
+  changeLanguage:'تغير اللغه',
 };

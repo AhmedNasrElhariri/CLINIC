@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-
 import { Whisper, Popover, Form } from 'rsuite';
 import { NavStyled, BadgeStyled } from './style';
 import { Div } from 'components';
@@ -12,10 +11,8 @@ import Navigator from './navigator';
 import { CRSelectInput } from 'components/widgets';
 import { useNewAppointment } from 'hooks';
 import { i18n } from '../../../translations/i18n';
-const languages = [
-  { id: 'ar', name: 'اللغه العربيه' },
-  { id: 'en', name: 'English' },
-];
+import * as R from 'ramda';
+
 const NotificatinBadge = ({ count }) => (
   <Div position="relative">
     {!!count && (
@@ -43,7 +40,7 @@ const Navbar = ({
   const notificationsRef = useRef();
   const settingsRef = useRef();
   const { organizationBranches } = useNewAppointment({});
-
+  const language = R.propOr('en', 'language')(user);
   useEffect(() => {
     setFormValue(val => ({
       ...val,
@@ -51,7 +48,6 @@ const Navbar = ({
     }));
   }, []);
   useEffect(() => {
-    const { language } = formValue;
     i18n.changeLanguage(language);
     if (language === 'ar') {
       setFormValue({ ...formValue, dir: 'rtl' });
@@ -60,8 +56,8 @@ const Navbar = ({
       setFormValue({ ...formValue, dir: 'ltr' });
       set('dir', 'ltr');
     }
-  }, [formValue.language]);
-  console.log(avatar,'AA');
+  }, [language]);
+
   return (
     <NavStyled>
       <Navigator />
@@ -74,12 +70,6 @@ const Navbar = ({
             data={organizationBranches}
             onSelect={val => set('branch', val)}
             style={{ width: '200px', margin: '0px 20px' }}
-          />
-          <CRSelectInput
-            name="language"
-            data={languages}
-            onSelect={val => set('language', val)}
-            style={{ width: '200px' }}
           />
         </Div>
       </Form>

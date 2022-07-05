@@ -9,7 +9,7 @@ import * as R from 'ramda';
 import moment from 'moment';
 
 const initValue = {
-  facePartationNumber: 0,
+  facePartationNumber: 1,
   facePartationName: '',
   units: '',
   materialId: null,
@@ -32,7 +32,7 @@ const FaceOperations = ({ patient }) => {
     faceOperations,
   } = useFaceOperation({
     patientId: patient?.id,
-    facePartationNumber: formValue?.facePartationNumber,
+    facePartationNumber: formValue.facePartationNumber,
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -42,12 +42,7 @@ const FaceOperations = ({ patient }) => {
       setFormValue(initValue);
     },
   });
-  console.log(
-    faceOperations,
-    'faceOperations',
-    partationFaceOperations,
-    'partationFaceOperations'
-  );
+  
   const handleAddFaceOperation = useCallback(
     data => {
       const facePartationNumber = R.propOr(1, 'facePartationNumber')(data);
@@ -111,12 +106,19 @@ const FaceOperations = ({ patient }) => {
     );
   }, [filter.name, selectedOperations]);
   const filteredDateOperations = useMemo(() => {
-    const startDate = moment(filter.date[0]).startOf('day').toDate();
-    const endDate = moment(filter.date[1]).endOf('day').toDate();
-    return filteredOperations.filter(
-      o => new Date(o.date) > startDate && new Date(o.date) < endDate
-    );
+    if (filter.date[0] && filter.date[1]) {
+      const startDate = moment(filter.date[0]).startOf('day').toDate();
+      const endDate = moment(filter.date[1]).endOf('day').toDate();
+      return filteredOperations.filter(
+        o => new Date(o.date) > startDate && new Date(o.date) < endDate
+      );
+    } else {
+      return filteredOperations;
+    }
   }, [filter.date, filteredOperations]);
+  if (faceOperations.length === 0) {
+    return 'loading...';
+  }
   return (
     <>
       <Face
@@ -131,7 +133,7 @@ const FaceOperations = ({ patient }) => {
             setOperationsType('all');
           }}
         >
-          Clear
+          All Operations
         </CRButton>
       </Div>
       <NewFaceOperation

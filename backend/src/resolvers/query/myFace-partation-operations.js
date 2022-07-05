@@ -6,6 +6,7 @@ const myFacePartationOperations = async (
   { patientId, facePartationNumber },
   { userId, organizationId }
 ) => {
+  
   const partation = await prisma.facePartation.findMany({
     where: {
       number: facePartationNumber,
@@ -14,10 +15,14 @@ const myFacePartationOperations = async (
   });
   const partationId = partation[0].id;
   const operations = await prisma.faceOperation.findMany({
-    where: {
-      patientId: patientId,
-      partationId: partationId,
-    },
+    where: Object.assign(
+      {
+        patientId: patientId,
+      },
+      partationId && {
+        partationId: partationId,
+      }
+    ),
     include: {
       material: true,
       facePartation: true,

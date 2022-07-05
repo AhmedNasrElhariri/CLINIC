@@ -23,7 +23,6 @@ import '../../../translations/i18n';
 
 const initialvalues = {
   branchId: null,
-  language: 'ar',
   dir: 'rtl',
 };
 

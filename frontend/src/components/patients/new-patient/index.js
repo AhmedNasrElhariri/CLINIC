@@ -48,7 +48,6 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       initValue: initialValues,
       model,
     });
-  console.log(formValue,'FFFFFF');
   const { data } = useQuery(ALL_AREAS);
   const { createPatient, createPatientLoading } = usePatients({
     onCreate: () => {

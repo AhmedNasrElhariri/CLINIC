@@ -56,7 +56,6 @@ export default function EmployeePayroll(props) {
 
   const handleClickEdit = useCallback(
     data => {
-      console.log(data, 'DDD');
       const tran = R.pick(['id', 'amount'])(data);
       setFormValue({ ...tran });
       open();
@@ -71,7 +70,7 @@ export default function EmployeePayroll(props) {
       },
     });
   }, [formValue]);
-  console.log(formValue, 'FFF');
+
   return (
     <>
       <Div style={{ float: 'right' }}>
