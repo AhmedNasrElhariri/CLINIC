@@ -6,10 +6,11 @@ import * as R from 'ramda';
 import {
   LIST_PATIENT_IMAGES,
   INSRET_IMAGE_RESULT,
+  DELETE_LAB_PHOTO,
 } from 'apollo-client/queries';
 import { IMAGE_STATUS } from 'utils/constants';
 
-function usePatientImages({ patientId, onInsert } = {}) {
+function usePatientImages({ patientId, onInsert, onDelete } = {}) {
   const [getPendingImages, { data, called, refetch }] = useLazyQuery(
     LIST_PATIENT_IMAGES,
     {
@@ -40,7 +41,13 @@ function usePatientImages({ patientId, onInsert } = {}) {
       onInsert && onInsert();
     },
   });
-
+  const [deleteImagePhoto] = useMutation(DELETE_LAB_PHOTO, {
+    onCompleted: () => {
+      Alert.success('Lab Document has been Deleted successfully');
+      onDelete && onDelete();
+      refetch();
+    },
+  });
   useEffect(() => {
     if (patientId) {
       getPendingImages();
@@ -52,8 +59,9 @@ function usePatientImages({ patientId, onInsert } = {}) {
       pendingImages,
       historyImages,
       insertImageResult: image => insertImageResult({ variables: { image } }),
+      deleteImagePhoto,
     }),
-    [historyImages, insertImageResult, pendingImages]
+    [historyImages, insertImageResult, pendingImages, deleteImagePhoto]
   );
 }
 

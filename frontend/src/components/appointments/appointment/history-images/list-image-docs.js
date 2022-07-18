@@ -42,7 +42,7 @@ const saveFile = url => {
     FileDownload(response.data, 'report.pdf');
   });
 };
-function ListImageDocs({ images, imageId }) {
+function ListImageDocs({ images, imageId,onDelete }) {
   const { t } = useTranslation();
   const image = images.filter(ele => ele.id === imageId);
   const documents = image[0]?.documents;
@@ -83,7 +83,7 @@ function ListImageDocs({ images, imageId }) {
         </CRTable>
       </CRCard>
       <Div mb={50}>
-        <AppointmentGallery pictures={imagesFiles} />
+        <AppointmentGallery pictures={imagesFiles} onDelete={onDelete}/>
       </Div>
       <Div mt={50}>
         {pdfFiles?.map(d => (

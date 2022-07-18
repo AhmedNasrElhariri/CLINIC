@@ -3,10 +3,14 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
 
-import { LIST_PATIENT_LABS, INSRET_LAB_RESULT } from 'apollo-client/queries';
+import {
+  LIST_PATIENT_LABS,
+  INSRET_LAB_RESULT,
+  DELETE_LAB_PHOTO,
+} from 'apollo-client/queries';
 import { LAB_STATUS } from 'utils/constants';
 
-function usePatientLabs({ patientId, onInsert } = {}) {
+function usePatientLabs({ patientId, onInsert, onDelete } = {}) {
   const [getPendingLabs, { data, called, refetch }] = useLazyQuery(
     LIST_PATIENT_LABS,
     {
@@ -39,7 +43,13 @@ function usePatientLabs({ patientId, onInsert } = {}) {
       refetch();
     },
   });
-
+  const [deleteLabPhoto] = useMutation(DELETE_LAB_PHOTO, {
+    onCompleted: () => {
+      Alert.success('Lab Document has been Deleted successfully');
+      onDelete && onDelete();
+      refetch();
+    },
+  });
   useEffect(() => {
     if (patientId) {
       getPendingLabs();
@@ -51,8 +61,9 @@ function usePatientLabs({ patientId, onInsert } = {}) {
       pendingLabs,
       historyLabs,
       insertLabResult: lab => insertLabResult({ variables: { lab } }),
+      deleteLabPhoto,
     }),
-    [historyLabs, insertLabResult, pendingLabs]
+    [historyLabs, insertLabResult, pendingLabs, deleteLabPhoto]
   );
 }
 

@@ -174,6 +174,14 @@ export const INSRET_LAB_RESULT = gql`
   }
 `;
 
+export const DELETE_LAB_PHOTO = gql`
+  mutation deleteLabPhoto($id: ID!) {
+    deleteLabPhoto(id: $id) {
+      id
+    }
+  }
+`;
+
 export const INSRET_IMAGE_RESULT = gql`
   mutation insertImageResult($image: ImageInput!) {
     insertImageResult(image: $image) {

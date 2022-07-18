@@ -406,6 +406,7 @@ type Mutation {
   updateSnippet(snippet: SnippetInput!): Snippet!
   deleteSnippet(id: ID!): Snippet!
   insertLabResult(lab: LabInput!): Lab!
+  deleteLabPhoto(id: ID!): File!
   insertImageResult(image: ImageInput!): Image!
   createMedicineHistory(
     medicineHistory: MedicineHistoryInput!

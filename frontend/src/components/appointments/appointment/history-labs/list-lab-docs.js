@@ -42,7 +42,7 @@ const saveFile = url => {
     FileDownload(response.data, 'report.pdf');
   });
 };
-function ListLabDocs({ labs, labId }) {
+function ListLabDocs({ labs, labId, onDelete }) {
   const { t } = useTranslation();
   const lab = labs.filter(ele => ele.id === labId);
   const documents = lab[0]?.documents;
@@ -87,7 +87,7 @@ function ListLabDocs({ labs, labId }) {
       </CRCard>
 
       <Div mb={50}>
-        <AppointmentGallery pictures={imagesFiles} />
+        <AppointmentGallery pictures={imagesFiles} onDelete={onDelete} />
       </Div>
       <Div mt={50}>
         {pdfFiles?.map(d => (

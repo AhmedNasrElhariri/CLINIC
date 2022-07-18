@@ -111,7 +111,7 @@ const LabFormInput = ({ value, onChange }) => {
     formData.append('file', newFile2);
 
     try {
-      const res = await axios.post('http://localhost:3000/upload', formData);
+      const res = await axios.post('/upload', formData);
       const newImages = value.concat(res);
       onChange(newImages);
     } catch (ex) {

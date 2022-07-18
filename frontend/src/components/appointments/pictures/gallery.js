@@ -4,9 +4,9 @@ import ImageGallery from 'react-image-gallery';
 import { Div } from 'components';
 import ListImagesThumbnails from './list-pictures-thumbnails';
 
-const AppointmentGallery = ({ pictures }) => {
+const AppointmentGallery = ({ pictures, onDelete }) => {
   const [galleryVisibility, setGalleryVisibility] = useState(false);
-
+  console.log(pictures, 'pictures');
   const ref = useRef();
 
   useEffect(() => {
@@ -19,6 +19,7 @@ const AppointmentGallery = ({ pictures }) => {
       <ListImagesThumbnails
         pictures={pictures}
         onClick={() => setGalleryVisibility(true)}
+        onDelete={onDelete}
       />
       {galleryVisibility && (
         <ImageGallery
