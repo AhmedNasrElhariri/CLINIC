@@ -190,6 +190,11 @@ function AppointmentData({
   );
   const categoryId = categoryLabForm?.categoryId;
   const { labsDefinition } = useLabDefinitions({});
+  const customLabDefinitions = useMemo(() => {
+    return labsDefinition.filter(l => l.category.id === categoryId);
+  }, [labsDefinition, categoryId]);
+
+  console.log(labsDefinition, 'labsDefinition');
   const handleLabsChange = useCallback(
     labIds => {
       const cateLabs = labsDefinition.map(l => l.id);
@@ -204,6 +209,10 @@ function AppointmentData({
   );
   const imageId = categoryImageForm?.categoryId;
   const { imagesDefinition } = useImageDefinition({});
+  const customImageDefinitions = useMemo(() => {
+    return imagesDefinition.filter(l => l.category.id === imageId);
+  }, [imagesDefinition, imageId]);
+
   const handleImagesChange = useCallback(
     imageIds => {
       const cateImages = imagesDefinition.map(i => i.id);
@@ -305,7 +314,6 @@ function AppointmentData({
               medicineDefinitions={medicineDefinitions}
               selectedMedicines={appointmentFormValue.selectedMedicines}
               onChange={handleMedicineChange}
-              
             />
           </SectionContainer>
 
@@ -362,7 +370,7 @@ function AppointmentData({
                 />
                 <CRSelectInput
                   name="labId"
-                  data={labsDefinition}
+                  data={customLabDefinitions}
                   label={t('lab')}
                   style={{ width: '300px' }}
                 />
@@ -399,7 +407,7 @@ function AppointmentData({
                 />
                 <CRSelectInput
                   name="imageId"
-                  data={imagesDefinition}
+                  data={customImageDefinitions}
                   label={t('image')}
                   style={{ width: '300px' }}
                 />

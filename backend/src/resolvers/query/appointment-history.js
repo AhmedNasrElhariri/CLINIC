@@ -21,7 +21,6 @@ const appointmentHistory = async (_, { appointmentId, patientId }) => {
 
   return prisma.appointment.findMany({
     where: {
-      status: APPOINTMENTS_STATUS.CLOSED,
       patient: {
         id: patientId,
       },

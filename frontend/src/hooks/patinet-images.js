@@ -27,7 +27,10 @@ function usePatientImages({ patientId, onInsert, onDelete } = {}) {
   );
 
   const pendingImages = useMemo(
-    () => R.filter(R.propEq('status', IMAGE_STATUS.PENDING))(images),
+    () =>
+      R.filter(R.propOr('status', IMAGE_STATUS.PENDING || IMAGE_STATUS.DRAFT))(
+        images
+      ),
     [images]
   );
 

@@ -28,7 +28,10 @@ function usePatientLabs({ patientId, onInsert, onDelete } = {}) {
   );
 
   const pendingLabs = useMemo(
-    () => R.filter(R.propEq('status', LAB_STATUS.PENDING))(labs),
+    () =>
+      R.filter(R.propOr('status', LAB_STATUS.PENDING || LAB_STATUS.DRAFT))(
+        labs
+      ),
     [labs]
   );
   const historyLabs = useMemo(

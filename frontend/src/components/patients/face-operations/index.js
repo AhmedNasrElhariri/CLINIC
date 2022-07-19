@@ -116,9 +116,6 @@ const FaceOperations = ({ patient }) => {
       return filteredOperations;
     }
   }, [filter.date, filteredOperations]);
-  if (faceOperations.length === 0) {
-    return 'loading...';
-  }
   return (
     <>
       <Face

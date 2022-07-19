@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import { Can } from 'components/user/can';
@@ -13,7 +13,6 @@ import AvatarWithName from '../patient-avatar-with-name/index';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import Dental from '../dental';
-import FaceOperations from '../face-operations';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import PatientImages from 'components/appointments/appointment/patient-images';
 import History from 'components/appointments/appointment/patient-history';
@@ -35,6 +34,8 @@ const Container = styled.div`
 const TabContainer = styled.div`
   width: 100%;
 `;
+
+const FaceOperationsPage = lazy(() => import('../face-operations'));
 
 function Appointment() {
   const history = useHistory();
@@ -173,7 +174,7 @@ function Appointment() {
                 )}
                 {showComp('9') && (
                   <Can I="ViewFaseOperation" an="Patient">
-                    <FaceOperations patient={patient} />
+                    <FaceOperationsPage patient={patient} />
                   </Can>
                 )}
                 {showComp('10') && (
