@@ -4,7 +4,7 @@ import { MainContainer, CRCard, CRNav } from 'components';
 import { Can } from 'components/user/can';
 import InventoryStatus from '../status';
 import InventoryHistory from '../history';
-import ItemsDefinitions from '../items-definitions';
+// import ItemsDefinitions from '../items-definitions';
 import InventoryManual from '../inventory-manual';
 import { useTranslation } from 'react-i18next';
 
@@ -13,8 +13,8 @@ const InventoryPage = () => {
   const tabs = [
     { name: t('inventory'), key: '0', component: InventoryStatus },
     { name: t('history'), key: '1', component: InventoryHistory },
-    { name: t('itemDefinition'), key: '2', component: ItemsDefinitions },
-    { name: t('inventoryManual'), key: '3', component: ItemsDefinitions },
+    // { name: t('itemDefinition'), key: '2', component: ItemsDefinitions },
+    { name: t('inventoryManual'), key: '2', component: InventoryManual },
   ];
   const [activeTab, setActiveTab] = useState(tabs[0].key);
   return (
@@ -44,12 +44,12 @@ const InventoryPage = () => {
             <InventoryHistory />
           </Can>
         )}
-        {activeTab === '2' && (
+        {/* {activeTab === '2' && (
           <Can I="DefineItem" an="Inventory">
             <ItemsDefinitions />
           </Can>
-        )}
-        {activeTab === '3' && (
+        )} */}
+        {activeTab === '2' && (
           <Can I="AddCustom" an="Inventory">
             <InventoryManual />
           </Can>

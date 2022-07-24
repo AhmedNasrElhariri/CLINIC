@@ -313,7 +313,7 @@ export const TRANSLATIONS_AR = {
   deleteThisCourse: 'حذف الكورس',
   assignDoctor: 'اضافه دكتور',
   pay: 'دفع',
-  addUnits: 'اضافه وحدات',
+  consumeUnits: 'استهلاك من الوحدات',
   editUnits: 'تعديل الوحدات',
   finish: 'انهاء',
   totalOfUnits: 'العدد الكلي للوحدات',

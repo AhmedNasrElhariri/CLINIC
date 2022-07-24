@@ -315,7 +315,7 @@ export const TRANSLATIONS_EN = {
   cancelThisCourse: 'Cancel This Course',
   assignDoctor: 'Assign Doctor',
   pay: 'Pay',
-  addUnits: 'Add Units',
+  consumeUnits: 'Consume Units',
   editUnits: 'Edit Units',
   finish: 'Finsh',
   totalOfUnits: 'Total of Units',

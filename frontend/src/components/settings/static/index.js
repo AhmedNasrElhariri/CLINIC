@@ -24,6 +24,7 @@ import { get } from 'services/local-storage';
 import { useTranslation } from 'react-i18next';
 import CourseTypeDefinition from './course-types-definition';
 import SupplierAccount from './supplier-account';
+import ItemsDefinitions from '../../inventory/items-definitions';
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -80,6 +81,7 @@ function StaticSettings() {
         <CRVNav.CRItem eventKey="18">{t('appointmentType')}</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="19">{t('courseType')}</CRVNav.CRItem>
         <CRVNav.CRItem eventKey="20">{t('supplierAccount')}</CRVNav.CRItem>
+        <CRVNav.CRItem eventKey="21">{t('itemDefinition')}</CRVNav.CRItem>
       </CRVNav>
       <TabContainer>
         {(() => {
@@ -124,8 +126,10 @@ function StaticSettings() {
               return <AppointmentTypeDefinition />;
             case '19':
               return <CourseTypeDefinition />;
-            default:
+            case '20':
               return <SupplierAccount />;
+            default:
+              return <ItemsDefinitions />;
           }
         })()}
       </TabContainer>

@@ -56,6 +56,7 @@ function Root() {
     reportPrintoutName = t('reportsPrintout'),
     permissionsName = t('permissions'),
     coursesName = t('courses'),
+    inventory = t('inventory'),
     supplierAccount = t('supplierAccount');
   const items = [
     {
@@ -118,6 +119,11 @@ function Root() {
     {
       to: '/supplier-account',
       name: supplierAccount,
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
+      to: '/inventory',
+      name: inventory,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {

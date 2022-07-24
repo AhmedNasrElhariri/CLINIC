@@ -6,6 +6,7 @@ import ListItemsDefinitions from '../list-items-definitions/index';
 import NewItem from '../new-item';
 import { useInventory } from 'hooks';
 import { useTranslation } from 'react-i18next';
+
 const ItemsDefinitions = () => {
   const { items } = useInventory();
   const { t } = useTranslation();

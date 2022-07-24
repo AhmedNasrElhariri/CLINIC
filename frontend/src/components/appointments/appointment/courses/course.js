@@ -69,7 +69,7 @@ const CourseData = ({
         )}
         {(course.type === 'Perunit' || course.type === 'Custom') && (
           <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
-            {t('addUnits')}
+            {t('consumeUnits')}
           </CRButton>
         )}
         {(course.type === 'Perunit' || course.type === 'Custom') && (
