@@ -79,7 +79,6 @@ const dataURIToBlob = dataURI => {
   const mimeString = splitDataURI[0].split(':')[1].split(';')[0];
   const ia = new Uint8Array(byteString.length);
   for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-  console.log(ia, 'ia', mimeString, 'mimeString');
   return new Blob([ia], { type: mimeString });
 };
 const LabFormInput = ({ value, onChange }) => {

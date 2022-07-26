@@ -1349,6 +1349,7 @@ type Expense {
 }
 type ExpenseData {
   expenses: [Expense!]
+  allExpenses: [Expense!]
   totalExpenses: Float
   expensesCount: Int
 }
@@ -1393,6 +1394,7 @@ type Revenue {
 
 type RevenueData {
   revenues: [Revenue!]
+  allRevenues: [Revenue!]
   totalRevenues: Float
   revenuesCount: Int
 }
@@ -1414,6 +1416,7 @@ type BankRevenue {
 }
 type BankRevenueData {
   bankRevenues: [BankRevenue!]
+  allBankRevenues: [BankRevenue!]
   totalRevenues: Float
   revenuesCount: Int
 }
@@ -1448,6 +1451,7 @@ type BankExpense {
 }
 type BankExpenseData {
   bankExpenses: [BankExpense!]
+  allBankExpenses: [BankExpense!]
   totalExpenses: Float!
   expensesCount: Int!
 }

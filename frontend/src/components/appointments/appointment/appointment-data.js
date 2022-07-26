@@ -194,7 +194,7 @@ function AppointmentData({
     return labsDefinition.filter(l => l.category.id === categoryId);
   }, [labsDefinition, categoryId]);
 
-  console.log(labsDefinition, 'labsDefinition');
+
   const handleLabsChange = useCallback(
     labIds => {
       const cateLabs = labsDefinition.map(l => l.id);

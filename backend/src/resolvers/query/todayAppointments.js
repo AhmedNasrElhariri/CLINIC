@@ -23,7 +23,6 @@ const todayAppointments = async (_, __, { user, organizationId }) => {
     from = moment(DAY).startOf('day').toDate();
     to = moment(DAY).endOf('day').toDate();
   }
-  console.log(from,to,'FFFFFFFFF');
   const appointments = await prisma.appointment.findMany({
     where: {
       OR: [

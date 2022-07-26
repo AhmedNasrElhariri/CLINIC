@@ -43,7 +43,7 @@ export const tomorrowAppointmentsReminder = async () => {
       })
       .then(message => console.log(message))
       .catch(err => {
-        console.log(err, 'EEEEEEEEEEEE');
+        
       });
   });
 };

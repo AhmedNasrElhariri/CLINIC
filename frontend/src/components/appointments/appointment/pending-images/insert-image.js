@@ -14,7 +14,6 @@ const InsertImageResult = ({ visible, onClose, onCreate, id, images }) => {
       documents: [],
     },
   });
-  console.log(formValue,'FFF');
   useEffect(() => {
     updateProp('id', id);
   }, [id, updateProp]);

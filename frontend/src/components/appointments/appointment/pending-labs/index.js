@@ -13,7 +13,6 @@ const PendingLabs = ({ patient }) => {
     patientId: patient.id,
     onInsert: close,
   });
-  console.log(pendingLabs,'pendingLabs');
   const handleClickEdit = useCallback(
     data => {
       setSelectedLab(data);

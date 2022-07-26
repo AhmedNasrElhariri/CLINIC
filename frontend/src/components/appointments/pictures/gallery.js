@@ -6,7 +6,6 @@ import ListImagesThumbnails from './list-pictures-thumbnails';
 
 const AppointmentGallery = ({ pictures, onDelete }) => {
   const [galleryVisibility, setGalleryVisibility] = useState(false);
-  console.log(pictures, 'pictures');
   const ref = useRef();
 
   useEffect(() => {

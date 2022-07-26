@@ -47,6 +47,13 @@ export const LIST_EXPENSES = gql`
           name
         }
       }
+      allExpenses {
+        id
+        name
+        amount
+        expenseType
+        date
+      }
       totalExpenses
       expensesCount
     }
@@ -99,6 +106,12 @@ export const LIST_REVENUES = gql`
           id
           name
         }
+      }
+      allRevenues {
+        id
+        name
+        amount
+        date
       }
       totalRevenues
       revenuesCount
@@ -160,6 +173,12 @@ export const LIST_BANK_REVENUES = gql`
           name
         }
       }
+      allBankRevenues {
+        id
+        name
+        amount
+        date
+      }
       totalRevenues
       revenuesCount
     }
@@ -218,6 +237,12 @@ export const LIST_BANK_EXPENSES = gql`
           id
           name
         }
+      }
+      allBankExpenses {
+        id
+        name
+        amount
+        date
       }
       totalExpenses
       expensesCount

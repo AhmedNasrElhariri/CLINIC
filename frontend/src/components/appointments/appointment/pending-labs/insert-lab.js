@@ -16,7 +16,6 @@ const InsertLabResult = ({ visible, onClose, onCreate, id, labs }) => {
       documents: [],
     },
   });
-  console.log(formValue, 'FVVV');
   useEffect(() => {
     updateProp('id', id);
   }, [id, updateProp]);

@@ -41,7 +41,7 @@ const bankExpenses = async (
     false
   );
 
-  const bankExpenses = await prisma.bankExpense.findMany({
+  const allBankExpenses = await prisma.bankExpense.findMany({
     where: {
       organizationId,
       AND: [
@@ -154,8 +154,11 @@ const bankExpenses = async (
   });
   const sum = totalExpenses.sum.amount;
   const count = totalExpenses.count.id;
+  const TO = offset + limit;
+
   const data = {
-    bankExpenses: bankExpenses,
+    bankExpenses: allBankExpenses.slice(offset, TO),
+    allBankExpenses: allBankExpenses,
     totalExpenses: sum,
     expensesCount: count,
   };

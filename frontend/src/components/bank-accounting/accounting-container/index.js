@@ -103,6 +103,8 @@ const BankAccountingContainer = () => {
   const {
     revenues,
     expenses,
+    allRevenues,
+    allExpenses,
     totalRevenues,
     totalExpenses,
     RevenuesCount,
@@ -247,7 +249,12 @@ const BankAccountingContainer = () => {
                 </CRButton>
               </Can>
               <PdfView
-                data={{ revenues, expenses, totalRevenues, totalExpenses }}
+                data={{
+                  revenues: allRevenues,
+                  expenses: allExpenses,
+                  totalRevenues,
+                  totalExpenses,
+                }}
                 period={timeFrame}
                 marginTop={marginTop}
                 marginRight={marginRight}

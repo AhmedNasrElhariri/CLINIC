@@ -84,10 +84,11 @@ const useAccounting = ({
   });
   const revenuesData = revenueData?.bankRevenues;
   const revenues = R.propOr([], 'bankRevenues')(revenuesData);
+  const allRevenues = R.propOr([], 'allBankRevenues')(revenuesData);
 
   const expensesData = expenseData?.bankExpenses;
   const expenses = R.propOr([], 'bankExpenses')(expensesData);
-
+  const allExpenses = R.propOr([], 'allBankExpenses')(expensesData);
   // const allExpenses = useMemo(
   //   () => R.propOr([], 'bankExpenses')(expenseData),
   //   [expenseData]
@@ -194,6 +195,8 @@ const useAccounting = ({
     () => ({
       revenues,
       expenses,
+      allRevenues,
+      allExpenses,
       totalRevenues,
       RevenuesCount,
       totalExpenses,
@@ -210,6 +213,8 @@ const useAccounting = ({
     [
       revenues,
       expenses,
+      allRevenues,
+      allExpenses,
       timeFrame,
       totalRevenues,
       RevenuesCount,

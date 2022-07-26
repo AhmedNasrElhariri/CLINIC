@@ -3,7 +3,6 @@ import * as R from 'ramda';
 import { Div, CRDivider } from 'components';
 import { formatDate } from 'utils/date';
 const SessionsPulses = ({ summary }) => {
-  console.log(summary, 'SS');
   const sessions = summary.map(s => {
     return {
       date: R.propOr(new Date(), 'date')(s),
@@ -12,7 +11,6 @@ const SessionsPulses = ({ summary }) => {
       sessionsPulses: R.propOr([], 'sessionsPulses')(s),
     };
   });
-  console.log(sessions, 'SSesions');
   return (
     <>
       <Div ml={20}>

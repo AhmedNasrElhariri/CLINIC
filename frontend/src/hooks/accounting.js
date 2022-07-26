@@ -66,9 +66,11 @@ const useAccounting = ({
   // );
   const revenuesData = revenueData?.revenues;
   const revenues = R.propOr([], 'revenues')(revenuesData);
+  const allRevenues = R.propOr([], 'allRevenues')(revenuesData);
 
   const expensesData = expenseData?.expenses;
   const expenses = R.propOr([], 'expenses')(expensesData);
+  const allExpenses = R.propOr([], 'allExpenses')(expensesData);
 
   // const expenses = useMemo(
   //   () => filterAccountingList(allExpenses, view, period),
@@ -148,6 +150,8 @@ const useAccounting = ({
     () => ({
       expenses,
       revenues,
+      allRevenues,
+      allExpenses,
       totalExpenses,
       totalRevenues,
       RevenuesCount,
@@ -165,6 +169,8 @@ const useAccounting = ({
     [
       expenses,
       revenues,
+      allRevenues,
+      allExpenses,
       timeFrame,
       totalExpenses,
       totalRevenues,
