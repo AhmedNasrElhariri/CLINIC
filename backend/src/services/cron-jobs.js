@@ -3,6 +3,7 @@ import moment from 'moment';
 import { PrismaClient } from '@prisma/client';
 import { formatDateFull } from './date.service';
 import { accountSidTwilio, authTokenTwilio } from '@/utils/constants';
+import axios from 'axios';
 
 const client = require('twilio')(accountSidTwilio, authTokenTwilio);
 
@@ -15,7 +16,7 @@ export const tomorrowAppointmentsReminder = async (
   // const config = await prisma.configuration.findUnique({
   //   where: { organizationId: organizationId },
   // });
-  console.log(organizationId,'OOOOOO');
+  console.log(organizationId, 'OOOOOO');
   const day = moment(new Date()).add(1, 'days').toDate();
   const from = moment(day).startOf('day').toDate();
   const to = moment(day).endOf('day').toDate();
@@ -51,25 +52,39 @@ export const tomorrowAppointmentsReminder = async (
   });
 };
 export const createAppointmentMessage = async appointment => {
+  console.log('SSSSSSSSSSSSend');
   const { date, patientId } = appointment;
   const patient = await prisma.patient.findUnique({
     where: {
       id: patientId,
     },
   });
-  const receiverPhoneNo = '+2' + patient.phoneNo;
+  const receiverPhoneNo = '2' + patient.phoneNo;
   const updatedDate = formatDateFull(date);
   const originalMessage = 'You have Appointment at ' + updatedDate;
-  client.messages
-    .create({
-      messagingServiceSid: 'MG93cfd5400b8563cefc681cb68ee935b3',
-      body: originalMessage,
-      to: receiverPhoneNo, // add 'whatsapp:+...'
-    })
-    .then(message => console.log(message))
-    .catch(err => {
-      console.log(err, 'EEEEEEEEEEEE');
-    });
+  const YourSenderID = 'seem';
+  const YourPassword = "77JKaw\\CpJZY]}8y";
+  const YourUserName = 'seem';
+  console.log(YourPassword);
+
+  const URL = `http://www.mysmslogin.com/sendsms.aspx?u=${YourUserName.valueOf()}&p=${YourPassword.valueOf()}&sndr=${YourSenderID.valueOf()}&to=${receiverPhoneNo.valueOf()}&msg=${originalMessage.valueOf()}`;
+
+  // client.messages
+  //   .create({
+  //     messagingServiceSid: 'MG93cfd5400b8563cefc681cb68ee935b3',
+  //     body: originalMessage,
+  //     to: receiverPhoneNo, // add 'whatsapp:+...'
+  //   })
+  //   .then(message => console.log(message))
+  //   .catch(err => {
+  //     console.log(err, 'EEEEEEEEEEEE');
+  //   });
+  axios({
+    method: 'get',
+    url: URL,
+  })
+    .then(res => console.log(res, 'rrrrrrrrSSSSS'))
+    .catch(err => console.log(err, 'ERR'));
 };
 
 export const before3daysSurgeriesReminder = async () => {

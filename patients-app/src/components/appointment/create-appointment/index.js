@@ -98,6 +98,7 @@ const CreateAppointment = () => {
       sessionId,
       duration,
       reference,
+      sendSMS: true,
     });
   }, [createAppointment, formValue]);
   return (
