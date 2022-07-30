@@ -5,6 +5,7 @@ import {
   REGISTER,
   LOGIN,
   FORGET_PATIENT_PASSWORD,
+  SEND_OTP,
 } from "../apollo-client/queries";
 import { useNavigate } from "react-router-dom";
 import * as ls from "../services/local-storage";
@@ -12,7 +13,12 @@ import { useAuth } from "./index";
 import { ACCESS_TOKEN } from "../services/local-storage";
 import { useTranslation } from "react-i18next";
 
-const PatientRegistrations = ({ onLoginSucceeded, organizationId }) => {
+const PatientRegistrations = ({
+  onLoginSucceeded,
+  organizationId,
+  setOtp,
+  setShow,
+}) => {
   const history = useNavigate();
   const { t } = useTranslation();
   const { setAuthenticated } = useAuth({});
@@ -78,6 +84,25 @@ const PatientRegistrations = ({ onLoginSucceeded, organizationId }) => {
     window.location.reload();
   }, [setAuthenticated]);
 
+  const [sendOtp] = useMutation(SEND_OTP, {
+    onCompleted(data) {
+      toaster.push(
+        <Message showIcon type="success" header="Success">
+          Code Sent
+        </Message>
+      );
+      setOtp(data.sendOtp);
+      setShow(true);
+    },
+    onError(err) {
+      toaster.push(
+        <Message showIcon type="error" header="Error">
+          {err.message}
+        </Message>
+      );
+    },
+  });
+
   return useMemo(
     () => ({
       register,
@@ -87,6 +112,7 @@ const PatientRegistrations = ({ onLoginSucceeded, organizationId }) => {
       registerLoading,
       loginLoading,
       forgetPasswordLoading,
+      sendOtp,
     }),
     [
       register,
@@ -96,6 +122,7 @@ const PatientRegistrations = ({ onLoginSucceeded, organizationId }) => {
       registerLoading,
       loginLoading,
       forgetPasswordLoading,
+      sendOtp,
     ]
   );
 };

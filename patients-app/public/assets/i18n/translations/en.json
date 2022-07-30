@@ -45,5 +45,6 @@
   "AGE_ERROR": "Age should be between 1 and 100 years old",
   "NAME_ERROR": "Name is required",
   "SEX_ERROR": "Sex is required",
-  "PASSWORD_ERROR": "Passord is required"
+  "PASSWORD_ERROR": "Passord is required",
+  "SEND_CODE_AGAIN":"Send The Code Again"
 }

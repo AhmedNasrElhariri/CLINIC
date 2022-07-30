@@ -83,7 +83,7 @@ const Login = ({
                 <Button
                   appearance="link"
                   onClick={() => {
-                    history("/forget-password");
+                    history(`/forget-password/${organizationId}`);
                   }}
                 >
                   {t("FORGET_PASSWORD")}

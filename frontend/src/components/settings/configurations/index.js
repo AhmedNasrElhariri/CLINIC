@@ -72,7 +72,6 @@ const Configurations = () => {
       orgName: orgName || '',
       orgPhoneNo: orgPhoneNo || '',
     };
-    console.log(newFormValue, 'newFormValue');
     updateSMSConf({
       variables: {
         smsConfig: newFormValue,

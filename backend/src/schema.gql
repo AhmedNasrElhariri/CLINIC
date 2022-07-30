@@ -595,6 +595,7 @@ type Mutation {
   registerPatient(input: RegisterPatientInput!): Patient!
   loginPatient(input: LoginPatientInput!): AuthPatientPayload!
   forgetPatientPassword(input: ForgetPatientPasswordInput!): Patient!
+  sendOtp(phoneNo: String!): Int
 }
 
 ########################### Auth ##################################

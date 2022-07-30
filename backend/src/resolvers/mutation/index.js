@@ -129,3 +129,4 @@ export { default as addSupplierInvoice } from './add-supplier-invoice';
 export { default as editInvoice } from './edit-invoice';
 export { default as editInvoiceTransaction } from './edit-invoice-transaction';
 export { default as updateSMSConf } from './update-sms-config';
+export { default as sendOtp } from './send-otp';

@@ -133,10 +133,9 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       }
     ),
   });
-  console.log(sendSMS,'sendSMSsendSMS');
-  if (sendSMS) {
-    createAppointmentMessage(createdAppointment);
-  }
+  // if (sendSMS) {
+  //   createAppointmentMessage(createdAppointment);
+  // }
   if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {
     onAppointmentCreate({
       userId,

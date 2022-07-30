@@ -28,3 +28,9 @@ export const FORGET_PATIENT_PASSWORD = gql`
     }
   }
 `;
+
+export const SEND_OTP = gql`
+  mutation sendOtp($phoneNo: String!) {
+    sendOtp(phoneNo: $phoneNo) 
+  }
+`;

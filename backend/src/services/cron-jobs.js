@@ -52,7 +52,6 @@ export const tomorrowAppointmentsReminder = async (
   });
 };
 export const createAppointmentMessage = async appointment => {
-  console.log('SSSSSSSSSSSSend');
   const { date, patientId } = appointment;
   const patient = await prisma.patient.findUnique({
     where: {
@@ -65,7 +64,6 @@ export const createAppointmentMessage = async appointment => {
   const YourSenderID = 'seem';
   const YourPassword = "77JKaw\\CpJZY]}8y";
   const YourUserName = 'seem';
-  console.log(YourPassword);
 
   const URL = `http://www.mysmslogin.com/sendsms.aspx?u=${YourUserName.valueOf()}&p=${YourPassword.valueOf()}&sndr=${YourSenderID.valueOf()}&to=${receiverPhoneNo.valueOf()}&msg=${originalMessage.valueOf()}`;
 

@@ -45,5 +45,6 @@
   "AGE_ERROR": "السن يجب ان يكون من 1-100",
   "NAME_ERROR": "الاسم *",
   "SEX_ERROR": "النوع *",
-  "PASSWORD_ERROR": "كلمه السر *"
+  "PASSWORD_ERROR": "كلمه السر *",
+  "SEND_CODE_AGAIN": "اعاده ارسال الكود"
 }
