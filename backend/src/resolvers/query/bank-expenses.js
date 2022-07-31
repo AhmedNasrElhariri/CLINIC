@@ -93,8 +93,6 @@ const bankExpenses = async (
       specialty: true,
       doctor: true,
     },
-    skip: offset,
-    take: limit,
     orderBy: {
       date: 'asc',
     },

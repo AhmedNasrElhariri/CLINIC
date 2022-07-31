@@ -378,6 +378,14 @@ export const UPDATE_BUSINESS_NOTES = gql`
   }
 `;
 
+export const DELETE_APPOINTMENT_PHOTO = gql`
+  mutation deleteAppointmentPhoto($id: ID!) {
+    deleteAppointmentPhoto(id: $id){
+      id
+    }
+  }
+`;
+
 export const GET_APPOINTMENT_HISTORY = gql`
   query ($appointmentId: ID, $patientId: ID) {
     appointmentHistory(appointmentId: $appointmentId, patientId: $patientId) {

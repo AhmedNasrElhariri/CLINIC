@@ -100,8 +100,6 @@ const bankRevenues = async (
       doctor: true,
       patient: true,
     },
-    skip: offset,
-    take: limit,
     orderBy: {
       date: 'asc',
     },

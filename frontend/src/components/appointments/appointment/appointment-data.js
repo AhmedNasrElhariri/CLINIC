@@ -167,6 +167,7 @@ function AppointmentData({
   }, [sessionsDefinition]);
   const handlePicturesChange = useCallback(
     pictures => {
+      console.log(pictures,'PP');
       onChange({
         ...appointmentFormValue,
         pictures,
@@ -193,7 +194,6 @@ function AppointmentData({
   const customLabDefinitions = useMemo(() => {
     return labsDefinition.filter(l => l.category.id === categoryId);
   }, [labsDefinition, categoryId]);
-
 
   const handleLabsChange = useCallback(
     labIds => {

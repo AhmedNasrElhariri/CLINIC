@@ -18,6 +18,7 @@ import {
   ADJUST_APPOINTMENT,
   CANCEL_APPOINTMENT,
   GET_INVOICE_COUNTER,
+  DELETE_APPOINTMENT_PHOTO,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
@@ -43,6 +44,7 @@ function useAppointments({
   userId,
   action,
   patientId,
+  onDeletePhoto,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -196,12 +198,25 @@ function useAppointments({
     ],
   });
 
+  const [deleteAppointmentPhoto] = useMutation(DELETE_APPOINTMENT_PHOTO, {
+    onCompleted: () => {
+      Alert.success('Appointment Photo has been Deleted successfully');
+      onDeletePhoto && onDeletePhoto();
+    },
+    refetchQueries: [
+      {
+        query: LIST_APPOINTMENTS,
+      },
+    ],
+  });
+
   return useMemo(
     () => ({
       appointments,
       todayAppointments,
       filterBranches,
       appointmentsCount,
+      deleteAppointmentPhoto,
       refetchAppointments: {
         query: LIST_APPOINTMENTS,
       },
@@ -221,6 +236,7 @@ function useAppointments({
       appointmentsCount,
       todayAppointments,
       specialties,
+      deleteAppointmentPhoto,
       appointmentsCountNumber,
       doctors,
       filterBranches,

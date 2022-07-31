@@ -135,3 +135,4 @@ export { default as changeLanguage } from './change-language';
 export { default as deleteLabPhoto } from './delete-lab-photo';
 export { default as updateSMSConf } from './update-sms-config';
 export { default as sendOtp } from './send-otp';
+export { default as deleteAppointmentPhoto } from './delete-appointment-photo';
