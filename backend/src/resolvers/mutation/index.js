@@ -133,3 +133,5 @@ export { default as editInvoiceSupplier } from './edit-invoice-supplier';
 export { default as editPayrollTransaction } from './edit-payroll-transaction';
 export { default as changeLanguage } from './change-language';
 export { default as deleteLabPhoto } from './delete-lab-photo';
+export { default as updateSMSConf } from './update-sms-config';
+export { default as sendOtp } from './send-otp';

@@ -5,12 +5,16 @@ import { Form } from 'rsuite';
 import { H3, Div, CRButton, CRNumberInput, CRSelectInput } from 'components';
 import PageSetup from './page-setup';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
+import EnableSMS from './enable-sms';
 import { useConfigurations } from 'hooks';
 import { useTranslation } from 'react-i18next';
 
 
 const initialValues = {
   enableInvoiceCounter: false,
+  enableSMS: false,
+  orgName: '',
+  orgPhoneNo: '',
 };
 const initialPulsesValue = {
   before: 0,
@@ -43,14 +47,15 @@ const Configurations = () => {
     pageSetupData,
     editPoints,
     points,
+    updateSMSConf,
   } = useConfigurations();
   useEffect(() => {
-    const enableInvoiceCounter = R.propOr(
-      false,
-      'enableInvoiceCounter'
-    )(configurations);
+    // const enableInvoiceCounter = R.propOr(
+    //   false,
+    //   'enableInvoiceCounter'
+    // )(configurations);
     setFormValue({
-      enableInvoiceCounter,
+      ...configurations,
     });
     const before = R.propOr(0, 'before')(getPulseControl);
     const after = R.propOr(0, 'after')(getPulseControl);
@@ -62,6 +67,20 @@ const Configurations = () => {
   const handleSave = useCallback(() => {
     update(formValue);
   }, [formValue, update]);
+
+  const handleSaveSMS = useCallback(() => {
+    const { enableSMS, orgName, orgPhoneNo } = formValue;
+    const newFormValue = {
+      enableSMS: enableSMS || false,
+      orgName: orgName || '',
+      orgPhoneNo: orgPhoneNo || '',
+    };
+    updateSMSConf({
+      variables: {
+        smsConfig: newFormValue,
+      },
+    });
+  }, [formValue, updateSMSConf]);
 
   useEffect(() => {
     const { type } = pageSetup;
@@ -122,6 +141,17 @@ const Configurations = () => {
         value={formValue?.enableInvoiceCounter}
       />
       
+      <hr></hr>
+      <Div display="flex" justifyContent="space-between">
+        <H3 mb={64}>SMS Configuration</H3>
+        <Div>
+          <CRButton onClick={handleSaveSMS} variant="primary">
+            Save
+          </CRButton>
+        </Div>
+      </Div>
+      <EnableSMS onChange={setFormValue} formValue={formValue} />
+
       <>
         <hr></hr>
         <Div display="flex" justifyContent="space-between">

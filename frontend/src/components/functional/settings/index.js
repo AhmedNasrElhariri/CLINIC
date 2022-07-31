@@ -45,11 +45,11 @@ export default function Settings({ onClose, ...props }) {
       icon: '/icons/snippets.png',
       path: '/snippets',
     },
-    // {
-    //   name: t('inventory'),
-    //   icon: '/icons/static.png',
-    //   path: '/inventory',
-    // },
+    {
+      name: t('permissions'),
+      icon: '/icons/static.png',
+      path: '/permissions',
+    },
     {
       name: t('logout'),
       icon: '/icons/logout.png',

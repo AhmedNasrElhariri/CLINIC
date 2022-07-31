@@ -7,7 +7,7 @@ import ListImagesThumbnails from './list-pictures-thumbnails';
 const AppointmentGallery = ({ pictures, onDelete }) => {
   const [galleryVisibility, setGalleryVisibility] = useState(false);
   const ref = useRef();
-
+  console.log(pictures,'pictures');
   useEffect(() => {
     if (ref.current) {
       ref.current.fullScreen();

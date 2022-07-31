@@ -540,6 +540,7 @@ type Mutation {
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
   deleteRoleToUser(userId: ID!, roleId: ID!): Boolean
   updateConfiguration(configuration: ConfigurationInput): Configuration!
+  updateSMSConf(smsConfig: SMSConfigurationInput): SMSConfig!
   addAppointmentTypeDefinition(
     appointmentTypeDefinition: AppointmentTypeInputDefinition!
   ): AppointmentTypeDefinition
@@ -620,6 +621,7 @@ type Mutation {
   registerPatient(input: RegisterPatientInput!): Patient!
   loginPatient(input: LoginPatientInput!): AuthPatientPayload!
   forgetPatientPassword(input: ForgetPatientPasswordInput!): Patient!
+  sendOtp(phoneNo: String!): Int
 }
 
 ########################### Auth ##################################
@@ -751,12 +753,29 @@ input UserInput {
 
 type Configuration {
   id: ID!
-  enableInvoiceCounter: Boolean!
+  enableInvoiceCounter: Boolean
+  enableSMS: Boolean
+  orgName: String
+  orgPhoneNo: String
 }
 
 input ConfigurationInput {
   id: ID
   enableInvoiceCounter: Boolean!
+}
+
+type SMSConfig {
+  id: ID!
+  enableSMS: Boolean!
+  orgName: String
+  orgPhoneNo: String
+}
+
+input SMSConfigurationInput {
+  id: ID
+  enableSMS: Boolean!
+  orgName: String
+  orgPhoneNo: String
 }
 
 ########################### Search ##################################
@@ -956,6 +975,7 @@ input AppointmentInput {
   notes: String
   courseId: ID
   waiting: Boolean
+  sendSMS: Boolean
 }
 
 input AppointmentPictureInput {

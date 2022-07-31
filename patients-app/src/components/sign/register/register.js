@@ -73,7 +73,10 @@ const Register = ({
                     />
                     {showTwo && checkResult["age"].hasError && (
                       <div className={"rs-form-control-wrapper"}>
-                        <Form.ErrorMessage show={showTwo} placement="bottomStart">
+                        <Form.ErrorMessage
+                          show={showTwo}
+                          placement="bottomStart"
+                        >
                           {checkResult["age"].errorMessage}
                         </Form.ErrorMessage>
                       </div>
@@ -97,9 +100,9 @@ const Register = ({
                   <Button
                     appearance="primary"
                     onClick={sendOtp}
-                    style={{ margin: "0px 10px" }}
+                    style={{ margin: "0px 10px", width: "140px" }}
                   >
-                    {t("NEXT")}
+                    {show ? t("SEND_CODE_AGAIN") : t("NEXT")}
                   </Button>
                 )}
               </div>

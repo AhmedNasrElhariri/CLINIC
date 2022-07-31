@@ -23,6 +23,7 @@ const { StringType, NumberType } = Schema.Types;
 
 const RegisterPage = ({}) => {
   const { organizationId } = useParams();
+  const [otp, setOtp] = useState(0);
   const { t } = useTranslation();
   const model = Schema.Model({
     phoneNo: StringType().isRequired(t("PHONE_NO_ERROR")),
@@ -31,7 +32,7 @@ const RegisterPage = ({}) => {
     sex: StringType().isRequired(t("SEX_ERROR")),
     password: StringType().isRequired(t("PASSWORD_ERROR")),
   });
-  const [show, setshow] = useState(false);
+  const [show, setShow] = useState(false);
   const [final, setfinal] = useState("");
   const [confirm, setConfirm] = useState(false);
   const {
@@ -45,46 +46,23 @@ const RegisterPage = ({}) => {
     initValue: initialFormValue,
     model,
   });
+
   const auth = getAuth(app);
   const history = useNavigate();
-  const { register, registerLoading } = patientRegistrations({
+  const { register, registerLoading, sendOtp } = patientRegistrations({
     organizationId,
+    setOtp,
+    setShow,
   });
-  const configureCaptcha = () => {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: (response) => {},
-        defaultCountry: "IN",
-      },
-      auth
-    );
-  };
-  const sendOtp = () => {
+  
+  const sendOtpProcess = useCallback(() => {
     const { phoneNo } = formValue;
     if (phoneNo === "" || phoneNo.length < 10) return;
-    const newPhoneNo = "+2" + phoneNo;
-    configureCaptcha();
-    const appVerifier = window.recaptchaVerifier;
-    signInWithPhoneNumber(auth, newPhoneNo, appVerifier)
-      .then((result) => {
-        setfinal(result);
-        toaster.push(
-          <Message showIcon type="success" header="Success">
-            {t("CODE_SENT")}
-          </Message>
-        );
-        setshow(true);
-      })
-      .catch((err) => {
-        toaster.push(
-          <Message showIcon type="error" header="Error">
-            {t("CODE_UNSENT")}
-          </Message>
-        );
-      });
-  };
+    const newPhoneNo = "2" + phoneNo;
+    sendOtp({ variables: { phoneNo: newPhoneNo } });
+  }, [sendOtp, formValue]);
+
+
   const codeLength = useMemo(() => {
     const { code } = formValue;
     return code.length;
@@ -92,25 +70,22 @@ const RegisterPage = ({}) => {
   useEffect(() => {
     if (codeLength === 6) {
       const { code } = formValue;
-      if (code === null || final === null) return;
-      final
-        .confirm(code)
-        .then((result) => {
-          toaster.push(
-            <Message showIcon type="success" header="Success">
-              {t("PHONE_NO_VERIFY_MESSAGE")}
-            </Message>
-          );
-          setConfirm(true);
-          setshow(false);
-        })
-        .catch((err) => {
-          toaster.push(
-            <Message showIcon type="error" header="Error">
-              {t("FAIL")}
-            </Message>
-          );
-        });
+      if (code === null || otp === 0) return;
+      if (code == otp) {
+        toaster.push(
+          <Message showIcon type="success" header="Success">
+            {t("PHONE_NO_VERIFY_MESSAGE")}
+          </Message>
+        );
+        setConfirm(true);
+        setShow(false);
+      } else {
+        toaster.push(
+          <Message showIcon type="error" header="Error">
+            {t("FAIL")}
+          </Message>
+        );
+      }
     }
   }, [codeLength]);
   const signUp = useCallback(() => {
@@ -126,7 +101,7 @@ const RegisterPage = ({}) => {
       <Register
         formValue={formValue}
         onChange={setFormValue}
-        sendOtp={sendOtp}
+        sendOtp={sendOtpProcess}
         show={show}
         confirm={confirm}
         signUp={signUp}

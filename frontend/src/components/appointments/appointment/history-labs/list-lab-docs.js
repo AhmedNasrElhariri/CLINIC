@@ -59,6 +59,7 @@ function ListLabDocs({ labs, labId, onDelete }) {
     );
     return files;
   }, [documents]);
+  console.log(labs,'labs');
   return (
     <>
       <CRCard borderless>

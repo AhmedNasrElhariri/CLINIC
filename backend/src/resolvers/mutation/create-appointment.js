@@ -9,6 +9,7 @@ import {
   APPOINTMENTS_TYPES,
   MAX_NUMBERAPPS,
 } from '@/utils/constants';
+import { createAppointmentMessage } from '@/services/cron-jobs';
 
 const getDayAppointments = (day, userId) => {
   const start = getStartOfDay(day);
@@ -41,6 +42,8 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
     waiting,
     courseId,
     sessionId,
+    reference,
+    sendSMS,
     ...rest
   } = appointment;
   const creatorId = creator ? creator : userId;
@@ -71,16 +74,17 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       status: APPOINTMENTS_STATUS.SCHEDULED,
     },
   });
-  if (numOfAppsOfThePatient >= MAX_NUMBERAPPS) {
-    throw new APIExceptcion(
-      'You have been reached the max number of Appointments'
-    );
-  }
+  // if (numOfAppsOfThePatient >= MAX_NUMBERAPPS && reference === 'Online') {
+  //   throw new APIExceptcion(
+  //     'You have been reached the max number of Appointments'
+  //   );
+  // }
   const createdAppointment = await prisma.appointment.create({
     data: Object.assign(
       {
         ...rest,
         status: appointmentType,
+        reference: reference,
         patient: {
           connect: {
             id: patientId,
@@ -129,11 +133,9 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       }
     ),
   });
-  const PATIENT = await prisma.patient.findUnique({
-    where: {
-      id: patientId,
-    },
-  });
+  // if (sendSMS) {
+  //   createAppointmentMessage(createdAppointment);
+  // }
   if (appointment.type !== APPOINTMENTS_TYPES.Surgery) {
     onAppointmentCreate({
       userId,

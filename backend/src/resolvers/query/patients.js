@@ -6,9 +6,9 @@ const patients = async (
   { offset, limit, name, phoneNo, area },
   { organizationId }
 ) => {
-  const theArea = areas.find(
-    a => a.city_name_ar === area || a.city_name_en === area
-  );
+  const theArea = area
+    ? areas.find(a => a.city_name_ar === area || a.city_name_en === area)
+    : '';
 
   const patientsCount = await prisma.patient.count({
     where: Object.assign(

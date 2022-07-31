@@ -36,9 +36,9 @@ const NewPassword = ({
                     <Button
                       appearance="primary"
                       onClick={sendOtp}
-                      style={{ marginLeft: "10px" }}
+                      style={{ marginLeft: "10px", width: "180px" }}
                     >
-                      {t("NEXT")}
+                      {show ? t("SEND_CODE_AGAIN") : t("NEXT")}
                     </Button>
                   )}
                 </div>

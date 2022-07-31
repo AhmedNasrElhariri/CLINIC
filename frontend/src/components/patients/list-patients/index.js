@@ -32,6 +32,7 @@ function Patients() {
     reference: filter.reference,
     area: filter.area,
   });
+console.log(patientsReports,'patientsReports',filter,'FFF');
   const { t } = useTranslation();
   const handleSelect = useCallback(
     eventKey => {

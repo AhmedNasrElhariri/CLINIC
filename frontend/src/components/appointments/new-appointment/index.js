@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import * as moment from 'moment';
+import * as R from 'ramda';
 import { Alert, Form, Checkbox } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
@@ -35,6 +36,7 @@ import {
   useCourses,
   usePatients,
   useSessionDefinition,
+  useConfigurations,
 } from 'hooks';
 
 const appointmentTypes = getCreatableApptTypes().map(type => ({
@@ -52,6 +54,7 @@ const initialValues = {
   date: new Date(),
   time: null,
   waiting: false,
+  sendSMS: false,
 };
 const canAddPatient = formValue =>
   formValue.type === 'Examination' ? true : false;
@@ -64,6 +67,8 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const { t } = useTranslation();
+  const { configurations } = useConfigurations();
+  const enableSMS = R.propOr(false, 'enableSMS')(configurations);
   const {
     formValue,
     setFormValue,
@@ -137,6 +142,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
       specialtyId,
       waiting,
       session,
+      sendSMS,
     } = formValue;
 
     const timeDate = moment(formValue.time);
@@ -166,6 +172,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
       waiting,
       sessionId,
       duration,
+      sendSMS
     });
   }, [createAppointment, formValue]);
   return (
@@ -226,7 +233,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
           <Form fluid formValue={formValue} onChange={setFormValue}>
             <Container>
               <LeftContainer>
-                <CRSelectInput
+                {/* <CRSelectInput
                   label={t('examinationOrFollowup')}
                   name="type"
                   errorMessage={
@@ -236,7 +243,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
                   }
                   block
                   data={appointmentTypes}
-                />
+                /> */}
                 {formValue.type === 'Course' && (
                   <CRSelectInput
                     label="Course"
@@ -315,6 +322,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
                 )}{' '}
               </RightContainer>
             </Container>
+            <Div display="flex" >
             <Checkbox
               name="waiting"
               value={true}
@@ -323,6 +331,17 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
               {' '}
               {t('addToWaitingList')}
             </Checkbox>
+            {enableSMS && (
+              <Checkbox
+                name="sendSMS"
+                value={true}
+                onChange={val => setFormValue({ ...formValue, sendSMS: val })}
+              >
+                {' '}
+                Send SMS
+              </Checkbox>
+            )}
+            </Div>
           </Form>
         </Div>
       </CRModal>

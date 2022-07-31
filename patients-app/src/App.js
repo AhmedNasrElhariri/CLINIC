@@ -49,7 +49,10 @@ function App() {
                     element={<Register />}
                   />
                   <Route path="/login/:organizationId" element={<Login />} />
-                  <Route path="/forget-password" element={<ForgetPassword />} />
+                  <Route
+                    path="/forget-password/:organizationId"
+                    element={<ForgetPassword />}
+                  />
                 </>
               )}
             </Routes>

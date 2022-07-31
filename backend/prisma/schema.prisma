@@ -19,7 +19,6 @@ enum AppointmentType {
 enum CourseType {
   Session
   Perunit
-
 }
 
 enum AnesthesiaType {
@@ -121,6 +120,12 @@ enum UnitOfMeaure {
 enum InventoryOperation {
   Add
   Substract
+}
+
+enum PatientOtpStatus {
+  Pending
+  Used
+  Expired
 }
 
 enum PermissionAction {
@@ -487,7 +492,6 @@ model ViewStatus {
   activeViewId String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
-
 }
 
 model PatientViewStatus {
@@ -530,6 +534,7 @@ model Field {
   updatedAt         DateTime           @default(now()) @updatedAt
 
   PatientField PatientField[]
+
   @@unique([order, fieldGroupId], name: "order_fieldGroupId_unique_constraint")
 }
 
@@ -651,6 +656,9 @@ model Configuration {
   organization         Organization @relation(fields: [organizationId], references: [id])
   organizationId       String
   enableInvoiceCounter Boolean      @default(false)
+  enableSMS            Boolean?     @default(false)
+  orgName              String?
+  orgPhoneNo           String?
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @default(now()) @updatedAt
 
@@ -1315,7 +1323,6 @@ model Sales {
   userId            String?
   salesDefinition   SalesDefinition @relation(fields: [salesDefinitionId], references: [id])
   salesDefinitionId String
-
 }
 
 model CourseDefinition {
@@ -1603,6 +1610,13 @@ model UserSpecialty {
   updatedAt      DateTime     @default(now()) @updatedAt
 
   @@unique([userId, specialtyId, branchId], name: "userId_specialtyId_branchId_unique_constraint")
+}
+
+model PatientOtp {
+  id      String           @id @default(uuid())
+  phoneNo String           @unique
+  otp     Int
+  status  PatientOtpStatus
 }
 
 // end permission

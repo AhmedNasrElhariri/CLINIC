@@ -43,7 +43,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
     onEditAppointments,
     onCancelAppointments,
   } = rest;
-
+  console.log(appointment,'appointment');
   return (
     <Div
       className="link-group"

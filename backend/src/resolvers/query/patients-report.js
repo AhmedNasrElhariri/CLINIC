@@ -13,10 +13,14 @@ const patientsReport = async (
       organizationId,
     },
   });
-  const newPatients = patients.filter(p => p.reference.includes(reference));
-  const patientsArea = patients.filter(
-    p => p.area === theArea.city_name_en || p.area === theArea.city_name_ar
-  );
+  const newPatients = reference
+    ? patients.filter(p => p.reference.includes(reference))
+    : [];
+  const patientsArea = theArea
+    ? patients.filter(
+        p => p.area === theArea.city_name_en || p.area === theArea.city_name_ar
+      )
+    : [];
   const data = {
     patientsAreaCount: patientsArea.length || 0,
     patientsReferenceCount: newPatients.length || 0,

@@ -17,7 +17,7 @@ import { useForm } from 'hooks';
 import usePatients from './patients';
 
 const initialValues = {
-  type: 'Examination',
+  type: 'Session',
   patientId: null,
   branchId: null,
   session: {},

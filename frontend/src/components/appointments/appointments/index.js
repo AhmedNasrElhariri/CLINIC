@@ -231,9 +231,9 @@ function Appointments() {
           }
         >
           <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>{t('mainAppointments')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('waitingAppointments')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('completedAppointments')}</CRTabs.CRTab>
+            <CRTabs.CRTab>{t('mainAppointments')}</CRTabs.CRTab>
+            <CRTabs.CRTab>{t('waitingAppointments')}</CRTabs.CRTab>
+            <CRTabs.CRTab>{t('completedAppointments')}</CRTabs.CRTab>
           </CRTabs.CRTabsGroup>
           <CRTabs.CRContentGroup>
             <CRTabs.CRContent>
@@ -340,6 +340,7 @@ function Appointments() {
           show={visible}
           onCancel={close}
           appointment={appointment}
+          t={t}
         />
       )}
       {popUp === 'cancelAppointment' && (
@@ -348,6 +349,7 @@ function Appointments() {
           show={visible}
           onCancel={close}
           appointment={appointment}
+          t={t}
         />
       )}
     </>

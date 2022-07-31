@@ -41,13 +41,15 @@ function usePatients({
   onCreate,
 } = {}) {
   const { data: patientData } = useQuery(LIST_PATIENTS, {
-    variables: {
-      offset: (page - 1) * 20 || 0,
-      limit: 20,
-      name,
-      phoneNo,
-      area,
-    },
+    variables: Object.assign(
+      {
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+      name && { name: name },
+      phoneNo && { phoneNo: phoneNo },
+      area && { area: area }
+    ),
   });
   const patientsdata = patientData?.patients;
   const patients = useMemo(
@@ -166,7 +168,7 @@ function usePatients({
     },
     onError: () => Alert.error('Invalid Input'),
   });
-
+  
   const { data: patientsReportData } = useQuery(LIST_PATIENTS_REPORT, {
     variables: {
       area,

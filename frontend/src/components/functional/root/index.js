@@ -107,11 +107,6 @@ function Root() {
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
-      to: '/sales',
-      name: salesName,
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
-    {
       to: '/courses',
       name: coursesName,
       icon: <UserIcon width={11.8} height={14.1} />,
@@ -122,15 +117,20 @@ function Root() {
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
+      to: '/sales',
+      name: salesName,
+      icon: <UserIcon width={11.8} height={14.1} />,
+    },
+    {
       to: '/inventory',
       name: inventory,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
-    {
-      to: '/permissions',
-      name: permissionsName,
-      icon: <UserIcon width={11.8} height={14.1} />,
-    },
+    // {
+    //   to: '/permissions',
+    //   name: permissionsName,
+    //   icon: <UserIcon width={11.8} height={14.1} />,
+    // },
   ];
 
   if (!isVerified) {
