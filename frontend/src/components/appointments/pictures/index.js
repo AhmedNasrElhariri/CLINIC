@@ -20,7 +20,6 @@ const AppointmentPictures = ({ formValue, onChange: setFormValue }) => {
   const [galleryVisibility] = useState(false);
   const ref = useRef();
   const { deleteAppointmentPhoto } = useAppointments({ onDeletePhoto: close });
-  console.log(formValue,'formValue');
   useEffect(() => {
     if (ref.current) {
       ref.current.fullScreen();
@@ -73,7 +72,6 @@ const AppointmentPictures = ({ formValue, onChange: setFormValue }) => {
     },
     [open, setPhotoValue, setHeader, photoValue]
   );
-  console.log(photoValue,'photoValue');
   const handleAdd = useCallback(() => {
     if (header === 'Appointment pictures') {
       close();
@@ -83,9 +81,20 @@ const AppointmentPictures = ({ formValue, onChange: setFormValue }) => {
           id: photoValue.imageId,
         },
       });
+      const newFormValue = formValue.filter(
+        ({ id }) => id !== photoValue.imageId
+      );
+      setFormValue(newFormValue);
     }
-  }, [close, header, deleteAppointmentPhoto,photoValue]);
-
+  }, [
+    close,
+    header,
+    deleteAppointmentPhoto,
+    photoValue,
+    setFormValue,
+    formValue,
+  ]);
+ 
   return (
     <Div>
       <Div textAlign="right">

@@ -407,7 +407,7 @@ type Mutation {
   deleteSnippet(id: ID!): Snippet!
   insertLabResult(lab: LabInput!): Lab!
   deleteLabPhoto(id: ID!): File!
-  deleteAppointmentPhoto(id: ID!): File!
+  deleteAppointmentPhoto(id: ID!): ID!
   insertImageResult(image: ImageInput!): Image!
   createMedicineHistory(
     medicineHistory: MedicineHistoryInput!

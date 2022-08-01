@@ -8,7 +8,6 @@ const generateRandomNumber = () => {
 };
 const sendOtp = async (_, { phoneNo }) => {
   const randomOtp = generateRandomNumber();
-  console.log(randomOtp, 'randomOtprandomOtprandomOtp');
   const otpTransaction = await prisma.patientOtp.findMany({
     where: {
       phoneNo: {

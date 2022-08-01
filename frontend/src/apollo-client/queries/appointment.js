@@ -380,9 +380,7 @@ export const UPDATE_BUSINESS_NOTES = gql`
 
 export const DELETE_APPOINTMENT_PHOTO = gql`
   mutation deleteAppointmentPhoto($id: ID!) {
-    deleteAppointmentPhoto(id: $id){
-      id
-    }
+    deleteAppointmentPhoto(id: $id)
   }
 `;
 
