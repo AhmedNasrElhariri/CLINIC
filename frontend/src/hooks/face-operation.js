@@ -58,6 +58,15 @@ function useFaceOperation({
       Alert.success('the Face Operation has been delete Successfully');
       onDelete && onDelete();
     },
+    refetchQueries: [
+      {
+        query: LIST_FACE_OPERATIONS,
+        variables: {
+          facePartationNumber: facePartationNumber,
+          patientId: patientId,
+        },
+      },
+    ],
     onError() {
       Alert.error('Failed to delete The Face Operation');
     },

@@ -16,6 +16,7 @@ const todayAppointments = async (_, __, { user, organizationId }) => {
   const HOUR = DAY.getHours();
   let from = new Date();
   let to = new Date();
+  
   if (HOUR < 3) {
     from = moment(DAY).subtract(1, 'd').startOf('day').toDate();
     to = moment(DAY).endOf('day').toDate();
@@ -23,6 +24,7 @@ const todayAppointments = async (_, __, { user, organizationId }) => {
     from = moment(DAY).startOf('day').toDate();
     to = moment(DAY).endOf('day').toDate();
   }
+  
   const appointments = await prisma.appointment.findMany({
     where: {
       OR: [

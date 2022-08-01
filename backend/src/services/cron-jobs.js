@@ -16,7 +16,7 @@ export const tomorrowAppointmentsReminder = async (
   // const config = await prisma.configuration.findUnique({
   //   where: { organizationId: organizationId },
   // });
-  console.log(organizationId, 'OOOOOO');
+  
   const day = moment(new Date()).add(1, 'days').toDate();
   const from = moment(day).startOf('day').toDate();
   const to = moment(day).endOf('day').toDate();
