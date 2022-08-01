@@ -153,9 +153,9 @@ const bankExpenses = async (
   const sum = totalExpenses.sum.amount;
   const count = totalExpenses.count.id;
   const TO = offset + limit;
-
+  const expenses = allBankExpenses.slice(offset, TO);
   const data = {
-    bankExpenses: allBankExpenses.slice(offset, TO),
+    bankExpenses: expenses,
     allBankExpenses: allBankExpenses,
     totalExpenses: sum,
     expensesCount: count,

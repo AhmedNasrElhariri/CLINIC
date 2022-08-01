@@ -135,6 +135,7 @@ const BankAccountingContainer = () => {
       setFormValue(initValue);
     },
   });
+  console.log(totalRevenues,'ttt');
   const revenuesPages = Math.ceil(RevenuesCount / 20);
   const expensesPages = Math.ceil(expensesCount / 20);
 

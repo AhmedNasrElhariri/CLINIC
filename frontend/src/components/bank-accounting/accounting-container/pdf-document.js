@@ -36,13 +36,13 @@ const PdfTable = ({ data }) => (
   <Table data={data}>
     <TableHeader>
       <TableCell weighting={0.6}>Name</TableCell>
-      <TableCell weighting={0.6}>Bank Name</TableCell>
+      {/* <TableCell weighting={0.6}>Bank Name</TableCell> */}
       <TableCell weighting={0.2}>Amount</TableCell>
       <TableCell weighting={0.2}>Date</TableCell>
     </TableHeader>
     <TableBody>
       <DataTableCell getContent={r => r.name} weighting={0.6} />
-      <DataTableCell getContent={r => r.bank.name} weighting={0.6} />
+      {/* <DataTableCell getContent={r => r.bank.name} weighting={0.6} /> */}
       <DataTableCell getContent={r => r.amount} weighting={0.2} />
       <DataTableCell getContent={r => formatDate(r.date)} weighting={0.2} />
     </TableBody>

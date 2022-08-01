@@ -162,12 +162,14 @@ const bankRevenues = async (
       },
     },
   });
-  const sum = totalRevenues.sum.amount;
+  const sum = totalRevenues.sum.amount ;
   const count = totalRevenues.count.id;
   const TO = offset + limit;
+  const revenues = allBankRevenues.slice(offset, TO);
+  console.log(sum,count,'allBankRevenues');
 
   const data = {
-    bankRevenues: allBankRevenues.slice(offset, TO),
+    bankRevenues: revenues,
     allBankRevenues: allBankRevenues,
     totalRevenues: sum,
     revenuesCount: count,
