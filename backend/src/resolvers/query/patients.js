@@ -14,30 +14,36 @@ const patients = async (
     where: Object.assign(
       {
         organizationId,
-        OR: [
+        AND: [
           {
-            name: {
-              contains: name,
-              mode: 'insensitive',
-            },
+            OR: [
+              {
+                phoneNo: {
+                  contains: phoneNo,
+                },
+              },
+              {
+                phoneNoTwo: {
+                  contains: phoneNo,
+                },
+              },
+            ],
           },
           {
-            code: {
-              contains: name,
-              mode: 'insensitive',
-            },
-          },
-        ],
-        OR: [
-          {
-            phoneNo: {
-              contains: phoneNo,
-            },
-          },
-          {
-            phoneNoTwo: {
-              contains: phoneNo,
-            },
+            OR: [
+              {
+                code: {
+                  contains: name,
+                  mode: 'insensitive',
+                },
+              },
+              {
+                name: {
+                  contains: name,
+                  mode: 'insensitive',
+                },
+              },
+            ],
           },
         ],
       },
