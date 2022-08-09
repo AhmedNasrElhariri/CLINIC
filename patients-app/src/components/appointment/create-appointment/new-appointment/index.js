@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext, useEffect } from "react";
 import * as moment from "moment";
 import { SelectPicker, DatePicker, Form, Modal, Button } from "rsuite";
 import {
@@ -14,7 +14,6 @@ import { useAppointmentForm, allHooks } from "../../../../hooks";
 import { useTranslation } from "react-i18next";
 import { LangContext } from "../../../../services/context";
 export const isBeforeToday = (date) => moment(date).isBefore(moment(), "days");
-
 
 const NewAppointment = ({
   organizationId,
@@ -32,6 +31,7 @@ const NewAppointment = ({
   const { t } = useTranslation();
   const dir = useContext(LangContext);
   const [patientSearchValue, setPatientSearchValue] = useState("");
+  const patientId = ls.getPatientId();
   const { searchedPatients } = allHooks({
     patientSearchValue: patientSearchValue,
     organizationId,
@@ -40,7 +40,6 @@ const NewAppointment = ({
     const data = searchedPatients.map((d) => {
       return { label: d.name, value: d.id };
     });
-    const patientId = ls.getPatientId();
     const filteredData = data.filter((d) => d.value === patientId);
     return filteredData;
   }, [searchedPatients]);
@@ -65,7 +64,6 @@ const NewAppointment = ({
     type: formValue.type,
     appointments: appointmentsCount?.appointments || [],
   });
-
   return (
     <Modal open={open} onClose={handleClose}>
       <Modal.Header style={{ textAlign: "center", margin: "20px 0px" }}>

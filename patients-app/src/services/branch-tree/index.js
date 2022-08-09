@@ -49,7 +49,7 @@ const CustomBranchTress = ({
     });
     return updatedSpecialties;
   }, [formValue.branchId, branches]);
-
+  console.log(specialties,'specialtiesspecialties','branches',branches);
   const doctors = useMemo(() => {
     const newDoctors = R.pipe(
       R.find(R.propEq("value", formValue?.specialtyId)),

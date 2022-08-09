@@ -4,7 +4,6 @@ import NewAppointment from "./new-appointment";
 import { Button } from "rsuite";
 import {
   allHooks,
-  useAuth,
   patientRegistrations,
   useForm,
 } from "../../../hooks";
@@ -13,24 +12,26 @@ import { Header, ButtonContainer, LogOutButton } from "./new-appointment/style";
 import { useTranslation } from "react-i18next";
 import HeaderContainer from "../../shared-components/header";
 import { Schema } from "rsuite";
+import * as ls from "../../../services/local-storage";
 
-const initialValues = {
-  type: "Session",
-  patientId: "",
-  courseId: null,
-  branchId: null,
-  specialtyId: null,
-  sessionId: null,
-  userId: null,
-  date: null,
-  time: null,
-  waiting: false,
-};
 const { StringType, DateType } = Schema.Types;
 
 const CreateAppointment = () => {
   const { organizationId } = useParams();
   const { t } = useTranslation();
+  const patientId = ls.getPatientId();
+  const initialValues = {
+    type: "Session",
+    patientId: patientId,
+    courseId: null,
+    branchId: null,
+    specialtyId: null,
+    sessionId: null,
+    userId: null,
+    date: null,
+    time: null,
+    waiting: false,
+  };
   const model = Schema.Model({
     patientId: StringType().isRequired(t("PATIENT_NAME_ERROR")),
     branchId: StringType().isRequired(t("BRANCH_NAME_ERROR")),
@@ -101,6 +102,7 @@ const CreateAppointment = () => {
       sendSMS: true,
     });
   }, [createAppointment, formValue]);
+ 
   return (
     <>
       <LogOutButton onClick={logout}>{t("LOG_OUT")}</LogOutButton>

@@ -74,11 +74,11 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       status: APPOINTMENTS_STATUS.SCHEDULED,
     },
   });
-  // if (numOfAppsOfThePatient >= MAX_NUMBERAPPS && reference === 'Online') {
-  //   throw new APIExceptcion(
-  //     'You have been reached the max number of Appointments'
-  //   );
-  // }
+  if (numOfAppsOfThePatient >= MAX_NUMBERAPPS && reference === 'Online') {
+    throw new APIExceptcion(
+      'You have been reached the max number of Appointments'
+    );
+  }
   const createdAppointment = await prisma.appointment.create({
     data: Object.assign(
       {

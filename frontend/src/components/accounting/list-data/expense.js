@@ -33,7 +33,7 @@ const ListData = ({
               <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
             )}
         </CRTable.CRColumn> */}
-        <CRTable.CRColumn width={100}>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ expenseType }) => (
@@ -41,7 +41,7 @@ const ListData = ({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn width={100}>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('revenueAmount')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ amount }) => (
@@ -56,7 +56,7 @@ const ListData = ({
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn width={130}>
+        <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (

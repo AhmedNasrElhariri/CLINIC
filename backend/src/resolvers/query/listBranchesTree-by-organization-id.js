@@ -5,6 +5,10 @@ const listBranchesTreeByOrganizationId = (_, { organizationId }) => {
     where: {
       organizationId: organizationId,
     },
+    include: {
+      specialties: true,
+      userSpecialties: true,
+    },
   });
 };
 

@@ -85,18 +85,18 @@ const Register = ({
                 </Form.Group>
               </>
             )}
-            <Form.Group>
-              <Form.ControlLabel>{t("PHONENO")}</Form.ControlLabel>
-              <div style={{ display: "flex" }}>
-                <Form.Control
-                  name="phoneNo"
-                  type="text"
-                  block
-                  errorMessage={
-                    showTwo ? checkResult["phoneNo"]?.errorMessage : ""
-                  }
-                />
-                {!confirm && (
+            {!confirm && (
+              <Form.Group>
+                <Form.ControlLabel>{t("PHONENO")}</Form.ControlLabel>
+                <div style={{ display: "flex" }}>
+                  <Form.Control
+                    name="phoneNo"
+                    type="text"
+                    block
+                    errorMessage={
+                      showTwo ? checkResult["phoneNo"]?.errorMessage : ""
+                    }
+                  />
                   <Button
                     appearance="primary"
                     onClick={sendOtp}
@@ -104,9 +104,9 @@ const Register = ({
                   >
                     {show ? t("SEND_CODE_AGAIN") : t("NEXT")}
                   </Button>
-                )}
-              </div>
-            </Form.Group>
+                </div>
+              </Form.Group>
+            )}
             {show && (
               <Form.Group>
                 <Form.ControlLabel>{t("CODE")}</Form.ControlLabel>

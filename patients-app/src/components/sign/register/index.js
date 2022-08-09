@@ -67,6 +67,7 @@ const RegisterPage = ({}) => {
     const { code } = formValue;
     return code.length;
   }, [formValue.code]);
+  
   useEffect(() => {
     if (codeLength === 6) {
       const { code } = formValue;
