@@ -1,18 +1,13 @@
-import React, { useEffect, useMemo } from 'react';
-
+import React, { useMemo } from 'react';
 import { Div, Img, H6 } from 'components';
-import path from 'path';
-import crypto from 'crypto';
-import fs from 'fs';
 import { Icon } from 'rsuite';
+import { Can } from 'components/user/can';
 
-const filePath = './uploads';
 const MAX_COUNT = 3;
-let image11 = '';
+
 const ListPicturesThumbnails = ({ pictures, onClick, onDelete }) => {
   const count = pictures.length;
   const displayedCount = count >= MAX_COUNT ? MAX_COUNT : pictures.length;
-  image11 = pictures[0]?.url;
   const rest = count - displayedCount;
   const renderedPictures = useMemo(
     () => pictures.slice(0, displayedCount),
@@ -25,11 +20,13 @@ const ListPicturesThumbnails = ({ pictures, onClick, onDelete }) => {
         <>
           <div style={{ position: 'relative' }}>
             <Img src={i.url} width={100} height={100} mr={1} key={idx} />
-            <Icon
-              icon="trash"
-              style={{ position: 'absolute', bottom: '0px', left: '40px' }}
-              onClick={() => onDelete(i)}
-            ></Icon>
+            <Can I="DeleteImages" an="Patient">
+              <Icon
+                icon="trash"
+                style={{ position: 'absolute', bottom: '0px', left: '40px' }}
+                onClick={() => onDelete(i)}
+              ></Icon>
+            </Can>
           </div>
         </>
       ))}

@@ -141,6 +141,7 @@ export const ACTIONS = Object.freeze({
   ViewSessions_Patient: 'ViewSessions_Patient',
   ViewLabs_Patient: 'ViewLabs_Patient',
   ViewImages_Patient: 'ViewImages_Patient',
+  DeleteImages_Patient:'DeleteImages_Patient',
   ViewCourses_Patient: 'ViewCourses_Patient',
   ViewSessionsPulses_Patient: 'ViewSessionsPulses_Patient',
   GenerateMonthly_PulsesReport: 'GenerateMonthly_PulsesReport',

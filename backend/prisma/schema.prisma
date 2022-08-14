@@ -175,6 +175,7 @@ enum PermissionAction {
   ViewSessions_Patient
   ViewLabs_Patient
   ViewImages_Patient
+  DeleteImages_Patient
   ViewCourses_Patient
   ViewHistory_Patient
   ViewDental_Patient
