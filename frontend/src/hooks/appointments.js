@@ -19,6 +19,7 @@ import {
   CANCEL_APPOINTMENT,
   GET_INVOICE_COUNTER,
   DELETE_APPOINTMENT_PHOTO,
+  GET_APPOINTMENT_HISTORY
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
@@ -206,6 +207,10 @@ function useAppointments({
     refetchQueries: [
       {
         query: LIST_APPOINTMENTS,
+      },
+      {
+        query: GET_APPOINTMENT_HISTORY,
+        variables: { patientId: patientId },
       },
     ],
   });

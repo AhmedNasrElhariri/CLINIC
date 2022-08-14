@@ -128,6 +128,7 @@ function Appointment() {
                       summary={appointmentHistory}
                       tabularFields={tabularFields}
                       tabularData={hospitals}
+                      patientId={patientId}
                     />
                   </Can>
                 )}

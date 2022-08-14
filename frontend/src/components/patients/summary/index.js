@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import { Modal, Whisper, Tooltip, Form } from 'rsuite';
@@ -17,9 +17,13 @@ import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
 import { KeyStyled, ValueStyled } from './style';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
-import { useModal } from 'hooks';
+import { useModal, useAppointments } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import DeleteImage from './delete-image';
 
+const initalVal = {
+  imageId: null,
+};
 const renderProp = (key, value, textValue) => {
   return (
     <Div display="flex" alignItems="center" minHeight={60}>
@@ -80,8 +84,15 @@ const renderAppointment = data => {
   ));
 };
 
-const PatientSummary = ({ summary, tabularFields, tabularData }) => {
+const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
   const { t } = useTranslation();
+  const { visible, open, close } = useModal();
+  const [formValue, setFormValue] = useState(initalVal);
+  const [header, setHeader] = useState('');
+  const { deleteAppointmentPhoto } = useAppointments({
+    onDeletePhoto: close,
+    patientId: patientId,
+  });
   const updatedSummary = useMemo(() => {
     const today = moment(new Date()).endOf('day');
     const ss = summary.filter(s => moment(s.date) <= today);
@@ -107,25 +118,27 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
       R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(updatedSummary),
     [activeSession, updatedSummary]
   );
-  // const updatedData = useMemo(() => {
-  //   let newData = [];
-  //   if (dynamicTextInput) {
-  //     newData = data.map(d => {
-  //       let value = '';
-  //       value = dynamicTextInput[d.field.id] || '';
-  //       return { ...d, textValue: value };
-  //     });
-  //   } else {
-  //     newData = data;
-  //   }
-  //   return newData;
-  // }, [data, dynamicTextInput]);
-  const { visible, open, close } = useModal();
+  const handleDeleteImage = useCallback(
+    data => {
+      const image = R.pick(['id'])(data);
+      setHeader('Delete Image');
+      setFormValue({ ...formValue, imageId: image.id });
+      open();
+    },
+    [open, setFormValue, setHeader, formValue]
+  );
+  const handleAdd = useCallback(() => {
+    deleteAppointmentPhoto({
+      variables: {
+        id: formValue.imageId,
+      },
+    });
+  }, [deleteAppointmentPhoto, formValue]);
   const pictures = useMemo(
     () => R.propOr([], 'pictures')(activeSession),
     [activeSession]
   );
-
+  console.log(formValue, 'FF');
   if (!activeSession) {
     return '...No History';
   }
@@ -155,7 +168,10 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
               {pictures.length > 0 &&
                 renderProp(
                   'Images',
-                  <AppointmentGallery pictures={pictures} />
+                  <AppointmentGallery
+                    pictures={pictures}
+                    onDelete={handleDeleteImage}
+                  />
                 )}
             </Div>
           </>
@@ -185,14 +201,25 @@ const PatientSummary = ({ summary, tabularFields, tabularData }) => {
             {t('tableView')}
           </CRButton>
         </Div>
-        <Div>
-          <Modal show={visible} full onHide={close}>
-            <Modal.Body>
-              <SummaryTable data={tabularData} fields={tabularFields} />
-            </Modal.Body>
-          </Modal>
-        </Div>
+        {header !== 'Delete Image' && (
+          <Div>
+            <Modal show={visible} full onHide={close}>
+              <Modal.Body>
+                <SummaryTable data={tabularData} fields={tabularFields} />
+              </Modal.Body>
+            </Modal>
+          </Div>
+        )}
       </Div>
+      {header === 'Delete Image' && (
+        <DeleteImage
+          visible={visible}
+          formValue={formValue}
+          onOk={handleAdd}
+          onClose={close}
+          header={header}
+        />
+      )}
     </Div>
   );
 };

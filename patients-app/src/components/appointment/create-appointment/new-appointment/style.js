@@ -5,13 +5,14 @@ export const Container = styled.div`
   direction: ${(props) => props.dir};
   @media screen and (max-width: 600px) {
     font-size: 20px;
+    display: block;
   }
 `;
 export const LeftContainer = styled.div`
   width: 320px;
   margin: 0px 20px;
   @media screen and (max-width: 600px) {
-    width: 50%;
+    width: 100%;
     margin: 0px 10px;
   }
 `;
@@ -19,7 +20,7 @@ export const RightContainer = styled.div`
   width: 320px;
   margin: 0px 20px;
   @media screen and (max-width: 600px) {
-    width: 50%;
+    width: 100%;
     margin: 0px 10px;
   }
 `;
