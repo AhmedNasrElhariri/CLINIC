@@ -17,6 +17,10 @@ const options = [
   { name: 'Others', id: 'others' },
   { name: 'Friends', id: 'friends' },
 ];
+const patientLevels = [
+  { name: 'VIP', id: 'VIP' },
+  { name: 'Normal', id: 'Normal' },
+];
 const PatientsFilter = ({
   formValue,
   setFormValue,
@@ -46,7 +50,7 @@ const PatientsFilter = ({
     }
     return newareas;
   }, [dir, areas]);
- 
+
   const setAreaValue = val => {
     setFormValue({ ...formValue, area: val });
     setAreaFormValue({ ...areaFormValue, areaId: val });
@@ -82,6 +86,16 @@ const PatientsFilter = ({
             onChange={val =>
               val == null ? setFormValue({ ...formValue, reference: '' }) : ''
             }
+            style={{ width: '200px' }}
+          />
+        </Div>
+        <Div ml={3} mr={3}>
+          <CRSelectInput
+            label={t('patientLevel')}
+            data={patientLevels}
+            name="patientLevel"
+            value={formValue.patientLevel}
+            onChange={val => setFormValue({ ...formValue, patientLevel: val })}
             style={{ width: '200px' }}
           />
         </Div>

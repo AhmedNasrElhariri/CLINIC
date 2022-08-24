@@ -430,6 +430,9 @@ export const TRANSLATIONS_EN = {
   printEnglish: 'Print English',
   noMedicines: 'No Medicines',
   nolabs: 'No Labs',
-  noPictures:'No Pictures',
-  changeLanguage:'Change Language',
+  noPictures: 'No Pictures',
+  changeLanguage: 'Change Language',
+  subscriptionType: 'Kind Of Patient',
+  maritalStatus:'Marital Status',
+  patientLevel:'Patient Level',
 };

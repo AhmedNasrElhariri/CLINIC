@@ -1,7 +1,7 @@
 import React from 'react';
 import { Div } from 'components';
 import { Form } from 'rsuite';
-import { CRSelectInput } from 'components/widgets';
+import { CRSelectInput, CRTextInput } from 'components/widgets';
 import { useExpenseTypeDefinition } from 'hooks';
 import { useTranslation } from 'react-i18next';
 
@@ -22,19 +22,22 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
       formValue={formValue}
       onChange={setFormValue}
     >
-      <Div display="flex">
-        <Div mr={3}>
-          <CRSelectInput
-            label={t('expenseType')}
-            name="expenseType"
-            data={updatedExpenseTypeDefinitions}
-            onChange={val =>
-              val == null ? setFormValue({ ...formValue, expenseType: '' }) : ''
-            }
-            placeholder="Search"
-            style={{ width: '230px' }}
-          />
-        </Div>
+      <Div mr={3} display="flex">
+        <CRSelectInput
+          label={t('expenseType')}
+          name="expenseType"
+          data={updatedExpenseTypeDefinitions}
+          onChange={val =>
+            val == null ? setFormValue({ ...formValue, expenseType: '' }) : ''
+          }
+          placeholder="Search"
+          style={{ width: '230px', marginRight: '20px' }}
+        />
+        <CRTextInput
+          label={t('expenseName')}
+          name="expenseName"
+          style={{ width: '230px' }}
+        />
       </Div>
     </Form>
   );

@@ -425,7 +425,10 @@ export const TRANSLATIONS_AR = {
   printArabic: 'طباعه بالعربي',
   printEnglish: 'طباعه بالانجليزي',
   noMedicines: 'لا يوجد ادويه',
-  nolabs:'لا يوجد تحاليل',
-  noPictures:'لايوجد اشعه',
-  changeLanguage:'تغير اللغه',
+  nolabs: 'لا يوجد تحاليل',
+  noPictures: 'لايوجد اشعه',
+  changeLanguage: 'تغير اللغه',
+  subscriptionType: 'نوع المريض',
+  maritalStatus: 'الحالة الزوجية',
+  patientLevel: 'المستوي ',
 };

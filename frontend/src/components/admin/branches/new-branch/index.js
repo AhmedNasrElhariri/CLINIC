@@ -9,29 +9,29 @@ const model = Schema.Model({
   name: StringType().isRequired('Name is required'),
 });
 
-const initialValues = {
-  name: '',
-  address: '',
-  phoneNo: '',
-  notes: '',
-};
-
-export default function NewBranch({ show, onCancel, onCreate }) {
-  const [formValue, setFormValue] = useState(initialValues);
+export default function NewBranch({
+  show,
+  onCancel,
+  onCreate,
+  formValue,
+  setFormValue,
+  header,
+  handleAdd
+}) {
   const { t } = useTranslation();
-  useEffect(() => {
-    if (!show) {
-      setFormValue(initialValues);
-    }
-  }, [show]);
+  // useEffect(() => {
+  //   if (!show) {
+  //     setFormValue(initialValues);
+  //   }
+  // }, [show]);
 
   return (
     <CRModal
       show={show}
-      header={t('newBranch')}
+      header={header}
       onHide={onCancel}
       onCancel={onCancel}
-      onOk={() => onCreate(formValue)}
+      onOk={handleAdd}
       okTitle={t('ok')}
       cancelTitle={t('cancel')}
     >

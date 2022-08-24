@@ -10,18 +10,20 @@ const model = Schema.Model({
   name: StringType().isRequired('Name is required'),
 });
 
-const initialValues = {
-  name: '',
-};
-
-export default function NewSpecialty({ show, onCancel, onCreate }) {
-  const [formValue, setFormValue] = useState(initialValues);
+export default function NewSpecialty({
+  show,
+  onCancel,
+  onCreate,
+  formValue,
+  setFormValue,
+  header
+}) {
   const { t } = useTranslation();
-  useEffect(() => {
-    if (!show) {
-      setFormValue(initialValues);
-    }
-  }, [show]);
+  // useEffect(() => {
+  //   if (!show) {
+  //     setFormValue(initialValues);
+  //   }
+  // }, [show]);
 
   return (
     <CRModal

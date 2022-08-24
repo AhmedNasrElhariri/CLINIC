@@ -12,6 +12,7 @@ const initialValue = {
   phoneNo: '',
   area: '',
   reference: '',
+  patientLevel: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -23,6 +24,7 @@ function Patients() {
   const history = useHistory();
   const [filter, setFilter] = useState(initialValue);
   const [area, setArea] = useState(initialAreaValue);
+  console.log(filter, 'filter');
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage.activePage;
   const { patients, pages, patientsReports } = usePatients({
@@ -31,6 +33,7 @@ function Patients() {
     phoneNo: filter.phoneNo,
     reference: filter.reference,
     area: filter.area,
+    patientLevel: filter.patientLevel,
   });
 
   const { t } = useTranslation();
@@ -128,6 +131,37 @@ function Patients() {
               <CRTable.CRCell>
                 {({ code }) => (
                   <CRTable.CRCellStyled bold>{code}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>{t('maritalStatus')}</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ maritalStatus }) => (
+                  <CRTable.CRCellStyled bold>
+                    {maritalStatus}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>{t('patientLevel')}</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ patientLevel }) => (
+                  <CRTable.CRCellStyled bold>
+                    {patientLevel}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>{t('email')}</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ email }) => (
+                  <CRTable.CRCellStyled bold>{email}</CRTable.CRCellStyled>
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>

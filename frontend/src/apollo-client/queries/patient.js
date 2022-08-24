@@ -42,6 +42,7 @@ export const LIST_PATIENTS = gql`
     $name: String
     $phoneNo: String
     $area: String
+    $patientLevel: PatientLevel
   ) {
     patients(
       offset: $offset
@@ -49,6 +50,7 @@ export const LIST_PATIENTS = gql`
       name: $name
       phoneNo: $phoneNo
       area: $area
+      patientLevel: $patientLevel
     ) {
       patients {
         id
@@ -59,6 +61,9 @@ export const LIST_PATIENTS = gql`
         sex
         age
         reference
+        maritalStatus
+        patientLevel
+        email
         area
         code
         date

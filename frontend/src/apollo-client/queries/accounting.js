@@ -11,6 +11,7 @@ export const LIST_EXPENSES = gql`
     $branchId: ID
     $specialtyId: ID
     $doctorId: ID
+    $expenseName: String
   ) {
     expenses(
       offset: $offset
@@ -22,6 +23,7 @@ export const LIST_EXPENSES = gql`
       branchId: $branchId
       specialtyId: $specialtyId
       doctorId: $doctorId
+      expenseName: $expenseName
     ) {
       expenses {
         id

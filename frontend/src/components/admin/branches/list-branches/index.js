@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag } from 'rsuite';
+import { Tag,Icon } from 'rsuite';
 
 import { CRCard, CRTable } from 'components';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ export default function ListBranches({
   onSpecilatyClick,
   branchIds,
   specialtyIds,
+  onEdit,
 }) {
   const checkSpecialty = (branchId, specialtyId) => {
     if (branchIds.includes(branchId) && specialtyIds.includes(specialtyId)) {
@@ -75,6 +76,19 @@ export default function ListBranches({
                       : ''
                   )}
                 </div>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <CRTable.CRCellStyled bold>
+                  <Icon icon="edit" onClick={() => onEdit(data)}>
+                    {' '}
+                    {t('edit')}
+                  </Icon>
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

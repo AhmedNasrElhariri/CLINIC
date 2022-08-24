@@ -15,16 +15,27 @@
     text-align: left;
     padding: 8px;
   }
+  .heading{
+    font-size: 15px;
+    margin: 5px;
+  }
   
+  #accounting{
+    text-align: center;
+    margin: 5px 0px 10px 0x;
+  }
   tr:nth-child(even) {background-color: #f2f2f2;}
   </style>
 
 <body>
   <div class="test">
-    <h4>Total Revenues : <%= totalRevenues %></h4>
-    <h4>Total Expenses : <%= totalExpenses %></h4>
-    <h4>Profit : <%= profit %></h4>
-    <h5>Revenues</h5>
+    <h2 id="accounting">Accounting Report</h2>
+    <p class="heading">from <%= from %> to <%= to %></p>
+    <p class="heading">Total Revenues = <%= totalRevenues %></p>
+    <p class="heading">Total Expenses = <%= totalExpenses %></p>
+    <p class="heading">Profit = <%= profit %></p>
+    <hr></hr>
+    <p class="heading">Revenues</p>
     <table>
       <tr>
          <th>Name</th><th>Amount</th><th>Date</th>
@@ -38,7 +49,8 @@
        </tr>    
       <% } %>
    </table>
-   <h5>Expenses</h5>
+   <hr></hr>
+   <p class="heading">Expenses</p>
    <table>
     <tr>
        <th>Name</th><th>Amount</th><th>Date</th>

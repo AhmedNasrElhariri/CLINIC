@@ -34,10 +34,13 @@ import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalVal = {
   expenseType: '',
   revenueName: '',
+  expenseName: '',
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -231,6 +234,7 @@ const AccountingContainer = () => {
     expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
     expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
     revenueName: formValue?.revenueName,
+    expenseName: formValue?.expenseName,
     expenseType: formValue?.expenseType,
   });
   const revenuesPages = Math.ceil(RevenuesCount / 20);
@@ -244,6 +248,37 @@ const AccountingContainer = () => {
       ),
     [formValue, expenses]
   );
+  // const handleAccountingReport = async day => {
+  //   axios({
+  //     url: '/accounting',
+  //     responseType: 'blob', // important
+  //     method: 'GET',
+  //     params: {
+  //       branchId: branchSpecialtyUser?.branch,
+  //       specialtyId: branchSpecialtyUser?.specialty,
+  //       doctorId: branchSpecialtyUser?.doctor,
+  //       expenseBranchId: expenseBranchSpecialtyUser?.branch,
+  //       expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+  //       expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+  //       revenueName: formValue?.revenueName,
+  //       expenseType: formValue?.expenseType,
+  //       view,
+  //       dateFrom: period[0],
+  //       dateTo: period[1],
+  //     },
+  //   })
+  //     .then(function (response) {
+  //       const url = window.URL.createObjectURL(new Blob([response.data]));
+  //       const link = document.createElement('a');
+  //       link.href = url;
+  //       link.setAttribute('download', 'file.pdf'); //or any other extension
+  //       document.body.appendChild(link);
+  //       link.click();
+  //     })
+  //     .catch(err => {
+  //       console.log(err, 'rrr');
+  //     });
+  // };
   return (
     <>
       <MainContainer
@@ -266,6 +301,14 @@ const AccountingContainer = () => {
                   {t('newExpense')} +
                 </CRButton>
               </Can>
+              {/* <CRButton
+                variant="primary"
+                onClick={handleAccountingReport}
+                ml={1}
+                mr={1}
+              >
+                {t('print')}
+              </CRButton> */}
               <PdfView
                 data={{
                   revenues: allRevenues,

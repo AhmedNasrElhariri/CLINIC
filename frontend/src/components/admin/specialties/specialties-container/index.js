@@ -10,9 +10,17 @@ import {
 } from 'components';
 import { usePermissions, useModal } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import * as R from 'ramda';
+
+const initialValues = {
+  name: '',
+};
 
 export default function SpecialtiesContainer() {
   const { visible, open, close } = useModal();
+  const [formValue, setFormValue] = useState(initialValues);
+  const [header, setHeader] = useState('');
+  const [type, setType] = useState('');
   const { t } = useTranslation();
   const {
     visible: userVisible,
@@ -27,13 +35,14 @@ export default function SpecialtiesContainer() {
     });
   const [branchIds, setBranchIds] = useState([]);
   const [specialtyIds, setSpecialtyIds] = useState([]);
-  const handleCreate = useCallback(
-    specialty => {
-      createSpecialty(specialty);
-    },
-    [createSpecialty]
-  );
-
+  
+  const handleAdd = useCallback(() => {
+    if (type === 'createSpecialty') {
+      createSpecialty({ type: 'create', ...formValue });
+    } else if (type === 'editSpecialty') {
+      createSpecialty({ type: 'edit', ...formValue });
+    }
+  }, [createSpecialty, type, formValue]);
   const handleAddDoctor = useCallback(
     specialty => {
       addDoctor(specialty);
@@ -55,6 +64,25 @@ export default function SpecialtiesContainer() {
       setSpecialtyIds([...specialtyIds, specialtyId]);
     }
   }, [branches, specialties]);
+  const handleClickEdit = useCallback(
+    data => {
+      const specialty = R.pick(['id', 'name'])(data);
+      setType('editSpecialty');
+      setHeader(t('editSpecialty'));
+      setFormValue(specialty);
+      open();
+    },
+    [open, setFormValue, setType, setHeader]
+  );
+  const handleCreateSpecialty = useCallback(
+    data => {
+      setType('createSpecialty');
+      setHeader(t('newSpecialty'));
+      open();
+    },
+    [open, setFormValue, setType, setHeader]
+  );
+  console.log(specialties,'SSSpec');
   return (
     <>
       <MainContainer
@@ -62,7 +90,7 @@ export default function SpecialtiesContainer() {
         nobody
         more={
           <Div>
-            <CRButton onClick={open} variant="primary">
+            <CRButton onClick={handleCreateSpecialty} variant="primary">
               {t('newSpecialty')}
             </CRButton>
             <CRButton onClick={openUser} variant="primary" m="0px 2px">
@@ -72,10 +100,13 @@ export default function SpecialtiesContainer() {
         }
       ></MainContainer>
       <NewSpecialty
-        onCreate={handleCreate}
+        onCreate={handleAdd}
         show={visible}
         onHide={close}
         onCancel={close}
+        formValue={formValue}
+        setFormValue={setFormValue}
+        header={header}
       />
       <AddDoctor
         onCreate={handleAddDoctor}
@@ -91,6 +122,7 @@ export default function SpecialtiesContainer() {
         onBranchClick={onBranchClick}
         branchIds={branchIds}
         specialtyIds={specialtyIds}
+        onEdit={handleClickEdit}
       />
     </>
   );

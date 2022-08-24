@@ -49,6 +49,7 @@ export const LIST_APPOINTMENTS = gql`
         accounted
         duration
         reference
+        subscriptionType
         patient {
           id
           name
@@ -96,6 +97,7 @@ export const LIST_TODAY_APPOINTMENTS = gql`
       businessNotes
       reference
       updatedAt
+      subscriptionType
       patient {
         id
         name

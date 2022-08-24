@@ -10,10 +10,56 @@ const byAppointmentDate = R.groupBy(function (appointment) {
 });
 
 const init = app => {
-  app.get('/pdf', async (req, res) => {
+  app.get('/accounting', async (req, res) => {
+    const {
+      dateFrom,
+      dateTo,
+      view,
+      doctorId,
+      specialtyId,
+      branchId,
+      revenueName,
+      expenseBranchId,
+      expenseSpecialtyId,
+      expenseDoctorId,
+      expenseType,
+    } = req.query;
     try {
-      const pdfDoc = await generatePdf('/views/reports/rt.ejs', {
-        test: 'ddddddddd',
+      const endOfDay = moment(new Date()).clone().endOf('day').toDate();
+      const startOfDay = moment(new Date()).clone().startOf('day').toDate();
+      const revenues = await prisma.revenue.findMany({
+        where: {
+          date: {
+            gte: startOfDay,
+            lte: endOfDay,
+          },
+        },
+      });
+      const expenses = await prisma.expense.findMany({
+        where: {
+          date: {
+            gte: startOfDay,
+            lte: endOfDay,
+          },
+        },
+      });
+      const updatedRevenues = revenues.map(r => {
+        return { ...r, date: formatDateStandard(r.date) };
+      });
+      const updatedExpenses = expenses.map(r => {
+        return { ...r, date: formatDateStandard(r.date) };
+      });
+      const totalExpenses = expenses.reduce((acc, e) => acc + e.amount, 0);
+      const totalRevenues = revenues.reduce((acc, e) => acc + e.amount, 0);
+      const profit = totalRevenues - totalExpenses;
+      const pdfDoc = await generatePdf('/views/reports/accounting.ejs', {
+        revenues: updatedRevenues,
+        expenses: updatedExpenses,
+        totalExpenses: totalExpenses,
+        totalRevenues: totalRevenues,
+        profit: profit,
+        from: formatDateStandard(startOfDay),
+        to: formatDateStandard(endOfDay),
       });
       res.end(pdfDoc);
     } catch (e) {
@@ -27,185 +73,184 @@ const init = app => {
     const endOfMonth = moment(month).clone().endOf('month').toDate();
     const monthName = moment(month).format('MMMM YYYY');
 
-      const revenue = await prisma.revenue.aggregate({
-        sum: {
-          amount: true,
+    const revenue = await prisma.revenue.aggregate({
+      sum: {
+        amount: true,
+      },
+      where: {
+        date: {
+          gte: month,
+          lte: endOfMonth,
         },
-        where: {
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+      },
+    });
+    const revenues = revenue.sum.amount === null ? 0 : revenue.sum.amount;
+    const sales = await prisma.sales.aggregate({
+      sum: {
+        totalPrice: true,
+      },
+      where: {
+        date: {
+          gte: month,
+          lte: endOfMonth,
         },
-      });
-      const revenues = revenue.sum.amount === null ? 0 : revenue.sum.amount;
-      const sales = await prisma.sales.aggregate({
-        sum: {
-          totalPrice: true,
+      },
+    });
+    const totalSales = sales.sum.totalPrice === null ? 0 : sales.sum.totalPrice;
+    const expense = await prisma.expense.aggregate({
+      sum: {
+        amount: true,
+      },
+      where: {
+        date: {
+          gte: month,
+          lte: endOfMonth,
         },
-        where: {
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+      },
+    });
+    const expenses = expense.sum.amount === null ? 0 : expense.sum.amount;
+    const examinations = await prisma.appointment.findMany({
+      where: {
+        NOT: {
+          // pulses: null,
         },
-      });
-      const totalSales =
-        sales.sum.totalPrice === null ? 0 : sales.sum.totalPrice;
-      const expense = await prisma.expense.aggregate({
-        sum: {
-          amount: true,
+        type: 'Examination',
+        date: {
+          gte: month,
+          lte: endOfMonth,
         },
-        where: {
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+      },
+    });
+    const followups = await prisma.appointment.findMany({
+      where: {
+        NOT: {
+          // pulses: null,
         },
-      });
-      const expenses = expense.sum.amount === null ? 0 : expense.sum.amount;
-      const examinations = await prisma.appointment.findMany({
-        where: {
-          NOT: {
-            // pulses: null,
-          },
-          type: 'Examination',
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+        type: 'Followup',
+        date: {
+          gte: month,
+          lte: endOfMonth,
         },
-      });
-      const followups = await prisma.appointment.findMany({
-        where: {
-          NOT: {
-            // pulses: null,
-          },
-          type: 'Followup',
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+      },
+    });
+    const sessions = await prisma.appointment.findMany({
+      where: {
+        NOT: {
+          // pulses: null,
         },
-      });
-      const sessions = await prisma.appointment.findMany({
-        where: {
-          NOT: {
-            // pulses: null,
-          },
-          type: 'Session',
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+        type: 'Session',
+        date: {
+          gte: month,
+          lte: endOfMonth,
         },
-      });
-      const courses = await prisma.appointment.findMany({
-        where: {
-          NOT: {
-            // pulses: null,
-          },
-          type: 'Course',
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+      },
+    });
+    const courses = await prisma.appointment.findMany({
+      where: {
+        NOT: {
+          // pulses: null,
         },
-      });
-      const appointments = await prisma.appointment.findMany({
-        where: {
-          NOT: {
-            pulses: null,
-          },
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+        type: 'Course',
+        date: {
+          gte: month,
+          lte: endOfMonth,
         },
-      });
-      const groupingAppointment = byAppointmentDate(appointments);
-      const pulsesControl = await prisma.pulseControl.findMany({
-        where: {
-          date: {
-            gte: month,
-            lte: endOfMonth,
-          },
+      },
+    });
+    const appointments = await prisma.appointment.findMany({
+      where: {
+        NOT: {
+          pulses: null,
         },
-      });
-      const data = pulsesControl.map(p => {
-        let date = formatDateStandard(p.date);
-        let actual = p.after - p.before;
-        let numOfPulses = 0;
-        let pulses = groupingAppointment[date];
-        if (typeof pulses !== 'undefined' && pulses.length != 0) {
-          pulses.forEach(pl => {
-            numOfPulses += pl.pulses;
-          });
-          return {
-            date: date,
-            numOfPulses: numOfPulses,
-            before: p.before,
-            after: p.after,
-            diff: actual - numOfPulses,
-          };
-        } else {
-          return {
-            date: date,
-            numOfPulses: 0,
-            before: p.before,
-            after: p.after,
-            diff: actual - numOfPulses,
-          };
-        }
-      });
-      const numOfExamination = examinations.length,
-        numOfFollowup = followups.length,
-        numOfSession = sessions.length,
-        numOfCourses = courses.length;
-      const pdfDoc = {
-        totalRevenues: revenues,
-        monthName: monthName,
-        totalSales: totalSales,
-        totalExpenses: expenses,
-        numOfExamination: numOfExamination,
-        numOfFollowup: numOfFollowup,
-        numOfSession: numOfSession,
-        numOfCourses: numOfCourses,
-        data: data,
-      };
-      res.json(pdfDoc);
+        date: {
+          gte: month,
+          lte: endOfMonth,
+        },
+      },
+    });
+    const groupingAppointment = byAppointmentDate(appointments);
+    const pulsesControl = await prisma.pulseControl.findMany({
+      where: {
+        date: {
+          gte: month,
+          lte: endOfMonth,
+        },
+      },
+    });
+    const data = pulsesControl.map(p => {
+      let date = formatDateStandard(p.date);
+      let actual = p.after - p.before;
+      let numOfPulses = 0;
+      let pulses = groupingAppointment[date];
+      if (typeof pulses !== 'undefined' && pulses.length != 0) {
+        pulses.forEach(pl => {
+          numOfPulses += pl.pulses;
+        });
+        return {
+          date: date,
+          numOfPulses: numOfPulses,
+          before: p.before,
+          after: p.after,
+          diff: actual - numOfPulses,
+        };
+      } else {
+        return {
+          date: date,
+          numOfPulses: 0,
+          before: p.before,
+          after: p.after,
+          diff: actual - numOfPulses,
+        };
+      }
+    });
+    const numOfExamination = examinations.length,
+      numOfFollowup = followups.length,
+      numOfSession = sessions.length,
+      numOfCourses = courses.length;
+    const pdfDoc = {
+      totalRevenues: revenues,
+      monthName: monthName,
+      totalSales: totalSales,
+      totalExpenses: expenses,
+      numOfExamination: numOfExamination,
+      numOfFollowup: numOfFollowup,
+      numOfSession: numOfSession,
+      numOfCourses: numOfCourses,
+      data: data,
+    };
+    res.json(pdfDoc);
   });
 
-  app.get('/daily', async(req, res) => {
+  app.get('/daily', async (req, res) => {
     const { day } = req.query;
     const dayName = moment(day).format('DD-MM-YYYY');
     const endOfDay = moment(day).endOf('day').toDate();
     const startOfDay = moment(day).startOf('day').toDate();
-      const appointments =  await prisma.appointment.findMany({
-        where: {
-          NOT: {
-            pulses: null,
-          },
-          date: {
-            gte: startOfDay,
-            lte: endOfDay,
-          },
+    const appointments = await prisma.appointment.findMany({
+      where: {
+        NOT: {
+          pulses: null,
         },
-        include: {
-          user: true,
-          patient: true,
+        date: {
+          gte: startOfDay,
+          lte: endOfDay,
         },
-      });
-      const data = appointments.map(p => {
-        return {
-          doctor: p.user.name,
-          patient: p.patient.name,
-          powerOne: p.powerOne,
-          powerTwo: p.powerTwo,
-          pulses: p.pulses,
-        };
-      });
-      res.json(data);
+      },
+      include: {
+        user: true,
+        patient: true,
+      },
+    });
+    const data = appointments.map(p => {
+      return {
+        doctor: p.user.name,
+        patient: p.patient.name,
+        powerOne: p.powerOne,
+        powerTwo: p.powerTwo,
+        pulses: p.pulses,
+      };
+    });
+    res.json(data);
   });
 };
 

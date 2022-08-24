@@ -10,8 +10,19 @@ import {
 } from 'components';
 import { usePermissions, useModal } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import * as R from 'ramda';
+
+const initialValues = {
+  name: '',
+  address: '',
+  phoneNo: '',
+  notes: '',
+};
 
 export default function Branches() {
+  const [formValue, setFormValue] = useState(initialValues);
+  const [header, setHeader] = useState('');
+  const [type, setType] = useState('');
   const {
     visible: branchVisible,
     open: openBranch,
@@ -29,12 +40,13 @@ export default function Branches() {
   const [branchIds, setBranchIds] = useState([]);
   const [specialtyIds, setSpecialtyIds] = useState([]);
   const { t } = useTranslation();
-  const handleCreate = useCallback(
-    branch => {
-      createBranch(branch);
-    },
-    [createBranch]
-  );
+  const handleAdd = useCallback(() => {
+    if (type === 'createBranch') {
+      createBranch({ type: 'create', ...formValue });
+    } else if (type === 'editBranch') {
+      createBranch({ type: 'edit', ...formValue });
+    }
+  }, [createBranch, type, formValue]);
   const handleAddSpecialty = useCallback(
     value => addSpecialty(value),
     [addSpecialty]
@@ -46,6 +58,24 @@ export default function Branches() {
     },
     [branchIds, specialtyIds]
   );
+  const handleClickEdit = useCallback(
+    data => {
+      const user = R.pick(['id', 'name', 'email', 'allowedViews'])(data);
+      setType('editBranch');
+      setHeader(t('editBranch'));
+      setFormValue(user);
+      openBranch();
+    },
+    [openBranch, setFormValue, setType, setHeader]
+  );
+  const handleCreateBranch = useCallback(
+    data => {
+      setType('createBranch');
+      setHeader(t('newBranch'));
+      openBranch();
+    },
+    [openBranch, setFormValue, setType, setHeader]
+  );
   useEffect(() => {
     if (branches.length > 0 && specialties.length > 0) {
       const branchId = branches[0]?.id;
@@ -54,6 +84,7 @@ export default function Branches() {
       setSpecialtyIds([...specialtyIds, specialtyId]);
     }
   }, [branches, specialties]);
+  console.log(formValue, 'F');
   return (
     <>
       <MainContainer
@@ -61,7 +92,7 @@ export default function Branches() {
         nobody
         more={
           <Div>
-            <CRButton onClick={openBranch} variant="primary">
+            <CRButton onClick={handleCreateBranch} variant="primary">
               {t('newBranch')}
             </CRButton>
             <CRButton onClick={openSpecialty} variant="primary" m="0px 2px">
@@ -71,10 +102,13 @@ export default function Branches() {
         }
       ></MainContainer>
       <NewBranch
-        onCreate={handleCreate}
+        handleAdd={handleAdd}
         show={branchVisible}
         onHide={closeBranch}
         onCancel={closeBranch}
+        formValue={formValue}
+        setFormValue={setFormValue}
+        header={header}
       />
       <AddSpecialty
         onAdd={handleAddSpecialty}
@@ -89,6 +123,7 @@ export default function Branches() {
         onSpecilatyClick={onSpecilatyClick}
         branchIds={branchIds}
         specialtyIds={specialtyIds}
+        onEdit={handleClickEdit}
       />
     </>
   );

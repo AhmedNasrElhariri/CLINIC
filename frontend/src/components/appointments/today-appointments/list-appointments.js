@@ -43,7 +43,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
     onEditAppointments,
     onCancelAppointments,
   } = rest;
-  
+
   return (
     <Div
       className="link-group"
@@ -284,7 +284,7 @@ function ListAppointments({
         <CRTable.CRColumn width={200}>
           <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ patient }) => (
+            {({ patient, subscriptionType }) => (
               <Whisper
                 placement="top"
                 controlId="control-id-hover"
@@ -297,6 +297,10 @@ function ListAppointments({
                       </Div>
                       <Div>
                         {t('sex')}:{patient.sex}
+                      </Div>
+                      <Div>
+                        {t('subscriptionType')}: {'  '}
+                        {subscriptionType}
                       </Div>
                     </Div>
                   </Tooltip>

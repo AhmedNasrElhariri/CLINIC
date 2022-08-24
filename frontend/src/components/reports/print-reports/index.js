@@ -11,6 +11,7 @@ import {
   H4,
   CRCheckBoxGroup,
 } from 'components/widgets';
+import fs from 'fs';
 import { Can } from 'components/user/can';
 import axios from 'axios';
 import { Form, DatePicker, Table } from 'rsuite';
@@ -82,18 +83,23 @@ const Test = props => {
     setLoading(true);
     setError(null);
     let res = null;
-
+    // const file = fs.createWriteStream("file.pdf");
     axios({
-      url: '/daily',
-      params: {
-        day: moment(day).toDate(),
-      },
+      url: '/accounting',
+      responseType: 'blob', // important
       method: 'GET',
     })
-      .then(res => {
-        setData(res.data);
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'file.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
       })
-      .catch(err => {});
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
   };
   const { Column, HeaderCell, Cell, Pagination } = Table;
   const refOne = useRef();

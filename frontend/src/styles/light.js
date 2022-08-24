@@ -1,6 +1,6 @@
 import { transparentize, setLightness } from 'polished';
 
-const textColor = '#283148';
+const textColor = '#1e2129'//'#283148';
 const primaryColor = '#51C6F3'; // i changed the primary color from #51C6F3 to #1b253a
 const eventColor1 = primaryColor;
 const eventColor2 = '#40C173';

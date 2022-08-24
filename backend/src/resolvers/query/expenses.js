@@ -20,6 +20,7 @@ const expenses = async (
     doctorId,
     specialtyId,
     branchId,
+    expenseName,
   },
   { user, organizationId }
 ) => {
@@ -98,6 +99,10 @@ const expenses = async (
         gte: updatedDateFrom,
         lte: updatedDateTo,
       },
+      name: {
+        contains: expenseName,
+        mode: 'insensitive',
+      },
     },
     include: {
       user: true,
@@ -158,6 +163,10 @@ const expenses = async (
       },
       expenseType: {
         contains: expenseType,
+        mode: 'insensitive',
+      },
+      name: {
+        contains: expenseName,
         mode: 'insensitive',
       },
     },

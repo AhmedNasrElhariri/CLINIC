@@ -3,7 +3,7 @@ import { areas } from '@/services/areas';
 
 const patients = async (
   _,
-  { offset, limit, name, phoneNo, area },
+  { offset, limit, name, phoneNo, area, patientLevel },
   { organizationId }
 ) => {
   const theArea = area
@@ -60,6 +60,9 @@ const patients = async (
             },
           },
         ],
+      },
+      patientLevel && {
+        patientLevel: patientLevel,
       }
     ),
   });
@@ -113,6 +116,9 @@ const patients = async (
             },
           },
         ],
+      },
+      patientLevel && {
+        patientLevel: patientLevel,
       }
     ),
     skip: offset,

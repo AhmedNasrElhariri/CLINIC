@@ -35,6 +35,7 @@ function usePatients({
   area,
   reference,
   patientSearchValue,
+  patientLevel,
   patientId,
   all = false,
   couponId,
@@ -48,7 +49,8 @@ function usePatients({
       },
       name && { name: name },
       phoneNo && { phoneNo: phoneNo },
-      area && { area: area }
+      area && { area: area },
+      patientLevel && { patientLevel: patientLevel }
     ),
   });
   const patientsdata = patientData?.patients;
@@ -168,7 +170,7 @@ function usePatients({
     },
     onError: () => Alert.error('Invalid Input'),
   });
-  
+
   const { data: patientsReportData } = useQuery(LIST_PATIENTS_REPORT, {
     variables: {
       area,

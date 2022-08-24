@@ -114,6 +114,16 @@ enum Language {
   en
 }
 
+enum MaritalStatus {
+  Married
+  Single
+}
+
+enum PatientLevel {
+  VIP
+  Normal
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -124,6 +134,7 @@ type Query {
     name: String
     phoneNo: String
     area: String
+    patientLevel: PatientLevel
   ): PatientData
   searchedPatients(name: String, organizationId: ID): [Patient!]
   allPatients: [Patient!]
@@ -174,6 +185,7 @@ type Query {
     doctorId: ID
     specialtyId: ID
     branchId: ID
+    expenseName: String
   ): ExpenseData!
   revenues(
     offset: Int
@@ -735,11 +747,13 @@ input BranchInput {
   address: String
   phoneNo: String
   notes: String
+  type: String
 }
 
 input SpecialtyInput {
   id: ID
   name: String!
+  type: String
 }
 
 input UserInput {
@@ -804,6 +818,9 @@ type Patient implements Searchable {
   code: String
   codeNumber: Int!
   reference: [String]
+  maritalStatus: MaritalStatus
+  patientLevel: PatientLevel
+  email: String
   area: String
   age: Int!
   date: Date
@@ -842,6 +859,9 @@ input PatientInput {
   area: ID
   type: PatientMembershipType!
   guardianName: String
+  email: String
+  maritalStatus: MaritalStatus
+  patientLevel: PatientLevel
 }
 input RegisterPatientInput {
   phoneNo: String!
@@ -871,6 +891,7 @@ type Appointment {
   id: ID!
   date: Date
   type: AppointmentType!
+  subscriptionType: String
   status: AppointmentStatus!
   patient: Patient!
   branch: Branch

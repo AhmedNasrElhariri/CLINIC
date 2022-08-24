@@ -45,6 +45,16 @@ const options = [
   { name: 'Friends', value: 'friends' },
 ];
 
+const patientLevel = [
+  { name: 'VIP', value: 'VIP' },
+  { name: 'Normal', value: 'Normal' },
+];
+
+const maritalStatus = [
+  { name: 'Married', value: 'Married' },
+  { name: 'Single', value: 'Single' },
+];
+
 const isPrimary = ({ type }) => type === membershipTypes[0].value;
 const isSecondary = ({ type }) => type === membershipTypes[1].value;
 
@@ -85,7 +95,7 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
               : ''
           }
         /> */}
-        
+
         <CRRadio options={phoneOptions} name="phoneOption" />
         <CRLabel>{t('phoneNo')}</CRLabel>
         <PhoneInput
@@ -152,6 +162,23 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
         valueKey="value"
         searchable={false}
         data={SEX}
+        block
+      />
+      <CRTextInput label={t('email')} name="email" />
+      <CRSelectInput
+        label={t('maritalStatus')}
+        name="maritalStatus"
+        valueKey="value"
+        searchable={false}
+        data={maritalStatus}
+        block
+      />
+      <CRSelectInput
+        label={t('patientLevel')}
+        name="patientLevel"
+        valueKey="value"
+        searchable={false}
+        data={patientLevel}
         block
       />
       <CRSelectInput label={t('area')} name="area" data={newAreas} block />

@@ -128,6 +128,16 @@ enum PatientOtpStatus {
   Expired
 }
 
+enum MaritalStatus {
+  Married
+  Single
+}
+
+enum PatientLevel {
+  VIP
+  Normal
+}
+
 enum PermissionAction {
   List_Appointment
   Create_Appointment
@@ -350,6 +360,9 @@ model Patient {
   area               String                @default("")
   password           String?
   remainingOfPayment Int?                  @default(0)
+  maritalStatus      MaritalStatus?
+  patientLevel       PatientLevel?
+  email              String?
   organization       Organization          @relation(fields: [organizationId], references: [id])
   organizationId     String
   user               User                  @relation(fields: [userId], references: [id])
