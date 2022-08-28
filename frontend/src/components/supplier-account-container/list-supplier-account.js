@@ -6,6 +6,7 @@ import { CRCard, CRTable } from 'components';
 function ListSupplierAccount({
   supplierAccounts,
   onEdit,
+  onDelete,
   currentPage,
   setCurrentPage,
   pages,
@@ -67,6 +68,23 @@ function ListSupplierAccount({
             <CRTable.CRCell>
               {({ invoiceCount }) => (
                 <CRTable.CRCellStyled bold>{invoiceCount}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <Icon
+                  icon="trash"
+                  onClick={e => {
+                    e.stopPropagation();
+                    onDelete(data);
+                  }}
+                >
+                  {' '}
+                  {t('delete')}
+                </Icon>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

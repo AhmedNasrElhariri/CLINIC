@@ -14,6 +14,7 @@ import {
   LIST_INVOICE_TRANSACTIONS,
   EDIT_INVOICE_TRANSACTION,
   EDIT_INVOICE_SUPPLIER,
+  DELETE_SUPPLIER_ACCOUNT,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -26,7 +27,6 @@ const updateCache = mySupplierAccounts => {
   });
 };
 const updateInvoiceCache = mySupplierInvoices => {
-  
   client.writeQuery({
     query: LIST_SUPPLIER_INVOICES,
     data: {
@@ -42,9 +42,9 @@ function useSupplierAccounts({
   supplierId,
   invoiceId,
   name,
-  page,
+  page = 1,
   invoiceFilterName,
-  invoicePage=0,
+  invoicePage = 0,
 } = {}) {
   const { data } = useQuery(LIST_SUPPLIER_ACCOUNTS);
   const supplierAccounts = useMemo(
@@ -64,7 +64,8 @@ function useSupplierAccounts({
       ),
     }
   );
-  const detailedSupplierAccountDataa = detailedSupplierAccountData?.myDetailedSupplierAccounts;
+  const detailedSupplierAccountDataa =
+    detailedSupplierAccountData?.myDetailedSupplierAccounts;
   // R.propOr(
   //   {},
   //   'myDetailedSupplierAccounts'
@@ -150,6 +151,21 @@ function useSupplierAccounts({
       Alert.error('Failed to delete the SupplierAccount');
     },
   });
+  const [deleteSupplier] = useMutation(DELETE_SUPPLIER_ACCOUNT, {
+    onCompleted() {
+      Alert.success('the SupplierAccount has been Deleted Successfully');
+      onDelete && onDelete();
+    },
+    refetchQueries: [
+      {
+        query: LIST_DETAILED_SUPPLIER_ACCOUNTS,
+        variables: { offset: 0, limit: 20 },
+      },
+    ],
+    onError() {
+      Alert.error('Failed to delete the SupplierAccount');
+    },
+  });
   const [addSupplierInvoice] = useMutation(ADD_SUPPLIER_INVOICE, {
     onCompleted() {
       Alert.success('the Supplier Invoice has been Added Successfully');
@@ -158,7 +174,7 @@ function useSupplierAccounts({
     refetchQueries: [
       {
         query: LIST_SUPPLIER_INVOICES,
-        variables: { supplierId: supplierId, offset: 0, limit: 20},
+        variables: { supplierId: supplierId, offset: 0, limit: 20 },
       },
     ],
     onError() {
@@ -194,7 +210,6 @@ function useSupplierAccounts({
         query: LIST_SUPPLIER_INVOICES,
         variables: { supplierId: supplierId, offset: 0, limit: 20, name: '' },
       },
-      
     ],
     onError() {
       Alert.error('Failed to change The Supplier');
@@ -226,6 +241,7 @@ function useSupplierAccounts({
       addSupplierAccount,
       editSupplierAccount,
       deleteSupplierAccount,
+      deleteSupplier,
       detailedSupplierAccounts,
       supplierInvoices,
       addSupplierInvoice,
@@ -243,6 +259,7 @@ function useSupplierAccounts({
       addSupplierAccount,
       editSupplierAccount,
       deleteSupplierAccount,
+      deleteSupplier,
       detailedSupplierAccounts,
       supplierInvoices,
       addSupplierInvoice,

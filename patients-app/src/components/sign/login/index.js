@@ -14,6 +14,7 @@ const { StringType } = Schema.Types;
 
 const LoginPage = () => {
   const { organizationId } = useParams();
+  console.log(organizationId,'organizationId');
   const { t } = useTranslation();
   const model = Schema.Model({
     phoneNo: StringType().isRequired(t("PHONE_NO_ERROR")),

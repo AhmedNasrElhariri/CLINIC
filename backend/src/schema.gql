@@ -470,6 +470,7 @@ type Mutation {
     supplierAccount: SupplierAccountInput!
     type: String!
   ): SupplierAccount
+  deleteSupplierAccount(id: ID!): SupplierAccount
   addImageDefinition(imageDefinition: ImageInputDefinition!): ImageDefinition
   editImageDefinition(
     imageDefinition: ImageInputDefinition!

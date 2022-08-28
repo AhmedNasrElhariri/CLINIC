@@ -150,3 +150,10 @@ export const EDIT_SUPPLIER_ACCOUNT = gql`
     }
   }
 `;
+export const DELETE_SUPPLIER_ACCOUNT = gql`
+  mutation deleteSupplierAccount($id: ID!) {
+    deleteSupplierAccount(id: $id) {
+      id
+    }
+  }
+`;
