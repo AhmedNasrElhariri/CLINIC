@@ -100,6 +100,7 @@ enum FieldType {
   Check
   NestedSelector
   SelectorWithInput
+  Selector
 }
 
 enum PatientMembershipType {
@@ -136,6 +137,11 @@ enum MaritalStatus {
 enum PatientLevel {
   VIP
   Normal
+}
+
+enum FieldGroupStatus {
+  Static
+  Dynamic
 }
 
 enum PermissionAction {
@@ -519,15 +525,16 @@ model PatientViewStatus {
 }
 
 model FieldGroup {
-  id            String       @id @default(uuid())
+  id            String            @id @default(uuid())
   name          String
   order         Int
-  view          View?        @relation(fields: [viewId], references: [id])
+  status        FieldGroupStatus? @default(Static)
+  view          View?             @relation(fields: [viewId], references: [id])
   viewId        String?
   fields        Field[]
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @default(now()) @updatedAt
-  PatientView   PatientView? @relation(fields: [patientViewId], references: [id])
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @default(now()) @updatedAt
+  PatientView   PatientView?      @relation(fields: [patientViewId], references: [id])
   patientViewId String?
 
   @@unique([order, viewId], name: "order_viewId_unique_constraint")

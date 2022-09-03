@@ -42,6 +42,7 @@ import AppointmentMedicines from './appointment-medecines';
 import Labs from './appointment-labs';
 import Images from './appointment-images';
 import Pulses from './pulses';
+import GroupContainer from './group-container';
 import { useTranslation } from 'react-i18next';
 
 const renderItem = ({
@@ -146,6 +147,7 @@ function AppointmentData({
   handleShowPatientInfo,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
+  console.log(navs, 'NANA', formValue, 'formValue..');
   const { t } = useTranslation();
   const { labsCategory } = useLabCategory();
   const { imagesCategory } = useImageCategory();
@@ -167,7 +169,7 @@ function AppointmentData({
   }, [sessionsDefinition]);
   const handlePicturesChange = useCallback(
     pictures => {
-      console.log(pictures,'PP');
+      console.log(pictures, 'PP');
       onChange({
         ...appointmentFormValue,
         pictures,
@@ -212,7 +214,7 @@ function AppointmentData({
   const customImageDefinitions = useMemo(() => {
     return imagesDefinition.filter(l => l.category.id === imageId);
   }, [imagesDefinition, imageId]);
-
+  console.log(formValue, 'FORM');
   const handleImagesChange = useCallback(
     imageIds => {
       const cateImages = imagesDefinition.map(i => i.id);
@@ -263,28 +265,38 @@ function AppointmentData({
       <Div display="flex">
         <Div flexGrow={1}>
           {Object.keys(formValue).length > 0 && (
-            <>
+            <Div mb={5}>
               <Form formValue={formValue} onChange={onDataChange} fluid>
-                {navs.map((v, idx) => (
-                  <SectionContainer
-                    key={idx}
-                    title={v.title}
-                    name={v.to}
-                    pt={idx === 0 ? 0 : 4}
-                  >
-                    {v.fields.map(f => (
-                      <Div mb={4} key={f.id}>
-                        {renderItem({
-                          ...f,
-                          disabled,
-                          updatedSessions,
-                        })}
-                      </Div>
-                    ))}
-                  </SectionContainer>
-                ))}
+                {navs?.map((v, idx) =>
+                  v.status === 'Dynamic' ? (
+                    <GroupContainer
+                      fields={v.fields}
+                      title={v.title}
+                      onChange={onDataChange}
+                      formValue={formValue}
+                      updatedSessions={updatedSessions}
+                    />
+                  ) : (
+                    <SectionContainer
+                      key={idx}
+                      title={v.title}
+                      name={v.to}
+                      pt={idx === 0 ? 0 : 4}
+                    >
+                      {v.fields.map(f => (
+                        <Div mb={4} key={f.id}>
+                          {renderItem({
+                            ...f,
+                            disabled,
+                            updatedSessions,
+                          })}
+                        </Div>
+                      ))}
+                    </SectionContainer>
+                  )
+                )}
               </Form>
-            </>
+            </Div>
           )}
           <SectionContainer title={t('prescription')} name="prescription">
             <Form formValue={selectedMedicine} onChange={setSelectedMedicine}>

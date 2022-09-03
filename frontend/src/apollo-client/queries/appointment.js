@@ -417,6 +417,10 @@ export const GET_APPOINTMENT_HISTORY = gql`
         age
         sex
       }
+      doctor {
+        id
+        name
+      }
       pictures {
         id
         comment

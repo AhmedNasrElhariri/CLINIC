@@ -7,6 +7,7 @@ export const RADIO_FIELD_TYPE = 'Radio';
 export const CHECK_FIELD_TYPE = 'Check';
 export const NESTED_SELECTOR_FIELD_TYPE = 'NestedSelector';
 export const SELECTOR_WITH_INPUT = 'SelectorWithInput';
+export const SELECTOR = 'Selector';
 
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
 export const FULL_DATE_FORMAT = 'hh:mm a';
@@ -20,6 +21,7 @@ export const FIELD_TYPES = [
   { label: 'Check', value: CHECK_FIELD_TYPE },
   { label: 'Selector With Input', value: SELECTOR_WITH_INPUT },
   { label: 'Nested Selector', value: NESTED_SELECTOR_FIELD_TYPE },
+  { label: 'Selector', value: SELECTOR },
 ];
 
 export const MEDICAL_HISTORY_TYPES = Object.freeze({
@@ -93,6 +95,11 @@ export const CRUD = Object.freeze({
   CREATE: 'create',
   EDIT: 'edit',
 });
+
+export const LaneStatus = [
+  { name: 'Static', value: 'Static' },
+  { name: 'Dynamic', value: 'Dynamic' },
+];
 
 export const ALL_CHOICE = 'All';
 

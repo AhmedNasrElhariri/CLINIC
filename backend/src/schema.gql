@@ -82,6 +82,7 @@ enum FieldType {
   Check
   NestedSelector
   SelectorWithInput
+  Selector
 }
 
 enum AppointmentStatus {
@@ -122,6 +123,11 @@ enum MaritalStatus {
 enum PatientLevel {
   VIP
   Normal
+}
+
+enum FieldGroupStatus {
+  Static
+  Dynamic
 }
 
 ########################### Query ##################################
@@ -1116,6 +1122,7 @@ type FieldGroup {
   id: ID!
   name: String!
   order: Int!
+  status: FieldGroupStatus
   fields: [Field!]
 }
 
@@ -1167,6 +1174,7 @@ input FieldGroupInput {
   id: ID
   name: String!
   order: Int!
+  status: FieldGroupStatus
   fields: [FieldInput!]
 }
 

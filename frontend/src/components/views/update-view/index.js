@@ -16,11 +16,14 @@ import { mapLanesToGroupFields, mapGroupFieldsToLanes } from 'utils/view';
 import { ViewForm } from 'components';
 import { appointmentTypes } from 'services/appointment';
 import * as R from 'ramda';
+import { CRRadio, Div } from 'components';
+import { LaneStatus } from 'utils/constants';
 
 const width = 300;
 
 export default function CreateView({}) {
   const [lanes, setLanes] = useGlobalState('lanes');
+  const [lanesStatus, setLanesStatus] = useState({});
   const [formValue, setFormValue] = useState({
     name: '',
     type: null,
@@ -51,12 +54,19 @@ export default function CreateView({}) {
       variables: {
         view: {
           ...rest,
-          fieldGroups: mapLanesToGroupFields(lanes),
+          fieldGroups: mapLanesToGroupFields(lanes, lanesStatus),
         },
         viewId: viewId,
       },
     });
-  }, [updateView, formValue, lanes]);
+  }, [updateView, formValue, lanes, lanesStatus]);
+  useEffect(() => {
+    let obj = {};
+    lanes.forEach(({ id, status }) => {
+      obj[id] = status;
+    });
+    setLanesStatus(obj);
+  }, [lanes, setLanesStatus]);
   useEffect(() => {
     const fieldGroups = R.propOr([], 'fieldGroups')(view);
     const { id, name, type } = view;
@@ -64,6 +74,7 @@ export default function CreateView({}) {
     const lanes = mapGroupFieldsToLanes(fieldGroups);
     setLanes(lanes);
   }, [view, setLanes]);
+
   return (
     <>
       <Form layout="inline" formValue={formValue} onChange={setFormValue}>
@@ -92,6 +103,21 @@ export default function CreateView({}) {
           </Button>
         )}
       </Form>
+      <Div display="flex">
+        <Form formValue={lanesStatus} onChange={setLanesStatus}>
+          <FormGroup>
+            {lanes.length > 0 &&
+              lanes.map(l => (
+                <CRRadio
+                  label={l.title}
+                  name={l.id}
+                  options={LaneStatus}
+                  inline
+                />
+              ))}
+          </FormGroup>
+        </Form>
+      </Div>
       <ViewForm />
     </>
   );

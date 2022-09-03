@@ -8,6 +8,7 @@ import {
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
+  SELECTOR
 } from 'utils/constants';
 import Choices from './choices';
 import NestedChoices from './nested-choices';
@@ -74,6 +75,7 @@ const Card = ({ laneId, index }) => {
       CHECK_FIELD_TYPE,
       NESTED_SELECTOR_FIELD_TYPE,
       SELECTOR_WITH_INPUT,
+      SELECTOR
     ].includes(fieldType);
   }, [fieldType]);
 

@@ -10,6 +10,7 @@ export const ACTIVE_VIEWS = gql`
         id
         name
         order
+        status
         fields {
           id
           name
@@ -118,6 +119,7 @@ export const MY_VIEW = gql`
       fieldGroups {
         name
         id
+        status
         fields {
           name
           type

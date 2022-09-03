@@ -70,11 +70,11 @@ const renderAppointment = data => {
         ? renderProp(
             field.name,
             <Form>
-              <CRNestedSelector
+              {/* <CRNestedSelector
                 value={value}
                 choices={field.choices}
                 disabled
-              />
+              /> */}
             </Form>
           )
         : value && field.type === 'SelectorWithInput'
@@ -142,6 +142,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
   if (!activeSession) {
     return '...No History';
   }
+  console.log(updatedSummary, 'updatedSummary');
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>
@@ -159,7 +160,8 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
         {updatedSummary.length ? (
           <>
             <H3 mb={4}>
-              {t('session')} {updatedSummary.length - sessionId}
+              {t('session')} {updatedSummary.length - sessionId} {' / '}
+              {activeSession.doctor?.name}
             </H3>
             <Div>
               {renderProp('Date', formatDate(date))}
