@@ -1,42 +1,59 @@
-#!/bin/bash
+# !/bin/bash
 
-echo 'fetch latest'
-git pull 
+while getopts b: flag
+do
+    case "${flag}" in
+        b) branch=${OPTARG};;
+    esac
+done
+
+echo "Branch: $branch";
+
+[ -z "$branch" ] && { echo "Branch argument is empty, please enter valid one"; exit 1; }
+
+
+backup_folder=$(date +"%d-%m-%Y %H:%M")
+
+git fetch --all
+git checkout $branch
+git pull origin $branch
 
 echo 'start frontend build'
 cd ./frontend
-yarn install --frozen-lockfile
+npm install
 echo 'start building...'
-yarn build
-echo 'frontend built successfullty'
+npm run build
+cd ../
+echo 'frontend finished successfully'
 
 echo 'start patients app build'
-cd ../patients-app
-yarn install --frozen-lockfile
+cd ./patients-app
+npm install
 echo 'start building...'
-REACT_APP_GRAPHQL_URL=http://167.71.42.148:8000 yarn build
-echo 'patients app built successfullty'
+REACT_APP_GRAPHQL_URL=https://chr-ring.com npm run build
+cd ../
+echo 'patients app finished successfully'
 
-cd ../backend
-cp ../../root/.env ./
-
-echo "start backend build env yarn build"
-yarn install --frozen-lockfile
+echo "start backend build"
+cd ./backend
+npm install
 echo 'start building...'
 npx prisma generate
-yarn build
+npm run build
+cd ../
+echo 'backend build finished successfully'
 
-echo 'backend built successfullty'
+echo 'start sync data to the server'
+cd ./backend/dist
+zip -r ../../build.zip *
+cd ../../
+rsync -azP build.zip root@207.154.252.128:~/clinicr-qa
 
-cp -Rf dist/. ../../root
-cd ../../root
-
-prisma migrate deploy
-pm2 stop clinicr_qa
-pm2 start ecosystem.config.js
-
-pm2 stop patients_app
-pm2 serve patients-app/ 5000 --name "patients_app" --spa
+ssh root@207.154.252.128 "cd clinicr-qa &&
+ unzip -o ./build.zip -d . && rm build.zip && prisma migrate deploy && \
+ pm2 delete clinicr_qa || true && pm2 delete patients_app || true && \
+ pm2 start ecosystem.config.js && pm2 serve patients-app/ 5000 --name "patients_app" --spa
+"
 
 echo 'starting ...'
 
