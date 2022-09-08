@@ -20,26 +20,26 @@ git pull origin $branch
 
 echo 'start frontend build'
 cd ./frontend
-npm install
+yarn install
 echo 'start building...'
-npm run build
+yarn build
 cd ../
 echo 'frontend finished successfully'
 
 echo 'start patients app build'
 cd ./patients-app
-npm install
+yarn install
 echo 'start building...'
-REACT_APP_GRAPHQL_URL=https://chr-ring.com npm run build
+REACT_APP_GRAPHQL_URL=https://chr-ring.com yarn build
 cd ../
 echo 'patients app finished successfully'
 
 echo "start backend build"
 cd ./backend
-npm install
+yarn install
 echo 'start building...'
 npx prisma generate
-npm run build
+yarn build
 cd ../
 echo 'backend build finished successfully'
 

@@ -14,7 +14,7 @@ const { StringType } = Schema.Types;
 
 const LoginPage = () => {
   const { organizationId } = useParams();
-  console.log(organizationId,'organizationId');
+  console.log(organizationId, "organizationId");
   const { t } = useTranslation();
   const model = Schema.Model({
     phoneNo: StringType().isRequired(t("PHONE_NO_ERROR")),
@@ -48,13 +48,17 @@ const LoginPage = () => {
 
   const signIn = useCallback(() => {
     const { phoneNo, password } = formValue;
-    const patientInput = { phoneNo: phoneNo, password: password };
+    const patientInput = {
+      phoneNo: phoneNo,
+      password: password,
+      organizationId: organizationId,
+    };
     login({
       variables: {
         input: patientInput,
       },
     });
-  }, [formValue, login]);
+  }, [formValue, login, organizationId]);
   return (
     <>
       <Login

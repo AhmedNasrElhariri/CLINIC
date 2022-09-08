@@ -9,6 +9,7 @@ const registerPatient = async (_, { input: patientInput }) =>
     const { phoneNo, password, name, age, sex, organizationId } = patientInput;
     const patients = await prisma.patient.findMany({
       where: {
+        organizationId: organizationId,
         phoneNo: {
           contains: phoneNo,
         },
@@ -45,17 +46,22 @@ const registerPatient = async (_, { input: patientInput }) =>
         return patient;
       } else {
         const patient = patients[0];
-        const { id } = patient;
-        const hashingPassword = bcrypt.hashSync(password, 10);
-        await prisma.patient.update({
-          data: {
-            password: hashingPassword,
-          },
-          where: {
-            id,
-          },
-        });
-        return patient;
+        const pass = patient.password;
+        if (pass) {
+          throw new APIExceptcion('Account existed already please login');
+        } else {
+          const { id } = patient;
+          const hashingPassword = bcrypt.hashSync(password, 10);
+          await prisma.patient.update({
+            data: {
+              password: hashingPassword,
+            },
+            where: {
+              id,
+            },
+          });
+          return patient;
+        }
       }
     } else {
       throw new APIExceptcion('Please Make Sure From The Link');

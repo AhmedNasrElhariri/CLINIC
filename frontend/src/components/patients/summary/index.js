@@ -25,13 +25,24 @@ const initalVal = {
   imageId: null,
 };
 const renderProp = (key, value, textValue) => {
+  console.log(value, textValue, 'value, textValue');
   return (
     <Div display="flex" alignItems="center" minHeight={60}>
       <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
         <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
       </Whisper>
       <CRVDivider vertical />
-      <ValueStyled>{value}</ValueStyled>
+      {Array.isArray(value) ? (
+        value.map(v => (
+          <>
+            <ValueStyled>{v}</ValueStyled>
+            <CRVDivider vertical />
+          </>
+        ))
+      ) : (
+        <ValueStyled>{value}</ValueStyled>
+      )}
+
       {textValue && (
         <>
           <CRVDivider vertical />
@@ -161,7 +172,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
           <>
             <H3 mb={4}>
               {t('session')} {updatedSummary.length - sessionId} {' / '}
-              {activeSession.doctor?.name}
+              {activeSession.updater?.name}
             </H3>
             <Div>
               {renderProp('Date', formatDate(date))}

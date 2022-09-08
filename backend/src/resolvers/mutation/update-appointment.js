@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { LAB_STATUS, APPOINTMENTS_STATUS } from '@/utils/constants';
 import * as R from 'ramda';
 
-const updateAppointment = async (_, { appointment }) => {
+const updateAppointment = async (_, { appointment }, { userId }) => {
   const persistedAppointment = await prisma.appointment.findUnique({
     where: { id: appointment.id },
     include: { patient: true, pictures: true },
@@ -15,6 +15,7 @@ const updateAppointment = async (_, { appointment }) => {
       powerOne: appointment.powerOne || null,
       powerTwo: appointment.powerTwo || null,
       sessionsPulses: appointment.sessionsPulses || '[]',
+      updaterId: userId,
       data: {
         upsert: appointment.data.map(({ id, value, fieldId }) => ({
           create: {

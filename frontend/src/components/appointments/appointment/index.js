@@ -26,7 +26,7 @@ import {
 } from 'apollo-client/queries';
 
 import useAppointmentHistory from './fetch-appointment-history';
-import { HeaderStyled } from './style';
+import { HeaderStyled, StyledPanel } from './style';
 import { useForm, useModal } from 'hooks';
 import { APPT_STATUS } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
@@ -407,7 +407,7 @@ function Appointment() {
       </Div>
       <Panel shaded bordered bodyFill style={cardPosition}>
         {/* <Img src={patient?.url} width={240} height={150} /> */}
-        <Panel header={patient?.name}>
+        <StyledPanel header={patient?.name}>
           <p>
             <small>
               <Div display="flex">
@@ -436,7 +436,7 @@ function Appointment() {
               </Div>
             </small>
           </p>
-        </Panel>
+        </StyledPanel>
       </Panel>
     </>
   );

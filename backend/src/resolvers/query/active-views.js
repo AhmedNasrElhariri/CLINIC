@@ -1,9 +1,15 @@
 import { prisma } from '@';
 
-const activeView = async (_, __, { userId }) => {
+const activeView = async (_, __, { organizationId, userId }) => {
+  const users = await prisma.user.findMany({
+    where: {
+      organizationId,
+    },
+  });
+  const userIds = users.map(u => u.id);
   const viewStatus = await prisma.viewStatus.findMany({
     where: {
-      userId,
+      userId: { in: userIds },
     },
   });
 

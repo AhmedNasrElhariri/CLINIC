@@ -5,9 +5,10 @@ import { APIExceptcion } from '@/services/erros.service';
 import { APP_SECRET } from '../../utils/constants';
 
 const loginPatient = async (_, { input: patientInput }) => {
-  const { phoneNo, password } = patientInput;
+  const { phoneNo, password, organizationId } = patientInput;
   const patients = await prisma.patient.findMany({
     where: {
+      organizationId: organizationId,
       phoneNo: {
         contains: phoneNo,
       },

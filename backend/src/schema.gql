@@ -881,6 +881,7 @@ input RegisterPatientInput {
 input LoginPatientInput {
   phoneNo: String!
   password: String!
+  organizationId: ID!
 }
 input ForgetPatientPasswordInput {
   phoneNo: String!
@@ -914,6 +915,7 @@ type Appointment {
   session: SessionDefinition
   user: User!
   doctor: User!
+  updater: User
   data: [AppointmentField!]
   notes: String
   businessNotes: String

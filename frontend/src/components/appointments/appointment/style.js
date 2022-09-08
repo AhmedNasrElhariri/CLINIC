@@ -106,6 +106,12 @@ export const HeaderStyled = styled(Div)`
   } */
 `;
 
+export const StyledPanel = styled(Panel)`
+  & .rs-panel-heading,.rs-panel-body {
+    padding: 2px 20px;
+  }
+`;
+
 export const PatientContainerStyled = styled(Div)`
   display: flex;
   justify-content: space-between;
@@ -127,4 +133,3 @@ export const PatientInfoStyled = styled(Div)`
     margin-left: 20px;
   }
 `;
-

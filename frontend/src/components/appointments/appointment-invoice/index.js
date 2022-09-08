@@ -109,6 +109,7 @@ function AppointmentInvoice({
   const { companysDefinition } = useCompanyDefinition({});
   const { sessionsDefinition } = useSessionDefinition({});
   const { t } = useTranslation();
+  console.log(totalRemainingOfPayment, 'totalRemainingOfPayment');
   const updatedSessionDefinitions = sessionsDefinition.map(s => {
     return {
       name: s.name,
@@ -197,6 +198,11 @@ function AppointmentInvoice({
             {t('remainingPay')}
           </CRButton>
         </Div>
+        {totalRemainingOfPayment > 0 && (
+          <Div m="10px 0px">
+            {t('theRemaining')} : {totalRemainingOfPayment}
+          </Div>
+        )}
         {visa && (
           <Form>
             <CRSelectInput
@@ -257,9 +263,6 @@ function AppointmentInvoice({
         )}
         {remainingOperation && (
           <>
-            <Div m="10px 0px">
-              {t('theRemaining')} : {totalRemainingOfPayment}
-            </Div>
             <Form>
               <CRNumberInput
                 label={t('payOfRemaining')}

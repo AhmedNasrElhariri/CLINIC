@@ -421,6 +421,10 @@ export const GET_APPOINTMENT_HISTORY = gql`
         id
         name
       }
+      updater{
+        id
+        name
+      }
       pictures {
         id
         comment

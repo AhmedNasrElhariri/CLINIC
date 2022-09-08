@@ -27,33 +27,40 @@ import {
 
 const CellDiv = styled.div`
   width: 100px;
-  border: 2px solid gray;
+  border: 1px solid #e5e5ea;
   margin: 3px;
   height: 50px;
+  text-align: center;
+  padding-top: 14px;
   @media only screen and (max-width: 991px) {
     width: 70px;
     margin: 3px;
     height: 40px;
+    padding-top: 10px;
   }
 `;
 const IconDiv = styled.div`
   width: 100px;
   margin: 3px;
   height: 50px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 `;
 
 const ColDiv = styled.div`
   width: 100px;
-  margin: 3px;
-  height: 50px;
+  margin: 3px 5px;
+  height: 30px;
   @media only screen and (max-width: 991px) {
     width: 70px;
     margin: 3px;
-    height: 40px;
+    height: 20px;
   }
 `;
 const FieldContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 const renderItem = ({
   type,
@@ -79,7 +86,7 @@ const renderItem = ({
     case NUMBER_FIELD_TYPE:
       return <CRNumberInput label={name} name={id} {...props} />;
     case TEXT_FIELD_TYPE:
-      return <CRTextInput label={name} name={id} {...props} />;
+      return <CRTextInput label={name} name={id}  {...props} />;
     case LONG_TEXT_FIELD_TYPE:
       return <CRTextArea label={name} name={id} {...props} importable />;
     case RADIO_FIELD_TYPE:
@@ -160,7 +167,7 @@ const GroupContainer = ({
     },
     [onChange, formValue]
   );
-
+  console.log(fields,'fields');
   return (
     <>
       <H3 mb={10}>{title}</H3>

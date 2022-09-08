@@ -347,12 +347,13 @@ model User {
   SupplierInvoiceTransaction SupplierInvoiceTransaction[]
   UserCourseUnitsHistory     CourseUnitsHistory[]         @relation("userUnitHistory")
   DoctorCourseUnitsHistory   CourseUnitsHistory[]         @relation("doctorUnitHistory")
+  updater                    Appointment[]                @relation("updaterApp")
 }
 
 model Patient {
   id                 String                @id @default(uuid())
   name               String
-  phoneNo            String                @unique
+  phoneNo            String
   phoneNoTwo         String?
   type               PatientMembershipType
   appointments       Appointment[]
@@ -392,6 +393,8 @@ model Patient {
   BankRevenue        BankRevenue[]
   InsuranceRevenue   InsuranceRevenue[]
   BankExpense        BankExpense[]
+
+  @@unique([organizationId, phoneNo], name: "organizationId_phoneNo_unique_constraint")
 }
 
 model Appointment {
@@ -404,6 +407,8 @@ model Appointment {
   userId           String
   doctor           User               @relation("doctorApp", fields: [doctorId], references: [id])
   doctorId         String
+  updater          User?              @relation("updaterApp", fields: [updaterId], references: [id])
+  updaterId        String?
   businessNotes    String             @default("")
   accounted        Boolean            @default(false)
   duration         Int                @default(5)

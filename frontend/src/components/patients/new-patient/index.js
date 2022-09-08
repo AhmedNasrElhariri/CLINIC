@@ -25,7 +25,7 @@ const initialValues = {
   reference: [],
   age: 0,
   date: new Date(),
-  type: null,
+  type: 'Primary',
   guardianName: '',
 };
 const { StringType, NumberType } = Schema.Types;
