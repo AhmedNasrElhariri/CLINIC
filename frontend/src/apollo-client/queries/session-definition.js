@@ -61,11 +61,9 @@ export const LIST_SESSION_STATISTICS = gql`
       name
       totalNumber
       totalPrice
-      revenues {
-        patient {
-          id
-          name
-        }
+      patients {
+        name
+        phoneNo
       }
     }
   }

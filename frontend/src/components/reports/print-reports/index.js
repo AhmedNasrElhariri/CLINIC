@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import ReactToPrint from 'react-to-print';
 import {
   CRButton,
@@ -8,10 +8,8 @@ import {
   CRDateRangePicker,
   H5,
   H3,
-  H4,
-  CRCheckBoxGroup,
+  CRTable,
 } from 'components/widgets';
-import fs from 'fs';
 import { Can } from 'components/user/can';
 import axios from 'axios';
 import { Form, DatePicker, Table } from 'rsuite';
@@ -97,8 +95,7 @@ const Test = props => {
         document.body.appendChild(link);
         link.click();
       })
-      .catch(err => {
-      });
+      .catch(err => {});
   };
   const { Column, HeaderCell, Cell, Pagination } = Table;
   const refOne = useRef();
@@ -209,6 +206,30 @@ const Test = props => {
                   <H5>Session Name : {st.name}</H5>
                   <H5>TotalNumber: {st.totalNumber}</H5>
                   <H5>TotalPrice:{st.totalPrice}</H5>
+                  <CRTable autoHeight data={st.patients}>
+                    <CRTable.CRColumn flexGrow={1}>
+                      <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
+                      <CRTable.CRCell>
+                        {({ name }) => (
+                          <CRTable.CRCellStyled bold>
+                            {name}
+                          </CRTable.CRCellStyled>
+                        )}
+                      </CRTable.CRCell>
+                    </CRTable.CRColumn>
+                    <CRTable.CRColumn flexGrow={1}>
+                      <CRTable.CRHeaderCell>
+                        {t('phoneNo')}
+                      </CRTable.CRHeaderCell>
+                      <CRTable.CRCell>
+                        {({ phoneNo }) => (
+                          <CRTable.CRCellStyled bold>
+                            {phoneNo}
+                          </CRTable.CRCellStyled>
+                        )}
+                      </CRTable.CRCell>
+                    </CRTable.CRColumn>
+                  </CRTable>
                 </Div>
               ))}
             </Div>

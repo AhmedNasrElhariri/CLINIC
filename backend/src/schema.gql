@@ -1771,7 +1771,7 @@ type SessionStatistics {
   name: String!
   totalNumber: Int!
   totalPrice: Int!
-  revenues: [Revenue]
+  patients: [Patient]
 }
 
 ########################### SupplierAccount ##################################

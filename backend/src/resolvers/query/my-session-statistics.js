@@ -8,6 +8,23 @@ function groupArrayOfObjects(list, key) {
   }, {});
 }
 
+const nuniquePatients = arr => {
+  const uniqueIds = [];
+
+  const unique = arr.filter(element => {
+    const isDuplicate = uniqueIds.includes(element.id);
+
+    if (!isDuplicate) {
+      uniqueIds.push(element.id);
+
+      return true;
+    }
+
+    return false;
+  });
+  return unique;
+};
+
 const sessionStatistics = async (
   _,
   { sessionsIds, dateFrom, dateTo },
@@ -73,15 +90,22 @@ const sessionStatistics = async (
   const statistics = totalsessions.map(async ts => {
     const session = sessions.find(s => s.id == ts.sessionId);
     const revenues = await prisma.revenue.findMany({
-      where: { name: { contains: session.name } },
+      where: {
+        name: { contains: session.name },
+        date: {
+          gte: startDay,
+          lte: endDay,
+        },
+      },
       include: { patient: true },
     });
-
+    const patients = revenues.map(rr => rr.patient);
+    const uniPatients = nuniquePatients(patients);
     return {
       name: session.name,
       totalNumber: ts.totalNumber,
       totalPrice: ts.totalPrice,
-      revenues: revenues,
+      patients: uniPatients,
     };
   });
 
