@@ -15,6 +15,7 @@ import {
   COUPON_POINTS_TRANSACTIONS,
   PATIENT_REVENUE,
   CREATE_PATIENT,
+  LIST_PATIENTS_REPORTS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -33,13 +34,17 @@ function usePatients({
   name = '',
   phoneNo = '',
   area,
-  reference,
   patientSearchValue,
   patientLevel,
   patientId,
   all = false,
   couponId,
   onCreate,
+  age,
+  session,
+  type,
+  period,
+  reference,
 } = {}) {
   const { data: patientData } = useQuery(LIST_PATIENTS, {
     variables: Object.assign(
@@ -48,9 +53,7 @@ function usePatients({
         limit: 20,
       },
       name && { name: name },
-      phoneNo && { phoneNo: phoneNo },
-      area && { area: area },
-      patientLevel && { patientLevel: patientLevel }
+      phoneNo && { phoneNo: phoneNo }
     ),
   });
   const patientsdata = patientData?.patients;
@@ -64,6 +67,37 @@ function usePatients({
   );
 
   const pages = Math.ceil(patientsCount / 20);
+
+  ////
+  const { data: patientReportsData } = useQuery(LIST_PATIENTS_REPORTS, {
+    variables: Object.assign(
+      {
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+      area && { area: area },
+      patientLevel && { patientLevel: patientLevel },
+      type && { type: type },
+      age && { ageFrom: age[0] },
+      age && { ageTo: age[1] },
+      session && { sessionId: session },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      reference && { reference: reference }
+    ),
+  });
+  const patientsReportsdata = patientReportsData?.patientsReports;
+  const ReportsPatients = useMemo(
+    () => R.propOr([], 'patients')(patientsReportsdata),
+    [patientsReportsdata]
+  );
+  const reportsPatientsCount = useMemo(
+    () => R.propOr(0, 'patientsCount')(patientsReportsdata),
+    [patientsReportsdata]
+  );
+  const reportsPages = Math.ceil(reportsPatientsCount / 20);
+
+  //
 
   const { data: patientSummaryData } = useQuery(LIST_PATIENTS_SUMMARY, {});
   const patientsSummarydata = patientSummaryData?.patients;
@@ -205,6 +239,9 @@ function usePatients({
       patientRevenueCounts,
       patientTotalRevenue,
       createPatient,
+      ReportsPatients,
+      reportsPages,
+      reportsPatientsCount,
       createPatientLoading: loading,
       edit: patient =>
         editPatient({
@@ -227,6 +264,9 @@ function usePatients({
       patientRevenue,
       patientRevenueCounts,
       patientTotalRevenue,
+      ReportsPatients,
+      reportsPages,
+      reportsPatientsCount,
     ]
   );
 }

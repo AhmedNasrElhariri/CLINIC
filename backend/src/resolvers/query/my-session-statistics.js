@@ -2,11 +2,11 @@ import { prisma } from '@';
 import moment from 'moment';
 
 function groupArrayOfObjects(list, key) {
-  return list.reduce(function(rv, x) {
+  return list.reduce(function (rv, x) {
     (rv[x[key]] = rv[x[key]] || []).push(x);
     return rv;
   }, {});
-};
+}
 
 const sessionStatistics = async (
   _,
@@ -54,8 +54,8 @@ const sessionStatistics = async (
   const updatedSessionsTransactions = sessionsTransactions.map(s => {
     return { ...s, totalPrice: s.number * s.price };
   });
-  
-  const groups = groupArrayOfObjects(updatedSessionsTransactions,'sessionId');
+
+  const groups = groupArrayOfObjects(updatedSessionsTransactions, 'sessionId');
   const groupsValue = Object.values(groups);
   const totalsessions = groupsValue.map(g => {
     let totalNumber = 0;
@@ -70,12 +70,18 @@ const sessionStatistics = async (
       totalPrice: totalPrice,
     };
   });
-  const statistics = totalsessions.map(ts => {
+  const statistics = totalsessions.map(async ts => {
     const session = sessions.find(s => s.id == ts.sessionId);
+    const revenues = await prisma.revenue.findMany({
+      where: { name: { contains: session.name } },
+      include: { patient: true },
+    });
+
     return {
       name: session.name,
       totalNumber: ts.totalNumber,
       totalPrice: ts.totalPrice,
+      revenues: revenues,
     };
   });
 

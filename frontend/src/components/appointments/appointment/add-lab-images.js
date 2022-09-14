@@ -114,7 +114,6 @@ const LabFormInput = ({ value, onChange }) => {
       const newImages = value.concat(res);
       onChange(newImages);
     } catch (ex) {
-      console.log(ex);
     }
   };
   return (

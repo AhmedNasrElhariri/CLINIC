@@ -1,19 +1,8 @@
-import React, { useState, useRef, useCallback } from 'react';
-
-import {
-  MainContainer,
-  CRTable,
-  Div,
-  CRButton,
-  H3,
-  H4,
-  CRNav,
-} from 'components';
-
+import React, { useState } from 'react';
+import { CRNav } from 'components';
 import { useTranslation } from 'react-i18next';
 import ListPatients from './list-patients';
 import ListPatientsReports from './list-patients-reports';
-
 
 function Patients() {
   const [activeTab, setActiveTab] = useState('0');

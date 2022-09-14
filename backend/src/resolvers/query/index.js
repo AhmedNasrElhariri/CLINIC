@@ -104,3 +104,4 @@ export { default as myDetailedSupplierAccounts } from './my-detailed-supplier-ac
 export { default as mySupplierInvoices } from './my-supplier-invoices';
 export { default as myInvoiceTransactions } from './my-invoice-transactions';
 export { default as courseUnitsHistory } from './course-units-history';
+export { default as patientsReports } from './patients-reports';

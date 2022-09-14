@@ -39,7 +39,7 @@ export { default as NewPatient } from './patients/new-patient';
 export { default as Patient } from './patients/patient';
 export { default as PatientSummary } from './patients/summary';
 export { default as PatientProgress } from './patients/progress';
-export { default as PatientFilter } from './patients/filter';
+export { default as PatientFilter } from './patients/filter/patients-filter';
 export { default as PatientInfo } from './patients/patient-info';
 
 /******************       Appointment    *********************************/

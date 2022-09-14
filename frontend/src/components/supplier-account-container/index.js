@@ -31,7 +31,6 @@ const SupplierAccount = () => {
       setFormValue(initialVal);
     },
   });
-  console.log(formValue, 'FF');
   const pages = Math.ceil(detailedSupplierAccountsCount / 20);
   const handleClickDelete = useCallback(
     data => {

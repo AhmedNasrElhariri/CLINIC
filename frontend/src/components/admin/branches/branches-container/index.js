@@ -84,7 +84,6 @@ export default function Branches() {
       setSpecialtyIds([...specialtyIds, specialtyId]);
     }
   }, [branches, specialties]);
-  console.log(formValue, 'F');
   return (
     <>
       <MainContainer

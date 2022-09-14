@@ -98,7 +98,6 @@ const Test = props => {
         link.click();
       })
       .catch(err => {
-        console.log(err, 'rrr');
       });
   };
   const { Column, HeaderCell, Cell, Pagination } = Table;

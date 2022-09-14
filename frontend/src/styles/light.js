@@ -1,6 +1,6 @@
 import { transparentize, setLightness } from 'polished';
 
-const textColor = '#1e2129'//'#283148';
+const textColor = '#060608'; //#1e2129'//'#283148';
 const primaryColor = '#51C6F3'; // i changed the primary color from #51C6F3 to #1b253a
 const eventColor1 = primaryColor;
 const eventColor2 = '#40C173';
@@ -11,7 +11,7 @@ const eventColor5 = textColor;
 export const scrollbarColor = transparentize(0.8, textColor);
 export const colors = {
   white: '#ffffff',
-  light:'rgba(182, 183, 183, 0.1)',
+  light: 'rgba(182, 183, 183, 0.1)',
   primary: primaryColor,
   primaryDarker: '#3abbf0',
   primaryLight: '#EDF9FE',

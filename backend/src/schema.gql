@@ -134,13 +134,19 @@ enum FieldGroupStatus {
 
 type Query {
   hello(name: String): Boolean
-  patients(
+  patients(offset: Int, limit: Int, name: String, phoneNo: String): PatientData
+  patientsReports(
     offset: Int
     limit: Int
-    name: String
-    phoneNo: String
     area: String
     patientLevel: PatientLevel
+    sessionId: ID
+    ageFrom: Int
+    ageTo: Int
+    dateFrom: Date
+    dateTo: Date
+    type: Sex
+    reference: String
   ): PatientData
   searchedPatients(name: String, organizationId: ID): [Patient!]
   allPatients: [Patient!]
@@ -1436,6 +1442,7 @@ type Revenue {
   name: String!
   level: String
   user: User!
+  patient: Patient
   doctor: User
   branch: Branch
   payer: String
@@ -1764,6 +1771,7 @@ type SessionStatistics {
   name: String!
   totalNumber: Int!
   totalPrice: Int!
+  revenues: [Revenue]
 }
 
 ########################### SupplierAccount ##################################

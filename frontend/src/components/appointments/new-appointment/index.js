@@ -45,7 +45,7 @@ const appointmentTypes = getCreatableApptTypes().map(type => ({
 }));
 
 const initialValues = {
-  type: 'Examination',
+  type: 'Session',
   patientId: '',
   courseId: null,
   branchId: null,
@@ -172,7 +172,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
       waiting,
       sessionId,
       duration,
-      sendSMS
+      sendSMS,
     });
   }, [createAppointment, formValue]);
   return (
@@ -322,25 +322,25 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
                 )}{' '}
               </RightContainer>
             </Container>
-            <Div display="flex" >
-            <Checkbox
-              name="waiting"
-              value={true}
-              onChange={val => setFormValue({ ...formValue, waiting: val })}
-            >
-              {' '}
-              {t('addToWaitingList')}
-            </Checkbox>
-            {enableSMS && (
+            <Div display="flex">
               <Checkbox
-                name="sendSMS"
+                name="waiting"
                 value={true}
-                onChange={val => setFormValue({ ...formValue, sendSMS: val })}
+                onChange={val => setFormValue({ ...formValue, waiting: val })}
               >
                 {' '}
-                Send SMS
+                {t('addToWaitingList')}
               </Checkbox>
-            )}
+              {enableSMS && (
+                <Checkbox
+                  name="sendSMS"
+                  value={true}
+                  onChange={val => setFormValue({ ...formValue, sendSMS: val })}
+                >
+                  {' '}
+                  Send SMS
+                </Checkbox>
+              )}
             </Div>
           </Form>
         </Div>

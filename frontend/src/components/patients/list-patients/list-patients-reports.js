@@ -3,16 +3,17 @@ import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import { MainContainer, CRTable, Div, CRButton, H3, H4 } from 'components';
 import { Can } from 'components/user/can';
-import PatientsFilter from '../filter/index';
+import PatientsFilter from '../filter/patients-reports-filter';
 import EditPatient from '../edit-patient';
 import { usePatients } from 'hooks';
 import { useTranslation } from 'react-i18next';
 const initialValue = {
-  name: '',
-  phoneNo: '',
   area: '',
   reference: '',
   patientLevel: null,
+  age: null,
+  session: null,
+  type: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -22,21 +23,26 @@ const initialAreaValue = {
 };
 function Patients() {
   const history = useHistory();
+  const ref = useRef();
+  const { t } = useTranslation();
   const [filter, setFilter] = useState(initialValue);
   const [area, setArea] = useState(initialAreaValue);
-  console.log(filter, 'filter');
+  const [period, setPeriod] = useState([]);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage.activePage;
-  const { patients, pages, patientsReports } = usePatients({
+
+  const { ReportsPatients, reportsPages, reportsPatientsCount } = usePatients({
     page,
-    name: filter.name,
-    phoneNo: filter.phoneNo,
     reference: filter.reference,
     area: filter.area,
     patientLevel: filter.patientLevel,
+    age: filter.age,
+    session: filter.session,
+    type: filter.type,
+    period: period,
+    reference: filter.reference,
   });
 
-  const { t } = useTranslation();
   const handleSelect = useCallback(
     eventKey => {
       setCurrentPage({ activePage: eventKey });
@@ -44,8 +50,8 @@ function Patients() {
     [setCurrentPage]
   );
 
-  const ref = useRef();
-  const refTwo = useRef();
+  console.log(filter, 'FF');
+
   return (
     <>
       <Can I="View" an="Patient">
@@ -56,12 +62,12 @@ function Patients() {
               <Can I="CreateSocialReport" an="Patient">
                 <ReactToPrint
                   trigger={() => (
-                    <CRButton variant="primary">{t('socialReport')} +</CRButton>
+                    <CRButton variant="primary">{t('print')} +</CRButton>
                   )}
                   content={() => ref.current}
                 />
               </Can>
-              <Can I="CreateAreaReport" an="Patient">
+              {/* <Can I="CreateAreaReport" an="Patient">
                 <ReactToPrint
                   trigger={() => (
                     <CRButton variant="primary" ml={1} mr={1}>
@@ -70,7 +76,7 @@ function Patients() {
                   )}
                   content={() => refTwo.current}
                 />
-              </Can>
+              </Can> */}
             </Div>
           }
         >
@@ -81,11 +87,12 @@ function Patients() {
                 setFormValue={setFilter}
                 areaFormValue={area}
                 setAreaFormValue={setArea}
+                setPeriod={setPeriod}
               ></PatientsFilter>
             </Div>
           </Div>
           <CRTable
-            data={patients}
+            data={ReportsPatients}
             autoHeight
             onRowClick={({ id }) => {
               history.push(`/patients/${id}`);
@@ -214,39 +221,59 @@ function Patients() {
               },
             ]}
             activePage={currentPage?.activePage}
-            pages={pages}
+            pages={reportsPages}
             onSelect={handleSelect}
-            total={patients && patients.length}
+            total={ReportsPatients && ReportsPatients.length}
             onChangePage={p => setCurrentPage(p)}
           />
 
           <Div style={{ overflow: 'hidden', height: '0px' }}>
             <Div ref={ref}>
               <H3 textAlign="center" margin="10px">
-                Social Report
+                Patients Report
               </H3>
-              <Div display="flex">
-                <H4 margin="0px 10px">Reference By:</H4>
-                <H4>{filter.reference}</H4>
-              </Div>
+              {period.length > 0 && (
+                <Div display="flex">
+                  <H4 margin="0px 10px">The Period from to :</H4>
+                  <H4>{period[0] - period[1]}</H4>
+                </Div>
+              )}
+              {filter.age && (
+                <Div display="flex">
+                  <H4 margin="0px 10px">age between:</H4>
+                  <H4>
+                    {filter?.age[0]} - {filter?.age[1]}
+                  </H4>
+                </Div>
+              )}
+              {filter.type && (
+                <Div display="flex">
+                  <H4 margin="0px 10px">Type :</H4>
+                  <H4>{filter.type}</H4>
+                </Div>
+              )}
+              {filter.patientLevel && (
+                <Div display="flex">
+                  <H4 margin="0px 10px">Patient Level :</H4>
+                  <H4>{filter.patientLevel}</H4>
+                </Div>
+              )}
+              {filter.reference && (
+                <Div display="flex">
+                  <H4 margin="0px 10px">Reference By:</H4>
+                  <H4>{filter.reference}</H4>
+                </Div>
+              )}
+              {filter.area && (
+                <Div display="flex">
+                  <H4 margin="0px 10px">Area:</H4>
+                  <H4>{filter.area}</H4>
+                </Div>
+              )}
+
               <Div display="flex">
                 <H4 margin="0px 10px">Total Number Of Patients:</H4>
-                <H4>{patientsReports.patientsReferenceCount}</H4>
-              </Div>
-            </Div>
-          </Div>
-          <Div style={{ overflow: 'hidden', height: '0px' }}>
-            <Div ref={refTwo}>
-              <H3 textAlign="center" margin="10px">
-                Area Report
-              </H3>
-              <Div display="flex">
-                <H4 margin="0px 10px">The Area:</H4>
-                <H4>{filter.area}</H4>
-              </Div>
-              <Div display="flex">
-                <H4 margin="0px 10px">Total Number Of Patients:</H4>
-                <H4>{patientsReports.patientsAreaCount}</H4>
+                <H4>{reportsPatientsCount}</H4>
               </Div>
             </Div>
           </Div>

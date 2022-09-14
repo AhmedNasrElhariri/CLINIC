@@ -4,7 +4,7 @@ import { H6 } from '../html/index';
 
 const CRHeaderCell = ({ children, ...props }) => (
   <Table.HeaderCell {...props}>
-    <H6 color="texts.2">{children}</H6>
+    <H6 color="#2a2a2a">{children}</H6>
   </Table.HeaderCell>
 );
 

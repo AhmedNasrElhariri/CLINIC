@@ -167,7 +167,6 @@ const GroupContainer = ({
     },
     [onChange, formValue]
   );
-  console.log(fields,'fields');
   return (
     <>
       <H3 mb={10}>{title}</H3>

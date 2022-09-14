@@ -109,7 +109,6 @@ function AppointmentInvoice({
   const { companysDefinition } = useCompanyDefinition({});
   const { sessionsDefinition } = useSessionDefinition({});
   const { t } = useTranslation();
-  console.log(totalRemainingOfPayment, 'totalRemainingOfPayment');
   const updatedSessionDefinitions = sessionsDefinition.map(s => {
     return {
       name: s.name,

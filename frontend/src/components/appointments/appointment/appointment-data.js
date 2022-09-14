@@ -147,7 +147,6 @@ function AppointmentData({
   handleShowPatientInfo,
 }) {
   const navs = useMemo(() => convertGroupFieldsToNavs(groups), [groups]);
-  console.log(navs, 'NANA', formValue, 'formValue..');
   const { t } = useTranslation();
   const { labsCategory } = useLabCategory();
   const { imagesCategory } = useImageCategory();
@@ -169,7 +168,6 @@ function AppointmentData({
   }, [sessionsDefinition]);
   const handlePicturesChange = useCallback(
     pictures => {
-      console.log(pictures, 'PP');
       onChange({
         ...appointmentFormValue,
         pictures,
@@ -214,7 +212,6 @@ function AppointmentData({
   const customImageDefinitions = useMemo(() => {
     return imagesDefinition.filter(l => l.category.id === imageId);
   }, [imagesDefinition, imageId]);
-  console.log(formValue, 'FORM');
   const handleImagesChange = useCallback(
     imageIds => {
       const cateImages = imagesDefinition.map(i => i.id);

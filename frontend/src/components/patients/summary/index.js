@@ -25,7 +25,6 @@ const initalVal = {
   imageId: null,
 };
 const renderProp = (key, value, textValue) => {
-  console.log(value, textValue, 'value, textValue');
   return (
     <Div display="flex" alignItems="center" minHeight={60}>
       <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
@@ -149,11 +148,9 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     () => R.propOr([], 'pictures')(activeSession),
     [activeSession]
   );
-  console.log(formValue, 'FF');
   if (!activeSession) {
     return '...No History';
   }
-  console.log(updatedSummary, 'updatedSummary');
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>

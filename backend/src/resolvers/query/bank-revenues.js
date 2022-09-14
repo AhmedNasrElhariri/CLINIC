@@ -166,7 +166,6 @@ const bankRevenues = async (
   const count = totalRevenues.count.id;
   const TO = offset + limit;
   const revenues = allBankRevenues.slice(offset, TO);
-  console.log(sum,count,'allBankRevenues');
 
   const data = {
     bankRevenues: revenues,
