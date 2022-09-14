@@ -12,7 +12,7 @@ function Patients() {
     <>
       <CRNav appearance="tabs" activeKey={activeTab} onSelect={setActiveTab}>
         <CRNav.CRItem eventKey="0">{t('patients')}</CRNav.CRItem>
-        <CRNav.CRItem eventKey="1">{t('patientsReports')}</CRNav.CRItem>
+        <CRNav.CRItem eventKey="1">{t('patientReports')}</CRNav.CRItem>
       </CRNav>
       {activeTab === '0' ? <ListPatients /> : <ListPatientsReports />}
     </>

@@ -7,6 +7,8 @@ import PatientsFilter from '../filter/patients-reports-filter';
 import EditPatient from '../edit-patient';
 import { usePatients } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import { format } from 'utils/date';
+
 const initialValue = {
   area: '',
   reference: '',
@@ -37,7 +39,6 @@ function Patients() {
     area: filter.area,
     patientLevel: filter.patientLevel,
     age: filter.age,
-    session: filter.session,
     type: filter.type,
     period: period,
     reference: filter.reference,
@@ -50,7 +51,7 @@ function Patients() {
     [setCurrentPage]
   );
 
-  console.log(filter, 'FF');
+  console.log(period, 'period4');
 
   return (
     <>
@@ -234,8 +235,8 @@ function Patients() {
               </H3>
               {period.length > 0 && (
                 <Div display="flex">
-                  <H4 margin="0px 10px">The Period from to :</H4>
-                  <H4>{period[0] - period[1]}</H4>
+                  <H4 margin="0px 10px">The Period from :</H4>
+                  <H4>{format(period[0])}  to  {format(period[1])}</H4>
                 </Div>
               )}
               {filter.age && (

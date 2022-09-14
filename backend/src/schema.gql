@@ -140,7 +140,6 @@ type Query {
     limit: Int
     area: String
     patientLevel: PatientLevel
-    sessionId: ID
     ageFrom: Int
     ageTo: Int
     dateFrom: Date

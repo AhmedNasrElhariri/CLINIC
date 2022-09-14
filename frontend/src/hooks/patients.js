@@ -80,7 +80,6 @@ function usePatients({
       type && { type: type },
       age && { ageFrom: age[0] },
       age && { ageTo: age[1] },
-      session && { sessionId: session },
       period && { dateFrom: period[0] },
       period && { dateTo: period[1] },
       reference && { reference: reference }

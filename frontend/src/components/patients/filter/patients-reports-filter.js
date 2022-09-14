@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client';
 import { ALL_AREAS } from 'apollo-client/queries';
 import { useTranslation } from 'react-i18next';
 import { get } from 'services/local-storage';
-import { useSessionDefinition } from 'hooks';
+
 const options = [
   { name: 'FaceBook', id: 'facebook' },
   { name: 'Instagram', id: 'instagram' },
@@ -46,7 +46,6 @@ const PatientsFilter = ({
   const { data } = useQuery(ALL_AREAS);
   const dir = get('dir');
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
-  const { sessionsDefinition } = useSessionDefinition();
   const { t } = useTranslation();
   const newAreas = useMemo(() => {
     let newareas = [];
@@ -122,17 +121,6 @@ const PatientsFilter = ({
             valueKey="value"
             searchable={false}
             data={SEX}
-            style={{ width: '200px' }}
-            block
-          />
-        </Div>
-        <Div ml={3} mr={3}>
-          <CRSelectInput
-            label={t('session')}
-            name="session"
-            valueKey="id"
-            searchable={false}
-            data={sessionsDefinition}
             style={{ width: '200px' }}
             block
           />

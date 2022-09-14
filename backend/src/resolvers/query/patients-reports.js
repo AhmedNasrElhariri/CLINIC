@@ -14,7 +14,6 @@ const patients = async (
     dateTo,
     ageFrom,
     ageTo,
-    sessionId,
     reference,
   },
   { organizationId }
@@ -62,15 +61,14 @@ const patients = async (
         },
       }
     ),
-    skip: offset,
-    take: limit,
   });
   const newPatients = reference
     ? patients.filter(p => p.reference.includes(reference))
     : patients;
   const TO = offset + limit;
   const finalPatients = newPatients.slice(offset, TO);
-  const data = { patients: finalPatients, patientsCount: newPatients.length };
+  const patientsCount = newPatients.length;
+  const data = { patients: finalPatients, patientsCount: patientsCount };
   return data;
 };
 

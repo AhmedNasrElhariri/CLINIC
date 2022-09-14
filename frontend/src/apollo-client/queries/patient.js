@@ -61,7 +61,6 @@ export const LIST_PATIENTS_REPORTS = gql`
     $dateTo: Date
     $ageFrom: Int
     $ageTo: Int
-    $sessionId: ID
     $reference: String
   ) {
     patientsReports(
@@ -74,7 +73,6 @@ export const LIST_PATIENTS_REPORTS = gql`
       type: $type
       ageFrom: $ageFrom
       ageTo: $ageTo
-      sessionId: $sessionId
       reference: $reference
     ) {
       patients {
