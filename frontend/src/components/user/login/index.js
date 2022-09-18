@@ -8,6 +8,8 @@ import { CoverStyled } from './style';
 
 const { StringType } = Schema.Types;
 
+const subTitleClasses = '!text-lg lg:!text-5xl !font-normal uppercase';
+
 const model = Schema.Model({
   type: StringType().isRequired('Appointment Type is required'),
   patient: StringType().isRequired('Patient Type is required'),
@@ -18,7 +20,7 @@ const initialValues = {
   password: '',
 };
 
-function Login({ onLoginSucceeded, onLoginFailed }) {
+export default function Login({ onLoginSucceeded, onLoginFailed }) {
   const [formValue, setFormValue] = useState(initialValues);
 
   const [login] = useMutation(LOGIN, {
@@ -39,32 +41,34 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
       height="100vh"
       style={{ direction: 'ltr' }}
     >
-      <Div
-        flexGrow={1}
-        width="100%"
-        py="4%"
-        pl="10%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-around"
-        alingItems="center"
-      >
-        <Div>
-          <Div as="img" src="logo.png" alt="" width="auto" />
-        </Div>
-        <Div>
-          <H1 variant="primary" textTransform="uppercase" fontWeight={400}>
-            Appointments
-          </H1>
-          <H1 variant="dark" textTransform="uppercase" fontWeight={400}>
-            Reports
-          </H1>
-          <H1 variant="dark" textTransform="uppercase" fontWeight={400}>
-            Agenda
-          </H1>
-        </Div>
-        <Div width={447}>
+      <Div className="mt-10 items-center grow inline-flex flex-col">
+        <Div
+          className="max-w-md w-full px-5 flex flex-col justify-center
+        items-center lg:items-start"
+        >
+          <div className="lg:my-10 text-center">
+            <Div as="img" src="logo.png" alt="" width="auto" />
+          </div>
+          <Div
+            className="flex text-lg gap-2 
+          mt-6 lg:mt-0 lg:mb-3
+          items-center lg:items-start
+          lg:flex-col"
+          >
+            <H1 variant="primary" className={subTitleClasses}>
+              Appointments
+            </H1>
+            <span className="lg:hidden">-</span>
+            <H1 variant="dark" className={subTitleClasses}>
+              Reports
+            </H1>
+            <span className="lg:hidden">-</span>
+            <H1 variant="dark" className={subTitleClasses}>
+              Agenda
+            </H1>
+          </Div>
           <Form
+            className="max-w-md w-full py-3"
             fluid
             model={model}
             formValue={formValue}
@@ -77,6 +81,7 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
               type="password"
             />
             <CRButton
+              className="mt-3"
               block
               bold
               uppercase
@@ -88,9 +93,7 @@ function Login({ onLoginSucceeded, onLoginFailed }) {
           </Form>
         </Div>
       </Div>
-      <CoverStyled flexGrow={1} width="100%" />
+      <CoverStyled className="grow-[2] lg:grow-[1.375] tw-hidden md:block" />
     </Div>
   );
 }
-
-export default Login;
