@@ -41,7 +41,7 @@ const bankRevenues = async (
     },
     false
   );
-  const allBankRevenues = await prisma.bankRevenue.findMany({
+  const revenues = await prisma.bankRevenue.findMany({
     where: {
       organizationId,
       AND: [
@@ -92,6 +92,8 @@ const bankRevenues = async (
         lte: updatedDateTo,
       },
     },
+    skip: offset,
+    take: limit,
     include: {
       bank: true,
       user: true,
@@ -164,12 +166,8 @@ const bankRevenues = async (
   });
   const sum = totalRevenues.sum.amount ;
   const count = totalRevenues.count.id;
-  const TO = offset + limit;
-  const revenues = allBankRevenues.slice(offset, TO);
-
   const data = {
     bankRevenues: revenues,
-    allBankRevenues: allBankRevenues,
     totalRevenues: sum,
     revenuesCount: count,
   };

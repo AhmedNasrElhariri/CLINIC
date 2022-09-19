@@ -24,7 +24,7 @@ export const LIST_APPOINTMENTS = gql`
     $offset: Int
     $limit: Int
     $patient: String
-    $type: AppointmentType
+    $type: ID
     $status: AppointmentStatus
     $dateFrom: Date
     $dateTo: Date
@@ -421,7 +421,7 @@ export const GET_APPOINTMENT_HISTORY = gql`
         id
         name
       }
-      updater{
+      updater {
         id
         name
       }

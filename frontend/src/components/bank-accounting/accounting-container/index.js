@@ -30,6 +30,10 @@ import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import { Can } from 'components/user/can';
 import PdfView from './pdf';
 import { formatDate } from 'utils/date';
+import axios from 'axios';
+import useGlobalState from 'state';
+import { ExcelIcon } from 'components/icons/index';
+
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalFilterVal = {
   expenseType: '',
@@ -65,6 +69,7 @@ const inialExpenseCurrentPage = {
 const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [action, setAction] = useState('');
+  const [user, setUser] = useGlobalState('user');
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
   const { formValue, setFormValue, type, setType, show, setShow } = useForm({
@@ -103,8 +108,6 @@ const BankAccountingContainer = () => {
   const {
     revenues,
     expenses,
-    allRevenues,
-    allExpenses,
     totalRevenues,
     totalExpenses,
     RevenuesCount,
@@ -138,13 +141,6 @@ const BankAccountingContainer = () => {
   const revenuesPages = Math.ceil(RevenuesCount / 20);
   const expensesPages = Math.ceil(expensesCount / 20);
 
-  const updatedRevenues = useMemo(() => {
-    if (filter.bank == null) {
-      return revenues;
-    } else {
-      return revenues.filter(r => r.bank.id == filter.bank);
-    }
-  }, [filter, revenues]);
   const handleClickEditRevenue = useCallback(
     data => {
       const { bank } = data;
@@ -221,6 +217,96 @@ const BankAccountingContainer = () => {
     formValue,
     type,
   ]);
+
+  const handleBankAccountingReport = async day => {
+    axios({
+      url: '/bankAccountingReport',
+      responseType: 'blob', // important
+      method: 'GET',
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        expenseBranchId: expenseBranchSpecialtyUser?.branch,
+        expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+        expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+        revenueName: formValue?.revenueName,
+        expenseType: formValue?.expenseType,
+        expenseName: formValue?.expenseName,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'accounting.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
+  };
+  ///
+  const handleBankRevenueAccountingExcel = async day => {
+    axios({
+      url: '/accountingBankRevenueExcel',
+      responseType: 'blob', // important
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        revenueName: formValue?.revenueName,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `bank-revenues-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
+  };
+  const handleBankExpenseAccountingExcel = async day => {
+    axios({
+      url: '/accountingBankExpenseExcel',
+      responseType: 'blob', // important
+      params: {
+        expenseBranchId: expenseBranchSpecialtyUser?.branch,
+        expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+        expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+        expenseType: formValue?.expenseType,
+        expenseName: formValue?.expenseName,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `bank-expenses-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
+  };
   return (
     <>
       <MainContainer
@@ -248,7 +334,15 @@ const BankAccountingContainer = () => {
                   {t('newExpense')} +
                 </CRButton>
               </Can>
-              <PdfView
+              <CRButton
+                variant="primary"
+                onClick={handleBankAccountingReport}
+                ml={1}
+                mr={1}
+              >
+                {t('print')} +
+              </CRButton>
+              {/* <PdfView
                 data={{
                   revenues: allRevenues,
                   expenses: allExpenses,
@@ -261,7 +355,7 @@ const BankAccountingContainer = () => {
                 marginBottom={marginBottom}
                 marginLeft={marginLeft}
                 t={t}
-              />
+              /> */}
             </>
           </Div>
         }
@@ -283,11 +377,22 @@ const BankAccountingContainer = () => {
             </H6>
           </Div>
         </Can>
-        <Filter
-          formValue={filter}
-          setFormValue={setFilter}
-          banksDefinition={banksDefinition}
-        />
+        <Div display="flex">
+          <Filter
+            formValue={filter}
+            setFormValue={setFilter}
+            banksDefinition={banksDefinition}
+          />
+          <ExcelIcon
+            variant="primary"
+            onClick={handleBankRevenueAccountingExcel}
+            ml={1}
+            mr={1}
+            width="30px"
+            height="30px"
+            marginTop="40px"
+          />
+        </Div>
         <Div>
           <Div display="flex">
             <Div flexGrow={1} mr={2}>
@@ -304,10 +409,21 @@ const BankAccountingContainer = () => {
                 setCurrentPage={setCurrentPage}
                 pages={revenuesPages}
               />
-              <ExpenseFilter
-                formValue={formValue}
-                setFormValue={setFormValue}
-              />
+              <Div display="flex">
+                <ExpenseFilter
+                  formValue={formValue}
+                  setFormValue={setFormValue}
+                />
+                <ExcelIcon
+                  variant="primary"
+                  onClick={handleBankExpenseAccountingExcel}
+                  ml={1}
+                  mr={1}
+                  width="30px"
+                  height="30px"
+                  marginTop="40px"
+                />
+              </Div>
               <BranchSpecialtyUserFilter
                 formValue={expenseBranchSpecialtyUser}
                 onChange={setExpenseBranchSpecialtyUser}

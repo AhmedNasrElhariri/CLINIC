@@ -40,7 +40,7 @@ const revenues = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
-  const allRevenues = await prisma.revenue.findMany({
+  const revenues = await prisma.revenue.findMany({
     where: {
       organizationId: organizationId,
       AND: [
@@ -86,6 +86,8 @@ const revenues = async (
         mode: 'insensitive',
       },
     },
+    skip: offset,
+    take: limit,
     include: {
       user: true,
       specialty: true,
@@ -151,12 +153,9 @@ const revenues = async (
   });
   const sum = totalRevenues.sum.amount;
   const count = totalRevenues.count.id;
-  const TO = offset + limit;
-  const revenues = allRevenues.slice(offset, TO);
-  
+
   const data = {
     revenues: revenues,
-    allRevenues: allRevenues,
     totalRevenues: sum,
     revenuesCount: count,
   };

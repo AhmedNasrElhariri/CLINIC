@@ -154,7 +154,7 @@ type Query {
     offset: Int
     limit: Int
     patient: String
-    type: AppointmentType
+    type: ID
     status: AppointmentStatus
     dateFrom: Date
     dateTo: Date
@@ -560,6 +560,7 @@ type Mutation {
   createSpecialty(specialty: SpecialtyInput!): Specialty!
   createUser(user: UserInput!): User!
   editUser(user: UserInput!): User!
+  deleteUser(id: ID!): User
   addSpecialty(branchId: ID!, specialtyId: ID!): Branch!
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
@@ -692,6 +693,7 @@ type User {
   specialty: [Specialty]
   role: Role
   allowedViews: [String!]
+  organizationId: ID
 }
 
 type Permission {
@@ -1037,7 +1039,7 @@ input AppointmentQueryInput {
   patients: [ID]
   fromDate: Date
   toDate: Date
-  type: AppointmentType
+  type: ID
 }
 
 input SessionPulseInput {
@@ -1407,7 +1409,6 @@ type Expense {
 }
 type ExpenseData {
   expenses: [Expense!]
-  allExpenses: [Expense!]
   totalExpenses: Float
   expensesCount: Int
 }
@@ -1453,7 +1454,6 @@ type Revenue {
 
 type RevenueData {
   revenues: [Revenue!]
-  allRevenues: [Revenue!]
   totalRevenues: Float
   revenuesCount: Int
 }
@@ -1475,7 +1475,6 @@ type BankRevenue {
 }
 type BankRevenueData {
   bankRevenues: [BankRevenue!]
-  allBankRevenues: [BankRevenue!]
   totalRevenues: Float
   revenuesCount: Int
 }
@@ -1510,7 +1509,6 @@ type BankExpense {
 }
 type BankExpenseData {
   bankExpenses: [BankExpense!]
-  allBankExpenses: [BankExpense!]
   totalExpenses: Float!
   expensesCount: Int!
 }
@@ -1779,6 +1777,7 @@ type SupplierAccount {
   id: ID!
   name: String!
   phoneNo: String
+  taxNumber: String
   totalPaid: Float
   totalUnpaid: Float
   invoiceCount: Int
@@ -1792,6 +1791,7 @@ input SupplierAccountInput {
   id: ID
   name: String!
   phoneNo: String
+  taxNumber: String
 }
 input SupplierInvoiceInput {
   name: String!

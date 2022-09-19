@@ -3,9 +3,11 @@ import { Form, Row, Col } from 'rsuite';
 import { useTranslation } from 'react-i18next';
 import { appointmentTypes, appointmentStatus } from 'services/appointment';
 import { CRTextInput, CRSelectInput, CRDateRangePicker } from 'components';
+import { useSessionDefinition } from 'hooks';
 
 function AppointmentsFilter({ formValue, onChange }) {
   const { t } = useTranslation();
+  const { sessionsDefinition } = useSessionDefinition({});
   return (
     <Form formValue={formValue} onChange={onChange} fluid>
       <Row gutter={16}>
@@ -36,9 +38,10 @@ function AppointmentsFilter({ formValue, onChange }) {
         <Col xs={6}>
           <CRSelectInput
             name="type"
+            keyValue="id"
             label={t('type')}
             block
-            data={appointmentTypes}
+            data={sessionsDefinition}
           />
         </Col>
       </Row>

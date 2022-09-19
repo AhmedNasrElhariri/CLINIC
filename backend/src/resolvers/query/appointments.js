@@ -25,12 +25,12 @@ const appointments = async (
     },
     false
   );
-  const sortingObj =
-    type === APPOINTMENTS_STATUS.WAITING
-      ? { updatedAt: 'asc' }
-      : {
-          date: 'asc',
-        };
+  // const sortingObj =
+  //   type === APPOINTMENTS_STATUS.WAITING
+  //     ? { updatedAt: 'asc' }
+  //     : {
+  //         date: 'asc',
+  //       };
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
   let appointmentsCount = 0;
@@ -40,7 +40,6 @@ const appointments = async (
       where: Object.assign(
         {
           status,
-          type,
           AND: [
             {
               OR: [
@@ -88,14 +87,16 @@ const appointments = async (
               gte: startDay,
               lte: endDay,
             },
-          }
+          },
+        type && {
+          sessionId: type,
+        }
       ),
     });
     appointments = await prisma.appointment.findMany({
       where: Object.assign(
         {
           status,
-          type,
           AND: [
             {
               OR: [
@@ -143,9 +144,12 @@ const appointments = async (
               gte: startDay,
               lte: endDay,
             },
-          }
+          },
+        type && {
+          sessionId: type,
+        }
       ),
-      orderBy: [sortingObj],
+
       include: {
         specialty: true,
         branch: true,

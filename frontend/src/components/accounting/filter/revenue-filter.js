@@ -7,18 +7,15 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
   const { t } = useTranslation();
   return (
     <Form
-      style={{ width: 276, marginBottom: 64 }}
+      style={{ marginBottom: 64 }}
       formValue={formValue}
       onChange={setFormValue}
     >
-      <Div display="flex">
-        <Div mr={3}>
-          <CRTextInput
-            label={t('revenueName')}
-            name="revenueName"
-            style={{ width: '230px' }}
-          />
-        </Div>
+      <Div width="270px">
+        <CRTextInput
+          label={t('revenueName')}
+          name="revenueName"
+        />
       </Div>
     </Form>
   );

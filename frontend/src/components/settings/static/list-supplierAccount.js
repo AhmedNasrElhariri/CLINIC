@@ -25,6 +25,14 @@ function ListSupplierAccounts({ supplierAccounts, onEdit, onDelete }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('taxNumber')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ taxNumber }) => (
+                <CRTable.CRCellStyled bold>{taxNumber}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>

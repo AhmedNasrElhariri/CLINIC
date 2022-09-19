@@ -341,14 +341,14 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        {/* <CRTable.CRColumn>
+        <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ user }) => (
               <CRTable.CRCellStyled>{user?.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
-        </CRTable.CRColumn> */}
+        </CRTable.CRColumn>
         <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>

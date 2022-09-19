@@ -3,7 +3,7 @@ import { Tag, Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
 import { useTranslation } from 'react-i18next';
 
-export default function Users({ users, onEdit }) {
+export default function Users({ users, onEdit,onDelete }) {
   const { t } = useTranslation();
   return (
     <>
@@ -45,6 +45,19 @@ export default function Users({ users, onEdit }) {
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
                     {t('edit')}
+                  </Icon>
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <CRTable.CRCellStyled bold>
+                  <Icon icon="trush" onClick={() => onDelete(data)}>
+                    {' '}
+                    {t('delete')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}

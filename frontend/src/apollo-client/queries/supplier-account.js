@@ -6,6 +6,7 @@ export const LIST_SUPPLIER_ACCOUNTS = gql`
       id
       name
       phoneNo
+      taxNumber
     }
   }
 `;
@@ -17,6 +18,7 @@ export const LIST_DETAILED_SUPPLIER_ACCOUNTS = gql`
         id
         name
         phoneNo
+        taxNumber
         totalPaid
         totalUnpaid
         invoiceCount
@@ -89,6 +91,7 @@ export const ADD_SUPPLIER_ACCOUNT = gql`
       id
       name
       phoneNo
+      taxNumber
     }
   }
 `;
@@ -147,6 +150,7 @@ export const EDIT_SUPPLIER_ACCOUNT = gql`
       id
       name
       phoneNo
+      taxNumber
     }
   }
 `;

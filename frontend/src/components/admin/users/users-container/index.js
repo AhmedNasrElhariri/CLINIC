@@ -16,7 +16,7 @@ export default function UsersContainer() {
   const [formValue, setFormValue] = useState(initialValues);
   const [type, setType] = useState('');
   const { t } = useTranslation();
-  const { users, createUser, editUser } = usePermissions({
+  const { users, createUser, editUser,deleteUser } = usePermissions({
     onCreateUser: close,
     onEditUser: close,
   });
@@ -34,13 +34,24 @@ export default function UsersContainer() {
     },
     [open, setFormValue, setType]
   );
+  const handleClickDelete = useCallback(
+    data => {
+      const user = R.pick(['id'])(data);
+      setType('delete');
+      setFormValue(user);
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       createUser(formValue);
-    } else {
+    } else if (type === 'edit') {
       editUser(formValue);
+    } else {
+      deleteUser(formValue);
     }
-  }, [createUser, editUser, formValue, type]);
+  }, [createUser, editUser, deleteUser, formValue, type]);
   return (
     <>
       <MainContainer
@@ -61,7 +72,11 @@ export default function UsersContainer() {
         onChange={setFormValue}
         type={type}
       />
-      <Users users={users} onEdit={handleClickEdit} />
+      <Users
+        users={users}
+        onEdit={handleClickEdit}
+        onDelete={handleClickDelete}
+      />
     </>
   );
 }

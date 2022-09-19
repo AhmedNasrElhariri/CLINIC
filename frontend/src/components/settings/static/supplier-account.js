@@ -7,7 +7,7 @@ import { useForm, useModal, useSupplierAccounts } from 'hooks';
 import { Schema } from 'rsuite';
 import { useTranslation } from 'react-i18next';
 
-const initValue = { name: '', phoneNo: '' };
+const initValue = { name: '', phoneNo: '',taxNumber:'' };
 const { StringType } = Schema.Types;
 const model = Schema.Model({
   name: StringType().isRequired('SupplierAccount name is required'),

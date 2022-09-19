@@ -126,6 +126,13 @@ export const EDIT_USER = gql`
     }
   }
 `;
+export const DELETE_USER = gql`
+  mutation deleteUser($id: ID!) {
+    deleteUser(id: $id) {
+     id
+    }
+  }
+`;
 
 export const ADD_SPECIALITY = gql`
   mutation addSpecialty($branchId: ID!, $specialtyId: ID!) {

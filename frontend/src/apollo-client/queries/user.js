@@ -7,6 +7,7 @@ export const USER = gql`
       name
       email
       allowedViews
+      organizationId
       role {
         permissions {
           subject
@@ -26,6 +27,7 @@ export const LOGIN = gql`
         id
         avatar
         position
+        organizationId
         language
         allowedViews
         name
@@ -49,6 +51,7 @@ export const VERIFY = gql`
       position
       language
       allowedViews
+      organizationId
       name
       role {
         permissions {

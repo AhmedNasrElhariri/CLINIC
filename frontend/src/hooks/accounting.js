@@ -43,7 +43,7 @@ const useAccounting = ({
       expenseBranchId && { branchId: expenseBranchId },
       expenseSpecialtyId && { specialtyId: expenseSpecialtyId },
       expenseDoctorId && { doctorId: expenseDoctorId },
-      expenseName && { expenseName: expenseName },
+      expenseName && { expenseName: expenseName }
     ),
   });
   const { data: revenueData } = useQuery(LIST_REVENUES, {
@@ -68,11 +68,9 @@ const useAccounting = ({
   // );
   const revenuesData = revenueData?.revenues;
   const revenues = R.propOr([], 'revenues')(revenuesData);
-  const allRevenues = R.propOr([], 'allRevenues')(revenuesData);
 
   const expensesData = expenseData?.expenses;
   const expenses = R.propOr([], 'expenses')(expensesData);
-  const allExpenses = R.propOr([], 'allExpenses')(expensesData);
 
   // const expenses = useMemo(
   //   () => filterAccountingList(allExpenses, view, period),
@@ -152,14 +150,10 @@ const useAccounting = ({
     () => ({
       expenses,
       revenues,
-      allRevenues,
-      allExpenses,
       totalExpenses,
       totalRevenues,
       RevenuesCount,
       expensesCount,
-      // BranchTotalExpenses,
-      // BranchTotalRevenues,
       timeFrame,
       refetchRevenues: {
         query: LIST_REVENUES,
@@ -171,15 +165,11 @@ const useAccounting = ({
     [
       expenses,
       revenues,
-      allRevenues,
-      allExpenses,
       timeFrame,
       totalExpenses,
       totalRevenues,
       RevenuesCount,
       expensesCount,
-      // BranchTotalExpenses,
-      // BranchTotalRevenues,
     ]
   );
 };

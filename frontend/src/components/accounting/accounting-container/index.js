@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
 import { ACTIONS } from 'utils/constants';
+import fs from 'fs';
 import {
   MainContainer,
   Div,
@@ -35,6 +36,8 @@ import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import useGlobalState from 'state';
+import { ExcelIcon } from 'components/icons/index';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalVal = {
@@ -60,6 +63,7 @@ const initialExpenseBranchValue = {
 };
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
+  const [user, setUser] = useGlobalState('user');
   const { t } = useTranslation();
   const { filterBranches } = useAppointments({
     action: ACTIONS.View_Accounting,
@@ -215,8 +219,6 @@ const AccountingContainer = () => {
   const {
     expenses,
     revenues,
-    allRevenues,
-    allExpenses,
     totalRevenues,
     totalExpenses,
     RevenuesCount,
@@ -248,37 +250,95 @@ const AccountingContainer = () => {
       ),
     [formValue, expenses]
   );
-  // const handleAccountingReport = async day => {
-  //   axios({
-  //     url: '/accounting',
-  //     responseType: 'blob', // important
-  //     method: 'GET',
-  //     params: {
-  //       branchId: branchSpecialtyUser?.branch,
-  //       specialtyId: branchSpecialtyUser?.specialty,
-  //       doctorId: branchSpecialtyUser?.doctor,
-  //       expenseBranchId: expenseBranchSpecialtyUser?.branch,
-  //       expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
-  //       expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
-  //       revenueName: formValue?.revenueName,
-  //       expenseType: formValue?.expenseType,
-  //       view,
-  //       dateFrom: period[0],
-  //       dateTo: period[1],
-  //     },
-  //   })
-  //     .then(function (response) {
-  //       const url = window.URL.createObjectURL(new Blob([response.data]));
-  //       const link = document.createElement('a');
-  //       link.href = url;
-  //       link.setAttribute('download', 'file.pdf'); //or any other extension
-  //       document.body.appendChild(link);
-  //       link.click();
-  //     })
-  //     .catch(err => {
-  //       console.log(err, 'rrr');
-  //     });
-  // };
+  const handleAccountingReport = async day => {
+    axios({
+      url: '/accounting',
+      responseType: 'blob', // important
+      method: 'GET',
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        expenseBranchId: expenseBranchSpecialtyUser?.branch,
+        expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+        expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+        revenueName: formValue?.revenueName,
+        expenseType: formValue?.expenseType,
+        expenseName: formValue?.expenseName,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'accounting.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
+  };
+
+  const handleRevenueAccountingExcel = async day => {
+    axios({
+      url: '/accountingRevenueExcel',
+      responseType: 'blob', // important
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        revenueName: formValue?.revenueName,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `revenues-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
+  };
+  const handleExpenseAccountingExcel = async day => {
+    axios({
+      url: '/accountingExpenseExcel',
+      responseType: 'blob', // important
+      params: {
+        expenseBranchId: expenseBranchSpecialtyUser?.branch,
+        expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+        expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+        expenseType: formValue?.expenseType,
+        expenseName: formValue?.expenseName,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `expenses-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
+  };
   return (
     <>
       <MainContainer
@@ -301,15 +361,15 @@ const AccountingContainer = () => {
                   {t('newExpense')} +
                 </CRButton>
               </Can>
-              {/* <CRButton
+              <CRButton
                 variant="primary"
                 onClick={handleAccountingReport}
                 ml={1}
                 mr={1}
               >
-                {t('print')}
-              </CRButton> */}
-              <PdfView
+                {t('print')} +
+              </CRButton>
+              {/* <PdfView
                 data={{
                   revenues: allRevenues,
                   expenses: allExpenses,
@@ -322,7 +382,7 @@ const AccountingContainer = () => {
                 marginBottom={marginBottom}
                 marginLeft={marginLeft}
                 t={t}
-              />
+              /> */}
             </>
           </Div>
         }
@@ -350,10 +410,21 @@ const AccountingContainer = () => {
           {activeTab === '0' ? (
             <Div display="flex">
               <Div flexGrow={1} mr={2}>
-                <RevenueFilter
-                  formValue={formValue}
-                  setFormValue={setFormValue}
-                />
+                <Div display="flex">
+                  <RevenueFilter
+                    formValue={formValue}
+                    setFormValue={setFormValue}
+                  />
+                  <ExcelIcon
+                    variant="primary"
+                    onClick={handleRevenueAccountingExcel}
+                    ml={1}
+                    mr={1}
+                    width="30px"
+                    height="30px"
+                    marginTop="40px"
+                  />
+                </Div>
                 <BranchSpecialtyUserFilter
                   formValue={branchSpecialtyUser}
                   onChange={setBranchSpecialtyUser}
@@ -370,10 +441,20 @@ const AccountingContainer = () => {
                   setCurrentPage={setCurrentPage}
                   pages={revenuesPages}
                 />
-                <ExpenseFilter
-                  formValue={formValue}
-                  setFormValue={setFormValue}
-                />
+                <Div display="flex">
+                  <ExpenseFilter
+                    formValue={formValue}
+                    setFormValue={setFormValue}
+                  />
+                  <ExcelIcon
+                    onClick={handleExpenseAccountingExcel}
+                    ml={1}
+                    mr={1}
+                    width="30px"
+                    height="30px"
+                    marginTop="40px"
+                  />
+                </Div>
                 <BranchSpecialtyUserFilter
                   formValue={expenseBranchSpecialtyUser}
                   onChange={setExpenseBranchSpecialtyUser}

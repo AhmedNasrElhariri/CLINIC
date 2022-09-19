@@ -19,6 +19,7 @@ import {
   LIST_ACTION_DOCTORS,
   DELETE_ROLE_TO_USER,
   EDIT_USER,
+  DELETE_USER,
 } from 'apollo-client/queries';
 import { POSITIONS, ACTIONS } from 'utils/constants';
 
@@ -154,6 +155,20 @@ function usePermissions({
     },
   });
 
+  const [deleteUser] = useMutation(DELETE_USER, {
+    onCompleted() {
+      Alert.success('The user has been deleted Successfully');
+      onEditUser && onEditUser();
+    },
+    update(cache, { data: { deleteUser: user } }) {
+      const newUsers = users.filter(u => u.id !== user.id);
+      updateUsersCache(cache, [...newUsers]);
+    },
+    onError() {
+      Alert.error('Failed to delete user');
+    },
+  });
+
   const [addSpecialty] = useMutation(ADD_SPECIALITY, {
     onCompleted() {
       Alert.success('The specialty has been added Successfully');
@@ -239,6 +254,7 @@ function usePermissions({
         createSpecialty({ variables: { specialty } }),
       createUser: user => createUser({ variables: { user } }),
       editUser: user => editUser({ variables: { user } }),
+      deleteUser: user => deleteUser({ variables: { id: user.id } }),
       addSpecialty: data => addSpecialty({ variables: data }),
       addDoctor: data => addDoctor({ variables: data }),
       assignRoleToUser: data => assignRoleToUser({ variables: data }),
@@ -267,6 +283,7 @@ function usePermissions({
       createSpecialty,
       createUser,
       editUser,
+      deleteUser,
       addSpecialty,
       addDoctor,
       assignRoleToUser,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRTextInput, CRModal, CRCheckBoxGroup } from 'components';
+import { CRTextInput, CRModal, CRCheckBoxGroup,H3 } from 'components';
 import { CRSelectInput } from 'components/widgets';
 import { POSITIONS } from 'utils/constants';
 import { mapObjValuesToChoices } from 'utils/misc';
@@ -57,23 +57,33 @@ export default function NewUser({
       onOk={() => onOk(formValue)}
     >
       <Form fluid model={model} formValue={formValue} onChange={onChange}>
-        <CRTextInput label={t('name')} name="name" />
-        <CRTextInput label={t('email')} name="email" />
-        <CRTextInput label={t('password')} name="password" type="password" />
-        <CRSelectInput
-          name="position"
-          label={t('position')}
-          block
-          data={positions}
-        />
-        <CRCheckBoxGroup
-          options={viewsList}
-          name="allowedViews"
-          label={t('viewsAllowedToUser')}
-          value={formValue.views}
-          onChange={val => onChange({ ...formValue, allowedViews: val })}
-          inline
-        />
+        {type === 'delete' ? (
+          <H3>Are you sure that you want delete user and all related data?</H3>
+        ) : (
+          <>
+            <CRTextInput label={t('name')} name="name" />
+            <CRTextInput label={t('email')} name="email" />
+            <CRTextInput
+              label={t('password')}
+              name="password"
+              type="password"
+            />
+            <CRSelectInput
+              name="position"
+              label={t('position')}
+              block
+              data={positions}
+            />
+            <CRCheckBoxGroup
+              options={viewsList}
+              name="allowedViews"
+              label={t('viewsAllowedToUser')}
+              value={formValue.views}
+              onChange={val => onChange({ ...formValue, allowedViews: val })}
+              inline
+            />
+          </>
+        )}
       </Form>
     </CRModal>
   );

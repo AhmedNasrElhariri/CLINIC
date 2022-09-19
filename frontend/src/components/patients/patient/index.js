@@ -166,13 +166,13 @@ function Appointment() {
                     <SessionsPulses summary={appointmentHistory} />
                   </Can>
                 )}
-                {showComp('8') && (
-                  <Can I="ViewDental" an="Patient">
-                    <AllowedViews part="Dental">
+                <AllowedViews part="Dental">
+                  {showComp('8') && (
+                    <Can I="ViewDental" an="Patient">
                       <Dental patient={patient} />
-                    </AllowedViews>
-                  </Can>
-                )}
+                    </Can>
+                  )}
+                </AllowedViews>
                 {showComp('9') && (
                   <Can I="ViewFaseOperation" an="Patient">
                     <FaceOperationsPage patient={patient} />

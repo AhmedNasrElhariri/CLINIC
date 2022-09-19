@@ -18,7 +18,7 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
   updatedExpenseTypeDefinitions.push(salary);
   return (
     <Form
-      style={{ width: 276, marginBottom: 64 }}
+      style={{ marginBottom: 64 }}
       formValue={formValue}
       onChange={setFormValue}
     >

@@ -85,3 +85,6 @@ export const DentalIcon_1_1 = props => (
 export const DentalIcon_1_2 = props => (
   <IconStyled src="/icons/dental-1-2.png" {...props} />
 );
+export const ExcelIcon = props => (
+  <IconStyled src="/icons/excelImage.png" {...props} />
+);

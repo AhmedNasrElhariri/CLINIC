@@ -68,6 +68,12 @@ function NewSupplierAccount({
               // placeholder="phoneNo"
               block
             />
+            <CRTextInput
+              label={t('taxNumber')}
+              name="taxNumber"
+              // placeholder="phoneNo"
+              block
+            />
           </>
         )}
       </Form>

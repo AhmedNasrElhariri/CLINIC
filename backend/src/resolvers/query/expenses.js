@@ -54,7 +54,7 @@ const expenses = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
-  const allExpenses = await prisma.expense.findMany({
+  const expenses = await prisma.expense.findMany({
     where: {
       organizationId: organizationId,
       AND: [
@@ -104,6 +104,8 @@ const expenses = async (
         mode: 'insensitive',
       },
     },
+    skip: offset,
+    take: limit,
     include: {
       user: true,
       specialty: true,
@@ -174,11 +176,9 @@ const expenses = async (
 
   const sum = totalExpenses.sum.amount;
   const count = totalExpenses.count.id;
-  const TO = offset + limit;
 
   const data = {
-    expenses: allExpenses.slice(offset, TO),
-    allExpenses: allExpenses,
+    expenses: expenses,
     totalExpenses: sum,
     expensesCount: count,
   };
