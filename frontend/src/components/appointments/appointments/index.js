@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Div, H3, CRTabs } from 'components';
 import Filter from './filter';
 import BranchFilter from '../../filters';
-
+import { Nav } from 'rsuite';
 import * as R from 'ramda';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
@@ -50,7 +49,6 @@ function Appointments() {
   const {
     appointments,
     appointmentsCountNumber,
-    refetchAppointments,
     filterBranches,
     archive,
     complete,
@@ -154,11 +152,11 @@ function Appointments() {
             quantity,
           })),
           discount: {
-            name: 'discount' + ' - ' + appointment.patient.name,
+            name: `discount-${appointment.patient.name}`,
             amount: discount,
           },
           others: {
-            name: 'others - ' + othersName + ' - ' + appointment.patient.name,
+            name: `others-${appointment.patient.name}`,
             amount: others,
           },
           remaining: remaining,
@@ -185,7 +183,7 @@ function Appointments() {
         notes: notes.businessNotes,
       },
     });
-  }, [appointment, updateNotes, notes]);
+  }, [appointment, updateNotes, notes, close]);
   const handleEdit = useCallback(
     formValue => {
       close();
@@ -199,12 +197,12 @@ function Appointments() {
         },
       });
     },
-    [adjust, appointment]
+    [adjust, appointment, close]
   );
   const handleCancel = useCallback(() => {
     close();
     cancel({ variables: { id: appointment.id } });
-  }, [cancel, appointment]);
+  }, [cancel, appointment, close]);
   const handleComplete = useCallback(
     ({ appointment }) => {
       close();
@@ -214,93 +212,95 @@ function Appointments() {
         },
       });
     },
-    [appointment, complete, close]
+    [complete, close]
   );
   useEffect(() => {
     setNotes(val => ({
       businessNotes: R.propOr('', 'businessNotes')(appointment),
     }));
   }, [appointment]);
+  const [activeIndex, setActiveIndex] = React.useState(0);
   return (
     <>
-      <H3 mb={64}>{t('appointments')}</H3>
-      <Div mb={4}>
-        <CRTabs
-          onChange={index =>
-            setFormValue({ ...formValue, status: tabVsStatus.get(index) })
-          }
-        >
-          <CRTabs.CRTabsGroup>
-            <CRTabs.CRTab>{t('mainAppointments')}</CRTabs.CRTab>
-            <CRTabs.CRTab>{t('waitingAppointments')}</CRTabs.CRTab>
-            <CRTabs.CRTab>{t('completedAppointments')}</CRTabs.CRTab>
-          </CRTabs.CRTabsGroup>
-          <CRTabs.CRContentGroup>
-            <CRTabs.CRContent>
-              <BranchFilter
-                appointments={appointments}
-                branches={filterBranches}
-                render={apps => (
-                  <>
-                    <Filter formValue={formValue} onChange={setFormValue} />
-                    <ListAppointments
-                      appointments={apps}
-                      onArchive={onClickDone}
-                      onComplete={onCompleteDone}
-                      onAddBusinessNotes={onAddBusinessNotes}
-                      onDuplicateAppointments={onDuplicateAppointments}
-                      onEditAppointments={onEditAppointments}
-                      onCancelAppointments={onCancelAppointments}
-                      defaultExpanded={true}
-                      currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}
-                      pages={pages}
-                    />
-                  </>
-                )}
+      <h1 className="text-2xl mb-4">{t('appointments')}</h1>
+      <Nav
+        activeKey={activeIndex}
+        onSelect={i => {
+          setActiveIndex(i);
+          setFormValue({ ...formValue, status: tabVsStatus.get(i) });
+        }}
+        appearance="tabs"
+        justified
+        className="text-center max-w-5xl mb-5"
+      >
+        <Nav.Item eventKey={0}>{t('mainAppointments')}</Nav.Item>
+        <Nav.Item eventKey={1}>{t('waitingAppointments')}</Nav.Item>
+        <Nav.Item eventKey={2}>{t('completedAppointments')}</Nav.Item>
+      </Nav>
+
+      {activeIndex === 0 && (
+        <BranchFilter
+          appointments={appointments}
+          branches={filterBranches}
+          render={apps => (
+            <>
+              <Filter formValue={formValue} onChange={setFormValue} />
+              <ListAppointments
+                appointments={apps}
+                onArchive={onClickDone}
+                onComplete={onCompleteDone}
+                onAddBusinessNotes={onAddBusinessNotes}
+                onDuplicateAppointments={onDuplicateAppointments}
+                onEditAppointments={onEditAppointments}
+                onCancelAppointments={onCancelAppointments}
+                defaultExpanded={true}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                pages={pages}
               />
-            </CRTabs.CRContent>
-            <CRTabs.CRContent>
-              <BranchFilter
-                appointments={appointments}
-                branches={filterBranches}
-                render={apps => (
-                  <>
-                    <Filter formValue={formValue} onChange={setFormValue} />
-                    <ListAppointments
-                      appointments={apps}
-                      onArchive={onClickDone}
-                      onComplete={onCompleteDone}
-                      onAddBusinessNotes={onAddBusinessNotes}
-                      defaultExpanded={true}
-                      waiting={true}
-                    />
-                  </>
-                )}
+            </>
+          )}
+        />
+      )}
+      {activeIndex === 1 && (
+        <BranchFilter
+          appointments={appointments}
+          branches={filterBranches}
+          render={apps => (
+            <>
+              <Filter formValue={formValue} onChange={setFormValue} />
+              <ListAppointments
+                appointments={apps}
+                onArchive={onClickDone}
+                onComplete={onCompleteDone}
+                onAddBusinessNotes={onAddBusinessNotes}
+                defaultExpanded={true}
+                waiting={true}
               />
-            </CRTabs.CRContent>
-            <CRTabs.CRContent>
-              <BranchFilter
-                appointments={appointments}
-                branches={filterBranches}
-                render={apps => (
-                  <>
-                    <Filter formValue={formValue} onChange={setFormValue} />
-                    <ListAppointments
-                      appointments={apps}
-                      onArchive={onClickDone}
-                      onComplete={onCompleteDone}
-                      onAddBusinessNotes={onAddBusinessNotes}
-                      defaultExpanded={true}
-                      waiting={true}
-                    />
-                  </>
-                )}
+            </>
+          )}
+        />
+      )}
+      {activeIndex === 2 && (
+        <BranchFilter
+          appointments={appointments}
+          branches={filterBranches}
+          render={apps => (
+            <>
+              <Filter formValue={formValue} onChange={setFormValue} />
+              <ListAppointments
+                appointments={apps}
+                onArchive={onClickDone}
+                onComplete={onCompleteDone}
+                onAddBusinessNotes={onAddBusinessNotes}
+                defaultExpanded={true}
+                waiting={true}
               />
-            </CRTabs.CRContent>
-          </CRTabs.CRContentGroup>
-        </CRTabs>
-      </Div>
+            </>
+          )}
+        />
+      )}
+
       {popUp === 'archive' && (
         <ArchiveAppointment
           appointment={appointment}
