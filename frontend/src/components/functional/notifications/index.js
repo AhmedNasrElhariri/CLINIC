@@ -28,7 +28,7 @@ export default function Notifications({ onClear, notifications }) {
       }
     >
       {notifications.length > 0 ? (
-        <Badge>
+        <Badge content={notifications.length}>
           <MdOutlineNotifications className="cursor-pointer" />
         </Badge>
       ) : (
