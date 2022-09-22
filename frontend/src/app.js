@@ -1,3 +1,4 @@
+import './styles/App.css';
 import React, { useEffect, useState } from 'react';
 import { Ability } from '@casl/ability';
 import { ApolloProvider } from '@apollo/client';
@@ -30,15 +31,15 @@ export default function App() {
     <>
       <GlobalStyle />
       {/* <StyleSheetManager stylisPlugins={[rtlPlugin]}> */}
-        <AbilityContext.Provider value={new Ability()}>
-            <ApolloProvider client={client}>
-              <ThemeProvider theme={{ ...lightTheme, direction: get('dir') }}>
-                <BrowserRouter>
-                  <Root />
-                </BrowserRouter>
-              </ThemeProvider>
-            </ApolloProvider>
-        </AbilityContext.Provider>
+      <AbilityContext.Provider value={new Ability()}>
+        <ApolloProvider client={client}>
+          <ThemeProvider theme={{ ...lightTheme, direction: get('dir') }}>
+            <BrowserRouter>
+              <Root />
+            </BrowserRouter>
+          </ThemeProvider>
+        </ApolloProvider>
+      </AbilityContext.Provider>
       {/* </StyleSheetManager> */}
     </>
   );

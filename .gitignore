@@ -126,3 +126,8 @@ npm-debug.log
 yarn-error.log
 
 # End of https://www.gitignore.io/api/node,vuejs,visualstudiocode
+
+build
+build.zip
+package-lock.json
+yarn.lock

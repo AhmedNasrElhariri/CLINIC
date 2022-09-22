@@ -1,25 +1,11 @@
 import React, { useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
-import {
-  AppointmentPrintout,
-  AdjustAppointment,
-  Div,
-  CRButton,
-  CRTable,
-} from 'components';
-import {
-  Tooltip,
-  Whisper,
-  Dropdown,
-  Popover,
-  IconButton,
-  Divider,
-} from 'rsuite';
-import { isScheduled, isWaiting } from 'services/appointment';
+import { AppointmentPrintout, Div, CRButton, CRTable } from 'components';
+import { Tooltip, Whisper, Dropdown, Popover } from 'rsuite';
 import { canAjdust } from 'services/appointment';
 import { Can } from 'components/user/can';
-import { PrintOLIcon, MoreIcon } from 'components/icons';
+import { MoreIcon } from 'components/icons';
 import { formatDate } from 'utils/date';
 import { Table } from 'rsuite';
 import {
@@ -31,14 +17,9 @@ import { useTranslation } from 'react-i18next';
 
 const ActionCell = ({ rowData, dataKey, ...rest }) => {
   const { t } = useTranslation();
-  function handleAction() {
-    alert(`id:${rowData[dataKey]}`);
-  }
   const {
     appointment,
-    onArchive,
     onComplete,
-    onAddBusinessNotes,
     onDuplicateAppointments,
     onEditAppointments,
     onCancelAppointments,
@@ -229,7 +210,6 @@ function ListAppointments({
   close,
 }) {
   const history = useHistory();
-  const componentRef = useRef();
   const ref = useRef();
   const handleSelect = useCallback(
     eventKey => {
@@ -251,7 +231,6 @@ function ListAppointments({
         />
       </Div>
       <CRTable
-        autoHeight
         data={appointments}
         onRowClick={appointment => {
           history.push(

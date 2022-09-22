@@ -66,7 +66,9 @@ const link = split(
     errorLink,
     authLink,
     cleanTypeName,
-    createUploadLink({ uri: '/graphql' }),
+    createUploadLink({
+      uri: `${process.env.REACT_APP_API_ENDPOINT ?? ''}/graphql`,
+    }),
   ])
 );
 

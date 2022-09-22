@@ -20,6 +20,7 @@ import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import '../../../translations/i18n';
+import { Drawer } from 'rsuite';
 
 const initialvalues = {
   branchId: null,
@@ -143,8 +144,26 @@ function Root() {
         <ContainerStyled>
           {isAuthenticated ? (
             <>
-              <Sidebar items={items} />
-              <MainStyled>
+              <div className="tw-hidden lg:block">
+                <Sidebar items={items} />
+              </div>
+              <Drawer
+                show={formValue.isDrawerOpen}
+                placement={formValue.dir === 'rtl' ? 'right' : 'left'}
+                className="!w-64"
+                onHide={() =>
+                  setFormValue(prev => ({ ...prev, isDrawerOpen: false }))
+                }
+              >
+                <div
+                  onClick={() =>
+                    setFormValue(prev => ({ ...prev, isDrawerOpen: false }))
+                  }
+                >
+                  <Sidebar items={items} />
+                </div>
+              </Drawer>
+              <MainStyled className="overflow-hidden">
                 <Navbar
                   onLogout={logout}
                   onClickAvatar={() => history.push('/me')}
@@ -155,7 +174,7 @@ function Root() {
                   setFormValue={setFormValue}
                   user={user}
                 />
-                <ContentStyled>
+                <ContentStyled className="overflow-auto">
                   <AppRouter></AppRouter>
                 </ContentStyled>
               </MainStyled>

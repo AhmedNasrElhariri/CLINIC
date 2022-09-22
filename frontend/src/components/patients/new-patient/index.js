@@ -1,15 +1,9 @@
 import React, { useMemo } from 'react';
-import { Alert, Schema } from 'rsuite';
+import { Schema, Modal, Button } from 'rsuite';
 import * as R from 'ramda';
 import { ALL_AREAS } from 'apollo-client/queries';
-import { CRModal } from 'components';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import Form from './form';
-import {
-  CREATE_PATIENT,
-  LIST_SEARCHED_PATIENTS,
-  LIST_PATIENTS,
-} from 'apollo-client/queries';
 import { usePatients, useForm } from 'hooks';
 import { get } from 'services/local-storage';
 import { useTranslation } from 'react-i18next';
@@ -36,14 +30,13 @@ const model = Schema.Model({
     .maxLength(30, 'The field cannot be greater than 30 characters')
     .isRequired('User name is required'),
   phoneNo: StringType().isRequired('Phone No is  Required'),
-  // .pattern(/^(01(0|1|2|5)\d{8})$/, 'Invalid Phone No'),
   age: NumberType('Age should be a number').range(
     0,
     100,
     'Age should be 0-100 years old'
   ),
 });
-export default function NewPatient({ show: showModel, onHide, onCreate }) {
+export default function NewPatient({ show: showModel, onHide }) {
   const { formValue, setFormValue, checkResult, validate, show, setShow } =
     useForm({
       initValue: initialValues,
@@ -55,7 +48,6 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
       onHide();
       setFormValue(initialValues);
       setShow(false);
-      // onCreate(patient);
     },
   });
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
@@ -82,33 +74,45 @@ export default function NewPatient({ show: showModel, onHide, onCreate }) {
   }, [dir, areas]);
 
   return (
-    <CRModal
+    <Modal
       show={showModel}
       onHide={onHide}
-      header={t('newPatient')}
-      onCancel={onHide}
-      onOk={() => {
-        setShow(true);
-        if (validate) {
-          const { ageOption, phoneOption, ...rest } = formValue;
-          createPatient({
-            variables: {
-              input: { ...rest },
-            },
-          });
-        }
-      }}
-      okTitle={t('ok')}
-      cancelTitle={t('cancel')}
       loading={createPatientLoading}
+      className="!w-[calc(100vw-5%)] sm:!w-[40rem]"
     >
-      <Form
-        onChange={setFormValue}
-        formValue={formValue}
-        newAreas={newAreas}
-        checkResult={checkResult}
-        show={show}
-      />
-    </CRModal>
+      <Modal.Header className="text-[1rem]">{t('newPatient')}</Modal.Header>
+      <Modal.Body>
+        <Form
+          className="flex flex-col"
+          onChange={setFormValue}
+          formValue={formValue}
+          newAreas={newAreas}
+          checkResult={checkResult}
+          show={show}
+        />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          onClick={() => {
+            setShow(true);
+            if (validate) {
+              const { ageOption, phoneOption, ...rest } = formValue;
+              createPatient({
+                variables: {
+                  input: { ...rest },
+                },
+              });
+            }
+          }}
+          appearance="primary"
+          className="min-w-[5rem]"
+        >
+          {t('ok')}
+        </Button>
+        <Button onClick={onHide} appearance="subtle">
+          {t('cancel')}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }

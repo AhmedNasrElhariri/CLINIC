@@ -1,16 +1,23 @@
 import React from 'react';
-import { Icon } from 'rsuite';
-import { Div } from '../../widgets/html/index';
-import { Img } from 'components';
+import { Avatar as RAvatar } from 'rsuite';
+import { MdPersonOutline } from 'react-icons/md';
 
-const Avatar = ({ url, onClick }) => (
-  <Div borderRadius="50%" onClick={onClick} mr={10}>
-    {url ? (
-      <Img src={url} width={50} height={50} borderRadius="50%" />
-    ) : (
-      <Icon icon="avatar" size="2x" />
-    )}
-  </Div>
-);
+export default function Avatar({ avatar, user, onClick }) {
+  return (
+    <>
+      <div
+        className="sm:inline-flex items-center text-sm cursor-pointer gap-3 tw-hidden"
+        onClick={onClick}
+      >
+        {user?.name}
+        <RAvatar
+          src={`${process.env.REACT_APP_API_ENDPOINT ?? ''}${avatar}`}
+          circle
+          size="md"
+        />
+      </div>
 
-export default Avatar;
+      <MdPersonOutline className="cursor-pointer sm:hidden" onClick={onClick} />
+    </>
+  );
+}

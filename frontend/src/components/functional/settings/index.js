@@ -1,84 +1,83 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useRef, cloneElement } from 'react';
+import { Link } from 'react-router-dom';
+import { Whisper, Popover, Dropdown } from 'rsuite';
+import {
+  MdOutlineSettings,
+  MdLogout,
+  MdOutlineBuild,
+  MdOutlineGridView,
+  MdOutlineMonetizationOn,
+  MdOutlineTextSnippet,
+  MdOutlineFactCheck,
+} from 'react-icons/md';
 
-import { Img, H6, Div } from 'components';
-import { Container, LinkStyled } from './style';
-import { Can } from 'components/user/can';
-import { get } from 'services/local-storage';
-import { useTranslation } from 'react-i18next';
-
-const Item = ({ name, icon, path, onClick }) => {
-  return (
-    <LinkStyled to={path} onClick={onClick}>
-      <Img src={icon} width={40} height={40} />
-      <H6 ml={20}>{name}</H6>
-    </LinkStyled>
-  );
-};
-
-export default function Settings({ onClose, ...props }) {
-  const history = useHistory();
-  const { t } = useTranslation();
-  const dir = get('dir');
-  let right = '30px';
-  dir === 'ltr' ? (right = '30px') : (right = '-480px');
+export default function Settings({ t, onLogout }) {
+  const settingsRef = useRef();
   const items = [
     {
       name: t('configurations'),
-      icon: '/icons/config.png',
+      icon: <MdOutlineBuild />,
       path: '/settings/configurations',
     },
     {
       name: t('staticInfo'),
-      icon: '/icons/static.png',
+      icon: <MdOutlineGridView />,
       path: '/settings/static',
     },
 
     {
       name: t('payroll'),
-      icon: '/icons/static.png',
+      icon: <MdOutlineMonetizationOn />,
       path: '/payroll',
     },
 
     {
       name: t('snippets'),
-      icon: '/icons/snippets.png',
+      icon: <MdOutlineTextSnippet />,
       path: '/snippets',
     },
     {
       name: t('logout'),
       icon: '/icons/logout.png',
       action: 'onLogout',
+      // name: t('permissions'),
+      // icon: <MdOutlineFactCheck />,
+      // path: '/permissions',
     },
   ];
 
   return (
-    <Container right={right}>
-      {items.map(({ path, action, permission, ...item }, idx) => (
-        <Div key={idx}>
-          {permission ? (
-            <Can>
-              <Item
-                path={path}
-                {...item}
-                onClick={() => {
-                  action ? props[action]() : history.push(path);
-                  onClose();
-                }}
-              />
-            </Can>
-          ) : (
-            <Item
-              path={path}
-              {...item}
-              onClick={() => {
-                action ? props[action]() : history.push(path);
-                onClose();
-              }}
-            />
-          )}
-        </Div>
-      ))}
-    </Container>
+    <Whisper
+      trigger="click"
+      placement="bottomEnd"
+      ref={settingsRef}
+      speaker={
+        <Popover full>
+          <Dropdown.Menu
+            onSelect={() => settingsRef.current.close()}
+            className="w-48"
+          >
+            {items.map((item, i) => (
+              <Dropdown.Item key={i}>
+                <Link to={item.path} className="flex items-center gap-1">
+                  {cloneElement(item.icon, {
+                    className: 'text-[1.25rem]',
+                  })}
+                  {item.name}
+                </Link>
+              </Dropdown.Item>
+            ))}
+            <Dropdown.Item onSelect={() => onLogout()}>
+              <Link className="flex items-center gap-1" to="/login">
+                <MdLogout className="text-[1.25rem]" />
+                {t('logout')}
+              </Link>
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Popover>
+      }
+    >
+      <MdOutlineSettings className="cursor-pointer" />
+    </Whisper>
   );
 }

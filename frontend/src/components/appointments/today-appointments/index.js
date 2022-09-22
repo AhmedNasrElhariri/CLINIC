@@ -1,8 +1,8 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import { Nav } from 'rsuite';
 import * as R from 'ramda';
 import moment from 'moment';
 import { ACTIONS } from 'utils/constants';
-import { CRTabs } from 'components';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
@@ -175,7 +175,7 @@ function TodayAppointments() {
             quantity,
           })),
           discount: {
-            name: 'discount' + ' - ' + appointment.patient.name,
+            name: `discount-${appointment.patient.name}`,
             amount: discount,
           },
           others: {
@@ -207,7 +207,7 @@ function TodayAppointments() {
         notes: notes.businessNotes,
       },
     });
-  }, [appointment, updateNotes, notes]);
+  }, [appointment, updateNotes, notes, close]);
   const handleEdit = useCallback(
     formValue => {
       close();
@@ -221,12 +221,12 @@ function TodayAppointments() {
         },
       });
     },
-    [adjust, appointment]
+    [adjust, appointment, close]
   );
   const handleCancel = useCallback(() => {
     close();
     cancel({ variables: { id: appointment.id } });
-  }, [cancel, appointment]);
+  }, [cancel, appointment, close]);
   const handleComplete = useCallback(
     ({ appointment }) => {
       close();
@@ -236,72 +236,81 @@ function TodayAppointments() {
         },
       });
     },
-    [appointment, complete, close]
+    [complete, close]
   );
+
+  const [active, setActive] = React.useState('mainAppointments');
+
   return (
     <>
-      <CRTabs>
-        <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>{t('mainAppointments')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('waitingAppointments')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('completedAppointments')}</CRTabs.CRTab>
-        </CRTabs.CRTabsGroup>
-        <CRTabs.CRContentGroup>
-          <CRTabs.CRContent>
-            <Filter
-              appointments={upcomingAppointments}
-              branches={filterBranches}
-              render={apps => (
-                <ListAppointments
-                  title="Upcoming Appointments"
-                  appointments={apps}
-                  onArchive={onClickDone}
-                  onComplete={onCompleteDone}
-                  onAddBusinessNotes={onAddBusinessNotes}
-                  onDuplicateAppointments={onDuplicateAppointments}
-                  onEditAppointments={onEditAppointments}
-                  onCancelAppointments={onCancelAppointments}
-                  defaultExpanded={true}
-                  close={close}
-                />
-              )}
+      <Nav
+        onSelect={setActive}
+        appearance="tabs"
+        justified
+        className="text-center max-w-5xl mb-5"
+        activeKey={active}
+      >
+        <Nav.Item eventKey="mainAppointments">{t('mainAppointments')}</Nav.Item>
+        <Nav.Item eventKey="waitingAppointments">
+          {t('waitingAppointments')}
+        </Nav.Item>
+        <Nav.Item eventKey="completedAppointments">
+          {t('completedAppointments')}
+        </Nav.Item>
+      </Nav>
+      {active === 'mainAppointments' && (
+        <Filter
+          appointments={upcomingAppointments}
+          branches={filterBranches}
+          render={apps => (
+            <ListAppointments
+              title="Upcoming Appointments"
+              appointments={apps}
+              onArchive={onClickDone}
+              onComplete={onCompleteDone}
+              onAddBusinessNotes={onAddBusinessNotes}
+              onDuplicateAppointments={onDuplicateAppointments}
+              onEditAppointments={onEditAppointments}
+              onCancelAppointments={onCancelAppointments}
+              defaultExpanded={true}
+              close={close}
             />
-          </CRTabs.CRContent>
-          <CRTabs.CRContent>
-            <Filter
-              appointments={waitingAppointments}
-              branches={filterBranches}
-              render={apps => (
-                <ListAppointments
-                  appointments={apps}
-                  onArchive={onClickDone}
-                  onComplete={onCompleteDone}
-                  onAddBusinessNotes={onAddBusinessNotes}
-                  onDuplicateAppointments={onDuplicateAppointments}
-                  onEditAppointments={onEditAppointments}
-                  onCancelAppointments={onCancelAppointments}
-                  defaultExpanded={true}
-                  waiting={true}
-                />
-              )}
+          )}
+        />
+      )}
+      {active === 'waitingAppointments' && (
+        <Filter
+          appointments={waitingAppointments}
+          branches={filterBranches}
+          render={apps => (
+            <ListAppointments
+              appointments={apps}
+              onArchive={onClickDone}
+              onComplete={onCompleteDone}
+              onAddBusinessNotes={onAddBusinessNotes}
+              onDuplicateAppointments={onDuplicateAppointments}
+              onEditAppointments={onEditAppointments}
+              onCancelAppointments={onCancelAppointments}
+              defaultExpanded={true}
+              waiting={true}
             />
-          </CRTabs.CRContent>
-          <CRTabs.CRContent>
-            <Filter
-              appointments={completedAppointments}
-              branches={filterBranches}
-              render={apps => (
-                <ListAppointments
-                  title="Completed Appointments"
-                  appointments={apps}
-                  onAddBusinessNotes={onAddBusinessNotes}
-                  defaultExpanded={true}
-                />
-              )}
+          )}
+        />
+      )}
+      {active === 'completedAppointments' && (
+        <Filter
+          appointments={completedAppointments}
+          branches={filterBranches}
+          render={apps => (
+            <ListAppointments
+              title="Completed Appointments"
+              appointments={apps}
+              onAddBusinessNotes={onAddBusinessNotes}
+              defaultExpanded={true}
             />
-          </CRTabs.CRContent>
-        </CRTabs.CRContentGroup>
-      </CRTabs>
+          )}
+        />
+      )}
       {popUp === 'archive' && (
         <ArchiveAppointment
           appointment={appointment}
@@ -309,7 +318,6 @@ function TodayAppointments() {
           onCancel={close}
           onOk={handleArchive}
           loading={loading}
-          
         />
       )}
       {popUp === 'complete' && (
@@ -357,12 +365,6 @@ function TodayAppointments() {
           t={t}
         />
       )}
-      {/* <CancelAppointment
-        visible={visible.cancel}
-        appointment={appointment}
-        onOk={cancel}
-        onClose={() => onClose('cancel')}
-      /> */}
     </>
   );
 }
