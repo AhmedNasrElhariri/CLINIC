@@ -129,6 +129,10 @@ enum FieldGroupStatus {
   Static
   Dynamic
 }
+enum PatientOldOrNew {
+  Old
+  New
+}
 
 ########################### Query ##################################
 
@@ -144,8 +148,10 @@ type Query {
     ageTo: Int
     dateFrom: Date
     dateTo: Date
+    enable: Boolean
     type: Sex
     reference: String
+    oldOrNew: PatientOldOrNew
   ): PatientData
   searchedPatients(name: String, organizationId: ID): [Patient!]
   allPatients: [Patient!]
@@ -561,6 +567,8 @@ type Mutation {
   createUser(user: UserInput!): User!
   editUser(user: UserInput!): User!
   deleteUser(id: ID!): User
+  deleteBranch(id: ID!): Boolean
+  deleteSpecialty(id: ID!): Boolean
   addSpecialty(branchId: ID!, specialtyId: ID!): Branch!
   addDoctor(branchId: ID!, specialtyId: ID!, userId: ID!): Branch!
   assignRoleToUser(userId: ID!, roleId: ID!): Boolean
@@ -839,6 +847,7 @@ type Patient implements Searchable {
   age: Int!
   date: Date
   sex: Sex!
+  oldOrNew: PatientOldOrNew
   appointments: [Appointment!]
 }
 
@@ -876,6 +885,7 @@ input PatientInput {
   email: String
   maritalStatus: MaritalStatus
   patientLevel: PatientLevel
+  oldOrNew: PatientOldOrNew
 }
 input RegisterPatientInput {
   phoneNo: String!

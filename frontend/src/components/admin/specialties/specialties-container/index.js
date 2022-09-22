@@ -28,21 +28,29 @@ export default function SpecialtiesContainer() {
     close: closeDoctor,
   } = useModal();
 
-  const { branches, specialties, doctors, createSpecialty, addDoctor } =
-    usePermissions({
-      onCreateSpecialty: close,
-      onAddDoctor: closeDoctor,
-    });
+  const {
+    branches,
+    specialties,
+    doctors,
+    createSpecialty,
+    addDoctor,
+    deleteSpecialty,
+  } = usePermissions({
+    onCreateSpecialty: close,
+    onAddDoctor: closeDoctor,
+  });
   const [branchIds, setBranchIds] = useState([]);
   const [specialtyIds, setSpecialtyIds] = useState([]);
-  
+
   const handleAdd = useCallback(() => {
     if (type === 'createSpecialty') {
       createSpecialty({ type: 'create', ...formValue });
     } else if (type === 'editSpecialty') {
       createSpecialty({ type: 'edit', ...formValue });
+    } else {
+      deleteSpecialty({ ...formValue });
     }
-  }, [createSpecialty, type, formValue]);
+  }, [deleteSpecialty, createSpecialty, type, formValue]);
   const handleAddDoctor = useCallback(
     specialty => {
       addDoctor(specialty);
@@ -74,6 +82,16 @@ export default function SpecialtiesContainer() {
     },
     [open, setFormValue, setType, setHeader]
   );
+  const handleClickDelete = useCallback(
+    data => {
+      const specialty = R.pick(['id'])(data);
+      setType('deleteSpecialty');
+      setHeader(t('deleteSpecialty'));
+      setFormValue(specialty);
+      open();
+    },
+    [open, setFormValue, setType, setHeader]
+  );
   const handleCreateSpecialty = useCallback(
     data => {
       setType('createSpecialty');
@@ -82,7 +100,6 @@ export default function SpecialtiesContainer() {
     },
     [open, setFormValue, setType, setHeader]
   );
-  console.log(specialties,'SSSpec');
   return (
     <>
       <MainContainer
@@ -107,6 +124,7 @@ export default function SpecialtiesContainer() {
         formValue={formValue}
         setFormValue={setFormValue}
         header={header}
+        type={type}
       />
       <AddDoctor
         onCreate={handleAddDoctor}
@@ -123,6 +141,7 @@ export default function SpecialtiesContainer() {
         branchIds={branchIds}
         specialtyIds={specialtyIds}
         onEdit={handleClickEdit}
+        onDeleteSpecialty={handleClickDelete}
       />
     </>
   );

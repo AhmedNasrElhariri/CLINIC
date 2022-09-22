@@ -16,6 +16,8 @@ const initialValue = {
   age: null,
   session: null,
   type: null,
+  enable: false,
+  oldOrNew: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -41,7 +43,9 @@ function Patients() {
     age: filter.age,
     type: filter.type,
     period: period,
+    enable: filter.enable,
     reference: filter.reference,
+    oldOrNew: filter.oldOrNew,
   });
 
   const handleSelect = useCallback(
@@ -50,8 +54,6 @@ function Patients() {
     },
     [setCurrentPage]
   );
-
-  console.log(period, 'period4');
 
   return (
     <>
@@ -182,6 +184,14 @@ function Patients() {
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1}>
+              <CRTable.CRHeaderCell>{t('oldOrNew')}</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ oldOrNew }) => (
+                  <CRTable.CRCellStyled bold>{oldOrNew}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
               <CRTable.CRHeaderCell>{t('reference')}</CRTable.CRHeaderCell>
@@ -236,7 +246,9 @@ function Patients() {
               {period.length > 0 && (
                 <Div display="flex">
                   <H4 margin="0px 10px">The Period from :</H4>
-                  <H4>{format(period[0])}  to  {format(period[1])}</H4>
+                  <H4>
+                    {format(period[0])} to {format(period[1])}
+                  </H4>
                 </Div>
               )}
               {filter.age && (

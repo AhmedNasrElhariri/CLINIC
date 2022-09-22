@@ -50,6 +50,11 @@ const patientLevel = [
   { name: 'Normal', value: 'Normal' },
 ];
 
+const patientOldOrNew = [
+  { name: 'Old', value: 'Old' },
+  { name: 'New', value: 'New' },
+];
+
 const maritalStatus = [
   { name: 'Married', value: 'Married' },
   { name: 'Single', value: 'Single' },
@@ -106,18 +111,6 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
           onChange={phone => onChange({ ...formValue, phoneNo: phone })}
           containerStyle={{ marginTop: '10px' }}
           inputStyle={{ width: '100%', borderRadius: '0px' }}
-          // isValid={(value, country) => {
-          //   if (!value.match(/^(01(0|1|2|5)\d{8})$/) && show) {
-          //     return 'Invalid value: ' + value + ', ' + country.name;
-          //   } else {
-          //     return true;
-          //   }
-          // }}
-          // errorMessage={
-          //   show && checkResult['phoneNo'].hasError
-          //     ? checkResult['phoneNo'].errorMessage
-          //     : ''
-          // }
         />
         {formValue.phoneOption === 'two' && (
           <>
@@ -179,6 +172,14 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
         valueKey="value"
         searchable={false}
         data={patientLevel}
+        block
+      />
+      <CRSelectInput
+        label={t('OldOrNew')}
+        name="oldOrNew"
+        valueKey="value"
+        searchable={false}
+        data={patientOldOrNew}
         block
       />
       <CRSelectInput label={t('area')} name="area" data={newAreas} block />

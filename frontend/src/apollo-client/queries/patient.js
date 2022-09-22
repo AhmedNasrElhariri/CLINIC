@@ -59,9 +59,11 @@ export const LIST_PATIENTS_REPORTS = gql`
     $type: Sex
     $dateFrom: Date
     $dateTo: Date
+    $enable: Boolean
     $ageFrom: Int
     $ageTo: Int
     $reference: String
+    $oldOrNew: PatientOldOrNew
   ) {
     patientsReports(
       offset: $offset
@@ -70,10 +72,12 @@ export const LIST_PATIENTS_REPORTS = gql`
       patientLevel: $patientLevel
       dateFrom: $dateFrom
       dateTo: $dateTo
+      enable: $enable
       type: $type
       ageFrom: $ageFrom
       ageTo: $ageTo
       reference: $reference
+      oldOrNew: $oldOrNew
     ) {
       patients {
         id
@@ -90,6 +94,7 @@ export const LIST_PATIENTS_REPORTS = gql`
         area
         code
         date
+        oldOrNew
       }
       patientsCount
     }

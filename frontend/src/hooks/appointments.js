@@ -62,11 +62,7 @@ function useAppointments({
   });
 
   const appointmentsdata = data?.appointments;
-  const appointmentsCountNumber = useMemo(() => {
-    const Data = R.propOr({}, 'appointments')(data);
-    const pagesNumber = Data?.appointmentsCount;
-    return pagesNumber;
-  }, [data]);
+  const appointmentsCountNumber = R.propOr([], 'appointmentsCount')(appointmentsdata);
   const appointments = useMemo(
     () =>
       R.pipe(
@@ -78,6 +74,7 @@ function useAppointments({
       )(appointmentsdata),
     [data, includeSurgery]
   );
+  const pages = Math.ceil(appointmentsCountNumber / 20);
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: {
       date: date,
@@ -227,7 +224,7 @@ function useAppointments({
       },
       branches: [],
       specialties,
-      appointmentsCountNumber,
+      pages,
       doctors,
       archive,
       complete,
@@ -242,7 +239,7 @@ function useAppointments({
       todayAppointments,
       specialties,
       deleteAppointmentPhoto,
-      appointmentsCountNumber,
+      pages,
       doctors,
       filterBranches,
       archive,

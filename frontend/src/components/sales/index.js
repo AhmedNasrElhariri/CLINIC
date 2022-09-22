@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as R from 'ramda';
 import { Form } from 'rsuite';
 import Profit from './profit';
@@ -29,10 +29,13 @@ import { formatDate } from 'utils/date';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import { CRDocSelectInput, CRSelectInput } from 'components/widgets';
 import { useTranslation } from 'react-i18next';
+import { ExcelIcon } from 'components/icons/index';
+import useGlobalState from 'state';
+import axios from 'axios';
 
 const initValue = { itemId: '', quantity: 0 };
 const initFilter = {
-  itemId: null,
+  item: {},
   userId: null,
   specialtyId: null,
   branchId: null,
@@ -49,6 +52,7 @@ const inialCurrentPage = {
 const Sales = () => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
+  const [user, setUser] = useGlobalState('user');
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
@@ -90,7 +94,7 @@ const Sales = () => {
     branchId: branchSpecialtyUser?.branch,
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
-    itemId: filter?.itemId,
+    itemId: R.propOr(null, 'id')(filter?.item),
     creatorId: filter?.userId,
   });
   const pages = Math.ceil(salesCounts / 20);
@@ -100,12 +104,7 @@ const Sales = () => {
   const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
   const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
   const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
-  // const updatedUsers = organizationusers.map(u => {
-  //   return {
-  //     id: u.id,
-  //     name: u.name,
-  //   };
-  // });
+
   const handleDelete = useCallback(
     idx => {
       const newItems = R.remove(idx, 1)(selectedItems);
@@ -113,26 +112,6 @@ const Sales = () => {
     },
     [selectedItems]
   );
-  // const itemFilteredSales = useMemo(() => {
-  //   if (filter.itemId == null) {
-  //     return filteredSales;
-  //   } else {
-  //     const newSales = filteredSales.filter(
-  //       s => s?.salesDefinition?.id == filter?.itemId?.id
-  //     );
-  //     return newSales;
-  //   }
-  // }, [filter, filteredSales]);
-  // const itemFilteredSalesByUser = useMemo(() => {
-  //   if (filter.userId == null) {
-  //     return itemFilteredSales;
-  //   } else {
-  //     const newSales = itemFilteredSales.filter(
-  //       s => s?.user?.id == filter.userId
-  //     );
-  //     return newSales;
-  //   }
-  // }, [filter, itemFilteredSales]);
 
   const handleAddItems = useCallback(() => {
     const newItems = [...selectedItems, formValue];
@@ -184,6 +163,64 @@ const Sales = () => {
       });
     }
   }, [addSales, editSales, formValue, type]);
+
+  const handleSalesExcelReport = async day => {
+    axios({
+      url: '/salesExcel',
+      responseType: 'blob', // important
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        itemId: R.propOr(null, 'id')(filter?.item),
+        creatorId: filter?.userId,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `sales-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
+  };
+  const handleSalesPrintReport = async day => {
+    axios({
+      url: '/salesPrintReport',
+      responseType: 'blob', // important
+      method: 'GET',
+      params: {
+        view,
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        itemId: R.propOr(null, 'id')(filter?.item),
+        creatorId: filter?.userId,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'sales.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
+  };
   return (
     <>
       <MainContainer
@@ -191,10 +228,15 @@ const Sales = () => {
         more={
           <Div display="flex">
             <Can I="Create" an="Sales">
-              <CRButton variant="primary" onClick={handleClickCreate} mr={1} ml={1}>
+              <CRButton
+                variant="primary"
+                onClick={handleClickCreate}
+                mr={1}
+                ml={1}
+              >
                 {t('addNewSales')} +
               </CRButton>
-              <PdfView
+              {/* <PdfView
                 data={saleses}
                 totalSalesPrice={totalSalesPrice}
                 totalSalesCost={totalSalesCost}
@@ -205,8 +247,23 @@ const Sales = () => {
                 marginBottom={marginBottom}
                 marginLeft={marginLeft}
                 t={t}
-              />
+              /> */}
+              <CRButton
+                variant="primary"
+                onClick={handleSalesPrintReport}
+                mr={1}
+                ml={1}
+              >
+                {t('print')} +
+              </CRButton>
             </Can>
+            <ExcelIcon
+              onClick={handleSalesExcelReport}
+              ml={5}
+              mr={1}
+              width="30px"
+              height="30px"
+            />
           </Div>
         }
         nobody
@@ -244,7 +301,8 @@ const Sales = () => {
             <CRDocSelectInput
               label={t('item')}
               data={salesesDefinition}
-              name="itemId"
+              name="item"
+              keyValue="id"
               placement="auto"
               style={{ width: '300px' }}
             />

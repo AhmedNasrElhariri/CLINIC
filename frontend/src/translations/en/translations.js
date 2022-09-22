@@ -433,6 +433,8 @@ export const TRANSLATIONS_EN = {
   noPictures: 'No Pictures',
   changeLanguage: 'Change Language',
   subscriptionType: 'Kind Of Patient',
-  maritalStatus:'Marital Status',
-  patientLevel:'Patient Level',
+  maritalStatus: 'Marital Status',
+  patientLevel: 'Patient Level',
+  deleteBranch: 'Delete Branch',
+  deleteSpecialty:'Delete Specialty'
 };

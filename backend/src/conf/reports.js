@@ -224,6 +224,114 @@ const init = app => {
     }
   });
 
+  app.get('/salesPrintReport', async (req, res) => {
+    const {
+      dateFrom,
+      dateTo,
+      view,
+      doctorId,
+      specialtyId,
+      branchId,
+      itemId,
+      creatorId,
+      organizationId,
+    } = req.query;
+    try {
+      let updatedDateFrom = new Date();
+      let updatedDateTo = new Date();
+      if (dateFrom && dateTo) {
+        updatedDateFrom = getStartOfDay(dateFrom);
+        updatedDateTo = getEndOfDay(dateTo);
+      } else {
+        const datesArray = getDateFromAndDateToFromView(view);
+        updatedDateFrom = datesArray[0];
+        updatedDateTo = datesArray[1];
+      }
+      const sales = await prisma.sales.findMany({
+        where: {
+          organizationId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              salesDefinitionId: itemId,
+            },
+            {
+              userId: creatorId,
+            },
+          ],
+
+          date: {
+            gte: updatedDateFrom,
+            lte: updatedDateTo,
+          },
+        },
+        include: {
+          salesDefinition: true,
+        },
+      });
+      const totalSales = await prisma.sales.aggregate({
+        sum: {
+          totalPrice: true,
+          totalCost: true,
+        },
+        count: {
+          id: true,
+        },
+        where: {
+          organizationId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              salesDefinitionId: itemId,
+            },
+            {
+              userId: creatorId,
+            },
+          ],
+
+          date: {
+            gte: updatedDateFrom,
+            lte: updatedDateTo,
+          },
+        },
+      });
+      const totalPrice = totalSales.sum.totalPrice;
+      const totalCost = totalSales.sum.totalCost;
+      const salesCount = totalSales.count.id;
+      const updatedSales = sales.map(s => {
+        return { ...s, date: formatDateStandard(s.date) };
+      });
+      const pdfDoc = await generatePdf('/views/reports/sales.ejs', {
+        totalPrice: totalPrice,
+        totalCost: totalCost,
+        salesCount: salesCount,
+        sales: updatedSales,
+        from: formatDateStandard(updatedDateFrom),
+        to: formatDateStandard(updatedDateTo),
+      });
+      res.end(pdfDoc);
+    } catch (e) {
+      res.status(400).send(e);
+      res.status(400).send('Invalid');
+    }
+  });
+  ///excel
   app.get('/accountingRevenueExcel', async (req, res) => {
     const {
       dateFrom,
@@ -470,6 +578,79 @@ const init = app => {
       let keys = ['name', 'date', 'amount'];
       const workbook = generateExcel(keys, expenses);
       var fileName = 'Revenues.xlsx';
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+      res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+      await workbook.xlsx.write(res);
+      res.end();
+    } catch (e) {
+      res.status(400).send(e);
+      res.status(400).send('Invalid');
+    }
+  });
+
+  ///salesExcel
+  app.get('/salesExcel', async (req, res) => {
+    const {
+      dateFrom,
+      dateTo,
+      view,
+      doctorId,
+      specialtyId,
+      branchId,
+      itemId,
+      creatorId,
+      organizationId,
+    } = req.query;
+    try {
+      let updatedDateFrom = new Date();
+      let updatedDateTo = new Date();
+      if (dateFrom && dateTo) {
+        updatedDateFrom = getStartOfDay(dateFrom);
+        updatedDateTo = getEndOfDay(dateTo);
+      } else {
+        const datesArray = getDateFromAndDateToFromView(view);
+        updatedDateFrom = datesArray[0];
+        updatedDateTo = datesArray[1];
+      }
+
+      const sales = await prisma.sales.findMany({
+        where: {
+          organizationId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              salesDefinitionId: itemId,
+            },
+            {
+              userId: creatorId,
+            },
+          ],
+          date: {
+            gte: updatedDateFrom,
+            lte: updatedDateTo,
+          },
+        },
+        include: {
+          salesDefinition: true,
+        },
+      });
+      const updatedSales = sales.map(s => {
+        return { ...s, name: s.salesDefinition.name };
+      });
+      let keys = ['name', 'date', 'quantity', 'totalPrice', 'totalCost'];
+      const workbook = generateExcel(keys, updatedSales);
+      var fileName = 'sales.xlsx';
       res.setHeader(
         'Content-Type',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

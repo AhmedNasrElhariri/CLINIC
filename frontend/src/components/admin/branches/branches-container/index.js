@@ -33,10 +33,11 @@ export default function Branches() {
     open: openSpecialty,
     close: closeSpecialty,
   } = useModal();
-  const { branches, specialties, createBranch, addSpecialty } = usePermissions({
-    onCreateBranch: closeBranch,
-    onAddSpecialty: closeSpecialty,
-  });
+  const { branches, specialties, createBranch, addSpecialty, deleteBranch } =
+    usePermissions({
+      onCreateBranch: closeBranch,
+      onAddSpecialty: closeSpecialty,
+    });
   const [branchIds, setBranchIds] = useState([]);
   const [specialtyIds, setSpecialtyIds] = useState([]);
   const { t } = useTranslation();
@@ -45,6 +46,8 @@ export default function Branches() {
       createBranch({ type: 'create', ...formValue });
     } else if (type === 'editBranch') {
       createBranch({ type: 'edit', ...formValue });
+    } else {
+      deleteBranch({ ...formValue });
     }
   }, [createBranch, type, formValue]);
   const handleAddSpecialty = useCallback(
@@ -64,6 +67,16 @@ export default function Branches() {
       setType('editBranch');
       setHeader(t('editBranch'));
       setFormValue(user);
+      openBranch();
+    },
+    [openBranch, setFormValue, setType, setHeader]
+  );
+  const handleClickDelete = useCallback(
+    data => {
+      const branch = R.pick(['id'])(data);
+      setType('deleteBranch');
+      setHeader(t('deleteBranch'));
+      setFormValue(branch);
       openBranch();
     },
     [openBranch, setFormValue, setType, setHeader]
@@ -108,6 +121,7 @@ export default function Branches() {
         formValue={formValue}
         setFormValue={setFormValue}
         header={header}
+        type={type}
       />
       <AddSpecialty
         onAdd={handleAddSpecialty}
@@ -123,6 +137,7 @@ export default function Branches() {
         branchIds={branchIds}
         specialtyIds={specialtyIds}
         onEdit={handleClickEdit}
+        onDeleteBranch={handleClickDelete}
       />
     </>
   );

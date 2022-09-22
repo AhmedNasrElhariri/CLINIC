@@ -12,8 +12,8 @@ const CRDocSelectInput = ({
   const selectedData = useMemo(() => {
     let lastData = [];
     if (branchId != null && specialtyId == null && userId == null) {
-      lastData = data.filter(
-        i => i.level === 'branch' && i.branch.id == branchId
+      lastData = data?.filter(
+        i => i.level === 'branch' && i?.branch?.id == branchId
       );
     } else if (specialtyId != null && userId == null) {
       lastData = data.filter(

@@ -27,6 +27,7 @@ const initialValues = {
   date: new Date(),
   type: 'Primary',
   guardianName: '',
+  oldOrNew: '',
 };
 const { StringType, NumberType } = Schema.Types;
 const model = Schema.Model({

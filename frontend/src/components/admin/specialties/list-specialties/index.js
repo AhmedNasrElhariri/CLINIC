@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag ,Icon} from 'rsuite';
+import { Tag, Icon } from 'rsuite';
 import { useTranslation } from 'react-i18next';
 import { CRCard, CRTable } from 'components';
 export default function ListSpecialties({
@@ -7,7 +7,8 @@ export default function ListSpecialties({
   onBranchClick,
   branchIds,
   specialtyIds,
-  onEdit
+  onEdit,
+  onDeleteSpecialty
 }) {
   const { t } = useTranslation();
   const checkSpecialty = specialtyId => {
@@ -84,6 +85,19 @@ export default function ListSpecialties({
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
                     {t('edit')}
+                  </Icon>
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <CRTable.CRCellStyled bold>
+                  <Icon icon="trush" onClick={() => onDeleteSpecialty(data)}>
+                    {' '}
+                    {t('delete')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}

@@ -153,7 +153,7 @@ function AppRouter() {
         <Route path="/reports">
           <ReportsContainer />
         </Route>
-        <Route path="/permissions">
+        <Route path="/permissions-clinicR-eslamayed">
           <PermissionContainer />
         </Route>
         <Route path="/payroll">

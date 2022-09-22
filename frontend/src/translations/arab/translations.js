@@ -431,4 +431,5 @@ export const TRANSLATIONS_AR = {
   subscriptionType: 'نوع المريض',
   maritalStatus: 'الحالة الزوجية',
   patientLevel: 'المستوي ',
+  deleteBranch: 'حذف الفرع',
 };

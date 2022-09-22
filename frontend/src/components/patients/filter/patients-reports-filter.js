@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { CRDateRangePicker, Div, CRSelectInput } from 'components';
-import { Form } from 'rsuite';
+import { CRDateRangePicker, Div, CRSelectInput, H4 } from 'components';
+import { Form, Toggle } from 'rsuite';
 import * as R from 'ramda';
 import { useQuery } from '@apollo/client';
 import { ALL_AREAS } from 'apollo-client/queries';
@@ -36,6 +36,10 @@ const SEX = ['Male', 'Female'].map(s => ({
   name: s,
   value: s,
 }));
+const patientOldOrNew = [
+  { name: 'Old', value: 'Old' },
+  { name: 'New', value: 'New' },
+];
 const PatientsFilter = ({
   formValue,
   setFormValue,
@@ -134,6 +138,17 @@ const PatientsFilter = ({
             block
           />
         </Div>
+        <Div>
+          <CRSelectInput
+            label={t('OldOrNew')}
+            name="oldOrNew"
+            valueKey="value"
+            searchable={false}
+            style={{ width: '200px' }}
+            data={patientOldOrNew}
+            block
+          />
+        </Div>
         <Div width={180}>
           <Form fluid>
             <CRDateRangePicker
@@ -147,6 +162,13 @@ const PatientsFilter = ({
               onChange={setPeriod}
             />
           </Form>
+        </Div>
+        <Div display="flex" justifyContent="space-between" mb={3} mt={45}>
+          <H4 mr={10}>Not comming </H4>
+          <Toggle
+            onChange={val => setFormValue({ ...formValue, enable: val })}
+            checked={formValue?.enable}
+          />
         </Div>
       </Div>
     </Form>

@@ -49,7 +49,6 @@ function Appointments() {
   const { visible, close, open } = useModal({});
   const {
     appointments,
-    appointmentsCountNumber,
     refetchAppointments,
     filterBranches,
     archive,
@@ -57,6 +56,7 @@ function Appointments() {
     updateNotes,
     adjust,
     cancel,
+    pages
   } = useAppointments({
     page,
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
@@ -66,7 +66,7 @@ function Appointments() {
     patient: R.propOr('', 'patient')(formValue),
     action: ACTIONS.List_Appointment,
   });
-  const pages = Math.ceil(appointmentsCountNumber / 20);
+  
   const [popUp, setPopUp] = useState('');
   const [appointment, setAppointment] = useState(null);
   const onClickDone = useCallback(

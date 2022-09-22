@@ -138,3 +138,6 @@ export { default as sendOtp } from './send-otp';
 export { default as deleteAppointmentPhoto } from './delete-appointment-photo';
 export { default as deleteSupplierAccount } from './delete-supplier-account';
 export { default as deleteUser } from './delete-user';
+export { default as deleteBranch } from './delete-branch';
+export { default as deleteSpecialty } from './delete-specialty';
+

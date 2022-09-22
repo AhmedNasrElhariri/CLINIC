@@ -20,6 +20,8 @@ import {
   DELETE_ROLE_TO_USER,
   EDIT_USER,
   DELETE_USER,
+  DELETE_BRANCH,
+  DELETE_SPECIALTY,
 } from 'apollo-client/queries';
 import { POSITIONS, ACTIONS } from 'utils/constants';
 
@@ -169,6 +171,31 @@ function usePermissions({
     },
   });
 
+  const [deleteBranch] = useMutation(DELETE_BRANCH, {
+    onCompleted() {
+      Alert.success(
+        'The barnch and specialty merge has been deleted Successfully'
+      );
+      onCreateBranch && onCreateBranch();
+    },
+
+    onError() {
+      Alert.error('Failed to delete branch');
+    },
+  });
+  const [deleteSpecialty] = useMutation(DELETE_SPECIALTY, {
+    onCompleted() {
+      Alert.success(
+        'The barnch and specialty merge has been deleted Successfully'
+      );
+      onCreateSpecialty && onCreateSpecialty();
+    },
+
+    onError() {
+      Alert.error('Failed to delete branch');
+    },
+  });
+
   const [addSpecialty] = useMutation(ADD_SPECIALITY, {
     onCompleted() {
       Alert.success('The specialty has been added Successfully');
@@ -255,6 +282,9 @@ function usePermissions({
       createUser: user => createUser({ variables: { user } }),
       editUser: user => editUser({ variables: { user } }),
       deleteUser: user => deleteUser({ variables: { id: user.id } }),
+      deleteBranch: branch => deleteBranch({ variables: { id: branch.id } }),
+      deleteSpecialty: specialty =>
+        deleteSpecialty({ variables: { id: specialty.id } }),
       addSpecialty: data => addSpecialty({ variables: data }),
       addDoctor: data => addDoctor({ variables: data }),
       assignRoleToUser: data => assignRoleToUser({ variables: data }),
@@ -284,6 +314,8 @@ function usePermissions({
       createUser,
       editUser,
       deleteUser,
+      deleteBranch,
+      deleteSpecialty,
       addSpecialty,
       addDoctor,
       assignRoleToUser,

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form, Schema } from 'rsuite';
 import { useTranslation } from 'react-i18next';
-import { CRTextInput, CRModal, CRTextArea } from 'components';
+import { CRTextInput, CRModal, CRTextArea, Div, H3 } from 'components';
 
 const { StringType } = Schema.Types;
 
@@ -16,7 +16,8 @@ export default function NewBranch({
   formValue,
   setFormValue,
   header,
-  handleAdd
+  type,
+  handleAdd,
 }) {
   const { t } = useTranslation();
   // useEffect(() => {
@@ -36,10 +37,16 @@ export default function NewBranch({
       cancelTitle={t('cancel')}
     >
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
-        <CRTextInput label={t('name')} name="name" />
-        <CRTextInput label={t('address')} name="address" />
-        <CRTextInput label={t('phoneNo')} name="phoneNo" />
-        <CRTextArea label={t('notes')} name="notes"></CRTextArea>
+        {type === 'deleteBranch' ? (
+          <H3>Are you sure that you want to delete branch?</H3>
+        ) : (
+          <>
+            <CRTextInput label={t('name')} name="name" />
+            <CRTextInput label={t('address')} name="address" />
+            <CRTextInput label={t('phoneNo')} name="phoneNo" />
+            <CRTextArea label={t('notes')} name="notes"></CRTextArea>
+          </>
+        )}
       </Form>
     </CRModal>
   );

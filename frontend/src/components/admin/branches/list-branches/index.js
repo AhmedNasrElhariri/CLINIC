@@ -10,6 +10,7 @@ export default function ListBranches({
   branchIds,
   specialtyIds,
   onEdit,
+  onDeleteBranch
 }) {
   const checkSpecialty = (branchId, specialtyId) => {
     if (branchIds.includes(branchId) && specialtyIds.includes(specialtyId)) {
@@ -87,6 +88,19 @@ export default function ListBranches({
                   <Icon icon="edit" onClick={() => onEdit(data)}>
                     {' '}
                     {t('edit')}
+                  </Icon>
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <CRTable.CRCellStyled bold>
+                  <Icon icon="trush" onClick={() => onDeleteBranch(data)}>
+                    {' '}
+                    {t('delete')}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}

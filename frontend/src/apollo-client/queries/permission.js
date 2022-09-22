@@ -129,8 +129,18 @@ export const EDIT_USER = gql`
 export const DELETE_USER = gql`
   mutation deleteUser($id: ID!) {
     deleteUser(id: $id) {
-     id
+      id
     }
+  }
+`;
+export const DELETE_BRANCH = gql`
+  mutation deleteBranch($id: ID!) {
+    deleteBranch(id: $id)
+  }
+`;
+export const DELETE_SPECIALTY = gql`
+  mutation deleteSpecialty($id: ID!) {
+    deleteSpecialty(id: $id)
   }
 `;
 

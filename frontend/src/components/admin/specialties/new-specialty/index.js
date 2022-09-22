@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form, Schema } from 'rsuite';
 
-import { CRTextInput, CRModal } from 'components';
+import { CRTextInput, CRModal, H3 } from 'components';
 import { useTranslation } from 'react-i18next';
 
 const { StringType } = Schema.Types;
@@ -16,7 +16,8 @@ export default function NewSpecialty({
   onCreate,
   formValue,
   setFormValue,
-  header
+  header,
+  type,
 }) {
   const { t } = useTranslation();
   // useEffect(() => {
@@ -28,7 +29,7 @@ export default function NewSpecialty({
   return (
     <CRModal
       show={show}
-      header={t('newSpecialty')}
+      header={header}
       onHide={onCancel}
       onCancel={onCancel}
       onOk={() => onCreate(formValue)}
@@ -36,7 +37,13 @@ export default function NewSpecialty({
       cancelTitle={t('cancel')}
     >
       <Form fluid model={model} formValue={formValue} onChange={setFormValue}>
-        <CRTextInput label={t('name')} name="name" />
+        {type === 'deleteSpecialty' ? (
+          <H3>Are you sure that you want to delete specialty?</H3>
+        ) : (
+          <>
+            <CRTextInput label={t('name')} name="name" />
+          </>
+        )}
       </Form>
     </CRModal>
   );
