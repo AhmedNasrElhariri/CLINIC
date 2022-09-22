@@ -16,10 +16,10 @@ const initialValues = {
   orgName: '',
   orgPhoneNo: '',
 };
-const initialPulsesValue = {
-  before: 0,
-  after: 0,
-};
+// const initialPulsesValue = {
+//   before: 0,
+//   after: 0,
+// };
 const initialPointsValue = {
   points: 0,
   couponValue: 0,
@@ -34,33 +34,33 @@ const initialPageSetup = {
 
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
-  const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
+  // const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
   const [pointsValue, setPointsValues] = useState(initialPointsValue);
   const [pageSetup, setPageSetup] = useState(initialPageSetup);
   const { t } = useTranslation();
   const {
     configurations,
     update,
-    addPulsesControl,
-    getPulseControl,
+    // addPulsesControl,
+    // getPulseControl,
     addPageSetup,
     pageSetupData,
     editPoints,
     points,
     updateSMSConf,
   } = useConfigurations();
-  useEffect(() => {
-    // const enableInvoiceCounter = R.propOr(
-    //   false,
-    //   'enableInvoiceCounter'
-    // )(configurations);
-    setFormValue({
-      ...configurations,
-    });
-    const before = R.propOr(0, 'before')(getPulseControl);
-    const after = R.propOr(0, 'after')(getPulseControl);
-    setPulseValues({ ...pulsesValue, before, after });
-  }, [configurations, getPulseControl]);
+  // useEffect(() => {
+  //   // const enableInvoiceCounter = R.propOr(
+  //   //   false,
+  //   //   'enableInvoiceCounter'
+  //   // )(configurations);
+  //   setFormValue({
+  //     ...configurations,
+  //   });
+  //   const before = R.propOr(0, 'before')(getPulseControl);
+  //   const after = R.propOr(0, 'after')(getPulseControl);
+  //   setPulseValues({ ...pulsesValue, before, after });
+  // }, [configurations, getPulseControl]);
   useEffect(() => {
     setPointsValues({ points: points.points, couponValue: points.couponValue });
   }, [points, setPointsValues]);
@@ -101,13 +101,13 @@ const Configurations = () => {
     },
     [formValue]
   );
-  const handlePulsesSave = useCallback(() => {
-    addPulsesControl({
-      variables: {
-        pulsesControl: pulsesValue,
-      },
-    });
-  }, [pulsesValue, addPulsesControl]);
+  // const handlePulsesSave = useCallback(() => {
+  //   addPulsesControl({
+  //     variables: {
+  //       pulsesControl: pulsesValue,
+  //     },
+  //   });
+  // }, [pulsesValue, addPulsesControl]);
 
   const handlePageSetupSave = useCallback(() => {
     addPageSetup({
@@ -183,7 +183,7 @@ const Configurations = () => {
           </Div>
         </Form>
       </>
-      <>
+      {/* <>
         <hr></hr>
         <Div display="flex" justifyContent="space-between">
           <Div display="flex" justifyContent="space-around">
@@ -215,7 +215,7 @@ const Configurations = () => {
             />
           </Div>
         </Form>
-      </>
+      </> */}
 
       <>
         <hr></hr>

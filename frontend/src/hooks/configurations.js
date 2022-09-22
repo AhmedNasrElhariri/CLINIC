@@ -23,13 +23,13 @@ const useConfigurations = ({ onUpdate } = {}) => {
     () => R.propOr({}, 'configuration')(data),
     [data]
   );
-  const { data: PulseData } = useQuery(GET_PULSE_CONTROL, {
-    fetchPolicy: 'network-only',
-  });
-  const getPulseControl = useMemo(
-    () => R.propOr({}, 'getPulseControl')(PulseData),
-    [PulseData]
-  );
+  // const { data: PulseData } = useQuery(GET_PULSE_CONTROL, {
+  //   fetchPolicy: 'network-only',
+  // });
+  // const getPulseControl = useMemo(
+  //   () => R.propOr({}, 'getPulseControl')(PulseData),
+  //   [PulseData]
+  // );
 
   const { data: pageSetup } = useQuery(GET_PAGE_SETUP);
   const pageSetupData = useMemo(
@@ -91,7 +91,7 @@ const useConfigurations = ({ onUpdate } = {}) => {
       configurations,
       update: handleUpdateConfiguration,
       addPulsesControl,
-      getPulseControl,
+      // getPulseControl,
       addPageSetup,
       pageSetupData,
       editPoints,
@@ -102,7 +102,7 @@ const useConfigurations = ({ onUpdate } = {}) => {
       configurations,
       handleUpdateConfiguration,
       addPulsesControl,
-      getPulseControl,
+      // getPulseControl,
       addPageSetup,
       pageSetupData,
       editPoints,
