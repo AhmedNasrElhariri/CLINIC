@@ -1,15 +1,8 @@
-import React, { useState, useCallback, lazy, Suspense } from 'react';
+import React, { useState, useCallback, lazy } from 'react';
 import styled from 'styled-components';
-import { useParams, useHistory, Switch, Route } from 'react-router-dom';
+import { useParams, Switch, Route } from 'react-router-dom';
 import { Can } from 'components/user/can';
-import {
-  CRVNav,
-  CRButton,
-  MainContainer,
-  PatientSummary,
-  AllowedViews,
-} from 'components';
-import AvatarWithName from '../patient-avatar-with-name/index';
+import { CRVNav, PatientSummary, AllowedViews } from 'components';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import Dental from '../dental';
@@ -26,6 +19,8 @@ import PatientCoupons from '../patient-coupons';
 import { get } from 'services/local-storage';
 import PatientRevenue from '../patient-revenue';
 import { useTranslation } from 'react-i18next';
+import { SelectPicker } from 'rsuite';
+import Header from './header';
 
 const Container = styled.div`
   display: flex;
@@ -38,7 +33,6 @@ const TabContainer = styled.div`
 const FaceOperationsPage = lazy(() => import('../face-operations'));
 
 function Appointment() {
-  const history = useHistory();
   const { t } = useTranslation();
   const tabs = [
     t('patientInfo'),
@@ -78,9 +72,23 @@ function Appointment() {
     borderRight = 'none';
     borderLeft = border;
   }
+
   return (
     <>
-      <MainContainer
+      <Header
+        patientName={patient.name}
+        t={t}
+        appointmentId={appointmentId}
+        className="mb-7"
+      />
+
+      {/* <SelectPicker
+        searchable={false}
+        data={tabs.map(item => ({ label: item, value: item }))}
+        style={{ width: 256 }}
+      /> */}
+
+      {/* <MainContainer
         nobody
         more={
           <>
@@ -95,27 +103,39 @@ function Appointment() {
             )}
           </>
         }
-      ></MainContainer>
+      ></MainContainer> */}
+
+      <SelectPicker
+        className="w-64 mb-7 sm:!hidden"
+        cleanable={false}
+        defaultValue={activeTab}
+        onSelect={setActiveTab}
+        searchable={false}
+        data={tabs.map((item, i) => ({ label: item, value: String(i) }))}
+      />
 
       <Switch>
         <Route exact path="/patients/:id">
           {() => (
             <Container>
-              <CRVNav
-                appearance="tabs"
-                activeKey={activeTab}
-                onSelect={setActiveTab}
-                justified
-                vertical
-                borderRight={borderRight}
-                borderLeft={borderLeft}
-              >
-                {tabs.map((t, idx) => (
-                  <CRVNav.CRItem eventKey={idx + ''} key={idx}>
-                    {t}
-                  </CRVNav.CRItem>
-                ))}
-              </CRVNav>
+              <aside className="tw-hidden sm:block">
+                <CRVNav
+                  appearance="tabs"
+                  activeKey={activeTab}
+                  onSelect={setActiveTab}
+                  justified
+                  vertical
+                  borderRight={borderRight}
+                  borderLeft={borderLeft}
+                >
+                  {tabs.map((t, idx) => (
+                    <CRVNav.CRItem eventKey={idx + ''} key={idx}>
+                      {t}
+                    </CRVNav.CRItem>
+                  ))}
+                </CRVNav>
+              </aside>
+
               <TabContainer>
                 {showComp('0') && (
                   <Can I="ViewPatientInfo" an="Patient">
