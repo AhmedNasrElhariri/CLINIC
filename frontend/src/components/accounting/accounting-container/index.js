@@ -3,7 +3,6 @@ import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
 import { ACTIONS } from 'utils/constants';
-import fs from 'fs';
 import {
   MainContainer,
   Div,
