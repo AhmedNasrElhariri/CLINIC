@@ -36,14 +36,6 @@ export default function Settings({ t, onLogout }) {
       icon: <MdOutlineTextSnippet />,
       path: '/snippets',
     },
-    {
-      name: t('logout'),
-      icon: '/icons/logout.png',
-      action: 'onLogout',
-      // name: t('permissions'),
-      // icon: <MdOutlineFactCheck />,
-      // path: '/permissions',
-    },
   ];
 
   return (
