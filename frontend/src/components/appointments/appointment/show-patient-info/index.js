@@ -1,12 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { CRModal, Div } from 'components';
 import { useQuery } from '@apollo/client';
 import usePatientHistory from 'components/patients/patient/use-patient-history';
 import { GET_PATIENT_FIELD } from 'apollo-client/queries';
 import * as R from 'ramda';
-import {
-  getKeyValuesFromPatientGroups,
-} from 'services/appointment';
+import { getKeyValuesFromPatientGroups } from 'services/appointment';
 const PatientInfo = ({ visible, onClose, patient }) => {
   const { data: patientFieldData } = useQuery(GET_PATIENT_FIELD, {
     variables: {
@@ -53,7 +51,8 @@ const PatientInfo = ({ visible, onClose, patient }) => {
           </Div>
           <Div>{patient?.sex}</Div>
         </Div>
-        {data && data.length > 0 &&
+        {data &&
+          data.length > 0 &&
           data.map(d => (
             <Div display="flex" p="10px">
               <Div width="50px" ml="30px" mr="30px">
