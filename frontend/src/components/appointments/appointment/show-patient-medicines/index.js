@@ -7,7 +7,7 @@ import { useMedicineDefinitions, useTimings } from 'hooks';
 import { LIST_PATIENT_APPOINTMENTS } from 'apollo-client/queries';
 import { APPT_STATUS } from 'utils/constants';
 import { formatDate } from 'utils/date';
-import { ContainerStyled } from './style';
+// import { ContainerStyled } from './style';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -101,7 +101,7 @@ function ShowMedicinines({ visible, onClose, patient }) {
         onCancel={onClose}
         noFooter={true}
         CancelFooter={true}
-        CRContainer={ContainerStyled}
+        // CRContainer={ContainerStyled}
       >
         <Slider {...settings}>
           {FinishedMedicines.map(med => (

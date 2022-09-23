@@ -2,15 +2,15 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { Alert, Loader, Icon, Panel } from 'rsuite';
+import { Alert, Panel, Button } from 'rsuite';
 import Prescription from './prescription';
-
+import { useTranslation } from 'react-i18next';
 import Labs from './labs/index';
 import Images from './images';
 import ShowMedicinines from './show-patient-medicines';
 import ShowPatientInfo from './show-patient-info';
 import NewAppointment from './new-appointment';
-import { Div, H3, CRButton, Img } from 'components';
+import { Div } from 'components';
 import AppointmentData from './appointment-data';
 import {
   getFormInitValues,
@@ -18,7 +18,6 @@ import {
   mapSessionValues,
   isArchived,
 } from 'services/appointment';
-import { ArrowIcon } from 'components/icons';
 import {
   GET_APPOINTMENT,
   UPDATE_APPOINTMENT,
@@ -26,17 +25,16 @@ import {
 } from 'apollo-client/queries';
 
 import useAppointmentHistory from './fetch-appointment-history';
-import { HeaderStyled, StyledPanel } from './style';
 import { useForm, useModal } from 'hooks';
 import { APPT_STATUS } from 'utils/constants';
-import { useTranslation } from 'react-i18next';
-import { get } from 'services/local-storage';
+import { StyledPanel } from './style';
+// import { get } from 'services/local-storage';
+import AppointmentHeader from './appointment-header';
 
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 function Appointment() {
   const { visible, open, close } = useModal();
   const { type, setType } = useForm({});
-  const { t } = useTranslation();
   const [sessionsPulses, setSessionsPulses] = useState([]);
   const [sessionFormValue, setSessionFormValue] = useState({});
   const { visible: visbleAppointment, toggle: toggleAppointment } = useModal();
@@ -56,21 +54,21 @@ function Appointment() {
   });
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
-  const dir = get('dir');
-  let cardPosition = {};
-  dir === 'ltr'
-    ? (cardPosition = {
-        position: 'absolute',
-        top: '130px',
-        right: '20px',
-        width: 240,
-      })
-    : (cardPosition = {
-        position: 'absolute',
-        top: '130px',
-        left: '20px',
-        width: 240,
-      });
+  // const dir = get('dir');
+  // let cardPosition = {};
+  // dir === 'ltr'
+  //   ? (cardPosition = {
+  //       position: 'absolute',
+  //       top: '130px',
+  //       right: '20px',
+  //       width: 240,
+  //     })
+  //   : (cardPosition = {
+  //       position: 'absolute',
+  //       top: '130px',
+  //       left: '20px',
+  //       width: 240,
+  //     });
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');
@@ -173,6 +171,7 @@ function Appointment() {
     setType('create');
     open();
   }, [open, setType]);
+
   const handleShowPatientInfo = useCallback(() => {
     setPopupTwo(false);
     setPopup(false);
@@ -222,6 +221,8 @@ function Appointment() {
     {});
     setSessionFormValue(sessionsFormValueUpdated);
   }, [sessionsPulses, setSessionFormValue]);
+
+  //useEffect Warning
   useEffect(() => {
     let totalPulses = 0;
     for (const session in sessionFormValue) {
@@ -248,7 +249,6 @@ function Appointment() {
     },
     [apptFormValue, setApptFormValue]
   );
-
   const handleImagesChange = useCallback(
     Images => {
       setApptFormValue({
@@ -270,70 +270,58 @@ function Appointment() {
   const appointId = R.propOr('', 'id')(appoint);
   const indx = sortedPatientAppointments.findIndex(pA => pA.id === appointId);
   const nextAppointment = patientAppointments[indx + 1];
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  const { t } = useTranslation();
+
   return (
     <>
+      <AppointmentHeader
+        handleClickCreateFour={handleClickCreateFour}
+        disabled={disabled}
+        handleClickCreate={handleClickCreate}
+        handleClickCreateThree={handleClickCreateThree}
+        handleClickCreateTwo={handleClickCreateTwo}
+        handleUpdate={handleUpdate}
+        setDisabled={setDisabled}
+        t={t}
+      />
+
+      <Panel
+        shaded
+        bordered
+        bodyFill
+        className="mt-5 sm:absolute right-5 top-32 w-64"
+      >
+        <StyledPanel header={patient?.name}>
+          <p>
+            <small>
+              <Div display="flex">
+                <Div width="50px" mr="30px">
+                  {t('phoneNo')}
+                </Div>
+                <Div>{patient?.phoneNo}</Div>
+              </Div>
+              <Div display="flex">
+                <Div width="50px" mr="30px">
+                  {t('sex')}
+                </Div>
+                <Div>{patient?.sex}</Div>
+              </Div>
+              <Div
+                display="flex"
+                onClick={() => handleShowPatientInfo()}
+                mt="2px"
+              >
+                <Div width="50px" mr="30px" mt={10}>
+                  <Button appearance="link">{t('more')}</Button>
+                </Div>
+              </Div>
+            </small>
+          </p>
+        </StyledPanel>
+      </Panel>
+
       <Div display="flex">
         <Div flexGrow={1}>
-          <HeaderStyled>
-            <H3 mb={64}>{t('appointment')}</H3>
-            <Div>
-              <CRButton
-                variant="primary"
-                onClick={handleClickCreateFour}
-                disabled={disabled}
-              >
-                {t('showMedicines')} <Icon icon="print" />
-              </CRButton>
-              <CRButton
-                variant="primary"
-                onClick={handleClickCreate}
-                disabled={disabled}
-              >
-                {t('printMedicine')} <Icon icon="print" />
-              </CRButton>
-              <CRButton
-                variant="primary"
-                onClick={handleClickCreateThree}
-                disabled={disabled}
-              >
-                {t('printImages')} <Icon icon="print" />
-              </CRButton>
-              <CRButton
-                variant="primary"
-                onClick={handleClickCreateTwo}
-                disabled={disabled}
-              >
-                {t('printLabs')} <Icon icon="print" />
-              </CRButton>
-              {disabled && (
-                <CRButton
-                  variant="primary"
-                  onClick={handleUpdate}
-                  onClick={() => setDisabled(false)}
-                >
-                  {t('edit')} <Icon icon="save" />
-                </CRButton>
-              )}
-
-              <CRButton
-                variant="primary"
-                onClick={handleUpdate}
-                disabled={disabled}
-              >
-                {t('save')} <Icon icon="save" />
-              </CRButton>
-              {/* <CRButton
-              variant="primary"
-              open={visbleAppointment}
-              onClick={toggleAppointment}
-            >
-              Reverse Appoinment <Icon icon="save" />
-            </CRButton> */}
-            </Div>
-          </HeaderStyled>
           <Div display="flex">
             <Div flexGrow={1}>
               <Div py={3} bg="white">
@@ -405,39 +393,6 @@ function Appointment() {
           </Div>
         </Div>
       </Div>
-      <Panel shaded bordered bodyFill style={cardPosition}>
-        {/* <Img src={patient?.url} width={240} height={150} /> */}
-        <StyledPanel header={patient?.name}>
-          <p>
-            <small>
-              <Div display="flex">
-                <Div width="50px" mr="30px">
-                  {t('phoneNo')}
-                </Div>
-                <Div>{patient?.phoneNo}</Div>
-              </Div>
-              <Div display="flex">
-                <Div width="50px" mr="30px">
-                  {t('sex')}
-                </Div>
-                <Div>{patient?.sex}</Div>
-              </Div>
-              <Div
-                display="flex"
-                onClick={() => handleShowPatientInfo()}
-                mt="2px"
-              >
-                <Div width="50px" mr="30px" mt={10}>
-                  <a>{t('more')}</a>
-                </Div>
-                {/* <Div>
-              <ArrowIcon width="25px" />
-            </Div> */}
-              </Div>
-            </small>
-          </p>
-        </StyledPanel>
-      </Panel>
     </>
   );
 }

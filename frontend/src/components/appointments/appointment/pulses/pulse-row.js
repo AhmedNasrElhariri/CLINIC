@@ -28,42 +28,39 @@ const PulseRow = ({
   return (
     <>
       <MedicineContainerStyled>
-        <Form fluid formValue={formValue} onChange={setFormValue}>
-          <FlexboxGrid>
-            <FlexboxGrid.Item colspan={5}>
-              <BoxStyled>
-                <CRSelectInput
-                  placeholder="Power One"
-                  name="powerOne"
-                  data={powerValues}
-                  layout="inline"
-                  block
-                />
-              </BoxStyled>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={5}>
-              <BoxStyled>
-                <CRSelectInput
-                  placeholder="Power Two"
-                  name="powerTwo"
-                  data={powerValues}
-                  layout="inline"
-                  block
-                />
-              </BoxStyled>
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={8}>
-              <BoxStyled>
-                <Div mr={2}>
-                  <CRNumberInput
-                    name="pulses"
-                    layout="inline"
-                    placeholder="Pulses"
-                  />
-                </Div>
-              </BoxStyled>
-            </FlexboxGrid.Item>
-          </FlexboxGrid>
+        <Form
+          fluid
+          formValue={formValue}
+          onChange={setFormValue}
+          className="flex flex-wrap"
+        >
+          <BoxStyled className="w-52">
+            <CRSelectInput
+              placeholder="Power One"
+              name="powerOne"
+              data={powerValues}
+              layout="inline"
+              block
+            />
+          </BoxStyled>
+          <BoxStyled className="w-52">
+            <CRSelectInput
+              placeholder="Power Two"
+              name="powerTwo"
+              data={powerValues}
+              layout="inline"
+              block
+            />
+          </BoxStyled>
+          <BoxStyled className="w-52">
+            <Div mr={2}>
+              <CRNumberInput
+                name="pulses"
+                layout="inline"
+                placeholder="Pulses"
+              />
+            </Div>
+          </BoxStyled>
         </Form>
       </MedicineContainerStyled>
       {sessionsPulses?.length > 0 && (

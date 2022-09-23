@@ -15,7 +15,6 @@ import {
   CRNestedSelector,
   CRMultipleSelector,
   CRSelectInput,
-  Img,
 } from 'components';
 
 import { convertGroupFieldsToNavs } from 'services/appointment';
@@ -111,7 +110,7 @@ const SectionContainer = ({ title, children, name, ...props }) => {
     <Div as={Element} name={name} {...props}>
       <Div px={4} my={2}>
         <H3 mb={10}>{title}</H3>
-        <Div mb={4}>{children}</Div>
+        <div className="mb-4">{children}</div>
       </Div>
     </Div>
   );
@@ -159,7 +158,6 @@ function AppointmentData({
     initialSelectedMedicine
   );
   const [session, SetSession] = useState({});
-  const { patient } = appointment;
   const choices = useMemo(() => {
     return sessionsDefinition.map(s => ({
       name: s.name,
@@ -205,7 +203,7 @@ function AppointmentData({
         labIds: [...oldLabs, ...labIds],
       });
     },
-    [appointmentFormValue, onChange, categoryLabForm]
+    [appointmentFormValue, onChange, labsDefinition]
   );
   const imageId = categoryImageForm?.categoryId;
   const { imagesDefinition } = useImageDefinition({});
@@ -222,7 +220,7 @@ function AppointmentData({
         imageIds: [...oldImages, ...imageIds],
       });
     },
-    [appointmentFormValue, onChange, categoryImageForm]
+    [appointmentFormValue, onChange, imagesDefinition]
   );
   const handleAddSession = () => {
     setSessionsPulses([...sessionsPulses, session]);
@@ -259,192 +257,190 @@ function AppointmentData({
   };
   return (
     <>
-      <Div display="flex">
-        <Div flexGrow={1}>
-          {Object.keys(formValue).length > 0 && (
-            <Div mb={5}>
-              <Form formValue={formValue} onChange={onDataChange} fluid>
-                {navs?.map((v, idx) =>
-                  v.status === 'Dynamic' ? (
-                    <GroupContainer
-                      fields={v.fields}
-                      title={v.title}
-                      onChange={onDataChange}
-                      formValue={formValue}
-                      updatedSessions={updatedSessions}
-                    />
-                  ) : (
-                    <SectionContainer
-                      key={idx}
-                      title={v.title}
-                      name={v.to}
-                      pt={idx === 0 ? 0 : 4}
-                    >
-                      {v.fields.map(f => (
-                        <Div mb={4} key={f.id}>
-                          {renderItem({
-                            ...f,
-                            disabled,
-                            updatedSessions,
-                          })}
-                        </Div>
-                      ))}
-                    </SectionContainer>
-                  )
-                )}
-              </Form>
-            </Div>
-          )}
-          <SectionContainer title={t('prescription')} name="prescription">
-            <Form formValue={selectedMedicine} onChange={setSelectedMedicine}>
-              <Div
-                mb={10}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <CRSelectInput
-                  name="medicineId"
-                  data={medicineDefinitions}
-                  label={t('medicine')}
-                  style={{
-                    width: '300px',
-                    marginRight: '10px',
-                    marginLeft: '10px',
-                  }}
-                />
-                <CRButton ml={20} mt={40} onClick={addMedicine}>
-                  {t('add')}
-                </CRButton>
-              </Div>
+      <div>
+        {Object.keys(formValue).length > 0 && (
+          <Div mb={5}>
+            <Form formValue={formValue} onChange={onDataChange} fluid>
+              {navs?.map((v, idx) =>
+                v.status === 'Dynamic' ? (
+                  <GroupContainer
+                    fields={v.fields}
+                    title={v.title}
+                    onChange={onDataChange}
+                    formValue={formValue}
+                    updatedSessions={updatedSessions}
+                  />
+                ) : (
+                  <SectionContainer
+                    key={idx}
+                    title={v.title}
+                    name={v.to}
+                    pt={idx === 0 ? 0 : 4}
+                  >
+                    {v.fields.map(f => (
+                      <Div mb={4} key={f.id}>
+                        {renderItem({
+                          ...f,
+                          disabled,
+                          updatedSessions,
+                        })}
+                      </Div>
+                    ))}
+                  </SectionContainer>
+                )
+              )}
             </Form>
-            <AppointmentMedicines
-              prescription={appointmentFormValue.prescription}
-              medicineDefinitions={medicineDefinitions}
-              selectedMedicines={appointmentFormValue.selectedMedicines}
-              onChange={handleMedicineChange}
-            />
-          </SectionContainer>
-
-          <SectionContainer title={t('sessionsPulses')} name="pulses">
+          </Div>
+        )}
+        <SectionContainer title={t('prescription')} name="prescription">
+          <Form formValue={selectedMedicine} onChange={setSelectedMedicine}>
             <Div
-              display="flext"
+              className="flex-wrap gap-4"
+              mb={10}
+              display="flex"
               justifyContent="center"
               alignItems="center"
-              mb={20}
             >
-              <Form>
-                <CRSelectInput
-                  data={choices}
-                  label={t('session')}
-                  onChange={val => SetSession(val)}
-                  style={{ width: '300px' }}
-                />
-              </Form>
-              <CRButton
-                primary
-                onClick={() => handleAddSession()}
-                ml={10}
-                mr={10}
-                mt={40}
-              >
+              <CRSelectInput
+                name="medicineId"
+                data={medicineDefinitions}
+                label={t('medicine')}
+                style={{
+                  width: 256,
+                }}
+              />
+              <CRButton className="self-end" onClick={addMedicine}>
                 {t('add')}
               </CRButton>
             </Div>
-            <Pulses
-              pulses={appointmentFormValue}
-              onChange={onChange}
-              sessionsPulses={sessionsPulses}
-              sessionFormValue={sessionFormValue}
-              setSessionFormValue={setSessionFormValue}
-            />
-          </SectionContainer>
-          <SectionContainer title={t('labs')} name="labs">
-            <Form formValue={categoryLabForm} onChange={setCategoryLabForm}>
-              <Div
-                mb={10}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <CRSelectInput
-                  name="categoryId"
-                  data={labsCategory}
-                  label={t('labCategory')}
-                  style={{
-                    width: '300px',
-                    marginRight: '10px',
-                    marginLeft: '10px',
-                  }}
-                />
-                <CRSelectInput
-                  name="labId"
-                  data={customLabDefinitions}
-                  label={t('lab')}
-                  style={{ width: '300px' }}
-                />
-                <CRButton ml={10} mr={10} mt={40} onClick={addLab}>
-                  {t('add')}
-                </CRButton>
-              </Div>
-            </Form>
+          </Form>
+          <AppointmentMedicines
+            prescription={appointmentFormValue.prescription}
+            medicineDefinitions={medicineDefinitions}
+            selectedMedicines={appointmentFormValue.selectedMedicines}
+            onChange={handleMedicineChange}
+          />
+        </SectionContainer>
 
-            <Labs
-              selectedLabs={appointmentFormValue.labIds}
-              onChange={handleLabsChange}
-              categoryId={categoryLabForm?.categoryId}
-            />
-          </SectionContainer>
-          <SectionContainer title={t('images')} name="images">
-            <Form formValue={categoryImageForm} onChange={setCategoryImageForm}>
-              <Div
-                mb={10}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <CRSelectInput
-                  name="categoryId"
-                  block
-                  data={imagesCategory}
-                  label={t('imageCategory')}
-                  style={{
-                    width: '300px',
-                    marginRight: '10px',
-                    marginLeft: '10px',
-                  }}
-                />
-                <CRSelectInput
-                  name="imageId"
-                  data={customImageDefinitions}
-                  label={t('image')}
-                  style={{ width: '300px' }}
-                />
-                <CRButton ml={10} mr={10} mt={40} onClick={addImage}>
-                  {t('add')}
-                </CRButton>
-              </Div>
+        <SectionContainer title={t('sessionsPulses')} name="pulses">
+          <Div
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={20}
+            className="flex flex-wrap"
+          >
+            <Form>
+              <CRSelectInput
+                data={choices}
+                label={t('session')}
+                onChange={val => SetSession(val)}
+                style={{ width: '256px' }}
+              />
             </Form>
-            <Images
-              selectedImages={appointmentFormValue.imageIds}
-              onChange={handleImagesChange}
-              categoryId={categoryImageForm?.categoryId}
-            />
-          </SectionContainer>
+            <CRButton
+              primary
+              onClick={() => handleAddSession()}
+              ml={10}
+              mr={10}
+              mt={40}
+            >
+              {t('add')}
+            </CRButton>
+          </Div>
+          <Pulses
+            pulses={appointmentFormValue}
+            onChange={onChange}
+            sessionsPulses={sessionsPulses}
+            sessionFormValue={sessionFormValue}
+            setSessionFormValue={setSessionFormValue}
+          />
+        </SectionContainer>
 
-          <SectionContainer title={t('notes')} name="Notes">
-            <Form formValue={appointmentFormValue} onChange={onChange}>
-              <CRTextArea name="notes" disabled={disabled} importable />
-            </Form>
-          </SectionContainer>
-          <SectionContainer title={t('pictures')} name="Pictures">
-            <AppointmentPictures
-              formValue={appointmentFormValue.pictures}
-              onChange={handlePicturesChange}
-            />
-          </SectionContainer>
-        </Div>
-      </Div>
+        <SectionContainer title={t('labs')} name="labs">
+          <Form formValue={categoryLabForm} onChange={setCategoryLabForm}>
+            <Div
+              mb={10}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              className="flex-wrap gap-3"
+            >
+              <CRSelectInput
+                name="categoryId"
+                data={labsCategory}
+                label={t('labCategory')}
+                style={{
+                  width: '256px',
+                }}
+              />
+              <CRSelectInput
+                name="labId"
+                data={customLabDefinitions}
+                label={t('lab')}
+                style={{ width: '256px' }}
+              />
+              <CRButton ml={10} mr={10} mt={40} onClick={addLab}>
+                {t('add')}
+              </CRButton>
+            </Div>
+          </Form>
+
+          <Labs
+            selectedLabs={appointmentFormValue.labIds}
+            onChange={handleLabsChange}
+            categoryId={categoryLabForm?.categoryId}
+          />
+        </SectionContainer>
+
+        <SectionContainer title={t('images')} name="images">
+          <Form formValue={categoryImageForm} onChange={setCategoryImageForm}>
+            <Div
+              mb={10}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              className="flex-wrap"
+            >
+              <CRSelectInput
+                name="categoryId"
+                block
+                data={imagesCategory}
+                label={t('imageCategory')}
+                className="flex-wrap"
+                style={{
+                  width: '256px',
+                }}
+              />
+              <CRSelectInput
+                name="imageId"
+                data={customImageDefinitions}
+                label={t('image')}
+                style={{ width: '256px' }}
+              />
+              <CRButton onClick={addImage}>{t('add')}</CRButton>
+            </Div>
+          </Form>
+          <Images
+            selectedImages={appointmentFormValue.imageIds}
+            onChange={handleImagesChange}
+            categoryId={categoryImageForm?.categoryId}
+          />
+        </SectionContainer>
+
+        <SectionContainer title={t('notes')} name="Notes">
+          <Form formValue={appointmentFormValue} onChange={onChange}>
+            <CRTextArea name="notes" disabled={disabled} importable />
+          </Form>
+        </SectionContainer>
+
+        <SectionContainer title={t('pictures')} name="Pictures">
+          <AppointmentPictures
+            formValue={appointmentFormValue.pictures}
+            onChange={handlePicturesChange}
+          />
+        </SectionContainer>
+      </div>
     </>
   );
 }
