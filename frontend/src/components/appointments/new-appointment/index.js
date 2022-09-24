@@ -273,7 +273,7 @@ import {
 } from 'hooks';
 
 const initialValues = {
-  type: 'Examination',
+  type: 'Session',
   patientId: '',
   courseId: null,
   branchId: null,
