@@ -12,7 +12,7 @@ export default function AppointmentHeader({
   t,
 }) {
   return (
-    <div className="flex items-center justify-between flex-col sm:flex-row">
+    <div className="flex items-center justify-between flex-col sm:flex-row sm:mb-32">
       <H3 className="mb-4">{t('appointment')}</H3>
       <div className="inline-flex flex-wrap gap-1">
         <CRButton

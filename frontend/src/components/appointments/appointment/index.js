@@ -274,57 +274,56 @@ function Appointment() {
 
   return (
     <>
-      <AppointmentHeader
-        handleClickCreateFour={handleClickCreateFour}
-        disabled={disabled}
-        handleClickCreate={handleClickCreate}
-        handleClickCreateThree={handleClickCreateThree}
-        handleClickCreateTwo={handleClickCreateTwo}
-        handleUpdate={handleUpdate}
-        setDisabled={setDisabled}
-        t={t}
-      />
-
-      <Panel
-        shaded
-        bordered
-        bodyFill
-        className="mt-5 sm:absolute right-5 top-32 w-64"
-      >
-        <StyledPanel header={patient?.name}>
-          <p>
-            <small>
-              <Div display="flex">
-                <Div width="50px" mr="30px">
-                  {t('phoneNo')}
-                </Div>
-                <Div>{patient?.phoneNo}</Div>
-              </Div>
-              <Div display="flex">
-                <Div width="50px" mr="30px">
-                  {t('sex')}
-                </Div>
-                <Div>{patient?.sex}</Div>
-              </Div>
-              <Div
-                display="flex"
-                onClick={() => handleShowPatientInfo()}
-                mt="2px"
-              >
-                <Div width="50px" mr="30px" mt={10}>
-                  <Button appearance="link">{t('more')}</Button>
-                </Div>
-              </Div>
-            </small>
-          </p>
-        </StyledPanel>
-      </Panel>
-
       <Div display="flex">
         <Div flexGrow={1}>
           <Div display="flex">
             <Div flexGrow={1}>
-              <Div py={3} bg="white">
+              <Div py={3} bg="white" className="relative">
+                <AppointmentHeader
+                  handleClickCreateFour={handleClickCreateFour}
+                  disabled={disabled}
+                  handleClickCreate={handleClickCreate}
+                  handleClickCreateThree={handleClickCreateThree}
+                  handleClickCreateTwo={handleClickCreateTwo}
+                  handleUpdate={handleUpdate}
+                  setDisabled={setDisabled}
+                  t={t}
+                />
+
+                <Panel
+                  shaded
+                  bordered
+                  bodyFill
+                  className="mt-5 sm:absolute right-5 top-20 w-64"
+                >
+                  <StyledPanel header={patient?.name}>
+                    <p>
+                      <small>
+                        <Div display="flex">
+                          <Div width="50px" mr="30px">
+                            {t('phoneNo')}
+                          </Div>
+                          <Div>{patient?.phoneNo}</Div>
+                        </Div>
+                        <Div display="flex">
+                          <Div width="50px" mr="30px">
+                            {t('sex')}
+                          </Div>
+                          <Div>{patient?.sex}</Div>
+                        </Div>
+                        <Div
+                          display="flex"
+                          onClick={() => handleShowPatientInfo()}
+                          mt="2px"
+                        >
+                          <Div width="50px" mr="30px" mt={10}>
+                            <Button appearance="link">{t('more')}</Button>
+                          </Div>
+                        </Div>
+                      </small>
+                    </p>
+                  </StyledPanel>
+                </Panel>
                 <AppointmentData
                   disabled={disabled}
                   formValue={formValue}

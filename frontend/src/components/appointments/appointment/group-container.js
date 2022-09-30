@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { Form, IconButton, Icon } from 'rsuite';
 import styled from 'styled-components';
 import {
@@ -7,6 +7,7 @@ import {
   CRTextInput,
   CRTextArea,
   CRRadio,
+  CRCheckBoxGroup,
   CRButton,
   CRNestedSelector,
   CRMultipleSelector,
@@ -18,6 +19,7 @@ import {
   TEXT_FIELD_TYPE,
   LONG_TEXT_FIELD_TYPE,
   RADIO_FIELD_TYPE,
+  CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
   SELECTOR,
@@ -108,6 +110,17 @@ const renderItem = ({
           {...props}
         />
       );
+
+    // case CHECK_FIELD_TYPE:
+    //   return (
+    //     <CRCheckBoxGroup
+    //       label={name}
+    //       options={choices}
+    //       name={id}
+    //       {...props}
+    //       inline
+    //     />
+    //   );
     case NESTED_SELECTOR_FIELD_TYPE:
       return (
         <CRNestedSelector label={name} name={id} choices={choices} {...props} />
@@ -137,7 +150,7 @@ const GroupContainer = ({
       newFormVal[f.id] = val;
     });
     onChange(newFormVal);
-  }, [formValueTwo, onChange, fields, formValue]);
+  }, [formValueTwo, setFormValueTwo, onChange]);
 
   const handleDelete = useCallback(
     indx => {
@@ -146,66 +159,71 @@ const GroupContainer = ({
         let val = [];
         val =
           formValue[f.id].constructor === Array
-            ? newFormVal[f.id].filter((v, index) => index !== indx)
+            ? newFormVal[f.id].filter((v, index) => index != indx)
             : [formValueTwo[f.id]];
         newFormVal[f.id] = val;
       });
       onChange(newFormVal);
     },
-    [onChange, formValue, fields, formValueTwo]
+    [onChange, formValue]
   );
   return (
     <>
       <H3 mb={10}>{title}</H3>
-      <Form formValue={formValueTwo} onChange={setFormValueTwo}>
-        <FieldContainer display="flex" className="flex flex-wrap">
-          {fields?.map(f => (
-            <Div mb={4} key={f.id}>
-              {renderItem({
-                ...f,
-                updatedSessions,
-              })}
-            </Div>
-          ))}
-          <CRButton
-            onClick={() => handleOnChange()}
-            // disabled={disabled}
-            mt={41}
-            ml={20}
-          >
-            Add
-          </CRButton>
-        </FieldContainer>
-      </Form>
-
-      <Div mt={10}>
+      <Div display="flex">
+        <Form formValue={formValueTwo} onChange={setFormValueTwo}>
+          <FieldContainer display="flex">
+            {fields?.map(f => (
+              <Div mb={4} key={f.id}>
+                {renderItem({
+                  ...f,
+                  updatedSessions,
+                })}
+              </Div>
+            ))}
+            <CRButton
+              onClick={() => handleOnChange()}
+              // disabled={disabled}
+              mt={41}
+              ml={20}
+            >
+              Add
+            </CRButton>
+          </FieldContainer>
+        </Form>
+      </Div>
+      <Div
+        mt={10}
+        className="overflow-x-scroll max-w-[calc(100vw-35px)] md:max-w-[calc(80vw)]"
+      >
         {fields.length > 0 && (
           <>
-            <Div className="flex flex-wrap">
+            <Div display="flex">
               {fields?.map(({ name }, indx) => (
                 <ColDiv>{name}</ColDiv>
               ))}
             </Div>
-
-            <Div className="flex flex-wrap">
-              {fields?.map(({ id }, indx) => (
-                <Div>
-                  {formValue[id] &&
-                    formValue[id]?.map((v, indx) => <CellDiv>{v}</CellDiv>)}
-                </Div>
-              ))}
-            </Div>
-            <Div>
-              {formValue[fields[0].id] &&
-                formValue[fields[0].id]?.map((v, indx) => (
-                  <IconDiv>
-                    <IconButton
-                      icon={<Icon icon="trash" />}
-                      color="red"
-                      onClick={() => handleDelete(indx)}
-                    />
-                  </IconDiv>
+            <Div display="flex">
+              <Div display="flex">
+                {fields?.map(({ id }, indx) => (
+                  <Div>
+                    {formValue[id] &&
+                      formValue[id]?.map((v, indx) => <CellDiv>{v}</CellDiv>)}
+                  </Div>
                 ))}
+              </Div>
+              <Div>
+                {formValue[fields[0].id] &&
+                  formValue[fields[0].id]?.map((v, indx) => (
+                    <IconDiv>
+                      <IconButton
+                        icon={<Icon icon="trash" />}
+                        color="red"
+                        onClick={() => handleDelete(indx)}
+                      />
+                    </IconDiv>
+                  ))}
+              </Div>
             </Div>
           </>
         )}
