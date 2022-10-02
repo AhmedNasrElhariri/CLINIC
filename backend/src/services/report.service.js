@@ -1,5 +1,5 @@
 import ejs from 'ejs';
-import fs from 'fs';
+import { promises as fsp } from 'fs';
 import pdf from 'html-pdf';
 const posthtml = require('posthtml');
 const postcss = require('posthtml-postcss');
@@ -11,20 +11,21 @@ const postcssOptions = {};
 const options = { format: 'A4' };
 
 export const generatePdf = async (path, vairables = {}) => {
-  const file = await fs.readFileSync(__dirname + path, 'utf8');
+  const file = await fsp.readFile(__dirname + path, 'utf8');
   const compiled = ejs.compile(file);
-
+  console.log(compiled, 'step5');
   const html = await posthtml([
     postcss(postcssPlugins, postcssOptions, filterType),
   ])
     .process(compiled(vairables))
-    .then(result => result.html).catch(err => console.log(err,'htmlERROR'));
-  console.log(html,'html');
+    .then(result => result.html)
+    
+  console.log(html, 'html');
   return new Promise((resolve, reject) => {
-    pdf.create(html).toBuffer((err, res) => {
+    pdf.create(html, options).toBuffer((err, res) => {
       if (err) {
         reject(err);
-        console.log(err,'ERR');
+        console.log(err,'err step7')
       }
       resolve(res);
     });
