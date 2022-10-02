@@ -259,62 +259,62 @@ const AccountingContainer = () => {
       ),
     [formValue, expenses]
   );
-  const handleAccountingReport = useCallback(async () => {
-    // axios({
-    //   url: '/accounting',
-    //   responseType: 'blob', // important
-    //   params: {
-    //     branchId: branchSpecialtyUser?.branch,
-    //     specialtyId: branchSpecialtyUser?.specialty,
-    //     doctorId: branchSpecialtyUser?.doctor,
-    //     expenseBranchId: expenseBranchSpecialtyUser?.branch,
-    //     expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
-    //     expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
-    //     revenueName: formValue?.revenueName,
-    //     expenseType: formValue?.expenseType,
-    //     expenseName: formValue?.expenseName,
-    //     view,
-    //     dateFrom: period[0],
-    //     dateTo: period[1],
-    //     organizationId: user.organizationId,
-    //   },
-    // })
-    //   .then(function (response) {
-    //     console.log(response, 'REEEsss');
-    //     const url = window.URL.createObjectURL(new Blob([response.data]));
-    //     const link = document.createElement('a');
-    //     link.href = url;
-    //     link.setAttribute('download', 'accounting.pdf'); //or any other extension
-    //     document.body.appendChild(link);
-    //     link.click();
-    //   })
-    //   .catch(err => {
-    //     console.log(err, 'rrr');
-    //   });
+  const handleAccountingReport = () => {
+    axios({
+      url: '/accounting',
+      responseType: 'blob', // important
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        expenseBranchId: expenseBranchSpecialtyUser?.branch,
+        expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+        expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+        revenueName: formValue?.revenueName,
+        expenseType: formValue?.expenseType,
+        expenseName: formValue?.expenseName,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        console.log(response, 'REEEsss');
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'accounting.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {
+        console.log(err, 'rrr');
+      });
 
-    let blob = await pdf(
-      <PdfDocument
-        data={{
-          revenues: allRevenues,
-          expenses: allExpenses,
-          totalRevenues,
-          totalExpenses,
-        }}
-        period={period}
-        marginTop={marginTop}
-        marginRight={marginRight}
-        marginBottom={marginBottom}
-        marginLeft={marginLeft}
-      />
-    ).toBlob();
-    const url = URL.createObjectURL(blob);
-    setFormValue({ ...formValue, printOrNot: false });
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'accounting.pdf'); //or any other extension
-    document.body.appendChild(link);
-    link.click();
-  }, [setFormValue]);
+    // let blob = await pdf(
+    //   <PdfDocument
+    //     data={{
+    //       revenues: allRevenues,
+    //       expenses: allExpenses,
+    //       totalRevenues,
+    //       totalExpenses,
+    //     }}
+    //     period={period}
+    //     marginTop={marginTop}
+    //     marginRight={marginRight}
+    //     marginBottom={marginBottom}
+    //     marginLeft={marginLeft}
+    //   />
+    // ).toBlob();
+    // const url = URL.createObjectURL(blob);
+    // setFormValue({ ...formValue, printOrNot: false });
+    // const link = document.createElement('a');
+    // link.href = url;
+    // link.setAttribute('download', 'accounting.pdf'); //or any other extension
+    // document.body.appendChild(link);
+    // link.click();
+  };
   console.log(formValue, 'FF');
   const handleRevenueAccountingExcel = async day => {
     axios({
@@ -397,10 +397,7 @@ const AccountingContainer = () => {
               </Can>
               <CRButton
                 variant="primary"
-                onClick={() => {
-                  setFormValue({ ...formValue, printOrNot: true });
-                  handleAccountingReport();
-                }}
+                onClick={handleAccountingReport}
                 ml={1}
                 mr={1}
               >

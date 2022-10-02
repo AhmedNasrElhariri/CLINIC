@@ -19,7 +19,7 @@ export const generatePdf = async (path, vairables = {}) => {
   ])
     .process(compiled(vairables))
     .then(result => result.html);
-
+  console.log(html,'html');
   return new Promise((resolve, reject) => {
     pdf.create(html, options).toBuffer((err, res) => {
       if (err) {

@@ -67,6 +67,7 @@ const init = app => {
           },
         },
       });
+      console.log(revenues,'revenues');
       const expenses = await prisma.expense.findMany({
         where: {
           organizationId,
@@ -95,6 +96,7 @@ const init = app => {
           },
         },
       });
+      console.log(expenses,'expensess');
       const updatedRevenues = revenues.map(r => {
         return { ...r, date: formatDateStandard(r.date) };
       });
@@ -104,6 +106,7 @@ const init = app => {
       const totalExpenses = expenses.reduce((acc, e) => acc + e.amount, 0);
       const totalRevenues = revenues.reduce((acc, e) => acc + e.amount, 0);
       const profit = totalRevenues - totalExpenses;
+      console.log(totalExpenses,totalRevenues,'totalRevenues');
       const pdfDoc = await generatePdf('/views/reports/accounting.ejs', {
         revenues: updatedRevenues,
         expenses: updatedExpenses,
@@ -113,6 +116,7 @@ const init = app => {
         from: formatDateStandard(updatedDateFrom),
         to: formatDateStandard(updatedDateTo),
       });
+      console.log(pdfDoc,'pdfDoc');
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
       res.end(pdfDoc);
