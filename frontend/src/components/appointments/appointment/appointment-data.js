@@ -401,7 +401,7 @@ function AppointmentData({
               display="flex"
               justifyContent="center"
               alignItems="center"
-              className="flex-wrap"
+              className="flex-wrap gap-3"
             >
               <CRSelectInput
                 name="categoryId"
@@ -419,7 +419,9 @@ function AppointmentData({
                 label={t('image')}
                 style={{ width: '256px' }}
               />
-              <CRButton onClick={addImage}>{t('add')}</CRButton>
+              <CRButton onClick={addImage} mt={40}>
+                {t('add')}
+              </CRButton>
             </Div>
           </Form>
           <Images
