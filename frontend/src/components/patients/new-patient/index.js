@@ -7,7 +7,8 @@ import Form from './form';
 import { usePatients, useForm } from 'hooks';
 import { get } from 'services/local-storage';
 import { useTranslation } from 'react-i18next';
-
+import { Spinner } from 'components/widgets/button/spinner';
+import { CRButton } from 'components';
 const initialValues = {
   name: '',
   phoneNo: '',
@@ -21,7 +22,6 @@ const initialValues = {
   date: new Date(),
   type: 'Primary',
   guardianName: '',
-  oldOrNew: '',
 };
 const { StringType, NumberType } = Schema.Types;
 const model = Schema.Model({
@@ -92,7 +92,7 @@ export default function NewPatient({ show: showModel, onHide }) {
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button
+        <CRButton
           onClick={() => {
             setShow(true);
             if (validate) {
@@ -107,8 +107,8 @@ export default function NewPatient({ show: showModel, onHide }) {
           appearance="primary"
           className="min-w-[5rem]"
         >
-          {t('ok')}
-        </Button>
+          {createPatientLoading ? <Spinner /> : t('ok')}
+        </CRButton>
         <Button onClick={onHide} appearance="subtle">
           {t('cancel')}
         </Button>

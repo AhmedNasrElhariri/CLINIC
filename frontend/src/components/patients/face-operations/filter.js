@@ -15,6 +15,7 @@ const Filter = ({ formValue, setFormValue }) => {
           label="Range"
           placeholder="Timeframe"
           style={{ width: '230px' }}
+          placement="auto"
         />
       </Div>
     </Form>

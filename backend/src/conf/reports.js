@@ -117,6 +117,7 @@ const init = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
       res.end(pdfDoc);
     } catch (e) {
+      res.status(502).send(e);
       res.status(400).send(e);
       res.status(400).send('Invalid');
     }
@@ -219,8 +220,9 @@ const init = app => {
         from: formatDateStandard(updatedDateFrom),
         to: formatDateStandard(updatedDateTo),
       });
+      const fileName = 'accounting.pdf';
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
       res.end(pdfDoc);
     } catch (e) {
       res.status(400).send(e);

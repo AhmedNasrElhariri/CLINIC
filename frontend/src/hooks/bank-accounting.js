@@ -35,6 +35,7 @@ const useAccounting = ({
   expenseBranchId,
   expenseDoctorId,
   revenueName,
+  accountingOption,
 } = {}) => {
   const { data: revenueData } = useQuery(LIST_BANK_REVENUES, {
     variables: Object.assign(
@@ -83,10 +84,19 @@ const useAccounting = ({
     ),
   });
   const revenuesData = revenueData?.bankRevenues;
-  const revenues = R.propOr([], 'bankRevenues')(revenuesData);
+  const revenues = useMemo(() => {
+    return accountingOption === 'Expense'
+      ? []
+      : R.propOr([], 'bankRevenues')(revenuesData);
+  }, [revenuesData, accountingOption]);
 
   const expensesData = expenseData?.bankExpenses;
-  const expenses = R.propOr([], 'bankExpenses')(expensesData);
+  const expenses = useMemo(() => {
+    return accountingOption === 'Revenue'
+      ? []
+      : R.propOr([], 'bankExpenses')(expensesData);
+  }, [expensesData, accountingOption]);
+
   // const allExpenses = useMemo(
   //   () => R.propOr([], 'bankExpenses')(expenseData),
   //   [expenseData]
@@ -115,23 +125,28 @@ const useAccounting = ({
     [period, view]
   );
 
-  const totalRevenues = useMemo(
-    () => R.propOr(0, 'totalRevenues')(revenuesData),
-    [revenuesData]
-  );
-  const RevenuesCount = useMemo(
-    () => R.propOr(0, 'revenuesCount')(revenuesData),
-    [revenuesData]
-  );
+  const totalRevenues = useMemo(() => {
+    return accountingOption === 'Expense'
+      ? 0
+      : R.propOr(0, 'totalRevenues')(revenuesData);
+  }, [revenuesData, accountingOption]);
+  const RevenuesCount = useMemo(() => {
+    return accountingOption === 'Expense'
+      ? 0
+      : R.propOr(0, 'revenuesCount')(revenuesData);
+  }, [revenuesData, accountingOption]);
 
-  const totalExpenses = useMemo(
-    () => R.propOr(0, 'totalExpenses')(expensesData),
-    [expensesData]
-  );
-  const expensesCount = useMemo(
-    () => R.propOr(0, 'expensesCount')(expensesData),
-    [expensesData]
-  );
+  const totalExpenses = useMemo(() => {
+    return accountingOption === 'Revenue'
+      ? 0
+      : R.propOr(0, 'totalExpenses')(expensesData);
+  }, [expensesData, accountingOption]);
+  const expensesCount = useMemo(() => {
+    return accountingOption === 'Revenue'
+      ? 0
+      : R.propOr(0, 'expensesCount')(expensesData);
+  }, [expensesData, accountingOption]);
+
   const [editBankRevenue] = useMutation(EDIT_BANK_REVENUE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Edited Successfully');

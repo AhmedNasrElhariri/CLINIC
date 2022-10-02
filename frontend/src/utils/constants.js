@@ -77,7 +77,11 @@ export const ACCOUNTING_VIEWS = {
   YEAR: 'YEAR',
   TIME_SLOT: 'TIME_SLOT',
 };
-
+export const ACCOUNT_OPTIONS = [
+  { id: 'All', name: 'All' },
+  { id: 'Revenue', name: 'Revenue' },
+  { id: 'Expense', name: 'Expense' },
+];
 export const PERMISSION_LEVELS = Object.freeze({
   ORGNIZATION: 'Organization',
   BRANCH: 'Branch',

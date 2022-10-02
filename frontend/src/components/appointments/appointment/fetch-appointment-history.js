@@ -16,7 +16,7 @@ export default ({ appointmentId, appointment }) => {
       groups: [],
     };
   }
-
+ 
   const [views] = useGlobalState('activeViews');
   const view = useMemo(() => views[appointment.type], [appointment, views]);
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
@@ -29,6 +29,7 @@ export default ({ appointmentId, appointment }) => {
     () => R.pipe(R.map(R.prop('fields')), R.unnest)(groups),
     [groups]
   );
+
   const appointmentHistory = useMemo(
     () => R.pathOr([], ['appointmentHistory'])(history),
     [history]

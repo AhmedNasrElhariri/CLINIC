@@ -108,6 +108,98 @@ export const LIST_REVENUES = gql`
   }
 `;
 
+export const LIST_ALL_REVENUES = gql`
+  query allRevenues(
+    $dateFrom: Date
+    $dateTo: Date
+    $view: String
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
+    $revenueName: String
+  ) {
+    allRevenues(
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      view: $view
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+      revenueName: $revenueName
+    ) {
+      id
+      name
+      amount
+      date
+      invoiceNo
+      payer
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty {
+        id
+        name
+      }
+      doctor {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const LIST_ALL_EXPENSES = gql`
+  query allExpenses(
+    $dateFrom: Date
+    $dateTo: Date
+    $view: String
+    $expenseType: String
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
+    $expenseName: String
+  ) {
+    allExpenses(
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      view: $view
+      expenseType: $expenseType
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+      expenseName: $expenseName
+    ) {
+      id
+      name
+      amount
+      expenseType
+      date
+      invoiceNo
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty {
+        id
+        name
+      }
+      doctor {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const LIST_BANK_REVENUES = gql`
   query bankRevenues(
     $offset: Int

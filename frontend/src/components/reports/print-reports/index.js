@@ -160,6 +160,7 @@ const Test = props => {
               <CRDateRangePicker
                 name="sessionDate"
                 placeholder={t('timeframe')}
+                placement="auto"
                 style={{ width: '230px', marginRight: '30px' }}
               />
               {/* <CRSelectInput

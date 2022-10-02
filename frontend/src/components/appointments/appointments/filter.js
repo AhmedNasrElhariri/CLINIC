@@ -5,9 +5,7 @@ import { appointmentTypes, appointmentStatus } from 'services/appointment';
 import { CRTextInput, CRSelectInput, CRDateRangePicker } from 'components';
 import { useSessionDefinition } from 'hooks';
 
-const FilterContainer = ({ children }) => (
-  <div>{children}</div>
-);
+const FilterContainer = ({ children }) => <div>{children}</div>;
 
 export default function AppointmentsFilter({ formValue, onChange }) {
   const { t } = useTranslation();
@@ -35,6 +33,7 @@ export default function AppointmentsFilter({ formValue, onChange }) {
       <FilterContainer>
         <CRDateRangePicker
           name="date"
+          placement="auto"
           label={t('range')}
           placeholder={t('timeframe')}
           block
@@ -47,8 +46,9 @@ export default function AppointmentsFilter({ formValue, onChange }) {
         <CRSelectInput
           name="type"
           label={t('type')}
+          valueKey="id"
           block
-          data={appointmentTypes}
+          data={sessionsDefinition}
         />
       </FilterContainer>
     </Form>

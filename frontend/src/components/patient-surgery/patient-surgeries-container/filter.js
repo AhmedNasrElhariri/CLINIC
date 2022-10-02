@@ -47,7 +47,7 @@ function PatientSurgeryFilter({ formValue, onChange }) {
             label={t('time')}
             placeholder={t('timeframe')}
             block
-            placement="left"
+            placement="auto"
           />
         </Col>
       </Row>

@@ -38,6 +38,7 @@ const Toolbar = ({ activeKey, onSelect, onChangePeriod }) => {
             small
             $noLabel
             onChange={onChangePeriod}
+            placement="auto"
           />
         </Form>
       </Div>

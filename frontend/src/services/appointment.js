@@ -15,6 +15,8 @@ export const convertGroupFieldsToNavs = groups => {
   }));
 };
 
+
+
 export const normalizeDataWithGroups = (groups = [], data = []) => {
   const normalizedFieldsData = normalizeFieldsData(data);
   return groups.map(group => {
@@ -69,6 +71,7 @@ export const getKeyValuesFromPatientGroups = (patientGroups, normFields) => {
     return [];
   }
 };
+
 
 export const mapFormValueToAppointmentData = (normFields, fromValue) => {
   return Object.keys(normFields).map(id => ({

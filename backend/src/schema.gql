@@ -215,6 +215,25 @@ type Query {
     branchId: ID
     revenueName: String
   ): RevenueData!
+  allExpenses(
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    expenseType: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+    expenseName: String
+  ): [Expense!]
+  allRevenues(
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+    revenueName: String
+  ): [Revenue!]
   bankRevenues(
     offset: Int
     limit: Int

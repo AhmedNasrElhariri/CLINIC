@@ -18,7 +18,7 @@ export const Spinner = styled.div`
   width: 20px;
   position: absolute;
   top: 17px;
-  left: 60px;
+  left: 20px;
   transform: translate3d(-50%, -50%, 0);
   will-change: transform;
 `;

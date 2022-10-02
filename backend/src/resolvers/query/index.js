@@ -105,3 +105,5 @@ export { default as mySupplierInvoices } from './my-supplier-invoices';
 export { default as myInvoiceTransactions } from './my-invoice-transactions';
 export { default as courseUnitsHistory } from './course-units-history';
 export { default as patientsReports } from './patients-reports';
+export { default as allExpenses } from './all-expenses';
+export { default as allRevenues } from './all-revenues';

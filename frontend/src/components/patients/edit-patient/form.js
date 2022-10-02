@@ -12,7 +12,10 @@ const SEX = ['Male', 'Female'].map(s => ({
   name: s,
   id: s,
 }));
-
+const patientOldOrNew = [
+  { name: 'Old', value: 'Old' },
+  { name: 'New', value: 'New' },
+];
 const { StringType, NumberType } = Schema.Types;
 
 const model = Schema.Model({
@@ -59,6 +62,14 @@ const NewPatient = ({ formValue, onChange, t }) => {
         name="sex"
         searchable={false}
         data={SEX}
+        block
+      />
+      <CRSelectInput
+        label={t('OldOrNew')}
+        name="oldOrNew"
+        valueKey="value"
+        searchable={false}
+        data={patientOldOrNew}
         block
       />
     </Form>

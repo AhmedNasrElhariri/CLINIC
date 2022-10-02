@@ -255,6 +255,7 @@ function AppointmentData({
       });
     }
   };
+
   return (
     <>
       <div>

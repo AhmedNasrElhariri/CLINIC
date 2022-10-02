@@ -249,6 +249,7 @@ import * as R from 'ramda';
 import { Alert, Form, Checkbox, Modal, Button } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
+import { Spinner } from 'components/widgets/button/spinner';
 import {
   CRSelectInput,
   CRTimePicker,
@@ -257,6 +258,7 @@ import {
   Div,
   NewPatient,
   CRBrancheTree,
+  CRButton,
 } from 'components';
 import { isBeforeToday } from 'utils/date';
 
@@ -542,13 +544,20 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button
+          <CRButton
+            onClick={handleCreate}
+            appearance="primary"
+            className="min-w-[5rem]"
+          >
+            {loading ? <Spinner /> : t('ok')}
+          </CRButton>
+          {/* <Button
             onClick={handleCreate}
             appearance="primary"
             className="min-w-[5rem]"
           >
             {t('ok')}
-          </Button>
+          </Button> */}
           <Button
             onClick={() => {
               onHide();

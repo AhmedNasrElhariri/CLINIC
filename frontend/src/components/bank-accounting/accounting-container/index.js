@@ -8,6 +8,7 @@ import {
   H6,
   CRButton,
   BranchSpecialtyUserFilter,
+  CRSelectInput,
 } from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data/revenue';
@@ -26,19 +27,21 @@ import {
 } from 'hooks';
 import Filter from './filter';
 import BranchFilter from '../../filters';
-import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
+import { ACCOUNTING_VIEWS, ACTIONS, ACCOUNT_OPTIONS } from 'utils/constants';
 import { Can } from 'components/user/can';
 import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 import axios from 'axios';
 import useGlobalState from 'state';
 import { ExcelIcon } from 'components/icons/index';
+import { Form } from 'rsuite';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalFilterVal = {
   expenseType: '',
   revenueName: '',
   bank: null,
+  accountingOption: 'All',
 };
 const initValue = {
   id: null,
@@ -130,6 +133,7 @@ const BankAccountingContainer = () => {
     expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
     bankId: filter?.bank,
     revenueName: filter?.revenueName,
+    accountingOption: filter?.accountingOption,
     onEdit: () => {
       close();
     },
@@ -138,6 +142,7 @@ const BankAccountingContainer = () => {
       setFormValue(initValue);
     },
   });
+  console.log(filter,'f');
   const revenuesPages = Math.ceil(RevenuesCount / 20);
   const expensesPages = Math.ceil(expensesCount / 20);
 
@@ -369,7 +374,16 @@ const BankAccountingContainer = () => {
             data={{ revenues, revenues }}
             onChangePeriod={setPeriod}
           />
-
+          <Form>
+            <CRSelectInput
+              data={ACCOUNT_OPTIONS}
+              name="accountOption"
+              block
+              value={filter.accountingOption}
+              onChange={val => setFilter({ ...filter, accountingOption: val })}
+              style={{ width: '170px' }}
+            />
+          </Form>
           <Div display="flex" my={4}>
             <H6>{t('showingFor')} :</H6>
             <H6 variant="primary" ml={2} fontWeight="bold">

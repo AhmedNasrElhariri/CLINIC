@@ -2,27 +2,60 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import { Modal, Whisper, Tooltip, Form } from 'rsuite';
-import { useParams, useHistory, Switch, Route } from 'react-router-dom';
-import {
-  Div,
-  H6,
-  CRNav,
-  CRVDivider,
-  H3,
-  CRButton,
-  CRNestedSelector,
-} from 'components';
+import { useHistory } from 'react-router-dom';
+import { Div, H6, CRNav, CRVDivider, H3, CRButton } from 'components';
 import { formatDate } from 'utils/date';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
-import { KeyStyled, ValueStyled } from './style';
+import {
+  KeyStyled,
+  ValueStyled,
+  StyledCell,
+  StyledContainer,
+  StyledHeader,
+} from './style';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
 import { useModal, useAppointments } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import DeleteImage from './delete-image';
+import useGlobalState from 'state';
+import { normalizeDataWithGroups } from 'services/appointment';
 
 const initalVal = {
   imageId: null,
+};
+
+const renderTable = (fields, name) => {
+  return (
+    <>
+      <H3>{name}</H3>
+      <Div display="flex">
+        {Object.keys(fields).map((key, i) => (
+          <StyledContainer>
+            <StyledHeader>{key}</StyledHeader>
+            {fields[key] &&
+              fields[key].length > 0 &&
+              fields[key].map(v => <StyledCell>{v}</StyledCell>)}
+          </StyledContainer>
+        ))}
+      </Div>
+    </>
+  );
+};
+const renderValues = (fields, name) => {
+  return (
+    <>
+      <H3>{name}</H3>
+      <Div display="flex">
+        {Object.keys(fields).map((key, i) => (
+          <StyledContainer>
+            <StyledHeader>{key}</StyledHeader>
+            {fields[key] && <StyledCell>{fields[key]}</StyledCell>}
+          </StyledContainer>
+        ))}
+      </Div>
+    </>
+  );
 };
 const renderProp = (key, value, textValue) => {
   return (
@@ -74,28 +107,40 @@ const renderProp2 = (key, value) => {
 };
 
 const renderAppointment = data => {
-  return data.map(({ value, field, textValue }, idx) => (
-    <React.Fragment key={idx}>
-      {value && field.type === 'NestedSelector'
-        ? renderProp(
-            field.name,
-            <Form>
-              {/* <CRNestedSelector
-                value={value}
-                choices={field.choices}
-                disabled
-              /> */}
-            </Form>
-          )
-        : value && field.type === 'SelectorWithInput'
-        ? renderProp2(field.name, value, textValue)
-        : renderProp(field.name, value, textValue)}
-    </React.Fragment>
-  ));
+  // return data.map(({ value, field, textValue }, idx) => (
+  //   <React.Fragment key={idx}>
+  //     {value && field.type === 'NestedSelector'
+  //       ? renderProp(
+  //           field.name,
+  //           <Form>
+  //             {/* <CRNestedSelector
+  //               value={value}
+  //               choices={field.choices}
+  //               disabled
+  //             /> */}
+  //           </Form>
+  //         )
+  //       : value && field.type === 'SelectorWithInput'
+  //       ? renderProp2(field.name, value, textValue)
+  //       : renderProp(field.name, value, textValue)}
+  //   </React.Fragment>
+  // ));
+  return data.map(({ status, fields, name }, idx) =>
+    status === 'Dynamic'
+      ? renderTable(fields, name)
+      : renderValues(fields, name)
+  );
 };
 
 const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
   const { t } = useTranslation();
+  const [activeSession, setActiveSession] = useState(null);
+  const [views] = useGlobalState('activeViews');
+  const view = useMemo(
+    () => views[activeSession?.type],
+    [activeSession, views]
+  );
+  const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
   const { visible, open, close } = useModal();
   const [formValue, setFormValue] = useState(initalVal);
   const [header, setHeader] = useState('');
@@ -108,7 +153,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     const ss = summary.filter(s => moment(s.date) <= today);
     return ss;
   }, [summary]);
-  const [activeSession, setActiveSession] = useState(null);
+
   const history = useHistory();
   useEffect(() => {
     setActiveSession(R.propOr({}, '0')(updatedSummary));
@@ -128,6 +173,8 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
       R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(updatedSummary),
     [activeSession, updatedSummary]
   );
+  const newGroups = normalizeDataWithGroups(groups, data);
+  
   const handleDeleteImage = useCallback(
     data => {
       const image = R.pick(['id'])(data);
@@ -151,6 +198,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
   if (!activeSession) {
     return '...No History';
   }
+
   return (
     <Div display="flex" position="relative">
       <CRNav vertical minWidth={180} onSelect={setActiveSession}>
@@ -173,7 +221,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
             </H3>
             <Div>
               {renderProp('Date', formatDate(date))}
-              {renderAppointment(data)}
+              {renderAppointment(newGroups)}
               {activeSession.notes && renderProp('Notes', activeSession.notes)}
               {pictures.length > 0 &&
                 renderProp(

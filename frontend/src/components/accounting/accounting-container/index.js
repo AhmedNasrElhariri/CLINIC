@@ -10,6 +10,7 @@ import {
   CRButton,
   H6,
   BranchSpecialtyUserFilter,
+  CRSelectInput,
 } from 'components';
 import Toolbar from '../toolbar';
 import ListExpenseData from '../list-data/expense.js';
@@ -28,7 +29,7 @@ import BranchFilter from '../../filters';
 import { Can } from 'components/user/can';
 import ExpenseFilter from '../filter/expense-filter';
 import RevenueFilter from '../filter/revenue-filter';
-import { ACCOUNTING_VIEWS } from 'utils/constants';
+import { ACCOUNTING_VIEWS, ACCOUNT_OPTIONS } from 'utils/constants';
 import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
 import PdfView from '../toolbar/pdf';
@@ -37,12 +38,17 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import useGlobalState from 'state';
 import { ExcelIcon } from 'components/icons/index';
+import { Form } from 'rsuite';
+import PdfDocument from '../toolbar/pdf-document';
+import { pdf } from '@react-pdf/renderer';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalVal = {
   expenseType: '',
   revenueName: '',
   expenseName: '',
+  accountingOption: 'All',
+  printOrNot: false,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -222,6 +228,8 @@ const AccountingContainer = () => {
     totalExpenses,
     RevenuesCount,
     expensesCount,
+    allExpenses,
+    allRevenues,
     timeFrame,
   } = useAccounting({
     view,
@@ -237,6 +245,8 @@ const AccountingContainer = () => {
     revenueName: formValue?.revenueName,
     expenseName: formValue?.expenseName,
     expenseType: formValue?.expenseType,
+    accountingOption: formValue?.accountingOption,
+    printOrNot: formValue.printOrNot,
   });
   const revenuesPages = Math.ceil(RevenuesCount / 20);
   const expensesPages = Math.ceil(expensesCount / 20);
@@ -249,40 +259,63 @@ const AccountingContainer = () => {
       ),
     [formValue, expenses]
   );
-  const handleAccountingReport = async day => {
-    axios({
-      url: '/accounting',
-      responseType: 'blob', // important
-      method: 'GET',
-      params: {
-        branchId: branchSpecialtyUser?.branch,
-        specialtyId: branchSpecialtyUser?.specialty,
-        doctorId: branchSpecialtyUser?.doctor,
-        expenseBranchId: expenseBranchSpecialtyUser?.branch,
-        expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
-        expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
-        revenueName: formValue?.revenueName,
-        expenseType: formValue?.expenseType,
-        expenseName: formValue?.expenseName,
-        view,
-        dateFrom: period[0],
-        dateTo: period[1],
-        organizationId: user.organizationId,
-      },
-    })
-      .then(function (response) {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'accounting.pdf'); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch(err => {
-        console.log(err, 'rrr');
-      });
-  };
+  const handleAccountingReport = useCallback(async () => {
+    // axios({
+    //   url: '/accounting',
+    //   responseType: 'blob', // important
+    //   params: {
+    //     branchId: branchSpecialtyUser?.branch,
+    //     specialtyId: branchSpecialtyUser?.specialty,
+    //     doctorId: branchSpecialtyUser?.doctor,
+    //     expenseBranchId: expenseBranchSpecialtyUser?.branch,
+    //     expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+    //     expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+    //     revenueName: formValue?.revenueName,
+    //     expenseType: formValue?.expenseType,
+    //     expenseName: formValue?.expenseName,
+    //     view,
+    //     dateFrom: period[0],
+    //     dateTo: period[1],
+    //     organizationId: user.organizationId,
+    //   },
+    // })
+    //   .then(function (response) {
+    //     console.log(response, 'REEEsss');
+    //     const url = window.URL.createObjectURL(new Blob([response.data]));
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.setAttribute('download', 'accounting.pdf'); //or any other extension
+    //     document.body.appendChild(link);
+    //     link.click();
+    //   })
+    //   .catch(err => {
+    //     console.log(err, 'rrr');
+    //   });
 
+    let blob = await pdf(
+      <PdfDocument
+        data={{
+          revenues: allRevenues,
+          expenses: allExpenses,
+          totalRevenues,
+          totalExpenses,
+        }}
+        period={period}
+        marginTop={marginTop}
+        marginRight={marginRight}
+        marginBottom={marginBottom}
+        marginLeft={marginLeft}
+      />
+    ).toBlob();
+    const url = URL.createObjectURL(blob);
+    setFormValue({ ...formValue, printOrNot: false });
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'accounting.pdf'); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+  }, [setFormValue]);
+  console.log(formValue, 'FF');
   const handleRevenueAccountingExcel = async day => {
     axios({
       url: '/accountingRevenueExcel',
@@ -299,6 +332,7 @@ const AccountingContainer = () => {
       },
     })
       .then(function (response) {
+        console.log(response, 'REEEsssxcl');
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
@@ -327,6 +361,7 @@ const AccountingContainer = () => {
       },
     })
       .then(function (response) {
+        console.log(response, 'REEEsssxcl');
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
@@ -362,7 +397,10 @@ const AccountingContainer = () => {
               </Can>
               <CRButton
                 variant="primary"
-                onClick={handleAccountingReport}
+                onClick={() => {
+                  setFormValue({ ...formValue, printOrNot: true });
+                  handleAccountingReport();
+                }}
                 ml={1}
                 mr={1}
               >
@@ -398,6 +436,18 @@ const AccountingContainer = () => {
             data={{ revenues, expenses }}
             onChangePeriod={setPeriod}
           />
+          <Form>
+            <CRSelectInput
+              data={ACCOUNT_OPTIONS}
+              name="accountOption"
+              block
+              value={formValue.accountingOption}
+              onChange={val =>
+                setFormValue({ ...formValue, accountingOption: val })
+              }
+              style={{ width: '170px' }}
+            />
+          </Form>
           <Div display="flex" my={4}>
             <H6>{t('showingFor')} :</H6>
             <H6 variant="primary" ml={2} fontWeight="bold">

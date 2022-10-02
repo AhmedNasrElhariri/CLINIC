@@ -19,7 +19,7 @@ const Toolbar = ({ onChangePeriod ,lastTimeFrameDay}) => {
             size="sm"
             block
             small
-            placement="topStart"
+            placement="auto"
             $noLabel
             onChange={onChangePeriod}
           />
