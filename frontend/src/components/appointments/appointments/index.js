@@ -323,6 +323,7 @@ function Appointments() {
           appointment={appointment}
           show={visible}
           onCancel={close}
+          t={t}
           notes={notes}
           setNotes={setNotes}
           onOk={addBusinessNotes}
