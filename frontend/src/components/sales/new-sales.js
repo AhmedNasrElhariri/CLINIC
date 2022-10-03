@@ -88,7 +88,7 @@ function NewSales({
                   onChange={val => onChange({ ...formValue, itemId: val?.id })}
                   label={t('item')}
                   data={salesesDefinition}
-                  placement="left"
+                  placement="auto"
                   style={{ width: '240px' }}
                   block
                 />

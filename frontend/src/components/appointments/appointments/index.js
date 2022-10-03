@@ -316,6 +316,7 @@ function Appointments() {
           show={visible}
           onCancel={close}
           onOk={handleComplete}
+          t={t}
         />
       )}
       {popUp === 'notes' && (

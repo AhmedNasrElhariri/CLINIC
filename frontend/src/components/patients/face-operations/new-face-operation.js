@@ -43,7 +43,7 @@ function NewFaceOperation({
               name="materialId"
               block
               data={materialsDefinition}
-              placement="topStart"
+              placement="auto"
             />
             <CRTextInput
               label="Units"

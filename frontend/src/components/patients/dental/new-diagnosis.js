@@ -89,21 +89,21 @@ function NewDiagnosis({
               name="depth"
               block
               data={DepthTypes[formValue.depthType]}
-              placement="topStart"
+              placement="auto"
             />
             <CRSelectInput
               label="Diagnosis"
               name="diagnosisId"
               block
               data={dentalDiagnosissDefinition}
-              placement="topStart"
+              placement="auto"
             />
             <CRSelectInput
               label="Doctor"
               name="doctorId"
               block
               data={doctors}
-              placement="topStart"
+              placement="auto"
             />
           </>
         ) : (

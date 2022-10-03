@@ -96,7 +96,7 @@ const init = app => {
           },
         },
       });
-      console.log(expenses,'expensess','step2');
+      console.log('step2',new Date());
       const updatedRevenues = revenues.map(r => {
         return { ...r, date: formatDateStandard(r.date) };
       });
@@ -106,7 +106,7 @@ const init = app => {
       const totalExpenses = expenses.reduce((acc, e) => acc + e.amount, 0);
       const totalRevenues = revenues.reduce((acc, e) => acc + e.amount, 0);
       const profit = totalRevenues - totalExpenses;
-      console.log(totalExpenses,totalRevenues,'totalRevenues','step3');
+      console.log('step3',new Date());
       const pdfDoc = await generatePdf('/views/reports/accounting.ejs', {
         revenues: updatedRevenues,
         expenses: updatedExpenses,
@@ -116,7 +116,7 @@ const init = app => {
         from: formatDateStandard(updatedDateFrom),
         to: formatDateStandard(updatedDateTo),
       });
-      console.log(pdfDoc,'pdfDoc','step4');
+      console.log('step4',new Date());
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
       res.end(pdfDoc);
@@ -124,7 +124,7 @@ const init = app => {
       res.status(502).send(e);
       res.status(400).send(e);
       res.status(400).send('Invalid');
-      console.log(e,'step4');
+      console.log('step5',new Date());
     }
   });
 

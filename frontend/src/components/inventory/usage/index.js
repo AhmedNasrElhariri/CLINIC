@@ -72,7 +72,7 @@ function InventoryUsage({
             branchId={formValue?.branchId}
             userId={formValue?.userId}
             data={itemsChoices}
-            placement="topStart"
+            placement="auto"
             block
           ></CRDocSelectInput>
         </Div>

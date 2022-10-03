@@ -8,24 +8,24 @@ const autoprefixer = require('autoprefixer');
 const postcssPlugins = [autoprefixer()];
 const filterType = /^text\/css$/;
 const postcssOptions = {};
-const options = { format: 'A4' };
+const options = { format: 'A4'};
 
 export const generatePdf = async (path, vairables = {}) => {
   const file = await fsp.readFile(__dirname + path, 'utf8');
   const compiled = ejs.compile(file);
-  console.log(compiled, 'step5');
+  console.log('step6',new Date());
   const html = await posthtml([
     postcss(postcssPlugins, postcssOptions, filterType),
   ])
     .process(compiled(vairables))
-    .then(result => result.html)
-    
-  console.log(html, 'html');
+    .then(result => result.html);
+
+  console.log('step7',new Date());
   return new Promise((resolve, reject) => {
     pdf.create(html, options).toBuffer((err, res) => {
       if (err) {
         reject(err);
-        console.log(err,'err step7')
+        console.log('err step8',new Date());
       }
       resolve(res);
     });
