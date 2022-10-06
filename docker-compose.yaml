@@ -10,5 +10,3 @@ services:
       - VIRTUAL_PORT=4000
       - VIRTUAL_HOST=clinicr.mostafaellethy.com
       - LETSENCRYPT_HOST=clinicr.mostafaellethy.com
-    ports:
-      - "80:4000"
