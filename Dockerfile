@@ -1,5 +1,5 @@
-FROM node:12-alpine as build
-ENV NODE_OPTIONS=--max_old_space_size=2048
+FROM node:14-alpine as build
+ENV NODE_OPTIONS=--max_old_space_size=3072
 WORKDIR /app/frontend
 COPY ./frontend/package.json .
 RUN npm install
