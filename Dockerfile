@@ -1,6 +1,5 @@
 FROM node:12-alpine as build
-EXPOSE 4000
-RUN npm install pm2 -g
+ENV NODE_OPTIONS=--max_old_space_size=2048
 WORKDIR /app/frontend
 COPY ./frontend/package.json .
 RUN npm install
@@ -16,4 +15,10 @@ RUN npm run build
 RUN mv -v ./deploy_required/* ./dist
 WORKDIR /app/backend/dist
 RUN cp ../node_modules/@prisma/engines/query-engine-linux-musl .
+
+FROM node:12-alpine
+WORKDIR /app
+COPY --from=build /app/backend/dist /app/
+RUN npm install pm2 -g
+EXPOSE 4000
 CMD pm2-runtime ecosystem.config.js
