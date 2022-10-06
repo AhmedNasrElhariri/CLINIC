@@ -14,18 +14,20 @@ import { getContextData } from './services/auth.service';
 import cron from 'node-cron';
 import initUploadConfig from './conf/upload';
 import initReportsConfig from './conf/reports';
-import {
-  tomorrowAppointmentsReminder,
-  before3daysSurgeriesReminder,
-  beforeOneDaySurgeryReminder,
-  every6HoursAppointmentReminder,
-} from './services/cron-jobs';
+// import {
+//   tomorrowAppointmentsReminder,
+//   before3daysSurgeriesReminder,
+//   beforeOneDaySurgeryReminder,
+//   every6HoursAppointmentReminder,
+// } from './services/cron-jobs';
 export const UPLOAD_DIR = '/uploads';
 
 mkdirp.sync(path.join(__dirname, UPLOAD_DIR));
 
 export const prisma = new PrismaClient();
-export const pubsub = new RedisPubSub();
+export const pubsub = new RedisPubSub({
+  connection: { host: process.env.REDIS_HOST || '127.0.0.1' },
+});
 
 const options = {
   port: process.env.APP_PORT || 4000,
@@ -56,8 +58,6 @@ const app = server.express;
 
 app.use(cors());
 
-
-
 app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
 initUploadConfig(app);
 initReportsConfig(app);
@@ -82,9 +82,9 @@ cron.schedule('00 06 * * *', async function () {
 });
 ///////////////   whatsApp Messages   ////////
 // cron.schedule('07 13 * * *', async function () {
-  // tomorrowAppointmentsReminder();
-  // before3daysSurgeriesReminder();
-  // beforeOneDaySurgeryReminder();
+// tomorrowAppointmentsReminder();
+// before3daysSurgeriesReminder();
+// beforeOneDaySurgeryReminder();
 // });
 // cron.schedule('00 00,06,12,18 * * *', async function () {
 //   every6HoursAppointmentReminder();

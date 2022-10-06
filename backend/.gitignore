@@ -2,5 +2,6 @@ dist
 .vscode/
 server-dist/
 
+.env
 .env.dev
 .env.prod

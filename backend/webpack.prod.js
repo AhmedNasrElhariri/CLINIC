@@ -25,10 +25,10 @@ module.exports = merge(common, {
           from: '../frontend/build/',
           to: 'frontend',
         },
-        {
-          from: '../patients-app/build/',
-          to: 'patients-app',
-        },
+        // {
+        //   from: '../patients-app/build/',
+        //   to: 'patients-app',
+        // },
         {
           from: './prisma/migrations/',
           to: 'migrations',

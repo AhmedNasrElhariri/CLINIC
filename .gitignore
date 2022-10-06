@@ -129,5 +129,3 @@ yarn-error.log
 
 build
 build.zip
-package-lock.json
-yarn.lock
