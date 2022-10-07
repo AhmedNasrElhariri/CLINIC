@@ -129,3 +129,5 @@ yarn-error.log
 
 build
 build.zip
+me.key
+docker_image.tar.gz
