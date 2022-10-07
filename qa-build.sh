@@ -20,7 +20,7 @@ git pull origin $branch
 
 echo 'start frontend build'
 cd ./frontend
-npm install
+npm ci
 echo 'start building...'
 npm run build
 cd ../
@@ -28,7 +28,7 @@ echo 'frontend finished successfully'
 
 echo 'start patients app build'
 cd ./patients-app
-npm install
+npm ci
 echo 'start building...'
 REACT_APP_GRAPHQL_URL=https://chr-ring.com npm run build
 cd ../
@@ -36,7 +36,7 @@ echo 'patients app finished successfully'
 
 echo "start backend build"
 cd ./backend
-npm install
+npm ci
 echo 'start building...'
 npx prisma generate
 npm run build

@@ -67,7 +67,6 @@ const init = app => {
           },
         },
       });
-      console.log(revenues,'revenues/step1');
       const expenses = await prisma.expense.findMany({
         where: {
           organizationId,
@@ -96,7 +95,6 @@ const init = app => {
           },
         },
       });
-      console.log('step2',new Date());
       const updatedRevenues = revenues.map(r => {
         return { ...r, date: formatDateStandard(r.date) };
       });
@@ -106,25 +104,21 @@ const init = app => {
       const totalExpenses = expenses.reduce((acc, e) => acc + e.amount, 0);
       const totalRevenues = revenues.reduce((acc, e) => acc + e.amount, 0);
       const profit = totalRevenues - totalExpenses;
-      console.log('step3',new Date());
       const pdfDoc = await generatePdf('/views/reports/accounting.ejs', {
         revenues: updatedRevenues,
         expenses: updatedExpenses,
-        totalExpenses: totalExpenses,
-        totalRevenues: totalRevenues,
-        profit: profit,
+        totalExpenses,
+        totalRevenues,
+        profit,
         from: formatDateStandard(updatedDateFrom),
         to: formatDateStandard(updatedDateTo),
       });
-      console.log('step4',new Date());
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
       res.end(pdfDoc);
     } catch (e) {
-      res.status(502).send(e);
+      console.log(e);
       res.status(400).send(e);
-      res.status(400).send('Invalid');
-      console.log('step5',new Date());
     }
   });
 
@@ -225,6 +219,7 @@ const init = app => {
         from: formatDateStandard(updatedDateFrom),
         to: formatDateStandard(updatedDateTo),
       });
+      console.log('pdfDoc', pdfDoc);
       const fileName = 'accounting.pdf';
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
