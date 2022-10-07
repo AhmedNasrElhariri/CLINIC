@@ -1,9 +1,0 @@
-.vscode
-mobile-app
-patients-app
-*.sh
-.gitignore
-*.ods
-**/node_modules
-**/build
-**/dist
