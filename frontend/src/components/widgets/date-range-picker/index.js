@@ -51,6 +51,7 @@ const CustomDatePicker = ({
 }) => {
   return (
     <DateRangePickerStyled
+      preventOverflow
       {...props}
       value={value}
       format={format}
@@ -60,7 +61,7 @@ const CustomDatePicker = ({
   );
 };
 
-export default ({ label, children, ...rest }) => {
+export default function Component({ label, children, ...rest }) {
   return (
     <FormGroup>
       <Label>{label}</Label>
@@ -68,4 +69,4 @@ export default ({ label, children, ...rest }) => {
       {children}
     </FormGroup>
   );
-};
+}

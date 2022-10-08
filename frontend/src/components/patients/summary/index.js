@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
-import { Modal, Whisper, Tooltip, Form } from 'rsuite';
+import { Modal, Whisper, Tooltip, Divider } from 'rsuite';
 import { useHistory } from 'react-router-dom';
 import { Div, H6, CRNav, CRVDivider, H3, CRButton } from 'components';
 import { formatDate } from 'utils/date';
@@ -84,27 +84,28 @@ const renderProp = (key, value, textValue) => {
     </Div>
   );
 };
-const renderProp2 = (key, value) => {
-  return (
-    <Div display="flex" alignItems="center" minHeight={60}>
-      <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
-        <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
-      </Whisper>
-      {value.length > 0 &&
-        value.map(v => (
-          <Div display="flex">
-            <CRVDivider vertical />
-            <Div display="flex">
-              <ValueStyled>{v[0]}</ValueStyled>
-            </Div>
-            <Div ml={10} display="flex" mr={10}>
-              <ValueStyled>{v[1]}</ValueStyled>
-            </Div>
-          </Div>
-        ))}
-    </Div>
-  );
-};
+
+// const renderProp2 = (key, value) => {
+//   return (
+//     <Div display="flex" alignItems="center" minHeight={60}>
+//       <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
+//         <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
+//       </Whisper>
+//       {value.length > 0 &&
+//         value.map(v => (
+//           <Div display="flex">
+//             <CRVDivider vertical />
+//             <Div display="flex">
+//               <ValueStyled>{v[0]}</ValueStyled>
+//             </Div>
+//             <Div ml={10} display="flex" mr={10}>
+//               <ValueStyled>{v[1]}</ValueStyled>
+//             </Div>
+//           </Div>
+//         ))}
+//     </Div>
+//   );
+// };
 
 const renderAppointment = data => {
   // return data.map(({ value, field, textValue }, idx) => (
@@ -174,7 +175,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     [activeSession, updatedSummary]
   );
   const newGroups = normalizeDataWithGroups(groups, data);
-  
+
   const handleDeleteImage = useCallback(
     data => {
       const image = R.pick(['id'])(data);
@@ -200,25 +201,84 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
   }
 
   return (
-    <Div display="flex" position="relative">
-      <CRNav vertical minWidth={180} onSelect={setActiveSession}>
-        {updatedSummary.map((session, idx) => (
-          <CRNav.CRVItem
-            key={session.id}
-            eventKey={session}
-            active={activeSession.id === session.id}
-          >
-            {t('session')} {updatedSummary.length - idx}
-          </CRNav.CRVItem>
-        ))}
-      </CRNav>
+    <Div className="flex flex-col md:flex-row">
+      <Divider className="!mt-0 sm:!hidden" />
+
+      {/* Show responsive session toggler if screen is small and there is list and active session  */}
+      {updatedSummary && activeSession && (
+        <div
+          className="flex gap-3 items-center md:!hidden sm:pl-4"
+          onChange={event =>
+            setActiveSession(
+              updatedSummary.find(session => session.id === event.target.value)
+            )
+          }
+        >
+          <label>Session:</label>
+          <select className="grow p-1" defaultValue={activeSession.id}>
+            {updatedSummary.map((session, i) => (
+              <option key={i} value={session.id}>{`${t('session')} ${
+                updatedSummary.length - i
+              }`}</option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {/* Show default sessions list if screen is not small */}
+      <div className="tw-hidden md:inline-flex">
+        <CRNav vertical minWidth={180} onSelect={setActiveSession}>
+          {updatedSummary.map((session, idx) => (
+            <CRNav.CRVItem
+              key={session.id}
+              eventKey={session}
+              active={activeSession.id === session.id}
+            >
+              {t('session')} {updatedSummary.length - idx}
+            </CRNav.CRVItem>
+          ))}
+        </CRNav>
+      </div>
+
       <Div m={4} flexGrow={1}>
         {updatedSummary.length ? (
           <>
-            <H3 mb={4}>
-              {t('session')} {updatedSummary.length - sessionId} {' / '}
-              {activeSession.updater?.name}
-            </H3>
+            <div className="flex flex-row flex-wrap items-center justify-between">
+              <H3>
+                {t('session')} {updatedSummary.length - sessionId} {' / '}
+                {activeSession.updater?.name}
+              </H3>
+              <Div className="my-3">
+                <Div>
+                  <CRButton
+                    onClick={() =>
+                      history.push(`/appointments/${activeSession.id}`)
+                    }
+                    variant="primary"
+                    mr={10}
+                    ml={10}
+                  >
+                    {t('edit')}
+                  </CRButton>
+                  <CRButton onClick={open} variant="primary">
+                    {t('tableView')}
+                  </CRButton>
+                </Div>
+                {header !== 'Delete Image' && (
+                  <Div>
+                    <Modal show={visible} full onHide={close}>
+                      <Modal.Body>
+                        <SummaryTable
+                          data={tabularData}
+                          fields={tabularFields}
+                        />
+                      </Modal.Body>
+                    </Modal>
+                  </Div>
+                )}
+              </Div>
+            </div>
+
             <Div>
               {renderProp('Date', formatDate(date))}
               {renderAppointment(newGroups)}
@@ -241,31 +301,6 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
             height={200}
           >
             <H6 color="texts.2">{t('noData')}</H6>
-          </Div>
-        )}
-      </Div>
-
-      <Div position="absolute" top={0} right={3}>
-        <Div mb={10}>
-          <CRButton
-            onClick={() => history.push(`/appointments/${activeSession.id}`)}
-            variant="primary"
-            mr={10}
-            ml={10}
-          >
-            {t('edit')}
-          </CRButton>
-          <CRButton onClick={open} variant="primary">
-            {t('tableView')}
-          </CRButton>
-        </Div>
-        {header !== 'Delete Image' && (
-          <Div>
-            <Modal show={visible} full onHide={close}>
-              <Modal.Body>
-                <SummaryTable data={tabularData} fields={tabularFields} />
-              </Modal.Body>
-            </Modal>
           </Div>
         )}
       </Div>
