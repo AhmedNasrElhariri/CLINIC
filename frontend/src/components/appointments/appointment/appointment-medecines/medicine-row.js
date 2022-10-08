@@ -22,45 +22,43 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
       fluid
       formValue={formValue}
       onChange={onChange}
-      className="flex flex-row flex-nowrap items-center gap-3 mt-7"
+      className="flex flex-row flex-nowrap items-center gap-3 mt-4 sm:bg-white p-2"
     >
-      <Div className="flex items-center min-w-[7rem] flex-wrap">
+      <Div className="flex items-center w-24 flex-wrap">
         <H6 fontWeight="bold">{name}</H6>
         <H6 mx={1}>({form})</H6>
         <H7 fontStyle="italic">{concentration}</H7>
       </Div>
       <div className="bg-white">
-        <CRTextInput
-          className="min-w-[5rem]"
-          name="dose"
-          layout="inline"
-          placeholder={t('dose')}
-          disabled={required}
-        />
+      <CRTextInput
+        noLabel
+        className="min-w-[5rem]"
+        name="dose"
+        placeholder={t('dose')}
+        disabled={required}
+      />
       </div>
-
       <CRSelectInput
+        noLabel
         className="min-w-[10rem]"
         name="timingId"
         data={timings}
         disabled={required}
-        layout="inline"
-        block
       />
       <CRNumberInput
+        noLabel
         name="duration"
-        layout="inline"
         placeholder={t('duration')}
         disabled={required}
         style={{ width: '100px' }}
       />
       <CRSelectInput
+        noLabel
         placeholder="Period"
         name="period"
         data={peridos}
         disabled={required}
-        layout="inline"
-        style={{ width: '150px' }}
+        className="min-w-[10rem]"
       />
       <CRButton
         className="min-w-[5rem] "

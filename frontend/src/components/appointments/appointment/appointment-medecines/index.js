@@ -67,7 +67,7 @@ const AppointmentMedicines = ({
   }, []);
 
   return (
-    <div className="bg-slate-100 overflow-x-auto pb-5 px-4">
+    <div className="bg-slate-100 overflow-x-auto pb-5 px-4 mt-7">
       {formValue.map((f, idx) => (
         <MedicineRow
           timings={timings}

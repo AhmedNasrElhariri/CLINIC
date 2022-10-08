@@ -9,10 +9,17 @@ const CustomInput = memo(({ onChange, ...props }) => {
   return <InputStyled onChange={e => onChange(e.target.value)} {...props} />;
 });
 
-const TextInput = ({ label, layout, addOn, borderless = false, ...rest }) => {
+const TextInput = ({
+  label,
+  layout,
+  addOn,
+  borderless = false,
+  noLabel,
+  ...rest
+}) => {
   return (
     <FormGroupStyled>
-      <Label layout={layout}>{label}</Label>
+      {!noLabel && <Label layout={layout}>{label}</Label>}
       <InputGroupStyled borderless={borderless ? 1 : 0}>
         <FormControl {...rest} accepter={CustomInput} addonAfter={!!addOn} />
         {addOn && <AddOnStyle>{addOn}</AddOnStyle>}

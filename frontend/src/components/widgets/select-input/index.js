@@ -163,13 +163,14 @@ const CRSelectInput = ({
   valueKey,
   layout,
   children,
+  noLabel,
   ...rest
 }) => {
   const { t } = useTranslation();
   const placeho = t('select');
   return (
     <FormGroupStyled layout={layout}>
-      <Label>{label}</Label>
+      {!noLabel && <Label>{label}</Label>}
       <FormControl
         {...rest}
         accepter={CustomSelect}
