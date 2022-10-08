@@ -194,7 +194,7 @@ const GroupContainer = ({
       </Div>
       <Div
         mt={10}
-        className="overflow-x-scroll max-w-[calc(100vw-35px)] md:max-w-[calc(80vw)]"
+        className="overflow-x-scroll max-w-[calc(100vw-35px)]"
       >
         {fields.length > 0 && (
           <>
