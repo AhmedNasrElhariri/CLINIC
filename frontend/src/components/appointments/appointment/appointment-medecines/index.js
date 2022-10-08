@@ -67,21 +67,18 @@ const AppointmentMedicines = ({
   }, []);
 
   return (
-    <Div>
-      {/* <MedicinesFilter onNameChange={() => {}}></MedicinesFilter> */}
-      <Div>
-        {formValue.map((f, idx) => (
-          <MedicineRow
-            timings={timings}
-            key={idx}
-            medicine={f.medicine}
-            onClick={() => handleOnClick(f, idx)}
-            onChange={val => handleOnChange(val, idx)}
-            formValue={f}
-          />
-        ))}
-      </Div>
-    </Div>
+    <div className="bg-slate-100 overflow-x-auto pb-5 px-4">
+      {formValue.map((f, idx) => (
+        <MedicineRow
+          timings={timings}
+          key={idx}
+          medicine={f.medicine}
+          onClick={() => handleOnClick(f, idx)}
+          onChange={val => handleOnChange(val, idx)}
+          formValue={f}
+        />
+      ))}
+    </div>
   );
 };
 
