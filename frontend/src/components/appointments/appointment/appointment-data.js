@@ -329,7 +329,6 @@ function AppointmentData({
         </SectionContainer>
 
         <SectionContainer title={t('sessionsPulses')} name="pulses">
-          here
           <Div
             display="flex"
             justifyContent="center"

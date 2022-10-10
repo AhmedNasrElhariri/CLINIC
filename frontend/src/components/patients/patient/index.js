@@ -82,29 +82,6 @@ function Appointment() {
         className="mb-7"
       />
 
-      {/* <SelectPicker
-        searchable={false}
-        data={tabs.map(item => ({ label: item, value: item }))}
-        style={{ width: 256 }}
-      /> */}
-
-      {/* <MainContainer
-        nobody
-        more={
-          <>
-            <AvatarWithName patient={patient} />
-            {appointmentId && (
-              <CRButton
-                onClick={() => history.push(`/appointments/${appointmentId}`)}
-                variant="primary"
-              >
-                {t('currentAppointment')}
-              </CRButton>
-            )}
-          </>
-        }
-      ></MainContainer> */}
-
       <SelectPicker
         className="w-64 mb-7 sm:!hidden"
         cleanable={false}

@@ -43,17 +43,21 @@ const renderTable = (fields, name) => {
   );
 };
 const renderValues = (fields, name) => {
+  console.log(fields);
   return (
     <>
       <H3>{name}</H3>
-      <Div display="flex">
+      <div className="flex flex-nowrap overflow-x-auto pb-7">
         {Object.keys(fields).map((key, i) => (
-          <StyledContainer>
-            <StyledHeader>{key}</StyledHeader>
-            {fields[key] && <StyledCell>{fields[key]}</StyledCell>}
-          </StyledContainer>
+          <>
+            <div className="min-w-[7rem] flex-1 text-center inline-flex flex-col">
+              <h6 className="mb-2">{key}</h6>
+              {fields[key] &&
+                fields[key].map((item, idx) => <p key={idx}>{item}</p>)}
+            </div>
+          </>
         ))}
-      </Div>
+      </div>
     </>
   );
 };
@@ -85,47 +89,7 @@ const renderProp = (key, value, textValue) => {
   );
 };
 
-// const renderProp2 = (key, value) => {
-//   return (
-//     <Div display="flex" alignItems="center" minHeight={60}>
-//       <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
-//         <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
-//       </Whisper>
-//       {value.length > 0 &&
-//         value.map(v => (
-//           <Div display="flex">
-//             <CRVDivider vertical />
-//             <Div display="flex">
-//               <ValueStyled>{v[0]}</ValueStyled>
-//             </Div>
-//             <Div ml={10} display="flex" mr={10}>
-//               <ValueStyled>{v[1]}</ValueStyled>
-//             </Div>
-//           </Div>
-//         ))}
-//     </Div>
-//   );
-// };
-
 const renderAppointment = data => {
-  // return data.map(({ value, field, textValue }, idx) => (
-  //   <React.Fragment key={idx}>
-  //     {value && field.type === 'NestedSelector'
-  //       ? renderProp(
-  //           field.name,
-  //           <Form>
-  //             {/* <CRNestedSelector
-  //               value={value}
-  //               choices={field.choices}
-  //               disabled
-  //             /> */}
-  //           </Form>
-  //         )
-  //       : value && field.type === 'SelectorWithInput'
-  //       ? renderProp2(field.name, value, textValue)
-  //       : renderProp(field.name, value, textValue)}
-  //   </React.Fragment>
-  // ));
   return data.map(({ status, fields, name }, idx) =>
     status === 'Dynamic'
       ? renderTable(fields, name)
@@ -206,16 +170,19 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
 
       {/* Show responsive session toggler if screen is small and there is list and active session  */}
       {updatedSummary && activeSession && (
-        <div
-          className="flex gap-3 items-center md:!hidden sm:pl-4"
-          onChange={event =>
-            setActiveSession(
-              updatedSummary.find(session => session.id === event.target.value)
-            )
-          }
-        >
+        <div className="flex gap-3 items-center md:!hidden sm:pl-4">
           <label>Session:</label>
-          <select className="grow p-1" defaultValue={activeSession.id}>
+          <select
+            className="grow p-1"
+            defaultValue={activeSession.id}
+            onChange={event =>
+              setActiveSession(
+                updatedSummary.find(
+                  session => session.id === event.target.value
+                )
+              )
+            }
+          >
             {updatedSummary.map((session, i) => (
               <option key={i} value={session.id}>{`${t('session')} ${
                 updatedSummary.length - i
@@ -240,7 +207,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
         </CRNav>
       </div>
 
-      <Div m={4} flexGrow={1}>
+      <div className="sm:px-5">
         {updatedSummary.length ? (
           <>
             <div className="flex flex-row flex-wrap items-center justify-between">
@@ -248,8 +215,8 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
                 {t('session')} {updatedSummary.length - sessionId} {' / '}
                 {activeSession.updater?.name}
               </H3>
-              <Div className="my-3">
-                <Div>
+              <div className="my-3">
+                <div>
                   <CRButton
                     onClick={() =>
                       history.push(`/appointments/${activeSession.id}`)
@@ -263,10 +230,14 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
                   <CRButton onClick={open} variant="primary">
                     {t('tableView')}
                   </CRButton>
-                </Div>
+                </div>
                 {header !== 'Delete Image' && (
-                  <Div>
-                    <Modal show={visible} full onHide={close}>
+                  <div>
+                    <Modal
+                      show={visible}
+                      onHide={close}
+                      className="!max-w-[90%]"
+                    >
                       <Modal.Body>
                         <SummaryTable
                           data={tabularData}
@@ -274,9 +245,9 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
                         />
                       </Modal.Body>
                     </Modal>
-                  </Div>
+                  </div>
                 )}
-              </Div>
+              </div>
             </div>
 
             <Div>
@@ -303,7 +274,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
             <H6 color="texts.2">{t('noData')}</H6>
           </Div>
         )}
-      </Div>
+      </div>
       {header === 'Delete Image' && (
         <DeleteImage
           visible={visible}
