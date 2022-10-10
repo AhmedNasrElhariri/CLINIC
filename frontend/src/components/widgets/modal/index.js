@@ -26,7 +26,7 @@ const Modal = ({
   return (
     <CRContainer show={show} width={width} {...props}>
       {!noHeader && <CRHeader {...headerStyle} title={header}></CRHeader>}
-      <CRBody style={bodyStyle}>
+      <CRBody style={bodyStyle} className="!max-h-[66vh]">
         {children}
         {!noFooter && (
           <CRFooter

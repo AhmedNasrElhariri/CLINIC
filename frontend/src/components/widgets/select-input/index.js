@@ -164,12 +164,13 @@ const CRSelectInput = ({
   layout,
   children,
   noLabel,
+  formGroupClassName,
   ...rest
 }) => {
   const { t } = useTranslation();
   const placeho = t('select');
   return (
-    <FormGroupStyled layout={layout}>
+    <FormGroupStyled layout={layout} className={formGroupClassName}>
       {!noLabel && <Label>{label}</Label>}
       <FormControl
         {...rest}

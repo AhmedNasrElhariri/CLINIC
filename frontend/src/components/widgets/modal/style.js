@@ -3,7 +3,7 @@ import { Modal } from 'rsuite';
 import { space } from 'styled-system';
 
 export const ModalStyled = styled(Modal)`
-  max-width: 100vw;
+  max-width: 90vw;
 `;
 
 export const ModalHeaderStyled = styled(Modal.Header)`
