@@ -4,7 +4,7 @@ import { CRTable } from 'components';
 
 const SummaryTable = ({ data, fields }) => {
   return (
-    <CRTable data={data} >
+    <CRTable data={data}>
       {fields.map(f => (
         <CRTable.CRColumn flexGrow={1} key={f.id} fixed>
           <CRTable.CRHeaderCell>{f.name}</CRTable.CRHeaderCell>
