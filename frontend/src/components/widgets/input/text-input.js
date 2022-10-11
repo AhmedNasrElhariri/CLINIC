@@ -6,7 +6,13 @@ import Label from '../label';
 import { InputStyled, InputGroupStyled, AddOnStyle } from './style';
 
 const CustomInput = memo(({ onChange, ...props }) => {
-  return <InputStyled onChange={e => onChange(e.target.value)} {...props} />;
+  return (
+    <InputStyled
+      onChange={e => onChange(e.target.value)}
+      {...props}
+      className="min-w-[7rem]"
+    />
+  );
 });
 
 const TextInput = ({

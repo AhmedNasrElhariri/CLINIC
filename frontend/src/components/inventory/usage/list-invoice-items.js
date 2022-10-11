@@ -1,29 +1,21 @@
 import React from 'react';
 
-import { H7, Div } from 'components';
-import { Item, DeleteLinkStyled } from './style';
+import { Div } from 'components';
+import { Button } from 'rsuite';
 
 function ListInvoiceItems({ items, priceKey, onDelete }) {
   return (
-    <Div>
+    <Div className="bg-slate-100 p-3">
       {items.map((item, idx) => (
-        <Item key={idx}>
-          <Div display="flex" alignItems="center">
-            <H7 color="texts.1">
-              {item?.Quantity}
-              {' / '}
-            </H7>
-            <H7 color="texts.1" textDecoration="underline">
-              {item?.name}
-            </H7>
-            <DeleteLinkStyled cursor="pointer" onClick={() => onDelete(idx)}>
-              Delete
-            </DeleteLinkStyled>
-          </Div>
-          <Div display="flex" alignItems="center">
-            <H7 color="texts.1">EGP {item[priceKey] * item?.Quantity}</H7>
-          </Div>
-        </Item>
+        <div key={idx} className="flex items-center">
+          <h6>{`${item?.Quantity} / ${item?.name}`}</h6>
+          <Button
+            className="ml-auto !text-red-500"
+            onClick={() => onDelete(idx)}
+          >
+            Delete
+          </Button>
+        </div>
       ))}
     </Div>
   );
