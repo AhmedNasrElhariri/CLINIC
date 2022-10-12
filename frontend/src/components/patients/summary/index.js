@@ -192,7 +192,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
         </CRNav>
       </div>
 
-      <div className="sm:px-5 grow">
+      <div className="sm:px-5 grow overflow-x-auto">
         {updatedSummary.length ? (
           <>
             <Header
