@@ -28,7 +28,7 @@ const renderTable = (fields, name) => {
       <div
         className="pb-10 grid"
         style={{
-          gridTemplateColumns: `repeat(${keys.length}, minmax(75px, 1fr))`,
+          gridTemplateColumns: `repeat(${keys.length}, minmax(100px, 1fr))`,
         }}
       >
         {keys.map(key => (
@@ -51,7 +51,7 @@ const renderValues = (fields, name) => {
       <div
         className="pb-10 grid"
         style={{
-          gridTemplateColumns: `repeat(${keys.length}, minmax(75px, 1fr))`,
+          gridTemplateColumns: `repeat(${keys.length}, minmax(100px, 1fr))`,
         }}
       >
         {keys.map(key => (
