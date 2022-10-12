@@ -2,60 +2,65 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
 import { Modal, Whisper, Tooltip, Divider } from 'rsuite';
-import { useHistory } from 'react-router-dom';
-import { Div, H6, CRNav, CRVDivider, H3, CRButton } from 'components';
+import { Div, H6, CRNav, CRVDivider, H3 } from 'components';
 import { formatDate } from 'utils/date';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
-import {
-  KeyStyled,
-  ValueStyled,
-  StyledCell,
-  StyledContainer,
-  StyledHeader,
-} from './style';
+import { KeyStyled, ValueStyled, StyledCell } from './style';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
 import { useModal, useAppointments } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import DeleteImage from './delete-image';
 import useGlobalState from 'state';
 import { normalizeDataWithGroups } from 'services/appointment';
+import SessionSelector from './session-selector';
+import Header from './header';
 
 const initalVal = {
   imageId: null,
 };
 
 const renderTable = (fields, name) => {
+  const keys = Object.keys(fields);
   return (
     <>
       <H3>{name}</H3>
-      <Div display="flex">
-        {Object.keys(fields).map((key, i) => (
-          <StyledContainer>
-            <StyledHeader>{key}</StyledHeader>
+      <div
+        className="pb-10 grid"
+        style={{
+          gridTemplateColumns: `repeat(${keys.length}, minmax(75px, 1fr))`,
+        }}
+      >
+        {keys.map(key => (
+          <div className="text-center" key={key}>
+            <h6 className="mb-2">{key}</h6>
             {fields[key] &&
               fields[key].length > 0 &&
               fields[key].map(v => <StyledCell>{v}</StyledCell>)}
-          </StyledContainer>
+          </div>
         ))}
-      </Div>
+      </div>
     </>
   );
 };
 const renderValues = (fields, name) => {
-  console.log(fields);
+  const keys = Object.keys(fields);
   return (
     <>
       <H3>{name}</H3>
-      <div className="flex flex-nowrap overflow-x-auto pb-7">
-        {Object.keys(fields).map((key, i) => (
-          <>
-            <div className="min-w-[7rem] flex-1 text-center inline-flex flex-col">
-              <h6 className="mb-2">{key}</h6>
-              {fields[key] &&
-                fields[key].map((item, idx) => <p key={idx}>{item}</p>)}
-            </div>
-          </>
+      <div
+        className="pb-10 grid"
+        style={{
+          gridTemplateColumns: `repeat(${keys.length}, minmax(75px, 1fr))`,
+        }}
+      >
+        {keys.map(key => (
+          <div className="text-center" key={key}>
+            <h6 className="mb-2">{key}</h6>
+            {fields[key] &&
+              fields[key].length > 0 &&
+              fields[key].map(v => <StyledCell>{v}</StyledCell>)}
+          </div>
         ))}
       </div>
     </>
@@ -119,7 +124,6 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     return ss;
   }, [summary]);
 
-  const history = useHistory();
   useEffect(() => {
     setActiveSession(R.propOr({}, '0')(updatedSummary));
   }, [updatedSummary]);
@@ -133,11 +137,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     () => R.propOr([], 'data')(activeSession),
     [activeSession]
   );
-  const sessionId = useMemo(
-    () =>
-      R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(updatedSummary),
-    [activeSession, updatedSummary]
-  );
+
   const newGroups = normalizeDataWithGroups(groups, data);
 
   const handleDeleteImage = useCallback(
@@ -168,28 +168,13 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     <Div className="flex flex-col md:flex-row">
       <Divider className="!mt-0 sm:!hidden" />
 
-      {/* Show responsive session toggler if screen is small and there is list and active session  */}
       {updatedSummary && activeSession && (
-        <div className="flex gap-3 items-center md:!hidden sm:pl-4">
-          <label>Session:</label>
-          <select
-            className="grow p-1"
-            defaultValue={activeSession.id}
-            onChange={event =>
-              setActiveSession(
-                updatedSummary.find(
-                  session => session.id === event.target.value
-                )
-              )
-            }
-          >
-            {updatedSummary.map((session, i) => (
-              <option key={i} value={session.id}>{`${t('session')} ${
-                updatedSummary.length - i
-              }`}</option>
-            ))}
-          </select>
-        </div>
+        <SessionSelector
+          activeSession={activeSession}
+          setActiveSession={setActiveSession}
+          updatedSummary={updatedSummary}
+          t={t}
+        />
       )}
 
       {/* Show default sessions list if screen is not small */}
@@ -207,62 +192,37 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
         </CRNav>
       </div>
 
-      <div className="sm:px-5">
+      <div className="sm:px-5 grow">
         {updatedSummary.length ? (
           <>
-            <div className="flex flex-row flex-wrap items-center justify-between">
-              <H3>
-                {t('session')} {updatedSummary.length - sessionId} {' / '}
-                {activeSession.updater?.name}
-              </H3>
-              <div className="my-3">
-                <div>
-                  <CRButton
-                    onClick={() =>
-                      history.push(`/appointments/${activeSession.id}`)
-                    }
-                    variant="primary"
-                    mr={10}
-                    ml={10}
-                  >
-                    {t('edit')}
-                  </CRButton>
-                  <CRButton onClick={open} variant="primary">
-                    {t('tableView')}
-                  </CRButton>
-                </div>
-                {header !== 'Delete Image' && (
-                  <div>
-                    <Modal
-                      show={visible}
-                      onHide={close}
-                      className="!max-w-[90%]"
-                    >
-                      <Modal.Body>
-                        <SummaryTable
-                          data={tabularData}
-                          fields={tabularFields}
-                        />
-                      </Modal.Body>
-                    </Modal>
-                  </div>
-                )}
-              </div>
+            <Header
+              updatedSummary={updatedSummary}
+              t={t}
+              activeSession={activeSession}
+              open={open}
+            />
+            {header !== 'Delete Image' && (
+              <Modal show={visible} onHide={close} className="!max-w-[90%]">
+                <Modal.Body>
+                  <SummaryTable data={tabularData} fields={tabularFields} />
+                </Modal.Body>
+              </Modal>
+            )}
+
+            {renderProp('Date', formatDate(date))}
+            <div className="overflow-x-auto">
+              {renderAppointment(newGroups)}
             </div>
 
-            <Div>
-              {renderProp('Date', formatDate(date))}
-              {renderAppointment(newGroups)}
-              {activeSession.notes && renderProp('Notes', activeSession.notes)}
-              {pictures.length > 0 &&
-                renderProp(
-                  'Images',
-                  <AppointmentGallery
-                    pictures={pictures}
-                    onDelete={handleDeleteImage}
-                  />
-                )}
-            </Div>
+            {activeSession.notes && renderProp('Notes', activeSession.notes)}
+            {pictures.length > 0 &&
+              renderProp(
+                'Images',
+                <AppointmentGallery
+                  pictures={pictures}
+                  onDelete={handleDeleteImage}
+                />
+              )}
           </>
         ) : (
           <Div
