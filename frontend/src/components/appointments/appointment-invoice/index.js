@@ -104,7 +104,7 @@ function AppointmentInvoice({
                 name="amount"
                 value={discount}
                 onChange={val => onDiscountChange(Number(val))}
-                width={210}
+                width={128}
                 addOn={<CRButton variant="danger">{t('applied')}</CRButton>}
               />
               <Div display="flex">
@@ -203,8 +203,7 @@ function AppointmentInvoice({
           </Div>
         </Div>
       </div>
-
-      <Div display="flex">
+      <div className="flex flex-wrap justify-between items-center gap-3 w-full md:w-1/2 mt-3">
         <PrintInvoice
           items={selectedSessions}
           subtotal={subtotal}
@@ -223,7 +222,7 @@ function AppointmentInvoice({
         <CRButton onClick={handleFinish}>
           {loading ? <Spinner /> : t('finish')}
         </CRButton>
-      </Div>
+      </div>
     </>
   );
 }
