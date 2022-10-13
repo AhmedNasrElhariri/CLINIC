@@ -165,7 +165,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
   }
 
   return (
-    <Div className="flex flex-col md:flex-row">
+    <Div className="flex flex-col xl:flex-row">
       <Divider className="!mt-0 sm:!hidden" />
 
       {updatedSummary && activeSession && (
@@ -178,7 +178,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
       )}
 
       {/* Show default sessions list if screen is not small */}
-      <div className="tw-hidden md:inline-flex">
+      <div className="tw-hidden xl:inline-flex">
         <CRNav vertical minWidth={180} onSelect={setActiveSession}>
           {updatedSummary.map((session, idx) => (
             <CRNav.CRVItem

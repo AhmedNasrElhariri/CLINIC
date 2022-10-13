@@ -5,10 +5,10 @@ export default function SessionSelector({
   t,
 }) {
   return (
-    <div className="flex gap-3 items-center md:!hidden sm:pl-4">
+    <div className="flex gap-3 items-center xl:!hidden sm:pl-4">
       <label>Session:</label>
       <select
-        className="grow p-1"
+        className="grow p-1 max-w-sm"
         defaultValue={activeSession.id}
         onChange={event =>
           setActiveSession(
