@@ -196,7 +196,7 @@ const GroupContainer = ({
         <div className="overflow-x-auto">
           {fields.length > 0 && (
             <div
-              className="grid pb-10 items-end"
+              className="grid pb-10 items-stretch"
               style={{
                 gridTemplateColumns: `repeat(${
                   fields.length + 1
@@ -214,16 +214,20 @@ const GroupContainer = ({
                   </p>
                 </div>
               ))}
-              {formValue[fields[0].id] &&
-                formValue[fields[0].id]?.map((v, indx) => (
-                  <IconDiv>
-                    <IconButton
-                      icon={<Icon icon="trash" />}
-                      color="red"
-                      onClick={() => handleDelete(indx)}
-                    />
-                  </IconDiv>
-                ))}
+              {formValue[fields[0].id] && (
+                <div className="flex flex-col justify-center items-center">
+                  <h6 className="mb-3">Delete</h6>
+                  {formValue[fields[0].id]?.map((v, i) => (
+                    <div className="min-h-[2.75rem]" key={i}>
+                      <IconButton
+                        icon={<Icon icon="trash" />}
+                        color="red"
+                        onClick={() => handleDelete(i)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
