@@ -3,7 +3,7 @@ import { CRButton, CRSelectInput, Div, CRNumberInput } from 'components';
 import { Form, Divider } from 'rsuite';
 import { useBankDefinition, useCompanyDefinition } from 'hooks';
 
-export default function TopButtonsGroup({
+export default function Payment({
   t,
   bank,
   setBank,
