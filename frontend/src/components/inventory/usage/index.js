@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import * as R from 'ramda';
 import { Form } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
-import { Div, CRNumberInput } from 'components';
+import { CRNumberInput } from 'components';
 import ListInvoiceItems from './list-invoice-items';
 import { useInventory } from 'hooks';
 import { CRButton, CRBrancheTree, CRDocSelectInput } from 'components/widgets';
@@ -24,7 +24,7 @@ function InventoryUsage({
   formValue,
   setFormValue,
 }) {
-  const { items, inventoryWithAmount } = useInventory();
+  const { inventoryWithAmount } = useInventory();
   const { t } = useTranslation();
   const handleDelete = useCallback(
     idx => {
@@ -32,7 +32,7 @@ function InventoryUsage({
       setSelectedItems(newItems);
       onChange(newItems);
     },
-    [onChange, selectedItems]
+    [onChange, selectedItems, setSelectedItems]
   );
 
   const handleAdd = useCallback(() => {
@@ -42,20 +42,20 @@ function InventoryUsage({
     setSelectedItems(newItems);
     setFormValue(initValue);
     onChange(newItems);
-  }, [onChange, formValue, selectedItems]);
+  }, [onChange, formValue, selectedItems, setFormValue, setSelectedItems]);
 
   const itemsChoices = useMemo(() => {
     const selectedItemIds = R.map(R.prop('itemId'))(selectedItems);
 
     return inventoryWithAmount.filter(f => !selectedItemIds.includes(f.id));
-  }, [selectedItems]);
+  }, [selectedItems, inventoryWithAmount]);
   const itemsList = useMemo(() => {
     const byIds = normalize(inventoryWithAmount);
     return selectedItems.map(({ itemId, quantity }) => ({
       ...byIds[itemId],
       Quantity: quantity,
     }));
-  }, [selectedItems]);
+  }, [selectedItems, inventoryWithAmount]);
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
       <CRBrancheTree
@@ -63,30 +63,22 @@ function InventoryUsage({
         onChange={setFormValue}
         action={ACTIONS.AddCustom_Inventory}
       />
-      <Div display="flex" padding={30}>
-        <Div width={396} mr={30}>
-          <CRDocSelectInput
-            label={t('item')}
-            name="itemId"
-            specialtyId={formValue?.specialtyId}
-            branchId={formValue?.branchId}
-            userId={formValue?.userId}
-            data={itemsChoices}
-            placement="auto"
-            block
-          ></CRDocSelectInput>
-        </Div>
-        <Div width={200}>
-          <CRNumberInput
-            name="quantity"
-            label={t('quantity')}
-            name="quantity"
-          />
-        </Div>
+      <CRDocSelectInput
+        label={t('item')}
+        name="itemId"
+        specialtyId={formValue?.specialtyId}
+        branchId={formValue?.branchId}
+        userId={formValue?.userId}
+        data={itemsChoices}
+        placement="auto"
+        block
+      ></CRDocSelectInput>
+      <div className="flex items-end gap-3 mb-5">
+        <CRNumberInput name="quantity" label={t('quantity')} />
         <CRButton variant="primary" onClick={handleAdd}>
           {t('add')}
         </CRButton>
-      </Div>
+      </div>
       <ListInvoiceItems items={itemsList} onDelete={handleDelete} />
     </Form>
   );

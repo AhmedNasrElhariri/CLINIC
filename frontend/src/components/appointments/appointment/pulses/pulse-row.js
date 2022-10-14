@@ -65,23 +65,30 @@ const PulseRow = ({
       </MedicineContainerStyled>
       {sessionsPulses?.length > 0 && (
         <MedicineContainerStyled>
-          <Form formValue={sessionFormValue} onChange={setSessionFormValue}>
-            <FlexboxGrid>
-              {sessionsPulses?.map(sP => (
-                <FlexboxGrid.Item colspan={8} mt={2}>
-                  <BoxStyled>
-                    <Div mr={2}>
-                      <CRNumberInput
-                        name={sP.name}
-                        value={sessionFormValue.sP?.name}
-                        layout="inline"
-                        label={sP.name}
-                      />
-                    </Div>
-                  </BoxStyled>
-                </FlexboxGrid.Item>
-              ))}
-            </FlexboxGrid>
+          <Form
+            formValue={sessionFormValue}
+            onChange={setSessionFormValue}
+            className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {/* <FlexboxGrid> */}
+            {sessionsPulses?.map(sP => (
+              // <FlexboxGrid.Item colspan={8} mt={2}>
+              //   <BoxStyled>
+              //     <Div mr={2}>
+
+              <CRNumberInput
+                formGroupClassName="flex-col text-center"
+                name={sP.name}
+                value={sessionFormValue.sP?.name}
+                layout="inline"
+                label={sP.name}
+              />
+
+              //     </Div>
+              //   </BoxStyled>
+              // </FlexboxGrid.Item>
+            ))}
+            {/* </FlexboxGrid> */}
           </Form>
         </MedicineContainerStyled>
       )}

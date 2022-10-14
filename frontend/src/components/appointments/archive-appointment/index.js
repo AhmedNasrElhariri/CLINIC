@@ -8,7 +8,6 @@ import React, {
 import { Steps, Schema } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
-import styled from 'styled-components';
 import { CRModal, Div } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
@@ -47,10 +46,6 @@ const initInventoryValue = {
   specialtyId: null,
   userId: null,
 };
-const StepsDev = styled.div`
-  width: 450px;
-  margin: auto;
-`;
 
 const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -116,11 +111,11 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     );
     sub = subRed + others;
     return sub;
-  }, [selectedSessions, option, others]);
+  }, [selectedSessions, others]);
   const totalCoupons = useMemo(() => {
     let totalSum = 0;
     const values = Object.values(coupons);
-    if (values.length == 0) {
+    if (values.length === 0) {
       totalSum = 0;
     } else {
       values.forEach(v => {
@@ -186,9 +181,11 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     bank,
     company,
     option,
-    coupons,
     couponsValue,
     doctorFees,
+    doctorOption,
+    newCoupons,
+    total,
   ]);
   const handleFinish = useCallback(() => {
     let updatedDoctorfees = {};
@@ -238,9 +235,11 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     bank,
     company,
     option,
-    coupons,
     couponsValue,
     doctorFees,
+    doctorOption,
+    newCoupons,
+    total,
   ]);
 
   const handleCancel = useCallback(() => {
@@ -256,7 +255,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const { companysSessionDefinition } = useCompanySessionDefinition({});
   const companySessions = useMemo(
     () => companysSessionDefinition.filter(s => s.company.id === company),
-    [company]
+    [company, companysSessionDefinition]
   );
   const updatedCompanySessions = companySessions.map(cS => {
     return {
@@ -265,6 +264,15 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       id: cS.id,
     };
   });
+
+  const stepItems = useMemo(
+    () =>
+      [t('invoice'), t('doctor'), t('inventory')].map((title, idx) => (
+        <Steps.Item title={title} onClick={() => setActiveStep(idx)} />
+      )),
+    [setActiveStep, t]
+  );
+
   return (
     <CRModal
       show={show}
@@ -278,17 +286,18 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         setActiveStep(0);
       }}
       onCancel={handleCancel}
-      width={850}
-      height={480}
-      bodyStyle={{ paddingLeft: 47, paddingRight: 47, margin: 0 }}
+      className="!w-[1024px]"
     >
-      <StepsDev>
-        <Steps current={activeStep}>
-          <Steps.Item title={t('invoice')} onClick={() => setActiveStep(0)} />
-          <Steps.Item title={t('doctor')} onClick={() => setActiveStep(1)} />
-          <Steps.Item title={t('inventory')} onClick={() => setActiveStep(2)} />
+      <div className="max-w-lg mx-auto mb-7">
+        <Steps current={activeStep} className="![display:none] sm:!flex">
+          {stepItems}
         </Steps>
-      </StepsDev>
+
+        <Steps current={activeStep} vertical className="sm:hidden">
+          {stepItems}
+        </Steps>
+      </div>
+
       <Div>
         {activeStep === 0 && (
           <AppointmentInvoice

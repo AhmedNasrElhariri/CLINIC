@@ -2,7 +2,7 @@ import React, { useState, useCallback, lazy } from 'react';
 import styled from 'styled-components';
 import { useParams, Switch, Route } from 'react-router-dom';
 import { Can } from 'components/user/can';
-import { CRVNav, PatientSummary, AllowedViews } from 'components';
+import { PatientSummary, AllowedViews } from 'components';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
 import Dental from '../dental';
@@ -16,11 +16,11 @@ import PatientProgress from '../progress';
 import { useQueryParams, useHospitals, usePatients } from 'hooks';
 import PatientInformationCreation from '../patient-information-creation';
 import PatientCoupons from '../patient-coupons';
-import { get } from 'services/local-storage';
 import PatientRevenue from '../patient-revenue';
 import { useTranslation } from 'react-i18next';
 import { SelectPicker } from 'rsuite';
 import Header from './header';
+import Aside from './aside';
 
 const Container = styled.div`
   display: flex;
@@ -28,6 +28,7 @@ const Container = styled.div`
 `;
 const TabContainer = styled.div`
   width: 100%;
+  overflow: hidden;
 `;
 
 const FaceOperationsPage = lazy(() => import('../face-operations'));
@@ -61,17 +62,6 @@ function Appointment() {
   const { hospitals } = useHospitals({});
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
-  const dir = get('dir');
-  let border = '2px solid #eef1f1';
-  let borderRight = '';
-  let borderLeft = '';
-  if (dir === 'ltr') {
-    borderRight = border;
-    borderLeft = 'none';
-  } else {
-    borderRight = 'none';
-    borderLeft = border;
-  }
 
   return (
     <>
@@ -81,29 +71,6 @@ function Appointment() {
         appointmentId={appointmentId}
         className="mb-7"
       />
-
-      {/* <SelectPicker
-        searchable={false}
-        data={tabs.map(item => ({ label: item, value: item }))}
-        style={{ width: 256 }}
-      /> */}
-
-      {/* <MainContainer
-        nobody
-        more={
-          <>
-            <AvatarWithName patient={patient} />
-            {appointmentId && (
-              <CRButton
-                onClick={() => history.push(`/appointments/${appointmentId}`)}
-                variant="primary"
-              >
-                {t('currentAppointment')}
-              </CRButton>
-            )}
-          </>
-        }
-      ></MainContainer> */}
 
       <SelectPicker
         className="w-64 mb-7 sm:!hidden"
@@ -118,23 +85,11 @@ function Appointment() {
         <Route exact path="/patients/:id">
           {() => (
             <Container>
-              <aside className="tw-hidden sm:block">
-                <CRVNav
-                  appearance="tabs"
-                  activeKey={activeTab}
-                  onSelect={setActiveTab}
-                  justified
-                  vertical
-                  borderRight={borderRight}
-                  borderLeft={borderLeft}
-                >
-                  {tabs.map((t, idx) => (
-                    <CRVNav.CRItem eventKey={idx + ''} key={idx}>
-                      {t}
-                    </CRVNav.CRItem>
-                  ))}
-                </CRVNav>
-              </aside>
+              <Aside
+                tabs={tabs}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
 
               <TabContainer>
                 {showComp('0') && (

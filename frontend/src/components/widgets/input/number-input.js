@@ -47,10 +47,16 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
   );
 });
 
-const NumberInput = ({ label, layout, ...rest }) => {
+const NumberInput = ({
+  label,
+  layout,
+  formGroupClassName,
+  noLabel,
+  ...rest
+}) => {
   return (
-    <FormGroupStyled layout={layout}>
-      <Label layout={layout}>{label}</Label>
+    <FormGroupStyled layout={layout} className={formGroupClassName}>
+      {!noLabel && <Label layout={layout}>{label}</Label>}
       <FormControl {...rest} accepter={CustomInput} />
     </FormGroupStyled>
   );

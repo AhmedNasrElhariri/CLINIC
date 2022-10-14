@@ -192,41 +192,45 @@ const GroupContainer = ({
           </FieldContainer>
         </Form>
       </Div>
-      <Div
-        mt={10}
-        className="overflow-x-scroll max-w-[calc(100vw-35px)] md:max-w-[calc(80vw)]"
-      >
-        {fields.length > 0 && (
-          <>
-            <Div display="flex">
-              {fields?.map(({ name }, indx) => (
-                <ColDiv>{name}</ColDiv>
-              ))}
-            </Div>
-            <Div display="flex">
-              <Div display="flex">
-                {fields?.map(({ id }, indx) => (
-                  <Div>
+      <Div mt={10} className="overflow-hidden max-w-[calc(100vw-35px)]">
+        <div className="overflow-x-auto">
+          {fields.length > 0 && (
+            <div
+              className="grid pb-10 items-stretch"
+              style={{
+                gridTemplateColumns: `repeat(${
+                  fields.length + 1
+                }, minmax(100px, 1fr))`,
+              }}
+            >
+              {fields.map(({ id, name }, i) => (
+                <div>
+                  <h6 key={i} className="mb-3 text-center">
+                    {name}
+                  </h6>
+                  <p className="text-center">
                     {formValue[id] &&
                       formValue[id]?.map((v, indx) => <CellDiv>{v}</CellDiv>)}
-                  </Div>
-                ))}
-              </Div>
-              <Div>
-                {formValue[fields[0].id] &&
-                  formValue[fields[0].id]?.map((v, indx) => (
-                    <IconDiv>
+                  </p>
+                </div>
+              ))}
+              {formValue[fields[0].id] && (
+                <div className="flex flex-col justify-center items-center">
+                  <h6 className="mb-3">Delete</h6>
+                  {formValue[fields[0].id]?.map((v, i) => (
+                    <div className="min-h-[2.75rem]" key={i}>
                       <IconButton
                         icon={<Icon icon="trash" />}
                         color="red"
-                        onClick={() => handleDelete(indx)}
+                        onClick={() => handleDelete(i)}
                       />
-                    </IconDiv>
+                    </div>
                   ))}
-              </Div>
-            </Div>
-          </>
-        )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </Div>
     </>
   );

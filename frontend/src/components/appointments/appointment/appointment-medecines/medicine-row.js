@@ -18,79 +18,57 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
   const { t } = useTranslation();
 
   return (
-    <MedicineContainerStyled>
-      <Form fluid formValue={formValue} onChange={onChange}>
-        <FlexboxGrid align="middle">
-          <FlexboxGrid.Item colspan={5}>
-            <Div display="flex" alignItems="center">
-              <H6 fontWeight="bold">{name}</H6>
-              <H6 mx={1}>({form})</H6>
-              <H7 fontStyle="italic">{concentration}</H7>
-            </Div>
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={4}>
-            <BoxStyled>
-              <CRTextInput
-                name="dose"
-                layout="inline"
-                placeholder={t('dose')}
-                disabled={required}
-              />
-            </BoxStyled>
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={4}>
-            <BoxStyled>
-              <CRSelectInput
-                name="timingId"
-                data={timings}
-                disabled={required}
-                layout="inline"
-                block
-              />
-            </BoxStyled>
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={8}>
-            <BoxStyled>
-              <Div mr={2}>
-                <CRNumberInput
-                  name="duration"
-                  layout="inline"
-                  placeholder={t('duration')}
-                  disabled={required}
-                  style={{ width: '100px' }}
-                />
-              </Div>
-              <CRSelectInput
-                placeholder="Period"
-                name="period"
-                data={peridos}
-                disabled={required}
-                layout="inline"
-                style={{ width: '150px' }}
-              />
-            </BoxStyled>
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={3}>
-            <Div
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              mt={'3px'}
-            >
-              <CRButton
-                height={50}
-                width={100}
-                variant={required ? 'dark' : 'primary'}
-                p={10}
-                onClick={onClick}
-              >
-                {required ? t('required') : t('require')}
-              </CRButton>
-            </Div>
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
-      </Form>
-    </MedicineContainerStyled>
+    <Form
+      fluid
+      formValue={formValue}
+      onChange={onChange}
+      className="flex flex-row flex-nowrap items-center gap-3 mt-4 sm:bg-white p-2"
+    >
+      <Div className="flex items-center w-24 flex-wrap">
+        <H6 fontWeight="bold">{name}</H6>
+        <H6 mx={1}>({form})</H6>
+        <H7 fontStyle="italic">{concentration}</H7>
+      </Div>
+      <div className="bg-white">
+      <CRTextInput
+        noLabel
+        className="min-w-[5rem]"
+        name="dose"
+        placeholder={t('dose')}
+        disabled={required}
+      />
+      </div>
+      <CRSelectInput
+        noLabel
+        className="min-w-[10rem]"
+        name="timingId"
+        data={timings}
+        disabled={required}
+      />
+      <CRNumberInput
+        noLabel
+        name="duration"
+        placeholder={t('duration')}
+        disabled={required}
+        style={{ width: '100px' }}
+      />
+      <CRSelectInput
+        noLabel
+        placeholder="Period"
+        name="period"
+        data={peridos}
+        disabled={required}
+        className="min-w-[10rem]"
+      />
+      <CRButton
+        className="min-w-[5rem] "
+        variant={required ? 'dark' : 'primary'}
+        p={10}
+        onClick={onClick}
+      >
+        {required ? t('required') : t('require')}
+      </CRButton>
+    </Form>
   );
 };
 

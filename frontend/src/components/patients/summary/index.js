@@ -1,59 +1,68 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import * as R from 'ramda';
 import moment from 'moment';
-import { Modal, Whisper, Tooltip, Form } from 'rsuite';
-import { useHistory } from 'react-router-dom';
-import { Div, H6, CRNav, CRVDivider, H3, CRButton } from 'components';
+import { Modal, Whisper, Tooltip, Divider } from 'rsuite';
+import { Div, H6, CRNav, CRVDivider, H3 } from 'components';
 import { formatDate } from 'utils/date';
 import SummaryTable from '../summary-table';
 import { capitalize } from 'utils/text';
-import {
-  KeyStyled,
-  ValueStyled,
-  StyledCell,
-  StyledContainer,
-  StyledHeader,
-} from './style';
+import { KeyStyled, ValueStyled, StyledCell } from './style';
 import AppointmentGallery from 'components/appointments/pictures/gallery';
 import { useModal, useAppointments } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import DeleteImage from './delete-image';
 import useGlobalState from 'state';
 import { normalizeDataWithGroups } from 'services/appointment';
+import SessionSelector from './session-selector';
+import Header from './header';
 
 const initalVal = {
   imageId: null,
 };
 
 const renderTable = (fields, name) => {
+  const keys = Object.keys(fields);
   return (
     <>
       <H3>{name}</H3>
-      <Div display="flex">
-        {Object.keys(fields).map((key, i) => (
-          <StyledContainer>
-            <StyledHeader>{key}</StyledHeader>
+      <div
+        className="pb-10 grid"
+        style={{
+          gridTemplateColumns: `repeat(${keys.length}, minmax(100px, 1fr))`,
+        }}
+      >
+        {keys.map(key => (
+          <div className="text-center" key={key}>
+            <h6 className="mb-2">{key}</h6>
             {fields[key] &&
               fields[key].length > 0 &&
               fields[key].map(v => <StyledCell>{v}</StyledCell>)}
-          </StyledContainer>
+          </div>
         ))}
-      </Div>
+      </div>
     </>
   );
 };
 const renderValues = (fields, name) => {
+  const keys = Object.keys(fields);
   return (
     <>
       <H3>{name}</H3>
-      <Div display="flex">
-        {Object.keys(fields).map((key, i) => (
-          <StyledContainer>
-            <StyledHeader>{key}</StyledHeader>
-            {fields[key] && <StyledCell>{fields[key]}</StyledCell>}
-          </StyledContainer>
+      <div
+        className="pb-10 grid"
+        style={{
+          gridTemplateColumns: `repeat(${keys.length}, minmax(100px, 1fr))`,
+        }}
+      >
+        {keys.map(key => (
+          <div className="text-center" key={key}>
+            <h6 className="mb-2">{key}</h6>
+            {fields[key] &&
+              fields[key].length > 0 &&
+              fields[key].map(v => <StyledCell>{v}</StyledCell>)}
+          </div>
         ))}
-      </Div>
+      </div>
     </>
   );
 };
@@ -84,47 +93,8 @@ const renderProp = (key, value, textValue) => {
     </Div>
   );
 };
-const renderProp2 = (key, value) => {
-  return (
-    <Div display="flex" alignItems="center" minHeight={60}>
-      <Whisper speaker={<Tooltip>{key}</Tooltip>} delayHide={0} delayShow={0}>
-        <KeyStyled color="texts.2">{capitalize(key)}</KeyStyled>
-      </Whisper>
-      {value.length > 0 &&
-        value.map(v => (
-          <Div display="flex">
-            <CRVDivider vertical />
-            <Div display="flex">
-              <ValueStyled>{v[0]}</ValueStyled>
-            </Div>
-            <Div ml={10} display="flex" mr={10}>
-              <ValueStyled>{v[1]}</ValueStyled>
-            </Div>
-          </Div>
-        ))}
-    </Div>
-  );
-};
 
 const renderAppointment = data => {
-  // return data.map(({ value, field, textValue }, idx) => (
-  //   <React.Fragment key={idx}>
-  //     {value && field.type === 'NestedSelector'
-  //       ? renderProp(
-  //           field.name,
-  //           <Form>
-  //             {/* <CRNestedSelector
-  //               value={value}
-  //               choices={field.choices}
-  //               disabled
-  //             /> */}
-  //           </Form>
-  //         )
-  //       : value && field.type === 'SelectorWithInput'
-  //       ? renderProp2(field.name, value, textValue)
-  //       : renderProp(field.name, value, textValue)}
-  //   </React.Fragment>
-  // ));
   return data.map(({ status, fields, name }, idx) =>
     status === 'Dynamic'
       ? renderTable(fields, name)
@@ -154,7 +124,6 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     return ss;
   }, [summary]);
 
-  const history = useHistory();
   useEffect(() => {
     setActiveSession(R.propOr({}, '0')(updatedSummary));
   }, [updatedSummary]);
@@ -168,13 +137,9 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     () => R.propOr([], 'data')(activeSession),
     [activeSession]
   );
-  const sessionId = useMemo(
-    () =>
-      R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(updatedSummary),
-    [activeSession, updatedSummary]
-  );
+
   const newGroups = normalizeDataWithGroups(groups, data);
-  
+
   const handleDeleteImage = useCallback(
     data => {
       const image = R.pick(['id'])(data);
@@ -200,38 +165,64 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
   }
 
   return (
-    <Div display="flex" position="relative">
-      <CRNav vertical minWidth={180} onSelect={setActiveSession}>
-        {updatedSummary.map((session, idx) => (
-          <CRNav.CRVItem
-            key={session.id}
-            eventKey={session}
-            active={activeSession.id === session.id}
-          >
-            {t('session')} {updatedSummary.length - idx}
-          </CRNav.CRVItem>
-        ))}
-      </CRNav>
-      <Div m={4} flexGrow={1}>
+    <Div className="flex flex-col xl:flex-row">
+      <Divider className="!mt-0 sm:!hidden" />
+
+      {updatedSummary && activeSession && (
+        <SessionSelector
+          activeSession={activeSession}
+          setActiveSession={setActiveSession}
+          updatedSummary={updatedSummary}
+          t={t}
+        />
+      )}
+
+      {/* Show default sessions list if screen is not small */}
+      <div className="tw-hidden xl:inline-flex">
+        <CRNav vertical minWidth={180} onSelect={setActiveSession}>
+          {updatedSummary.map((session, idx) => (
+            <CRNav.CRVItem
+              key={session.id}
+              eventKey={session}
+              active={activeSession.id === session.id}
+            >
+              {t('session')} {updatedSummary.length - idx}
+            </CRNav.CRVItem>
+          ))}
+        </CRNav>
+      </div>
+
+      <div className="sm:px-5 grow overflow-x-auto">
         {updatedSummary.length ? (
           <>
-            <H3 mb={4}>
-              {t('session')} {updatedSummary.length - sessionId} {' / '}
-              {activeSession.updater?.name}
-            </H3>
-            <Div>
-              {renderProp('Date', formatDate(date))}
+            <Header
+              updatedSummary={updatedSummary}
+              t={t}
+              activeSession={activeSession}
+              open={open}
+            />
+            {header !== 'Delete Image' && (
+              <Modal show={visible} onHide={close} className="!max-w-[90%]">
+                <Modal.Body>
+                  <SummaryTable data={tabularData} fields={tabularFields} />
+                </Modal.Body>
+              </Modal>
+            )}
+
+            {renderProp('Date', formatDate(date))}
+            <div className="overflow-x-auto">
               {renderAppointment(newGroups)}
-              {activeSession.notes && renderProp('Notes', activeSession.notes)}
-              {pictures.length > 0 &&
-                renderProp(
-                  'Images',
-                  <AppointmentGallery
-                    pictures={pictures}
-                    onDelete={handleDeleteImage}
-                  />
-                )}
-            </Div>
+            </div>
+
+            {activeSession.notes && renderProp('Notes', activeSession.notes)}
+            {pictures.length > 0 &&
+              renderProp(
+                'Images',
+                <AppointmentGallery
+                  pictures={pictures}
+                  onDelete={handleDeleteImage}
+                />
+              )}
           </>
         ) : (
           <Div
@@ -243,32 +234,7 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
             <H6 color="texts.2">{t('noData')}</H6>
           </Div>
         )}
-      </Div>
-
-      <Div position="absolute" top={0} right={3}>
-        <Div mb={10}>
-          <CRButton
-            onClick={() => history.push(`/appointments/${activeSession.id}`)}
-            variant="primary"
-            mr={10}
-            ml={10}
-          >
-            {t('edit')}
-          </CRButton>
-          <CRButton onClick={open} variant="primary">
-            {t('tableView')}
-          </CRButton>
-        </Div>
-        {header !== 'Delete Image' && (
-          <Div>
-            <Modal show={visible} full onHide={close}>
-              <Modal.Body>
-                <SummaryTable data={tabularData} fields={tabularFields} />
-              </Modal.Body>
-            </Modal>
-          </Div>
-        )}
-      </Div>
+      </div>
       {header === 'Delete Image' && (
         <DeleteImage
           visible={visible}

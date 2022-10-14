@@ -107,7 +107,12 @@ const renderItem = ({
 
 const SectionContainer = ({ title, children, name, ...props }) => {
   return (
-    <Div as={Element} name={name} {...props}>
+    <Div
+      as={Element}
+      name={name}
+      {...props}
+      className="overflow-x-scroll max-w-[calc(100vw-35px)]"
+    >
       <Div px={4} my={2}>
         <H3 mb={10}>{title}</H3>
         <div className="mb-4">{children}</div>
