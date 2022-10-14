@@ -1,58 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <title>Clinic-R Report</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0px 2px 50px 2px;
+    }
 
-<head>
-  <title>Clinic-R Report</title>
-</head>
-<style>
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0px 2px 50px 2px;
-  }
-  
-  th, td {
-    text-align: left;
-    padding: 8px;
-  }
-  
-  tr:nth-child(even) {background-color: #f2f2f2;}
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
   </style>
 
-<body>
-  <div class="test">
-    <h4>Total Revenues : <%= totalRevenues %></h4>
-    <h4>Total Expenses : <%= totalExpenses %></h4>
-    <h4>Profit : <%= profit %></h4>
-    <h5>Revenues</h5>
-    <table>
-      <tr>
-         <th>Name</th><th>Amount</th><th>Date</th>
-      </tr>
-   
-      <% for (var i = 0; i < revenues.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
-       <tr>
-         <td><%= revenues[i].name %></td>
-         <td><%= revenues[i].amount %></td>
-         <td><%= revenues[i].date %></td>
-       </tr>    
-      <% } %>
-   </table>
-   <h5>Expenses</h5>
-   <table>
-    <tr>
-       <th>Name</th><th>Amount</th><th>Date</th>
-    </tr>
- 
-    <% for (var i = 0; i < expenses.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
-     <tr>
-       <td><%= expenses[i].name %></td>
-       <td><%= expenses[i].amount %></td>
-       <td><%= expenses[i].date %></td>
-     </tr>    
-    <% } %>
- </table>
-  </div>
-</body>
+  <body>
+    <div class="test">
+      <h4>Total Revenues : <%= totalRevenues %></h4>
+      <h4>Total Expenses : <%= totalExpenses %></h4>
+      <h4>Profit : <%= profit %></h4>
+      <h5>Revenues</h5>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Date</th>
+        </tr>
 
+        <% for (var i = 0; i < revenues.length; /* I save the data in a variable
+        'quotation', I don't know how you named your variable */ i++) { %>
+        <tr>
+          <td><%= revenues[i].name %></td>
+          <td><%= revenues[i].amount %></td>
+          <td><%= revenues[i].date %></td>
+        </tr>
+        <% } %>
+      </table>
+      <h5>Expenses</h5>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Date</th>
+        </tr>
+
+        <% for (var i = 0; i < expenses.length; /* I save the data in a variable
+        'quotation', I don't know how you named your variable */ i++) { %>
+        <tr>
+          <td><%= expenses[i].name %></td>
+          <td><%= expenses[i].amount %></td>
+          <td><%= expenses[i].date %></td>
+        </tr>
+        <% } %>
+      </table>
+    </div>
+  </body>
 </html>

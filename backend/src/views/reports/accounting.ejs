@@ -1,8 +1,9 @@
-<!doctype html>
+<!doctype html >
 <html>
 
 <head>
   <title>Clinic-R Report</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <style>
   table {
@@ -35,35 +36,39 @@
     <p class="heading">Total Expenses = <%= totalExpenses %></p>
     <p class="heading">Profit = <%= profit %></p>
     <hr></hr>
-    <p class="heading">Revenues</p>
+    <%if (showRevenues) { %>
+      <p class="heading">Revenues</p>
+      <table>
+        <tr>
+          <th>Name</th><th>Amount</th><th>Date</th>
+        </tr>
+    
+        <% for (var i = 0; i < revenues.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+        <tr>
+          <td><%= revenues[i].name %></td>
+          <td><%= revenues[i].amount %></td>
+          <td><%= revenues[i].date %></td>
+        </tr>    
+        <% } %>
+    </table>
+    <hr></hr>
+   <% } %>
+   <%if (showExpenses) { %>
+    <p class="heading">Expenses</p>
     <table>
       <tr>
-         <th>Name</th><th>Amount</th><th>Date</th>
+        <th>Name</th><th>Amount</th><th>Date</th>
       </tr>
-   
-      <% for (var i = 0; i < revenues.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
-       <tr>
-         <td><%= revenues[i].name %></td>
-         <td><%= revenues[i].amount %></td>
-         <td><%= revenues[i].date %></td>
-       </tr>    
+  
+      <% for (var i = 0; i < expenses.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+      <tr>
+        <td><%= expenses[i].name %></td>
+        <td><%= expenses[i].amount %></td>
+        <td><%= expenses[i].date %></td>
+      </tr>    
       <% } %>
-   </table>
-   <hr></hr>
-   <p class="heading">Expenses</p>
-   <table>
-    <tr>
-       <th>Name</th><th>Amount</th><th>Date</th>
-    </tr>
- 
-    <% for (var i = 0; i < expenses.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
-     <tr>
-       <td><%= expenses[i].name %></td>
-       <td><%= expenses[i].amount %></td>
-       <td><%= expenses[i].date %></td>
-     </tr>    
-    <% } %>
- </table>
+    </table>
+   <% } %>
   </div>
 </body>
 

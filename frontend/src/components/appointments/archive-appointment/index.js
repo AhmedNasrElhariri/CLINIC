@@ -1,4 +1,10 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
 import { Steps, Schema } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
@@ -69,6 +75,12 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     initValue: initInventoryValue,
     model,
   });
+
+  useEffect(() => {
+    setOption(initlOption);
+    setDiscount(0);
+  }, [show]);
+
   const { patientCoupons, onePatient } = usePatients({
     patientId: appointment?.patient.id,
     all: false,
