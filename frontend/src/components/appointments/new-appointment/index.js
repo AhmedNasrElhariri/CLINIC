@@ -473,7 +473,11 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
               <div>
                 <CRSelectInput
                   label={t('patient')}
-                  onSearch={v => setPatientSearchValue(v)}
+                  onSearch={v => {
+                    if (v) {
+                      setPatientSearchValue(v);
+                    }
+                  }}
                   placeholder="Name / Phone no"
                   data={returnedPatientsOfSearch}
                   onChange={val =>
