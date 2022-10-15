@@ -78,9 +78,9 @@ export const ACCOUNTING_VIEWS = {
   TIME_SLOT: 'TIME_SLOT',
 };
 export const ACCOUNT_OPTIONS = [
-  { id: 'All', name: 'All' },
-  { id: 'Revenue', name: 'Revenue' },
-  { id: 'Expense', name: 'Expense' },
+  { id: 'All', name: 'All', paramValue: ['revenues', 'expenses'] },
+  { id: 'Revenue', name: 'Revenue', paramValue: ['revenues'] },
+  { id: 'Expense', name: 'Expense', paramValue: ['expenses'] },
 ];
 export const PERMISSION_LEVELS = Object.freeze({
   ORGNIZATION: 'Organization',

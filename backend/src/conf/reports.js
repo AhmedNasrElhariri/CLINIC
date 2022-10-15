@@ -16,11 +16,12 @@ const byAppointmentDate = R.groupBy(function (appointment) {
 });
 
 const init = app => {
-  app.get('/accounting', async (req, res) => {
+  app.post('/accounting', async (req, res) => {
     const {
       dateFrom,
       dateTo,
       view,
+      columns = ['revenues', 'expenses'],
       doctorId,
       specialtyId,
       branchId,
@@ -107,6 +108,8 @@ const init = app => {
       const pdfDoc = await generatePdf('/views/reports/accounting.ejs', {
         revenues: updatedRevenues,
         expenses: updatedExpenses,
+        showRevenues: columns.includes('revenues'),
+        showExpenses: columns.includes('expenses'),
         totalExpenses,
         totalRevenues,
         profit,

@@ -260,8 +260,12 @@ const AccountingContainer = () => {
     [formValue, expenses]
   );
   const handleAccountingReport = () => {
+    const { paramValue } = ACCOUNT_OPTIONS.find(
+      ({ id }) => id === formValue.accountingOption
+    );
     axios({
       url: '/accounting',
+      method: 'POST',
       responseType: 'blob', // important
       params: {
         branchId: branchSpecialtyUser?.branch,
@@ -273,6 +277,7 @@ const AccountingContainer = () => {
         revenueName: formValue?.revenueName,
         expenseType: formValue?.expenseType,
         expenseName: formValue?.expenseName,
+        columns: paramValue,
         view,
         dateFrom: period[0],
         dateTo: period[1],
@@ -280,7 +285,6 @@ const AccountingContainer = () => {
       },
     })
       .then(function (response) {
-        console.log(response, 'REEEsss');
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
@@ -315,7 +319,6 @@ const AccountingContainer = () => {
     // document.body.appendChild(link);
     // link.click();
   };
-  console.log(formValue, 'FF');
   const handleRevenueAccountingExcel = async day => {
     axios({
       url: '/accountingRevenueExcel',
@@ -373,6 +376,7 @@ const AccountingContainer = () => {
         console.log(err, 'rrr');
       });
   };
+
   return (
     <>
       <MainContainer

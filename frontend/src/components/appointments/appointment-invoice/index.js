@@ -73,7 +73,7 @@ function AppointmentInvoice({
       <Payment
         t={t}
         bank={bank}
-        setbank={setBank}
+        setBank={setBank}
         appointment={appointment}
         patientCoupons={patientCoupons}
         coupons={coupons}
