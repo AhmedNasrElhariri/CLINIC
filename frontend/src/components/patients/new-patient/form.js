@@ -50,11 +50,6 @@ const patientLevel = [
   { name: 'Normal', value: 'Normal' },
 ];
 
-const patientOldOrNew = [
-  { name: 'Old', value: 'Old' },
-  { name: 'New', value: 'New' },
-];
-
 const maritalStatus = [
   { name: 'Married', value: 'Married' },
   { name: 'Single', value: 'Single' },
@@ -172,14 +167,6 @@ const NewPatient = ({ formValue, onChange, newAreas, checkResult, show }) => {
         valueKey="value"
         searchable={false}
         data={patientLevel}
-        block
-      />
-      <CRSelectInput
-        label={t('OldOrNew')}
-        name="oldOrNew"
-        valueKey="value"
-        searchable={false}
-        data={patientOldOrNew}
         block
       />
       <CRSelectInput label={t('area')} name="area" data={newAreas} block />

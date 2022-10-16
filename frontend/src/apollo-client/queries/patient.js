@@ -63,7 +63,6 @@ export const LIST_PATIENTS_REPORTS = gql`
     $ageFrom: Int
     $ageTo: Int
     $reference: String
-    $oldOrNew: PatientOldOrNew
   ) {
     patientsReports(
       offset: $offset
@@ -77,7 +76,6 @@ export const LIST_PATIENTS_REPORTS = gql`
       ageFrom: $ageFrom
       ageTo: $ageTo
       reference: $reference
-      oldOrNew: $oldOrNew
     ) {
       patients {
         id
@@ -94,7 +92,6 @@ export const LIST_PATIENTS_REPORTS = gql`
         area
         code
         date
-        oldOrNew
       }
       patientsCount
     }

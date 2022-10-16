@@ -129,10 +129,6 @@ enum FieldGroupStatus {
   Static
   Dynamic
 }
-enum PatientOldOrNew {
-  Old
-  New
-}
 
 ########################### Query ##################################
 
@@ -151,7 +147,6 @@ type Query {
     enable: Boolean
     type: Sex
     reference: String
-    oldOrNew: PatientOldOrNew
   ): PatientData
   searchedPatients(name: String, organizationId: ID): [Patient!]
   allPatients: [Patient!]
@@ -866,7 +861,6 @@ type Patient implements Searchable {
   age: Int!
   date: Date
   sex: Sex!
-  oldOrNew: PatientOldOrNew
   appointments: [Appointment!]
 }
 
@@ -904,7 +898,6 @@ input PatientInput {
   email: String
   maritalStatus: MaritalStatus
   patientLevel: PatientLevel
-  oldOrNew: PatientOldOrNew
 }
 input RegisterPatientInput {
   phoneNo: String!

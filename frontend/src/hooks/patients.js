@@ -46,7 +46,6 @@ function usePatients({
   period,
   enable,
   reference,
-  oldOrNew,
 } = {}) {
   const { data: patientData } = useQuery(LIST_PATIENTS, {
     variables: Object.assign(
@@ -85,8 +84,7 @@ function usePatients({
       period && { dateFrom: period[0] },
       period && { dateTo: period[1] },
       enable && { enable: enable },
-      reference && { reference: reference },
-      oldOrNew && { oldOrNew: oldOrNew }
+      reference && { reference: reference }
     ),
   });
   const patientsReportsdata = patientReportsData?.patientsReports;

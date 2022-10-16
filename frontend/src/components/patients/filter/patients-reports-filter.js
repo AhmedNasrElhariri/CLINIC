@@ -36,10 +36,7 @@ const SEX = ['Male', 'Female'].map(s => ({
   name: s,
   value: s,
 }));
-const patientOldOrNew = [
-  { name: 'Old', value: 'Old' },
-  { name: 'New', value: 'New' },
-];
+
 const PatientsFilter = ({
   formValue,
   setFormValue,
@@ -135,17 +132,6 @@ const PatientsFilter = ({
             name="age"
             data={ageOptions}
             style={{ width: '200px' }}
-            block
-          />
-        </Div>
-        <Div>
-          <CRSelectInput
-            label={t('OldOrNew')}
-            name="oldOrNew"
-            valueKey="value"
-            searchable={false}
-            style={{ width: '200px' }}
-            data={patientOldOrNew}
             block
           />
         </Div>
