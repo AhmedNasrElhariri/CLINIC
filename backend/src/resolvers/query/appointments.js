@@ -159,7 +159,7 @@ const appointments = async (
       skip: offset,
       take: limit,
       orderBy: {
-        date: 'desc',
+        date: 'asc',
       },
     });
   }
