@@ -17,7 +17,6 @@ const initialValue = {
   session: null,
   type: null,
   enable: false,
-  oldOrNew: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -45,7 +44,6 @@ function Patients() {
     period: period,
     enable: filter.enable,
     reference: filter.reference,
-    oldOrNew: filter.oldOrNew,
   });
 
   const handleSelect = useCallback(
@@ -181,14 +179,6 @@ function Patients() {
               <CRTable.CRCell>
                 {({ area }) => (
                   <CRTable.CRCellStyled bold>{area}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('oldOrNew')}</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ oldOrNew }) => (
-                  <CRTable.CRCellStyled bold>{oldOrNew}</CRTable.CRCellStyled>
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>

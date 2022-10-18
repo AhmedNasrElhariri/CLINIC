@@ -23,7 +23,6 @@ const patients = async (
     ageFrom,
     ageTo,
     reference,
-    oldOrNew,
   },
   { organizationId, user }
 ) => {
@@ -72,9 +71,6 @@ const patients = async (
             gte: ageFrom,
             lte: ageTo,
           },
-        },
-        oldOrNew && {
-          oldOrNew: oldOrNew,
         }
       ),
     });
@@ -170,9 +166,6 @@ const patients = async (
             gte: ageFrom,
             lte: ageTo,
           },
-        },
-        oldOrNew && {
-          oldOrNew: oldOrNew,
         }
       ),
     });
