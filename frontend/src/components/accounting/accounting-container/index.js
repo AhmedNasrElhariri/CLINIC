@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, memo } from 'react';
 import { useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
@@ -18,29 +18,25 @@ import ListRevenueData from '../list-data/revenue.js';
 import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
-import { useAccounting, useAppointments, useConfigurations } from 'hooks';
+import { useAccounting, useAppointments } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
   UPDATE_EXPENSE,
   UPDATE_REVENUE,
 } from 'apollo-client/queries';
-import BranchFilter from '../../filters';
 import { Can } from 'components/user/can';
 import ExpenseFilter from '../filter/expense-filter';
 import RevenueFilter from '../filter/revenue-filter';
 import { ACCOUNTING_VIEWS, ACCOUNT_OPTIONS } from 'utils/constants';
 import AccountingForm, { useAccountingForm } from '../form';
 import Summary from '../summary';
-import PdfView from '../toolbar/pdf';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import useGlobalState from 'state';
 import { ExcelIcon } from 'components/icons/index';
 import { Form } from 'rsuite';
-import PdfDocument from '../toolbar/pdf-document';
-import { pdf } from '@react-pdf/renderer';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalVal = {
@@ -68,7 +64,7 @@ const initialExpenseBranchValue = {
 };
 const AccountingContainer = () => {
   const [activeTab, setActiveTab] = useState('0');
-  const [user, setUser] = useGlobalState('user');
+  const [user] = useGlobalState('user');
   const { t } = useTranslation();
   const { filterBranches } = useAppointments({
     action: ACTIONS.View_Accounting,
@@ -87,14 +83,14 @@ const AccountingContainer = () => {
     inialExpenseCurrentPage
   );
   const expensePage = expenseCurrentPage?.activePage;
-  const { pageSetupData } = useConfigurations();
-  const pageSetupRow = pageSetupData.find(
-    element => element.type === 'accounting'
-  );
-  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
-  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
-  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
-  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
+  // const { pageSetupData } = useConfigurations();
+  // const pageSetupRow = pageSetupData.find(
+  //   element => element.type === 'accounting'
+  // );
+  // const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
+  // const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
+  // const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
+  // const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
   const [createExpense, { loading: createExpensesLoading }] = useMutation(
     CREATE_EXPENSE,
     {
@@ -228,8 +224,6 @@ const AccountingContainer = () => {
     totalExpenses,
     RevenuesCount,
     expensesCount,
-    allExpenses,
-    allRevenues,
     timeFrame,
   } = useAccounting({
     view,
@@ -295,29 +289,6 @@ const AccountingContainer = () => {
       .catch(err => {
         console.log(err, 'rrr');
       });
-
-    // let blob = await pdf(
-    //   <PdfDocument
-    //     data={{
-    //       revenues: allRevenues,
-    //       expenses: allExpenses,
-    //       totalRevenues,
-    //       totalExpenses,
-    //     }}
-    //     period={period}
-    //     marginTop={marginTop}
-    //     marginRight={marginRight}
-    //     marginBottom={marginBottom}
-    //     marginLeft={marginLeft}
-    //   />
-    // ).toBlob();
-    // const url = URL.createObjectURL(blob);
-    // setFormValue({ ...formValue, printOrNot: false });
-    // const link = document.createElement('a');
-    // link.href = url;
-    // link.setAttribute('download', 'accounting.pdf'); //or any other extension
-    // document.body.appendChild(link);
-    // link.click();
   };
   const handleRevenueAccountingExcel = async day => {
     axios({
@@ -379,54 +350,37 @@ const AccountingContainer = () => {
 
   return (
     <>
-      <MainContainer
-        title={t('accounting')}
-        more={
-          <Div display="flex">
-            <>
-              <Can I="AddRevenue" an="Accounting">
-                <CRButton variant="primary" onClick={createRevenueForm.show}>
-                  {t('newRevenue')} +
-                </CRButton>
-              </Can>
-              <Can I="AddExpense" an="Accounting">
-                <CRButton
-                  variant="primary"
-                  onClick={createExpenseForm.show}
-                  ml={1}
-                  mr={1}
-                >
-                  {t('newExpense')} +
-                </CRButton>
-              </Can>
-              <CRButton
-                variant="primary"
-                onClick={handleAccountingReport}
-                ml={1}
-                mr={1}
-              >
-                {t('print')} +
-              </CRButton>
-              {/* <PdfView
-                data={{
-                  revenues: allRevenues,
-                  expenses: allExpenses,
-                  totalRevenues,
-                  totalExpenses,
-                }}
-                period={timeFrame}
-                marginTop={marginTop}
-                marginRight={marginRight}
-                marginBottom={marginBottom}
-                marginLeft={marginLeft}
-                t={t}
-              /> */}
-            </>
-          </Div>
-        }
-        nobody
-      ></MainContainer>
-      <Tabs onSelect={setActiveTab} activeTab={activeTab} />
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-5">
+        <h4>{t('accounting')}</h4>
+        <div className="inline-flex flex-wrap gap-y-1 items-center">
+          <Can I="AddRevenue" an="Accounting">
+            <CRButton variant="primary" onClick={createRevenueForm.show}>
+              {t('newRevenue')} +
+            </CRButton>
+          </Can>
+          <Can I="AddExpense" an="Accounting">
+            <CRButton
+              variant="primary"
+              onClick={createExpenseForm.show}
+              ml={1}
+              mr={1}
+            >
+              {t('newExpense')} +
+            </CRButton>
+          </Can>
+          <CRButton
+            variant="primary"
+            onClick={handleAccountingReport}
+            ml={1}
+            mr={1}
+          >
+            {t('print')} +
+          </CRButton>
+        </div>
+      </div>
+
+      {/* <Tabs onSelect={setActiveTab} activeTab={activeTab} className="mb-3" /> */}
+
       <CRCard borderless>
         <Can I="ViewFilters" an="Accounting">
           <Toolbar
@@ -446,7 +400,7 @@ const AccountingContainer = () => {
               onChange={val =>
                 setFormValue({ ...formValue, accountingOption: val })
               }
-              style={{ width: '170px' }}
+              className="w-64 my-4"
             />
           </Form>
           <Div display="flex" my={4}>
@@ -456,6 +410,7 @@ const AccountingContainer = () => {
             </H6>
           </Div>
         </Can>
+
         <Div>
           {activeTab === '0' ? (
             <Div display="flex">
@@ -491,18 +446,14 @@ const AccountingContainer = () => {
                   setCurrentPage={setCurrentPage}
                   pages={revenuesPages}
                 />
-                <Div display="flex">
+                <Div className="flex gap-3 items-center mb-5">
                   <ExpenseFilter
                     formValue={formValue}
                     setFormValue={setFormValue}
                   />
                   <ExcelIcon
                     onClick={handleExpenseAccountingExcel}
-                    ml={1}
-                    mr={1}
-                    width="30px"
-                    height="30px"
-                    marginTop="40px"
+                    className="w-8 h-8 mt-8"
                   />
                 </Div>
                 <BranchSpecialtyUserFilter
@@ -522,74 +473,6 @@ const AccountingContainer = () => {
                   pages={expensesPages}
                 />
                 <Profit expenses={totalExpenses} revenues={totalRevenues} />
-                {/* <BranchFilter
-                  appointments={updatedRevenues}
-                  type="accounting"
-                  method="revenues"
-                  branches={filterBranches}
-                  render={(revenues, totalRevenues) => (
-                    <>
-                      <ListRevenueData
-                        title={t('revenues')}
-                        data={revenues}
-                        onEdit={revenue => {
-                          editRevenueForm.setFormValue(
-                            R.pick(ENTITY_PROPS)(revenue)
-                          );
-                          editRevenueForm.show();
-                        }}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        // pages={pages}
-                      />
-                      <Div flexGrow={1} ml={2}>
-                        <ExpenseFilter
-                          formValue={formValue}
-                          setFormValue={setFormValue}
-                        />
-                        <BranchFilter
-                          appointments={updatedExpenses}
-                          type="accounting"
-                          method="expenses"
-                          branches={filterBranches}
-                          render={(expenses, __, totalExpenses) => (
-                            <>
-                              <ListExpenseData
-                                title={t('expenses')}
-                                data={expenses}
-                                onEdit={expense => {
-                                  editExpenseForm.setFormValue(
-                                    R.pick(ENTITY_PROPS)(expense)
-                                  );
-                                  editExpenseForm.show();
-                                }}
-                              />
-                              <Profit
-                                expenses={totalExpenses}
-                                revenues={totalRevenues}
-                              />
-                              <Div
-                                mt={10}
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                              >
-                                <PdfView
-                                  data={{ revenues, expenses }}
-                                  period={timeFrame}
-                                  marginTop={marginTop}
-                                  marginRight={marginRight}
-                                  marginBottom={marginBottom}
-                                  marginLeft={marginLeft}
-                                />
-                              </Div>
-                            </>
-                          )}
-                        />
-                      </Div>
-                    </>
-                  )}
-                /> */}
               </Div>
             </Div>
           ) : (
@@ -610,4 +493,4 @@ const AccountingContainer = () => {
 
 AccountingContainer.propTypes = {};
 
-export default AccountingContainer;
+export default memo(AccountingContainer);

@@ -1,40 +1,42 @@
-import React from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import { MainContainer, AccountingContainer, CRTabs } from 'components';
+import { AccountingContainer } from 'components';
 import BankInsuranceAccountingContainer from './banking-insurance';
 import ReportsPrintOut from '../print-reports';
 import Reports from '../reports';
 import { useTranslation } from 'react-i18next';
+import Nav from './nav';
+
+export const TABS = [
+  { key: 'accounting', element: () => <AccountingContainer /> },
+  {
+    key: 'bankAndInsuranceAccounting',
+    element: () => <BankInsuranceAccountingContainer />,
+  },
+  { key: 'statistics', element: () => <Reports /> },
+  { key: 'reports', element: () => <ReportsPrintOut /> },
+];
 
 const ReportsContainer = () => {
+  const [activeTab, setActiveTab] = useState(TABS[0].key);
   const { t } = useTranslation();
+
+  const onSelect = useCallback(key => setActiveTab(key), []);
+
+  const activeContent = useMemo(
+    () => TABS.find(o => o.key === activeTab).element(),
+    [activeTab]
+  );
+
   return (
     <>
-      <MainContainer title={t('reports')} nobody></MainContainer>
-      <CRTabs>
-        <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>{t('accounting')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('bankAndInsuranceAccounting')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('statistics')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('reports')}</CRTabs.CRTab>
-        </CRTabs.CRTabsGroup>
-        <CRTabs.CRContentGroup>
-          <CRTabs.CRContent>
-            <AccountingContainer />
-          </CRTabs.CRContent>
-          <CRTabs.CRContent>
-            <BankInsuranceAccountingContainer />
-          </CRTabs.CRContent>
-          <CRTabs.CRContent>
-            <Reports />
-          </CRTabs.CRContent>
-          <CRTabs.CRContent>
-            <ReportsPrintOut />
-          </CRTabs.CRContent>
-        </CRTabs.CRContentGroup>
-      </CRTabs>
+      <h1 className="text-2xl mb-4">{t('reports')}</h1>
+
+      <Nav activeTab={activeTab} t={t} onSelect={onSelect} />
+
+      {activeContent}
     </>
   );
 };
 
-export default ReportsContainer;
+export default memo(ReportsContainer);

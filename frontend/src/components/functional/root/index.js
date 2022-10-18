@@ -5,7 +5,7 @@ import Fab from 'components/appointments/new-appointment/fab';
 import UserAllowedViewsContext from '../../../services/allowed-views-context';
 import useGlobalState from 'state';
 import { AppRouter, Login, NewPatient } from 'components';
-import { UserIcon, CalendarIcon } from 'components/icons';
+import { UserIcon } from 'components/icons';
 import {
   ContainerStyled,
   MainStyled,
@@ -49,13 +49,11 @@ function Root() {
   const allowedViews = R.propOr([], 'allowedViews')(user);
   const appointmentsName = t('appointments'),
     todayAppointmentsName = t('todayAppointments'),
-    calenderName = t('calendar'),
     salesName = t('sales'),
     reportsName = t('reports'),
     patientsName = t('patients'),
     surgeriesName = t('surgeries'),
     reportPrintoutName = t('reportsPrintout'),
-    permissionsName = t('permissions'),
     coursesName = t('courses'),
     inventory = t('inventory'),
     supplierAccount = t('supplierAccount');

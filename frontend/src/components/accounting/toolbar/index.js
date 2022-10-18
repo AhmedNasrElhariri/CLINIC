@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 const Toolbar = ({ activeKey, onSelect, onChangePeriod }) => {
   const { t } = useTranslation();
   return (
-    <Div display="flex">
+    <Div display="flex" className="flex-wrap items-baseline justify-between">
       <CRButtonGroup onSelect={onSelect} activeKey={activeKey}>
         <CRButtonGroup.CRButton eventKey={ACCOUNTING_VIEWS.DAY}>
           {t('today')}
@@ -27,7 +27,7 @@ const Toolbar = ({ activeKey, onSelect, onChangePeriod }) => {
         </CRButtonGroup.CRButton>
       </CRButtonGroup>
 
-      <Div width={180}>
+      <Div width={256}>
         <Form fluid>
           <CRDateRangePicker
             name=""

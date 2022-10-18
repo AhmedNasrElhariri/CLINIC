@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   MainContainer,
@@ -30,4 +30,4 @@ const ReportsContainer = () => {
   );
 };
 
-export default ReportsContainer;
+export default memo(ReportsContainer);

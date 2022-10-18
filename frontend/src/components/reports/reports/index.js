@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
 import LineChart from '@rsuite/charts/lib/charts/LineChart';
@@ -84,4 +84,4 @@ function Reports() {
   );
 }
 
-export default Reports;
+export default memo(Reports);

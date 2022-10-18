@@ -17,12 +17,8 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
   const salary = { id: 'Salary', name: 'Salary' };
   updatedExpenseTypeDefinitions.push(salary);
   return (
-    <Form
-      style={{ marginBottom: 64 }}
-      formValue={formValue}
-      onChange={setFormValue}
-    >
-      <Div mr={3} display="flex">
+    <Form formValue={formValue} onChange={setFormValue}>
+      <div className="flex flex-wrap gap-3">
         <CRSelectInput
           label={t('expenseType')}
           name="expenseType"
@@ -31,14 +27,10 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
             val == null ? setFormValue({ ...formValue, expenseType: '' }) : ''
           }
           placeholder="Search"
-          style={{ width: '230px', marginRight: '20px' }}
+          className="w-56"
         />
-        <CRTextInput
-          label={t('expenseName')}
-          name="expenseName"
-          style={{ width: '230px' }}
-        />
-      </Div>
+        <CRTextInput label={t('expenseName')} name="expenseName" />
+      </div>
     </Form>
   );
 };

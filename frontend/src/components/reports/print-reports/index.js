@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import ReactToPrint from 'react-to-print';
 import {
   CRButton,
@@ -175,7 +175,6 @@ const Test = props => {
               /> */}
               <MultiCascader
                 data={updatedSessionsDefinitions}
-                style={{ width: 224 }}
                 onChange={val =>
                   setFormValue({ ...formValue, sessionsIds: val })
                 }
@@ -375,4 +374,4 @@ const Test = props => {
 
 Test.propTypes = {};
 
-export default Test;
+export default memo(Test);

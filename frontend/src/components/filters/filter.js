@@ -4,7 +4,7 @@ import { get } from 'services/local-storage';
 import { CRSelectInput } from 'components';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
-function AppointmentsFilter({ formValue, onChange, branches }) {
+function AppointmentsFilter({ formValue, onChange, branches, formClassName }) {
   const branch = get('branch');
   const { t } = useTranslation();
   useEffect(() => {
@@ -32,7 +32,7 @@ function AppointmentsFilter({ formValue, onChange, branches }) {
       formValue={formValue}
       onChange={onChange}
       fluid
-      className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+      className={`grid grid-cols-2 sm:grid-cols-3 gap-4 ${formClassName}`}
     >
       <div className="flex-1">
         <CRSelectInput
