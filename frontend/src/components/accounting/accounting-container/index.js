@@ -4,7 +4,6 @@ import { Alert } from 'rsuite';
 import * as R from 'ramda';
 import { ACTIONS } from 'utils/constants';
 import {
-  MainContainer,
   Div,
   CRCard,
   CRButton,
@@ -15,7 +14,6 @@ import {
 import Toolbar from '../toolbar';
 import ListExpenseData from '../list-data/expense.js';
 import ListRevenueData from '../list-data/revenue.js';
-import Tabs from '../tabs';
 import Profit from '../profit';
 import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
 import { useAccounting, useAppointments } from 'hooks';
@@ -63,7 +61,8 @@ const initialExpenseBranchValue = {
   doctor: null,
 };
 const AccountingContainer = () => {
-  const [activeTab, setActiveTab] = useState('0');
+  // const [activeTab] = useState('0');
+  const activeTab = '0';
   const [user] = useGlobalState('user');
   const { t } = useTranslation();
   const { filterBranches } = useAppointments({

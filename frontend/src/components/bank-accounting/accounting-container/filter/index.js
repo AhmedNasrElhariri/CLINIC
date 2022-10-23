@@ -7,26 +7,22 @@ const AccountingFilter = ({ formValue, setFormValue, banksDefinition }) => {
   const { t } = useTranslation();
   return (
     <Form
-      style={{ marginBottom: 64 }}
+      className="flex flex-wrap gap-3"
       formValue={formValue}
       onChange={setFormValue}
     >
-      <Div display="flex">
-        <Div mr={3} ml={3}>
-          <CRSelectInput
-            label={t('bank')}
-            name="bank"
-            data={banksDefinition}
-            placeholder="Search"
-            style={{ width: '230px' }}
-          />
-        </Div>
-        <CRTextInput
-          label={t('revenueName')}
-          name="revenueName"
-          style={{ width: '230px' }}
-        />
-      </Div>
+      <CRSelectInput
+        label={t('bank')}
+        name="bank"
+        data={banksDefinition}
+        placeholder="Search"
+        style={{ width: '230px' }}
+      />
+      <CRTextInput
+        label={t('revenueName')}
+        name="revenueName"
+        style={{ width: '230px' }}
+      />
     </Form>
   );
 };

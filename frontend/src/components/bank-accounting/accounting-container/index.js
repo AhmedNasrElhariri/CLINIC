@@ -1,8 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
 import {
-  MainContainer,
   Div,
   CRCard,
   H6,
@@ -21,22 +20,22 @@ import {
   useAppointments,
   useModal,
   useForm,
-  useConfigurations,
+  // useConfigurations,
   useBankDefinition,
   useExpenseTypeDefinition,
 } from 'hooks';
 import Filter from './filter';
-import BranchFilter from '../../filters';
+// import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS, ACCOUNT_OPTIONS } from 'utils/constants';
 import { Can } from 'components/user/can';
-import PdfView from './pdf';
+// import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 import axios from 'axios';
 import useGlobalState from 'state';
 import { ExcelIcon } from 'components/icons/index';
 import { Form } from 'rsuite';
 
-const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
+// const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalFilterVal = {
   expenseType: '',
   revenueName: '',
@@ -72,7 +71,7 @@ const inialExpenseCurrentPage = {
 const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [action, setAction] = useState('');
-  const [user, setUser] = useGlobalState('user');
+  const [user] = useGlobalState('user');
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
   const { formValue, setFormValue, type, setType, show, setShow } = useForm({
@@ -89,7 +88,7 @@ const BankAccountingContainer = () => {
   const [expenseBranchSpecialtyUser, setExpenseBranchSpecialtyUser] = useState(
     initialExpenseBranchValue
   );
-  const { pageSetupData } = useConfigurations();
+  // const { pageSetupData } = useConfigurations();
   const { banksDefinition } = useBankDefinition({});
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
   const updatedexpenseType = expenseTypesDefinition.map(e => {
@@ -100,11 +99,11 @@ const BankAccountingContainer = () => {
   });
   const page = currentPage?.activePage;
   const expensePage = expenseCurrentPage?.activePage;
-  const pageSetupRow = pageSetupData.find(element => element.type === 'visa');
-  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
-  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
-  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
-  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
+  // const pageSetupRow = pageSetupData.find(element => element.type === 'visa');
+  // const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
+  // const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
+  // const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
+  // const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
   const { filterBranches } = useAppointments({
     action: ACTIONS.ViewBank_Accounting,
   });
@@ -142,7 +141,7 @@ const BankAccountingContainer = () => {
       setFormValue(initValue);
     },
   });
-  console.log(filter,'f');
+  console.log(filter, 'f');
   const revenuesPages = Math.ceil(RevenuesCount / 20);
   const expensesPages = Math.ceil(expensesCount / 20);
 
@@ -314,7 +313,31 @@ const BankAccountingContainer = () => {
   };
   return (
     <>
-      <MainContainer
+      <section className="flex justify-between flex-wrap items-center gap-4 mb-5">
+        <h5>{t('bankAccounting')}</h5>
+        <div className="inline-flex flex-wrap items-center gap-2">
+          <Can I="AddBankRevenue" an="Accounting">
+            <CRButton
+              variant="primary"
+              onClick={() => handleClickCreateRevenue()}
+            >
+              {t('newRevenue')} +
+            </CRButton>
+          </Can>
+          <Can I="AddBankExpense" an="Accounting">
+            <CRButton
+              variant="primary"
+              onClick={() => handleClickCreateExpense()}
+            >
+              {t('newExpense')} +
+            </CRButton>
+          </Can>
+          <CRButton variant="primary" onClick={handleBankAccountingReport}>
+            {t('print')} +
+          </CRButton>
+        </div>
+      </section>
+      {/* <MainContainer
         title={t('bankAccounting')}
         more={
           <Div display="flex" mt={20}>
@@ -347,7 +370,7 @@ const BankAccountingContainer = () => {
               >
                 {t('print')} +
               </CRButton>
-              {/* <PdfView
+              <PdfView
                 data={{
                   revenues: allRevenues,
                   expenses: allExpenses,
@@ -360,18 +383,19 @@ const BankAccountingContainer = () => {
                 marginBottom={marginBottom}
                 marginLeft={marginLeft}
                 t={t}
-              /> */}
+              />
             </>
           </Div>
         }
         nobody
-      ></MainContainer>
-      <CRCard borderless>
+      ></MainContainer> */}
+
+      <section className="mb-3">
         <Can I="ViewFilters" an="Accounting">
           <Toolbar
             activeKey={view}
             onSelect={setView}
-            data={{ revenues, revenues }}
+            data={{ revenues }}
             onChangePeriod={setPeriod}
           />
           <Form>
@@ -381,17 +405,18 @@ const BankAccountingContainer = () => {
               block
               value={filter.accountingOption}
               onChange={val => setFilter({ ...filter, accountingOption: val })}
-              style={{ width: '170px' }}
+              style={{ width: '256px' }}
             />
           </Form>
-          <Div display="flex" my={4}>
+          <Div display="flex" my={3}>
             <H6>{t('showingFor')} :</H6>
             <H6 variant="primary" ml={2} fontWeight="bold">
               {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
             </H6>
           </Div>
         </Can>
-        <Div display="flex">
+
+        <div className="flex items-center gap-4 mb-4">
           <Filter
             formValue={filter}
             setFormValue={setFilter}
@@ -400,21 +425,23 @@ const BankAccountingContainer = () => {
           <ExcelIcon
             variant="primary"
             onClick={handleBankRevenueAccountingExcel}
-            ml={1}
-            mr={1}
             width="30px"
             height="30px"
             marginTop="40px"
           />
-        </Div>
+        </div>
+        <BranchSpecialtyUserFilter
+          formValue={branchSpecialtyUser}
+          onChange={setBranchSpecialtyUser}
+          branches={filterBranches}
+        />
+      </section>
+
+      <CRCard borderless>
+        <Div display="flex"></Div>
         <Div>
           <Div display="flex">
             <Div flexGrow={1} mr={2}>
-              <BranchSpecialtyUserFilter
-                formValue={branchSpecialtyUser}
-                onChange={setBranchSpecialtyUser}
-                branches={filterBranches}
-              />
               <ListData
                 title={t('bankingRevenues')}
                 data={revenues}

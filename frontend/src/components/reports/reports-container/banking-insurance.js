@@ -1,31 +1,44 @@
-import { memo } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  MainContainer,
   BankAccountingContainer,
   InsuranceAccountingContainer,
-  CRTabs,
 } from 'components';
+
+import { Nav } from 'rsuite';
+
+const TABS = [
+  { key: 'bankAccounting', element: () => <BankAccountingContainer /> },
+  {
+    key: 'insuranceAccounting',
+    element: () => <InsuranceAccountingContainer />,
+  },
+];
 
 const ReportsContainer = () => {
   const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState(TABS[0].key);
+
+  const onSelect = useCallback(k => {
+    setActiveTab(k);
+  }, []);
+
   return (
     <>
-      <MainContainer title={t('reports')} nobody></MainContainer>
-      <CRTabs>
-        <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>{t('bankAccounting')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('insuranceAccounting')}</CRTabs.CRTab>
-        </CRTabs.CRTabsGroup>
-        <CRTabs.CRContentGroup>
-          <CRTabs.CRContent>
-            <BankAccountingContainer />
-          </CRTabs.CRContent>
-          <CRTabs.CRContent>
-            <InsuranceAccountingContainer />
-          </CRTabs.CRContent>
-        </CRTabs.CRContentGroup>
-      </CRTabs>
+      <Nav
+        onSelect={onSelect}
+        className="bg-slate-50 rounded-md text-center my-7"
+        justified
+        activeKey={activeTab}
+      >
+        {TABS.map(item => (
+          <Nav.Item eventKey={item.key} key={item.key}>
+            {t(item.key)}
+          </Nav.Item>
+        ))}
+      </Nav>
+
+      {TABS.map(item => item.key === activeTab && item.element())}
     </>
   );
 };

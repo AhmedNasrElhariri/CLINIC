@@ -1,12 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import * as R from 'ramda';
-import {
-  MainContainer,
-  Div,
-  CRCard,
-  H6,
-  BranchSpecialtyUserFilter,
-} from 'components';
+import { Div, CRCard, H6, BranchSpecialtyUserFilter } from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../../accounting/profit';
@@ -17,13 +11,13 @@ import {
   useConfigurations,
 } from 'hooks';
 import Filter from './filter';
-import BranchFilter from '../../filters';
+// import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
 
-const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
+// const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initialval = {
   company: '',
 };
@@ -66,23 +60,23 @@ const BankAccountingContainer = () => {
   const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
   const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
   const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
-  const updatedRevenues = useMemo(
-    () =>
-      revenues.filter(r =>
-        r.company.name.toLowerCase().includes(filter.company.toLowerCase())
-      ),
-    [filter, revenues]
-  );
+  // const updatedRevenues = useMemo(
+  //   () =>
+  //     revenues.filter(r =>
+  //       r.company.name.toLowerCase().includes(filter.company.toLowerCase())
+  //     ),
+  //   [filter, revenues]
+  // );
   return (
     <>
-      <MainContainer title={t('insurance')} nobody></MainContainer>
+      {/* <MainContainer title={t('insurance')} nobody></MainContainer> */}
       <CRCard borderless>
-        <Div display="flex" justifyContent="space-between">
+        <div className="flex flex-wrap items-center gap-4">
           <Can I="ViewFilters" an="Accounting">
             <Toolbar
               activeKey={view}
               onSelect={setView}
-              data={{ revenues, revenues }}
+              data={{ revenues }}
               onChangePeriod={setPeriod}
             />
 
@@ -103,7 +97,7 @@ const BankAccountingContainer = () => {
             marginLeft={marginLeft}
             t={t}
           />
-        </Div>
+        </div>
         <Filter formValue={filter} setFormValue={setFilter} />
         <Div>
           <Div display="flex">
@@ -114,7 +108,7 @@ const BankAccountingContainer = () => {
                 branches={filterBranches}
               />
               <ListData
-                title={t("insuranceRevenues")}
+                title={t('insuranceRevenues')}
                 data={revenues}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
