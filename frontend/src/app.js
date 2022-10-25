@@ -1,5 +1,5 @@
 import './styles/App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Ability } from '@casl/ability';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
@@ -16,8 +16,8 @@ import './state';
 import './global-style.js';
 import font from './fonts/Tajawal-Regular.ttf';
 import { AbilityContext } from 'components/user/can/index';
-import { set, get } from 'services/local-storage';
-import { StyleSheetManager } from 'styled-components';
+import {  get } from 'services/local-storage';
+// import { StyleSheetManager } from 'styled-components';
 // import rtlPlugin from 'stylis-plugin-rtl';
 export default function App() {
   useEffect(() => {

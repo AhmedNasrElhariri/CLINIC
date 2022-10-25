@@ -34,14 +34,14 @@ function Patients() {
   return (
     <>
       <Can I="View" an="Patient">
-        <Div display="flex">
-          <Div mr={3}>
-            <PatientsFilter
-              formValue={filter}
-              setFormValue={setFilter}
-            ></PatientsFilter>
-          </Div>
-        </Div>
+        {/* <Div display="flex">
+          <Div mr={3}> */}
+        <PatientsFilter
+          formValue={filter}
+          setFormValue={setFilter}
+        ></PatientsFilter>
+        {/* </Div>
+        </Div> */}
         <CRTable
           data={patients}
           autoHeight
