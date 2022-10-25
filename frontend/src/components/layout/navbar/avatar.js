@@ -10,11 +10,7 @@ export default function Avatar({ avatar, user, onClick }) {
         onClick={onClick}
       >
         {user?.name}
-        <RAvatar
-          src={`${process.env.REACT_APP_API_ENDPOINT ?? ''}${avatar}`}
-          circle
-          size="md"
-        />
+        <RAvatar src={avatar} circle size="md" />
       </div>
 
       <MdPersonOutline className="cursor-pointer sm:hidden" onClick={onClick} />

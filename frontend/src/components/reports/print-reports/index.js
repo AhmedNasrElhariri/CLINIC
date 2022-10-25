@@ -104,94 +104,81 @@ const Test = props => {
   const refFour = useRef();
   let monthlyData = dataTwo?.data || [];
   return (
-    <>
-      <Container>
+    <div className="flex flex-col gap-3">
+      {/* <Container> */}
+      <ReportRow>
         <Can I="GenerateMonthly" an="PulsesReport">
-          <Report>
-            <Name>{t('monthlyReport')}</Name>
-            <Form formValue={formValue} onChange={setFormValue}>
-              <CRSelectInput
-                placeholder={t('select')}
-                name="month"
-                data={monthes}
-                layout="inline"
-                block
-                style={{ width: '270px' }}
-              />
-            </Form>
-            <CRButton onClick={() => handleMonthlyReport(formValue.month)}>
-              {t('generate')}
-            </CRButton>
-            <ReactToPrint
-              trigger={() => <CRButton primary>{t('print')}</CRButton>}
-              content={() => refTwo.current}
-            />
-          </Report>
-        </Can>
-      </Container>
-      <Container>
-        <Can I="GenerateDaily" an="PulsesReport">
-          <Report>
-            <Name>{t('dailyReport')}</Name>
-            <Form formValue={formValue} onChange={setFormValue}>
-              <CRDatePicker
-                block
-                name="date"
-                accepter={DatePicker}
-                style={{ width: '270px' }}
-              />
-            </Form>
-            <CRButton onClick={() => handleDailyReport(formValue.date)}>
-              {t('generate')}
-            </CRButton>
-            <ReactToPrint
-              trigger={() => <CRButton primary>{t('print')}</CRButton>}
-              content={() => refOne.current}
-            />
-          </Report>
-        </Can>
-      </Container>
-      <Container>
-        {/* <Can I="GenerateDaily" an="PulsesReport"> */}
-        <Report>
-          <Name>{t('sessionReport')}</Name>
+          <Name>{t('monthlyReport')}</Name>
           <Form formValue={formValue} onChange={setFormValue}>
-            <Div display="flex" justifyContent="space-between">
-              <CRDateRangePicker
-                name="sessionDate"
-                placeholder={t('timeframe')}
-                placement="auto"
-                style={{ width: '230px', marginRight: '30px' }}
-              />
-              {/* <CRSelectInput
-                name="sessionId"
-                data={sessionsDefinition}
-                style={{ width: '230px' }}
-              /> */}
-              {/* <CRCheckBoxGroup
-                options={updatedSessionsDefinitions}
-                name="sessionsIds"
-                inline
-              /> */}
-              <MultiCascader
-                data={updatedSessionsDefinitions}
-                onChange={val =>
-                  setFormValue({ ...formValue, sessionsIds: val })
-                }
-                style={{ marginTop: '10px', width: '250px' }}
-              />
-            </Div>
+            <CRSelectInput
+              placeholder={t('select')}
+              name="month"
+              data={monthes}
+              layout="inline"
+              block
+              style={{ width: '270px' }}
+            />
           </Form>
-          <CRButton onClick={() => setShowSessionData(!showSessionData)}>
-            {showSessionData ? t('close') : t('show')}
+          <CRButton onClick={() => handleMonthlyReport(formValue.month)}>
+            {t('generate')}
           </CRButton>
           <ReactToPrint
             trigger={() => <CRButton primary>{t('print')}</CRButton>}
-            content={() => refThree.current}
+            content={() => refTwo.current}
           />
-        </Report>
-        {/* </Can> */}
-      </Container>
+        </Can>
+      </ReportRow>
+      {/* <Report> */}
+
+      {/* </Report> */}
+      {/* </Container> */}
+      <ReportRow>
+        <Can I="GenerateDaily" an="PulsesReport">
+          <Name>{t('dailyReport')}</Name>
+          <Form formValue={formValue} onChange={setFormValue}>
+            <CRDatePicker
+              block
+              name="date"
+              accepter={DatePicker}
+              style={{ width: '270px' }}
+            />
+          </Form>
+          <CRButton onClick={() => handleDailyReport(formValue.date)}>
+            {t('generate')}
+          </CRButton>
+          <ReactToPrint
+            trigger={() => <CRButton primary>{t('print')}</CRButton>}
+            content={() => refOne.current}
+          />
+        </Can>
+      </ReportRow>
+      <ReportRow>
+        <Name>{t('sessionReport')}</Name>
+        <Form
+          formValue={formValue}
+          onChange={setFormValue}
+          className="inline-flex flex-wrap items-center"
+        >
+          <CRDateRangePicker
+            name="sessionDate"
+            placeholder={t('timeframe')}
+            placement="auto"
+            style={{ width: '230px', marginRight: '30px' }}
+          />
+          <MultiCascader
+            data={updatedSessionsDefinitions}
+            onChange={val => setFormValue({ ...formValue, sessionsIds: val })}
+            style={{ marginTop: '10px', width: '250px' }}
+          />
+        </Form>
+        <CRButton onClick={() => setShowSessionData(!showSessionData)}>
+          {showSessionData ? t('close') : t('show')}
+        </CRButton>
+        <ReactToPrint
+          trigger={() => <CRButton primary>{t('print')}</CRButton>}
+          content={() => refThree.current}
+        />
+      </ReportRow>
       <Div>
         <Div
           style={!showSessionData ? { overflow: 'hidden', height: '0px' } : {}}
@@ -236,16 +223,14 @@ const Test = props => {
           </Div>
         </Div>
       </Div>
-      <Container>
-        <Report>
-          <Name>{t('totalUnpaidOfCoursesReport')}</Name>
+      <ReportRow>
+        <Name>{t('totalUnpaidOfCoursesReport')}</Name>
 
-          <ReactToPrint
-            trigger={() => <CRButton primary>{t('print')}</CRButton>}
-            content={() => refFour.current}
-          />
-        </Report>
-      </Container>
+        <ReactToPrint
+          trigger={() => <CRButton primary>{t('print')}</CRButton>}
+          content={() => refFour.current}
+        />
+      </ReportRow>
       <Div>
         <Div style={{ overflow: 'hidden', height: '0px' }}>
           <Div ref={refOne} borderless>
@@ -368,10 +353,18 @@ const Test = props => {
           </Div>
         </Div>
       </Div>
-    </>
+    </div>
   );
 };
 
 Test.propTypes = {};
 
 export default memo(Test);
+
+function ReportRow({ children }) {
+  return (
+    <div className="flex flex-wrap bg-slate-100 px-3 py-5 items-center gap-5 border border-slate-900/20 border-solid">
+      {children}
+    </div>
+  );
+}
