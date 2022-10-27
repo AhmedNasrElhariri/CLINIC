@@ -20,7 +20,7 @@ function ListPatientSurgeries({
   );
   return (
     <>
-      <CRCard borderless>
+      <CRCard borderless className="mt-5">
         <CRTable autoHeight data={patientSurgeries} onRowClick={onSurgeryClick}>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
@@ -71,7 +71,9 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('anesthesiaDoctorName')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>
+              {t('anesthesiaDoctorName')}
+            </CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ anesthesiaDoctorName }) => (
                 <CRTable.CRCellStyled>
