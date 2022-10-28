@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CRTable, Div } from 'components';
+import { CRTable } from 'components';
 import { Can } from 'components/user/can';
 import PatientsFilter from '../filter/patients-filter';
 import EditPatient from '../edit-patient';
@@ -42,7 +42,7 @@ function Patients() {
         ></PatientsFilter>
         {/* </Div>
         </Div> */}
-        <CRTable
+        <CRTable wordWrap
           data={patients}
           autoHeight
           onRowClick={({ id }) => {

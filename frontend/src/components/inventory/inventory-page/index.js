@@ -1,60 +1,43 @@
 import React, { useState } from 'react';
-
-import { MainContainer, CRCard, CRNav } from 'components';
+import { Nav } from 'rsuite';
 import { Can } from 'components/user/can';
 import InventoryStatus from '../status';
 import InventoryHistory from '../history';
-// import ItemsDefinitions from '../items-definitions';
 import InventoryManual from '../inventory-manual';
 import { useTranslation } from 'react-i18next';
 
 const InventoryPage = () => {
   const { t } = useTranslation();
-  const tabs = [
-    { name: t('inventory'), key: '0', component: InventoryStatus },
-    { name: t('history'), key: '1', component: InventoryHistory },
-    // { name: t('itemDefinition'), key: '2', component: ItemsDefinitions },
-    { name: t('inventoryManual'), key: '2', component: InventoryManual },
-  ];
-  const [activeTab, setActiveTab] = useState(tabs[0].key);
+  const [activeTab, setActiveTab] = useState(0);
   return (
     <>
-      <MainContainer title={t('inventory')} nobody></MainContainer>
-      <CRNav
-        appearance="tabs"
+      <h1 className="text-2xl mb-4">{t('inventory')}</h1>
+      <Nav
         activeKey={activeTab}
         onSelect={setActiveTab}
-        width={1000}
+        appearance="tabs"
         justified
+        className="text-center max-w-5xl mb-5"
       >
-        {tabs.map(({ key, name }) => (
-          <CRNav.CRItem key={key} eventKey={key}>
-            {name}
-          </CRNav.CRItem>
-        ))}
-      </CRNav>
-      <CRCard borderless>
-        {activeTab === '0' && (
-          <Can I="View" an="Inventory">
-            <InventoryStatus />
-          </Can>
-        )}
-        {activeTab === '1' && (
-          <Can I="ViewHistory" an="Inventory">
-            <InventoryHistory />
-          </Can>
-        )}
-        {/* {activeTab === '2' && (
-          <Can I="DefineItem" an="Inventory">
-            <ItemsDefinitions />
-          </Can>
-        )} */}
-        {activeTab === '2' && (
-          <Can I="AddCustom" an="Inventory">
-            <InventoryManual />
-          </Can>
-        )}
-      </CRCard>
+        <Nav.Item eventKey={0}>{t('inventory')}</Nav.Item>
+        <Nav.Item eventKey={1}>{t('history')}</Nav.Item>
+        <Nav.Item eventKey={2}>{t('completedAppointments')}</Nav.Item>
+      </Nav>
+      {activeTab === 0 && (
+        <Can I="View" an="Inventory">
+          <InventoryStatus />
+        </Can>
+      )}
+      {activeTab === 1 && (
+        <Can I="ViewHistory" an="Inventory">
+          <InventoryHistory />
+        </Can>
+      )}
+      {activeTab === 2 && (
+        <Can I="AddCustom" an="Inventory">
+          <InventoryManual />
+        </Can>
+      )}
     </>
   );
 };
