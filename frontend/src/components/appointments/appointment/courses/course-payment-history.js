@@ -30,13 +30,13 @@ const CoursePayment = ({ coursePayments, onEdit, courseId }) => {
           <Table.HeaderCell>{t('number')}</Table.HeaderCell>
           <Table.Cell>{(_, indx) => indx + 1}</Table.Cell>
         </Table.Column>
-        <Table.Column flexGrow={1} minWidth={128}>
+        <Table.Column flexGrow={1} minWidth={192}>
           <Table.HeaderCell>{t('date')}</Table.HeaderCell>
           <Table.Cell>
             {({ date }) => formatDate(date, 'dddd, DD-MM-YYYY')}
           </Table.Cell>
         </Table.Column>
-        <Table.Column flexGrow={1} minWidth={64}>
+        <Table.Column flexGrow={1} minWidth={128}>
           <Table.HeaderCell>{t('creator')}</Table.HeaderCell>
           <Table.Cell>{({ user }) => user.name}</Table.Cell>
         </Table.Column>

@@ -14,21 +14,21 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
         className="text-sm text-gray-600"
         data={courseUnitsHistory}
       >
-        <Table.Column flexGrow={1}>
+        <Table.Column flexGrow={1} minWidth={64}>
           <Table.HeaderCell>{t('number')}</Table.HeaderCell>
           <Table.Cell>{(_, indx) => indx + 1}</Table.Cell>
         </Table.Column>
-        <Table.Column flexGrow={1}>
+        <Table.Column flexGrow={1} minWidth={192}>
           <Table.HeaderCell>{t('date')}</Table.HeaderCell>
           <Table.Cell>
             {({ date }) => formatDate(date, 'dddd, DD-MM-YYYY')}
           </Table.Cell>
         </Table.Column>
-        <Table.Column flexGrow={1}>
+        <Table.Column flexGrow={1} minWidth={128}>
           <Table.HeaderCell>{t('creator')}</Table.HeaderCell>
           <Table.Cell>{({ user }) => user.name}</Table.Cell>
         </Table.Column>
-        <Table.Column flexGrow={1}>
+        <Table.Column flexGrow={1} minWidth={48}>
           <Table.HeaderCell>{t('units')}</Table.HeaderCell>
           <Table.Cell>{({ units }) => units}</Table.Cell>
         </Table.Column>
