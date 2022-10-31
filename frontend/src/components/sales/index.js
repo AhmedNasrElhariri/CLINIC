@@ -3,19 +3,10 @@ import * as R from 'ramda';
 import { Form } from 'rsuite';
 import Profit from './profit';
 import Toolbar from '../accounting/toolbar';
-import {
-  Div,
-  CRButton,
-  CRCard,
-  H6,
-  MainContainer,
-  BranchSpecialtyUserFilter,
-} from 'components';
+import { CRButton, H6, BranchSpecialtyUserFilter } from 'components';
 import NewSales from './new-sales';
 import ListSaleses from './list-sales';
-import Filter from '../filters';
 import { Can } from 'components/user/can';
-import PdfView from './sales-pdf';
 import {
   useForm,
   useSales,
@@ -23,7 +14,6 @@ import {
   useAppointments,
   useModal,
   useSalesDefinition,
-  useConfigurations,
 } from 'hooks';
 import { formatDate } from 'utils/date';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
@@ -39,7 +29,6 @@ const initFilter = {
   userId: null,
   specialtyId: null,
   branchId: null,
-  userId: null,
 };
 const initialBranchValue = {
   branch: null,
@@ -52,7 +41,7 @@ const inialCurrentPage = {
 const Sales = () => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
-  const [user, setUser] = useGlobalState('user');
+  const [user] = useGlobalState('user');
   const { formValue, setFormValue, type, setType } = useForm({
     initValue,
   });
@@ -98,13 +87,6 @@ const Sales = () => {
     creatorId: filter?.userId,
   });
   const pages = Math.ceil(salesCounts / 20);
-  const { pageSetupData } = useConfigurations();
-  const pageSetupRow = pageSetupData.find(element => element.type === 'sales');
-  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
-  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
-  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
-  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
-
   const handleDelete = useCallback(
     idx => {
       const newItems = R.remove(idx, 1)(selectedItems);
@@ -117,7 +99,8 @@ const Sales = () => {
     const newItems = [...selectedItems, formValue];
     setSelectedItems(newItems);
     setFormValue(initValue);
-  }, [formValue, selectedItems]);
+  }, [formValue, selectedItems, setFormValue]);
+
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);
@@ -162,7 +145,7 @@ const Sales = () => {
         },
       });
     }
-  }, [addSales, editSales, formValue, type]);
+  }, [addSales, editSales, formValue, type, deleteSales, selectedItems]);
 
   const handleSalesExcelReport = async day => {
     axios({
@@ -223,65 +206,38 @@ const Sales = () => {
   };
   return (
     <>
-      <MainContainer
-        title={t('sales')}
-        more={
-          <Div display="flex">
-            <Can I="Create" an="Sales">
-              <CRButton
-                variant="primary"
-                onClick={handleClickCreate}
-                mr={1}
-                ml={1}
-              >
-                {t('addNewSales')} +
-              </CRButton>
-              {/* <PdfView
-                data={saleses}
-                totalSalesPrice={totalSalesPrice}
-                totalSalesCost={totalSalesCost}
-                period={timeFrame}
-                sales={true}
-                marginTop={marginTop}
-                marginRight={marginRight}
-                marginBottom={marginBottom}
-                marginLeft={marginLeft}
-                t={t}
-              /> */}
-              <CRButton
-                variant="primary"
-                onClick={handleSalesPrintReport}
-                mr={1}
-                ml={1}
-              >
-                {t('print')} +
-              </CRButton>
-            </Can>
-            <ExcelIcon
-              onClick={handleSalesExcelReport}
-              ml={5}
-              mr={1}
-              width="30px"
-              height="30px"
-            />
-          </Div>
-        }
-        nobody
-      ></MainContainer>
-      <CRCard borderless>
+      <div className="flex flex-wrap justify-between gap-5 items-center">
+        <h1 className="text-2xl mb-4">{t('sales')}</h1>
+        <div className="flex flex-wrap gap-3 items-center">
+          <Can I="Create" an="Sales">
+            <CRButton variant="primary" onClick={handleClickCreate}>
+              {t('addNewSales')} +
+            </CRButton>
+            <CRButton variant="primary" onClick={handleSalesPrintReport}>
+              {t('print')} +
+            </CRButton>
+          </Can>
+          <ExcelIcon
+            onClick={handleSalesExcelReport}
+            width="30px"
+            height="30px"
+          />
+        </div>
+      </div>
+      <div className="my-3">
         <Toolbar
           activeKey={view}
           onSelect={setView}
           onChangePeriod={setPeriod}
         />
+      </div>
+      <div className="flex my-3">
+        <H6>{t('showingFor')} :</H6>
+        <H6 variant="primary" ml={2} fontWeight="bold">
+          {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
+        </H6>
+      </div>
 
-        <Div display="flex" my={4}>
-          <H6>{t('showingFor')} :</H6>
-          <H6 variant="primary" ml={2} fontWeight="bold">
-            {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
-          </H6>
-        </Div>
-      </CRCard>
       <NewSales
         visible={visible}
         formValue={formValue}
@@ -295,32 +251,35 @@ const Sales = () => {
         onClose={close}
         type={type}
       />
-      <Div mb={50}>
-        <Form formValue={filter} onChange={setFilter}>
-          <Div display="flex" justifyContent="space-around">
-            <CRDocSelectInput
-              label={t('item')}
-              data={salesesDefinition}
-              name="item"
-              keyValue="id"
-              placement="auto"
-              style={{ width: '300px' }}
-            />
-            <CRSelectInput
-              label={t('creator')}
-              name="userId"
-              placement="auto"
-              data={organizationusers}
-              style={{ width: '300px' }}
-            />
-          </Div>
-        </Form>
-      </Div>
+
+      <Form
+        formValue={filter}
+        onChange={setFilter}
+        className="flex flex-wrap items-center gap-5 mb-5"
+      >
+        <CRDocSelectInput
+          label={t('item')}
+          data={salesesDefinition}
+          name="item"
+          keyValue="id"
+          placement="auto"
+          style={{ width: 256 }}
+        />
+        <CRSelectInput
+          label={t('creator')}
+          name="userId"
+          placement="auto"
+          data={organizationusers}
+          style={{ width: 256 }}
+        />
+      </Form>
+
       <BranchSpecialtyUserFilter
         formValue={branchSpecialtyUser}
         onChange={setBranchSpecialtyUser}
         branches={filterBranches}
       />
+
       <ListSaleses
         saleses={saleses}
         onEdit={handleClickEdit}
@@ -330,37 +289,6 @@ const Sales = () => {
         pages={pages}
       />
       <Profit totalPrice={totalSalesPrice} totalCost={totalSalesCost} />
-      {/* <Filter
-        appointments={itemFilteredSalesByUser}
-        branches={filterBranches}
-        type="sales"
-        render={(sales, totalSalesPrice, totalSalesCost) => (
-          <>
-            <ListSaleses
-              saleses={sales}
-              onEdit={handleClickEdit}
-              onDelete={handleClickDelete}
-            />
-            <Profit totalPrice={totalSalesPrice} totalCost={totalSalesCost} />
-            <Div
-              mt={10}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <PdfView
-                data={sales}
-                period={timeFrame}
-                sales={true}
-                marginTop={marginTop}
-                marginRight={marginRight}
-                marginBottom={marginBottom}
-                marginLeft={marginLeft}
-              />
-            </Div>
-          </>
-        )}
-      /> */}
     </>
   );
 };

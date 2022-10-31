@@ -1,10 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const NewPatient = lazy(() =>
@@ -62,13 +57,13 @@ const ListPatientViews = lazy(() =>
 const UpdatePatientView = lazy(() =>
   import('../../../components/patient-views/update-patient-view')
 );
-const EditPatientView = lazy(() =>
-  import('../../../components/patient-views/edit-views')
-);
+// const EditPatientView = lazy(() =>
+//   import('../../../components/patient-views/edit-views')
+// );
 const CreatePatientView = lazy(() =>
   import('../../../components/patient-views/create-view')
 );
-const Csv = lazy(() => import('../../../components/csv'));
+// const Csv = lazy(() => import('../../../components/csv'));
 const Payroll = lazy(() => import('../../../components/payroll'));
 const Sales = lazy(() => import('../../../components/sales'));
 const Courses = lazy(() => import('../../../components/courses'));
@@ -79,7 +74,7 @@ const SupplierAccount = lazy(() =>
   import('../../supplier-account-container/supplier-account')
 );
 const SupplierInvoice = lazy(() =>
-import('../../supplier-account-container/supplier-account/invoice')
+  import('../../supplier-account-container/supplier-account/invoice')
 );
 const TodayAppointment = lazy(() =>
   import('../../../components/appointments/today-appointments')

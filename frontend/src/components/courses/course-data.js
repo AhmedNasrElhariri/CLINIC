@@ -5,7 +5,7 @@ import CourseSession from '../appointments/appointment/courses/course-sessions';
 import CourseUnitsHistoryPage from '../appointments/appointment/courses/course-units-history';
 import * as moment from 'moment';
 import * as R from 'ramda';
-import { Div, CRButton, CRTabs } from 'components';
+import { Div, CRButton } from 'components';
 import { useCourses } from 'hooks';
 import {
   Data,
@@ -14,8 +14,12 @@ import {
 } from '../appointments/appointment/courses/style';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
+import { Nav } from 'rsuite';
+import { useCallback } from 'react';
+import { useState } from 'react';
 
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
+
 const CourseData = ({
   courseId,
   courses,
@@ -47,55 +51,48 @@ const CourseData = ({
       history.push(`/appointments/${appointment.id}`);
     }
   };
+  const [activeTab, setActiveTab] = useState(0);
+
+  const onSelect = useCallback(k => {
+    setActiveTab(k);
+  }, []);
 
   return (
     <>
       <Div border="1px solid #eef1f1" m="5px" p="5px">
-        {course.status !== 'Cancelled' && course.status !== 'Rejected' && (
+        <div className="flex flex-wrap gap-1 items-center m-2">
+          {course.status !== 'Cancelled' && course.status !== 'Rejected' && (
+            <CRButton variant="primary" onClick={() => onDeleteCourse(course)}>
+              {t('deleteThisCourse')}
+            </CRButton>
+          )}
+          <CRButton variant="primary" onClick={() => onEditDoctor(course)}>
+            {t('assignDoctor')}
+          </CRButton>
+          {course.price > course.paid && course.status === 'InProgress' && (
+            <CRButton variant="primary" onClick={() => onEditPaid(course)}>
+              {t('pay')}
+            </CRButton>
+          )}
+          {course.type === 'Perunit' && (
+            <CRButton variant="primary" onClick={() => onAddUnits(course)}>
+              {t('consumeUnits')}
+            </CRButton>
+          )}
+          {course.type === 'Perunit' && (
+            <CRButton variant="primary" onClick={() => onEditUnits(course)}>
+              {t('editUnits')}
+            </CRButton>
+          )}
           <CRButton
-            variant="primary"
-            mt={2}
-            mr={1}
-            onClick={() => onDeleteCourse(course)}
+            variant="danger"
+            onClick={() => {
+              onFinishCourse(course);
+            }}
           >
-            {t('deleteThisCourse')}
+            {t('finish')}
           </CRButton>
-        )}
-        <CRButton
-          variant="primary"
-          mt={2}
-          mr={1}
-          onClick={() => onEditDoctor(course)}
-        >
-          {t('assignDoctor')}
-        </CRButton>
-        {course.price > course.paid && course.status === 'InProgress' && (
-          <CRButton variant="primary" mr={1} onClick={() => onEditPaid(course)}>
-            {t('pay')}
-          </CRButton>
-        )}
-        {course.type === 'Perunit' && (
-          <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
-            {t('consumeUnits')}
-          </CRButton>
-        )}
-        {course.type === 'Perunit' && (
-          <CRButton
-            variant="primary"
-            mr={1}
-            onClick={() => onEditUnits(course)}
-          >
-            {t('editUnits')}
-          </CRButton>
-        )}
-        <CRButton
-          variant="danger"
-          onClick={() => {
-            onFinishCourse(course);
-          }}
-        >
-          {t('finish')}
-        </CRButton>
+        </div>
         <Data>
           <DataName>{t('name')} : </DataName>
           <DataValue>{course?.name}</DataValue>
@@ -160,37 +157,38 @@ const CourseData = ({
             ''
           )}
         </Data>
-        <Div mt={20}>
-          <CRTabs>
-            <CRTabs.CRTabsGroup>
-              <CRTabs.CRTab>{t('courseSession')}</CRTabs.CRTab>
-              <CRTabs.CRTab>{t('coursePaymentHistory')}</CRTabs.CRTab>
-              <CRTabs.CRTab>{t('courseUnitsHistory')}</CRTabs.CRTab>
-            </CRTabs.CRTabsGroup>
-            <CRTabs.CRContentGroup>
-              <CRTabs.CRContent>
-                <CourseSession
-                  sessions={updatedSessions}
-                  handleClick={handleClick}
-                />
-              </CRTabs.CRContent>
-              <CRTabs.CRContent>
-                <CoursePayment
-                  coursePayments={coursePayments}
-                  onEdit={onEditHistoryPayment}
-                  courseId={course.id}
-                />
-              </CRTabs.CRContent>
-              <CRTabs.CRContent>
-                <CourseUnitsHistoryPage
-                  courseUnitsHistory={courseUnitsHistory}
-                  onEdit={onEditUnitsHistory}
-                  courseId={course.id}
-                />
-              </CRTabs.CRContent>
-            </CRTabs.CRContentGroup>
-          </CRTabs>
-        </Div>
+
+        <Nav
+          onSelect={onSelect}
+          justified
+          activeKey={activeTab}
+          appearance="tabs"
+          className="my-5 text-center"
+        >
+          <Nav.Item eventKey={0}>{t('courseSession')}</Nav.Item>
+          <Nav.Item eventKey={1}>{t('coursePaymentHistory')}</Nav.Item>
+          <Nav.Item eventKey={2}>{t('courseUnitsHistory')}</Nav.Item>
+        </Nav>
+
+        {activeTab === 0 && (
+          <CourseSession sessions={updatedSessions} handleClick={handleClick} />
+        )}
+
+        {activeTab === 1 && (
+          <CoursePayment
+            coursePayments={coursePayments}
+            onEdit={onEditHistoryPayment}
+            courseId={course.id}
+          />
+        )}
+
+        {activeTab === 2 && (
+          <CourseUnitsHistoryPage
+            courseUnitsHistory={courseUnitsHistory}
+            onEdit={onEditUnitsHistory}
+            courseId={course.id}
+          />
+        )}
       </Div>
     </>
   );

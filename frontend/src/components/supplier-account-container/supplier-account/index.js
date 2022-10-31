@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSupplierAccounts, useModal } from 'hooks';
 import ListSupplierInvoices from './list-supplier-invoices';
 import InvoiceData from './invoice';
-import { CRButton, Div } from 'components';
+import { CRButton } from 'components';
 import NewInvoice from './new-invoice';
 import * as R from 'ramda';
 import Filter from './filter';
@@ -60,7 +60,7 @@ const SupplierAccount = () => {
     setHeader(t('addNewInvoice'));
     setFormValue(initValue);
     open();
-  }, [open, setFormValue, setType]);
+  }, [open, setFormValue, setType, t]);
   const handleClickEditPaid = useCallback(
     data => {
       const invoice = R.pick(['id'])(data);
@@ -69,7 +69,7 @@ const SupplierAccount = () => {
       setFormValue({ ...invoice, paid: 0 });
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleClickEditTransaction = useCallback(
     data => {
@@ -79,7 +79,7 @@ const SupplierAccount = () => {
       setFormValue({ ...invoice });
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleClickEditInvoice = useCallback(
     data => {
@@ -89,7 +89,7 @@ const SupplierAccount = () => {
       setFormValue({ id: id });
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
@@ -130,6 +130,7 @@ const SupplierAccount = () => {
     editInvoiceSupplier,
     formValue,
     type,
+    supplierId,
   ]);
   const allInvoices = useCallback(() => {
     setInvoice({});
@@ -151,12 +152,13 @@ const SupplierAccount = () => {
         />
       ) : (
         <>
-          <Div display="flex" justifyContent="space-between">
+          <div className="flex justify-between items-end flex-wrap gap-5 mb-5">
             <Filter formValue={filter} onChange={setFilter} t={t} />
-            <CRButton mb="10px" mt="40px" onClick={handleClickCreate}>
+            <CRButton onClick={handleClickCreate}>
               {t('addNewInvoice')}
             </CRButton>
-          </Div>
+          </div>
+
           <ListSupplierInvoices
             invoices={supplierInvoices}
             setInvoice={setInvoice}

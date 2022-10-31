@@ -1,6 +1,6 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as R from 'ramda';
-import { CRSelectInput, Div, CRButton } from 'components';
+import { CRSelectInput, CRButton } from 'components';
 import { usePatients, useCoursesDefinition, useCourses, useModal } from 'hooks';
 import useFrom from 'hooks/form';
 import ListCourses from './list-courses';
@@ -45,7 +45,7 @@ const Courses = () => {
   const [bank, setBank] = useState(null);
   const [visa, setVisa] = useState(false);
   const { t } = useTranslation();
-  const [sortType, setSortType] = React.useState();
+  const [sortType] = React.useState();
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const { formValue, setFormValue, type, setType } = useFrom({
@@ -113,7 +113,7 @@ const Courses = () => {
       setFormValue(course);
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleClickAddUnits = useCallback(
     data => {
@@ -123,7 +123,7 @@ const Courses = () => {
       setFormValue(course);
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleClickEditPaid = useCallback(
     data => {
@@ -133,7 +133,7 @@ const Courses = () => {
       setFormValue({ ...course, paid: 0, visaPaid: 0 });
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleClickEditDoctor = useCallback(
     data => {
@@ -143,7 +143,7 @@ const Courses = () => {
       setFormValue(course);
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleDeleteCourse = useCallback(
     data => {
@@ -153,7 +153,7 @@ const Courses = () => {
       setFormValue(course);
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleFinishCourse = useCallback(
     course => {
@@ -162,7 +162,7 @@ const Courses = () => {
       setFormValue(course);
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleClickEditHistoryPayment = useCallback(
     data => {
@@ -172,7 +172,7 @@ const Courses = () => {
       setFormValue(course);
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleClickEditUnitsHistory = useCallback(
     data => {
@@ -187,7 +187,7 @@ const Courses = () => {
       setFormValue(updatedUnitTransaction);
       open();
     },
-    [open, setFormValue, setType]
+    [open, setFormValue, setType, t]
   );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
@@ -296,45 +296,47 @@ const Courses = () => {
     finishCourse,
     editCoursePaymentHistory,
     bank,
+    deleteCourse,
+    editCourseUnitHistory,
+    editCourseUnits,
   ]);
   return (
     <>
-      <Div mb={50} display="flex" justifyContent="space-around">
+      <div className="flex flex-wrap items-end gap-4 mb-5">
         {!showCourseData && (
-          <Form formValue={filter} onChange={setFilter}>
-            <Div display="flex" justifyContent="space-between">
-              <CRSelectInput
-                label={t('course')}
-                data={coursesDefinitions}
-                name="courseId"
-                placement="auto"
-                style={{ width: '300px', margin: '0px 5px' }}
-              />
-              <CRSelectInput
-                label={t('courseStatus')}
-                data={courseStatus}
-                name="status"
-                placement="auto"
-                style={{ width: '300px', margin: '0px 5px' }}
-              />
-              <Div m="0px 5px">
-                <CRSelectInput
-                  label={t('patient')}
-                  onSearch={v => setPatientSearchValue(v)}
-                  placeholder={t('patient')}
-                  data={searchedPatients}
-                  onChange={val => setFilter({ ...filter, patientId: val })}
-                  value={filter.patientId}
-                  virtualized={false}
-                  style={{ width: '300px' }}
-                />
-              </Div>
-            </Div>
+          <Form
+            formValue={filter}
+            onChange={setFilter}
+            className="flex flex-wrap gap-3"
+          >
+            <CRSelectInput
+              label={t('course')}
+              data={coursesDefinitions}
+              name="courseId"
+              placement="auto"
+              style={{ width: 256 }}
+            />
+            <CRSelectInput
+              label={t('courseStatus')}
+              data={courseStatus}
+              name="status"
+              placement="auto"
+              style={{ width: 256 }}
+            />
+            <CRSelectInput
+              label={t('patient')}
+              onSearch={v => setPatientSearchValue(v)}
+              placeholder={t('patient')}
+              data={searchedPatients}
+              onChange={val => setFilter({ ...filter, patientId: val })}
+              value={filter.patientId}
+              virtualized={false}
+              style={{ width: 256 }}
+            />
           </Form>
         )}
 
         <CRButton
-          mt={42}
           onClick={() => {
             setShowCourseData(false);
             setFilter(initFilter);
@@ -342,7 +344,7 @@ const Courses = () => {
         >
           {t('allCourses')}
         </CRButton>
-      </Div>
+      </div>
       <NewCourse
         visible={visible}
         formValue={formValue}

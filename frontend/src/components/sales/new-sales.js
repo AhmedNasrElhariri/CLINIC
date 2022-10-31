@@ -34,7 +34,7 @@ function NewSales({
   const { t } = useTranslation();
   const header = useMemo(
     () => (type === 'create' ? t('addNewSales') : t('editSales')),
-    [type]
+    [type, t]
   );
   const ref = useRef();
   const { salesesDefinition } = useSalesDefinition({});
@@ -44,7 +44,7 @@ function NewSales({
       ...byIds[itemId],
       quantity,
     }));
-  }, [selectedItems]);
+  }, [selectedItems, salesesDefinition]);
   const total = useMemo(
     () =>
       itemsList.reduce((acc, { price, quantity }) => acc + price * quantity, 0),
@@ -77,33 +77,29 @@ function NewSales({
                 action={ACTIONS.Create_Sales}
               />
             )}
-
-            <Div display="flex" justifyContent="space-between" mt={3}>
-              <Div>
-                <CRDocSelectInput
-                  formValue={formValue}
-                  branchId={formValue?.branchId}
-                  specialtyId={formValue?.specialtyId}
-                  userId={formValue?.userId}
-                  onChange={val => onChange({ ...formValue, itemId: val?.id })}
-                  label={t('item')}
-                  data={salesesDefinition}
-                  placement="auto"
-                  style={{ width: '240px' }}
-                  block
-                />
-              </Div>
-              <Div display="flex">
-                <CRNumberInput
-                  name="quantity"
-                  label={t('quantity')}
-                  value={formValue.quantity}
-                />
-              </Div>
+            <div className="flex flex-wrap items-end gap-4">
+              <CRDocSelectInput
+                formValue={formValue}
+                branchId={formValue?.branchId}
+                specialtyId={formValue?.specialtyId}
+                userId={formValue?.userId}
+                onChange={val => onChange({ ...formValue, itemId: val?.id })}
+                label={t('item')}
+                data={salesesDefinition}
+                placement="auto"
+                style={{ width: 256 }}
+                block
+              />
+              <CRNumberInput
+                name="quantity"
+                label={t('quantity')}
+                value={formValue.quantity}
+                className="max-w-[64px]"
+              />
               <CRButton variant="primary" onClick={handleAdd}>
                 {t('add')}
               </CRButton>
-            </Div>
+            </div>
             <ListInvoiceItems items={itemsList} onDelete={handleDelete} />
             <Div style={{ overflow: 'hidden', height: '0px' }}>
               <Div ref={ref}>

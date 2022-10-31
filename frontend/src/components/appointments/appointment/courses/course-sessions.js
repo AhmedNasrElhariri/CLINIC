@@ -1,56 +1,42 @@
 import React from 'react';
-import { CRCard, CRTable } from 'components';
+import { CRCard } from 'components';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
+import { Table } from 'rsuite';
 
 const CoursePayment = ({ sessions, handleClick }) => {
   const { t } = useTranslation();
   return (
     <CRCard borderless>
-      <CRTable
+      <Table
+        wordWrap
         autoHeight
         data={sessions}
         onRowClick={appointment => {
           handleClick(appointment);
         }}
       >
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('number')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({}, indx) => (
-              <CRTable.CRCellStyled bold>{indx + 1}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ date }) => (
-              <CRTable.CRCellStyled bold>
-                {formatDate(date, 'dddd, DD-MM-YYYY')}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('time')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ date }) => (
-              <CRTable.CRCellStyled bold>
-                {formatDate(date, 'hh : mm a')}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('status')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ status }) => (
-              <CRTable.CRCellStyled bold>{status}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-      </CRTable>
+        <Table.Column flexGrow={1}>
+          <Table.HeaderCell>{t('number')}</Table.HeaderCell>
+          <Table.Cell>
+            {(_, indx) => <Table.CellStyled bold>{indx + 1}</Table.CellStyled>}
+          </Table.Cell>
+        </Table.Column>
+        <Table.Column flexGrow={1}>
+          <Table.HeaderCell>{t('date')}</Table.HeaderCell>
+          <Table.Cell>
+            {({ date }) => formatDate(date, 'dddd, DD-MM-YYYY')}
+          </Table.Cell>
+        </Table.Column>
+        <Table.Column flexGrow={1}>
+          <Table.HeaderCell>{t('time')}</Table.HeaderCell>
+          <Table.Cell>{({ date }) => formatDate(date, 'hh : mm a')}</Table.Cell>
+        </Table.Column>
+        <Table.Column flexGrow={1}>
+          <Table.HeaderCell>{t('status')}</Table.HeaderCell>
+          <Table.Cell>{({ status }) => status}</Table.Cell>
+        </Table.Column>
+      </Table>
     </CRCard>
   );
 };
