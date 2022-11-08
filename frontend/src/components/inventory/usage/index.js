@@ -1,17 +1,22 @@
 import React, { useCallback, useMemo } from 'react';
 import * as R from 'ramda';
-import { Form } from 'rsuite';
+import { Form, InputNumber } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
 import { CRNumberInput } from 'components';
 import ListInvoiceItems from './list-invoice-items';
 import { useInventory } from 'hooks';
-import { CRButton, CRBrancheTree, CRDocSelectInput } from 'components/widgets';
+import {
+  CRButton,
+  CRBrancheTree,
+  CRDocSelectInput,
+  CRLabel,
+} from 'components/widgets';
 import { normalize } from 'utils/misc';
 import { useTranslation } from 'react-i18next';
 
 const initValue = {
   itemId: null,
-  quantity: 1,
+  quantity: 0,
   branchId: null,
   specialtyId: null,
   userId: null,
@@ -37,7 +42,7 @@ function InventoryUsage({
 
   const handleAdd = useCallback(() => {
     const itemId = formValue?.itemId.id;
-    const quantity = formValue?.quantity;
+    const quantity = parseFloat(formValue?.quantity);
     const newItems = [...selectedItems, { itemId: itemId, quantity: quantity }];
     setSelectedItems(newItems);
     setFormValue(initValue);
@@ -74,7 +79,14 @@ function InventoryUsage({
         block
       ></CRDocSelectInput>
       <div className="flex items-end gap-3 mb-5">
-        <CRNumberInput name="quantity" label={t('quantity')} />
+        {/* <CRNumberInput name="quantity" label={t('quantity')} /> */}
+        <CRLabel>{t('quantity')}</CRLabel>
+        <InputNumber
+          value={formValue.quantity}
+          onChange={val => {
+            setFormValue({ ...formValue, quantity: val });
+          }}
+        />
         <CRButton variant="primary" onClick={handleAdd}>
           {t('add')}
         </CRButton>

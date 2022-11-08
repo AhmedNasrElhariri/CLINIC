@@ -48,6 +48,8 @@ export const LIST_SESSIONS_DEFINITION = gql`
       name
       price
       duration
+      followUp
+      timer
     }
   }
 `;
@@ -76,6 +78,8 @@ export const ADD_SESSION_DEFINITION = gql`
       name
       price
       duration
+      followUp
+      timer
     }
   }
 `;
@@ -87,6 +91,8 @@ export const EDIT_SESSION_DEFINITION = gql`
       name
       price
       duration
+      followUp
+      timer
     }
   }
 `;

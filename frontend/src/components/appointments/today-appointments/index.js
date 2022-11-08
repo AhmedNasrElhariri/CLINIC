@@ -139,6 +139,14 @@ function TodayAppointments() {
     },
     [open]
   );
+  const onFollowUpAppointments = useCallback(
+    appointment => {
+      setPopUp('followUpAppointment');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
   const handleArchive = useCallback(
     ({
       sessions,
@@ -272,6 +280,7 @@ function TodayAppointments() {
               onDuplicateAppointments={onDuplicateAppointments}
               onEditAppointments={onEditAppointments}
               onCancelAppointments={onCancelAppointments}
+              onFollowUpAppointments={onFollowUpAppointments}
               defaultExpanded={true}
               close={close}
             />
@@ -363,6 +372,14 @@ function TodayAppointments() {
           onCancel={close}
           appointment={appointment}
           t={t}
+        />
+      )}
+      {popUp === 'followUpAppointment' && (
+        <NewAppointment
+          show={visible}
+          onHide={close}
+          appointment={appointment}
+          followUp={true}
         />
       )}
     </>

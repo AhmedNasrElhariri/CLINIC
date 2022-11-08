@@ -1,5 +1,9 @@
 import { prisma } from '@';
-const editCourseUnits = async (_, { courseId, consumed, type }, { userId }) => {
+const editCourseUnits = async (
+  _,
+  { courseId, consumed, type, notes },
+  { userId }
+) => {
   const data = await prisma.course.findUnique({
     where: {
       id: courseId,
@@ -28,6 +32,7 @@ const editCourseUnits = async (_, { courseId, consumed, type }, { userId }) => {
           },
         },
         units: consumed,
+        notes: notes,
         date: new Date(),
       },
     });

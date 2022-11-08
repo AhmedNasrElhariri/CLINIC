@@ -622,11 +622,17 @@ type Mutation {
     bank: ID
     paymentId: ID!
   ): Course!
-  editCourseUnits(courseId: ID!, consumed: Int!, type: String!): Course!
+  editCourseUnits(
+    courseId: ID!
+    consumed: Int!
+    type: String!
+    notes: String
+  ): Course!
   editCourseUnitHistory(
     transactionId: ID
     consumed: Int
     courseId: ID
+    notes: String
   ): CourseUnitsHistory!
   editCourseDoctor(courseId: ID!, doctorId: ID!): Course!
   finishCourse(courseId: ID!): Course!
@@ -1632,7 +1638,7 @@ type InventoryItem {
   itemId: ID!
   userId: ID!
   price: Int!
-  quantity: Int!
+  quantity: Float!
   branch: Branch
   specialty: Specialty
   doctor: User
@@ -1670,7 +1676,7 @@ input AddToInventoryInput {
 
 input FinishAppointmentItemInput {
   itemId: String!
-  quantity: Int!
+  quantity: Float!
 }
 input InventoryConsumedItemInput {
   items: [FinishAppointmentItemInput!]
@@ -1771,6 +1777,8 @@ type SessionDefinition {
   name: String!
   price: Float!
   duration: Int!
+  followUp: Boolean
+  timer: Date
 }
 
 input SessionInputDefinition {
@@ -1778,6 +1786,8 @@ input SessionInputDefinition {
   name: String!
   price: Float!
   duration: Int!
+  followUp: Boolean
+  timer: Int
 }
 
 type SessionTransaction {
@@ -2188,6 +2198,7 @@ type CoursePayment {
 type CourseUnitsHistory {
   id: ID!
   units: Int!
+  notes: String
   date: Date!
   user: User
   doctor: User

@@ -13,7 +13,7 @@ const model = Schema.Model({
 });
 const initInventoryValue = {
   itemId: null,
-  quantity: 1,
+  quantity: 0,
   branchId: null,
   specialtyId: null,
   userId: null,
@@ -31,6 +31,7 @@ const InventoryManual = () => {
     open();
   }, [open]);
   const handleInventoryChange = useCallback(() => {}, []);
+  console.log(selectedItems,'SELECTED');
   return (
     <>
       <Div display="flex" justifyContent="right" mt={10}>

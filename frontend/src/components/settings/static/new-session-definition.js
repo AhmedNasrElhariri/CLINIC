@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Form, InputNumber } from 'rsuite';
-import { CRModal, CRNumberInput, CRTextInput, CRLabel } from 'components';
+import { Form, InputNumber, Toggle } from 'rsuite';
+import { CRModal, CRNumberInput, CRTextInput, CRLabel, Div } from 'components';
 import { useTranslation } from 'react-i18next';
 
 function NewSessionDefinition({
@@ -63,23 +63,24 @@ function NewSessionDefinition({
           }
           // placeholder="Type Price"
         />
-        {/* <CRNumberInput
-          label="Price"
-          name="price"
-          errorMessage={
-            show && checkResult['price'].hasError
-              ? checkResult['price'].errorMessage
-              : ''
-          }
-          placeholder="Type Price"
-          block
-        /> */}
         <CRNumberInput
           label={t('duration')}
           name="duration"
           // placeholder="Type Duration"
           block
         />
+        <Div mt="20px">
+          <label>Follow Up or not: </label>
+          <Toggle onChange={val => onChange({ ...formValue, followUp: val })} />
+        </Div>
+        {formValue.followUp && (
+          <CRNumberInput
+            label="Timer"
+            name="timer"
+            placeholder="Type Timer"
+            block
+          />
+        )}
       </Form>
     </CRModal>
   );

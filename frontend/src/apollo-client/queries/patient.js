@@ -43,7 +43,15 @@ export const LIST_PATIENTS = gql`
         name
         phoneNo
         phoneNoTwo
+        sex
+        age
+        reference
+        maritalStatus
+        patientLevel
+        email
+        area
         code
+        date
       }
       patientsCount
     }

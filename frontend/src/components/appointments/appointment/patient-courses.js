@@ -26,6 +26,7 @@ const initValue = {
   userId: null,
   courseType: 'standard',
   customUnits: 0,
+  notes: '',
 };
 
 const CourseButton = styled.button`
@@ -169,10 +170,14 @@ const Course = ({ patientId }) => {
   );
   const handleClickEditUnitsHistory = useCallback(
     data => {
-      const unitTransaction = R.pick(['id', 'units', 'transactionId'])(data);
+      console.log(data,'DDD');
+      const unitTransaction = R.pick(['id', 'units', 'transactionId', 'notes'])(
+        data
+      );
       const updatedUnitTransaction = {
         id: unitTransaction.id,
         consumed: unitTransaction.units,
+        notes: unitTransaction.notes,
         transactionId: unitTransaction.transactionId,
       };
       setType('editUnitsTransactions');
@@ -250,6 +255,7 @@ const Course = ({ patientId }) => {
         variables: {
           courseId: formValue.id,
           consumed: formValue.consumed,
+          notes: formValue.notes,
           type: 'addNewUnits',
         },
       });
@@ -267,6 +273,7 @@ const Course = ({ patientId }) => {
           transactionId: formValue.transactionId,
           consumed: formValue.consumed,
           courseId: formValue.id,
+          notes: formValue.notes,
         },
       });
     } else if (type === 'deleteCourse') {
@@ -316,6 +323,7 @@ const Course = ({ patientId }) => {
     editCourseUnitHistory,
     bank,
   ]);
+  console.log(formValue,'FFO');
   const InprogressCourses = useMemo(
     () => patientCourses.filter(c => c.status === 'InProgress'),
     [patientCourses]

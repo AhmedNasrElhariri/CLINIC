@@ -83,7 +83,7 @@ const archiveAppointment = async (
       )
     );
 
-    if (others.amount > 0) {
+    if (others.amount > 0 || others.name) {
       await prisma.revenue.create({
         data: Object.assign(
           {

@@ -1,7 +1,17 @@
 import React from 'react';
 import { Form, SelectPicker, Schema } from 'rsuite';
 
-import { CRSelectInput, CRTextInput, CRNumberInput, ShowIf } from 'components';
+import {
+  CRSelectInput,
+  CRTextInput,
+  CRNumberInput,
+  CRDatePicker,
+  ShowIf,
+  CRCheckBoxGroup,
+  Div,
+  CRLabel,
+  CRRadio,
+} from 'components';
 
 const membershipTypes = [
   { name: 'Primary', id: 'Primary' },
@@ -12,6 +22,26 @@ const SEX = ['Male', 'Female'].map(s => ({
   name: s,
   id: s,
 }));
+const options = [
+  { name: 'FaceBook', value: 'facebook' },
+  { name: 'Instagram', value: 'instagram' },
+  { name: 'Twitter', value: 'twitter' },
+  { name: 'Internet', value: 'Internet' },
+  { name: 'BillBoard', value: 'billboard' },
+  { name: 'Another Doctor', value: 'another doctor' },
+  { name: 'Others', value: 'others' },
+  { name: 'Friends', value: 'friends' },
+];
+
+const patientLevel = [
+  { name: 'VIP', value: 'VIP' },
+  { name: 'Normal', value: 'Normal' },
+];
+
+const maritalStatus = [
+  { name: 'Married', value: 'Married' },
+  { name: 'Single', value: 'Single' },
+];
 
 const { StringType, NumberType } = Schema.Types;
 
@@ -30,7 +60,7 @@ const model = Schema.Model({
 const isPrimary = ({ type }) => type === membershipTypes[0].id;
 const isSecondary = ({ type }) => type === membershipTypes[1].id;
 
-const NewPatient = ({ formValue, onChange, t }) => {
+const NewPatient = ({ formValue, onChange, t,newAreas }) => {
   return (
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput
@@ -60,6 +90,31 @@ const NewPatient = ({ formValue, onChange, t }) => {
         searchable={false}
         data={SEX}
         block
+      />
+      <CRTextInput label={t('email')} name="email" />
+      <CRSelectInput
+        label={t('maritalStatus')}
+        name="maritalStatus"
+        valueKey="value"
+        searchable={false}
+        data={maritalStatus}
+        block
+      />
+      <CRSelectInput
+        label={t('patientLevel')}
+        name="patientLevel"
+        valueKey="value"
+        searchable={false}
+        data={patientLevel}
+        block
+      />
+      <CRSelectInput label={t('area')} name="area" data={newAreas} block />
+      <CRCheckBoxGroup
+        label={t('reference')}
+        options={options}
+        value={formValue.reference}
+        onChange={val => onChange({ ...formValue, reference: val })}
+        inline
       />
     </Form>
   );

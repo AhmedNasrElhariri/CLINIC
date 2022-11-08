@@ -150,6 +150,7 @@ export const LIST_COURSE_UNITS_HISTORY = gql`
       id
       units
       date
+      notes
       doctor {
         id
         name
@@ -253,8 +254,18 @@ export const EDIT_COURSE_PAYMENT_HISTORY = gql`
 `;
 
 export const EDIT_COURSE_UNITS = gql`
-  mutation editCourseUnits($courseId: ID!, $consumed: Int!, $type: String!) {
-    editCourseUnits(courseId: $courseId, consumed: $consumed, type: $type) {
+  mutation editCourseUnits(
+    $courseId: ID!
+    $consumed: Int!
+    $type: String!
+    $notes: String
+  ) {
+    editCourseUnits(
+      courseId: $courseId
+      consumed: $consumed
+      type: $type
+      notes: $notes
+    ) {
       id
       price
       discount
@@ -275,11 +286,13 @@ export const EDIT_COURSE_UNIT_HISTORY = gql`
     $transactionId: ID
     $consumed: Int
     $courseId: ID
+    $notes: String
   ) {
     editCourseUnitHistory(
       transactionId: $transactionId
       consumed: $consumed
       courseId: $courseId
+      notes: $notes
     ) {
       id
       units

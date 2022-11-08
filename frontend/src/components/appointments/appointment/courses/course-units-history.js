@@ -43,6 +43,14 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>{t('notes')}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ notes }) => (
+              <CRTable.CRCellStyled bold>{notes}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
         <CRTable.CRColumn>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -55,6 +63,7 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
                       id: courseId,
                       units: data.units,
                       transactionId: data.id,
+                      notes: data.notes,
                     };
                     onEdit(newData);
                   }}

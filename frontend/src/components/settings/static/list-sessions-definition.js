@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 function ListSessions({ sessions, onEdit }) {
   const { t } = useTranslation();
+  console.log(sessions);
   return (
     <>
       <CRCard borderless>
@@ -30,6 +31,22 @@ function ListSessions({ sessions, onEdit }) {
             <CRTable.CRCell>
               {({ duration }) => (
                 <CRTable.CRCellStyled bold>{duration}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('followUp')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ followUp }) => (
+                <CRTable.CRCellStyled bold>{followUp? 'Yes' :'No'}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('timer')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ timer }) => (
+                <CRTable.CRCellStyled bold>{timer}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

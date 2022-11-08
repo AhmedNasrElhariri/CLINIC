@@ -482,6 +482,7 @@ const init = app => {
       specialtyId,
       branchId,
       revenueName,
+      bankId,
       organizationId,
     } = req.query;
     try {
@@ -507,6 +508,9 @@ const init = app => {
             },
             {
               doctorId: doctorId,
+            },
+            {
+              bankId: bankId,
             },
           ],
           date: {
@@ -570,6 +574,9 @@ const init = app => {
             },
             {
               doctorId: expenseDoctorId,
+            },
+            {
+              bankId: bankId,
             },
           ],
           date: {
