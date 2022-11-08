@@ -1,30 +1,25 @@
-import React, { useState } from 'react';
-import { Route, Redirect, useHistory } from 'react-router-dom';
-import * as R from 'ramda';
-import Fab from 'components/appointments/new-appointment/fab';
-import UserAllowedViewsContext from '../../../services/allowed-views-context';
-import useGlobalState from 'state';
-import { AppRouter, Login, NewPatient } from 'components';
-import { UserIcon } from 'components/icons';
-import {
-  ContainerStyled,
-  MainStyled,
-  ContentStyled,
-  LoginContainerStyled,
-} from './style';
-import Sidebar from 'components/layout/sidebar';
-import Navbar from 'components/layout/navbar';
-import NewAppointment from 'components/appointments/new-appointment';
-import useUserProfile from './fetch-user';
-import { Can } from 'components/user/can';
-import { useModal } from 'hooks';
-import { useTranslation } from 'react-i18next';
-import '../../../translations/i18n';
-import { Drawer } from 'rsuite';
+import React, { useState } from "react";
+import { Route, Redirect, useHistory } from "react-router-dom";
+import * as R from "ramda";
+import Fab from "components/appointments/new-appointment/fab";
+import UserAllowedViewsContext from "../../../services/allowed-views-context";
+import useGlobalState from "state";
+import { AppRouter, Login, NewPatient } from "components";
+import { UserIcon } from "components/icons";
+import { MainStyled, ContentStyled, LoginContainerStyled } from "./style";
+import Sidebar from "components/layout/sidebar";
+import Navbar from "components/layout/navbar";
+import NewAppointment from "components/appointments/new-appointment";
+import useUserProfile from "./fetch-user";
+import { Can } from "components/user/can";
+import { useModal } from "hooks";
+import { useTranslation } from "react-i18next";
+import "../../../translations/i18n";
+import { Drawer } from "rsuite";
 
 const initialvalues = {
   branchId: null,
-  dir: 'rtl',
+  dir: "rtl",
 };
 
 function Root() {
@@ -45,21 +40,21 @@ function Root() {
     user: User,
   } = useUserProfile();
 
-  const [user] = useGlobalState('user');
-  const allowedViews = R.propOr([], 'allowedViews')(user);
-  const appointmentsName = t('appointments'),
-    todayAppointmentsName = t('todayAppointments'),
-    salesName = t('sales'),
-    reportsName = t('reports'),
-    patientsName = t('patients'),
-    surgeriesName = t('surgeries'),
-    reportPrintoutName = t('reportsPrintout'),
-    coursesName = t('courses'),
-    inventory = t('inventory'),
-    supplierAccount = t('supplierAccount');
+  const [user] = useGlobalState("user");
+  const allowedViews = R.propOr([], "allowedViews")(user);
+  const appointmentsName = t("appointments"),
+    todayAppointmentsName = t("todayAppointments"),
+    salesName = t("sales"),
+    reportsName = t("reports"),
+    patientsName = t("patients"),
+    surgeriesName = t("surgeries"),
+    reportPrintoutName = t("reportsPrintout"),
+    coursesName = t("courses"),
+    inventory = t("inventory"),
+    supplierAccount = t("supplierAccount");
   const items = [
     {
-      to: '/appointments/today',
+      to: "/appointments/today",
       name: todayAppointmentsName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
@@ -69,7 +64,7 @@ function Root() {
     //   icon: <CalendarIcon width={11.8} height={14.1} />,
     // },
     {
-      to: '/appointments',
+      to: "/appointments",
       name: appointmentsName,
       extra: (
         <Can I="Create" an="Appointment">
@@ -79,7 +74,7 @@ function Root() {
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
-      to: '/patients',
+      to: "/patients",
       name: patientsName,
       extra: (
         <Can I="Create" an="Patient">
@@ -90,38 +85,38 @@ function Root() {
     },
 
     {
-      to: '/reports',
+      to: "/reports",
       name: reportsName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
 
     {
-      to: '/surgeries',
+      to: "/surgeries",
       name: surgeriesName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
-      to: '/report-printouts',
+      to: "/report-printouts",
       name: reportPrintoutName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
-      to: '/courses',
+      to: "/courses",
       name: coursesName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
-      to: '/supplier-account',
+      to: "/supplier-account",
       name: supplierAccount,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
-      to: '/sales',
+      to: "/sales",
       name: salesName,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
     {
-      to: '/inventory',
+      to: "/inventory",
       name: inventory,
       icon: <UserIcon width={11.8} height={14.1} />,
     },
@@ -133,13 +128,13 @@ function Root() {
   ];
 
   if (!isVerified) {
-    return <div>{t('loading')}</div>;
+    return <div>{t("loading")}</div>;
   }
 
   return (
-    <div dir={formValue.dir}>
+    <div>
       <UserAllowedViewsContext.Provider value={allowedViews}>
-        <ContainerStyled>
+        <div className="flex">
           {isAuthenticated ? (
             <>
               <div className="tw-hidden lg:block">
@@ -147,15 +142,15 @@ function Root() {
               </div>
               <Drawer
                 show={formValue.isDrawerOpen}
-                placement={formValue.dir === 'rtl' ? 'right' : 'left'}
+                placement={formValue.dir === "rtl" ? "right" : "left"}
                 className="!w-64"
                 onHide={() =>
-                  setFormValue(prev => ({ ...prev, isDrawerOpen: false }))
+                  setFormValue((prev) => ({ ...prev, isDrawerOpen: false }))
                 }
               >
                 <div
                   onClick={() =>
-                    setFormValue(prev => ({ ...prev, isDrawerOpen: false }))
+                    setFormValue((prev) => ({ ...prev, isDrawerOpen: false }))
                   }
                 >
                   <Sidebar items={items} />
@@ -164,8 +159,8 @@ function Root() {
               <MainStyled className="overflow-hidden">
                 <Navbar
                   onLogout={logout}
-                  onClickAvatar={() => history.push('/me')}
-                  avatar={R.prop('avatar')(User)}
+                  onClickAvatar={() => history.push("/me")}
+                  avatar={R.prop("avatar")(User)}
                   notifications={notifications}
                   onClear={clearNotifications}
                   formValue={formValue}
@@ -195,7 +190,7 @@ function Root() {
               <Redirect to="/login"></Redirect>
             </>
           )}
-        </ContainerStyled>
+        </div>
       </UserAllowedViewsContext.Provider>
     </div>
   );

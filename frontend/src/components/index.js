@@ -30,7 +30,7 @@ export { default as ShowIf } from './functional/show-if';
 
 /******************       users    *********************************/
 export { default as Profile } from './user/profile';
-export { default as Login } from './user/login';
+export { default as Login } from '../features/auth/LoginView';
 export { default as Logout } from './user/logout';
 
 /******************       Patient    *********************************/
