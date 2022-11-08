@@ -301,7 +301,7 @@ const NewAppointment = ({
   show: showModel,
   onHide,
   appointment,
-  followUp = false,
+  followUp,
 }) => {
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
@@ -355,10 +355,10 @@ const NewAppointment = ({
       return {
         name: s.name,
         id: s,
-        timer: timer,
       };
     });
-  }, [sessionsDefinition, followUp]);
+  }, [sessionsDefinition]);
+  console.log(updatedSessionsDefinition, 'updatedSessionsDefinition');
   useEffect(() => {
     if (appointment && appointment?.branch?.id != null) {
       setFormValue({
@@ -371,11 +371,15 @@ const NewAppointment = ({
       });
     }
   }, [appointment]);
-  // useEffect(() => {
-  //    if(followUp){
-  //      setFormValue({...formValue,session:updatedSessionsDefinition[0]})
-  //    }
-  // },[followUp])
+  useEffect(() => {
+    if (followUp && updatedSessionsDefinition.length > 0) {
+      setFormValue({
+        ...formValue,
+        session: updatedSessionsDefinition[0].id,
+        date: updatedSessionsDefinition[0].id.timer,
+      });
+    }
+  }, [ followUp]);
   const handleCreate = useCallback(() => {
     setShow(true);
     if (!validate) {
@@ -424,6 +428,7 @@ const NewAppointment = ({
       sendSMS,
     });
   }, [createAppointment, formValue]);
+  console.log(formValue, 'ff', followUp);
   return (
     <>
       <NewPatient

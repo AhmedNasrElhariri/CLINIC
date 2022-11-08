@@ -19,7 +19,7 @@ import {
   CANCEL_APPOINTMENT,
   GET_INVOICE_COUNTER,
   DELETE_APPOINTMENT_PHOTO,
-  GET_APPOINTMENT_HISTORY
+  GET_APPOINTMENT_HISTORY,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
@@ -46,6 +46,9 @@ function useAppointments({
   action,
   patientId,
   onDeletePhoto,
+  setFollowUp,
+  setPopUp,
+  open,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -62,7 +65,10 @@ function useAppointments({
   });
 
   const appointmentsdata = data?.appointments;
-  const appointmentsCountNumber = R.propOr([], 'appointmentsCount')(appointmentsdata);
+  const appointmentsCountNumber = R.propOr(
+    [],
+    'appointmentsCount'
+  )(appointmentsdata);
   const appointments = useMemo(
     () =>
       R.pipe(
@@ -119,6 +125,9 @@ function useAppointments({
     {
       onCompleted: () => {
         Alert.success('Appointment has been Archived successfully');
+        setFollowUp(true);
+        setPopUp('followUpAppointment');
+        open();
       },
       refetchQueries: [
         {
