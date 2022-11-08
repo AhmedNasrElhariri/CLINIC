@@ -1,7 +1,7 @@
 import React from 'react';
-import { CRCard, CRTable } from 'components';
+import { CRCard } from 'components';
 import { formatDate } from 'utils/date';
-import { Icon } from 'rsuite';
+import { Icon, Table } from 'rsuite';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
@@ -20,75 +20,58 @@ const CoursePayment = ({ coursePayments, onEdit, courseId }) => {
   const { t } = useTranslation();
   return (
     <CRCard borderless>
-      <CRTable autoHeight data={coursePayments}>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('number')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({}, indx) => (
-              <CRTable.CRCellStyled bold>{indx + 1}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ date }) => (
-              <CRTable.CRCellStyled bold>
-                {formatDate(date, 'dddd, DD-MM-YYYY')}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('creator')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ user }) => (
-              <CRTable.CRCellStyled bold>{user.name}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ type }) => (
-              <CRTable.CRCellStyled bold>{type}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('payment')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ payment }) => (
-              <CRTable.CRCellStyled bold>{payment}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn>
-          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {data => (
-              <CRTable.CRCellStyled bold>
-                {toDay(data.date) && data?.type === 'Payment' && (
-                  <Icon
-                    icon="edit"
-                    onClick={() => {
-                      const newData = {
-                        id: courseId,
-                        paid: data.payment,
-                        paymentId: data.id,
-                      };
-                      onEdit(newData);
-                    }}
-                  >
-                    {' '}
-                    {t('edit')}
-                  </Icon>
-                )}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-      </CRTable>
+      <Table
+        autoHeight
+        data={coursePayments}
+        wordWrap
+        rowClassName="text-sm text-gray-600"
+      >
+        <Table.Column flexGrow={1} minWidth={64}>
+          <Table.HeaderCell>{t('number')}</Table.HeaderCell>
+          <Table.Cell>{(_, indx) => indx + 1}</Table.Cell>
+        </Table.Column>
+        <Table.Column flexGrow={1} minWidth={192}>
+          <Table.HeaderCell>{t('date')}</Table.HeaderCell>
+          <Table.Cell>
+            {({ date }) => formatDate(date, 'dddd, DD-MM-YYYY')}
+          </Table.Cell>
+        </Table.Column>
+        <Table.Column flexGrow={1} minWidth={128}>
+          <Table.HeaderCell>{t('creator')}</Table.HeaderCell>
+          <Table.Cell>{({ user }) => user.name}</Table.Cell>
+        </Table.Column>
+        <Table.Column flexGrow={1} minWidth={92}>
+          <Table.HeaderCell>{t('type')}</Table.HeaderCell>
+          <Table.Cell>{({ type }) => type}</Table.Cell>
+        </Table.Column>
+        <Table.Column flexGrow={1} minWidth={92}>
+          <Table.HeaderCell>{t('payment')}</Table.HeaderCell>
+          <Table.Cell>{({ payment }) => payment}</Table.Cell>
+        </Table.Column>
+        <Table.Column>
+          <Table.HeaderCell></Table.HeaderCell>
+          <Table.Cell>
+            {data =>
+              toDay(data.date) &&
+              data?.type === 'Payment' && (
+                <Icon
+                  icon="edit"
+                  onClick={() => {
+                    const newData = {
+                      id: courseId,
+                      paid: data.payment,
+                      paymentId: data.id,
+                    };
+                    onEdit(newData);
+                  }}
+                >
+                  {t('edit')}
+                </Icon>
+              )
+            }
+          </Table.Cell>
+        </Table.Column>
+      </Table>
     </CRCard>
   );
 };
