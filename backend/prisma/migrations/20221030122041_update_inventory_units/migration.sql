@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "InventoryHistory" ALTER COLUMN "quantity" SET DATA TYPE DOUBLE PRECISION;
+
+-- AlterTable
+ALTER TABLE "InventoryItem" ALTER COLUMN "quantity" SET DATA TYPE DOUBLE PRECISION;

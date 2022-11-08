@@ -33,6 +33,7 @@ const calcDate = ({ date, time }) =>
     .toDate();
 function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
+  const [followUp, setFollowUp] = useState(false);
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
   const { visible, close, open } = useModal({});
@@ -51,8 +52,11 @@ function TodayAppointments() {
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
     onAdjust: () => {},
+    setFollowUp,
+    setPopUp,
+    open,
   });
-
+   console.log(followUp,popUp,'FFpopUp');
   const filteredAppointments = useMemo(
     () => filterTodayAppointments(appointments, formValue),
     [appointments, formValue]
@@ -139,6 +143,16 @@ function TodayAppointments() {
     },
     [open]
   );
+  const onFollowUpAppointments = useCallback(
+    appointment => {
+      setFollowUp(true);
+      setPopUp('followUpAppointment');
+      setAppointment(appointment);
+      open();
+    },
+    [open]
+  );
+  console.log(popUp, appointment, 'POPAPP');
   const handleArchive = useCallback(
     ({
       sessions,
@@ -272,6 +286,7 @@ function TodayAppointments() {
               onDuplicateAppointments={onDuplicateAppointments}
               onEditAppointments={onEditAppointments}
               onCancelAppointments={onCancelAppointments}
+              onFollowUpAppointments={onFollowUpAppointments}
               defaultExpanded={true}
               close={close}
             />
@@ -363,6 +378,14 @@ function TodayAppointments() {
           onCancel={close}
           appointment={appointment}
           t={t}
+        />
+      )}
+      {popUp === 'followUpAppointment' && (
+        <NewAppointment
+          show={visible}
+          onHide={close}
+          appointment={appointment}
+          followUp={followUp}
         />
       )}
     </>

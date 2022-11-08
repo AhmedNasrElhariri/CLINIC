@@ -28,6 +28,7 @@ const initValue = {
   specialtyId: null,
   userId: null,
   bankCreate: null,
+  notes: '',
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -176,11 +177,14 @@ const Courses = () => {
   );
   const handleClickEditUnitsHistory = useCallback(
     data => {
-      const unitTransaction = R.pick(['id', 'units', 'transactionId'])(data);
+      const unitTransaction = R.pick(['id', 'units', 'transactionId', 'notes'])(
+        data
+      );
       const updatedUnitTransaction = {
         id: unitTransaction.id,
         consumed: unitTransaction.units,
         transactionId: unitTransaction.transactionId,
+        notes: unitTransaction.notes,
       };
       setType('editUnitsTransactions');
       setHeader(t('editUnitTransaction'));
@@ -236,6 +240,7 @@ const Courses = () => {
         variables: {
           courseId: formValue.id,
           consumed: formValue.consumed,
+          notes: formValue.notes,
           type: 'addNewUnits',
         },
       });
@@ -264,6 +269,7 @@ const Courses = () => {
           transactionId: formValue.transactionId,
           consumed: formValue.consumed,
           courseId: formValue.id,
+          notes: formValue.notes,
         },
       });
     } else if (type === 'deleteCourse') {

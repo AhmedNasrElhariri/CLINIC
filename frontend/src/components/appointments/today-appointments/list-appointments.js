@@ -23,6 +23,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
     onDuplicateAppointments,
     onEditAppointments,
     onCancelAppointments,
+    onFollowUpAppointments,
   } = rest;
 
   return (
@@ -144,6 +145,20 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                 )}
               </Dropdown.Item>
               <Dropdown.Item eventKey={9}>
+                <Div>
+                  <CRButton
+                    variant="primary"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onFollowUpAppointments(appointment);
+                    }}
+                    style={{ width: '108px' }}
+                  >
+                    {t('followUp')}
+                  </CRButton>
+                </Div>
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={10}>
                 {canAjdust(appointment) && (
                   <Div>
                     <Can I="Cancel" an="Appointment">
@@ -205,6 +220,7 @@ function ListAppointments({
   onDuplicateAppointments,
   onEditAppointments,
   onCancelAppointments,
+  onFollowUpAppointments,
   currentPage,
   setCurrentPage,
   close,
@@ -275,7 +291,7 @@ function ListAppointments({
                         {t('phoneNo')}:{patient.phoneNo}
                       </Div>
                       <Div>
-                        {t('sex')}:{patient.sex}
+                        {t('code')}:{patient.code}
                       </Div>
                       <Div>
                         {t('subscriptionType')}: {'  '}
@@ -530,6 +546,7 @@ function ListAppointments({
                 onDuplicateAppointments={onDuplicateAppointments}
                 onEditAppointments={onEditAppointments}
                 onCancelAppointments={onCancelAppointments}
+                onFollowUpAppointments={onFollowUpAppointments}
               />
             )}
           </Table.Cell>

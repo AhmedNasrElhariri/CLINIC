@@ -297,7 +297,12 @@ const FormItemContainer = ({ children, className }) => (
   <div className={`w-full sm:w-1/2 p-2 ${className ?? ''}`}>{children}</div>
 );
 
-const NewAppointment = ({ show: showModel, onHide, appointment }) => {
+const NewAppointment = ({
+  show: showModel,
+  onHide,
+  appointment,
+  followUp,
+}) => {
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
   const { t } = useTranslation();
@@ -342,13 +347,18 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
     name: course.name,
     IDBTransaction: course.id,
   }));
-  const updatedSessionsDefinition = sessionsDefinition.map(s => {
-    return {
-      name: s.name,
-      id: s,
-    };
-  });
-
+  const updatedSessionsDefinition = useMemo(() => {
+    const sd = followUp
+      ? sessionsDefinition.filter(s => s.followUp)
+      : sessionsDefinition.filter(s => !s.followUp);
+    return sd.map(s => {
+      return {
+        name: s.name,
+        id: s,
+      };
+    });
+  }, [sessionsDefinition]);
+  console.log(updatedSessionsDefinition, 'updatedSessionsDefinition');
   useEffect(() => {
     if (appointment && appointment?.branch?.id != null) {
       setFormValue({
@@ -361,6 +371,15 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
       });
     }
   }, [appointment]);
+  useEffect(() => {
+    if (followUp && updatedSessionsDefinition.length > 0) {
+      setFormValue({
+        ...formValue,
+        session: updatedSessionsDefinition[0].id,
+        date: updatedSessionsDefinition[0].id.timer,
+      });
+    }
+  }, [ followUp]);
   const handleCreate = useCallback(() => {
     setShow(true);
     if (!validate) {
@@ -409,6 +428,7 @@ const NewAppointment = ({ show: showModel, onHide, appointment }) => {
       sendSMS,
     });
   }, [createAppointment, formValue]);
+  console.log(formValue, 'ff', followUp);
   return (
     <>
       <NewPatient

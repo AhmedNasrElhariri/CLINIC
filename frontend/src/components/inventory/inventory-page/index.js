@@ -21,7 +21,7 @@ const InventoryPage = () => {
       >
         <Nav.Item eventKey={0}>{t('inventory')}</Nav.Item>
         <Nav.Item eventKey={1}>{t('history')}</Nav.Item>
-        <Nav.Item eventKey={2}>{t('completedAppointments')}</Nav.Item>
+        <Nav.Item eventKey={2}>{t('inventoryManual')}</Nav.Item>
       </Nav>
       {activeTab === 0 && (
         <Can I="View" an="Inventory">

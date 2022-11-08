@@ -26,6 +26,7 @@ import {
   CRTable,
   CRRadio,
   H6,
+  CRTextInput,
 } from 'components';
 
 import { StyledSession, TableDiv } from './style';
@@ -116,7 +117,7 @@ function NewCourse({
   setSelectedSessions,
 }) {
   const [session, setSession] = useState({});
-  const [sessionNumber, setSessionNumber] = useState(0);
+  const [sessionNumber, setSessionNumber] = useState(1);
   const [sessionPrice, setSessionPrice] = useState(0);
   const { coursesDefinitions } = useCoursesDefinition();
   const { banksDefinition } = useBankDefinition({});
@@ -436,11 +437,20 @@ function NewCourse({
         ) : type === 'addNewUnits' ||
           type === 'editConsumedUnits' ||
           type === 'editUnitsTransactions' ? (
-          <CRNumberInput
-            label={t('consumedUnits')}
-            name="consumed"
-            title={t('consumedUnits')}
-          />
+          <>
+            <CRNumberInput
+              label={t('consumedUnits')}
+              name="consumed"
+              title={t('consumedUnits')}
+            />
+            {(type === 'addNewUnits' || type === 'editUnitsTransactions') && (
+              <CRTextInput
+                label={t('notes')}
+                name="notes"
+                title={t('notes')}
+              />
+            )}
+          </>
         ) : type === 'finishCourse' ? (
           <Div>{t('finishCourseMessage')} </Div>
         ) : type === 'deleteCourse' ? (

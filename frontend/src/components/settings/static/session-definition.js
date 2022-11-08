@@ -13,6 +13,8 @@ const initValue = {
   name: '',
   price: 0,
   duration: 5,
+  followUp: false,
+  timer: 0,
 };
 const { StringType, NumberType } = Schema.Types;
 const model = Schema.Model({
@@ -61,7 +63,9 @@ const SessionDefinition = () => {
   }, [open, setFormValue, setType]);
   const handleClickEdit = useCallback(
     data => {
-      const session = R.pick(['id', 'name', 'price', 'duration'])(data);
+      const session = R.pick(['id', 'name', 'price', 'duration', 'followUp'])(
+        data
+      );
       setType('edit');
       setFormValue(session);
       open();

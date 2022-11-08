@@ -963,7 +963,7 @@ model Item {
 
 model InventoryItem {
   id             String       @id @default(uuid())
-  quantity       Int
+  quantity       Float
   price          Int
   item           Item         @relation(fields: [itemId], references: [id])
   itemId         String
@@ -997,7 +997,7 @@ model InventoryHistory {
   doctor         User?              @relation("doctorInventory", fields: [doctorId], references: [id])
   doctorId       String?
   operation      InventoryOperation
-  quantity       Int
+  quantity       Float
   price          Int?
   date           DateTime
   createdAt      DateTime           @default(now())
@@ -1236,6 +1236,8 @@ model SessionDefinition {
   name               String
   price              Float
   duration           Int                  @default(5)
+  followUp           Boolean?             @default(false)
+  timer              Int?
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @default(now()) @updatedAt
   organization       Organization         @relation(fields: [organizationId], references: [id])
@@ -1429,6 +1431,7 @@ model CoursePayment {
 model CourseUnitsHistory {
   id       String   @id @default(uuid())
   units    Int
+  notes    String?
   date     DateTime
   user     User     @relation("userUnitHistory", fields: [userId], references: [id])
   userId   String
