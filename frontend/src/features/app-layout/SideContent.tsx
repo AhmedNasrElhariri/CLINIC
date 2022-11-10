@@ -37,7 +37,7 @@ export default memo(function SideContent() {
             <div className="w-8 flex items-center justify-end">
               <MdAddCircleOutline
                 onClick={toggleAddAppointment}
-                className="text-[1.25rem] cursor-pointer text-slate-700"
+                className="text-[1.25rem] cursor-pointer text-slate-600"
               />
             </div>
           </Can>
@@ -52,7 +52,7 @@ export default memo(function SideContent() {
             <div className="w-8 flex items-center justify-end">
               <MdAddCircleOutline
                 onClick={toggleAddPatient}
-                className="text-[1.25rem] cursor-pointer text-slate-700"
+                className="text-[1.25rem] cursor-pointer text-slate-600"
               />
             </div>
           </Can>
@@ -97,7 +97,7 @@ export default memo(function SideContent() {
         icon: InboxOutlined,
       },
     ],
-    []
+    [toggleAddAppointment, toggleAddPatient]
   );
 
   return (
