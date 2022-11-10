@@ -15,24 +15,25 @@ import CancelAppointment from '../cancel-appointment';
 import {
   filterTodayAppointments,
   sortAppointmentsByUpdatedAt,
-} from 'services/appointment';
-import Filter from '../../filters';
-import { APPT_STATUS } from 'utils/constants';
-import { useTranslation } from 'react-i18next';
+} from "services/appointment";
+import Filter from "../../filters";
+import { APPT_STATUS } from "utils/constants";
+import { useTranslation } from "react-i18next";
 const initialValue = {
-  businessNotes: '',
+  businessNotes: "",
 };
 const calcDate = ({ date, time }) =>
   moment(date)
     .set({
-      hour: moment(time).get('hour'),
-      minute: moment(time).get('minute'),
+      hour: moment(time).get("hour"),
+      minute: moment(time).get("minute"),
       second: 0,
       millisecond: 0,
     })
     .toDate();
 function TodayAppointments() {
-  const [popUp, setPopUp] = useState('');
+
+  const [popUp, setPopUp] = useState("");
   const [followUp, setFollowUp] = useState(false);
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
@@ -65,8 +66,8 @@ function TodayAppointments() {
   );
 
   useEffect(() => {
-    setNotes(val => ({
-      businessNotes: R.propOr('', 'businessNotes')(appointment),
+    setNotes((val) => ({
+      businessNotes: R.propOr("", "businessNotes")(appointment),
     }));
   }, [appointment]);
 
@@ -74,8 +75,8 @@ function TodayAppointments() {
     () =>
       R.pipe(
         R.filter(
-          R.propEq('status', APPT_STATUS.SCHEDULED) ||
-            R.propEq('status', APPT_STATUS.CHANGED)
+          R.propEq("status", APPT_STATUS.SCHEDULED) ||
+            R.propEq("status", APPT_STATUS.CHANGED)
         )
       )(filteredAppointments),
     [filteredAppointments]
@@ -84,7 +85,7 @@ function TodayAppointments() {
   const waitingAppointments = useMemo(
     () =>
       sortAppointmentsByUpdatedAt(
-        R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(
+        R.pipe(R.filter(R.propEq("status", APPT_STATUS.WAITING)))(
           filteredAppointments
         )
       ),
@@ -92,63 +93,63 @@ function TodayAppointments() {
   );
   const completedAppointments = useMemo(
     () =>
-      R.pipe(R.filter(R.propEq('status', APPT_STATUS.ARCHIVED)))(
+      R.pipe(R.filter(R.propEq("status", APPT_STATUS.ARCHIVED)))(
         filteredAppointments
       ),
     [filteredAppointments]
   );
   const onClickDone = useCallback(
-    appointment => {
-      setPopUp('archive');
+    (appointment) => {
+      setPopUp("archive");
       setAppointment(appointment);
       open();
     },
     [open]
   );
   const onCompleteDone = useCallback(
-    appointment => {
-      setPopUp('complete');
+    (appointment) => {
+      setPopUp("complete");
       setAppointment(appointment);
       open();
     },
     [open]
   );
   const onAddBusinessNotes = useCallback(
-    appointment => {
-      setPopUp('notes');
+    (appointment) => {
+      setPopUp("notes");
       setAppointment(appointment);
       open();
     },
     [open]
   );
   const onDuplicateAppointments = useCallback(
-    appointment => {
-      setPopUp('newAppointment');
+    (appointment) => {
+      setPopUp("newAppointment");
       setAppointment(appointment);
       open();
     },
     [open]
   );
   const onEditAppointments = useCallback(
-    appointment => {
-      setPopUp('editAppointment');
+    (appointment) => {
+      setPopUp("editAppointment");
       setAppointment(appointment);
       open();
     },
     [open]
   );
   const onCancelAppointments = useCallback(
-    appointment => {
-      setPopUp('cancelAppointment');
+    (appointment) => {
+      setPopUp("cancelAppointment");
       setAppointment(appointment);
       open();
     },
     [open]
   );
   const onFollowUpAppointments = useCallback(
-    appointment => {
+    (appointment) => {
       setFollowUp(true);
-      setPopUp('followUpAppointment');
+      setPopUp("followUpAppointment");
       setAppointment(appointment);
       open();
     },
@@ -179,7 +180,7 @@ function TodayAppointments() {
           userId: appointment?.doctor.id,
           branchId: appointment?.branch.id,
           date: appointment.date,
-          sessions: sessions.map(session => ({
+          sessions: sessions.map((session) => ({
             name: getName({ session, appointment }),
             price: session.price,
             number: session.number,
@@ -194,7 +195,7 @@ function TodayAppointments() {
             amount: discount,
           },
           others: {
-            name: 'others - ' + othersName + ' - ' + appointment.patient.name,
+            name: "others - " + othersName + " - " + appointment.patient.name,
             amount: others,
           },
           remaining: remaining,
@@ -224,7 +225,7 @@ function TodayAppointments() {
     });
   }, [appointment, updateNotes, notes, close]);
   const handleEdit = useCallback(
-    formValue => {
+    (formValue) => {
       close();
       adjust({
         variables: {
@@ -254,7 +255,7 @@ function TodayAppointments() {
     [complete, close]
   );
 
-  const [active, setActive] = React.useState('mainAppointments');
+  const [active, setActive] = React.useState("mainAppointments");
 
   return (
     <>
@@ -262,22 +263,22 @@ function TodayAppointments() {
         onSelect={setActive}
         appearance="tabs"
         justified
-        className="text-center max-w-5xl mb-5"
+        className="text-center mb-5"
         activeKey={active}
       >
-        <Nav.Item eventKey="mainAppointments">{t('mainAppointments')}</Nav.Item>
+        <Nav.Item eventKey="mainAppointments">{t("mainAppointments")}</Nav.Item>
         <Nav.Item eventKey="waitingAppointments">
-          {t('waitingAppointments')}
+          {t("waitingAppointments")}
         </Nav.Item>
         <Nav.Item eventKey="completedAppointments">
-          {t('completedAppointments')}
+          {t("completedAppointments")}
         </Nav.Item>
       </Nav>
-      {active === 'mainAppointments' && (
+      {active === "mainAppointments" && (
         <Filter
           appointments={upcomingAppointments}
           branches={filterBranches}
-          render={apps => (
+          render={(apps) => (
             <ListAppointments
               title="Upcoming Appointments"
               appointments={apps}
@@ -295,11 +296,11 @@ function TodayAppointments() {
           )}
         />
       )}
-      {active === 'waitingAppointments' && (
+      {active === "waitingAppointments" && (
         <Filter
           appointments={waitingAppointments}
           branches={filterBranches}
-          render={apps => (
+          render={(apps) => (
             <ListAppointments
               appointments={apps}
               onArchive={onClickDone}
@@ -314,11 +315,11 @@ function TodayAppointments() {
           )}
         />
       )}
-      {active === 'completedAppointments' && (
+      {active === "completedAppointments" && (
         <Filter
           appointments={completedAppointments}
           branches={filterBranches}
-          render={apps => (
+          render={(apps) => (
             <ListAppointments
               title="Completed Appointments"
               appointments={apps}
@@ -328,7 +329,7 @@ function TodayAppointments() {
           )}
         />
       )}
-      {popUp === 'archive' && (
+      {popUp === "archive" && (
         <ArchiveAppointment
           appointment={appointment}
           show={visible}
@@ -337,7 +338,7 @@ function TodayAppointments() {
           loading={loading}
         />
       )}
-      {popUp === 'complete' && (
+      {popUp === "complete" && (
         <CompleteAppointment
           appointment={appointment}
           show={visible}
@@ -346,7 +347,7 @@ function TodayAppointments() {
           t={t}
         />
       )}
-      {popUp === 'notes' && (
+      {popUp === "notes" && (
         <BusinessNotes
           appointment={appointment}
           show={visible}
@@ -357,14 +358,14 @@ function TodayAppointments() {
           t={t}
         />
       )}
-      {popUp === 'newAppointment' && (
+      {popUp === "newAppointment" && (
         <NewAppointment
           show={visible}
           onHide={close}
           appointment={appointment}
         />
       )}
-      {popUp === 'editAppointment' && (
+      {popUp === "editAppointment" && (
         <EditAppointment
           onOk={handleEdit}
           show={visible}
@@ -373,7 +374,7 @@ function TodayAppointments() {
           t={t}
         />
       )}
-      {popUp === 'cancelAppointment' && (
+      {popUp === "cancelAppointment" && (
         <CancelAppointment
           onOk={handleCancel}
           show={visible}
@@ -382,7 +383,7 @@ function TodayAppointments() {
           t={t}
         />
       )}
-      {popUp === 'followUpAppointment' && (
+      {popUp === "followUpAppointment" && (
         <NewAppointment
           show={visible}
           onHide={close}

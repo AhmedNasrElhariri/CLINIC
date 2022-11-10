@@ -1,15 +1,15 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Can } from 'components/user/can';
-import { Schema } from 'rsuite';
-import { Div, CRButton, MainContainer } from 'components';
-import moment from 'moment';
-import ListPatientSurgeries from '../list-patient-surgeries';
-import NewPatientSurgery from '../new-patient-surgery';
-import PatientSurgeryFilter from './filter';
-import { filterPatientSurgery } from 'services/patient-surgery';
-import { useForm, usePatientSurgeries, useModal } from 'hooks';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback, useMemo, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Can } from "components/user/can";
+import { Schema } from "rsuite";
+import { Div, CRButton, MainContainer } from "components";
+import moment from "moment";
+import ListPatientSurgeries from "../list-patient-surgeries";
+import NewPatientSurgery from "../new-patient-surgery";
+import PatientSurgeryFilter from "./filter";
+import { filterPatientSurgery } from "services/patient-surgery";
+import { useForm, usePatientSurgeries, useModal } from "hooks";
+import { useTranslation } from "react-i18next";
 
 const initValue = {
   patientId: null,
@@ -18,7 +18,7 @@ const initValue = {
   date: null,
   time: null,
   anesthesia: null,
-  anesthesiaDoctorName: '',
+  anesthesiaDoctorName: "",
   assistantFees: 0,
   anesthesiaFees: 0,
   others: 0,
@@ -29,12 +29,14 @@ const inialCurrentPage = {
   activePage: 1,
 };
 const { StringType, DateType } = Schema.Types;
+
 const model = Schema.Model({
-  patientId: StringType().isRequired('patient is required'),
-  surgeryId: StringType().isRequired('surgery is required'),
-  hospitalId: StringType().isRequired('hospital is required'),
-  date: DateType().isRequired('date is required'),
+  patientId: StringType().isRequired("patient is required"),
+  surgeryId: StringType().isRequired("surgery is required"),
+  hospitalId: StringType().isRequired("hospital is required"),
+  date: DateType().isRequired("date is required"),
 });
+
 const PatientSurgeriesContainer = () => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
@@ -99,12 +101,12 @@ const PatientSurgeriesContainer = () => {
   return (
     <>
       <MainContainer
-        title={t('patientsSurgeries')}
+        title={t("patientsSurgeries")}
         more={
           <Div display="flex">
             <Can I="Create" an="Surgery">
               <CRButton variant="primary" onClick={handleOnClickCreate}>
-                {t('surgery')} +
+                {t("surgery")} +
               </CRButton>
             </Can>
           </Div>

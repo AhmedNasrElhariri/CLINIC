@@ -1,22 +1,22 @@
-import { useMemo, useEffect } from 'react';
-import * as R from 'ramda';
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useMemo, useEffect } from "react";
+import * as R from "ramda";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import {
   LIST_EXPENSES,
   LIST_REVENUES,
   LIST_ALL_EXPENSES,
   LIST_ALL_REVENUES,
-} from 'apollo-client/queries';
-import { filterAccountingList } from 'utils/accounting';
-import { ACCOUNTING_VIEWS } from 'utils/constants';
+} from "apollo-client/queries";
+import { filterAccountingList } from "utils/accounting";
+import { ACCOUNTING_VIEWS } from "utils/constants";
 import {
   getDayStartAndEnd,
   getWeekStartAndEnd,
   getMonthStartAndEnd,
   getQuarterStartAndEnd,
   getYearStartAndEnd,
-} from 'utils/date';
-import { ACTIONS } from 'utils/constants';
+} from "utils/date";
+import { ACTIONS } from "utils/constants";
 
 const useAccounting = ({
   view,
@@ -71,15 +71,15 @@ const useAccounting = ({
   });
   const revenuesData = revenueData?.revenues;
   const revenues =
-    accountingOption === 'Expense'
+    accountingOption === "Expense"
       ? []
-      : R.propOr([], 'revenues')(revenuesData);
+      : R.propOr([], "revenues")(revenuesData);
 
   const expensesData = expenseData?.expenses;
   const expenses =
-    accountingOption === 'Revenue'
+    accountingOption === "Revenue"
       ? []
-      : R.propOr([], 'expenses')(expensesData);
+      : R.propOr([], "expenses")(expensesData);
 
   // const expenses = useMemo(
   //   () => filterAccountingList(allExpenses, view, period),
@@ -101,25 +101,25 @@ const useAccounting = ({
   // );
 
   const totalRevenues = useMemo(() => {
-    return accountingOption === 'Expense'
+    return accountingOption === "Expense"
       ? 0
-      : R.propOr(0, 'totalRevenues')(revenuesData);
+      : R.propOr(0, "totalRevenues")(revenuesData);
   }, [revenuesData, accountingOption]);
   const RevenuesCount = useMemo(() => {
-    return accountingOption === 'Expense'
+    return accountingOption === "Expense"
       ? 0
-      : R.propOr(0, 'revenuesCount')(revenuesData);
+      : R.propOr(0, "revenuesCount")(revenuesData);
   }, [revenuesData, accountingOption]);
 
   const totalExpenses = useMemo(() => {
-    return accountingOption === 'Revenue'
+    return accountingOption === "Revenue"
       ? 0
-      : R.propOr(0, 'totalExpenses')(expensesData);
+      : R.propOr(0, "totalExpenses")(expensesData);
   }, [expensesData, accountingOption]);
   const expensesCount = useMemo(() => {
-    return accountingOption === 'Revenue'
+    return accountingOption === "Revenue"
       ? 0
-      : R.propOr(0, 'expensesCount')(expensesData);
+      : R.propOr(0, "expensesCount")(expensesData);
   }, [expensesData, accountingOption]);
 
   ////all
@@ -162,14 +162,12 @@ const useAccounting = ({
   });
 
   const allRevenues = printOrNot
-    ? R.propOr([], 'allRevenues')(revenueAllData)
+    ? R.propOr([], "allRevenues")(revenueAllData)
     : [];
 
-  
   const allExpenses = printOrNot
-    ? R.propOr([], 'allExpenses')(expenseAllData)
+    ? R.propOr([], "allExpenses")(expenseAllData)
     : [];
-console.log(allRevenues,'allRevenues');
   // const BranchTotalExpenses = useMemo(() => {
   //   const updatedExpenses = expenses.filter(
   //     e =>
@@ -190,7 +188,7 @@ console.log(allRevenues,'allRevenues');
   //   return updatedRevenue.reduce((acc, e) => acc + e.amount, 0);
   // }, [revenues, branchId, specialtyId, userId]);
 
-  const getTimeFrameByView = view => {
+  const getTimeFrameByView = (view) => {
     const viewVsFn = {
       [ACCOUNTING_VIEWS.DAY]: getDayStartAndEnd,
       [ACCOUNTING_VIEWS.WEEK]: getWeekStartAndEnd,
@@ -212,7 +210,7 @@ console.log(allRevenues,'allRevenues');
       getAll();
       getAllTwo();
     }
-  }, [getAll,getAllTwo, printOrNot]);
+  }, [getAll, getAllTwo, printOrNot]);
 
   return useMemo(
     () => ({
