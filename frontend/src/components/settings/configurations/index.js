@@ -1,14 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import * as R from 'ramda';
 import * as moment from 'moment';
-import { Form } from 'rsuite';
-import { H3, Div, CRButton, CRNumberInput, CRSelectInput } from 'components';
+import { Form, Toggle } from 'rsuite';
+import { H3, Div, CRButton, CRNumberInput } from 'components';
 import PageSetup from './page-setup';
 import EnableInvoiceCounter from './enable-invoice-counter/index';
 import EnableSMS from './enable-sms';
 import { useConfigurations } from 'hooks';
 import { useTranslation } from 'react-i18next';
-
 
 const initialValues = {
   enableInvoiceCounter: false,
@@ -31,12 +30,16 @@ const initialPageSetup = {
   left: 0,
   type: 'prescription',
 };
+const initialFollowUp = {
+  followUp: false,
+};
 
 const Configurations = () => {
   const [formValue, setFormValue] = useState(initialValues);
   // const [pulsesValue, setPulseValues] = useState(initialPulsesValue);
   const [pointsValue, setPointsValues] = useState(initialPointsValue);
   const [pageSetup, setPageSetup] = useState(initialPageSetup);
+  const [followUpValues, setFollowUpValues] = useState(initialFollowUp);
   const { t } = useTranslation();
   const {
     configurations,
@@ -48,6 +51,8 @@ const Configurations = () => {
     editPoints,
     points,
     updateSMSConf,
+    editFollowUpFeature,
+    organization,
   } = useConfigurations();
   // useEffect(() => {
   //   // const enableInvoiceCounter = R.propOr(
@@ -64,6 +69,11 @@ const Configurations = () => {
   useEffect(() => {
     setPointsValues({ points: points.points, couponValue: points.couponValue });
   }, [points, setPointsValues]);
+  useEffect(() => {
+    const fo = R.propOr(false, 'followUp')(organization);
+    console.log(fo, 'fo');
+    setFollowUpValues({ ...followUpValues, followUp: fo });
+  }, [organization, setFollowUpValues]);
   const handleSave = useCallback(() => {
     update(formValue);
   }, [formValue, update]);
@@ -124,6 +134,13 @@ const Configurations = () => {
       },
     });
   }, [pointsValue, editPoints]);
+  const handleFollowUpSave = useCallback(() => {
+    editFollowUpFeature({
+      variables: {
+        followUp: followUpValues.followUp,
+      },
+    });
+  }, [followUpValues, editFollowUpFeature]);
 
   const today = moment(new Date()).format('DD/MM/YYYY');
   return (
@@ -140,7 +157,7 @@ const Configurations = () => {
         onChange={updateEnable}
         value={formValue?.enableInvoiceCounter}
       />
-      
+
       <hr></hr>
       <Div display="flex" justifyContent="space-between">
         <H3 mb={64}>SMS Configuration</H3>
@@ -183,6 +200,34 @@ const Configurations = () => {
           </Div>
         </Form>
       </>
+
+      <>
+        <hr></hr>
+        <Div display="flex" justifyContent="space-between">
+          <Div display="flex" justifyContent="space-around">
+            <H3 mb={64} mr={20}>
+              {t('followUp')}
+            </H3>
+          </Div>
+          <Div>
+            <CRButton onClick={handleFollowUpSave} variant="primary">
+              {t('save')}
+            </CRButton>
+          </Div>
+        </Div>
+        <Form formValue={followUpValues} onChange={setFollowUpValues}>
+          <Div display="flex" justifyContent="space-between">
+            <label>FollowUp feature or not: </label>
+            <Toggle
+              onChange={val =>
+                setFollowUpValues({ ...followUpValues, followUp: val })
+              }
+              checked={followUpValues.followUp}
+            />
+          </Div>
+        </Form>
+      </>
+
       {/* <>
         <hr></hr>
         <Div display="flex" justifyContent="space-between">

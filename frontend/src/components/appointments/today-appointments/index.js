@@ -7,7 +7,7 @@ import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
 import CompleteAppointment from '../complete-appointment';
-import { useAppointments, useModal } from 'hooks';
+import { useAppointments, useConfigurations, useModal } from 'hooks';
 import BusinessNotes from './business-notes';
 import NewAppointment from 'components/appointments/new-appointment';
 import EditAppointment from '../edit-appointment';
@@ -37,8 +37,10 @@ function TodayAppointments() {
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
   const { visible, close, open } = useModal({});
-  const [appointment, setAppointment] = useState(null);
+  const [appointment, setAppointment] = useState({});
   const { t } = useTranslation();
+  const { organization } = useConfigurations({});
+  const followUpFeature = R.propOr(false, 'followUp')(organization);
   const {
     todayAppointments: appointments,
     filterBranches,
@@ -55,8 +57,8 @@ function TodayAppointments() {
     setFollowUp,
     setPopUp,
     open,
+    followUpFeature,
   });
-   console.log(followUp,popUp,'FFpopUp');
   const filteredAppointments = useMemo(
     () => filterTodayAppointments(appointments, formValue),
     [appointments, formValue]
@@ -150,9 +152,8 @@ function TodayAppointments() {
       setAppointment(appointment);
       open();
     },
-    [open]
+    [setAppointment, setFollowUp, setPopUp, open]
   );
-  console.log(popUp, appointment, 'POPAPP');
   const handleArchive = useCallback(
     ({
       sessions,
@@ -289,6 +290,7 @@ function TodayAppointments() {
               onFollowUpAppointments={onFollowUpAppointments}
               defaultExpanded={true}
               close={close}
+              followUpFeature={followUpFeature}
             />
           )}
         />
@@ -386,6 +388,7 @@ function TodayAppointments() {
           onHide={close}
           appointment={appointment}
           followUp={followUp}
+          setFollowUp={setFollowUp}
         />
       )}
     </>

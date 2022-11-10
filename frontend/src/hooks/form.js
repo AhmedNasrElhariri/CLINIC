@@ -41,7 +41,17 @@ function useForm({ initValue, model }) {
       show,
       setShow,
     }),
-    [formValue, reset, type, updateProp, validate, checkResult, show, setShow]
+    [
+      formValue,
+      setFormValue,
+      reset,
+      type,
+      updateProp,
+      validate,
+      checkResult,
+      show,
+      setShow,
+    ]
   );
 }
 

@@ -225,6 +225,7 @@ model Organization {
   invoiceCounter            Int                         @default(1)
   maxNumberOfUsers          Int                         @default(6)
   patientCode               Int                         @default(1000)
+  followUp                  Boolean?                    @default(false)
   createdAt                 DateTime                    @default(now())
   updatedAt                 DateTime                    @default(now()) @updatedAt
   item                      Item[]
@@ -405,42 +406,45 @@ model Patient {
 }
 
 model Appointment {
-  id               String             @id @default(uuid())
-  date             DateTime           @default(now())
-  type             AppointmentType
-  patient          Patient            @relation(fields: [patientId], references: [id])
-  patientId        String
-  user             User               @relation("userApp", fields: [userId], references: [id])
-  userId           String
-  doctor           User               @relation("doctorApp", fields: [doctorId], references: [id])
-  doctorId         String
-  updater          User?              @relation("updaterApp", fields: [updaterId], references: [id])
-  updaterId        String?
-  businessNotes    String             @default("")
-  accounted        Boolean            @default(false)
-  duration         Int                @default(5)
-  reference        String?
-  status           AppointmentStatus
-  data             AppointmentField[]
-  notes            String?            @default("")
-  patientSurgeries PatientSurgery[]
-  prescription     Prescription[]
-  labs             Lab[]
-  images           Image[]
-  pictures         AppointmentFile[]
-  courses          Course[]
-  pulses           Int?
-  powerOne         Int?
-  powerTwo         Int?
-  sessionsPulses   Json?              @default("[]")
-  branch           Branch?            @relation(fields: [branchId], references: [id])
-  branchId         String?
-  specialty        Specialty?         @relation(fields: [specialtyId], references: [id])
-  specialtyId      String?
-  session          SessionDefinition? @relation(fields: [sessionId], references: [id])
-  sessionId        String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt
+  id                    String             @id @default(uuid())
+  date                  DateTime           @default(now())
+  type                  AppointmentType
+  patient               Patient            @relation(fields: [patientId], references: [id])
+  patientId             String
+  user                  User               @relation("userApp", fields: [userId], references: [id])
+  userId                String
+  doctor                User               @relation("doctorApp", fields: [doctorId], references: [id])
+  doctorId              String
+  updater               User?              @relation("updaterApp", fields: [updaterId], references: [id])
+  updaterId             String?
+  businessNotes         String             @default("")
+  accounted             Boolean            @default(false)
+  duration              Int                @default(5)
+  reference             String?
+  status                AppointmentStatus
+  data                  AppointmentField[]
+  notes                 String?            @default("")
+  patientSurgeries      PatientSurgery[]
+  prescription          Prescription[]
+  labs                  Lab[]
+  images                Image[]
+  pictures              AppointmentFile[]
+  courses               Course[]
+  pulses                Int?
+  powerOne              Int?
+  powerTwo              Int?
+  sessionsPulses        Json?              @default("[]")
+  branch                Branch?            @relation(fields: [branchId], references: [id])
+  branchId              String?
+  specialty             Specialty?         @relation(fields: [specialtyId], references: [id])
+  specialtyId           String?
+  session               SessionDefinition? @relation(fields: [sessionId], references: [id])
+  sessionId             String?
+  appointmentFollowUp   Appointment?       @relation("followUpRelation", fields: [appointmentFollowUpId], references: [id])
+  appointmentFollowUpId String?            @unique
+  followApp             Appointment?       @relation("followUpRelation")
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @default(now()) @updatedAt
 }
 
 model PulseControl {

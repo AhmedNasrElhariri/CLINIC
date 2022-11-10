@@ -1,6 +1,7 @@
 import { prisma, pubsub } from '@';
 import { formatDateFull } from '@/services/date.service';
 import { NOTIFICATION } from '@/utils/notifications';
+import { APIExceptcion } from '@/services/erros.service';
 
 const APPOINTMENT_EDITED = 'APPOINTMENT_EDITED';
 
@@ -10,6 +11,16 @@ const publish = message => {
       message,
     },
   });
+};
+
+export const createFollowUpRelation = async ({ appointmentId }) => {
+  const app = await prisma.appointment.findUnique({
+    where: { id: appointmentId },
+  });
+  const { appointmentFollowUpId } = app;
+  if (appointmentFollowUpId) {
+    throw new APIExceptcion('This app has followUp already');
+  }
 };
 
 export const onAppointmentCreate = async ({

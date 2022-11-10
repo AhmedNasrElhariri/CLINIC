@@ -5,6 +5,8 @@ import {
   EXMAINTATION_LENGTH,
   EXMATION_STARTING_HOUR,
 } from '@/utils/constants';
+import { prisma } from '@prisma/client';
+
 
 export const getAppointmentLength = () => EXMAINTATION_LENGTH;
 export const getSessionsStartingHour = () => EXMATION_STARTING_HOUR;
@@ -25,3 +27,5 @@ export const validDate = (newDate, appointments) => {
     return !moment(newDate).isBetween(startDate, endDate, 'minutes', '[)');
   });
 };
+
+

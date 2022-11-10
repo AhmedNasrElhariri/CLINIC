@@ -3,7 +3,10 @@ import moment from 'moment';
 import { getStartOfDay, getEndOfDay } from '@/services/date.service';
 import { validDate } from '@/services/appointment.service';
 import { APIExceptcion } from '@/services/erros.service';
-import { onAppointmentCreate } from '@/services/notification.service';
+import {
+  onAppointmentCreate,
+  createFollowUpRelation,
+} from '@/services/notification.service';
 import {
   APPOINTMENTS_STATUS,
   APPOINTMENTS_TYPES,
@@ -44,9 +47,12 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
     sessionId,
     reference,
     sendSMS,
+    appointmentId,
+    followUp,
     ...rest
   } = appointment;
   const creatorId = creator ? creator : userId;
+  let createdAppointment = {};
   const appointments = await getDayAppointments(appointment.date, userId);
   if (
     !(
@@ -79,60 +85,132 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
       'You have been reached the max number of Appointments'
     );
   }
-  const createdAppointment = await prisma.appointment.create({
-    data: Object.assign(
-      {
-        ...rest,
-        status: appointmentType,
-        reference: reference,
-        patient: {
-          connect: {
-            id: patientId,
-          },
-        },
-        user: {
-          connect: {
-            id: creatorId,
-          },
-        },
-        doctor: {
-          connect: {
-            id: userId,
-          },
-        },
-      },
-      sessionId && {
-        session: {
-          connect: {
-            id: sessionId,
-          },
-        },
-      },
-      specialtyId && {
-        specialty: {
-          connect: {
-            id: specialtyId,
-          },
-        },
-      },
-      branchId && {
-        branch: {
-          connect: {
-            id: branchId,
-          },
-        },
-      },
-      appointment.type === APPOINTMENTS_TYPES.Course && {
-        courses: {
-          connect: [
-            {
-              id: courseId,
+  if (followUp) {
+    const app = await prisma.appointment.findUnique({
+      where: { id: appointmentId },
+    });
+    const { appointmentFollowUpId } = app;
+    if (appointmentFollowUpId) {
+      throw new APIExceptcion('This appointment has followUp already');
+    }
+    createdAppointment = await prisma.appointment.create({
+      data: Object.assign(
+        {
+          ...rest,
+          status: appointmentType,
+          reference: reference,
+          patient: {
+            connect: {
+              id: patientId,
             },
-          ],
+          },
+          user: {
+            connect: {
+              id: creatorId,
+            },
+          },
+          doctor: {
+            connect: {
+              id: userId,
+            },
+          },
         },
-      }
-    ),
-  });
+        sessionId && {
+          session: {
+            connect: {
+              id: sessionId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        appointment.type === APPOINTMENTS_TYPES.Course && {
+          courses: {
+            connect: [
+              {
+                id: courseId,
+              },
+            ],
+          },
+        }
+      ),
+    });
+    const createdAppId = createdAppointment.id;
+    await prisma.appointment.update({
+      data: { appointmentFollowUpId: createdAppId },
+      where: {
+        id: appointmentId,
+      },
+    });
+  } else {
+    createdAppointment = await prisma.appointment.create({
+      data: Object.assign(
+        {
+          ...rest,
+          status: appointmentType,
+          reference: reference,
+          patient: {
+            connect: {
+              id: patientId,
+            },
+          },
+          user: {
+            connect: {
+              id: creatorId,
+            },
+          },
+          doctor: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        sessionId && {
+          session: {
+            connect: {
+              id: sessionId,
+            },
+          },
+        },
+        specialtyId && {
+          specialty: {
+            connect: {
+              id: specialtyId,
+            },
+          },
+        },
+        branchId && {
+          branch: {
+            connect: {
+              id: branchId,
+            },
+          },
+        },
+        appointment.type === APPOINTMENTS_TYPES.Course && {
+          courses: {
+            connect: [
+              {
+                id: courseId,
+              },
+            ],
+          },
+        }
+      ),
+    });
+  }
+
   // if (sendSMS) {
   //   createAppointmentMessage(createdAppointment);
   // }

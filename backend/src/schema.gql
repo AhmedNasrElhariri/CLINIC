@@ -538,6 +538,7 @@ type Mutation {
   addPulsesControl(pulsesControl: PulseControlInput!): PulseControl!
   addPageSetup(pageSetup: PageSetupInput!): PageSetup!
   editPoints(points: Int!, couponValue: Int!): Points
+  editFollowUpFeature(followUp: Boolean!): Organization!
   addBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   editBankDefinition(bankDefinition: BankInputDefinition!): BankDefinition
   addExpenseTypeDefinition(
@@ -1042,6 +1043,8 @@ input AppointmentInput {
   courseId: ID
   waiting: Boolean
   sendSMS: Boolean
+  followUp: Boolean
+  appointmentId: ID
 }
 
 input AppointmentPictureInput {
@@ -1120,6 +1123,7 @@ type Points {
   points: Int!
   couponValue: Int!
 }
+
 type Coupon {
   id: ID!
   value: Int!
@@ -1690,6 +1694,7 @@ type Organization {
   id: ID!
   name: String!
   invoiceCounter: Int!
+  followUp: Boolean!
 }
 ########################### Hospitals ##################################
 

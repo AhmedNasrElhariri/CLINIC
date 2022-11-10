@@ -5,6 +5,7 @@ export const GET_INVOICE_COUNTER = gql`
     myInvoiceCounter {
       name
       invoiceCounter
+      followUp
     }
   }
 `;

@@ -302,6 +302,7 @@ const NewAppointment = ({
   onHide,
   appointment,
   followUp,
+  setFollowUp,
 }) => {
   const { visible, open, close } = useModal();
   const [patientSearchValue, setPatientSearchValue] = useState('');
@@ -357,29 +358,30 @@ const NewAppointment = ({
         id: s,
       };
     });
-  }, [sessionsDefinition]);
-  console.log(updatedSessionsDefinition, 'updatedSessionsDefinition');
+  }, [followUp, sessionsDefinition]);
+
   useEffect(() => {
-    if (appointment && appointment?.branch?.id != null) {
+    if (appointment) {
+      console.log('IN use app', appointment, formValue);
       setFormValue({
         branchId: appointment.branch.id,
         type: appointment.type,
         patientId: appointment.patient.id,
         specialtyId: appointment.specialty.id,
         userId: appointment.doctor.id,
-        date: new Date(),
       });
+      if (followUp && updatedSessionsDefinition.length > 0) {
+        setFormValue({
+          ...formValue,
+          session: updatedSessionsDefinition[0].id,
+          date: updatedSessionsDefinition[0].id.timer,
+        });
+      }
     }
-  }, [appointment]);
-  useEffect(() => {
-    if (followUp && updatedSessionsDefinition.length > 0) {
-      setFormValue({
-        ...formValue,
-        session: updatedSessionsDefinition[0].id,
-        date: updatedSessionsDefinition[0].id.timer,
-      });
-    }
-  }, [ followUp]);
+
+    console.log(formValue, 'Form In  ouy Use');
+  }, [appointment, followUp]);
+
   const handleCreate = useCallback(() => {
     setShow(true);
     if (!validate) {
@@ -414,6 +416,7 @@ const NewAppointment = ({
     }
     const sessionId = session?.id;
     const duration = session?.duration;
+    const appointmentId = appointment?.id;
     createAppointment({
       patientId,
       type,
@@ -426,9 +429,11 @@ const NewAppointment = ({
       sessionId,
       duration,
       sendSMS,
+      appointmentId,
+      followUp,
     });
-  }, [createAppointment, formValue]);
-  console.log(formValue, 'ff', followUp);
+  }, [createAppointment, formValue, followUp, appointment]);
+
   return (
     <>
       <NewPatient
@@ -446,6 +451,7 @@ const NewAppointment = ({
         onHide={() => {
           onHide();
           setFormValue(initialValues);
+          setFollowUp(false);
         }}
       >
         <Modal.Header className="text-[1rem]">

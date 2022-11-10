@@ -26,6 +26,7 @@ const initialValues = {
   date: new Date(),
   time: null,
   waiting: false,
+  appointmentId: null,
 };
 const { StringType, DateType } = Schema.Types;
 const model = Schema.Model({

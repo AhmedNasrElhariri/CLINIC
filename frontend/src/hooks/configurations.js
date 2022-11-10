@@ -13,6 +13,8 @@ import {
   EDIT_POINTS,
   GET_POINTS,
   UPDATE_SMS_CONF,
+  EDIT_FOLLOWUP_FEATURE,
+  GET_INVOICE_COUNTER,
 } from 'apollo-client/queries';
 
 const useConfigurations = ({ onUpdate } = {}) => {
@@ -41,6 +43,13 @@ const useConfigurations = ({ onUpdate } = {}) => {
     () => R.propOr({}, 'points')(pointsData),
     [pointsData]
   );
+  const { data: organizationData } = useQuery(GET_INVOICE_COUNTER, {
+    fetchPolicy: 'network-only',
+  });
+  const organization = useMemo(
+    () => R.propOr({}, 'myInvoiceCounter')(organizationData),
+    [organizationData]
+  );
   const [updateConfiguration] = useMutation(UPDATE_CONFIGURATION, {
     onCompleted: () => {
       Alert.success('Event has been updated successfully');
@@ -66,6 +75,11 @@ const useConfigurations = ({ onUpdate } = {}) => {
   const [editPoints] = useMutation(EDIT_POINTS, {
     onCompleted: () => {
       Alert.success('Points updated successfully');
+    },
+  });
+  const [editFollowUpFeature] = useMutation(EDIT_FOLLOWUP_FEATURE, {
+    onCompleted: () => {
+      Alert.success('Followup Feature updated successfully');
     },
   });
 
@@ -97,6 +111,8 @@ const useConfigurations = ({ onUpdate } = {}) => {
       editPoints,
       points,
       updateSMSConf,
+      editFollowUpFeature,
+      organization,
     }),
     [
       configurations,
@@ -107,7 +123,9 @@ const useConfigurations = ({ onUpdate } = {}) => {
       pageSetupData,
       editPoints,
       points,
-      updateSMSConf
+      updateSMSConf,
+      editFollowUpFeature,
+      organization,
     ]
   );
 };

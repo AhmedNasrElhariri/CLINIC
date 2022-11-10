@@ -24,6 +24,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
     onEditAppointments,
     onCancelAppointments,
     onFollowUpAppointments,
+    followUpFeature,
   } = rest;
 
   return (
@@ -144,20 +145,23 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                   </Div>
                 )}
               </Dropdown.Item>
-              <Dropdown.Item eventKey={9}>
-                <Div>
-                  <CRButton
-                    variant="primary"
-                    onClick={e => {
-                      e.stopPropagation();
-                      onFollowUpAppointments(appointment);
-                    }}
-                    style={{ width: '108px' }}
-                  >
-                    {t('followUp')}
-                  </CRButton>
-                </Div>
-              </Dropdown.Item>
+              {followUpFeature && (
+                <Dropdown.Item eventKey={9}>
+                  <Div>
+                    <CRButton
+                      variant="primary"
+                      onClick={e => {
+                        e.stopPropagation();
+                        onFollowUpAppointments(appointment);
+                      }}
+                      style={{ width: '108px' }}
+                    >
+                      {t('followUp')}
+                    </CRButton>
+                  </Div>
+                </Dropdown.Item>
+              )}
+
               <Dropdown.Item eventKey={10}>
                 {canAjdust(appointment) && (
                   <Div>
@@ -224,6 +228,7 @@ function ListAppointments({
   currentPage,
   setCurrentPage,
   close,
+  followUpFeature,
 }) {
   const history = useHistory();
   const ref = useRef();
@@ -547,6 +552,7 @@ function ListAppointments({
                 onEditAppointments={onEditAppointments}
                 onCancelAppointments={onCancelAppointments}
                 onFollowUpAppointments={onFollowUpAppointments}
+                followUpFeature={followUpFeature}
               />
             )}
           </Table.Cell>

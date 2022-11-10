@@ -189,6 +189,14 @@ export const EDIT_POINTS = gql`
     }
   }
 `;
+export const EDIT_FOLLOWUP_FEATURE = gql`
+  mutation editFollowUpFeature($followUp: Boolean!) {
+    editFollowUpFeature(followUp: $followUp) {
+      id
+      followUp
+    }
+  }
+`;
 export const GET_POINTS = gql`
   {
     points {
