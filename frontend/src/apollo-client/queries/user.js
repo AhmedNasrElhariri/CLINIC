@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const USER = gql`
   query user($id: ID!) {
@@ -99,14 +99,14 @@ export const SET_AVATAR = gql`
   }
 `;
 
-export const MY_NOTIFICATIONS = gql`
-  query myNotifications {
-    myNotifications {
-      message
-      viewed
-    }
-  }
-`;
+// export const MY_NOTIFICATIONS = gql`
+//   query myNotifications {
+//     myNotifications {
+//       message
+//       viewed
+//     }
+//   }
+// `;
 
 export const NOTIFICATION_SUBSCRIPTION = gql`
   subscription notifications {

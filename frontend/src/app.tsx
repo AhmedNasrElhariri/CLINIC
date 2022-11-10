@@ -3,7 +3,7 @@ import { ConfigProvider } from "antd";
 import "./styles/App.css";
 import { Provider } from "react-redux";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Ability } from "@casl/ability";
 import { ApolloProvider } from "@apollo/client";
 import { ThemeProvider } from "styled-components";
@@ -16,8 +16,6 @@ import lightTheme from "styles/light";
 import "rsuite/dist/styles/rsuite-default.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-image-gallery/styles/css/image-gallery.css";
-import "./state";
-import "./global-style.js";
 import { AbilityContext } from "components/user/can/index";
 import { get } from "services/local-storage";
 import { store } from "redux-store/store";

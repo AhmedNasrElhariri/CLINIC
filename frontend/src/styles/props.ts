@@ -1,4 +1,4 @@
-import { system } from 'styled-system';
+import { system } from "styled-system";
 
 export const textTransform = system({
   textTransform: true,

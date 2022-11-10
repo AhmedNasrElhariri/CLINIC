@@ -2,6 +2,9 @@ import { useCallback, useEffect } from "react";
 import { Button, Form, Input } from "antd";
 import { LoginPayload } from "features/auth/interfaces";
 import { useLoginMutation } from "features/auth/authAPI";
+import { setCookie } from "common/utils/cookies";
+import { setAuth } from "./authSlice";
+import { useAppDispatch } from "redux-store/hooks";
 
 const subTitleClasses =
   "!text-lg lg:!text-5xl !font-normal uppercase font-bebasNeue";
@@ -13,6 +16,7 @@ export default function Login({
   onLoginSucceeded: Function;
   onLoginFailed: Function;
 }) {
+  const dispatch = useAppDispatch();
   const [loginMutation, { data, isSuccess, isLoading, isError }] =
     useLoginMutation();
 
@@ -28,10 +32,12 @@ export default function Login({
   }, [isError, onLoginFailed]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && data) {
+      setCookie("token", String(data?.token));
+      dispatch(setAuth(data));
       onLoginSucceeded(data);
     }
-  }, [isSuccess, data, onLoginSucceeded]);
+  }, [isSuccess, data, onLoginSucceeded, dispatch]);
 
   return (
     <div className="h-screen w-full flex">

@@ -10,6 +10,9 @@ module.exports = {
       fontFamily: {
         bebasNeue: ["bebasNeue", "sans-serif"],
       },
+      screens: {
+        'antd-lg': '992px',
+      },
     },
   },
   plugins: [],

@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import moment from 'moment';
+
 const filterBySurgery = (data, filter) => {
   const surgeryId = R.propOr(null, 'surgery')(filter);
   return data.filter(({ surgery: { id } }) => !surgeryId || id === surgeryId);
