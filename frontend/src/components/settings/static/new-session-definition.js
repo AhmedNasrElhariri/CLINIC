@@ -3,6 +3,7 @@ import { Form, InputNumber, Toggle } from 'rsuite';
 import { CRModal, CRNumberInput, CRTextInput, CRLabel, Div } from 'components';
 import { useTranslation } from 'react-i18next';
 
+
 function NewSessionDefinition({
   formValue,
   onChange,

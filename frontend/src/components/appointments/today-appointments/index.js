@@ -309,8 +309,10 @@ function TodayAppointments() {
               onDuplicateAppointments={onDuplicateAppointments}
               onEditAppointments={onEditAppointments}
               onCancelAppointments={onCancelAppointments}
+              onFollowUpAppointments={onFollowUpAppointments}
               defaultExpanded={true}
               waiting={true}
+              followUpFeature={followUpFeature}
             />
           )}
         />

@@ -67,6 +67,9 @@ const sessionStatistics = async (
         lte: endDay,
       },
     },
+    include: {
+      user: true,
+    },
   });
   const updatedSessionsTransactions = sessionsTransactions.map(s => {
     return { ...s, totalPrice: s.number * s.price };
@@ -85,6 +88,7 @@ const sessionStatistics = async (
       sessionId: g[0].sessionId,
       totalNumber: totalNumber,
       totalPrice: totalPrice,
+      doctorName: g[0].user.name,
     };
   });
   const statistics = totalsessions.map(async ts => {
@@ -103,6 +107,7 @@ const sessionStatistics = async (
     const uniPatients = nuniquePatients(patients);
     return {
       name: session.name,
+      doctorName: ts.doctorName,
       totalNumber: ts.totalNumber,
       totalPrice: ts.totalPrice,
       patients: uniPatients,

@@ -193,6 +193,7 @@ const Test = props => {
                   <H5>Session Name : {st.name}</H5>
                   <H5>TotalNumber: {st.totalNumber}</H5>
                   <H5>TotalPrice:{st.totalPrice}</H5>
+                  <H5>User Name:{st.doctorName}</H5>
                   <CRTable autoHeight data={st.patients}>
                     <CRTable.CRColumn flexGrow={1}>
                       <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>

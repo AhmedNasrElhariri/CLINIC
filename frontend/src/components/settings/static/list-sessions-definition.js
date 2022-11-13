@@ -1,8 +1,8 @@
-import React from 'react';
-import { Icon } from 'rsuite';
-import { CRCard, CRTable } from 'components';
-import { useTranslation } from 'react-i18next';
-
+import React from "react";
+import { Icon } from "rsuite";
+import { CRCard, CRTable } from "components";
+import { useTranslation } from "react-i18next";
+import { formatDate } from "utils/date";
 function ListSessions({ sessions, onEdit }) {
   const { t } = useTranslation();
   console.log(sessions);
@@ -11,7 +11,7 @@ function ListSessions({ sessions, onEdit }) {
       <CRCard borderless>
         <CRTable autoHeight data={sessions}>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t("name")}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -19,7 +19,7 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t("price")}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ price }) => (
                 <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
@@ -27,7 +27,7 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('duration')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t("duration")}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ duration }) => (
                 <CRTable.CRCellStyled bold>{duration}</CRTable.CRCellStyled>
@@ -35,29 +35,33 @@ function ListSessions({ sessions, onEdit }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('followUp')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t("followUp")}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ followUp }) => (
-                <CRTable.CRCellStyled bold>{followUp? 'Yes' :'No'}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>
+                  {followUp ? "Yes" : "No"}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('timer')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t("timer")}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ timer }) => (
-                <CRTable.CRCellStyled bold>{timer}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>
+                  {formatDate(timer, "dddd, DD-MM-YYYY")}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {data => (
+              {(data) => (
                 <CRTable.CRCellStyled bold>
                   <Icon icon="edit" onClick={() => onEdit(data)}>
-                    {' '}
-                    {t('edit')}
+                    {" "}
+                    {t("edit")}
                   </Icon>
                 </CRTable.CRCellStyled>
               )}
@@ -66,10 +70,10 @@ function ListSessions({ sessions, onEdit }) {
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {data => (
+              {(data) => (
                 <Icon icon="trash" onClick={() => onEdit(data)}>
-                  {' '}
-                  {t('delete')}
+                  {" "}
+                  {t("delete")}
                 </Icon>
               )}
             </CRTable.CRCell>

@@ -32,6 +32,10 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
           <Table.HeaderCell>{t('units')}</Table.HeaderCell>
           <Table.Cell>{({ units }) => units}</Table.Cell>
         </Table.Column>
+        <Table.Column flexGrow={1} minWidth={48}>
+          <Table.HeaderCell>{t('notes')}</Table.HeaderCell>
+          <Table.Cell>{({ notes }) => notes}</Table.Cell>
+        </Table.Column>
         <Table.Column>
           <Table.HeaderCell></Table.HeaderCell>
           <Table.Cell>
