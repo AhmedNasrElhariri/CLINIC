@@ -141,7 +141,7 @@ export const ACTIONS = Object.freeze({
   ViewSessions_Patient: 'ViewSessions_Patient',
   ViewLabs_Patient: 'ViewLabs_Patient',
   ViewImages_Patient: 'ViewImages_Patient',
-  DeleteImages_Patient:'DeleteImages_Patient',
+  DeleteImages_Patient: 'DeleteImages_Patient',
   ViewCourses_Patient: 'ViewCourses_Patient',
   ViewSessionsPulses_Patient: 'ViewSessionsPulses_Patient',
   GenerateMonthly_PulsesReport: 'GenerateMonthly_PulsesReport',
@@ -160,4 +160,8 @@ export const ACTIONS = Object.freeze({
   ViewPatientInfo_Patient: 'ViewPatientInfo_Patient',
   ViewSurgeries_Patient: 'ViewSurgeries_Patient',
   View_SupplierAccount: 'View_SupplierAccount',
+  ViewDynamicViews_CurrentAppointment: 'ViewDynamicViews_CurrentAppointment',
+  ViewNotes_CurrentAppointment: 'ViewNotes_CurrentAppointment',
+  ViewImages_CurrentAppointment: 'ViewImages_CurrentAppointment',
+  DeleteImages_CurrentAppointment: 'DeleteImages_CurrentAppointment',
 });

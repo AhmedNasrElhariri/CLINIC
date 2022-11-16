@@ -1,11 +1,12 @@
 import { prisma } from '@';
 import { getArea } from '../../services/get_Area';
+
 const createPatient = async (
   _,
   { input: patient },
   { userId, organizationId }
 ) => {
-  const { area, name, phoneNo, code, ...rest } = patient;
+  const { area, name, phoneNo, code, branchId, ...rest } = patient;
 
   const organization = await prisma.organization.findUnique({
     where: {
@@ -25,23 +26,32 @@ const createPatient = async (
   const updatedPatientCode = 'cr' + patientCode;
   const finalCode = code ? code : updatedPatientCode;
   return prisma.patient.create({
-    data: {
-      area: area,
-      code: finalCode,
-      name,
-      phoneNo,
-      ...rest,
-      organization: {
-        connect: {
-          id: organizationId,
+    data: Object.assign(
+      {
+        area: area,
+        code: finalCode,
+        name,
+        phoneNo,
+        ...rest,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
         },
       },
-      user: {
-        connect: {
-          id: userId,
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
         },
-      },
-    },
+      }
+    ),
   });
 };
 

@@ -1,8 +1,8 @@
-import React from 'react';
-import { CRCard } from 'components';
-import { formatDate } from 'utils/date';
-import { Icon, Table } from 'rsuite';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { CRCard } from "components";
+import { formatDate } from "utils/date";
+import { Icon, Table } from "rsuite";
+import { useTranslation } from "react-i18next";
 
 const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
   const { t } = useTranslation();
@@ -15,31 +15,31 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
         data={courseUnitsHistory}
       >
         <Table.Column flexGrow={1} minWidth={64}>
-          <Table.HeaderCell>{t('number')}</Table.HeaderCell>
+          <Table.HeaderCell>{t("number")}</Table.HeaderCell>
           <Table.Cell>{(_, indx) => indx + 1}</Table.Cell>
         </Table.Column>
         <Table.Column flexGrow={1} minWidth={192}>
-          <Table.HeaderCell>{t('date')}</Table.HeaderCell>
+          <Table.HeaderCell>{t("date")}</Table.HeaderCell>
           <Table.Cell>
-            {({ date }) => formatDate(date, 'dddd, DD-MM-YYYY')}
+            {({ date }) => formatDate(date, "dddd, DD-MM-YYYY")}
           </Table.Cell>
         </Table.Column>
         <Table.Column flexGrow={1} minWidth={128}>
-          <Table.HeaderCell>{t('creator')}</Table.HeaderCell>
+          <Table.HeaderCell>{t("creator")}</Table.HeaderCell>
           <Table.Cell>{({ user }) => user.name}</Table.Cell>
         </Table.Column>
         <Table.Column flexGrow={1} minWidth={48}>
-          <Table.HeaderCell>{t('units')}</Table.HeaderCell>
+          <Table.HeaderCell>{t("units")}</Table.HeaderCell>
           <Table.Cell>{({ units }) => units}</Table.Cell>
         </Table.Column>
         <Table.Column flexGrow={1} minWidth={48}>
-          <Table.HeaderCell>{t('notes')}</Table.HeaderCell>
+          <Table.HeaderCell>{t("notes")}</Table.HeaderCell>
           <Table.Cell>{({ notes }) => notes}</Table.Cell>
         </Table.Column>
         <Table.Column>
           <Table.HeaderCell></Table.HeaderCell>
           <Table.Cell>
-            {data => (
+            {(data) => (
               <Icon
                 icon="edit"
                 onClick={() => {
@@ -47,12 +47,13 @@ const CourseUnitsHistory = ({ courseUnitsHistory, onEdit, courseId }) => {
                     id: courseId,
                     units: data.units,
                     transactionId: data.id,
+                    notes: data.notes,
                   };
                   onEdit(newData);
                 }}
               >
-                {' '}
-                {t('edit')}
+                {" "}
+                {t("edit")}
               </Icon>
             )}
           </Table.Cell>

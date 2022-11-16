@@ -215,6 +215,10 @@ enum PermissionAction {
   View_Permission
   ViewFilters_Accounting
   View_SupplierAccount
+  ViewDynamicViews_CurrentAppointment
+  ViewNotes_CurrentAppointment
+  ViewImages_CurrentAppointment
+  DeleteImages_CurrentAppointment
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -382,6 +386,8 @@ model Patient {
   organizationId     String
   user               User                  @relation(fields: [userId], references: [id])
   userId             String
+  branch             Branch?               @relation(fields: [branchId], references: [id])
+  branchId           String?
   guardianName       String?
   createdAt          DateTime              @default(now())
   updatedAt          DateTime              @default(now()) @updatedAt
@@ -1608,6 +1614,7 @@ model Branch {
   CoursePayment      CoursePayment[]
   BankExpense        BankExpense[]
   InventoryHistory   InventoryHistory[]
+  Patient            Patient[]
 }
 
 model Specialty {

@@ -11,11 +11,11 @@ function groupArrayOfObjects(list, key) {
 const nuniquePatients = arr => {
   const uniqueIds = [];
 
-  const unique = arr.filter(element => {
-    const isDuplicate = uniqueIds.includes(element.id);
+  const unique = arr.filter(({ patient, doctor }) => {
+    const isDuplicate = uniqueIds.includes(patient.id);
 
     if (!isDuplicate) {
-      uniqueIds.push(element.id);
+      uniqueIds.push(patient.id);
 
       return true;
     }
@@ -67,9 +67,6 @@ const sessionStatistics = async (
         lte: endDay,
       },
     },
-    include: {
-      user: true,
-    },
   });
   const updatedSessionsTransactions = sessionsTransactions.map(s => {
     return { ...s, totalPrice: s.number * s.price };
@@ -88,7 +85,6 @@ const sessionStatistics = async (
       sessionId: g[0].sessionId,
       totalNumber: totalNumber,
       totalPrice: totalPrice,
-      doctorName: g[0].user.name,
     };
   });
   const statistics = totalsessions.map(async ts => {
@@ -101,16 +97,17 @@ const sessionStatistics = async (
           lte: endDay,
         },
       },
-      include: { patient: true },
+      include: { patient: true, doctor: true },
     });
-    const patients = revenues.map(rr => rr.patient);
-    const uniPatients = nuniquePatients(patients);
+    const updatedRevenue = revenues.map(rr => {
+      return { patient: rr.patient, doctor: rr.doctor };
+    });
+    const uniRevenues = nuniquePatients(updatedRevenue);
     return {
       name: session.name,
-      doctorName: ts.doctorName,
       totalNumber: ts.totalNumber,
       totalPrice: ts.totalPrice,
-      patients: uniPatients,
+      sessions: uniRevenues,
     };
   });
 

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const CREATE_PATIENT = gql`
   mutation createPatient($input: PatientInput!) {
@@ -71,6 +71,7 @@ export const LIST_PATIENTS_REPORTS = gql`
     $ageFrom: Int
     $ageTo: Int
     $reference: String
+    $branchId: String
   ) {
     patientsReports(
       offset: $offset
@@ -84,6 +85,7 @@ export const LIST_PATIENTS_REPORTS = gql`
       ageFrom: $ageFrom
       ageTo: $ageTo
       reference: $reference
+      branchId: $branchId
     ) {
       patients {
         id

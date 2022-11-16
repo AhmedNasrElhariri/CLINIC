@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const LIST_PRICES = gql`
   {
@@ -63,10 +63,16 @@ export const LIST_SESSION_STATISTICS = gql`
       name
       totalNumber
       totalPrice
-      doctorName
-      patients {
-        name
-        phoneNo
+      sessions {
+        doctor {
+          id
+          name
+        }
+        patient {
+          id
+          name
+          phoneNo
+        }
       }
     }
   }

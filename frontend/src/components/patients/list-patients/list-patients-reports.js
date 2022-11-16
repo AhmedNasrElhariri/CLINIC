@@ -1,22 +1,23 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
-import ReactToPrint from 'react-to-print';
-import { MainContainer, CRTable, Div, CRButton, H3, H4 } from 'components';
-import { Can } from 'components/user/can';
-import PatientsFilter from '../filter/patients-reports-filter';
-import EditPatient from '../edit-patient';
-import { usePatients } from 'hooks';
-import { useTranslation } from 'react-i18next';
-import { format } from 'utils/date';
+import React, { useState, useRef, useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import ReactToPrint from "react-to-print";
+import { MainContainer, CRTable, Div, CRButton, H3, H4 } from "components";
+import { Can } from "components/user/can";
+import PatientsFilter from "../filter/patients-reports-filter";
+import EditPatient from "../edit-patient";
+import { usePatients } from "hooks";
+import { useTranslation } from "react-i18next";
+import { format } from "utils/date";
 
 const initialValue = {
-  area: '',
-  reference: '',
+  area: "",
+  reference: "",
   patientLevel: null,
   age: null,
   session: null,
   type: null,
   enable: false,
+  branchId: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -44,10 +45,11 @@ function Patients() {
     period: period,
     enable: filter.enable,
     reference: filter.reference,
+    branchId: filter.branchId,
   });
 
   const handleSelect = useCallback(
-    eventKey => {
+    (eventKey) => {
       setCurrentPage({ activePage: eventKey });
     },
     [setCurrentPage]
@@ -57,13 +59,13 @@ function Patients() {
     <>
       <Can I="View" an="Patient">
         <MainContainer
-          title={t('patients')}
+          title={t("patients")}
           more={
             <Div display="flex">
               <Can I="CreateSocialReport" an="Patient">
                 <ReactToPrint
                   trigger={() => (
-                    <CRButton variant="primary">{t('print')} +</CRButton>
+                    <CRButton variant="primary">{t("print")} +</CRButton>
                   )}
                   content={() => ref.current}
                 />
@@ -101,7 +103,7 @@ function Patients() {
             bordered={false}
           >
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("patient")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ name }) => (
                   <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
@@ -110,7 +112,7 @@ function Patients() {
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('membershipType')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("membershipType")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ type }) => (
                   <CRTable.CRCellStyled bold>{type}</CRTable.CRCellStyled>
@@ -119,7 +121,7 @@ function Patients() {
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("phoneNo")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ phoneNo }) => (
                   <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
@@ -127,7 +129,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('phoneNoTwo')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("phoneNoTwo")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ phoneNoTwo }) => (
                   <CRTable.CRCellStyled bold>{phoneNoTwo}</CRTable.CRCellStyled>
@@ -135,7 +137,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('code')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("code")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ code }) => (
                   <CRTable.CRCellStyled bold>{code}</CRTable.CRCellStyled>
@@ -144,7 +146,7 @@ function Patients() {
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('maritalStatus')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("maritalStatus")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ maritalStatus }) => (
                   <CRTable.CRCellStyled bold>
@@ -155,7 +157,7 @@ function Patients() {
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('patientLevel')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("patientLevel")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ patientLevel }) => (
                   <CRTable.CRCellStyled bold>
@@ -166,7 +168,7 @@ function Patients() {
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('email')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("email")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ email }) => (
                   <CRTable.CRCellStyled bold>{email}</CRTable.CRCellStyled>
@@ -175,7 +177,7 @@ function Patients() {
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('area')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("area")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ area }) => (
                   <CRTable.CRCellStyled bold>{area}</CRTable.CRCellStyled>
@@ -184,16 +186,16 @@ function Patients() {
             </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1}>
-              <CRTable.CRHeaderCell>{t('reference')}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t("reference")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ reference }) => (
                   <CRTable.CRCellStyled bold>
                     <Div display="flex">
-                      {reference.map(r => (
+                      {reference.map((r) => (
                         <Div>
-                          {' - '}
+                          {" - "}
                           {r}
-                          {'  '}
+                          {"  "}
                         </Div>
                       ))}
                     </Div>
@@ -205,7 +207,7 @@ function Patients() {
             <CRTable.CRColumn flexGrow={1}>
               <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
               <CRTable.CRCell>
-                {data => <EditPatient patient={data} t={t} />}
+                {(data) => <EditPatient patient={data} t={t} />}
               </CRTable.CRCell>
             </CRTable.CRColumn>
           </CRTable>
@@ -225,10 +227,10 @@ function Patients() {
             pages={reportsPages}
             onSelect={handleSelect}
             total={ReportsPatients && ReportsPatients.length}
-            onChangePage={p => setCurrentPage(p)}
+            onChangePage={(p) => setCurrentPage(p)}
           />
 
-          <Div style={{ overflow: 'hidden', height: '0px' }}>
+          <Div style={{ overflow: "hidden", height: "0px" }}>
             <Div ref={ref}>
               <H3 textAlign="center" margin="10px">
                 Patients Report

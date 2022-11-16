@@ -147,6 +147,7 @@ type Query {
     enable: Boolean
     type: Sex
     reference: String
+    branchId: String
   ): PatientData
   searchedPatients(name: String, organizationId: ID): [Patient!]
   allPatients: [Patient!]
@@ -905,6 +906,7 @@ input PatientInput {
   email: String
   maritalStatus: MaritalStatus
   patientLevel: PatientLevel
+  branchId: ID
 }
 input RegisterPatientInput {
   phoneNo: String!
@@ -1805,8 +1807,12 @@ type SessionStatistics {
   name: String!
   totalNumber: Int!
   totalPrice: Int!
-  patients: [Patient]
-  doctorName: String
+  sessions: [UpdatedSessions]
+}
+
+type UpdatedSessions {
+  patient: Patient
+  doctor: User
 }
 
 ########################### SupplierAccount ##################################
