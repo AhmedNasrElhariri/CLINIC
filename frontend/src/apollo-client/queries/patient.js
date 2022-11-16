@@ -52,6 +52,7 @@ export const LIST_PATIENTS = gql`
         area
         code
         date
+        branchId
       }
       patientsCount
     }
@@ -102,6 +103,7 @@ export const LIST_PATIENTS_REPORTS = gql`
         area
         code
         date
+        branchId
       }
       patientsCount
     }

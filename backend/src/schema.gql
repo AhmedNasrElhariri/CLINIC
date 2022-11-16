@@ -869,6 +869,7 @@ type Patient implements Searchable {
   age: Int!
   date: Date
   sex: Sex!
+  branchId: ID
   appointments: [Appointment!]
 }
 

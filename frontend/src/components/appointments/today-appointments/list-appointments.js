@@ -281,6 +281,36 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
+        <CRTable.CRColumn>
+          <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ user }) => (
+              <CRTable.CRCellStyled>{user?.name}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+
+        <CRTable.CRColumn width={200}>
+          <CRTable.CRHeaderCell>{t("type")}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ type, session }) => (
+              <CRTable.CRCellStyled>
+                {type === "Session" ? "S " : type}{" "}
+                {type === "Session" ? session?.name : ""}
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn width={50}>
+          <CRTable.CRHeaderCell>{t("reference")}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ reference }) => (
+              <CRTable.CRCellStyled>
+                <Div fontWeight="Bold">{reference}</Div>
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
         <CRTable.CRColumn width={200}>
           <CRTable.CRHeaderCell>{t("patient")}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -311,28 +341,6 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-
-        <CRTable.CRColumn width={200}>
-          <CRTable.CRHeaderCell>{t("type")}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ type, session }) => (
-              <CRTable.CRCellStyled>
-                {type === "Session" ? "S " : type}{" "}
-                {type === "Session" ? session?.name : ""}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn width={50}>
-          <CRTable.CRHeaderCell>{t("reference")}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ reference }) => (
-              <CRTable.CRCellStyled>
-                <Div fontWeight="Bold">{reference}</Div>
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
         <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>{t("doctor")}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -341,14 +349,7 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn>
-          <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ user }) => (
-              <CRTable.CRCellStyled>{user?.name}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
+
         <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>{t("specialty")}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -605,13 +606,11 @@ function ListAppointments({
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.7}>
-              <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+            <CRTable.CRColumn flexGrow={0.8}>
+              <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
               <CRTable.CRCell>
-                {({ patient }) => (
-                  <CRTable.CRCellStyled bold>
-                    {patient.name}
-                  </CRTable.CRCellStyled>
+                {({ user }) => (
+                  <CRTable.CRCellStyled>{user.name}</CRTable.CRCellStyled>
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
@@ -637,18 +636,21 @@ function ListAppointments({
               </CRTable.CRCell>
             </CRTable.CRColumn>
             <CRTable.CRColumn flexGrow={0.7}>
+              <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ patient }) => (
+                  <CRTable.CRCellStyled bold>
+                    {patient.name}
+                  </CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
+
+            <CRTable.CRColumn flexGrow={0.7}>
               <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ doctor }) => (
                   <CRTable.CRCellStyled>{doctor.name}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.8}>
-              <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ user }) => (
-                  <CRTable.CRCellStyled>{user.name}</CRTable.CRCellStyled>
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
