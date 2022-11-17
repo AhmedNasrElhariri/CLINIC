@@ -145,11 +145,6 @@ enum FieldGroupStatus {
   Dynamic
 }
 
-enum PatientOldOrNew {
-  Old
-  New
-}
-
 enum PermissionAction {
   List_Appointment
   Create_Appointment
@@ -378,7 +373,6 @@ model Patient {
   area               String                @default("")
   password           String?
   remainingOfPayment Int?                  @default(0)
-  oldOrNew           PatientOldOrNew?
   maritalStatus      MaritalStatus?
   patientLevel       PatientLevel?
   email              String?
