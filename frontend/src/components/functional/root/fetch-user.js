@@ -1,17 +1,18 @@
-import { useEffect, useCallback, useMemo } from "react";
-import { useLazyQuery, useSubscription, useMutation } from "@apollo/client";
+import { useEffect, useCallback } from "react";
+import { useLazyQuery } from "@apollo/client";
 import * as R from "ramda";
 
-import * as ls from "services/local-storage";
 import {
   ACTIVE_VIEWS,
-  NOTIFICATION_SUBSCRIPTION,
   // MY_NOTIFICATIONS,
   // CLEAR_NOTIFICATIONS,
   ACTIVE_PATIENT_VIEWS,
 } from "apollo-client/queries";
-import { ACCESS_TOKEN } from "utils/constants";
-import { set } from "../../../services/local-storage";
+import {
+  removeUserToken,
+  set,
+  setUserToken,
+} from "../../../services/local-storage";
 import { useAuth } from "hooks";
 import useGlobalState from "state";
 
@@ -52,7 +53,7 @@ function useUserProfile() {
       getPatientViews();
       // getNotifications();
     }
-  }, [data, getViews, isAuthenticated, isVerified]);
+  }, [data, getViews, isAuthenticated, isVerified, getPatientViews]);
 
   useEffect(() => {
     const views = R.prop("activeViews")(data);
@@ -71,7 +72,7 @@ function useUserProfile() {
 
   const onLoginSucceeded = useCallback(
     ({ token, user }) => {
-      ls.setUserToken(token);
+      setUserToken(token);
       setAuthenticated(true);
       set("user", user);
       setUser(user);
@@ -81,12 +82,12 @@ function useUserProfile() {
   );
 
   const onLoginFailed = useCallback(() => {
-    ls.removeUserToken(ACCESS_TOKEN);
+    removeUserToken();
     setAuthenticated(false);
   }, [setAuthenticated]);
 
   const logout = useCallback(() => {
-    ls.removeUserToken(ACCESS_TOKEN);
+    removeUserToken();
     setAuthenticated(false);
     window.location.reload();
   }, [setAuthenticated]);

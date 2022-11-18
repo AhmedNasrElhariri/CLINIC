@@ -1,7 +1,7 @@
-import { useMemo, useCallback } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import * as R from 'ramda';
-import { Alert } from 'rsuite';
+import { useMemo, useCallback } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import * as R from "ramda";
+import { Alert } from "rsuite";
 
 import {
   LIST_CONFIGURATIONS,
@@ -15,14 +15,14 @@ import {
   UPDATE_SMS_CONF,
   EDIT_FOLLOWUP_FEATURE,
   GET_INVOICE_COUNTER,
-} from 'apollo-client/queries';
+} from "apollo-client/queries";
 
 const useConfigurations = ({ onUpdate } = {}) => {
   const { data } = useQuery(LIST_CONFIGURATIONS, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
   });
   const configurations = useMemo(
-    () => R.propOr({}, 'configuration')(data),
+    () => R.propOr({}, "configuration")(data),
     [data]
   );
   // const { data: PulseData } = useQuery(GET_PULSE_CONTROL, {
@@ -35,36 +35,36 @@ const useConfigurations = ({ onUpdate } = {}) => {
 
   const { data: pageSetup } = useQuery(GET_PAGE_SETUP);
   const pageSetupData = useMemo(
-    () => R.propOr([], 'getPageSetup')(pageSetup),
+    () => R.propOr([], "getPageSetup")(pageSetup),
     [pageSetup]
   );
   const { data: pointsData } = useQuery(GET_POINTS);
   const points = useMemo(
-    () => R.propOr({}, 'points')(pointsData),
+    () => R.propOr({}, "points")(pointsData),
     [pointsData]
   );
   const { data: organizationData } = useQuery(GET_INVOICE_COUNTER, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
   });
   const organization = useMemo(
-    () => R.propOr({}, 'myInvoiceCounter')(organizationData),
+    () => R.propOr({}, "myInvoiceCounter")(organizationData),
     [organizationData]
   );
   const [updateConfiguration] = useMutation(UPDATE_CONFIGURATION, {
     onCompleted: () => {
-      Alert.success('Event has been updated successfully');
+      Alert.success("Event has been updated successfully");
       onUpdate && onUpdate();
     },
   });
   const [addPulsesControl] = useMutation(ADD_PULSES_CONTROL, {
     onCompleted: () => {
-      Alert.success('Pulses Contol Added successfully');
+      Alert.success("Pulses Contol Added successfully");
     },
   });
 
   const [addPageSetup] = useMutation(ADD_PAGE_SETUP, {
     onCompleted: () => {
-      Alert.success('Page Setup updated successfully');
+      Alert.success("Page Setup updated successfully");
     },
     refetchQueries: [
       {
@@ -74,23 +74,23 @@ const useConfigurations = ({ onUpdate } = {}) => {
   });
   const [editPoints] = useMutation(EDIT_POINTS, {
     onCompleted: () => {
-      Alert.success('Points updated successfully');
+      Alert.success("Points updated successfully");
     },
   });
   const [editFollowUpFeature] = useMutation(EDIT_FOLLOWUP_FEATURE, {
     onCompleted: () => {
-      Alert.success('Followup Feature updated successfully');
+      Alert.success("Followup Feature updated successfully");
     },
   });
 
   const handleUpdateConfiguration = useCallback(
-    configuration => updateConfiguration({ variables: { configuration } }),
+    (configuration) => updateConfiguration({ variables: { configuration } }),
     [updateConfiguration]
   );
 
   const [updateSMSConf] = useMutation(UPDATE_SMS_CONF, {
     onCompleted: () => {
-      Alert.success('SMS Configuration has been updated successfully');
+      Alert.success("SMS Configuration has been updated successfully");
       onUpdate && onUpdate();
     },
     refetchQueries: [

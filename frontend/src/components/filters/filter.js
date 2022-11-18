@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
-import { Form } from 'rsuite';
-import { get } from 'services/local-storage';
-import { CRSelectInput } from 'components';
-import { useTranslation } from 'react-i18next';
-import * as R from 'ramda';
+import React, { useEffect, useMemo } from "react";
+import { Form } from "rsuite";
+import { get } from "services/local-storage";
+import { CRSelectInput } from "components";
+import { useTranslation } from "react-i18next";
+import * as R from "ramda";
+
 function AppointmentsFilter({ formValue, onChange, branches, formClassName }) {
-  const branch = get('branch');
+  const branch = get("branch");
   const { t } = useTranslation();
   useEffect(() => {
     onChange({ ...formValue, branch: branch });
@@ -13,8 +14,8 @@ function AppointmentsFilter({ formValue, onChange, branches, formClassName }) {
   const specialties = useMemo(
     () =>
       R.pipe(
-        R.find(R.propEq('id', formValue.branch)),
-        R.propOr([], 'specialties')
+        R.find(R.propEq("id", formValue.branch)),
+        R.propOr([], "specialties")
       )(branches),
     [branches, formValue.branch]
   );
@@ -22,8 +23,8 @@ function AppointmentsFilter({ formValue, onChange, branches, formClassName }) {
   const doctors = useMemo(
     () =>
       R.pipe(
-        R.find(R.propEq('id', formValue.specialty)),
-        R.propOr([], 'doctors')
+        R.find(R.propEq("id", formValue.specialty)),
+        R.propOr([], "doctors")
       )(specialties),
     [formValue.specialty, specialties]
   );
@@ -37,8 +38,8 @@ function AppointmentsFilter({ formValue, onChange, branches, formClassName }) {
       <div className="flex-1">
         <CRSelectInput
           name="branch"
-          label={t('branch')}
-          placeholder={t('select')}
+          label={t("branch")}
+          placeholder={t("select")}
           data={branches}
           block
         />
@@ -46,8 +47,8 @@ function AppointmentsFilter({ formValue, onChange, branches, formClassName }) {
       <div className="flex-1">
         <CRSelectInput
           name="specialty"
-          label={t('specialty')}
-          placeholder={t('select')}
+          label={t("specialty")}
+          placeholder={t("select")}
           block
           data={specialties}
         />
@@ -55,10 +56,10 @@ function AppointmentsFilter({ formValue, onChange, branches, formClassName }) {
       <div className="flex-1">
         <CRSelectInput
           name="doctor"
-          label={t('user')}
+          label={t("user")}
           block
           data={doctors}
-          placeholder={t('select')}
+          placeholder={t("select")}
         />
       </div>
       {/* <Div display="flex" width="100%" justifyContent="space-between"> */}

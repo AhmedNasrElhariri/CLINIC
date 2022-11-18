@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getCookie } from "common/utils/cookies";
-import { Auth, LoginResponse } from "./interfaces";
+import { AuthStore, LoginResponse } from "common/interfaces";
+import { getToken } from "services/local-storage";
 
-const initialState: Auth = {
+const initialState: AuthStore = {
   user: undefined,
-  token: getCookie("token"),
+  token: getToken(),
 };
 
 const authSlice = createSlice({

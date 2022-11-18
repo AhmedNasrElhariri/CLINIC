@@ -1,5 +1,5 @@
 import { Drawer } from "antd";
-import { Dispatch, memo, SetStateAction } from "react";
+import { Dispatch, memo, SetStateAction, useCallback } from "react";
 import SideContent from "./SideContent";
 
 export default memo(function AppDrawer({
@@ -9,14 +9,18 @@ export default memo(function AppDrawer({
   isOpen: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const closeDrawer = useCallback(() => {
+    setOpen(false);
+  }, [setOpen]);
+
   return (
     <Drawer
       open={isOpen}
       width={256}
-      onClose={() => setOpen(false)}
-      bodyStyle={{ padding: "0.5rem 0"}}
+      onClose={closeDrawer}
+      bodyStyle={{ padding: "0.5rem 0" }}
     >
-      <SideContent />
+      <SideContent closeDrawer={closeDrawer} />
     </Drawer>
   );
 });

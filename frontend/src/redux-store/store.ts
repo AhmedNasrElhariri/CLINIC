@@ -2,12 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "features/api/apiSlice";
 import { rtkQueryErrorHandler } from "middlewares/rtkQueryErrorHandler";
 import authReducer from "features/auth/authSlice";
-import organizationReducer from "features/organization/organizationSlice";
+import rootReducer from "features/root/rootSlice";
 
 export const store = configureStore({
   reducer: {
+    root: rootReducer,
     auth: authReducer,
-    organization: organizationReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>

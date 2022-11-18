@@ -1,15 +1,15 @@
-import React, { useCallback, useState, useMemo } from 'react';
-import * as R from 'ramda';
-import styled from 'styled-components';
-import { Div, H3, CRButton } from 'components';
-import useFrom from 'hooks/form';
-import { Can } from 'components/user/can';
-import NewCourse from 'components/appointments/appointment/courses';
-import CourseData from 'components/appointments/appointment/courses/course';
-import { useCourses } from 'hooks';
-import { useModal } from 'hooks';
-import { CRTabs } from 'components';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback, useState, useMemo } from "react";
+import * as R from "ramda";
+import styled from "styled-components";
+import { Div, H3, CRButton } from "components";
+import useFrom from "hooks/form";
+import { Can } from "components/user/can";
+import NewCourse from "components/appointments/appointment/courses";
+import CourseData from "components/appointments/appointment/courses/course";
+import { useCourses } from "hooks";
+import { useModal } from "hooks";
+import { CRTabs } from "components";
+import { useTranslation } from "react-i18next";
 
 const initValue = {
   course: null,
@@ -24,9 +24,9 @@ const initValue = {
   branchId: null,
   specialtyId: null,
   userId: null,
-  courseType: 'standard',
+  courseType: "standard",
   customUnits: 0,
-  notes: '',
+  notes: "",
 };
 
 const CourseButton = styled.button`
@@ -42,7 +42,7 @@ const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
   const [index, setIndex] = useState(0);
-  const [header, setHeader] = useState('');
+  const [header, setHeader] = useState("");
   const [visa, setVisa] = useState(false);
   const [bank, setBank] = useState(null);
   const [selectedSessions, setSelectedSessions] = useState([]);
@@ -94,84 +94,83 @@ const Course = ({ patientId }) => {
     courseId: formValue?.id,
   });
   const handleClickCreate = useCallback(() => {
-    setType('create');
-    setHeader(t('createNewCourse'));
+    setType("create");
+    setHeader(t("createNewCourse"));
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
   const handleClickEditUnits = useCallback(
-    data => {
-      const course = R.pick(['id', 'consumed'])(data);
-      setType('editConsumedUnits');
-      setHeader(t('editConsumedUnits'));
+    (data) => {
+      const course = R.pick(["id", "consumed"])(data);
+      setType("editConsumedUnits");
+      setHeader(t("editConsumedUnits"));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickAddUnits = useCallback(
-    data => {
-      const course = R.pick(['id', 'consumed'])(data);
-      setType('addNewUnits');
-      setHeader(t('addNewUnits'));
+    (data) => {
+      const course = R.pick(["id", "consumed"])(data);
+      setType("addNewUnits");
+      setHeader(t("addNewUnits"));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickEditPaid = useCallback(
-    data => {
-      const course = R.pick(['id'])(data);
-      setType('edit');
-      setHeader(t('addNewPayment'));
+    (data) => {
+      const course = R.pick(["id"])(data);
+      setType("edit");
+      setHeader(t("addNewPayment"));
       setFormValue({ ...course, paid: 0, visaPaid: 0 });
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickEditHistoryPayment = useCallback(
-    data => {
-      const course = R.pick(['id', 'paid', 'paymentId'])(data);
-      setType('editPaymentHistory');
-      setHeader(t('editHistoryPayment'));
+    (data) => {
+      const course = R.pick(["id", "paid", "paymentId"])(data);
+      setType("editPaymentHistory");
+      setHeader(t("editHistoryPayment"));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickEditDoctor = useCallback(
-    data => {
-      const course = R.pick(['id', 'doctorId'])(data);
-      setType('courseDoctor');
-      setHeader(t('assignNewDoctor'));
+    (data) => {
+      const course = R.pick(["id", "doctorId"])(data);
+      setType("courseDoctor");
+      setHeader(t("assignNewDoctor"));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleDeleteCourse = useCallback(
-    data => {
-      const course = R.pick(['id'])(data);
-      setType('deleteCourse');
-      setHeader(t('cancelTheCourse'));
+    (data) => {
+      const course = R.pick(["id"])(data);
+      setType("deleteCourse");
+      setHeader(t("cancelTheCourse"));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleFinishCourse = useCallback(
-    course => {
-      setType('finishCourse');
-      setHeader(t('finishTheCourse'));
+    (course) => {
+      setType("finishCourse");
+      setHeader(t("finishTheCourse"));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickEditUnitsHistory = useCallback(
-    data => {
-      console.log(data,'DDD');
-      const unitTransaction = R.pick(['id', 'units', 'transactionId', 'notes'])(
+    (data) => {
+      const unitTransaction = R.pick(["id", "units", "transactionId", "notes"])(
         data
       );
       console.log(unitTransaction,'unitTransaction');
@@ -181,18 +180,18 @@ const Course = ({ patientId }) => {
         notes: unitTransaction.notes,
         transactionId: unitTransaction.transactionId,
       };
-      setType('editUnitsTransactions');
-      setHeader(t('editUnitTransaction'));
+      setType("editUnitsTransactions");
+      setHeader(t("editUnitTransaction"));
       setFormValue(updatedUnitTransaction);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'create') {
+    if (type === "create") {
       let price = 0;
       let courseId = null,
-        customName = '';
+        customName = "";
 
       const {
         discount,
@@ -206,7 +205,7 @@ const Course = ({ patientId }) => {
         courseType,
         customUnits,
       } = formValue;
-      if (courseType === 'standard' && course) {
+      if (courseType === "standard" && course) {
         price = course.price;
         courseId = course.id;
       } else {
@@ -215,7 +214,7 @@ const Course = ({ patientId }) => {
           0
         );
         selectedSessions.forEach(({ number, name }) => {
-          customName += number + '-' + name + ' ';
+          customName += number + "-" + name + " ";
         });
       }
       const finalFormValue = {
@@ -238,37 +237,37 @@ const Course = ({ patientId }) => {
           course: finalFormValue,
         },
       });
-    } else if (type === 'courseDoctor') {
+    } else if (type === "courseDoctor") {
       editCourseDoctor({
         variables: {
           courseId: formValue.id,
           doctorId: formValue.doctorId,
         },
       });
-    } else if (type === 'finishCourse') {
+    } else if (type === "finishCourse") {
       finishCourse({
         variables: {
           courseId: formValue.id,
         },
       });
-    } else if (type === 'addNewUnits') {
+    } else if (type === "addNewUnits") {
       editCourseUnits({
         variables: {
           courseId: formValue.id,
           consumed: formValue.consumed,
           notes: formValue.notes,
-          type: 'addNewUnits',
+          type: "addNewUnits",
         },
       });
-    } else if (type === 'editConsumedUnits') {
+    } else if (type === "editConsumedUnits") {
       editCourseUnits({
         variables: {
           courseId: formValue.id,
           consumed: formValue.consumed,
-          type: 'editConsumedUnits',
+          type: "editConsumedUnits",
         },
       });
-    } else if (type === 'editUnitsTransactions') {
+    } else if (type === "editUnitsTransactions") {
       editCourseUnitHistory({
         variables: {
           transactionId: formValue.transactionId,
@@ -277,7 +276,7 @@ const Course = ({ patientId }) => {
           notes: formValue.notes,
         },
       });
-    } else if (type === 'deleteCourse') {
+    } else if (type === "deleteCourse") {
       deleteCourse({
         variables: {
           courseId: formValue.id,
@@ -288,7 +287,7 @@ const Course = ({ patientId }) => {
           userId: formValue.userId,
         },
       });
-    } else if (type === 'editPaymentHistory') {
+    } else if (type === "editPaymentHistory") {
       editCoursePaymentHistory({
         variables: {
           courseId: formValue.id,
@@ -324,22 +323,21 @@ const Course = ({ patientId }) => {
     editCourseUnitHistory,
     bank,
   ]);
-  console.log(formValue,'FFO');
   const InprogressCourses = useMemo(
-    () => patientCourses.filter(c => c.status === 'InProgress'),
+    () => patientCourses.filter((c) => c.status === "InProgress"),
     [patientCourses]
   );
   const FinishedCourses = useMemo(
     () =>
       patientCourses.filter(
-        c => c.status === 'Finished' || c.status === 'EarlyFinished'
+        (c) => c.status === "Finished" || c.status === "EarlyFinished"
       ),
     [patientCourses]
   );
   const CancelledCourses = useMemo(
     () =>
       patientCourses.filter(
-        c => c.status === 'Cancelled' || c.status === 'Rejected'
+        (c) => c.status === "Cancelled" || c.status === "Rejected"
       ),
     [patientCourses]
   );
@@ -347,9 +345,9 @@ const Course = ({ patientId }) => {
     <>
       <CRTabs>
         <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>{t('inProgressCourses')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('finishedCourses')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('cancelledCourses')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t("inProgressCourses")}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t("finishedCourses")}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t("cancelledCourses")}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
@@ -368,7 +366,7 @@ const Course = ({ patientId }) => {
                   <Div width={200} mt={2}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        {t('addNewCourse')}+
+                        {t("addNewCourse")}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -386,7 +384,7 @@ const Course = ({ patientId }) => {
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>{t('noCourses')}</H3>
+                    <H3>{t("noCourses")}</H3>
                   )}
                 </>
               </Div>
@@ -408,7 +406,7 @@ const Course = ({ patientId }) => {
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        {t('addNewCourse')}+
+                        {t("addNewCourse")}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -426,7 +424,7 @@ const Course = ({ patientId }) => {
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>{t('noCourses')}</H3>
+                    <H3>{t("noCourses")}</H3>
                   )}
                 </>
               </Div>
@@ -448,7 +446,7 @@ const Course = ({ patientId }) => {
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        {t('addNewCourse')}+
+                        {t("addNewCourse")}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -466,7 +464,7 @@ const Course = ({ patientId }) => {
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>{t('noCourses')}</H3>
+                    <H3>{t("noCourses")}</H3>
                   )}
                 </>
               </Div>

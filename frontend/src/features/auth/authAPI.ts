@@ -1,5 +1,5 @@
+import { LoginPayload, LoginResponse } from "common/interfaces";
 import { apiSlice } from "features/api/apiSlice";
-import { LoginPayload, LoginResponse } from "./interfaces";
 import { LOGIN_MUTATION } from "./queries";
 
 const authAPI = apiSlice.injectEndpoints({

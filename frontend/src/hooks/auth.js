@@ -1,24 +1,25 @@
-import { useEffect } from 'react';
-import { VERIFY } from 'apollo-client/queries';
-import { useMutation } from '@apollo/client';
-import { useAbility } from '@casl/react';
-import { POSITIONS, ACCESS_TOKEN } from '../utils/constants';
-import useGlobalState from 'state';
-import { AbilityContext } from 'components/user/can';
+import { useEffect } from "react";
+import { VERIFY } from "apollo-client/queries";
+import { useMutation } from "@apollo/client";
+import { useAbility } from "@casl/react";
+import { POSITIONS } from "../utils/constants";
+import useGlobalState from "state";
+import { AbilityContext } from "components/user/can";
+import { getToken } from "services/local-storage";
 
 const useAuth = () => {
-  const [isAuthenticated, setAuthenticated] = useGlobalState('isAuthenticated');
-  const [isVerified, setVerified] = useGlobalState('isVerified');
-  const [user, setUser] = useGlobalState('user');
+  const [isAuthenticated, setAuthenticated] = useGlobalState("isAuthenticated");
+  const [isVerified, setVerified] = useGlobalState("isVerified");
+  const [user, setUser] = useGlobalState("user");
   const ability = useAbility(AbilityContext);
 
-  const updatePermissions = user => {
+  const updatePermissions = (user) => {
     let permissions;
-    if (user.position === 'Admin') {
+    if (user.position === "Admin") {
       permissions = [
         {
-          action: 'manage',
-          subject: 'all',
+          action: "manage",
+          subject: "all",
         },
       ];
     } else {
@@ -28,7 +29,7 @@ const useAuth = () => {
   };
 
   const [verify] = useMutation(VERIFY, {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: "no-cache",
     onCompleted({ verify: user }) {
       setAuthenticated(true);
       setUser(user);
@@ -41,8 +42,9 @@ const useAuth = () => {
   });
 
   useEffect(() => {
-    verify({ variables: { token: localStorage.getItem(ACCESS_TOKEN) } });
+    verify({ variables: { token: getToken() } });
   }, [verify]);
+
   return {
     isAuthenticated,
     isVerified,

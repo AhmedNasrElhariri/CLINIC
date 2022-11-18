@@ -1,4 +1,4 @@
-import { memo, useContext, useMemo } from "react";
+import { memo, useContext, useMemo, MouseEventHandler } from "react";
 import { Can } from "components/user/can";
 import {
   BellOutlined,
@@ -18,7 +18,11 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ModalsContext } from "common/contexts/ModalsContext";
 
-export default memo(function SideContent() {
+export default memo(function SideContent({
+  closeDrawer,
+}: {
+  closeDrawer?: MouseEventHandler<HTMLAnchorElement>;
+}) {
   const { t } = useTranslation();
   const { toggleAddAppointment, toggleAddPatient } = useContext(ModalsContext);
 
@@ -102,11 +106,11 @@ export default memo(function SideContent() {
 
   return (
     <List
-      className="mt-10"
       dataSource={ROUTES}
       renderItem={(route) => (
         <List.Item className="text-xs py-0 px-4 h-10 flex items-center justify-between">
           <Link
+            onClick={closeDrawer}
             to={route.path}
             className="flex items-center text-xs gap-2 h-full grow"
           >

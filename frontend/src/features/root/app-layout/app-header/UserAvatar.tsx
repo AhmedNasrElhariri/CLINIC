@@ -1,5 +1,5 @@
 import { Avatar } from "antd";
-import { User } from "features/users/interfaces";
+import { User } from "common/interfaces";
 import { memo } from "react";
 import { MdPersonOutline } from "react-icons/md";
 import { Link } from "react-router-dom";

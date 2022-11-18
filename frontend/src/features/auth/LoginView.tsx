@@ -1,15 +1,15 @@
 import { useCallback, useEffect } from "react";
 import { Button, Form, Input } from "antd";
-import { LoginPayload } from "features/auth/interfaces";
 import { useLoginMutation } from "features/auth/authAPI";
-import { setCookie } from "common/utils/cookies";
 import { setAuth } from "./authSlice";
 import { useAppDispatch } from "redux-store/hooks";
+import { LoginPayload } from "common/interfaces";
+import { setUserToken } from "services/local-storage";
 
 const subTitleClasses =
   "!text-lg lg:!text-5xl !font-normal uppercase font-bebasNeue";
 
-export default function Login({
+export default function LoginView({
   onLoginSucceeded,
   onLoginFailed,
 }: {
@@ -33,7 +33,7 @@ export default function Login({
 
   useEffect(() => {
     if (isSuccess && data) {
-      setCookie("token", String(data?.token));
+      setUserToken(data?.token);
       dispatch(setAuth(data));
       onLoginSucceeded(data);
     }

@@ -8,7 +8,7 @@ import useUserProfile from "./fetch-user";
 import { useModal } from "hooks";
 import { useTranslation } from "react-i18next";
 import LoginView from "features/auth/LoginView";
-import AppLayout from "features/app-layout/AppLayout";
+import AppLayout from "features/root/app-layout/AppLayout";
 import { ModalsContext } from "common/contexts/ModalsContext";
 
 function Root() {

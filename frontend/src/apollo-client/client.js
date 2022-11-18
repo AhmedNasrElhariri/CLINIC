@@ -4,10 +4,10 @@ import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import * as ls from "services/local-storage";
+import { getToken } from "services/local-storage";
 
 const authLink = setContext((_, { headers }) => {
-  const token = ls.getToken();
+  const token = getToken();
   return {
     headers: {
       ...headers,
@@ -20,7 +20,7 @@ const wsLink = new GraphQLWsLink({
   options: {
     reconnect: true,
     connectionParams: async () => {
-      const token = ls.getToken();
+      const token = getToken();
       return {
         headers: {
           authorization: token ? `Bearer ${token}` : "",

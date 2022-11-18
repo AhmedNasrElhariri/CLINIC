@@ -19,6 +19,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import { AbilityContext } from "components/user/can/index";
 import { get } from "services/local-storage";
 import { store } from "redux-store/store";
+import "translations/i18n";
 // import { StyleSheetManager } from 'styled-components';
 // import rtlPlugin from 'stylis-plugin-rtl';
 

@@ -1,5 +1,4 @@
 import { Button, Dropdown } from "antd";
-import { removeCookie } from "common/utils/cookies";
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -12,6 +11,7 @@ import {
 } from "react-icons/md";
 
 import { Link } from "react-router-dom";
+import { removeUserToken } from "services/local-storage";
 
 const ROUTES = [
   {
@@ -46,7 +46,7 @@ export default memo(function SettingsDropdown({
   const { t } = useTranslation();
 
   const handleLogout = useCallback(() => {
-    removeCookie("token");
+    removeUserToken();
     logout();
   }, [logout]);
 

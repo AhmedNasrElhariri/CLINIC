@@ -1,8 +1,8 @@
 import { Layout } from "antd";
-import { User } from "features/users/interfaces";
+import { User } from "common/interfaces";
 import { memo, useState } from "react";
 import { MdMenu } from "react-icons/md";
-import AppDrawer from "./AppDrawer";
+import AppDrawer from "../AppDrawer";
 import BranchSelect from "./BranchSelect";
 import Navigator from "./Navigator";
 import SettingsDropdown from "./SettingsDropdown";
