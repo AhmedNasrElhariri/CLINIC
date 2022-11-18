@@ -1,7 +1,6 @@
 import { memo, useContext, useMemo, MouseEventHandler } from "react";
 import { Can } from "components/user/can";
 import {
-  BellOutlined,
   UserOutlined,
   CalendarOutlined,
   MedicineBoxOutlined,
@@ -31,7 +30,7 @@ export default memo(function SideContent({
       {
         path: "/appointments/today",
         name: "todayAppointments",
-        icon: BellOutlined,
+        icon: CalendarOutlined,
       },
       {
         path: "/appointments",
@@ -112,7 +111,7 @@ export default memo(function SideContent({
           <Link
             onClick={closeDrawer}
             to={route.path}
-            className="flex items-center text-xs gap-2 h-full grow"
+            className="flex items-center text-xs gap-2 h-full grow text-slate-600"
           >
             <route.icon className="!text-[18px]" /> {t(route.name)}
           </Link>
