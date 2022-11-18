@@ -1098,18 +1098,12 @@ input PatientFieldInput {
 type Prescription {
   id: ID!
   medicineId: ID
-  timingId: ID
   dose: String
-  duration: Int
-  period: String
 }
 
 input PrescriptionInput {
   medicineId: ID!
   dose: String
-  timingId: ID
-  duration: Int
-  period: String
 }
 
 ########################### Area ##################################

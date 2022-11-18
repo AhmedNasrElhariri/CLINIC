@@ -42,23 +42,14 @@ const updateAppointment = async (_, { appointment }, { userId }) => {
       },
       prescription: {
         deleteMany: {},
-        create: appointment.prescription.map(
-          ({ dose, duration, period, medicineId, timingId }) => ({
-            dose,
-            duration,
-            period,
-            medicine: {
-              connect: {
-                id: medicineId,
-              },
+        create: appointment.prescription.map(({ dose, medicineId }) => ({
+          dose,
+          medicine: {
+            connect: {
+              id: medicineId,
             },
-            timing: {
-              connect: {
-                id: timingId,
-              },
-            },
-          })
-        ),
+          },
+        })),
       },
       labs: {
         deleteMany: {},

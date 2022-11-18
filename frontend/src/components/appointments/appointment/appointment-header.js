@@ -1,4 +1,5 @@
 import { H3, CRButton } from 'components';
+import ReactToPrint from 'react-to-print';
 import { Icon } from 'rsuite';
 
 export default function AppointmentHeader({
@@ -10,6 +11,7 @@ export default function AppointmentHeader({
   handleUpdate,
   setDisabled,
   t,
+  printRef,
 }) {
   return (
     <div className="flex items-center justify-between flex-col sm:flex-row sm:mb-32">
@@ -22,13 +24,25 @@ export default function AppointmentHeader({
         >
           {t('showMedicines')} <Icon icon="print" />
         </CRButton>
-        <CRButton
+        <ReactToPrint
+          trigger={() => (
+            <CRButton
+              variant="primary"
+              onClick={handleClickCreate}
+              disabled={disabled}
+            >
+              {t('printPrescription')} <Icon icon="print" />
+            </CRButton>
+          )}
+          content={() => printRef.current}
+        />
+        {/* <CRButton
           variant="primary"
           onClick={handleClickCreate}
           disabled={disabled}
         >
-          {t('printMedicine')} <Icon icon="print" />
-        </CRButton>
+          {t('printPrescription')} <Icon icon="print" />
+        </CRButton> */}
         <CRButton
           variant="primary"
           onClick={handleClickCreateThree}

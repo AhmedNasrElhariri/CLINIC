@@ -359,7 +359,7 @@ export const TRANSLATIONS_EN = {
   fixedDoctorFees: "Fixed Doctor Fees",
   percentageDoctorFees: "Percentage Doctor Fees",
   showMedicines: "Show Medicines",
-  printMedicine: "PrintMedicine",
+  printPrescription: "Print Prescription",
   printImages: "Print Images",
   printLabs: "Print Labs",
   more: "More",

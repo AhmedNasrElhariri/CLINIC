@@ -9,13 +9,14 @@ import {
   NumberButton,
 } from './style';
 import { FormGroupStyled } from '../form-group';
+import { isFloat } from 'utils/nubmer';
 
 const CustomInput = memo(({ value, onChange, ...props }) => {
   const setValue = useCallback(val => onChange(val), [onChange]);
   const onChangeValue = useCallback(
     e => {
       const val = Number(e.target.value);
-      if (Number.isInteger(val)) {
+      if (isFloat(val)) {
         setValue(val);
       }
     },
