@@ -29,16 +29,15 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
         <H6 mx={1}>({form})</H6>
         <H7 fontStyle="italic">{concentration}</H7>
       </Div>
-      <div className="bg-white">
-      <CRTextInput
-        noLabel
-        className="min-w-[5rem]"
-        name="dose"
-        placeholder={t('dose')}
-        disabled={required}
-      />
-      </div>
-      <CRSelectInput
+      <Div className="flex-grow">
+        <CRTextInput
+          noLabel
+          name="dose"
+          placeholder={t('dose')}
+          disabled={required}
+        />
+      </Div>
+      {/* <CRSelectInput
         noLabel
         className="min-w-[10rem]"
         name="timingId"
@@ -59,7 +58,7 @@ const MedicineRow = ({ timings, medicine, formValue, onChange, onClick }) => {
         data={peridos}
         disabled={required}
         className="min-w-[10rem]"
-      />
+      /> */}
       <CRButton
         className="min-w-[5rem] "
         variant={required ? 'dark' : 'primary'}

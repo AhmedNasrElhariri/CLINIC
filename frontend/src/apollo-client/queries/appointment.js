@@ -172,9 +172,6 @@ export const LIST_PATIENT_APPOINTMENTS = gql`
       prescription {
         medicineId
         dose
-        timingId
-        duration
-        period
       }
     }
   }
@@ -198,9 +195,6 @@ export const GET_APPOINTMENT = gql`
       prescription {
         medicineId
         dose
-        timingId
-        duration
-        period
       }
       userId
       data {
@@ -398,9 +392,6 @@ export const GET_APPOINTMENT_HISTORY = gql`
       prescription {
         medicineId
         dose
-        timingId
-        duration
-        period
       }
       data {
         id

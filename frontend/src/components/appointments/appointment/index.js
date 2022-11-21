@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import * as R from 'ramda';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
@@ -271,6 +277,7 @@ function Appointment() {
   const indx = sortedPatientAppointments.findIndex(pA => pA.id === appointId);
   const nextAppointment = patientAppointments[indx + 1];
   const { t } = useTranslation();
+  const printRef = useRef();
 
   return (
     <>
@@ -287,6 +294,7 @@ function Appointment() {
                   handleClickCreateTwo={handleClickCreateTwo}
                   handleUpdate={handleUpdate}
                   setDisabled={setDisabled}
+                  printRef={printRef}
                   t={t}
                 />
 
@@ -338,16 +346,15 @@ function Appointment() {
                   setSessionFormValue={setSessionFormValue}
                   handleShowPatientInfo={handleShowPatientInfo}
                 />
-                {popup && (
-                  <Prescription
-                    visible={visible}
-                    onClose={close}
-                    type={type}
-                    medicine={apptFormValue.prescription}
-                    onChange={handleMedicineChange}
-                    nextAppointment={nextAppointment}
-                  />
-                )}
+                <Prescription
+                  visible={visible}
+                  onClose={close}
+                  type={type}
+                  medicine={apptFormValue.prescription}
+                  onChange={handleMedicineChange}
+                  nextAppointment={nextAppointment}
+                  printRef={printRef}
+                />
                 {popupTwo && (
                   <Labs
                     visible={visible}

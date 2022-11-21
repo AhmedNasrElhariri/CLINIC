@@ -32,14 +32,11 @@ const AppointmentMedicines = ({
   useEffect(() => {
     const newFormValue = finalMedicines.map((m, idx) => {
       const formMedicine = prescription.find(f => f.medicineId === m.id) || {};
-      const { dose, medicineId, timingId, duration, period } = formMedicine;
+      const { dose, medicineId } = formMedicine;
       return {
         medicine: m,
         dose: dose || undefined,
-        timingId: timingId || null,
         medicineId: medicineId || m.id || null,
-        duration: duration || '',
-        period: period || null,
         required: !R.isEmpty(formMedicine),
       };
     });
@@ -51,8 +48,9 @@ const AppointmentMedicines = ({
       const newState = !required;
       const prescription = formValue
         .filter((lf, index) => (index === idx ? newState : lf.required))
-        .map(lf =>
-          R.pick(['dose', 'timingId', 'medicineId', 'duration', 'period'])(lf)
+        .map(
+          lf => R.pick(['dose', 'medicineId'])(lf)
+          // R.pick(['dose', 'timingId', 'medicineId', 'duration', 'period'])(lf)
         );
       onChange(prescription);
     },

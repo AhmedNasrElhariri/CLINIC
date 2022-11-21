@@ -485,10 +485,6 @@ model Prescription {
   dose          String?
   medicine      MedicineDefinition @relation(fields: [medicineId], references: [id])
   medicineId    String
-  timing        Timing             @relation(fields: [timingId], references: [id])
-  timingId      String
-  duration      Int?
-  period        String?
   appointment   Appointment?       @relation(fields: [appointmentId], references: [id])
   appointmentId String?
   createdAt     DateTime           @default(now())
@@ -1066,7 +1062,6 @@ model Timing {
   organizationId    String
   user              User           @relation(fields: [userId], references: [id])
   userId            String
-  prescriptions     Prescription[]
 }
 
 model SupplierAccount {
