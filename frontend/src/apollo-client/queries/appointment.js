@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const CREATE_APPOINTMENT = gql`
   mutation createAppointment($appointment: AppointmentInput!) {
@@ -50,6 +50,8 @@ export const LIST_APPOINTMENTS = gql`
         duration
         reference
         subscriptionType
+        isFollowUp
+        canAddFollowUp
         patient {
           id
           name
@@ -77,6 +79,10 @@ export const LIST_APPOINTMENTS = gql`
         session {
           id
           name
+          price
+          duration
+          followUp
+          timer
         }
       }
       appointmentsCount
@@ -98,6 +104,8 @@ export const LIST_TODAY_APPOINTMENTS = gql`
       reference
       updatedAt
       subscriptionType
+      isFollowUp
+      canAddFollowUp
       patient {
         id
         name
@@ -122,6 +130,10 @@ export const LIST_TODAY_APPOINTMENTS = gql`
       session {
         id
         name
+        price
+        duration
+        followUp
+        timer
       }
       doctor {
         id

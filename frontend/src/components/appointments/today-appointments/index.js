@@ -1,17 +1,17 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { Nav } from 'rsuite';
-import * as R from 'ramda';
-import moment from 'moment';
-import { ACTIONS } from 'utils/constants';
-import ListAppointments from './list-appointments';
-import ArchiveAppointment from '../archive-appointment';
-import { getName } from 'services/accounting';
-import CompleteAppointment from '../complete-appointment';
-import { useAppointments, useConfigurations, useModal } from 'hooks';
-import BusinessNotes from './business-notes';
-import NewAppointment from 'components/appointments/new-appointment';
-import EditAppointment from '../edit-appointment';
-import CancelAppointment from '../cancel-appointment';
+import React, { useMemo, useCallback, useState, useEffect } from "react";
+import { Nav } from "rsuite";
+import * as R from "ramda";
+import moment from "moment";
+import { ACTIONS } from "utils/constants";
+import ListAppointments from "./list-appointments";
+import ArchiveAppointment from "../archive-appointment";
+import { getName } from "services/accounting";
+import CompleteAppointment from "../complete-appointment";
+import { useAppointments, useConfigurations, useModal } from "hooks";
+import BusinessNotes from "./business-notes";
+import NewAppointment from "components/appointments/new-appointment";
+import EditAppointment from "../edit-appointment";
+import CancelAppointment from "../cancel-appointment";
 import {
   filterTodayAppointments,
   sortAppointmentsByUpdatedAt,
@@ -32,7 +32,6 @@ const calcDate = ({ date, time }) =>
     })
     .toDate();
 function TodayAppointments() {
-
   const [popUp, setPopUp] = useState("");
   const [followUp, setFollowUp] = useState(false);
   const [formValue] = useState({});
@@ -41,7 +40,7 @@ function TodayAppointments() {
   const [appointment, setAppointment] = useState({});
   const { t } = useTranslation();
   const { organization } = useConfigurations({});
-  const followUpFeature = R.propOr(false, 'followUp')(organization);
+  const followUpFeature = R.propOr(false, "followUp")(organization);
   const {
     todayAppointments: appointments,
     filterBranches,
@@ -54,6 +53,7 @@ function TodayAppointments() {
   } = useAppointments({
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
+    canAddFollowUp: appointment?.canAddFollowUp,
     onAdjust: () => {},
     setFollowUp,
     setPopUp,

@@ -349,32 +349,36 @@ const NewAppointment = ({
     IDBTransaction: course.id,
   }));
   const updatedSessionsDefinition = useMemo(() => {
-    const sd = followUp
-      ? sessionsDefinition.filter((s) => s.followUp)
-      : sessionsDefinition.filter((s) => !s.followUp);
-    return sd.map((s) => {
+    return sessionsDefinition.map((s) => {
       return {
         name: s.name,
         id: s,
       };
     });
-  }, [followUp, sessionsDefinition]);
+  }, [sessionsDefinition]);
 
   useEffect(() => {
-    if (appointment) {
+    if (appointment && updatedSessionsDefinition.length > 0) {
       console.log("IN use app", appointment, formValue);
-      setFormValue({
-        branchId: appointment.branch.id,
-        type: appointment.type,
-        patientId: appointment.patient.id,
-        specialtyId: appointment.specialty.id,
-        userId: appointment.doctor.id,
-      });
-      if (followUp && updatedSessionsDefinition.length > 0) {
+      if (followUp) {
         setFormValue({
-          ...formValue,
-          session: updatedSessionsDefinition[0].id,
-          date: updatedSessionsDefinition[0].id.timer,
+          branchId: appointment?.branch.id,
+          type: appointment?.type,
+          patientId: appointment?.patient.id,
+          specialtyId: appointment?.specialty.id,
+          userId: appointment?.doctor.id,
+          session: appointment?.session,
+          date: new Date(appointment?.session.timer),
+        });
+      } else {
+        setFormValue({
+          branchId: appointment?.branch.id,
+          type: appointment?.type,
+          patientId: appointment?.patient.id,
+          specialtyId: appointment?.specialty.id,
+          userId: appointment?.doctor.id,
+          session: appointment?.session,
+          date: new Date(),
         });
       }
     }
@@ -433,7 +437,7 @@ const NewAppointment = ({
       followUp,
     });
   }, [createAppointment, formValue, followUp, appointment]);
-
+  console.log(formValue, "FFINFF");
   return (
     <>
       <NewPatient
@@ -479,23 +483,14 @@ const NewAppointment = ({
                     data={updatedPatientCourses}
                   />
                 )}
-                {formValue.type === "Session" && followUp ? (
+                {formValue.type === "Session" && (
                   <CRSelectInput
                     label="Session Name"
                     name="session"
                     block
                     data={updatedSessionsDefinition}
-                    disabled
+                    value={formValue?.session}
                   />
-                ) : (
-                  formValue.type === "Session" && (
-                    <CRSelectInput
-                      label="Session Name"
-                      name="session"
-                      block
-                      data={updatedSessionsDefinition}
-                    />
-                  )
                 )}
                 <CRBrancheTree
                   formValue={formValue}

@@ -125,7 +125,7 @@ const init = app => {
     }
   });
 
-  app.get('/bankAccountingReport', async (req, res) => {
+  app.post('/bankAccountingReport', async (req, res) => {
     const {
       dateFrom,
       dateTo,
@@ -138,6 +138,7 @@ const init = app => {
       expenseSpecialtyId,
       expenseDoctorId,
       expenseType,
+      columns = ['revenues', 'expenses'],
       organizationId,
       expenseName,
     } = req.query;
@@ -216,14 +217,15 @@ const init = app => {
       const pdfDoc = await generatePdf('/views/reports/accounting.ejs', {
         revenues: updatedRevenues,
         expenses: updatedExpenses,
+        showRevenues: columns.includes('revenues'),
+        showExpenses: columns.includes('expenses'),
         totalExpenses: totalExpenses,
         totalRevenues: totalRevenues,
         profit: profit,
         from: formatDateStandard(updatedDateFrom),
         to: formatDateStandard(updatedDateTo),
       });
-      console.log('pdfDoc', pdfDoc);
-      const fileName = 'accounting.pdf';
+      const fileName = 'accounting-visa.pdf';
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
       res.end(pdfDoc);
