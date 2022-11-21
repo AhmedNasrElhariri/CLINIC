@@ -420,6 +420,7 @@ model Appointment {
   businessNotes         String             @default("")
   accounted             Boolean            @default(false)
   duration              Int                @default(5)
+  isFollowUp            Boolean?           @default(false)
   reference             String?
   status                AppointmentStatus
   data                  AppointmentField[]

@@ -964,6 +964,8 @@ type Appointment {
   labs: [Lab!]
   images: [Image!]
   courses: [Course!]
+  isFollowUp: Boolean
+  canAddFollowUp: Boolean
 }
 
 type AppointmentData {

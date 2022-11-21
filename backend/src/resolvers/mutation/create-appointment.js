@@ -99,6 +99,7 @@ const createAppointment = async (_, { appointment }, { userId: creator }) => {
           ...rest,
           status: appointmentType,
           reference: reference,
+          isFollowUp: true,
           patient: {
             connect: {
               id: patientId,
