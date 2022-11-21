@@ -7,17 +7,9 @@ import useGlobalState from 'state';
 import { useQuery } from '@apollo/client';
 import { GET_APPOINTMENT_HISTORY } from 'apollo-client/queries';
 
-export default ({ appointmentId, appointment }) => {
-  if (!appointmentId || !appointment) {
-    return {
-      normalizedFields: {},
-      appointmentHistory: [],
-      viewFields: [],
-      groups: [],
-    };
-  }
- 
+const useAppointmentHistory = ({ appointmentId, appointment }) => {
   const [views] = useGlobalState('activeViews');
+  console.log(views);
   const view = useMemo(() => views[appointment.type], [appointment, views]);
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {
@@ -40,6 +32,15 @@ export default ({ appointmentId, appointment }) => {
     [data, groups]
   );
 
+  if (!appointmentId || !appointment) {
+    return {
+      normalizedFields: {},
+      appointmentHistory: [],
+      viewFields: [],
+      groups: [],
+    };
+  }
+
   return {
     normalizedFields,
     appointmentHistory,
@@ -47,3 +48,5 @@ export default ({ appointmentId, appointment }) => {
     groups,
   };
 };
+
+export default useAppointmentHistory;

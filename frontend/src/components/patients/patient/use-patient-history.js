@@ -14,16 +14,7 @@ import {
 } from 'apollo-client/queries';
 import { NUMBER_FIELD_TYPE, TEXT_FIELD_TYPE } from 'utils/constants';
 
-export default ({ patientId, appointment = {} }) => {
-  if (!patientId) {
-    return {
-      normalizedFields: {},
-      appointmentHistory: [],
-      viewFields: [],
-      groups: [],
-    };
-  }
-
+const usePatientHistory = ({ patientId, appointment = {} }) => {
   const views = useGlobalState('activeViews');
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {
@@ -117,6 +108,15 @@ export default ({ patientId, appointment = {} }) => {
     [appointmentHistory, groups]
   );
 
+  if (!patientId) {
+    return {
+      normalizedFields: {},
+      appointmentHistory: [],
+      viewFields: [],
+      groups: [],
+    };
+  }
+
   return {
     normalizedFields,
     appointmentHistory,
@@ -131,3 +131,5 @@ export default ({ patientId, appointment = {} }) => {
     appointmentsWithGroups,
   };
 };
+
+export default usePatientHistory;
