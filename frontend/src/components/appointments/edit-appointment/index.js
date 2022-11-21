@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import * as moment from 'moment';
-import { ACTIONS } from 'utils/constants';
+import React, { useState } from "react";
+import * as moment from "moment";
+import { ACTIONS } from "utils/constants";
 import {
   Div,
   CRModal,
@@ -8,11 +8,11 @@ import {
   H6,
   CRDatePicker,
   CRBrancheTree,
-} from 'components';
-import { Form, DatePicker } from 'rsuite';
-import { formatDate, isBeforeToday } from 'utils/date';
-import { STANDARD_DATE_FORMAT } from 'utils/constants';
-import { useAppointmentForm, useAppointments } from 'hooks';
+} from "components";
+import { Form, DatePicker } from "rsuite";
+import { formatDate, isBeforeToday } from "utils/date";
+import { STANDARD_DATE_FORMAT } from "utils/constants";
+import { useAppointmentForm, useAppointments } from "hooks";
 
 const EditAppointment = ({ show, onCancel, onOk, appointment, t }) => {
   const [formValue, setFormValue] = useState({
@@ -40,13 +40,20 @@ const EditAppointment = ({ show, onCancel, onOk, appointment, t }) => {
   return (
     <CRModal
       show={show}
-      header={t('adjustAppointment')}
+      header={t("adjustAppointment")}
       bodyStyle={{
-        padding: '10px 89px ',
+        padding: "10px 89px ",
       }}
-      okTitle={t('adjust')}
+      okTitle={t("adjust")}
       onOk={() => {
         onOk(formValue);
+        setFormValue({
+          date: null,
+          time: null,
+          branchId: null,
+          specialtyId: null,
+          userId: null,
+        });
       }}
       onCancel={onCancel}
       onHide={onCancel}
@@ -55,19 +62,19 @@ const EditAppointment = ({ show, onCancel, onOk, appointment, t }) => {
         <Div my={1}>
           <CRCard>
             <H6 color="texts.1" mb={1}>
-              {t('oldDate')}
+              {t("oldDate")}
             </H6>
             <H6>
               {formatDate(
                 appointment.date,
-                STANDARD_DATE_FORMAT + ' - hh:mm a'
+                STANDARD_DATE_FORMAT + " - hh:mm a"
               )}
             </H6>
           </CRCard>
 
           <CRCard mt={10} pb={50}>
             <H6 color="texts.1" mb={1}>
-              {t('newDate')}
+              {t("newDate")}
             </H6>
             <Div px={53}>
               <CRBrancheTree
@@ -85,14 +92,14 @@ const EditAppointment = ({ show, onCancel, onOk, appointment, t }) => {
               {formValue.userId && (
                 <CRDatePicker
                   format="HH:mm"
-                  hideMinutes={minute => minute % 5 !== 0}
+                  hideMinutes={(minute) => minute % 5 !== 0}
                   name="time"
                   accepter={DatePicker}
-                  disabledMinutes={minute =>
+                  disabledMinutes={(minute) =>
                     disabledMinutes(minute, moment(formValue.time).hours())
                   }
                   hideHours={hideHours}
-                  style={{ marginTop: '10px' }}
+                  style={{ marginTop: "10px" }}
                   onSelectTrigger
                   block
                 />

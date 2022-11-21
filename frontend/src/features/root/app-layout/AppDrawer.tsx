@@ -15,6 +15,7 @@ export default memo(function AppDrawer({
 
   return (
     <Drawer
+      placement="left"
       open={isOpen}
       width={256}
       onClose={closeDrawer}

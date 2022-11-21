@@ -195,7 +195,7 @@ const Test = (props) => {
                   <H5>TotalPrice:{st.totalPrice}</H5>
 
                   <CRTable autoHeight data={st.sessions}>
-                    <CRTable.CRColumn flexGrow={1}>
+                    <CRTable.CRColumn width={300}>
                       <CRTable.CRHeaderCell>{t("name")}</CRTable.CRHeaderCell>
                       <CRTable.CRCell>
                         {({ patient }) => (
@@ -205,7 +205,7 @@ const Test = (props) => {
                         )}
                       </CRTable.CRCell>
                     </CRTable.CRColumn>
-                    <CRTable.CRColumn flexGrow={1}>
+                    <CRTable.CRColumn width={300}>
                       <CRTable.CRHeaderCell>
                         {t("phoneNo")}
                       </CRTable.CRHeaderCell>
@@ -217,7 +217,7 @@ const Test = (props) => {
                         )}
                       </CRTable.CRCell>
                     </CRTable.CRColumn>
-                    <CRTable.CRColumn flexGrow={1}>
+                    <CRTable.CRColumn width={300}>
                       <CRTable.CRHeaderCell>{t("doctor")}</CRTable.CRHeaderCell>
                       <CRTable.CRCell>
                         {({ doctor }) => (

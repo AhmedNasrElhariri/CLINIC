@@ -41,35 +41,6 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
         speaker={
           <Popover full>
             <Dropdown.Menu>
-              {/* <Dropdown.Item eventKey={3}>
-                <Can I="Acc" an="Appointment">
-                  {appointment.accounted ? (
-                    <CRButton
-                      variant="success"
-                      mr={1}
-                      onClick={e => {
-                        e.stopPropagation();
-                        onArchive(appointment);
-                      }}
-                      style={{ width: '108px' }}
-                    >
-                      ACC
-                    </CRButton>
-                  ) : (
-                    <CRButton
-                      variant="primary"
-                      mr={1}
-                      onClick={e => {
-                        e.stopPropagation();
-                        onArchive(appointment);
-                      }}
-                      style={{ width: '108px' }}
-                    >
-                      ACC
-                    </CRButton>
-                  )}
-                </Can>
-              </Dropdown.Item> */}
               <Dropdown.Item eventKey={4}>
                 <Can I="Archive" an="Appointment">
                   <CRButton
@@ -85,31 +56,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                   </CRButton>
                 </Can>
               </Dropdown.Item>
-              {/* <Dropdown.Item eventKey={5}>
-                <Whisper
-                  placement="top"
-                  controlId="control-id-hover"
-                  trigger="hover"
-                  speaker={
-                    <Tooltip>
-                      {appointment?.businessNotes.length > 0
-                        ? appointment?.businessNotes
-                        : 'No Notes'}
-                    </Tooltip>
-                  }
-                >
-                  <CRButton
-                    variant="primary"
-                    onClick={e => {
-                      e.stopPropagation();
-                      onAddBusinessNotes(appointment);
-                    }}
-                    style={{ width: '108px' }}
-                  >
-                    Notes
-                  </CRButton>
-                </Whisper>
-              </Dropdown.Item> */}
+
               <Dropdown.Item eventKey={6}>
                 <Can I="Create" an="Appointment">
                   <CRButton
@@ -145,7 +92,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                   </Div>
                 )}
               </Dropdown.Item>
-              {followUpFeature && (
+              {followUpFeature && appointment?.canAddFollowUp && (
                 <Dropdown.Item eventKey={9}>
                   <Div>
                     <CRButton
@@ -293,10 +240,11 @@ function ListAppointments({
         <CRTable.CRColumn width={200}>
           <CRTable.CRHeaderCell>{t("type")}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ type, session }) => (
+            {({ type, session, isFollowUp }) => (
               <CRTable.CRCellStyled>
                 {type === "Session" ? "S " : type}{" "}
                 {type === "Session" ? session?.name : ""}
+                {type === "Session" && isFollowUp ? "/Follow Up" : ""}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>

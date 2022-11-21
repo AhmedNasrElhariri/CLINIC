@@ -50,6 +50,7 @@ function useAppointments({
   setPopUp,
   open,
   followUpFeature,
+  canAddFollowUp,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -125,10 +126,10 @@ function useAppointments({
     ARCHIVE_APPOINTMENT,
     {
       onCompleted: () => {
-        Alert.success('Appointment has been Archived successfully');
-        if (followUpFeature) {
+        Alert.success("Appointment has been Archived successfully");
+        if (followUpFeature && canAddFollowUp) {
           setFollowUp(true);
-          setPopUp('followUpAppointment');
+          setPopUp("followUpAppointment");
           open();
         }
       },
@@ -193,7 +194,7 @@ function useAppointments({
     },
     refetchQueries: [
       {
-        query: LIST_APPOINTMENTS,
+        query: LIST_TODAY_APPOINTMENTS,
       },
     ],
   });

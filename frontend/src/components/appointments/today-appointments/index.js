@@ -53,6 +53,7 @@ function TodayAppointments() {
   } = useAppointments({
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
+    canAddFollowUp: appointment?.canAddFollowUp,
     onAdjust: () => {},
     setFollowUp,
     setPopUp,
