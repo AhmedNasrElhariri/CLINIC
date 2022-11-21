@@ -9,7 +9,6 @@ import { GET_APPOINTMENT_HISTORY } from 'apollo-client/queries';
 
 const useAppointmentHistory = ({ appointmentId, appointment }) => {
   const [views] = useGlobalState('activeViews');
-  console.log(views);
   const view = useMemo(() => views[appointment.type], [appointment, views]);
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {

@@ -1,20 +1,20 @@
-import { useEffect, useCallback } from "react";
-import { useLazyQuery } from "@apollo/client";
-import * as R from "ramda";
+import { useEffect, useCallback } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import * as R from 'ramda';
 
 import {
   ACTIVE_VIEWS,
   // MY_NOTIFICATIONS,
   // CLEAR_NOTIFICATIONS,
   ACTIVE_PATIENT_VIEWS,
-} from "apollo-client/queries";
+} from 'apollo-client/queries';
 import {
   removeUserToken,
   set,
   setUserToken,
-} from "../../../services/local-storage";
-import { useAuth } from "hooks";
-import useGlobalState from "state";
+} from '../../../services/local-storage';
+import { useAuth } from 'hooks';
+import useGlobalState from 'state';
 
 function useUserProfile() {
   const { isVerified, isAuthenticated, setAuthenticated, updatePermissions } =
@@ -29,9 +29,9 @@ function useUserProfile() {
   //   onSubscriptionData: () => refetch(),
   // });
 
-  const [_, setActiveViews] = useGlobalState("activeViews");
-  const [__, setActivePatientViews] = useGlobalState("activePatientViews");
-  const [user, setUser] = useGlobalState("user");
+  const [_, setActiveViews] = useGlobalState('activeViews');
+  const [__, setActivePatientViews] = useGlobalState('activePatientViews');
+  const [user, setUser] = useGlobalState('user');
   // const [clearNotifications] = useMutation(CLEAR_NOTIFICATIONS, {
   //   update(cache, { data: { createRevenue: revenue } }) {
   //     cache.writeQuery({
@@ -53,28 +53,31 @@ function useUserProfile() {
       getPatientViews();
       // getNotifications();
     }
-  }, [data, getViews, isAuthenticated, isVerified, getPatientViews]);
+  }, [isAuthenticated, isVerified]);
 
   useEffect(() => {
-    const views = R.prop("activeViews")(data);
-    const patientViews = R.prop("activePatientViews")(patientViewsData);
+    const views = R.prop('activeViews')(data);
     if (views) {
       const normalizedView = R.pipe(
-        R.groupBy(R.prop("type")),
-        R.map(R.prop("0"))
+        R.groupBy(R.prop('type')),
+        R.map(R.prop('0'))
       )(views);
       setActiveViews(normalizedView);
     }
+  }, [data]);
+
+  useEffect(() => {
+    const patientViews = R.prop('activePatientViews')(patientViewsData);
     if (patientViews) {
       setActivePatientViews(patientViews);
     }
-  }, [data, setActiveViews, patientViewsData, setActivePatientViews]);
+  }, [patientViewsData]);
 
   const onLoginSucceeded = useCallback(
     ({ token, user }) => {
       setUserToken(token);
       setAuthenticated(true);
-      set("user", user);
+      set('user', user);
       setUser(user);
       updatePermissions(user);
     },

@@ -1,4 +1,5 @@
 import React, { useCallback, memo } from 'react';
+import * as R from 'ramda';
 import { FormControl } from 'rsuite';
 
 import Label from '../label';
@@ -15,7 +16,10 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
   const setValue = useCallback(val => onChange(val), [onChange]);
   const onChangeValue = useCallback(
     e => {
-      const val = Number(e.target.value);
+      const val = e.target.value;
+      if (R.isEmpty(val) || R.isNil(val)) {
+        setValue('');
+      }
       if (isFloat(val)) {
         setValue(val);
       }
