@@ -19,7 +19,6 @@ function Prescription({ medicine, printRef, ...rest }) {
       }),
       {}
     );
-    console.log(normalizedMedicines);
     setNormalizedMedicines(normalizedMedicines);
   }, [medicineDefinitions]);
 
