@@ -7,6 +7,7 @@
     "start": "./node_modules/nodemon/bin/nodemon.js -e js,graphql --exec babel-node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config=webpack.prod.js",
+    "build:qa": "webpack --config=webpack.qa.js",
     "dev": "prisma generate && webpack --config ./webpack.dev.js --watch",
     "debug": "babel src -d lib -s"
   },

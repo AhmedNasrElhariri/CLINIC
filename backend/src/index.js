@@ -90,6 +90,7 @@ cron.schedule('00 06 * * *', async function () {
 //   every6HoursAppointmentReminder();
 // });
 //////////////////////////////////////////////////////////
+console.log('env is ' + process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend')));
   app.get('*', (req, res, next) => {
