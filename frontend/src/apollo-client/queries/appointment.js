@@ -47,6 +47,7 @@ export const LIST_APPOINTMENTS = gql`
         date
         businessNotes
         accounted
+        confirmed
         duration
         reference
         subscriptionType
@@ -99,6 +100,7 @@ export const LIST_TODAY_APPOINTMENTS = gql`
       status
       date
       accounted
+      confirmed
       duration
       businessNotes
       reference
@@ -300,6 +302,13 @@ export const ADJUST_APPOINTMENT = gql`
     ) {
       id
       date
+    }
+  }
+`;
+export const CONFIRMED_APPOINTMENT = gql`
+  mutation confirmedAppointment($id: ID!) {
+    confirmedAppointment(id: $id) {
+      id
     }
   }
 `;

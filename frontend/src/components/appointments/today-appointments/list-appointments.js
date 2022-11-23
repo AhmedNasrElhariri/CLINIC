@@ -6,7 +6,7 @@ import { Tooltip, Whisper, Dropdown, Popover } from "rsuite";
 import { canAjdust } from "services/appointment";
 import { Can } from "components/user/can";
 import { MoreIcon } from "components/icons";
-import { formatDate } from "utils/date";
+import { formatDate, addMinutesToDateAndReturnTime } from "utils/date";
 import { Table } from "rsuite";
 import {
   FULL_DATE_FORMAT,
@@ -174,6 +174,7 @@ function ListAppointments({
   onFollowUpAppointments,
   currentPage,
   setCurrentPage,
+  onConfirmed,
   close,
   followUpFeature,
 }) {
@@ -219,12 +220,28 @@ function ListAppointments({
         <CRTable.CRColumn width={130}>
           <CRTable.CRHeaderCell>{t("time")}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ date }) => (
-              <CRTable.CRCellStyled>
-                {waiting
-                  ? formatDate(date, STANDARD_DATE_FORMAT)
-                  : formatDate(date, FULL_DAY_FORMAT)}
-              </CRTable.CRCellStyled>
+            {({ date, session }) => (
+              <Whisper
+                placement="top"
+                controlId="control-id-hover"
+                trigger="hover"
+                speaker={
+                  <Tooltip>
+                    <Div>
+                      <Div>
+                        {t("end Date ")}:
+                        {addMinutesToDateAndReturnTime(date, session?.duration)}
+                      </Div>
+                    </Div>
+                  </Tooltip>
+                }
+              >
+                <CRTable.CRCellStyled>
+                  {waiting
+                    ? formatDate(date, STANDARD_DATE_FORMAT)
+                    : formatDate(date, FULL_DAY_FORMAT)}
+                </CRTable.CRCellStyled>
+              </Whisper>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
@@ -314,117 +331,36 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        {/* <CRTable.CRColumn width={550}>
-          <CRTable.CRHeaderCell>Actions</CRTable.CRHeaderCell>
+        <CRTable.CRColumn width={40}>
+          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {appointment => (
-              <Div display="flex">
-                {(isScheduled(appointment) || isWaiting(appointment)) && (
-                  <>
-                    <Can I="Acc" an="Appointment">
-                      {appointment.accounted ? (
-                        <CRButton
-                          variant="success"
-                          mr={1}
-                          onClick={e => {
-                            e.stopPropagation();
-                            onArchive(appointment);
-                          }}
-                          width={70}
-                        >
-                          ACC
-                        </CRButton>
-                      ) : (
-                        <CRButton
-                          variant="primary"
-                          mr={1}
-                          onClick={e => {
-                            e.stopPropagation();
-                            onArchive(appointment);
-                          }}
-                          width={70}
-                        >
-                          ACC
-                        </CRButton>
-                      )}
-                    </Can>
-                    <Can I="Archive" an="Appointment">
-                      <CRButton
-                        variant="primary"
-                        mr={1}
-                        onClick={e => {
-                          e.stopPropagation();
-                          onComplete(appointment);
-                        }}
-                      >
-                        Archive
-                      </CRButton>
-                    </Can>
-                  </>
-                )}
-
-                <Whisper
-                  placement="top"
-                  controlId="control-id-hover"
-                  trigger="hover"
-                  speaker={
-                    <Tooltip>
-                      {appointment?.businessNotes.length > 0
-                        ? appointment?.businessNotes
-                        : 'No Notes'}
-                    </Tooltip>
-                  }
+            {(appointment) =>
+              appointment.confirmed ? (
+                <CRButton
+                  variant="success"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onConfirmed(appointment);
+                  }}
+                  block
                 >
-                  <CRButton
-                    variant="primary"
-                    onClick={e => {
-                      e.stopPropagation();
-                      onAddBusinessNotes(appointment);
-                    }}
-                    width={70}
-                  >
-                    Notes
-                  </CRButton>
-                </Whisper>
+                  {t("C")}
+                </CRButton>
+              ) : (
                 <CRButton
                   variant="primary"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
-                    onDuplicateAppointments(appointment);
+                    onConfirmed(appointment);
                   }}
-                  width={70}
-                  ml={1}
+                  block
                 >
-                  Duplicates
+                  {t("C")}
                 </CRButton>
-                <Div onClick={e => e.stopPropagation()}>
-                  <ReactToPrint
-                    trigger={() => <PrintOLIcon ml={2} />}
-                    content={() => componentRef.current}
-                  />
-                  <Div display="none">
-                    <AppointmentPrintout
-                      ref={componentRef}
-                      appointment={appointment}
-                      patient={appointment.patient}
-                    />
-                  </Div>
-                </Div>
-                <Div onClick={e => e.stopPropagation()}>
-                  {canAjdust(appointment) && (
-                    <AdjustAppointment appointment={appointment} />
-                  )}
-                </Div>
-              </Div>
-            )}
+              )
+            }
           </CRTable.CRCell>
-        </CRTable.CRColumn> */}
-
-        {/* <CRTable.CRColumn>
-          <CRTable.CRHeaderCell>Action</CRTable.CRHeaderCell>
-
-          
-        </CRTable.CRColumn> */}
+        </CRTable.CRColumn>
         <CRTable.CRColumn width={80}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>

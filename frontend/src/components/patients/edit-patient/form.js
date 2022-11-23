@@ -7,6 +7,7 @@ import {
   CRNumberInput,
   ShowIf,
   CRCheckBoxGroup,
+  CRTextArea
 } from "components";
 
 const membershipTypes = [
@@ -121,6 +122,7 @@ const NewPatient = ({ formValue, onChange, t, newAreas, branches }) => {
         onChange={(val) => onChange({ ...formValue, reference: val })}
         inline
       />
+      <CRTextArea name="notes" label="Notes" />
     </Form>
   );
 };

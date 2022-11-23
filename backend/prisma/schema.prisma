@@ -373,6 +373,7 @@ model Patient {
   area               String                @default("")
   password           String?
   remainingOfPayment Int?                  @default(0)
+  notes              String?
   maritalStatus      MaritalStatus?
   patientLevel       PatientLevel?
   email              String?
@@ -419,6 +420,7 @@ model Appointment {
   updaterId             String?
   businessNotes         String             @default("")
   accounted             Boolean            @default(false)
+  confirmed             Boolean?           @default(false)
   duration              Int                @default(5)
   isFollowUp            Boolean?           @default(false)
   reference             String?
@@ -1053,15 +1055,15 @@ model LabCategory {
 }
 
 model Timing {
-  id                String         @id @default(uuid())
+  id                String       @id @default(uuid())
   name              String
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @default(now()) @updatedAt
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @default(now()) @updatedAt
   englishPrintValue String
   arabicPrintValue  String
-  organization      Organization   @relation(fields: [organizationId], references: [id])
+  organization      Organization @relation(fields: [organizationId], references: [id])
   organizationId    String
-  user              User           @relation(fields: [userId], references: [id])
+  user              User         @relation(fields: [userId], references: [id])
   userId            String
 }
 

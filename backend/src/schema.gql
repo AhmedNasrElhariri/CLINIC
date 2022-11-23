@@ -443,6 +443,7 @@ type Mutation {
     specialtyId: ID
     userId: ID
   ): Appointment!
+  confirmedAppointment(id: ID!): Appointment!
   cancelAppointment(id: ID!): Appointment!
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
@@ -870,6 +871,7 @@ type Patient implements Searchable {
   date: Date
   sex: Sex!
   branchId: ID
+  notes: String
   appointments: [Appointment!]
 }
 
@@ -908,6 +910,7 @@ input PatientInput {
   maritalStatus: MaritalStatus
   patientLevel: PatientLevel
   branchId: ID
+  notes: String
 }
 input RegisterPatientInput {
   phoneNo: String!
@@ -950,6 +953,7 @@ type Appointment {
   duration: Int
   updatedAt: Date
   accounted: Boolean
+  confirmed: Boolean
   sessionsPulses: [SessionPulse!]
   session: SessionDefinition
   user: User!

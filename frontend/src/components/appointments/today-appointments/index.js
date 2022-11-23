@@ -50,6 +50,7 @@ function TodayAppointments() {
     updateNotes,
     adjust,
     cancel,
+    confirmedAppointment,
   } = useAppointments({
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
@@ -154,6 +155,12 @@ function TodayAppointments() {
       open();
     },
     [setAppointment, setFollowUp, setPopUp, open]
+  );
+  const onConfirmed = useCallback(
+    ({ id }) => {
+      confirmedAppointment({ variables: { id: id } });
+    },
+    [confirmedAppointment]
   );
   const handleArchive = useCallback(
     ({
@@ -289,6 +296,7 @@ function TodayAppointments() {
               onEditAppointments={onEditAppointments}
               onCancelAppointments={onCancelAppointments}
               onFollowUpAppointments={onFollowUpAppointments}
+              onConfirmed={onConfirmed}
               defaultExpanded={true}
               close={close}
               followUpFeature={followUpFeature}
@@ -310,6 +318,7 @@ function TodayAppointments() {
               onEditAppointments={onEditAppointments}
               onCancelAppointments={onCancelAppointments}
               onFollowUpAppointments={onFollowUpAppointments}
+              onConfirmed={onConfirmed}
               defaultExpanded={true}
               waiting={true}
               followUpFeature={followUpFeature}

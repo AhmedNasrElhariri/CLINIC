@@ -53,6 +53,7 @@ export const LIST_PATIENTS = gql`
         code
         date
         branchId
+        notes
       }
       patientsCount
     }
@@ -104,6 +105,7 @@ export const LIST_PATIENTS_REPORTS = gql`
         code
         date
         branchId
+        notes
       }
       patientsCount
     }
@@ -164,6 +166,7 @@ export const GET_PATIENT = gql`
       phoneNo
       phoneNoTwo
       remainingOfPayment
+      notes
     }
   }
 `;

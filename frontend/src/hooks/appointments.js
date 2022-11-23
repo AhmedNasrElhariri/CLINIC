@@ -20,6 +20,7 @@ import {
   GET_INVOICE_COUNTER,
   DELETE_APPOINTMENT_PHOTO,
   GET_APPOINTMENT_HISTORY,
+  CONFIRMED_APPOINTMENT,
 } from "apollo-client/queries";
 import client from "apollo-client/client";
 import { Alert } from "rsuite";
@@ -198,6 +199,14 @@ function useAppointments({
       },
     ],
   });
+  const [confirmedAppointment] = useMutation(CONFIRMED_APPOINTMENT, {
+    onCompleted: ({}) => {},
+    refetchQueries: [
+      {
+        query: LIST_TODAY_APPOINTMENTS,
+      },
+    ],
+  });
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {
     onCompleted: () => {
       Alert.success("Appointment has been cancelled successfully");
@@ -232,6 +241,7 @@ function useAppointments({
       filterBranches,
       appointmentsCount,
       deleteAppointmentPhoto,
+      confirmedAppointment,
       refetchAppointments: {
         query: LIST_APPOINTMENTS,
       },
@@ -251,6 +261,7 @@ function useAppointments({
       appointmentsCount,
       todayAppointments,
       specialties,
+      confirmedAppointment,
       deleteAppointmentPhoto,
       pages,
       doctors,

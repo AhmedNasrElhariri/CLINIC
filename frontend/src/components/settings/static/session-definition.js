@@ -55,7 +55,7 @@ const SessionDefinition = () => {
       setFormValue(initValue);
     },
   });
-
+  console.log(formValue,'FF');
   const handleClickCreate = useCallback(() => {
     setType('create');
     setFormValue(initValue);

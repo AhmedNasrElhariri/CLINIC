@@ -1,24 +1,24 @@
-import React, { useCallback, memo } from 'react';
-import * as R from 'ramda';
-import { FormControl } from 'rsuite';
+import React, { useCallback, memo } from "react";
+import * as R from "ramda";
+import { FormControl } from "rsuite";
 
-import Label from '../label';
-import { AddIcon, MinusIcon } from 'components/icons';
+import Label from "../label";
+import { AddIcon, MinusIcon } from "components/icons";
 import {
   NumberContainerStyled,
   NumberInputStyled,
   NumberButton,
-} from './style';
-import { FormGroupStyled } from '../form-group';
-import { isFloat } from 'utils/nubmer';
+} from "./style";
+import { FormGroupStyled } from "../form-group";
+import { isFloat } from "utils/nubmer";
 
 const CustomInput = memo(({ value, onChange, ...props }) => {
-  const setValue = useCallback(val => onChange(val), [onChange]);
+  const setValue = useCallback((val) => onChange(Number(val)), [onChange]);
   const onChangeValue = useCallback(
-    e => {
+    (e) => {
       const val = e.target.value;
       if (R.isEmpty(val) || R.isNil(val)) {
-        setValue('');
+        setValue("");
       }
       if (isFloat(val)) {
         setValue(val);
@@ -30,11 +30,11 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
   return (
     <NumberContainerStyled>
       <NumberButton
-        borderRadius={'50%'}
+        borderRadius={"50%"}
         onClick={() => setValue(Number(value || 0) - 1)}
         variant="light"
       >
-        <MinusIcon style={{ width: '25px' }} />
+        <MinusIcon style={{ width: "25px" }} />
       </NumberButton>
       <NumberInputStyled
         value={value}
@@ -42,11 +42,11 @@ const CustomInput = memo(({ value, onChange, ...props }) => {
         {...props}
       ></NumberInputStyled>
       <NumberButton
-        borderRadius={'50%'}
+        borderRadius={"50%"}
         onClick={() => setValue(Number(value || 0) + 1)}
         variant="light"
       >
-        <AddIcon style={{ width: '25px' }} />
+        <AddIcon style={{ width: "25px" }} />
       </NumberButton>
     </NumberContainerStyled>
   );
@@ -68,7 +68,7 @@ const NumberInput = ({
 };
 
 NumberInput.defaultProps = {
-  layout: 'vertical',
+  layout: "vertical",
 };
 
 export default memo(NumberInput);

@@ -60,6 +60,7 @@ function Appointments() {
     adjust,
     cancel,
     pages,
+    confirmedAppointment
   } = useAppointments({
     page,
     dateFrom: R.pathOr(null, ["date", 0])(formValue),
@@ -119,7 +120,12 @@ function Appointments() {
     },
     [open]
   );
-
+  const onConfirmed = useCallback(
+    ({ id }) => {
+      confirmedAppointment({ variables: { id: id } });
+    },
+    [confirmedAppointment]
+  );
   const handleArchive = useCallback(
     ({
       sessions,
@@ -266,6 +272,7 @@ function Appointments() {
                 onDuplicateAppointments={onDuplicateAppointments}
                 onEditAppointments={onEditAppointments}
                 onCancelAppointments={onCancelAppointments}
+                onConfirmed={onConfirmed}
                 defaultExpanded={true}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
@@ -292,6 +299,7 @@ function Appointments() {
                 onDuplicateAppointments={onDuplicateAppointments}
                 onEditAppointments={onEditAppointments}
                 onCancelAppointments={onCancelAppointments}
+                onConfirmed={onConfirmed}
                 defaultExpanded={true}
                 waiting={true}
                 followUpFeature={followUpFeature}

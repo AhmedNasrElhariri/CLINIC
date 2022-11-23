@@ -40,6 +40,12 @@ const PatientInfo = ({ patient }) => {
             <AddressStyled>{patient.phoneNoTwo}</AddressStyled>
           </Cell>
         )}
+        {patient.notes && (
+          <Cell>
+            <CellTitle>{t('notes')}</CellTitle>
+            <AddressStyled>{patient.notes}</AddressStyled>
+          </Cell>
+        )}
       </CRCard>
     </PatientInfoStyled>
   );

@@ -140,5 +140,5 @@ export { default as deleteSupplierAccount } from './delete-supplier-account';
 export { default as deleteUser } from './delete-user';
 export { default as deleteBranch } from './delete-branch';
 export { default as deleteSpecialty } from './delete-specialty';
-export {default as editFollowUpFeature} from './edit-followUp-feature';
-
+export { default as editFollowUpFeature } from './edit-followUp-feature';
+export { default as confirmedAppointment } from './confirm-appointment';

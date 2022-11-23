@@ -24,6 +24,7 @@ const initialValues = {
   date: new Date(),
   type: "Primary",
   branchId: null,
+  notes: "",
 };
 const EditButton = styled(Button)`
   background-color: white;
