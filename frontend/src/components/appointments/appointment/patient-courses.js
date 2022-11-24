@@ -173,7 +173,6 @@ const Course = ({ patientId }) => {
       const unitTransaction = R.pick(["id", "units", "transactionId", "notes"])(
         data
       );
-      console.log(unitTransaction,'unitTransaction');
       const updatedUnitTransaction = {
         id: unitTransaction.id,
         consumed: unitTransaction.units,

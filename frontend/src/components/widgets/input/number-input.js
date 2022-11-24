@@ -13,7 +13,7 @@ import { FormGroupStyled } from '../form-group';
 import { isFloat } from 'utils/nubmer';
 
 const CustomInput = memo(({ value, onChange, ...props }) => {
-  const setValue = useCallback(val => onChange(val), [onChange]);
+  const setValue = useCallback(val => onChange(Number(val)), [onChange]);
   const onChangeValue = useCallback(
     e => {
       const val = e.target.value;
