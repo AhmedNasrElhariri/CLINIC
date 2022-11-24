@@ -63,7 +63,6 @@ const todayAppointments = async (_, __, { user, organizationId }) => {
       doctor: true,
     },
   });
-  console.log(appointments, 'backeApp');
   return appointments;
 };
 
