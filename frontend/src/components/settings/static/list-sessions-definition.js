@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { formatDate } from "utils/date";
 function ListSessions({ sessions, onEdit }) {
   const { t } = useTranslation();
-  console.log(sessions);
   return (
     <>
       <CRCard borderless>

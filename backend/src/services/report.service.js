@@ -30,7 +30,6 @@ export const generatePdf = async (path, vairables = {}) => {
       async err => {
         if (err) {
           reject(err);
-          console.log(err);
         }
         const fileBuffer = await fsp.readFile(tempFileName);
         resolve(fileBuffer);

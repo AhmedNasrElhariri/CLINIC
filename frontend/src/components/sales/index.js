@@ -172,7 +172,6 @@ const Sales = () => {
         link.click();
       })
       .catch(err => {
-        console.log(err, 'rrr');
       });
   };
   const handleSalesPrintReport = async day => {
@@ -201,7 +200,6 @@ const Sales = () => {
         link.click();
       })
       .catch(err => {
-        console.log(err, 'rrr');
       });
   };
   return (

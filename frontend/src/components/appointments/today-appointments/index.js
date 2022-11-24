@@ -55,6 +55,7 @@ function TodayAppointments() {
     patientId: appointment?.patient?.id,
     canAddFollowUp: appointment?.canAddFollowUp,
     onAdjust: () => {},
+    setAppointment,
     setFollowUp,
     setPopUp,
     open,
@@ -64,7 +65,6 @@ function TodayAppointments() {
     () => filterTodayAppointments(appointments, formValue),
     [appointments, formValue]
   );
-
   useEffect(() => {
     setNotes((val) => ({
       businessNotes: R.propOr("", "businessNotes")(appointment),
@@ -81,7 +81,6 @@ function TodayAppointments() {
       )(filteredAppointments),
     [filteredAppointments]
   );
-
   const waitingAppointments = useMemo(
     () =>
       sortAppointmentsByUpdatedAt(
@@ -104,7 +103,7 @@ function TodayAppointments() {
       setAppointment(appointment);
       open();
     },
-    [open]
+    [setAppointment, open]
   );
   const onCompleteDone = useCallback(
     (appointment) => {
@@ -252,7 +251,7 @@ function TodayAppointments() {
         },
       });
     },
-    [complete, close]
+    [appointment,complete, close]
   );
 
   const [active, setActive] = React.useState("mainAppointments");

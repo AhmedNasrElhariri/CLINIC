@@ -286,7 +286,6 @@ const AccountingContainer = () => {
         link.click();
       })
       .catch(err => {
-        console.log(err, 'rrr');
       });
   };
   const handleRevenueAccountingExcel = async day => {
@@ -313,7 +312,7 @@ const AccountingContainer = () => {
         link.click();
       })
       .catch(err => {
-        console.log(err, 'rrr');
+        
       });
   };
   const handleExpenseAccountingExcel = async day => {
@@ -341,7 +340,6 @@ const AccountingContainer = () => {
         link.click();
       })
       .catch(err => {
-        console.log(err, 'rrr');
       });
   };
 
