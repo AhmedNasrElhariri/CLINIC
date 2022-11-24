@@ -44,7 +44,6 @@ function Patients() {
     type: filter.type,
     period: period,
     enable: filter.enable,
-    reference: filter.reference,
     branchId: filter.branchId,
   });
 
@@ -70,16 +69,6 @@ function Patients() {
                   content={() => ref.current}
                 />
               </Can>
-              {/* <Can I="CreateAreaReport" an="Patient">
-                <ReactToPrint
-                  trigger={() => (
-                    <CRButton variant="primary" ml={1} mr={1}>
-                      {t('areaReport')} +
-                    </CRButton>
-                  )}
-                  content={() => refTwo.current}
-                />
-              </Can> */}
             </Div>
           }
         >
@@ -102,7 +91,7 @@ function Patients() {
             }}
             bordered={false}
           >
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={160}>
               <CRTable.CRHeaderCell>{t("patient")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ name }) => (
@@ -111,7 +100,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={96}>
               <CRTable.CRHeaderCell>{t("membershipType")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ type }) => (
@@ -120,7 +109,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={108}>
               <CRTable.CRHeaderCell>{t("phoneNo")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ phoneNo }) => (
@@ -128,7 +117,7 @@ function Patients() {
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={108}>
               <CRTable.CRHeaderCell>{t("phoneNoTwo")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ phoneNoTwo }) => (
@@ -136,7 +125,7 @@ function Patients() {
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={64}>
               <CRTable.CRHeaderCell>{t("code")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ code }) => (
@@ -145,7 +134,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={64}>
               <CRTable.CRHeaderCell>{t("maritalStatus")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ maritalStatus }) => (
@@ -156,7 +145,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={64}>
               <CRTable.CRHeaderCell>{t("patientLevel")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ patientLevel }) => (
@@ -167,7 +156,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={128}>
               <CRTable.CRHeaderCell>{t("email")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ email }) => (
@@ -176,7 +165,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={128}>
               <CRTable.CRHeaderCell>{t("area")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ area }) => (
@@ -185,7 +174,7 @@ function Patients() {
               </CRTable.CRCell>
             </CRTable.CRColumn>
 
-            <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRColumn flexGrow={1} minWidth={110}>
               <CRTable.CRHeaderCell>{t("reference")}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ reference }) => (
