@@ -34,7 +34,6 @@ import useAppointmentHistory from './fetch-appointment-history';
 import { useForm, useModal } from 'hooks';
 import { APPT_STATUS } from 'utils/constants';
 import { StyledPanel } from './style';
-// import { get } from 'services/local-storage';
 import AppointmentHeader from './appointment-header';
 
 const sortByDate = R.sortBy(R.compose(R.prop('date')));

@@ -1,16 +1,20 @@
 import React, { useEffect, useMemo } from "react";
 import { Form } from "rsuite";
-import { get } from "services/local-storage";
 import { CRSelectInput } from "components";
 import { useTranslation } from "react-i18next";
 import * as R from "ramda";
+import { useAppSelector } from "redux-store/hooks";
+import { selectSelectedBranch } from "features/root/rootSlice";
 
 function AppointmentsFilter({ formValue, onChange, branches, formClassName }) {
-  const branch = get("branch");
+  const branchId = useAppSelector(selectSelectedBranch);
   const { t } = useTranslation();
+
+  // When Global branch changed
   useEffect(() => {
-    onChange({ ...formValue, branch: branch });
-  }, [branch]);
+    onChange((prev) => ({ ...prev, branch: branchId }));
+  }, [branchId, onChange]);
+
   const specialties = useMemo(
     () =>
       R.pipe(
