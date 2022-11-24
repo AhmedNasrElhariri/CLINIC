@@ -1,16 +1,14 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
+import { CRTable } from "components";
 import { Can } from "components/user/can";
 import PatientsFilter from "../filter/patients-filter";
 import EditPatient from "../edit-patient";
 import { usePatients } from "hooks";
 import { useTranslation } from "react-i18next";
-import { Table } from "rsuite";
-
 const initialValue = {
   name: "",
   phoneNo: "",
-  branchId: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -40,9 +38,7 @@ function Patients() {
           formValue={filter}
           setFormValue={setFilter}
         ></PatientsFilter>
-        <Table
-          rowClassName="cursor-pointer"
-          wordWrap
+        <CRTable
           data={patients}
           autoHeight
           onRowClick={({ id }) => {
@@ -50,33 +46,49 @@ function Patients() {
           }}
           bordered={false}
         >
-          <Table.Column flexGrow={1} minWidth={128}>
-            <Table.HeaderCell>{t("patient")}</Table.HeaderCell>
-            <Table.Cell>{({ name }) => name}</Table.Cell>
-          </Table.Column>
+          <CRTable.CRColumn flexGrow={1} minWidth={160}>
+            <CRTable.CRHeaderCell>{t("patient")}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ name }) => (
+                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
 
-          <Table.Column flexGrow={1} minWidth={128}>
-            <Table.HeaderCell>{t("phoneNo")}</Table.HeaderCell>
-            <Table.Cell>{({ phoneNo }) => phoneNo}</Table.Cell>
-          </Table.Column>
-          <Table.Column flexGrow={1} minWidth={128}>
-            <Table.HeaderCell>{t("phoneNoTwo")}</Table.HeaderCell>
-            <Table.Cell>{({ phoneNoTwo }) => phoneNoTwo}</Table.Cell>
-          </Table.Column>
-          <Table.Column flexGrow={1} minWidth={64}>
-            <Table.HeaderCell>{t("code")}</Table.HeaderCell>
-            <Table.Cell>{({ code }) => code}</Table.Cell>
-          </Table.Column>
+          <CRTable.CRColumn flexGrow={1} minWidth={128}>
+            <CRTable.CRHeaderCell>{t("phoneNo")}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ phoneNo }) => (
+                <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1} minWidth={128}>
+            <CRTable.CRHeaderCell>{t("phoneNoTwo")}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ phoneNoTwo }) => (
+                <CRTable.CRCellStyled bold>{phoneNoTwo}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1} minWidth={92}>
+            <CRTable.CRHeaderCell>{t("code")}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ code }) => (
+                <CRTable.CRCellStyled bold>{code}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
 
-          <Table.Column flexGrow={1}>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.Cell>
+          <CRTable.CRColumn flexGrow={1} minWidth={64}>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
               {(data) => <EditPatient patient={data} t={t} />}
-            </Table.Cell>
-          </Table.Column>
-        </Table>
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+        </CRTable>
 
-        <Table.Pagination
+        <CRTable.CRPagination
           lengthMenu={[
             {
               value: 10,
