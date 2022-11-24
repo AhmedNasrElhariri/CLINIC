@@ -1,11 +1,9 @@
-import { prisma } from '@';
-
-const canAddFollowUp = ({ appointmentFollowUpId }) => {
-  if (appointmentFollowUpId) {
-    return false;
-  } else {
-    return true;
+const canAddFollowUp = ({ appointmentFollowUpId, session }) => {
+  let f = false;
+  if (session.followUp && appointmentFollowUpId === null) {
+    f = true;
   }
+  return f;
 };
 
 export default canAddFollowUp;
