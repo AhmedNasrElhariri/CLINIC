@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useConfigurations, useMedicineDefinitions } from 'hooks';
 import { Div } from 'components';
 import { PrintMedicine, PrescriptionPrintout } from './style';
+import { createDescription } from 'services/medicine.service';
 
 function Prescription({ medicine, printRef, ...rest }) {
   const { medicineDefinitions } = useMedicineDefinitions();
@@ -35,7 +36,7 @@ function Prescription({ medicine, printRef, ...rest }) {
           <PrintMedicine key={index}>
             <Div className="flex">
               <Div mr={2} fontWeight="bold">
-                {normalizedMedicines[element.medicineId].name}
+                {createDescription(normalizedMedicines[element.medicineId])}
               </Div>
               <Div>{element.dose}&nbsp;</Div>
             </Div>
