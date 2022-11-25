@@ -218,7 +218,7 @@ const GroupContainer = ({
                   <p className="text-center">
                     {formValue[id] &&
                       formValue[id]?.map((v, indx) => (
-                        <CellDiv>{renderFieldValue(v)}</CellDiv>
+                        <CellDiv>{renderFieldValue(v, type)}</CellDiv>
                       ))}
                   </p>
                 </div>
