@@ -2,14 +2,14 @@ import { prisma } from '@';
 
 const totalPaid = async ({ id }) => {
   const totalPaid = await prisma.supplierInvoice.aggregate({
-    sum: {
+    _sum: {
       paid: true,
     },
     where: {
       supplierId: id,
     },
   });
-  const sum = totalPaid.sum.paid || 0;
+  const sum = totalPaid._sum.paid || 0;
   return sum;
 };
 export default totalPaid;

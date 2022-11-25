@@ -381,7 +381,6 @@ const NewAppointment = ({
         });
       }
     }
-
   }, [appointment, followUp]);
 
   const handleCreate = useCallback(() => {
@@ -438,7 +437,7 @@ const NewAppointment = ({
   return (
     <>
       <NewPatient
-        onCreate={({ id }) => {
+        onCreateDefault={({ id }) => {
           setFormValue({ ...formValue, patientId: id });
           close();
         }}
@@ -486,7 +485,6 @@ const NewAppointment = ({
                     name="session"
                     block
                     data={updatedSessionsDefinition}
-                    
                   />
                 )}
                 <CRBrancheTree
