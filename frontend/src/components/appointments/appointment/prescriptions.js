@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 
@@ -23,6 +23,7 @@ const ContainerStyled = styled.div`
 
 const WrapperStyled = styled(Div)`
   width: 500px;
+  /* height: calc(100% - 40px); */
   height: ${HEIGHT};
   border: 1px solid black;
   border-radius: 8px;
@@ -37,6 +38,7 @@ const DeleteButtonStyled = styled(CRButton)`
 
 const Prescriptions = ({ prescriptions, onDeletePrescriptions }) => {
   const { pageSetupData } = useConfigurations();
+  const ref = useRef();
 
   const pageSetupRow = pageSetupData.find(
     element => element.type === 'prescription'
@@ -64,10 +66,10 @@ const Prescriptions = ({ prescriptions, onDeletePrescriptions }) => {
       <DeleteButtonStyled variant="danger" onClick={onDeletePrescriptions}>
         Delete
       </DeleteButtonStyled>
-      <WrapperStyled>
+      <WrapperStyled ref={ref}>
         <Slider dots={null}>
           {prescriptions.map((medicines, index) => (
-            <Div key={index} height={HEIGHT} {...margins}>
+            <Div key={index} height={HEIGHT} p={4}>
               <Div>
                 {medicines.map(({ medicine, dose }, idx) => (
                   <Div key={idx}>
@@ -90,28 +92,3 @@ Prescriptions.defaultProps = {
 };
 
 export default Prescriptions;
-
-{
-  /* <ContainerStyled>
-      <WrapperStyled {...margins}>
-        <Slider
-          dots={null}
-          nextArrow={<SampleNextArrow />}
-          prevArrow={<SamplePrevArrow />}
-        >
-          {prescriptions.map((medicines, index) => (
-            <Div key={index}>
-              <List>
-                {medicines.map(({ medicine, dose }, idx) => (
-                  <List.Item key={idx}>
-                    <H4 mb={0}>{createDescription(medicine)}</H4>
-                    <Div>{dose}</Div>
-                  </List.Item>
-                ))}
-              </List>
-            </Div>
-          ))}
-        </Slider>
-      </WrapperStyled>
-    </ContainerStyled> */
-}

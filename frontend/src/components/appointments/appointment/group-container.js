@@ -24,6 +24,7 @@ import {
   SELECTOR_WITH_INPUT,
   SELECTOR,
 } from 'utils/constants';
+import { formatNumber } from 'utils/nubmer';
 
 const CellDiv = styled.div`
   width: 100px;
@@ -130,6 +131,13 @@ const renderItem = ({
   }
 };
 
+const renderFieldValue = (value, type) => {
+  if (type === NUMBER_FIELD_TYPE) {
+    return formatNumber(value);
+  }
+  return value;
+};
+
 const GroupContainer = ({
   fields,
   formValue,
@@ -204,14 +212,14 @@ const GroupContainer = ({
                 }, minmax(100px, 1fr))`,
               }}
             >
-              {fields.map(({ id, name }, i) => (
-                <div>
-                  <h6 key={i} className="mb-3 text-center">
-                    {name}
-                  </h6>
+              {fields.map(({ id, name, type }, i) => (
+                <div key={i}>
+                  <h6 className="mb-3 text-center">{name}</h6>
                   <p className="text-center">
                     {formValue[id] &&
-                      formValue[id]?.map((v, indx) => <CellDiv>{v}</CellDiv>)}
+                      formValue[id]?.map((v, indx) => (
+                        <CellDiv>{renderFieldValue(v)}</CellDiv>
+                      ))}
                   </p>
                 </div>
               ))}

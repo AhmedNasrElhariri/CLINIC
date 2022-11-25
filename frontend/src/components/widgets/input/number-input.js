@@ -10,40 +10,40 @@ import {
   NumberButton,
 } from './style';
 import { FormGroupStyled } from '../form-group';
-import { isFloat } from 'utils/nubmer';
+import { formatNumber, isFloat, unmask } from 'utils/nubmer';
 
 const CustomInput = memo(({ value, onChange, ...props }) => {
-  const setValue = useCallback(val => onChange(Number(val)), [onChange]);
   const onChangeValue = useCallback(
     e => {
-      const val = e.target.value;
+      console.log(e.target.value)
+      const val = unmask(e.target.value);
       if (R.isEmpty(val) || R.isNil(val)) {
-        setValue('');
+        onChange('');
       }
       if (isFloat(val)) {
-        setValue(val);
+        onChange(val);
       }
     },
-    [setValue]
+    [onChange]
   );
 
   return (
     <NumberContainerStyled>
       <NumberButton
         borderRadius={'50%'}
-        onClick={() => setValue(Number(value || 0) - 1)}
+        onClick={() => onChange(parseFloat(value) - 1)}
         variant="light"
       >
         <MinusIcon style={{ width: '25px' }} />
       </NumberButton>
       <NumberInputStyled
-        value={value}
+        value={formatNumber(value)}
         onChange={onChangeValue}
         {...props}
       ></NumberInputStyled>
       <NumberButton
         borderRadius={'50%'}
-        onClick={() => setValue(Number(value || 0) + 1)}
+        onClick={() => onChange(parseFloat(value) + 1)}
         variant="light"
       >
         <AddIcon style={{ width: '25px' }} />
