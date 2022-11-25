@@ -26,7 +26,6 @@ const initialValues = {
   type: "Primary",
   guardianName: "",
   branchId: null,
-  notes: "",
 };
 const { StringType, NumberType } = Schema.Types;
 const model = Schema.Model({
