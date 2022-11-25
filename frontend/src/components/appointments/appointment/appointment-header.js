@@ -36,13 +36,6 @@ export default function AppointmentHeader({
           )}
           content={() => printRef.current}
         />
-        {/* <CRButton
-          variant="primary"
-          onClick={handleClickCreate}
-          disabled={disabled}
-        >
-          {t('printPrescription')} <Icon icon="print" />
-        </CRButton> */}
         <CRButton
           variant="primary"
           onClick={handleClickCreateThree}
