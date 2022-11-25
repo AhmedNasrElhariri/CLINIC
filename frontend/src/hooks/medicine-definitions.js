@@ -62,9 +62,15 @@ function useMedicineDefinitions({ onCreate, onEdit, onDelete } = {}) {
     },
   });
 
+  const normalizedMedicineDefinitions = useMemo(
+    () => medicineDefinitions.reduce((acc, m) => ({ ...acc, [m.id]: m }), {}),
+    [medicineDefinitions]
+  );
+
   return useMemo(
     () => ({
       medicineDefinitions,
+      normalizedMedicineDefinitions,
       addMedicineDefinition,
       editMedicineDefinition,
       deleteMedicineDefinition,
@@ -72,6 +78,7 @@ function useMedicineDefinitions({ onCreate, onEdit, onDelete } = {}) {
     }),
     [
       addMedicineDefinition,
+      normalizedMedicineDefinitions,
       editMedicineDefinition,
       deleteMedicineDefinition,
       medicineDefinitions,

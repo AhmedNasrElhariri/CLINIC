@@ -277,6 +277,7 @@ export const TRANSLATIONS_EN = {
   consume: "Consume",
   consumeInventory: "Consume Inventory", //
   patientInfo: "Patient Info",
+  prescriptions: "Prescriptions",
   sessions: "Sessions",
   labs: "Labs",
   images: "Rays",
