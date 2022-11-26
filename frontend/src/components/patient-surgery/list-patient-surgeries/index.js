@@ -22,7 +22,7 @@ function ListPatientSurgeries({
     <>
       <CRCard borderless className="mt-5">
         <CRTable autoHeight data={patientSurgeries} onRowClick={onSurgeryClick}>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={128} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ patient }) => (
@@ -31,7 +31,7 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={72} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('surgery')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ surgery }) => (
@@ -40,7 +40,7 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={108} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('hospital')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ hospital }) => (
@@ -49,7 +49,7 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1.5}>
+          <CRTable.CRColumn minWidth={136} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date }) =>
@@ -62,7 +62,7 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={64} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('anesthesiaType')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ anesthesia }) => (
@@ -70,7 +70,7 @@ function ListPatientSurgeries({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={116} flexGrow={1}>
             <CRTable.CRHeaderCell>
               {t('anesthesiaDoctorName')}
             </CRTable.CRHeaderCell>
@@ -83,7 +83,7 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={64} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('fees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ fees }) => (
@@ -98,7 +98,7 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={64} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('hospitalFees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ hospitalFees }) => (
@@ -112,7 +112,7 @@ function ListPatientSurgeries({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={64} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('assistantFees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ assistantFees }) => (
@@ -126,7 +126,7 @@ function ListPatientSurgeries({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={64} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('anesthesiaFees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ anesthesiaFees }) => (
@@ -140,7 +140,7 @@ function ListPatientSurgeries({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn minWidth={64} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('othersFees')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ others }) => (

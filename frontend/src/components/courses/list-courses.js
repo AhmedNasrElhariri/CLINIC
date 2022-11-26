@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CRCard } from 'components';
-import { Table } from 'rsuite';
+import { CRCard, CRTable } from 'components';
 
 function ListCourses({
   courses,
@@ -21,38 +20,57 @@ function ListCourses({
   return (
     <>
       <CRCard borderless>
-        <Table
-          rowClassName="text-sm font-normal text-gray-500 cursor-pointer"
-          wordWrap
-          autoHeight
+        <CRTable
           data={courses}
           onRowClick={course => {
             setCourse(course);
             setShowCourseData(true);
           }}
         >
-          <Table.Column flexGrow={1} minWidth={128}>
-            <Table.HeaderCell>{t('courseName')}</Table.HeaderCell>
-            <Table.Cell>{({ name }) => name}</Table.Cell>
-          </Table.Column>
-          <Table.Column flexGrow={1} minWidth={128}>
-            <Table.HeaderCell>{t('patient')}</Table.HeaderCell>
-            <Table.Cell>{({ patient }) => patient.name}</Table.Cell>
-          </Table.Column>
-          <Table.Column flexGrow={1} minWidth={128}>
-            <Table.HeaderCell>{t('phoneNo')}</Table.HeaderCell>
-            <Table.Cell>{({ patient }) => patient.phoneNo}</Table.Cell>
-          </Table.Column>
-          <Table.Column flexGrow={1} minWidth={64}>
-            <Table.HeaderCell>{t('coursePrice')}</Table.HeaderCell>
-            <Table.Cell>{({ price }) => price}</Table.Cell>
-          </Table.Column>
-          <Table.Column flexGrow={1} minWidth={64}>
-            <Table.HeaderCell>{t('courseUnpaid')}</Table.HeaderCell>
-            <Table.Cell>{({ price, paid }) => price - paid}</Table.Cell>
-          </Table.Column>
-        </Table>
-        <Table.Pagination
+          <CRTable.CRColumn flexGrow={1} minWidth={160}>
+            <CRTable.CRHeaderCell>{t('courseName')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ name }) => (
+                <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1} minWidth={160}>
+            <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ patient }) => (
+                <CRTable.CRCellStyled bold>{patient.name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1} minWidth={128}>
+            <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ patient }) => (
+                <CRTable.CRCellStyled bold>
+                  {patient.phoneNo}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1} minWidth={96}>
+            <CRTable.CRHeaderCell>{t('coursePrice')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ price }) => (
+                <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1} minWidth={96}>
+            <CRTable.CRHeaderCell>{t('courseUnpaid')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ price, paid }) => (
+                <CRTable.CRCellStyled bold>{price - paid}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+        </CRTable>
+        <CRTable.CRPagination
           lengthMenu={[
             {
               value: 10,

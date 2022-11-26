@@ -10,13 +10,7 @@ export default function MainContainer({
 }) {
   return (
     <>
-      <Div
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={64}
-        mt={5}
-      >
+      <Div className="flex justify-between items-center flex-col sm:flex-row mb-5 sm:mt-5 sm:mb-7">
         {title ? <H3>{title}</H3> : ''}
         {more}
       </Div>
