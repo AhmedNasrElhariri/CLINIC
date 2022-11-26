@@ -30,8 +30,8 @@ const totalUnpaidOfCourses = async (_, __, { user, organizationId }) => {
       },
     },
   });
-  const totalPrice = totalPriceOfCourses.sum.price;
-  const totalPaid = totalPaidOfCourses.sum.paid;
+  const totalPrice = totalPriceOfCourses._sum.price;
+  const totalPaid = totalPaidOfCourses._sum.paid;
   const totalUnpaid = totalPrice - totalPaid;
   return { totalUnpaid: totalUnpaid };
 };

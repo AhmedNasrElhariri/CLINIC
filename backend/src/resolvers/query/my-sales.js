@@ -152,9 +152,9 @@ const mySaleses = async (
       },
     },
   });
-  const totalPrice = totalSales.sum.totalPrice;
-  const totalCost = totalSales.sum.totalCost;
-  const salesCount = totalSales.count.id;
+  const totalPrice = totalSales._sum.totalPrice;
+  const totalCost = totalSales._sum.totalCost;
+  const salesCount = totalSales._count.id;
   const data = {
     sales: sales,
     totalSalesPrice: totalPrice,

@@ -40,7 +40,11 @@ const model = Schema.Model({
     "Age should be 0-100 years old"
   ),
 });
-export default function NewPatient({ show: showModel, onHide }) {
+export default function NewPatient({
+  show: showModel,
+  onHide,
+  onCreateDefault,
+}) {
   const { formValue, setFormValue, checkResult, validate, show, setShow } =
     useForm({
       initValue: initialValues,
@@ -60,6 +64,7 @@ export default function NewPatient({ show: showModel, onHide }) {
       setFormValue(initialValues);
       setShow(false);
     },
+    onCreateDefault,
   });
   const areas = useMemo(() => R.propOr([], "areas")(data), [data]);
   const { t } = useTranslation();

@@ -9,7 +9,7 @@ const totalPaid = async ({ id }) => {
       supplierId: id,
     },
   });
-  const sum = totalPaid.sum.paid || 0;
+  const sum = totalPaid._sum.paid || 0;
   return sum;
 };
 export default totalPaid;

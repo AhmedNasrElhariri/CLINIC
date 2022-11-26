@@ -9,7 +9,7 @@ const invoiceCount = async ({ id }) => {
       supplierId: id,
     },
   });
-  const count = invoiceCount.count.id;
+  const count = invoiceCount._count.id;
   return count;
 };
 export default invoiceCount;

@@ -134,8 +134,8 @@ const CompanyRevenues = async (
       },
     },
   });
-  const sum = totalRevenues.sum.amount;
-  const count = totalRevenues.count.id;
+  const sum = totalRevenues._sum.amount;
+  const count = totalRevenues._count.id;
   const data = {
     companyRevenues: companyRevenues,
     totalRevenues: sum,

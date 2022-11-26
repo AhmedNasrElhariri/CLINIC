@@ -51,7 +51,7 @@ const myCourses = async (
   //   skip: offset,
   //   take: limit,
   // });
-  const courses = await prisma.$queryRaw`SELECT C."id" As "courseId" FROM public."Course" AS C INNER JOIN public."Patient" AS P on C."patientId" = P."id"   WHERE P."organizationId" = ${organizationId} AND (CASE WHEN ${patientId} like '_%' THEN P."id" = ${patientId} ELSE P."id" like '_%' END) AND  (CASE WHEN ${status} like '_%' THEN (C."status" = ${newStatus[0]} OR C."status" = ${newStatus[1]}) ELSE C."status" = 'InProgress' END) ORDER BY (C.price - C.paid) DESC LIMIT ${limit} OFFSET ${offset}`;
+  const courses = await prisma.$queryRaw`SELECT C."id" As "courseId" FROM public."Course" AS C INNER JOIN public."Patient" AS P on C."patientId" = P."id"   WHERE P."organizationId" = ${organizationId} AND (CASE WHEN ${patientId} like '_%' THEN P."id" = ${patientId} ELSE P."id" like '_%' END) AND  (CASE WHEN ${status} like '_%' THEN (C."status"::text = ${newStatus[0]} OR C."status"::text = ${newStatus[1]}) ELSE C."status" = 'InProgress' END) ORDER BY (C.price - C.paid) DESC LIMIT ${limit} OFFSET ${offset}`;
 
   let coursesIds = [];
   courses.forEach(c => {

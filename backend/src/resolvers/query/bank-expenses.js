@@ -152,8 +152,8 @@ const bankExpenses = async (
       },
     },
   });
-  const sum = totalExpenses.sum.amount;
-  const count = totalExpenses.count.id;
+  const sum = totalExpenses._sum.amount;
+  const count = totalExpenses._count.id;
 
   const data = {
     bankExpenses: expenses,
