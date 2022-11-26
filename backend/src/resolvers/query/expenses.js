@@ -117,10 +117,10 @@ const expenses = async (
     },
   });
   const totalExpenses = await prisma.expense.aggregate({
-    sum: {
+    _sum: {
       amount: true,
     },
-    count: {
+    _count: {
       id: true,
     },
     where: {

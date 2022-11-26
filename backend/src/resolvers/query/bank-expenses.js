@@ -101,10 +101,10 @@ const bankExpenses = async (
   });
 
   const totalExpenses = await prisma.bankExpense.aggregate({
-    sum: {
+    _sum: {
       amount: true,
     },
-    count: {
+    _count: {
       id: true,
     },
     where: {

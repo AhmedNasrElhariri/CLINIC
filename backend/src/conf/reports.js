@@ -288,11 +288,11 @@ const init = app => {
         },
       });
       const totalSales = await prisma.sales.aggregate({
-        sum: {
+        _sum: {
           totalPrice: true,
           totalCost: true,
         },
-        count: {
+        _count: {
           id: true,
         },
         where: {
@@ -690,7 +690,7 @@ const init = app => {
     const monthName = moment(month).format('MMMM YYYY');
 
     const revenue = await prisma.revenue.aggregate({
-      sum: {
+      _sum: {
         amount: true,
       },
       where: {
@@ -702,7 +702,7 @@ const init = app => {
     });
     const revenues = revenue.sum.amount === null ? 0 : revenue.sum.amount;
     const sales = await prisma.sales.aggregate({
-      sum: {
+      _sum: {
         totalPrice: true,
       },
       where: {
@@ -714,7 +714,7 @@ const init = app => {
     });
     const totalSales = sales.sum.totalPrice === null ? 0 : sales.sum.totalPrice;
     const expense = await prisma.expense.aggregate({
-      sum: {
+      _sum: {
         amount: true,
       },
       where: {

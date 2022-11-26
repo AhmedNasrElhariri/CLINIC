@@ -86,10 +86,10 @@ const CompanyRevenues = async (
     },
   });
   const totalRevenues = await prisma.insuranceRevenue.aggregate({
-    sum: {
+    _sum: {
       amount: true,
     },
-    count: {
+    _count: {
       id: true,
     },
     where: {

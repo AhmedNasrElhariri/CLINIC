@@ -11,7 +11,7 @@ const totalUnpaidOfCourses = async (_, __, { user, organizationId }) => {
     true
   );
   const totalPriceOfCourses = await prisma.course.aggregate({
-    sum: {
+    _sum: {
       price: true,
     },
     where: {
@@ -21,7 +21,7 @@ const totalUnpaidOfCourses = async (_, __, { user, organizationId }) => {
     },
   });
   const totalPaidOfCourses = await prisma.course.aggregate({
-    sum: {
+    _sum: {
       paid: true,
     },
     where: {
