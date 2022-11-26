@@ -69,7 +69,7 @@ function Appointments() {
     type: R.propOr(null, "type")(formValue),
     patient: R.propOr("", "patient")(formValue),
     action: ACTIONS.List_Appointment,
-    setAppointment
+    setAppointment,
   });
 
   const onClickDone = useCallback(
@@ -161,8 +161,9 @@ function Appointments() {
             amount: discount,
           },
           others: {
-            name: `others-${appointment.patient.name}`,
+            name: `others-${othersName}-${appointment.patient.name}`,
             amount: others,
+            othersName: othersName,
           },
           remaining: remaining,
           payOfRemaining: payOfRemaining,
@@ -226,7 +227,7 @@ function Appointments() {
         },
       });
     },
-    [appointment,complete, close]
+    [appointment, complete, close]
   );
   useEffect(() => {
     setNotes((val) => ({
