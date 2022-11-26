@@ -1,6 +1,6 @@
 const canAddFollowUp = ({ appointmentFollowUpId, session }) => {
   let f = false;
-  if (session.followUp && appointmentFollowUpId === null) {
+  if (session && session.followUp && appointmentFollowUpId === null) {
     f = true;
   }
   return f;

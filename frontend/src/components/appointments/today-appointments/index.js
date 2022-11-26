@@ -196,6 +196,7 @@ function TodayAppointments() {
           others: {
             name: "others - " + othersName + " - " + appointment.patient.name,
             amount: others,
+            othersName: othersName,
           },
           remaining: remaining,
           payOfRemaining: payOfRemaining,
@@ -251,7 +252,7 @@ function TodayAppointments() {
         },
       });
     },
-    [appointment,complete, close]
+    [appointment, complete, close]
   );
 
   const [active, setActive] = React.useState("mainAppointments");

@@ -75,7 +75,7 @@ const PatientsFilter = ({
     }
     return newareas;
   }, [dir, areas]);
-
+  console.log(dir,newAreas,'PATIRNT');
   const setAreaValue = (val) => {
     setFormValue({ ...formValue, area: val });
     setAreaFormValue({ ...areaFormValue, areaId: val });
