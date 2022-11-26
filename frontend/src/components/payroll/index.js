@@ -7,7 +7,6 @@ import {
   H4,
   CRBrancheTree,
 } from 'components';
-import styled from 'styled-components';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import { CheckboxGroup, Checkbox, Schema, Form } from 'rsuite';
 import PayrollForm, { usePayrollForm } from './form';
@@ -16,12 +15,6 @@ import EmployeesPayroll from './list-payrolls';
 import { useModal, usePayroll, useAccounting, useForm } from 'hooks';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
-
-const StyledDiv = styled.div`
-  & .rs-form-control-wrapper {
-    display: block;
-  }
-`;
 
 const initialPayrollusers = [];
 const initValue = {
@@ -119,8 +112,7 @@ function Payroll() {
       setFormValue(initValue);
     },
   });
-  const view = ACCOUNTING_VIEWS.YEAR,
-    updatedPeriod = formValue.period;
+  const view = ACCOUNTING_VIEWS.YEAR;
   const { BranchTotalRevenues, BranchTotalExpenses } = useAccounting({
     view,
     period,
@@ -161,7 +153,7 @@ function Payroll() {
       });
       close();
     }
-  }, [formValue, addPayrollUser]);
+  }, [formValue, addPayrollUser, close, validate]);
   const handleAddAdvance = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.employeeId,
@@ -176,7 +168,7 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.employeeId, period]);
+  }, [addTransaction, amount, period, formValue]);
   const handleAddCommision = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.employeeId,
@@ -191,7 +183,7 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.employeeId, period]);
+  }, [addTransaction, amount, formValue, period]);
   const handleAddIncentive = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.employeeId,
@@ -206,7 +198,7 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.employeeId, period]);
+  }, [addTransaction, amount, formValue, period]);
   const handleAddDeduction = useCallback(() => {
     const updatedFormValue = {
       userId: formValue.employeeId,
@@ -221,8 +213,8 @@ function Payroll() {
         payrollTransaction: updatedFormValue,
       },
     });
-  }, [addTransaction, amount, formValue.employeeId, period]);
-  const deletePayrollUserFun = userId => {
+  }, [addTransaction, amount, formValue, period]);
+  const deletePayrollUserFun = (userId) => {
     deleteUser({
       variables: {
         userId: userId,
@@ -335,16 +327,16 @@ function Payroll() {
       ),
     });
     close();
-  }, [addPayroll, formValue, checkedPayLipsUsers]);
+  }, [addPayroll, formValue, checkedPayLipsUsers, close]);
   return (
     <>
       <Can I="View" an="Payroll">
         <MainContainer
           title={t('payrollReports')}
           more={
-            <Div display="flex">
+            <div className="flex items-center justify-center flex-wrap gap-1">
               <Can I="CreatePayslips" an="Payroll">
-                <CRButton variant="primary" onClick={open} ml={1}>
+                <CRButton variant="primary" onClick={open}>
                   {t('payPayslips')}
                 </CRButton>
               </Can>
@@ -365,7 +357,6 @@ function Payroll() {
                     setValidModel(model2);
                     addAdvanceForm.show();
                   }}
-                  ml={1}
                 >
                   {t('addAdvance')}
                 </CRButton>
@@ -377,7 +368,6 @@ function Payroll() {
                     addIncentiveForm.show();
                     setValidModel(model2);
                   }}
-                  ml={1}
                 >
                   {t('addIncentives')}
                 </CRButton>
@@ -389,7 +379,6 @@ function Payroll() {
                     addCommissionForm.show();
                     setValidModel(model2);
                   }}
-                  ml={1}
                 >
                   {t('addCommission')}
                 </CRButton>
@@ -401,12 +390,11 @@ function Payroll() {
                     addDeductionForm.show();
                     setValidModel(model2);
                   }}
-                  ml={1}
                 >
                   {t('addDeduction')}
                 </CRButton>
               </Can>
-            </Div>
+            </div>
           }
           nobody
         ></MainContainer>
@@ -428,7 +416,6 @@ function Payroll() {
             onCancel={close}
             loading={addPayrollLoading}
             header="Payslips"
-            // bodyStyle={{ minWidth: 300 }}
           >
             <>
               <H4>{formatDate(new Date())}</H4>
@@ -437,9 +424,9 @@ function Payroll() {
                   inline
                   name="payrolluserIds"
                   value={checkedPayLipsUsers}
-                  onChange={val => setCheckPayLipsUsers(val)}
+                  onChange={(val) => setCheckPayLipsUsers(val)}
                 >
-                  {payslips.map(pa => (
+                  {payslips.map((pa) => (
                     <Div
                       display="flex"
                       backgroundColor="#eef1f1"
