@@ -15,7 +15,7 @@ import { formatNumber, isFloat, unmask } from 'utils/nubmer';
 const CustomInput = memo(({ value, onChange, ...props }) => {
   const onChangeValue = useCallback(
     e => {
-      const val = unmask(e.target.value);
+      const val = Number(e.target.value);
       if (R.isEmpty(val) || R.isNil(val)) {
         onChange('');
       }
