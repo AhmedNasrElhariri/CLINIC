@@ -164,7 +164,7 @@ const bankRevenues = async (
       },
     },
   });
-  const sum = totalRevenues._sum.amount ;
+  const sum = totalRevenues._sum.amount;
   const count = totalRevenues._count.id;
   const data = {
     bankRevenues: revenues,
