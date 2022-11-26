@@ -46,7 +46,6 @@ const PatientsFilter = ({
   setPeriod,
 }) => {
   const { data } = useQuery(ALL_AREAS);
-  const dir = get('dir');
   const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const { t, i18n } = useTranslation();
   const { data: BranchesData } = useQuery(LIST_BRANCHES_TREE, {
@@ -56,9 +55,10 @@ const PatientsFilter = ({
     () => R.propOr([], 'listBranchesTree')(BranchesData),
     [data, BranchesData]
   );
+  const language = i18n?.language;
   const newAreas = useMemo(() => {
     let newareas = [];
-    if (i18n.language === 'ar') {
+    if (language === 'ar') {
       newareas = areas.map(a => {
         return {
           id: a.city_name_ar,
@@ -74,7 +74,7 @@ const PatientsFilter = ({
       });
     }
     return newareas;
-  }, [dir, areas]);
+  }, [language, areas]);
   const setAreaValue = val => {
     setFormValue({ ...formValue, area: val });
     setAreaFormValue({ ...areaFormValue, areaId: val });
