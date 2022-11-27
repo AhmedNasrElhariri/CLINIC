@@ -241,6 +241,7 @@ const BankAccountingContainer = () => {
         revenueName: formValue?.revenueName,
         expenseType: formValue?.expenseType,
         expenseName: formValue?.expenseName,
+        bankId: filter?.bank,
         columns: paramValue,
         view,
         dateFrom: period[0],
@@ -257,7 +258,6 @@ const BankAccountingContainer = () => {
         link.click();
       })
       .catch((err) => {
-        console.log(err, "rrr");
       });
   };
   ///
@@ -286,7 +286,6 @@ const BankAccountingContainer = () => {
         link.click();
       })
       .catch((err) => {
-        console.log(err, "rrr");
       });
   };
   const handleBankExpenseAccountingExcel = async (day) => {
@@ -315,7 +314,6 @@ const BankAccountingContainer = () => {
         link.click();
       })
       .catch((err) => {
-        console.log(err, "rrr");
       });
   };
   return (

@@ -137,6 +137,7 @@ const init = app => {
       expenseSpecialtyId,
       expenseDoctorId,
       expenseType,
+      bankId,
       columns = ['revenues', 'expenses'],
       organizationId,
       expenseName,
@@ -165,6 +166,9 @@ const init = app => {
             {
               doctorId: doctorId,
             },
+            {
+              bankId: bankId,
+            },
           ],
           date: {
             gte: updatedDateFrom,
@@ -188,6 +192,9 @@ const init = app => {
             },
             {
               doctorId: expenseDoctorId,
+            },
+            {
+              bankId: bankId,
             },
           ],
           expenseType: {
@@ -712,7 +719,8 @@ const init = app => {
         },
       },
     });
-    const totalSales = sales._sum.totalPrice === null ? 0 : sales.sum.totalPrice;
+    const totalSales =
+      sales._sum.totalPrice === null ? 0 : sales.sum.totalPrice;
     const expense = await prisma.expense.aggregate({
       _sum: {
         amount: true,
