@@ -169,7 +169,7 @@ function AppointmentData({
     () =>
       medicineDefinitions.map(m => ({
         ...m,
-        description: createDescription(m)
+        description: createDescription(m),
       })),
     [medicineDefinitions]
   );
@@ -275,42 +275,42 @@ function AppointmentData({
   return (
     <>
       <div>
-        <Can I="ViewDynamicViews" an="CurrentAppointment">
-          {Object.keys(formValue).length > 0 && (
-            <Div mb={5}>
-              <Form formValue={formValue} onChange={onDataChange} fluid>
-                {navs?.map((v, idx) =>
-                  v.status === 'Dynamic' ? (
-                    <GroupContainer
-                      fields={v.fields}
-                      title={v.title}
-                      onChange={onDataChange}
-                      formValue={formValue}
-                      updatedSessions={updatedSessions}
-                    />
-                  ) : (
-                    <SectionContainer
-                      key={idx}
-                      title={v.title}
-                      name={v.to}
-                      pt={idx === 0 ? 0 : 4}
-                    >
-                      {v.fields.map(f => (
-                        <Div mb={4} key={f.id}>
-                          {renderItem({
-                            ...f,
-                            disabled,
-                            updatedSessions,
-                          })}
-                        </Div>
-                      ))}
-                    </SectionContainer>
-                  )
-                )}
-              </Form>
-            </Div>
-          )}
-        </Can>
+        {/* <Can I="ViewDynamicViews" an="CurrentAppointment"> */}
+        {Object.keys(formValue).length > 0 && (
+          <Div mb={5}>
+            <Form formValue={formValue} onChange={onDataChange} fluid>
+              {navs?.map((v, idx) =>
+                v.status === 'Dynamic' ? (
+                  <GroupContainer
+                    fields={v.fields}
+                    title={v.title}
+                    onChange={onDataChange}
+                    formValue={formValue}
+                    updatedSessions={updatedSessions}
+                  />
+                ) : (
+                  <SectionContainer
+                    key={idx}
+                    title={v.title}
+                    name={v.to}
+                    pt={idx === 0 ? 0 : 4}
+                  >
+                    {v.fields.map(f => (
+                      <Div mb={4} key={f.id}>
+                        {renderItem({
+                          ...f,
+                          disabled,
+                          updatedSessions,
+                        })}
+                      </Div>
+                    ))}
+                  </SectionContainer>
+                )
+              )}
+            </Form>
+          </Div>
+        )}
+        {/* </Can> */}
         <SectionContainer title={t('prescription')} name="prescription">
           <Form formValue={selectedMedicine} onChange={setSelectedMedicine}>
             <Div
