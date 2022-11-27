@@ -1,39 +1,39 @@
-import React, { useMemo } from "react";
-import { CRDateRangePicker, Div, CRSelectInput, H4 } from "components";
-import { Form, Toggle } from "rsuite";
-import * as R from "ramda";
-import { useQuery } from "@apollo/client";
-import { ALL_AREAS,LIST_BRANCHES_TREE } from "apollo-client/queries";
-import { useTranslation } from "react-i18next";
-import { get } from "services/local-storage";
-import { ACTIONS } from "utils/constants";
+import React, { useMemo } from 'react';
+import { CRDateRangePicker, Div, CRSelectInput, H4 } from 'components';
+import { Form, Toggle } from 'rsuite';
+import * as R from 'ramda';
+import { useQuery } from '@apollo/client';
+import { ALL_AREAS, LIST_BRANCHES_TREE } from 'apollo-client/queries';
+import { useTranslation } from 'react-i18next';
+import { get } from 'services/local-storage';
+import { ACTIONS } from 'utils/constants';
 
 const options = [
-  { name: "FaceBook", id: "facebook" },
-  { name: "Instagram", id: "instagram" },
-  { name: "Twitter", id: "twitter" },
-  { name: "Internet", id: "Internet" },
-  { name: "BillBoard", id: "billboard" },
-  { name: "Another Doctor", id: "another doctor" },
-  { name: "Others", id: "others" },
-  { name: "Friends", id: "friends" },
+  { name: 'FaceBook', id: 'facebook' },
+  { name: 'Instagram', id: 'instagram' },
+  { name: 'Twitter', id: 'twitter' },
+  { name: 'Internet', id: 'Internet' },
+  { name: 'BillBoard', id: 'billboard' },
+  { name: 'Another Doctor', id: 'another doctor' },
+  { name: 'Others', id: 'others' },
+  { name: 'Friends', id: 'friends' },
 ];
 const patientLevels = [
-  { name: "VIP", id: "VIP" },
-  { name: "Normal", id: "Normal" },
+  { name: 'VIP', id: 'VIP' },
+  { name: 'Normal', id: 'Normal' },
 ];
 const ageOptions = [
-  { name: "1-10", id: [1, 10] },
-  { name: "11-20", id: [11, 20] },
-  { name: "21-30", id: [21, 30] },
-  { name: "31-40", id: [31, 40] },
-  { name: "41-50", id: [41, 50] },
-  { name: "51-60", id: [51, 60] },
-  { name: "61-70", id: [61, 70] },
-  { name: "71-80", id: [71, 80] },
-  { name: "81-90", id: [81, 90] },
+  { name: '1-10', id: [1, 10] },
+  { name: '11-20', id: [11, 20] },
+  { name: '21-30', id: [21, 30] },
+  { name: '31-40', id: [31, 40] },
+  { name: '41-50', id: [41, 50] },
+  { name: '51-60', id: [51, 60] },
+  { name: '61-70', id: [61, 70] },
+  { name: '71-80', id: [71, 80] },
+  { name: '81-90', id: [81, 90] },
 ];
-const SEX = ["Male", "Female"].map((s) => ({
+const SEX = ['Male', 'Female'].map(s => ({
   name: s,
   value: s,
 }));
@@ -46,37 +46,36 @@ const PatientsFilter = ({
   setPeriod,
 }) => {
   const { data } = useQuery(ALL_AREAS);
-  const dir = get("dir");
-  const areas = useMemo(() => R.propOr([], "areas")(data), [data]);
-  const { t } = useTranslation();
+  const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
+  const { t, i18n } = useTranslation();
   const { data: BranchesData } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Patient },
   });
   const branches = useMemo(
-    () => R.propOr([], "listBranchesTree")(BranchesData),
+    () => R.propOr([], 'listBranchesTree')(BranchesData),
     [data, BranchesData]
   );
+  const language = i18n?.language;
   const newAreas = useMemo(() => {
     let newareas = [];
-    if (dir === "ltr") {
-      newareas = areas.map((a) => {
-        return {
-          id: a.city_name_en,
-          name: a.city_name_en,
-        };
-      });
-    } else {
-      newareas = areas.map((a) => {
+    if (language === 'ar') {
+      newareas = areas.map(a => {
         return {
           id: a.city_name_ar,
           name: a.city_name_ar,
         };
       });
+    } else {
+      newareas = areas.map(a => {
+        return {
+          id: a.city_name_en,
+          name: a.city_name_en,
+        };
+      });
     }
     return newareas;
-  }, [dir, areas]);
-  console.log(dir,newAreas,'PATIRNT');
-  const setAreaValue = (val) => {
+  }, [language, areas]);
+  const setAreaValue = val => {
     setFormValue({ ...formValue, area: val });
     setAreaFormValue({ ...areaFormValue, areaId: val });
   };
@@ -89,37 +88,35 @@ const PatientsFilter = ({
       <Div display="flex" justifyContent="space-around" flexWrap="wrap">
         <Div ml={3} mr={3}>
           <CRSelectInput
-            label={t("reference")}
+            label={t('reference')}
             name="reference"
             data={options}
-            onChange={(val) =>
-              val == null ? setFormValue({ ...formValue, reference: "" }) : ""
+            onChange={val =>
+              val == null ? setFormValue({ ...formValue, reference: '' }) : ''
             }
-            style={{ width: "200px" }}
+            style={{ width: '200px' }}
           />
         </Div>
         <Div ml={3} mr={3}>
           <CRSelectInput
-            label={t("patientLevel")}
+            label={t('patientLevel')}
             data={patientLevels}
             name="patientLevel"
             value={formValue.patientLevel}
-            onChange={(val) =>
-              setFormValue({ ...formValue, patientLevel: val })
-            }
-            style={{ width: "200px" }}
+            onChange={val => setFormValue({ ...formValue, patientLevel: val })}
+            style={{ width: '200px' }}
           />
         </Div>
         <Div ml={3} mr={3}>
           <CRSelectInput
-            label={t("area")}
+            label={t('area')}
             name="area"
             data={newAreas}
             value={formValue.area}
-            style={{ width: "200px" }}
-            onChange={(val) =>
+            style={{ width: '200px' }}
+            onChange={val =>
               val == null
-                ? (setFormValue({ ...formValue, area: "" }),
+                ? (setFormValue({ ...formValue, area: '' }),
                   setAreaFormValue({ areaId: null }))
                 : setAreaValue(val)
             }
@@ -127,36 +124,34 @@ const PatientsFilter = ({
         </Div>
         <Div ml={3} mr={3}>
           <CRSelectInput
-            label={t("type")}
+            label={t('type')}
             name="type"
             valueKey="value"
             searchable={false}
             data={SEX}
-            style={{ width: "200px" }}
+            style={{ width: '200px' }}
             block
           />
         </Div>
         <Div ml={3} mr={3}>
           <CRSelectInput
-            label={t("age")}
+            label={t('age')}
             name="age"
             data={ageOptions}
-            style={{ width: "200px" }}
+            style={{ width: '200px' }}
             block
           />
         </Div>
         <Div ml={3} mr={3}>
           <CRSelectInput
-            label={t("branch")}
+            label={t('branch')}
             name="branchId"
             valueKey="id"
             searchable={false}
             data={branches}
-            style={{ width: "200px" }}
+            style={{ width: '200px' }}
             value={formValue.branchId}
-            onChange={(val) =>
-              setFormValue({ ...formValue, branchId: val })
-            }
+            onChange={val => setFormValue({ ...formValue, branchId: val })}
             block
           />
         </Div>
@@ -165,7 +160,7 @@ const PatientsFilter = ({
             <CRDateRangePicker
               name=""
               label="From - To"
-              placeholder={t("timeframe")}
+              placeholder={t('timeframe')}
               size="sm"
               block
               small
@@ -177,7 +172,7 @@ const PatientsFilter = ({
         <Div display="flex" justifyContent="space-between" mb={3} mt={45}>
           <H4 mr={10}>Not comming </H4>
           <Toggle
-            onChange={(val) => setFormValue({ ...formValue, enable: val })}
+            onChange={val => setFormValue({ ...formValue, enable: val })}
             checked={formValue?.enable}
           />
         </Div>

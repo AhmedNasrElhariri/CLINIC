@@ -14,7 +14,7 @@ function ListSupplierAccount({
 }) {
   const history = useHistory();
   const handleSelect = useCallback(
-    eventKey => {
+    (eventKey) => {
       setCurrentPage({ activePage: eventKey });
     },
     [setCurrentPage]
@@ -25,13 +25,13 @@ function ListSupplierAccount({
         <CRTable
           autoHeight
           data={supplierAccounts}
-          onRowClick={supplierAccount => {
+          onRowClick={(supplierAccount) => {
             history.push(
               `/supplier-account/${supplierAccount.id}?supplierId=${supplierAccount.id}`
             );
           }}
         >
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1} minWidth={128}>
             <CRTable.CRHeaderCell>{t('companyName')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
@@ -39,7 +39,7 @@ function ListSupplierAccount({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1} minWidth={112}>
             <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ phoneNo }) => (
@@ -55,7 +55,7 @@ function ListSupplierAccount({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1} minWidth={64}>
             <CRTable.CRHeaderCell>{t('totalPaid')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ totalPaid }) => (
@@ -63,7 +63,7 @@ function ListSupplierAccount({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1} minWidth={64}>
             <CRTable.CRHeaderCell>{t('totalUnPaid')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ totalUnpaid }) => (
@@ -79,18 +79,17 @@ function ListSupplierAccount({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn>
+          <CRTable.CRColumn minWidth={108}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {data => (
+              {(data) => (
                 <Icon
                   icon="trash"
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
                     onDelete(data);
                   }}
                 >
-                  {' '}
                   {t('delete')}
                 </Icon>
               )}

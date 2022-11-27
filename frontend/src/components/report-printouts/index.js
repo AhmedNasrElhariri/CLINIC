@@ -5,7 +5,6 @@ import { ACTIONS } from 'utils/constants';
 import 'react-quill/dist/quill.snow.css';
 import { CRSelectInput, CRButton, Div } from 'components';
 import { useTranslation } from 'react-i18next';
-import { useReactToPrint } from 'react-to-print';
 import Label from '../widgets/label';
 import styled from 'styled-components';
 import {
@@ -181,18 +180,18 @@ function ReportPrintout() {
 
       <Form fluid formValue={formValue} onChange={setFormValue}>
         <CRSelectInput
+          formGroupClassName="!max-w-xl"
           name="patientReport"
           placeholder={t('patientReports')}
           data={values}
-          style={{ width: '1000px' }}
           block
         />
         {formValue.context && checkOne && formValue.context === 'patient' ? (
           <CRSelectInput
+            formGroupClassName="!max-w-xl"
             label={t('patient')}
             name="data"
             onSearch={v => setPatientSearchValue(v)}
-            style={{ width: '1000px' }}
             data={dataValue}
             virtualized={false}
             block
@@ -201,10 +200,10 @@ function ReportPrintout() {
           checkOne &&
           formValue.context === 'appointment' ? (
           <CRSelectInput
+            formGroupClassName="!max-w-xl"
             label={t('appointment')}
             name="data"
             data={dataValue}
-            style={{ width: '1000px' }}
             virtualized={false}
             block
           />
@@ -212,10 +211,10 @@ function ReportPrintout() {
           formValue.context &&
           checkOne && (
             <CRSelectInput
+              formGroupClassName="!max-w-xl"
               label="Surgery"
               name="data"
               data={dataValue}
-              style={{ width: '1000px' }}
               virtualized={false}
               block
             />
@@ -223,19 +222,19 @@ function ReportPrintout() {
         )}
 
         <CRSelectInput
+          formGroupClassName="!max-w-xl"
           label={t('contextData')}
           name="context"
-          style={{ width: '1000px' }}
           block
           data={contextData}
         />
-        <Div width={'1000px'}>
+        <div className="mt-3 max-w-5xl">
           <Editor
             onChange={handleText}
             formValue={formValue}
             pageSetupData={pageSetupData}
           />
-        </Div>
+        </div>
       </Form>
       <Div style={{ overflow: 'hidden', height: '0px' }}>
         <StyledDiv

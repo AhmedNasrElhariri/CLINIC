@@ -1,28 +1,28 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import * as R from "ramda";
-import PropTypes from "prop-types";
-import { get } from "services/local-storage";
-import { CRModal, Div } from "components";
-import { Button } from "rsuite";
-import Form from "./form";
-import styled from "styled-components";
-import { usePatients, useModal } from "hooks";
-import { useTranslation } from "react-i18next";
-import { useQuery } from "@apollo/client";
-import { ALL_AREAS, LIST_BRANCHES_TREE } from "apollo-client/queries";
-import { ACTIONS } from "utils/constants";
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import * as R from 'ramda';
+import PropTypes from 'prop-types';
+import { get } from 'services/local-storage';
+import { CRModal, Div } from 'components';
+import { Button } from 'rsuite';
+import Form from './form';
+import styled from 'styled-components';
+import { usePatients, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
+import { useQuery } from '@apollo/client';
+import { ALL_AREAS, LIST_BRANCHES_TREE } from 'apollo-client/queries';
+import { ACTIONS } from 'utils/constants';
 const initialValues = {
-  name: "",
-  phoneNo: "",
-  phoneNoTwo: "",
-  code: "",
-  guardianName: "",
-  ageOption: "age",
-  phoneOption: "one",
+  name: '',
+  phoneNo: '',
+  phoneNoTwo: '',
+  code: '',
+  guardianName: '',
+  ageOption: 'age',
+  phoneOption: 'one',
   reference: [],
   age: 0,
   date: new Date(),
-  type: "Primary",
+  type: 'Primary',
   branchId: null,
 };
 const EditButton = styled(Button)`
@@ -35,56 +35,56 @@ const EditPatient = ({ patient }) => {
   const { visible, open, close } = useModal();
   const { edit } = usePatients({ onEdit: close });
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data } = useQuery(ALL_AREAS);
-  const areas = useMemo(() => R.propOr([], "areas")(data), [data]);
+  const areas = useMemo(() => R.propOr([], 'areas')(data), [data]);
   const { data: BranchesData } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Patient },
   });
   const branches = useMemo(
-    () => R.propOr([], "listBranchesTree")(BranchesData),
+    () => R.propOr([], 'listBranchesTree')(BranchesData),
     [data, BranchesData]
   );
   useEffect(() => {
-    setFormValue(R.omit(["__typename"])(patient));
+    setFormValue(R.omit(['__typename'])(patient));
   }, [patient]);
   const handleEditPatient = useCallback(() => {
     const { remainingOfPayment, ...rest } = formValue;
     edit(rest);
   }, [edit, formValue]);
 
-  const handleOpen = useCallback((e) => {
+  const handleOpen = useCallback(e => {
     e.stopPropagation();
   }, []);
-  const dir = get("dir");
+  const language = i18n?.language;
   const newAreas = useMemo(() => {
     let newareas = [];
-    if (dir === "ltr") {
-      newareas = areas.map((a) => {
-        return {
-          id: a.city_name_en,
-          name: a.city_name_en,
-        };
-      });
-    } else {
-      newareas = areas.map((a) => {
+    if (language === 'ar') {
+      newareas = areas.map(a => {
         return {
           id: a.city_name_ar,
           name: a.city_name_ar,
         };
       });
+    } else {
+      newareas = areas.map(a => {
+        return {
+          id: a.city_name_en,
+          name: a.city_name_en,
+        };
+      });
     }
     return newareas;
-  }, [dir, areas]);
+  }, [language, areas]);
 
   return (
     <>
       <Div onClick={handleOpen}>
-        <EditButton onClick={open}>{t("edit")}</EditButton>
+        <EditButton onClick={open}>{t('edit')}</EditButton>
         <CRModal
           show={visible}
           onHide={close}
-          header={t("editPatient")}
+          header={t('editPatient')}
           onCancel={close}
           onOk={handleEditPatient}
         >
