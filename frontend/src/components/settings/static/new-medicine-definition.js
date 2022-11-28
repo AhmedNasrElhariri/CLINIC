@@ -139,15 +139,15 @@ function NewMedicine({
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={11}>
                           <Div p={2}>
-                            <CRSelectInput
-                              value={item.concentration}
+                            <CRTextInput
                               label={t('concentration')}
-                              data={concentrationOptions}
-                              style={{ width: '100%' }}
+                              name="name"
+                              value={item.concentration}
                               onChange={value =>
                                 changeProp(index, 'concentration', value)
                               }
-                            />
+                              block
+                            ></CRTextInput>
                           </Div>
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item

@@ -52,29 +52,17 @@ function EditMedicine({
             placeholder="Type Name"
             block
           />
-          {/* <CRTextInput
-            label={t('concentration')}
-            name="concentration"
-            errorMessage={
-              show && checkResult['concentration'].hasError
-                ? checkResult['concentration'].errorMessage
-                : ''
-            }
-            placeholder="Type Concentration"
-            block
-          /> */}
           <CRSelectInput
             name="form"
             label={t('medicineForm')}
             data={formOptions}
             block
           />
-          <CRSelectInput
+          <CRTextInput
             name="concentration"
             label={t('concentration')}
-            data={concentrationOptions}
             block
-          />
+          ></CRTextInput>
           <CRBrancheTree
             formValue={formValue}
             onChange={onChange}
