@@ -448,21 +448,21 @@ function AppointmentData({
             categoryId={categoryImageForm?.categoryId}
           />
         </SectionContainer>
-        <Can I="ViewNotes" an="CurrentAppointment">
+        {/* <Can I="ViewNotes" an="CurrentAppointment"> */}
           <SectionContainer title={t('notes')} name="Notes">
             <Form formValue={appointmentFormValue} onChange={onChange}>
               <CRTextArea name="notes" disabled={disabled} importable />
             </Form>
           </SectionContainer>
-        </Can>
-        <Can I="ViewImages" an="CurrentAppointment">
+        {/* </Can> */}
+        {/* <Can I="ViewImages" an="CurrentAppointment"> */}
           <SectionContainer title={t('pictures')} name="Pictures">
             <AppointmentPictures
               formValue={appointmentFormValue.pictures}
               onChange={handlePicturesChange}
             />
           </SectionContainer>
-        </Can>
+        {/* </Can> */}
       </div>
     </>
   );
