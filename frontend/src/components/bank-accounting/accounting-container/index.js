@@ -351,20 +351,6 @@ const BankAccountingContainer = () => {
               >
                 {t("print")} +
               </CRButton>
-              {/* <PdfView
-                data={{
-                  revenues: allRevenues,
-                  expenses: allExpenses,
-                  totalRevenues,
-                  totalExpenses,
-                }}
-                period={timeFrame}
-                marginTop={marginTop}
-                marginRight={marginRight}
-                marginBottom={marginBottom}
-                marginLeft={marginLeft}
-                t={t}
-              /> */}
             </>
           </Div>
         }

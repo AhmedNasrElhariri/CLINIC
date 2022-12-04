@@ -15,13 +15,14 @@ import Toolbar from '../toolbar';
 import ListExpenseData from '../list-data/expense.js';
 import ListRevenueData from '../list-data/revenue.js';
 import Profit from '../profit';
-import { LIST_EXPENSES, LIST_REVENUES } from 'apollo-client/queries';
 import { useAccounting, useAppointments } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
   UPDATE_EXPENSE,
   UPDATE_REVENUE,
+  LIST_EXPENSES,
+  LIST_REVENUES,
 } from 'apollo-client/queries';
 import { Can } from 'components/user/can';
 import ExpenseFilter from '../filter/expense-filter';
@@ -69,6 +70,8 @@ const AccountingContainer = () => {
     action: ACTIONS.View_Accounting,
   });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
+  const [refetchRe, setRefetchRe] = useState(false);
+  const [refetchEx, setRefetchEx] = useState(false);
   const [period, setPeriod] = useState([]);
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
@@ -82,6 +85,7 @@ const AccountingContainer = () => {
     inialExpenseCurrentPage
   );
   const expensePage = expenseCurrentPage?.activePage;
+
   // const { pageSetupData } = useConfigurations();
   // const pageSetupRow = pageSetupData.find(
   //   element => element.type === 'accounting'
@@ -90,18 +94,16 @@ const AccountingContainer = () => {
   // const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
   // const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
   // const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
+  console.log(refetchRe, 'REREFETCH');
   const [createExpense, { loading: createExpensesLoading }] = useMutation(
     CREATE_EXPENSE,
     {
       onCompleted({ createExpense: expnese }) {
         Alert.success('Expense Added Successfully');
         createExpenseForm.hide();
+        setRefetchEx(true);
       },
-      refetchQueries: [
-        {
-          query: LIST_EXPENSES,
-        },
-      ],
+
       onError() {
         Alert.error('Failed to add new Expense');
       },
@@ -114,12 +116,8 @@ const AccountingContainer = () => {
       onCompleted({ createRevenue: revenue }) {
         Alert.success('Revenue Added Successfully');
         createRevenueForm.hide();
+        setRefetchRe(true);
       },
-      refetchQueries: [
-        {
-          query: LIST_REVENUES,
-        },
-      ],
       onError() {
         Alert.error('Failed to add new Revenue');
       },
@@ -151,7 +149,35 @@ const AccountingContainer = () => {
       },
     }
   );
-
+  const {
+    expenses,
+    revenues,
+    totalRevenues,
+    totalExpenses,
+    RevenuesCount,
+    expensesCount,
+    timeFrame,
+  } = useAccounting({
+    view,
+    period,
+    page,
+    expensePage,
+    branchId: branchSpecialtyUser?.branch,
+    specialtyId: branchSpecialtyUser?.specialty,
+    doctorId: branchSpecialtyUser?.doctor,
+    expenseBranchId: expenseBranchSpecialtyUser?.branch,
+    expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+    expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+    revenueName: formValue?.revenueName,
+    expenseName: formValue?.expenseName,
+    expenseType: formValue?.expenseType,
+    accountingOption: formValue?.accountingOption,
+    printOrNot: formValue.printOrNot,
+    refetchRe: refetchRe,
+    setRefetchRe: setRefetchRe,
+    refetchEx,
+    setRefetchEx,
+  });
   const handleCreateRevenue = useCallback(
     revenue => {
       createRevenue({
@@ -216,31 +242,7 @@ const AccountingContainer = () => {
     onOk: handleUpdateExpense,
     action: ACTIONS.EditExpense_Accounting,
   });
-  const {
-    expenses,
-    revenues,
-    totalRevenues,
-    totalExpenses,
-    RevenuesCount,
-    expensesCount,
-    timeFrame,
-  } = useAccounting({
-    view,
-    period,
-    page,
-    expensePage,
-    branchId: branchSpecialtyUser?.branch,
-    specialtyId: branchSpecialtyUser?.specialty,
-    doctorId: branchSpecialtyUser?.doctor,
-    expenseBranchId: expenseBranchSpecialtyUser?.branch,
-    expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
-    expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
-    revenueName: formValue?.revenueName,
-    expenseName: formValue?.expenseName,
-    expenseType: formValue?.expenseType,
-    accountingOption: formValue?.accountingOption,
-    printOrNot: formValue.printOrNot,
-  });
+
   const revenuesPages = Math.ceil(RevenuesCount / 20);
   const expensesPages = Math.ceil(expensesCount / 20);
   const updatedExpenses = useMemo(
@@ -285,8 +287,7 @@ const AccountingContainer = () => {
         document.body.appendChild(link);
         link.click();
       })
-      .catch(err => {
-      });
+      .catch(err => {});
   };
   const handleRevenueAccountingExcel = async day => {
     axios({
@@ -311,9 +312,7 @@ const AccountingContainer = () => {
         document.body.appendChild(link);
         link.click();
       })
-      .catch(err => {
-        
-      });
+      .catch(err => {});
   };
   const handleExpenseAccountingExcel = async day => {
     axios({
@@ -339,8 +338,7 @@ const AccountingContainer = () => {
         document.body.appendChild(link);
         link.click();
       })
-      .catch(err => {
-      });
+      .catch(err => {});
   };
 
   return (

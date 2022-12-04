@@ -142,3 +142,4 @@ export { default as deleteBranch } from './delete-branch';
 export { default as deleteSpecialty } from './delete-specialty';
 export { default as editFollowUpFeature } from './edit-followUp-feature';
 export { default as confirmedAppointment } from './confirm-appointment';
+export { default as transferAppointments } from './transfer-apps';
