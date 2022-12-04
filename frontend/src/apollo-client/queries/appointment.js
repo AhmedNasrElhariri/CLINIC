@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const CREATE_APPOINTMENT = gql`
   mutation createAppointment($appointment: AppointmentInput!) {
@@ -310,6 +310,12 @@ export const CANCEL_APPOINTMENT = gql`
       id
       status
     }
+  }
+`;
+
+export const TRANSFER_APPOINTMENTS = gql`
+  mutation transferAppointments($transferData: TransferInputDate!) {
+    transferAppointments(transferData: $transferData) 
   }
 `;
 

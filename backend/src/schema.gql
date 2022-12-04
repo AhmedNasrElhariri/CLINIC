@@ -444,6 +444,7 @@ type Mutation {
     userId: ID
   ): Appointment!
   cancelAppointment(id: ID!): Appointment!
+  transferAppointments(transferData: TransferInputDate!): Boolean
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
   createSnippet(snippet: SnippetInput!): Snippet!
@@ -2268,4 +2269,9 @@ input PatientSurgeryInput {
   assistantFees: Int
   anesthesiaFees: Int
   others: Int
+}
+
+input TransferInputDate {
+  doctorId: ID!
+  appIds: [ID!]
 }

@@ -7,7 +7,12 @@ import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
 import CompleteAppointment from '../complete-appointment';
-import { useAppointments, useConfigurations, useModal } from 'hooks';
+import {
+  useAppointments,
+  useConfigurations,
+  useModal,
+  useCourses,
+} from 'hooks';
 import BusinessNotes from './business-notes';
 import NewAppointment from 'components/appointments/new-appointment';
 import EditAppointment from '../edit-appointment';
@@ -19,8 +24,12 @@ import {
 import Filter from '../../filters';
 import { APPT_STATUS } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
+import TransferAppointments from '../transfer-apps';
 const initialValue = {
   businessNotes: '',
+};
+const initalTransferValue = {
+  doctorId: null,
 };
 const calcDate = ({ date, time }) =>
   moment(date)
@@ -34,12 +43,18 @@ const calcDate = ({ date, time }) =>
 function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
   const [followUp, setFollowUp] = useState(false);
+  const [transferDoctor, setTransferDoctor] = useState(initalTransferValue);
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
+  const [checkedKeys, setCheckedKeys] = useState([]);
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState({});
   const { t } = useTranslation();
   const { organization } = useConfigurations({});
+  const { users } = useCourses({});
+  const doctors = useMemo(() => {
+    return users.filter(u => u.position === 'Doctor');
+  }, [users]);
   const followUpFeature = R.propOr(false, 'followUp')(organization);
   const {
     todayAppointments: appointments,
@@ -50,6 +65,7 @@ function TodayAppointments() {
     updateNotes,
     adjust,
     cancel,
+    transferAppointments,
   } = useAppointments({
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
@@ -129,6 +145,7 @@ function TodayAppointments() {
     },
     [open]
   );
+  console.log(transferDoctor);
   const onEditAppointments = useCallback(
     appointment => {
       setPopUp('editAppointment');
@@ -154,6 +171,10 @@ function TodayAppointments() {
     },
     [setAppointment, setFollowUp, setPopUp, open]
   );
+  const transferAppsAction = useCallback(() => {
+    setPopUp('transferAppointments');
+    open();
+  }, [setPopUp, open]);
   const handleArchive = useCallback(
     ({
       sessions,
@@ -243,6 +264,17 @@ function TodayAppointments() {
     close();
     cancel({ variables: { id: appointment.id } });
   }, [cancel, appointment, close]);
+  const handleTransferAppointment = useCallback(() => {
+    close();
+    transferAppointments({
+      variables: {
+        transferData: {
+          doctorId: transferDoctor.doctorId,
+          appIds: checkedKeys,
+        },
+      },
+    });
+  }, [transferAppointments, transferDoctor, checkedKeys, close]);
   const handleComplete = useCallback(
     ({ appointment }) => {
       close();
@@ -292,6 +324,12 @@ function TodayAppointments() {
               defaultExpanded={true}
               close={close}
               followUpFeature={followUpFeature}
+              checkedKeys={checkedKeys}
+              setCheckedKeys={setCheckedKeys}
+              doctors={doctors}
+              transferDoctor={transferDoctor}
+              setTransferDoctor={setTransferDoctor}
+              transferAppsAction={transferAppsAction}
             />
           )}
         />
@@ -392,6 +430,14 @@ function TodayAppointments() {
           appointment={appointment}
           followUp={followUp}
           setFollowUp={setFollowUp}
+        />
+      )}
+      {popUp === 'transferAppointments' && (
+        <TransferAppointments
+          onOk={handleTransferAppointment}
+          show={visible}
+          onCancel={close}
+          t={t}
         />
       )}
     </>

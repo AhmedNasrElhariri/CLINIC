@@ -151,14 +151,13 @@ const revenues = async (
       },
     },
   });
-  console.log(totalRevenues,'TTTT');
   const sum = totalRevenues._sum.amount;
   const count = totalRevenues._count.id;
 
   const data = {
     revenues: revenues,
     totalRevenues: sum,
-    revenuesCount: 100,
+    revenuesCount: count,
   };
   return data;
 };

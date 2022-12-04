@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from 'rsuite';
@@ -54,20 +54,6 @@ const useAccounting = ({
     ),
   });
 
-  // const allRevenues = useMemo(
-  //   () => R.propOr([], 'bankRevenues')(revenueData),
-  //   [revenueData]
-  // );
-
-  // const revenues = useMemo(
-  //   () => filterAccountingList(allRevenues, view, period),
-  //   [allRevenues, period, view]
-  // );
-  // const totalRevenues = useMemo(
-  //   () => revenues.reduce((acc, e) => acc + e.amount, 0),
-  //   [revenues]
-  // );
-
   const { data: expenseData } = useQuery(LIST_BANK_EXPENSES, {
     variables: Object.assign(
       {
@@ -83,12 +69,12 @@ const useAccounting = ({
       bankId && { bankId: bankId }
     ),
   });
+
   const revenuesData = revenueData?.bankRevenues;
+  console.log(revenueData,'revenueData');
   const revenues = useMemo(() => {
-    return accountingOption === 'Expense'
-      ? []
-      : R.propOr([], 'bankRevenues')(revenuesData);
-  }, [revenuesData, accountingOption]);
+    return R.propOr([], 'bankRevenues')(revenuesData);
+  }, [revenueData]);
 
   const expensesData = expenseData?.bankExpenses;
   const expenses = useMemo(() => {
@@ -97,16 +83,7 @@ const useAccounting = ({
       : R.propOr([], 'bankExpenses')(expensesData);
   }, [expensesData, accountingOption]);
 
-  // const allExpenses = useMemo(
-  //   () => R.propOr([], 'bankExpenses')(expenseData),
-  //   [expenseData]
-  // );
-
-  // const expenses = useMemo(
-  //   () => filterAccountingList(allExpenses, view, period),
-  //   [allExpenses, period, view]
-  // );
-
+ 
   const getTimeFrameByView = view => {
     const viewVsFn = {
       [ACCOUNTING_VIEWS.DAY]: getDayStartAndEnd,
@@ -129,12 +106,12 @@ const useAccounting = ({
     return accountingOption === 'Expense'
       ? 0
       : R.propOr(0, 'totalRevenues')(revenuesData);
-  }, [revenuesData, accountingOption]);
+  }, [revenueData, accountingOption]);
   const RevenuesCount = useMemo(() => {
     return accountingOption === 'Expense'
       ? 0
       : R.propOr(0, 'revenuesCount')(revenuesData);
-  }, [revenuesData, accountingOption]);
+  }, [revenueData, accountingOption]);
 
   const totalExpenses = useMemo(() => {
     return accountingOption === 'Revenue'
@@ -183,7 +160,7 @@ const useAccounting = ({
     refetchQueries: [
       {
         query: LIST_BANK_REVENUES,
-      },
+      },    
     ],
     onError() {
       Alert.error('Failed to Create the Bank Transition');
@@ -217,9 +194,9 @@ const useAccounting = ({
       createBankRevenue,
       createBankExpense,
       editBankExpense,
-      refetchRevenues: {
-        query: LIST_BANK_REVENUES,
-      },
+      // refetchRevenues: {
+      //   query: LIST_BANK_REVENUES,
+      // },
     }),
     [
       revenues,

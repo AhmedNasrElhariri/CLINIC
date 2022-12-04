@@ -1,19 +1,38 @@
-import React, { useRef, useCallback } from "react";
-import { useHistory } from "react-router-dom";
-import ReactToPrint from "react-to-print";
-import { AppointmentPrintout, Div, CRButton, CRTable } from "components";
-import { Tooltip, Whisper, Dropdown, Popover } from "rsuite";
-import { canAjdust } from "services/appointment";
-import { Can } from "components/user/can";
-import { MoreIcon } from "components/icons";
-import { formatDate } from "utils/date";
-import { Table } from "rsuite";
+import React, { useRef, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
+import ReactToPrint from 'react-to-print';
+import {
+  AppointmentPrintout,
+  Div,
+  CRButton,
+  CRTable,
+  CRSelectInput,
+} from 'components';
+import { Tooltip, Whisper, Dropdown, Popover, Checkbox } from 'rsuite';
+import { canAjdust } from 'services/appointment';
+import { Can } from 'components/user/can';
+import { MoreIcon } from 'components/icons';
+import { formatDate } from 'utils/date';
+import { Table, Form } from 'rsuite';
 import {
   FULL_DATE_FORMAT,
   STANDARD_DATE_FORMAT,
   FULL_DAY_FORMAT,
-} from "utils/constants";
-import { useTranslation } from "react-i18next";
+} from 'utils/constants';
+import { useTranslation } from 'react-i18next';
+const { Cell } = Table;
+const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
+  <Cell {...props} style={{ padding: 0 }}>
+    <div style={{ lineHeight: '46px' }}>
+      <Checkbox
+        value={rowData[dataKey]}
+        inline
+        onChange={onChange}
+        checked={checkedKeys.some(item => item === rowData[dataKey])}
+      />
+    </div>
+  </Cell>
+);
 
 const ActionCell = ({ rowData, dataKey, ...rest }) => {
   const { t } = useTranslation();
@@ -30,7 +49,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
   return (
     <Div
       className="link-group"
-      onClick={(e) => {
+      onClick={e => {
         e.stopPropagation();
       }}
     >
@@ -46,13 +65,13 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                   <CRButton
                     variant="primary"
                     mr={1}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       onComplete(appointment);
                     }}
-                    style={{ width: "108px" }}
+                    style={{ width: '108px' }}
                   >
-                    {t("archive")}
+                    {t('archive')}
                   </CRButton>
                 </Can>
               </Dropdown.Item>
@@ -61,13 +80,13 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                 <Can I="Create" an="Appointment">
                   <CRButton
                     variant="primary"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       onDuplicateAppointments(appointment);
                     }}
-                    style={{ width: "108px" }}
+                    style={{ width: '108px' }}
                   >
-                    {t("duplicates")}
+                    {t('duplicates')}
                   </CRButton>
                 </Can>
               </Dropdown.Item>
@@ -77,13 +96,13 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                     <Can I="Reschedule" an="Appointment">
                       <CRButton
                         variant="primary"
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           onEditAppointments(appointment);
                         }}
-                        style={{ width: "108px" }}
+                        style={{ width: '108px' }}
                       >
-                        {t("edit")}
+                        {t('edit')}
                       </CRButton>
                     </Can>
                     {/* {canAjdust(appointment) && (
@@ -97,13 +116,13 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                   <Div>
                     <CRButton
                       variant="primary"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         onFollowUpAppointments(appointment);
                       }}
-                      style={{ width: "108px" }}
+                      style={{ width: '108px' }}
                     >
-                      {t("followUp")}
+                      {t('followUp')}
                     </CRButton>
                   </Div>
                 </Dropdown.Item>
@@ -115,32 +134,32 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                     <Can I="Cancel" an="Appointment">
                       <CRButton
                         variant="primary"
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           onCancelAppointments(appointment);
                         }}
-                        style={{ width: "108px" }}
+                        style={{ width: '108px' }}
                       >
-                        {t("cancel")}
+                        {t('cancel')}
                       </CRButton>
                     </Can>
                   </Div>
                 )}
               </Dropdown.Item>
               <Dropdown.Item eventKey={7}>
-                <Div onClick={(e) => e.stopPropagation()}>
+                <Div onClick={e => e.stopPropagation()}>
                   {/* <ReactToPrint
                     trigger={() => <PrintOLIcon ml={2} />}
                     // content={() => componentRef.current}
                   /> */}
                   <CRButton
                     variant="primary"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                     }}
-                    style={{ width: "108px" }}
+                    style={{ width: '108px' }}
                   >
-                    {t("print")}
+                    {t('print')}
                   </CRButton>
                   <Div display="none">
                     <AppointmentPrintout
@@ -176,38 +195,100 @@ function ListAppointments({
   setCurrentPage,
   close,
   followUpFeature,
+  checkedKeys,
+  setCheckedKeys,
+  doctors,
+  transferApps,
+  transferDoctor,
+  setTransferDoctor,
+  transferAppsAction,
 }) {
   const history = useHistory();
   const ref = useRef();
+  const { t } = useTranslation();
+  let checked = false;
+  let indeterminate = false;
+  if (checkedKeys?.length === appointments?.length) {
+    checked = true;
+  } else if (checkedKeys?.length === 0) {
+    checked = false;
+  } else if (
+    checkedKeys?.length > 0 &&
+    checkedKeys?.length < appointments?.length
+  ) {
+    indeterminate = true;
+  }
+
+  const handleCheckAll = (value, checked) => {
+    const keys = checked ? appointments.map(item => item.id) : [];
+    setCheckedKeys(keys);
+  };
+  const handleCheck = (value, checked) => {
+    const keys = checked
+      ? [...checkedKeys, value]
+      : checkedKeys.filter(item => item !== value);
+    setCheckedKeys(keys);
+  };
   const handleSelect = useCallback(
-    (eventKey) => {
+    eventKey => {
       setCurrentPage({ activePage: eventKey });
     },
     [setCurrentPage]
   );
-  const { t } = useTranslation();
+
   return (
     <Div padding={20} wd>
-      <Div display="flex" justifyContent="space-between">
+      <Div display="flex">
         <ReactToPrint
           trigger={() => (
             <CRButton primary mb={20}>
-              {t("print")}
+              {t('print')}
             </CRButton>
           )}
           content={() => ref.current}
         />
+        <CRButton onClick={transferAppsAction} ml="10px">
+          Transfer
+        </CRButton>
+        <Form formValue={transferDoctor} onChange={setTransferDoctor}>
+          <CRSelectInput
+            name="doctorId"
+            placeholder={t('select')}
+            block
+            data={doctors}
+            style={{ width: '100px', marginLeft: '10px' }}
+          />
+        </Form>
       </Div>
+
       <CRTable
         data={appointments}
-        onRowClick={(appointment) => {
+        onRowClick={appointment => {
           history.push(
             `/patients/${appointment.patient.id}?appointmentId=${appointment.id}`
           );
         }}
         affixHorizontalScrollbar
-        style={{ direction: "ltr" }}
+        style={{ direction: 'ltr' }}
       >
+        <CRTable.CRColumn width={50} align="center">
+          <CRTable.CRHeaderCell style={{ padding: 0 }}>
+            <div style={{ lineHeight: '40px' }}>
+              <Checkbox
+                inline
+                checked={checked}
+                indeterminate={indeterminate}
+                onChange={handleCheckAll}
+              />
+            </div>
+          </CRTable.CRHeaderCell>
+          <CheckCell
+            dataKey="id"
+            checkedKeys={checkedKeys}
+            onChange={handleCheck}
+            onClick={event => event.stopPropagation()}
+          />
+        </CRTable.CRColumn>
         <CRTable.CRColumn width={30}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -217,7 +298,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={130}>
-          <CRTable.CRHeaderCell>{t("time")}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('time')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }) => (
               <CRTable.CRCellStyled>
@@ -238,19 +319,19 @@ function ListAppointments({
         </CRTable.CRColumn>
 
         <CRTable.CRColumn width={200}>
-          <CRTable.CRHeaderCell>{t("type")}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ type, session, isFollowUp }) => (
               <CRTable.CRCellStyled>
-                {type === "Session" ? "S " : type}{" "}
-                {type === "Session" ? session?.name : ""}
-                {type === "Session" && isFollowUp ? "/Follow Up" : ""}
+                {type === 'Session' ? 'S ' : type}{' '}
+                {type === 'Session' ? session?.name : ''}
+                {type === 'Session' && isFollowUp ? '/Follow Up' : ''}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={50}>
-          <CRTable.CRHeaderCell>{t("reference")}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('reference')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ reference }) => (
               <CRTable.CRCellStyled>
@@ -260,7 +341,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={200}>
-          <CRTable.CRHeaderCell>{t("patient")}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ patient, subscriptionType }) => (
               <Whisper
@@ -271,13 +352,13 @@ function ListAppointments({
                   <Tooltip>
                     <Div>
                       <Div>
-                        {t("phoneNo")}:{patient.phoneNo}
+                        {t('phoneNo')}:{patient.phoneNo}
                       </Div>
                       <Div>
-                        {t("code")}:{patient.code}
+                        {t('code')}:{patient.code}
                       </Div>
                       <Div>
-                        {t("subscriptionType")}: {"  "}
+                        {t('subscriptionType')}: {'  '}
                         {subscriptionType}
                       </Div>
                     </Div>
@@ -290,7 +371,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={120}>
-          <CRTable.CRHeaderCell>{t("doctor")}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ doctor }) => (
               <CRTable.CRCellStyled>{doctor?.name}</CRTable.CRCellStyled>
@@ -299,7 +380,7 @@ function ListAppointments({
         </CRTable.CRColumn>
 
         <CRTable.CRColumn width={120}>
-          <CRTable.CRHeaderCell>{t("specialty")}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ specialty }) => (
               <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
@@ -307,7 +388,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={120}>
-          <CRTable.CRHeaderCell>{t("branch")}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('branch')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ branch }) => (
               <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>
@@ -428,29 +509,29 @@ function ListAppointments({
         <CRTable.CRColumn width={80}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {(appointment) => (
+            {appointment => (
               <Can I="Acc" an="Appointment">
                 {appointment.accounted ? (
                   <CRButton
                     variant="success"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       onArchive(appointment);
                     }}
                     block
                   >
-                    {t("acc")}
+                    {t('acc')}
                   </CRButton>
                 ) : (
                   <CRButton
                     variant="primary"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       onArchive(appointment);
                     }}
                     block
                   >
-                    {t("acc")}
+                    {t('acc')}
                   </CRButton>
                 )}
               </Can>
@@ -460,7 +541,7 @@ function ListAppointments({
         <CRTable.CRColumn width={80}>
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {(appointment) => (
+            {appointment => (
               <Whisper
                 placement="top"
                 controlId="control-id-hover"
@@ -469,19 +550,19 @@ function ListAppointments({
                   <Tooltip>
                     {appointment?.businessNotes.length > 0
                       ? appointment?.businessNotes
-                      : "No Notes"}
+                      : 'No Notes'}
                   </Tooltip>
                 }
               >
                 <CRButton
                   variant="primary"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     onAddBusinessNotes(appointment);
                   }}
                   block
                 >
-                  {t("notes")}
+                  {t('notes')}
                 </CRButton>
               </Whisper>
             )}
@@ -489,9 +570,9 @@ function ListAppointments({
         </CRTable.CRColumn>
 
         <Table.Column>
-          <Table.HeaderCell>{t("actions")}</Table.HeaderCell>
+          <Table.HeaderCell>{t('actions')}</Table.HeaderCell>
           <Table.Cell>
-            {(appointment) => (
+            {appointment => (
               <ActionCell
                 appointment={appointment}
                 onArchive={onArchive}
@@ -523,7 +604,7 @@ function ListAppointments({
         onSelect={handleSelect}
         total={appointments.length}
       />
-      <Div style={{ overflow: "hidden", height: "0px" }}>
+      <Div style={{ overflow: 'hidden', height: '0px' }}>
         <Div ref={ref} mt={20} mr={10}>
           <CRTable autoHeight data={appointments} width={1000}>
             <CRTable.CRColumn flexGrow={0.2}>
@@ -539,7 +620,7 @@ function ListAppointments({
               <CRTable.CRCell>
                 {({ date }) => (
                   <CRTable.CRCellStyled>
-                    {waiting ? "" : formatDate(date, FULL_DATE_FORMAT)}
+                    {waiting ? '' : formatDate(date, FULL_DATE_FORMAT)}
                   </CRTable.CRCellStyled>
                 )}
               </CRTable.CRCell>
@@ -573,12 +654,12 @@ function ListAppointments({
             </CRTable.CRColumn>
 
             <CRTable.CRColumn width={200}>
-              <CRTable.CRHeaderCell>{t("type")}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
               <CRTable.CRCell>
                 {({ type, session }) => (
                   <CRTable.CRCellStyled>
-                    {type === "Session" ? "S " : type}{" "}
-                    {type === "Session" ? session?.name : ""}
+                    {type === 'Session' ? 'S ' : type}{' '}
+                    {type === 'Session' ? session?.name : ''}
                   </CRTable.CRCellStyled>
                 )}
               </CRTable.CRCell>
