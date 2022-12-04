@@ -5,12 +5,11 @@ const addSessionDefinition = async (
   { sessionDefinition },
   { organizationId }
 ) => {
-  const { name, price, duration } = sessionDefinition;
+  const { name, ...rest } = sessionDefinition;
   return prisma.sessionDefinition.create({
     data: {
       name,
-      price,
-      duration,
+      ...rest,
       organization: {
         connect: {
           id: organizationId,

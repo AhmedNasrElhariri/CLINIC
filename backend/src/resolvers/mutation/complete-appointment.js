@@ -13,7 +13,6 @@ const completeAppointment = async (_, { id }, { userId, organizationId }) => {
       images: true,
     },
   });
-
   const { labs, images } = appointment;
 
   await Promise.all([

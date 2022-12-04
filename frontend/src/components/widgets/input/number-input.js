@@ -1,6 +1,5 @@
-import React, { useCallback, memo } from "react";
-import * as R from "ramda";
-import { FormControl } from "rsuite";
+import React, { useCallback, memo } from 'react';
+import { FormControl } from 'rsuite';
 
 import Label from "../label";
 import { AddIcon, MinusIcon } from "components/icons";
@@ -8,19 +7,15 @@ import {
   NumberContainerStyled,
   NumberInputStyled,
   NumberButton,
-} from "./style";
-import { FormGroupStyled } from "../form-group";
-import { isFloat } from "utils/nubmer";
+} from './style';
+import { FormGroupStyled } from '../form-group';
 
 const CustomInput = memo(({ value, onChange, ...props }) => {
   const setValue = useCallback((val) => onChange(Number(val)), [onChange]);
   const onChangeValue = useCallback(
-    (e) => {
-      const val = e.target.value;
-      if (R.isEmpty(val) || R.isNil(val)) {
-        setValue("");
-      }
-      if (isFloat(val)) {
+    e => {
+      const val = Number(e.target.value);
+      if (Number.isInteger(val)) {
         setValue(val);
       }
     },

@@ -42,6 +42,7 @@ const archiveAppointment = async (
   },
   { userId, organizationId }
 ) => {
+  console.log(others, 'OO');
   const level = GetLevel(branchId, specialtyId, userID);
   if (company == null) {
     sessions.forEach(async ({ price, number, id }) => {
@@ -83,7 +84,7 @@ const archiveAppointment = async (
       )
     );
 
-    if (others.amount > 0 || others.name) {
+    if (others.othersName || others.amount > 0) {
       await prisma.revenue.create({
         data: Object.assign(
           {
@@ -338,7 +339,7 @@ const archiveAppointment = async (
           patientId
         )
       );
-      if (others.amount > 0) {
+      if (others.othersName || others.amount > 0) {
         await prisma.bankRevenue.create({
           data: Object.assign(
             {

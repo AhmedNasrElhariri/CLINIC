@@ -33,6 +33,14 @@ const updateCache = (myAppointments) => {
     },
   });
 };
+const updateCacheTwo = (myAppointments) => {
+  client.writeQuery({
+    query: LIST_TODAY_APPOINTMENTS,
+    data: {
+      myAppointments,
+    },
+  });
+};
 
 function useAppointments({
   includeSurgery,
@@ -52,6 +60,7 @@ function useAppointments({
   open,
   followUpFeature,
   canAddFollowUp,
+  setAppointment,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -159,13 +168,23 @@ function useAppointments({
   const [complete] = useMutation(COMPLETE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success("Appointment has been Completed successfully");
+      setAppointment({});
     },
     refetchQueries: [
       {
-        query: LIST_APPOINTMENTS,
-        variables: { offset: 0, limit: 20 },
+        query: LIST_TODAY_APPOINTMENTS,
       },
     ],
+    // update(cache, { data: { completeAppointment: completeApp } }) {
+    //   const apps = todayAppointments.map((app) => {
+    //     if (app.id === completeApp.id) {
+    //       return { ...app, status: "Archived" };
+    //     } else {
+    //       return app;
+    //     }
+    //   });
+    //   updateCacheTwo(apps);
+    // },
   });
   const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
     onCompleted: () => {

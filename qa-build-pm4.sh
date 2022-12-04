@@ -34,26 +34,31 @@ REACT_APP_GRAPHQL_URL=https://chr-ring.com npm run build
 cd ../
 echo 'patients app finished successfully'
 
-echo "start backend build"
-cd ./backend
-npm ci
-echo 'start building...'
-npx prisma generate
-npm run build
-cd ../
-echo 'backend build finished successfully'
+[ -d "./temp" ] && rm -r ./temp
+
+mkdir temp
+cp -r ./frontend/build ./temp/frontend
+cp -r ./patients-app/build ./temp/patients-app
+cp -r ./backend/src ./temp/src
+cp -r ./backend/prisma ./temp/prisma
+cp -r ./backend/package.json ./temp/package.json
+cp -r ./backend/webpack.common.js ./temp/webpack.common.js
+cp -r ./backend/webpack.dev.js ./temp/webpack.dev.js
 
 echo 'start sync data to the server'
-cd ./backend/dist
-zip -r ../../build.zip *
-cd ../../
-rsync -azP build.zip root@164.90.178.150:~/clinicr-qa
+test -f ./build.zip && rm ./build.zip
+cd ./temp
+zip -r ../build.zip *
+cd ../
+rsync -azP build.zip root@164.90.178.150:~/clinicr
 
-ssh root@164.90.178.150 "cd clinicr-qa &&
+ssh root@164.90.178.150 "cd clinicr &&
  unzip -o ./build.zip -d . && rm build.zip && prisma migrate deploy && \
- pm2 delete clinicr_qa || true && pm2 delete patients_app || true && \
+ pm2 delete clinicr || true && pm2 delete patients_app || true && \
+ npm install && npx prisma generate && npx webpack --mode='production' --config ./webpack.dev.js && \
+ cp -r ./frontend ./server-dist/frontend &&  cp -r ./patients-app ./server-dist/patients-app && \
  pm2 start ecosystem.config.js && pm2 serve patients-app/ 5000 --name "patients_app" --spa
 "
 
-echo 'starting ...'
+# echo 'starting ...'
 

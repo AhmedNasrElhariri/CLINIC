@@ -1,8 +1,8 @@
-import React, { useMemo, useState, useCallback } from "react";
-import PropTypes from "prop-types";
-import { Form } from "rsuite";
-import { Element } from "react-scroll";
-import { Can } from "components/user/can";
+import React, { useMemo, useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { Form } from 'rsuite';
+import { Element } from 'react-scroll';
+import { Can } from 'components/user/can';
 
 import {
   Div,
@@ -16,9 +16,10 @@ import {
   CRNestedSelector,
   CRMultipleSelector,
   CRSelectInput,
-} from "components";
+} from 'components';
 
-import { convertGroupFieldsToNavs } from "services/appointment";
+import { convertGroupFieldsToNavs } from 'services/appointment';
+import { createDescription } from 'services/medicine.service';
 import {
   NUMBER_FIELD_TYPE,
   TEXT_FIELD_TYPE,
@@ -27,9 +28,9 @@ import {
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
-} from "utils/constants";
+} from 'utils/constants';
 
-import AppointmentPictures from "../pictures";
+import AppointmentPictures from '../pictures';
 import {
   useImageCategory,
   useLabCategory,
@@ -37,13 +38,13 @@ import {
   useLabDefinitions,
   useImageDefinition,
   useMedicineDefinitions,
-} from "hooks";
-import AppointmentMedicines from "./appointment-medecines";
-import Labs from "./appointment-labs";
-import Images from "./appointment-images";
-import Pulses from "./pulses";
-import GroupContainer from "./group-container";
-import { useTranslation } from "react-i18next";
+} from 'hooks';
+import AppointmentMedicines from './appointment-medecines';
+import Labs from './appointment-labs';
+import Images from './appointment-images';
+import Pulses from './pulses';
+import GroupContainer from './group-container';
+import { useTranslation } from 'react-i18next';
 
 const renderItem = ({
   type,
@@ -56,9 +57,9 @@ const renderItem = ({
   ...props
 }) => {
   let newChoices = [];
-  if (type === "SelectorWithInput") {
+  if (type === 'SelectorWithInput') {
     if (dynamic) {
-      newChoices = choices.map((c) => {
+      newChoices = choices.map(c => {
         return { name: c, id: c };
       });
     } else {
@@ -163,15 +164,24 @@ function AppointmentData({
   const [selectedMedicine, setSelectedMedicine] = useState(
     initialSelectedMedicine
   );
+
+  const medicineDefinitionsChoices = useMemo(
+    () =>
+      medicineDefinitions.map(m => ({
+        ...m,
+        description: createDescription(m),
+      })),
+    [medicineDefinitions]
+  );
   const [session, SetSession] = useState({});
   const choices = useMemo(() => {
-    return sessionsDefinition.map((s) => ({
+    return sessionsDefinition.map(s => ({
       name: s.name,
       id: { name: s.name, value: 0 },
     }));
   }, [sessionsDefinition]);
   const handlePicturesChange = useCallback(
-    (pictures) => {
+    pictures => {
       onChange({
         ...appointmentFormValue,
         pictures,
@@ -180,12 +190,12 @@ function AppointmentData({
     [appointmentFormValue, onChange]
   );
   const updatedSessions = useMemo(() => {
-    return sessionsDefinition.map((s) => {
+    return sessionsDefinition.map(s => {
       return { name: s.name, id: s.name };
     });
   }, [sessionsDefinition]);
   const handleMedicineChange = useCallback(
-    (prescription) => {
+    prescription => {
       onChange({
         ...appointmentFormValue,
         prescription,
@@ -196,14 +206,14 @@ function AppointmentData({
   const categoryId = categoryLabForm?.categoryId;
   const { labsDefinition } = useLabDefinitions({});
   const customLabDefinitions = useMemo(() => {
-    return labsDefinition.filter((l) => l.category.id === categoryId);
+    return labsDefinition.filter(l => l.category.id === categoryId);
   }, [labsDefinition, categoryId]);
 
   const handleLabsChange = useCallback(
-    (labIds) => {
-      const cateLabs = labsDefinition.map((l) => l.id);
+    labIds => {
+      const cateLabs = labsDefinition.map(l => l.id);
       const appLabs = appointmentFormValue.labIds;
-      const oldLabs = appLabs.filter((x) => !cateLabs.includes(x));
+      const oldLabs = appLabs.filter(x => !cateLabs.includes(x));
       onChange({
         ...appointmentFormValue,
         labIds: [...oldLabs, ...labIds],
@@ -214,13 +224,13 @@ function AppointmentData({
   const imageId = categoryImageForm?.categoryId;
   const { imagesDefinition } = useImageDefinition({});
   const customImageDefinitions = useMemo(() => {
-    return imagesDefinition.filter((l) => l.category.id === imageId);
+    return imagesDefinition.filter(l => l.category.id === imageId);
   }, [imagesDefinition, imageId]);
   const handleImagesChange = useCallback(
-    (imageIds) => {
-      const cateImages = imagesDefinition.map((i) => i.id);
+    imageIds => {
+      const cateImages = imagesDefinition.map(i => i.id);
       const appImages = appointmentFormValue.imageIds;
-      const oldImages = appImages.filter((x) => !cateImages.includes(x));
+      const oldImages = appImages.filter(x => !cateImages.includes(x));
       onChange({
         ...appointmentFormValue,
         imageIds: [...oldImages, ...imageIds],
@@ -265,61 +275,61 @@ function AppointmentData({
   return (
     <>
       <div>
-        <Can I="ViewDynamicViews" an="CurrentAppointment">
-          {Object.keys(formValue).length > 0 && (
-            <Div mb={5}>
-              <Form formValue={formValue} onChange={onDataChange} fluid>
-                {navs?.map((v, idx) =>
-                  v.status === "Dynamic" ? (
-                    <GroupContainer
-                      fields={v.fields}
-                      title={v.title}
-                      onChange={onDataChange}
-                      formValue={formValue}
-                      updatedSessions={updatedSessions}
-                    />
-                  ) : (
-                    <SectionContainer
-                      key={idx}
-                      title={v.title}
-                      name={v.to}
-                      pt={idx === 0 ? 0 : 4}
-                    >
-                      {v.fields.map((f) => (
-                        <Div mb={4} key={f.id}>
-                          {renderItem({
-                            ...f,
-                            disabled,
-                            updatedSessions,
-                          })}
-                        </Div>
-                      ))}
-                    </SectionContainer>
-                  )
-                )}
-              </Form>
-            </Div>
-          )}
-        </Can>
-        <SectionContainer title={t("prescription")} name="prescription">
+        {/* <Can I="ViewDynamicViews" an="CurrentAppointment"> */}
+        {Object.keys(formValue).length > 0 && (
+          <Div mb={5}>
+            <Form formValue={formValue} onChange={onDataChange} fluid>
+              {navs?.map((v, idx) =>
+                v.status === 'Dynamic' ? (
+                  <GroupContainer
+                    fields={v.fields}
+                    title={v.title}
+                    onChange={onDataChange}
+                    formValue={formValue}
+                    updatedSessions={updatedSessions}
+                  />
+                ) : (
+                  <SectionContainer
+                    key={idx}
+                    title={v.title}
+                    name={v.to}
+                    pt={idx === 0 ? 0 : 4}
+                  >
+                    {v.fields.map(f => (
+                      <Div mb={4} key={f.id}>
+                        {renderItem({
+                          ...f,
+                          disabled,
+                          updatedSessions,
+                        })}
+                      </Div>
+                    ))}
+                  </SectionContainer>
+                )
+              )}
+            </Form>
+          </Div>
+        )}
+        {/* </Can> */}
+        <SectionContainer title={t('prescription')} name="prescription">
           <Form formValue={selectedMedicine} onChange={setSelectedMedicine}>
             <Div
               className="flex-wrap gap-4"
               mb={10}
               display="flex"
-              justifyContent="center"
               alignItems="center"
             >
               <CRSelectInput
                 name="medicineId"
-                data={medicineDefinitions}
-                label={t("medicine")}
+                data={medicineDefinitionsChoices}
+                label={t('medicine')}
+                labelKey="description"
                 style={{
-                  width: 256,
+                  minWidth: 400,
                 }}
               />
               <CRButton className="self-end" onClick={addMedicine}>
-                {t("add")}
+                {t('add')}
               </CRButton>
             </Div>
           </Form>
@@ -331,7 +341,7 @@ function AppointmentData({
           />
         </SectionContainer>
 
-        <SectionContainer title={t("sessionsPulses")} name="pulses">
+        <SectionContainer title={t('sessionsPulses')} name="pulses">
           <Div
             display="flex"
             justifyContent="center"
@@ -342,9 +352,9 @@ function AppointmentData({
             <Form>
               <CRSelectInput
                 data={choices}
-                label={t("session")}
-                onChange={(val) => SetSession(val)}
-                style={{ width: "256px" }}
+                label={t('session')}
+                onChange={val => SetSession(val)}
+                style={{ width: '256px' }}
               />
             </Form>
             <CRButton
@@ -354,7 +364,7 @@ function AppointmentData({
               mr={10}
               mt={40}
             >
-              {t("add")}
+              {t('add')}
             </CRButton>
           </Div>
           <Pulses
@@ -366,7 +376,7 @@ function AppointmentData({
           />
         </SectionContainer>
 
-        <SectionContainer title={t("labs")} name="labs">
+        <SectionContainer title={t('labs')} name="labs">
           <Form formValue={categoryLabForm} onChange={setCategoryLabForm}>
             <Div
               mb={10}
@@ -378,19 +388,19 @@ function AppointmentData({
               <CRSelectInput
                 name="categoryId"
                 data={labsCategory}
-                label={t("labCategory")}
+                label={t('labCategory')}
                 style={{
-                  width: "256px",
+                  width: '256px',
                 }}
               />
               <CRSelectInput
                 name="labId"
                 data={customLabDefinitions}
-                label={t("lab")}
-                style={{ width: "256px" }}
+                label={t('lab')}
+                style={{ width: '256px' }}
               />
               <CRButton ml={10} mr={10} mt={40} onClick={addLab}>
-                {t("add")}
+                {t('add')}
               </CRButton>
             </Div>
           </Form>
@@ -402,7 +412,7 @@ function AppointmentData({
           />
         </SectionContainer>
 
-        <SectionContainer title={t("images")} name="images">
+        <SectionContainer title={t('images')} name="images">
           <Form formValue={categoryImageForm} onChange={setCategoryImageForm}>
             <Div
               mb={10}
@@ -415,20 +425,20 @@ function AppointmentData({
                 name="categoryId"
                 block
                 data={imagesCategory}
-                label={t("imageCategory")}
+                label={t('imageCategory')}
                 className="flex-wrap"
                 style={{
-                  width: "256px",
+                  width: '256px',
                 }}
               />
               <CRSelectInput
                 name="imageId"
                 data={customImageDefinitions}
-                label={t("image")}
-                style={{ width: "256px" }}
+                label={t('image')}
+                style={{ width: '256px' }}
               />
               <CRButton onClick={addImage} mt={40}>
-                {t("add")}
+                {t('add')}
               </CRButton>
             </Div>
           </Form>
@@ -438,21 +448,21 @@ function AppointmentData({
             categoryId={categoryImageForm?.categoryId}
           />
         </SectionContainer>
-        <Can I="ViewNotes" an="CurrentAppointment">
-          <SectionContainer title={t("notes")} name="Notes">
+        {/* <Can I="ViewNotes" an="CurrentAppointment"> */}
+          <SectionContainer title={t('notes')} name="Notes">
             <Form formValue={appointmentFormValue} onChange={onChange}>
               <CRTextArea name="notes" disabled={disabled} importable />
             </Form>
           </SectionContainer>
-        </Can>
-        <Can I="ViewImages" an="CurrentAppointment">
-          <SectionContainer title={t("pictures")} name="Pictures">
+        {/* </Can> */}
+        {/* <Can I="ViewImages" an="CurrentAppointment"> */}
+          <SectionContainer title={t('pictures')} name="Pictures">
             <AppointmentPictures
               formValue={appointmentFormValue.pictures}
               onChange={handlePicturesChange}
             />
           </SectionContainer>
-        </Can>
+        {/* </Can> */}
       </div>
     </>
   );

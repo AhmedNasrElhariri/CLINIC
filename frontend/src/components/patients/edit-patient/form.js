@@ -58,7 +58,6 @@ const isPrimary = ({ type }) => type === membershipTypes[0].id;
 const isSecondary = ({ type }) => type === membershipTypes[1].id;
 
 const NewPatient = ({ formValue, onChange, t, newAreas, branches }) => {
-  console.log(formValue,'FF');
   return (
     <Form fluid model={model} formValue={formValue} onChange={onChange}>
       <CRSelectInput

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import React from "react";
+import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 
 import {
   Table,
@@ -7,13 +7,13 @@ import {
   TableBody,
   TableCell,
   DataTableCell,
-} from '@david.kucsai/react-pdf-table';
+} from "@david.kucsai/react-pdf-table";
 
-import { formatFullDay } from 'utils/date';
+import { formatFullDay } from "utils/date";
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     padding: 20,
     fontSize: 12,
   },
@@ -37,10 +37,10 @@ const PdfTable = ({ data }) => {
       </TableHeader>
       <TableBody>
         <DataTableCell
-          getContent={r => formatFullDay(r.date)}
+          getContent={(r) => formatFullDay(r.date)}
           weighting={0.2}
         />
-        <DataTableCell getContent={r => r.body} weighting={0.8} />
+        <DataTableCell getContent={(r) => r.body} weighting={0.8} />
       </TableBody>
     </Table>
   );
@@ -49,8 +49,8 @@ const PdfTable = ({ data }) => {
 const PdfDocument = ({ data }) => {
   return (
     <Document>
-      <Page size="A4" orientation="landscape" style={styles.page}>
-        <View style={styles.header}>
+      <Page size="A4" orientation="landscape">
+        <View>
           <Text>Inventory Report</Text>
         </View>
 

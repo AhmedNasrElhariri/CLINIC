@@ -47,6 +47,7 @@ function usePatients({
   enable,
   reference,
   branchId,
+  onCreateDefault,
 } = {}) {
   const { data: patientData } = useQuery(LIST_PATIENTS, {
     variables: Object.assign(
@@ -172,6 +173,7 @@ function usePatients({
     onCompleted: ({ createPatient: patient }) => {
       Alert.success("Patient Created Successfully");
       onCreate && onCreate();
+      onCreateDefault({ id: patient.id });
     },
     refetchQueries: [
       {

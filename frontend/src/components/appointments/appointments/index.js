@@ -44,6 +44,7 @@ function Appointments() {
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const [notes, setNotes] = useState(initialValue);
+  const [appointment, setAppointment] = useState(null);
   const [popUp, setPopUp] = useState("");
   const [followUp, setFollowUp] = useState(false);
   const { organization } = useConfigurations({});
@@ -69,9 +70,9 @@ function Appointments() {
     type: R.propOr(null, "type")(formValue),
     patient: R.propOr("", "patient")(formValue),
     action: ACTIONS.List_Appointment,
+    setAppointment,
   });
 
-  const [appointment, setAppointment] = useState(null);
   const onClickDone = useCallback(
     (appointment) => {
       setAppointment(appointment);
@@ -166,8 +167,9 @@ function Appointments() {
             amount: discount,
           },
           others: {
-            name: `others-${appointment.patient.name}`,
+            name: `others-${othersName}-${appointment.patient.name}`,
             amount: others,
+            othersName: othersName,
           },
           remaining: remaining,
           payOfRemaining: payOfRemaining,
@@ -231,7 +233,7 @@ function Appointments() {
         },
       });
     },
-    [complete, close]
+    [appointment, complete, close]
   );
   useEffect(() => {
     setNotes((val) => ({

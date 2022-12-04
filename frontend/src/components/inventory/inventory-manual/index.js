@@ -31,7 +31,6 @@ const InventoryManual = () => {
     open();
   }, [open]);
   const handleInventoryChange = useCallback(() => {}, []);
-  console.log(selectedItems,'SELECTED');
   return (
     <>
       <Div display="flex" justifyContent="right" mt={10}>

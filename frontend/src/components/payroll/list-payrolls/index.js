@@ -14,11 +14,11 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
           autoHeight
           data={payrollUsers}
           bordered={false}
-          onRowClick={user => {
+          onRowClick={(user) => {
             history.push(`/payroll/${user.id}`, user);
           }}
         >
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1} minWidth={160}>
             <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ user }) => (
@@ -46,7 +46,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={1} minWidth={192}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ id }) => (
@@ -60,7 +60,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
                     {t('openDetails')}
                   </Icon>
                   <Icon
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation();
                       handleDelete(id);
                     }}

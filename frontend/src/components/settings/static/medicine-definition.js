@@ -7,11 +7,13 @@ import ListMedicinesDefinition from './list-medicine-definition';
 import { useMedicineDefinitions } from 'hooks';
 import { useForm, useModal } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import EditMedicine from './edit-medicine-definition';
 
 const initValue = {
   name: '',
-  concentration: '',
-  form: '',
+  // concentrations: [],
+  // forms: [],
+  doses: [],
   branchId: null,
   specialtyId: null,
   userId: null,
@@ -19,12 +21,18 @@ const initValue = {
 const { StringType } = Schema.Types;
 const model = Schema.Model({
   name: StringType().isRequired('medicine name is required'),
-  concentration: StringType().isRequired('concentration name is required'),
-  form: StringType().isRequired('form name is required'),
+  // concentrations: StringType().isRequired('concentration name is required'),
+  // forms: StringType().isRequired('form name is required'),
+});
+
+const createDose = ({ form, concentration } = {}) => ({
+  form: form || null,
+  concentration: concentration || null,
 });
 
 const MedicineDefinition = () => {
   const { visible, open, close } = useModal();
+  const { visible: editVisible, open: openEdit, close: closeEdit } = useModal();
   const { t } = useTranslation();
   const {
     formValue,
@@ -51,7 +59,7 @@ const MedicineDefinition = () => {
       setFormValue(initValue);
     },
     onEdit: () => {
-      close();
+      closeEdit();
       setShow(false);
       setFormValue(initValue);
     },
@@ -72,9 +80,9 @@ const MedicineDefinition = () => {
       const medicine = R.pick(['id', 'name', 'concentration', 'form'])(data);
       setType('edit');
       setFormValue(medicine);
-      open();
+      openEdit();
     },
-    [open, setFormValue, setType]
+    [openEdit, setFormValue, setType]
   );
 
   const handleClickDelete = useCallback(
@@ -89,10 +97,13 @@ const MedicineDefinition = () => {
 
   const handleAdd = useCallback(() => {
     if (type === 'create') {
-      addMedicineDefinition({
-        variables: {
-          medicineDefinition: formValue,
-        },
+      const { doses, ...rest } = formValue;
+      doses.forEach(({ form, concentration }) => {
+        addMedicineDefinition({
+          variables: {
+            medicineDefinition: { ...rest, form, concentration },
+          },
+        });
       });
     } else if (type === 'delete') {
       deleteMedicineDefinition({
@@ -101,21 +112,38 @@ const MedicineDefinition = () => {
           type: 'delete',
         },
       });
-    } else {
-      editMedicineDefinition({
-        variables: {
-          medicineDefinition: formValue,
-          type: 'edit',
-        },
-      });
     }
-  }, [
-    addMedicineDefinition,
-    editMedicineDefinition,
-    deleteMedicineDefinition,
-    formValue,
-    type,
-  ]);
+  }, [addMedicineDefinition, deleteMedicineDefinition, formValue, type]);
+
+  const handleEdit = useCallback(() => {
+    editMedicineDefinition({
+      variables: {
+        medicineDefinition: formValue,
+        type: 'edit',
+      },
+    });
+  }, [editMedicineDefinition, formValue]);
+
+  const handleAddDose = useCallback(() => {
+    setFormValue(val => ({
+      ...val,
+      doses: val.doses.concat(createDose({})),
+    }));
+  }, [setFormValue]);
+
+  const handleDeleteDose = useCallback(
+    index => {
+      setFormValue(val => ({
+        ...val,
+        doses: val.doses.reduce(
+          (acc, item, idx) => (idx === index ? acc : [...acc, item]),
+          []
+        ),
+      }));
+    },
+    [setFormValue]
+  );
+
   return (
     <>
       <Div textAlign="right">
@@ -129,6 +157,20 @@ const MedicineDefinition = () => {
         onChange={setFormValue}
         onOk={handleAdd}
         onClose={close}
+        type={type}
+        checkResult={checkResult}
+        validate={validate}
+        show={show}
+        setShow={setShow}
+        onAddDose={handleAddDose}
+        onDeleteDose={handleDeleteDose}
+      />
+      <EditMedicine
+        visible={editVisible}
+        formValue={formValue}
+        onChange={setFormValue}
+        onOk={handleEdit}
+        onClose={closeEdit}
         type={type}
         checkResult={checkResult}
         validate={validate}

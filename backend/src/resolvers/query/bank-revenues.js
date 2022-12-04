@@ -107,10 +107,10 @@ const bankRevenues = async (
     },
   });
   const totalRevenues = await prisma.bankRevenue.aggregate({
-    sum: {
+    _sum: {
       amount: true,
     },
-    count: {
+    _count: {
       id: true,
     },
     where: {
@@ -164,8 +164,8 @@ const bankRevenues = async (
       },
     },
   });
-  const sum = totalRevenues.sum.amount ;
-  const count = totalRevenues.count.id;
+  const sum = totalRevenues._sum.amount;
+  const count = totalRevenues._count.id;
   const data = {
     bankRevenues: revenues,
     totalRevenues: sum,

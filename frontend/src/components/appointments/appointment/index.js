@@ -34,7 +34,6 @@ import useAppointmentHistory from './fetch-appointment-history';
 import { useForm, useModal } from 'hooks';
 import { APPT_STATUS } from 'utils/constants';
 import { StyledPanel } from './style';
-// import { get } from 'services/local-storage';
 import AppointmentHeader from './appointment-header';
 
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
@@ -60,21 +59,6 @@ function Appointment() {
   });
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
-  // const dir = get('dir');
-  // let cardPosition = {};
-  // dir === 'ltr'
-  //   ? (cardPosition = {
-  //       position: 'absolute',
-  //       top: '130px',
-  //       right: '20px',
-  //       width: 240,
-  //     })
-  //   : (cardPosition = {
-  //       position: 'absolute',
-  //       top: '130px',
-  //       left: '20px',
-  //       width: 240,
-  //     });
   const [update] = useMutation(UPDATE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been updates successfully');

@@ -15,9 +15,17 @@ import useGlobalState from 'state';
 import { normalizeDataWithGroups } from 'services/appointment';
 import SessionSelector from './session-selector';
 import Header from './header';
+import { formatNumber, isFloat } from 'utils/nubmer';
 
 const initalVal = {
   imageId: null,
+};
+
+const renderFieldValue = value => {
+  if (isFloat(value)) {
+    return formatNumber(value);
+  }
+  return value;
 };
 
 const renderTable = (fields, name) => {
@@ -36,7 +44,9 @@ const renderTable = (fields, name) => {
             <h6 className="mb-2">{key}</h6>
             {fields[key] &&
               fields[key].length > 0 &&
-              fields[key].map(v => <StyledCell>{v}</StyledCell>)}
+              fields[key].map(v => (
+                <StyledCell>{renderFieldValue(v)}</StyledCell>
+              ))}
           </div>
         ))}
       </div>
@@ -59,7 +69,9 @@ const renderValues = (fields, name) => {
             <h6 className="mb-2">{key}</h6>
             {fields[key] &&
               fields[key].length > 0 &&
-              fields[key].map(v => <StyledCell>{v}</StyledCell>)}
+              fields[key].map(v => (
+                <StyledCell>{renderFieldValue(v)}</StyledCell>
+              ))}
           </div>
         ))}
       </div>

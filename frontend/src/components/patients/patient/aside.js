@@ -1,18 +1,18 @@
 import { CRVNav } from 'components';
-import { get } from 'services/local-storage';
+import { useTranslation } from 'react-i18next';
 
 export default function Aside({ tabs, activeTab, setActiveTab }) {
-  const dir = get('dir');
-
+  const { i18n } = useTranslation();
   const border = '2px solid #eef1f1';
   let borderRight = '';
   let borderLeft = '';
-  if (dir === 'ltr') {
-    borderRight = border;
-    borderLeft = 'none';
-  } else {
+  const language = i18n?.language;
+  if (language === 'ar') {
     borderRight = 'none';
     borderLeft = border;
+  } else {
+    borderRight = border;
+    borderLeft = 'none';
   }
 
   return (

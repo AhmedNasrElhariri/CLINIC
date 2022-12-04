@@ -1,4 +1,4 @@
-import React, { useState, useCallback, lazy } from 'react';
+import React, { useState, useCallback, lazy, useMemo } from 'react';
 import styled from 'styled-components';
 import { useParams, Switch, Route } from 'react-router-dom';
 import { Can } from 'components/user/can';
@@ -13,7 +13,12 @@ import PatientCourses from 'components/appointments/appointment/patient-courses'
 import PatientSurgries from 'components/appointments/appointment/surgries';
 import SessionsPulses from '../sessions-pulses';
 import PatientProgress from '../progress';
-import { useQueryParams, useHospitals, usePatients } from 'hooks';
+import {
+  useQueryParams,
+  useHospitals,
+  usePatients,
+  useMedicineDefinitions,
+} from 'hooks';
 import PatientInformationCreation from '../patient-information-creation';
 import PatientCoupons from '../patient-coupons';
 import PatientRevenue from '../patient-revenue';
@@ -21,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { SelectPicker } from 'rsuite';
 import Header from './header';
 import Aside from './aside';
+import Prescriptions from 'components/appointments/appointment/prescriptions';
 
 const Container = styled.div`
   display: flex;
@@ -38,6 +44,7 @@ function Appointment() {
   const tabs = [
     t('patientInfo'),
     t('sessions'),
+    t('prescriptions'),
     t('surgeries'),
     t('labs'),
     t('images'),
@@ -59,9 +66,23 @@ function Appointment() {
   let { appointmentId } = useQueryParams();
   const { onePatient: patient } = usePatients({ patientId });
   const { viewFields, appointmentHistory } = usePatientHistory({ patientId });
+  const { normalizedMedicineDefinitions } = useMedicineDefinitions();
   const { hospitals } = useHospitals({});
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
+
+  const prescriptions = useMemo(
+    () =>
+      appointmentHistory
+        .filter(({ prescription }) => prescription.length)
+        .map(({ prescription }) =>
+          prescription.map(medicine => ({
+            ...medicine,
+            medicine: normalizedMedicineDefinitions[medicine.medicineId],
+          }))
+        ),
+    [appointmentHistory, normalizedMedicineDefinitions]
+  );
 
   return (
     <>
@@ -108,6 +129,9 @@ function Appointment() {
                   </Can>
                 )}
                 {showComp('2') && (
+                  <Prescriptions prescriptions={prescriptions} />
+                )}
+                {showComp('3') && (
                   <Can I="ViewSurgeries" an="Patient">
                     <PatientSurgries
                       history={[]}
@@ -116,44 +140,44 @@ function Appointment() {
                     />
                   </Can>
                 )}
-                {showComp('3') && (
+                {showComp('4') && (
                   <Can I="ViewLabs" an="Patient">
                     <PatientLabs patient={patient} />
                   </Can>
                 )}
-                {showComp('4') && (
+                {showComp('5') && (
                   <Can I="ViewImages" an="Patient">
                     <PatientImages patient={patient} />
                   </Can>
                 )}
-                {showComp('5') && (
+                {showComp('6') && (
                   <Can I="ViewHistory" an="Patient">
                     <History patient={patient} />
                   </Can>
                 )}
-                {showComp('6') && (
+                {showComp('7') && (
                   <Can I="ViewCourses" an="Patient">
                     <PatientCourses patientId={patient?.id} />
                   </Can>
                 )}
-                {showComp('7') && (
+                {showComp('8') && (
                   <Can I="ViewSessionsPulses" an="Patient">
                     <SessionsPulses summary={appointmentHistory} />
                   </Can>
                 )}
                 <AllowedViews part="Dental">
-                  {showComp('8') && (
+                  {showComp('9') && (
                     <Can I="ViewDental" an="Patient">
                       <Dental patient={patient} />
                     </Can>
                   )}
                 </AllowedViews>
-                {showComp('9') && (
+                {showComp('10') && (
                   <Can I="ViewFaseOperation" an="Patient">
                     <FaceOperationsPage patient={patient} />
                   </Can>
                 )}
-                {showComp('10') && (
+                {showComp('11') && (
                   <Can I="ViewProgress" an="Patient">
                     <PatientProgress
                       history={appointmentHistory}
@@ -161,17 +185,17 @@ function Appointment() {
                     />
                   </Can>
                 )}
-                {showComp('11') && (
+                {showComp('12') && (
                   <Can I="ViewPatientInformationCreation" an="Patient">
                     <PatientInformationCreation patient={patient} />
                   </Can>
                 )}
-                {showComp('12') && (
+                {showComp('13') && (
                   <Can I="ViewCoupons" an="Patient">
                     <PatientCoupons patient={patient} />
                   </Can>
                 )}
-                {showComp('13') && (
+                {showComp('14') && (
                   <Can I="ViewPatientRevenue" an="Patient">
                     <PatientRevenue patient={patient} />
                   </Can>
