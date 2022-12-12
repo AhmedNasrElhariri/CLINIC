@@ -29,7 +29,7 @@ const model = Schema.Model({
 });
 
 const initialValues = {
-  type: 'Examination',
+  Session: 'Session',
   patientId: '',
   branchId: null,
   specialtyId: null,
@@ -50,11 +50,11 @@ export default function NewAppointment({ show, onHide, appointment }) {
     name: course?.name,
     IDBTransaction: course.id,
   }));
-  useEffect(() => {
-    return () => {
-      setFormValue(initialValues);
-    };
-  }, [setFormValue]);
+  // useEffect(() => {
+  //   return () => {
+  //     setFormValue(initialValues);
+  //   };
+  // }, [setFormValue]);
   
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,

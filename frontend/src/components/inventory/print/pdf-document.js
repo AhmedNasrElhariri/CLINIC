@@ -11,6 +11,7 @@ import {
 
 import { formatFullDay } from "utils/date";
 
+
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#ffffff",
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
   table: {
     container: {
       marginTop: 20,
+      
     },
   },
 });
@@ -49,8 +51,8 @@ const PdfTable = ({ data }) => {
 const PdfDocument = ({ data }) => {
   return (
     <Document>
-      <Page size="A4" orientation="landscape">
-        <View>
+      <Page size="A4" orientation="landscape" style={styles.page}>
+        <View style={styles.header}>
           <Text>Inventory Report</Text>
         </View>
 

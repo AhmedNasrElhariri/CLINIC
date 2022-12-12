@@ -29,13 +29,13 @@ import {
 import { useTranslation } from 'react-i18next';
 const { Cell } = Table;
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
-  <Cell {...props} style={{ padding: 0 }}>
+  <Cell {...props} style={{ padding: 0, top: '-2px' }}>
     <div style={{ lineHeight: '46px' }}>
       <Checkbox
         value={rowData[dataKey]}
         inline
         onChange={onChange}
-        checked={checkedKeys.some(item => item === rowData[dataKey])}
+        checked={checkedKeys?.some(item => item === rowData[dataKey])}
       />
     </div>
   </Cell>
@@ -264,7 +264,7 @@ function ListAppointments({
             placeholder={t('select')}
             block
             data={doctors}
-            style={{ width: '100px', marginLeft: '10px' }}
+            style={{ width: '100px', marginLeft: '10px', marginTop: '-10px' }}
           />
         </Form>
       </Div>
@@ -431,6 +431,7 @@ function ListAppointments({
                     onConfirmed(appointment);
                   }}
                   block
+                  padding={10}
                 >
                   {t('C')}
                 </CRButton>
@@ -442,6 +443,7 @@ function ListAppointments({
                     onConfirmed(appointment);
                   }}
                   block
+                  padding={10}
                 >
                   {t('C')}
                 </CRButton>

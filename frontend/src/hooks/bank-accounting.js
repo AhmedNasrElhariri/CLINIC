@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import * as R from 'ramda';
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from 'rsuite';
@@ -27,7 +27,8 @@ const useAccounting = ({
   branchId,
   bankId,
   onEdit,
-  onCreate,
+  onCreateBankRe,
+  onCreateBankEx,
   page,
   expensePage,
   doctorId,
@@ -36,8 +37,12 @@ const useAccounting = ({
   expenseDoctorId,
   revenueName,
   accountingOption,
+  refetchRe,
+  setRefetchRe,
+  refetchEx,
+  setRefetchEx,
 } = {}) => {
-  const { data: revenueData } = useQuery(LIST_BANK_REVENUES, {
+  const { data: revenueData, refetch } = useQuery(LIST_BANK_REVENUES, {
     variables: Object.assign(
       {
         offset: (page - 1) * 20 || 0,
@@ -53,37 +58,40 @@ const useAccounting = ({
       revenueName && { revenueName: revenueName }
     ),
   });
-
-  const { data: expenseData } = useQuery(LIST_BANK_EXPENSES, {
-    variables: Object.assign(
-      {
-        offset: (expensePage - 1) * 20 || 0,
-        limit: 20,
-      },
-      period && { dateFrom: period[0] },
-      period && { dateTo: period[1] },
-      view && { view: view },
-      expenseBranchId && { branchId: expenseBranchId },
-      expenseSpecialtyId && { specialtyId: expenseSpecialtyId },
-      expenseDoctorId && { doctorId: expenseDoctorId },
-      bankId && { bankId: bankId }
-    ),
-  });
+  
+  const { data: expenseData, refetch: refetchExpenses } = useQuery(
+    LIST_BANK_EXPENSES,
+    {
+      variables: Object.assign(
+        {
+          offset: (expensePage - 1) * 20 || 0,
+          limit: 20,
+        },
+        period && { dateFrom: period[0] },
+        period && { dateTo: period[1] },
+        view && { view: view },
+        expenseBranchId && { branchId: expenseBranchId },
+        expenseSpecialtyId && { specialtyId: expenseSpecialtyId },
+        expenseDoctorId && { doctorId: expenseDoctorId },
+        bankId && { bankId: bankId }
+      ),
+    }
+  );
 
   const revenuesData = revenueData?.bankRevenues;
-  console.log(revenueData,'revenueData');
   const revenues = useMemo(() => {
-    return R.propOr([], 'bankRevenues')(revenuesData);
-  }, [revenueData]);
+    return accountingOption === 'Expense'
+      ? []
+      : R.propOr([], 'bankRevenues')(revenuesData);
+  }, [revenueData, accountingOption]);
 
   const expensesData = expenseData?.bankExpenses;
   const expenses = useMemo(() => {
     return accountingOption === 'Revenue'
       ? []
       : R.propOr([], 'bankExpenses')(expensesData);
-  }, [expensesData, accountingOption]);
+  }, [expenseData, accountingOption]);
 
- 
   const getTimeFrameByView = view => {
     const viewVsFn = {
       [ACCOUNTING_VIEWS.DAY]: getDayStartAndEnd,
@@ -123,17 +131,11 @@ const useAccounting = ({
       ? 0
       : R.propOr(0, 'expensesCount')(expensesData);
   }, [expensesData, accountingOption]);
-
   const [editBankRevenue] = useMutation(EDIT_BANK_REVENUE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Edited Successfully');
-      onEdit && onEdit();
+      onCreateBankRe && onCreateBankRe();
     },
-    refetchQueries: [
-      {
-        query: LIST_BANK_REVENUES,
-      },
-    ],
     onError() {
       Alert.error('Failed to edit the Bank Transition');
     },
@@ -141,13 +143,8 @@ const useAccounting = ({
   const [editBankExpense] = useMutation(EDIT_BANK_EXPENSE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Edited Successfully');
-      onEdit && onEdit();
+      onCreateBankEx && onCreateBankEx();
     },
-    refetchQueries: [
-      {
-        query: LIST_BANK_EXPENSES,
-      },
-    ],
     onError() {
       Alert.error('Failed to edit the Bank Transition');
     },
@@ -155,13 +152,8 @@ const useAccounting = ({
   const [createBankRevenue] = useMutation(CREATE_BANK_REVENUE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Created Successfully');
-      onCreate && onCreate();
+      onCreateBankRe && onCreateBankRe();
     },
-    refetchQueries: [
-      {
-        query: LIST_BANK_REVENUES,
-      },    
-    ],
     onError() {
       Alert.error('Failed to Create the Bank Transition');
     },
@@ -169,17 +161,20 @@ const useAccounting = ({
   const [createBankExpense] = useMutation(CREATE_BANK_EXPENSE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Created Successfully');
-      onCreate && onCreate();
+      onCreateBankEx && onCreateBankEx();
     },
-    refetchQueries: [
-      {
-        query: LIST_BANK_EXPENSES,
-      },
-    ],
     onError() {
       Alert.error('Failed to Create the Bank Transition');
     },
   });
+  useEffect(() => {
+    refetch();
+    setRefetchRe(false);
+  }, [refetchRe]);
+  useEffect(() => {
+    refetchExpenses();
+    setRefetchEx(false);
+  }, [refetchEx]);
 
   return useMemo(
     () => ({

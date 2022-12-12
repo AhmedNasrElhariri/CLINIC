@@ -14,6 +14,9 @@ import { getContextData } from './services/auth.service';
 import cron from 'node-cron';
 import initUploadConfig from './conf/upload';
 import initReportsConfig from './conf/reports';
+
+
+import historyFunction from './logging/index';
 // import {
 //   tomorrowAppointmentsReminder,
 //   before3daysSurgeriesReminder,
@@ -42,6 +45,10 @@ moment.updateLocale('en', {
     doy: 12,
   },
 });
+
+/////
+historyFunction();
+///
 
 const server = new GraphQLServer({
   typeDefs,

@@ -145,6 +145,20 @@ enum FieldGroupStatus {
   Dynamic
 }
 
+enum LoggingModel {
+  Revenue
+  Expense
+  BankRevenue
+  BankExpense
+}
+
+enum LoggingAction {
+  update
+  delete
+  insert
+  
+}
+
 enum PermissionAction {
   List_Appointment
   Create_Appointment
@@ -276,6 +290,7 @@ model Organization {
   CourseTypeDefinition      CourseTypeDefinition[]
   SupplierAccount           SupplierAccount[]
   SupplierInvoice           SupplierInvoice[]
+  Logging                   Logging[]
 }
 
 model User {
@@ -354,6 +369,7 @@ model User {
   UserCourseUnitsHistory     CourseUnitsHistory[]         @relation("userUnitHistory")
   DoctorCourseUnitsHistory   CourseUnitsHistory[]         @relation("doctorUnitHistory")
   updater                    Appointment[]                @relation("updaterApp")
+  Logging                    Logging[]
 }
 
 model Patient {
@@ -1657,6 +1673,19 @@ model PatientOtp {
   phoneNo String           @unique
   otp     Int
   status  PatientOtpStatus
+}
+
+model Logging {
+  id             String        @id @default(uuid())
+  model          LoggingModel
+  recordId       String
+  text           String
+  date           DateTime
+  action         LoggingAction
+  user           User          @relation(fields: [userId], references: [id])
+  userId         String
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organizationId String
 }
 
 // end permission

@@ -42,7 +42,7 @@ const archiveAppointment = async (
   },
   { userId, organizationId }
 ) => {
-  console.log(others, 'OO');
+  
   const level = GetLevel(branchId, specialtyId, userID);
   if (company == null) {
     sessions.forEach(async ({ price, number, id }) => {

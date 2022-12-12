@@ -10,8 +10,6 @@ function Patients() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(navKeys[0]);
 
-  console.log(navKeys[0]);
-
   return (
     <>
       <Nav appearance="subtle" activeKey={activeTab} onSelect={setActiveTab}>

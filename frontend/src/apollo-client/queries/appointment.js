@@ -58,6 +58,7 @@ export const LIST_APPOINTMENTS = gql`
           name
           age
           sex
+          code
           phoneNo
           points
         }

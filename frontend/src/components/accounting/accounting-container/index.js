@@ -15,7 +15,7 @@ import Toolbar from '../toolbar';
 import ListExpenseData from '../list-data/expense.js';
 import ListRevenueData from '../list-data/revenue.js';
 import Profit from '../profit';
-import { useAccounting, useAppointments } from 'hooks';
+import { useAccounting, useAppointments, useGeneralHook } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -94,7 +94,7 @@ const AccountingContainer = () => {
   // const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
   // const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
   // const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
-  console.log(refetchRe, 'REREFETCH');
+
   const [createExpense, { loading: createExpensesLoading }] = useMutation(
     CREATE_EXPENSE,
     {
@@ -130,6 +130,7 @@ const AccountingContainer = () => {
       onCompleted({ updateExpense: expnese }) {
         Alert.success('Expense has been updated Successfully');
         editExpenseForm.hide();
+        setRefetchEx(true);
       },
       onError() {
         Alert.error('Failed to update Expense');
@@ -143,6 +144,7 @@ const AccountingContainer = () => {
       onCompleted({ updateRevenue: revenue }) {
         Alert.success('Revenue has been updated Successfully');
         editRevenueForm.hide();
+        setRefetchRe(true);
       },
       onError() {
         Alert.error('Failed to update Revenue');
@@ -156,7 +158,6 @@ const AccountingContainer = () => {
     totalExpenses,
     RevenuesCount,
     expensesCount,
-    timeFrame,
   } = useAccounting({
     view,
     period,
@@ -178,6 +179,7 @@ const AccountingContainer = () => {
     refetchEx,
     setRefetchEx,
   });
+  const { timeFrame } = useGeneralHook({ view, period });
   const handleCreateRevenue = useCallback(
     revenue => {
       createRevenue({

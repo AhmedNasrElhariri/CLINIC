@@ -8,14 +8,7 @@ import {
   LIST_ALL_REVENUES,
 } from 'apollo-client/queries';
 import { filterAccountingList } from 'utils/accounting';
-import { ACCOUNTING_VIEWS } from 'utils/constants';
-import {
-  getDayStartAndEnd,
-  getWeekStartAndEnd,
-  getMonthStartAndEnd,
-  getQuarterStartAndEnd,
-  getYearStartAndEnd,
-} from 'utils/date';
+
 import { ACTIONS } from 'utils/constants';
 
 const useAccounting = ({
@@ -40,23 +33,26 @@ const useAccounting = ({
   refetchEx,
   setRefetchEx,
 } = {}) => {
-  const { data: expenseData, refetch: refetchExpenses } = useQuery(LIST_EXPENSES, {
-    variables: Object.assign(
-      {
-        action: ACTIONS.View_Accounting,
-        offset: (expensePage - 1) * 20 || 0,
-        limit: 20,
-      },
-      period && { dateFrom: period[0] },
-      period && { dateTo: period[1] },
-      view && { view: view },
-      expenseType && { expenseType: expenseType },
-      expenseBranchId && { branchId: expenseBranchId },
-      expenseSpecialtyId && { specialtyId: expenseSpecialtyId },
-      expenseDoctorId && { doctorId: expenseDoctorId },
-      expenseName && { expenseName: expenseName }
-    ),
-  });
+  const { data: expenseData, refetch: refetchExpenses } = useQuery(
+    LIST_EXPENSES,
+    {
+      variables: Object.assign(
+        {
+          action: ACTIONS.View_Accounting,
+          offset: (expensePage - 1) * 20 || 0,
+          limit: 20,
+        },
+        period && { dateFrom: period[0] },
+        period && { dateTo: period[1] },
+        view && { view: view },
+        expenseType && { expenseType: expenseType },
+        expenseBranchId && { branchId: expenseBranchId },
+        expenseSpecialtyId && { specialtyId: expenseSpecialtyId },
+        expenseDoctorId && { doctorId: expenseDoctorId },
+        expenseName && { expenseName: expenseName }
+      ),
+    }
+  );
   const { data: revenueData, refetch } = useQuery(LIST_REVENUES, {
     variables: Object.assign(
       {
@@ -73,7 +69,6 @@ const useAccounting = ({
       revenueName && { revenueName: revenueName }
     ),
   });
-  console.log(revenueData, 'revenueData');
   const revenuesData = revenueData?.revenues;
   const revenues = useMemo(() => {
     return accountingOption === 'Expense'
@@ -91,7 +86,8 @@ const useAccounting = ({
     return accountingOption === 'Expense'
       ? 0
       : R.propOr(0, 'totalRevenues')(revenuesData);
-  }, [revenueData, accountingOption]);
+  }, [revenuesData, accountingOption]);
+
   const RevenuesCount = useMemo(() => {
     return accountingOption === 'Expense'
       ? 0
@@ -108,7 +104,7 @@ const useAccounting = ({
       ? 0
       : R.propOr(0, 'expensesCount')(expensesData);
   }, [expensesData, accountingOption]);
-
+  
   ////all
 
   const [getAllTwo, { data: expenseAllData }] = useLazyQuery(
@@ -156,23 +152,6 @@ const useAccounting = ({
     ? R.propOr([], 'allExpenses')(expenseAllData)
     : [];
 
-  const getTimeFrameByView = view => {
-    const viewVsFn = {
-      [ACCOUNTING_VIEWS.DAY]: getDayStartAndEnd,
-      [ACCOUNTING_VIEWS.WEEK]: getWeekStartAndEnd,
-      [ACCOUNTING_VIEWS.MONTH]: getMonthStartAndEnd,
-      [ACCOUNTING_VIEWS.QUARTER]: getQuarterStartAndEnd,
-      [ACCOUNTING_VIEWS.YEAR]: getYearStartAndEnd,
-    };
-
-    if (viewVsFn[view]) {
-      return viewVsFn[view]();
-    }
-  };
-  const timeFrame = useMemo(
-    () => (period && period.length ? period : getTimeFrameByView(view)),
-    [period, view]
-  );
   useEffect(() => {
     if (printOrNot) {
       getAll();
@@ -195,7 +174,7 @@ const useAccounting = ({
       totalRevenues,
       RevenuesCount,
       expensesCount,
-      timeFrame,
+
       allRevenues,
       allExpenses,
       refetchRevenues: {
@@ -208,7 +187,7 @@ const useAccounting = ({
     [
       expenses,
       revenues,
-      timeFrame,
+
       allRevenues,
       allExpenses,
       totalExpenses,

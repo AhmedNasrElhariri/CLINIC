@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import * as R from "ramda";
+import React, { useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import * as R from 'ramda';
 import {
   MainContainer,
   Div,
@@ -9,13 +9,13 @@ import {
   CRButton,
   BranchSpecialtyUserFilter,
   CRSelectInput,
-} from "components";
-import Toolbar from "../../accounting/toolbar";
-import ListData from "./list-data/revenue";
-import ListExpenseData from "./list-data/expense";
-import Profit from "../../accounting/profit";
-import BankModel from "../bank-model";
-import ExpenseFilter from "../../accounting/filter/expense-filter";
+} from 'components';
+import Toolbar from '../../accounting/toolbar';
+import ListData from './list-data/revenue';
+import ListExpenseData from './list-data/expense';
+import Profit from '../../accounting/profit';
+import BankModel from '../bank-model';
+import ExpenseFilter from '../../accounting/filter/expense-filter';
 import {
   useBankAccounting,
   useAppointments,
@@ -24,34 +24,34 @@ import {
   useConfigurations,
   useBankDefinition,
   useExpenseTypeDefinition,
-} from "hooks";
-import Filter from "./filter";
-import BranchFilter from "../../filters";
-import { ACCOUNTING_VIEWS, ACTIONS, ACCOUNT_OPTIONS } from "utils/constants";
-import { Can } from "components/user/can";
-import PdfView from "./pdf";
-import { formatDate } from "utils/date";
-import axios from "axios";
-import useGlobalState from "state";
-import { ExcelIcon } from "components/icons/index";
-import { Form } from "rsuite";
+} from 'hooks';
+import Filter from './filter';
+import BranchFilter from '../../filters';
+import { ACCOUNTING_VIEWS, ACTIONS, ACCOUNT_OPTIONS } from 'utils/constants';
+import { Can } from 'components/user/can';
+import PdfView from './pdf';
+import { formatDate } from 'utils/date';
+import axios from 'axios';
+import useGlobalState from 'state';
+import { ExcelIcon } from 'components/icons/index';
+import { Form } from 'rsuite';
 
-const ENTITY_PROPS = ["id", "name", "amount", "date", "invoiceNo"];
+const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalFilterVal = {
-  expenseType: "",
-  revenueName: "",
+  expenseType: '',
+  revenueName: '',
   bank: null,
-  accountingOption: "All",
+  accountingOption: 'All',
 };
 const initValue = {
   id: null,
   amount: 0,
   bankId: null,
-  checkNumber: "",
-  invoiceNo: "",
-  expenseType: "",
+  checkNumber: '',
+  invoiceNo: '',
+  expenseType: '',
   date: null,
-  name: "",
+  name: '',
 };
 const initialBranchValue = {
   branch: null,
@@ -71,8 +71,8 @@ const inialExpenseCurrentPage = {
 };
 const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
-  const [action, setAction] = useState("");
-  const [user, setUser] = useGlobalState("user");
+  const [action, setAction] = useState('');
+  const [user, setUser] = useGlobalState('user');
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
   const { formValue, setFormValue, type, setType, show, setShow } = useForm({
@@ -80,6 +80,8 @@ const BankAccountingContainer = () => {
   });
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initalFilterVal);
+  const [refetchRe, setRefetchRe] = useState(false);
+  const [refetchEx, setRefetchEx] = useState(false);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const [expenseCurrentPage, setExpenseCurrentPage] = useState(
     inialExpenseCurrentPage
@@ -92,7 +94,7 @@ const BankAccountingContainer = () => {
   const { pageSetupData } = useConfigurations();
   const { banksDefinition } = useBankDefinition({});
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
-  const updatedexpenseType = expenseTypesDefinition.map((e) => {
+  const updatedexpenseType = expenseTypesDefinition.map(e => {
     return {
       id: e.name,
       name: e.name,
@@ -100,7 +102,7 @@ const BankAccountingContainer = () => {
   });
   const page = currentPage?.activePage;
   const expensePage = expenseCurrentPage?.activePage;
-  const pageSetupRow = pageSetupData.find((element) => element.type === "visa");
+  const pageSetupRow = pageSetupData.find(element => element.type === 'visa');
   const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
   const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
   const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
@@ -134,12 +136,22 @@ const BankAccountingContainer = () => {
     bankId: filter?.bank,
     revenueName: filter?.revenueName,
     accountingOption: filter?.accountingOption,
+    refetchRe: refetchRe,
+    setRefetchRe: setRefetchRe,
+    refetchEx: refetchEx,
+    setRefetchEx: setRefetchEx,
     onEdit: () => {
       close();
     },
-    onCreate: () => {
+    onCreateBankRe: () => {
       close();
       setFormValue(initValue);
+      setRefetchRe(true);
+    },
+    onCreateBankEx: () => {
+      close();
+      setFormValue(initValue);
+      setRefetchEx(true);
     },
   });
 
@@ -147,10 +159,10 @@ const BankAccountingContainer = () => {
   const expensesPages = Math.ceil(expensesCount / 20);
 
   const handleClickEditRevenue = useCallback(
-    (data) => {
+    data => {
       const { bank } = data;
-      const row = R.pick(["id", "amount", "name", "date", "checkNumber"])(data);
-      setType("editBankRevenue");
+      const row = R.pick(['id', 'amount', 'name', 'date', 'checkNumber'])(data);
+      setType('editBankRevenue');
       setAction(ACTIONS.EditBankRevenue_Accounting);
       setFormValue({ ...row, bankId: bank.id });
       open();
@@ -158,17 +170,17 @@ const BankAccountingContainer = () => {
     [open, setFormValue, setType, setAction]
   );
   const handleClickEditExpense = useCallback(
-    (data) => {
+    data => {
       const { bank } = data;
       const row = R.pick([
-        "id",
-        "amount",
-        "name",
-        "expenseType",
-        "date",
-        "checkNumber",
+        'id',
+        'amount',
+        'name',
+        'expenseType',
+        'date',
+        'checkNumber',
       ])(data);
-      setType("editBankExpense");
+      setType('editBankExpense');
       setAction(ACTIONS.EditBankExpense_Accounting);
       setFormValue({ ...row, bankId: bank.id });
       open();
@@ -176,38 +188,38 @@ const BankAccountingContainer = () => {
     [open, setFormValue, setType, setAction]
   );
   const handleClickCreateRevenue = useCallback(() => {
-    setType("createBankRevenue");
+    setType('createBankRevenue');
     setAction(ACTIONS.AddBankRevenue_Accounting);
     open();
   }, [open, setType, setAction]);
   const handleClickCreateExpense = useCallback(() => {
-    setType("createBankExpense");
+    setType('createBankExpense');
     setAction(ACTIONS.AddBankExpense_Accounting);
     open();
   }, [open, setType, setAction]);
 
   const handleAdd = useCallback(() => {
-    if (type === "editBankRevenue") {
+    if (type === 'editBankRevenue') {
       editBankRevenue({
         variables: {
           bankTransition: formValue,
         },
       });
-    } else if (type === "createBankRevenue") {
+    } else if (type === 'createBankRevenue') {
       const { id, expenseType, ...rest } = formValue;
       createBankRevenue({
         variables: {
           bankTransition: rest,
         },
       });
-    } else if (type === "createBankExpense") {
+    } else if (type === 'createBankExpense') {
       const { id, ...rest } = formValue;
       createBankExpense({
         variables: {
           bankTransition: rest,
         },
       });
-    } else if (type === "editBankExpense") {
+    } else if (type === 'editBankExpense') {
       editBankExpense({
         variables: {
           bankTransition: formValue,
@@ -228,9 +240,9 @@ const BankAccountingContainer = () => {
       ({ id }) => id === filter.accountingOption
     );
     axios({
-      url: "/bankAccountingReport",
-      method: "POST",
-      responseType: "blob", // important
+      url: '/bankAccountingReport',
+      method: 'POST',
+      responseType: 'blob', // important
       params: {
         branchId: branchSpecialtyUser?.branch,
         specialtyId: branchSpecialtyUser?.specialty,
@@ -251,20 +263,19 @@ const BankAccountingContainer = () => {
     })
       .then(function (response) {
         const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = url;
-        link.setAttribute("download", "visaAccounting.pdf"); //or any other extension
+        link.setAttribute('download', 'visaAccounting.pdf'); //or any other extension
         document.body.appendChild(link);
         link.click();
       })
-      .catch((err) => {
-      });
+      .catch(err => {});
   };
   ///
-  const handleBankRevenueAccountingExcel = async (day) => {
+  const handleBankRevenueAccountingExcel = async day => {
     axios({
-      url: "/accountingBankRevenueExcel",
-      responseType: "blob", // important
+      url: '/accountingBankRevenueExcel',
+      responseType: 'blob', // important
       params: {
         branchId: branchSpecialtyUser?.branch,
         specialtyId: branchSpecialtyUser?.specialty,
@@ -279,19 +290,18 @@ const BankAccountingContainer = () => {
     })
       .then(function (response) {
         const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = url;
-        link.setAttribute("download", `bank-revenues-${Date.now()}.xlsx`); //or any other extension
+        link.setAttribute('download', `bank-revenues-${Date.now()}.xlsx`); //or any other extension
         document.body.appendChild(link);
         link.click();
       })
-      .catch((err) => {
-      });
+      .catch(err => {});
   };
-  const handleBankExpenseAccountingExcel = async (day) => {
+  const handleBankExpenseAccountingExcel = async day => {
     axios({
-      url: "/accountingBankExpenseExcel",
-      responseType: "blob", // important
+      url: '/accountingBankExpenseExcel',
+      responseType: 'blob', // important
       params: {
         expenseBranchId: expenseBranchSpecialtyUser?.branch,
         expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
@@ -307,19 +317,18 @@ const BankAccountingContainer = () => {
     })
       .then(function (response) {
         const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = url;
-        link.setAttribute("download", `bank-expenses-${Date.now()}.xlsx`); //or any other extension
+        link.setAttribute('download', `bank-expenses-${Date.now()}.xlsx`); //or any other extension
         document.body.appendChild(link);
         link.click();
       })
-      .catch((err) => {
-      });
+      .catch(err => {});
   };
   return (
     <>
       <MainContainer
-        title={t("bankAccounting")}
+        title={t('bankAccounting')}
         more={
           <Div display="flex" mt={20}>
             <>
@@ -330,7 +339,7 @@ const BankAccountingContainer = () => {
                   ml={1}
                   mr={1}
                 >
-                  {t("newRevenue")} +
+                  {t('newRevenue')} +
                 </CRButton>
               </Can>
               <Can I="AddBankExpense" an="Accounting">
@@ -340,7 +349,7 @@ const BankAccountingContainer = () => {
                   mr={1}
                   onClick={() => handleClickCreateExpense()}
                 >
-                  {t("newExpense")} +
+                  {t('newExpense')} +
                 </CRButton>
               </Can>
               <CRButton
@@ -349,7 +358,7 @@ const BankAccountingContainer = () => {
                 ml={1}
                 mr={1}
               >
-                {t("print")} +
+                {t('print')} +
               </CRButton>
             </>
           </Div>
@@ -370,14 +379,12 @@ const BankAccountingContainer = () => {
               name="accountOption"
               block
               value={filter.accountingOption}
-              onChange={(val) =>
-                setFilter({ ...filter, accountingOption: val })
-              }
-              style={{ width: "170px" }}
+              onChange={val => setFilter({ ...filter, accountingOption: val })}
+              style={{ width: '170px' }}
             />
           </Form>
           <Div display="flex" my={4}>
-            <H6>{t("showingFor")} :</H6>
+            <H6>{t('showingFor')} :</H6>
             <H6 variant="primary" ml={2} fontWeight="bold">
               {formatDate(R.head(timeFrame))} - {formatDate(R.last(timeFrame))}
             </H6>
@@ -408,7 +415,7 @@ const BankAccountingContainer = () => {
                 branches={filterBranches}
               />
               <ListData
-                title={t("bankingRevenues")}
+                title={t('bankingRevenues')}
                 data={revenues}
                 onEdit={handleClickEditRevenue}
                 currentPage={currentPage}
@@ -436,7 +443,7 @@ const BankAccountingContainer = () => {
                 branches={filterBranches}
               />
               <ListExpenseData
-                title={t("bankingExpenses")}
+                title={t('bankingExpenses')}
                 data={expenses}
                 onEdit={handleClickEditExpense}
                 currentPage={expenseCurrentPage}

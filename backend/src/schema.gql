@@ -130,6 +130,16 @@ enum FieldGroupStatus {
   Dynamic
 }
 
+enum LoggingModel {
+  Revenue
+}
+
+enum LoggingAction {
+  update
+  delete
+  insert
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -161,6 +171,13 @@ type Query {
     dateFrom: Date
     dateTo: Date
   ): AppointmentData!
+  logging(
+    offset: Int
+    limit: Int
+    userId: ID
+    dateFrom: Date
+    dateTo: Date
+  ): LoggingData!
   allAppointments: [Appointment!]
   patientsReport(area: String, reference: String): PatientsCount!
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
@@ -1546,8 +1563,8 @@ type BankExpense {
 }
 type BankExpenseData {
   bankExpenses: [BankExpense!]
-  totalExpenses: Float!
-  expensesCount: Int!
+  totalExpenses: Float
+  expensesCount: Int
 }
 input BankExpenseTransitionInput {
   id: ID
@@ -2232,6 +2249,21 @@ input AppointmentTypeInputDefinition {
   urgent: Boolean!
 }
 ##########################################################################################
+
+type Logging {
+  id: ID
+  model: LoggingModel
+  recordId: String
+  text: String
+  date: Date
+  action: LoggingAction
+  user: User
+}
+
+type LoggingData{
+  logging:[Logging!]
+  loggingCount: Int!
+}
 
 ########################### Patient Surgeries ##################################
 

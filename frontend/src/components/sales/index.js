@@ -10,10 +10,10 @@ import { Can } from "components/user/can";
 import {
   useForm,
   useSales,
-  useAccounting,
   useAppointments,
   useModal,
   useSalesDefinition,
+  useGeneralHook
 } from "hooks";
 import { formatDate } from "utils/date";
 import { ACCOUNTING_VIEWS, ACTIONS } from "utils/constants";
@@ -53,7 +53,8 @@ const Sales = () => {
   const { filterBranches } = useAppointments({ action: ACTIONS.View_Sales });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
-  const { timeFrame } = useAccounting({ view, period });
+  const { timeFrame } = useGeneralHook({ view, period });
+
   const [selectedItems, setSelectedItems] = useState([]);
   const { salesesDefinition } = useSalesDefinition({});
   const {
@@ -75,7 +76,7 @@ const Sales = () => {
     },
     onEdit: () => {
       close();
-      setFormValue(initValue);
+      setFormValue(initValue)
     },
     view,
     period,

@@ -146,7 +146,7 @@ function TodayAppointments() {
     },
     [open]
   );
-  console.log(transferDoctor);
+
   const onEditAppointments = useCallback(
     appointment => {
       setPopUp('editAppointment');
@@ -291,7 +291,7 @@ function TodayAppointments() {
         },
       });
     },
-    [complete, close]
+    [appointment, complete, close]
   );
 
   const [active, setActive] = React.useState('mainAppointments');
@@ -317,6 +317,7 @@ function TodayAppointments() {
         <Filter
           appointments={upcomingAppointments}
           branches={filterBranches}
+          todayApp={true}
           render={apps => (
             <ListAppointments
               title="Upcoming Appointments"

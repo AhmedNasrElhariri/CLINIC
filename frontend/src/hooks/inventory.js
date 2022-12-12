@@ -13,7 +13,6 @@ import {
   REMOVE_ITEM,
   CONSUME_INVENTORY_MANUAl,
 } from 'apollo-client/queries';
-import { useAccounting } from 'hooks';
 
 function useInventory({
   onCreateCompleted,
@@ -23,7 +22,7 @@ function useInventory({
   onRemoveItem,
   onRemoveItemError,
 } = {}) {
-  const { refetchExpenses } = useAccounting();
+
 
   const { data: ItemData } = useQuery(LIST_ITEMS);
   const { data: InventoryData } = useQuery(LIST_INVENTORY);
@@ -143,7 +142,7 @@ function useInventory({
       onAddCompleted && onAddCompleted(addItem);
     },
     refetchQueries: [
-      refetchExpenses,
+      //refetchExpenses,
       refetchInventoryHistory,
       refetchInventory,
     ],
@@ -177,7 +176,7 @@ function useInventory({
       Alert.error('Failed to consume the Inventory');
     },
     refetchQueries: [
-      refetchExpenses,
+      //refetchExpenses,
       refetchInventoryHistory,
       refetchInventory,
     ],

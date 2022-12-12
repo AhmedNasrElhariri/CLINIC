@@ -1,11 +1,12 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
+
 export const createAppointmentRevenue = async data => {
-  return prisma.revenue.createMany({ data });
+  return Promise.all(data.map(d => prisma.revenue.create({ data: d })));
 };
 
 export const createAppointmentBankRevenue = async data => {
-  return prisma.bankRevenue.createMany({ data });
+  return Promise.all(data.map(d => prisma.bankRevenue.create({ data: d })));
 };
 
 export const createAppointmentRevenueFromSessions = (

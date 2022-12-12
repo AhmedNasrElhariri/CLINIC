@@ -99,6 +99,11 @@ export default memo(function SideContent({
         name: "inventory",
         icon: InboxOutlined,
       },
+      {
+        path: "/logging",
+        name: "logging",
+        icon: InboxOutlined,
+      },
     ],
     [toggleAddAppointment, toggleAddPatient]
   );

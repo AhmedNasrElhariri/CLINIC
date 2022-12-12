@@ -11,6 +11,8 @@ export interface Doctor {
 
 export interface RootStore {
   selectedBranch: string | null;
+  selectedSpecialty: string | null;
+  selectedDoctor: string | null;
 }
 
 export interface Branch {

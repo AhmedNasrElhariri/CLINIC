@@ -49,3 +49,5 @@ export { default as usePatientView } from './patient-view';
 export { default as useAppointmentTypesDefinition } from './use-appointmentTypes-definition';
 export { default as useCourseTypeDefinition } from './course-type-definition';
 export { default as useSupplierAccounts } from './supplierAccounts';
+export { default as useLogging } from './logging';
+export { default as useGeneralHook } from './general-hook';
