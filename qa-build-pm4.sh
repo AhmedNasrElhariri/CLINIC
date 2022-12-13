@@ -56,9 +56,11 @@ ssh root@164.90.178.150 "cd clinicr &&
  unzip -o ./build.zip -d . && rm build.zip && prisma migrate deploy && \
  pm2 delete clinicr || true && pm2 delete patients_app || true && \
  npm install && npx prisma generate && npx webpack --mode='production' --config ./webpack.dev.js && \
- cp -r ./frontend ./server-dist/frontend &&  cp -r ./patients-app ./server-dist/patients-app && \
+ cp -r ./frontend ./server-dist/frontend
+"
+ssh root@164.90.178.150 "cd clinicr &&
  pm2 start ecosystem.config.js && pm2 serve patients-app/ 5000 --name "patients_app" --spa
 "
 
-# echo 'starting ...'
+echo 'starting ...'
 
