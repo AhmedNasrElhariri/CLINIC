@@ -4,6 +4,9 @@ import Filter from './filter';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
 import ListLogging from './list-logging';
+import { CRButton } from 'components';
+import axios from 'axios';
+import useGlobalState from 'state';
 
 const Logging = () => {
   const { t } = useTranslation();
@@ -13,10 +16,10 @@ const Logging = () => {
     model: '',
     tag: '',
   });
+  const [user] = useGlobalState('user');
   const [currentPage, setCurrentPage] = useState({ page: 1 });
   const page = currentPage?.activePage;
   const { users } = useCourses({});
-  console.log(formValue,'FF');
   const { loggings, pages, loggingCount, models, tagNames } = useLogging({
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
     dateTo: R.pathOr(null, ['date', 1])(formValue),
@@ -25,9 +28,35 @@ const Logging = () => {
     model: formValue.model,
     tagName: formValue.tag,
   });
-
+  const handleLoggingReport = () => {
+    axios({
+      url: '/logging',
+      method: 'POST',
+      responseType: 'blob', // important
+      params: {
+        dateFrom: R.pathOr(null, ['date', 0])(formValue),
+        dateTo: R.pathOr(null, ['date', 1])(formValue),
+        userId: R.propOr(null, 'userId')(formValue),
+        model: formValue.model,
+        tagName: formValue.tag,
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'logging.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {});
+  };
   return (
     <>
+      <CRButton variant="primary" onClick={handleLoggingReport} ml={1} mr={1}>
+        {t('print')} +
+      </CRButton>
       <Filter
         users={users}
         models={models}

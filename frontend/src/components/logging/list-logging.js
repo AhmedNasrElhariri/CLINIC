@@ -1,4 +1,4 @@
-import React,{useCallback} from 'react';
+import React, { useCallback } from 'react';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 

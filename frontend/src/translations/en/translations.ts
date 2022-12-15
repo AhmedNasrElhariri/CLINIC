@@ -431,8 +431,6 @@ export const TRANSLATIONS_EN = {
   patientLevel: 'Patient Level',
   deleteBranch: 'Delete Branch',
   deleteSpecialty: 'Delete Specialty',
-<<<<<<< HEAD
-=======
   views: 'Views',
->>>>>>> dff20d85e47f128158cd4276393ccfd4e6af4184
+  tagName:'Tag Name',
 };

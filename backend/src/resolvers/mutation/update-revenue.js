@@ -29,6 +29,7 @@ const updateRevenue = async (_, { revenue: { id, ...revenue } }) => {
         },
       }
     ),
+    tag: 'revenue from user',
     where: {
       id,
     },

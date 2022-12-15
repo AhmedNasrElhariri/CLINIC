@@ -876,6 +876,56 @@ const init = app => {
     });
     res.json(data);
   });
+
+  app.post('/logging', async (req, res) => {
+    const {
+      dateFrom,
+      dateTo,
+      userId,
+      model,
+      tagName,
+      organizationId,
+    } = req.query;
+    try {
+      const startDay = moment(dateFrom).startOf('day').toDate();
+      const endDay = moment(dateTo).endOf('day').toDate();
+      const loggings = await prisma.logging.findMany({
+        where: Object.assign(
+          {
+            organizationId,
+          },
+          dateTo &&
+            dateFrom && {
+              date: {
+                gte: startDay,
+                lte: endDay,
+              },
+            },
+          userId && {
+            userId: userId,
+          },
+          model && {
+            model: model,
+          },
+          tagName && {
+            tagName: tagName,
+          }
+        ),
+        include: {
+          user: true,
+        },
+      });
+      const pdfDoc = await generatePdf('/views/reports/logging.ejs', {
+        logging: loggings,
+        formatDateStandard: formatDateStandard,
+      });
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
+      res.end(pdfDoc);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+  });
 };
 
 export default init;

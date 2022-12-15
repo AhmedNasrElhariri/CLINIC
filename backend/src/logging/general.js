@@ -1,6 +1,5 @@
 import { prisma } from '@';
 export const shortFun = async (model, coment, action, r, tag) => {
-  // console.log(tag,'tatta');
   await prisma.logging.create({
     data: {
       model: model,

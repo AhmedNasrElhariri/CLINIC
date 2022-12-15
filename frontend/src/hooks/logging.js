@@ -23,7 +23,6 @@ const Logging = ({ page, dateFrom, dateTo, userId, model, tagName }) => {
   const pages = Math.ceil(loggingCount / 20);
 
   const loggings = useMemo(() => R.propOr(0, 'logging')(loggingsdata), [data]);
-   console.log(loggingTagData,'loggingTagDataloggingTagData')
   const loggingTags = useMemo(
     () => R.propOr([], 'loggingTags')(loggingTagData),
     [loggingTagData]
