@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import { Form, List, Panel, PanelGroup } from 'rsuite';
+import { Form, Icon, List, Panel, PanelGroup } from 'rsuite';
 
-import { CRButton, CRTabs, CRTextInput, Div } from 'components/widgets';
+import { CRButton, CRTabs, CRTextInput, Div, H5 } from 'components/widgets';
 import { SELECTOR_WITH_INPUT, SELECTOR } from 'utils/constants';
 
 const getGroups = () => {
@@ -88,6 +88,20 @@ const reducer = (state, { action, payload }) => {
             : field
         ),
       }));
+    case ACTIONS.DELETE_CHOICE:
+      return state.map(({ fields, ...rest }) => ({
+        ...rest,
+        fields: fields.map(field =>
+          field.id === payload.fieldId
+            ? {
+                ...field,
+                choices: field.choices.filter(
+                  (_, index) => index !== payload.choiceIndex
+                ),
+              }
+            : field
+        ),
+      }));
     default:
       return state;
   }
@@ -139,7 +153,30 @@ export default function UserView() {
                         <List>
                           {choices.map((item, index) => (
                             <List.Item key={index} index={index}>
-                              {item}
+                              <Div
+                                display="flex"
+                                justifyContent="space-between"
+                              >
+                                <H5>{item}</H5>
+                                <Icon
+                                  icon="trash-o"
+                                  style={{
+                                    fontSize: 17,
+                                    cursor: 'pointer',
+                                    color: '#e50124',
+                                  }}
+                                  onClick={e => {
+                                    dispatch({
+                                      action: ACTIONS.DELETE_CHOICE,
+                                      payload: {
+                                        fieldId: fieldId,
+                                        choiceIndex: index,
+                                      },
+                                    });
+                                    clear(fieldId);
+                                  }}
+                                ></Icon>
+                              </Div>
                             </List.Item>
                           ))}
                         </List>
