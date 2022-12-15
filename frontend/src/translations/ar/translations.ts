@@ -425,4 +425,5 @@ export const TRANSLATIONS_AR = {
   maritalStatus: "الحالة الزوجية",
   patientLevel: "المستوي ",
   deleteBranch: "حذف الفرع",
+  views: "خانات العمل",
 };
