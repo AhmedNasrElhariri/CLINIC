@@ -41,6 +41,7 @@ const createExpense = async (_, { expense }, { userId, organizationId }) => {
         },
       }
     ),
+    tag: 'expense from user'
   });
 };
 

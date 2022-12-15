@@ -14,7 +14,7 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
           autoHeight
           data={payrollUsers}
           bordered={false}
-          onRowClick={(user) => {
+          onRowClick={user => {
             history.push(`/payroll/${user.id}`, user);
           }}
         >
@@ -52,15 +52,13 @@ export default function EmployeesPayroll({ payrollUsers, handleDelete }) {
               {({ id }) => (
                 <>
                   <Icon
-                    onClick={(...data) => {
-                      console.dir(data);
-                    }}
+                    onClick={(...data) => {}}
                     style={{ paddingRight: '25px' }}
                   >
                     {t('openDetails')}
                   </Icon>
                   <Icon
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       handleDelete(id);
                     }}

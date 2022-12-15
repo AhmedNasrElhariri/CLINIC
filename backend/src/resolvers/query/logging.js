@@ -2,7 +2,7 @@ import { prisma } from '@';
 import moment from 'moment';
 const logging = async (
   _,
-  { offset, limit, dateFrom, dateTo, userId },
+  { offset, limit, dateFrom, dateTo, userId, model, tagName },
   { user, organizationId }
 ) => {
   const startDay = moment(dateFrom).startOf('day').toDate();
@@ -21,6 +21,12 @@ const logging = async (
         },
       userId && {
         userId: userId,
+      },
+      model && {
+        model: model,
+      },
+      tagName && {
+        tagName: tagName,
       }
     ),
   });
@@ -38,6 +44,12 @@ const logging = async (
         },
       userId && {
         userId: userId,
+      },
+      model && {
+        model: model,
+      },
+      tagName && {
+        tagName: tagName,
       }
     ),
     include: {

@@ -156,7 +156,6 @@ enum LoggingAction {
   update
   delete
   insert
-  
 }
 
 enum PermissionAction {
@@ -1682,10 +1681,20 @@ model Logging {
   text           String
   date           DateTime
   action         LoggingAction
+  loggingTag     LoggingTag?   @relation(fields: [tagName], references: [name])
+  tagName        String?
   user           User          @relation(fields: [userId], references: [id])
   userId         String
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
+}
+
+model LoggingTag {
+  model       LoggingModel
+  name        String       @id
+  displayName String
+  Logging     Logging[]
+  @@unique([model, name], name: "model_name_unique_constraint")
 }
 
 // end permission

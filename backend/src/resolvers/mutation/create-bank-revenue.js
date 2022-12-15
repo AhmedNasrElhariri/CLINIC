@@ -56,6 +56,7 @@ const createBankRevenue = async (
         },
       }
     ),
+    tag: 'bankRevenue from user',
   });
 };
 

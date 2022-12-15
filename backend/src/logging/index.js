@@ -1,9 +1,5 @@
 import { prisma } from '@';
-import {
-  createRevenueLogging,
-  updateRevenueLogging,
-  createManyRevenueLogging,
-} from './revenue';
+import { createRevenueLogging, updateRevenueLogging } from './revenue';
 import { createExpenseLogging, updateExpenseLogging } from './expense';
 import {
   createBankRevenueLogging,
@@ -14,11 +10,10 @@ import {
   updateBankExpenseLogging,
 } from './bank-expense';
 
-import { getRow, getManyCreate } from './general';
+import { getRow } from './general';
 const logg = [
   { action: 'create', model: 'Revenue', handler: createRevenueLogging },
   { action: 'update', model: 'Revenue', handler: updateRevenueLogging },
-  // { action: 'createMany', model: 'Revenue', handler: createManyRevenueLogging },
   { action: 'create', model: 'Expense', handler: createExpenseLogging },
   { action: 'update', model: 'Expense', handler: updateExpenseLogging },
   { action: 'create', model: 'BankRevenue', handler: createBankRevenueLogging },
@@ -28,18 +23,20 @@ const logg = [
 ];
 const middlewares = async () => {
   prisma.$use(async (params, next) => {
-    const rs = next(params);
-    const action = params.action;
-    const model = params.model;
+    const { args } = params;
+    const { tag, ...rest } = args;
+    const newParams = { ...params, args: rest };
+    const rs = next(newParams);
+    const action = newParams.action;
+    const model = newParams.model;
     const runningMiddlewares = logg.filter(
       l => l.model === model && l.action === action
     );
-    
     if (runningMiddlewares.length > 0) {
       const oneMiddleWare = runningMiddlewares[0];
-      const row = await getRow(params);
+      const row = await getRow(newParams);
       rs.then(r => {
-        oneMiddleWare.handler(r, row);
+        oneMiddleWare.handler(r, row, tag);
       }).catch(err => console.log(err));
     }
 

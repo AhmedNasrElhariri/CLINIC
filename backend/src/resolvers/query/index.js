@@ -108,3 +108,4 @@ export { default as patientsReports } from './patients-reports';
 export { default as allExpenses } from './all-expenses';
 export { default as allRevenues } from './all-revenues';
 export { default as logging } from './logging';
+export { default as loggingTags } from './logging-tags';

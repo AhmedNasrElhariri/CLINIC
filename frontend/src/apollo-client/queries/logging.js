@@ -6,6 +6,8 @@ export const LIST_LOGGING = gql`
     $userId: ID
     $dateFrom: Date
     $dateTo: Date
+    $model: LoggingModel
+    $tagName: String
   ) {
     logging(
       offset: $offset
@@ -13,6 +15,8 @@ export const LIST_LOGGING = gql`
       userId: $userId
       dateFrom: $dateFrom
       dateTo: $dateTo
+      model: $model
+      tagName: $tagName
     ) {
       logging {
         id
@@ -24,6 +28,15 @@ export const LIST_LOGGING = gql`
         date
       }
       loggingCount
+    }
+  }
+`;
+export const LIST_LOGGING_TAG = gql`
+  {
+    loggingTags {
+      name
+      model
+      displayName
     }
   }
 `;

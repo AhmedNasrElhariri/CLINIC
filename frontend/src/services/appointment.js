@@ -15,8 +15,6 @@ export const convertGroupFieldsToNavs = groups => {
   }));
 };
 
-
-
 export const normalizeDataWithGroups = (groups = [], data = []) => {
   const normalizedFieldsData = normalizeFieldsData(data);
   return groups.map(group => {
@@ -71,7 +69,6 @@ export const getKeyValuesFromPatientGroups = (patientGroups, normFields) => {
     return [];
   }
 };
-
 
 export const mapFormValueToAppointmentData = (normFields, fromValue) => {
   return Object.keys(normFields).map(id => ({
@@ -138,7 +135,7 @@ const filterByBranch = (appointments, filter) => {
 const filterByDoctor = (appointments, filter) => {
   const doctor = R.prop('doctor')(filter);
 
-  return !doctor
+  return !doctor || doctor !== 'null'
     ? appointments
     : appointments.filter(app => app.userId === doctor);
 };
@@ -146,7 +143,7 @@ const filterByDoctor = (appointments, filter) => {
 const filterBySpecialty = (appointments, filter) => {
   const specialty = R.prop('specialty')(filter);
 
-  return !specialty
+  return !specialty || specialty !== 'null'
     ? appointments
     : appointments.filter(app => app.specialtyId === specialty);
 };

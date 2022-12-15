@@ -38,7 +38,7 @@ function ListLogging({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={3}>
             <CRTable.CRHeaderCell>{t('action')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ text }) => (

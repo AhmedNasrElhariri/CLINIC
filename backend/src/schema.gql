@@ -132,6 +132,9 @@ enum FieldGroupStatus {
 
 enum LoggingModel {
   Revenue
+  Expense
+  BankRevenue
+  BankExpense
 }
 
 enum LoggingAction {
@@ -177,7 +180,10 @@ type Query {
     userId: ID
     dateFrom: Date
     dateTo: Date
+    model: LoggingModel
+    tagName: String
   ): LoggingData!
+  loggingTags: [LoggingTag!]
   allAppointments: [Appointment!]
   patientsReport(area: String, reference: String): PatientsCount!
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
@@ -2260,9 +2266,15 @@ type Logging {
   user: User
 }
 
-type LoggingData{
-  logging:[Logging!]
+type LoggingData {
+  logging: [Logging!]
   loggingCount: Int!
+}
+
+type LoggingTag {
+  model: LoggingModel
+  name: String
+  displayName: String
 }
 
 ########################### Patient Surgeries ##################################

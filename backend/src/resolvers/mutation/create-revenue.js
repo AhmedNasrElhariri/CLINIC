@@ -47,6 +47,7 @@ const createRevenue = async (_, { revenue }, { userId, organizationId }) => {
         },
       }
     ),
+    tag: 'revenue from user'
   });
 };
 

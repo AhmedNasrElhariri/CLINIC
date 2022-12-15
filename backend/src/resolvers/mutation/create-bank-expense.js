@@ -56,6 +56,7 @@ const createBankExpense = async (
         },
       }
     ),
+    tag: 'bankExpense from user',
   });
 };
 
