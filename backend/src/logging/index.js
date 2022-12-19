@@ -26,6 +26,7 @@ const middlewares = async () => {
     const { args } = params;
     const { tag, ...rest } = args;
     const newParams = { ...params, args: rest };
+    const row = await getRow(newParams);
     const rs = next(newParams);
     const action = newParams.action;
     const model = newParams.model;
@@ -34,7 +35,6 @@ const middlewares = async () => {
     );
     if (runningMiddlewares.length > 0) {
       const oneMiddleWare = runningMiddlewares[0];
-      const row = await getRow(newParams);
       rs.then(r => {
         oneMiddleWare.handler(r, row, tag);
       }).catch(err => console.log(err));
