@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const CREATE_PATIENT = gql`
   mutation createPatient($input: PatientInput!) {
@@ -31,6 +31,10 @@ export const EDIT_PATIENT = gql`
       age
       reference
       area
+      notes
+      maritalStatus
+      patientLevel
+      email
     }
   }
 `;
@@ -167,6 +171,14 @@ export const GET_PATIENT = gql`
       phoneNoTwo
       remainingOfPayment
       notes
+      reference
+      maritalStatus
+      patientLevel
+      email
+      area
+      code
+      date
+      branchId
     }
   }
 `;

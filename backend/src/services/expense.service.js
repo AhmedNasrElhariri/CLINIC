@@ -23,7 +23,8 @@ export const createInventoryExpense = async ({
         },
       },
     },
-  });
+    tag: 'expense from appointment',
+  },);
 };
 
 export const createAppointmentExpense = async (
@@ -77,5 +78,6 @@ export const createAppointmentExpense = async (
         },
       }
     ),
+    tag: 'expense from appointment',
   });
 };

@@ -317,7 +317,7 @@ function ListAppointments({
                   <Tooltip>
                     <Div>
                       <Div>
-                        {t('end Date ')}:
+                        {t('End time ')}:
                         {addMinutesToDateAndReturnTime(date, session?.duration)}
                       </Div>
                     </Div>

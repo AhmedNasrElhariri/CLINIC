@@ -432,5 +432,5 @@ export const TRANSLATIONS_EN = {
   deleteBranch: 'Delete Branch',
   deleteSpecialty: 'Delete Specialty',
   views: 'Views',
-  tagName:'Tag Name',
+  tagName: 'Tag Name',
 };

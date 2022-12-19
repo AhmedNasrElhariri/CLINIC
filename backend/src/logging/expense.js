@@ -5,6 +5,6 @@ export const createExpenseLogging = async (r,row = {}, tag) => {
   shortFun('Expense', coment, 'insert', r, tag);
 };
 export const updateExpenseLogging = async (r, row, tag) => {
-  const coment = `change expense (${r.name}) from ${row.amount} to ${r.amount}`;
+  const coment = `edit expense (${r.name}) from ${row.amount} to ${r.amount}`;
   shortFun('Expense', coment, 'update', r, tag);
 };

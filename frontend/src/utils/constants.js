@@ -237,3 +237,29 @@ export const IMAGE_STATUS = Object.freeze({
   PENDING: 'Pending',
   COMPLETED: 'Completed',
 });
+export const loggingModels = [
+  {
+    key: 'Revenue/Acc',
+    value: { model: 'Revenue', tagName: 'revenue from appointment' },
+  },
+  {
+    key: 'Expense/Acc',
+    value: { model: 'Expense', tagName: 'expense from appointment' },
+  },
+  {
+    key: 'BankRevenue/Acc',
+    value: { model: 'BankRevenue', tagName: 'revenue from appointment' },
+  },
+  {
+    key: 'BankExpense/Acc',
+    value: { model: 'BankExpense', tagName: 'revenue from appointment' },
+  },
+  {
+    key: 'Add - Edit Revenue/Cash',
+    value: { model: 'Revenue', tagName: 'revenue from user' },
+  },
+  {
+    key: 'Add - Edit Revenue/Visa',
+    value: { model: 'BankRevenue', tagName: 'revenue from user' },
+  },
+];

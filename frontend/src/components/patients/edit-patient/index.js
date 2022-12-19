@@ -24,7 +24,7 @@ const initialValues = {
   date: new Date(),
   type: 'Primary',
   branchId: null,
-  notes: "",
+  notes: '',
 };
 const EditButton = styled(Button)`
   background-color: white;
@@ -32,6 +32,7 @@ const EditButton = styled(Button)`
   font-size: 18px;
 `;
 const EditPatient = ({ patient }) => {
+  console.log(patient, 'PPPP');
   const [formValue, setFormValue] = useState(initialValues);
   const { visible, open, close } = useModal();
   const { edit } = usePatients({ onEdit: close });
@@ -47,7 +48,8 @@ const EditPatient = ({ patient }) => {
     [data, BranchesData]
   );
   useEffect(() => {
-    setFormValue(R.omit(['__typename'])(patient));
+    const pa = R.omit(['__typename'])(patient);
+    setFormValue({ ...pa, type: 'Primary' });
   }, [patient]);
   const handleEditPatient = useCallback(() => {
     const { remainingOfPayment, ...rest } = formValue;

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CRCard, H3 } from 'components';
+import { CRCard, H3,Div } from 'components';
 import EditPatient from '../edit-patient';
 import {
   PatientInfoStyled,
@@ -19,7 +19,7 @@ const PatientInfo = ({ patient }) => {
       <CRCard borderless>
         <Cell height={64}>
           <H3>{t('information')}</H3>
-          <EditPatient patient={patient} editName={t('edit')}/>
+          <EditPatient patient={patient} editName={t('edit')} />
           <EditButton>{t('expand')}</EditButton>
         </Cell>
         <Cell>
@@ -33,6 +33,46 @@ const PatientInfo = ({ patient }) => {
         <Cell>
           <CellTitle>{t('phoneNo')}</CellTitle>
           <AddressStyled>{patient.phoneNo}</AddressStyled>
+        </Cell>
+        <Cell>
+          <CellTitle>{t('code')}</CellTitle>
+          <AddressStyled>{patient.code}</AddressStyled>
+        </Cell>
+        <Cell>
+          <CellTitle>{t('gender')}</CellTitle>
+          <AddressStyled>{patient.sex}</AddressStyled>
+        </Cell>
+        <Cell>
+          <CellTitle>{t('maritalStatus')}</CellTitle>
+          <AddressStyled>{patient.maritalStatus}</AddressStyled>
+        </Cell>
+        <Cell>
+          <CellTitle>{t('patientLevel')}</CellTitle>
+          <AddressStyled>{patient.patientLevel}</AddressStyled>
+        </Cell>
+        <Cell>
+          <CellTitle>{t('email')}</CellTitle>
+          <AddressStyled>{patient.email}</AddressStyled>
+        </Cell>
+        <Cell>
+          <CellTitle>{t('area')}</CellTitle>
+          <AddressStyled>{patient.area}</AddressStyled>
+        </Cell>
+        <Cell>
+          <CellTitle>{t('reference')}</CellTitle>
+          <AddressStyled>
+            {
+              <Div display="flex">
+                {patient.reference.map(r => (
+                  <Div>
+                    {' - '}
+                    {r}
+                    {'  '}
+                  </Div>
+                ))}
+              </Div>
+            }
+          </AddressStyled>
         </Cell>
         {patient.phoneNoTwo && (
           <Cell>

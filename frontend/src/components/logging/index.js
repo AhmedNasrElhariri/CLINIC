@@ -13,20 +13,19 @@ const Logging = () => {
   const [formValue, setFormValue] = useState({
     date: [],
     userId: null,
-    model: '',
-    tag: '',
+    model: {},
   });
   const [user] = useGlobalState('user');
   const [currentPage, setCurrentPage] = useState({ page: 1 });
   const page = currentPage?.activePage;
   const { users } = useCourses({});
-  const { loggings, pages, loggingCount, models, tagNames } = useLogging({
+  const { loggings, pages, loggingCount } = useLogging({
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
     dateTo: R.pathOr(null, ['date', 1])(formValue),
     userId: R.propOr(null, 'userId')(formValue),
     page: page,
-    model: formValue.model,
-    tagName: formValue.tag,
+    model: formValue.model?.model,
+    tagName: formValue.model?.tagName,
   });
   const handleLoggingReport = () => {
     axios({
@@ -37,8 +36,8 @@ const Logging = () => {
         dateFrom: R.pathOr(null, ['date', 0])(formValue),
         dateTo: R.pathOr(null, ['date', 1])(formValue),
         userId: R.propOr(null, 'userId')(formValue),
-        model: formValue.model,
-        tagName: formValue.tag,
+        model: formValue.model?.model,
+        tagName: formValue.model?.tagName,
         organizationId: user.organizationId,
       },
     })
@@ -59,8 +58,6 @@ const Logging = () => {
       </CRButton>
       <Filter
         users={users}
-        models={models}
-        tagNames={tagNames}
         formValue={formValue}
         setFormValue={setFormValue}
         t={t}

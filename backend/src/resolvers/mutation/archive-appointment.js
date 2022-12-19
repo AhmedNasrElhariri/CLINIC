@@ -42,7 +42,6 @@ const archiveAppointment = async (
   },
   { userId, organizationId }
 ) => {
-  
   const level = GetLevel(branchId, specialtyId, userID);
   if (company == null) {
     sessions.forEach(async ({ price, number, id }) => {
@@ -132,6 +131,7 @@ const archiveAppointment = async (
             },
           }
         ),
+        tag: 'revenue from appointment',
       });
     }
     if (payOfRemaining > 0) {
@@ -184,6 +184,7 @@ const archiveAppointment = async (
             },
           }
         ),
+        tag: 'revenue from appointment',
       });
       await prisma.patient.update({
         data: {
@@ -270,6 +271,7 @@ const archiveAppointment = async (
             },
           }
         ),
+        tag: 'revenue from appointment',
       });
       await prisma.bankRevenue.create({
         data: Object.assign(
@@ -323,6 +325,7 @@ const archiveAppointment = async (
             },
           }
         ),
+        tag: 'revenue from appointment',
       });
     } else {
       ///
@@ -392,6 +395,7 @@ const archiveAppointment = async (
               },
             }
           ),
+          tag: 'revenue from appointment',
         });
       }
       if (payOfRemaining > 0) {
@@ -451,6 +455,7 @@ const archiveAppointment = async (
               },
             }
           ),
+          tag: 'revenue from appointment',
         });
         await prisma.patient.update({
           data: {
@@ -799,6 +804,7 @@ const archiveAppointment = async (
           },
         }
       ),
+      tag: 'expense from appointment',
     });
     await prisma.patient.update({
       data: {

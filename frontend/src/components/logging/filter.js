@@ -1,8 +1,8 @@
 import React from 'react';
 import { CRDateRangePicker, Div, CRSelectInput } from 'components';
 import { Form } from 'rsuite';
-
-const Filter = ({ formValue, setFormValue, t, users, models, tagNames }) => {
+import { loggingModels } from 'utils/constants';
+const Filter = ({ formValue, setFormValue, t, users }) => {
   return (
     <Form
       style={{ marginBottom: 64 }}
@@ -32,18 +32,10 @@ const Filter = ({ formValue, setFormValue, t, users, models, tagNames }) => {
           label={t('model')}
           name="model"
           placeholder={t('select')}
+          labelKey="key"
+          valueKey="value"
           block
-          data={models}
-          style={{ marginRight: '30px', width: '150px' }}
-        />
-        <CRSelectInput
-          label={t('tagName')}
-          name="tag"
-          placeholder={t('select')}
-          valueKey="name"
-          labelKey="name"
-          block
-          data={tagNames}
+          data={loggingModels}
           style={{ marginRight: '30px', width: '150px' }}
         />
       </Div>
