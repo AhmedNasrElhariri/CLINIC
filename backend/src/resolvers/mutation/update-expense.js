@@ -29,6 +29,7 @@ const updateExpense = async (_, { expense: { id, ...expense } }) => {
         },
       }
     ),
+    tag: 'expense from user',
     where: {
       id,
     },
