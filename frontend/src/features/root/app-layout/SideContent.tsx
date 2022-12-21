@@ -1,5 +1,5 @@
-import { memo, useContext, useMemo, MouseEventHandler } from "react";
-import { Can } from "components/user/can";
+import { memo, useContext, useMemo, MouseEventHandler } from 'react';
+import { Can } from 'components/user/can';
 import {
   UserOutlined,
   CalendarOutlined,
@@ -10,12 +10,12 @@ import {
   IdcardOutlined,
   SolutionOutlined,
   PrinterOutlined,
-} from "@ant-design/icons";
-import { List } from "antd";
-import { MdAddCircleOutline } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { ModalsContext } from "common/contexts/ModalsContext";
+} from '@ant-design/icons';
+import { List } from 'antd';
+import { MdAddCircleOutline } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { ModalsContext } from 'common/contexts/ModalsContext';
 
 export default memo(function SideContent({
   closeDrawer,
@@ -28,13 +28,13 @@ export default memo(function SideContent({
   const ROUTES = useMemo(
     () => [
       {
-        path: "/appointments/today",
-        name: "todayAppointments",
+        path: '/appointments/today',
+        name: 'todayAppointments',
         icon: CalendarOutlined,
       },
       {
-        path: "/appointments",
-        name: "appointments",
+        path: '/appointments',
+        name: 'appointments',
         extra: (
           <Can I="Create" an="Appointment">
             <div className="w-8 flex items-center justify-end">
@@ -48,8 +48,8 @@ export default memo(function SideContent({
         icon: CalendarOutlined,
       },
       {
-        path: "/patients",
-        name: "patients",
+        path: '/patients',
+        name: 'patients',
         extra: (
           <Can I="Create" an="Patient">
             <div className="w-8 flex items-center justify-end">
@@ -64,44 +64,45 @@ export default memo(function SideContent({
       },
 
       {
-        path: "/reports",
-        name: "reports",
+        path: '/reports',
+        name: 'reports',
         icon: FileTextOutlined,
       },
 
       {
-        path: "/surgeries",
-        name: "surgeries",
+        path: '/surgeries',
+        name: 'surgeries',
         icon: MedicineBoxOutlined,
       },
       {
-        path: "/report-printouts",
-        name: "reportsPrintout",
+        path: '/report-printouts',
+        name: 'reportsPrintout',
         icon: PrinterOutlined,
       },
       {
-        path: "/courses",
-        name: "courses",
+        path: '/courses',
+        name: 'courses',
         icon: SolutionOutlined,
       },
       {
-        path: "/supplier-account",
-        name: "supplierAccount",
+        path: '/supplier-account',
+        name: 'supplierAccount',
         icon: IdcardOutlined,
       },
       {
-        path: "/sales",
-        name: "sales",
+        path: '/sales',
+        name: 'sales',
         icon: DollarOutlined,
       },
       {
-        path: "/inventory",
-        name: "inventory",
+        path: '/inventory',
+        name: 'inventory',
         icon: InboxOutlined,
       },
+
       {
-        path: "/logging",
-        name: "logging",
+        path: '/logging',
+        name: 'logging',
         icon: InboxOutlined,
       },
     ],
@@ -111,18 +112,33 @@ export default memo(function SideContent({
   return (
     <List
       dataSource={ROUTES}
-      renderItem={(route) => (
-        <List.Item className="text-xs py-0 px-4 h-10 flex items-center justify-between">
-          <Link
-            onClick={closeDrawer}
-            to={route.path}
-            className="flex items-center text-xs gap-2 h-full grow text-slate-600"
-          >
-            <route.icon className="!text-[18px]" /> {t(route.name)}
-          </Link>
-          {route.extra}
-        </List.Item>
-      )}
+      renderItem={route =>
+        route.name === 'logging' ? (
+          <Can I="View" an="Logging">
+            <List.Item className="text-xs py-0 px-4 h-10 flex items-center justify-between">
+              <Link
+                onClick={closeDrawer}
+                to={route.path}
+                className="flex items-center text-xs gap-2 h-full grow text-slate-600"
+              >
+                <route.icon className="!text-[18px]" /> {t(route.name)}
+              </Link>
+              {route.extra}
+            </List.Item>
+          </Can>
+        ) : (
+          <List.Item className="text-xs py-0 px-4 h-10 flex items-center justify-between">
+            <Link
+              onClick={closeDrawer}
+              to={route.path}
+              className="flex items-center text-xs gap-2 h-full grow text-slate-600"
+            >
+              <route.icon className="!text-[18px]" /> {t(route.name)}
+            </Link>
+            {route.extra}
+          </List.Item>
+        )
+      }
     />
   );
 });

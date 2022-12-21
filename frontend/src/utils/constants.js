@@ -180,6 +180,7 @@ export const ACTIONS = Object.freeze({
   ViewNotes_CurrentAppointment: 'ViewNotes_CurrentAppointment',
   ViewImages_CurrentAppointment: 'ViewImages_CurrentAppointment',
   DeleteImages_CurrentAppointment: 'DeleteImages_CurrentAppointment',
+  View_Logging: 'View_Logging',
 });
 
 export const ACTIONS_ORGANZATIONONLY = [
@@ -224,6 +225,7 @@ export const ACTIONS_ORGANZATIONONLY = [
   'ViewNotes_CurrentAppointment',
   'ViewImages_CurrentAppointment',
   'DeleteImages_CurrentAppointment',
+  'View_Logging',
 ];
 
 export const LAB_STATUS = Object.freeze({
