@@ -63,7 +63,7 @@ const PatientInfo = ({ patient }) => {
           <AddressStyled>
             {
               <Div display="flex">
-                {patient.reference.map(r => (
+                {patient.reference?.map(r => (
                   <Div>
                     {' - '}
                     {r}
