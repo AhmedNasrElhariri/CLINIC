@@ -26,6 +26,7 @@ const initialValues = {
   type: 'Primary',
   guardianName: '',
   branchId: null,
+  patientId: null,
 };
 const { StringType, NumberType } = Schema.Types;
 const model = Schema.Model({

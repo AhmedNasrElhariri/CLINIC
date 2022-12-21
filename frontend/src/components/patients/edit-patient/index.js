@@ -25,6 +25,7 @@ const initialValues = {
   type: 'Primary',
   branchId: null,
   notes: '',
+  patientId: null,
 };
 const EditButton = styled(Button)`
   background-color: white;

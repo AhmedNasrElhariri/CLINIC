@@ -59,11 +59,15 @@ const PatientInfo = ({ patient }) => {
           <AddressStyled>{patient.area}</AddressStyled>
         </Cell>
         <Cell>
+          <CellTitle>{t('patientId')}</CellTitle>
+          <AddressStyled>{patient.patientId}</AddressStyled>
+        </Cell>
+        <Cell>
           <CellTitle>{t('reference')}</CellTitle>
           <AddressStyled>
             {
               <Div display="flex">
-                {patient.reference.map(r => (
+                {patient.reference?.map(r => (
                   <Div>
                     {' - '}
                     {r}

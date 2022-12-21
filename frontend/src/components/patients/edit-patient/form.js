@@ -114,6 +114,7 @@ const NewPatient = ({ formValue, onChange, t, newAreas, branches }) => {
         block
       />
       <CRSelectInput label={t("area")} name="area" data={newAreas} block />
+      <CRTextInput label={t("patientId")} name="patientId" />
       <CRCheckBoxGroup
         label={t("reference")}
         options={options}

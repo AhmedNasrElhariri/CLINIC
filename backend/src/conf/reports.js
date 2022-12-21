@@ -241,6 +241,75 @@ const init = app => {
     }
   });
 
+  // insurrance report
+
+  app.post('/insurranceReport', async (req, res) => {
+    const {
+      dateFrom,
+      dateTo,
+      view,
+      doctorId,
+      specialtyId,
+      branchId,
+      companyId,
+      organizationId,
+    } = req.query;
+    try {
+      let updatedDateFrom = new Date();
+      let updatedDateTo = new Date();
+      if (dateFrom && dateTo) {
+        updatedDateFrom = getStartOfDay(dateFrom);
+        updatedDateTo = getEndOfDay(dateTo);
+      } else {
+        const datesArray = getDateFromAndDateToFromView(view);
+        updatedDateFrom = datesArray[0];
+        updatedDateTo = datesArray[1];
+      }
+      const insurranceRevenues = await prisma.insuranceRevenue.findMany({
+        where: {
+          organizationId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              companyId: companyId,
+            },
+          ],
+          date: {
+            gte: updatedDateFrom,
+            lte: updatedDateTo,
+          },
+        },
+      });
+
+      const totalRevenues = insurranceRevenues.reduce(
+        (acc, e) => acc + e.amount,
+        0
+      );
+      const pdfDoc = await generatePdf('/views/reports/insurrance.ejs', {
+        revenues: insurranceRevenues,
+        totalRevenues: totalRevenues,
+        formatDateStandard: formatDateStandard,
+        updatedDateFrom,
+        updatedDateTo,
+      });
+      const fileName = 'insurrance.pdf';
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+      res.end(pdfDoc);
+    } catch (e) {
+      res.status(400).send(e);
+      res.status(400).send('Invalid');
+    }
+  });
+
   app.get('/salesPrintReport', async (req, res) => {
     const {
       dateFrom,
@@ -923,8 +992,70 @@ const init = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
       res.end(pdfDoc);
     } catch (e) {
-      console.log(e,'eeeeeeeeee');
+      console.log(e, 'eeeeeeeeee');
       res.status(400).send(e);
+    }
+  });
+  
+  //insurrance Excel
+  app.get('/insurranceExcel', async (req, res) => {
+    const {
+      dateFrom,
+      dateTo,
+      view,
+      doctorId,
+      specialtyId,
+      branchId,   
+      companyId,
+      organizationId,
+    } = req.query;
+    try {
+      let updatedDateFrom = new Date();
+      let updatedDateTo = new Date();
+      if (dateFrom && dateTo) {
+        updatedDateFrom = getStartOfDay(dateFrom);
+        updatedDateTo = getEndOfDay(dateTo);
+      } else {
+        const datesArray = getDateFromAndDateToFromView(view);
+        updatedDateFrom = datesArray[0];
+        updatedDateTo = datesArray[1];
+      }
+      const revenues = await prisma.insuranceRevenue.findMany({
+        where: {
+          organizationId,
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+            {
+              companyId: companyId,
+            },
+          ],
+          date: {
+            gte: updatedDateFrom,
+            lte: updatedDateTo,
+          },
+        },
+      });
+      let keys = ['name', 'date', 'amount'];
+      const workbook = generateExcel(keys, revenues);
+      var fileName = 'Insurrance-Revenues.xlsx';
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+      res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+      await workbook.xlsx.write(res);
+      res.end();
+    } catch (e) {
+      res.status(400).send(e);
+      res.status(400).send('Invalid');
     }
   });
 };

@@ -392,6 +392,7 @@ model Patient {
   maritalStatus      MaritalStatus?
   patientLevel       PatientLevel?
   email              String?
+  patientId          String?
   organization       Organization          @relation(fields: [organizationId], references: [id])
   organizationId     String
   user               User                  @relation(fields: [userId], references: [id])
@@ -1694,6 +1695,7 @@ model LoggingTag {
   name        String       @id
   displayName String
   Logging     Logging[]
+
   @@unique([model, name], name: "model_name_unique_constraint")
 }
 

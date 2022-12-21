@@ -173,6 +173,14 @@ function Patients() {
                 )}
               </CRTable.CRCell>
             </CRTable.CRColumn>
+            <CRTable.CRColumn flexGrow={1} minWidth={128}>
+              <CRTable.CRHeaderCell>{t("patientId")}</CRTable.CRHeaderCell>
+              <CRTable.CRCell>
+                {({ patientId }) => (
+                  <CRTable.CRCellStyled bold>{patientId}</CRTable.CRCellStyled>
+                )}
+              </CRTable.CRCell>
+            </CRTable.CRColumn>
 
             <CRTable.CRColumn flexGrow={1} minWidth={110}>
               <CRTable.CRHeaderCell>{t("reference")}</CRTable.CRHeaderCell>

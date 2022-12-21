@@ -9,7 +9,17 @@ import { ACTIONS } from '@/utils/constants';
 
 const CompanyRevenues = async (
   _,
-  { offset, limit, dateFrom, dateTo, view, doctorId, specialtyId, branchId },
+  {
+    offset,
+    limit,
+    dateFrom,
+    dateTo,
+    view,
+    doctorId,
+    specialtyId,
+    branchId,
+    companyId,
+  },
   { user, organizationId }
 ) => {
   const ids = await listFlattenUsersTreeIds(
@@ -62,6 +72,9 @@ const CompanyRevenues = async (
             },
             {
               doctorId: doctorId,
+            },
+            {
+              companyId: companyId,
             },
           ],
         },
@@ -124,6 +137,9 @@ const CompanyRevenues = async (
             },
             {
               doctorId: doctorId,
+            },
+            {
+              companyId,
             },
           ],
         },

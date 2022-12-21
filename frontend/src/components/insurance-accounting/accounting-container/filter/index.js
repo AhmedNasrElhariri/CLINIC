@@ -8,12 +8,7 @@ import { useTranslation } from 'react-i18next';
 const AccountingFilter = ({ formValue, setFormValue }) => {
   const { t } = useTranslation();
   const { companysDefinition } = useCompanyDefinition({});
-  const updatedCompanysDefinitions = companysDefinition.map(c => {
-    return {
-      id: c.name,
-      name: c.name,
-    };
-  });
+
   return (
     <Form
       style={{ width: 276, marginBottom: 64 }}
@@ -25,12 +20,9 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
           <CRSelectInput
             label={t('companyName')}
             name="company"
-            data={updatedCompanysDefinitions}
-            onChange={val =>
-              val == null
-                ? setFormValue({ company: '' })
-                : setFormValue({ company: val })
-            }
+            data={companysDefinition}
+            labelKey="name"
+            valueKey="id"
             placeholder="Search"
             style={{ width: '230px' }}
           />

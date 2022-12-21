@@ -19,6 +19,7 @@ const useAccounting = ({
   branchId,
   page,
   doctorId,
+  companyId,
 } = {}) => {
   const { data: revenueData } = useQuery(LIST_COMPANY_REVENUES, {
     variables: Object.assign(
@@ -31,24 +32,11 @@ const useAccounting = ({
       view && { view: view },
       branchId && { branchId: branchId },
       specialtyId && { specialtyId: specialtyId },
-      doctorId && { doctorId: doctorId }
+      doctorId && { doctorId: doctorId },
+      companyId && { companyId: companyId }
     ),
   });
 
-  // const allRevenues = useMemo(
-  //   () => R.propOr([], 'companyRevenues')(revenueData),
-  //   [revenueData]
-  // );
-
-  // const revenues = useMemo(
-  //   () => filterAccountingList(allRevenues, view, period),
-  //   [allRevenues, period, view]
-  // );
-
-  // const totalRevenues = useMemo(
-  //   () => revenues.reduce((acc, e) => acc + e.amount, 0),
-  //   [revenues]
-  // );
   const revenuesData = revenueData?.companyRevenues;
   const revenues = R.propOr([], 'companyRevenues')(revenuesData);
   const totalRevenues = useMemo(

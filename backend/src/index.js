@@ -13,7 +13,7 @@ import middlewares from './middlewares';
 import { getContextData } from './services/auth.service';
 import cron from 'node-cron';
 import initUploadConfig from './conf/upload';
-import initReportsConfig from './conf/reports';
+import initReportsConfig from './conf/reports-pdf';
 
 
 import historyFunction from './logging/index';

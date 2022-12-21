@@ -285,6 +285,7 @@ type Query {
     doctorId: ID
     specialtyId: ID
     branchId: ID
+    companyId: ID
   ): InsuranceRevenueData!
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
@@ -896,6 +897,7 @@ type Patient implements Searchable {
   sex: Sex!
   branchId: ID
   notes: String
+  patientId: String
   appointments: [Appointment!]
 }
 
@@ -928,6 +930,7 @@ input PatientInput {
   sex: Sex!
   reference: [String]
   area: ID
+  patientId: String
   type: PatientMembershipType!
   guardianName: String
   email: String

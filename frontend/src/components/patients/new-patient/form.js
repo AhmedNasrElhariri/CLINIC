@@ -177,6 +177,7 @@ const NewPatient = ({
       />
       <CRSelectInput label={t("area")} name="area" data={newAreas} block />
       <CRTextInput label="Code" name="code" />
+      <CRTextInput label={t("patientId")} name="patientId" />
       <CRCheckBoxGroup
         label={t("reference")}
         options={options}

@@ -1,25 +1,27 @@
 import React, { useState } from 'react';
 import * as R from 'ramda';
-import { Div, CRCard, H6, BranchSpecialtyUserFilter } from 'components';
+import {
+  Div,
+  CRCard,
+  H6,
+  BranchSpecialtyUserFilter,
+  CRButton,
+} from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../../accounting/profit';
 import { Can } from 'components/user/can';
-import {
-  useInsuranceAccounting,
-  useAppointments,
-  useConfigurations,
-} from 'hooks';
+import { useInsuranceAccounting, useAppointments } from 'hooks';
 import Filter from './filter';
-// import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
-import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
+import useGlobalState from 'state';
+import { ExcelIcon } from 'components/icons/index';
+import axios from 'axios';
 
-// const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initialval = {
-  company: '',
+  company: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -35,6 +37,7 @@ const BankAccountingContainer = () => {
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const [user, setUser] = useGlobalState('user');
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
   const { filterBranches } = useAppointments({
@@ -49,24 +52,65 @@ const BankAccountingContainer = () => {
       branchId: branchSpecialtyUser?.branch,
       specialtyId: branchSpecialtyUser?.specialty,
       doctorId: branchSpecialtyUser?.doctor,
+      companyId: filter.company,
     });
 
-  const { pageSetupData } = useConfigurations();
+  // const { pageSetupData } = useConfigurations();
   const revenuesPages = Math.ceil(RevenuesCount / 20);
-  const pageSetupRow = pageSetupData.find(
-    element => element.type === 'accounting'
-  );
-  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
-  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
-  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
-  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
-  // const updatedRevenues = useMemo(
-  //   () =>
-  //     revenues.filter(r =>
-  //       r.company.name.toLowerCase().includes(filter.company.toLowerCase())
-  //     ),
-  //   [filter, revenues]
-  // );
+
+  const handleInsurranceReport = () => {
+    axios({
+      url: '/insurranceReport',
+      method: 'POST',
+      responseType: 'blob', // important
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        companyId: filter?.company,
+        organizationId: user.organizationId,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'insurrance.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {});
+  };
+  ///
+  const handleInsurranceExcel = async () => {
+    axios({
+      url: '/insurranceExcel',
+      responseType: 'blob', // important
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        companyId: filter?.company,
+        view,
+        dateFrom: period[0],
+        dateTo: period[1],
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `insurrance-revenues-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {});
+  };
+
   return (
     <>
       {/* <MainContainer title={t('insurance')} nobody></MainContainer> */}
@@ -88,14 +132,22 @@ const BankAccountingContainer = () => {
               </H6>
             </Div>
           </Can>
-          <PdfView
-            data={{ revenues, expenses: [], totalRevenues }}
-            period={timeFrame}
-            marginTop={marginTop}
-            marginRight={marginRight}
-            marginBottom={marginBottom}
-            marginLeft={marginLeft}
-            t={t}
+          <CRButton
+            variant="primary"
+            onClick={handleInsurranceReport}
+            ml={1}
+            mr={1}
+          >
+            {t('print')} +
+          </CRButton>
+          <ExcelIcon
+            variant="primary"
+            onClick={handleInsurranceExcel}
+            ml={1}
+            mr={1}
+            width="30px"
+            height="30px"
+            marginTop="40px"
           />
         </div>
         <Filter formValue={filter} setFormValue={setFilter} />
@@ -115,33 +167,6 @@ const BankAccountingContainer = () => {
                 pages={revenuesPages}
               />
               <Profit expenses={0} revenues={totalRevenues} />
-              {/* <BranchFilter
-                appointments={updatedRevenues}
-                branches={filterBranches}
-                type="accounting"
-                method="revenues"
-                render={(revenues, totalRevenues) => (
-                  <>
-                    <ListData title={t('insuranceRevenues')} data={revenues} />
-                    <Profit expenses={0} revenues={totalRevenues} />
-                    <Div
-                      mt={10}
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <PdfView
-                        data={{ revenues, expenses: [] }}
-                        period={timeFrame}
-                        marginTop={marginTop}
-                        marginRight={marginRight}
-                        marginBottom={marginBottom}
-                        marginLeft={marginLeft}
-                      />
-                    </Div>
-                  </>
-                )}
-              /> */}
             </Div>
           </Div>
         </Div>

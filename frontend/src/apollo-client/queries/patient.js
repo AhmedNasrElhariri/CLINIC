@@ -35,6 +35,7 @@ export const EDIT_PATIENT = gql`
       maritalStatus
       patientLevel
       email
+      patientId
     }
   }
 `;
@@ -58,6 +59,7 @@ export const LIST_PATIENTS = gql`
         date
         branchId
         notes
+        patientId
       }
       patientsCount
     }
@@ -110,6 +112,7 @@ export const LIST_PATIENTS_REPORTS = gql`
         date
         branchId
         notes
+        patientId
       }
       patientsCount
     }
@@ -179,6 +182,7 @@ export const GET_PATIENT = gql`
       code
       date
       branchId
+      patientId
     }
   }
 `;
