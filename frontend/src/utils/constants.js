@@ -262,7 +262,7 @@ export const loggingModels = [
   },
   {
     key: 'Add - Edit Revenue/Visa',
-    value: { model: 'BankRevenue', tagName: 'revenue from user' },
+    value: { model: 'BankRevenue', tagName: 'bankRevenue from user' },
   },
   {
     key: 'Add - Edit Expense/Cash',
@@ -270,6 +270,6 @@ export const loggingModels = [
   },
   {
     key: 'Add - Edit Expense/Visa',
-    value: { model: 'BankExpense', tagName: 'expense from user' },
+    value: { model: 'BankExpense', tagName: 'bankExpense from user' },
   },
 ];

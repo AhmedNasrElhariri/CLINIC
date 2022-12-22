@@ -25,7 +25,7 @@ function ListLogging({
             <CRTable.CRCell>
               {({ date }) => (
                 <CRTable.CRCellStyled bold>
-                  {formatDate(date, 'dddd, DD-MM-YYYY')}
+                  {formatDate(date, 'dddd, DD-MM-YYYY hh:mm ')}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
