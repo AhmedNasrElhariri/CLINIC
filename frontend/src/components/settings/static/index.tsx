@@ -27,7 +27,6 @@ import UserView from "components/views/user-view";
 // import UserView2 from "components/views/user-view/index copy";
 
 const VIEWS: { [key: string]: ReactElement } = {
-  views: <UserView />,
   hospitals: <Hospitals />,
   surgeries: <Surgeries />,
   medicineDefinition: <MedicineDefinition />,
@@ -50,6 +49,7 @@ const VIEWS: { [key: string]: ReactElement } = {
   courseType: <CourseTypeDefinition />,
   supplierAccount: <SupplierAccount />,
   itemDefinition: <ItemsDefinitions />,
+  views: <UserView />,
 };
 
 const viewsKeys = Object.keys(VIEWS);
@@ -67,6 +67,7 @@ function StaticSettings() {
           options={viewsKeys.map((k) => ({ label: t(k), value: k }))}
           value={activeView}
           onSelect={(view: string) => setView(view)}
+          showSearch
         />
       </div>
 

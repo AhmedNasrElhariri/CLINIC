@@ -10,6 +10,7 @@ import {
   IdcardOutlined,
   SolutionOutlined,
   PrinterOutlined,
+  HistoryOutlined,
 } from '@ant-design/icons';
 import { List } from 'antd';
 import { MdAddCircleOutline } from 'react-icons/md';
@@ -103,7 +104,7 @@ export default memo(function SideContent({
       {
         path: '/logging',
         name: 'logging',
-        icon: InboxOutlined,
+        icon: HistoryOutlined,
       },
     ],
     [toggleAddAppointment, toggleAddPatient]
