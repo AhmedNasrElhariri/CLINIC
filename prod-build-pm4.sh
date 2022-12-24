@@ -30,7 +30,7 @@ echo 'start patients app build'
 cd ./patients-app
 npm ci
 echo 'start building...'
-REACT_APP_GRAPHQL_URL=https://chr-ring.com npm run build
+REACT_APP_GRAPHQL_URL=https://cr-ehr.com npm run build
 cd ../
 echo 'patients app finished successfully'
 
@@ -56,11 +56,11 @@ ssh root@159.223.18.82 "cd clinicr &&
  zip -r '../clinicr_backup/$backup_folder.zip' * -x node_modules/**\* uploads/**\* views/**\* query-engine-debian-openssl-1.1.x build.zip &&
  unzip -o ./build.zip -d . && rm build.zip && prisma migrate deploy && \
  pm2 delete clinicr || true && pm2 delete patients_app || true && \
- npm install && npx prisma generate && npx webpack --mode='production' --config ./webpack.dev.js && \
+ npm install && npx prisma migrate deploy npx prisma generate && npx webpack --mode='production' --config ./webpack.dev.js && \
  cp -r ./frontend ./server-dist/frontend && \
 "
 
-ssh root@164.90.178.150 "cd clinicr &&
+ssh root@159.223.18.82 "cd clinicr &&
  pm2 start ecosystem.config.js && pm2 serve patients-app/ 5000 --name "patients_app" --spa
 "
 
