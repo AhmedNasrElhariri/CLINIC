@@ -42,6 +42,7 @@ const editBankExpense = async (_, { bankTransition }) => {
         },
       }
     ),
+    tag: 'bankExpense from user',
     where: {
       id,
     },

@@ -41,6 +41,7 @@ const editBankTransition = async (_, { bankTransition }) => {
         },
       }
     ),
+    tag: 'bankRevenue from user',
     where: {
       id,
     },
