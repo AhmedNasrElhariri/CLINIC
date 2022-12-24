@@ -15,14 +15,17 @@ const createPatient = async (
   });
 
   const { patientCode, id } = organization;
-  await prisma.organization.update({
-    data: {
-      patientCode: patientCode + 1,
-    },
-    where: {
-      id,
-    },
-  });
+  console.log(code,'COCOO');
+  if (!code) {
+    await prisma.organization.update({
+      data: {
+        patientCode: patientCode + 1,
+      },
+      where: {
+        id,
+      },
+    });
+  }
   const updatedPatientCode = 'cr' + patientCode;
   const finalCode = code ? code : updatedPatientCode;
   return prisma.patient.create({
