@@ -180,6 +180,7 @@ export const ACTIONS = Object.freeze({
   ViewNotes_CurrentAppointment: 'ViewNotes_CurrentAppointment',
   ViewImages_CurrentAppointment: 'ViewImages_CurrentAppointment',
   DeleteImages_CurrentAppointment: 'DeleteImages_CurrentAppointment',
+  View_Logging: 'View_Logging',
 });
 
 export const ACTIONS_ORGANZATIONONLY = [
@@ -224,6 +225,7 @@ export const ACTIONS_ORGANZATIONONLY = [
   'ViewNotes_CurrentAppointment',
   'ViewImages_CurrentAppointment',
   'DeleteImages_CurrentAppointment',
+  'View_Logging',
 ];
 
 export const LAB_STATUS = Object.freeze({
@@ -260,7 +262,7 @@ export const loggingModels = [
   },
   {
     key: 'Add - Edit Revenue/Visa',
-    value: { model: 'BankRevenue', tagName: 'revenue from user' },
+    value: { model: 'BankRevenue', tagName: 'bankRevenue from user' },
   },
   {
     key: 'Add - Edit Expense/Cash',
@@ -268,6 +270,6 @@ export const loggingModels = [
   },
   {
     key: 'Add - Edit Expense/Visa',
-    value: { model: 'BankExpense', tagName: 'expense from user' },
+    value: { model: 'BankExpense', tagName: 'bankExpense from user' },
   },
 ];

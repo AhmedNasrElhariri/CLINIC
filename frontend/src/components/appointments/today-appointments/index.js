@@ -347,6 +347,7 @@ function TodayAppointments() {
         <Filter
           appointments={waitingAppointments}
           branches={filterBranches}
+          todayApp={true}
           render={apps => (
             <ListAppointments
               appointments={apps}

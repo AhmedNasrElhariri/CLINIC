@@ -1,21 +1,8 @@
-import React, { memo, useEffect, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { filterAppointments } from './filters';
 import { Div } from 'components';
 import Filter from './filter';
-import {
-  selectSelectedBranch,
-  selectSelectedSpecialty,
-  selectSelectedDoctor,
-  setSelectedSpecialty,
-  setSelectedDoctor,
-  setSelectedBranch,
-} from 'features/root/rootSlice';
-import { useAppDispatch, useAppSelector } from 'redux-store/hooks';
-import {
-  SELECTED_BRANCH,
-  SELECTED_DOCTOR,
-  SELECTED_SPECIALTY,
-} from 'utils/constants';
+
 export default function AppointmentFilters({
   appointments,
   type,

@@ -227,6 +227,7 @@ enum PermissionAction {
   ViewNotes_CurrentAppointment
   ViewImages_CurrentAppointment
   DeleteImages_CurrentAppointment
+  View_Logging
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

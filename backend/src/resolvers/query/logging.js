@@ -55,6 +55,9 @@ const logging = async (
     include: {
       user: true,
     },
+    orderBy: {
+      date: 'desc',
+    },
     skip: offset,
     take: limit,
   });

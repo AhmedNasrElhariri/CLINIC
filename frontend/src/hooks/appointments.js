@@ -21,8 +21,8 @@ import {
   DELETE_APPOINTMENT_PHOTO,
   GET_APPOINTMENT_HISTORY,
   CONFIRMED_APPOINTMENT,
-  TRANSFER_APPOINTMENTS
-} from "apollo-client/queries";
+  TRANSFER_APPOINTMENTS,
+} from 'apollo-client/queries';
 
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
@@ -217,6 +217,20 @@ function useAppointments({
     refetchQueries: [
       {
         query: LIST_TODAY_APPOINTMENTS,
+      },
+      {
+        query: LIST_APPOINTMENTS,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+            status,
+            patient,
+          },
+          dateFrom && { dateFrom },
+          dateTo && { dateTo },
+          type && { type }
+        ),
       },
     ],
   });
