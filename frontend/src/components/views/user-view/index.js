@@ -124,71 +124,69 @@ export default function UserView() {
                 {filterGroupFields(fields).map(
                   ({ id: fieldId, choices = [] }) => (
                     <CRTabs.CRContent key={fieldId}>
-                      <Div>
-                        <>
-                          <List>
-                            {choices.map((item, index) => (
-                              <List.Item key={index} index={index}>
-                                <Div
-                                  display="flex"
-                                  justifyContent="space-between"
-                                >
-                                  <H5>{item}</H5>
-                                  <Icon
-                                    icon="trash-o"
-                                    style={{
-                                      fontSize: 17,
-                                      cursor: 'pointer',
-                                      color: '#e50124',
-                                    }}
-                                    onClick={e => {
-                                      dispatch({
-                                        action: ACTIONS.DELETE_CHOICE,
-                                        payload: {
-                                          fieldId: fieldId,
-                                          choiceIndex: index,
-                                        },
-                                      });
-                                      clear(fieldId);
-                                    }}
-                                  ></Icon>
-                                </Div>
-                              </List.Item>
-                            ))}
-                          </List>
-                          <Div index={choices.length}>
-                            <Form formValue={formValue} onChange={setFormValue}>
+                      <Div width={500}>
+                        <List>
+                          {choices.map((item, index) => (
+                            <List.Item key={index} index={index}>
                               <Div
-                                className="flex-wrap gap-4"
-                                mb={10}
                                 display="flex"
-                                alignItems="center"
+                                justifyContent="space-between"
                               >
-                                <CRTextInput
-                                  name={fieldId}
+                                <H5>{item}</H5>
+                                <Icon
+                                  icon="trash-o"
                                   style={{
-                                    width: 400,
+                                    fontSize: 17,
+                                    cursor: 'pointer',
+                                    color: '#e50124',
                                   }}
-                                />
-                                <CRButton
-                                  className="self-end"
                                   onClick={e => {
                                     dispatch({
-                                      action: ACTIONS.ADD_CHOICE,
+                                      action: ACTIONS.DELETE_CHOICE,
                                       payload: {
                                         fieldId: fieldId,
-                                        choice: formValue[fieldId],
+                                        choiceIndex: index,
                                       },
                                     });
                                     clear(fieldId);
                                   }}
-                                >
-                                  Add
-                                </CRButton>
+                                ></Icon>
                               </Div>
-                            </Form>
-                          </Div>
-                        </>
+                            </List.Item>
+                          ))}
+                        </List>
+                        <Div index={choices.length}>
+                          <Form formValue={formValue} onChange={setFormValue}>
+                            <Div
+                              className="flex-wrap gap-4"
+                              mb={10}
+                              display="flex"
+                              alignItems="center"
+                            >
+                              <CRTextInput
+                                name={fieldId}
+                                style={{
+                                  width: 400,
+                                }}
+                              />
+                              <CRButton
+                                className="self-end"
+                                onClick={e => {
+                                  dispatch({
+                                    action: ACTIONS.ADD_CHOICE,
+                                    payload: {
+                                      fieldId: fieldId,
+                                      choice: formValue[fieldId],
+                                    },
+                                  });
+                                  clear(fieldId);
+                                }}
+                              >
+                                Add
+                              </CRButton>
+                            </Div>
+                          </Form>
+                        </Div>
                       </Div>
                     </CRTabs.CRContent>
                   )
