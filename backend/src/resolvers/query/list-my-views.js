@@ -1,6 +1,12 @@
 import { prisma } from '@';
 
-const listView = (_, __, { userId }) => {
+const listView = async (_, __, { organizationId }) => {
+  const users = await prisma.user.findMany({
+    where: {
+      organizationId,
+    },
+  });
+  const userIds = users.map(u => u.id);
   return prisma.view.findMany({
     include: {
       fieldGroups: {
@@ -20,7 +26,9 @@ const listView = (_, __, { userId }) => {
       id: 'asc',
     },
     where: {
-      userId,
+      user: {
+        id: { in: userIds },
+      },
     },
   });
 };

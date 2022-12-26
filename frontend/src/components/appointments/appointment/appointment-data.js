@@ -28,6 +28,7 @@ import {
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
+  SELECTOR,
 } from 'utils/constants';
 
 import AppointmentPictures from '../pictures';
@@ -57,14 +58,13 @@ const renderItem = ({
   ...props
 }) => {
   let newChoices = [];
-  if (type === 'SelectorWithInput') {
-    if (dynamic) {
-      newChoices = choices.map(c => {
-        return { name: c, id: c };
-      });
-    } else {
-      newChoices = updatedSessions;
-    }
+  if ([SELECTOR_WITH_INPUT, SELECTOR].includes(type)) {
+    newChoices = dynamic
+      ? updatedSessions
+      : choices.map(c => ({
+          id: c,
+          name: c,
+        }));
   }
 
   switch (type) {
@@ -449,19 +449,19 @@ function AppointmentData({
           />
         </SectionContainer>
         {/* <Can I="ViewNotes" an="CurrentAppointment"> */}
-          <SectionContainer title={t('notes')} name="Notes">
-            <Form formValue={appointmentFormValue} onChange={onChange}>
-              <CRTextArea name="notes" disabled={disabled} importable />
-            </Form>
-          </SectionContainer>
+        <SectionContainer title={t('notes')} name="Notes">
+          <Form formValue={appointmentFormValue} onChange={onChange}>
+            <CRTextArea name="notes" disabled={disabled} importable />
+          </Form>
+        </SectionContainer>
         {/* </Can> */}
         {/* <Can I="ViewImages" an="CurrentAppointment"> */}
-          <SectionContainer title={t('pictures')} name="Pictures">
-            <AppointmentPictures
-              formValue={appointmentFormValue.pictures}
-              onChange={handlePicturesChange}
-            />
-          </SectionContainer>
+        <SectionContainer title={t('pictures')} name="Pictures">
+          <AppointmentPictures
+            formValue={appointmentFormValue.pictures}
+            onChange={handlePicturesChange}
+          />
+        </SectionContainer>
         {/* </Can> */}
       </div>
     </>

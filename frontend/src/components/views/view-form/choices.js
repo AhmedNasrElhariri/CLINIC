@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Input, Icon, Button, IconButton, Toggle, Form } from 'rsuite';
 
 import { CRModal, CRSelectInput, Div } from 'components';
@@ -7,13 +7,22 @@ function Choices({
   visible,
   onOk,
   onClose,
-  toggle,
-  setToggle,
+  dynamic,
+  onToggle,
   choicesTypes,
   choicesType,
   setChoicesType,
+  choices,
 }) {
   const [formValue, setFormValue] = useState([]);
+
+  useEffect(() => {
+    if (choices && Array.isArray(choices)) {
+      setFormValue([...choices]);
+    }
+    
+  }, [choices]);
+
   const handleOnClick = useCallback(() => {
     setFormValue([...formValue, '']);
   }, [formValue]);
@@ -48,16 +57,20 @@ function Choices({
       onHide={onClose}
       onCancel={onClose}
     >
-      <Div mr={20} mt={45} width={100}>
-        <Toggle
-          checkedChildren="static"
-          unCheckedChildren="dynamic"
-          size="md"
-          onChange={v => setToggle(v)}
-          mt={10}
-        />
+      <Div mr={20} mt={45} width={200}>
+        <span>Is Dynamic</span>
+        <Toggle size="md" checked={dynamic} onChange={onToggle} mt={10} />
       </Div>
-      {toggle && (
+      {dynamic && (
+        <Form formValue={choicesType} onChange={setChoicesType}>
+          <CRSelectInput
+            data={choicesTypes}
+            name="choicesType"
+            style={{ width: '300px', marginTop: '10px' }}
+          />
+        </Form>
+      )}
+      {!dynamic && (
         <>
           <Div display="flex" justifyContent="flex-end" mb={3}>
             <Button onClick={handleOnClick}>Add</Button>
@@ -78,15 +91,6 @@ function Choices({
             </Div>
           ))}
         </>
-      )}
-      {!toggle && (
-        <Form formValue={choicesType} onChange={setChoicesType}>
-          <CRSelectInput
-            data={choicesTypes}
-            name="choicesType"
-            style={{ width: '300px', marginTop: '10px' }}
-          />
-        </Form>
       )}
     </CRModal>
   );

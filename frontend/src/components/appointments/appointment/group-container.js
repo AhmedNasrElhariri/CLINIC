@@ -7,7 +7,6 @@ import {
   CRTextInput,
   CRTextArea,
   CRRadio,
-  CRCheckBoxGroup,
   CRButton,
   CRNestedSelector,
   CRMultipleSelector,
@@ -19,7 +18,6 @@ import {
   TEXT_FIELD_TYPE,
   LONG_TEXT_FIELD_TYPE,
   RADIO_FIELD_TYPE,
-  CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
   SELECTOR,
@@ -74,15 +72,17 @@ const renderItem = ({
   ...props
 }) => {
   let newChoices = [];
-  if (type === 'SelectorWithInput' || type === 'Selector') {
-    if (dynamic) {
-      newChoices = choices.map(c => {
-        return { name: c, id: c };
-      });
-    } else {
-      newChoices = updatedSessions;
-    }
+  if ([SELECTOR_WITH_INPUT, SELECTOR].includes(type)) {
+    newChoices = dynamic
+      ? updatedSessions
+      : choices.map(c => ({
+          id: c,
+          name: c,
+        }));
   }
+
+  console.log('AAAAAA');
+
   switch (type) {
     case NUMBER_FIELD_TYPE:
       return <CRNumberInput label={name} name={id} {...props} />;
@@ -112,16 +112,6 @@ const renderItem = ({
         />
       );
 
-    // case CHECK_FIELD_TYPE:
-    //   return (
-    //     <CRCheckBoxGroup
-    //       label={name}
-    //       options={choices}
-    //       name={id}
-    //       {...props}
-    //       inline
-    //     />
-    //   );
     case NESTED_SELECTOR_FIELD_TYPE:
       return (
         <CRNestedSelector label={name} name={id} choices={choices} {...props} />

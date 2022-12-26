@@ -37,7 +37,7 @@ export default function CreateView({}) {
     },
   });
   const view = useMemo(() => {
-    return R.pipe(R.propOr({}, 'MyView'))(data);
+    return R.pipe(R.propOr({}, 'myView'))(data);
   }, [data]);
   const [updateView] = useMutation(UPDATE_VIEW, {
     onCompleted() {
