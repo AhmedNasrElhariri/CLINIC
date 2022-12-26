@@ -9,17 +9,26 @@ import {
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
   SELECTOR,
+  TABLE_FIELD_TYPE,
 } from 'utils/constants';
 import Choices from './choices';
 import NestedChoices from './nested-choices';
 import { useModal } from 'hooks';
+import Table from './table';
+
 const choicesTypes = [{ name: 'Sessions-Definition', id: 'sessions' }];
 const initialChoicesType = { choicesType: 'sessions' };
+
+const POPUP_TYPE = Object.freeze({
+  CHOICES: 1,
+  NESTED_CHOICES: 2,
+  TABLE_CELLS: 3,
+});
 
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState('lanes');
   const [editLane] = useGlobalState('editLane');
-  const [popup, setPopup] = useState(0);
+  const [popup, setPopup] = useState(null);
   const [choicesType, setChoicesType] = useState(initialChoicesType);
   const [dynamic, setDynamic] = useState(false);
 
@@ -50,12 +59,17 @@ const Card = ({ laneId, index }) => {
   }, [formValue, lanes, setLanes]);
 
   const handleClickCreate = useCallback(() => {
-    setPopup(1);
+    setPopup(POPUP_TYPE.CHOICES);
     open();
   }, [open]);
 
   const handleClickCreateTree = useCallback(() => {
-    setPopup(2);
+    setPopup(POPUP_TYPE.NESTED_CHOICES);
+    open();
+  }, [open]);
+
+  const handleClickTable = useCallback(() => {
+    setPopup(POPUP_TYPE.TABLE_CELLS);
     open();
   }, [open]);
 
@@ -137,6 +151,20 @@ const Card = ({ laneId, index }) => {
               Choices +
             </H6>
           )}
+          {fieldType === TABLE_FIELD_TYPE && (
+            <H6
+              variant="primary"
+              onClick={handleClickTable}
+              style={{
+                fontSize: '10px',
+                color: 'blue',
+                display: 'block',
+                float: 'left',
+              }}
+            >
+              Table details +
+            </H6>
+          )}
         </Div>
         {!editLane && (
           <Icon
@@ -150,7 +178,7 @@ const Card = ({ laneId, index }) => {
           />
         )}
 
-        {popup === 1 && (
+        {popup === POPUP_TYPE.CHOICES && (
           <Choices
             visible={visible}
             onOk={handleSetChoices}
@@ -163,12 +191,15 @@ const Card = ({ laneId, index }) => {
             choices={formValue.choices}
           />
         )}
-        {popup === 2 && (
+        {popup === POPUP_TYPE.NESTED_CHOICES && (
           <NestedChoices
             visible={visible}
             onOk={handleSetChoices}
             onClose={handleClose}
           />
+        )}
+        {popup === POPUP_TYPE.TABLE_CELLS && (
+          <Table visible={true} onOk={handleSetChoices} onClose={handleClose} />
         )}
       </Panel>
     </>

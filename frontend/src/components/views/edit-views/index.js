@@ -68,8 +68,6 @@ export default function EditView() {
     });
   }, [editView, lanes]);
 
-  console.log(lanes);
-
   return (
     <>
       <Button onClick={onClick}>Save</Button>
