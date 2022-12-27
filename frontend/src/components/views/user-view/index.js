@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client';
 
 import { CRButton, CRTabs, CRTextInput, Div, H5 } from 'components/widgets';
 import useView from 'hooks/view';
-import { SELECTOR_WITH_INPUT, SELECTOR } from 'utils/constants';
+import { SELECTOR_WITH_INPUT, SELECTOR_FIELD_TYPE } from 'utils/constants';
 import { UPDATE_VIEW } from 'apollo-client/queries';
 
 const ACTIONS = Object.freeze({
@@ -68,7 +68,7 @@ export default function UserView() {
       id,
       name,
       fields: (fields || []).filter(({ type }) =>
-        [SELECTOR_WITH_INPUT, SELECTOR].includes(type)
+        [SELECTOR_WITH_INPUT, SELECTOR_FIELD_TYPE].includes(type)
       ),
     }));
     dispatch({ action: ACTIONS.SET, payload: userView.fieldGroups });
@@ -84,7 +84,7 @@ export default function UserView() {
 
   const filterGroupFields = useCallback(fields => {
     return (fields || []).filter(({ type }) =>
-      [SELECTOR_WITH_INPUT, SELECTOR].includes(type)
+      [SELECTOR_WITH_INPUT, SELECTOR_FIELD_TYPE].includes(type)
     );
   }, []);
 

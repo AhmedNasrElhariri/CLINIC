@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Table, Button, SelectPicker } from 'rsuite';
 import { nanoid } from 'nanoid';
 import { CRModal } from 'components';
@@ -7,7 +7,7 @@ import {
   FIELD_TYPES,
   NESTED_SELECTOR_FIELD_TYPE,
   RADIO_FIELD_TYPE,
-  SELECTOR,
+  SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
 } from 'utils/constants';
 import Choices from './choices';
@@ -63,7 +63,7 @@ export const InfoCell = ({ rowData, dataKey, onClick, ...props }) => {
     CHECK_FIELD_TYPE,
     NESTED_SELECTOR_FIELD_TYPE,
     SELECTOR_WITH_INPUT,
-    SELECTOR,
+    SELECTOR_FIELD_TYPE,
   ].includes(rowData.type);
 
   return (
@@ -78,17 +78,20 @@ export const InfoCell = ({ rowData, dataKey, onClick, ...props }) => {
   );
 };
 
-const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
+const ActionCell = ({ rowData, dataKey, onClick, onDelete, ...props }) => {
   return (
     <Cell {...props}>
       <Button appearance="link" onClick={() => onClick(rowData.id)}>
         {rowData.status === 'EDIT' ? 'Save' : 'Edit'}
       </Button>
+      <Button appearance="link" onClick={() => onDelete(rowData.id)}>
+        Delete
+      </Button>
     </Cell>
   );
 };
 
-function TableRows({ visible, onOk, onClose, value }) {
+function TableRows({ visible, onOk, onClose, choices }) {
   const [data, setData] = useState([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
   const { visible: choicesVisible, open, close } = useModal();
@@ -110,6 +113,13 @@ function TableRows({ visible, onOk, onClose, value }) {
     });
   }, []);
 
+  const handleDeleteState = useCallback(id => {
+    setData(data => {
+      const nextData = data.filter(row => row.id !== id);
+      return nextData;
+    });
+  }, []);
+
   const handleClickChoices = useCallback((_, index) => {
     setSelectedRowIndex(index);
     open();
@@ -119,7 +129,12 @@ function TableRows({ visible, onOk, onClose, value }) {
     setData([...data, generateCol()]);
   }, [data]);
 
-  const handleOnOk = useCallback(() => {}, [data, onOk]);
+  const handleOnOk = useCallback(() => {
+    const nextData = data.map(({ status, ...row }) => ({
+      ...row,
+    }));
+    onOk(nextData);
+  }, [data, onOk]);
 
   const selectedRow = useMemo(
     () => data[selectedRowIndex],
@@ -128,19 +143,19 @@ function TableRows({ visible, onOk, onClose, value }) {
 
   const updateSelecedRow = useCallback(
     (prop, value) => {
-      console.log(value);
       setData(data => {
         const nextData = data.map((row, index) =>
           index === selectedRowIndex ? { ...row, [prop]: value } : row
         );
-        console.log(nextData);
         return nextData;
       });
     },
     [selectedRowIndex]
   );
 
-  console.log(selectedRow);
+  useEffect(() => {
+    setData(choices.map(row => ({ ...row, status: null })));
+  }, []);
 
   return (
     <>
@@ -171,7 +186,11 @@ function TableRows({ visible, onOk, onClose, value }) {
 
           <Column flexGrow={1}>
             <HeaderCell>Action</HeaderCell>
-            <ActionCell dataKey="id" onClick={handleEditState} />
+            <ActionCell
+              dataKey="id"
+              onClick={handleEditState}
+              onDelete={handleDeleteState}
+            />
           </Column>
         </Table>
       </CRModal>
