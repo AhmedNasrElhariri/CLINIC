@@ -109,3 +109,4 @@ export { default as allExpenses } from './all-expenses';
 export { default as allRevenues } from './all-revenues';
 export { default as logging } from './logging';
 export { default as loggingTags } from './logging-tags';
+export { default as doctorSessionsDefinations } from './doctor-session-definations';

@@ -143,6 +143,15 @@ enum LoggingAction {
   insert
 }
 
+enum FeesCalculationMethod {
+  before
+  after
+}
+enum FeesCalculationType {
+  fixed
+  percentage
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -412,6 +421,7 @@ type Query {
   transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
   areas: [Area]
   totalUnpaidOfCourses: TotalUnpaidOfCourses
+  doctorSessionsDefinations(doctorId: ID!): [DoctorSessionDefination!]
 }
 
 ########################### Mutation ##################################
@@ -704,6 +714,10 @@ type Mutation {
   loginPatient(input: LoginPatientInput!): AuthPatientPayload!
   forgetPatientPassword(input: ForgetPatientPasswordInput!): Patient!
   sendOtp(phoneNo: String!): Int
+  addSessionToDoctor(
+    doctorSession: DoctorSessionDefinationInput!
+  ): DoctorSessionDefination!
+  deleteSessionToDoctor(sessionId: ID!): DoctorSessionDefination!
 }
 
 ########################### Auth ##################################
@@ -2052,6 +2066,24 @@ input CompanySessionInputDefinition {
 }
 
 ########################### Sales Definition ##################################
+
+###########################SessionToDoctor ###################################
+
+type DoctorSessionDefination {
+  id: ID!
+  doctor: User!
+  session: SessionDefinition!
+  feesCalculationMethod: FeesCalculationMethod
+  feesCalculationType: FeesCalculationType!
+}
+
+input DoctorSessionDefinationInput {
+  doctorId: ID!
+  sessionId: ID!
+  feesCalculationMethod: FeesCalculationMethod
+  feesCalculationType: FeesCalculationType!
+}
+#################################################################################
 
 type SalesDefinition {
   id: ID!

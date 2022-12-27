@@ -20,6 +20,11 @@ export { default as UsersContainer } from './admin/users/users-container';
 export { default as NewUser } from './admin/users/new-user';
 export { default as Users } from './admin/users/list-users';
 
+/******************       Doctors    *********************************/
+export { default as DoctorsContainer } from './admin/doctors/doctors-container';
+export { default as NewSessionToDoctor } from './admin/doctors/new-sessions-to-doctors';
+export { default as Doctors } from './admin/doctors/list-doctors';
+
 /******************       Widgets    *********************************/
 export * from './widgets';
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Form } from 'rsuite';
 import { Spinner } from 'components/widgets/button/spinner';
 import {
@@ -58,7 +58,9 @@ function AppointmentInvoice({
   totalRemainingOfPayment,
 }) {
   const { t } = useTranslation();
-
+  const [visa, setVisa] = useState(false);
+  const [coupon, setCoupon] = useState(false);
+  const [insurance, setInsurance] = useState(false);
   useEffect(() => {
     setCouponsValue(totalCoupons);
   }, [setCouponsValue, totalCoupons]);
@@ -82,6 +84,12 @@ function AppointmentInvoice({
         setCompany={setCompany}
         payOfRemaining={payOfRemaining}
         setPayOfRemaining={setPayOfRemaining}
+        visa={visa}
+        setVisa={setVisa}
+        coupon={coupon}
+        setCoupon={setCoupon}
+        insurance={insurance}
+        setInsurance={setInsurance}
       />
 
       <div className="flex mt-5 flex-col md:flex-row">
@@ -97,107 +105,111 @@ function AppointmentInvoice({
         </div>
 
         <Div>
-          <Div mb={4}>
-            <Form>
-              <CRTextInput
-                label={t('discount')}
-                name="amount"
-                value={discount}
-                onChange={val => onDiscountChange(Number(val))}
-                width={128}
-                addOn={<CRButton variant="danger">{t('applied')}</CRButton>}
-              />
-              <Div display="flex">
-                <CRTextInput
-                  label={t('others')}
-                  name="others"
-                  value={others}
-                  onChange={val => onOthersChange(Number(val))}
-                />
-                <CRTextInput
-                  label={t('name')}
-                  name="othersName"
-                  value={othersName}
-                  onChange={val => onOthersNameChange(val)}
-                />
-              </Div>
-              <CRTextInput
-                label={t('remaining')}
-                name="remaining"
-                value={remaining}
-                onChange={val => onRemainingChange(Number(val))}
-                width={210}
-              />
-            </Form>
-          </Div>
-          <CRDivider />
-          {(company !== null || bank !== null) && (
-            <>
-              <Form formValue={option} onChange={setOption}>
-                <CRRadio options={PAY_OPTIONS} name="option" />
-                {(option.option === 'fixed' && company !== null) ||
-                bank !== null ? (
-                  <CRNumberInput label={t('cashPayment')} name="amount" />
-                ) : (
-                  option.option === 'percentage' &&
-                  (company !== null || bank !== null) && (
-                    <CRNumberInput
-                      label={t('percentagefrom0To100')}
-                      // name="price"
-                      name="amount"
+          {!insurance && (
+            <div>
+              <Div mb={4}>
+                <Form>
+                  <CRTextInput
+                    label={t('discount')}
+                    name="amount"
+                    value={discount}
+                    onChange={val => onDiscountChange(Number(val))}
+                    width={128}
+                    addOn={<CRButton variant="danger">{t('applied')}</CRButton>}
+                  />
+                  <Div display="flex">
+                    <CRTextInput
+                      label={t('others')}
+                      name="others"
+                      value={others}
+                      onChange={val => onOthersChange(Number(val))}
                     />
-                  )
-                )}
-              </Form>
+                    <CRTextInput
+                      label={t('name')}
+                      name="othersName"
+                      value={othersName}
+                      onChange={val => onOthersNameChange(val)}
+                    />
+                  </Div>
+                  <CRTextInput
+                    label={t('remaining')}
+                    name="remaining"
+                    value={remaining}
+                    onChange={val => onRemainingChange(Number(val))}
+                    width={210}
+                  />
+                </Form>
+              </Div>
               <CRDivider />
-            </>
-          )}
-          <H5 fontWeight={400}>{t('summary')}</H5>
-          <Div background="#f0f1f1" p="6px 8px">
-            {others > 0 && (
-              <Price
-                name={t('others')}
-                price={others}
-                overriden
-                variant="primary"
-              />
-            )}
-            {payOfRemaining > 0 && (
-              <Price
-                name={t('thePayOfTheRemaining')}
-                price={payOfRemaining}
-                overriden
-                variant="primary"
-              />
-            )}
-            <Price name={t('subtotal')} price={subtotal} overriden />
-            {couponsValue > 0 && (
-              <Price
-                name={t('couponValue')}
-                price={couponsValue}
-                overriden
-                variant="danger"
-              />
-            )}
-            {discount > 0 && (
-              <Price
-                name={t('discount')}
-                price={discount}
-                overriden
-                variant="danger"
-              />
-            )}
+              {(company !== null || bank !== null) && (
+                <>
+                  <Form formValue={option} onChange={setOption}>
+                    <CRRadio options={PAY_OPTIONS} name="option" />
+                    {(option.option === 'fixed' && company !== null) ||
+                    bank !== null ? (
+                      <CRNumberInput label={t('cashPayment')} name="amount" />
+                    ) : (
+                      option.option === 'percentage' &&
+                      (company !== null || bank !== null) && (
+                        <CRNumberInput
+                          label={t('percentagefrom0To100')}
+                          // name="price"
+                          name="amount"
+                        />
+                      )
+                    )}
+                  </Form>
+                  <CRDivider />
+                </>
+              )}
+              <H5 fontWeight={400}>{t('summary')}</H5>
+              <Div background="#f0f1f1" p="6px 8px">
+                {others > 0 && (
+                  <Price
+                    name={t('others')}
+                    price={others}
+                    overriden
+                    variant="primary"
+                  />
+                )}
+                {payOfRemaining > 0 && (
+                  <Price
+                    name={t('thePayOfTheRemaining')}
+                    price={payOfRemaining}
+                    overriden
+                    variant="primary"
+                  />
+                )}
+                <Price name={t('subtotal')} price={subtotal} overriden />
+                {couponsValue > 0 && (
+                  <Price
+                    name={t('couponValue')}
+                    price={couponsValue}
+                    overriden
+                    variant="danger"
+                  />
+                )}
+                {discount > 0 && (
+                  <Price
+                    name={t('discount')}
+                    price={discount}
+                    overriden
+                    variant="danger"
+                  />
+                )}
 
-            {remaining > 0 && (
-              <Price
-                name={t('remaining')}
-                price={remaining}
-                overriden
-                variant="danger"
-              />
-            )}
-          </Div>
-          <CRDivider />
+                {remaining > 0 && (
+                  <Price
+                    name={t('remaining')}
+                    price={remaining}
+                    overriden
+                    variant="danger"
+                  />
+                )}
+              </Div>
+              <CRDivider />
+            </div>
+          )}
           <Div pr="8px">
             <Price name={t('total')} price={total} />
           </Div>

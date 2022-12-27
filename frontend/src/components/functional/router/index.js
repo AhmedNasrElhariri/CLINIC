@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Can } from 'components/user/can';
 
 const NewPatient = lazy(() =>
   import('../../../components/patients/new-patient')
@@ -151,7 +152,7 @@ function AppRouter() {
         <Route path="/reports">
           <ReportsContainer />
         </Route>
-        <Route path="/permissions-clinicR-eslamayed">
+        <Route path="/permissions">
           <PermissionContainer />
         </Route>
         <Route path="/payroll">

@@ -22,6 +22,9 @@ import {
   DELETE_USER,
   DELETE_BRANCH,
   DELETE_SPECIALTY,
+  ADD_SESSION_TO_DOCTOR,
+  LIST_DOCTOR_SESSION_DEFINATION,
+  DELETE_SESSION_TO_DOCTOR,
 } from 'apollo-client/queries';
 import { POSITIONS, ACTIONS } from 'utils/constants';
 
@@ -66,6 +69,8 @@ function usePermissions({
   onAddDoctor,
   onAssignRoleToUser,
   onDeleteRoleToUser,
+  onCreateSessionToDoctor,
+  doctorId
 } = {}) {
   const { data: branchesData } = useQuery(LIST_BRANCHES);
   const branches = useMemo(
@@ -92,6 +97,14 @@ function usePermissions({
   const roles = useMemo(
     () => R.propOr([], 'listRoles')(rolesData),
     [rolesData]
+  );
+  const { data: doctorSessionsData } = useQuery(
+    LIST_DOCTOR_SESSION_DEFINATION,
+    { variables: { doctorId: doctorId } }
+  );
+  const doctorSessionsDefinations = useMemo(
+    () => R.propOr([], 'doctorSessionsDefinations')(doctorSessionsData),
+    [doctorSessionsData]
   );
   /* mutations */
   const [createOrUpdateRole] = useMutation(CREATE_OR_UPDATE_ROLE, {
@@ -240,6 +253,26 @@ function usePermissions({
     refetchQueries: [{ query: LIST_ROLES }],
   });
 
+  const [addSessionToDoctor] = useMutation(ADD_SESSION_TO_DOCTOR, {
+    onCompleted() {
+      Alert.success('The session has been created Successfully');
+      onCreateSessionToDoctor && onCreateSessionToDoctor();
+    },
+    onError(err) {
+      Alert.error(err.message);
+    },
+  });
+
+  const [deleteSessionToDoctor] = useMutation(DELETE_SESSION_TO_DOCTOR, {
+    onCompleted() {
+      Alert.success('The session has been deleted Successfully');
+      onCreateSessionToDoctor && onCreateSessionToDoctor();
+    },
+    onError(err) {
+      Alert.error(err.message);
+    },
+  });
+
   /* compound */
   const groupedPermissions = useMemo(
     () => R.groupBy(R.prop('subject'))(actions),
@@ -296,6 +329,10 @@ function usePermissions({
       listActionDoctors: action => listActionDoctors({ variables: { action } }),
       actionUsers: actionUsers || [],
       actionDoctors: actionDoctors || [],
+      addSessionToDoctor: doctorSession =>
+        addSessionToDoctor({ variables: { doctorSession: doctorSession } }),
+        deleteSessionToDoctor,
+      doctorSessionsDefinations,
     }),
     [
       branches,
@@ -321,6 +358,9 @@ function usePermissions({
       assignRoleToUser,
       listActionUsers,
       listActionDoctors,
+      addSessionToDoctor,
+      doctorSessionsDefinations,
+      deleteSessionToDoctor
     ]
   );
 }

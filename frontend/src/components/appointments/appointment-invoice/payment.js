@@ -15,11 +15,14 @@ export default function Payment({
   setCompany,
   payOfRemaining,
   setPayOfRemaining,
+  visa,
+  setVisa,
+  coupon,
+  setCoupon,
+  insurance,
+  setInsurance
 }) {
-  const [visa, setVisa] = useState(false);
-  const [coupon, setCoupon] = useState(false);
   const [remainingOperation, setRemainingOperation] = useState(false);
-  const [insurance, setInsurance] = useState(false);
   const { banksDefinition } = useBankDefinition({});
   const { companysDefinition } = useCompanyDefinition({});
 
@@ -33,6 +36,7 @@ export default function Payment({
             setCoupon(false);
             setRemainingOperation(false);
           }}
+          style={{ backgroundColor: '#3498ff' }}
         >
           {t('payByVisa')}
         </CRButton>
@@ -43,6 +47,7 @@ export default function Payment({
             setCoupon(false);
             setRemainingOperation(false);
           }}
+          style={{ backgroundColor: '#3498ff' }}
         >
           {t('insurancePay')}
         </CRButton>
@@ -53,6 +58,7 @@ export default function Payment({
             setCoupon(true);
             setRemainingOperation(false);
           }}
+          style={{ backgroundColor: '#3498ff' }}
         >
           {t('couponPay')}
         </CRButton>
@@ -63,6 +69,7 @@ export default function Payment({
             setCoupon(false);
             setRemainingOperation(true);
           }}
+          style={{ backgroundColor: '#3498ff' }}
         >
           {t('remainingPay')}
         </CRButton>

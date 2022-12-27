@@ -158,6 +158,16 @@ enum LoggingAction {
   insert
 }
 
+enum FeesCalculationMethod {
+  before
+  after
+}
+
+enum FeesCalculationType {
+  fixed
+  percentage
+}
+
 enum PermissionAction {
   List_Appointment
   Create_Appointment
@@ -291,6 +301,7 @@ model Organization {
   SupplierAccount           SupplierAccount[]
   SupplierInvoice           SupplierInvoice[]
   Logging                   Logging[]
+  DoctorSessionDefination   DoctorSessionDefination[]
 }
 
 model User {
@@ -370,6 +381,7 @@ model User {
   DoctorCourseUnitsHistory   CourseUnitsHistory[]         @relation("doctorUnitHistory")
   updater                    Appointment[]                @relation("updaterApp")
   Logging                    Logging[]
+  DoctorSessionDefination    DoctorSessionDefination[]
 }
 
 model Patient {
@@ -1251,18 +1263,19 @@ model Price {
 }
 
 model SessionDefinition {
-  id                 String               @id @default(uuid())
-  name               String
-  price              Float
-  duration           Int                  @default(5)
-  followUp           Boolean?             @default(false)
-  timer              Int?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now()) @updatedAt
-  organization       Organization         @relation(fields: [organizationId], references: [id])
-  organizationId     String
-  Appointment        Appointment[]
-  SessionTransaction SessionTransaction[]
+  id                      String                    @id @default(uuid())
+  name                    String
+  price                   Float
+  duration                Int                       @default(5)
+  followUp                Boolean?                  @default(false)
+  timer                   Int?
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @default(now()) @updatedAt
+  organization            Organization              @relation(fields: [organizationId], references: [id])
+  organizationId          String
+  Appointment             Appointment[]
+  SessionTransaction      SessionTransaction[]
+  DoctorSessionDefination DoctorSessionDefination[]
 }
 
 model CourseTypeDefinition {
@@ -1700,4 +1713,16 @@ model LoggingTag {
   @@unique([model, name], name: "model_name_unique_constraint")
 }
 
-// end permission
+model DoctorSessionDefination {
+  id                    String                 @id @default(uuid())
+  doctor                User                   @relation(fields: [doctorId], references: [id])
+  doctorId              String
+  session               SessionDefinition      @relation(fields: [sessionId], references: [id])
+  sessionId             String
+  feesCalculationMethod FeesCalculationMethod?
+  feesCalculationType   FeesCalculationType
+  organization          Organization           @relation(fields: [organizationId], references: [id])
+  organizationId        String
+
+  @@unique([sessionId, doctorId], name: "sessionId_doctorId_sessionDefination_unique_constraint")
+}
