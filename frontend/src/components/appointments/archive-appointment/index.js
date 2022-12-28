@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  useMemo,
-  useEffect,
-} from 'react';
+import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { Steps, Schema } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
@@ -15,37 +9,21 @@ import DoctorsTab from '../doctors-tab';
 import { useForm, useCompanySessionDefinition, usePatients } from 'hooks';
 import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 import { useTranslation } from 'react-i18next';
-
+import {
+  initValue,
+  initlOption,
+  initlDoctorOption,
+  initialDoctorFess,
+  initInventoryValue,
+  companyInital,
+  initalInsurranceValues,
+} from './constants';
 const { StringType, NumberType } = Schema.Types;
 
 const model = Schema.Model({
   itemId: StringType().isRequired('Item is required'),
   quantity: NumberType().isRequired('Amount Type is required'),
 });
-const initValue = {
-  sessions: [],
-  items: [],
-};
-const initlOption = {
-  option: '',
-  amount: 0,
-  payMethod: 'cash',
-};
-const initlDoctorOption = {
-  option: 'fixed',
-};
-const initialDoctorFess = {
-  doctorId: null,
-  fees: 0,
-  doctorName: '',
-};
-const initInventoryValue = {
-  itemId: null,
-  quantity: 1,
-  branchId: null,
-  specialtyId: null,
-  userId: null,
-};
 
 const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -55,7 +33,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [othersName, setOthersName] = useState('');
   const [bank, setBank] = useState(null);
   const [cashPayment, setCashPayment] = useState(0);
-  const [company, setCompany] = useState(null);
+  const [company, setCompany] = useState(companyInital);
   const [coupons, setCoupons] = useState([]);
   const [couponsValue, setCouponsValue] = useState(0);
   const [option, setOption] = useState(initlOption);
@@ -64,6 +42,9 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [doctorFees, setDoctorFees] = useState(initialDoctorFess);
   const [selectedItems, setSelectedItems] = useState([]);
   const [payOfRemaining, setPayOfRemaining] = useState(0);
+  const [insurranceValues, setInsurranceValues] = useState(
+    initalInsurranceValues
+  );
   const value = useRef(initValue);
   const { t } = useTranslation();
   const { formValue, setFormValue } = useForm({
@@ -152,11 +133,12 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         coupons: newCoupons,
         couponsValue,
         doctorFees: updatedDoctorfees,
+        insurranceValues: insurranceValues,
       });
       setActiveStep(0);
       setOthers(0);
       setBank(null);
-      setCompany(null);
+      setCompany(companyInital);
       setOthersName('');
       setDiscount(0);
       setCoupons([]);
@@ -165,6 +147,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       setRemaining(0);
       setPayOfRemaining(0);
       setDoctorFees(initialDoctorFess);
+      setInsurranceValues(initalInsurranceValues);
       value.current = {
         sessions: [],
         items: [],
@@ -186,6 +169,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     doctorOption,
     newCoupons,
     total,
+    insurranceValues,
   ]);
   const handleFinish = useCallback(() => {
     let updatedDoctorfees = {};
@@ -208,19 +192,21 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       coupons: newCoupons,
       couponsValue,
       doctorFees: updatedDoctorfees,
+      insurranceValues: insurranceValues,
     });
     setActiveStep(0);
     setOthers(0);
     setRemaining(0);
     setPayOfRemaining(0);
     setBank(null);
-    setCompany(null);
+    setCompany(companyInital);
     setOthersName('');
     setDiscount(0);
     setCoupons([]);
     setCouponsValue(0);
     setSelectedSessions([]);
     setDoctorFees(initialDoctorFess);
+    setInsurranceValues(initalInsurranceValues);
     value.current = {
       sessions: [],
       items: [],
@@ -240,6 +226,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     doctorOption,
     newCoupons,
     total,
+    insurranceValues,
   ]);
 
   const handleCancel = useCallback(() => {
@@ -254,7 +241,10 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   );
   const { companysSessionDefinition } = useCompanySessionDefinition({});
   const companySessions = useMemo(
-    () => companysSessionDefinition.filter(s => s.company.id === company),
+    () =>
+      companysSessionDefinition.filter(
+        s => s.company.id === company?.companyId
+      ),
     [company, companysSessionDefinition]
   );
   const updatedCompanySessions = companySessions.map(cS => {
@@ -338,6 +328,8 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
             payOfRemaining={payOfRemaining}
             setPayOfRemaining={setPayOfRemaining}
             totalRemainingOfPayment={totalRemainingOfPayment}
+            insurranceValues={insurranceValues}
+            setInsurranceValues={setInsurranceValues}
           />
         )}
         {activeStep === 1 && (

@@ -151,6 +151,10 @@ enum FeesCalculationType {
   fixed
   percentage
 }
+enum PaymentMethod {
+  cash
+  visa
+}
 
 ########################### Query ##################################
 
@@ -448,7 +452,7 @@ type Mutation {
     payOfRemaining: Int
     bank: ID
     date: Date!
-    company: ID
+    company: CompanyInput
     option: optionInput!
     branchId: ID
     specialtyId: ID
@@ -2357,4 +2361,10 @@ input PatientSurgeryInput {
 input TransferInputDate {
   doctorId: ID!
   appIds: [ID!]
+}
+input CompanyInput {
+  companyId: ID
+  cardId: String
+  paymentMethod: PaymentMethod
+  bankId: ID
 }

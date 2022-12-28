@@ -198,6 +198,7 @@ function TodayAppointments() {
       coupons,
       couponsValue,
       doctorFees,
+      insurranceValues,
     }) => {
       close();
       archive({
@@ -237,6 +238,7 @@ function TodayAppointments() {
           coupons,
           couponsValue,
           doctorFees: doctorFees,
+          insurranceValues: insurranceValues,
         },
       });
     },

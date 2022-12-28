@@ -273,3 +273,7 @@ export const loggingModels = [
     value: { model: 'BankExpense', tagName: 'bankExpense from user' },
   },
 ];
+export const paymentMthod = [
+  { id: 'cash', name: 'cash' },
+  { id: 'visa', name: 'visa' },
+];

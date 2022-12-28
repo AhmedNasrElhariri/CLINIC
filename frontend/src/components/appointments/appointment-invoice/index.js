@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import Price from './price';
 import Payment from './payment';
 import Sessions from './sessions';
-
+import InsurrancePrice from './insurrance-price';
 const PAY_OPTIONS = [
   { name: 'Fixed', value: 'fixed' },
   { name: 'Percentage', value: 'percentage' },
@@ -56,6 +56,8 @@ function AppointmentInvoice({
   payOfRemaining,
   setPayOfRemaining,
   totalRemainingOfPayment,
+  insurranceValues,
+  setInsurranceValues,
 }) {
   const { t } = useTranslation();
   const [visa, setVisa] = useState(false);
@@ -64,6 +66,10 @@ function AppointmentInvoice({
   useEffect(() => {
     setCouponsValue(totalCoupons);
   }, [setCouponsValue, totalCoupons]);
+  useEffect(() => {
+    setInsurranceValues({ ...insurranceValues, total: total });
+  }, [total]);
+  console.log(insurranceValues, 'insurranceValues');
   return (
     <>
       {totalRemainingOfPayment > 0 && (
@@ -210,9 +216,21 @@ function AppointmentInvoice({
               <CRDivider />
             </div>
           )}
-          <Div pr="8px">
-            <Price name={t('total')} price={total} />
-          </Div>
+          {insurance ? (
+            <Div pr="8px">
+              <InsurrancePrice
+                name={t('total')}
+                price={total}
+                formValue={insurranceValues}
+                setFormValue={setInsurranceValues}
+                totalValue={total}
+              />
+            </Div>
+          ) : (
+            <Div pr="8px">
+              <Price name={t('total')} price={total} />
+            </Div>
+          )}
         </Div>
       </div>
       <div className="flex flex-wrap justify-between items-center gap-3 w-full md:w-1/2 mt-3">

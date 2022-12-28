@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
-import { CRButton, CRSelectInput, Div, CRNumberInput } from 'components';
+import {
+  CRButton,
+  CRSelectInput,
+  Div,
+  CRNumberInput,
+  CRTextInput,
+} from 'components';
 import { Form, Divider } from 'rsuite';
 import { useBankDefinition, useCompanyDefinition } from 'hooks';
-
+import { paymentMthod } from 'utils/constants';
 export default function Payment({
   t,
   bank,
@@ -20,7 +26,7 @@ export default function Payment({
   coupon,
   setCoupon,
   insurance,
-  setInsurance
+  setInsurance,
 }) {
   const [remainingOperation, setRemainingOperation] = useState(false);
   const { banksDefinition } = useBankDefinition({});
@@ -123,16 +129,40 @@ export default function Payment({
       )}
 
       {insurance && (
-        <Form>
-          <CRSelectInput
-            label={t('company')}
-            name="bank"
-            data={companysDefinition}
-            value={company}
-            onChange={setCompany}
-            placeholder={t('select')}
-            style={{ width: '230px' }}
-          />
+        <Form formValue={company} onChange={setCompany}>
+          <Div display="flex">
+            <CRSelectInput
+              label={t('company')}
+              name="companyId"
+              data={companysDefinition}
+              placeholder={t('select')}
+              style={{ width: '230px', marginRight: '10px' }}
+            />
+            <CRTextInput
+              label={t('card Id')}
+              name="cardId"
+              placeholder={t('type card Id')}
+              style={{ width: '230px' }}
+            />
+          </Div>
+          <Div display="flex">
+            <CRSelectInput
+              label={t('payment method')}
+              name="paymentMethod"
+              data={paymentMthod}
+              placeholder={t('select')}
+              style={{ width: '230px', marginRight: '10px' }}
+            />
+            {company.paymentMethod === 'visa' && (
+              <CRSelectInput
+                label={t('bank')}
+                name="bankId"
+                data={banksDefinition}
+                placeholder={t('select')}
+                style={{ width: '230px' }}
+              />
+            )}
+          </Div>
         </Form>
       )}
 

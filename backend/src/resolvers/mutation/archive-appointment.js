@@ -22,7 +22,7 @@ const archiveAppointment = async (
   {
     id,
     bank = null,
-    company = null,
+    company,
     sessions = [],
     option,
     items = [],
@@ -43,31 +43,60 @@ const archiveAppointment = async (
   { userId, organizationId }
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
-  if (company == null) {
-    sessions.forEach(async ({ price, number, id }) => {
-      await prisma.sessionTransaction.create({
-        data: {
-          number,
-          price,
-          date: new Date(),
-          session: {
-            connect: {
-              id,
+  if (company.companyId == null) {
+    const updatedSessionsTransactions = sessions.map(
+      ({ price, number, id }) => {
+        return {
+          data: {
+            number,
+            price,
+            date: new Date(),
+            session: {
+              connect: {
+                id,
+              },
+            },
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          organization: {
-            connect: {
-              id: organizationId,
-            },
-          },
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
-        },
-      });
-    });
+        };
+      }
+    );
+    await Promise.all(
+      updatedSessionsTransactions.map(d => prisma.sessionTransaction.create(d))
+    );
+    // sessions.forEach(async ({ price, number, id }) => {
+    //   await prisma.sessionTransaction.create({
+    //     data: {
+    //       number,
+    //       price,
+    //       date: new Date(),
+    //       session: {
+    //         connect: {
+    //           id,
+    //         },
+    //       },
+    //       organization: {
+    //         connect: {
+    //           id: organizationId,
+    //         },
+    //       },
+    //       user: {
+    //         connect: {
+    //           id: userId,
+    //         },
+    //       },
+    //     },
+    //   });
+    // });
   }
   if (bank == null && company == null) {
     await createAppointmentRevenue(
