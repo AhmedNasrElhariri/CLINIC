@@ -1,5 +1,4 @@
 import { prisma } from '@';
-import { getArea } from '../../services/get_Area';
 
 const createPatient = async (
   _,
@@ -15,20 +14,10 @@ const createPatient = async (
   });
 
   const { patientCode, id } = organization;
-  console.log(code,'COCOO');
-  if (!code) {
-    await prisma.organization.update({
-      data: {
-        patientCode: patientCode + 1,
-      },
-      where: {
-        id,
-      },
-    });
-  }
+
   const updatedPatientCode = 'cr' + patientCode;
   const finalCode = code ? code : updatedPatientCode;
-  return prisma.patient.create({
+  const createdPatient = await prisma.patient.create({
     data: Object.assign(
       {
         code: finalCode,
@@ -53,6 +42,17 @@ const createPatient = async (
       }
     ),
   });
+  if (!code) {
+    await prisma.organization.update({
+      data: {
+        patientCode: patientCode + 1,
+      },
+      where: {
+        id,
+      },
+    });
+  }
+  return createdPatient;
 };
 
 export default createPatient;
