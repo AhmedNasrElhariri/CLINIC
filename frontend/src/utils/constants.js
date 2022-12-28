@@ -10,7 +10,7 @@ export const RADIO_FIELD_TYPE = 'Radio';
 export const CHECK_FIELD_TYPE = 'Check';
 export const NESTED_SELECTOR_FIELD_TYPE = 'NestedSelector';
 export const SELECTOR_WITH_INPUT = 'SelectorWithInput';
-export const SELECTOR = 'Selector';
+export const SELECTOR_FIELD_TYPE= 'Selector';
 export const TABLE_FIELD_TYPE = 'Table';
 
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
@@ -25,7 +25,7 @@ export const FIELD_TYPES = [
   { label: 'Check', value: CHECK_FIELD_TYPE },
   { label: 'Selector With Input', value: SELECTOR_WITH_INPUT },
   { label: 'Nested Selector', value: NESTED_SELECTOR_FIELD_TYPE },
-  { label: 'Selector', value: SELECTOR },
+  { label: 'Selector', value: SELECTOR_FIELD_TYPE },
   { label: 'Table', value: TABLE_FIELD_TYPE },
 ];
 

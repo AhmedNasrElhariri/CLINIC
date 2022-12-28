@@ -16,8 +16,6 @@ const initialValue = {
 };
 const MultipleSelector = ({ choices, onChange, value, disabled, ...props }) => {
   const [formValue, setFormValue] = useState(initialValue);
-  console.log('abc');
-  console.log(value);
 
   const handleOnChange = () => {
     const { choice, text } = formValue;

@@ -8,7 +8,7 @@ import {
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
-  SELECTOR,
+  SELECTOR_FIELD_TYPE,
   TABLE_FIELD_TYPE,
 } from 'utils/constants';
 import Choices from './choices';
@@ -83,6 +83,14 @@ const Card = ({ laneId, index }) => {
     close();
   };
 
+  const handleOnOkTable = choices => {
+    update({
+      ...formValue,
+      choices,
+    });
+    close();
+  };
+
   const handleClose = useCallback(() => {
     close();
   }, [close]);
@@ -95,12 +103,12 @@ const Card = ({ laneId, index }) => {
       CHECK_FIELD_TYPE,
       NESTED_SELECTOR_FIELD_TYPE,
       SELECTOR_WITH_INPUT,
-      SELECTOR,
+      SELECTOR_FIELD_TYPE,
     ].includes(fieldType);
   }, [fieldType]);
 
   useEffect(() => {
-    if ([SELECTOR, SELECTOR_WITH_INPUT].includes(formValue.type)) {
+    if ([SELECTOR_FIELD_TYPE, SELECTOR_WITH_INPUT].includes(formValue.type)) {
       setDynamic(formValue.dynamic);
     }
   }, [formValue]);
@@ -199,7 +207,12 @@ const Card = ({ laneId, index }) => {
           />
         )}
         {popup === POPUP_TYPE.TABLE_CELLS && (
-          <Table visible={true} onOk={handleSetChoices} onClose={handleClose} />
+          <Table
+            visible={visible}
+            choices={formValue?.choices}
+            onOk={handleOnOkTable}
+            onClose={handleClose}
+          />
         )}
       </Panel>
     </>

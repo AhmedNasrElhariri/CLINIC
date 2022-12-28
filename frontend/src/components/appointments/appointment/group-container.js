@@ -20,7 +20,7 @@ import {
   RADIO_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
-  SELECTOR,
+  SELECTOR_FIELD_TYPE,
 } from 'utils/constants';
 import { formatNumber } from 'utils/nubmer';
 
@@ -72,7 +72,7 @@ const renderItem = ({
   ...props
 }) => {
   let newChoices = [];
-  if ([SELECTOR_WITH_INPUT, SELECTOR].includes(type)) {
+  if ([SELECTOR_WITH_INPUT, SELECTOR_FIELD_TYPE].includes(type)) {
     newChoices = dynamic
       ? updatedSessions
       : choices.map(c => ({
@@ -80,8 +80,6 @@ const renderItem = ({
           name: c,
         }));
   }
-
-  console.log('AAAAAA');
 
   switch (type) {
     case NUMBER_FIELD_TYPE:
@@ -92,7 +90,7 @@ const renderItem = ({
       return <CRTextArea label={name} name={id} {...props} importable />;
     case RADIO_FIELD_TYPE:
       return <CRRadio label={name} name={id} options={choices} {...props} />;
-    case SELECTOR:
+    case SELECTOR_FIELD_TYPE:
       return (
         <CRSelectInput
           label={name}
