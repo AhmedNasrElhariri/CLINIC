@@ -16,8 +16,8 @@ const updateView = async (_, { view, viewId }, { userId }) => {
               ...fg,
               fields: {
                 upsert: fg.fields.map(f => ({
-                  update: { ...f },
-                  create: { ...f },
+                  update: { ...f, choices: f.choices || undefined },
+                  create: { ...f, choices: f.choices || undefined },
                   where: {
                     id: f.id || '',
                   },
@@ -29,6 +29,7 @@ const updateView = async (_, { view, viewId }, { userId }) => {
               fields: {
                 create: fg.fields.map(f => ({
                   ...f,
+                  choices: f.choices || undefined,
                 })),
               },
             },
@@ -44,7 +45,7 @@ const updateView = async (_, { view, viewId }, { userId }) => {
     })
     .then(() => true)
     .catch(err => {
-      return false;
+      throw new Error(err);
     });
 };
 

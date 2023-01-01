@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const editBankExpense = async (_, { bankTransition }) => {
+const editBankExpense = async (_, { bankTransition }, { userId }) => {
   const {
     id,
     specialtyId,
@@ -17,6 +17,11 @@ const editBankExpense = async (_, { bankTransition }) => {
         bank: {
           connect: {
             id: bankId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
           },
         },
       },
