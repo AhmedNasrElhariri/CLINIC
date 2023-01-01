@@ -104,7 +104,7 @@ const useAccounting = ({
       ? 0
       : R.propOr(0, 'expensesCount')(expensesData);
   }, [expensesData, accountingOption]);
-  
+
   ////all
 
   const [getAllTwo, { data: expenseAllData }] = useLazyQuery(
@@ -159,12 +159,16 @@ const useAccounting = ({
     }
   }, [getAll, getAllTwo, printOrNot]);
   useEffect(() => {
-    refetch();
-    setRefetchRe(false);
+    if (refetchRe) {
+      refetch();
+      setRefetchRe(false);
+    }
   }, [refetchRe]);
   useEffect(() => {
-    refetchExpenses();
-    setRefetchEx(false);
+    if (refetchEx) {
+      refetchExpenses();
+      setRefetchEx(false);
+    }
   }, [refetchEx]);
   return useMemo(
     () => ({
