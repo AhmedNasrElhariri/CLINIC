@@ -16,7 +16,13 @@ import {
   couponAccounting,
   updateCoupons,
 } from '@/services/coupon.service';
-
+import {
+  createAppointmentInsurranceRevenue,
+  createAppointmentRevenueFromInsurranceSessions,
+  createAppointmentBankRevenueFromInsurranceSessions,
+  createAppointmentInsurranceRevenueFromSessions,
+} from '@/services/insurrance.service';
+import { CostServices } from '@/services/cost.service';
 const archiveAppointment = async (
   _,
   {
@@ -98,7 +104,9 @@ const archiveAppointment = async (
     //   });
     // });
   }
-  if (bank == null && company == null) {
+
+  // start of cash accounting
+  if (bank == null && company.companyId == null) {
     await createAppointmentRevenue(
       createAppointmentRevenueFromSessions(
         userId,
@@ -237,7 +245,9 @@ const archiveAppointment = async (
       );
     }
   }
-  if (bank != null && company == null) {
+
+  // start of bank accounting
+  if (bank != null && company.companyId == null) {
     let sub = 0;
     const subRed = sessions.reduce(
       (sum, { price, number }) => sum + number * price,
@@ -497,282 +507,134 @@ const archiveAppointment = async (
       }
     }
   }
-  if (company != null) {
-    const totalSessionAmount = sessions.reduce(
-      (sum, { price, number }) => sum + price * number,
-      0
+
+  // start of insurrance
+  if (company.companyId != null) {
+    const { companyId, cardId, paymentMethod, bankId } = company;
+    // const finalInsurrancePayment =
+    // const totalSessionAmount = sessions.reduce(
+    //   (sum, { price, number }) => sum + price * number,
+    //   0
+    // );
+    // const totalAmount =
+    //   totalSessionAmount +
+    //   others.amount +
+    //   payOfRemaining -
+    //   discount.amount -
+    //   couponsValue;
+    // let subtotal = 0;
+    // let amount = 0;
+    // subtotal = totalAmount - option.amount;
+    // amount = option.amount;
+    // if (option.option === 'percentage') {
+    //   subtotal = totalAmount - option.amount * totalAmount * 0.01;
+    //   amount = totalAmount - subtotal;
+    // }
+    await createAppointmentInsurranceRevenue(
+      createAppointmentInsurranceRevenueFromSessions(
+        userId,
+        sessions,
+        organizationId,
+        branchId,
+        date,
+        specialtyId,
+        userID,
+        patientId,
+        companyId,
+        cardId
+      )
     );
-    const totalAmount =
-      totalSessionAmount +
-      others.amount +
-      payOfRemaining -
-      discount.amount -
-      couponsValue;
-    let subtotal = 0;
-    let amount = 0;
-    subtotal = totalAmount - option.amount;
-    amount = option.amount;
-    if (option.option === 'percentage') {
-      subtotal = totalAmount - option.amount * totalAmount * 0.01;
-      amount = totalAmount - subtotal;
-    }
-    if (bank == null) {
-      await prisma.revenue.create({
-        data: Object.assign(
-          {
-            date: new Date(date),
-            name: 'Cash Payment - ' + patientName,
-            amount: amount,
-            level,
-            organization: {
-              connect: {
-                id: organizationId,
-              },
-            },
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
-          },
-          specialtyId && {
-            specialty: {
-              connect: {
-                id: specialtyId,
-              },
-            },
-          },
-          branchId && {
-            branch: {
-              connect: {
-                id: branchId,
-              },
-            },
-          },
-          userID && {
-            doctor: {
-              connect: {
-                id: userID,
-              },
-            },
-          },
-          patientId && {
-            patient: {
-              connect: {
-                id: patientId,
-              },
-            },
-          }
-        ),
-      });
-      await prisma.insuranceRevenue.create({
-        data: Object.assign(
-          {
-            date: new Date(date),
-            name: 'insurance Payment - ' + patientName,
-            amount: subtotal,
-            level,
-            organization: {
-              connect: {
-                id: organizationId,
-              },
-            },
-            company: {
-              connect: {
-                id: company,
-              },
-            },
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
-          },
-          specialtyId && {
-            specialty: {
-              connect: {
-                id: specialtyId,
-              },
-            },
-          },
-          branchId && {
-            branch: {
-              connect: {
-                id: branchId,
-              },
-            },
-          },
-          userID && {
-            doctor: {
-              connect: {
-                id: userID,
-              },
-            },
-          },
-          patientId && {
-            patient: {
-              connect: {
-                id: patientId,
-              },
-            },
-          }
-        ),
-      });
+
+    if (paymentMethod === 'cash') {
+      await createAppointmentRevenue(
+        createAppointmentRevenueFromInsurranceSessions(
+          userId,
+          sessions,
+          organizationId,
+          branchId,
+          date,
+          specialtyId,
+          userID,
+          patientId
+        )
+      );
     } else {
-      await prisma.bankRevenue.create({
-        data: Object.assign(
-          {
-            date: new Date(date),
-            name: 'Bank Payment - ' + patientName,
-            amount: amount,
-            level,
-            organization: {
-              connect: {
-                id: organizationId,
-              },
-            },
-            bank: {
-              connect: {
-                id: bank,
-              },
-            },
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
-          },
-          specialtyId && {
-            specialty: {
-              connect: {
-                id: specialtyId,
-              },
-            },
-          },
-          branchId && {
-            branch: {
-              connect: {
-                id: branchId,
-              },
-            },
-          },
-          userID && {
-            doctor: {
-              connect: {
-                id: userID,
-              },
-            },
-          },
-          patientId && {
-            patient: {
-              connect: {
-                id: patientId,
-              },
-            },
-          }
-        ),
-      });
-      await prisma.insuranceRevenue.create({
-        data: Object.assign(
-          {
-            date: new Date(date),
-            name: 'insurance Payment - ' + patientName,
-            amount: subtotal,
-            level,
-            organization: {
-              connect: {
-                id: organizationId,
-              },
-            },
-            company: {
-              connect: {
-                id: company,
-              },
-            },
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
-          },
-          specialtyId && {
-            specialty: {
-              connect: {
-                id: specialtyId,
-              },
-            },
-          },
-          branchId && {
-            branch: {
-              connect: {
-                id: branchId,
-              },
-            },
-          },
-          userID && {
-            doctor: {
-              connect: {
-                id: userID,
-              },
-            },
-          },
-          patientId && {
-            patient: {
-              connect: {
-                id: patientId,
-              },
-            },
-          }
-        ),
-      });
+      await createAppointmentBankRevenue(
+        createAppointmentBankRevenueFromInsurranceSessions(
+          userId,
+          sessions,
+          organizationId,
+          branchId,
+          date,
+          specialtyId,
+          userID,
+          patientId,
+          bankId
+        )
+      );
     }
   }
-  if (doctorFees.fees > 0) {
-    const { fees, doctorId, doctorName } = doctorFees;
-    const name = 'Doctor-fees / ' + doctorName;
-    await prisma.expense.create({
-      data: Object.assign(
-        {
-          date: new Date(date),
-          name: name,
-          expenseType: 'Doctor',
-          amount: fees,
-          level,
-          organization: {
-            connect: {
-              id: organizationId,
-            },
-          },
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
-        },
-        specialtyId && {
-          specialty: {
-            connect: {
-              id: specialtyId,
-            },
-          },
-        },
-        branchId && {
-          branch: {
-            connect: {
-              id: branchId,
-            },
-          },
-        },
-        userID && {
-          doctor: {
-            connect: {
-              id: doctorId,
-            },
-          },
-        }
-      ),
-    });
-  }
+  // end of insurrancce
+
+  //start of costServices
+  await CostServices(
+    userId,
+    sessions,
+    organizationId,
+    branchId,
+    date,
+    specialtyId,
+    userID,
+  );
+  // ###############################
+
+  // if (doctorFees.fees > 0) {
+  //   const { fees, doctorId, doctorName } = doctorFees;
+  //   const name = 'Doctor-fees / ' + doctorName;
+  //   await prisma.expense.create({
+  //     data: Object.assign(
+  //       {
+  //         date: new Date(date),
+  //         name: name,
+  //         expenseType: 'Doctor',
+  //         amount: fees,
+  //         level,
+  //         organization: {
+  //           connect: {
+  //             id: organizationId,
+  //           },
+  //         },
+  //         user: {
+  //           connect: {
+  //             id: userId,
+  //           },
+  //         },
+  //       },
+  //       specialtyId && {
+  //         specialty: {
+  //           connect: {
+  //             id: specialtyId,
+  //           },
+  //         },
+  //       },
+  //       branchId && {
+  //         branch: {
+  //           connect: {
+  //             id: branchId,
+  //           },
+  //         },
+  //       },
+  //       userID && {
+  //         doctor: {
+  //           connect: {
+  //             id: doctorId,
+  //           },
+  //         },
+  //       }
+  //     ),
+  //   });
+  // }
+
   if (couponsValue > 0) {
     await updateCoupons(coupons, organizationId);
     if (bank == null && company == null) {

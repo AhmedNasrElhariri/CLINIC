@@ -240,6 +240,7 @@ export const LIST_DOCTOR_SESSION_DEFINATION = gql`
       id
       feesCalculationMethod
       feesCalculationType
+      fees
       session {
         name
       }

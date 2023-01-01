@@ -29,6 +29,7 @@ export default function Sessions({
   selectedSessions,
   setSelectedSessions,
   onChange,
+  insurance,
 }) {
   const { sessionsDefinition } = useSessionDefinition({});
   const [session, setSession] = useState({});
@@ -119,7 +120,13 @@ export default function Sessions({
         />
       </H6>
       <div className="my-3">
-        <ListInvoiceItems items={selectedSessions} onDelete={handleDelete} />
+        <ListInvoiceItems
+          items={selectedSessions}
+          onDelete={handleDelete}
+          setItems={setSelectedSessions}
+          insurance={insurance}
+          handleChangeSessions={onChange}
+        />
       </div>
     </>
   );

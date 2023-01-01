@@ -7,14 +7,14 @@ export const initlOption = {
   amount: 0,
   payMethod: 'cash',
 };
-export const initlDoctorOption = {
-  option: 'fixed',
-};
-export const initialDoctorFess = {
-  doctorId: null,
-  fees: 0,
-  doctorName: '',
-};
+// export const initlDoctorOption = {
+//   option: 'fixed',
+// };
+// export const initialDoctorFess = {
+//   doctorId: null,
+//   fees: 0,
+//   doctorName: '',
+// };
 export const initInventoryValue = {
   itemId: null,
   quantity: 1,
@@ -28,7 +28,4 @@ export const companyInital = {
   paymentMethod: 'cash',
   bankId: null,
 };
-export const initalInsurranceValues = {
-  total: 0,
-  patientFees: 0,
-};
+

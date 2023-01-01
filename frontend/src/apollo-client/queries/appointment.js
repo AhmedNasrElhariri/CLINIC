@@ -325,7 +325,7 @@ export const CANCEL_APPOINTMENT = gql`
 
 export const TRANSFER_APPOINTMENTS = gql`
   mutation transferAppointments($transferData: TransferInputDate!) {
-    transferAppointments(transferData: $transferData) 
+    transferAppointments(transferData: $transferData)
   }
 `;
 
@@ -359,7 +359,7 @@ export const ARCHIVE_APPOINTMENT = gql`
     $bank: ID
     $patientName: String!
     $patientId: ID!
-    $company: ID
+    $company: CompanyInput
     $option: optionInput!
     $branchId: ID
     $specialtyId: ID

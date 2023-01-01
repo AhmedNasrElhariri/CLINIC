@@ -14,8 +14,9 @@ import DoctorSessions from '../list-sessions';
 const initialValues = {
   doctorId: null,
   sessionId: null,
-  feesCalculationMethod: '',
-  feesCalculationType: '',
+  feesCalculationMethod: null,
+  feesCalculationType: null,
+  fees: 0,
 };
 export default function UsersContainer() {
   const { visible, open, close } = useModal();
@@ -63,6 +64,7 @@ export default function UsersContainer() {
       deleteSessionToDoctor({ variables: { sessionId: formValue.sessionId } });
     }
   }, [addSessionToDoctor, deleteSessionToDoctor, formValue, type]);
+  console.log(formValue,'FF');
   return (
     <>
       <MainContainer title={t('doctors')} nobody></MainContainer>

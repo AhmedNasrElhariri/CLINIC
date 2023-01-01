@@ -1,5 +1,4 @@
 import { prisma } from '@';
-import { getArea } from '../../services/get_Area';
 
 const createPatient = async (
   _,
@@ -15,7 +14,6 @@ const createPatient = async (
   });
 
   const { patientCode, id } = organization;
-  console.log(code,'COCOO');
   if (!code) {
     await prisma.organization.update({
       data: {

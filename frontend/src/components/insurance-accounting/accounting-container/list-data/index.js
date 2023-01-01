@@ -59,6 +59,14 @@ const ListData = ({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>{t('cardId')}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ cardId }) => (
+              <CRTable.CRCellStyled bold>{cardId}</CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
 
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>

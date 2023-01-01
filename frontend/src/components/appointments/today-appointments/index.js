@@ -198,7 +198,6 @@ function TodayAppointments() {
       coupons,
       couponsValue,
       doctorFees,
-      insurranceValues,
     }) => {
       close();
       archive({
@@ -213,6 +212,8 @@ function TodayAppointments() {
             price: session.price,
             number: session.number,
             id: session.id,
+            patientFees: session?.patientFees || 0,
+            cost: session?.cost,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,
@@ -238,7 +239,6 @@ function TodayAppointments() {
           coupons,
           couponsValue,
           doctorFees: doctorFees,
-          insurranceValues: insurranceValues,
         },
       });
     },

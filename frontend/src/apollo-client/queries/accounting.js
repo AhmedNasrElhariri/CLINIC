@@ -380,6 +380,7 @@ export const LIST_COMPANY_REVENUES = gql`
         name
         amount
         payer
+        cardId
         company {
           id
           name

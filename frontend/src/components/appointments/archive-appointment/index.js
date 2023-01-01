@@ -5,18 +5,16 @@ import * as R from 'ramda';
 import { CRModal, Div } from 'components';
 import InventoryUsage from 'components/inventory/usage';
 import AppointmentInvoice from '../appointment-invoice';
-import DoctorsTab from '../doctors-tab';
+import CostTab from '../cost-tab';
 import { useForm, useCompanySessionDefinition, usePatients } from 'hooks';
 import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 import { useTranslation } from 'react-i18next';
 import {
   initValue,
   initlOption,
-  initlDoctorOption,
-  initialDoctorFess,
+  // initialDoctorFess,
   initInventoryValue,
   companyInital,
-  initalInsurranceValues,
 } from './constants';
 const { StringType, NumberType } = Schema.Types;
 
@@ -37,14 +35,11 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   const [coupons, setCoupons] = useState([]);
   const [couponsValue, setCouponsValue] = useState(0);
   const [option, setOption] = useState(initlOption);
-  const [doctorOption, setDoctorOption] = useState(initlDoctorOption);
+  // const [doctorOption, setDoctorOption] = useState(initlDoctorOption);
   const [selectedSessions, setSelectedSessions] = useState([]);
-  const [doctorFees, setDoctorFees] = useState(initialDoctorFess);
+  // const [doctorFees, setDoctorFees] = useState(initialDoctorFess);
   const [selectedItems, setSelectedItems] = useState([]);
   const [payOfRemaining, setPayOfRemaining] = useState(0);
-  const [insurranceValues, setInsurranceValues] = useState(
-    initalInsurranceValues
-  );
   const value = useRef(initValue);
   const { t } = useTranslation();
   const { formValue, setFormValue } = useForm({
@@ -78,6 +73,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     [data]
   );
   const handleInvoiceChange = useCallback(sessions => {
+    console.log(sessions,'jj')
     value.current = { ...value.current, sessions };
   }, []);
 
@@ -113,13 +109,13 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     if (activeStep !== 2) {
       setActiveStep(activeStep + 1);
     } else {
-      let updatedDoctorfees = {};
-      if (doctorOption.option === 'fixed') {
-        updatedDoctorfees = doctorFees;
-      } else {
-        const updatedFees = 0.01 * doctorFees.fees * total;
-        updatedDoctorfees = { ...doctorFees, fees: updatedFees };
-      }
+      // let updatedDoctorfees = {};
+      // if (doctorOption.option === 'fixed') {
+      //   updatedDoctorfees = doctorFees;
+      // } else {
+      //   const updatedFees = 0.01 * doctorFees.fees * total;
+      //   updatedDoctorfees = { ...doctorFees, fees: updatedFees };
+      // }
       onOk({
         ...value.current,
         discount,
@@ -132,8 +128,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
         option,
         coupons: newCoupons,
         couponsValue,
-        doctorFees: updatedDoctorfees,
-        insurranceValues: insurranceValues,
+        // doctorFees: updatedDoctorfees,
       });
       setActiveStep(0);
       setOthers(0);
@@ -146,8 +141,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       setSelectedSessions([]);
       setRemaining(0);
       setPayOfRemaining(0);
-      setDoctorFees(initialDoctorFess);
-      setInsurranceValues(initalInsurranceValues);
+      // setDoctorFees(initialDoctorFess);
       value.current = {
         sessions: [],
         items: [],
@@ -165,20 +159,19 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     company,
     option,
     couponsValue,
-    doctorFees,
-    doctorOption,
+    // doctorFees,
+    // doctorOption,
     newCoupons,
     total,
-    insurranceValues,
   ]);
   const handleFinish = useCallback(() => {
-    let updatedDoctorfees = {};
-    if (doctorOption.option === 'fixed') {
-      updatedDoctorfees = doctorFees;
-    } else {
-      const updatedFees = 0.01 * doctorFees.fees * total;
-      updatedDoctorfees = { ...doctorFees, fees: updatedFees };
-    }
+    // let updatedDoctorfees = {};
+    // if (doctorOption.option === 'fixed') {
+    //   updatedDoctorfees = doctorFees;
+    // } else {
+    //   const updatedFees = 0.01 * doctorFees.fees * total;
+    //   updatedDoctorfees = { ...doctorFees, fees: updatedFees };
+    // }
     onOk({
       ...value.current,
       discount,
@@ -191,8 +184,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       option,
       coupons: newCoupons,
       couponsValue,
-      doctorFees: updatedDoctorfees,
-      insurranceValues: insurranceValues,
+      // doctorFees: updatedDoctorfees,
     });
     setActiveStep(0);
     setOthers(0);
@@ -205,8 +197,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     setCoupons([]);
     setCouponsValue(0);
     setSelectedSessions([]);
-    setDoctorFees(initialDoctorFess);
-    setInsurranceValues(initalInsurranceValues);
+    // setDoctorFees(initialDoctorFess);
     value.current = {
       sessions: [],
       items: [],
@@ -222,11 +213,10 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     company,
     option,
     couponsValue,
-    doctorFees,
-    doctorOption,
+    // doctorFees,
+    // doctorOption,
     newCoupons,
     total,
-    insurranceValues,
   ]);
 
   const handleCancel = useCallback(() => {
@@ -257,12 +247,12 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
 
   const stepItems = useMemo(
     () =>
-      [t('invoice'), t('doctor'), t('inventory')].map((title, idx) => (
+      [t('invoice'), t('cost'), t('inventory')].map((title, idx) => (
         <Steps.Item title={title} onClick={() => setActiveStep(idx)} />
       )),
     [setActiveStep, t]
   );
-
+  
   return (
     <CRModal
       show={show}
@@ -328,17 +318,13 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
             payOfRemaining={payOfRemaining}
             setPayOfRemaining={setPayOfRemaining}
             totalRemainingOfPayment={totalRemainingOfPayment}
-            insurranceValues={insurranceValues}
-            setInsurranceValues={setInsurranceValues}
           />
         )}
         {activeStep === 1 && (
-          <DoctorsTab
-            appointment={appointment}
-            doctorFees={doctorFees}
-            setDoctorFees={setDoctorFees}
-            doctorOption={doctorOption}
-            setDoctorOption={setDoctorOption}
+          <CostTab
+            onChange={handleInvoiceChange}
+            selectedSessions={selectedSessions}
+            setSelectedSessions={setSelectedSessions}
           />
         )}
         {activeStep === 2 && (

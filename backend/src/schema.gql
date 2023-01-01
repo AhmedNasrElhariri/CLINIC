@@ -1299,6 +1299,8 @@ input SessionInput {
   price: Float!
   number: Int!
   id: ID!
+  patientFees: Int
+  cost: Int
 }
 
 input Discount {
@@ -1619,6 +1621,7 @@ type InsuranceRevenue {
   specialty: Specialty
   doctor: User
   invoiceNo: String
+  cardId: String
   company: CompanyDefinition!
 }
 type InsuranceRevenueData {
@@ -2079,6 +2082,7 @@ type DoctorSessionDefination {
   session: SessionDefinition!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
+  fees: Int!
 }
 
 input DoctorSessionDefinationInput {
@@ -2086,6 +2090,7 @@ input DoctorSessionDefinationInput {
   sessionId: ID!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
+  fees: Int
 }
 #################################################################################
 

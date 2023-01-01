@@ -49,6 +49,17 @@ export default function Sessions({ sessions, onDeleteSession }) {
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('fees')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ fees, feesCalculationType }) => (
+                <CRTable.CRCellStyled bold>
+                  {fees}
+                  {feesCalculationType === 'percentage' ? '%' : ''}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
 
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>

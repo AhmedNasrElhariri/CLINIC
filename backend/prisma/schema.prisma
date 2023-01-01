@@ -941,6 +941,7 @@ model InsuranceRevenue {
   doctor         User?             @relation("insuranceDoctor", fields: [doctorId], references: [id])
   doctorId       String?
   level          String?
+  cardId         String?
   patient        Patient?          @relation(fields: [patientId], references: [id])
   patientId      String?
   specialty      Specialty?        @relation(fields: [specialtyId], references: [id])
@@ -1721,6 +1722,7 @@ model DoctorSessionDefination {
   sessionId             String
   feesCalculationMethod FeesCalculationMethod?
   feesCalculationType   FeesCalculationType
+  fees                  Int?
   organization          Organization           @relation(fields: [organizationId], references: [id])
   organizationId        String
 

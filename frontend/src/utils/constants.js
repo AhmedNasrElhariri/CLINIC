@@ -277,3 +277,12 @@ export const paymentMthod = [
   { id: 'cash', name: 'cash' },
   { id: 'visa', name: 'visa' },
 ];
+
+export const feesCalTypes = [
+  { name: 'Percentage', value: 'percentage' },
+  { name: 'Fixed', value: 'fixed' },
+];
+export const feesCalMethods = [
+  { name: 'Before', value: 'before' },
+  { name: 'After', value: 'after' },
+];

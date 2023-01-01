@@ -1,19 +1,10 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Form } from 'rsuite';
 
-import { CRRadio, CRModal, H3 } from 'components';
-import { CRSelectInput } from 'components/widgets';
+import { CRRadio, CRModal, H3, CRNumberInput, CRSelectInput } from 'components';
 
 import { useTranslation } from 'react-i18next';
-
-const feesCalTypes = [
-  { name: 'Percentage', value: 'percentage' },
-  { name: 'Fixed', value: 'fixed' },
-];
-const feesCalMethods = [
-  { name: 'Before', value: 'before' },
-  { name: 'After', value: 'after' },
-];
+import { feesCalTypes, feesCalMethods } from 'utils/constants';
 
 export default function NewUser({
   show,
@@ -55,15 +46,18 @@ export default function NewUser({
               data={sessionsDefinition}
             />
             <CRRadio
-              options={feesCalMethods}
-              name="feesCalculationMethod"
-              label="fees Calculation Method"
-            />
-            <CRRadio
               options={feesCalTypes}
               name="feesCalculationType"
               label="fees Calculation Type"
             />
+            {formValue.feesCalculationType === 'percentage' && (
+              <CRRadio
+                options={feesCalMethods}
+                name="feesCalculationMethod"
+                label="fees Calculation Method"
+              />
+            )}
+            <CRNumberInput name="fees" label={t('fees')} block />
           </>
         )}
       </Form>
