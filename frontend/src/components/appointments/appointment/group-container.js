@@ -7,7 +7,6 @@ import {
   CRTextInput,
   CRTextArea,
   CRRadio,
-  CRCheckBoxGroup,
   CRButton,
   CRNestedSelector,
   CRMultipleSelector,
@@ -19,10 +18,9 @@ import {
   TEXT_FIELD_TYPE,
   LONG_TEXT_FIELD_TYPE,
   RADIO_FIELD_TYPE,
-  CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
-  SELECTOR,
+  SELECTOR_FIELD_TYPE,
 } from 'utils/constants';
 import { formatNumber } from 'utils/nubmer';
 
@@ -74,15 +72,15 @@ const renderItem = ({
   ...props
 }) => {
   let newChoices = [];
-  if (type === 'SelectorWithInput' || type === 'Selector') {
-    if (dynamic) {
-      newChoices = choices.map(c => {
-        return { name: c, id: c };
-      });
-    } else {
-      newChoices = updatedSessions;
-    }
+  if ([SELECTOR_WITH_INPUT, SELECTOR_FIELD_TYPE].includes(type)) {
+    newChoices = dynamic
+      ? updatedSessions
+      : choices.map(c => ({
+          id: c,
+          name: c,
+        }));
   }
+
   switch (type) {
     case NUMBER_FIELD_TYPE:
       return <CRNumberInput label={name} name={id} {...props} />;
@@ -92,7 +90,7 @@ const renderItem = ({
       return <CRTextArea label={name} name={id} {...props} importable />;
     case RADIO_FIELD_TYPE:
       return <CRRadio label={name} name={id} options={choices} {...props} />;
-    case SELECTOR:
+    case SELECTOR_FIELD_TYPE:
       return (
         <CRSelectInput
           label={name}
@@ -112,16 +110,6 @@ const renderItem = ({
         />
       );
 
-    // case CHECK_FIELD_TYPE:
-    //   return (
-    //     <CRCheckBoxGroup
-    //       label={name}
-    //       options={choices}
-    //       name={id}
-    //       {...props}
-    //       inline
-    //     />
-    //   );
     case NESTED_SELECTOR_FIELD_TYPE:
       return (
         <CRNestedSelector label={name} name={id} choices={choices} {...props} />

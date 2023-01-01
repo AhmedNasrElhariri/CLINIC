@@ -102,6 +102,7 @@ enum FieldType {
   NestedSelector
   SelectorWithInput
   Selector
+  Table
 }
 
 enum PatientMembershipType {

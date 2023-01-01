@@ -1,11 +1,13 @@
-import React, { memo, useEffect, useState } from 'react';
-import { CRTextInput, CRSelectInput, Div, CRButton } from 'components';
+import React, { memo, useState } from 'react';
 import {
-  ChoiceContainerStyled,
-  ChoiceName,
-  ButtonDiv,
-  Container,
-} from './style';
+  CRTextInput,
+  CRSelectInput,
+  Div,
+  CRButton,
+  CRDivider,
+  CRVDivider,
+} from 'components';
+import { ChoiceContainerStyled, Container } from './style';
 import { Form } from 'rsuite';
 
 const initialValue = {
@@ -14,6 +16,7 @@ const initialValue = {
 };
 const MultipleSelector = ({ choices, onChange, value, disabled, ...props }) => {
   const [formValue, setFormValue] = useState(initialValue);
+
   const handleOnChange = () => {
     const { choice, text } = formValue;
     const choicedValue = [choice, text];
@@ -21,22 +24,25 @@ const MultipleSelector = ({ choices, onChange, value, disabled, ...props }) => {
     onChange(newValue);
     setFormValue(initialValue);
   };
+
   const handleDelete = indx => {
-    const newValue = value.filter((v, index) => index != indx);
+    const newValue = value.filter((v, index) => index !== indx);
     onChange(newValue);
   };
 
   return (
-    <Div>
+    <Div width={600}>
       <Form formValue={formValue} onChange={setFormValue}>
-        <Div display="flex">
+        <Div display="flex" justifyContent="space-between">
           <CRSelectInput
             name="choice"
             data={choices}
-            style={{ width: '200px', marginRight: '30px' }}
+            style={{ width: '200px', marginRight: '20px' }}
             disabled={disabled}
           />
-          <CRTextInput name="text" disabled={disabled} />
+          <Div flexGrow={1}>
+            <CRTextInput name="text" disabled={disabled} />
+          </Div>
 
           <CRButton
             onClick={() => handleOnChange()}
@@ -49,29 +55,31 @@ const MultipleSelector = ({ choices, onChange, value, disabled, ...props }) => {
         </Div>
       </Form>
       <Div mt={10}>
-        {value.length > 0 &&
-          value?.map(
-            ([choice, text], indx) =>
-              choice && (
-                <ChoiceContainerStyled>
-                  <Container>
-                    <ChoiceName>{choice}</ChoiceName>
-                    <ChoiceName ml="20px">{text}</ChoiceName>
-                    <ButtonDiv>
-                      <CRButton
-                        variant="dark"
-                        width={150}
-                        m="auto"
-                        onClick={() => handleDelete(indx)}
-                        disabled={disabled}
-                      >
-                        Delete
-                      </CRButton>
-                    </ButtonDiv>
-                  </Container>
-                </ChoiceContainerStyled>
-              )
-          )}
+        {(value || []).map(
+          ([choice, text], indx) =>
+            choice && (
+              <ChoiceContainerStyled>
+                <Container>
+                  <Div display="flex" flexGrow={1} p="10px">
+                    <Div>{choice}</Div>
+                    <CRVDivider />
+                    <Div>{text}</Div>
+                  </Div>
+                  <Div display="flex" alignItems="center" mr="4px">
+                    <CRButton
+                      variant="danger"
+                      display="block"
+                      onClick={() => handleDelete(indx)}
+                      disabled={disabled}
+                      verysmall
+                    >
+                      Delete
+                    </CRButton>
+                  </Div>
+                </Container>
+              </ChoiceContainerStyled>
+            )
+        )}
       </Div>
     </Div>
   );

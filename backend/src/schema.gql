@@ -83,6 +83,7 @@ enum FieldType {
   NestedSelector
   SelectorWithInput
   Selector
+  Table
 }
 
 enum AppointmentStatus {
@@ -214,7 +215,7 @@ type Query {
   getPatientField(patientId: ID!): [PatientField!]
   getUserPatientFields: [PatientField!]
   listMyViews: [View!]
-  MyView(id: ID!): View
+  myView(id: ID!): View
   MyPatientView(id: ID!): PatientView
   activeViews: [View!]
   activePatientViews: [PatientView!]

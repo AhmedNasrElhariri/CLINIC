@@ -11,6 +11,14 @@ const theme = {
   },
 };
 
+const verySmallHeight = {
+  height: {
+    normal: 30,
+    large: 20,
+  },
+};
+
+
 const smallHeight = {
   height: {
     normal: 38,
@@ -32,12 +40,16 @@ const normalHeight = {
   },
 };
 
-const getHeight = ({ small, large }) =>
-  small
+const getHeight = ({ verysmall,small, large }) => {
+  if (verysmall) {
+    return byTheme(verySmallHeight)
+  }
+  return small
     ? byTheme(smallHeight)
     : large
     ? byTheme(largeHeight)
     : byTheme(normalHeight);
+};
 
 const Button = styled.button.attrs(({ block, uppercase }) => ({
   width: block ? '100%' : 'initial',

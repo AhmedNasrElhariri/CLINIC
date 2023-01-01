@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Input, Tree, Button } from 'rsuite';
 import { nanoid } from 'nanoid';
 import { CRModal } from 'components';
@@ -36,12 +36,15 @@ const toChoices = arr => {
 function NestedChoices({ visible, onOk, onClose }) {
   const [label, setLabel] = useState('');
   const [activeNode, setActiveNode] = useState({});
-  const dataItemType = {
-    value: nanoid(),
-    label: label,
-    refKey: activeNode.refKey,
-    visible: true,
-  };
+  const dataItemType = useMemo(
+    () => ({
+      value: nanoid(),
+      label: label,
+      refKey: activeNode.refKey,
+      visible: true,
+    }),
+    [label, activeNode.refKey]
+  );
   const [data, setData] = useState([
     {
       label: 'Root',

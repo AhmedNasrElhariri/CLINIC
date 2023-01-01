@@ -5,7 +5,7 @@ export { default as appointment } from './appointment';
 export { default as appointmentHistory } from './appointment-history';
 export { default as patient } from './patient';
 export { default as listMyViews } from './list-my-views';
-export { default as MyView } from './my-view';
+export { default as myView } from './my-view';
 export { default as listMyViewsStatus } from './list-my-views-status';
 export { default as listMyPatientViewsStatus } from './list-my-patient-views-status';
 export { default as activeViews } from './active-views';

@@ -16,6 +16,7 @@ import {
   CRNestedSelector,
   CRMultipleSelector,
   CRSelectInput,
+  CRTableWithInput
 } from 'components';
 
 import { convertGroupFieldsToNavs } from 'services/appointment';
@@ -28,6 +29,8 @@ import {
   CHECK_FIELD_TYPE,
   NESTED_SELECTOR_FIELD_TYPE,
   SELECTOR_WITH_INPUT,
+  SELECTOR_FIELD_TYPE,
+  TABLE_FIELD_TYPE,
 } from 'utils/constants';
 
 import AppointmentPictures from '../pictures';
@@ -57,14 +60,13 @@ const renderItem = ({
   ...props
 }) => {
   let newChoices = [];
-  if (type === 'SelectorWithInput') {
-    if (dynamic) {
-      newChoices = choices.map(c => {
-        return { name: c, id: c };
-      });
-    } else {
-      newChoices = updatedSessions;
-    }
+  if ([SELECTOR_WITH_INPUT, SELECTOR_FIELD_TYPE].includes(type)) {
+    newChoices = dynamic
+      ? updatedSessions
+      : choices.map(c => ({
+          id: c,
+          name: c,
+        }));
   }
 
   switch (type) {
@@ -101,6 +103,10 @@ const renderItem = ({
     case NESTED_SELECTOR_FIELD_TYPE:
       return (
         <CRNestedSelector label={name} name={id} choices={choices} {...props} />
+      );
+    case TABLE_FIELD_TYPE:
+      return (
+        <CRTableWithInput label={name} name={id} choices={choices} {...props} />
       );
     default:
       return null;
