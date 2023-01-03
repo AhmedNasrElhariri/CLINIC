@@ -488,3 +488,8 @@ export const EDIT_EXPENSE_TYPE_DEFINITION = gql`
     }
   }
 `;
+export const GATHER_INSURANCE = gql`
+  mutation gatherInsurance($gatherInsuranceData: GatherDoctorFeesDataInput!) {
+    gatherInsurance(gatherInsuranceData: $gatherInsuranceData)
+  }
+`;

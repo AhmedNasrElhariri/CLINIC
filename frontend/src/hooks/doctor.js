@@ -10,6 +10,7 @@ import {
   DELETE_SESSION_TO_DOCTOR,
   LIST_DOCTOR_FEES,
   EDIT_DOCTOR_FEES,
+  GATHER_DOCTOR_FEES,
 } from 'apollo-client/queries';
 import { POSITIONS } from 'utils/constants';
 
@@ -106,6 +107,29 @@ function useDoctor({
       Alert.error(err.message);
     },
   });
+  const [gatherDoctorFees] = useMutation(GATHER_DOCTOR_FEES, {
+    onCompleted() {
+      Alert.success('The fees has been gathered Successfully');
+    },
+    refetchQueries: [
+      {
+        query: LIST_DOCTOR_FEES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+            doctorId,
+            status,
+          },
+          dateFrom && { dateFrom },
+          dateTo && { dateTo }
+        ),
+      },
+    ],
+    onError(err) {
+      Alert.error(err.message);
+    },
+  });
   /* compound */
 
   return useMemo(
@@ -120,6 +144,7 @@ function useDoctor({
       totalDoctorFees,
       doctorFeesCount,
       editDoctorFees,
+      gatherDoctorFees,
     }),
     [
       users,
@@ -131,6 +156,7 @@ function useDoctor({
       totalDoctorFees,
       doctorFeesCount,
       editDoctorFees,
+      gatherDoctorFees,
     ]
   );
 }

@@ -52,3 +52,4 @@ export { default as useSupplierAccounts } from './supplierAccounts';
 export { default as useLogging } from './logging';
 export { default as useGeneralHook } from './general-hook';
 export { default as useDoctor } from './doctor';
+export { default as useSelectedRow } from './selected-rows';

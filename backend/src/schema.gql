@@ -737,6 +737,8 @@ type Mutation {
   ): DoctorSessionDefination!
   deleteSessionToDoctor(sessionId: ID!): DoctorSessionDefination!
   editDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
+  gatherDoctorFees(gatherDoctorFeesData: GatherDoctorFeesDataInput!): Boolean
+  gatherInsurance(gatherInsuranceData: GatherDoctorFeesDataInput!): Boolean
 }
 
 ########################### Auth ##################################
@@ -2406,4 +2408,7 @@ type DoctorFeesData {
   doctorFees: [DoctorFees]
   totalDoctorFees: Float
   doctorFeesCount: Int
+}
+input GatherDoctorFeesDataInput {
+  ids: [ID!]
 }

@@ -146,3 +146,5 @@ export { default as transferAppointments } from './transfer-apps';
 export { default as addSessionToDoctor } from './add-session-to-doctor';
 export { default as deleteSessionToDoctor } from './delete-session-to-doctor';
 export { default as editDoctorFees } from './edit-doctor-fees';
+export { default as gatherDoctorFees } from './gather-doctor-fees';
+export { default as gatherInsurance } from './gather-insurance';

@@ -84,6 +84,7 @@ const InsuranceTransactions = async (
         lte: updatedDateTo,
       },
       organizationId,
+      status: 'Draft',
     },
     include: {
       company: true,
@@ -95,7 +96,7 @@ const InsuranceTransactions = async (
     skip: offset,
     take: limit,
     orderBy: {
-      date: 'asc',
+      createdAt: 'desc',
     },
   });
   const totalInsuranceDebit = await prisma.insuranceRevenue.aggregate({
@@ -148,6 +149,7 @@ const InsuranceTransactions = async (
         gte: updatedDateFrom,
         lte: updatedDateTo,
       },
+      status: 'Draft',
     },
   });
   const sum = totalInsuranceDebit._sum.amount;

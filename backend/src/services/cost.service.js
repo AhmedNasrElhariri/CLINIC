@@ -1,39 +1,4 @@
 import { prisma } from '@';
-import { GetLevel } from '@/services/get-level';
-
-const doCostOfSession = sessions => {
-  return sessions.some(({ cost }) => cost > 0);
-};
-const createAppointmentSessionCost = async data => {
-  return Promise.all(data.map(d => prisma.expense.create({ data: d })));
-};
-const createCostOfSessionsFromAppointment = (
-  userId,
-  sessions,
-  organizationId,
-  branchId,
-  date,
-  specialtyId,
-  userID
-) => {
-  const level = GetLevel(branchId, specialtyId, userID);
-  return sessions.map(({ name, cost }) =>
-    Object.assign(
-      {
-        date: new Date(date),
-        name: name + ' - cost of session',
-        expenseType: 'Cost Of Session',
-        amount: cost,
-        level,
-        organizationId,
-        userId,
-      },
-      specialtyId && { specialtyId },
-      branchId && { branchId },
-      userID && { doctorId: userID }
-    )
-  );
-};
 
 const createAppointmentDoctorCost = async data => {
   return Promise.all(data.map(d => prisma.doctorFees.create({ data: d })));
@@ -102,18 +67,7 @@ export const CostServices = async (
   const doctorSessions = await prisma.doctorSessionDefination.findMany({
     where: { doctorId: userID },
   });
-  doCostOfSession(sessions) &&
-    (await createAppointmentSessionCost(
-      createCostOfSessionsFromAppointment(
-        userId,
-        sessions,
-        organizationId,
-        branchId,
-        date,
-        specialtyId,
-        userID
-      )
-    ));
+
   doctorSessions.length > 0 &&
     (await createAppointmentDoctorCost(
       createCostOfDoctorsFromAppointment(

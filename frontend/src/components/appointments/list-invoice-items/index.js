@@ -59,7 +59,7 @@ function ListInvoiceItems({
                     }}
                   />
                   <CRLabel style={{ marginBottom: '0px', margin: '0px 3px' }}>
-                    patient
+                    patient fees
                   </CRLabel>
                   <InputNumber
                     value={item?.patientFees || 0}

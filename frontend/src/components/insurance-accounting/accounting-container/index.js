@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import * as R from 'ramda';
 import {
   Div,
@@ -38,6 +38,7 @@ const InsuranceDebitContainer = () => {
   const [filter, setFilter] = useState(initialval);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const [user, setUser] = useGlobalState('user');
+  const [checkedKeys, setCheckedKeys] = useState([]);
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
   const { filterBranches } = useAppointments({
@@ -49,6 +50,7 @@ const InsuranceDebitContainer = () => {
     totalInsuranceDebit,
     InsuranceDebitCount,
     timeFrame,
+    gatherInsurance,
   } = useInsuranceAccounting({
     view,
     period,
@@ -58,7 +60,13 @@ const InsuranceDebitContainer = () => {
     doctorId: branchSpecialtyUser?.doctor,
     companyId: filter.company,
   });
-
+  const handleGatherInsurance = useCallback(() => {
+    gatherInsurance({
+      variables: {
+        gatherInsuranceData: { ids: checkedKeys },
+      },
+    });
+  }, [checkedKeys, gatherInsurance]);
   // const { pageSetupData } = useConfigurations();
   const insurancePages = Math.ceil(InsuranceDebitCount / 20);
 
@@ -114,7 +122,7 @@ const InsuranceDebitContainer = () => {
       })
       .catch(err => {});
   };
-
+  console.log(checkedKeys, 'checkedKeys');
   return (
     <>
       <CRCard borderless>
@@ -150,8 +158,15 @@ const InsuranceDebitContainer = () => {
             mr={1}
             width="30px"
             height="30px"
-            marginTop="40px"
           />
+          <CRButton
+            variant="primary"
+            onClick={handleGatherInsurance}
+            mr={1}
+            disabled={checkedKeys.length > 0 ? false : true}
+          >
+            {t('gather')} +
+          </CRButton>
         </div>
         <Filter formValue={filter} setFormValue={setFilter} />
         <Div>
@@ -168,6 +183,8 @@ const InsuranceDebitContainer = () => {
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 pages={insurancePages}
+                checkedKeys={checkedKeys}
+                setCheckedKeys={setCheckedKeys}
               />
               <Profit expenses={0} revenues={totalInsuranceDebit} />
             </Div>

@@ -1,7 +1,14 @@
-import { Div, CRSelectInput, CRDateRangePicker } from 'components';
+import { Div, CRSelectInput, CRDateRangePicker, CRButton } from 'components';
 import { Form } from 'rsuite';
 import { feesStatus } from 'utils/constants';
-const Filter = ({ filter, setFilter, doctors, setPeriod, t }) => {
+const Filter = ({
+  filter,
+  setFilter,
+  doctors,
+  setPeriod,
+  t,
+  handlePayDoctorFees,
+}) => {
   return (
     <Div
       display="flex"
@@ -46,6 +53,11 @@ const Filter = ({ filter, setFilter, doctors, setPeriod, t }) => {
           />
         </Form>
       </Div>
+      {filter?.status === 'Draft' && (
+        <Div mt="43px" ml="10px">
+          <CRButton onClick={handlePayDoctorFees}>Pay doctor fees </CRButton>
+        </Div>
+      )}
     </Div>
   );
 };

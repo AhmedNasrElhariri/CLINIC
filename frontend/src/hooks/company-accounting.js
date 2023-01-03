@@ -1,7 +1,10 @@
 import { useMemo } from 'react';
 import * as R from 'ramda';
-import { useQuery } from '@apollo/client';
-import { LIST_INSURANCE_TRANSACTIONS } from 'apollo-client/queries';
+import { useQuery, useMutation } from '@apollo/client';
+import {
+  LIST_INSURANCE_TRANSACTIONS,
+  GATHER_INSURANCE,
+} from 'apollo-client/queries';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import {
   getDayStartAndEnd,
@@ -10,6 +13,7 @@ import {
   getQuarterStartAndEnd,
   getYearStartAndEnd,
 } from 'utils/date';
+import { Alert } from 'rsuite';
 
 const useAccounting = ({
   view,
@@ -37,7 +41,10 @@ const useAccounting = ({
   });
 
   const insurancesData = insuranceData?.insuranceTransactions;
-  const insuranceTransactions = R.propOr([], 'insuranceTransactions')(insurancesData);
+  const insuranceTransactions = R.propOr(
+    [],
+    'insuranceTransactions'
+  )(insurancesData);
   const totalInsuranceDebit = useMemo(
     () => R.propOr(0, 'totalInsuranceDebit')(insurancesData),
     [insurancesData]
@@ -64,7 +71,32 @@ const useAccounting = ({
     () => (period && period.length ? period : getTimeFrameByView(view)),
     [period, view]
   );
-
+  const [gatherInsurance] = useMutation(GATHER_INSURANCE, {
+    onCompleted() {
+      Alert.success('The fees has been gathered Successfully');
+    },
+    refetchQueries: [
+      {
+        query: LIST_INSURANCE_TRANSACTIONS,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          period && { dateFrom: period[0] },
+          period && { dateTo: period[1] },
+          view && { view: view },
+          branchId && { branchId: branchId },
+          specialtyId && { specialtyId: specialtyId },
+          doctorId && { doctorId: doctorId },
+          companyId && { companyId: companyId }
+        ),
+      },
+    ],
+    onError(err) {
+      Alert.error(err.message);
+    },
+  });
   return useMemo(
     () => ({
       insuranceTransactions,
@@ -74,8 +106,15 @@ const useAccounting = ({
       refetchRevenues: {
         query: LIST_INSURANCE_TRANSACTIONS,
       },
+      gatherInsurance,
     }),
-    [insuranceTransactions, InsuranceDebitCount, timeFrame, totalInsuranceDebit]
+    [
+      insuranceTransactions,
+      InsuranceDebitCount,
+      timeFrame,
+      totalInsuranceDebit,
+      gatherInsurance,
+    ]
   );
 };
 

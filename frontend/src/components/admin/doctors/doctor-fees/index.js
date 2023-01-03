@@ -16,12 +16,14 @@ const DoctorFees = () => {
   const [type, setType] = useState('');
   const [filter, setFilter] = useState({ doctorId: null, status: 'Draft' });
   const [period, setPeriod] = useState([]);
+  const [checkedKeys, setCheckedKeys] = useState([]);
   const {
     doctors,
     doctorFeesTransactions,
     totalDoctorFees,
     doctorFeesCount,
     editDoctorFees,
+    gatherDoctorFees,
   } = useDoctor({
     onCreateUser: close,
     onEditUser: close,
@@ -44,6 +46,16 @@ const DoctorFees = () => {
     },
     [open, setFormValue, setType]
   );
+  const handlePayDoctorFees = useCallback(() => {
+    gatherDoctorFees({
+      variables: {
+        gatherDoctorFeesData: {
+          ids: checkedKeys,
+        },
+      },
+    });
+    setCheckedKeys([]);
+  }, [checkedKeys, gatherDoctorFees, setCheckedKeys]);
   const handleAdd = useCallback(() => {
     if (type === 'editFees') {
       editDoctorFees({
@@ -61,6 +73,7 @@ const DoctorFees = () => {
         doctors={doctors}
         setPeriod={setPeriod}
         t={t}
+        handlePayDoctorFees={handlePayDoctorFees}
       />
       <ListDoctorFees
         fees={doctorFeesTransactions}
@@ -70,6 +83,9 @@ const DoctorFees = () => {
         currentPage={currentPage}
         pages={pages}
         onEdit={handleClickEditDoctorFees}
+        checkedKeys={checkedKeys}
+        setCheckedKeys={setCheckedKeys}
+        filter={filter}
       />
       <EditableDoctorFees
         show={visible}

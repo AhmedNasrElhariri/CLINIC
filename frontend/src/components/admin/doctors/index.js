@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import DoctorSessions from './list-sessions';
 import DoctorFees from './doctor-fees/index';
 import Doctors from './list-doctors';
+
 const initialValues = {
   doctorId: null,
   sessionId: null,
@@ -33,6 +34,7 @@ export default function UsersContainer() {
       close();
       setFormValue(initialValues);
     },
+    doctorId: filter?.doctorId,
   });
   const handleClickAddSessionToDoctor = useCallback(
     data => {

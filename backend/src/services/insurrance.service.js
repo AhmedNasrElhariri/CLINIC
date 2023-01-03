@@ -22,7 +22,7 @@ export const createAppointmentRevenueFromInsurranceSessions = (
       {
         date: new Date(date),
         name,
-        amount: patientFees * number,
+        amount: patientFees,
         level,
         organizationId,
         userId,
@@ -52,7 +52,7 @@ export const createAppointmentBankRevenueFromInsurranceSessions = (
       {
         date: new Date(date),
         name,
-        amount: patientFees * number,
+        amount: patientFees,
         level,
         organizationId,
         userId,
@@ -84,7 +84,7 @@ export const createAppointmentInsurranceRevenueFromSessions = (
       {
         date: new Date(date),
         name,
-        amount: price * number - patientFees * number,
+        amount: price * number - patientFees,
         level,
         organizationId,
         userId,

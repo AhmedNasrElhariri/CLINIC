@@ -69,3 +69,8 @@ export const EDIT_DOCTOR_FEES = gql`
     }
   }
 `;
+export const GATHER_DOCTOR_FEES = gql`
+  mutation gatherDoctorFees($gatherDoctorFeesData: GatherDoctorFeesDataInput!) {
+    gatherDoctorFees(gatherDoctorFeesData: $gatherDoctorFeesData)
+  }
+`;

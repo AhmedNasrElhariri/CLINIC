@@ -2,7 +2,20 @@ import { formatDate } from 'utils/date';
 import { CRCard, CRTable, Total } from 'components';
 import { FULL_DAY_FORMAT } from 'utils/constants';
 import { useCallback } from 'react';
-import { Icon } from 'rsuite';
+import { Icon, Checkbox, Table } from 'rsuite';
+const { Cell } = Table;
+const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
+  <Cell {...props} style={{ padding: 0, top: '-2px' }}>
+    <div style={{ lineHeight: '46px' }}>
+      <Checkbox
+        value={rowData[dataKey]}
+        inline
+        onChange={onChange}
+        checked={checkedKeys?.some(item => item === rowData[dataKey])}
+      />
+    </div>
+  </Cell>
+);
 const ListDoctorFees = ({
   fees,
   t,
@@ -11,7 +24,30 @@ const ListDoctorFees = ({
   currentPage,
   pages,
   onEdit,
+  checkedKeys,
+  setCheckedKeys,
+  filter,
 }) => {
+  let checked = false;
+  let indeterminate = false;
+  if (checkedKeys?.length === fees?.length) {
+    checked = true;
+  } else if (checkedKeys?.length === 0) {
+    checked = false;
+  } else if (checkedKeys?.length > 0 && checkedKeys?.length < fees?.length) {
+    indeterminate = true;
+  }
+
+  const handleCheckAll = (value, checked) => {
+    const keys = checked ? fees.map(item => item.id) : [];
+    setCheckedKeys(keys);
+  };
+  const handleCheck = (value, checked) => {
+    const keys = checked
+      ? [...checkedKeys, value]
+      : checkedKeys.filter(item => item !== value);
+    setCheckedKeys(keys);
+  };
   const handleSelect = useCallback(
     eventKey => {
       setCurrentPage(eventKey);
@@ -22,6 +58,27 @@ const ListDoctorFees = ({
     <>
       <CRCard borderless mb="20px">
         <CRTable autoHeight data={fees}>
+          {filter?.status === 'Draft' && (
+            <CRTable.CRColumn width={50} align="center">
+              <CRTable.CRHeaderCell style={{ padding: 0 }}>
+                <div style={{ lineHeight: '40px' }}>
+                  <Checkbox
+                    inline
+                    checked={checked}
+                    indeterminate={indeterminate}
+                    onChange={handleCheckAll}
+                  />
+                </div>
+              </CRTable.CRHeaderCell>
+              <CheckCell
+                dataKey="id"
+                checkedKeys={checkedKeys}
+                onChange={handleCheck}
+                onClick={event => event.stopPropagation()}
+              />
+            </CRTable.CRColumn>
+          )}
+
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
