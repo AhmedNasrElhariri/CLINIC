@@ -29,3 +29,5 @@ export { default as CRLabel } from './label';
 export { default as CRTabs } from './tabs';
 export { default as CRBrancheTree } from './branch-tree';
 export { default as AllowedViews } from './allowed-views';
+export { default as CRTableWithInput } from './table-with-input';
+export { default as CRIcon } from './icon';

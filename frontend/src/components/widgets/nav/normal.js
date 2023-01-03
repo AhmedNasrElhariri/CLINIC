@@ -6,6 +6,7 @@ import CRScoll from './scroll-item';
 import { layout } from 'styled-system';
 
 const CRNav = styled(Nav)`
+  overflow-x: scroll;
   & .rs-nav-waterline {
     border: none !important;
   }

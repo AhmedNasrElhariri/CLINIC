@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const MyView = (_, { id }, { userId }) => {
+const myView = (_, { id }) => {
   return prisma.view.findUnique({
     include: {
       fieldGroups: {
@@ -22,4 +22,4 @@ const MyView = (_, { id }, { userId }) => {
   });
 };
 
-export default MyView;
+export default myView;

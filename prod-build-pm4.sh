@@ -1,55 +1,55 @@
 #!/bin/bash
 
-# while getopts b: flag
-# do
-#     case "${flag}" in
-#         b) branch=${OPTARG};;
-#     esac
-# done
+while getopts b: flag
+do
+    case "${flag}" in
+        b) branch=${OPTARG};;
+    esac
+done
 
-# echo "Branch: $branch";
+echo "Branch: $branch";
 
-# [ -z "$branch" ] && { echo "Branch argument is empty, please enter valid one"; exit 1; }
+[ -z "$branch" ] && { echo "Branch argument is empty, please enter valid one"; exit 1; }
 
 
-# backup_folder=$(date +"%d-%m-%Y %H:%M")
+backup_folder=$(date +"%d-%m-%Y %H:%M")
 
-# git fetch --all
-# git checkout $branch
-# git pull origin $branch
+git fetch --all
+git checkout $branch
+git pull origin $branch
 
-# echo 'start frontend build'
-# cd ./frontend
-# npm ci
-# echo 'start building...'
-# npm run build
-# cd ../
-# echo 'frontend finished successfully'
+echo 'start frontend build'
+cd ./frontend
+npm ci
+echo 'start building...'
+npm run build
+cd ../
+echo 'frontend finished successfully'
 
-# echo 'start patients app build'
-# cd ./patients-app
-# npm ci
-# echo 'start building...'
-# REACT_APP_GRAPHQL_URL=https://cr-ehr.com npm run build
-# cd ../
-# echo 'patients app finished successfully'
+echo 'start patients app build'
+cd ./patients-app
+npm ci
+echo 'start building...'
+REACT_APP_GRAPHQL_URL=https://cr-ehr.com npm run build
+cd ../
+echo 'patients app finished successfully'
 
-# [ -d "./temp" ] && rm -r ./temp
+[ -d "./temp" ] && rm -r ./temp
 
-# mkdir temp
-# cp -r ./frontend/build ./temp/frontend
-# cp -r ./patients-app/build ./temp/patients-app
-# cp -r ./backend/src ./temp/src
-# cp -r ./backend/prisma ./temp/prisma
-# cp -r ./backend/package.json ./temp/package.json
-# cp -r ./backend/webpack.common.js ./temp/webpack.common.js
-# cp -r ./backend/webpack.dev.js ./temp/webpack.dev.js
+mkdir temp
+cp -r ./frontend/build ./temp/frontend
+cp -r ./patients-app/build ./temp/patients-app
+cp -r ./backend/src ./temp/src
+cp -r ./backend/prisma ./temp/prisma
+cp -r ./backend/package.json ./temp/package.json
+cp -r ./backend/webpack.common.js ./temp/webpack.common.js
+cp -r ./backend/webpack.dev.js ./temp/webpack.dev.js
 
-# echo 'start sync data to the server'
-# test -f ./build.zip && rm ./build.zip
-# cd ./temp
-# zip -r ../build.zip *
-# cd ../
+echo 'start sync data to the server'
+test -f ./build.zip && rm ./build.zip
+cd ./temp
+zip -r ../build.zip *
+cd ../
 rsync -azP build.zip root@159.223.18.82:~/clinicr
 
 ssh root@159.223.18.82 "cd clinicr &&

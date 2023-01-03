@@ -111,8 +111,8 @@ export const LIST_MY_VIEWS_SUMMARY = gql`
 `;
 
 export const MY_VIEW = gql`
-  query MyView($id: ID!) {
-    MyView(id: $id) {
+  query myView($id: ID!) {
+    myView(id: $id) {
       id
       name
       type
@@ -121,9 +121,11 @@ export const MY_VIEW = gql`
         id
         status
         fields {
+          id
           name
           type
-          id
+          choices
+          dynamic
         }
       }
     }

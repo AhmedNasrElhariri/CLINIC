@@ -6,9 +6,9 @@ import CRCell from './cell';
 import { BarStyled, CRCellStyled } from './style';
 import CRDateCell from './date-cell';
 
-const CRTableStyled = styled(Table).attrs(({ data }) => ({
-  rowHeight: 37,
-  height: data.length * 37 + 40,
+const CRTableStyled = styled(Table).attrs(({ data, height = 37 }) => ({
+  rowHeight: height,
+  height: data.length * height + 40,
 }))`
   cursor: pointer;
   & .rs-table-row {
