@@ -145,3 +145,4 @@ export { default as confirmedAppointment } from './confirm-appointment';
 export { default as transferAppointments } from './transfer-apps';
 export { default as addSessionToDoctor } from './add-session-to-doctor';
 export { default as deleteSessionToDoctor } from './delete-session-to-doctor';
+export { default as editDoctorFees } from './edit-doctor-fees';

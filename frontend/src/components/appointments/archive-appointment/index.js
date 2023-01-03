@@ -73,7 +73,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     [data]
   );
   const handleInvoiceChange = useCallback(sessions => {
-    console.log(sessions,'jj')
     value.current = { ...value.current, sessions };
   }, []);
 

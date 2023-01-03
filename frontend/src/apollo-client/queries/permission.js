@@ -220,33 +220,4 @@ export const LIST_ACTION_DOCTORS = gql`
     }
   }
 `;
-export const ADD_SESSION_TO_DOCTOR = gql`
-  mutation addSessionToDoctor($doctorSession: DoctorSessionDefinationInput!) {
-    addSessionToDoctor(doctorSession: $doctorSession) {
-      id
-    }
-  }
-`;
-export const DELETE_SESSION_TO_DOCTOR = gql`
-  mutation deleteSessionToDoctor($sessionId: ID!) {
-    deleteSessionToDoctor(sessionId: $sessionId) {
-      id
-    }
-  }
-`;
-export const LIST_DOCTOR_SESSION_DEFINATION = gql`
-  query doctorSessionsDefinations($doctorId: ID!) {
-    doctorSessionsDefinations(doctorId: $doctorId) {
-      id
-      feesCalculationMethod
-      feesCalculationType
-      fees
-      session {
-        name
-      }
-      doctor {
-        name
-      }
-    }
-  }
-`;
+

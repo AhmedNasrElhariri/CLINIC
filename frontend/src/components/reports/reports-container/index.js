@@ -1,17 +1,24 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 
-import { AccountingContainer } from 'components';
-import BankInsuranceAccountingContainer from './banking-insurance';
+import {
+  AccountingContainer,
+  BankAccountingContainer,
+  InsuranceAccountingContainer,
+} from 'components';
 import ReportsPrintOut from '../print-reports';
 import Reports from '../reports';
 import { useTranslation } from 'react-i18next';
 import Nav from './nav';
 
 export const TABS = [
-  { key: 'accounting', element: () => <AccountingContainer /> },
+  { key: 'cash', element: () => <AccountingContainer /> },
   {
-    key: 'bankAndInsuranceAccounting',
-    element: () => <BankInsuranceAccountingContainer />,
+    key: 'bank',
+    element: () => <BankAccountingContainer />,
+  },
+  {
+    key: 'insurance',
+    element: () => <InsuranceAccountingContainer />,
   },
   { key: 'statistics', element: () => <Reports /> },
   { key: 'reports', element: () => <ReportsPrintOut /> },

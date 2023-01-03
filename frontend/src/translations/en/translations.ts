@@ -438,4 +438,8 @@ export const TRANSLATIONS_EN = {
   feesCalculationMethod: 'fees calculation method',
   newSession: 'New Session',
   deleteSession: 'Delete session',
+  insuranceDebit: 'Insurance Debit',
+  cash: 'Cash',
+  insuranceTransactions: 'Insurance Transactions',
+  doctorSessions: 'Doctor Sessions',
 };

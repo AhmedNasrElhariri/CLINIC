@@ -31,3 +31,4 @@ export * from './appointment-type-definition';
 export * from './couse-type-definition';
 export * from './supplier-account';
 export * from './logging';
+export * from './doctor';

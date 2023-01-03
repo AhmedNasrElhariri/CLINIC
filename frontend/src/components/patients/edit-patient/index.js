@@ -33,7 +33,6 @@ const EditButton = styled(Button)`
   font-size: 18px;
 `;
 const EditPatient = ({ patient }) => {
-  console.log(patient, 'PPPP');
   const [formValue, setFormValue] = useState(initialValues);
   const { visible, open, close } = useModal();
   const { edit } = usePatients({ onEdit: close });

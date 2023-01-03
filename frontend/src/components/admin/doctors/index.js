@@ -1,16 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import * as R from 'ramda';
-import {
-  NewSessionToDoctor,
-  MainContainer,
-  CRSelectInput,
-  Doctors,
-  Div,
-} from 'components';
-import { usePermissions, useModal, useSessionDefinition } from 'hooks';
+import { MainContainer, CRTabs } from 'components';
+import NewSessionToDoctor from './new-session-to-doctor';
+import { useDoctor, useModal, useSessionDefinition } from 'hooks';
 import { useTranslation } from 'react-i18next';
-import { Form } from 'rsuite';
-import DoctorSessions from '../list-sessions';
+import DoctorSessions from './list-sessions';
+import DoctorFees from './doctor-fees/index';
+import Doctors from './list-doctors';
 const initialValues = {
   doctorId: null,
   sessionId: null,
@@ -21,8 +17,8 @@ const initialValues = {
 export default function UsersContainer() {
   const { visible, open, close } = useModal();
   const [formValue, setFormValue] = useState(initialValues);
-  const [filter, setFilter] = useState({ doctorId: null });
   const [type, setType] = useState('');
+  const [filter, setFilter] = useState({ doctorId: null, status: 'Draft' });
   const { t } = useTranslation();
   const { sessionsDefinition } = useSessionDefinition({});
   const {
@@ -30,14 +26,13 @@ export default function UsersContainer() {
     addSessionToDoctor,
     deleteSessionToDoctor,
     doctorSessionsDefinations,
-  } = usePermissions({
+  } = useDoctor({
     onCreateUser: close,
     onEditUser: close,
     onCreateSessionToDoctor: () => {
       close();
       setFormValue(initialValues);
     },
-    doctorId: filter?.doctorId,
   });
   const handleClickAddSessionToDoctor = useCallback(
     data => {
@@ -64,10 +59,39 @@ export default function UsersContainer() {
       deleteSessionToDoctor({ variables: { sessionId: formValue.sessionId } });
     }
   }, [addSessionToDoctor, deleteSessionToDoctor, formValue, type]);
-  console.log(formValue,'FF');
   return (
     <>
       <MainContainer title={t('doctors')} nobody></MainContainer>
+
+      <CRTabs defaultValue={3}>
+        <CRTabs.CRTabsGroup>
+          <CRTabs.CRTab>{t('doctorFees')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('doctors')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('doctorSessions')}</CRTabs.CRTab>
+        </CRTabs.CRTabsGroup>
+        <CRTabs.CRContentGroup>
+          <CRTabs.CRContent>
+            <DoctorFees />
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <Doctors
+              users={doctors}
+              onAddSessionToDoctor={handleClickAddSessionToDoctor}
+            />
+          </CRTabs.CRContent>
+
+          <CRTabs.CRContent>
+            <DoctorSessions
+              sessions={doctorSessionsDefinations}
+              onDeleteSession={handleDeleteSession}
+              filter={filter}
+              setFilter={setFilter}
+              users={doctors}
+              t={t}
+            />
+          </CRTabs.CRContent>
+        </CRTabs.CRContentGroup>
+      </CRTabs>
       <NewSessionToDoctor
         show={visible}
         onHide={close}
@@ -77,27 +101,6 @@ export default function UsersContainer() {
         onChange={setFormValue}
         type={type}
         sessionsDefinition={sessionsDefinition}
-      />
-      <Doctors
-        users={doctors}
-        onAddSessionToDoctor={handleClickAddSessionToDoctor}
-      />
-      <Div display="flex" justifyContent="center" alignItems="center" mt="30px">
-        <Form formValue={filter} onChange={setFilter}>
-          <CRSelectInput
-            label={t('doctor')}
-            name="doctorId"
-            labelKey="name"
-            valueKey="id"
-            block
-            data={doctors}
-            style={{ width: '200px' }}
-          />
-        </Form>
-      </Div>
-      <DoctorSessions
-        sessions={doctorSessionsDefinations}
-        onDeleteSession={handleDeleteSession}
       />
     </>
   );

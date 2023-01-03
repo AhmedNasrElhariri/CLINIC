@@ -1,12 +1,19 @@
 import { Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
 import { useTranslation } from 'react-i18next';
-
-export default function Sessions({ sessions, onDeleteSession }) {
+import Filter from './filter';
+export default function Sessions({
+  sessions,
+  onDeleteSession,
+  filter,
+  setFilter,
+  users,
+}) {
   const { t } = useTranslation();
 
   return (
     <>
+      <Filter filter={filter} setFilter={setFilter} doctors={users} t={t} />
       <CRCard borderless>
         <CRTable autoHeight data={sessions}>
           <CRTable.CRColumn flexGrow={1}>

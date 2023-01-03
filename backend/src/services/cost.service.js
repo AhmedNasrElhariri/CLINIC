@@ -36,7 +36,7 @@ const createCostOfSessionsFromAppointment = (
 };
 
 const createAppointmentDoctorCost = async data => {
-  return Promise.all(data.map(d => prisma.expense.create({ data: d })));
+  return Promise.all(data.map(d => prisma.doctorFees.create({ data: d })));
 };
 const createCostOfDoctorsFromAppointment = (
   userId,
@@ -46,13 +46,13 @@ const createCostOfDoctorsFromAppointment = (
   date,
   specialtyId,
   userID,
-  doctorSessions
+  doctorSessions,
+  id
 ) => {
-  const level = GetLevel(branchId, specialtyId, userID);
   let newSessions = [];
-  sessions.forEach(({ name, price, cost, id }) => {
+  sessions.forEach(({ name, price, number, cost, id: sessionID }) => {
     const doctorSession = doctorSessions.find(
-      ({ sessionId }) => sessionId === id
+      ({ sessionId }) => sessionId === sessionID
     );
 
     if (doctorSession) {
@@ -63,20 +63,21 @@ const createCostOfDoctorsFromAppointment = (
       } = doctorSession;
       const doctorFees =
         feesCalculationType === 'fixed'
-          ? fees
+          ? fees * number
           : feesCalculationMethod === 'before'
-          ? fees * price * 0.01
-          : (price - cost || 0) * fees * 0.01;
+          ? fees * price * number * 0.01
+          : (price - (cost ? cost : 0)) * fees * number * 0.01;
       const session = Object.assign(
         {
-          date: new Date(date),
-          name: name + ' - fees of doctor',
-          expenseType: 'Fees Of Doctor',
+          name: name,
           amount: doctorFees,
-          level,
+          status: 'Draft',
           organizationId,
           userId,
+          sessionId: sessionID,
+          appointmentId: id,
         },
+        cost && { cost },
         specialtyId && { specialtyId },
         branchId && { branchId },
         userID && { doctorId: userID }
@@ -95,7 +96,8 @@ export const CostServices = async (
   branchId,
   date,
   specialtyId,
-  userID
+  userID,
+  id
 ) => {
   const doctorSessions = await prisma.doctorSessionDefination.findMany({
     where: { doctorId: userID },
@@ -122,7 +124,8 @@ export const CostServices = async (
         date,
         specialtyId,
         userID,
-        doctorSessions
+        doctorSessions,
+        id
       )
     ));
 };

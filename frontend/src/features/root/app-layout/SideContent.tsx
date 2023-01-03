@@ -11,6 +11,7 @@ import {
   SolutionOutlined,
   PrinterOutlined,
   HistoryOutlined,
+  PoundOutlined,
 } from '@ant-design/icons';
 import { List } from 'antd';
 import { MdAddCircleOutline } from 'react-icons/md';
@@ -105,6 +106,11 @@ export default memo(function SideContent({
         path: '/logging',
         name: 'logging',
         icon: HistoryOutlined,
+      },
+      {
+        path: '/doctors',
+        name: 'Doctors',
+        icon: PoundOutlined,
       },
     ],
     [toggleAddAppointment, toggleAddPatient]

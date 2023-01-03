@@ -70,7 +70,7 @@ function usePermissions({
   onAssignRoleToUser,
   onDeleteRoleToUser,
   onCreateSessionToDoctor,
-  doctorId
+  doctorId,
 } = {}) {
   const { data: branchesData } = useQuery(LIST_BRANCHES);
   const branches = useMemo(
@@ -259,7 +259,11 @@ function usePermissions({
       onCreateSessionToDoctor && onCreateSessionToDoctor();
     },
     onError(err) {
-      Alert.error(err.message);
+      err.message.includes(
+        'Unique constraint failed on the fields: (`sessionId`,`doctorId`)'
+      )
+        ? Alert.error('You create this session to doctor exactly')
+        : Alert.error(err.message);
     },
   });
 
@@ -331,7 +335,7 @@ function usePermissions({
       actionDoctors: actionDoctors || [],
       addSessionToDoctor: doctorSession =>
         addSessionToDoctor({ variables: { doctorSession: doctorSession } }),
-        deleteSessionToDoctor,
+      deleteSessionToDoctor,
       doctorSessionsDefinations,
     }),
     [
@@ -360,7 +364,7 @@ function usePermissions({
       listActionDoctors,
       addSessionToDoctor,
       doctorSessionsDefinations,
-      deleteSessionToDoctor
+      deleteSessionToDoctor,
     ]
   );
 }

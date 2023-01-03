@@ -168,6 +168,11 @@ enum FeesCalculationType {
   percentage
 }
 
+enum FeesStatus {
+  Draft
+  Cleared
+}
+
 enum PermissionAction {
   List_Appointment
   Create_Appointment
@@ -302,6 +307,7 @@ model Organization {
   SupplierInvoice           SupplierInvoice[]
   Logging                   Logging[]
   DoctorSessionDefination   DoctorSessionDefination[]
+  doctorFees                DoctorFees[]
 }
 
 model User {
@@ -382,6 +388,8 @@ model User {
   updater                    Appointment[]                @relation("updaterApp")
   Logging                    Logging[]
   DoctorSessionDefination    DoctorSessionDefination[]
+  doctorFees                 DoctorFees[]                 @relation("doctorFees")
+  userFees                   DoctorFees[]                 @relation("userFees")
 }
 
 model Patient {
@@ -477,6 +485,7 @@ model Appointment {
   followApp             Appointment?       @relation("followUpRelation")
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @default(now()) @updatedAt
+  doctorFees            DoctorFees[]
 }
 
 model PulseControl {
@@ -942,6 +951,7 @@ model InsuranceRevenue {
   doctorId       String?
   level          String?
   cardId         String?
+  status         FeesStatus        @default(Draft)
   patient        Patient?          @relation(fields: [patientId], references: [id])
   patientId      String?
   specialty      Specialty?        @relation(fields: [specialtyId], references: [id])
@@ -1277,6 +1287,7 @@ model SessionDefinition {
   Appointment             Appointment[]
   SessionTransaction      SessionTransaction[]
   DoctorSessionDefination DoctorSessionDefination[]
+  doctorFees              DoctorFees[]
 }
 
 model CourseTypeDefinition {
@@ -1638,6 +1649,7 @@ model Branch {
   BankExpense        BankExpense[]
   InventoryHistory   InventoryHistory[]
   Patient            Patient[]
+  doctorFees         DoctorFees[]
 }
 
 model Specialty {
@@ -1665,6 +1677,7 @@ model Specialty {
   CoursePayment      CoursePayment[]
   BankExpense        BankExpense[]
   InventoryHistory   InventoryHistory[]
+  doctorFees         DoctorFees[]
 }
 
 model UserSpecialty {
@@ -1727,4 +1740,29 @@ model DoctorSessionDefination {
   organizationId        String
 
   @@unique([sessionId, doctorId], name: "sessionId_doctorId_sessionDefination_unique_constraint")
+}
+
+model DoctorFees {
+  id             String            @id @default(uuid())
+  name           String
+  amount         Float
+  date           DateTime          @default(now())
+  cost           Int?
+  status         FeesStatus        @default(Draft)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @default(now()) @updatedAt
+  organization   Organization      @relation(fields: [organizationId], references: [id])
+  organizationId String
+  session        SessionDefinition @relation(fields: [sessionId], references: [id])
+  sessionId      String
+  appointment    Appointment       @relation(fields: [appointmentId], references: [id])
+  appointmentId  String
+  doctor         User              @relation("doctorFees", fields: [doctorId], references: [id])
+  doctorId       String
+  user           User              @relation("userFees", fields: [userId], references: [id])
+  userId         String
+  branch         Branch?           @relation(fields: [branchId], references: [id])
+  branchId       String?
+  specialty      Specialty?        @relation(fields: [specialtyId], references: [id])
+  specialtyId    String?
 }

@@ -352,8 +352,8 @@ export const CREATE_BANK_EXPENSE = gql`
   }
 `;
 
-export const LIST_COMPANY_REVENUES = gql`
-  query companyRevenues(
+export const LIST_INSURANCE_TRANSACTIONS = gql`
+  query insuranceTransactions(
     $offset: Int
     $limit: Int
     $dateFrom: Date
@@ -364,7 +364,7 @@ export const LIST_COMPANY_REVENUES = gql`
     $doctorId: ID
     $companyId: ID
   ) {
-    companyRevenues(
+    insuranceTransactions(
       offset: $offset
       limit: $limit
       dateFrom: $dateFrom
@@ -375,7 +375,7 @@ export const LIST_COMPANY_REVENUES = gql`
       doctorId: $doctorId
       companyId: $companyId
     ) {
-      companyRevenues {
+      insuranceTransactions {
         id
         name
         amount
@@ -404,8 +404,8 @@ export const LIST_COMPANY_REVENUES = gql`
         date
         invoiceNo
       }
-      totalRevenues
-      revenuesCount
+      totalInsuranceDebit
+      InsuranceDebitCount
     }
   }
 `;

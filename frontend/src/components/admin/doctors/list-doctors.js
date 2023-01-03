@@ -8,7 +8,7 @@ export default function Users({ users, onAddSessionToDoctor }) {
 
   return (
     <>
-      <CRCard borderless>
+      <CRCard borderless mt="40px">
         <CRTable autoHeight data={users} bordered={false}>
           <CRTable.CRColumn flexGrow={3}>
             <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>

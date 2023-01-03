@@ -99,6 +99,7 @@
     ]
   },
   "proxy": "http://localhost:4000",
+  "allowedHosts": ["localhost", ".localhost"],
   "devDependencies": {
     "@types/ramda": "^0.28.19",
     "@types/react-router-dom": "^5.3.3",

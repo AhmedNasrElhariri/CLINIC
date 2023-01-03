@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import * as R from 'ramda';
 import {
   Div,
@@ -31,7 +31,7 @@ const initialBranchValue = {
   specialty: null,
   doctor: null,
 };
-const BankAccountingContainer = () => {
+const InsuranceDebitContainer = () => {
   const { t } = useTranslation();
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
@@ -44,19 +44,23 @@ const BankAccountingContainer = () => {
     action: ACTIONS.ViewInsurance_Accounting,
   });
   const page = currentPage?.activePage;
-  const { revenues, totalRevenues, RevenuesCount, timeFrame } =
-    useInsuranceAccounting({
-      view,
-      period,
-      page,
-      branchId: branchSpecialtyUser?.branch,
-      specialtyId: branchSpecialtyUser?.specialty,
-      doctorId: branchSpecialtyUser?.doctor,
-      companyId: filter.company,
-    });
+  const {
+    insuranceTransactions,
+    totalInsuranceDebit,
+    InsuranceDebitCount,
+    timeFrame,
+  } = useInsuranceAccounting({
+    view,
+    period,
+    page,
+    branchId: branchSpecialtyUser?.branch,
+    specialtyId: branchSpecialtyUser?.specialty,
+    doctorId: branchSpecialtyUser?.doctor,
+    companyId: filter.company,
+  });
 
   // const { pageSetupData } = useConfigurations();
-  const revenuesPages = Math.ceil(RevenuesCount / 20);
+  const insurancePages = Math.ceil(InsuranceDebitCount / 20);
 
   const handleInsurranceReport = () => {
     axios({
@@ -104,7 +108,7 @@ const BankAccountingContainer = () => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `insurrance-revenues-${Date.now()}.xlsx`); //or any other extension
+        link.setAttribute('download', `insurrance-debit-${Date.now()}.xlsx`); //or any other extension
         document.body.appendChild(link);
         link.click();
       })
@@ -113,14 +117,13 @@ const BankAccountingContainer = () => {
 
   return (
     <>
-      {/* <MainContainer title={t('insurance')} nobody></MainContainer> */}
       <CRCard borderless>
         <div className="flex flex-wrap items-center gap-4">
           <Can I="ViewFilters" an="Accounting">
             <Toolbar
               activeKey={view}
               onSelect={setView}
-              data={{ revenues }}
+              data={{ insuranceTransactions }}
               onChangePeriod={setPeriod}
             />
 
@@ -160,13 +163,13 @@ const BankAccountingContainer = () => {
                 branches={filterBranches}
               />
               <ListData
-                title={t('insuranceRevenues')}
-                data={revenues}
+                title={t('insuranceTransactions')}
+                data={insuranceTransactions}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                pages={revenuesPages}
+                pages={insurancePages}
               />
-              <Profit expenses={0} revenues={totalRevenues} />
+              <Profit expenses={0} revenues={totalInsuranceDebit} />
             </Div>
           </Div>
         </Div>
@@ -175,4 +178,4 @@ const BankAccountingContainer = () => {
   );
 };
 
-export default BankAccountingContainer;
+export default InsuranceDebitContainer;

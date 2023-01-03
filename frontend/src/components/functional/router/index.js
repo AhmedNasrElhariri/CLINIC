@@ -83,8 +83,9 @@ const TodayAppointment = lazy(() =>
 const CreateDefaultView = lazy(() =>
   import('../../../components/views/create-default-view')
 );
-const LoggingContainer = lazy(() =>
-import('../../../components/logging')
+const LoggingContainer = lazy(() => import('../../../components/logging'));
+const DoctorsContainer = lazy(() =>
+  import('../../admin/doctors')
 );
 // const {
 //   NewPatient,
@@ -217,6 +218,9 @@ function AppRouter() {
         </Route>
         <Route path="/supplier-account">
           <SupplierAccountContainer />
+        </Route>
+        <Route path="/doctors">
+          <DoctorsContainer />
         </Route>
         <Route path="/logging">
           <LoggingContainer />

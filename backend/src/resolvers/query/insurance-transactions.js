@@ -7,7 +7,7 @@ import {
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
-const CompanyRevenues = async (
+const InsuranceTransactions = async (
   _,
   {
     offset,
@@ -40,7 +40,7 @@ const CompanyRevenues = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
-  const companyRevenues = await prisma.insuranceRevenue.findMany({
+  const insuranceTransactions = await prisma.insuranceRevenue.findMany({
     where: {
       AND: [
         {
@@ -98,7 +98,7 @@ const CompanyRevenues = async (
       date: 'asc',
     },
   });
-  const totalRevenues = await prisma.insuranceRevenue.aggregate({
+  const totalInsuranceDebit = await prisma.insuranceRevenue.aggregate({
     _sum: {
       amount: true,
     },
@@ -150,14 +150,14 @@ const CompanyRevenues = async (
       },
     },
   });
-  const sum = totalRevenues._sum.amount;
-  const count = totalRevenues._count.id;
+  const sum = totalInsuranceDebit._sum.amount;
+  const count = totalInsuranceDebit._count.id;
   const data = {
-    companyRevenues: companyRevenues,
-    totalRevenues: sum,
-    revenuesCount: count,
+    insuranceTransactions: insuranceTransactions,
+    totalInsuranceDebit: sum,
+    InsuranceDebitCount: count,
   };
   return data;
 };
 
-export default CompanyRevenues;
+export default InsuranceTransactions;

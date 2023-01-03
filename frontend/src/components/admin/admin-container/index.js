@@ -1,10 +1,7 @@
-import React from 'react';
-
 import {
   MainContainer,
   BranchesContainer,
   UsersContainer,
-  DoctorsContainer,
   SpecialtiesContainer,
   Assign,
   CRTabs,
@@ -21,7 +18,6 @@ const AdminContainer = () => {
           <CRTabs.CRTab>{t('branches')}</CRTabs.CRTab>
           <CRTabs.CRTab>{t('specialties')}</CRTabs.CRTab>
           <CRTabs.CRTab>{t('users')}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t('doctors')}</CRTabs.CRTab>
           <CRTabs.CRTab>{t('rolePermission')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
@@ -33,9 +29,6 @@ const AdminContainer = () => {
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <UsersContainer />
-          </CRTabs.CRContent>
-          <CRTabs.CRContent>
-            <DoctorsContainer />
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <Assign />

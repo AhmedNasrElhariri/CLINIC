@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import * as R from 'ramda';
 import { useQuery } from '@apollo/client';
-import { LIST_COMPANY_REVENUES } from 'apollo-client/queries';
-import { filterAccountingList } from 'utils/accounting';
+import { LIST_INSURANCE_TRANSACTIONS } from 'apollo-client/queries';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import {
   getDayStartAndEnd,
@@ -21,7 +20,7 @@ const useAccounting = ({
   doctorId,
   companyId,
 } = {}) => {
-  const { data: revenueData } = useQuery(LIST_COMPANY_REVENUES, {
+  const { data: insuranceData } = useQuery(LIST_INSURANCE_TRANSACTIONS, {
     variables: Object.assign(
       {
         offset: (page - 1) * 20 || 0,
@@ -37,15 +36,15 @@ const useAccounting = ({
     ),
   });
 
-  const revenuesData = revenueData?.companyRevenues;
-  const revenues = R.propOr([], 'companyRevenues')(revenuesData);
-  const totalRevenues = useMemo(
-    () => R.propOr(0, 'totalRevenues')(revenuesData),
-    [revenuesData]
+  const insurancesData = insuranceData?.insuranceTransactions;
+  const insuranceTransactions = R.propOr([], 'insuranceTransactions')(insurancesData);
+  const totalInsuranceDebit = useMemo(
+    () => R.propOr(0, 'totalInsuranceDebit')(insurancesData),
+    [insurancesData]
   );
-  const RevenuesCount = useMemo(
-    () => R.propOr(0, 'revenuesCount')(revenuesData),
-    [revenuesData]
+  const InsuranceDebitCount = useMemo(
+    () => R.propOr(0, 'InsuranceDebitCount')(insurancesData),
+    [insurancesData]
   );
 
   const getTimeFrameByView = view => {
@@ -68,15 +67,15 @@ const useAccounting = ({
 
   return useMemo(
     () => ({
-      revenues,
-      totalRevenues,
-      RevenuesCount,
+      insuranceTransactions,
+      totalInsuranceDebit,
+      InsuranceDebitCount,
       timeFrame,
       refetchRevenues: {
-        query: LIST_COMPANY_REVENUES,
+        query: LIST_INSURANCE_TRANSACTIONS,
       },
     }),
-    [revenues, RevenuesCount, timeFrame, totalRevenues]
+    [insuranceTransactions, InsuranceDebitCount, timeFrame, totalInsuranceDebit]
   );
 };
 

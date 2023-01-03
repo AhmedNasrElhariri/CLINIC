@@ -286,3 +286,7 @@ export const feesCalMethods = [
   { name: 'Before', value: 'before' },
   { name: 'After', value: 'after' },
 ];
+export const feesStatus = [
+  { name: 'Draft', value: 'Draft' },
+  { name: 'Cleared', value: 'Cleared' },
+];

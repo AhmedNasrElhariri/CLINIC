@@ -585,6 +585,7 @@ const archiveAppointment = async (
     date,
     specialtyId,
     userID,
+    id,
   );
   // ###############################
 

@@ -156,6 +156,11 @@ enum PaymentMethod {
   visa
 }
 
+enum FeesStatus {
+  Draft
+  Cleared
+}
+
 ########################### Query ##################################
 
 type Query {
@@ -289,7 +294,7 @@ type Query {
     branchId: ID
     bankId: ID
   ): BankExpenseData!
-  companyRevenues(
+  insuranceTransactions(
     offset: Int
     limit: Int
     dateFrom: Date
@@ -299,7 +304,7 @@ type Query {
     specialtyId: ID
     branchId: ID
     companyId: ID
-  ): InsuranceRevenueData!
+  ): InsuranceTransactionsData!
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
   myNotifications: [Notification!]
@@ -426,6 +431,14 @@ type Query {
   areas: [Area]
   totalUnpaidOfCourses: TotalUnpaidOfCourses
   doctorSessionsDefinations(doctorId: ID!): [DoctorSessionDefination!]
+  doctorFeesTransactions(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    doctorId: ID
+    status: FeesStatus
+  ): DoctorFeesData!
 }
 
 ########################### Mutation ##################################
@@ -722,6 +735,7 @@ type Mutation {
     doctorSession: DoctorSessionDefinationInput!
   ): DoctorSessionDefination!
   deleteSessionToDoctor(sessionId: ID!): DoctorSessionDefination!
+  editDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
 }
 
 ########################### Auth ##################################
@@ -1609,7 +1623,7 @@ input BankExpenseTransitionInput {
   name: String!
 }
 
-type InsuranceRevenue {
+type InsuranceTransaction {
   id: ID!
   name: String!
   amount: Int!
@@ -1624,10 +1638,10 @@ type InsuranceRevenue {
   cardId: String
   company: CompanyDefinition!
 }
-type InsuranceRevenueData {
-  companyRevenues: [InsuranceRevenue!]
-  totalRevenues: Float
-  revenuesCount: Int
+type InsuranceTransactionsData {
+  insuranceTransactions: [InsuranceTransaction!]
+  totalInsuranceDebit: Float
+  InsuranceDebitCount: Int
 }
 input RevenueInput {
   name: String!
@@ -2092,6 +2106,11 @@ input DoctorSessionDefinationInput {
   feesCalculationType: FeesCalculationType!
   fees: Int
 }
+input DoctorFeesTransactionInput {
+  id: ID!
+  name: String!
+  amount: Int!
+}
 #################################################################################
 
 type SalesDefinition {
@@ -2372,4 +2391,18 @@ input CompanyInput {
   cardId: String
   paymentMethod: PaymentMethod
   bankId: ID
+}
+type DoctorFees {
+  id: ID
+  name: String
+  amount: Float
+  date: Date
+  cost: Int
+  status: FeesStatus
+  doctor: User
+}
+type DoctorFeesData {
+  doctorFees: [DoctorFees]
+  totalDoctorFees: Float
+  doctorFeesCount: Int
 }

@@ -6,7 +6,7 @@ import { CRRadio, CRModal, H3, CRNumberInput, CRSelectInput } from 'components';
 import { useTranslation } from 'react-i18next';
 import { feesCalTypes, feesCalMethods } from 'utils/constants';
 
-export default function NewUser({
+export default function NewSession({
   show,
   onCancel,
   onCreate,
@@ -65,8 +65,8 @@ export default function NewUser({
   );
 }
 
-NewUser.propTypes = {};
+NewSession.propTypes = {};
 
-NewUser.defaultProps = {
+NewSession.defaultProps = {
   specialties: [],
 };

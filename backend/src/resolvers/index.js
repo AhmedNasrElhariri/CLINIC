@@ -20,7 +20,7 @@ import * as fromPayrollTransaction from './payroll-transaction';
 import * as fromPermission from './permission';
 import * as fromRevenue from './revenue';
 import * as fromBankRevenue from './bankRevenue';
-import * as fromInsuranceRevenue from './insuranceRevenue';
+import * as fromInsuranceTransactions from './insuranceTransaction';
 import * as fromBankExpense from './bankExpense';
 import * as fromLabDefinition from './lab-definition';
 import * as fromImageDefinition from './image-definition';
@@ -50,7 +50,7 @@ export default {
   Revenue: fromRevenue,
   BankRevenue: fromBankRevenue,
   BankExpense: fromBankExpense,
-  InsuranceRevenue: fromInsuranceRevenue,
+  InsuranceTransaction: fromInsuranceTransactions,
   LabDefinition: fromLabDefinition,
   ImageDefinition: fromImageDefinition,
   SupplierAccount: fromSupplierAccount,

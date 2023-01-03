@@ -1,6 +1,4 @@
-import React from 'react';
 import { Icon } from 'rsuite';
-
 import { CRCard, CRTable } from 'components';
 import { useTranslation } from 'react-i18next';
 function ListImagesDefinition({ images, onEdit, onDelete }) {
