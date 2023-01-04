@@ -305,6 +305,7 @@ type Query {
     specialtyId: ID
     branchId: ID
     companyId: ID
+    status: FeesStatus
   ): InsuranceTransactionsData!
   search(q: String!, patient: Boolean, snippet: Boolean): SearchResult
   user(id: ID!): User
@@ -1639,6 +1640,7 @@ type InsuranceTransaction {
   doctor: User
   invoiceNo: String
   cardId: String
+  status: FeesStatus
   company: CompanyDefinition!
 }
 type InsuranceTransactionsData {

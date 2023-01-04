@@ -1,10 +1,13 @@
-import Accounting from './accounting';
-import Visa from './visa';
-import Sales from './sales';
+import initAccounting from './accounting';
+import initVisa from './visa';
+import initSales from './sales';
+import initInsurance from './insurance';
+
 const init = app => {
-  Accounting(app);
-  Visa(app);
-  Sales(app);
+  initAccounting(app);
+  initVisa(app);
+  initSales(app);
+  initInsurance(app);
 };
 
 export default init;

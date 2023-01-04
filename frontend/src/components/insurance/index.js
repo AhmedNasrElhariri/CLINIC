@@ -7,9 +7,9 @@ import {
   BranchSpecialtyUserFilter,
   CRButton,
 } from 'components';
-import Toolbar from '../../accounting/toolbar';
+import Toolbar from '../accounting/toolbar';
 import ListData from './list-data';
-import Profit from '../../accounting/profit';
+import Profit from '../accounting/profit';
 import { Can } from 'components/user/can';
 import { useInsuranceAccounting, useAppointments } from 'hooks';
 import Filter from './filter';
@@ -17,11 +17,11 @@ import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
 import useGlobalState from 'state';
-import { ExcelIcon } from 'components/icons/index';
 import axios from 'axios';
 
 const initialval = {
   company: null,
+  status: null,
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -31,13 +31,14 @@ const initialBranchValue = {
   specialty: null,
   doctor: null,
 };
+
 const InsuranceDebitContainer = () => {
   const { t } = useTranslation();
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const [filter, setFilter] = useState(initialval);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
-  const [user, setUser] = useGlobalState('user');
+  const [user] = useGlobalState('user');
   const [checkedKeys, setCheckedKeys] = useState([]);
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
@@ -59,6 +60,7 @@ const InsuranceDebitContainer = () => {
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
     companyId: filter.company,
+    status: filter.status,
   });
   const handleGatherInsurance = useCallback(() => {
     gatherInsurance({
@@ -67,12 +69,11 @@ const InsuranceDebitContainer = () => {
       },
     });
   }, [checkedKeys, gatherInsurance]);
-  // const { pageSetupData } = useConfigurations();
   const insurancePages = Math.ceil(InsuranceDebitCount / 20);
 
   const handleInsurranceReport = () => {
     axios({
-      url: '/insurranceReport',
+      url: '/reports/insurance',
       method: 'POST',
       responseType: 'blob', // important
       params: {
@@ -82,6 +83,7 @@ const InsuranceDebitContainer = () => {
         companyId: filter?.company,
         organizationId: user.organizationId,
         view,
+        status: filter?.status,
         dateFrom: period[0],
         dateTo: period[1],
       },
@@ -96,36 +98,31 @@ const InsuranceDebitContainer = () => {
       })
       .catch(err => {});
   };
-  ///
-  const handleInsurranceExcel = async () => {
-    axios({
-      url: '/insurranceExcel',
-      responseType: 'blob', // important
-      params: {
-        branchId: branchSpecialtyUser?.branch,
-        specialtyId: branchSpecialtyUser?.specialty,
-        doctorId: branchSpecialtyUser?.doctor,
-        companyId: filter?.company,
-        view,
-        dateFrom: period[0],
-        dateTo: period[1],
-        organizationId: user.organizationId,
-      },
-    })
-      .then(function (response) {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `insurrance-debit-${Date.now()}.xlsx`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch(err => {});
-  };
-  console.log(checkedKeys, 'checkedKeys');
+
   return (
     <>
       <CRCard borderless>
+        <Div display="flex" justifyContent="space-between">
+          <h4>{t('insurance')}</h4>
+          <Div>
+            <CRButton
+              variant="primary"
+              onClick={handleInsurranceReport}
+              ml={1}
+              mr={1}
+            >
+              {t('print')} +
+            </CRButton>
+            <CRButton
+              variant="primary"
+              onClick={handleGatherInsurance}
+              mr={1}
+              disabled={checkedKeys.length > 0 ? false : true}
+            >
+              {t('gather')} +
+            </CRButton>
+          </Div>
+        </Div>
         <div className="flex flex-wrap items-center gap-4">
           <Can I="ViewFilters" an="Accounting">
             <Toolbar
@@ -143,32 +140,10 @@ const InsuranceDebitContainer = () => {
               </H6>
             </Div>
           </Can>
-          <CRButton
-            variant="primary"
-            onClick={handleInsurranceReport}
-            ml={1}
-            mr={1}
-          >
-            {t('print')} +
-          </CRButton>
-          <ExcelIcon
-            variant="primary"
-            onClick={handleInsurranceExcel}
-            ml={1}
-            mr={1}
-            width="30px"
-            height="30px"
-          />
-          <CRButton
-            variant="primary"
-            onClick={handleGatherInsurance}
-            mr={1}
-            disabled={checkedKeys.length > 0 ? false : true}
-          >
-            {t('gather')} +
-          </CRButton>
         </div>
-        <Filter formValue={filter} setFormValue={setFilter} />
+        <Div>
+          <Filter formValue={filter} setFormValue={setFilter} />
+        </Div>
         <Div>
           <Div display="flex">
             <Div flexGrow={1} mr={2}>

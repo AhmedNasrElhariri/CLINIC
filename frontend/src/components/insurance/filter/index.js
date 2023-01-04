@@ -4,6 +4,7 @@ import { Form } from 'rsuite';
 import { CRSelectInput } from 'components/widgets';
 import { useCompanyDefinition } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import { feesStatus } from 'utils/constants';
 
 const AccountingFilter = ({ formValue, setFormValue }) => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
       onChange={setFormValue}
     >
       <Div display="flex">
-        <Div mr={3}>
+        <Div mr={2}>
           <CRSelectInput
             label={t('companyName')}
             name="company"
@@ -27,6 +28,15 @@ const AccountingFilter = ({ formValue, setFormValue }) => {
             style={{ width: '230px' }}
           />
         </Div>
+        <CRSelectInput
+          label={t('status')}
+          name="status"
+          labelKey="name"
+          valueKey="value"
+          block
+          data={feesStatus}
+          style={{ width: '200px', marginRight: '20px' }}
+        />
       </Div>
     </Form>
   );

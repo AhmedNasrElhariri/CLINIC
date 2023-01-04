@@ -15,7 +15,6 @@ import cron from 'node-cron';
 import initUploadConfig from './conf/upload';
 import initReportsConfig from './conf/reports-pdf';
 
-
 import historyFunction from './logging/index';
 // import {
 //   tomorrowAppointmentsReminder,

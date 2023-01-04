@@ -363,6 +363,7 @@ export const LIST_INSURANCE_TRANSACTIONS = gql`
     $specialtyId: ID
     $doctorId: ID
     $companyId: ID
+    $status: FeesStatus
   ) {
     insuranceTransactions(
       offset: $offset
@@ -374,6 +375,7 @@ export const LIST_INSURANCE_TRANSACTIONS = gql`
       specialtyId: $specialtyId
       doctorId: $doctorId
       companyId: $companyId
+      status: $status
     ) {
       insuranceTransactions {
         id
@@ -381,6 +383,7 @@ export const LIST_INSURANCE_TRANSACTIONS = gql`
         amount
         payer
         cardId
+        status
         company {
           id
           name

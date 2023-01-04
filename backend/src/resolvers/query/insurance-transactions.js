@@ -19,6 +19,7 @@ const InsuranceTransactions = async (
     specialtyId,
     branchId,
     companyId,
+    status,
   },
   { user, organizationId }
 ) => {
@@ -65,16 +66,16 @@ const InsuranceTransactions = async (
         {
           AND: [
             {
-              branchId: branchId,
+              branchId,
             },
             {
-              specialtyId: specialtyId,
+              specialtyId,
             },
             {
-              doctorId: doctorId,
+              doctorId,
             },
             {
-              companyId: companyId,
+              companyId,
             },
           ],
         },
@@ -84,7 +85,7 @@ const InsuranceTransactions = async (
         lte: updatedDateTo,
       },
       organizationId,
-      status: 'Draft',
+      status,
     },
     include: {
       company: true,
@@ -131,13 +132,13 @@ const InsuranceTransactions = async (
         {
           AND: [
             {
-              branchId: branchId,
+              branchId,
             },
             {
-              specialtyId: specialtyId,
+              specialtyId,
             },
             {
-              doctorId: doctorId,
+              doctorId,
             },
             {
               companyId,
@@ -149,7 +150,7 @@ const InsuranceTransactions = async (
         gte: updatedDateFrom,
         lte: updatedDateTo,
       },
-      status: 'Draft',
+      status,
     },
   });
   const sum = totalInsuranceDebit._sum.amount;

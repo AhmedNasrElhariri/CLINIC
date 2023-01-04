@@ -110,7 +110,7 @@ const init = app => {
         to: formatDateStandard(updatedDateTo),
       });
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=cash.pdf');
       res.end(pdfDoc);
     } catch (e) {
       res.status(400).send(e);

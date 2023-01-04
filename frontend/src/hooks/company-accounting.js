@@ -23,6 +23,7 @@ const useAccounting = ({
   page,
   doctorId,
   companyId,
+  status,
 } = {}) => {
   const { data: insuranceData } = useQuery(LIST_INSURANCE_TRANSACTIONS, {
     variables: Object.assign(
@@ -32,11 +33,12 @@ const useAccounting = ({
       },
       period && { dateFrom: period[0] },
       period && { dateTo: period[1] },
-      view && { view: view },
-      branchId && { branchId: branchId },
-      specialtyId && { specialtyId: specialtyId },
-      doctorId && { doctorId: doctorId },
-      companyId && { companyId: companyId }
+      view && { view },
+      branchId && { branchId },
+      specialtyId && { specialtyId },
+      doctorId && { doctorId },
+      companyId && { companyId },
+      status && { status }
     ),
   });
 
@@ -85,11 +87,12 @@ const useAccounting = ({
           },
           period && { dateFrom: period[0] },
           period && { dateTo: period[1] },
-          view && { view: view },
-          branchId && { branchId: branchId },
-          specialtyId && { specialtyId: specialtyId },
-          doctorId && { doctorId: doctorId },
-          companyId && { companyId: companyId }
+          view && { view },
+          branchId && { branchId },
+          specialtyId && { specialtyId },
+          doctorId && { doctorId },
+          companyId && { companyId },
+          status && { status }
         ),
       },
     ],
