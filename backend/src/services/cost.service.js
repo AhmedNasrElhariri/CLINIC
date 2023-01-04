@@ -28,10 +28,10 @@ const createCostOfDoctorsFromAppointment = (
       } = doctorSession;
       const doctorFees =
         feesCalculationType === 'fixed'
-          ? fees * number
+          ? fees
           : feesCalculationMethod === 'before'
-          ? fees * price * number * 0.01
-          : (price - (cost ? cost : 0)) * fees * number * 0.01;
+          ? price * number * (fees / 100)
+          : (price * number - (cost ? cost : 0)) * (fees / 100);
       const session = Object.assign(
         {
           name: name,

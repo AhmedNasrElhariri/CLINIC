@@ -1,22 +1,19 @@
 import { useMemo } from 'react';
 import { Form } from 'rsuite';
-
 import { CRRadio, CRModal, H3, CRNumberInput, CRSelectInput } from 'components';
-
-import { useTranslation } from 'react-i18next';
 import { feesCalTypes, feesCalMethods } from 'utils/constants';
 
 export default function NewSession({
   show,
   onCancel,
-  onCreate,
   onOk,
   formValue,
   onChange,
   type,
   sessionsDefinition,
+  users,
+  t,
 }) {
-  const { t } = useTranslation();
   const header = useMemo(() => {
     if (type === 'newSession') {
       return t('newSession');
@@ -37,6 +34,14 @@ export default function NewSession({
           <H3>Are you sure that you want delete the session to doctor?</H3>
         ) : (
           <>
+            <CRSelectInput
+              name="doctorId"
+              label={t('doctor')}
+              labelKey="name"
+              valueKey="id"
+              block
+              data={users}
+            />
             <CRSelectInput
               name="sessionId"
               label={t('session')}
