@@ -11,7 +11,7 @@ import {
   LIST_DOCTOR_FEES,
   EDIT_DOCTOR_FEES,
   GATHER_DOCTOR_FEES,
-  ADD_NEW_DOCTOR_FEES
+  ADD_NEW_DOCTOR_FEES,
 } from 'apollo-client/queries';
 import { POSITIONS } from 'utils/constants';
 
@@ -46,7 +46,7 @@ function useDoctor({
   const { data: doctorFeesData } = useQuery(LIST_DOCTOR_FEES, {
     variables: Object.assign(
       {
-        offset: (page - 1) * 20 || 0,
+        offset: (page - 1) * 20,
         limit: 20,
         doctorId,
         status,

@@ -47,6 +47,7 @@ const DoctorFees = () => {
     dateFrom: period && period[0],
     dateTo: period && period[1],
     status: filter?.status,
+    page: currentPage,
   });
   const pages = Math.ceil(doctorFeesCount / 20);
   const handleClickEditDoctorFees = useCallback(
