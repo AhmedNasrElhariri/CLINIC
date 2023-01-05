@@ -21,8 +21,6 @@ import {
   CREATE_REVENUE,
   UPDATE_EXPENSE,
   UPDATE_REVENUE,
-  LIST_EXPENSES,
-  LIST_REVENUES,
 } from 'apollo-client/queries';
 import { Can } from 'components/user/can';
 import ExpenseFilter from '../filter/expense-filter';

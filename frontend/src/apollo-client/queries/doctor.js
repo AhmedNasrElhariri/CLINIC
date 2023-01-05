@@ -52,8 +52,12 @@ export const LIST_DOCTOR_FEES = gql`
         name
         amount
         date
+        cost
         doctor {
           name
+        }
+        session {
+          price
         }
       }
       totalDoctorFees
@@ -65,6 +69,13 @@ export const LIST_DOCTOR_FEES = gql`
 export const EDIT_DOCTOR_FEES = gql`
   mutation editDoctorFees($doctorFees: DoctorFeesTransactionInput!) {
     editDoctorFees(doctorFees: $doctorFees) {
+      id
+    }
+  }
+`;
+export const ADD_NEW_DOCTOR_FEES = gql`
+  mutation addNewwDoctorFees($doctorFees: DoctorFeesTransactionInput!) {
+    addNewwDoctorFees(doctorFees: $doctorFees) {
       id
     }
   }

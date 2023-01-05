@@ -496,3 +496,8 @@ export const GATHER_INSURANCE = gql`
     gatherInsurance(gatherInsuranceData: $gatherInsuranceData)
   }
 `;
+export const REVERT_INSURANCE = gql`
+mutation revertInsurance($revertInsuranceData: GatherDoctorFeesDataInput!) {
+  revertInsurance(revertInsuranceData: $revertInsuranceData)
+}
+`;

@@ -35,8 +35,12 @@ const middlewares = async () => {
     );
     if (runningMiddlewares.length > 0) {
       const oneMiddleWare = runningMiddlewares[0];
-      rs.then(r => {
-        oneMiddleWare.handler(r, row, tag);
+      rs.then(async r => {
+        const organization = await prisma.organization.findUnique({
+          where: { id: r.organizationId },
+        });
+        const { loggable } = organization;
+        loggable && oneMiddleWare.handler(r, row, tag);
       }).catch(err => console.log(err));
     }
 

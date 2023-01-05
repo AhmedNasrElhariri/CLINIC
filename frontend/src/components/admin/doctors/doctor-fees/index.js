@@ -5,18 +5,29 @@ import { useModal } from 'hooks';
 import { useState } from 'react';
 import * as R from 'ramda';
 import EditableDoctorFees from './editable-doctor-fees';
-import { useDoctor } from 'hooks';
+import { useDoctor, useSessionDefinition } from 'hooks';
 import { useTranslation } from 'react-i18next';
+import Actions from './actions';
+import axios from 'axios';
+import useGlobalState from 'state';
 
+const initialFormValue = {
+  name: '',
+  amount: 0,
+  doctorId: null,
+  sessionId: null,
+};
 const DoctorFees = () => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const { visible, open, close } = useModal();
-  const [formValue, setFormValue] = useState({});
+  const [formValue, setFormValue] = useState(initialFormValue);
   const [type, setType] = useState('');
   const [filter, setFilter] = useState({ doctorId: null, status: 'Draft' });
   const [period, setPeriod] = useState([]);
   const [checkedKeys, setCheckedKeys] = useState([]);
+  const { sessionsDefinition } = useSessionDefinition({});
+  const [user] = useGlobalState('user');
   const {
     doctors,
     doctorFeesTransactions,
@@ -24,6 +35,7 @@ const DoctorFees = () => {
     doctorFeesCount,
     editDoctorFees,
     gatherDoctorFees,
+    addNewwDoctorFees,
   } = useDoctor({
     onCreateUser: close,
     onEditUser: close,
@@ -56,6 +68,10 @@ const DoctorFees = () => {
     });
     setCheckedKeys([]);
   }, [checkedKeys, gatherDoctorFees, setCheckedKeys]);
+  const handleAddNewFees = useCallback(() => {
+    setType('addNewFees');
+    open();
+  }, [open, setType]);
   const handleAdd = useCallback(() => {
     if (type === 'editFees') {
       editDoctorFees({
@@ -63,8 +79,38 @@ const DoctorFees = () => {
           doctorFees: formValue,
         },
       });
+    } else if (type === 'addNewFees') {
+      addNewwDoctorFees({
+        variables: {
+          doctorFees: formValue,
+        },
+      });
     }
-  }, [editDoctorFees, formValue, type]);
+  }, [addNewwDoctorFees, editDoctorFees, formValue, type]);
+  const printDoctorFees = () => {
+    axios({
+      url: '/doctorFees',
+      method: 'POST',
+      responseType: 'blob', // important
+      params: {
+        organizationId: user.organizationId,
+        status: filter?.status,
+        doctorId: filter?.doctorId,
+        dateFrom: period && period[0],
+        dateTo: period && period[1],
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'doctor.pdf'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {});
+  };
+
   return (
     <>
       <Filter
@@ -73,8 +119,14 @@ const DoctorFees = () => {
         doctors={doctors}
         setPeriod={setPeriod}
         t={t}
-        handlePayDoctorFees={handlePayDoctorFees}
-      />
+      >
+        <Actions
+          filter={filter}
+          handlePayDoctorFees={handlePayDoctorFees}
+          addNewFees={handleAddNewFees}
+          print={printDoctorFees}
+        />
+      </Filter>
       <ListDoctorFees
         fees={doctorFeesTransactions}
         t={t}
@@ -95,6 +147,8 @@ const DoctorFees = () => {
         formValue={formValue}
         onChange={setFormValue}
         type={type}
+        users={doctors}
+        sessionsDefinition={sessionsDefinition}
       />
     </>
   );

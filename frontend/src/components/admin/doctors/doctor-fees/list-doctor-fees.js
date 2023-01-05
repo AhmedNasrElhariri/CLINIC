@@ -78,7 +78,14 @@ const ListDoctorFees = ({
               />
             </CRTable.CRColumn>
           )}
-
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ doctor }) => (
+                <CRTable.CRCellStyled bold>{doctor.name}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
@@ -89,7 +96,7 @@ const ListDoctorFees = ({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={2}>
             <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
@@ -106,10 +113,20 @@ const ListDoctorFees = ({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('cost')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ doctor }) => (
-                <CRTable.CRCellStyled bold>{doctor.name}</CRTable.CRCellStyled>
+              {({ cost }) => (
+                <CRTable.CRCellStyled bold>{cost}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ session }) => (
+                <CRTable.CRCellStyled bold>
+                  {session.price}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

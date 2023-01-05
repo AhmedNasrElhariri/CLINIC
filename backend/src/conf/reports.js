@@ -419,6 +419,10 @@ const init = app => {
       res.status(400).send('Invalid');
     }
   });
+
+  
+  ///doctorFeesReport
+
   ///excel
   app.get('/accountingRevenueExcel', async (req, res) => {
     const {
@@ -996,7 +1000,7 @@ const init = app => {
       res.status(400).send(e);
     }
   });
-  
+
   //insurrance Excel
   app.get('/insurranceExcel', async (req, res) => {
     const {
@@ -1005,7 +1009,7 @@ const init = app => {
       view,
       doctorId,
       specialtyId,
-      branchId,   
+      branchId,
       companyId,
       organizationId,
     } = req.query;

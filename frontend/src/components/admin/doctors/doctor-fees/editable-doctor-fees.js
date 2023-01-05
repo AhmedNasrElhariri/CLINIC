@@ -1,25 +1,24 @@
 import { useMemo } from 'react';
 import { Form } from 'rsuite';
-import {
-  CRModal,
-  CRNumberInput,
-  CRTextInput,
-} from 'components';
+import { CRModal, CRNumberInput, CRTextInput, CRSelectInput } from 'components';
 import { useTranslation } from 'react-i18next';
 
 export default function EditableDoctorFees({
   show,
   onCancel,
-  onCreate,
   onOk,
   formValue,
   onChange,
   type,
+  users,
+  sessionsDefinition,
 }) {
   const { t } = useTranslation();
   const header = useMemo(() => {
     if (type === 'editFees') {
       return t('editFees');
+    } else if (type === 'addNewFees') {
+      return t('addNewFees');
     }
   }, [type]);
   return (
@@ -31,6 +30,26 @@ export default function EditableDoctorFees({
       onOk={() => onOk(formValue)}
     >
       <Form fluid formValue={formValue} onChange={onChange}>
+        {type === 'addNewFees' && (
+          <>
+            <CRSelectInput
+              name="doctorId"
+              label={t('doctor')}
+              labelKey="name"
+              valueKey="id"
+              block
+              data={users}
+            />
+            <CRSelectInput
+              name="sessionId"
+              label={t('session')}
+              labelKey="name"
+              valueKey="id"
+              block
+              data={sessionsDefinition}
+            />
+          </>
+        )}
         <CRTextInput name="name" label={t('name')} block />
         <CRNumberInput name="amount" label={t('amount')} block />
       </Form>

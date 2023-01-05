@@ -165,4 +165,5 @@ export const ACTIONS = Object.freeze({
   ViewImages_CurrentAppointment: 'ViewImages_CurrentAppointment',
   DeleteImages_CurrentAppointment: 'DeleteImages_CurrentAppointment',
   View_Logging: 'View_Logging',
+  View_DoctorFees: 'View_DoctorFees',
 });

@@ -78,6 +78,9 @@ const patients = async (
         },
       ],
     }),
+    orderBy: {
+      createdAt: 'desc',
+    },
     skip: offset,
     take: limit,
   });

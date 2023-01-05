@@ -148,3 +148,5 @@ export { default as deleteSessionToDoctor } from './delete-session-to-doctor';
 export { default as editDoctorFees } from './edit-doctor-fees';
 export { default as gatherDoctorFees } from './gather-doctor-fees';
 export { default as gatherInsurance } from './gather-insurance';
+export { default as revertInsurance } from './revert-insurance';
+export { default as addNewwDoctorFees } from './add-new-doctor-fees';

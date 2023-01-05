@@ -244,6 +244,7 @@ enum PermissionAction {
   ViewImages_CurrentAppointment
   DeleteImages_CurrentAppointment
   View_Logging
+  View_DoctorFees
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,6 +258,7 @@ model Organization {
   followUp                  Boolean?                    @default(false)
   createdAt                 DateTime                    @default(now())
   updatedAt                 DateTime                    @default(now()) @updatedAt
+  loggable                  Boolean                     @default(false)
   item                      Item[]
   hospital                  Hospital[]
   surgeries                 Surgery[]
@@ -1756,8 +1758,8 @@ model DoctorFees {
   organizationId String
   session        SessionDefinition @relation(fields: [sessionId], references: [id])
   sessionId      String
-  appointment    Appointment       @relation(fields: [appointmentId], references: [id])
-  appointmentId  String
+  appointment    Appointment?      @relation(fields: [appointmentId], references: [id])
+  appointmentId  String?
   doctor         User              @relation("doctorFees", fields: [doctorId], references: [id])
   doctorId       String
   user           User              @relation("userFees", fields: [userId], references: [id])

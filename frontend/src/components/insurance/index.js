@@ -52,6 +52,7 @@ const InsuranceDebitContainer = () => {
     InsuranceDebitCount,
     timeFrame,
     gatherInsurance,
+    revertInsurance,
   } = useInsuranceAccounting({
     view,
     period,
@@ -63,12 +64,22 @@ const InsuranceDebitContainer = () => {
     status: filter.status,
   });
   const handleGatherInsurance = useCallback(() => {
+    setCheckedKeys([]);
     gatherInsurance({
       variables: {
         gatherInsuranceData: { ids: checkedKeys },
       },
     });
-  }, [checkedKeys, gatherInsurance]);
+  }, [checkedKeys, gatherInsurance, setCheckedKeys]);
+
+  const handleRevertInsurance = useCallback(() => {
+    setCheckedKeys([]);
+    revertInsurance({
+      variables: {
+        revertInsuranceData: { ids: checkedKeys },
+      },
+    });
+  }, [checkedKeys, revertInsurance, setCheckedKeys]);
   const insurancePages = Math.ceil(InsuranceDebitCount / 20);
 
   const handleInsurranceReport = () => {
@@ -117,9 +128,25 @@ const InsuranceDebitContainer = () => {
               variant="primary"
               onClick={handleGatherInsurance}
               mr={1}
-              disabled={checkedKeys.length > 0 ? false : true}
+              disabled={
+                filter.status === 'Draft' && checkedKeys.length > 0
+                  ? false
+                  : true
+              }
             >
               {t('gather')} +
+            </CRButton>
+            <CRButton
+              variant="primary"
+              onClick={handleRevertInsurance}
+              mr={1}
+              disabled={
+                filter.status === 'Cleared' && checkedKeys.length > 0
+                  ? false
+                  : true
+              }
+            >
+              {t('revert')} +
             </CRButton>
           </Div>
         </Div>

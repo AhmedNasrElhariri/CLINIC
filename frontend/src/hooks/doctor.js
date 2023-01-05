@@ -11,6 +11,7 @@ import {
   LIST_DOCTOR_FEES,
   EDIT_DOCTOR_FEES,
   GATHER_DOCTOR_FEES,
+  ADD_NEW_DOCTOR_FEES
 } from 'apollo-client/queries';
 import { POSITIONS } from 'utils/constants';
 
@@ -65,6 +66,14 @@ function useDoctor({
       Alert.success('The session has been created Successfully');
       onCreateSessionToDoctor && onCreateSessionToDoctor();
     },
+    refetchQueries: [
+      {
+        query: LIST_DOCTOR_SESSION_DEFINATION,
+        variables: {
+          doctorId: doctorId,
+        },
+      },
+    ],
     onError(err) {
       err.message.includes(
         'Unique constraint failed on the fields: (`sessionId`,`doctorId`)'
@@ -79,13 +88,45 @@ function useDoctor({
       Alert.success('The session has been deleted Successfully');
       onCreateSessionToDoctor && onCreateSessionToDoctor();
     },
+    refetchQueries: [
+      {
+        query: LIST_DOCTOR_SESSION_DEFINATION,
+        variables: {
+          doctorId: doctorId,
+        },
+      },
+    ],
     onError(err) {
       Alert.error(err.message);
     },
   });
   const [editDoctorFees] = useMutation(EDIT_DOCTOR_FEES, {
     onCompleted() {
-      Alert.success('The doctor fees has been deleted Successfully');
+      Alert.success('The doctor fees has been edited Successfully');
+      onEditDoctorFees && onEditDoctorFees();
+    },
+    refetchQueries: [
+      {
+        query: LIST_DOCTOR_FEES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+            doctorId,
+            status,
+          },
+          dateFrom && { dateFrom },
+          dateTo && { dateTo }
+        ),
+      },
+    ],
+    onError(err) {
+      Alert.error(err.message);
+    },
+  });
+  const [addNewwDoctorFees] = useMutation(ADD_NEW_DOCTOR_FEES, {
+    onCompleted() {
+      Alert.success('The doctor fees has been added Successfully');
       onEditDoctorFees && onEditDoctorFees();
     },
     refetchQueries: [
@@ -145,6 +186,7 @@ function useDoctor({
       doctorFeesCount,
       editDoctorFees,
       gatherDoctorFees,
+      addNewwDoctorFees,
     }),
     [
       users,
@@ -157,6 +199,7 @@ function useDoctor({
       doctorFeesCount,
       editDoctorFees,
       gatherDoctorFees,
+      addNewwDoctorFees,
     ]
   );
 }

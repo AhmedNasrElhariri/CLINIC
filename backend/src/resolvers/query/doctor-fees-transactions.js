@@ -25,6 +25,7 @@ const doctorFeesTransactions = async (
     ),
     include: {
       doctor: true,
+      session: true,
     },
     skip: offset,
     take: limit,

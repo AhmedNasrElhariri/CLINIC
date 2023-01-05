@@ -1,7 +1,7 @@
-import { useMemo } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import * as R from "ramda";
-import { Alert } from "rsuite";
+import { useMemo } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import * as R from 'ramda';
+import { Alert } from 'rsuite';
 
 import {
   LIST_PATIENTS,
@@ -16,10 +16,10 @@ import {
   PATIENT_REVENUE,
   CREATE_PATIENT,
   LIST_PATIENTS_REPORTS,
-} from "apollo-client/queries";
-import client from "apollo-client/client";
+} from 'apollo-client/queries';
+import client from 'apollo-client/client';
 
-const updateCache = (patients) => {
+const updateCache = patients => {
   client.writeQuery({
     query: LIST_PATIENTS,
     data: {
@@ -31,8 +31,8 @@ const updateCache = (patients) => {
 function usePatients({
   onEdit,
   page = 1,
-  name = "",
-  phoneNo = "",
+  name = '',
+  phoneNo = '',
   area,
   patientSearchValue,
   patientLevel,
@@ -61,11 +61,11 @@ function usePatients({
   });
   const patientsdata = patientData?.patients;
   const patients = useMemo(
-    () => R.propOr([], "patients")(patientsdata),
+    () => R.propOr([], 'patients')(patientsdata),
     [patientData]
   );
   const patientsCount = useMemo(
-    () => R.propOr(0, "patientsCount")(patientsdata),
+    () => R.propOr(0, 'patientsCount')(patientsdata),
     [patientData]
   );
 
@@ -92,11 +92,11 @@ function usePatients({
   });
   const patientsReportsdata = patientReportsData?.patientsReports;
   const ReportsPatients = useMemo(
-    () => R.propOr([], "patients")(patientsReportsdata),
+    () => R.propOr([], 'patients')(patientsReportsdata),
     [patientsReportsdata]
   );
   const reportsPatientsCount = useMemo(
-    () => R.propOr(0, "patientsCount")(patientsReportsdata),
+    () => R.propOr(0, 'patientsCount')(patientsReportsdata),
     [patientsReportsdata]
   );
   const reportsPages = Math.ceil(reportsPatientsCount / 20);
@@ -106,7 +106,7 @@ function usePatients({
   const { data: patientSummaryData } = useQuery(LIST_PATIENTS_SUMMARY, {});
   const patientsSummarydata = patientSummaryData?.patients;
   const patientsSummary = useMemo(
-    () => R.propOr([], "patients")(patientsSummarydata),
+    () => R.propOr([], 'patients')(patientsSummarydata),
     [patientSummaryData]
   );
 
@@ -116,13 +116,13 @@ function usePatients({
     },
   });
   const searchedPatients = useMemo(
-    () => R.propOr([], "searchedPatients")(searchedPatientsData),
+    () => R.propOr([], 'searchedPatients')(searchedPatientsData),
     [searchedPatientsData]
   );
 
   const { data: allPatientsData } = useQuery(LIST_ALL_PATIENTS);
   const allPatients = useMemo(
-    () => R.propOr([], "allPatients")(allPatientsData),
+    () => R.propOr([], 'allPatients')(allPatientsData),
     [allPatientsData]
   );
 
@@ -131,7 +131,7 @@ function usePatients({
       id: patientId,
     },
   });
-  const onePatient = R.propOr({}, "patient")(onePatientData);
+  const onePatient = R.propOr({}, 'patient')(onePatientData);
 
   const { data: patientCouponData } = useQuery(PATIENT_COUPONS, {
     variables: {
@@ -139,7 +139,7 @@ function usePatients({
       all: all,
     },
   });
-  const patientCoupons = R.propOr([], "patientCoupons")(patientCouponData);
+  const patientCoupons = R.propOr([], 'patientCoupons')(patientCouponData);
 
   const { data: couponTransactionsData } = useQuery(
     COUPON_POINTS_TRANSACTIONS,
@@ -151,7 +151,7 @@ function usePatients({
   );
   const couponPointsTransactions = R.propOr(
     [],
-    "couponPointsTransactions"
+    'couponPointsTransactions'
   )(couponTransactionsData);
 
   const { data: patientRevenueData } = useQuery(PATIENT_REVENUE, {
@@ -162,52 +162,53 @@ function usePatients({
     },
   });
   const patientRevenuesData = patientRevenueData?.patientRevenue;
-  const patientRevenue = R.propOr([], "patientRevenue")(patientRevenuesData);
-  const patientTotalRevenue = R.propOr(0, "totalRevenue")(patientRevenuesData);
+  const patientRevenue = R.propOr([], 'patientRevenue')(patientRevenuesData);
+  const patientTotalRevenue = R.propOr(0, 'totalRevenue')(patientRevenuesData);
   const patientRevenueCounts = R.propOr(
     0,
-    "patientRevenueCounts"
+    'patientRevenueCounts'
   )(patientRevenuesData);
 
   const [createPatient, { loading }] = useMutation(CREATE_PATIENT, {
     onCompleted: ({ createPatient: patient }) => {
-      Alert.success("Patient Created Successfully");
+      Alert.success('Patient Created Successfully');
       onCreate && onCreate();
-      onCreateDefault({ id: patient.id });
+      onCreateDefault && onCreateDefault({ id: patient.id });
     },
     refetchQueries: [
       {
         query: LIST_PATIENTS,
-        variables: {
-          offset: 0,
-          limit: 20,
-          name: "",
-          phoneNo: "",
-          phoneNoTwo: "",
-        },
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          name && { name: name },
+          phoneNo && { phoneNo: phoneNo }
+        ),
       },
       {
         query: LIST_SEARCHED_PATIENTS,
         variables: {
-          name: "",
+          name: '',
         },
       },
     ],
-    onError: () => Alert.error("Invalid Input"),
+    onError: () => Alert.error('Invalid Input'),
   });
 
   const [editPatient] = useMutation(EDIT_PATIENT, {
     onCompleted: ({ createPatient: patient }) => {
-      Alert.success("Patient updated Successfully");
+      Alert.success('Patient updated Successfully');
     },
     update(cache, { data: { editPatient: patient } }) {
-      const newPatients = patients.map((p) =>
+      const newPatients = patients.map(p =>
         p.id === patient.id ? patient : p
       );
       updateCache(newPatients);
       onEdit && onEdit();
     },
-    onError: () => Alert.error("Invalid Input"),
+    onError: () => Alert.error('Invalid Input'),
   });
 
   const { data: patientsReportData } = useQuery(LIST_PATIENTS_REPORT, {
@@ -217,14 +218,14 @@ function usePatients({
     },
   });
   const patientsReports = useMemo(
-    () => R.propOr({}, "patientsReport")(patientsReportData),
+    () => R.propOr({}, 'patientsReport')(patientsReportData),
     [patientsReportData]
   );
 
   return useMemo(
     () => ({
       patients,
-      updateCache: (patients) => {
+      updateCache: patients => {
         client.writeQuery({
           query: LIST_PATIENTS,
           data: {
@@ -248,7 +249,7 @@ function usePatients({
       reportsPages,
       reportsPatientsCount,
       createPatientLoading: loading,
-      edit: (patient) =>
+      edit: patient =>
         editPatient({
           variables: { patient },
         }),

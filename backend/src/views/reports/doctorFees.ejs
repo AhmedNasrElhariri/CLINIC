@@ -1,0 +1,54 @@
+<!doctype html >
+<html>
+
+<head>
+  <title>Clinic-R Report</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0px 2px 50px 2px;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  .heading{
+    font-size: 15px;
+    margin: 5px;
+  }
+  
+  #accounting{
+    text-align: center;
+    margin: 5px 0px 10px 0x;
+  }
+  tr:nth-child(even) {background-color: #f2f2f2;}
+  </style>
+
+<body>
+  <div class="test">
+    <h2 id="accounting">Doctor fees Report</h2>
+    <hr></hr>
+   
+      <table>
+        <tr>
+          <th>Date</th><th>Doctor</th><th>amount</th><th>user</th>
+        </tr>
+    
+        <% for (var i = 0; i < doctorFees.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+        <tr>
+          <td><%= formatDateStandard(doctorFees[i].date) %></td>
+          <td><%= doctorFees[i].doctor.name %></td>
+          <td><%= doctorFees[i].amount %></td>
+          <td><%= doctorFees[i].user.name %></td>
+        </tr>    
+        <% } %>
+    </table>
+    
+  </div>
+</body>
+
+</html>

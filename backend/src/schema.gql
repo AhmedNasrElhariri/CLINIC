@@ -740,6 +740,8 @@ type Mutation {
   editDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
   gatherDoctorFees(gatherDoctorFeesData: GatherDoctorFeesDataInput!): Boolean
   gatherInsurance(gatherInsuranceData: GatherDoctorFeesDataInput!): Boolean
+  revertInsurance(revertInsuranceData: GatherDoctorFeesDataInput!): Boolean
+  addNewwDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
 }
 
 ########################### Auth ##################################
@@ -2112,9 +2114,11 @@ input DoctorSessionDefinationInput {
   fees: Int
 }
 input DoctorFeesTransactionInput {
-  id: ID!
+  id: ID
   name: String!
   amount: Int!
+  sessionId: ID
+  doctorId: ID
 }
 #################################################################################
 
@@ -2405,6 +2409,7 @@ type DoctorFees {
   cost: Int
   status: FeesStatus
   doctor: User
+  session: SessionDefinition
 }
 type DoctorFeesData {
   doctorFees: [DoctorFees]

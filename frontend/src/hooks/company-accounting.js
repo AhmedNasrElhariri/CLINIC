@@ -4,6 +4,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import {
   LIST_INSURANCE_TRANSACTIONS,
   GATHER_INSURANCE,
+  REVERT_INSURANCE
 } from 'apollo-client/queries';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import {
@@ -100,6 +101,33 @@ const useAccounting = ({
       Alert.error(err.message);
     },
   });
+  const [revertInsurance] = useMutation(REVERT_INSURANCE, {
+    onCompleted() {
+      Alert.success('The fees has been reverted Successfully');
+    },
+    refetchQueries: [
+      {
+        query: LIST_INSURANCE_TRANSACTIONS,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          period && { dateFrom: period[0] },
+          period && { dateTo: period[1] },
+          view && { view },
+          branchId && { branchId },
+          specialtyId && { specialtyId },
+          doctorId && { doctorId },
+          companyId && { companyId },
+          status && { status }
+        ),
+      },
+    ],
+    onError(err) {
+      Alert.error(err.message);
+    },
+  });
   return useMemo(
     () => ({
       insuranceTransactions,
@@ -110,6 +138,7 @@ const useAccounting = ({
         query: LIST_INSURANCE_TRANSACTIONS,
       },
       gatherInsurance,
+      revertInsurance
     }),
     [
       insuranceTransactions,
@@ -117,6 +146,7 @@ const useAccounting = ({
       timeFrame,
       totalInsuranceDebit,
       gatherInsurance,
+      revertInsurance
     ]
   );
 };

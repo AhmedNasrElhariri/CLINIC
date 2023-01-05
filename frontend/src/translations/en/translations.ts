@@ -442,4 +442,6 @@ export const TRANSLATIONS_EN = {
   cash: 'Cash',
   insuranceTransactions: 'Insurance Transactions',
   doctorSessions: 'Doctor Sessions',
+  gather: 'Gather',
+  revert: 'Revert',
 };
