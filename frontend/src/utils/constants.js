@@ -293,4 +293,5 @@ export const feesCalMethods = [
 export const feesStatus = [
   { name: 'Draft', value: 'Draft' },
   { name: 'Cleared', value: 'Cleared' },
+  { name: 'Refused', value: 'Refused' },
 ];

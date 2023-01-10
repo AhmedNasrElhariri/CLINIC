@@ -56,6 +56,10 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     patientId: appointment?.patient.id,
     all: false,
   });
+  useEffect(() => {
+    const { cardId, cardExpiryDate } = onePatient;
+    setCompany({ ...company, cardId: cardId, cardExpiryDate: cardExpiryDate });
+  }, [onePatient, company.cardId]);
   const totalRemainingOfPayment = onePatient?.remainingOfPayment;
   const newCoupons = useMemo(() => {
     let newCouponsObject = [];
@@ -251,7 +255,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       )),
     [setActiveStep, t]
   );
-  
+
   return (
     <CRModal
       show={show}

@@ -55,6 +55,7 @@ function useAppointments({
   followUpFeature,
   canAddFollowUp,
   setAppointment,
+  onArchive,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -131,6 +132,7 @@ function useAppointments({
     {
       onCompleted: () => {
         Alert.success('Appointment has been Archived successfully');
+        onArchive && onArchive();
         if (followUpFeature && canAddFollowUp) {
           setFollowUp(true);
           setPopUp('followUpAppointment');
@@ -157,6 +159,7 @@ function useAppointments({
           query: GET_INVOICE_COUNTER,
         },
       ],
+      onError: ({ message }) => Alert.error(message),
     }
   );
   const [complete] = useMutation(COMPLETE_APPOINTMENT, {

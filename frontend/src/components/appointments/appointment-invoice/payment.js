@@ -5,6 +5,7 @@ import {
   Div,
   CRNumberInput,
   CRTextInput,
+  CRDatePicker,
 } from 'components';
 import { Form, Divider } from 'rsuite';
 import { useBankDefinition, useCompanyDefinition } from 'hooks';
@@ -142,6 +143,11 @@ export default function Payment({
               label={t('card Id')}
               name="cardId"
               placeholder={t('type card Id')}
+              style={{ width: '230px', marginRight: '10px' }}
+            />
+            <CRDatePicker
+              label={t('cardExpiryDate')}
+              name="cardExpiryDate"
               style={{ width: '230px' }}
             />
           </Div>

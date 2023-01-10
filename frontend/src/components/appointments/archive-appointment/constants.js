@@ -25,7 +25,7 @@ export const initInventoryValue = {
 export const companyInital = {
   companyId: null,
   cardId: '',
+  cardExpiryDate: null,
   paymentMethod: 'cash',
   bankId: null,
 };
-

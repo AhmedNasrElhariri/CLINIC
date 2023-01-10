@@ -150,3 +150,5 @@ export { default as gatherDoctorFees } from './gather-doctor-fees';
 export { default as gatherInsurance } from './gather-insurance';
 export { default as revertInsurance } from './revert-insurance';
 export { default as addNewwDoctorFees } from './add-new-doctor-fees';
+export { default as refuseInsurance } from './refuse-insurance';
+export { default as addNewInsurance } from './add-new-insurance';

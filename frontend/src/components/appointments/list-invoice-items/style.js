@@ -9,7 +9,8 @@ export const DeleteLinkStyled = styled(H7)`
 export const Item = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 500px;
+  align-items: center;
+  width: content-fit;
   padding: 8px 12px;
   background-color: #f0f1f1;
   margin-bottom: 10px;

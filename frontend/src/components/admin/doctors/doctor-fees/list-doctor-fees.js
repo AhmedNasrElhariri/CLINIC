@@ -125,7 +125,7 @@ const ListDoctorFees = ({
             <CRTable.CRCell>
               {({ session }) => (
                 <CRTable.CRCellStyled bold>
-                  {session.price}
+                  {session?.price}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

@@ -1,7 +1,8 @@
-import { H7, Div, CRLabel } from 'components';
+import { H7, Div, CRLabel, CRRadio } from 'components';
 import { DeleteLinkStyled, Item } from './style';
 import { Form, InputNumber } from 'rsuite';
 import { useCallback } from 'react';
+import { feesCalTypes } from 'utils/constants';
 function ListInvoiceItems({
   items,
   priceKey,
@@ -30,6 +31,16 @@ function ListInvoiceItems({
     },
     [items]
   );
+  const handleChangeType = useCallback(
+    (value, indx) => {
+      const item = items[indx];
+      const newItem = { ...item, type: value };
+      const newItems = items.map((i, index) => (index === indx ? newItem : i));
+      setItems(newItems);
+      handleChangeSessions(newItems);
+    },
+    [items]
+  );
   return (
     <Div>
       {items.map((item, idx) => (
@@ -44,8 +55,8 @@ function ListInvoiceItems({
             </H7>
             {insurance && (
               <Form>
-                <Div display="flex">
-                  <CRLabel style={{ marginBottom: '0px', margin: '0px 3px' }}>
+                <Div display="flex" alignItems="center">
+                  <CRLabel style={{ margin: '0px 0px 0px 30px' }}>
                     price
                   </CRLabel>
                   <InputNumber
@@ -58,7 +69,14 @@ function ListInvoiceItems({
                       marginLeft: '5px',
                     }}
                   />
-                  <CRLabel style={{ marginBottom: '0px', margin: '0px 3px' }}>
+                  <CRRadio
+                    options={feesCalTypes}
+                    inline
+                    style={{ marginBottom: ' 10px' }}
+                    value={item?.type ||'percentage'}
+                    onChange={v => handleChangeType(v, idx)}
+                  />
+                  <CRLabel style={{ margin: '0px 0px 0px 30px' }}>
                     patient fees
                   </CRLabel>
                   <InputNumber

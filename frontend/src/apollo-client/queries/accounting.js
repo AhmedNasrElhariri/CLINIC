@@ -497,7 +497,19 @@ export const GATHER_INSURANCE = gql`
   }
 `;
 export const REVERT_INSURANCE = gql`
-mutation revertInsurance($revertInsuranceData: GatherDoctorFeesDataInput!) {
-  revertInsurance(revertInsuranceData: $revertInsuranceData)
-}
+  mutation revertInsurance($revertInsuranceData: GatherDoctorFeesDataInput!) {
+    revertInsurance(revertInsuranceData: $revertInsuranceData)
+  }
+`;
+export const REFUSE_INSURANCE = gql`
+  mutation refuseInsurance($refuseInsuranceData: GatherDoctorFeesDataInput!) {
+    refuseInsurance(refuseInsuranceData: $refuseInsuranceData)
+  }
+`;
+export const ADD_NEW_INSURANCE = gql`
+  mutation addNewInsurance($insurance: InsuranceInput!) {
+    addNewInsurance(insurance: $insurance) {
+      id
+    }
+  }
 `;

@@ -160,6 +160,7 @@ enum PaymentMethod {
 enum FeesStatus {
   Draft
   Cleared
+  Refused
 }
 
 ########################### Query ##################################
@@ -741,7 +742,9 @@ type Mutation {
   gatherDoctorFees(gatherDoctorFeesData: GatherDoctorFeesDataInput!): Boolean
   gatherInsurance(gatherInsuranceData: GatherDoctorFeesDataInput!): Boolean
   revertInsurance(revertInsuranceData: GatherDoctorFeesDataInput!): Boolean
+  refuseInsurance(refuseInsuranceData: GatherDoctorFeesDataInput!): Boolean
   addNewwDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
+  addNewInsurance(insurance: InsuranceInput): InsuranceTransaction
 }
 
 ########################### Auth ##################################
@@ -937,6 +940,8 @@ type Patient implements Searchable {
   notes: String
   patientId: String
   appointments: [Appointment!]
+  cardId: String
+  cardExpiryDate: Date
 }
 
 type VerifiedPatient {
@@ -1321,6 +1326,7 @@ input SessionInput {
   id: ID!
   patientFees: Int
   cost: Int
+  feesCalType: FeesCalculationType
 }
 
 input Discount {
@@ -1649,6 +1655,22 @@ type InsuranceTransactionsData {
   insuranceTransactions: [InsuranceTransaction!]
   totalInsuranceDebit: Float
   InsuranceDebitCount: Int
+}
+input InsuranceInput {
+  name: String!
+  totalAmount: Int!
+  companyId: ID!
+  patientId: ID!
+  date: Date!
+  patientFees: Int
+  doctorFees: Int
+  branchId: ID
+  specialtyId: ID
+  userId: ID
+  doctorId: ID
+  bankId: ID
+  feesCalculationType: FeesCalculationType
+  paymentMethod: PaymentMethod
 }
 input RevenueInput {
   name: String!
@@ -2400,6 +2422,7 @@ input CompanyInput {
   cardId: String
   paymentMethod: PaymentMethod
   bankId: ID
+  cardExpiryDate: Date
 }
 type DoctorFees {
   id: ID

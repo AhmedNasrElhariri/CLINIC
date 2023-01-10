@@ -23,6 +23,8 @@ import {
   createAppointmentInsurranceRevenueFromSessions,
 } from '@/services/insurrance.service';
 import { CostServices } from '@/services/cost.service';
+import moment from 'moment';
+import { APIExceptcion } from '@/services/erros.service';
 const archiveAppointment = async (
   _,
   {
@@ -510,7 +512,13 @@ const archiveAppointment = async (
 
   // start of insurrance
   if (company.companyId != null) {
-    const { companyId, cardId, paymentMethod, bankId } = company;
+    const {
+      companyId,
+      cardId,
+      paymentMethod,
+      bankId,
+      cardExpiryDate,
+    } = company;
     // const finalInsurrancePayment =
     // const totalSessionAmount = sessions.reduce(
     //   (sum, { price, number }) => sum + price * number,
@@ -530,6 +538,24 @@ const archiveAppointment = async (
     //   subtotal = totalAmount - option.amount * totalAmount * 0.01;
     //   amount = totalAmount - subtotal;
     // }
+    if (moment(cardExpiryDate) < moment(new Date())) {
+      throw new APIExceptcion('this card expired');
+    }
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+    });
+    const { cardId: CARDID, cardExpiryDate: CARDEXPIRYDATE } = patient;
+    if (cardId !== CARDID || cardExpiryDate !== CARDEXPIRYDATE) {
+      await prisma.patient.update({
+        data: {
+          cardId: cardId,
+          cardExpiryDate: cardExpiryDate,
+        },
+        where: {
+          id: patientId,
+        },
+      });
+    }
     await createAppointmentInsurranceRevenue(
       createAppointmentInsurranceRevenueFromSessions(
         userId,
@@ -541,7 +567,8 @@ const archiveAppointment = async (
         userID,
         patientId,
         companyId,
-        cardId
+        cardId,
+        cardExpiryDate
       )
     );
 
@@ -585,7 +612,7 @@ const archiveAppointment = async (
     date,
     specialtyId,
     userID,
-    id,
+    id
   );
   // ###############################
 

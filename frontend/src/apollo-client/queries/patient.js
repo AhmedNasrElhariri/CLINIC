@@ -183,6 +183,8 @@ export const GET_PATIENT = gql`
       date
       branchId
       patientId
+      cardId
+      cardExpiryDate
     }
   }
 `;

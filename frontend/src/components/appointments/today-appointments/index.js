@@ -72,6 +72,9 @@ function TodayAppointments() {
     patientId: appointment?.patient?.id,
     canAddFollowUp: appointment?.canAddFollowUp,
     onAdjust: () => {},
+    onArchive: () => {
+      close();
+    },
     setAppointment,
     setFollowUp,
     setPopUp,
@@ -199,7 +202,6 @@ function TodayAppointments() {
       couponsValue,
       doctorFees,
     }) => {
-      close();
       archive({
         variables: {
           id: appointment.id,
@@ -213,6 +215,7 @@ function TodayAppointments() {
             number: session.number,
             id: session.id,
             patientFees: session?.patientFees || 0,
+            feesCalType: session?.type,
             cost: session?.cost,
           })),
           items: items.map(({ itemId, quantity }) => ({
@@ -242,7 +245,7 @@ function TodayAppointments() {
         },
       });
     },
-    [appointment, archive, close]
+    [appointment, archive]
   );
 
   const addBusinessNotes = useCallback(() => {

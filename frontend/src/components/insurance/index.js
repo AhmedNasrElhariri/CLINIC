@@ -11,13 +11,22 @@ import Toolbar from '../accounting/toolbar';
 import ListData from './list-data';
 import Profit from '../accounting/profit';
 import { Can } from 'components/user/can';
-import { useInsuranceAccounting, useAppointments } from 'hooks';
+import {
+  useInsuranceAccounting,
+  useAppointments,
+  useModal,
+  useDoctor,
+  useBankDefinition,
+  useCompanyDefinition,
+  usePatients,
+} from 'hooks';
 import Filter from './filter';
 import { ACCOUNTING_VIEWS, ACTIONS } from 'utils/constants';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
 import useGlobalState from 'state';
 import axios from 'axios';
+import NewInsurance from './new-insurance';
 
 const initialval = {
   company: null,
@@ -31,15 +40,41 @@ const initialBranchValue = {
   specialty: null,
   doctor: null,
 };
+const initialFormValue = {
+  name: '',
+  totalAmount: 0,
+  companyId: null,
+  patientId: null,
+  date: null,
+  patientFees: 0,
+  doctorFees: 0,
+  branchId: null,
+  specialtyId: null,
+  userId: null,
+  doctorId: null,
+  feesCalculationType: 'percentage',
+  patientSearchValue: '',
+  paymentMethod: 'cash',
+  bankId: null,
+};
 
 const InsuranceDebitContainer = () => {
   const { t } = useTranslation();
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
+  const { visible, open, close } = useModal();
+  const [formValue, setFormValue] = useState(initialFormValue);
   const [period, setPeriod] = useState([]);
+  const [type, setType] = useState('');
   const [filter, setFilter] = useState(initialval);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const [user] = useGlobalState('user');
   const [checkedKeys, setCheckedKeys] = useState([]);
+  const { doctors } = useDoctor({});
+  const { banksDefinition } = useBankDefinition({});
+  const { companysDefinition } = useCompanyDefinition({});
+  const { searchedPatients } = usePatients({
+    patientSearchValue: formValue.patientSearchValue,
+  });
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
   const { filterBranches } = useAppointments({
@@ -53,6 +88,8 @@ const InsuranceDebitContainer = () => {
     timeFrame,
     gatherInsurance,
     revertInsurance,
+    refuseInsurance,
+    addNewInsurance,
   } = useInsuranceAccounting({
     view,
     period,
@@ -62,25 +99,48 @@ const InsuranceDebitContainer = () => {
     doctorId: branchSpecialtyUser?.doctor,
     companyId: filter.company,
     status: filter.status,
+    onAddInsurance: () => {
+      close();
+      setFormValue(initialFormValue);
+    },
   });
+  const insurancePages = Math.ceil(InsuranceDebitCount / 20);
+  const handleAddNewInsurance = useCallback(() => {
+    open();
+    setType('addNewInsurance');
+    setFormValue(initialFormValue);
+  }, [open, setType, setFormValue]);
   const handleGatherInsurance = useCallback(() => {
-    setCheckedKeys([]);
     gatherInsurance({
       variables: {
         gatherInsuranceData: { ids: checkedKeys },
       },
     });
+    setCheckedKeys([]);
+  }, [checkedKeys, gatherInsurance, setCheckedKeys]);
+  const handleRefuseInsurance = useCallback(() => {
+    refuseInsurance({
+      variables: {
+        refuseInsuranceData: { ids: checkedKeys },
+      },
+    });
+    setCheckedKeys([]);
   }, [checkedKeys, gatherInsurance, setCheckedKeys]);
 
   const handleRevertInsurance = useCallback(() => {
-    setCheckedKeys([]);
     revertInsurance({
       variables: {
         revertInsuranceData: { ids: checkedKeys },
       },
     });
+    setCheckedKeys([]);
   }, [checkedKeys, revertInsurance, setCheckedKeys]);
-  const insurancePages = Math.ceil(InsuranceDebitCount / 20);
+  const handleAdd = useCallback(() => {
+    const { patientSearchValue, ...rest } = formValue;
+    if (type === 'addNewInsurance') {
+      addNewInsurance({ variables: { insurance: rest } });
+    }
+  }, [addNewInsurance, type, formValue]);
 
   const handleInsurranceReport = () => {
     axios({
@@ -138,6 +198,14 @@ const InsuranceDebitContainer = () => {
             </CRButton>
             <CRButton
               variant="primary"
+              onClick={handleRefuseInsurance}
+              mr={1}
+              disabled={checkedKeys.length > 0 ? false : true}
+            >
+              {t('refuse')} +
+            </CRButton>
+            <CRButton
+              variant="primary"
               onClick={handleRevertInsurance}
               mr={1}
               disabled={
@@ -147,6 +215,9 @@ const InsuranceDebitContainer = () => {
               }
             >
               {t('revert')} +
+            </CRButton>
+            <CRButton variant="primary" onClick={handleAddNewInsurance} mr={1}>
+              {t('addNewInsurance')} +
             </CRButton>
           </Div>
         </Div>
@@ -192,6 +263,19 @@ const InsuranceDebitContainer = () => {
             </Div>
           </Div>
         </Div>
+        <NewInsurance
+          visible={visible}
+          formValue={formValue}
+          onChange={setFormValue}
+          onOk={handleAdd}
+          onClose={close}
+          type={type}
+          doctors={doctors}
+          companysDefinition={companysDefinition}
+          banksDefinition={banksDefinition}
+          searchedPatients={searchedPatients}
+          t={t}
+        />
       </CRCard>
     </>
   );

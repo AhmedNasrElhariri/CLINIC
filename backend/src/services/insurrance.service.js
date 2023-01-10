@@ -1,6 +1,7 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
 
+
 export const createAppointmentInsurranceRevenue = async data => {
   return Promise.all(
     data.map(d => prisma.insuranceRevenue.create({ data: d }))
@@ -17,12 +18,15 @@ export const createAppointmentRevenueFromInsurranceSessions = (
   patientId
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
-  return sessions.map(({ name, number, patientFees }) =>
+  return sessions.map(({ name, number, price, patientFees, feesCalType }) =>
     Object.assign(
       {
         date: new Date(date),
         name,
-        amount: patientFees,
+        amount:
+          feesCalType === 'fixed'
+            ? patientFees
+            : (patientFees / 100) * number * price,
         level,
         organizationId,
         userId,
@@ -47,12 +51,15 @@ export const createAppointmentBankRevenueFromInsurranceSessions = (
   bankId
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
-  return sessions.map(({ name, number, patientFees }) =>
+  return sessions.map(({ name, number, price, patientFees, feesCalType }) =>
     Object.assign(
       {
         date: new Date(date),
         name,
-        amount: patientFees,
+        amount:
+          feesCalType === 'fixed'
+            ? patientFees
+            : (patientFees / 100) * number * price,
         level,
         organizationId,
         userId,
@@ -79,12 +86,15 @@ export const createAppointmentInsurranceRevenueFromSessions = (
   cardId
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
-  return sessions.map(({ name, price, number, patientFees }) =>
+  return sessions.map(({ name, price, number, patientFees, feesCalType }) =>
     Object.assign(
       {
         date: new Date(date),
         name,
-        amount: price * number - patientFees,
+        amount:
+          feesCalType === 'fixed'
+            ? price * number - patientFees
+            : price * number - (patientFees / 100) * price * number,
         level,
         organizationId,
         userId,
