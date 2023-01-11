@@ -28,7 +28,7 @@ const NewInsurance = ({
   t,
 }) => {
   const header = useMemo(() =>
-    type === 'adddNewInsurance' ? t('editInsurance') : [type]
+    type === 'addNewInsurance' ? t('addNewInsurance') : t('adddNewInsurance')
   );
 
   return (

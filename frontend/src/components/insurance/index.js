@@ -62,8 +62,12 @@ const initialFormValue = {
 const MenuPopover = ({ onSelect, ...rest }) => (
   <Popover {...rest} full>
     <Dropdown.Menu onSelect={onSelect}>
-      <Dropdown.Item eventKey={1}>Pdf</Dropdown.Item>
-      <Dropdown.Item eventKey={2}>Excel</Dropdown.Item>
+      <Dropdown.Item eventKey={1}>
+        <CRButton>Pdf</CRButton>
+      </Dropdown.Item>
+      <Dropdown.Item eventKey={2}>
+        <CRButton>Excel</CRButton>
+      </Dropdown.Item>
     </Dropdown.Menu>
   </Popover>
 );
@@ -247,7 +251,7 @@ const InsuranceDebitContainer = () => {
               trigger="click"
               speaker={<MenuPopover onSelect={handleSelectMenu} />}
             >
-              <Button>Prints</Button>
+              <CRButton>Prints</CRButton>
             </Whisper>
           </Div>
         </Div>
