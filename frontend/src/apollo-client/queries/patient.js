@@ -60,6 +60,8 @@ export const LIST_PATIENTS = gql`
         branchId
         notes
         patientId
+        cardId
+        cardExpiryDate
       }
       patientsCount
     }

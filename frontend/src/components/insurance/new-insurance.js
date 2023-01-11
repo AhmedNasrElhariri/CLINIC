@@ -54,7 +54,7 @@ const NewInsurance = ({
         <CRRadio
           options={feesCalTypes}
           name="feesCalculationType"
-          label="fees Calculation Type"
+          label="Fixed/Percentage"
         />
         <CRNumberInput
           label={t('doctorFees')}

@@ -59,7 +59,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
   useEffect(() => {
     const { cardId, cardExpiryDate } = onePatient;
     setCompany({ ...company, cardId: cardId, cardExpiryDate: cardExpiryDate });
-  }, [onePatient, company.cardId]);
+  }, [onePatient, setCompany]);
   const totalRemainingOfPayment = onePatient?.remainingOfPayment;
   const newCoupons = useMemo(() => {
     let newCouponsObject = [];

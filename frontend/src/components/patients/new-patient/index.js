@@ -27,6 +27,8 @@ const initialValues = {
   guardianName: '',
   branchId: null,
   patientId: null,
+  cardId: '',
+  cardExpiryDate: null,
 };
 const { StringType, NumberType } = Schema.Types;
 const model = Schema.Model({

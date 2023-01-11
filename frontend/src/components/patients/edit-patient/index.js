@@ -26,6 +26,8 @@ const initialValues = {
   branchId: null,
   notes: '',
   patientId: null,
+  cardId: '',
+  cardExpiryDate: null,
 };
 const EditButton = styled(Button)`
   background-color: white;

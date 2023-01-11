@@ -444,4 +444,11 @@ export const TRANSLATIONS_EN = {
   doctorSessions: 'Doctor Sessions',
   gather: 'Gather',
   revert: 'Revert',
+  addNewInsurance: 'add new insurance',
+  editInsurance: 'Edit insurance',
+  totalAmount: 'Total amount',
+  patientFees: 'Patient fees',
+  paymentMethod: 'Payment method',
+  cardExpiryDate: 'Card expiry date',
+  refuse: 'Refuse',
 };

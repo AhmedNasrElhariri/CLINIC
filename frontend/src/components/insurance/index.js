@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import * as R from 'ramda';
 import {
   Div,
@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next';
 import useGlobalState from 'state';
 import axios from 'axios';
 import NewInsurance from './new-insurance';
+import { Whisper, Button, Popover, Dropdown } from 'rsuite';
 
 const initialval = {
   company: null,
@@ -58,6 +59,14 @@ const initialFormValue = {
   bankId: null,
 };
 
+const MenuPopover = ({ onSelect, ...rest }) => (
+  <Popover {...rest} full>
+    <Dropdown.Menu onSelect={onSelect}>
+      <Dropdown.Item eventKey={1}>Pdf</Dropdown.Item>
+      <Dropdown.Item eventKey={2}>Excel</Dropdown.Item>
+    </Dropdown.Menu>
+  </Popover>
+);
 const InsuranceDebitContainer = () => {
   const { t } = useTranslation();
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
@@ -169,6 +178,36 @@ const InsuranceDebitContainer = () => {
       })
       .catch(err => {});
   };
+  const handleInsurranceExcel = async day => {
+    axios({
+      url: '/insuranceExcel',
+      responseType: 'blob', // important
+      params: {
+        branchId: branchSpecialtyUser?.branch,
+        specialtyId: branchSpecialtyUser?.specialty,
+        doctorId: branchSpecialtyUser?.doctor,
+        companyId: filter?.company,
+        organizationId: user.organizationId,
+        view,
+        status: filter?.status,
+        dateFrom: period[0],
+        dateTo: period[1],
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `Insurance-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {});
+  };
+
+  function handleSelectMenu(eventKey, event) {
+    eventKey === 1 ? handleInsurranceReport() : handleInsurranceExcel();
+  }
 
   return (
     <>
@@ -178,23 +217,11 @@ const InsuranceDebitContainer = () => {
           <Div>
             <CRButton
               variant="primary"
-              onClick={handleInsurranceReport}
-              ml={1}
-              mr={1}
-            >
-              {t('print')} +
-            </CRButton>
-            <CRButton
-              variant="primary"
               onClick={handleGatherInsurance}
               mr={1}
-              disabled={
-                filter.status === 'Draft' && checkedKeys.length > 0
-                  ? false
-                  : true
-              }
+              disabled={checkedKeys.length > 0 ? false : true}
             >
-              {t('gather')} +
+              {t('gather')}
             </CRButton>
             <CRButton
               variant="primary"
@@ -202,23 +229,26 @@ const InsuranceDebitContainer = () => {
               mr={1}
               disabled={checkedKeys.length > 0 ? false : true}
             >
-              {t('refuse')} +
+              {t('refuse')}
             </CRButton>
             <CRButton
               variant="primary"
               onClick={handleRevertInsurance}
               mr={1}
-              disabled={
-                filter.status === 'Cleared' && checkedKeys.length > 0
-                  ? false
-                  : true
-              }
+              disabled={checkedKeys.length > 0 ? false : true}
             >
-              {t('revert')} +
+              {t('revert')}
             </CRButton>
             <CRButton variant="primary" onClick={handleAddNewInsurance} mr={1}>
-              {t('addNewInsurance')} +
+              {t('addNewInsurance')}
             </CRButton>
+            <Whisper
+              placement="bottomStart"
+              trigger="click"
+              speaker={<MenuPopover onSelect={handleSelectMenu} />}
+            >
+              <Button>Prints</Button>
+            </Whisper>
           </Div>
         </Div>
         <div className="flex flex-wrap items-center gap-4">

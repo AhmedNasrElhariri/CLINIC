@@ -981,6 +981,8 @@ input PatientInput {
   patientLevel: PatientLevel
   branchId: ID
   notes: String
+  cardId: String
+  cardExpiryDate: Date
 }
 input RegisterPatientInput {
   phoneNo: String!

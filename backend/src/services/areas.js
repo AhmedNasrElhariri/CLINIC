@@ -2366,5 +2366,53 @@ export const areas = [
     governorate_id: '1',
     city_name_ar: 'هليوبوليس',
     city_name_en: 'Heliopolis',
+  }, ////بورسعيد
+  {
+    id: '400',
+    governorate_id: '2',
+    city_name_ar: 'حي الشرق',
+    city_name_en: 'hayu alsharq',
+  },
+  {
+    id: '401',
+    governorate_id: '2',
+    city_name_ar: 'حي العرب',
+    city_name_en: 'hayu alearab',
+  },
+  {
+    id: '402',
+    governorate_id: '2',
+    city_name_ar: 'حي الزهور',
+    city_name_en: 'hayu alzuhur',
+  },
+  {
+    id: '403',
+    governorate_id: '2',
+    city_name_ar: 'حي المناخ',
+    city_name_en: 'hayu almunakh',
+  },
+  {
+    id: '404',
+    governorate_id: '2',
+    city_name_ar: 'حي الضواحي',
+    city_name_en: 'hayu aldawahi',
+  },
+  {
+    id: '405',
+    governorate_id: '2',
+    city_name_ar: 'حي الجنوب',
+    city_name_en: 'hayu aljanub',
+  },
+  {
+    id: '406',
+    governorate_id: '2',
+    city_name_ar: 'حي غرب',
+    city_name_en: 'hayu gharb',
+  },
+  {
+    id: '407',
+    governorate_id: '2',
+    city_name_ar: 'بورفؤاد',
+    city_name_en: 'burfuaad',
   },
 ];

@@ -278,8 +278,8 @@ export const loggingModels = [
   },
 ];
 export const paymentMthod = [
-  { id: 'cash', name: 'cash' },
-  { id: 'visa', name: 'visa' },
+  { id: 'cash', name: 'Cash' },
+  { id: 'visa', name: 'Visa' },
 ];
 
 export const feesCalTypes = [

@@ -139,17 +139,12 @@ export default function Payment({
               placeholder={t('select')}
               style={{ width: '230px', marginRight: '10px' }}
             />
-            <CRTextInput
-              label={t('card Id')}
-              name="cardId"
-              placeholder={t('type card Id')}
-              style={{ width: '230px', marginRight: '10px' }}
-            />
             <CRDatePicker
               label={t('cardExpiryDate')}
               name="cardExpiryDate"
-              style={{ width: '230px' }}
+              style={{ width: '230px', marginRight: '10px' }}
             />
+            <CRTextInput label={t('cardId')} name="cardId" />
           </Div>
           <Div display="flex">
             <CRSelectInput
