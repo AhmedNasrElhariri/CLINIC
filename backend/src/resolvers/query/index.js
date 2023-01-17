@@ -111,3 +111,4 @@ export { default as logging } from './logging';
 export { default as loggingTags } from './logging-tags';
 export { default as doctorSessionsDefinations } from './doctor-session-definations';
 export { default as doctorFeesTransactions } from './doctor-fees-transactions';
+export { default as doctorCoursePartsDefinations } from './doctor-courseParts-definations';

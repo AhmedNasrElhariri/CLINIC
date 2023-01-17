@@ -219,6 +219,40 @@ export const EDIT_COURSE = gql`
     }
   }
 `;
+export const EDIT_COURSE_WITH_DOCTOR_FEES = gql`
+  mutation paidCourseWithDoctorFees(
+    $courseId: ID!
+    $branchId: ID
+    $specialtyId: ID
+    $userId: ID
+    $paid: Int!
+    $visaPaid: Int
+    $bank: ID
+    $sessions: [SessionInput]
+  ) {
+    paidCourseWithDoctorFees(
+      courseId: $courseId
+      paid: $paid
+      visaPaid: $visaPaid
+      branchId: $branchId
+      specialtyId: $specialtyId
+      userId: $userId
+      bank: $bank
+      sessions: $sessions
+    ) {
+      id
+      price
+      discount
+      patient {
+        id
+        name
+        age
+        sex
+        phoneNo
+      }
+    }
+  }
+`;
 
 export const EDIT_COURSE_PAYMENT_HISTORY = gql`
   mutation editCoursePaymentHistory(

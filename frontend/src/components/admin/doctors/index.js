@@ -2,6 +2,7 @@ import { MainContainer, CRTabs } from 'components';
 import DoctorSessions from './doctor-sessions';
 import DoctorFees from './doctor-fees/index';
 import { useTranslation } from 'react-i18next';
+import DoctorCoursePart from './doctor-course-parts';
 
 export default function DoctorContainer() {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ export default function DoctorContainer() {
         <CRTabs.CRTabsGroup>
           <CRTabs.CRTab>{t('doctorFees')}</CRTabs.CRTab>
           <CRTabs.CRTab>{t('doctorSessions')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('doctorCourseParts')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
@@ -21,6 +23,9 @@ export default function DoctorContainer() {
           </CRTabs.CRContent>
           <CRTabs.CRContent>
             <DoctorSessions />
+          </CRTabs.CRContent>
+          <CRTabs.CRContent>
+            <DoctorCoursePart />
           </CRTabs.CRContent>
         </CRTabs.CRContentGroup>
       </CRTabs>

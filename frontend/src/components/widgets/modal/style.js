@@ -4,6 +4,7 @@ import { space } from 'styled-system';
 
 export const ModalStyled = styled(Modal)`
   max-width: 90vw;
+  min-width: fit-content;
 `;
 
 export const ModalHeaderStyled = styled(Modal.Header)`

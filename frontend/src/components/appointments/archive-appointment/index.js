@@ -9,6 +9,8 @@ import CostTab from '../cost-tab';
 import { useForm, useCompanySessionDefinition, usePatients } from 'hooks';
 import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 import { useTranslation } from 'react-i18next';
+import ReferedDoctorInvoice from '../refered-doctor-invoice';
+import { getName } from 'services/accounting';
 import {
   initValue,
   initlOption,
@@ -23,7 +25,14 @@ const model = Schema.Model({
   quantity: NumberType().isRequired('Amount Type is required'),
 });
 
-const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
+const ArchiveAppointment = ({
+  appointment,
+  show,
+  onCancel,
+  onOk,
+  loading,
+  archiveReferedDoctorAppointment,
+}) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [others, setOthers] = useState(0);
@@ -60,6 +69,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     const { cardId, cardExpiryDate } = onePatient;
     setCompany({ ...company, cardId: cardId, cardExpiryDate: cardExpiryDate });
   }, [onePatient, setCompany]);
+
   const totalRemainingOfPayment = onePatient?.remainingOfPayment;
   const newCoupons = useMemo(() => {
     let newCouponsObject = [];
@@ -112,43 +122,56 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     if (activeStep !== 2) {
       setActiveStep(activeStep + 1);
     } else {
-      // let updatedDoctorfees = {};
-      // if (doctorOption.option === 'fixed') {
-      //   updatedDoctorfees = doctorFees;
-      // } else {
-      //   const updatedFees = 0.01 * doctorFees.fees * total;
-      //   updatedDoctorfees = { ...doctorFees, fees: updatedFees };
-      // }
-      onOk({
-        ...value.current,
-        discount,
-        others,
-        remaining,
-        payOfRemaining,
-        othersName,
-        bank,
-        company,
-        option,
-        coupons: newCoupons,
-        couponsValue,
-        // doctorFees: updatedDoctorfees,
-      });
-      setActiveStep(0);
-      setOthers(0);
-      setBank(null);
-      setCompany(companyInital);
-      setOthersName('');
-      setDiscount(0);
-      setCoupons([]);
-      setCouponsValue(0);
-      setSelectedSessions([]);
-      setRemaining(0);
-      setPayOfRemaining(0);
-      // setDoctorFees(initialDoctorFess);
-      value.current = {
-        sessions: [],
-        items: [],
-      };
+      if (appointment?.referedDoctor) {
+        archiveReferedDoctorAppointment({
+          variables: {
+            data: {
+              sessions: selectedSessions.map(session => ({
+                name: getName({ session, appointment }),
+                price: session.price,
+                number: session.number,
+                id: session.id,
+                patientFees: session?.patientFees || 0,
+                feesCalType: session?.type,
+                cost: session?.cost,
+              })),
+              appointmentId: appointment?.id,
+              doctorId: appointment?.doctor.id,
+              specialtyId: appointment?.specialty.id,
+              branchId: appointment?.branch.id,
+            },
+          },
+        });
+      } else {
+        onOk({
+          ...value.current,
+          discount,
+          others,
+          remaining,
+          payOfRemaining,
+          othersName,
+          bank,
+          company,
+          option,
+          coupons: newCoupons,
+          couponsValue,
+        });
+        setActiveStep(0);
+        setOthers(0);
+        setBank(null);
+        setCompany(companyInital);
+        setOthersName('');
+        setDiscount(0);
+        setCoupons([]);
+        setCouponsValue(0);
+        setSelectedSessions([]);
+        setRemaining(0);
+        setPayOfRemaining(0);
+        value.current = {
+          sessions: [],
+          items: [],
+        };
+      }
     }
   }, [
     activeStep,
@@ -162,19 +185,13 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     company,
     option,
     couponsValue,
-    // doctorFees,
-    // doctorOption,
     newCoupons,
     total,
+    selectedSessions,
+    appointment,
+    archiveReferedDoctorAppointment,
   ]);
   const handleFinish = useCallback(() => {
-    // let updatedDoctorfees = {};
-    // if (doctorOption.option === 'fixed') {
-    //   updatedDoctorfees = doctorFees;
-    // } else {
-    //   const updatedFees = 0.01 * doctorFees.fees * total;
-    //   updatedDoctorfees = { ...doctorFees, fees: updatedFees };
-    // }
     onOk({
       ...value.current,
       discount,
@@ -187,7 +204,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       option,
       coupons: newCoupons,
       couponsValue,
-      // doctorFees: updatedDoctorfees,
     });
     setActiveStep(0);
     setOthers(0);
@@ -200,7 +216,6 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     setCoupons([]);
     setCouponsValue(0);
     setSelectedSessions([]);
-    // setDoctorFees(initialDoctorFess);
     value.current = {
       sessions: [],
       items: [],
@@ -216,11 +231,31 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
     company,
     option,
     couponsValue,
-    // doctorFees,
-    // doctorOption,
     newCoupons,
     total,
   ]);
+
+  const handleFinishReferedDoctor = useCallback(() => {
+    archiveReferedDoctorAppointment({
+      variables: {
+        data: {
+          sessions: selectedSessions.map(session => ({
+            name: getName({ session, appointment }),
+            price: session.price,
+            number: session.number,
+            id: session.id,
+            patientFees: session?.patientFees || 0,
+            feesCalType: session?.type,
+            cost: session?.cost,
+          })),
+          appointmentId: appointment?.id,
+          doctorId: appointment?.doctor.id,
+          specialtyId: appointment?.specialty.id,
+          branchId: appointment?.branch.id,
+        },
+      },
+    });
+  }, [selectedSessions, appointment, archiveReferedDoctorAppointment]);
 
   const handleCancel = useCallback(() => {
     if (activeStep === 1) {
@@ -282,7 +317,7 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
       </div>
 
       <Div>
-        {activeStep === 0 && (
+        {activeStep === 0 && !appointment?.referedDoctor && (
           <AppointmentInvoice
             onChange={handleInvoiceChange}
             discount={discount}
@@ -321,6 +356,14 @@ const ArchiveAppointment = ({ appointment, show, onCancel, onOk, loading }) => {
             payOfRemaining={payOfRemaining}
             setPayOfRemaining={setPayOfRemaining}
             totalRemainingOfPayment={totalRemainingOfPayment}
+          />
+        )}
+        {activeStep === 0 && appointment?.referedDoctor && (
+          <ReferedDoctorInvoice
+            handleFinishReferedDoctor={handleFinishReferedDoctor}
+            selectedSessions={selectedSessions}
+            setSelectedSessions={setSelectedSessions}
+            appointment={appointment}
           />
         )}
         {activeStep === 1 && (

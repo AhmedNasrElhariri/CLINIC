@@ -175,6 +175,11 @@ enum FeesStatus {
   Refused
 }
 
+enum ReferedStatus {
+  Credit
+  Debit
+}
+
 enum PermissionAction {
   List_Appointment
   Create_Appointment
@@ -251,67 +256,68 @@ enum PermissionAction {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 model Organization {
-  id                        String                      @id @default(uuid())
-  name                      String
-  invoiceCounter            Int                         @default(1)
-  maxNumberOfUsers          Int                         @default(6)
-  patientCode               Int                         @default(1000)
-  followUp                  Boolean?                    @default(false)
-  createdAt                 DateTime                    @default(now())
-  updatedAt                 DateTime                    @default(now()) @updatedAt
-  loggable                  Boolean                     @default(false)
-  item                      Item[]
-  hospital                  Hospital[]
-  surgeries                 Surgery[]
-  patientSurgeries          PatientSurgery[]
-  roles                     PermissionRole[]
-  permissions               Permission[]
-  rules                     Rule[]
-  configurations            Configuration?
-  branches                  Branch[]
-  specialties               Specialty[]
-  users                     User[]
-  userSpecialties           UserSpecialty[]
-  patients                  Patient[]
-  inventoryItems            InventoryItem[]
-  inventoryHistory          InventoryHistory[]
-  Payroll                   Payroll[]
-  SalesDefinition           SalesDefinition[]
-  Sales                     Sales[]
-  CourseDefinition          CourseDefinition[]
-  AppointmentTypeDefinition AppointmentTypeDefinition[]
-  BankDefinition            BankDefinition[]
-  CompanyDefinition         CompanyDefinition[]
-  CompanySessionDefinition  CompanySessionDefinition[]
-  ExpenseTypeDefinition     ExpenseTypeDefinition[]
-  Price                     Price[]
-  SessionDefinition         SessionDefinition[]
-  Expense                   Expense[]
-  Revenue                   Revenue[]
-  BankRevenue               BankRevenue[]
-  InsuranceRevenue          InsuranceRevenue[]
-  Timing                    Timing[]
-  ImageDefinition           ImageDefinition[]
-  FacePartation             FacePartation[]
-  FaceOperation             FaceOperation[]
-  MaterialDefinition        MaterialDefinition[]
-  LabDefinition             LabDefinition[]
-  LabCategory               LabCategory[]
-  ImageCategory             ImageCategory[]
-  DentalDiagnosisDefinition DentalDiagnosisDefinition[]
-  Tooth                     Tooth[]
-  ToothTransaction          ToothTransaction[]
-  PageSetup                 PageSetup[]
-  SessionTransaction        SessionTransaction[]
-  Points                    Points[]
-  Coupon                    Coupon[]
-  BankExpense               BankExpense[]
-  CourseTypeDefinition      CourseTypeDefinition[]
-  SupplierAccount           SupplierAccount[]
-  SupplierInvoice           SupplierInvoice[]
-  Logging                   Logging[]
-  DoctorSessionDefination   DoctorSessionDefination[]
-  doctorFees                DoctorFees[]
+  id                         String                       @id @default(uuid())
+  name                       String
+  invoiceCounter             Int                          @default(1)
+  maxNumberOfUsers           Int                          @default(6)
+  patientCode                Int                          @default(1000)
+  followUp                   Boolean?                     @default(false)
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now()) @updatedAt
+  loggable                   Boolean                      @default(false)
+  item                       Item[]
+  hospital                   Hospital[]
+  surgeries                  Surgery[]
+  patientSurgeries           PatientSurgery[]
+  roles                      PermissionRole[]
+  permissions                Permission[]
+  rules                      Rule[]
+  configurations             Configuration?
+  branches                   Branch[]
+  specialties                Specialty[]
+  users                      User[]
+  userSpecialties            UserSpecialty[]
+  patients                   Patient[]
+  inventoryItems             InventoryItem[]
+  inventoryHistory           InventoryHistory[]
+  Payroll                    Payroll[]
+  SalesDefinition            SalesDefinition[]
+  Sales                      Sales[]
+  CourseDefinition           CourseDefinition[]
+  AppointmentTypeDefinition  AppointmentTypeDefinition[]
+  BankDefinition             BankDefinition[]
+  CompanyDefinition          CompanyDefinition[]
+  CompanySessionDefinition   CompanySessionDefinition[]
+  ExpenseTypeDefinition      ExpenseTypeDefinition[]
+  Price                      Price[]
+  SessionDefinition          SessionDefinition[]
+  Expense                    Expense[]
+  Revenue                    Revenue[]
+  BankRevenue                BankRevenue[]
+  InsuranceRevenue           InsuranceRevenue[]
+  Timing                     Timing[]
+  ImageDefinition            ImageDefinition[]
+  FacePartation              FacePartation[]
+  FaceOperation              FaceOperation[]
+  MaterialDefinition         MaterialDefinition[]
+  LabDefinition              LabDefinition[]
+  LabCategory                LabCategory[]
+  ImageCategory              ImageCategory[]
+  DentalDiagnosisDefinition  DentalDiagnosisDefinition[]
+  Tooth                      Tooth[]
+  ToothTransaction           ToothTransaction[]
+  PageSetup                  PageSetup[]
+  SessionTransaction         SessionTransaction[]
+  Points                     Points[]
+  Coupon                     Coupon[]
+  BankExpense                BankExpense[]
+  CourseTypeDefinition       CourseTypeDefinition[]
+  SupplierAccount            SupplierAccount[]
+  SupplierInvoice            SupplierInvoice[]
+  Logging                    Logging[]
+  DoctorSessionDefination    DoctorSessionDefination[]
+  doctorFees                 DoctorFees[]
+  DoctorCoursePartDefination DoctorCoursePartDefination[]
 }
 
 model User {
@@ -394,6 +400,7 @@ model User {
   DoctorSessionDefination    DoctorSessionDefination[]
   doctorFees                 DoctorFees[]                 @relation("doctorFees")
   userFees                   DoctorFees[]                 @relation("userFees")
+  DoctorCoursePartDefination DoctorCoursePartDefination[]
 }
 
 model Patient {
@@ -467,6 +474,7 @@ model Appointment {
   duration              Int                @default(5)
   isFollowUp            Boolean?           @default(false)
   reference             String?
+  referedDoctor         Boolean            @default(false)
   status                AppointmentStatus
   data                  AppointmentField[]
   notes                 String?            @default("")
@@ -1297,13 +1305,15 @@ model SessionDefinition {
 }
 
 model CourseTypeDefinition {
-  id             String       @id @default(uuid())
-  name           String
-  price          Int
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now()) @updatedAt
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
+  id                         String                       @id @default(uuid())
+  name                       String
+  price                      Int
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now()) @updatedAt
+  organization               Organization                 @relation(fields: [organizationId], references: [id])
+  organizationId             String
+  DoctorCoursePartDefination DoctorCoursePartDefination[]
+  DoctorFees                 DoctorFees[]
 }
 
 model Points {
@@ -1742,6 +1752,7 @@ model DoctorSessionDefination {
   feesCalculationMethod FeesCalculationMethod?
   feesCalculationType   FeesCalculationType
   fees                  Int?
+  referedDoctor         Boolean                @default(false)
   organization          Organization           @relation(fields: [organizationId], references: [id])
   organizationId        String
 
@@ -1749,26 +1760,44 @@ model DoctorSessionDefination {
 }
 
 model DoctorFees {
-  id             String             @id @default(uuid())
+  id             String                @id @default(uuid())
   name           String
   amount         Float
-  date           DateTime           @default(now())
+  date           DateTime              @default(now())
   cost           Int?
-  status         FeesStatus         @default(Draft)
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @default(now()) @updatedAt
-  organization   Organization       @relation(fields: [organizationId], references: [id])
+  status         FeesStatus            @default(Draft)
+  referedStatus  ReferedStatus         @default(Debit)
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @default(now()) @updatedAt
+  organization   Organization          @relation(fields: [organizationId], references: [id])
   organizationId String
-  session        SessionDefinition? @relation(fields: [sessionId], references: [id])
+  session        SessionDefinition?    @relation(fields: [sessionId], references: [id])
   sessionId      String?
-  appointment    Appointment?       @relation(fields: [appointmentId], references: [id])
+  part           CourseTypeDefinition? @relation(fields: [partId], references: [id])
+  partId         String?
+  appointment    Appointment?          @relation(fields: [appointmentId], references: [id])
   appointmentId  String?
-  doctor         User               @relation("doctorFees", fields: [doctorId], references: [id])
+  doctor         User                  @relation("doctorFees", fields: [doctorId], references: [id])
   doctorId       String
-  user           User               @relation("userFees", fields: [userId], references: [id])
+  user           User                  @relation("userFees", fields: [userId], references: [id])
   userId         String
-  branch         Branch?            @relation(fields: [branchId], references: [id])
+  branch         Branch?               @relation(fields: [branchId], references: [id])
   branchId       String?
-  specialty      Specialty?         @relation(fields: [specialtyId], references: [id])
+  specialty      Specialty?            @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
+}
+
+model DoctorCoursePartDefination {
+  id                    String                 @id @default(uuid())
+  doctor                User                   @relation(fields: [doctorId], references: [id])
+  doctorId              String
+  part                  CourseTypeDefinition   @relation(fields: [partId], references: [id])
+  partId                String
+  feesCalculationMethod FeesCalculationMethod?
+  feesCalculationType   FeesCalculationType
+  fees                  Int?
+  organization          Organization           @relation(fields: [organizationId], references: [id])
+  organizationId        String
+
+  @@unique([partId, doctorId], name: "partId_doctorId_coursrePart_unique_constraint")
 }

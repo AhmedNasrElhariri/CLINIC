@@ -1,6 +1,7 @@
 import { Div, CRSelectInput, CRDateRangePicker, CRButton } from 'components';
 import { Form } from 'rsuite';
-import { feesStatus } from 'utils/constants';
+import { feesStatus, DoctorTypesOper } from 'utils/constants';
+
 const Filter = ({ filter, setFilter, doctors, setPeriod, t, children }) => {
   return (
     <Div
@@ -18,6 +19,13 @@ const Filter = ({ filter, setFilter, doctors, setPeriod, t, children }) => {
             valueKey="value"
             block
             data={feesStatus}
+            style={{ width: '200px', marginRight: '20px' }}
+          />
+          <CRSelectInput
+            label={t('type')}
+            name="type"
+            block
+            data={DoctorTypesOper}
             style={{ width: '200px', marginRight: '20px' }}
           />
           <CRSelectInput

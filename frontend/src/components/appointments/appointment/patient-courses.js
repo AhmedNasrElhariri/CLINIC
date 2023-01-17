@@ -1,15 +1,16 @@
-import React, { useCallback, useState, useMemo } from "react";
-import * as R from "ramda";
-import styled from "styled-components";
-import { Div, H3, CRButton } from "components";
-import useFrom from "hooks/form";
-import { Can } from "components/user/can";
-import NewCourse from "components/appointments/appointment/courses";
-import CourseData from "components/appointments/appointment/courses/course";
-import { useCourses } from "hooks";
-import { useModal } from "hooks";
-import { CRTabs } from "components";
-import { useTranslation } from "react-i18next";
+import React, { useCallback, useState, useMemo } from 'react';
+import * as R from 'ramda';
+import styled from 'styled-components';
+import { Div, H3, CRButton } from 'components';
+import useFrom from 'hooks/form';
+import { Can } from 'components/user/can';
+import NewCourse from 'components/appointments/appointment/courses';
+import CourseData from 'components/appointments/appointment/courses/course';
+import { useCourses } from 'hooks';
+import { useModal } from 'hooks';
+import { CRTabs } from 'components';
+import { useTranslation } from 'react-i18next';
+import EditableCourse from 'components/appointments/appointment/courses/editable-course';
 
 const initValue = {
   course: null,
@@ -24,9 +25,9 @@ const initValue = {
   branchId: null,
   specialtyId: null,
   userId: null,
-  courseType: "standard",
+  courseType: 'standard',
   customUnits: 0,
-  notes: "",
+  notes: '',
 };
 
 const CourseButton = styled.button`
@@ -42,10 +43,11 @@ const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
   const [index, setIndex] = useState(0);
-  const [header, setHeader] = useState("");
+  const [header, setHeader] = useState('');
   const [visa, setVisa] = useState(false);
   const [bank, setBank] = useState(null);
   const [selectedSessions, setSelectedSessions] = useState([]);
+  const [paidSessions, setPaidSessions] = useState([]);
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
@@ -61,6 +63,7 @@ const Course = ({ patientId }) => {
     loading,
     finishCourse,
     editCourseUnitHistory,
+    paidCourseWithDoctorFees,
   } = useCourses({
     onCreate: () => {
       close();
@@ -93,84 +96,95 @@ const Course = ({ patientId }) => {
     patientId: patientId,
     courseId: formValue?.id,
   });
+  console.log(paidSessions, 'PPaidSess');
   const handleClickCreate = useCallback(() => {
-    setType("create");
-    setHeader(t("createNewCourse"));
+    setType('create');
+    setHeader(t('createNewCourse'));
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
   const handleClickEditUnits = useCallback(
-    (data) => {
-      const course = R.pick(["id", "consumed"])(data);
-      setType("editConsumedUnits");
-      setHeader(t("editConsumedUnits"));
+    data => {
+      const course = R.pick(['id', 'consumed'])(data);
+      setType('editConsumedUnits');
+      setHeader(t('editConsumedUnits'));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickAddUnits = useCallback(
-    (data) => {
-      const course = R.pick(["id", "consumed"])(data);
-      setType("addNewUnits");
-      setHeader(t("addNewUnits"));
+    data => {
+      const course = R.pick(['id', 'consumed'])(data);
+      setType('addNewUnits');
+      setHeader(t('addNewUnits'));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickEditPaid = useCallback(
-    (data) => {
-      const course = R.pick(["id"])(data);
-      setType("edit");
-      setHeader(t("addNewPayment"));
+    data => {
+      const course = R.pick(['id'])(data);
+      setType('edit');
+      setHeader(t('addNewPayment'));
+      setFormValue({ ...course, paid: 0, visaPaid: 0 });
+      open();
+    },
+    [open, setFormValue, setType]
+  );
+  const handleEditPaidWithDoctorFees = useCallback(
+    data => {
+      const course = R.pick(['id', 'consumed'])(data);
+      setType('editPaidWithDoctorFees');
+      setHeader(t('editPaidWithDoctorFees'));
       setFormValue({ ...course, paid: 0, visaPaid: 0 });
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickEditHistoryPayment = useCallback(
-    (data) => {
-      const course = R.pick(["id", "paid", "paymentId"])(data);
-      setType("editPaymentHistory");
-      setHeader(t("editHistoryPayment"));
+    data => {
+      const course = R.pick(['id', 'paid', 'paymentId'])(data);
+      setType('editPaymentHistory');
+      setHeader(t('editHistoryPayment'));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickEditDoctor = useCallback(
-    (data) => {
-      const course = R.pick(["id", "doctorId"])(data);
-      setType("courseDoctor");
-      setHeader(t("assignNewDoctor"));
+    data => {
+      const course = R.pick(['id', 'doctorId'])(data);
+      setType('courseDoctor');
+      setHeader(t('assignNewDoctor'));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleDeleteCourse = useCallback(
-    (data) => {
-      const course = R.pick(["id"])(data);
-      setType("deleteCourse");
-      setHeader(t("cancelTheCourse"));
+    data => {
+      const course = R.pick(['id'])(data);
+      setType('deleteCourse');
+      setHeader(t('cancelTheCourse'));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleFinishCourse = useCallback(
-    (course) => {
-      setType("finishCourse");
-      setHeader(t("finishTheCourse"));
+    course => {
+      setType('finishCourse');
+      setHeader(t('finishTheCourse'));
       setFormValue(course);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleClickEditUnitsHistory = useCallback(
-    (data) => {
-      const unitTransaction = R.pick(["id", "units", "transactionId", "notes"])(
+    data => {
+      const unitTransaction = R.pick(['id', 'units', 'transactionId', 'notes'])(
         data
       );
       const updatedUnitTransaction = {
@@ -179,18 +193,19 @@ const Course = ({ patientId }) => {
         notes: unitTransaction.notes,
         transactionId: unitTransaction.transactionId,
       };
-      setType("editUnitsTransactions");
-      setHeader(t("editUnitTransaction"));
+      setType('editUnitsTransactions');
+      setHeader(t('editUnitTransaction'));
       setFormValue(updatedUnitTransaction);
       open();
     },
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === "create") {
+    if (type === 'create') {
       let price = 0;
+      let totalUnits = 0;
       let courseId = null,
-        customName = "";
+        customName = '';
 
       const {
         discount,
@@ -204,22 +219,26 @@ const Course = ({ patientId }) => {
         courseType,
         customUnits,
       } = formValue;
-      if (courseType === "standard" && course) {
+      if (courseType === 'standard' && course) {
         price = course.price;
         courseId = course.id;
       } else {
         price = selectedSessions.reduce(
-          (sum, { price, number }) => sum + number * price,
+          (sum, { price, number, totalPrice }) => sum + totalPrice,
+          0
+        );
+        totalUnits = selectedSessions.reduce(
+          (sum, { number }) => sum + number,
           0
         );
         selectedSessions.forEach(({ number, name }) => {
-          customName += number + "-" + name + " ";
+          customName += number + '-' + name + ' ';
         });
       }
       const finalFormValue = {
         price: price - discount,
         customName: customName,
-        customUnits,
+        customUnits: totalUnits,
         patientId: patientId,
         courseDefinitionId: courseId,
         doctorId,
@@ -236,37 +255,37 @@ const Course = ({ patientId }) => {
           course: finalFormValue,
         },
       });
-    } else if (type === "courseDoctor") {
+    } else if (type === 'courseDoctor') {
       editCourseDoctor({
         variables: {
           courseId: formValue.id,
           doctorId: formValue.doctorId,
         },
       });
-    } else if (type === "finishCourse") {
+    } else if (type === 'finishCourse') {
       finishCourse({
         variables: {
           courseId: formValue.id,
         },
       });
-    } else if (type === "addNewUnits") {
+    } else if (type === 'addNewUnits') {
       editCourseUnits({
         variables: {
           courseId: formValue.id,
           consumed: formValue.consumed,
           notes: formValue.notes,
-          type: "addNewUnits",
+          type: 'addNewUnits',
         },
       });
-    } else if (type === "editConsumedUnits") {
+    } else if (type === 'editConsumedUnits') {
       editCourseUnits({
         variables: {
           courseId: formValue.id,
           consumed: formValue.consumed,
-          type: "editConsumedUnits",
+          type: 'editConsumedUnits',
         },
       });
-    } else if (type === "editUnitsTransactions") {
+    } else if (type === 'editUnitsTransactions') {
       editCourseUnitHistory({
         variables: {
           transactionId: formValue.transactionId,
@@ -275,7 +294,7 @@ const Course = ({ patientId }) => {
           notes: formValue.notes,
         },
       });
-    } else if (type === "deleteCourse") {
+    } else if (type === 'deleteCourse') {
       deleteCourse({
         variables: {
           courseId: formValue.id,
@@ -286,7 +305,7 @@ const Course = ({ patientId }) => {
           userId: formValue.userId,
         },
       });
-    } else if (type === "editPaymentHistory") {
+    } else if (type === 'editPaymentHistory') {
       editCoursePaymentHistory({
         variables: {
           courseId: formValue.id,
@@ -295,6 +314,19 @@ const Course = ({ patientId }) => {
           specialtyId: formValue.specialtyId,
           userId: formValue.userId,
           branchId: formValue.branchId,
+        },
+      });
+    } else if (type === 'editPaidWithDoctorFees') {
+      paidCourseWithDoctorFees({
+        variables: {
+          courseId: formValue.id,
+          paid: formValue.paid,
+          visaPaid: formValue.visaPaid,
+          specialtyId: formValue.specialtyId,
+          userId: formValue.userId,
+          branchId: formValue.branchId,
+          bank: bank,
+          sessions: paidSessions,
         },
       });
     } else {
@@ -321,22 +353,24 @@ const Course = ({ patientId }) => {
     finishCourse,
     editCourseUnitHistory,
     bank,
+    paidSessions,
+    paidCourseWithDoctorFees,
   ]);
   const InprogressCourses = useMemo(
-    () => patientCourses.filter((c) => c.status === "InProgress"),
+    () => patientCourses.filter(c => c.status === 'InProgress'),
     [patientCourses]
   );
   const FinishedCourses = useMemo(
     () =>
       patientCourses.filter(
-        (c) => c.status === "Finished" || c.status === "EarlyFinished"
+        c => c.status === 'Finished' || c.status === 'EarlyFinished'
       ),
     [patientCourses]
   );
   const CancelledCourses = useMemo(
     () =>
       patientCourses.filter(
-        (c) => c.status === "Cancelled" || c.status === "Rejected"
+        c => c.status === 'Cancelled' || c.status === 'Rejected'
       ),
     [patientCourses]
   );
@@ -344,9 +378,9 @@ const Course = ({ patientId }) => {
     <>
       <CRTabs>
         <CRTabs.CRTabsGroup>
-          <CRTabs.CRTab>{t("inProgressCourses")}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t("finishedCourses")}</CRTabs.CRTab>
-          <CRTabs.CRTab>{t("cancelledCourses")}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('inProgressCourses')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('finishedCourses')}</CRTabs.CRTab>
+          <CRTabs.CRTab>{t('cancelledCourses')}</CRTabs.CRTab>
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
@@ -365,7 +399,7 @@ const Course = ({ patientId }) => {
                   <Div width={200} mt={2}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        {t("addNewCourse")}+
+                        {t('addNewCourse')}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -374,6 +408,7 @@ const Course = ({ patientId }) => {
                       courses={InprogressCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
+                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -383,7 +418,7 @@ const Course = ({ patientId }) => {
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>{t("noCourses")}</H3>
+                    <H3>{t('noCourses')}</H3>
                   )}
                 </>
               </Div>
@@ -405,7 +440,7 @@ const Course = ({ patientId }) => {
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        {t("addNewCourse")}+
+                        {t('addNewCourse')}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -414,6 +449,7 @@ const Course = ({ patientId }) => {
                       courses={FinishedCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
+                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -423,7 +459,7 @@ const Course = ({ patientId }) => {
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>{t("noCourses")}</H3>
+                    <H3>{t('noCourses')}</H3>
                   )}
                 </>
               </Div>
@@ -445,7 +481,7 @@ const Course = ({ patientId }) => {
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
-                        {t("addNewCourse")}+
+                        {t('addNewCourse')}+
                       </CRButton>
                     </Can>
                   </Div>
@@ -454,6 +490,7 @@ const Course = ({ patientId }) => {
                       courses={CancelledCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
+                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -463,7 +500,7 @@ const Course = ({ patientId }) => {
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                     />
                   ) : (
-                    <H3>{t("noCourses")}</H3>
+                    <H3>{t('noCourses')}</H3>
                   )}
                 </>
               </Div>
@@ -471,23 +508,45 @@ const Course = ({ patientId }) => {
           </CRTabs.CRContent>
         </CRTabs.CRContentGroup>
       </CRTabs>
-      <NewCourse
-        visible={visible}
-        formValue={formValue}
-        onChange={setFormValue}
-        onOk={handleAdd}
-        onClose={close}
-        header={header}
-        type={type}
-        loading={loading}
-        users={users}
-        bank={bank}
-        setBank={setBank}
-        visa={visa}
-        setVisa={setVisa}
-        selectedSessions={selectedSessions}
-        setSelectedSessions={setSelectedSessions}
-      />
+      {type !== 'editPaidWithDoctorFees' && (
+        <NewCourse
+          visible={visible}
+          formValue={formValue}
+          onChange={setFormValue}
+          onOk={handleAdd}
+          onClose={close}
+          header={header}
+          type={type}
+          loading={loading}
+          users={users}
+          bank={bank}
+          setBank={setBank}
+          visa={visa}
+          setVisa={setVisa}
+          selectedSessions={selectedSessions}
+          setSelectedSessions={setSelectedSessions}
+        />
+      )}
+      {type === 'editPaidWithDoctorFees' && (
+        <EditableCourse
+          visible={visible}
+          formValue={formValue}
+          onChange={setFormValue}
+          onOk={handleAdd}
+          onClose={close}
+          header={header}
+          type={type}
+          loading={loading}
+          users={users}
+          bank={bank}
+          setBank={setBank}
+          visa={visa}
+          setVisa={setVisa}
+          paidSessions={paidSessions}
+          setPaidSessions={setPaidSessions}
+          t={t}
+        />
+      )}
     </>
   );
 };

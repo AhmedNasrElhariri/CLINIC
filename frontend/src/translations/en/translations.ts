@@ -451,4 +451,10 @@ export const TRANSLATIONS_EN = {
   paymentMethod: 'Payment method',
   cardExpiryDate: 'Card expiry date',
   refuse: 'Refuse',
+  doctorCourseParts: 'Doctor course parts',
+  payWithDoctorFees: 'Pay with doctor fees',
+  editPaidWithDoctorFees: 'edit paid with doctor fees',
+  deleteCoursePart: 'delete Course Part',
+  newCoursePart: 'new Course Part',
+  addCoursePartToDoctor: 'Add Course Part To Doctor',
 };

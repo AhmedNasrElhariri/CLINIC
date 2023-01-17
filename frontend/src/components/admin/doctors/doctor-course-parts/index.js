@@ -1,64 +1,60 @@
 import Filter from './filter';
-import ListSessions from './list-sessions';
-import NewSessionToDoctor from './new-session-to-doctor';
-import { useDoctor, useModal, useSessionDefinition } from 'hooks';
+import ListParts from './list-parts';
+import NewPartToDoctor from './new-course-parts-to-doctor';
+import { useDoctor, useModal, useCourseTypeDefinition } from 'hooks';
 import { useCallback, useState } from 'react';
 import * as R from 'ramda';
 import { useTranslation } from 'react-i18next';
 const initialValues = {
   doctorId: null,
-  sessionId: null,
+  partId: null,
   feesCalculationMethod: null,
   feesCalculationType: null,
   fees: 0,
-  referedDoctor: false,
 };
-const DoctorSessions = () => {
+const DoctorCourseParts = () => {
   const { visible, open, close } = useModal();
   const [formValue, setFormValue] = useState(initialValues);
   const [type, setType] = useState('');
   const [filter, setFilter] = useState({
     doctorId: null,
-    status: 'Draft',
-    referedDoctor: false,
   });
   const { t } = useTranslation();
-  const { sessionsDefinition } = useSessionDefinition({});
+  const { courseTypesDefinition } = useCourseTypeDefinition({});
   const {
     doctors,
-    addSessionToDoctor,
-    deleteSessionToDoctor,
-    doctorSessionsDefinations,
+    doctorCoursePartsDefinations,
+    addCoursePartToDoctor,
+    deleteCoursePartToDoctor,
   } = useDoctor({
     onCreateUser: close,
     onEditUser: close,
-    onCreateSessionToDoctor: () => {
+    onCreateCoursePartToDoctor: () => {
       close();
       setFormValue(initialValues);
     },
     doctorId: filter?.doctorId,
-    referedDoctor: filter?.referedDoctor,
   });
-  const handleClickAddSessionToDoctor = useCallback(() => {
-    setType('newSession');
+  const handleClickAddCoursePartToDoctor = useCallback(() => {
+    setType('newCoursePart');
     open();
   }, [open, setType]);
-  const handleDeleteSession = useCallback(
+  const handleDeleteCoursePart = useCallback(
     data => {
-      const sessionId = R.propOr('', 'id')(data);
+      const partId = R.propOr('', 'id')(data);
       setType('delete');
-      setFormValue({ sessionId: sessionId });
+      setFormValue({ partId: partId });
       open();
     },
     [open, setFormValue, setType]
   );
   const handleAdd = useCallback(() => {
-    if (type === 'newSession') {
-      addSessionToDoctor(formValue);
+    if (type === 'newCoursePart') {
+      addCoursePartToDoctor({ variables: { doctorCoursePart: formValue } });
     } else {
-      deleteSessionToDoctor({ variables: { sessionId: formValue.sessionId } });
+      deleteCoursePartToDoctor({ variables: { partId: formValue.partId } });
     }
-  }, [addSessionToDoctor, deleteSessionToDoctor, formValue, type]);
+  }, [addCoursePartToDoctor, deleteCoursePartToDoctor, formValue, type]);
   return (
     <>
       <Filter
@@ -66,14 +62,14 @@ const DoctorSessions = () => {
         setFilter={setFilter}
         doctors={doctors}
         t={t}
-        onAddSessionToDoctor={handleClickAddSessionToDoctor}
+        onAddPartToDoctor={handleClickAddCoursePartToDoctor}
       />
-      <ListSessions
-        sessions={doctorSessionsDefinations}
-        onDeleteSession={handleDeleteSession}
+      <ListParts
+        parts={doctorCoursePartsDefinations}
+        onDeletePart={handleDeleteCoursePart}
         t={t}
       />
-      <NewSessionToDoctor
+      <NewPartToDoctor
         show={visible}
         onHide={close}
         onCancel={close}
@@ -81,11 +77,11 @@ const DoctorSessions = () => {
         formValue={formValue}
         onChange={setFormValue}
         type={type}
-        sessionsDefinition={sessionsDefinition}
+        courseParts={courseTypesDefinition}
         users={doctors}
         t={t}
       />
     </>
   );
 };
-export default DoctorSessions;
+export default DoctorCourseParts;

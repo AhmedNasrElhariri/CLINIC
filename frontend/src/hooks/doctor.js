@@ -12,6 +12,9 @@ import {
   EDIT_DOCTOR_FEES,
   GATHER_DOCTOR_FEES,
   ADD_NEW_DOCTOR_FEES,
+  LIST_DOCTOR_COURSE_PARTS_DEFINATION,
+  ADD_COURSE_PART_TO_DOCTOR,
+  DELETE_COURSE_PART_TO_DOCTOR,
 } from 'apollo-client/queries';
 import { POSITIONS } from 'utils/constants';
 
@@ -23,6 +26,9 @@ function useDoctor({
   dateTo,
   status,
   onEditDoctorFees,
+  referedDoctor,
+  type,
+  onCreateCoursePartToDoctor,
 } = {}) {
   const { data: usersData } = useQuery(LIST_USERS);
   const users = useMemo(
@@ -36,7 +42,12 @@ function useDoctor({
 
   const { data: doctorSessionsData } = useQuery(
     LIST_DOCTOR_SESSION_DEFINATION,
-    { variables: { doctorId: doctorId } }
+    {
+      variables: {
+        doctorId: doctorId,
+        referedDoctor: referedDoctor,
+      },
+    }
   );
   const doctorSessionsDefinations = useMemo(
     () => R.propOr([], 'doctorSessionsDefinations')(doctorSessionsData),
@@ -52,13 +63,28 @@ function useDoctor({
         status,
       },
       dateFrom && { dateFrom },
-      dateTo && { dateTo }
+      dateTo && { dateTo },
+      type && { type }
     ),
   });
   const doctorFees = doctorFeesData?.doctorFeesTransactions;
   const doctorFeesTransactions = R.propOr([], 'doctorFees')(doctorFees);
   const totalDoctorFees = R.propOr([], 'totalDoctorFees')(doctorFees);
   const doctorFeesCount = R.propOr([], 'doctorFeesCount')(doctorFees);
+
+  // doctor Coursre parts
+  const { data: doctorCoursePartsData } = useQuery(
+    LIST_DOCTOR_COURSE_PARTS_DEFINATION,
+    {
+      variables: {
+        doctorId: doctorId,
+      },
+    }
+  );
+  const doctorCoursePartsDefinations = useMemo(
+    () => R.propOr([], 'doctorCoursePartsDefinations')(doctorCoursePartsData),
+    [doctorCoursePartsData]
+  );
   /* mutations */
 
   const [addSessionToDoctor] = useMutation(ADD_SESSION_TO_DOCTOR, {
@@ -171,7 +197,47 @@ function useDoctor({
       Alert.error(err.message);
     },
   });
-  /* compound */
+
+  /* coursePart */
+  const [addCoursePartToDoctor] = useMutation(ADD_COURSE_PART_TO_DOCTOR, {
+    onCompleted() {
+      Alert.success('The course part has been created Successfully');
+      onCreateCoursePartToDoctor && onCreateCoursePartToDoctor();
+    },
+    refetchQueries: [
+      {
+        query: LIST_DOCTOR_COURSE_PARTS_DEFINATION,
+        variables: {
+          doctorId: doctorId,
+        },
+      },
+    ],
+    onError(err) {
+      err.message.includes(
+        'Unique constraint failed on the fields: (`partId`,`doctorId`)'
+      )
+        ? Alert.error('You create this part to doctor exactly')
+        : Alert.error(err.message);
+    },
+  });
+
+  const [deleteCoursePartToDoctor] = useMutation(DELETE_COURSE_PART_TO_DOCTOR, {
+    onCompleted() {
+      Alert.success('The session has been deleted Successfully');
+      onCreateCoursePartToDoctor && onCreateCoursePartToDoctor();
+    },
+    refetchQueries: [
+      {
+        query: LIST_DOCTOR_COURSE_PARTS_DEFINATION,
+        variables: {
+          doctorId: doctorId,
+        },
+      },
+    ],
+    onError(err) {
+      Alert.error(err.message);
+    },
+  });
 
   return useMemo(
     () => ({
@@ -187,6 +253,9 @@ function useDoctor({
       editDoctorFees,
       gatherDoctorFees,
       addNewwDoctorFees,
+      doctorCoursePartsDefinations,
+      addCoursePartToDoctor,
+      deleteCoursePartToDoctor,
     }),
     [
       users,
@@ -200,6 +269,9 @@ function useDoctor({
       editDoctorFees,
       gatherDoctorFees,
       addNewwDoctorFees,
+      doctorCoursePartsDefinations,
+      addCoursePartToDoctor,
+      deleteCoursePartToDoctor,
     ]
   );
 }

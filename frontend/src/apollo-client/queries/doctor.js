@@ -15,12 +15,17 @@ export const DELETE_SESSION_TO_DOCTOR = gql`
   }
 `;
 export const LIST_DOCTOR_SESSION_DEFINATION = gql`
-  query doctorSessionsDefinations($doctorId: ID!) {
-    doctorSessionsDefinations(doctorId: $doctorId) {
+  query doctorSessionsDefinations($doctorId: ID!, $referedDoctor: Boolean) {
+    doctorSessionsDefinations(
+      doctorId: $doctorId
+      referedDoctor: $referedDoctor
+    ) {
       id
       feesCalculationMethod
       feesCalculationType
       fees
+      referedDoctor
+      sessionId
       session {
         name
       }
@@ -38,6 +43,7 @@ export const LIST_DOCTOR_FEES = gql`
     $dateTo: Date
     $doctorId: ID!
     $status: FeesStatus
+    $type: ReferedStatus
   ) {
     doctorFeesTransactions(
       doctorId: $doctorId
@@ -46,6 +52,7 @@ export const LIST_DOCTOR_FEES = gql`
       dateFrom: $dateFrom
       dateTo: $dateTo
       status: $status
+      type: $type
     ) {
       doctorFees {
         id
@@ -83,5 +90,40 @@ export const ADD_NEW_DOCTOR_FEES = gql`
 export const GATHER_DOCTOR_FEES = gql`
   mutation gatherDoctorFees($gatherDoctorFeesData: GatherDoctorFeesDataInput!) {
     gatherDoctorFees(gatherDoctorFeesData: $gatherDoctorFeesData)
+  }
+`;
+
+//doctor Course part
+export const LIST_DOCTOR_COURSE_PARTS_DEFINATION = gql`
+  query doctorCoursePartsDefinations($doctorId: ID!) {
+    doctorCoursePartsDefinations(doctorId: $doctorId) {
+      id
+      feesCalculationMethod
+      feesCalculationType
+      fees
+      partId
+      part {
+        name
+      }
+      doctor {
+        name
+      }
+    }
+  }
+`;
+export const ADD_COURSE_PART_TO_DOCTOR = gql`
+  mutation addCoursePartToDoctor(
+    $doctorCoursePart: DoctorCoursePartDefinationInput!
+  ) {
+    addCoursePartToDoctor(doctorCoursePart: $doctorCoursePart) {
+      id
+    }
+  }
+`;
+export const DELETE_COURSE_PART_TO_DOCTOR = gql`
+  mutation deleteCoursePartToDoctor($partId: ID!) {
+    deleteCoursePartToDoctor(partId: $partId) {
+      id
+    }
   }
 `;

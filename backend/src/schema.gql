@@ -163,6 +163,10 @@ enum FeesStatus {
   Refused
 }
 
+enum ReferedStatus {
+  Credit
+  Debit
+}
 ########################### Query ##################################
 
 type Query {
@@ -433,7 +437,10 @@ type Query {
   transactionRevenuesTimeFrame(userId: ID!): TransctionRevenuesTimeFrame
   areas: [Area]
   totalUnpaidOfCourses: TotalUnpaidOfCourses
-  doctorSessionsDefinations(doctorId: ID!): [DoctorSessionDefination!]
+  doctorSessionsDefinations(
+    doctorId: ID!
+    referedDoctor: Boolean
+  ): [DoctorSessionDefination!]
   doctorFeesTransactions(
     offset: Int
     limit: Int
@@ -441,7 +448,9 @@ type Query {
     dateTo: Date
     doctorId: ID
     status: FeesStatus
+    type: ReferedStatus
   ): DoctorFeesData!
+  doctorCoursePartsDefinations(doctorId: ID!): [DoctorCoursePartDefination!]
 }
 
 ########################### Mutation ##################################
@@ -745,6 +754,21 @@ type Mutation {
   refuseInsurance(refuseInsuranceData: GatherDoctorFeesDataInput!): Boolean
   addNewwDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
   addNewInsurance(insurance: InsuranceInput): InsuranceTransaction
+  archiveReferedDoctorAppointment(data: ReferedDoctorInput!): Boolean
+  addCoursePartToDoctor(
+    doctorCoursePart: DoctorCoursePartDefinationInput
+  ): DoctorCoursePartDefination
+  paidCourseWithDoctorFees(
+    courseId: ID!
+    paid: Int!
+    visaPaid: Int
+    branchId: ID
+    specialtyId: ID
+    userId: ID
+    bank: ID
+    sessions: [SessionInput]
+  ): Course!
+  deleteCoursePartToDoctor(partId: ID!): DoctorCoursePartDefination!
 }
 
 ########################### Auth ##################################
@@ -1042,6 +1066,7 @@ type Appointment {
   courses: [Course!]
   isFollowUp: Boolean
   canAddFollowUp: Boolean
+  referedDoctor: Boolean
 }
 
 type AppointmentData {
@@ -1126,6 +1151,7 @@ input AppointmentInput {
   sendSMS: Boolean
   followUp: Boolean
   appointmentId: ID
+  referedDoctor: Boolean
 }
 
 input AppointmentPictureInput {
@@ -2128,6 +2154,8 @@ type DoctorSessionDefination {
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
   fees: Int!
+  referedDoctor: Boolean
+  sessionId: ID!
 }
 
 input DoctorSessionDefinationInput {
@@ -2136,6 +2164,7 @@ input DoctorSessionDefinationInput {
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
   fees: Int
+  referedDoctor: Boolean
 }
 input DoctorFeesTransactionInput {
   id: ID
@@ -2143,6 +2172,25 @@ input DoctorFeesTransactionInput {
   amount: Int!
   sessionId: ID
   doctorId: ID
+}
+
+###########################CoursePartsToDoctor ###################################
+type DoctorCoursePartDefination {
+  id: ID!
+  doctor: User!
+  part: CourseTypeDefinition!
+  feesCalculationMethod: FeesCalculationMethod
+  feesCalculationType: FeesCalculationType!
+  fees: Int!
+  partId: ID!
+}
+
+input DoctorCoursePartDefinationInput {
+  doctorId: ID!
+  partId: ID!
+  feesCalculationMethod: FeesCalculationMethod
+  feesCalculationType: FeesCalculationType!
+  fees: Int
 }
 #################################################################################
 
@@ -2443,4 +2491,12 @@ type DoctorFeesData {
 }
 input GatherDoctorFeesDataInput {
   ids: [ID!]
+}
+######################################ReferedDoctorInput############
+input ReferedDoctorInput {
+  sessions: [SessionInput!]
+  appointmentId: ID
+  doctorId: ID!
+  branchId: ID
+  specialtyId: ID
 }

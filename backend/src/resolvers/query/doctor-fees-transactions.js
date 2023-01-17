@@ -3,7 +3,7 @@ import moment from 'moment';
 
 const doctorFeesTransactions = async (
   _,
-  { offset, limit, dateFrom, dateTo, doctorId, status },
+  { offset, limit, dateFrom, dateTo, doctorId, status, type },
   { organizationId }
 ) => {
   const startDay = moment(dateFrom).startOf('day').toDate();
@@ -21,7 +21,8 @@ const doctorFeesTransactions = async (
             lte: endDay,
           },
         },
-      status && { status }
+      status && { status },
+      type && { referedStatus: type }
     ),
     include: {
       doctor: true,
@@ -52,7 +53,8 @@ const doctorFeesTransactions = async (
             lte: endDay,
           },
         },
-      status && { status }
+      status && { status },
+      type && { referedStatus: type }
     ),
   });
   const sum = totalDoctorFees._sum.amount;

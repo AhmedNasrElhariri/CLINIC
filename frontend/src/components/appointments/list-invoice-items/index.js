@@ -73,7 +73,7 @@ function ListInvoiceItems({
                     options={feesCalTypes}
                     inline
                     style={{ marginBottom: ' 10px' }}
-                    value={item?.type ||'percentage'}
+                    value={item?.type || 'percentage'}
                     onChange={v => handleChangeType(v, idx)}
                   />
                   <CRLabel style={{ margin: '0px 0px 0px 30px' }}>
@@ -93,7 +93,11 @@ function ListInvoiceItems({
             </DeleteLinkStyled>
           </Div>
           <Div display="flex" alignItems="center">
-            <H7 color="texts.1">EGP {item[priceKey] * item?.number}</H7>
+            {item?.totalPrice ? (
+              <H7 color="texts.1">EGP {item?.totalPrice}</H7>
+            ) : (
+              <H7 color="texts.1">EGP {item[priceKey] * item?.number}</H7>
+            )}
           </Div>
         </Item>
       ))}

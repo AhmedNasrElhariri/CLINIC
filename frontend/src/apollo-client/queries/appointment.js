@@ -109,6 +109,7 @@ export const LIST_TODAY_APPOINTMENTS = gql`
       subscriptionType
       isFollowUp
       canAddFollowUp
+      referedDoctor
       patient {
         id
         name
@@ -392,6 +393,11 @@ export const ARCHIVE_APPOINTMENT = gql`
       id
       status
     }
+  }
+`;
+export const ARCHIVE_REFERED_DOCTORAPPOINTMENT = gql`
+  mutation archiveReferedDoctorAppointment($data: ReferedDoctorInput!) {
+    archiveReferedDoctorAppointment(data: $data)
   }
 `;
 export const UPDATE_BUSINESS_NOTES = gql`

@@ -67,6 +67,7 @@ function TodayAppointments() {
     cancel,
     confirmedAppointment,
     transferAppointments,
+    archiveReferedDoctorAppointment,
   } = useAppointments({
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
@@ -392,6 +393,7 @@ function TodayAppointments() {
           onCancel={close}
           onOk={handleArchive}
           loading={loading}
+          archiveReferedDoctorAppointment={archiveReferedDoctorAppointment}
         />
       )}
       {popUp === 'complete' && (

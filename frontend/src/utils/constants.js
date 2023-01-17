@@ -295,3 +295,11 @@ export const feesStatus = [
   { name: 'Cleared', value: 'Cleared' },
   { name: 'Refused', value: 'Refused' },
 ];
+export const DoctorTypes = [
+  { name: 'Internal', id: false },
+  { name: 'External', id: true },
+];
+export const DoctorTypesOper = [
+  { name: 'Internal', id: 'Debit' },
+  { name: 'External', id: 'Credit' },
+];

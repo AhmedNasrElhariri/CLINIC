@@ -2,13 +2,16 @@ import { prisma } from '@';
 
 const doctorSessionsDefinations = async (
   _,
-  { doctorId },
+  { doctorId, referedDoctor },
   { user, organizationId }
 ) => {
   return prisma.doctorSessionDefination.findMany({
-    where: {
-      doctorId,
-    },
+    where: Object.assign(
+      {
+        doctorId,
+      },
+      referedDoctor && { referedDoctor: referedDoctor }
+    ),
     include: {
       session: true,
       doctor: true,

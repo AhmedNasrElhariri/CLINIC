@@ -16,6 +16,7 @@ const CourseData = ({
   courses,
   indx,
   onEditPaid,
+  onEditPaidWithDoctorFees,
   onEditDoctor,
   onFinishCourse,
   onEditUnits,
@@ -65,6 +66,15 @@ const CourseData = ({
         {course.price > course.paid && course.status === 'InProgress' && (
           <CRButton variant="primary" mr={1} onClick={() => onEditPaid(course)}>
             {t('pay')}
+          </CRButton>
+        )}
+        {course.price > course.paid && course.status === 'InProgress' && (
+          <CRButton
+            variant="primary"
+            mr={1}
+            onClick={() => onEditPaidWithDoctorFees(course)}
+          >
+            {t('payWithDoctorFees')}
           </CRButton>
         )}
         {(course.type === 'Perunit' || course.type === 'Custom') && (

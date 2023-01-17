@@ -106,3 +106,5 @@ export { default as Payroll } from './payroll';
 export { default as BranchSpecialtyUserFilter } from './branch-specialty-user-filter';
 
 export { default as Total } from './total';
+
+export { default as Sessions } from './sessions';

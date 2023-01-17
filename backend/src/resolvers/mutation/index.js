@@ -152,3 +152,7 @@ export { default as revertInsurance } from './revert-insurance';
 export { default as addNewwDoctorFees } from './add-new-doctor-fees';
 export { default as refuseInsurance } from './refuse-insurance';
 export { default as addNewInsurance } from './add-new-insurance';
+export { default as archiveReferedDoctorAppointment } from './archive-refered-doctor-appointment';
+export { default as addCoursePartToDoctor } from './add-course-part-to-doctor';
+export { default as paidCourseWithDoctorFees } from './paid-course-with-doctor-fees';
+export { default as deleteCoursePartToDoctor } from './delete-course-part';

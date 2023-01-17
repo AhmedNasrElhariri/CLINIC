@@ -1,32 +1,24 @@
 import { useMemo } from 'react';
-import { Form, Toggle } from 'rsuite';
-import {
-  CRRadio,
-  CRModal,
-  H3,
-  CRNumberInput,
-  CRSelectInput,
-  CRLabel,
-  Div
-} from 'components';
+import { Form } from 'rsuite';
+import { CRRadio, CRModal, H3, CRNumberInput, CRSelectInput } from 'components';
 import { feesCalTypes, feesCalMethods } from 'utils/constants';
 
-export default function NewSession({
+export default function NewPart({
   show,
   onCancel,
   onOk,
   formValue,
   onChange,
   type,
-  sessionsDefinition,
+  courseParts,
   users,
   t,
 }) {
   const header = useMemo(() => {
-    if (type === 'newSession') {
-      return t('newSession');
+    if (type === 'newCoursePart') {
+      return t('newCoursePart');
     } else {
-      return t('deleteSession');
+      return t('deleteCoursePart');
     }
   }, [type]);
   return (
@@ -39,7 +31,7 @@ export default function NewSession({
     >
       <Form fluid formValue={formValue} onChange={onChange}>
         {type === 'delete' ? (
-          <H3>Are you sure that you want delete the session to doctor?</H3>
+          <H3>Are you sure that you want delete the part to doctor?</H3>
         ) : (
           <>
             <CRSelectInput
@@ -51,12 +43,12 @@ export default function NewSession({
               data={users}
             />
             <CRSelectInput
-              name="sessionId"
-              label={t('session')}
+              name="partId"
+              label={t('part')}
               labelKey="name"
               valueKey="id"
               block
-              data={sessionsDefinition}
+              data={courseParts}
             />
             <CRRadio
               options={feesCalTypes}
@@ -71,14 +63,6 @@ export default function NewSession({
               />
             )}
             <CRNumberInput name="fees" label={t('fees')} block />
-            <Div mt="20px" display="flex">
-              <CRLabel>External</CRLabel>
-              <Toggle
-                onChange={val => onChange({ ...formValue, referedDoctor: val })}
-                checked={formValue?.referedDoctor}
-                style={{margin:'5px 0px 0px 10px'}}
-              />
-            </Div>
           </>
         )}
       </Form>
@@ -86,8 +70,4 @@ export default function NewSession({
   );
 }
 
-NewSession.propTypes = {};
-
-NewSession.defaultProps = {
-  specialties: [],
-};
+NewPart.propTypes = {};

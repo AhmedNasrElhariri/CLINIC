@@ -1,255 +1,10 @@
-// import React, { useCallback, useEffect, useState, useMemo } from 'react';
-// import * as moment from 'moment';
-// import * as R from 'ramda';
-// import { Alert, Form, Checkbox } from 'rsuite';
-// import { ACTIONS } from 'utils/constants';
-// import { useTranslation } from 'react-i18next';
-// import {
-//   CRSelectInput,
-//   CRTimePicker,
-//   CRDatePicker,
-//   H5,
-//   Div,
-//   CRModal,
-//   NewPatient,
-//   CRBrancheTree,
-// } from 'components';
-// import { isBeforeToday } from 'utils/date';
-// import {
-//   ModalBodyStyled,
-//   ContainerStyled,
-//   Container,
-//   LeftContainer,
-//   RightContainer,
-//   SecondRowContainer,
-//   SecondContainerStyled,
-//   SecondModalBodyStyled,
-// } from './style';
-
-// import { filterPatientBy } from 'utils/patient';
-// import { getCreatableApptTypes } from 'services/appointment';
-// import {
-//   useAppointmentForm,
-//   useNewAppointment,
-//   useAppointments,
-//   useModal,
-//   useCourses,
-//   usePatients,
-//   useSessionDefinition,
-//   useConfigurations,
-// } from 'hooks';
-
-// const appointmentTypes = getCreatableApptTypes().map(type => ({
-//   id: type,
-//   name: type,
-// }));
-
-// const initialValues = {
-//   type: 'Session',
-//   patientId: '',
-//   courseId: null,
-//   branchId: null,
-//   specialtyId: null,
-//   userId: null,
-//   date: new Date(),
-//   time: null,
-//   waiting: false,
-//   sendSMS: false,
-// };
-// const canAddPatient = formValue =>
-//   formValue.type === 'Examination' ? true : false;
-
-// const searchBy = (text, _, patient) => {
-//   return filterPatientBy(text, patient);
-// };
-
-// const NewAppointment = ({ show: showModel, onHide, appointment }) => {
-//   const { visible, open, close } = useModal();
-//   const [patientSearchValue, setPatientSearchValue] = useState('');
-//   const { t } = useTranslation();
-//   const { configurations } = useConfigurations();
-//   const enableSMS = R.propOr(false, 'enableSMS')(configurations);
-//   const {
-//     formValue,
-//     setFormValue,
-//     checkResult,
-//     validate,
-//     show,
-//     setShow,
-//     createAppointment,
-//     loading,
-//   } = useNewAppointment({
-//     onCreate: () => {
-//       onHide();
-//       setPatientSearchValue('');
-//     },
-//   });
-//   const { searchedPatients } = usePatients({
-//     patientSearchValue: patientSearchValue,
-//   });
-//   const returnedPatientsOfSearch = useMemo(() => {
-//     return searchedPatients;
-//   }, [searchedPatients]);
-//   const { patientCourses } = useCourses({
-//     patientId: formValue.patientId,
-//   });
-//   const { sessionsDefinition } = useSessionDefinition();
-//   const { appointmentsCount } = useAppointments({
-//     date: formValue?.date,
-//     userId: formValue?.userId,
-//   });
-//   const { disabledMinutes, hideHours } = useAppointmentForm({
-//     date: formValue.date,
-//     type: formValue.type,
-//     appointments: appointmentsCount?.appointments || [],
-//   });
-
-//   const updatedPatientCourses = patientCourses.map(course => ({
-//     name: course.name,
-//     IDBTransaction: course.id,
-//   }));
-//   const updatedSessionsDefinition = sessionsDefinition.map(s => {
-//     return {
-//       name: s.name,
-//       id: s,
-//     };
-//   });
-
-//   useEffect(() => {
-//     if (appointment && appointment?.branch?.id != null) {
-//       setFormValue({
-//         branchId: appointment.branch.id,
-//         type: appointment.type,
-//         patientId: appointment.patient.id,
-//         specialtyId: appointment.specialty.id,
-//         userId: appointment.doctor.id,
-//         date: new Date(),
-//       });
-//     }
-//   }, [appointment]);
-//   const handleCreate = useCallback(() => {
-//     setShow(true);
-//     if (!validate) {
-//       Alert.error('Complete Required Fields');
-//       return;
-//     }
-//     const {
-//       patientId,
-//       userId,
-//       type,
-//       courseId,
-//       branchId,
-//       specialtyId,
-//       waiting,
-//       session,
-//       sendSMS,
-//     } = formValue;
-
-//     const timeDate = moment(formValue.time);
-
-//     let date = moment(formValue.date).set({
-//       hours: timeDate.hours(),
-//       minute: timeDate.minutes(),
-//     });
-
-//     if (waiting) {
-//       date = moment(formValue.date).set({
-//         hours: '13',
-//         minute: '00',
-//         second: '00',
-//       });
-//     }
-//     const sessionId = session?.id;
-//     const duration = session?.duration;
-//     createAppointment({
-//       patientId,
-//       type,
-//       date,
-//       userId,
-//       courseId,
-//       branchId,
-//       specialtyId,
-//       waiting,
-//       sessionId,
-//       duration,
-//       sendSMS,
-//     });
-//   }, [createAppointment, formValue]);
-//   return (
-//     <>
-//       <NewPatient
-//         onCreate={({ id }) => {
-//           setFormValue({ ...formValue, patientId: id });
-//           close();
-//         }}
-//         show={visible}
-//         onHide={close}
-//       />
-//       <CRModal
-//         show={showModel}
-//         CRContainer={SecondContainerStyled}
-//         CRBody={SecondModalBodyStyled}
-//         noFooter
-//         noHeader
-//         loading={loading}
-//         onHide={() => {
-//           onHide();
-//         }}
-//         onCancel={() => {
-//           onHide();
-//         }}
-//       >
-//         <Div>
-//           {t('totalAppointments')}: {appointmentsCount?.totalAppointment}{' '}
-//           {/* {t('patient')} */}
-//         </Div>
-//         <SecondRowContainer>
-//           <Div>
-//             {t('totalWaitingList')}: {appointmentsCount?.totalWaiting}{' '}
-//             {/* {t(t('patient'))} */}
-//           </Div>
-//           <Div>{t('viewAll')}</Div>
-//         </SecondRowContainer>
-//       </CRModal>
-//       <CRModal
-//         show={showModel}
-//         header={t('newAppointment')}
-//         CRContainer={ContainerStyled}
-//         CRBody={ModalBodyStyled}
-//         onOk={handleCreate}
-//         okTitle={t('ok')}
-//         cancelTitle={t('cancel')}
-//         loading={loading}
-//         onHide={() => {
-//           onHide();
-//           setFormValue(initialValues);
-//         }}
-//         onCancel={() => {
-//           onHide();
-//           setFormValue(initialValues);
-//         }}
-//       >
-//         <Div>
-
-//         </Div>
-//       </CRModal>
-//     </>
-//   );
-// };
-
-// NewAppointment.propTypes = {};
-
-// NewAppointment.defaultProps = {};
-
-// export default NewAppointment;
-
-import React, { useCallback, useEffect, useState, useMemo } from "react";
-import * as moment from "moment";
-import * as R from "ramda";
-import { Alert, Form, Checkbox, Modal, Button } from "rsuite";
-import { ACTIONS } from "utils/constants";
-import { useTranslation } from "react-i18next";
-import { Spinner } from "components/widgets/button/spinner";
+import { useCallback, useEffect, useState, useMemo } from 'react';
+import * as moment from 'moment';
+import * as R from 'ramda';
+import { Alert, Form, Checkbox, Modal, Button, Toggle } from 'rsuite';
+import { ACTIONS } from 'utils/constants';
+import { useTranslation } from 'react-i18next';
+import { Spinner } from 'components/widgets/button/spinner';
 import {
   CRSelectInput,
   CRTimePicker,
@@ -259,10 +14,11 @@ import {
   NewPatient,
   CRBrancheTree,
   CRButton,
-} from "components";
-import { isBeforeToday } from "utils/date";
+  CRLabel,
+} from 'components';
+import { isBeforeToday } from 'utils/date';
 
-import { filterPatientBy } from "utils/patient";
+import { filterPatientBy } from 'utils/patient';
 import {
   useAppointmentForm,
   useNewAppointment,
@@ -272,11 +28,11 @@ import {
   usePatients,
   useSessionDefinition,
   useConfigurations,
-} from "hooks";
+} from 'hooks';
 
 const initialValues = {
-  type: "Session",
-  patientId: "",
+  type: 'Session',
+  patientId: '',
   courseId: null,
   branchId: null,
   specialtyId: null,
@@ -286,15 +42,15 @@ const initialValues = {
   waiting: false,
   sendSMS: false,
 };
-const canAddPatient = (formValue) =>
-  formValue.type === "Examination" ? true : false;
+const canAddPatient = formValue =>
+  formValue.type === 'Examination' ? true : false;
 
 const searchBy = (text, _, patient) => {
   return filterPatientBy(text, patient);
 };
 
 const FormItemContainer = ({ children, className }) => (
-  <div className={`w-full sm:w-1/2 p-2 ${className ?? ""}`}>{children}</div>
+  <div className={`w-full sm:w-1/2 p-2 ${className ?? ''}`}>{children}</div>
 );
 
 const NewAppointment = ({
@@ -305,10 +61,10 @@ const NewAppointment = ({
   setFollowUp,
 }) => {
   const { visible, open, close } = useModal();
-  const [patientSearchValue, setPatientSearchValue] = useState("");
+  const [patientSearchValue, setPatientSearchValue] = useState('');
   const { t } = useTranslation();
   const { configurations } = useConfigurations();
-  const enableSMS = R.propOr(false, "enableSMS")(configurations);
+  const enableSMS = R.propOr(false, 'enableSMS')(configurations);
   const {
     formValue,
     setFormValue,
@@ -321,7 +77,7 @@ const NewAppointment = ({
   } = useNewAppointment({
     onCreate: () => {
       onHide();
-      setPatientSearchValue("");
+      setPatientSearchValue('');
     },
   });
   const { searchedPatients } = usePatients({
@@ -344,12 +100,12 @@ const NewAppointment = ({
     appointments: appointmentsCount?.appointments || [],
   });
 
-  const updatedPatientCourses = patientCourses.map((course) => ({
+  const updatedPatientCourses = patientCourses.map(course => ({
     name: course.name,
     IDBTransaction: course.id,
   }));
   const updatedSessionsDefinition = useMemo(() => {
-    return sessionsDefinition.map((s) => {
+    return sessionsDefinition.map(s => {
       return {
         name: s.name,
         id: s,
@@ -386,7 +142,7 @@ const NewAppointment = ({
   const handleCreate = useCallback(() => {
     setShow(true);
     if (!validate) {
-      Alert.error("Complete Required Fields");
+      Alert.error('Complete Required Fields');
       return;
     }
     const {
@@ -399,6 +155,7 @@ const NewAppointment = ({
       waiting,
       session,
       sendSMS,
+      referedDoctor,
     } = formValue;
 
     const timeDate = moment(formValue.time);
@@ -410,9 +167,9 @@ const NewAppointment = ({
 
     if (waiting) {
       date = moment(formValue.date).set({
-        hours: "13",
-        minute: "00",
-        second: "00",
+        hours: '13',
+        minute: '00',
+        second: '00',
       });
     }
     const sessionId = session?.id;
@@ -432,6 +189,7 @@ const NewAppointment = ({
       sendSMS,
       appointmentId,
       followUp,
+      referedDoctor,
     });
   }, [createAppointment, formValue, followUp, appointment]);
   return (
@@ -455,22 +213,22 @@ const NewAppointment = ({
         }}
       >
         <Modal.Header className="text-[1rem]">
-          {t("newAppointment")}
+          {t('newAppointment')}
         </Modal.Header>
         <Modal.Body>
           <div className="bg-sky-100 p-2">
             <p>
-              {t("totalAppointments")}:{" "}
+              {t('totalAppointments')}:{' '}
               {appointmentsCount.totalAppointment ?? 0}
             </p>
             <p>
-              {t("totalWaitingList")}: {appointmentsCount.totalWaiting ?? 0}
+              {t('totalWaitingList')}: {appointmentsCount.totalWaiting ?? 0}
             </p>
           </div>
           <Form fluid formValue={formValue} onChange={setFormValue}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                {formValue.type === "Course" && (
+                {formValue.type === 'Course' && (
                   <CRSelectInput
                     label="Course"
                     name="courseId"
@@ -479,7 +237,7 @@ const NewAppointment = ({
                     data={updatedPatientCourses}
                   />
                 )}
-                {formValue.type === "Session" && (
+                {formValue.type === 'Session' && (
                   <CRSelectInput
                     label="Session Name"
                     name="session"
@@ -498,15 +256,15 @@ const NewAppointment = ({
               </div>
               <div>
                 <CRSelectInput
-                  label={t("patient")}
-                  onSearch={(v) => {
+                  label={t('patient')}
+                  onSearch={v => {
                     if (v) {
                       setPatientSearchValue(v);
                     }
                   }}
                   placeholder="Name / Phone no"
                   data={returnedPatientsOfSearch}
-                  onChange={(val) =>
+                  onChange={val =>
                     setFormValue({ ...formValue, patientId: val })
                   }
                   value={formValue.patientId}
@@ -523,27 +281,27 @@ const NewAppointment = ({
                       className="cursor-pointer"
                       mt={2}
                     >
-                      {t("createNewPatient")}
+                      {t('createNewPatient')}
                     </H5>
                   </Div>
                 </CRSelectInput>
                 <CRDatePicker
-                  label={t("date")}
+                  label={t('date')}
                   block
                   name="date"
                   errorMessage={
-                    show && checkResult["date"]?.hasError
-                      ? checkResult["date"]?.errorMessage
-                      : ""
+                    show && checkResult['date']?.hasError
+                      ? checkResult['date']?.errorMessage
+                      : ''
                   }
                   disabledDate={isBeforeToday}
                 />
                 {!formValue.waiting && formValue?.userId && (
                   <CRTimePicker
-                    label={t("time")}
+                    label={t('time')}
                     block
                     name="time"
-                    disabledMinutes={(minute) =>
+                    disabledMinutes={minute =>
                       disabledMinutes(minute, moment(formValue.time).hours())
                     }
                     hideHours={hideHours}
@@ -557,17 +315,25 @@ const NewAppointment = ({
               <Checkbox
                 name="waiting"
                 value={true}
-                onChange={(val) => setFormValue({ ...formValue, waiting: val })}
+                onChange={val => setFormValue({ ...formValue, waiting: val })}
               >
-                {t("addToWaitingList")}
+                {t('addToWaitingList')}
               </Checkbox>
+              <Div display="flex" ml="30px" mt="3px">
+                <CRLabel>External</CRLabel>
+                <Toggle
+                  onChange={val =>
+                    setFormValue({ ...formValue, referedDoctor: val })
+                  }
+                  checked={formValue?.referedDoctor}
+                  style={{ margin: '5px' }}
+                />
+              </Div>
               {enableSMS && (
                 <Checkbox
                   name="sendSMS"
                   value={true}
-                  onChange={(val) =>
-                    setFormValue({ ...formValue, sendSMS: val })
-                  }
+                  onChange={val => setFormValue({ ...formValue, sendSMS: val })}
                 >
                   Send SMS
                 </Checkbox>
@@ -581,7 +347,7 @@ const NewAppointment = ({
             appearance="primary"
             className="min-w-[5rem]"
           >
-            {loading ? <Spinner /> : t("ok")}
+            {loading ? <Spinner /> : t('ok')}
           </CRButton>
           {/* <Button
             onClick={handleCreate}
@@ -597,7 +363,7 @@ const NewAppointment = ({
             }}
             appearance="subtle"
           >
-            {t("cancel")}
+            {t('cancel')}
           </Button>
         </Modal.Footer>
       </Modal>

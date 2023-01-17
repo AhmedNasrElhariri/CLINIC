@@ -1,7 +1,6 @@
 import { Div, CRSelectInput, CRButton } from 'components';
 import { Form } from 'rsuite';
-import { DoctorTypes } from 'utils/constants';
-const Filter = ({ filter, setFilter, doctors, t, onAddSessionToDoctor }) => {
+const Filter = ({ filter, setFilter, doctors, t, onAddPartToDoctor }) => {
   return (
     <Div
       display="flex"
@@ -21,17 +20,10 @@ const Filter = ({ filter, setFilter, doctors, t, onAddSessionToDoctor }) => {
             data={doctors}
             style={{ width: '200px', marginRight: '20px' }}
           />
-          <CRSelectInput
-            label={t('internal/external')}
-            name="referedDoctor"
-            block
-            data={DoctorTypes}
-            style={{ width: '200px', marginRight: '20px' }}
-          />
         </Div>
       </Form>
-      <CRButton onClick={onAddSessionToDoctor} mt="35px">
-        {t('addSessionToDoctor')}
+      <CRButton onClick={onAddPartToDoctor} mt="35px">
+        {t('addCoursePartToDoctor')}
       </CRButton>
     </Div>
   );

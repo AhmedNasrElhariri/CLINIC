@@ -22,6 +22,7 @@ import {
   GET_APPOINTMENT_HISTORY,
   CONFIRMED_APPOINTMENT,
   TRANSFER_APPOINTMENTS,
+  ARCHIVE_REFERED_DOCTORAPPOINTMENT,
 } from 'apollo-client/queries';
 
 import client from 'apollo-client/client';
@@ -162,6 +163,21 @@ function useAppointments({
       onError: ({ message }) => Alert.error(message),
     }
   );
+  const [
+    archiveReferedDoctorAppointment,
+    { loading: archiveReferedDoctorLoading },
+  ] = useMutation(ARCHIVE_REFERED_DOCTORAPPOINTMENT, {
+    onCompleted: () => {
+      Alert.success('Appointment has been Archived successfully');
+      onArchive && onArchive();
+    },
+    refetchQueries: [
+      {
+        query: LIST_TODAY_APPOINTMENTS,
+      },
+    ],
+    onError: ({ message }) => Alert.error(message),
+  });
   const [complete] = useMutation(COMPLETE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been Completed successfully');
@@ -172,16 +188,6 @@ function useAppointments({
         query: LIST_TODAY_APPOINTMENTS,
       },
     ],
-    // update(cache, { data: { completeAppointment: completeApp } }) {
-    //   const apps = todayAppointments.map((app) => {
-    //     if (app.id === completeApp.id) {
-    //       return { ...app, status: "Archived" };
-    //     } else {
-    //       return app;
-    //     }
-    //   });
-    //   updateCacheTwo(apps);
-    // },
   });
   const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
     onCompleted: () => {
@@ -295,6 +301,7 @@ function useAppointments({
       adjust,
       cancel,
       transferAppointments,
+      archiveReferedDoctorAppointment,
     }),
     [
       appointments,
@@ -313,6 +320,7 @@ function useAppointments({
       adjust,
       cancel,
       transferAppointments,
+      archiveReferedDoctorAppointment,
     ]
   );
 }

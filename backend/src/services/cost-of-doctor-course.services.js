@@ -5,54 +5,43 @@ const createAppointmentDoctorCost = async data => {
 };
 const createCostOfDoctorsFromAppointment = (
   userId,
-  sessions,
+  parts,
   organizationId,
   branchId,
-  date,
   specialtyId,
-  userID,
-  doctorSessions,
-  id,
-  referedStatus
+  doctorId,
+  doctorParts
 ) => {
-  let newSessions = [];
-  sessions.forEach(({ name, price, number, cost, id: sessionID }) => {
-    const doctorSession = doctorSessions.find(
-      ({ sessionId }) => sessionId === sessionID
-    );
+  let newParts = [];
+  parts.forEach(({ name, price, number, cost, id: partID }) => {
+    const doctorPart = doctorParts.find(({ partId }) => partId === partID);
 
-    if (doctorSession) {
-      const {
-        feesCalculationMethod,
-        feesCalculationType,
-        fees,
-      } = doctorSession;
+    if (doctorPart) {
+      const { feesCalculationMethod, feesCalculationType, fees } = doctorPart;
       const doctorFees =
         feesCalculationType === 'fixed'
-          ? fees
+          ? fees * number
           : feesCalculationMethod === 'before'
           ? price * number * (fees / 100)
           : (price * number - (cost ? cost : 0)) * (fees / 100);
-      const session = Object.assign(
+      const part = Object.assign(
         {
           name: name,
           amount: doctorFees,
           status: 'Draft',
           organizationId,
           userId,
-          sessionId: sessionID,
-          appointmentId: id,
+          partId: partID,
         },
         cost && { cost },
         specialtyId && { specialtyId },
         branchId && { branchId },
-        userID && { doctorId: userID },
-        referedStatus && { referedStatus: referedStatus }
+        doctorId && { doctorId: doctorId }
       );
-      newSessions.push(session);
+      newParts.push(part);
     }
   });
-  return newSessions;
+  return newParts;
 };
 
 export const CostServices = async (
@@ -60,29 +49,24 @@ export const CostServices = async (
   sessions,
   organizationId,
   branchId,
-  date,
   specialtyId,
-  userID,
-  id,
-  referedStatus
+  doctorId
 ) => {
-  const doctorSessions = await prisma.doctorSessionDefination.findMany({
-    where: { doctorId: userID },
+  const parts = sessions;
+  const doctorParts = await prisma.doctorCoursePartDefination.findMany({
+    where: { doctorId: doctorId },
   });
 
-  doctorSessions.length > 0 &&
+  doctorParts.length > 0 &&
     (await createAppointmentDoctorCost(
       createCostOfDoctorsFromAppointment(
         userId,
-        sessions,
+        parts,
         organizationId,
         branchId,
-        date,
         specialtyId,
-        userID,
-        doctorSessions,
-        id,
-        referedStatus
+        doctorId,
+        doctorParts
       )
     ));
 };

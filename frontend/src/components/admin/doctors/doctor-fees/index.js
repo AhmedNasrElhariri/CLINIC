@@ -23,7 +23,11 @@ const DoctorFees = () => {
   const { visible, open, close } = useModal();
   const [formValue, setFormValue] = useState(initialFormValue);
   const [type, setType] = useState('');
-  const [filter, setFilter] = useState({ doctorId: null, status: 'Draft' });
+  const [filter, setFilter] = useState({
+    doctorId: null,
+    status: 'Draft',
+    type: 'Debit',
+  });
   const [period, setPeriod] = useState([]);
   const [checkedKeys, setCheckedKeys] = useState([]);
   const { sessionsDefinition } = useSessionDefinition({});
@@ -47,6 +51,7 @@ const DoctorFees = () => {
     dateFrom: period && period[0],
     dateTo: period && period[1],
     status: filter?.status,
+    type: filter?.type,
     page: currentPage,
   });
   const pages = Math.ceil(doctorFeesCount / 20);
