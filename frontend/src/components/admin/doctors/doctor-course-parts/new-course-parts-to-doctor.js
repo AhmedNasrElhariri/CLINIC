@@ -31,7 +31,7 @@ export default function NewPart({
     >
       <Form fluid formValue={formValue} onChange={onChange}>
         {type === 'delete' ? (
-          <H3>Are you sure that you want delete the part to doctor?</H3>
+          <H3>Are you sure that you want to delete this record ?</H3>
         ) : (
           <>
             <CRSelectInput
@@ -53,7 +53,7 @@ export default function NewPart({
             <CRRadio
               options={feesCalTypes}
               name="feesCalculationType"
-              label="fees Calculation Type"
+              label={t('feesCalculationType')}
             />
             {formValue.feesCalculationType === 'percentage' && (
               <CRRadio

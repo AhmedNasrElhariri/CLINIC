@@ -20,7 +20,8 @@ import {
   TOTAL_UNPAID_OF_COURSES,
   LIST_COURSE_UNITS_HISTORY,
   EDIT_COURSE_UNIT_HISTORY,
-  EDIT_COURSE_WITH_DOCTOR_FEES
+  EDIT_COURSE_WITH_DOCTOR_FEES,
+  LIST_COURSE_PARTS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -104,6 +105,14 @@ function useCourses({
   const totalUnpaidOfCourses = useMemo(
     () => R.propOr({}, 'totalUnpaidOfCourses')(totalUnpaidOfCoursesData),
     [totalUnpaidOfCoursesData]
+  );
+
+  const { data: coursePartsData } = useQuery(LIST_COURSE_PARTS, {
+    variables: { courseId },
+  });
+  const courseParts = useMemo(
+    () => R.propOr([], 'courseParts')(coursePartsData),
+    [coursePartsData]
   );
 
   const [addCourse, { loading }] = useMutation(ADD_COURSE, {
@@ -385,13 +394,15 @@ function useCourses({
         variables: { courseId: courseId },
       },
       {
+        query: LIST_COURSE_UNITS_HISTORY,
+        variables: { courseId: courseId },
+      },
+      {
         query: LIST_REVENUES,
       },
     ],
-    onError() {
-      Alert.error('Failed to edit the Course');
-    },
-  }); 
+    onError: ({ message }) => Alert.error(message),
+  });
   return useMemo(
     () => ({
       courses,
@@ -411,7 +422,8 @@ function useCourses({
       totalUnpaidOfCourses,
       courseUnitsHistory,
       editCourseUnitHistory,
-      paidCourseWithDoctorFees
+      paidCourseWithDoctorFees,
+      courseParts,
     }),
     [
       courses,
@@ -430,7 +442,8 @@ function useCourses({
       totalUnpaidOfCourses,
       courseUnitsHistory,
       editCourseUnitHistory,
-      paidCourseWithDoctorFees
+      paidCourseWithDoctorFees,
+      courseParts,
     ]
   );
 }

@@ -451,6 +451,7 @@ type Query {
     type: ReferedStatus
   ): DoctorFeesData!
   doctorCoursePartsDefinations(doctorId: ID!): [DoctorCoursePartDefination!]
+  courseParts(courseId: ID!): [CoursePart]
 }
 
 ########################### Mutation ##################################
@@ -760,8 +761,8 @@ type Mutation {
   ): DoctorCoursePartDefination
   paidCourseWithDoctorFees(
     courseId: ID!
-    paid: Int!
-    visaPaid: Int
+    paid: Float!
+    visaPaid: Float
     branchId: ID
     specialtyId: ID
     userId: ID
@@ -1355,6 +1356,8 @@ input SessionInput {
   patientFees: Int
   cost: Int
   feesCalType: FeesCalculationType
+  totalPrice: Int
+  partID: ID
 }
 
 input Discount {
@@ -2332,7 +2335,7 @@ type Course {
   name: String
   units: Int
   type: String
-  paid: Int!
+  paid: Float!
   consumed: Int!
   discount: Int!
   startDate: Date!
@@ -2353,7 +2356,7 @@ input CourseInput {
   price: Int!
   customName: String
   customUnits: Int
-  paid: Int
+  paid: Float
   consumed: Int
   discount: Int
   patientId: ID!
@@ -2364,11 +2367,12 @@ input CourseInput {
   specialtyId: ID
   userId: ID
   bank: ID
+  selectedParts: [SessionInput]
 }
 
 type CoursePayment {
   id: ID!
-  payment: Int!
+  payment: Float!
   type: String!
   date: Date!
   user: User!
@@ -2499,4 +2503,14 @@ input ReferedDoctorInput {
   doctorId: ID!
   branchId: ID
   specialtyId: ID
+}
+
+################course part#################
+type CoursePart {
+  id: ID
+  totalUnits: Int
+  remainingUnits: Int
+  unitPrice: Float
+  course: Course
+  part: CourseTypeDefinition
 }

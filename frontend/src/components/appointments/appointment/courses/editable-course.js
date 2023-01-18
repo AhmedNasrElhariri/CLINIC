@@ -26,13 +26,22 @@ function EditableCourse({
   paidSessions,
   setPaidSessions,
   t,
+  courseParts,
 }) {
-  const { courseTypesDefinition } = useCourseTypeDefinition({});
+  // const { courseTypesDefinition } = useCourseTypeDefinition({});
   const { banksDefinition } = useBankDefinition({});
   const choices = useMemo(() => {
-    const allChoices = [...courseTypesDefinition];
-    return allChoices.map(s => ({ name: s.name, id: s }));
-  }, [courseTypesDefinition]);
+    const newParts = courseParts.map(cp => {
+      const val = {
+        id: cp.id,
+        name: cp.part.name,
+        price: cp.unitPrice,
+        partID: cp.part.id,
+      };
+      return { id: val, name: cp.part.name };
+    });
+    return newParts;
+  }, [courseParts]);
   useEffect(() => {
     const sum = paidSessions.reduce(
       (sum, { price, number }) => sum + number * price,

@@ -162,6 +162,20 @@ export const LIST_COURSE_UNITS_HISTORY = gql`
     }
   }
 `;
+export const LIST_COURSE_PARTS = gql`
+  query ($courseId: ID!) {
+    courseParts(courseId: $courseId) {
+      id
+      unitPrice
+      remainingUnits
+      totalUnits
+      part {
+        name
+        id
+      }
+    }
+  }
+`;
 export const TOTAL_UNPAID_OF_COURSES = gql`
   {
     totalUnpaidOfCourses {
@@ -196,6 +210,7 @@ export const EDIT_COURSE = gql`
     $paid: Int!
     $visaPaid: Int
     $bank: ID
+    $parts: [sessionInput]
   ) {
     editCourse(
       courseId: $courseId
@@ -205,6 +220,7 @@ export const EDIT_COURSE = gql`
       specialtyId: $specialtyId
       userId: $userId
       bank: $bank
+      parts: $parts
     ) {
       id
       price
@@ -225,8 +241,8 @@ export const EDIT_COURSE_WITH_DOCTOR_FEES = gql`
     $branchId: ID
     $specialtyId: ID
     $userId: ID
-    $paid: Int!
-    $visaPaid: Int
+    $paid: Float!
+    $visaPaid: Float
     $bank: ID
     $sessions: [SessionInput]
   ) {

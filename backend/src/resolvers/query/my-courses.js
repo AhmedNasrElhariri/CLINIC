@@ -28,29 +28,7 @@ const myCourses = async (
       : status === 'Cancelled'
       ? ['Cancelled', 'Rejected']
       : ['InProgress', 'InProgress'];
-  // const courses = await prisma.course.findMany({
-  //   where: Object.assign(
-  //     {
-  //       patient: {
-  //         organization: {
-  //           id: organizationId,
-  //         },
-  //       },
-  //     },
-  //     patientId && { patientId: patientId },
-  //     status && { status: status },
-  //     courseId && {
-  //       courseDefinition: {
-  //         id: courseId,
-  //       },
-  //     }
-  //   ),
-  //   orderBy: {
-  //     paid: sortType,
-  //   },
-  //   skip: offset,
-  //   take: limit,
-  // });
+
   const courses = await prisma.$queryRaw`SELECT C."id" As "courseId" FROM public."Course" AS C INNER JOIN public."Patient" AS P on C."patientId" = P."id"   WHERE P."organizationId" = ${organizationId} AND (CASE WHEN ${patientId} like '_%' THEN P."id" = ${patientId} ELSE P."id" like '_%' END) AND  (CASE WHEN ${status} like '_%' THEN (C."status"::text = ${newStatus[0]} OR C."status"::text = ${newStatus[1]}) ELSE C."status" = 'InProgress' END) ORDER BY (C.price - C.paid) DESC LIMIT ${limit} OFFSET ${offset}`;
 
   let coursesIds = [];

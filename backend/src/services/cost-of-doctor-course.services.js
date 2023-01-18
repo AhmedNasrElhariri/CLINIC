@@ -13,7 +13,7 @@ const createCostOfDoctorsFromAppointment = (
   doctorParts
 ) => {
   let newParts = [];
-  parts.forEach(({ name, price, number, cost, id: partID }) => {
+  parts.forEach(({ name, price, number, cost, partID }) => {
     const doctorPart = doctorParts.find(({ partId }) => partId === partID);
 
     if (doctorPart) {

@@ -39,7 +39,7 @@ export default function NewSession({
     >
       <Form fluid formValue={formValue} onChange={onChange}>
         {type === 'delete' ? (
-          <H3>Are you sure that you want delete the session to doctor?</H3>
+          <H3>Are you sure that you want to delete this record?</H3>
         ) : (
           <>
             <CRSelectInput

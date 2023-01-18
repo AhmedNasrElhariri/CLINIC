@@ -64,6 +64,7 @@ const Course = ({ patientId }) => {
     finishCourse,
     editCourseUnitHistory,
     paidCourseWithDoctorFees,
+    courseParts,
   } = useCourses({
     onCreate: () => {
       close();
@@ -249,6 +250,7 @@ const Course = ({ patientId }) => {
         userId,
         branchId,
         bank: bank,
+        selectedParts: selectedSessions,
       };
       addCourse({
         variables: {
@@ -355,6 +357,7 @@ const Course = ({ patientId }) => {
     bank,
     paidSessions,
     paidCourseWithDoctorFees,
+    selectedSessions,
   ]);
   const InprogressCourses = useMemo(
     () => patientCourses.filter(c => c.status === 'InProgress'),
@@ -545,6 +548,7 @@ const Course = ({ patientId }) => {
           paidSessions={paidSessions}
           setPaidSessions={setPaidSessions}
           t={t}
+          courseParts={courseParts}
         />
       )}
     </>

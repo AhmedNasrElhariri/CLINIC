@@ -68,15 +68,16 @@ const CourseData = ({
             {t('pay')}
           </CRButton>
         )}
-        {course.price > course.paid && course.status === 'InProgress' && (
-          <CRButton
-            variant="primary"
-            mr={1}
-            onClick={() => onEditPaidWithDoctorFees(course)}
-          >
-            {t('payWithDoctorFees')}
-          </CRButton>
-        )}
+        {(course.price > course.paid || course.units - course.consumed > 0) &&
+          course.status === 'InProgress' && (
+            <CRButton
+              variant="primary"
+              mr={1}
+              onClick={() => onEditPaidWithDoctorFees(course)}
+            >
+              {t('payConsume')}
+            </CRButton>
+          )}
         {(course.type === 'Perunit' || course.type === 'Custom') && (
           <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
             {t('consumeUnits')}

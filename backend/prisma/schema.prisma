@@ -318,6 +318,7 @@ model Organization {
   DoctorSessionDefination    DoctorSessionDefination[]
   doctorFees                 DoctorFees[]
   DoctorCoursePartDefination DoctorCoursePartDefination[]
+  CoursePart                 CoursePart[]
 }
 
 model User {
@@ -1314,6 +1315,7 @@ model CourseTypeDefinition {
   organizationId             String
   DoctorCoursePartDefination DoctorCoursePartDefination[]
   DoctorFees                 DoctorFees[]
+  CoursePart                 CoursePart[]
 }
 
 model Points {
@@ -1450,7 +1452,7 @@ model Course {
   price              Int
   customName         String?
   customUnits        Int?
-  paid               Int
+  paid               Float
   consumed           Int                  @default(0)
   discount           Int
   startDate          DateTime
@@ -1469,11 +1471,12 @@ model Course {
   updatedAt          DateTime             @default(now()) @updatedAt
   CoursePayment      CoursePayment[]
   CourseUnitsHistory CourseUnitsHistory[]
+  CoursePart         CoursePart[]
 }
 
 model CoursePayment {
   id          String     @id @default(uuid())
-  payment     Int
+  payment     Float
   date        DateTime
   type        String     @default("Payment")
   user        User       @relation("coursePaymentUser", fields: [userId], references: [id])
@@ -1800,4 +1803,17 @@ model DoctorCoursePartDefination {
   organizationId        String
 
   @@unique([partId, doctorId], name: "partId_doctorId_coursrePart_unique_constraint")
+}
+
+model CoursePart {
+  id             String               @id @default(uuid())
+  totalUnits     Int
+  remainingUnits Int
+  unitPrice      Float
+  course         Course               @relation(fields: [courseId], references: [id])
+  courseId       String
+  part           CourseTypeDefinition @relation(fields: [partId], references: [id])
+  partId         String
+  organization   Organization         @relation(fields: [organizationId], references: [id])
+  organizationId String
 }

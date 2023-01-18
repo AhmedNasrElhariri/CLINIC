@@ -434,8 +434,8 @@ export const TRANSLATIONS_EN = {
   views: 'Views',
   tagName: 'Tag Name',
   addSessionToDoctor: 'Add session to doctor',
-  feesCalculationType: 'fees calculation type',
-  feesCalculationMethod: 'fees calculation method',
+  feesCalculationType: 'Fees calculation type',
+  feesCalculationMethod: 'Fees calculation method',
   newSession: 'New Session',
   deleteSession: 'Delete session',
   insuranceDebit: 'Insurance Debit',
@@ -457,4 +457,6 @@ export const TRANSLATIONS_EN = {
   deleteCoursePart: 'delete Course Part',
   newCoursePart: 'new Course Part',
   addCoursePartToDoctor: 'Add Course Part To Doctor',
+  part: 'Part',
+  payConsume:'Pay/Consume'
 };

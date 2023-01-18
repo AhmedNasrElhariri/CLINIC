@@ -134,10 +134,25 @@ function NewCourse({
       setSessionPrice(session.price);
     }
   }, [session]);
-  useEffect(() => {
-    setTotalPrice(sessionNumber * sessionPrice);
-  }, [sessionPrice, sessionNumber]);
-
+  const handleChangeSessionInputs = useCallback(
+    (value, type) => {
+      if (type === 'Number') {
+        setSessionNumber(value);
+        setTotalPrice(value * sessionPrice);
+      } else {
+        setTotalPrice(value);
+        setSessionPrice(value / sessionNumber);
+      }
+    },
+    [
+      sessionPrice,
+      totalPrice,
+      sessionNumber,
+      setTotalPrice,
+      setSessionPrice,
+      setSessionNumber,
+    ]
+  );
   useEffect(() => {
     onChange(formValue);
   }, [formValue, onChange]);
@@ -248,7 +263,7 @@ function NewCourse({
                       label={t('number')}
                       name="sessionsNumber"
                       value={sessionNumber}
-                      onChange={setSessionNumber}
+                      onChange={v => handleChangeSessionInputs(v, 'Number')}
                       style={{ width: '50px' }}
                     ></CRNumberInput>
                     <CRNumberInput
@@ -262,7 +277,7 @@ function NewCourse({
                       label={t('totalPrice')}
                       name="partTotalPrice"
                       value={totalPrice}
-                      onChange={setTotalPrice}
+                      onChange={v => handleChangeSessionInputs(v, 'TotalPrice')}
                       style={{ width: '70px' }}
                     ></CRNumberInput>
                   </Div>

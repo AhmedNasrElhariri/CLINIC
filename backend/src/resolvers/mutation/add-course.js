@@ -5,6 +5,10 @@ import {
   COURSE_STATUS,
 } from '@/utils/constants';
 import { GetLevel } from '@/services/get-level';
+import {
+  createCourseParts,
+  createCoursePartsFromCourse,
+} from '@/services/create-courrse-parts';
 const addCourse = async (_, { course }, { userId, organizationId }) => {
   const {
     patientId,
@@ -20,6 +24,7 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
     specialtyId,
     userId: userID,
     bank,
+    selectedParts,
   } = course;
   const level = GetLevel(branchId, specialtyId, userID);
   const startDate = sessions.length > 0 ? sessions[0] : new Date();
@@ -143,6 +148,12 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
       },
     });
     cName = customName;
+  }
+  if (selectedParts) {
+    const courseId = courseDef.id;
+    await createCourseParts(
+      createCoursePartsFromCourse(selectedParts, courseId, organizationId)
+    );
   }
   await prisma.coursePayment.create({
     data: {
