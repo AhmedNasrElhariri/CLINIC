@@ -210,7 +210,6 @@ export const EDIT_COURSE = gql`
     $paid: Int!
     $visaPaid: Int
     $bank: ID
-    $parts: [sessionInput]
   ) {
     editCourse(
       courseId: $courseId
@@ -220,7 +219,6 @@ export const EDIT_COURSE = gql`
       specialtyId: $specialtyId
       userId: $userId
       bank: $bank
-      parts: $parts
     ) {
       id
       price

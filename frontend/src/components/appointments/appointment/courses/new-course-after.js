@@ -119,6 +119,7 @@ function NewCourse({
   const [session, setSession] = useState({});
   const [sessionNumber, setSessionNumber] = useState(1);
   const [sessionPrice, setSessionPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const { coursesDefinitions } = useCoursesDefinition();
   const { banksDefinition } = useBankDefinition({});
   const { courseTypesDefinition } = useCourseTypeDefinition({});
@@ -133,7 +134,25 @@ function NewCourse({
       setSessionPrice(session.price);
     }
   }, [session]);
-
+  const handleChangeSessionInputs = useCallback(
+    (value, type) => {
+      if (type === 'Number') {
+        setSessionNumber(value);
+        setTotalPrice(value * sessionPrice);
+      } else {
+        setTotalPrice(value);
+        setSessionPrice(value / sessionNumber);
+      }
+    },
+    [
+      sessionPrice,
+      totalPrice,
+      sessionNumber,
+      setTotalPrice,
+      setSessionPrice,
+      setSessionNumber,
+    ]
+  );
   useEffect(() => {
     onChange(formValue);
   }, [formValue, onChange]);
@@ -190,6 +209,7 @@ function NewCourse({
       ...session,
       number: sessionNumber,
       price: sessionPrice,
+      totalPrice: totalPrice,
     };
     setSelectedSessions([...selectedSessions, updatedSession]);
   }, [
@@ -199,6 +219,7 @@ function NewCourse({
     sessionPrice,
     selectedSessions,
     session,
+    totalPrice,
   ]);
   const handleDelete = useCallback(
     idx => {
@@ -224,7 +245,7 @@ function NewCourse({
           <>
             <CRRadio options={courseTypes} name="courseType" />
             {formValue.courseType === 'custom' ? (
-              <Div width={500} mr={20}>
+              <Div mr={20}>
                 <Form fluid>
                   <CRButton onClick={() => add()}>{t('add')}</CRButton>
                   <Div display="flex" justifyContent="space-around">
@@ -242,7 +263,7 @@ function NewCourse({
                       label={t('number')}
                       name="sessionsNumber"
                       value={sessionNumber}
-                      onChange={setSessionNumber}
+                      onChange={v => handleChangeSessionInputs(v, 'Number')}
                       style={{ width: '50px' }}
                     ></CRNumberInput>
                     <CRNumberInput
@@ -250,6 +271,13 @@ function NewCourse({
                       name="coursePartPrice"
                       value={sessionPrice}
                       onChange={setSessionPrice}
+                      style={{ width: '70px' }}
+                    ></CRNumberInput>
+                    <CRNumberInput
+                      label={t('totalPrice')}
+                      name="partTotalPrice"
+                      value={totalPrice}
+                      onChange={v => handleChangeSessionInputs(v, 'TotalPrice')}
                       style={{ width: '70px' }}
                     ></CRNumberInput>
                   </Div>
@@ -267,10 +295,6 @@ function NewCourse({
                     onDelete={handleDelete}
                   />
                 </Div>
-                <CRNumberInput
-                  label={t('units')}
-                  name="customUnits"
-                ></CRNumberInput>
               </Div>
             ) : (
               <>
@@ -444,11 +468,7 @@ function NewCourse({
               title={t('consumedUnits')}
             />
             {(type === 'addNewUnits' || type === 'editUnitsTransactions') && (
-              <CRTextInput
-                label={t('notes')}
-                name="notes"
-                title={t('notes')}
-              />
+              <CRTextInput label={t('notes')} name="notes" title={t('notes')} />
             )}
           </>
         ) : type === 'finishCourse' ? (

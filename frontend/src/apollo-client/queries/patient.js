@@ -36,6 +36,8 @@ export const EDIT_PATIENT = gql`
       patientLevel
       email
       patientId
+      cardId
+      cardExpiryDate
     }
   }
 `;

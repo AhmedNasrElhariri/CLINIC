@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CRCard, H3,Div } from 'components';
+import { CRCard, H3, Div } from 'components';
 import EditPatient from '../edit-patient';
 import {
   PatientInfoStyled,
@@ -11,6 +11,8 @@ import {
   EditButton,
 } from './style';
 import { useTranslation } from 'react-i18next';
+import { formatDate } from 'utils/date';
+
 
 const PatientInfo = ({ patient }) => {
   const { t } = useTranslation();
@@ -20,7 +22,7 @@ const PatientInfo = ({ patient }) => {
         <Cell height={64}>
           <H3>{t('information')}</H3>
           <EditPatient patient={patient} editName={t('edit')} />
-          <EditButton>{t('expand')}</EditButton>
+          {/* <EditButton>{t('expand')}</EditButton> */}
         </Cell>
         <Cell>
           <CellTitle>{t('name')}</CellTitle>
@@ -59,8 +61,12 @@ const PatientInfo = ({ patient }) => {
           <AddressStyled>{patient.area}</AddressStyled>
         </Cell>
         <Cell>
-          <CellTitle>{t('patientId')}</CellTitle>
-          <AddressStyled>{patient.patientId}</AddressStyled>
+          <CellTitle>{t('cardNumber')}</CellTitle>
+          <AddressStyled>{patient.cardId}</AddressStyled>
+        </Cell>
+        <Cell>
+          <CellTitle>{t('cardExpiryDate')}</CellTitle>
+          <AddressStyled>{formatDate(patient.cardExpiryDate)}</AddressStyled>
         </Cell>
         <Cell>
           <CellTitle>{t('reference')}</CellTitle>

@@ -134,16 +134,16 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType]
   );
-  const handleEditPaidWithDoctorFees = useCallback(
-    data => {
-      const course = R.pick(['id', 'consumed'])(data);
-      setType('editPaidWithDoctorFees');
-      setHeader(t('editPaidWithDoctorFees'));
-      setFormValue({ ...course, paid: 0, visaPaid: 0 });
-      open();
-    },
-    [open, setFormValue, setType]
-  );
+  // const handleEditPaidWithDoctorFees = useCallback(
+  //   data => {
+  //     const course = R.pick(['id', 'consumed'])(data);
+  //     setType('editPaidWithDoctorFees');
+  //     setHeader(t('editPaidWithDoctorFees'));
+  //     setFormValue({ ...course, paid: 0, visaPaid: 0 });
+  //     open();
+  //   },
+  //   [open, setFormValue, setType]
+  // );
   const handleClickEditHistoryPayment = useCallback(
     data => {
       const course = R.pick(['id', 'paid', 'paymentId'])(data);
@@ -224,8 +224,12 @@ const Course = ({ patientId }) => {
         price = course.price;
         courseId = course.id;
       } else {
+        // price = selectedSessions.reduce(
+        //   (sum, { price, number, totalPrice }) => sum + totalPrice,
+        //   0
+        // );
         price = selectedSessions.reduce(
-          (sum, { price, number, totalPrice }) => sum + totalPrice,
+          (sum, { price, number }) => sum + price * number,
           0
         );
         totalUnits = selectedSessions.reduce(
@@ -411,7 +415,7 @@ const Course = ({ patientId }) => {
                       courses={InprogressCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
-                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
+                      // onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -452,7 +456,7 @@ const Course = ({ patientId }) => {
                       courses={FinishedCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
-                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
+                      // onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -493,7 +497,7 @@ const Course = ({ patientId }) => {
                       courses={CancelledCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
-                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
+                      // onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -530,7 +534,7 @@ const Course = ({ patientId }) => {
           setSelectedSessions={setSelectedSessions}
         />
       )}
-      {type === 'editPaidWithDoctorFees' && (
+      {/* {type === 'editPaidWithDoctorFees' && (
         <EditableCourse
           visible={visible}
           formValue={formValue}
@@ -550,7 +554,7 @@ const Course = ({ patientId }) => {
           t={t}
           courseParts={courseParts}
         />
-      )}
+      )} */}
     </>
   );
 };

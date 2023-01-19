@@ -107,11 +107,11 @@ export default memo(function SideContent({
         name: 'logging',
         icon: HistoryOutlined,
       },
-      {
-        path: '/doctors',
-        name: 'Doctors',
-        icon: PoundOutlined,
-      },
+      // {
+      //   path: '/doctors',
+      //   name: 'Doctors',
+      //   icon: PoundOutlined,
+      // },
     ],
     [toggleAddAppointment, toggleAddPatient]
   );
