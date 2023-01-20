@@ -103,6 +103,7 @@ const InsuranceDebitContainer = () => {
     revertInsurance,
     refuseInsurance,
     addNewInsurance,
+    editInsurance
   } = useInsuranceAccounting({
     view,
     period,
@@ -123,6 +124,15 @@ const InsuranceDebitContainer = () => {
     setType('addNewInsurance');
     setFormValue(initialFormValue);
   }, [open, setType, setFormValue]);
+  const handleEditInsurance = useCallback(
+    data => {
+      const insurance = R.pick(['id', 'name', 'amount'])(data);
+      setType('edit');
+      setFormValue({ ...insurance, totalAmount: insurance.amount });
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleGatherInsurance = useCallback(() => {
     gatherInsurance({
       variables: {
@@ -152,8 +162,18 @@ const InsuranceDebitContainer = () => {
     const { patientSearchValue, ...rest } = formValue;
     if (type === 'addNewInsurance') {
       addNewInsurance({ variables: { insurance: rest } });
+    } else {
+      editInsurance({
+        variables: {
+          insurance: {
+            id: formValue.id,
+            name: formValue.name,
+            amount: formValue.totalAmount,
+          },
+        },
+      });
     }
-  }, [addNewInsurance, type, formValue]);
+  }, [addNewInsurance,editInsurance, type, formValue]);
 
   const handleInsurranceReport = () => {
     axios({
@@ -292,6 +312,7 @@ const InsuranceDebitContainer = () => {
                 pages={insurancePages}
                 checkedKeys={checkedKeys}
                 setCheckedKeys={setCheckedKeys}
+                onEditInsurance={handleEditInsurance}
               />
               <Profit expenses={0} revenues={totalInsuranceDebit} />
             </Div>

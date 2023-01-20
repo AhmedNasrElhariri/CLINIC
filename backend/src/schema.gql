@@ -755,6 +755,7 @@ type Mutation {
   refuseInsurance(refuseInsuranceData: GatherDoctorFeesDataInput!): Boolean
   addNewwDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
   addNewInsurance(insurance: InsuranceInput): InsuranceTransaction
+  editInsurance(insurance: InsuranceEditInput): InsuranceTransaction
   archiveReferedDoctorAppointment(data: ReferedDoctorInput!): Boolean
   addCoursePartToDoctor(
     doctorCoursePart: DoctorCoursePartDefinationInput
@@ -1702,6 +1703,11 @@ input InsuranceInput {
   bankId: ID
   feesCalculationType: FeesCalculationType
   paymentMethod: PaymentMethod
+}
+input InsuranceEditInput {
+  id: ID!
+  name: String
+  amount: Int
 }
 input RevenueInput {
   name: String!

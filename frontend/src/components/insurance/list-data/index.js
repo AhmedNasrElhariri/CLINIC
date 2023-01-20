@@ -22,13 +22,13 @@ const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
 const ListData = ({
   title,
   data,
-  onEdit,
   canEdit,
   currentPage,
   setCurrentPage,
   pages,
   checkedKeys,
   setCheckedKeys,
+  onEditInsurance,
 }) => {
   const { t } = useTranslation();
   let checked = false;
@@ -131,14 +131,12 @@ const ListData = ({
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        {canEdit && (
-          <CRTable.CRColumn width={35}>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => <Icon icon="edit" onClick={() => onEdit(data)} />}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        )}
+        <CRTable.CRColumn width={35}>
+          <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {data => <Icon icon="edit" onClick={() => onEditInsurance(data)} />}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
       </CRTable>
       <CRTable.CRPagination
         lengthMenu={[

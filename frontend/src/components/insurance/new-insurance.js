@@ -28,7 +28,7 @@ const NewInsurance = ({
   t,
 }) => {
   const header = useMemo(() =>
-    type === 'addNewInsurance' ? t('addNewInsurance') : t('adddNewInsurance')
+    type === 'addNewInsurance' ? t('addNewInsurance') : t('editInsurance')
   );
 
   return (
@@ -46,77 +46,82 @@ const NewInsurance = ({
           name="totalAmount"
           block
         ></CRNumberInput>
-        <CRNumberInput
-          label={t('patientFees')}
-          name="patientFees"
-          block
-        ></CRNumberInput>
-        <CRRadio
-          options={feesCalTypes}
-          name="feesCalculationType"
-          label="Fixed/Percentage"
-        />
-        <CRNumberInput
-          label={t('doctorFees')}
-          name="doctorFees"
-          block
-        ></CRNumberInput>
-        <CRDatePicker label={t('date')} name="date" block></CRDatePicker>
-        <CRSelectInput
-          name="companyId"
-          label={t('company')}
-          labelKey="name"
-          valueKey="id"
-          block
-          data={companysDefinition}
-        />
-        <CRSelectInput
-          name="doctorId"
-          label={t('doctor')}
-          labelKey="name"
-          valueKey="id"
-          block
-          data={doctors}
-        />
-        <CRSelectInput
-          label={t('patient')}
-          name="patientId"
-          labelKey="name"
-          valueKey="id"
-          onSearch={v => {
-            if (v) {
-              onChange({ ...formValue, patientSearchValue: v });
-            }
-          }}
-          placeholder="Name / Phone no"
-          data={searchedPatients}
-          searchBy={searchBy}
-          virtualized={false}
-          block
-        ></CRSelectInput>
-        <CRSelectInput
-          label={t('paymentMethod')}
-          name="paymentMethod"
-          data={paymentMthod}
-          placeholder={t('select')}
-          block
-        />
-        {formValue.paymentMethod === 'visa' && (
-          <CRSelectInput
-            label={t('bank')}
-            name="bankId"
-            data={banksDefinition}
-            labelKey="name"
-            valueKey="id"
-            placeholder={t('select')}
-            block
-          />
+        {type === 'addNewInsurance' && (
+          <>
+            {' '}
+            <CRNumberInput
+              label={t('patientFees')}
+              name="patientFees"
+              block
+            ></CRNumberInput>
+            <CRRadio
+              options={feesCalTypes}
+              name="feesCalculationType"
+              label="Fixed/Percentage"
+            />
+            <CRNumberInput
+              label={t('doctorFees')}
+              name="doctorFees"
+              block
+            ></CRNumberInput>
+            <CRDatePicker label={t('date')} name="date" block></CRDatePicker>
+            <CRSelectInput
+              name="companyId"
+              label={t('company')}
+              labelKey="name"
+              valueKey="id"
+              block
+              data={companysDefinition}
+            />
+            <CRSelectInput
+              name="doctorId"
+              label={t('doctor')}
+              labelKey="name"
+              valueKey="id"
+              block
+              data={doctors}
+            />
+            <CRSelectInput
+              label={t('patient')}
+              name="patientId"
+              labelKey="name"
+              valueKey="id"
+              onSearch={v => {
+                if (v) {
+                  onChange({ ...formValue, patientSearchValue: v });
+                }
+              }}
+              placeholder="Name / Phone no"
+              data={searchedPatients}
+              searchBy={searchBy}
+              virtualized={false}
+              block
+            ></CRSelectInput>
+            <CRSelectInput
+              label={t('paymentMethod')}
+              name="paymentMethod"
+              data={paymentMthod}
+              placeholder={t('select')}
+              block
+            />
+            {formValue.paymentMethod === 'visa' && (
+              <CRSelectInput
+                label={t('bank')}
+                name="bankId"
+                data={banksDefinition}
+                labelKey="name"
+                valueKey="id"
+                placeholder={t('select')}
+                block
+              />
+            )}
+            <CRBrancheTree
+              formValue={formValue}
+              onChange={onChange}
+              action={ACTIONS.View_DoctorFees}
+            />
+          </>
         )}
-        <CRBrancheTree
-          formValue={formValue}
-          onChange={onChange}
-          action={ACTIONS.View_DoctorFees}
-        />
       </Form>
     </CRModal>
   );

@@ -156,3 +156,4 @@ export { default as archiveReferedDoctorAppointment } from './archive-refered-do
 export { default as addCoursePartToDoctor } from './add-course-part-to-doctor';
 export { default as paidCourseWithDoctorFees } from './paid-course-with-doctor-fees';
 export { default as deleteCoursePartToDoctor } from './delete-course-part';
+export { default as editInsurance } from './edit-insurance';

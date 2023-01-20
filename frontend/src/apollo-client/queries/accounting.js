@@ -513,3 +513,11 @@ export const ADD_NEW_INSURANCE = gql`
     }
   }
 `;
+
+export const EDIT_INSURANCE = gql`
+  mutation editInsurance($insurance: InsuranceEditInput!) {
+    editInsurance(insurance: $insurance) {
+      id
+    }
+  }
+`;
