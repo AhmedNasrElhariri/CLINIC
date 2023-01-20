@@ -97,7 +97,6 @@ const Course = ({ patientId }) => {
     patientId: patientId,
     courseId: formValue?.id,
   });
-  console.log(paidSessions, 'PPaidSess');
   const handleClickCreate = useCallback(() => {
     setType('create');
     setHeader(t('createNewCourse'));
@@ -243,7 +242,7 @@ const Course = ({ patientId }) => {
       const finalFormValue = {
         price: price - discount,
         customName: customName,
-        customUnits: totalUnits,
+        customUnits: customUnits,
         patientId: patientId,
         courseDefinitionId: courseId,
         doctorId,

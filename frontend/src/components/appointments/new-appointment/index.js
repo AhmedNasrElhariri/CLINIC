@@ -319,7 +319,7 @@ const NewAppointment = ({
               >
                 {t('addToWaitingList')}
               </Checkbox>
-              <Div display="flex" ml="30px" mt="3px">
+              {/* <Div display="flex" ml="30px" mt="3px">
                 <CRLabel>External</CRLabel>
                 <Toggle
                   onChange={val =>
@@ -328,7 +328,7 @@ const NewAppointment = ({
                   checked={formValue?.referedDoctor}
                   style={{ margin: '5px' }}
                 />
-              </Div>
+              </Div> */}
               {enableSMS && (
                 <Checkbox
                   name="sendSMS"
