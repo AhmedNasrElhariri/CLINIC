@@ -20,46 +20,53 @@ const addNewInsurance = async (
     paymentMethod,
     bankId,
   } = insurance;
-  await prisma.doctorFees.create({
-    data: Object.assign(
-      {
-        name,
-        date,
-        amount:
-          feesCalculationType === 'fixed'
-            ? doctorFees
-            : (totalAmount * doctorFees) / 100,
-        doctor: { connect: { id: doctorId } },
-        organization: {
-          connect: { id: organizationId },
-        },
-        user: {
-          connect: { id: userId },
-        },
-      },
-      specialtyId && {
-        specialty: {
-          connect: {
-            id: specialtyId,
-          },
-        },
-      },
-      branchId && {
-        branch: {
-          connect: {
-            id: branchId,
-          },
-        },
-      }
-    ),
-  });
+
+  const patientFeesAmount =
+    feesCalculationType === 'fixed'
+      ? patientFees
+      : (patientFees * totalAmount) / 100;
+
+  const insuranceTotalAmount = totalAmount - patientFeesAmount;
+  // await prisma.doctorFees.create({
+  //   data: Object.assign(
+  //     {
+  //       name,
+  //       date,
+  //       amount:
+  //         feesCalculationType === 'fixed'
+  //           ? doctorFees
+  //           : (totalAmount * doctorFees) / 100,
+  //       doctor: { connect: { id: doctorId } },
+  //       organization: {
+  //         connect: { id: organizationId },
+  //       },
+  //       user: {
+  //         connect: { id: userId },
+  //       },
+  //     },
+  //     specialtyId && {
+  //       specialty: {
+  //         connect: {
+  //           id: specialtyId,
+  //         },
+  //       },
+  //     },
+  //     branchId && {
+  //       branch: {
+  //         connect: {
+  //           id: branchId,
+  //         },
+  //       },
+  //     }
+  //   ),
+  // });
   if (paymentMethod === 'cash') {
     await prisma.revenue.create({
       data: Object.assign(
         {
           name,
           date,
-          amount: patientFees,
+          amount: patientFeesAmount,
           organization: {
             connect: { id: organizationId },
           },
@@ -94,7 +101,7 @@ const addNewInsurance = async (
         {
           name,
           date,
-          amount: patientFees,
+          amount: patientFeesAmount,
           organization: {
             connect: { id: organizationId },
           },
@@ -130,7 +137,7 @@ const addNewInsurance = async (
       {
         name,
         date,
-        amount: totalAmount - patientFees,
+        amount: insuranceTotalAmount,
         organization: {
           connect: { id: organizationId },
         },

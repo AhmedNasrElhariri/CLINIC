@@ -46,21 +46,21 @@ const NewInsurance = ({
           name="totalAmount"
           block
         ></CRNumberInput>
-        <CRNumberInput
-          label={t('patientFees')}
-          name="patientFees"
-          block
-        ></CRNumberInput>
         <CRRadio
           options={feesCalTypes}
           name="feesCalculationType"
           label="Fixed/Percentage"
         />
         <CRNumberInput
+          label={t('patientFees')}
+          name="patientFees"
+          block
+        ></CRNumberInput>
+        {/* <CRNumberInput
           label={t('doctorFees')}
           name="doctorFees"
           block
-        ></CRNumberInput>
+        ></CRNumberInput> */}
         <CRDatePicker label={t('date')} name="date" block></CRDatePicker>
         <CRSelectInput
           name="companyId"

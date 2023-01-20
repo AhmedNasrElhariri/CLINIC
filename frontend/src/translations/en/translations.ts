@@ -444,7 +444,7 @@ export const TRANSLATIONS_EN = {
   doctorSessions: 'Doctor Sessions',
   gather: 'Gather',
   revert: 'Revert',
-  addNewInsurance: 'add new insurance',
+  addNewInsurance: 'Add new insurance',
   editInsurance: 'Edit insurance',
   totalAmount: 'Total amount',
   patientFees: 'Patient fees',

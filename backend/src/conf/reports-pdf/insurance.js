@@ -8,7 +8,6 @@ import {
 } from '@/services/date.service';
 import { generateExcel } from '@/services/generate-excel-sheet';
 
-
 const init = app => {
   app.post('/reports/insurance', async (req, res) => {
     const {
@@ -111,7 +110,7 @@ const init = app => {
         updatedDateFrom = datesArray[0];
         updatedDateTo = datesArray[1];
       }
-      const transactions = await prisma.insuranceRevenue.findMany({
+      let transactions = await prisma.insuranceRevenue.findMany({
         where: {
           organizationId,
           date: {
@@ -134,18 +133,22 @@ const init = app => {
             },
           ],
         },
-        // include: {
-        //   company: true,
-        //   user: true,
-        //   branch: true,
-        //   specialty: true,
-        //   doctor: true,
-        // },
+        include: {
+          company: true,
+          // user: true,
+          // branch: true,
+          // specialty: true,
+          // doctor: true,
+        },
         orderBy: {
           createdAt: 'desc',
         },
       });
-      let keys = ['name', 'date', 'amount'];
+      let keys = ['name', 'amount', 'companyName', 'cardId', 'date'];
+      transactions = transactions.map(t => ({
+        ...t,
+        companyName: t.company.name,
+      }));
       const workbook = generateExcel(keys, transactions);
       var fileName = 'insurance.xlsx';
       res.setHeader(
