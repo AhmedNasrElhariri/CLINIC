@@ -24,7 +24,7 @@ export const createInventoryExpense = async ({
       },
     },
     tag: 'expense from appointment',
-  },);
+  });
 };
 
 export const createAppointmentExpense = async (
@@ -53,6 +53,66 @@ export const createAppointmentExpense = async (
         user: {
           connect: {
             id: userId,
+          },
+        },
+      },
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
+        },
+      },
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
+        },
+      },
+      userID && {
+        doctor: {
+          connect: {
+            id: userID,
+          },
+        },
+      }
+    ),
+    tag: 'expense from appointment',
+  });
+};
+export const createAppointmentBankExpense = async (
+  userId,
+  discount,
+  organizationId,
+  branchId,
+  specialtyId,
+  date,
+  userID,
+  level,
+  bank
+) => {
+  return prisma.bankExpense.create({
+    data: Object.assign(
+      {
+        date: new Date(date),
+        name: discount.name,
+        expenseType: 'Dicount',
+        amount: discount.amount,
+        level,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        bank: {
+          connect: {
+            id: bank,
           },
         },
       },

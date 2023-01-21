@@ -6,7 +6,10 @@ import {
   createAppointmentBankRevenueFromSessions,
 } from '@/services/revenue.service';
 import { GetLevel } from '@/services/get-level';
-import { createAppointmentExpense } from '@/services/expense.service';
+import {
+  createAppointmentExpense,
+  createAppointmentBankExpense,
+} from '@/services/expense.service';
 import {
   createSubstractHistoryForMultipleItems,
   updatedUsedMaterials,
@@ -210,18 +213,6 @@ const archiveAppointment = async (
         },
       });
     }
-    if (discount && discount.amount > 0) {
-      await createAppointmentExpense(
-        userId,
-        discount,
-        organizationId,
-        branchId,
-        specialtyId,
-        date,
-        userID,
-        level
-      );
-    }
   }
 
   // start of bank accounting
@@ -231,10 +222,9 @@ const archiveAppointment = async (
       (sum, { price, number }) => sum + number * price,
       0
     );
-    sub =
-      subRed + others.amount + payOfRemaining - discount.amount - couponsValue;
+    sub = subRed + others.amount + payOfRemaining - couponsValue;
     const name = 'Bank Payment - ' + patientName;
-    if (option.amount > 0 || couponsValue > 0 || discount.amount > 0) {
+    if (option.amount > 0 || couponsValue > 0) {
       let cashAmount = option.amount;
       let bankAmount = 0;
       if (option.option === 'percentage') {
@@ -655,6 +645,35 @@ const archiveAppointment = async (
       );
     }
   }
+  //discount calcs
+
+  if (discount && discount.amount > 0) {
+    if (bank != null) {
+      await createAppointmentBankExpense(
+        userId,
+        discount,
+        organizationId,
+        branchId,
+        specialtyId,
+        date,
+        userID,
+        level,
+        bank
+      );
+    } else {
+      await createAppointmentExpense(
+        userId,
+        discount,
+        organizationId,
+        branchId,
+        specialtyId,
+        date,
+        userID,
+        level
+      );
+    }
+  }
+  //remaining calcs
   if (remaining > 0) {
     const pa = await prisma.patient.findUnique({ where: { id: patientId } });
     const N = 'Payment Remaining of the patient/' + patientName;
