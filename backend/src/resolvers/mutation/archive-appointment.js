@@ -682,49 +682,100 @@ const archiveAppointment = async (
   if (remaining > 0) {
     const pa = await prisma.patient.findUnique({ where: { id: patientId } });
     const N = 'Payment Remaining of the patient/' + patientName;
-    await prisma.expense.create({
-      data: Object.assign(
-        {
-          date: new Date(date),
-          name: N,
-          expenseType: 'Patient',
-          amount: remaining,
-          level,
-          organization: {
-            connect: {
-              id: organizationId,
+    if (bank != null) {
+      await prisma.bankExpense.create({
+        data: Object.assign(
+          {
+            date: new Date(date),
+            name: N,
+            expenseType: 'Patient',
+            amount: remaining,
+            level,
+            bank: {
+              connect: {
+                id: bank,
+              },
+            },
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          user: {
-            connect: {
-              id: userId,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-        },
-        specialtyId && {
-          specialty: {
-            connect: {
-              id: specialtyId,
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
             },
           },
-        },
-        branchId && {
-          branch: {
-            connect: {
-              id: branchId,
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
+          }
+        ),
+        tag: 'expense from appointment',
+      });
+    } else {
+      await prisma.expense.create({
+        data: Object.assign(
+          {
+            date: new Date(date),
+            name: N,
+            expenseType: 'Patient',
+            amount: remaining,
+            level,
+            organization: {
+              connect: {
+                id: organizationId,
+              },
+            },
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-        },
-        userID && {
-          doctor: {
-            connect: {
-              id: userID,
+          specialtyId && {
+            specialty: {
+              connect: {
+                id: specialtyId,
+              },
             },
           },
-        }
-      ),
-      tag: 'expense from appointment',
-    });
+          branchId && {
+            branch: {
+              connect: {
+                id: branchId,
+              },
+            },
+          },
+          userID && {
+            doctor: {
+              connect: {
+                id: userID,
+              },
+            },
+          }
+        ),
+        tag: 'expense from appointment',
+      });
+    }
     await prisma.patient.update({
       data: {
         remainingOfPayment: pa.remainingOfPayment + remaining,

@@ -49,16 +49,16 @@ const NewInsurance = ({
         {type === 'addNewInsurance' && (
           <>
             {' '}
-            <CRNumberInput
-              label={t('patientFees')}
-              name="patientFees"
-              block
-            ></CRNumberInput>
             <CRRadio
               options={feesCalTypes}
               name="feesCalculationType"
               label="Fixed/Percentage"
             />
+            <CRNumberInput
+              label={t('patientFees')}
+              name="patientFees"
+              block
+            ></CRNumberInput>
             <CRNumberInput
               label={t('doctorFees')}
               name="doctorFees"
