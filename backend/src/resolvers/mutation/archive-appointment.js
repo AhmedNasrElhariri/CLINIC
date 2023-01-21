@@ -81,30 +81,6 @@ const archiveAppointment = async (
     await Promise.all(
       updatedSessionsTransactions.map(d => prisma.sessionTransaction.create(d))
     );
-    // sessions.forEach(async ({ price, number, id }) => {
-    //   await prisma.sessionTransaction.create({
-    //     data: {
-    //       number,
-    //       price,
-    //       date: new Date(),
-    //       session: {
-    //         connect: {
-    //           id,
-    //         },
-    //       },
-    //       organization: {
-    //         connect: {
-    //           id: organizationId,
-    //         },
-    //       },
-    //       user: {
-    //         connect: {
-    //           id: userId,
-    //         },
-    //       },
-    //     },
-    //   });
-    // });
   }
 
   // start of cash accounting
@@ -258,7 +234,7 @@ const archiveAppointment = async (
     sub =
       subRed + others.amount + payOfRemaining - discount.amount - couponsValue;
     const name = 'Bank Payment - ' + patientName;
-    if (option.amount > 0 || couponsValue > 0) {
+    if (option.amount > 0 || couponsValue > 0 || discount.amount > 0) {
       let cashAmount = option.amount;
       let bankAmount = 0;
       if (option.option === 'percentage') {

@@ -49,7 +49,7 @@ zip -r ../../build.zip *
 cd ../../
 rsync -azP build.zip root@164.90.178.150:~/clinicr-qa
 
-ssh root@164.90.178.150 "cd clinicr-qa &&
+ssh root@164.90.178.150 -i /home/ahmed/.ssh/id_rsa  "cd clinicr-qa &&
  unzip -o ./build.zip -d . && rm build.zip && prisma migrate deploy && \
  pm2 delete clinicr_qa || true && pm2 delete patients_app || true && \
  pm2 start ecosystem.config.js && pm2 serve patients-app/ 5000 --name "patients_app" --spa

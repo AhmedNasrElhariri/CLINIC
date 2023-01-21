@@ -59,11 +59,11 @@ const NewInsurance = ({
               name="patientFees"
               block
             ></CRNumberInput>
-            <CRNumberInput
+            {/* <CRNumberInput
               label={t('doctorFees')}
               name="doctorFees"
               block
-            ></CRNumberInput>
+            ></CRNumberInput> */}
             <CRDatePicker label={t('date')} name="date" block></CRDatePicker>
             <CRSelectInput
               name="companyId"
