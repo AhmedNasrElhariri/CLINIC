@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 const useModal = () => {
   const [visible, setVisible] = useState(false);
@@ -15,7 +15,10 @@ const useModal = () => {
     setVisible(!visible);
   }, [visible]);
 
-  return { visible, setVisible, open, close, toggle };
+  return useMemo(
+    () => ({ visible, setVisible, open, close, toggle }),
+    [visible, setVisible, open, close, toggle]
+  );
 };
 
 export default useModal;
