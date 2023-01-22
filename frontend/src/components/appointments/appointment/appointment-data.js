@@ -16,7 +16,7 @@ import {
   CRNestedSelector,
   CRMultipleSelector,
   CRSelectInput,
-  CRTableWithInput
+  CRTableWithInput,
 } from 'components';
 
 import { convertGroupFieldsToNavs } from 'services/appointment';
@@ -281,7 +281,6 @@ function AppointmentData({
   return (
     <>
       <div>
-        <Can I="ViewDynamicViews" an="CurrentAppointment">
         {Object.keys(formValue).length > 0 && (
           <Div mb={5}>
             <Form formValue={formValue} onChange={onDataChange} fluid>
@@ -316,7 +315,6 @@ function AppointmentData({
             </Form>
           </Div>
         )}
-        </Can>
         <SectionContainer title={t('prescription')} name="prescription">
           <Form formValue={selectedMedicine} onChange={setSelectedMedicine}>
             <Div
