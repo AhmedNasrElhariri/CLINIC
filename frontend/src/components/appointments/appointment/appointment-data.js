@@ -2,7 +2,6 @@ import React, { useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'rsuite';
 import { Element } from 'react-scroll';
-import { Can } from 'components/user/can';
 
 import {
   Div,
@@ -452,21 +451,17 @@ function AppointmentData({
             categoryId={categoryImageForm?.categoryId}
           />
         </SectionContainer>
-        <Can I="ViewNotes" an="CurrentAppointment">
-          <SectionContainer title={t('notes')} name="Notes">
-            <Form formValue={appointmentFormValue} onChange={onChange}>
-              <CRTextArea name="notes" disabled={disabled} importable />
-            </Form>
-          </SectionContainer>
-        </Can>
-        <Can I="ViewImages" an="CurrentAppointment">
-          <SectionContainer title={t('pictures')} name="Pictures">
-            <AppointmentPictures
-              formValue={appointmentFormValue.pictures}
-              onChange={handlePicturesChange}
-            />
-          </SectionContainer>
-        </Can>
+        <SectionContainer title={t('notes')} name="Notes">
+          <Form formValue={appointmentFormValue} onChange={onChange}>
+            <CRTextArea name="notes" disabled={disabled} importable />
+          </Form>
+        </SectionContainer>
+        <SectionContainer title={t('pictures')} name="Pictures">
+          <AppointmentPictures
+            formValue={appointmentFormValue.pictures}
+            onChange={handlePicturesChange}
+          />
+        </SectionContainer>
       </div>
     </>
   );
