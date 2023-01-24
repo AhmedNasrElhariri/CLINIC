@@ -1,5 +1,7 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
+import { APIExceptcion } from '@/services/erros.service';
+
 const editCourse = async (
   _,
   {
@@ -22,6 +24,12 @@ const editCourse = async (
       patient: true,
     },
   });
+  const totalPaid = paid + data.paid;
+  if (totalPaid > data.price) {
+    throw new APIExceptcion(
+      `You pay more than the required you should pay ${data.price - data.paid}`
+    );
+  }
   let cName = data.customName;
   const { courseDefinitionId } = data;
   if (courseDefinitionId) {

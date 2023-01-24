@@ -58,6 +58,7 @@ export const LIST_DOCTOR_FEES = gql`
         id
         name
         amount
+        totalPrice
         date
         cost
         doctor {

@@ -10,7 +10,8 @@ const createCostOfDoctorsFromAppointment = (
   branchId,
   specialtyId,
   doctorId,
-  doctorParts
+  doctorParts,
+  cName
 ) => {
   let newParts = [];
   parts.forEach(({ name, price, number, cost, partID }) => {
@@ -26,8 +27,9 @@ const createCostOfDoctorsFromAppointment = (
           : (price * number - (cost ? cost : 0)) * (fees / 100);
       const part = Object.assign(
         {
-          name: name,
+          name: 'c/' + cName + '/' + name,
           amount: doctorFees,
+          totalPrice: price * number,
           status: 'Draft',
           organizationId,
           userId,
@@ -50,7 +52,8 @@ export const CostServices = async (
   organizationId,
   branchId,
   specialtyId,
-  doctorId
+  doctorId,
+  cName
 ) => {
   const parts = sessions;
   const doctorParts = await prisma.doctorCoursePartDefination.findMany({
@@ -66,7 +69,8 @@ export const CostServices = async (
         branchId,
         specialtyId,
         doctorId,
-        doctorParts
+        doctorParts,
+        cName
       )
     ));
 };

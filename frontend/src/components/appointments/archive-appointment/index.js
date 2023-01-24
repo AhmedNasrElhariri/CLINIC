@@ -372,6 +372,9 @@ const ArchiveAppointment = ({
             onChange={handleInvoiceChange}
             selectedSessions={selectedSessions}
             setSelectedSessions={setSelectedSessions}
+            handleFinish={handleFinish}
+            loading={loading}
+            t={t}
           />
         )}
         {activeStep === 2 && (

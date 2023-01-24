@@ -1,6 +1,7 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
 import { CostServices } from '@/services/cost-of-doctor-course.services';
+import { APIExceptcion } from '@/services/erros.service';
 import {
   ReduceServices,
   CreateUnitHistoryFormParts,
@@ -29,10 +30,16 @@ const paidCourseWithDoctorFees = async (
       patient: true,
     },
   });
+  const totalPaid = paid + data.paid;
+  let cName = data.customName;
+  if (totalPaid > data.price) {
+    throw new APIExceptcion(
+      `You pay more than the required you should pay ${data.price - data.paid}`
+    );
+  }
   await ReduceServices(sessions, courseId);
   const totalUnits = sessions.reduce((sum, { number }) => sum + number, 0);
   const doctorId = data.doctorId;
-  let cName = data.customName;
   const { courseDefinitionId } = data;
   if (courseDefinitionId) {
     const courseDefination = await prisma.courseDefinition.findUnique({
@@ -45,45 +52,7 @@ const paidCourseWithDoctorFees = async (
   const cashPayment = 'C' + '/' + cName + '/' + data.patient.name;
   const salerId = data.userId;
   const patientId = data.patient.id;
-  // await prisma.coursePayment.create({
-  //   data: Object.assign(
-  //     {
-  //       payment: bank != null ? paid + visaPaid : paid,
-  //       date: new Date(),
-  //       user: {
-  //         connect: {
-  //           id: salerId,
-  //         },
-  //       },
-  //       course: {
-  //         connect: {
-  //           id: courseId,
-  //         },
-  //       },
-  //     },
-  //     specialtyId && {
-  //       specialty: {
-  //         connect: {
-  //           id: specialtyId,
-  //         },
-  //       },
-  //     },
-  //     branchId && {
-  //       branch: {
-  //         connect: {
-  //           id: branchId,
-  //         },
-  //       },
-  //     },
-  //     userID && {
-  //       doctor: {
-  //         connect: {
-  //           id: userID,
-  //         },
-  //       },
-  //     }
-  //   ),
-  // });
+
   if (bank != null) {
     if (paid > 0) {
       await prisma.revenue.create({
@@ -238,27 +207,7 @@ const paidCourseWithDoctorFees = async (
       ),
     });
   }
-  // await prisma.courseUnitsHistory.create({
-  //   data: {
-  //     user: {
-  //       connect: {
-  //         id: data.userId,
-  //       },
-  //     },
-  //     doctor: {
-  //       connect: {
-  //         id: data.doctorId,
-  //       },
-  //     },
-  //     course: {
-  //       connect: {
-  //         id: courseId,
-  //       },
-  //     },
-  //     units: totalUnits,
-  //     date: new Date(),
-  //   },
-  // });
+
   await CreatePaymentFormParts(
     sessions,
     userId,
@@ -274,7 +223,8 @@ const paidCourseWithDoctorFees = async (
     organizationId,
     branchId,
     specialtyId,
-    doctorId
+    doctorId,
+    cName
   );
   return prisma.course.update({
     where: {

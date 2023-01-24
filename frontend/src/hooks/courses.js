@@ -180,9 +180,7 @@ function useCourses({
         query: LIST_REVENUES,
       },
     ],
-    onError() {
-      Alert.error('Failed to edit the Course');
-    },
+    onError: ({ message }) => Alert.error(message),
   });
   const [editCoursePaymentHistory] = useMutation(EDIT_COURSE_PAYMENT_HISTORY, {
     onCompleted() {

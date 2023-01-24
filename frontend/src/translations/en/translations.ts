@@ -458,6 +458,10 @@ export const TRANSLATIONS_EN = {
   newCoursePart: 'new Course Part',
   addCoursePartToDoctor: 'Add Course Part To Doctor',
   part: 'Part',
-  payConsume:'Pay/Consume',
-  cardNumber:'Card Number'
+  payConsume: 'Pay/Consume',
+  cardNumber: 'Card Number',
+  addNewFees: 'Add new fees',
+  amount: 'Amount',
+  editFees: 'Edit fees',
+  newSessionDefination: 'New session defination',
 };

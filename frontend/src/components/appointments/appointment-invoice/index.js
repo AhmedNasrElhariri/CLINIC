@@ -8,10 +8,10 @@ import {
   CRNumberInput,
   CRTextInput,
   CRRadio,
+  CRDivider
 } from 'components';
 
 import PrintInvoice from '../print-invoice/index';
-import { CRDivider } from 'components';
 import { useTranslation } from 'react-i18next';
 import Price from './price';
 import Payment from './payment';

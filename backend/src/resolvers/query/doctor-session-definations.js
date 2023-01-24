@@ -9,8 +9,8 @@ const doctorSessionsDefinations = async (
     where: Object.assign(
       {
         doctorId,
+        referedDoctor,
       },
-      referedDoctor && { referedDoctor: referedDoctor }
     ),
     include: {
       session: true,

@@ -149,12 +149,12 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
     });
     cName = customName;
   }
-  // if (selectedParts) {
-  //   const courseId = courseDef.id;
-  //   await createCourseParts(
-  //     createCoursePartsFromCourse(selectedParts, courseId, organizationId)
-  //   );
-  // }
+  if (selectedParts) {
+    const courseId = courseDef.id;
+    await createCourseParts(
+      createCoursePartsFromCourse(selectedParts, courseId, organizationId)
+    );
+  }
   await prisma.coursePayment.create({
     data: {
       payment: paid,

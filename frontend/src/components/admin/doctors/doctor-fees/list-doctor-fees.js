@@ -108,7 +108,9 @@ const ListDoctorFees = ({
             <CRTable.CRHeaderCell>{t('amount')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ amount }) => (
-                <CRTable.CRCellStyled bold>{amount}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>
+                  {Math.round((amount + Number.EPSILON) * 100) / 100}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -121,12 +123,10 @@ const ListDoctorFees = ({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('totalPrice')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ session }) => (
-                <CRTable.CRCellStyled bold>
-                  {session?.price}
-                </CRTable.CRCellStyled>
+              {({ totalPrice }) => (
+                <CRTable.CRCellStyled bold>{Math.round((totalPrice + Number.EPSILON) * 100) / 100}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

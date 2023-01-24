@@ -30,14 +30,12 @@ const renderField = ({ id, type, choices, ...props }) => {
 
 const TableWithInput = ({ label, name, choices, value, ...rest }) => {
   const [formValue, setFormValue] = useState([]);
-  // console.log({ label, name, choices });
   const generateRow = useCallback(() => {
     const result = choices.reduce(
       (acc, { id }) => ({ ...acc, [id]: '' }),
       // (acc, field) => ({ ...acc, [field.id]: { field, value: '' } }),
       {}
     );
-    console.log(result);
     return result;
   }, [choices]);
 

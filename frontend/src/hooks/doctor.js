@@ -97,6 +97,7 @@ function useDoctor({
         query: LIST_DOCTOR_SESSION_DEFINATION,
         variables: {
           doctorId: doctorId,
+          referedDoctor: referedDoctor,
         },
       },
     ],
@@ -119,6 +120,7 @@ function useDoctor({
         query: LIST_DOCTOR_SESSION_DEFINATION,
         variables: {
           doctorId: doctorId,
+          referedDoctor: referedDoctor,
         },
       },
     ],

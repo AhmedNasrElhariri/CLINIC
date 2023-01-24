@@ -5,9 +5,12 @@ const addNewwDoctorFees = async (
   { doctorFees },
   { organizationId, userId }
 ) => {
+  const { sessionId, sessionName,name, ...rest } = doctorFees;
   return prisma.doctorFees.create({
     data: {
-      ...doctorFees,
+      name: sessionName + ' - ' + name,
+      sessionId: sessionId,
+      ...rest,
       userId,
       organizationId,
     },

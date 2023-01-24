@@ -55,13 +55,6 @@ export default function NewPart({
               name="feesCalculationType"
               label={t('feesCalculationType')}
             />
-            {formValue.feesCalculationType === 'percentage' && (
-              <CRRadio
-                options={feesCalMethods}
-                name="feesCalculationMethod"
-                label="fees Calculation Method"
-              />
-            )}
             <CRNumberInput name="fees" label={t('fees')} block />
           </>
         )}

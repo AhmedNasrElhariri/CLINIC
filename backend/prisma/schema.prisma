@@ -1489,6 +1489,8 @@ model CoursePayment {
   branchId    String?
   course      Course     @relation(fields: [courseId], references: [id])
   courseId    String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
 }
 
 model CourseUnitsHistory {
@@ -1502,6 +1504,8 @@ model CourseUnitsHistory {
   doctorId String?
   course   Course   @relation(fields: [courseId], references: [id])
   courseId String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
 }
 
 model ImageCategory {
@@ -1735,6 +1739,8 @@ model Logging {
   userId         String
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
 }
 
 model LoggingTag {
@@ -1759,7 +1765,7 @@ model DoctorSessionDefination {
   organization          Organization           @relation(fields: [organizationId], references: [id])
   organizationId        String
 
-  @@unique([sessionId, doctorId], name: "sessionId_doctorId_sessionDefination_unique_constraint")
+  @@unique([sessionId, doctorId, referedDoctor], name: "sessionId_doctorId_sessionDefination__referedDoctor_unique_constraint")
 }
 
 model DoctorFees {
@@ -1768,6 +1774,7 @@ model DoctorFees {
   amount         Float
   date           DateTime              @default(now())
   cost           Int?
+  totalPrice     Float?
   status         FeesStatus            @default(Draft)
   referedStatus  ReferedStatus         @default(Debit)
   createdAt      DateTime              @default(now())

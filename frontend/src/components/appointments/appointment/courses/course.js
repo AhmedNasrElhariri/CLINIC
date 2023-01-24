@@ -16,7 +16,7 @@ const CourseData = ({
   courses,
   indx,
   onEditPaid,
-  // onEditPaidWithDoctorFees,
+  onEditPaidWithDoctorFees,
   onEditDoctor,
   onFinishCourse,
   onEditUnits,
@@ -68,7 +68,7 @@ const CourseData = ({
             {t('pay')}
           </CRButton>
         )}
-        {/* {(course.price > course.paid || course.units - course.consumed > 0) &&
+        {(course.price > course.paid || course.units - course.consumed > 0) &&
           course.status === 'InProgress' && (
             <CRButton
               variant="primary"
@@ -77,7 +77,7 @@ const CourseData = ({
             >
               {t('payConsume')}
             </CRButton>
-          )} */}
+          )}
         {(course.type === 'Perunit' || course.type === 'Custom') && (
           <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
             {t('consumeUnits')}

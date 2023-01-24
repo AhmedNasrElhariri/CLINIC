@@ -1359,6 +1359,7 @@ input SessionInput {
   feesCalType: FeesCalculationType
   totalPrice: Int
   partID: ID
+  extraUnits: Int
 }
 
 input Discount {
@@ -2181,6 +2182,7 @@ input DoctorFeesTransactionInput {
   amount: Int!
   sessionId: ID
   doctorId: ID
+  sessionName: String
 }
 
 ###########################CoursePartsToDoctor ###################################
@@ -2490,6 +2492,7 @@ type DoctorFees {
   amount: Float
   date: Date
   cost: Int
+  totalPrice: Float
   status: FeesStatus
   doctor: User
   session: SessionDefinition

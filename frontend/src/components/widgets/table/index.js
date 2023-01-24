@@ -35,7 +35,15 @@ const CRTable = ({ children, flag, noFlag, ...props }) => (
     {!noFlag && (
       <CRTable.CRColumn width={7}>
         <CRTable.CRHeaderCell />
-        <CRTable.CRCell>{() => <BarStyled flag={flag} />}</CRTable.CRCell>
+        <CRTable.CRCell>
+          {({ referedDoctor }) =>
+            referedDoctor ? (
+              <BarStyled flag="danger" />
+            ) : (
+              <BarStyled flag={flag} />
+            )
+          }
+        </CRTable.CRCell>
       </CRTable.CRColumn>
     )}
     {children}

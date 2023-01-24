@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import * as R from 'ramda';
 import styled from 'styled-components';
 import { Div, H3, CRButton } from 'components';
@@ -39,6 +39,7 @@ const CourseButton = styled.button`
   cursor: pointer;
   height: 35px;
 `;
+
 const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
@@ -133,16 +134,16 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType]
   );
-  // const handleEditPaidWithDoctorFees = useCallback(
-  //   data => {
-  //     const course = R.pick(['id', 'consumed'])(data);
-  //     setType('editPaidWithDoctorFees');
-  //     setHeader(t('editPaidWithDoctorFees'));
-  //     setFormValue({ ...course, paid: 0, visaPaid: 0 });
-  //     open();
-  //   },
-  //   [open, setFormValue, setType]
-  // );
+  const handleEditPaidWithDoctorFees = useCallback(
+    data => {
+      const course = R.pick(['id', 'consumed'])(data);
+      setType('editPaidWithDoctorFees');
+      setHeader(t('pay'));
+      setFormValue({ ...course, paid: 0, visaPaid: 0 });
+      open();
+    },
+    [open, setFormValue, setType]
+  );
   const handleClickEditHistoryPayment = useCallback(
     data => {
       const course = R.pick(['id', 'paid', 'paymentId'])(data);
@@ -200,6 +201,10 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType]
   );
+  const totalCoursePrice = useMemo(() => selectedSessions.reduce(
+    (sum, { price, number, totalPrice }) => sum + totalPrice,
+    0
+  ),[selectedSessions])
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       let price = 0;
@@ -227,12 +232,12 @@ const Course = ({ patientId }) => {
         //   (sum, { price, number, totalPrice }) => sum + totalPrice,
         //   0
         // );
-        price = selectedSessions.reduce(
-          (sum, { price, number }) => sum + price * number,
-          0
-        );
+        // price = selectedSessions.reduce(
+        //   (sum, { price, number }) => sum + price * number,
+        //   0
+        // );
         totalUnits = selectedSessions.reduce(
-          (sum, { number }) => sum + number,
+          (sum, { number, extraUnits }) => sum + number + extraUnits,
           0
         );
         selectedSessions.forEach(({ number, name }) => {
@@ -240,9 +245,9 @@ const Course = ({ patientId }) => {
         });
       }
       const finalFormValue = {
-        price: price - discount,
+        price: totalCoursePrice - discount,
         customName: customName,
-        customUnits: customUnits,
+        customUnits: totalUnits,
         patientId: patientId,
         courseDefinitionId: courseId,
         doctorId,
@@ -414,7 +419,7 @@ const Course = ({ patientId }) => {
                       courses={InprogressCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
-                      // onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
+                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -455,7 +460,7 @@ const Course = ({ patientId }) => {
                       courses={FinishedCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
-                      // onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
+                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -496,7 +501,7 @@ const Course = ({ patientId }) => {
                       courses={CancelledCourses}
                       indx={index}
                       onEditPaid={handleClickEditPaid}
-                      // onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
+                      onEditPaidWithDoctorFees={handleEditPaidWithDoctorFees}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
                       onEditDoctor={handleClickEditDoctor}
@@ -531,9 +536,10 @@ const Course = ({ patientId }) => {
           setVisa={setVisa}
           selectedSessions={selectedSessions}
           setSelectedSessions={setSelectedSessions}
+          totalCoursePrice={totalCoursePrice}
         />
       )}
-      {/* {type === 'editPaidWithDoctorFees' && (
+      {type === 'editPaidWithDoctorFees' && (
         <EditableCourse
           visible={visible}
           formValue={formValue}
@@ -553,7 +559,7 @@ const Course = ({ patientId }) => {
           t={t}
           courseParts={courseParts}
         />
-      )} */}
+      )}
     </>
   );
 };

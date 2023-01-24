@@ -1,8 +1,16 @@
-import { Div, CRLabel } from 'components';
+import { Div, CRLabel, CRButton } from 'components';
 import { Fragment, useCallback } from 'react';
 import { Form, InputNumber } from 'rsuite';
+import { Spinner } from 'components/widgets/button/spinner';
 
-const CostTab = ({ onChange, selectedSessions, setSelectedSessions }) => {
+const CostTab = ({
+  onChange,
+  selectedSessions,
+  setSelectedSessions,
+  handleFinish,
+  loading,
+  t
+}) => {
   const handleChangeSesionCost = useCallback(
     (v, index) => {
       const session = selectedSessions[index];
@@ -17,7 +25,6 @@ const CostTab = ({ onChange, selectedSessions, setSelectedSessions }) => {
   return (
     <>
       <Form>
-        <Div display="flex">
           {selectedSessions?.map((f, index) => (
             <Fragment>
               <CRLabel style={{ marginRight: '15px' }}>{f.name}</CRLabel>
@@ -29,6 +36,10 @@ const CostTab = ({ onChange, selectedSessions, setSelectedSessions }) => {
               />
             </Fragment>
           ))}
+        <Div mt="60px" ml="10px">
+          <CRButton onClick={handleFinish}>
+            {loading ? <Spinner /> : t('finish')}
+          </CRButton>
         </Div>
       </Form>
     </>

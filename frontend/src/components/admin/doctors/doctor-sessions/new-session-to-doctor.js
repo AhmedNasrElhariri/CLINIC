@@ -24,7 +24,7 @@ export default function NewSession({
 }) {
   const header = useMemo(() => {
     if (type === 'newSession') {
-      return t('newSession');
+      return t('newSessionDefination');
     } else {
       return t('deleteSession');
     }
@@ -61,7 +61,7 @@ export default function NewSession({
             <CRRadio
               options={feesCalTypes}
               name="feesCalculationType"
-              label="fees Calculation Type"
+              label={t("feesCalculationType")}
             />
             {formValue.feesCalculationType === 'percentage' && (
               <CRRadio

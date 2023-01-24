@@ -21,6 +21,13 @@ export default function EditableDoctorFees({
       return t('addNewFees');
     }
   }, [type]);
+  const updatedSessions = useMemo(
+    () =>
+      sessionsDefinition.map(s => {
+        return { id: s, name: s.name };
+      }),
+    [sessionsDefinition]
+  );
   return (
     <CRModal
       show={show}
@@ -41,12 +48,12 @@ export default function EditableDoctorFees({
               data={users}
             />
             <CRSelectInput
-              name="sessionId"
+              name="session"
               label={t('session')}
               labelKey="name"
               valueKey="id"
               block
-              data={sessionsDefinition}
+              data={updatedSessions}
             />
           </>
         )}

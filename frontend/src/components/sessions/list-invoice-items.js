@@ -2,7 +2,6 @@ import { H7, Div } from 'components';
 import { DeleteLinkStyled, Item } from './style';
 
 function ListInvoiceItems({ items, priceKey, onDelete }) {
-  console.log(items,'III');
   return (
     <Div>
       {items.map((item, idx) => (

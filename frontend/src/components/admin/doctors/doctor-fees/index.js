@@ -15,7 +15,7 @@ const initialFormValue = {
   name: '',
   amount: 0,
   doctorId: null,
-  sessionId: null,
+  session: {},
 };
 const DoctorFees = () => {
   const { t } = useTranslation();
@@ -86,9 +86,14 @@ const DoctorFees = () => {
         },
       });
     } else if (type === 'addNewFees') {
+      const { session, ...rest } = formValue;
       addNewwDoctorFees({
         variables: {
-          doctorFees: formValue,
+          doctorFees: {
+            ...rest,
+            sessionId: session.id,
+            sessionName: session.name,
+          },
         },
       });
     }

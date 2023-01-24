@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 const initialValues = {
   doctorId: null,
   partId: null,
-  feesCalculationMethod: null,
   feesCalculationType: null,
   fees: 0,
 };
