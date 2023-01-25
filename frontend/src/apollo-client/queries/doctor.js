@@ -61,6 +61,8 @@ export const LIST_DOCTOR_FEES = gql`
         totalPrice
         date
         cost
+        unitPrice
+        numberOfUnits
         doctor {
           name
         }
@@ -70,6 +72,8 @@ export const LIST_DOCTOR_FEES = gql`
       }
       totalDoctorFees
       doctorFeesCount
+      totalPrice
+      totalCost
     }
   }
 `;

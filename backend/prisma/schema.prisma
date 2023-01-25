@@ -1489,23 +1489,23 @@ model CoursePayment {
   branchId    String?
   course      Course     @relation(fields: [courseId], references: [id])
   courseId    String
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now()) @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
 }
 
 model CourseUnitsHistory {
-  id       String   @id @default(uuid())
-  units    Int
-  notes    String?
-  date     DateTime
-  user     User     @relation("userUnitHistory", fields: [userId], references: [id])
-  userId   String
-  doctor   User?    @relation("doctorUnitHistory", fields: [doctorId], references: [id])
-  doctorId String?
-  course   Course   @relation(fields: [courseId], references: [id])
-  courseId String
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now()) @updatedAt
+  id        String   @id @default(uuid())
+  units     Int
+  notes     String?
+  date      DateTime
+  user      User     @relation("userUnitHistory", fields: [userId], references: [id])
+  userId    String
+  doctor    User?    @relation("doctorUnitHistory", fields: [doctorId], references: [id])
+  doctorId  String?
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model ImageCategory {
@@ -1739,8 +1739,8 @@ model Logging {
   userId         String
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now()) @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
 }
 
 model LoggingTag {
@@ -1779,6 +1779,8 @@ model DoctorFees {
   referedStatus  ReferedStatus         @default(Debit)
   createdAt      DateTime              @default(now())
   updatedAt      DateTime              @default(now()) @updatedAt
+  unitPrice      Float?
+  numberOfUnits  Int?
   organization   Organization          @relation(fields: [organizationId], references: [id])
   organizationId String
   session        SessionDefinition?    @relation(fields: [sessionId], references: [id])

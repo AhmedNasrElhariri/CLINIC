@@ -138,7 +138,7 @@ function NewCourse({
     listActionDoctors(ACTIONS.Create_Course);
   }, []);
   useEffect(() => {
-    if (session) {
+    if (session?.price) {
       setSessionPrice(session.price);
       setTotalPrice(session.price * sessionNumber);
     }
@@ -259,8 +259,14 @@ function NewCourse({
               withAndWithoutDoctorFees === 'withoutDoctorFees' ? (
                 <Div width={500} mr={20}>
                   <Form fluid>
-                    <Div display="flex" m="10px 0px">
-                      <CRButton mt ="10px" onClick={() => add()}>{t('add')}</CRButton>
+                    <Div
+                      display="flex"
+                      m="10px 0px"
+                      justifyContent="space-between"
+                    >
+                      <CRButton mt="10px" onClick={() => add()}>
+                        {t('add')}
+                      </CRButton>
                       {formValue.courseType === 'custom' && (
                         <CRSelectInput
                           placeholder={t('select')}
@@ -278,7 +284,7 @@ function NewCourse({
                         placeholder={t('select')}
                         value={session}
                         onChange={val =>
-                          val == null ? setSession({}) : setSession(val)
+                          val == null ? setSession(null) : setSession(val)
                         }
                         data={choices}
                         style={{ width: '170px' }}
@@ -320,7 +326,11 @@ function NewCourse({
               ) : (
                 <Div mr={20}>
                   <Form fluid>
-                    <Div display="flex" m="10px 0px">
+                    <Div
+                      display="flex"
+                      m="10px 0px"
+                      justifyContent="space-between"
+                    >
                       <CRButton mt="10px" onClick={() => add()}>
                         {t('add')}
                       </CRButton>
@@ -334,13 +344,14 @@ function NewCourse({
                           style={{ width: '190px', marginLeft: '10px' }}
                         />
                       )}
+
                       <Div
                         mt="10px"
                         padding="5px 10px"
                         border="1px solid gray"
                         ml="20px"
                       >
-                        {totalCoursePrice}
+                        Total price : {totalCoursePrice}
                       </Div>
                     </Div>
                     <Div display="flex" justifyContent="space-around">

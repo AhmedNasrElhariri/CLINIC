@@ -20,18 +20,7 @@ const ListParts = ({ parts, onDeletePart, t }) => {
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>
-            {t('feesCalculationMethod')}
-          </CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ feesCalculationMethod }) => (
-              <CRTable.CRCellStyled bold>
-                {feesCalculationMethod}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
+
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>
             {t('feesCalculationType')}

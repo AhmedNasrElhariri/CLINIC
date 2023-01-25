@@ -42,6 +42,9 @@ const createCostOfDoctorsFromAppointment = (
           userId,
           sessionId: sessionID,
           appointmentId: id,
+          totalPrice: price * number,
+          unitPrice: price,
+          numberOfUnits: number,
         },
         cost && { cost },
         specialtyId && { specialtyId },
@@ -66,8 +69,9 @@ export const CostServices = async (
   id,
   referedStatus
 ) => {
+  const referedDoctor = referedStatus === 'Debit' ? false : true;
   const doctorSessions = await prisma.doctorSessionDefination.findMany({
-    where: { doctorId: userID },
+    where: { doctorId: userID, referedDoctor: referedDoctor },
   });
 
   doctorSessions.length > 0 &&

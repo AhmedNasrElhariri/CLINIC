@@ -2183,6 +2183,8 @@ input DoctorFeesTransactionInput {
   sessionId: ID
   doctorId: ID
   sessionName: String
+  totalPrice: Float
+  cost: Int
 }
 
 ###########################CoursePartsToDoctor ###################################
@@ -2496,11 +2498,15 @@ type DoctorFees {
   status: FeesStatus
   doctor: User
   session: SessionDefinition
+  unitPrice: Float
+  numberOfUnits: Int
 }
 type DoctorFeesData {
   doctorFees: [DoctorFees]
   totalDoctorFees: Float
   doctorFeesCount: Int
+  totalPrice: Float
+  totalCost: Int
 }
 input GatherDoctorFeesDataInput {
   ids: [ID!]

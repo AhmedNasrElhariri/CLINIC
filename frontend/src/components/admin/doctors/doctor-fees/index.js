@@ -40,6 +40,8 @@ const DoctorFees = () => {
     editDoctorFees,
     gatherDoctorFees,
     addNewwDoctorFees,
+    totalPrice,
+    totalCost,
   } = useDoctor({
     onCreateUser: close,
     onEditUser: close,
@@ -57,7 +59,7 @@ const DoctorFees = () => {
   const pages = Math.ceil(doctorFeesCount / 20);
   const handleClickEditDoctorFees = useCallback(
     data => {
-      const fees = R.pick(['id', 'name', 'amount'])(data);
+      const fees = R.pick(['id', 'name', 'amount', 'totalPrice', 'cost'])(data);
       setType('editFees');
       setFormValue(fees);
       open();
@@ -149,6 +151,8 @@ const DoctorFees = () => {
         checkedKeys={checkedKeys}
         setCheckedKeys={setCheckedKeys}
         filter={filter}
+        totalPrice={totalPrice}
+        totalCost={totalCost}
       />
       <EditableDoctorFees
         show={visible}

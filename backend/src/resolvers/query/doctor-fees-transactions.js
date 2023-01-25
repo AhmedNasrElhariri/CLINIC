@@ -37,6 +37,8 @@ const doctorFeesTransactions = async (
   const totalDoctorFees = await prisma.doctorFees.aggregate({
     _sum: {
       amount: true,
+      totalPrice: true,
+      cost: true,
     },
     _count: {
       id: true,
@@ -59,10 +61,14 @@ const doctorFeesTransactions = async (
   });
   const sum = totalDoctorFees._sum.amount;
   const count = totalDoctorFees._count.id;
+  const totalPrice = totalDoctorFees._sum.totalPrice;
+  const totalCost = totalDoctorFees._sum.cost;
   const data = {
     doctorFees: doctorFees,
     totalDoctorFees: sum,
     doctorFeesCount: count,
+    totalPrice: totalPrice,
+    totalCost: totalCost,
   };
   return data;
 };

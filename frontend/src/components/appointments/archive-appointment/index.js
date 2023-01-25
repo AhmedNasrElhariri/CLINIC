@@ -123,62 +123,61 @@ const ArchiveAppointment = ({
     [discount, subtotal, totalCoupons, remaining, payOfRemaining]
   );
   const handleOk = useCallback(() => {
-    if (activeStep !== 2) {
-      setActiveStep(activeStep + 1);
-    } else {
-      if (appointment?.referedDoctor) {
-        archiveReferedDoctorAppointment({
-          variables: {
-            data: {
-              sessions: selectedSessions.map(session => ({
-                name: getName({ session, appointment }),
-                price: session.price,
-                number: session.number,
-                id: session.id,
-                patientFees: session?.patientFees || 0,
-                feesCalType: session?.type,
-                cost: session?.cost,
-              })),
-              appointmentId: appointment?.id,
-              doctorId: appointment?.doctor.id,
-              specialtyId: appointment?.specialty.id,
-              branchId: appointment?.branch.id,
-            },
+    // if (activeStep !== 2) {
+    //   setActiveStep(activeStep + 1);
+    // } else {
+    if (appointment?.referedDoctor) {
+      archiveReferedDoctorAppointment({
+        variables: {
+          data: {
+            sessions: selectedSessions.map(session => ({
+              name: getName({ session, appointment }),
+              price: session.price,
+              number: session.number,
+              id: session.id,
+              patientFees: session?.patientFees || 0,
+              feesCalType: session?.type,
+              cost: session?.cost,
+            })),
+            appointmentId: appointment?.id,
+            doctorId: appointment?.doctor.id,
+            specialtyId: appointment?.specialty.id,
+            branchId: appointment?.branch.id,
           },
-        });
-      } else {
-        onOk({
-          ...value.current,
-          discount,
-          others,
-          remaining,
-          payOfRemaining,
-          othersName,
-          bank,
-          company,
-          option,
-          coupons: newCoupons,
-          couponsValue,
-        });
-        setActiveStep(0);
-        setOthers(0);
-        setBank(null);
-        setCompany(companyInital);
-        setOthersName('');
-        setDiscount(0);
-        setCoupons([]);
-        setCouponsValue(0);
-        setSelectedSessions([]);
-        setRemaining(0);
-        setPayOfRemaining(0);
-        value.current = {
-          sessions: [],
-          items: [],
-        };
-      }
+        },
+      });
+    } else {
+      onOk({
+        ...value.current,
+        discount,
+        others,
+        remaining,
+        payOfRemaining,
+        othersName,
+        bank,
+        company,
+        option,
+        coupons: newCoupons,
+        couponsValue,
+      });
+      // setActiveStep(0);
+      setOthers(0);
+      setBank(null);
+      setCompany(companyInital);
+      setOthersName('');
+      setDiscount(0);
+      setCoupons([]);
+      setCouponsValue(0);
+      setSelectedSessions([]);
+      setRemaining(0);
+      setPayOfRemaining(0);
+      value.current = {
+        sessions: [],
+        items: [],
+      };
     }
   }, [
-    activeStep,
+    // activeStep,
     onOk,
     discount,
     others,
@@ -208,7 +207,7 @@ const ArchiveAppointment = ({
       coupons: newCoupons,
       couponsValue,
     });
-    setActiveStep(0);
+    // setActiveStep(0);
     setOthers(0);
     setRemaining(0);
     setPayOfRemaining(0);
@@ -374,7 +373,9 @@ const ArchiveAppointment = ({
             setSelectedSessions={setSelectedSessions}
             handleFinish={handleFinish}
             loading={loading}
+            refered={appointment?.referedDoctor}
             t={t}
+            handleFinishReferedDoctor={handleFinishReferedDoctor}
           />
         )}
         {activeStep === 2 && (

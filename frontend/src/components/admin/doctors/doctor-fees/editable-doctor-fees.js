@@ -59,6 +59,12 @@ export default function EditableDoctorFees({
         )}
         <CRTextInput name="name" label={t('name')} block />
         <CRNumberInput name="amount" label={t('amount')} block />
+        {type === 'editFees' && (
+          <>
+            <CRNumberInput name="totalPrice" label={t('sessionPrice')} block />
+            <CRNumberInput name="cost" label={t('cost')} block />
+          </>
+        )}
       </Form>
     </CRModal>
   );

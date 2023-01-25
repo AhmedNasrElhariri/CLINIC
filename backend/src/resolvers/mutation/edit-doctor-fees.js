@@ -1,10 +1,10 @@
 import { prisma } from '@';
 
 const editDoctorFees = async (_, { doctorFees }) => {
-  const { id, name, amount } = doctorFees;
+  const { id, ...rest } = doctorFees;
 
   return prisma.doctorFees.update({
-    data: { name, amount },
+    data: rest,
     where: {
       id,
     },

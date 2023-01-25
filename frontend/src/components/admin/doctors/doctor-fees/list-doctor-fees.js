@@ -27,6 +27,8 @@ const ListDoctorFees = ({
   checkedKeys,
   setCheckedKeys,
   filter,
+  totalPrice,
+  totalCost,
 }) => {
   let checked = false;
   let indeterminate = false;
@@ -54,6 +56,11 @@ const ListDoctorFees = ({
     },
     [setCurrentPage]
   );
+  const totals = {
+    total: total,
+    totalPrice: totalPrice,
+    totalCost: totalCost,
+  };
   return (
     <>
       <CRCard borderless mb="20px">
@@ -78,24 +85,7 @@ const ListDoctorFees = ({
               />
             </CRTable.CRColumn>
           )}
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ doctor }) => (
-                <CRTable.CRCellStyled bold>{doctor.name}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ date }) => (
-                <CRTable.CRCellStyled bold>
-                  {formatDate(date, FULL_DAY_FORMAT)}
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
+
           <CRTable.CRColumn flexGrow={2}>
             <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
@@ -115,6 +105,27 @@ const ListDoctorFees = ({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('unitPrice')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ unitPrice }) => (
+                <CRTable.CRCellStyled bold>
+                  {unitPrice &&
+                    Math.round((unitPrice + Number.EPSILON) * 100) / 100}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('numberOfUnits')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ numberOfUnits }) => (
+                <CRTable.CRCellStyled bold>
+                  {numberOfUnits}{' '}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('cost')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ cost }) => (
@@ -123,10 +134,22 @@ const ListDoctorFees = ({
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('totalPrice')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('sessionPrice')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ totalPrice }) => (
-                <CRTable.CRCellStyled bold>{Math.round((totalPrice + Number.EPSILON) * 100) / 100}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>
+                  {Math.round((totalPrice + Number.EPSILON) * 100) / 100}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ date }) => (
+                <CRTable.CRCellStyled bold>
+                  {formatDate(date, FULL_DAY_FORMAT)}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -161,7 +184,7 @@ const ListDoctorFees = ({
           // total={}
         />
       </CRCard>
-      <Total total={total} />
+      <Total totals={totals} />
     </>
   );
 };

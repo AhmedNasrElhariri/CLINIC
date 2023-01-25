@@ -52,7 +52,7 @@ zip -r ../build.zip *
 cd ../
 rsync -azP build.zip root@164.90.178.150:~/clinicr
 
-ssh root@164.90.178.150 "cd clinicr &&
+ssh root@164.90.178.150 -i /home/ahmed/.ssh/id_rsa "cd clinicr &&
  unzip -o ./build.zip -d . && rm build.zip && prisma migrate deploy && \
  pm2 delete clinicr || true && pm2 delete patients_app || true && \
  npm install && npx prisma generate && npx webpack --mode='production' --config ./webpack.dev.js && \

@@ -570,6 +570,7 @@ const archiveAppointment = async (
   // end of insurrancce
 
   //start of costServices
+  const referedStatus = 'Debit';
   await CostServices(
     userId,
     sessions,
@@ -578,7 +579,8 @@ const archiveAppointment = async (
     date,
     specialtyId,
     userID,
-    id
+    id,
+    referedStatus
   );
   // ###############################
 

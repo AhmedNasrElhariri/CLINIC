@@ -69,8 +69,10 @@ function useDoctor({
   });
   const doctorFees = doctorFeesData?.doctorFeesTransactions;
   const doctorFeesTransactions = R.propOr([], 'doctorFees')(doctorFees);
-  const totalDoctorFees = R.propOr([], 'totalDoctorFees')(doctorFees);
-  const doctorFeesCount = R.propOr([], 'doctorFeesCount')(doctorFees);
+  const totalDoctorFees = R.propOr(0, 'totalDoctorFees')(doctorFees);
+  const doctorFeesCount = R.propOr(0, 'doctorFeesCount')(doctorFees);
+  const totalPrice = R.propOr(0, 'totalPrice')(doctorFees);
+  const totalCost = R.propOr(0, 'totalCost')(doctorFees);
 
   // doctor Coursre parts
   const { data: doctorCoursePartsData } = useQuery(
@@ -138,13 +140,14 @@ function useDoctor({
         query: LIST_DOCTOR_FEES,
         variables: Object.assign(
           {
-            offset: (page - 1) * 20 || 0,
+            offset: (page - 1) * 20,
             limit: 20,
             doctorId,
             status,
           },
           dateFrom && { dateFrom },
-          dateTo && { dateTo }
+          dateTo && { dateTo },
+          type && { type }
         ),
       },
     ],
@@ -258,6 +261,8 @@ function useDoctor({
       doctorCoursePartsDefinations,
       addCoursePartToDoctor,
       deleteCoursePartToDoctor,
+      totalPrice,
+      totalCost,
     }),
     [
       users,
@@ -274,6 +279,8 @@ function useDoctor({
       doctorCoursePartsDefinations,
       addCoursePartToDoctor,
       deleteCoursePartToDoctor,
+      totalPrice,
+      totalCost,
     ]
   );
 }

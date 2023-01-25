@@ -464,4 +464,6 @@ export const TRANSLATIONS_EN = {
   amount: 'Amount',
   editFees: 'Edit fees',
   newSessionDefination: 'New session defination',
+  sessionPrice: 'Session price',
+  numberOfUnits: 'Number of units',
 };
