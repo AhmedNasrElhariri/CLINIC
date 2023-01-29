@@ -46,8 +46,8 @@ const courseTypes = [
   { value: 'custom', name: 'Custom' },
 ];
 const withAndWithoutDoctorFeesData = [
-  { id: 'withDoctorFees', name: 'WithDoctorFees' },
-  { id: 'withoutDoctorFees', name: 'WithoutDoctorFees' },
+  { id: 'withDoctorFees', name: 'With doctor fees' },
+  { id: 'withoutDoctorFees', name: 'Without doctor fees' },
 ];
 
 const isValidStartDate = (datesMetadata = [], startDate) => {

@@ -42,6 +42,7 @@ const CourseButton = styled.button`
 
 const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
+  const [course, setCourse] = useState({});
   const { t } = useTranslation();
   const [index, setIndex] = useState(0);
   const [header, setHeader] = useState('');
@@ -96,7 +97,7 @@ const Course = ({ patientId }) => {
       setFormValue(initValue);
     },
     patientId: patientId,
-    courseId: formValue?.id,
+    courseId: formValue?.id || course?.id,
   });
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -144,6 +145,7 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType]
   );
+  console.log(formValue, 'Form');
   const handleClickEditHistoryPayment = useCallback(
     data => {
       const course = R.pick(['id', 'paid', 'paymentId'])(data);
@@ -201,10 +203,14 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType]
   );
-  const totalCoursePrice = useMemo(() => selectedSessions.reduce(
-    (sum, { price, number, totalPrice }) => sum + totalPrice,
-    0
-  ),[selectedSessions])
+  const totalCoursePrice = useMemo(
+    () =>
+      selectedSessions.reduce(
+        (sum, { price, number, totalPrice }) => sum + totalPrice,
+        0
+      ),
+    [selectedSessions]
+  );
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       let price = 0;
@@ -385,6 +391,7 @@ const Course = ({ patientId }) => {
       ),
     [patientCourses]
   );
+  console.log(courseParts, 'CPIII');
   return (
     <>
       <CRTabs>
@@ -401,7 +408,10 @@ const Course = ({ patientId }) => {
                   {InprogressCourses.map((course, idx) => (
                     <CourseButton
                       variant="primary"
-                      onClick={() => setIndex(idx)}
+                      onClick={() => {
+                        setIndex(idx);
+                        setCourse(patientCourses[idx]);
+                      }}
                       key={idx}
                     >
                       {course.name}
@@ -427,6 +437,7 @@ const Course = ({ patientId }) => {
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
                       onEditUnitsHistory={handleClickEditUnitsHistory}
+                      courseParts={courseParts}
                     />
                   ) : (
                     <H3>{t('noCourses')}</H3>
@@ -468,6 +479,7 @@ const Course = ({ patientId }) => {
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
                       onEditUnitsHistory={handleClickEditUnitsHistory}
+                      courseParts={courseParts}
                     />
                   ) : (
                     <H3>{t('noCourses')}</H3>
@@ -509,6 +521,7 @@ const Course = ({ patientId }) => {
                       onDeleteCourse={handleDeleteCourse}
                       onEditHistoryPayment={handleClickEditHistoryPayment}
                       onEditUnitsHistory={handleClickEditUnitsHistory}
+                      courseParts={courseParts}
                     />
                   ) : (
                     <H3>{t('noCourses')}</H3>

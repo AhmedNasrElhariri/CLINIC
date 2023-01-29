@@ -10,6 +10,8 @@ import { useCourses } from 'hooks';
 import { Data, DataName, DataValue } from './style';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
+import ListCourseParts from './list-course-parts';
+import { Nav } from 'rsuite';
 
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const CourseData = ({
@@ -24,8 +26,10 @@ const CourseData = ({
   onDeleteCourse,
   onEditHistoryPayment,
   onEditUnitsHistory,
+  courseParts,
 }) => {
   const history = useHistory();
+  const [active, setActive] = React.useState('courseSession');
   const { t } = useTranslation();
   let course = courses[indx];
   let { sessions } = course;
@@ -167,11 +171,51 @@ const CourseData = ({
           )}
         </Data>
         <Div mt={20}>
-          <CRTabs>
+          <Nav
+            onSelect={setActive}
+            appearance="tabs"
+            justified
+            className="text-center mb-5"
+            activeKey={active}
+          >
+            <Nav.Item eventKey="courseSession">{t('courseSession')}</Nav.Item>
+            <Nav.Item eventKey="coursePaymentHistory">
+              {t('coursePaymentHistory')}
+            </Nav.Item>
+            <Nav.Item eventKey="courseUnitsHistory">
+              {t('courseUnitsHistory')}
+            </Nav.Item>
+            <Nav.Item eventKey="courseParts">{t('courseParts')}</Nav.Item>
+          </Nav>
+          {active === 'courseSession' && (
+            <CourseSession
+              sessions={updatedSessions}
+              handleClick={handleClick}
+            />
+          )}
+          {active === 'coursePaymentHistory' && (
+            <CoursePayment
+              coursePayments={coursePayments}
+              onEdit={onEditHistoryPayment}
+              courseId={course.id}
+            />
+          )}
+          {active === 'courseUnitsHistory' && (
+            <CourseUnitsHistoryPage
+              courseUnitsHistory={courseUnitsHistory}
+              onEdit={onEditUnitsHistory}
+              courseId={course.id}
+            />
+          )}
+          {active === 'courseParts' && (
+            <ListCourseParts parts={courseParts} t={t} />
+          )}
+          {/* <CRTabs>
             <CRTabs.CRTabsGroup>
               <CRTabs.CRTab>{t('courseSession')}</CRTabs.CRTab>
               <CRTabs.CRTab>{t('coursePaymentHistory')}</CRTabs.CRTab>
               <CRTabs.CRTab>{t('courseUnitsHistory')}</CRTabs.CRTab>
+              <CRTabs.CRTab>{t('courseParts')}</CRTabs.CRTab>
             </CRTabs.CRTabsGroup>
             <CRTabs.CRContentGroup>
               <CRTabs.CRContent>
@@ -194,8 +238,11 @@ const CourseData = ({
                   courseId={course.id}
                 />
               </CRTabs.CRContent>
+              <CRTabs.CRContent>
+                <ListCourseParts parts={courseParts} t={t}/>
+              </CRTabs.CRContent>
             </CRTabs.CRContentGroup>
-          </CRTabs>
+          </CRTabs> */}
         </Div>
       </Div>
     </>

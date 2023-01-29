@@ -466,4 +466,9 @@ export const TRANSLATIONS_EN = {
   newSessionDefination: 'New session defination',
   sessionPrice: 'Session price',
   numberOfUnits: 'Number of units',
+  withDoctorFees: 'With doctor fees',
+  withoutDoctorFees: 'Without doctor fees',
+  remainingUnits: 'Remaining units',
+  totalUnits: 'Total units',
+  courseParts: 'Course parts',
 };
