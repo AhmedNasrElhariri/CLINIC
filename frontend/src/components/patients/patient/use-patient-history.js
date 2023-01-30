@@ -14,11 +14,12 @@ import {
 } from 'apollo-client/queries';
 import { NUMBER_FIELD_TYPE, TEXT_FIELD_TYPE } from 'utils/constants';
 
-const usePatientHistory = ({ patientId, appointment = {} }) => {
+const usePatientHistory = ({ patientId, appointment = {}, type }) => {
   const views = useGlobalState('activeViews');
   const { data: history } = useQuery(GET_APPOINTMENT_HISTORY, {
     variables: {
       patientId,
+      type,
     },
   });
   const View = views[0]['Examination'];

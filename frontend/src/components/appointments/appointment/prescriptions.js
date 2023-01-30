@@ -44,22 +44,22 @@ const Prescriptions = ({ prescriptions, onDeletePrescriptions }) => {
     element => element.type === 'prescription'
   );
 
-  const margins = useMemo(
-    () =>
-      [
-        { name: 'top', prop: 'pt' },
-        { name: 'right', prop: 'pr' },
-        { name: 'bottom', prop: 'pb' },
-        { name: 'left', prop: 'pl' },
-      ].reduce(
-        (acc, { name, prop }) => ({
-          ...acc,
-          [prop]: (pageSetupRow[name] || 0) * 37.7952755906 + 'px',
-        }),
-        {}
-      ),
-    [pageSetupRow]
-  );
+  // const margins = useMemo(
+  //   () =>
+  //     [
+  //       { name: 'top', prop: 'pt' },
+  //       { name: 'right', prop: 'pr' },
+  //       { name: 'bottom', prop: 'pb' },
+  //       { name: 'left', prop: 'pl' },
+  //     ].reduce(
+  //       (acc, { name, prop }) => ({
+  //         ...acc,
+  //         [prop]: (pageSetupRow[name] || 0) * 37.7952755906 + 'px',
+  //       }),
+  //       {}
+  //     ),
+  //   [pageSetupRow]
+  // );
 
   return (
     <ContainerStyled>

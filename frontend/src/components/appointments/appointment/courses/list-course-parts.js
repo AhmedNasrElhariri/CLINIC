@@ -1,7 +1,6 @@
 import { CRCard, CRTable } from 'components';
 
 function ListCourseParts({ parts, t }) {
-  console.log(parts, 'parts');
   return (
     <>
       <CRCard borderless>

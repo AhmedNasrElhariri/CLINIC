@@ -416,8 +416,12 @@ export const DELETE_APPOINTMENT_PHOTO = gql`
 `;
 
 export const GET_APPOINTMENT_HISTORY = gql`
-  query ($appointmentId: ID, $patientId: ID) {
-    appointmentHistory(appointmentId: $appointmentId, patientId: $patientId) {
+  query ($appointmentId: ID, $patientId: ID, $type: AppointmentType) {
+    appointmentHistory(
+      appointmentId: $appointmentId
+      patientId: $patientId
+      type: $type
+    ) {
       id
       type
       date
@@ -465,6 +469,15 @@ export const GET_APPOINTMENT_HISTORY = gql`
       sessionsPulses {
         name
         value
+      }
+      patientSurgeries {
+        surgery {
+          name
+        }
+        hospital {
+          name
+        }
+        date
       }
       powerOne
       powerTwo

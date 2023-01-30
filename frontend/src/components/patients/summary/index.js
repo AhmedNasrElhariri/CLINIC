@@ -39,7 +39,7 @@ const renderTable = (fields, name) => {
           gridTemplateColumns: `repeat(${keys.length}, minmax(100px, 1fr))`,
         }}
       >
-        {keys.map(key => (
+        {keys?.map(key => (
           <div className="text-center" key={key}>
             <h6 className="mb-2">{key}</h6>
             {fields[key] &&
@@ -64,7 +64,7 @@ const renderValues = (fields, name) => {
           gridTemplateColumns: `repeat(${keys.length}, minmax(100px, 1fr))`,
         }}
       >
-        {keys.map(key => (
+        {keys?.map(key => (
           <div className="text-center" key={key}>
             <h6 className="mb-2">{key}</h6>
             {fields[key] &&

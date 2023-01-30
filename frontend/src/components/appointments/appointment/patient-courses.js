@@ -145,7 +145,6 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType]
   );
-  console.log(formValue, 'Form');
   const handleClickEditHistoryPayment = useCallback(
     data => {
       const course = R.pick(['id', 'paid', 'paymentId'])(data);
@@ -391,7 +390,6 @@ const Course = ({ patientId }) => {
       ),
     [patientCourses]
   );
-  console.log(courseParts, 'CPIII');
   return (
     <>
       <CRTabs>

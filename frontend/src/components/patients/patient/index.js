@@ -65,12 +65,19 @@ function Appointment() {
   let { patientId } = useParams();
   let { appointmentId } = useQueryParams();
   const { onePatient: patient } = usePatients({ patientId });
-  const { viewFields, appointmentHistory } = usePatientHistory({ patientId });
+
   const { normalizedMedicineDefinitions } = useMedicineDefinitions();
   const { hospitals } = useHospitals({});
   const [activeTab, setActiveTab] = useState('0');
   const showComp = useCallback(idx => activeTab === idx, [activeTab]);
-
+  const type = useMemo(
+    () => (activeTab === '3' ? 'Surgery' : null),
+    [activeTab]
+  );
+  const { viewFields, appointmentHistory } = usePatientHistory({
+    patientId,
+    type: type,
+  });
   const prescriptions = useMemo(
     () =>
       appointmentHistory
@@ -134,7 +141,7 @@ function Appointment() {
                 {showComp('3') && (
                   <Can I="ViewSurgeries" an="Patient">
                     <PatientSurgries
-                      history={[]}
+                      history={appointmentHistory}
                       viewFields={viewFields}
                       patientId={patient?.id}
                     />

@@ -14,11 +14,7 @@ const Box = ({ name, value }) => (
 
 const Total = ({ totals }) => {
   const { t } = useTranslation();
-  console.log(totals);
   const keys = Object.keys(totals);
-  keys.forEach(key => {
-    console.log(key);
-  });
 
   return (
     <ContainerStyled>

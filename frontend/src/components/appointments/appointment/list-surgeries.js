@@ -1,18 +1,30 @@
-import React from 'react';
 import { Div, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 
-const ListSurgries = ({ surgeries, onClick }) => {
+
+const ListSurgries = ({ data, onClick }) => {
   const { t } = useTranslation();
+  const history = useHistory();
+
+  console.log(data, 'DD');
   return (
     <Div>
-      <CRTable autoHeight data={surgeries} onRowClick={onClick}>
+      <CRTable
+        autoHeight
+        data={data}
+        onRowClick={appointment => {
+          history.push(`/appointments/${appointment.id}`);
+        }}
+      >
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('surgery')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ surgery }) => (
-              <CRTable.CRCellStyled>{surgery.name}</CRTable.CRCellStyled>
+            {({ patientSurgeries }) => (
+              <CRTable.CRCellStyled>
+                {patientSurgeries[0]?.surgery.name}
+              </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
@@ -20,8 +32,10 @@ const ListSurgries = ({ surgeries, onClick }) => {
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('hospital')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ hospital }) => (
-              <CRTable.CRCellStyled>{hospital.name}</CRTable.CRCellStyled>
+            {({ patientSurgeries }) => (
+              <CRTable.CRCellStyled>
+                {patientSurgeries[0]?.hospital.name}
+              </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
@@ -29,11 +43,11 @@ const ListSurgries = ({ surgeries, onClick }) => {
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ date }) =>
-              date ? (
-                <CRTable.CRCellStyled>{formatDate(date)}</CRTable.CRCellStyled>
-              ) : null
-            }
+            {({ patientSurgeries }) => (
+              <CRTable.CRCellStyled>
+                {formatDate(patientSurgeries[0]?.date)}
+              </CRTable.CRCellStyled>
+            )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
       </CRTable>

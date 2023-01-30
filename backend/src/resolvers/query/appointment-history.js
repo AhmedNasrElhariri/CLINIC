@@ -1,8 +1,7 @@
 import { prisma } from '@';
-import { APPOINTMENTS_STATUS } from '@/utils/constants';
 import * as R from 'ramda';
 
-const appointmentHistory = async (_, { appointmentId, patientId }) => {
+const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
   if (appointmentId) {
     const patient = await prisma.patient
       .findMany({
@@ -18,17 +17,36 @@ const appointmentHistory = async (_, { appointmentId, patientId }) => {
       .then(R.propOr({}, '0'));
     patientId = patient.id;
   }
-
-  return prisma.appointment.findMany({
-    where: {
-      patient: {
-        id: patientId,
+  if (type === 'Surgery') {
+    return prisma.appointment.findMany({
+      where: {
+        patient: {
+          id: patientId,
+        },
+        type: 'Surgery',
       },
-    },
-    orderBy: {
-      date: 'desc',
-    },
-  });
+      include: {
+        patientSurgeries: true,
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+  } else {
+    return prisma.appointment.findMany({
+      where: {
+        patient: {
+          id: patientId,
+        },
+        type: {
+          not: 'Surgery',
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+  }
 };
 
 export default appointmentHistory;

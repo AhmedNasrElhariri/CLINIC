@@ -114,7 +114,6 @@ function useCourses({
     () => R.propOr([], 'courseParts')(coursePartsData),
     [coursePartsData]
   );
-  console.log(courseParts, 'coursePartsHHHOOKS');
   const [addCourse, { loading }] = useMutation(ADD_COURSE, {
     onCompleted() {
       Alert.success('the Course has been Added Successfully');

@@ -59,17 +59,6 @@ function Appointment() {
   });
   const [disabled, setDisabled] = useState(false);
   const { appointmentId } = useParams();
-  const [update] = useMutation(UPDATE_APPOINTMENT, {
-    onCompleted: () => {
-      Alert.success('Appointment has been updates successfully');
-    },
-    refetchQueries: () => [
-      {
-        query: GET_APPOINTMENT,
-        variables: { id: appointmentId },
-      },
-    ],
-  });
   const { data: appointmentRes } = useQuery(GET_APPOINTMENT, {
     variables: {
       id: appointmentId,
@@ -89,6 +78,17 @@ function Appointment() {
   const { normalizedFields, groups } = useAppointmentHistory({
     appointmentId,
     appointment,
+  });
+  const [update] = useMutation(UPDATE_APPOINTMENT, {
+    onCompleted: () => {
+      Alert.success('Appointment has been updates successfully');
+    },
+    refetchQueries: [
+      {
+        query: GET_APPOINTMENT,
+        variables: { id: appointmentId },
+      },
+    ],
   });
   const handleUpdate = useCallback(() => {
     update({
@@ -175,7 +175,6 @@ function Appointment() {
   useEffect(() => {
     setFormValue(getFormInitValues(normalizedFields));
   }, [normalizedFields]);
-
   useEffect(() => {
     setApptFormValue(val => ({
       ...val,
@@ -194,6 +193,7 @@ function Appointment() {
         R.map(R.path(['imageDefinition', 'id']))
       )(appointment),
     }));
+    console.log(apptFormValue, 'innner');
   }, [appointment]);
 
   useEffect(() => {

@@ -217,7 +217,11 @@ type Query {
     patientId: ID!
     status: AppointmentStatus!
   ): [Appointment!]
-  appointmentHistory(appointmentId: ID, patientId: ID): [Appointment!]
+  appointmentHistory(
+    appointmentId: ID
+    patientId: ID
+    type: AppointmentType
+  ): [Appointment!]
   patient(id: ID!): Patient
   patientCoupons(patientId: ID!, all: Boolean): [Coupon!]
   patientRevenue(patientId: ID!, offset: Int, limit: Int): PatientRevenueData!
@@ -1069,6 +1073,7 @@ type Appointment {
   isFollowUp: Boolean
   canAddFollowUp: Boolean
   referedDoctor: Boolean
+  patientSurgeries: [PatientSurgery]
 }
 
 type AppointmentData {
