@@ -1,15 +1,15 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Can } from "components/user/can";
-import { Schema } from "rsuite";
-import { Div, CRButton, MainContainer } from "components";
-import moment from "moment";
-import ListPatientSurgeries from "../list-patient-surgeries";
-import NewPatientSurgery from "../new-patient-surgery";
-import PatientSurgeryFilter from "./filter";
-import { filterPatientSurgery } from "services/patient-surgery";
-import { useForm, usePatientSurgeries, useModal } from "hooks";
-import { useTranslation } from "react-i18next";
+import React, { useCallback, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Can } from 'components/user/can';
+import { Schema } from 'rsuite';
+import { Div, CRButton, MainContainer } from 'components';
+import moment from 'moment';
+import ListPatientSurgeries from '../list-patient-surgeries';
+import NewPatientSurgery from '../new-patient-surgery';
+import PatientSurgeryFilter from './filter';
+import { filterPatientSurgery } from 'services/patient-surgery';
+import { useForm, usePatientSurgeries, useModal } from 'hooks';
+import { useTranslation } from 'react-i18next';
 
 const initValue = {
   patientId: null,
@@ -18,7 +18,7 @@ const initValue = {
   date: null,
   time: null,
   anesthesia: null,
-  anesthesiaDoctorName: "",
+  anesthesiaDoctorName: '',
   assistantFees: 0,
   anesthesiaFees: 0,
   others: 0,
@@ -31,10 +31,10 @@ const inialCurrentPage = {
 const { StringType, DateType } = Schema.Types;
 
 const model = Schema.Model({
-  patientId: StringType().isRequired("patient is required"),
-  surgeryId: StringType().isRequired("surgery is required"),
-  hospitalId: StringType().isRequired("hospital is required"),
-  date: DateType().isRequired("date is required"),
+  patientId: StringType().isRequired('patient is required'),
+  surgeryId: StringType().isRequired('surgery is required'),
+  hospitalId: StringType().isRequired('hospital is required'),
+  date: DateType().isRequired('date is required'),
 });
 
 const PatientSurgeriesContainer = () => {
@@ -43,6 +43,7 @@ const PatientSurgeriesContainer = () => {
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
+  const [type, setType] = useState('');
   const { formValue, setFormValue, checkResult, validate, show, setShow } =
     useForm({
       initValue,
@@ -57,6 +58,7 @@ const PatientSurgeriesContainer = () => {
     });
   const {
     createPatientSurgery,
+    editPatientSurgery,
     patientSurgeries,
     patientSurgeriesCount,
     loading,
@@ -72,9 +74,11 @@ const PatientSurgeriesContainer = () => {
   });
   const pages = Math.ceil(patientSurgeriesCount / 20);
   const handleOnClickCreate = useCallback(() => {
+    setType('create');
     open();
-  }, [open]);
+  }, [open, setType]);
   const handleAdd = useCallback(() => {
+    console.log('in')
     const { time, date, ...rest } = formValue;
     const timeDate = moment(formValue.time);
 
@@ -83,8 +87,12 @@ const PatientSurgeriesContainer = () => {
       minute: timeDate.minutes(),
     });
     const newData = { date: Date, ...rest };
-    createPatientSurgery(newData);
-  }, [createPatientSurgery, formValue]);
+    if (type === 'create') {
+      createPatientSurgery(newData);
+    } else {
+      editPatientSurgery(newData);
+    }
+  }, [createPatientSurgery, editPatientSurgery, type, formValue]);
 
   const filteredList = useMemo(
     () => filterPatientSurgery(patientSurgeries, filterFormValue),
@@ -98,15 +106,50 @@ const PatientSurgeriesContainer = () => {
     [history]
   );
 
+  const handleClickEdit = useCallback(
+    data => {
+      const {
+        patient,
+        surgery,
+        hospital,
+        date,
+        anesthesia,
+        anesthesiaDoctorName,
+        fees,
+        hospitalFees,
+        assistantFees,
+        anesthesiaFees,
+        others,
+        id,
+      } = data;
+      setFormValue({
+        patientId: patient.id,
+        surgeryId: surgery.id,
+        hospitalId: hospital.id,
+        date: date,
+        anesthesia: anesthesia,
+        anesthesiaDoctorName: anesthesiaDoctorName,
+        fees: fees,
+        hospitalFees: hospitalFees,
+        assistantFees: assistantFees,
+        anesthesiaFees: anesthesiaFees,
+        others: others,
+        id: id,
+      });
+      setType('edit');
+      open();
+    },
+    [setFormValue, open, setType]
+  );
   return (
     <>
       <MainContainer
-        title={t("patientsSurgeries")}
+        title={t('patientsSurgeries')}
         more={
           <Div display="flex">
             <Can I="Create" an="Surgery">
               <CRButton variant="primary" onClick={handleOnClickCreate}>
-                {t("surgery")} +
+                {t('surgery')} +
               </CRButton>
             </Can>
           </Div>
@@ -123,6 +166,7 @@ const PatientSurgeriesContainer = () => {
           show={show}
           setShow={setShow}
           loading={loading}
+          type={type}
         />
         <PatientSurgeryFilter
           formValue={filterFormValue}
@@ -134,6 +178,7 @@ const PatientSurgeriesContainer = () => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           pages={pages}
+          onEdit={handleClickEdit}
         />
       </MainContainer>
     </>

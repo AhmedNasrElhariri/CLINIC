@@ -47,10 +47,7 @@ const NewPatientSurgery = ({
     <CRModal
       show={visible}
       header={header}
-      onOk={() => {
-        setShow(true);
-        validate && onOk();
-      }}
+      onOk={onOk}
       onHide={onClose}
       onCancel={onClose}
       loading={loading}

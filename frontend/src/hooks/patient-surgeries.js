@@ -8,6 +8,7 @@ import {
   CREATE_PATIENT_SURGERY,
   LIST_PATIENT_SURGERIES,
   LIST_REVENUES,
+  EDIT_PATIENT_SURGERY,
 } from 'apollo-client/queries';
 
 const updateCache = patientSurgeries => {
@@ -50,7 +51,6 @@ const usePatientSurgeries = ({
     [surgeries]
   );
 
-
   const [createPatientSurgery, { loading }] = useMutation(
     CREATE_PATIENT_SURGERY,
     {
@@ -62,15 +62,54 @@ const usePatientSurgeries = ({
         {
           query: LIST_REVENUES,
         },
+        {
+          query: LIST_PATIENT_SURGERIES,
+          variables: Object.assign(
+            {
+              offset: (page - 1) * 20 || 0,
+              limit: 20,
+            },
+            time && { dateFrom: time[0] },
+            time && { dateTo: time[1] },
+            hospital && { hospital: hospital },
+            surgery && { surgery: surgery },
+            patientId && { patientId: patientId }
+          ),
+        },
       ],
-      update(cache, { data: { createPatientSurgery: surgery } }) {
-        updateCache([...patientSurgeries, surgery]);
-      },
       onError() {
         Alert.error('Failed to create new Surgery');
       },
     }
   );
+  const [editPatientSurgery] = useMutation(EDIT_PATIENT_SURGERY, {
+    onCompleted() {
+      Alert.success('the Surgery has been updated Successfully');
+      onCreate && onCreate();
+    },
+    refetchQueries: [
+      {
+        query: LIST_REVENUES,
+      },
+      {
+        query: LIST_PATIENT_SURGERIES,
+        variables: Object.assign(
+          {
+            offset: (page - 1) * 20 || 0,
+            limit: 20,
+          },
+          time && { dateFrom: time[0] },
+          time && { dateTo: time[1] },
+          hospital && { hospital: hospital },
+          surgery && { surgery: surgery },
+          patientId && { patientId: patientId }
+        ),
+      },
+    ],
+    onError() {
+      Alert.error('Failed to create new Surgery');
+    },
+  });
 
   return useMemo(
     () => ({
@@ -83,10 +122,23 @@ const usePatientSurgeries = ({
           },
         });
       },
+      editPatientSurgery: patientSurgery => {
+        editPatientSurgery({
+          variables: {
+            patientSurgery,
+          },
+        });
+      },
       updateCache,
       loading,
     }),
-    [createPatientSurgery, patientSurgeries, patientSurgeriesCount, loading]
+    [
+      editPatientSurgery,
+      createPatientSurgery,
+      patientSurgeries,
+      patientSurgeriesCount,
+      loading,
+    ]
   );
 };
 

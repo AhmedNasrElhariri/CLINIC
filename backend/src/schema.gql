@@ -546,6 +546,7 @@ type Mutation {
   defineSurgery(surgery: SurgeryInput!): Surgery
   editSurgery(surgery: SurgeryInput!, type: String!): Surgery
   createPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
+  editPatientSurgery(patientSurgery: PatientSurgeryInput!): PatientSurgery
   addLabDefinition(labDefinition: LabInputDefinition!): LabDefinition
   editLabDefinition(
     labDefinition: LabInputDefinition!
@@ -2480,6 +2481,7 @@ input PatientSurgeryInput {
   assistantFees: Int
   anesthesiaFees: Int
   others: Int
+  id: ID
 }
 
 input TransferInputDate {

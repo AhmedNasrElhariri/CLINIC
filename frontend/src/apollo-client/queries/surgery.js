@@ -96,3 +96,11 @@ export const CREATE_PATIENT_SURGERY = gql`
     }
   }
 `;
+
+export const EDIT_PATIENT_SURGERY = gql`
+  mutation editPatientSurgery($patientSurgery: PatientSurgeryInput!) {
+    editPatientSurgery(patientSurgery: $patientSurgery) {
+      id
+    }
+  }
+`;

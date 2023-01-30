@@ -1,15 +1,18 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import NumberFormat from 'react-number-format';
 import { useTranslation } from 'react-i18next';
 import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { FULL_DAY_FORMAT } from 'utils/constants';
+import { Icon } from 'rsuite';
+
 function ListPatientSurgeries({
   patientSurgeries,
   onSurgeryClick,
   currentPage,
   setCurrentPage,
   pages,
+  onEdit,
 }) {
   const { t } = useTranslation();
   const handleSelect = useCallback(
@@ -150,6 +153,25 @@ function ListPatientSurgeries({
                     displayType="text"
                     thousandSeparator
                   />
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+          <CRTable.CRColumn>
+            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {data => (
+                <CRTable.CRCellStyled bold>
+                  <Icon
+                    icon="edit"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onEdit(data);
+                    }}
+                  >
+                    {' '}
+                    {t('edit')}
+                  </Icon>
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
