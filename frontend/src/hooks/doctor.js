@@ -171,7 +171,8 @@ function useDoctor({
             status,
           },
           dateFrom && { dateFrom },
-          dateTo && { dateTo }
+          dateTo && { dateTo },
+          type && { type }
         ),
       },
     ],

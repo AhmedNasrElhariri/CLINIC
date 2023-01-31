@@ -45,7 +45,6 @@
           <td><%= doctorFees[i].name %></td>
           <td><%= Math.round((doctorFees[i].amount + Number.EPSILON) * 100) / 100 %></td>
           <td><%= doctorFees[i].cost %></td>
-          <td><%= Math.round((doctorFees[i].totalPrice + Number.EPSILON) * 100) / 100 %></td>
         </tr>    
         <% } %>
     </table>

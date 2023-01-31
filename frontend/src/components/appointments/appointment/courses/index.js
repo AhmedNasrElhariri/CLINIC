@@ -148,9 +148,12 @@ function NewCourse({
       if (type === 'Number') {
         setSessionNumber(value);
         setTotalPrice(value * sessionPrice);
-      } else {
+      } else if (type === 'TotalPrice') {
         setTotalPrice(value);
         setSessionPrice(value / sessionNumber);
+      } else {
+        setSessionPrice(value);
+        setTotalPrice(value * sessionNumber);
       }
     },
     [
@@ -376,7 +379,9 @@ function NewCourse({
                         label={t('price')}
                         name="coursePartPrice"
                         value={sessionPrice}
-                        onChange={setSessionPrice}
+                        onChange={v =>
+                          handleChangeSessionInputs(v, 'SessionPrice')
+                        }
                         style={{ width: '100px' }}
                       ></CRNumberInput>
                       <CRNumberInput
