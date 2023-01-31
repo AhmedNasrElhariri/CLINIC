@@ -22,7 +22,7 @@ const Filter = ({ filter, setFilter, doctors, t, onAddSessionToDoctor }) => {
             style={{ width: '200px', marginRight: '20px' }}
           />
           <CRSelectInput
-            label={t('internal/external')}
+            label={t('internalExternal')}
             name="referedDoctor"
             block
             data={DoctorTypes}

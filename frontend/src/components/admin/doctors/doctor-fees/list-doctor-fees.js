@@ -58,8 +58,8 @@ const ListDoctorFees = ({
   );
   const totals = {
     total: total,
-    totalPrice: totalPrice,
     totalCost: totalCost,
+    totalPrice: totalPrice,
   };
   return (
     <>

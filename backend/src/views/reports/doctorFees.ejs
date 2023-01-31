@@ -35,7 +35,7 @@
    
       <table>
         <tr>
-          <th>Doctor</th><th>Date</th><th>Name</th><th>Amount</th><th>Cost</th><th>Total Price</th>
+          <th>Doctor</th><th>Date</th><th>Name</th><th>Amount</th><th>Cost</th><th>Session Price</th>
         </tr>
     
         <% for (var i = 0; i < doctorFees.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
@@ -43,9 +43,9 @@
           <td><%= doctorFees[i].doctor.name %></td>
           <td><%= formatDateStandard(doctorFees[i].date) %></td>
           <td><%= doctorFees[i].name %></td>
-          <td><%= doctorFees[i].amount %></td>
+          <td><%= Math.round((doctorFees[i].amount + Number.EPSILON) * 100) / 100 %></td>
           <td><%= doctorFees[i].cost %></td>
-          <td><%= doctorFees[i].totalPrice %></td>
+          <td><%= Math.round((doctorFees[i].totalPrice + Number.EPSILON) * 100) / 100 %></td>
         </tr>    
         <% } %>
     </table>

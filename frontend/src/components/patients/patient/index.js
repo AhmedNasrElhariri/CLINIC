@@ -144,6 +144,7 @@ function Appointment() {
                       history={appointmentHistory}
                       viewFields={viewFields}
                       patientId={patient?.id}
+                      t={t}
                     />
                   </Can>
                 )}

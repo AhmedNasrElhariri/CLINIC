@@ -64,7 +64,9 @@ const NewPatientSurgery = ({
           data={searchedPatients}
           onSearch={v => setPatientSearchValue(v)}
           block
+          disabled={type === 'create' ? false : true}
         />
+
         <CRSelectInput
           label={t('surgery')}
           name="surgeryId"

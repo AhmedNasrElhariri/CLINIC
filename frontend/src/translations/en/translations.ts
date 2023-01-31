@@ -471,4 +471,5 @@ export const TRANSLATIONS_EN = {
   remainingUnits: 'Remaining units',
   totalUnits: 'Total units',
   courseParts: 'Course parts',
+  internalExternal: 'Internal / External',
 };

@@ -218,7 +218,7 @@ function Appointment() {
     for (const session in sessionFormValue) {
       totalPulses += sessionFormValue[session];
     }
-    setApptFormValue({ ...apptFormValue, pulses: totalPulses });
+    setApptFormValue((prev => ({ ...prev, pulses: totalPulses })));
   }, [sessionFormValue]);
 
   const handleMedicineChange = useCallback(

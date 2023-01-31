@@ -138,6 +138,7 @@ const DoctorFees = () => {
           handlePayDoctorFees={handlePayDoctorFees}
           addNewFees={handleAddNewFees}
           print={printDoctorFees}
+          checkedKeys={checkedKeys}
         />
       </Filter>
       <ListDoctorFees

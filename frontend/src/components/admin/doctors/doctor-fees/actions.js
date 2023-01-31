@@ -1,10 +1,21 @@
 import { CRButton, Div } from 'components';
-const Actions = ({ filter, handlePayDoctorFees, addNewFees, print }) => {
+const Actions = ({
+  filter,
+  handlePayDoctorFees,
+  addNewFees,
+  print,
+  checkedKeys,
+}) => {
   return (
     <>
       {filter?.status === 'Draft' && (
         <Div mt="43px" ml="10px">
-          <CRButton onClick={handlePayDoctorFees}>Pay doctor fees </CRButton>
+          <CRButton
+            disabled={checkedKeys.length > 0 ? false : true}
+            onClick={handlePayDoctorFees}
+          >
+            Pay doctor fees{' '}
+          </CRButton>
         </Div>
       )}
       <Div mt="43px" ml="10px">

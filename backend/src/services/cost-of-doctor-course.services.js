@@ -34,6 +34,8 @@ const createCostOfDoctorsFromAppointment = (
           organizationId,
           userId,
           partId: partID,
+          unitPrice: price,
+          numberOfUnits: number,
         },
         cost && { cost },
         specialtyId && { specialtyId },
