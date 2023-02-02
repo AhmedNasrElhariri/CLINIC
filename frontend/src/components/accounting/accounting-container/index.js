@@ -42,6 +42,7 @@ const initalVal = {
   expenseName: '',
   accountingOption: 'All',
   printOrNot: false,
+  orderByOption: 'date',
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -168,6 +169,7 @@ const AccountingContainer = () => {
     expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
     expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
     revenueName: formValue?.revenueName,
+    orderByOption: formValue?.orderByOption,
     expenseName: formValue?.expenseName,
     expenseType: formValue?.expenseType,
     accountingOption: formValue?.accountingOption,

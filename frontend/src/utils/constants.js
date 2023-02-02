@@ -110,6 +110,12 @@ export const LaneStatus = [
   { name: 'Dynamic', value: 'Dynamic' },
 ];
 
+export const ORDERBYOPTIONS = [
+  { id: 'date', name: 'Date' },
+  { id: 'doctor', name: 'Doctor' },
+  { id: 'patient', name: 'Patient' },
+];
+
 export const ALL_CHOICE = 'All';
 
 export const ACTIONS = Object.freeze({
@@ -184,6 +190,8 @@ export const ACTIONS = Object.freeze({
   DeleteImages_CurrentAppointment: 'DeleteImages_CurrentAppointment',
   View_Logging: 'View_Logging',
   View_DoctorFees: 'View_DoctorFees',
+  View_Courses: 'View_Courses',
+  View_ReportsPrintout: 'View_ReportsPrintout',
 });
 
 export const ACTIONS_ORGANZATIONONLY = [

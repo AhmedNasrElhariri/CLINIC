@@ -32,6 +32,7 @@ const useAccounting = ({
   setRefetchRe,
   refetchEx,
   setRefetchEx,
+  orderByOption,
 } = {}) => {
   const { data: expenseData, refetch: refetchExpenses } = useQuery(
     LIST_EXPENSES,
@@ -66,7 +67,8 @@ const useAccounting = ({
       branchId && { branchId: branchId },
       specialtyId && { specialtyId: specialtyId },
       doctorId && { doctorId: doctorId },
-      revenueName && { revenueName: revenueName }
+      revenueName && { revenueName: revenueName },
+      orderByOption && { orderByOption: orderByOption }
     ),
   });
   const revenuesData = revenueData?.revenues;

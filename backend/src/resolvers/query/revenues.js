@@ -5,7 +5,7 @@ import {
   getStartOfDay,
   getEndOfDay,
 } from '@/services/date.service';
-import { ACTIONS } from '@/utils/constants';
+import { ACTIONS, ORDERBYOPTIONS } from '@/utils/constants';
 
 const revenues = async (
   _,
@@ -19,11 +19,16 @@ const revenues = async (
     specialtyId,
     branchId,
     revenueName,
+    orderByOption,
   },
   { user, organizationId }
 ) => {
   let updatedDateFrom = new Date();
   let updatedDateTo = new Date();
+  const option = orderByOption
+    ? ORDERBYOPTIONS.find(o => o.name === orderByOption)
+    : ORDERBYOPTIONS.find(o => o.name === 'date');
+  console.log(option, orderByOption);
   const ids = await listFlattenUsersTreeIds(
     {
       user,
@@ -93,10 +98,9 @@ const revenues = async (
       specialty: true,
       branch: true,
       doctor: true,
+      patient: true,
     },
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy: option.value,
   });
   const totalRevenues = await prisma.revenue.aggregate({
     _sum: {

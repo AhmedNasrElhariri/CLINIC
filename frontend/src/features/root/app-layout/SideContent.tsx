@@ -18,6 +18,7 @@ import { MdAddCircleOutline } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ModalsContext } from 'common/contexts/ModalsContext';
+import ListItem from './list-router-item';
 
 export default memo(function SideContent({
   closeDrawer,
@@ -83,7 +84,7 @@ export default memo(function SideContent({
       },
       {
         path: '/courses',
-        name: 'courses',
+        name: 'Courses',
         icon: SolutionOutlined,
       },
       {
@@ -122,29 +123,15 @@ export default memo(function SideContent({
       renderItem={route =>
         route.name === 'logging' ? (
           <Can I="View" an="Logging">
-            <List.Item className="text-xs py-0 px-4 h-10 flex items-center justify-between">
-              <Link
-                onClick={closeDrawer}
-                to={route.path}
-                className="flex items-center text-xs gap-2 h-full grow text-slate-600"
-              >
-                <route.icon className="!text-[18px]" /> {t(route.name)}
-              </Link>
-              {route.extra}
-            </List.Item>
+            <ListItem closeDrawer={closeDrawer} route={route} t={t} />
           </Can>
         ) : route.name === 'Doctors' ? (
           <Can I="View" an="DoctorFees">
-            <List.Item className="text-xs py-0 px-4 h-10 flex items-center justify-between">
-              <Link
-                onClick={closeDrawer}
-                to={route.path}
-                className="flex items-center text-xs gap-2 h-full grow text-slate-600"
-              >
-                <route.icon className="!text-[18px]" /> {t(route.name)}
-              </Link>
-              {route.extra}
-            </List.Item>
+            <ListItem closeDrawer={closeDrawer} route={route} t={t} />
+          </Can>
+        ) : route.name === 'Courses' ? (
+          <Can I="View" an="Courses">
+            <ListItem closeDrawer={closeDrawer} route={route} t={t} />
           </Can>
         ) : (
           <List.Item className="text-xs py-0 px-4 h-10 flex items-center justify-between">

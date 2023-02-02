@@ -261,6 +261,7 @@ type Query {
     specialtyId: ID
     branchId: ID
     revenueName: String
+    orderByOption: String
   ): RevenueData!
   allExpenses(
     dateFrom: Date

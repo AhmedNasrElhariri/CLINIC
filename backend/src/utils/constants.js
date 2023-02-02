@@ -94,6 +94,36 @@ export const PAYROLL_TRANSACTION_TYPE = Object.freeze({
   Deduction: 'Deduction',
   Salary: 'Salary',
 });
+export const ORDERBYOPTIONS = [
+  {
+    name: 'date',
+    value: {
+      createdAt: 'desc',
+    },
+  },
+  {
+    name: 'patient',
+    value: [
+      {
+        patient: {
+          name: 'desc',
+        },
+      },
+      { createdAt: 'desc' },
+    ],
+  },
+  {
+    name: 'doctor',
+    value: [
+      {
+        doctor: {
+          name: 'desc',
+        },
+      },
+      { createdAt: 'desc' },
+    ],
+  },
+];
 
 export const ACTIONS = Object.freeze({
   Create_Appointment: 'Create_Appointment',
@@ -166,4 +196,6 @@ export const ACTIONS = Object.freeze({
   DeleteImages_CurrentAppointment: 'DeleteImages_CurrentAppointment',
   View_Logging: 'View_Logging',
   View_DoctorFees: 'View_DoctorFees',
+  View_Courses: 'View_Courses',
+  View_ReportsPrintout: 'View_ReportsPrintout',
 });

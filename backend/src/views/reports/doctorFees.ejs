@@ -35,7 +35,7 @@
    
       <table>
         <tr>
-          <th>Doctor</th><th>Date</th><th>Name</th><th>Amount</th><th>Cost</th><th>Session Price</th>
+          <th>Doctor</th><th>Date</th><th>Name</th><th>Amount</th><th>Cost</th>
         </tr>
     
         <% for (var i = 0; i < doctorFees.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
@@ -48,6 +48,7 @@
         </tr>    
         <% } %>
     </table>
+    <h4 id="accounting">Total: <%=Math.round((totalDoctorFees + Number.EPSILON) * 100) / 100 %></h4>
     
   </div>
 </body>

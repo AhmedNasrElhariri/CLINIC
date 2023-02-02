@@ -66,6 +66,7 @@ export const LIST_REVENUES = gql`
     $specialtyId: ID
     $doctorId: ID
     $revenueName: String
+    $orderByOption: String
   ) {
     revenues(
       offset: $offset
@@ -77,6 +78,7 @@ export const LIST_REVENUES = gql`
       specialtyId: $specialtyId
       doctorId: $doctorId
       revenueName: $revenueName
+      orderByOption: $orderByOption
     ) {
       revenues {
         id

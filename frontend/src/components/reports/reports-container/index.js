@@ -9,6 +9,7 @@ import ReportsPrintOut from '../print-reports';
 import Reports from '../reports';
 import { useTranslation } from 'react-i18next';
 import Nav from './nav';
+import { Can } from 'components/user/can';
 
 export const TABS = [
   { key: 'cash', element: () => <AccountingContainer /> },
@@ -21,7 +22,14 @@ export const TABS = [
     element: () => <InsuranceAccountingContainer />,
   },
   { key: 'statistics', element: () => <Reports /> },
-  { key: 'reports', element: () => <ReportsPrintOut /> },
+  {
+    key: 'reports',
+    element: () => (
+      <Can I="View" an="ReportsPrintout">
+        <ReportsPrintOut />
+      </Can>
+    ),
+  },
 ];
 
 const ReportsContainer = () => {

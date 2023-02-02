@@ -251,6 +251,8 @@ enum PermissionAction {
   DeleteImages_CurrentAppointment
   View_Logging
   View_DoctorFees
+  View_Courses
+  View_ReportsPrintout
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
