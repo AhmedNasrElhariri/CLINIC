@@ -9,6 +9,9 @@ export const LIST_ITEMS = gql`
       quantity
       barcode
       notes
+      sellingPrice
+      alertNumberOfUnits
+      sellable
     }
   }
 `;
@@ -22,15 +25,15 @@ export const LIST_INVENTORY = gql`
       quantity
       price
       level
-      branch{
+      branch {
         id
         name
       }
-      specialty{
+      specialty {
         id
         name
       }
-      doctor{
+      doctor {
         id
         name
       }
@@ -63,6 +66,13 @@ export const UPDATE_ITEM = gql`
     editItem(item: $item) {
       id
       name
+      unitOfMeasure
+      quantity
+      barcode
+      notes
+      sellingPrice
+      alertNumberOfUnits
+      sellable
     }
   }
 `;
@@ -71,7 +81,14 @@ export const ADD_ITEM = gql`
   mutation addItem($item: AddToInventoryInput!) {
     addItem(item: $item) {
       id
+      name
+      unitOfMeasure
       quantity
+      barcode
+      notes
+      sellingPrice
+      alertNumberOfUnits
+      sellable
     }
   }
 `;

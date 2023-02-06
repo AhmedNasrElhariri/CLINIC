@@ -22,8 +22,6 @@ function useInventory({
   onRemoveItem,
   onRemoveItemError,
 } = {}) {
-
-
   const { data: ItemData } = useQuery(LIST_ITEMS);
   const { data: InventoryData } = useQuery(LIST_INVENTORY);
   const { data: InventoryHistoryData } = useQuery(LIST_INVENTORY_HISTORY);
@@ -92,6 +90,15 @@ function useInventory({
   const [update, { loading: updateItemLoading }] = useMutation(UPDATE_ITEM, {
     onCompleted: ({ updateItem }) => {
       onCreateCompleted && onCreateCompleted(updateItem);
+    },
+    update(cache, { data: { editItem } }) {
+      const { items } = cache.readQuery({
+        query: LIST_ITEMS,
+      });
+      cache.writeQuery({
+        query: LIST_ITEMS,
+        data: { items: [...items, editItem] },
+      });
     },
   });
 

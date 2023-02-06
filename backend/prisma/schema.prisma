@@ -1005,20 +1005,23 @@ model Event {
 }
 
 model Item {
-  id               String             @id @default(uuid())
-  name             String             @unique
-  unitOfMeasure    UnitOfMeaure
-  quantity         Int
-  barcode          String?
-  notes            String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt
-  organization     Organization       @relation(fields: [organizationId], references: [id])
-  organizationId   String
-  user             User               @relation(fields: [userId], references: [id])
-  userId           String
-  inventoryItems   InventoryItem[]
-  inventoryHistory InventoryHistory[]
+  id                 String             @id @default(uuid())
+  name               String             @unique
+  unitOfMeasure      UnitOfMeaure
+  quantity           Int
+  barcode            String?
+  notes              String?
+  sellingPrice       Int?
+  alertNumberOfUnits Int?
+  sellable           Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @default(now()) @updatedAt
+  organization       Organization       @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  user               User               @relation(fields: [userId], references: [id])
+  userId             String
+  inventoryItems     InventoryItem[]
+  inventoryHistory   InventoryHistory[]
 }
 
 model InventoryItem {

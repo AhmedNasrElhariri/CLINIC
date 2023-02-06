@@ -474,4 +474,8 @@ export const TRANSLATIONS_EN = {
   internalExternal: 'Internal / External',
   extraUnits: 'Extra units',
   orderBy: 'Order By',
+  sellingPrice: 'Selling price',
+  alertNumberOfUnits: 'Alert Number Of Units',
+  sellable: 'Sellable',
+  unitSellingPrice:'Unit selling price'
 };

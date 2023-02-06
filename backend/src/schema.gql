@@ -1773,6 +1773,9 @@ type Item {
   name: String!
   unitOfMeasure: UnitOfMeaure
   quantity: Int!
+  sellingPrice: Int
+  alertNumberOfUnits: Int
+  sellable: Boolean
   barcode: String
   notes: String
 }
@@ -1799,13 +1802,17 @@ input ItemInput {
   name: String!
   unitOfMeasure: UnitOfMeaure
   quantity: Int!
-  barcode: String
-  notes: String
+  sellingPrice: Int
+  alertNumberOfUnits: Int
+  sellable: Boolean
 }
 
 input ItemUpdateInput {
   id: ID!
   name: String!
+  quantity: Int!
+  sellingPrice: Int
+  alertNumberOfUnits: Int
 }
 
 input AddToInventoryInput {
