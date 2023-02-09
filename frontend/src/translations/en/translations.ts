@@ -474,4 +474,9 @@ export const TRANSLATIONS_EN = {
   internalExternal: 'Internal / External',
   extraUnits: 'Extra units',
   orderBy: 'Order By',
+  revenuesOrExpenses: 'Revenues / Expenses',
+  cashOrVisa: 'Cash / Visa',
+  cashAndVisa: 'Cash & Visa',
+  startTime: 'Start time',
+  endTime: 'End time',
 };

@@ -306,30 +306,24 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn width={130}>
-          <CRTable.CRHeaderCell>{t('time')}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('startTime')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date, session }) => (
-              <Whisper
-                placement="top"
-                controlId="control-id-hover"
-                trigger="hover"
-                speaker={
-                  <Tooltip>
-                    <Div>
-                      <Div>
-                        {t('End time ')}:
-                        {addMinutesToDateAndReturnTime(date, session?.duration)}
-                      </Div>
-                    </Div>
-                  </Tooltip>
-                }
-              >
-                <CRTable.CRCellStyled>
-                  {waiting
-                    ? formatDate(date, STANDARD_DATE_FORMAT)
-                    : formatDate(date, FULL_DAY_FORMAT)}
-                </CRTable.CRCellStyled>
-              </Whisper>
+              <CRTable.CRCellStyled>
+                {waiting
+                  ? formatDate(date, STANDARD_DATE_FORMAT)
+                  : formatDate(date, FULL_DAY_FORMAT)}
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        <CRTable.CRColumn width={130}>
+          <CRTable.CRHeaderCell>{t('endTime')}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ date, session }) => (
+              <CRTable.CRCellStyled>
+                {addMinutesToDateAndReturnTime(date, session?.duration)}
+              </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
@@ -350,16 +344,6 @@ function ListAppointments({
                 {type === 'Session' ? 'S ' : type}{' '}
                 {type === 'Session' ? session?.name : ''}
                 {type === 'Session' && isFollowUp ? '/Follow Up' : ''}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn width={50}>
-          <CRTable.CRHeaderCell>{t('reference')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ reference }) => (
-              <CRTable.CRCellStyled>
-                <Div fontWeight="Bold">{reference}</Div>
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
@@ -397,25 +381,26 @@ function ListAppointments({
         <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ doctor }) => (
-              <CRTable.CRCellStyled>{doctor?.name}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-
-        <CRTable.CRColumn width={120}>
-          <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ specialty }) => (
-              <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn width={120}>
-          <CRTable.CRHeaderCell>{t('branch')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ branch }) => (
-              <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>
+            {({ doctor, specialty, branch }) => (
+              <Whisper
+                placement="top"
+                controlId="control-id-hover"
+                trigger="hover"
+                speaker={
+                  <Tooltip>
+                    <Div>
+                      <Div>
+                        {t('specialty:  ')}{specialty.name}
+                      </Div>
+                      <Div>
+                        {t('branch:  ')}{branch.name}
+                      </Div>
+                    </Div>
+                  </Tooltip>
+                }
+              >
+                <CRTable.CRCellStyled>{doctor?.name}</CRTable.CRCellStyled>
+              </Whisper>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>

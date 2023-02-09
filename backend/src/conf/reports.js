@@ -996,7 +996,6 @@ const init = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
       res.end(pdfDoc);
     } catch (e) {
-      console.log(e, 'eeeeeeeeee');
       res.status(400).send(e);
     }
   });

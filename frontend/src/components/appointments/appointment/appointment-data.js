@@ -276,7 +276,6 @@ function AppointmentData({
       });
     }
   };
-  console.log(appointmentFormValue,'appointmentFormValue')
   return (
     <>
       <div>

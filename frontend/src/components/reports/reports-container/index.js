@@ -4,6 +4,7 @@ import {
   AccountingContainer,
   BankAccountingContainer,
   InsuranceAccountingContainer,
+  CashAndBankContainer
 } from 'components';
 import ReportsPrintOut from '../print-reports';
 import Reports from '../reports';
@@ -16,6 +17,10 @@ export const TABS = [
   {
     key: 'bank',
     element: () => <BankAccountingContainer />,
+  },
+  {
+    key: 'cashAndVisa',
+    element: () => <CashAndBankContainer />,
   },
   {
     key: 'insurance',

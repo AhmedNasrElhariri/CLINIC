@@ -9,6 +9,7 @@ import {
   CRButton,
   BranchSpecialtyUserFilter,
   CRSelectInput,
+  MenuPopover,
 } from 'components';
 import Toolbar from '../../accounting/toolbar';
 import ListData from './list-data/revenue';
@@ -34,7 +35,7 @@ import { formatDate } from 'utils/date';
 import axios from 'axios';
 import useGlobalState from 'state';
 import { ExcelIcon } from 'components/icons/index';
-import { Form } from 'rsuite';
+import { Form, Whisper } from 'rsuite';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalFilterVal = {
@@ -272,16 +273,25 @@ const BankAccountingContainer = () => {
       .catch(err => {});
   };
   ///
-  const handleBankRevenueAccountingExcel = async day => {
+  const handleBankAccountingExcel = async day => {
+    const { paramValue } = ACCOUNT_OPTIONS.find(
+      ({ id }) => id === filter.accountingOption
+    );
     axios({
-      url: '/accountingBankRevenueExcel',
+      url: '/accountingBankExcel',
       responseType: 'blob', // important
       params: {
         branchId: branchSpecialtyUser?.branch,
         specialtyId: branchSpecialtyUser?.specialty,
         doctorId: branchSpecialtyUser?.doctor,
+        expenseBranchId: expenseBranchSpecialtyUser?.branch,
+        expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+        expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
         revenueName: formValue?.revenueName,
+        expenseType: formValue?.expenseType,
+        expenseName: formValue?.expenseName,
         bankId: filter?.bank,
+        columns: paramValue,
         view,
         dateFrom: period[0],
         dateTo: period[1],
@@ -298,33 +308,36 @@ const BankAccountingContainer = () => {
       })
       .catch(err => {});
   };
-  const handleBankExpenseAccountingExcel = async day => {
-    axios({
-      url: '/accountingBankExpenseExcel',
-      responseType: 'blob', // important
-      params: {
-        expenseBranchId: expenseBranchSpecialtyUser?.branch,
-        expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
-        expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
-        expenseType: formValue?.expenseType,
-        expenseName: formValue?.expenseName,
-        bankId: filter?.bank,
-        view,
-        dateFrom: period[0],
-        dateTo: period[1],
-        organizationId: user.organizationId,
-      },
-    })
-      .then(function (response) {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `bank-expenses-${Date.now()}.xlsx`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch(err => {});
-  };
+  // const handleBankExpenseAccountingExcel = async day => {
+  //   axios({
+  //     url: '/accountingBankExpenseExcel',
+  //     responseType: 'blob', // important
+  //     params: {
+  //       expenseBranchId: expenseBranchSpecialtyUser?.branch,
+  //       expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
+  //       expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
+  //       expenseType: formValue?.expenseType,
+  //       expenseName: formValue?.expenseName,
+  //       bankId: filter?.bank,
+  //       view,
+  //       dateFrom: period[0],
+  //       dateTo: period[1],
+  //       organizationId: user.organizationId,
+  //     },
+  //   })
+  //     .then(function (response) {
+  //       const url = window.URL.createObjectURL(new Blob([response.data]));
+  //       const link = document.createElement('a');
+  //       link.href = url;
+  //       link.setAttribute('download', `bank-expenses-${Date.now()}.xlsx`); //or any other extension
+  //       document.body.appendChild(link);
+  //       link.click();
+  //     })
+  //     .catch(err => {});
+  // };
+  function handleSelectMenu(eventKey, event) {
+    eventKey === 1 ? handleBankAccountingReport() : handleBankAccountingExcel();
+  }
   return (
     <>
       <MainContainer
@@ -352,14 +365,13 @@ const BankAccountingContainer = () => {
                   {t('newExpense')} +
                 </CRButton>
               </Can>
-              <CRButton
-                variant="primary"
-                onClick={handleBankAccountingReport}
-                ml={1}
-                mr={1}
+              <Whisper
+                placement="bottomStart"
+                trigger="click"
+                speaker={<MenuPopover onSelect={handleSelectMenu} />}
               >
-                {t('print')} +
-              </CRButton>
+                <CRButton>Prints</CRButton>
+              </Whisper>
             </>
           </Div>
         }
@@ -396,7 +408,7 @@ const BankAccountingContainer = () => {
             setFormValue={setFilter}
             banksDefinition={banksDefinition}
           />
-          <ExcelIcon
+          {/* <ExcelIcon
             variant="primary"
             onClick={handleBankRevenueAccountingExcel}
             ml={1}
@@ -404,7 +416,7 @@ const BankAccountingContainer = () => {
             width="30px"
             height="30px"
             marginTop="40px"
-          />
+          /> */}
         </Div>
         <Div>
           <Div display="flex">
@@ -427,7 +439,7 @@ const BankAccountingContainer = () => {
                   formValue={formValue}
                   setFormValue={setFormValue}
                 />
-                <ExcelIcon
+                {/* <ExcelIcon
                   variant="primary"
                   onClick={handleBankExpenseAccountingExcel}
                   ml={1}
@@ -435,7 +447,7 @@ const BankAccountingContainer = () => {
                   width="30px"
                   height="30px"
                   marginTop="40px"
-                />
+                /> */}
               </Div>
               <BranchSpecialtyUserFilter
                 formValue={expenseBranchSpecialtyUser}

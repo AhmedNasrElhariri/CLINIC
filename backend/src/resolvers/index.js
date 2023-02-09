@@ -19,6 +19,7 @@ import * as fromPayroll from './payroll-user';
 import * as fromPayrollTransaction from './payroll-transaction';
 import * as fromPermission from './permission';
 import * as fromRevenue from './revenue';
+import * as fromExpense from './expense';
 import * as fromBankRevenue from './bankRevenue';
 import * as fromInsuranceTransactions from './insuranceTransaction';
 import * as fromBankExpense from './bankExpense';
@@ -48,6 +49,7 @@ export default {
   ...fromCustomResolvers,
   Course: fromCourse,
   Revenue: fromRevenue,
+  Expense: fromExpense,
   BankRevenue: fromBankRevenue,
   BankExpense: fromBankExpense,
   InsuranceTransaction: fromInsuranceTransactions,

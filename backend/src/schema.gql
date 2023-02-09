@@ -305,6 +305,20 @@ type Query {
     branchId: ID
     bankId: ID
   ): BankExpenseData!
+  accountingData(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+    name: String
+    accountingOption: String
+    transactionType: String!
+    bankId: ID
+  ): AccountingData
   insuranceTransactions(
     offset: Int
     limit: Int
@@ -1555,6 +1569,7 @@ type Expense {
   date: Date!
   expenseType: String!
   invoiceNo: String
+  flag: String
 }
 type ExpenseData {
   expenses: [Expense!]
@@ -1599,6 +1614,7 @@ type Revenue {
   amount: Float!
   date: Date!
   invoiceNo: String
+  flag: String
 }
 
 type RevenueData {
@@ -1607,6 +1623,19 @@ type RevenueData {
   revenuesCount: Int
 }
 
+type AccountingData {
+  data: [AccountingDataModel]
+  total: Float
+  count: Int
+}
+
+type AccountingDataModel {
+  id: ID!
+  name: String!
+  amount: Float!
+  date: Date!
+  flag: String
+}
 type BankRevenue {
   id: ID!
   name: String!
@@ -1621,6 +1650,7 @@ type BankRevenue {
   specialty: Specialty
   invoiceNo: String
   bank: BankDefinition!
+  flag: String
 }
 type BankRevenueData {
   bankRevenues: [BankRevenue!]
@@ -1655,6 +1685,7 @@ type BankExpense {
   invoiceNo: String
   checkNumber: String
   bank: BankDefinition!
+  flag: String
 }
 type BankExpenseData {
   bankExpenses: [BankExpense!]

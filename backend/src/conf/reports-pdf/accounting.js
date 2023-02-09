@@ -118,16 +118,22 @@ const init = app => {
   });
 
   ///excel
-  app.get('/accountingRevenueExcel', async (req, res) => {
+  app.get('/accountingExcel', async (req, res) => {
     const {
       dateFrom,
       dateTo,
       view,
+      columns = ['revenues', 'expenses'],
       doctorId,
       specialtyId,
       branchId,
       revenueName,
+      expenseBranchId,
+      expenseSpecialtyId,
+      expenseDoctorId,
+      expenseType,
       organizationId,
+      expenseName,
     } = req.query;
     try {
       let updatedDateFrom = new Date();
@@ -164,45 +170,6 @@ const init = app => {
           },
         },
       });
-      let keys = ['name', 'date', 'amount'];
-      const workbook = generateExcel(keys, revenues);
-      var fileName = 'Revenues.xlsx';
-      res.setHeader(
-        'Content-Type',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      );
-      res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
-      await workbook.xlsx.write(res);
-      res.end();
-    } catch (e) {
-      res.status(400).send(e);
-      res.status(400).send('Invalid');
-    }
-  });
-
-  app.get('/accountingExpenseExcel', async (req, res) => {
-    const {
-      dateFrom,
-      dateTo,
-      view,
-      expenseBranchId,
-      expenseSpecialtyId,
-      expenseDoctorId,
-      expenseType,
-      expenseName,
-      organizationId,
-    } = req.query;
-    try {
-      let updatedDateFrom = new Date();
-      let updatedDateTo = new Date();
-      if (dateFrom && dateTo) {
-        updatedDateFrom = getStartOfDay(dateFrom);
-        updatedDateTo = getEndOfDay(dateTo);
-      } else {
-        const datesArray = getDateFromAndDateToFromView(view);
-        updatedDateFrom = datesArray[0];
-        updatedDateTo = datesArray[1];
-      }
       const expenses = await prisma.expense.findMany({
         where: {
           organizationId,
@@ -217,6 +184,10 @@ const init = app => {
               doctorId: expenseDoctorId,
             },
           ],
+          expenseType: {
+            contains: expenseType,
+            mode: 'insensitive',
+          },
           date: {
             gte: updatedDateFrom,
             lte: updatedDateTo,
@@ -225,14 +196,16 @@ const init = app => {
             contains: expenseName,
             mode: 'insensitive',
           },
-          expenseType: {
-            contains: expenseType,
-            mode: 'insensitive',
-          },
         },
       });
       let keys = ['name', 'date', 'amount'];
-      const workbook = generateExcel(keys, expenses);
+
+      const workbook =
+        columns.includes('revenues') && columns.includes('expenses')
+          ? generateExcel(keys, ['Revenues', 'Expenses'], revenues, expenses)
+          : columns.includes('revenues')
+          ? generateExcel(keys, ['Revenues'], revenues)
+          : generateExcel(keys, ['Expenses'], expenses);
       var fileName = 'Revenues.xlsx';
       res.setHeader(
         'Content-Type',

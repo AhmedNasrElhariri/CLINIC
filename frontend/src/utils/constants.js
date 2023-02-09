@@ -87,6 +87,17 @@ export const ACCOUNT_OPTIONS = [
   { id: 'Revenue', name: 'Revenue', paramValue: ['revenues'] },
   { id: 'Expense', name: 'Expense', paramValue: ['expenses'] },
 ];
+
+export const TRANSATIONS_TYPES = [
+  { id: 'revenue', name: 'Revenue' },
+  { id: 'expense', name: 'Expense' },
+];
+
+export const ACCOUNTING_OPTIONS = [
+  { id: 'cash', name: 'Cash' },
+  { id: 'visa', name: 'Visa' },
+];
+
 export const PERMISSION_LEVELS = Object.freeze({
   ORGNIZATION: 'Organization',
   BRANCH: 'Branch',

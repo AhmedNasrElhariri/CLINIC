@@ -6,7 +6,6 @@ export const createRevenueLogging = async (r, __, tag) => {
   shortFun('Revenue', coment, 'insert', r, tag);
 };
 export const updateRevenueLogging = async (r, row, tag) => {
-  console.log(row.amount,'row.amount',r.amount,'r.amount')
   const coment = `edit revenue (${r.name}) from ${row.amount} to ${r.amount}`;
   shortFun('Revenue', coment, 'update', r, tag);
 };

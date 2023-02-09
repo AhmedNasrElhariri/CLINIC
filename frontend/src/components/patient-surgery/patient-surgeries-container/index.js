@@ -78,7 +78,6 @@ const PatientSurgeriesContainer = () => {
     open();
   }, [open, setType]);
   const handleAdd = useCallback(() => {
-    console.log('in')
     const { time, date, ...rest } = formValue;
     const timeDate = moment(formValue.time);
 

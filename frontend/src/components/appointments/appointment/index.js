@@ -193,7 +193,6 @@ function Appointment() {
         R.map(R.path(['imageDefinition', 'id']))
       )(appointment),
     }));
-    console.log(apptFormValue, 'innner');
   }, [appointment]);
 
   useEffect(() => {

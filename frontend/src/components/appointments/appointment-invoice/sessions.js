@@ -101,6 +101,7 @@ export default function Sessions({
             name="sessionsNumber"
             value={sessionNumber}
             onChange={setSessionNumber}
+            float={true}
           ></CRNumberInput>
         </div>
       </Form>

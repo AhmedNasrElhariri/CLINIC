@@ -6,6 +6,7 @@ import {
   LIST_REVENUES,
   LIST_ALL_EXPENSES,
   LIST_ALL_REVENUES,
+  LIST_ACCOUNTING_DATA,
 } from 'apollo-client/queries';
 import { filterAccountingList } from 'utils/accounting';
 
@@ -33,6 +34,9 @@ const useAccounting = ({
   refetchEx,
   setRefetchEx,
   orderByOption,
+  name,
+  transactionType,
+  bankId,
 } = {}) => {
   const { data: expenseData, refetch: refetchExpenses } = useQuery(
     LIST_EXPENSES,
@@ -71,6 +75,26 @@ const useAccounting = ({
       orderByOption && { orderByOption: orderByOption }
     ),
   });
+  const { data: accountingDATA } = useQuery(LIST_ACCOUNTING_DATA, {
+    variables: Object.assign(
+      {
+        action: ACTIONS.View_Accounting,
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+        transactionType: transactionType,
+      },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      view && { view: view },
+      branchId && { branchId: branchId },
+      specialtyId && { specialtyId: specialtyId },
+      doctorId && { doctorId: doctorId },
+      name && { name: name },
+      accountingOption && { accountingOption: accountingOption },
+      bankId && { bankId: bankId }
+    ),
+  });
+
   const revenuesData = revenueData?.revenues;
   const revenues = useMemo(() => {
     return accountingOption === 'Expense'
@@ -106,7 +130,18 @@ const useAccounting = ({
       ? 0
       : R.propOr(0, 'expensesCount')(expensesData);
   }, [expensesData, accountingOption]);
+  ////
 
+  const accountingTransactionsData = accountingDATA?.accountingData;
+  const accountingTransations = useMemo(() => {
+    return R.propOr([], 'data')(accountingTransactionsData);
+  }, [accountingDATA]);
+  const accountingTotal = useMemo(() => {
+    return R.propOr(0, 'total')(accountingTransactionsData);
+  }, [accountingDATA]);
+  const accountingCount = useMemo(() => {
+    return R.propOr(0, 'count')(accountingTransactionsData);
+  }, [accountingDATA]);
   ////all
 
   const [getAllTwo, { data: expenseAllData }] = useLazyQuery(
@@ -180,9 +215,11 @@ const useAccounting = ({
       totalRevenues,
       RevenuesCount,
       expensesCount,
-
       allRevenues,
       allExpenses,
+      accountingTransations,
+      accountingTotal,
+      accountingCount,
       refetchRevenues: {
         query: LIST_REVENUES,
       },
@@ -193,13 +230,15 @@ const useAccounting = ({
     [
       expenses,
       revenues,
-
       allRevenues,
       allExpenses,
       totalExpenses,
       totalRevenues,
       RevenuesCount,
       expensesCount,
+      accountingTransations,
+      accountingTotal,
+      accountingCount,
     ]
   );
 };

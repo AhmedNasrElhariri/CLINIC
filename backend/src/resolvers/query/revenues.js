@@ -28,7 +28,6 @@ const revenues = async (
   const option = orderByOption
     ? ORDERBYOPTIONS.find(o => o.name === orderByOption)
     : ORDERBYOPTIONS.find(o => o.name === 'date');
-  console.log(option, orderByOption);
   const ids = await listFlattenUsersTreeIds(
     {
       user,
