@@ -107,17 +107,27 @@ function useAppointments({
 
   const doctors = useMemo(() => R.pipe(R.propOr([], 'doctors'))(data), [data]);
 
-  const { data: todayAppointmentsData } = useQuery(LIST_TODAY_APPOINTMENTS);
+  const { data: todayAppointmentsData } = useQuery(LIST_TODAY_APPOINTMENTS, {
+    variables: {
+      offset: (page - 1) * 20 || 0,
+      limit: 20,
+    },
+  });
+  const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
   const todayAppointments = useMemo(
     () =>
       R.pipe(
-        R.propOr([], 'todayAppointments'),
+        R.propOr([], 'appointments'),
         R.reject(R.propEq('status', 'Cancelled')),
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-      )(todayAppointmentsData),
+      )(todayAppointmentsDATA),
     [todayAppointmentsData, includeSurgery]
+  );
+  const todayAppointmentsCount = useMemo(
+    () => R.propOr(0, 'appointmentsCount')(todayAppointmentsDATA),
+    [todayAppointmentsData]
   );
 
   const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
@@ -302,6 +312,7 @@ function useAppointments({
       cancel,
       transferAppointments,
       archiveReferedDoctorAppointment,
+      todayAppointmentsCount,
     }),
     [
       appointments,
@@ -321,6 +332,7 @@ function useAppointments({
       cancel,
       transferAppointments,
       archiveReferedDoctorAppointment,
+      todayAppointmentsCount
     ]
   );
 }

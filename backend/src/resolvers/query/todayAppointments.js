@@ -3,7 +3,11 @@ import moment from 'moment';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
-const todayAppointments = async (_, __, { user, organizationId }) => {
+const todayAppointments = async (
+  _,
+  { offset, limit },
+  { user, organizationId }
+) => {
   const ids = await listFlattenUsersTreeIds(
     {
       user,
@@ -24,7 +28,8 @@ const todayAppointments = async (_, __, { user, organizationId }) => {
     from = moment(DAY).startOf('day').toDate();
     to = moment(DAY).endOf('day').toDate();
   }
-
+ console.log(
+  offset, limit,'VVV')
   const appointments = await prisma.appointment.findMany({
     where: {
       OR: [
@@ -54,6 +59,8 @@ const todayAppointments = async (_, __, { user, organizationId }) => {
         date: 'asc',
       },
     ],
+    skip: offset,
+    take: limit,
     include: {
       specialty: true,
       branch: true,
@@ -63,7 +70,32 @@ const todayAppointments = async (_, __, { user, organizationId }) => {
       doctor: true,
     },
   });
-  return appointments;
+  const appointmentsCount = await prisma.appointment.count({
+    where: {
+      OR: [
+        {
+          doctorId: {
+            in: ids,
+          },
+        },
+        {
+          branchId: {
+            in: ids,
+          },
+        },
+        {
+          specialtyId: {
+            in: ids,
+          },
+        },
+      ],
+      date: {
+        gte: from,
+        lte: to,
+      },
+    },
+  });
+  return { appointments: appointments, appointmentsCount: appointmentsCount };
 };
 
 export default todayAppointments;

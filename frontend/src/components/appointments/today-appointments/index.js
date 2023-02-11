@@ -31,6 +31,9 @@ const initialValue = {
 const initalTransferValue = {
   doctorId: null,
 };
+const inialCurrentPage = {
+  activePage: 1,
+};
 const calcDate = ({ date, time }) =>
   moment(date)
     .set({
@@ -44,6 +47,7 @@ function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
   const [followUp, setFollowUp] = useState(false);
   const [transferDoctor, setTransferDoctor] = useState(initalTransferValue);
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
   const [checkedKeys, setCheckedKeys] = useState([]);
@@ -68,7 +72,9 @@ function TodayAppointments() {
     confirmedAppointment,
     transferAppointments,
     archiveReferedDoctorAppointment,
+    todayAppointmentsCount,
   } = useAppointments({
+    page: currentPage?.activePage,
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
     canAddFollowUp: appointment?.canAddFollowUp,
@@ -82,6 +88,7 @@ function TodayAppointments() {
     open,
     followUpFeature,
   });
+  const pages = Math.ceil(todayAppointmentsCount / 20);
   const filteredAppointments = useMemo(
     () => filterTodayAppointments(appointments, formValue),
     [appointments, formValue]
@@ -345,6 +352,9 @@ function TodayAppointments() {
               transferDoctor={transferDoctor}
               setTransferDoctor={setTransferDoctor}
               transferAppsAction={transferAppsAction}
+              pages={pages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           )}
         />
@@ -368,6 +378,7 @@ function TodayAppointments() {
               defaultExpanded={true}
               waiting={true}
               followUpFeature={followUpFeature}
+              pages={pages}
             />
           )}
         />
@@ -382,6 +393,7 @@ function TodayAppointments() {
               appointments={apps}
               onAddBusinessNotes={onAddBusinessNotes}
               defaultExpanded={true}
+              pages={pages}
             />
           )}
         />

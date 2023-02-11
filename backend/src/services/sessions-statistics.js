@@ -77,7 +77,6 @@ export const sessionsStatistics = async (sessionIds, startDay, endDay) => {
     //   return { patient: rr.patient, doctor: rr.doctor };
     // });
     // const uniRevenues = nuniquePatients(updatedRevenue);
-    // console.log(uniRevenues, 'uniRevenues');
     return {
       name: session.name,
       totalNumber: ts.totalNumber,
