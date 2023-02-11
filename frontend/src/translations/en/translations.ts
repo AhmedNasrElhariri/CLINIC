@@ -479,4 +479,5 @@ export const TRANSLATIONS_EN = {
   cashAndVisa: 'Cash & Visa',
   startTime: 'Start time',
   endTime: 'End time',
+  expenseName: "Expense Name",
 };

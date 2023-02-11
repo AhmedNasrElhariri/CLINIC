@@ -155,7 +155,7 @@ function useDoctor({
       Alert.error(err.message);
     },
   });
-  const [addNewwDoctorFees] = useMutation(ADD_NEW_DOCTOR_FEES, {
+  const [addNewDoctorFees] = useMutation(ADD_NEW_DOCTOR_FEES, {
     onCompleted() {
       Alert.success('The doctor fees has been added Successfully');
       onEditDoctorFees && onEditDoctorFees();
@@ -258,7 +258,7 @@ function useDoctor({
       doctorFeesCount,
       editDoctorFees,
       gatherDoctorFees,
-      addNewwDoctorFees,
+      addNewDoctorFees,
       doctorCoursePartsDefinations,
       addCoursePartToDoctor,
       deleteCoursePartToDoctor,
@@ -276,7 +276,7 @@ function useDoctor({
       doctorFeesCount,
       editDoctorFees,
       gatherDoctorFees,
-      addNewwDoctorFees,
+      addNewDoctorFees,
       doctorCoursePartsDefinations,
       addCoursePartToDoctor,
       deleteCoursePartToDoctor,

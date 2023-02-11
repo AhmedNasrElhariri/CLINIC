@@ -1,4 +1,4 @@
-import React, { useCallback, memo } from 'react';
+import React, { useCallback, memo, useState } from 'react';
 import { FormControl } from 'rsuite';
 
 import Label from '../label';
@@ -11,19 +11,21 @@ import {
 import { FormGroupStyled } from '../form-group';
 import { isFloat } from 'utils/nubmer';
 const CustomInput = memo(({ value, onChange, float, ...props }) => {
+  const [internalValue, setInternalValue] = useState(value);
   const setValue = useCallback(val => onChange(val), [onChange]);
   const onChangeValue = useCallback(
     e => {
-      if (float && isFloat(e.target.value)) {
-        setValue(e.target.value);
-      } else {
-        const val = Number(e.target.value);
-        if (Number.isInteger(val)) {
-          setValue(val);
-        }
+      let val = e.target.value;
+      if (float && isFloat(val)) {
+        setInternalValue(val);
+        setValue(parseFloat(val));
+      } else if (Number.isInteger(Number(val))) {
+        val = Number(val);
+        setInternalValue(val);
+        setValue(val);
       }
     },
-    [setValue]
+    [setValue, float]
   );
 
   return (
@@ -36,7 +38,7 @@ const CustomInput = memo(({ value, onChange, float, ...props }) => {
         <MinusIcon style={{ width: '25px' }} />
       </NumberButton>
       <NumberInputStyled
-        value={value}
+        value={internalValue}
         onChange={onChangeValue}
         {...props}
       ></NumberInputStyled>

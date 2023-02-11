@@ -304,7 +304,6 @@ const NewAppointment = ({
                     disabledMinutes={minute =>
                       disabledMinutes(minute, moment(formValue.time).hours())
                     }
-                    hideHours={hideHours}
                     startHour={8}
                     onSelectTrigger
                   />

@@ -773,7 +773,7 @@ type Mutation {
   gatherInsurance(gatherInsuranceData: GatherDoctorFeesDataInput!): Boolean
   revertInsurance(revertInsuranceData: GatherDoctorFeesDataInput!): Boolean
   refuseInsurance(refuseInsuranceData: GatherDoctorFeesDataInput!): Boolean
-  addNewwDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
+  addNewDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
   addNewInsurance(insurance: InsuranceInput): InsuranceTransaction
   editInsurance(insurance: InsuranceEditInput): InsuranceTransaction
   archiveReferedDoctorAppointment(data: ReferedDoctorInput!): Boolean
@@ -1579,7 +1579,7 @@ type ExpenseData {
 
 input ExpenseInput {
   name: String!
-  amount: Int!
+  amount: Float!
   expenseType: String!
   branchId: ID
   specialtyId: ID
@@ -1591,7 +1591,7 @@ input ExpenseInput {
 input ExpenseUpdateInput {
   id: ID!
   name: String!
-  amount: Int!
+  amount: Float!
   date: Date!
   branchId: ID
   specialtyId: ID
@@ -1750,7 +1750,7 @@ input InsuranceEditInput {
 }
 input RevenueInput {
   name: String!
-  amount: Int!
+  amount: Float!
   date: Date!
   expenseType: String
   branchId: ID
@@ -1762,7 +1762,7 @@ input RevenueInput {
 input RevenueUpdateInput {
   id: ID!
   name: String!
-  amount: Int!
+  amount: Float!
   date: Date!
   branchId: ID
   specialtyId: ID
@@ -2222,6 +2222,7 @@ input DoctorFeesTransactionInput {
   doctorId: ID
   sessionName: String
   totalPrice: Float
+  date: Date
   cost: Int
 }
 
