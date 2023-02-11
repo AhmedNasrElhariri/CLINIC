@@ -58,6 +58,10 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
     refetchQueries: [
       {
         query: LIST_TODAY_APPOINTMENTS,
+        variables: {
+          offset: 0,
+          limit: 20,
+        },
       },
       {
         query: LIST_APPOINTMENTS,

@@ -211,7 +211,7 @@ type Query {
   allAppointments: [Appointment!]
   patientsReport(area: String, reference: String): PatientsCount!
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
-  todayAppointments: [Appointment!]
+  todayAppointments(offset: Int, limit: Int): AppointmentData!
   appointment(id: ID!): Appointment!
   patientAppointments(
     patientId: ID!
