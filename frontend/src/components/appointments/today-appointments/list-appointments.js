@@ -390,10 +390,10 @@ function ListAppointments({
                   <Tooltip>
                     <Div>
                       <Div>
-                        {t('specialty:  ')}{specialty.name}
+                        {t('specialty:  ')}{specialty?.name}
                       </Div>
                       <Div>
-                        {t('branch:  ')}{branch.name}
+                        {t('branch:  ')}{branch?.name}
                       </Div>
                     </Div>
                   </Tooltip>

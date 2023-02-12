@@ -43,6 +43,11 @@ function useAppointments({
   dateFrom,
   dateTo,
   patient,
+
+  specialtyId,
+  branchId,
+  doctorId,
+
   type,
   status = APPT_STATUS.SCHEDULED,
   date,
@@ -81,12 +86,11 @@ function useAppointments({
     () =>
       R.pipe(
         R.propOr([], 'appointments'),
-        // R.reject(R.propEq('status', 'Cancelled')),
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery))
       )(appointmentsdata),
-    [data, includeSurgery]
+    [appointmentsdata, includeSurgery]
   );
   const pages = Math.ceil(appointmentsCountNumber / 20);
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
@@ -97,7 +101,7 @@ function useAppointments({
   });
   const appointmentsCount = useMemo(
     () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
-    [date, appointmentsDay]
+    [appointmentsDay]
   );
 
   const specialties = useMemo(
@@ -107,12 +111,13 @@ function useAppointments({
 
   const doctors = useMemo(() => R.pipe(R.propOr([], 'doctors'))(data), [data]);
 
-  const { data: todayAppointmentsData } = useQuery(LIST_TODAY_APPOINTMENTS, {
-    variables: {
-      offset: (page - 1) * 20 || 0,
-      limit: 20,
-    },
-  });
+  const { data: todayAppointmentsData, refetch: refetchTodayAppointments } =
+    useQuery(LIST_TODAY_APPOINTMENTS, {
+      variables: {
+        offset: (page - 1) * 20 || 0,
+        limit: 20,
+      },
+    });
   const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
   const todayAppointments = useMemo(
     () =>
@@ -123,11 +128,11 @@ function useAppointments({
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery))
       )(todayAppointmentsDATA),
-    [todayAppointmentsData, includeSurgery]
+    [todayAppointmentsDATA, includeSurgery]
   );
   const todayAppointmentsCount = useMemo(
     () => R.propOr(0, 'appointmentsCount')(todayAppointmentsDATA),
-    [todayAppointmentsData]
+    [todayAppointmentsDATA]
   );
 
   const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
@@ -144,6 +149,7 @@ function useAppointments({
       onCompleted: () => {
         Alert.success('Appointment has been Archived successfully');
         onArchive && onArchive();
+        refetchTodayAppointments();
         if (followUpFeature && canAddFollowUp) {
           setFollowUp(true);
           setPopUp('followUpAppointment');
@@ -151,9 +157,6 @@ function useAppointments({
         }
       },
       refetchQueries: [
-        {
-          query: LIST_TODAY_APPOINTMENTS,
-        },
         {
           query: LIST_REVENUES,
         },
@@ -173,41 +176,34 @@ function useAppointments({
       onError: ({ message }) => Alert.error(message),
     }
   );
-  const [
-    archiveReferedDoctorAppointment,
-    { loading: archiveReferedDoctorLoading },
-  ] = useMutation(ARCHIVE_REFERED_DOCTORAPPOINTMENT, {
-    onCompleted: () => {
-      Alert.success('Appointment has been Archived successfully');
-      onArchive && onArchive();
-    },
-    refetchQueries: [
-      {
-        query: LIST_TODAY_APPOINTMENTS,
+  const [archiveReferedDoctorAppointment] = useMutation(
+    ARCHIVE_REFERED_DOCTORAPPOINTMENT,
+    {
+      onCompleted: () => {
+        Alert.success('Appointment has been Archived successfully');
+        onArchive && onArchive();
+        refetchTodayAppointments();
       },
-    ],
-    onError: ({ message }) => Alert.error(message),
-  });
+      onError: ({ message }) => Alert.error(message),
+    }
+  );
   const [complete] = useMutation(COMPLETE_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been Completed successfully');
       setAppointment({});
+      refetchTodayAppointments();
     },
-    refetchQueries: [
-      {
-        query: LIST_TODAY_APPOINTMENTS,
-      },
-    ],
   });
   const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
     onCompleted: () => {
       Alert.success('Business Notes Added Successfully');
+      refetchTodayAppointments();
     },
     update(cache, { data: { updateNotes: appointment } }) {
-      const app = appointments.find(a => a.id == appointment.id);
+      const app = appointments.find(a => a.id === appointment.id);
       const newApp = { ...app, businessNotes: appointment.businessNotes };
       const allNewApp = appointments.map(oldApp => {
-        if (oldApp.id == appointment.id) {
+        if (oldApp.id === appointment.id) {
           return newApp;
         } else {
           return oldApp;
@@ -215,28 +211,18 @@ function useAppointments({
       });
       updateCache(allNewApp);
     },
-    refetchQueries: [
-      {
-        query: LIST_TODAY_APPOINTMENTS,
-      },
-    ],
   });
   const [adjust] = useMutation(ADJUST_APPOINTMENT, {
-    onCompleted: ({ adjustAppointment }) => {
+    onCompleted: () => {
       Alert.success('Appointment has been changed successfully');
+      refetchTodayAppointments();
     },
-    refetchQueries: [
-      {
-        query: LIST_TODAY_APPOINTMENTS,
-      },
-    ],
   });
   const [confirmedAppointment] = useMutation(CONFIRMED_APPOINTMENT, {
-    onCompleted: ({}) => {},
+    onCompleted: () => {
+      refetchTodayAppointments();
+    },
     refetchQueries: [
-      {
-        query: LIST_TODAY_APPOINTMENTS,
-      },
       {
         query: LIST_APPOINTMENTS,
         variables: Object.assign(
@@ -266,12 +252,8 @@ function useAppointments({
   const [transferAppointments] = useMutation(TRANSFER_APPOINTMENTS, {
     onCompleted: () => {
       Alert.success('Appointments has been Transfered successfully');
+      refetchTodayAppointments();
     },
-    refetchQueries: [
-      {
-        query: LIST_TODAY_APPOINTMENTS,
-      },
-    ],
   });
   const [deleteAppointmentPhoto] = useMutation(DELETE_APPOINTMENT_PHOTO, {
     onCompleted: () => {
@@ -332,7 +314,7 @@ function useAppointments({
       cancel,
       transferAppointments,
       archiveReferedDoctorAppointment,
-      todayAppointmentsCount
+      todayAppointmentsCount,
     ]
   );
 }

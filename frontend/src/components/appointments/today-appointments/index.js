@@ -78,6 +78,11 @@ function TodayAppointments() {
     action: ACTIONS.List_Appointment,
     patientId: appointment?.patient?.id,
     canAddFollowUp: appointment?.canAddFollowUp,
+
+    branchId: formValue?.branch,
+    specialtyId: formValue?.specialty,
+    doctorId: formValue?.doctor,
+
     onAdjust: () => {},
     onArchive: () => {
       close();
@@ -88,43 +93,44 @@ function TodayAppointments() {
     open,
     followUpFeature,
   });
+  console.log('todayAppointments', appointments);
   const pages = Math.ceil(todayAppointmentsCount / 20);
-  const filteredAppointments = useMemo(
-    () => filterTodayAppointments(appointments, formValue),
-    [appointments, formValue]
-  );
+  // const filteredAppointments = useMemo(
+  //   () => filterTodayAppointments(appointments, formValue),
+  //   [appointments, formValue]
+  // );
   useEffect(() => {
     setNotes(val => ({
       businessNotes: R.propOr('', 'businessNotes')(appointment),
     }));
   }, [appointment]);
 
-  const upcomingAppointments = useMemo(
-    () =>
-      R.pipe(
-        R.filter(
-          R.propEq('status', APPT_STATUS.SCHEDULED) ||
-            R.propEq('status', APPT_STATUS.CHANGED)
-        )
-      )(filteredAppointments),
-    [filteredAppointments]
-  );
-  const waitingAppointments = useMemo(
-    () =>
-      sortAppointmentsByUpdatedAt(
-        R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(
-          filteredAppointments
-        )
-      ),
-    [filteredAppointments]
-  );
-  const completedAppointments = useMemo(
-    () =>
-      R.pipe(R.filter(R.propEq('status', APPT_STATUS.ARCHIVED)))(
-        filteredAppointments
-      ),
-    [filteredAppointments]
-  );
+  // const upcomingAppointments = useMemo(
+  //   () =>
+  //     R.pipe(
+  //       R.filter(
+  //         R.propEq('status', APPT_STATUS.SCHEDULED) ||
+  //           R.propEq('status', APPT_STATUS.CHANGED)
+  //       )
+  //     )(appointments),
+  //   [appointments]
+  // );
+  // const waitingAppointments = useMemo(
+  //   () =>
+  //     sortAppointmentsByUpdatedAt(
+  //       R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(
+  //         appointments
+  //       )
+  //     ),
+  //   [appointments]
+  // );
+  // const completedAppointments = useMemo(
+  //   () =>
+  //     R.pipe(R.filter(R.propEq('status', APPT_STATUS.ARCHIVED)))(
+  //       appointments
+  //     ),
+  //   [appointments]
+  // );
   const onClickDone = useCallback(
     appointment => {
       setPopUp('archive');
@@ -309,6 +315,8 @@ function TodayAppointments() {
 
   const [active, setActive] = React.useState('mainAppointments');
 
+  console.log(appointments);
+
   return (
     <>
       <Nav
@@ -328,13 +336,13 @@ function TodayAppointments() {
       </Nav>
       {active === 'mainAppointments' && (
         <Filter
-          appointments={upcomingAppointments}
+          appointments={appointments}
           branches={filterBranches}
           todayApp={true}
-          render={apps => (
+          render={() => (
             <ListAppointments
               title="Upcoming Appointments"
-              appointments={apps}
+              appointments={appointments}
               onArchive={onClickDone}
               onComplete={onCompleteDone}
               onAddBusinessNotes={onAddBusinessNotes}
@@ -361,12 +369,12 @@ function TodayAppointments() {
       )}
       {active === 'waitingAppointments' && (
         <Filter
-          appointments={waitingAppointments}
+          appointments={appointments}
           branches={filterBranches}
           todayApp={true}
-          render={apps => (
+          render={() => (
             <ListAppointments
-              appointments={apps}
+              appointments={appointments}
               onArchive={onClickDone}
               onComplete={onCompleteDone}
               onAddBusinessNotes={onAddBusinessNotes}
@@ -385,12 +393,12 @@ function TodayAppointments() {
       )}
       {active === 'completedAppointments' && (
         <Filter
-          appointments={completedAppointments}
+          appointments={appointments}
           branches={filterBranches}
-          render={apps => (
+          render={() => (
             <ListAppointments
               title="Completed Appointments"
-              appointments={apps}
+              appointments={appointments}
               onAddBusinessNotes={onAddBusinessNotes}
               defaultExpanded={true}
               pages={pages}

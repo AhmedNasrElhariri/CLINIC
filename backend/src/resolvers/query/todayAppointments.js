@@ -1,7 +1,7 @@
 import { prisma } from '@';
 import moment from 'moment';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
+import { ACTIONS, APPOINTMENTS_STATUS } from '@/utils/constants';
 
 const todayAppointments = async (
   _,
@@ -28,8 +28,6 @@ const todayAppointments = async (
     from = moment(DAY).startOf('day').toDate();
     to = moment(DAY).endOf('day').toDate();
   }
- console.log(
-  offset, limit,'VVV')
   const appointments = await prisma.appointment.findMany({
     where: {
       OR: [
@@ -52,6 +50,9 @@ const todayAppointments = async (
       date: {
         gte: from,
         lte: to,
+      },
+      status: {
+        notIn: [APPOINTMENTS_STATUS.CANCELLED],
       },
     },
     orderBy: [
@@ -92,6 +93,9 @@ const todayAppointments = async (
       date: {
         gte: from,
         lte: to,
+      },
+      status: {
+        notIn: [APPOINTMENTS_STATUS.CANCELLED],
       },
     },
   });
