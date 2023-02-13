@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import { Form, DatePicker, Alert } from 'rsuite';
+import { Form, DatePicker, Alert,InputNumber } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as moment from 'moment';
 import * as R from 'ramda';
@@ -246,6 +246,8 @@ function NewCourse({
     return allChoices.map(s => ({ name: s.name, id: s }));
   }, [courseTypesDefinition]);
   const course = formValue?.course;
+
+  console.log(formValue);
   return (
     <CRModal
       show={visible}
@@ -273,7 +275,6 @@ function NewCourse({
                       {formValue.courseType === 'custom' && (
                         <CRSelectInput
                           placeholder={t('select')}
-                          value={session}
                           onChange={val => setWithAndWithoutDoctorFees(val)}
                           data={withAndWithoutDoctorFeesData}
                           value={withAndWithoutDoctorFees}
@@ -340,7 +341,6 @@ function NewCourse({
                       {formValue.courseType === 'custom' && (
                         <CRSelectInput
                           placeholder={t('select')}
-                          value={session}
                           onChange={val => setWithAndWithoutDoctorFees(val)}
                           data={withAndWithoutDoctorFeesData}
                           value={withAndWithoutDoctorFees}
@@ -427,12 +427,12 @@ function NewCourse({
                   block
                   sameValue
                 />
-                <CRNumberInput
+                <label>Price:</label>
+                <InputNumber
                   label={t('price')}
-                  name="price"
-                  title="Price"
+                  value={course?.price}
                   disabled
-                  value={course?.price || ''}
+
                 />
               </>
             )}

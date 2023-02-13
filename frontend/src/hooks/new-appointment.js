@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
 import * as moment from 'moment';
-import { ACTIONS } from 'utils/constants';
+import { ACTIONS, APPT_STATUS } from 'utils/constants';
 import { Schema } from 'rsuite';
 import {
   CREATE_APPOINTMENT,
@@ -15,6 +15,12 @@ import {
 } from 'apollo-client/queries';
 import { useForm } from 'hooks';
 import usePatients from './patients';
+import { useAppSelector } from 'redux-store/hooks';
+import {
+  selectSelectedBranch,
+  selectSelectedSpecialty,
+  selectSelectedDoctor,
+} from 'features/root/rootSlice';
 
 const initialValues = {
   type: 'Session',
@@ -35,7 +41,15 @@ const model = Schema.Model({
   date: DateType().isRequired('date is required'),
 });
 
-const useNewAppointment = ({ onCreate, date } = {}) => {
+const useNewAppointment = ({
+  onCreate,
+  date,
+  page = 1,
+  status = APPT_STATUS.SCHEDULED,
+} = {}) => {
+  const branchId = useAppSelector(selectSelectedBranch);
+  const selectedSpecialty = useAppSelector(selectSelectedSpecialty);
+  const selectedDoctor = useAppSelector(selectSelectedDoctor);
   const { formValue, setFormValue, checkResult, validate, show, setShow } =
     useForm({
       initValue: initialValues,
@@ -56,13 +70,6 @@ const useNewAppointment = ({ onCreate, date } = {}) => {
       onCreate && onCreate();
     },
     refetchQueries: [
-      {
-        query: LIST_TODAY_APPOINTMENTS,
-        variables: {
-          offset: 0,
-          limit: 20,
-        },
-      },
       {
         query: LIST_APPOINTMENTS,
         variables: { offset: 0, limit: 20 },

@@ -65,21 +65,22 @@ const NewAppointment = ({
   const { t } = useTranslation();
   const { configurations } = useConfigurations();
   const enableSMS = R.propOr(false, 'enableSMS')(configurations);
-  const {
-    formValue,
-    setFormValue,
-    checkResult,
-    validate,
-    show,
-    setShow,
-    createAppointment,
-    loading,
-  } = useNewAppointment({
-    onCreate: () => {
-      onHide();
-      setPatientSearchValue('');
-    },
-  });
+  const { formValue, setFormValue, checkResult, validate, show, setShow } =
+    useNewAppointment({
+      onCreate: () => {
+        onHide();
+        setPatientSearchValue('');
+      },
+    });
+  const { createAppointment, createAppointmentLoading: loading } =
+    useAppointments({
+      onCreateAppointment: () => {
+        onHide();
+        setPatientSearchValue('');
+        setFormValue(initialValues);
+        setShow(false);
+      },
+    });
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
   });

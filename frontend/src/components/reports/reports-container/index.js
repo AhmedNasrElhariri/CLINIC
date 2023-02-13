@@ -15,7 +15,7 @@ import { Can } from 'components/user/can';
 export const TABS = [
   { key: 'cash', element: () => <AccountingContainer /> },
   {
-    key: 'bank',
+    key: 'visa',
     element: () => <BankAccountingContainer />,
   },
   {

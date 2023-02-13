@@ -23,6 +23,7 @@ import {
   CONFIRMED_APPOINTMENT,
   TRANSFER_APPOINTMENTS,
   ARCHIVE_REFERED_DOCTORAPPOINTMENT,
+  CREATE_APPOINTMENT,
 } from 'apollo-client/queries';
 
 import client from 'apollo-client/client';
@@ -43,13 +44,11 @@ function useAppointments({
   dateFrom,
   dateTo,
   patient,
-
   specialtyId,
   branchId,
   doctorId,
-
   type,
-  status = APPT_STATUS.SCHEDULED,
+  status,
   date,
   userId,
   action,
@@ -62,6 +61,7 @@ function useAppointments({
   canAddFollowUp,
   setAppointment,
   onArchive,
+  onCreateAppointment,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -73,7 +73,10 @@ function useAppointments({
       },
       dateFrom && { dateFrom },
       dateTo && { dateTo },
-      type && { type }
+      type && { type },
+      branchId && { branchId: branchId },
+      specialtyId && { specialtyId: specialtyId },
+      doctorId && { doctorId: doctorId }
     ),
   });
 
@@ -113,10 +116,17 @@ function useAppointments({
 
   const { data: todayAppointmentsData, refetch: refetchTodayAppointments } =
     useQuery(LIST_TODAY_APPOINTMENTS, {
-      variables: {
-        offset: (page - 1) * 20 || 0,
-        limit: 20,
-      },
+      variables: Object.assign(
+        {
+          offset: (page - 1) * 30 || 0,
+          limit: 30,
+          status: status,
+          patient: patient,
+        },
+        branchId && { branchId: branchId },
+        specialtyId && { specialtyId: specialtyId },
+        doctorId && { doctorId: doctorId }
+      ),
     });
   const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
   const todayAppointments = useMemo(
@@ -239,6 +249,21 @@ function useAppointments({
       },
     ],
   });
+  const [createAppointment, { loading: createAppointmentLoading }] =
+    useMutation(CREATE_APPOINTMENT, {
+      onCompleted: () => {
+        Alert.success('Appointment Created Successfully');
+        onCreateAppointment && onCreateAppointment();
+        refetchTodayAppointments();
+      },
+      refetchQueries: [
+        {
+          query: LIST_APPOINTMENTS,
+          variables: { offset: 0, limit: 20 },
+        },
+      ],
+      onError: ({ message }) => Alert.error(message),
+    });
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been cancelled successfully');
@@ -270,7 +295,7 @@ function useAppointments({
       },
     ],
   });
-
+  console.log(status, 'ACTIVE');
   return useMemo(
     () => ({
       appointments,
@@ -295,6 +320,10 @@ function useAppointments({
       transferAppointments,
       archiveReferedDoctorAppointment,
       todayAppointmentsCount,
+      refetchTodayAppointments,
+      createAppointmentLoading,
+      createAppointment: appointment =>
+        createAppointment({ variables: { appointment } }),
     }),
     [
       appointments,
@@ -315,6 +344,9 @@ function useAppointments({
       transferAppointments,
       archiveReferedDoctorAppointment,
       todayAppointmentsCount,
+      refetchTodayAppointments,
+      createAppointment,
+      createAppointmentLoading,
     ]
   );
 }

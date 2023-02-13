@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import {
@@ -188,6 +188,7 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
 };
 
 function ListAppointments({
+  active,
   appointments,
   pages,
   onArchive,
@@ -210,6 +211,7 @@ function ListAppointments({
   transferDoctor,
   setTransferDoctor,
   transferAppsAction,
+  children,
 }) {
   const history = useHistory();
   const ref = useRef();
@@ -267,6 +269,7 @@ function ListAppointments({
             style={{ width: '100px', marginLeft: '10px', marginTop: '-10px' }}
           />
         </Form>
+        {children}
       </Div>
 
       <CRTable
@@ -279,9 +282,10 @@ function ListAppointments({
         affixHorizontalScrollbar
         style={{ direction: 'ltr' }}
       >
-        <CRTable.CRColumn width={50} align="center">
+        <CRTable.CRColumn width={100} align="center">
           <CRTable.CRHeaderCell style={{ padding: 0 }}>
-            <div style={{ lineHeight: '40px' }}>
+            <div style={{ lineHeight: '10px' }}>
+              <Div>Select / unSelect</Div>
               <Checkbox
                 inline
                 checked={checked}
@@ -305,28 +309,32 @@ function ListAppointments({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn width={130}>
-          <CRTable.CRHeaderCell>{t('startTime')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ date, session }) => (
-              <CRTable.CRCellStyled>
-                {waiting
-                  ? formatDate(date, STANDARD_DATE_FORMAT)
-                  : formatDate(date, FULL_DAY_FORMAT)}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
-        <CRTable.CRColumn width={130}>
-          <CRTable.CRHeaderCell>{t('endTime')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell>
-            {({ date, session }) => (
-              <CRTable.CRCellStyled>
-                {addMinutesToDateAndReturnTime(date, session?.duration)}
-              </CRTable.CRCellStyled>
-            )}
-          </CRTable.CRCell>
-        </CRTable.CRColumn>
+        {active !== 'Waiting' && (
+          <CRTable.CRColumn width={130}>
+            <CRTable.CRHeaderCell>{t('startTime')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ date, session }) => (
+                <CRTable.CRCellStyled>
+                  {waiting
+                    ? formatDate(date, STANDARD_DATE_FORMAT)
+                    : formatDate(date, FULL_DAY_FORMAT)}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+        )}
+        {active !== 'Waiting' && (
+          <CRTable.CRColumn width={130}>
+            <CRTable.CRHeaderCell>{t('endTime')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ date, session }) => (
+                <CRTable.CRCellStyled>
+                  {addMinutesToDateAndReturnTime(date, session?.duration)}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+        )}
         <CRTable.CRColumn>
           <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -390,10 +398,12 @@ function ListAppointments({
                   <Tooltip>
                     <Div>
                       <Div>
-                        {t('specialty:  ')}{specialty?.name}
+                        {t('specialty:  ')}
+                        {specialty.name}
                       </Div>
                       <Div>
-                        {t('branch:  ')}{branch?.name}
+                        {t('branch:  ')}
+                        {branch.name}
                       </Div>
                     </Div>
                   </Tooltip>

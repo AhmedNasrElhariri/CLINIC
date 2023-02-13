@@ -248,9 +248,10 @@ const Course = ({ patientId }) => {
         selectedSessions.forEach(({ number, name }) => {
           customName += number + '-' + name + ' ';
         });
+        price = totalCoursePrice - discount;
       }
       const finalFormValue = {
-        price: totalCoursePrice - discount,
+        price: price,
         customName: customName,
         customUnits: totalUnits,
         patientId: patientId,

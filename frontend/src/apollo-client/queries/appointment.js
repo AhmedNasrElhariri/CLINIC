@@ -28,6 +28,9 @@ export const LIST_APPOINTMENTS = gql`
     $status: AppointmentStatus
     $dateFrom: Date
     $dateTo: Date
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
   ) {
     appointments(
       input: $input
@@ -38,6 +41,9 @@ export const LIST_APPOINTMENTS = gql`
       dateFrom: $dateFrom
       dateTo: $dateTo
       status: $status
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
     ) {
       appointments {
         id
@@ -93,8 +99,24 @@ export const LIST_APPOINTMENTS = gql`
 `;
 
 export const LIST_TODAY_APPOINTMENTS = gql`
-  query ($offset: Int, $limit: Int) {
-    todayAppointments(offset: $offset, limit: $limit) {
+  query (
+    $offset: Int
+    $limit: Int
+    $status: AppointmentStatus
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
+    $patient: String
+  ) {
+    todayAppointments(
+      offset: $offset
+      limit: $limit
+      status: $status
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+      patient: $patient
+    ) {
       appointments {
         id
         type
