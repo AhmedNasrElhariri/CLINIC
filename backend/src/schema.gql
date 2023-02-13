@@ -1670,7 +1670,7 @@ type BankRevenueData {
 }
 input BankTransitionInput {
   id: ID
-  amount: Int!
+  amount: Float!
   date: Date!
   bankId: ID!
   branchId: ID
