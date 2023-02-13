@@ -247,7 +247,6 @@ function NewCourse({
   }, [courseTypesDefinition]);
   const course = formValue?.course;
 
-  console.log(formValue);
   return (
     <CRModal
       show={visible}

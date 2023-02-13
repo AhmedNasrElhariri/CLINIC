@@ -61,7 +61,6 @@ function useAppointments({
   canAddFollowUp,
   setAppointment,
   onArchive,
-  onCreateAppointment,
 } = {}) {
   const { data } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
@@ -249,21 +248,7 @@ function useAppointments({
       },
     ],
   });
-  const [createAppointment, { loading: createAppointmentLoading }] =
-    useMutation(CREATE_APPOINTMENT, {
-      onCompleted: () => {
-        Alert.success('Appointment Created Successfully');
-        onCreateAppointment && onCreateAppointment();
-        refetchTodayAppointments();
-      },
-      refetchQueries: [
-        {
-          query: LIST_APPOINTMENTS,
-          variables: { offset: 0, limit: 20 },
-        },
-      ],
-      onError: ({ message }) => Alert.error(message),
-    });
+
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been cancelled successfully');
@@ -295,7 +280,6 @@ function useAppointments({
       },
     ],
   });
-  console.log(status, 'ACTIVE');
   return useMemo(
     () => ({
       appointments,
@@ -321,9 +305,6 @@ function useAppointments({
       archiveReferedDoctorAppointment,
       todayAppointmentsCount,
       refetchTodayAppointments,
-      createAppointmentLoading,
-      createAppointment: appointment =>
-        createAppointment({ variables: { appointment } }),
     }),
     [
       appointments,
@@ -345,8 +326,6 @@ function useAppointments({
       archiveReferedDoctorAppointment,
       todayAppointmentsCount,
       refetchTodayAppointments,
-      createAppointment,
-      createAppointmentLoading,
     ]
   );
 }

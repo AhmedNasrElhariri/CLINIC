@@ -2,25 +2,17 @@ import { useMemo } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { Alert } from 'rsuite';
 import * as R from 'ramda';
-import * as moment from 'moment';
-import { ACTIONS, APPT_STATUS } from 'utils/constants';
+import { ACTIONS } from 'utils/constants';
 import { Schema } from 'rsuite';
+import useGlobalState from 'state';
 import {
   CREATE_APPOINTMENT,
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
-  LIST_TODAY_APPOINTMENTS,
-  APPOINTMENTS_DAY_COUNT,
   LIST_BRANCHES,
 } from 'apollo-client/queries';
 import { useForm } from 'hooks';
 import usePatients from './patients';
-import { useAppSelector } from 'redux-store/hooks';
-import {
-  selectSelectedBranch,
-  selectSelectedSpecialty,
-  selectSelectedDoctor,
-} from 'features/root/rootSlice';
 
 const initialValues = {
   type: 'Session',
@@ -41,21 +33,14 @@ const model = Schema.Model({
   date: DateType().isRequired('date is required'),
 });
 
-const useNewAppointment = ({
-  onCreate,
-  date,
-  page = 1,
-  status = APPT_STATUS.SCHEDULED,
-} = {}) => {
-  const branchId = useAppSelector(selectSelectedBranch);
-  const selectedSpecialty = useAppSelector(selectSelectedSpecialty);
-  const selectedDoctor = useAppSelector(selectSelectedDoctor);
+const useNewAppointment = ({ onCreate } = {}) => {
   const { formValue, setFormValue, checkResult, validate, show, setShow } =
     useForm({
       initValue: initialValues,
       model,
     });
   const { patientsSummary: patients } = usePatients();
+  const [onCreateAppointment] = useGlobalState('onCreateAppointment');
 
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: ACTIONS.Create_Appointment },
@@ -68,13 +53,8 @@ const useNewAppointment = ({
       setShow(false);
       Alert.success('Appointment Created Successfully');
       onCreate && onCreate();
+      onCreateAppointment.notifyAll();
     },
-    refetchQueries: [
-      {
-        query: LIST_APPOINTMENTS,
-        variables: { offset: 0, limit: 20 },
-      },
-    ],
     onError: ({ message }) => Alert.error(message),
   });
 

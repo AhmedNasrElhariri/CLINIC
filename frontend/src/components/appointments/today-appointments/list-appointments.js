@@ -285,7 +285,7 @@ function ListAppointments({
         <CRTable.CRColumn width={100} align="center">
           <CRTable.CRHeaderCell style={{ padding: 0 }}>
             <div style={{ lineHeight: '10px' }}>
-              <Div>Select / unSelect</Div>
+              <Div>Select / Unselect</Div>
               <Checkbox
                 inline
                 checked={checked}

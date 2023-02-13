@@ -2,6 +2,8 @@ import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { Nav, Form } from 'rsuite';
 import * as R from 'ramda';
 import moment from 'moment';
+import useGlobalState from 'state';
+
 import { ACTIONS } from 'utils/constants';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
@@ -13,17 +15,11 @@ import {
   useModal,
   useCourses,
 } from 'hooks';
-import { BranchSpecialtyUserFilter, CRTextInput, Div } from 'components';
+import { BranchSpecialtyUserFilter, CRTextInput } from 'components';
 import BusinessNotes from './business-notes';
 import NewAppointment from 'components/appointments/new-appointment';
 import EditAppointment from '../edit-appointment';
 import CancelAppointment from '../cancel-appointment';
-import {
-  filterTodayAppointments,
-  sortAppointmentsByUpdatedAt,
-} from 'services/appointment';
-import Filter from '../../filters';
-import { APPT_STATUS } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
 import TransferAppointments from '../transfer-apps';
 const initialValue = {
@@ -57,7 +53,6 @@ function TodayAppointments() {
   const [active, setActive] = React.useState('Scheduled');
   const [transferDoctor, setTransferDoctor] = useState(initalTransferValue);
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
-  const [formValue] = useState({});
   const [notes, setNotes] = useState(initialValue);
   const [checkedKeys, setCheckedKeys] = useState([]);
   const { visible, close, open } = useModal({});
@@ -65,7 +60,8 @@ function TodayAppointments() {
   const { t } = useTranslation();
   const { organization } = useConfigurations({});
   const { users } = useCourses({});
-  console.log(filter, 'sdd');
+  const [onCreateAppointment] = useGlobalState('onCreateAppointment');
+
   const doctors = useMemo(() => {
     return users.filter(u => u.position === 'Doctor');
   }, [users]);
@@ -83,6 +79,7 @@ function TodayAppointments() {
     transferAppointments,
     archiveReferedDoctorAppointment,
     todayAppointmentsCount,
+    refetchTodayAppointments,
   } = useAppointments({
     page: currentPage?.activePage,
     action: ACTIONS.List_Appointment,
@@ -104,42 +101,20 @@ function TodayAppointments() {
     followUpFeature,
   });
   const pages = Math.ceil(todayAppointmentsCount / 30);
-  // const filteredAppointments = useMemo(
-  //   () => filterTodayAppointments(appointments, formValue),
-  //   [appointments, formValue]
-  // );
+
   useEffect(() => {
-    setNotes(val => ({
+    setNotes(() => ({
       businessNotes: R.propOr('', 'businessNotes')(appointment),
     }));
   }, [appointment]);
 
-  // const upcomingAppointments = useMemo(
-  //   () =>
-  //     R.pipe(
-  //       R.filter(
-  //         R.propEq('status', APPT_STATUS.SCHEDULED) ||
-  //           R.propEq('status', APPT_STATUS.CHANGED)
-  //       )
-  //     )(appointments),
-  //   [appointments]
-  // );
-  // const waitingAppointments = useMemo(
-  //   () =>
-  //     sortAppointmentsByUpdatedAt(
-  //       R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(
-  //         appointments
-  //       )
-  //     ),
-  //   [appointments]
-  // );
-  // const completedAppointments = useMemo(
-  //   () =>
-  //     R.pipe(R.filter(R.propEq('status', APPT_STATUS.ARCHIVED)))(
-  //       appointments
-  //     ),
-  //   [appointments]
-  // );
+  useEffect(() => {
+    const id = onCreateAppointment.subscribe(() => {
+      refetchTodayAppointments();
+    });
+    return () => onCreateAppointment.unsubscribe(id);
+  }, [onCreateAppointment, refetchTodayAppointments]);
+
   const onClickDone = useCallback(
     appointment => {
       setPopUp('archive');
@@ -319,10 +294,8 @@ function TodayAppointments() {
         },
       });
     },
-    [appointment, complete, close]
+    [complete, close]
   );
-
-  console.log(appointments);
 
   return (
     <>
