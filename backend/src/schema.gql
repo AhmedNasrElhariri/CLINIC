@@ -1571,7 +1571,7 @@ input FamilyHistoryInput {
 type Expense {
   id: ID!
   name: String!
-  amount: Int!
+  amount: Float!
   level: String
   user: User
   branch: Branch
@@ -1705,7 +1705,7 @@ type BankExpenseData {
 }
 input BankExpenseTransitionInput {
   id: ID
-  amount: Int!
+  amount: Float!
   date: Date!
   bankId: ID!
   expenseType: String!

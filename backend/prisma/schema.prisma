@@ -860,7 +860,7 @@ model Expense {
   id             String       @id @default(uuid())
   name           String
   date           DateTime
-  amount         Int
+  amount         Float
   expenseType    String
   invoiceNo      String?
   level          String?

@@ -50,6 +50,8 @@ const Course = ({ patientId }) => {
   const [bank, setBank] = useState(null);
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [paidSessions, setPaidSessions] = useState([]);
+  const [withAndWithoutDoctorFees, setWithAndWithoutDoctorFees] =
+    useState('withoutDoctorFees');
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
@@ -229,22 +231,17 @@ const Course = ({ patientId }) => {
         courseType,
         customUnits,
       } = formValue;
+      totalUnits = customUnits;
       if (courseType === 'standard' && course) {
         price = course.price;
         courseId = course.id;
       } else {
-        // price = selectedSessions.reduce(
-        //   (sum, { price, number, totalPrice }) => sum + totalPrice,
-        //   0
-        // );
-        // price = selectedSessions.reduce(
-        //   (sum, { price, number }) => sum + price * number,
-        //   0
-        // );
-        totalUnits = selectedSessions.reduce(
-          (sum, { number, extraUnits }) => sum + number + extraUnits,
-          0
-        );
+        if (withAndWithoutDoctorFees === 'withDoctorFees') {
+          totalUnits = selectedSessions.reduce(
+            (sum, { number, extraUnits }) => sum + number + extraUnits,
+            0
+          );
+        }
         selectedSessions.forEach(({ number, name }) => {
           customName += number + '-' + name + ' ';
         });
@@ -549,6 +546,8 @@ const Course = ({ patientId }) => {
           selectedSessions={selectedSessions}
           setSelectedSessions={setSelectedSessions}
           totalCoursePrice={totalCoursePrice}
+          withAndWithoutDoctorFees={withAndWithoutDoctorFees}
+          setWithAndWithoutDoctorFees={setWithAndWithoutDoctorFees}
         />
       )}
       {type === 'editPaidWithDoctorFees' && (

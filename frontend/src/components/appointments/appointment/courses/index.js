@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import { Form, DatePicker, Alert,InputNumber } from 'rsuite';
+import { Form, DatePicker, Alert, InputNumber } from 'rsuite';
 import NumberFormat from 'react-number-format';
 import * as moment from 'moment';
 import * as R from 'ramda';
@@ -120,6 +120,8 @@ function NewCourse({
   selectedSessions,
   setSelectedSessions,
   totalCoursePrice,
+  withAndWithoutDoctorFees,
+  setWithAndWithoutDoctorFees,
 }) {
   const [session, setSession] = useState({});
   const [extraUnits, setExtraUnits] = useState(0);
@@ -130,8 +132,6 @@ function NewCourse({
   const { banksDefinition } = useBankDefinition({});
   const { courseTypesDefinition } = useCourseTypeDefinition({});
   const [checkedDays, setCheckedDays] = useState(options);
-  const [withAndWithoutDoctorFees, setWithAndWithoutDoctorFees] =
-    useState('withoutDoctorFees');
   const { t } = useTranslation();
   const { listActionDoctors, actionDoctors } = usePermissions();
   useEffect(() => {
@@ -431,7 +431,6 @@ function NewCourse({
                   label={t('price')}
                   value={course?.price}
                   disabled
-
                 />
               </>
             )}

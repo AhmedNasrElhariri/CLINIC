@@ -110,7 +110,7 @@ const PatientSurgries = ({ history: summary, t }) => {
       </div>
 
       <div className="sm:px-5 grow overflow-x-auto">
-        {updatedSummary.length ? (
+        {updatedSummary && updatedSummary.length > 0 ? (
           <>
             <Header
               updatedSummary={updatedSummary}
