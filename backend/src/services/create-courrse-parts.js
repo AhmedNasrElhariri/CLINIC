@@ -8,11 +8,11 @@ export const createCoursePartsFromCourse = (
   courseId,
   organizationId
 ) => {
-  return parts.map(({ number, price, id, extraUnits }) =>
+  return parts.map(({ price, id, numberOfUnits, number }) =>
     Object.assign({
-      totalUnits: number + extraUnits,
-      remainingUnits: number + extraUnits,
-      unitPrice: price,
+      totalUnits: numberOfUnits,
+      remainingUnits: numberOfUnits,
+      unitPrice: (number * price) / numberOfUnits,
       organizationId,
       courseId,
       partId: id,

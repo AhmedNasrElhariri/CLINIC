@@ -45,10 +45,6 @@ const courseTypes = [
   { value: 'standard', name: 'Standard' },
   { value: 'custom', name: 'Custom' },
 ];
-const withAndWithoutDoctorFeesData = [
-  { id: 'withDoctorFees', name: 'With doctor fees' },
-  { id: 'withoutDoctorFees', name: 'Without doctor fees' },
-];
 
 const isValidStartDate = (datesMetadata = [], startDate) => {
   return datesMetadata.some(d => moment(startDate).days() === d.day);
@@ -119,15 +115,13 @@ function NewCourse({
   setVisa,
   selectedSessions,
   setSelectedSessions,
-  totalCoursePrice,
-  withAndWithoutDoctorFees,
-  setWithAndWithoutDoctorFees,
+  consumedParts,
+  setConsumedParts,
+  courseParts,
 }) {
   const [session, setSession] = useState({});
-  const [extraUnits, setExtraUnits] = useState(0);
   const [sessionNumber, setSessionNumber] = useState(1);
   const [sessionPrice, setSessionPrice] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
   const { coursesDefinitions } = useCoursesDefinition();
   const { banksDefinition } = useBankDefinition({});
   const { courseTypesDefinition } = useCourseTypeDefinition({});
@@ -136,35 +130,24 @@ function NewCourse({
   const { listActionDoctors, actionDoctors } = usePermissions();
   useEffect(() => {
     listActionDoctors(ACTIONS.Create_Course);
-  }, []);
+  }, [listActionDoctors]);
+  console.log(sessionPrice,'price')
   useEffect(() => {
     if (session?.price) {
       setSessionPrice(session.price);
-      setTotalPrice(session.price * sessionNumber);
     }
-  }, [session]);
-  const handleChangeSessionInputs = useCallback(
-    (value, type) => {
-      if (type === 'Number') {
-        setSessionNumber(value);
-        setTotalPrice(value * sessionPrice);
-      } else if (type === 'TotalPrice') {
-        setTotalPrice(value);
-        setSessionPrice(value / sessionNumber);
-      } else {
-        setSessionPrice(value);
-        setTotalPrice(value * sessionNumber);
-      }
+  }, [session, sessionNumber,setSessionPrice]);
+
+  const handleChangeNumberOfNunits = useCallback(
+    (val, index) => {
+      const newSession = { ...selectedSessions[index], numberOfUnits: val };
+      const newSelectedSessions = selectedSessions;
+      newSelectedSessions[index] = newSession;
+      setSelectedSessions(newSelectedSessions);
     },
-    [
-      sessionPrice,
-      totalPrice,
-      sessionNumber,
-      setTotalPrice,
-      setSessionPrice,
-      setSessionNumber,
-    ]
+    [setSelectedSessions, selectedSessions]
   );
+
   useEffect(() => {
     onChange(formValue);
   }, [formValue, onChange]);
@@ -221,19 +204,15 @@ function NewCourse({
       ...session,
       number: sessionNumber,
       price: sessionPrice,
-      totalPrice: totalPrice,
-      extraUnits: extraUnits,
+      numberOfUnits: sessionNumber,
     };
     setSelectedSessions([...selectedSessions, updatedSession]);
   }, [
-    formValue,
     setSelectedSessions,
     sessionNumber,
     sessionPrice,
     selectedSessions,
     session,
-    totalPrice,
-    extraUnits,
   ]);
   const handleDelete = useCallback(
     idx => {
@@ -246,7 +225,6 @@ function NewCourse({
     return allChoices.map(s => ({ name: s.name, id: s }));
   }, [courseTypesDefinition]);
   const course = formValue?.course;
-
   return (
     <CRModal
       show={visible}
@@ -260,162 +238,74 @@ function NewCourse({
           <>
             <CRRadio options={courseTypes} name="courseType" />
             {formValue.courseType === 'custom' ? (
-              withAndWithoutDoctorFees === 'withoutDoctorFees' ? (
-                <Div width={500} mr={20}>
-                  <Form fluid>
-                    <Div
-                      display="flex"
-                      m="10px 0px"
-                      justifyContent="space-between"
-                    >
-                      <CRButton mt="10px" onClick={() => add()}>
-                        {t('add')}
-                      </CRButton>
-                      {formValue.courseType === 'custom' && (
-                        <CRSelectInput
-                          placeholder={t('select')}
-                          onChange={val => setWithAndWithoutDoctorFees(val)}
-                          data={withAndWithoutDoctorFeesData}
-                          value={withAndWithoutDoctorFees}
-                          style={{ width: '190px', marginLeft: '10px' }}
-                        />
-                      )}
-                    </Div>
-                    <Div display="flex" justifyContent="space-around">
-                      <CRSelectInput
-                        label={t('coursePartName')}
-                        placeholder={t('select')}
-                        value={session}
-                        onChange={val =>
-                          val == null ? setSession(null) : setSession(val)
-                        }
-                        data={choices}
-                        style={{ width: '170px' }}
-                      />
+              <Div width={700} mr={20}>
+                <Form fluid>
+                  <Div
+                    display="flex"
+                    m="10px 0px"
+                    justifyContent="space-between"
+                  >
+                    <CRButton mt="10px" onClick={() => add()}>
+                      {t('add')}
+                    </CRButton>
+                  </Div>
+                  <Div display="flex" justifyContent="space-around">
+                    <CRSelectInput
+                      label={t('coursePartName')}
+                      placeholder={t('select')}
+                      value={session}
+                      onChange={val =>
+                        val == null ? setSession(null) : setSession(val)
+                      }
+                      data={choices}
+                      style={{ width: '170px' }}
+                    />
+                    <CRNumberInput
+                      label={t('number')}
+                      name="sessionsNumber"
+                      value={sessionNumber}
+                      onChange={setSessionNumber}
+                      style={{ width: '50px' }}
+                    ></CRNumberInput>
+                    <CRNumberInput
+                      label={t('price')}
+                      name="coursePartPrice"
+                      value={sessionPrice}
+                      onChange={setSessionPrice}
+                      style={{ width: '70px' }}
+                    ></CRNumberInput>
+                  </Div>
+                </Form>
+                <H6 mt={2} color="texts.2">
+                  <NumberFormat
+                    value={session.price}
+                    displayType="text"
+                    thousandSeparator
+                  />
+                </H6>
+                <Div my={3}>
+                  <ListInvoiceItems
+                    items={selectedSessions}
+                    onDelete={handleDelete}
+                  />
+                </Div>
+                {/* <CRNumberInput
+                  label={t('units')}
+                  name="customUnits"
+                ></CRNumberInput> */}
+                {selectedSessions &&
+                  selectedSessions.map((session, indx) => (
+                    <>
                       <CRNumberInput
-                        label={t('number')}
-                        name="sessionsNumber"
-                        value={sessionNumber}
-                        onChange={setSessionNumber}
+                        label={`Number of Units ${session?.name}`}
+                        name="numberOfUnits"
+                        value={session?.numberOfUnits}
+                        onChange={val => handleChangeNumberOfNunits(val, indx)}
                         style={{ width: '50px' }}
                       ></CRNumberInput>
-                      <CRNumberInput
-                        label={t('price')}
-                        name="coursePartPrice"
-                        value={sessionPrice}
-                        onChange={setSessionPrice}
-                        style={{ width: '70px' }}
-                      ></CRNumberInput>
-                    </Div>
-                  </Form>
-                  <H6 mt={2} color="texts.2">
-                    <NumberFormat
-                      value={session.price}
-                      displayType="text"
-                      thousandSeparator
-                    />
-                  </H6>
-                  <Div my={3}>
-                    <ListInvoiceItems
-                      items={selectedSessions}
-                      onDelete={handleDelete}
-                    />
-                  </Div>
-                  <CRNumberInput
-                    label={t('units')}
-                    name="customUnits"
-                  ></CRNumberInput>
-                </Div>
-              ) : (
-                <Div mr={20}>
-                  <Form fluid>
-                    <Div
-                      display="flex"
-                      m="10px 0px"
-                      justifyContent="space-between"
-                    >
-                      <CRButton mt="10px" onClick={() => add()}>
-                        {t('add')}
-                      </CRButton>
-                      {formValue.courseType === 'custom' && (
-                        <CRSelectInput
-                          placeholder={t('select')}
-                          onChange={val => setWithAndWithoutDoctorFees(val)}
-                          data={withAndWithoutDoctorFeesData}
-                          value={withAndWithoutDoctorFees}
-                          style={{ width: '190px', marginLeft: '10px' }}
-                        />
-                      )}
-
-                      <Div
-                        mt="10px"
-                        padding="5px 10px"
-                        border="1px solid gray"
-                        ml="20px"
-                      >
-                        Total price : {totalCoursePrice}
-                      </Div>
-                    </Div>
-                    <Div display="flex" justifyContent="space-around">
-                      <CRSelectInput
-                        label={t('coursePartName')}
-                        placeholder={t('select')}
-                        value={session}
-                        onChange={val =>
-                          val == null ? setSession({}) : setSession(val)
-                        }
-                        data={choices}
-                        style={{ width: '170px' }}
-                      />
-                      <CRNumberInput
-                        label={t('number')}
-                        name="sessionsNumber"
-                        value={sessionNumber}
-                        onChange={v => handleChangeSessionInputs(v, 'Number')}
-                        style={{ width: '100px' }}
-                      ></CRNumberInput>
-                      <CRNumberInput
-                        label={t('price')}
-                        name="coursePartPrice"
-                        value={sessionPrice}
-                        onChange={v =>
-                          handleChangeSessionInputs(v, 'SessionPrice')
-                        }
-                        style={{ width: '100px' }}
-                      ></CRNumberInput>
-                      <CRNumberInput
-                        label={t('totalPrice')}
-                        name="partTotalPrice"
-                        value={totalPrice}
-                        onChange={v =>
-                          handleChangeSessionInputs(v, 'TotalPrice')
-                        }
-                        style={{ width: '100px' }}
-                      ></CRNumberInput>
-                      <CRNumberInput
-                        label={t('extraUnits')}
-                        name="extraUnits"
-                        value={extraUnits}
-                        onChange={setExtraUnits}
-                        style={{ width: '100px' }}
-                      ></CRNumberInput>
-                    </Div>
-                  </Form>
-                  <H6 mt={2} color="texts.2">
-                    <NumberFormat
-                      value={session.price}
-                      displayType="text"
-                      thousandSeparator
-                    />
-                  </H6>
-                  <Div my={3}>
-                    <ListInvoiceItems
-                      items={selectedSessions}
-                      onDelete={handleDelete}
-                    />
-                  </Div>
-                </Div>
-              )
+                    </>
+                  ))}
+              </Div>
             ) : (
               <>
                 <CRSelectInput
@@ -581,11 +471,25 @@ function NewCourse({
           type === 'editConsumedUnits' ||
           type === 'editUnitsTransactions' ? (
           <>
-            <CRNumberInput
-              label={t('consumedUnits')}
-              name="consumed"
-              title={t('consumedUnits')}
-            />
+            {courseParts && courseParts.length > 0 ? (
+              <Form formValue={consumedParts} onChange={setConsumedParts} fluid>
+                {courseParts.map(({ id, part }, indx) => (
+                  <>
+                    <CRNumberInput
+                      label={`Number of Units (${part?.name})`}
+                      name={id}
+                      style={{ width: '50px' }}
+                    ></CRNumberInput>
+                  </>
+                ))}
+              </Form>
+            ) : (
+              <CRNumberInput
+                label={t('consumedUnits')}
+                name="consumed"
+                title={t('consumedUnits')}
+              />
+            )}
             {(type === 'addNewUnits' || type === 'editUnitsTransactions') && (
               <CRTextInput label={t('notes')} name="notes" title={t('notes')} />
             )}

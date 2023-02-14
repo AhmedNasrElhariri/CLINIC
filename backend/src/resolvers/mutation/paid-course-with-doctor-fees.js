@@ -1,9 +1,9 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
-import { CostServices } from '@/services/cost-of-doctor-course.services';
+import { costServices } from '@/services/cost-of-doctor-course.services';
 import { APIExceptcion } from '@/services/erros.service';
 import {
-  ReduceServices,
+  reduceServices,
   CreateUnitHistoryFormParts,
   CreatePaymentFormParts,
 } from '@/services/course-parts.services';
@@ -37,7 +37,7 @@ const paidCourseWithDoctorFees = async (
       `You pay more than the required you should pay ${data.price - data.paid}`
     );
   }
-  await ReduceServices(sessions, courseId);
+  await reduceServices(sessions, courseId);
   const totalUnits = sessions.reduce((sum, { number }) => sum + number, 0);
   const doctorId = data.doctorId;
   const { courseDefinitionId } = data;
@@ -50,7 +50,6 @@ const paidCourseWithDoctorFees = async (
   const bankPayment =
     'C' + '/' + cName + '/' + data.patient.name + '/' + 'Bank_Payment';
   const cashPayment = 'C' + '/' + cName + '/' + data.patient.name;
-  const salerId = data.userId;
   const patientId = data.patient.id;
 
   if (bank != null) {
@@ -217,7 +216,7 @@ const paidCourseWithDoctorFees = async (
     branchId
   );
   await CreateUnitHistoryFormParts(sessions, userId, doctorId, courseId);
-  await CostServices(
+  await costServices(
     userId,
     sessions,
     organizationId,

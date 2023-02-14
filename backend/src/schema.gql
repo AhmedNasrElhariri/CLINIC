@@ -723,9 +723,10 @@ type Mutation {
   ): Course!
   editCourseUnits(
     courseId: ID!
-    consumed: Int!
+    consumed: Int
     type: String!
     notes: String
+    parts: [PartInput]
   ): Course!
   editCourseUnitHistory(
     transactionId: ID
@@ -1392,6 +1393,11 @@ input SessionInput {
   totalPrice: Int
   partID: ID
   extraUnits: Int
+  numberOfUnits: Int
+}
+input PartInput {
+  id: ID
+  number: Int
 }
 
 input Discount {

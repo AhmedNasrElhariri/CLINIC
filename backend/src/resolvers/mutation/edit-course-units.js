@@ -1,9 +1,16 @@
 import { prisma } from '@';
+import { reduceServices } from '@/services/course-parts.services';
+import { costServices } from '@/services/cost-of-doctor-course.services';
+
 const editCourseUnits = async (
   _,
-  { courseId, consumed, type, notes },
-  { userId }
+  { courseId, consumed, type, notes, parts },
+  { userId, organizationId }
 ) => {
+  const finalConsumed =
+    consumed > 0
+      ? consumed
+      : parts.reduce((sum, { number }) => sum + number, 0);
   const data = await prisma.course.findUnique({
     where: {
       id: courseId,
@@ -12,6 +19,26 @@ const editCourseUnits = async (
       patient: true,
     },
   });
+  if (parts && parts.length > 0) {
+    const PARTSIDS = parts.map(p => p.id);
+    const PARTS = await prisma.coursePart.findMany({
+      where: { id: { in: PARTSIDS } },
+      include: { part: true },
+    });
+    const sessions = PARTS.map(({ unitPrice, partId, part, id }) => {
+      const number = parts.find(p => p.id === id).number;
+      return {
+        name: part.name,
+        number: number,
+        price: unitPrice,
+        partID: partId,
+      };
+    });
+    const cName = data.customName;
+    const doctorId = data.doctorId;
+    await reduceServices(parts, courseId);
+    await costServices(userId, sessions, organizationId, doctorId, cName);
+  }
   const { courseDefinitionId } = data;
   if (type === 'addNewUnits') {
     await prisma.courseUnitsHistory.create({
@@ -31,7 +58,7 @@ const editCourseUnits = async (
             id: courseId,
           },
         },
-        units: consumed,
+        units: finalConsumed,
         notes: notes,
         date: new Date(),
       },
@@ -57,7 +84,7 @@ const editCourseUnits = async (
               id: data.doctorId,
             },
           },
-          consumed: data.consumed + consumed,
+          consumed: data.consumed + finalConsumed,
         },
         courseDefinitionId && {
           courseDefinition: {
@@ -91,7 +118,7 @@ const editCourseUnits = async (
               id: data.doctorId,
             },
           },
-          consumed: consumed,
+          consumed: finalConsumed,
         },
         courseDefinitionId && {
           courseDefinition: {

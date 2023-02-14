@@ -304,15 +304,17 @@ export const EDIT_COURSE_PAYMENT_HISTORY = gql`
 export const EDIT_COURSE_UNITS = gql`
   mutation editCourseUnits(
     $courseId: ID!
-    $consumed: Int!
+    $consumed: Int
     $type: String!
     $notes: String
+    $parts: [PartInput]
   ) {
     editCourseUnits(
       courseId: $courseId
       consumed: $consumed
       type: $type
       notes: $notes
+      parts: $parts
     ) {
       id
       price

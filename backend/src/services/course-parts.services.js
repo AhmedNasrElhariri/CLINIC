@@ -14,11 +14,11 @@ const createPaymentHistoryFromSessions = data => {
 const createReduceeFromCourseParts = (sessions, courseParts) => {
   let newParts = [];
 
-  sessions.forEach(({ id, number, name }) => {
+  sessions.forEach(({ id, number }) => {
     const part = courseParts.find(s => s.id === id);
     const TOTALREMAININGUNITS = part.remainingUnits - number;
     if (TOTALREMAININGUNITS < 0) {
-      throw new APIExceptcion(`you finished this part - ${name}`);
+      throw new APIExceptcion(`you finished this part - ${part.part.name}`);
     }
     const partDef = {
       data: {
@@ -109,9 +109,10 @@ const createPaymentHistory = (
   });
 };
 
-export const ReduceServices = async (sessions, courseId) => {
+export const reduceServices = async (sessions, courseId) => {
   const courseParts = await prisma.coursePart.findMany({
     where: { courseId: courseId },
+    include: { part: true },
   });
   sessions.length > 0 &&
     (await updateCoursePartModel(

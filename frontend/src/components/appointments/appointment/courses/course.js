@@ -5,7 +5,7 @@ import CourseUnitsHistoryPage from './course-units-history';
 import CourseSession from './course-sessions';
 import * as moment from 'moment';
 import * as R from 'ramda';
-import { Div, CRButton, CRTabs } from 'components';
+import { Div, CRButton } from 'components';
 import { useCourses } from 'hooks';
 import { Data, DataName, DataValue } from './style';
 import { formatDate } from 'utils/date';
@@ -18,7 +18,6 @@ const CourseData = ({
   courses,
   indx,
   onEditPaid,
-  onEditPaidWithDoctorFees,
   onEditDoctor,
   onFinishCourse,
   onEditUnits,
@@ -72,16 +71,7 @@ const CourseData = ({
             {t('pay')}
           </CRButton>
         )}
-        {(course.price > course.paid || course.units - course.consumed > 0) &&
-          course.status === 'InProgress' && (
-            <CRButton
-              variant="primary"
-              mr={1}
-              onClick={() => onEditPaidWithDoctorFees(course)}
-            >
-              {t('payConsume')}
-            </CRButton>
-          )}
+
         {(course.type === 'Perunit' || course.type === 'Custom') && (
           <CRButton variant="primary" mr={1} onClick={() => onAddUnits(course)}>
             {t('consumeUnits')}
@@ -210,39 +200,6 @@ const CourseData = ({
           {active === 'courseParts' && (
             <ListCourseParts parts={courseParts} t={t} />
           )}
-          {/* <CRTabs>
-            <CRTabs.CRTabsGroup>
-              <CRTabs.CRTab>{t('courseSession')}</CRTabs.CRTab>
-              <CRTabs.CRTab>{t('coursePaymentHistory')}</CRTabs.CRTab>
-              <CRTabs.CRTab>{t('courseUnitsHistory')}</CRTabs.CRTab>
-              <CRTabs.CRTab>{t('courseParts')}</CRTabs.CRTab>
-            </CRTabs.CRTabsGroup>
-            <CRTabs.CRContentGroup>
-              <CRTabs.CRContent>
-                <CourseSession
-                  sessions={updatedSessions}
-                  handleClick={handleClick}
-                />
-              </CRTabs.CRContent>
-              <CRTabs.CRContent>
-                <CoursePayment
-                  coursePayments={coursePayments}
-                  onEdit={onEditHistoryPayment}
-                  courseId={course.id}
-                />
-              </CRTabs.CRContent>
-              <CRTabs.CRContent>
-                <CourseUnitsHistoryPage
-                  courseUnitsHistory={courseUnitsHistory}
-                  onEdit={onEditUnitsHistory}
-                  courseId={course.id}
-                />
-              </CRTabs.CRContent>
-              <CRTabs.CRContent>
-                <ListCourseParts parts={courseParts} t={t}/>
-              </CRTabs.CRContent>
-            </CRTabs.CRContentGroup>
-          </CRTabs> */}
         </Div>
       </Div>
     </>

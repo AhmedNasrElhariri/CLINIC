@@ -19,7 +19,7 @@ function ListInvoiceItems({
       setItems(newItems);
       handleChangeSessions(newItems);
     },
-    [items]
+    [items,handleChangeSessions,setItems]
   );
   const handleChangePatientFees = useCallback(
     (value, indx) => {
@@ -29,7 +29,7 @@ function ListInvoiceItems({
       setItems(newItems);
       handleChangeSessions(newItems);
     },
-    [items]
+    [items,setItems,handleChangeSessions]
   );
   const handleChangeType = useCallback(
     (value, indx) => {

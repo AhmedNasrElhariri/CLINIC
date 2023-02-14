@@ -60,12 +60,7 @@ function useCourses({
       sortType && { sortType: sortType }
     ),
   });
-  // const appointmentsdata = data?.appointments;
-  // const appointmentsCountNumber = useMemo(() => {
-  //   const Data = R.propOr({}, 'appointments')(data);
-  //   const pagesNumber = Data?.appointmentsCount;
-  //   return pagesNumber;
-  // }, [data]);
+  
   const coursesData = useMemo(() => R.propOr({}, 'myCourses')(data), [data]);
   const courses = useMemo(
     () => R.propOr([], 'courses')(coursesData),
@@ -244,9 +239,7 @@ function useCourses({
         ),
       },
     ],
-    onError() {
-      Alert.error('Failed to edit the Course');
-    },
+    onError: ({ message }) => Alert.error(message),
   });
   const [editCourseDoctor] = useMutation(EDIT_COURSE_DOCTOR, {
     onCompleted() {
