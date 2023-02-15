@@ -311,11 +311,6 @@ function TodayAppointments() {
         <Nav.Item eventKey="Archived">{t('completedAppointments')}</Nav.Item>
       </Nav>
       {active === 'Scheduled' && (
-        // <Filter
-        //   appointments={appointments}
-        //   branches={filterBranches}
-        //   todayApp={true}
-        //   render={() => (
         <>
           <BranchSpecialtyUserFilter
             formValue={filter}
@@ -362,11 +357,6 @@ function TodayAppointments() {
         </>
       )}
       {active === 'Waiting' && (
-        // <Filter
-        //   appointments={appointments}
-        //   branches={filterBranches}
-        //   todayApp={true}
-        //   render={() => (
         <>
           <BranchSpecialtyUserFilter
             formValue={filter}
@@ -405,10 +395,6 @@ function TodayAppointments() {
         </>
       )}
       {active === 'Archived' && (
-        // <Filter
-        //   appointments={appointments}
-        //   branches={filterBranches}
-        //   render={() => (
         <>
           <BranchSpecialtyUserFilter
             formValue={filter}

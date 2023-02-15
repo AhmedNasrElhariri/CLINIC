@@ -252,6 +252,7 @@ function useAppointments({
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been cancelled successfully');
+      refetchTodayAppointments();
     },
     refetchQueries: [
       {

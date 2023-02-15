@@ -1,7 +1,7 @@
 import { prisma } from '@';
 import moment from 'moment';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS, APPOINTMENTS_STATUS } from '@/utils/constants';
+import { ACTIONS } from '@/utils/constants';
 
 const todayAppointments = async (
   _,
