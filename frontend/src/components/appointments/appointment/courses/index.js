@@ -131,12 +131,10 @@ function NewCourse({
   useEffect(() => {
     listActionDoctors(ACTIONS.Create_Course);
   }, [listActionDoctors]);
-  console.log(sessionPrice,'price')
+
   useEffect(() => {
-    if (session?.price) {
-      setSessionPrice(session.price);
-    }
-  }, [session, sessionNumber,setSessionPrice]);
+    setSessionPrice(session?.price || 0);
+  }, [session]);
 
   const handleChangeNumberOfNunits = useCallback(
     (val, index) => {
@@ -225,6 +223,7 @@ function NewCourse({
     return allChoices.map(s => ({ name: s.name, id: s }));
   }, [courseTypesDefinition]);
   const course = formValue?.course;
+
   return (
     <CRModal
       show={visible}
@@ -254,9 +253,7 @@ function NewCourse({
                       label={t('coursePartName')}
                       placeholder={t('select')}
                       value={session}
-                      onChange={val =>
-                        val == null ? setSession(null) : setSession(val)
-                      }
+                      onChange={val => setSession(val || null)}
                       data={choices}
                       style={{ width: '170px' }}
                     />
@@ -273,12 +270,13 @@ function NewCourse({
                       value={sessionPrice}
                       onChange={setSessionPrice}
                       style={{ width: '70px' }}
+                      float
                     ></CRNumberInput>
                   </Div>
                 </Form>
                 <H6 mt={2} color="texts.2">
                   <NumberFormat
-                    value={session.price}
+                    value={session?.price}
                     displayType="text"
                     thousandSeparator
                   />
@@ -289,21 +287,17 @@ function NewCourse({
                     onDelete={handleDelete}
                   />
                 </Div>
-                {/* <CRNumberInput
-                  label={t('units')}
-                  name="customUnits"
-                ></CRNumberInput> */}
                 {selectedSessions &&
                   selectedSessions.map((session, indx) => (
-                    <>
+                    <Div mb={2}>
                       <CRNumberInput
                         label={`Number of Units ${session?.name}`}
                         name="numberOfUnits"
                         value={session?.numberOfUnits}
                         onChange={val => handleChangeNumberOfNunits(val, indx)}
-                        style={{ width: '50px' }}
+                        layout="inline"
                       ></CRNumberInput>
-                    </>
+                    </Div>
                   ))}
               </Div>
             ) : (
@@ -474,13 +468,13 @@ function NewCourse({
             {courseParts && courseParts.length > 0 ? (
               <Form formValue={consumedParts} onChange={setConsumedParts} fluid>
                 {courseParts.map(({ id, part }, indx) => (
-                  <>
+                  <Div mb={type === 'addNewUnits' ? 2 : 0}>
                     <CRNumberInput
                       label={`Number of Units (${part?.name})`}
                       name={id}
-                      style={{ width: '50px' }}
+                      layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
                     ></CRNumberInput>
-                  </>
+                  </Div>
                 ))}
               </Form>
             ) : (

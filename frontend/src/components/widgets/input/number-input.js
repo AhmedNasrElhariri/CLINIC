@@ -1,4 +1,4 @@
-import React, { useCallback, memo, useState } from 'react';
+import React, { useCallback, memo, useState, useEffect } from 'react';
 import { FormControl } from 'rsuite';
 
 import Label from '../label';
@@ -27,6 +27,10 @@ const CustomInput = memo(({ value, onChange, float, ...props }) => {
     },
     [setValue, float]
   );
+
+  useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
 
   return (
     <NumberContainerStyled>
