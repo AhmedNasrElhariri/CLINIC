@@ -119,7 +119,7 @@ export const reduceServices = async (sessions, courseId) => {
       createReduceeFromCourseParts(sessions, courseParts)
     ));
 };
-export const CreateUnitHistoryFormParts = async (
+export const createUnitHistoryFormParts = async (
   sessions,
   userId,
   doctorId,

@@ -1,6 +1,10 @@
 import { prisma } from '@';
-import { reduceServices } from '@/services/course-parts.services';
+import {
+  reduceServices,
+  createUnitHistoryFormParts,
+} from '@/services/course-parts.services';
 import { costServices } from '@/services/cost-of-doctor-course.services';
+import { APIExceptcion } from '@/services/erros.service';
 
 const editCourseUnits = async (
   _,
@@ -17,8 +21,16 @@ const editCourseUnits = async (
     },
     include: {
       patient: true,
+      courseDefinition: true,
     },
   });
+  const condition =
+    data.customUnits > 0
+      ? consumed > data.customUnits - data.consumed
+      : consumed > data.courseDefinition.units - data.consumed;
+  if (condition) {
+    throw new APIExceptcion('you have been exceed the units ');
+  }
   if (parts && parts.length > 0) {
     const PARTSIDS = parts.map(p => p.id);
     const PARTS = await prisma.coursePart.findMany({
@@ -38,31 +50,34 @@ const editCourseUnits = async (
     const doctorId = data.doctorId;
     await reduceServices(parts, courseId);
     await costServices(userId, sessions, organizationId, doctorId, cName);
+    await createUnitHistoryFormParts(sessions, userId, doctorId, courseId);
   }
   const { courseDefinitionId } = data;
   if (type === 'addNewUnits') {
-    await prisma.courseUnitsHistory.create({
-      data: {
-        user: {
-          connect: {
-            id: data.userId,
+    if (consumed > 0) {
+      await prisma.courseUnitsHistory.create({
+        data: {
+          user: {
+            connect: {
+              id: data.userId,
+            },
           },
-        },
-        doctor: {
-          connect: {
-            id: data.doctorId,
+          doctor: {
+            connect: {
+              id: data.doctorId,
+            },
           },
-        },
-        course: {
-          connect: {
-            id: courseId,
+          course: {
+            connect: {
+              id: courseId,
+            },
           },
+          units: finalConsumed,
+          notes: notes,
+          date: new Date(),
         },
-        units: finalConsumed,
-        notes: notes,
-        date: new Date(),
-      },
-    });
+      });
+    }
     return prisma.course.update({
       where: {
         id: courseId,
@@ -107,7 +122,6 @@ const editCourseUnits = async (
               id: data.patientId,
             },
           },
-
           user: {
             connect: {
               id: data.userId,

@@ -631,6 +631,7 @@ const init = app => {
       expenseType,
       expenseName,
       organizationId,
+      bankId,
     } = req.query;
     try {
       let updatedDateFrom = new Date();
@@ -920,7 +921,7 @@ const init = app => {
 
   app.get('/daily', async (req, res) => {
     const { day } = req.query;
-    const dayName = moment(day).format('DD-MM-YYYY');
+    // const dayName = moment(day).format('DD-MM-YYYY');
     const endOfDay = moment(day).endOf('day').toDate();
     const startOfDay = moment(day).startOf('day').toDate();
     const appointments = await prisma.appointment.findMany({

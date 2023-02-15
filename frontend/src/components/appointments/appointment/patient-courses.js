@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useState, useMemo, useEffect } from 'react';
 import * as R from 'ramda';
 import styled from 'styled-components';
 import { Div, H3, CRButton } from 'components';
@@ -31,7 +31,6 @@ const initValue = {
 };
 
 const CourseButton = styled.button`
-  border: 1px solid rgba(81, 198, 243, 0.15);
   width: content-fit;
   background: transparent;
   color: rgba(40, 49, 72, 0.5);
@@ -98,6 +97,9 @@ const Course = ({ patientId }) => {
     patientId: patientId,
     courseId: formValue?.id || course?.id,
   });
+  useEffect(() => {
+    setCourse(patientCourses[0]);
+  }, [patientCourses]);
   const handleClickCreate = useCallback(() => {
     setType('create');
     setHeader(t('createNewCourse'));
@@ -134,7 +136,7 @@ const Course = ({ patientId }) => {
     },
     [open, setFormValue, setType, t]
   );
-  
+
   const handleClickEditHistoryPayment = useCallback(
     data => {
       const course = R.pick(['id', 'paid', 'paymentId'])(data);
@@ -402,6 +404,11 @@ const Course = ({ patientId }) => {
                         setCourse(patientCourses[idx]);
                       }}
                       key={idx}
+                      style={
+                        index === idx
+                          ? { border: '3px solid #5c8b9d' }
+                          : { border: 'none' }
+                      }
                     >
                       {course.name}
                     </CourseButton>
@@ -443,6 +450,11 @@ const Course = ({ patientId }) => {
                       variant="primary"
                       onClick={() => setIndex(idx)}
                       key={idx}
+                      style={
+                        index === idx
+                          ? { border: '3px solid #5c8b9d' }
+                          : { border: 'none' }
+                      }
                     >
                       {course.name}
                     </CourseButton>
@@ -484,6 +496,11 @@ const Course = ({ patientId }) => {
                       variant="primary"
                       onClick={() => setIndex(idx)}
                       key={idx}
+                      style={
+                        index === idx
+                          ? { border: '3px solid #5c8b9d' }
+                          : { border: 'none' }
+                      }
                     >
                       {course.name}
                     </CourseButton>

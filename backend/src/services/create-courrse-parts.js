@@ -8,7 +8,7 @@ export const createCoursePartsFromCourse = (
   courseId,
   organizationId
 ) => {
-  return parts.map(({ price, id, numberOfUnits, number }) =>
+  return parts.map(({ price, id, numberOfUnits, number }, index) =>
     Object.assign({
       totalUnits: numberOfUnits,
       remainingUnits: numberOfUnits,
@@ -16,6 +16,7 @@ export const createCoursePartsFromCourse = (
       organizationId,
       courseId,
       partId: id,
+      seq: index,
     })
   );
 };

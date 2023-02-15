@@ -12,7 +12,6 @@ const init = app => {
     const {
       view,
       period,
-      page,
       branchId,
       specialtyId,
       doctorId,
@@ -187,7 +186,6 @@ const init = app => {
           total = totalExpenses + totalBankExpenses;
         }
       }
-      console.log(trans, total, 'kkk');
       const pdfDoc = await generatePdf('/views/reports/all-accounting.ejs', {
         trans,
         total,
@@ -207,7 +205,6 @@ const init = app => {
     const {
       view,
       period,
-      page,
       branchId,
       specialtyId,
       doctorId,
@@ -221,7 +218,7 @@ const init = app => {
       let updatedDateFrom = new Date();
       let updatedDateTo = new Date();
       let trans = [];
-      let total = 0;
+      // let total = 0;
       const dateFrom = period && period[0];
       const dateTo = period && period[1];
       if (dateFrom && dateTo) {
@@ -290,20 +287,20 @@ const init = app => {
         const updatedBankRevenues = bankRevenues.map(r => {
           return { ...r, date: formatDateStandard(r.date), flag: 'visa' };
         });
-        const totalBankRevenue = updatedBankRevenues.reduce(
-          (acc, e) => acc + e.amount,
-          0
-        );
-        const totalRevenues = revenues.reduce((acc, e) => acc + e.amount, 0);
+        // const totalBankRevenue = updatedBankRevenues.reduce(
+        //   (acc, e) => acc + e.amount,
+        //   0
+        // );
+        // const totalRevenues = revenues.reduce((acc, e) => acc + e.amount, 0);
         if (accountingOption === 'cash') {
           trans = updatedRevenues;
-          total = totalRevenues;
+          // total = totalRevenues;
         } else if (accountingOption === 'visa') {
           trans = updatedBankRevenues;
-          total = totalBankRevenue;
+          // total = totalBankRevenue;
         } else {
           trans = [...updatedRevenues, ...updatedBankRevenues];
-          total = totalRevenues + totalBankRevenue;
+          // total = totalRevenues + totalBankRevenue;
         }
       } else {
         const expenses = await prisma.expense.findMany({
@@ -363,23 +360,23 @@ const init = app => {
         const updatedBankExpeses = bankExpenses.map(r => {
           return { ...r, date: formatDateStandard(r.date), flag: 'visa' };
         });
-        const totalBankExpenses = updatedBankExpeses.reduce(
-          (acc, e) => acc + e.amount,
-          0
-        );
-        const totalExpenses = updatedExpenses.reduce(
-          (acc, e) => acc + e.amount,
-          0
-        );
+        // const totalBankExpenses = updatedBankExpeses.reduce(
+        //   (acc, e) => acc + e.amount,
+        //   0
+        // );
+        // const totalExpenses = updatedExpenses.reduce(
+        //   (acc, e) => acc + e.amount,
+        //   0
+        // );
         if (accountingOption === 'cash') {
           trans = updatedExpenses;
-          total = totalExpenses;
+          // total = totalExpenses;
         } else if (accountingOption === 'visa') {
           trans = updatedBankExpeses;
-          total = totalBankExpenses;
+          // total = totalBankExpenses;
         } else {
           trans = [...updatedExpenses, ...updatedBankExpeses];
-          total = totalExpenses + totalBankExpenses;
+          // total = totalExpenses + totalBankExpenses;
         }
       }
       let keys = ['name', 'date', 'amount', 'flag'];

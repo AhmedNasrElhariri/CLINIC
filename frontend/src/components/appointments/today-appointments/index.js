@@ -3,7 +3,7 @@ import { Nav, Form } from 'rsuite';
 import * as R from 'ramda';
 import moment from 'moment';
 import useGlobalState from 'state';
-
+import { getPdfReport } from 'services/reports';
 import { ACTIONS } from 'utils/constants';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
@@ -22,6 +22,7 @@ import EditAppointment from '../edit-appointment';
 import CancelAppointment from '../cancel-appointment';
 import { useTranslation } from 'react-i18next';
 import TransferAppointments from '../transfer-apps';
+
 const initialValue = {
   businessNotes: '',
 };
@@ -296,7 +297,20 @@ function TodayAppointments() {
     },
     [complete, close]
   );
-
+  const handlePrint = useCallback(() => {
+    const params = {
+      status: active,
+      branchId: filter?.branch,
+      specialtyId: filter?.specialty,
+      doctorId: filter?.doctor,
+      patient: filter?.patient,
+    };
+    getPdfReport(
+      '/todayAppointmentReport',
+      params,
+      'today-appointment-report.pdf'
+    );
+  }, [active, filter]);
   return (
     <>
       <Nav
@@ -342,6 +356,7 @@ function TodayAppointments() {
             pages={pages}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            handlePrint={handlePrint}
           >
             <Form
               formValue={filter}
@@ -380,6 +395,7 @@ function TodayAppointments() {
             pages={pages}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            handlePrint={handlePrint}
           >
             <Form
               formValue={filter}
@@ -410,6 +426,7 @@ function TodayAppointments() {
             pages={pages}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            handlePrint={handlePrint}
           >
             <Form
               formValue={filter}

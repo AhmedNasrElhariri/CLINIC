@@ -1,6 +1,5 @@
-import React, { useRef, useCallback, Fragment } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import ReactToPrint from 'react-to-print';
 import {
   AppointmentPrintout,
   Div,
@@ -21,11 +20,7 @@ import { canAjdust } from 'services/appointment';
 import { Can } from 'components/user/can';
 import { MoreIcon } from 'components/icons';
 import { formatDate, addMinutesToDateAndReturnTime } from 'utils/date';
-import {
-  FULL_DATE_FORMAT,
-  STANDARD_DATE_FORMAT,
-  FULL_DAY_FORMAT,
-} from 'utils/constants';
+import { STANDARD_DATE_FORMAT, FULL_DAY_FORMAT } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
 const { Cell } = Table;
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
@@ -112,9 +107,6 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                         {t('edit')}
                       </CRButton>
                     </Can>
-                    {/* {canAjdust(appointment) && (
-                      <AdjustAppointment appointment={appointment} />
-                    )} */}
                   </Div>
                 )}
               </Dropdown.Item>
@@ -155,10 +147,6 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
               </Dropdown.Item>
               <Dropdown.Item eventKey={7}>
                 <Div onClick={e => e.stopPropagation()}>
-                  {/* <ReactToPrint
-                    trigger={() => <PrintOLIcon ml={2} />}
-                    // content={() => componentRef.current}
-                  /> */}
                   <CRButton
                     variant="primary"
                     onClick={e => {
@@ -170,7 +158,6 @@ const ActionCell = ({ rowData, dataKey, ...rest }) => {
                   </CRButton>
                   <Div display="none">
                     <AppointmentPrintout
-                      // ref={componentRef}
                       appointment={appointment}
                       patient={appointment?.patient}
                     />
@@ -212,9 +199,9 @@ function ListAppointments({
   setTransferDoctor,
   transferAppsAction,
   children,
+  handlePrint,
 }) {
   const history = useHistory();
-  const ref = useRef();
   const { t } = useTranslation();
   let checked = false;
   let indeterminate = false;
@@ -249,14 +236,7 @@ function ListAppointments({
   return (
     <Div padding={20} wd>
       <Div display="flex">
-        <ReactToPrint
-          trigger={() => (
-            <CRButton primary mb={20}>
-              {t('print')}
-            </CRButton>
-          )}
-          content={() => ref.current}
-        />
+        <CRButton onClick={handlePrint}>Print</CRButton>
         <CRButton onClick={transferAppsAction} ml="10px">
           Transfer
         </CRButton>
@@ -544,104 +524,6 @@ function ListAppointments({
         onSelect={handleSelect}
         total={appointments.length}
       />
-      <Div style={{ overflow: 'hidden', height: '0px' }}>
-        <Div ref={ref} mt={20} mr={10}>
-          <CRTable autoHeight data={appointments} width={1000}>
-            <CRTable.CRColumn flexGrow={0.2}>
-              <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ date }, indx) => (
-                  <CRTable.CRCellStyled>{indx + 1}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.5}>
-              <CRTable.CRHeaderCell>Time</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ date }) => (
-                  <CRTable.CRCellStyled>
-                    {waiting ? '' : formatDate(date, FULL_DATE_FORMAT)}
-                  </CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.5}>
-              <CRTable.CRHeaderCell>Date</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ date }) => (
-                  <CRTable.CRCellStyled>
-                    {formatDate(date, STANDARD_DATE_FORMAT)}
-                  </CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.8}>
-              <CRTable.CRHeaderCell>Creator</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ user }) => (
-                  <CRTable.CRCellStyled>{user.name}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-
-            <CRTable.CRColumn flexGrow={0.7}>
-              <CRTable.CRHeaderCell>Phone</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ patient }) => (
-                  <CRTable.CRCellStyled>{patient.phoneNo}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-
-            <CRTable.CRColumn width={200}>
-              <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ type, session }) => (
-                  <CRTable.CRCellStyled>
-                    {type === 'Session' ? 'S ' : type}{' '}
-                    {type === 'Session' ? session?.name : ''}
-                  </CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.7}>
-              <CRTable.CRHeaderCell>Name</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ patient }) => (
-                  <CRTable.CRCellStyled bold>
-                    {patient.name}
-                  </CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-
-            <CRTable.CRColumn flexGrow={0.7}>
-              <CRTable.CRHeaderCell>Doctor</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ doctor }) => (
-                  <CRTable.CRCellStyled>{doctor.name}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.5}>
-              <CRTable.CRHeaderCell>Specialty</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ specialty }) => (
-                  <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-            <CRTable.CRColumn flexGrow={0.8}>
-              <CRTable.CRHeaderCell>Branch</CRTable.CRHeaderCell>
-              <CRTable.CRCell>
-                {({ branch }) => (
-                  <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>
-                )}
-              </CRTable.CRCell>
-            </CRTable.CRColumn>
-          </CRTable>
-        </Div>
-      </Div>
     </Div>
   );
 }
