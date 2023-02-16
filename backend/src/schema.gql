@@ -197,6 +197,9 @@ type Query {
     status: AppointmentStatus
     dateFrom: Date
     dateTo: Date
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
   ): AppointmentData!
   logging(
     offset: Int
@@ -211,7 +214,15 @@ type Query {
   allAppointments: [Appointment!]
   patientsReport(area: String, reference: String): PatientsCount!
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
-  todayAppointments: [Appointment!]
+  todayAppointments(
+    offset: Int
+    limit: Int
+    status: AppointmentStatus
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+    patient: String
+  ): AppointmentData!
   appointment(id: ID!): Appointment!
   patientAppointments(
     patientId: ID!
@@ -305,6 +316,20 @@ type Query {
     branchId: ID
     bankId: ID
   ): BankExpenseData!
+  accountingData(
+    offset: Int
+    limit: Int
+    dateFrom: Date
+    dateTo: Date
+    view: String
+    doctorId: ID
+    specialtyId: ID
+    branchId: ID
+    name: String
+    accountingOption: String
+    transactionType: String!
+    bankId: ID
+  ): AccountingData
   insuranceTransactions(
     offset: Int
     limit: Int
@@ -698,9 +723,10 @@ type Mutation {
   ): Course!
   editCourseUnits(
     courseId: ID!
-    consumed: Int!
+    consumed: Int
     type: String!
     notes: String
+    parts: [PartInput]
   ): Course!
   editCourseUnitHistory(
     transactionId: ID
@@ -759,7 +785,7 @@ type Mutation {
   gatherInsurance(gatherInsuranceData: GatherDoctorFeesDataInput!): Boolean
   revertInsurance(revertInsuranceData: GatherDoctorFeesDataInput!): Boolean
   refuseInsurance(refuseInsuranceData: GatherDoctorFeesDataInput!): Boolean
-  addNewwDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
+  addNewDoctorFees(doctorFees: DoctorFeesTransactionInput!): DoctorFees!
   addNewInsurance(insurance: InsuranceInput): InsuranceTransaction
   editInsurance(insurance: InsuranceEditInput): InsuranceTransaction
   archiveReferedDoctorAppointment(data: ReferedDoctorInput!): Boolean
@@ -1367,6 +1393,11 @@ input SessionInput {
   totalPrice: Int
   partID: ID
   extraUnits: Int
+  numberOfUnits: Int
+}
+input PartInput {
+  id: ID
+  number: Int
 }
 
 input Discount {
@@ -1546,7 +1577,7 @@ input FamilyHistoryInput {
 type Expense {
   id: ID!
   name: String!
-  amount: Int!
+  amount: Float!
   level: String
   user: User
   branch: Branch
@@ -1555,6 +1586,7 @@ type Expense {
   date: Date!
   expenseType: String!
   invoiceNo: String
+  flag: String
 }
 type ExpenseData {
   expenses: [Expense!]
@@ -1564,7 +1596,7 @@ type ExpenseData {
 
 input ExpenseInput {
   name: String!
-  amount: Int!
+  amount: Float!
   expenseType: String!
   branchId: ID
   specialtyId: ID
@@ -1576,7 +1608,7 @@ input ExpenseInput {
 input ExpenseUpdateInput {
   id: ID!
   name: String!
-  amount: Int!
+  amount: Float!
   date: Date!
   branchId: ID
   specialtyId: ID
@@ -1599,6 +1631,7 @@ type Revenue {
   amount: Float!
   date: Date!
   invoiceNo: String
+  flag: String
 }
 
 type RevenueData {
@@ -1607,6 +1640,19 @@ type RevenueData {
   revenuesCount: Int
 }
 
+type AccountingData {
+  data: [AccountingDataModel]
+  total: Float
+  count: Int
+}
+
+type AccountingDataModel {
+  id: ID!
+  name: String!
+  amount: Float!
+  date: Date!
+  flag: String
+}
 type BankRevenue {
   id: ID!
   name: String!
@@ -1621,6 +1667,7 @@ type BankRevenue {
   specialty: Specialty
   invoiceNo: String
   bank: BankDefinition!
+  flag: String
 }
 type BankRevenueData {
   bankRevenues: [BankRevenue!]
@@ -1629,7 +1676,7 @@ type BankRevenueData {
 }
 input BankTransitionInput {
   id: ID
-  amount: Int!
+  amount: Float!
   date: Date!
   bankId: ID!
   branchId: ID
@@ -1655,6 +1702,7 @@ type BankExpense {
   invoiceNo: String
   checkNumber: String
   bank: BankDefinition!
+  flag: String
 }
 type BankExpenseData {
   bankExpenses: [BankExpense!]
@@ -1663,7 +1711,7 @@ type BankExpenseData {
 }
 input BankExpenseTransitionInput {
   id: ID
-  amount: Int!
+  amount: Float!
   date: Date!
   bankId: ID!
   expenseType: String!
@@ -1719,7 +1767,7 @@ input InsuranceEditInput {
 }
 input RevenueInput {
   name: String!
-  amount: Int!
+  amount: Float!
   date: Date!
   expenseType: String
   branchId: ID
@@ -1731,7 +1779,7 @@ input RevenueInput {
 input RevenueUpdateInput {
   id: ID!
   name: String!
-  amount: Int!
+  amount: Float!
   date: Date!
   branchId: ID
   specialtyId: ID
@@ -2198,6 +2246,7 @@ input DoctorFeesTransactionInput {
   doctorId: ID
   sessionName: String
   totalPrice: Float
+  date: Date
   cost: Int
 }
 

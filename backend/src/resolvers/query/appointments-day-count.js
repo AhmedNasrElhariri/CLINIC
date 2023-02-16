@@ -17,6 +17,7 @@ const appointmentsDayCount = async (_, { date, userId }) => {
     totalWaiting: 0,
     appointments: [],
   };
+
   const allAppointments = await prisma.appointment.findMany({
     where: {
       date: {
@@ -24,6 +25,13 @@ const appointmentsDayCount = async (_, { date, userId }) => {
         lte: endofDay,
       },
       doctorId: userId,
+      status: {
+        in: [
+          APPOINTMENTS_STATUS.SCHEDULED,
+          APPOINTMENTS_STATUS.CHANGED,
+          APPOINTMENTS_STATUS.ARCHIVED,
+        ],
+      },
     },
   });
   appointmentsDayCount.appointments = allAppointments;

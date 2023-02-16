@@ -8,6 +8,11 @@ const courseParts = (_, { courseId }) => {
     include: {
       part: true,
     },
+    orderBy: [
+      {
+        seq: 'asc',
+      },
+    ],
   });
 };
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Form } from 'rsuite';
-import { CRModal, CRNumberInput, CRTextInput, CRSelectInput } from 'components';
+import { CRModal, CRNumberInput, CRTextInput, CRSelectInput, CRDatePicker } from 'components';
 import { useTranslation } from 'react-i18next';
 
 export default function EditableDoctorFees({
@@ -59,6 +59,7 @@ export default function EditableDoctorFees({
         )}
         <CRTextInput name="name" label={t('name')} block />
         <CRNumberInput name="amount" label={t('amount')} block />
+        <CRDatePicker label="Date" name="date" block></CRDatePicker>
         {type === 'editFees' && (
           <>
             <CRNumberInput name="totalPrice" label={t('sessionPrice')} block />

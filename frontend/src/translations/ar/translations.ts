@@ -426,4 +426,5 @@ export const TRANSLATIONS_AR = {
   patientLevel: "المستوي ",
   deleteBranch: "حذف الفرع",
   views: "خانات العمل",
+  expenseName: "اسم المصروف",
 };

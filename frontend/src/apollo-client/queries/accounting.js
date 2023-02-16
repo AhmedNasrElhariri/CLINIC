@@ -523,3 +523,45 @@ export const EDIT_INSURANCE = gql`
     }
   }
 `;
+
+export const LIST_ACCOUNTING_DATA = gql`
+  query accountingData(
+    $offset: Int
+    $limit: Int
+    $dateFrom: Date
+    $dateTo: Date
+    $view: String
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
+    $name: String
+    $accountingOption: String
+    $transactionType: String!
+    $bankId: ID
+  ) {
+    accountingData(
+      offset: $offset
+      limit: $limit
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      view: $view
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+      name: $name
+      accountingOption: $accountingOption
+      transactionType: $transactionType
+      bankId: $bankId
+    ) {
+      data {
+        id
+        name
+        amount
+        date
+        flag
+      }
+      total
+      count
+    }
+  }
+`;

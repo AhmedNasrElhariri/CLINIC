@@ -3,7 +3,7 @@ import { H3, CRButton } from 'components';
 import * as R from 'ramda';
 import { useHistory } from 'react-router-dom';
 
-export default function Header({ updatedSummary, t, activeSession, open }) {
+export default function Header({ updatedSummary, t, activeSession }) {
   const history = useHistory();
 
   const sessionId = useMemo(
@@ -11,7 +11,7 @@ export default function Header({ updatedSummary, t, activeSession, open }) {
       R.findIndex(R.propEq('id', R.prop('id')(activeSession)))(updatedSummary),
     [activeSession, updatedSummary]
   );
-  const { patientSurgeries } = activeSession;
+  const patientSurgeries = R.propOr({}, 'patientSurgeries')(activeSession);
   return (
     <div className="flex flex-row flex-wrap items-center justify-between">
       <H3>

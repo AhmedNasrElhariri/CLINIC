@@ -39,7 +39,7 @@ const DoctorFees = () => {
     doctorFeesCount,
     editDoctorFees,
     gatherDoctorFees,
-    addNewwDoctorFees,
+    addNewDoctorFees,
     totalPrice,
     totalCost,
   } = useDoctor({
@@ -59,7 +59,14 @@ const DoctorFees = () => {
   const pages = Math.ceil(doctorFeesCount / 20);
   const handleClickEditDoctorFees = useCallback(
     data => {
-      const fees = R.pick(['id', 'name', 'amount', 'totalPrice', 'cost'])(data);
+      const fees = R.pick([
+        'id',
+        'name',
+        'amount',
+        'totalPrice',
+        'date',
+        'cost',
+      ])(data);
       setType('editFees');
       setFormValue(fees);
       open();
@@ -89,7 +96,7 @@ const DoctorFees = () => {
       });
     } else if (type === 'addNewFees') {
       const { session, ...rest } = formValue;
-      addNewwDoctorFees({
+      addNewDoctorFees({
         variables: {
           doctorFees: {
             ...rest,
@@ -99,7 +106,7 @@ const DoctorFees = () => {
         },
       });
     }
-  }, [addNewwDoctorFees, editDoctorFees, formValue, type]);
+  }, [addNewDoctorFees, editDoctorFees, formValue, type]);
   const printDoctorFees = () => {
     axios({
       url: '/doctorFees',

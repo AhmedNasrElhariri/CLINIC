@@ -17,7 +17,7 @@ function ListCourseParts({ parts, t }) {
             <CRTable.CRHeaderCell>{t('unitPrice')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ unitPrice }) => (
-                <CRTable.CRCellStyled bold>{unitPrice}</CRTable.CRCellStyled>
+                <CRTable.CRCellStyled bold>{unitPrice.toFixed(2)}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

@@ -1,19 +1,55 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Div, CRNav, H6, CRVDivider } from 'components';
-// import { useSuergriesAppointments } from 'hooks';
-import ListSurgeries from './list-surgeries';
 import SessionSelector from 'components/patients/surgery-summary/session-selector';
 import Header from 'components/patients/surgery-summary/header';
 import { Whisper, Tooltip, Divider } from 'rsuite';
 import {
   KeyStyled,
   ValueStyled,
+  StyledCell,
 } from 'components/patients/surgery-summary/style';
 import { capitalize } from 'utils/text';
 import moment from 'moment';
 import * as R from 'ramda';
 import { formatDate } from 'utils/date';
+import useGlobalState from 'state';
+import { normalizeDataWithGroups } from 'services/appointment';
+import { H3 } from 'components';
+import { formatNumber, isFloat } from 'utils/nubmer';
 
+const renderFieldValue = value => {
+  if (isFloat(value)) {
+    return formatNumber(value);
+  }
+  return value;
+};
+
+const renderValues = (fields, name) => {
+  const keys = Object.keys(fields);
+  return (
+    <>
+      <H3>{name}</H3>
+
+      <div
+        className="pb-10 grid"
+        style={{
+          gridTemplateColumns: `repeat(${keys.length}, minmax(100px, 1fr))`,
+        }}
+      >
+        {(keys || []).map(key => (
+          <>
+            <div className="text-center" key={key}>
+              <h6 className="mb-2">{key}</h6>
+              {fields[key] && (
+                <StyledCell>{renderFieldValue(fields[key])}</StyledCell>
+              )}
+            </div>
+          </>
+        ))}
+      </div>
+    </>
+  );
+};
 const renderProp = (key, value, textValue) => {
   return (
     <Div display="flex" alignItems="center" minHeight={60}>
@@ -41,13 +77,24 @@ const renderProp = (key, value, textValue) => {
     </Div>
   );
 };
+const renderAppointment = data => {
+  return data.map(({ status, fields, name }, idx) =>
+    renderValues(fields, name)
+  );
+};
 
 const PatientSurgries = ({ history: summary, t }) => {
   // const { surgeries } = useSuergriesAppointments({
   //   patientId,
   // });
-
+  console.log(summary, 'SUM');
   const [activeSession, setActiveSession] = useState(null);
+  const [views] = useGlobalState('activeViews');
+  const view = useMemo(
+    () => views[activeSession?.type],
+    [activeSession, views]
+  );
+  const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
 
   const updatedSummary = useMemo(() => {
     const today = moment(new Date()).endOf('day');
@@ -68,6 +115,8 @@ const PatientSurgries = ({ history: summary, t }) => {
     () => R.propOr([], 'data')(activeSession),
     [activeSession]
   );
+  const newGroups = normalizeDataWithGroups(groups, data);
+
   if (!activeSession) {
     return '...No History';
   }
@@ -110,7 +159,7 @@ const PatientSurgries = ({ history: summary, t }) => {
       </div>
 
       <div className="sm:px-5 grow overflow-x-auto">
-        {updatedSummary.length ? (
+        {updatedSummary && updatedSummary.length > 0 ? (
           <>
             <Header
               updatedSummary={updatedSummary}
@@ -127,9 +176,9 @@ const PatientSurgries = ({ history: summary, t }) => {
             )} */}
 
             {renderProp('Date', formatDate(date))}
-            {/* <div className="overflow-x-auto">
+            <div className="overflow-x-auto">
               {renderAppointment(newGroups)}
-            </div> */}
+            </div>
 
             {activeSession.notes && renderProp('Notes', activeSession.notes)}
             {/* {pictures.length > 0 &&

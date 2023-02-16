@@ -28,6 +28,9 @@ export const LIST_APPOINTMENTS = gql`
     $status: AppointmentStatus
     $dateFrom: Date
     $dateTo: Date
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
   ) {
     appointments(
       input: $input
@@ -38,6 +41,9 @@ export const LIST_APPOINTMENTS = gql`
       dateFrom: $dateFrom
       dateTo: $dateTo
       status: $status
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
     ) {
       appointments {
         id
@@ -93,56 +99,75 @@ export const LIST_APPOINTMENTS = gql`
 `;
 
 export const LIST_TODAY_APPOINTMENTS = gql`
-  {
-    todayAppointments {
-      id
-      type
-      date
-      status
-      date
-      accounted
-      confirmed
-      duration
-      businessNotes
-      reference
-      updatedAt
-      subscriptionType
-      isFollowUp
-      canAddFollowUp
-      referedDoctor
-      patient {
+  query (
+    $offset: Int
+    $limit: Int
+    $status: AppointmentStatus
+    $branchId: ID
+    $specialtyId: ID
+    $doctorId: ID
+    $patient: String
+  ) {
+    todayAppointments(
+      offset: $offset
+      limit: $limit
+      status: $status
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+      patient: $patient
+    ) {
+      appointments {
         id
-        name
-        age
-        sex
-        code
-        phoneNo
-        points
-      }
-      user {
-        id
-        name
-      }
-      branch {
-        id
-        name
-      }
-      specialty {
-        id
-        name
-      }
-      session {
-        id
-        name
-        price
+        type
+        date
+        status
+        date
+        accounted
+        confirmed
         duration
-        followUp
-        timer
+        businessNotes
+        reference
+        updatedAt
+        subscriptionType
+        isFollowUp
+        canAddFollowUp
+        referedDoctor
+        patient {
+          id
+          name
+          age
+          sex
+          code
+          phoneNo
+          points
+        }
+        user {
+          id
+          name
+        }
+        branch {
+          id
+          name
+        }
+        specialty {
+          id
+          name
+        }
+        session {
+          id
+          name
+          price
+          duration
+          followUp
+          timer
+        }
+        doctor {
+          id
+          name
+        }
       }
-      doctor {
-        id
-        name
-      }
+      appointmentsCount
     }
   }
 `;

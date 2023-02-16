@@ -860,7 +860,7 @@ model Expense {
   id             String       @id @default(uuid())
   name           String
   date           DateTime
-  amount         Int
+  amount         Float
   expenseType    String
   invoiceNo      String?
   level          String?
@@ -1824,6 +1824,9 @@ model CoursePart {
   totalUnits     Int
   remainingUnits Int
   unitPrice      Float
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @default(now()) @updatedAt
+  seq            Int?
   course         Course               @relation(fields: [courseId], references: [id])
   courseId       String
   part           CourseTypeDefinition @relation(fields: [partId], references: [id])

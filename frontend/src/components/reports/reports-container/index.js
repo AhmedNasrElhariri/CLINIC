@@ -4,6 +4,7 @@ import {
   AccountingContainer,
   BankAccountingContainer,
   InsuranceAccountingContainer,
+  CashAndBankContainer
 } from 'components';
 import ReportsPrintOut from '../print-reports';
 import Reports from '../reports';
@@ -14,8 +15,12 @@ import { Can } from 'components/user/can';
 export const TABS = [
   { key: 'cash', element: () => <AccountingContainer /> },
   {
-    key: 'bank',
+    key: 'visa',
     element: () => <BankAccountingContainer />,
+  },
+  {
+    key: 'cashAndVisa',
+    element: () => <CashAndBankContainer />,
   },
   {
     key: 'insurance',

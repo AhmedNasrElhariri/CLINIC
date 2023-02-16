@@ -1,7 +1,9 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { Nav } from 'rsuite';
+import { Nav, Form } from 'rsuite';
 import * as R from 'ramda';
 import moment from 'moment';
+import useGlobalState from 'state';
+import { getPdfReport } from 'services/reports';
 import { ACTIONS } from 'utils/constants';
 import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
@@ -13,23 +15,28 @@ import {
   useModal,
   useCourses,
 } from 'hooks';
+import { BranchSpecialtyUserFilter, CRTextInput } from 'components';
 import BusinessNotes from './business-notes';
 import NewAppointment from 'components/appointments/new-appointment';
 import EditAppointment from '../edit-appointment';
 import CancelAppointment from '../cancel-appointment';
-import {
-  filterTodayAppointments,
-  sortAppointmentsByUpdatedAt,
-} from 'services/appointment';
-import Filter from '../../filters';
-import { APPT_STATUS } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
 import TransferAppointments from '../transfer-apps';
+
 const initialValue = {
   businessNotes: '',
 };
 const initalTransferValue = {
   doctorId: null,
+};
+const inialCurrentPage = {
+  activePage: 1,
+};
+const initialBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+  patient: '',
 };
 const calcDate = ({ date, time }) =>
   moment(date)
@@ -43,8 +50,10 @@ const calcDate = ({ date, time }) =>
 function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
   const [followUp, setFollowUp] = useState(false);
+  const [filter, setFilter] = useState(initialBranchValue);
+  const [active, setActive] = React.useState('Scheduled');
   const [transferDoctor, setTransferDoctor] = useState(initalTransferValue);
-  const [formValue] = useState({});
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const [notes, setNotes] = useState(initialValue);
   const [checkedKeys, setCheckedKeys] = useState([]);
   const { visible, close, open } = useModal({});
@@ -52,6 +61,8 @@ function TodayAppointments() {
   const { t } = useTranslation();
   const { organization } = useConfigurations({});
   const { users } = useCourses({});
+  const [onCreateAppointment] = useGlobalState('onCreateAppointment');
+
   const doctors = useMemo(() => {
     return users.filter(u => u.position === 'Doctor');
   }, [users]);
@@ -68,10 +79,18 @@ function TodayAppointments() {
     confirmedAppointment,
     transferAppointments,
     archiveReferedDoctorAppointment,
+    todayAppointmentsCount,
+    refetchTodayAppointments,
   } = useAppointments({
+    page: currentPage?.activePage,
     action: ACTIONS.List_Appointment,
+    status: active,
     patientId: appointment?.patient?.id,
     canAddFollowUp: appointment?.canAddFollowUp,
+    branchId: filter?.branch,
+    specialtyId: filter?.specialty,
+    doctorId: filter?.doctor,
+    patient: filter?.patient,
     onAdjust: () => {},
     onArchive: () => {
       close();
@@ -82,42 +101,21 @@ function TodayAppointments() {
     open,
     followUpFeature,
   });
-  const filteredAppointments = useMemo(
-    () => filterTodayAppointments(appointments, formValue),
-    [appointments, formValue]
-  );
+  const pages = Math.ceil(todayAppointmentsCount / 30);
+
   useEffect(() => {
-    setNotes(val => ({
+    setNotes(() => ({
       businessNotes: R.propOr('', 'businessNotes')(appointment),
     }));
   }, [appointment]);
 
-  const upcomingAppointments = useMemo(
-    () =>
-      R.pipe(
-        R.filter(
-          R.propEq('status', APPT_STATUS.SCHEDULED) ||
-            R.propEq('status', APPT_STATUS.CHANGED)
-        )
-      )(filteredAppointments),
-    [filteredAppointments]
-  );
-  const waitingAppointments = useMemo(
-    () =>
-      sortAppointmentsByUpdatedAt(
-        R.pipe(R.filter(R.propEq('status', APPT_STATUS.WAITING)))(
-          filteredAppointments
-        )
-      ),
-    [filteredAppointments]
-  );
-  const completedAppointments = useMemo(
-    () =>
-      R.pipe(R.filter(R.propEq('status', APPT_STATUS.ARCHIVED)))(
-        filteredAppointments
-      ),
-    [filteredAppointments]
-  );
+  useEffect(() => {
+    const id = onCreateAppointment.subscribe(() => {
+      refetchTodayAppointments();
+    });
+    return () => onCreateAppointment.unsubscribe(id);
+  }, [onCreateAppointment, refetchTodayAppointments]);
+
   const onClickDone = useCallback(
     appointment => {
       setPopUp('archive');
@@ -297,11 +295,22 @@ function TodayAppointments() {
         },
       });
     },
-    [appointment, complete, close]
+    [complete, close]
   );
-
-  const [active, setActive] = React.useState('mainAppointments');
-
+  const handlePrint = useCallback(() => {
+    const params = {
+      status: active,
+      branchId: filter?.branch,
+      specialtyId: filter?.specialty,
+      doctorId: filter?.doctor,
+      patient: filter?.patient,
+    };
+    getPdfReport(
+      '/todayAppointmentReport',
+      params,
+      'today-appointment-report.pdf'
+    );
+  }, [active, filter]);
   return (
     <>
       <Nav
@@ -311,80 +320,126 @@ function TodayAppointments() {
         className="text-center mb-5"
         activeKey={active}
       >
-        <Nav.Item eventKey="mainAppointments">{t('mainAppointments')}</Nav.Item>
-        <Nav.Item eventKey="waitingAppointments">
-          {t('waitingAppointments')}
-        </Nav.Item>
-        <Nav.Item eventKey="completedAppointments">
-          {t('completedAppointments')}
-        </Nav.Item>
+        <Nav.Item eventKey="Scheduled">{t('mainAppointments')}</Nav.Item>
+        <Nav.Item eventKey="Waiting">{t('waitingAppointments')}</Nav.Item>
+        <Nav.Item eventKey="Archived">{t('completedAppointments')}</Nav.Item>
       </Nav>
-      {active === 'mainAppointments' && (
-        <Filter
-          appointments={upcomingAppointments}
-          branches={filterBranches}
-          todayApp={true}
-          render={apps => (
-            <ListAppointments
-              title="Upcoming Appointments"
-              appointments={apps}
-              onArchive={onClickDone}
-              onComplete={onCompleteDone}
-              onAddBusinessNotes={onAddBusinessNotes}
-              onDuplicateAppointments={onDuplicateAppointments}
-              onEditAppointments={onEditAppointments}
-              onCancelAppointments={onCancelAppointments}
-              onFollowUpAppointments={onFollowUpAppointments}
-              onConfirmed={onConfirmed}
-              defaultExpanded={true}
-              close={close}
-              followUpFeature={followUpFeature}
-              checkedKeys={checkedKeys}
-              setCheckedKeys={setCheckedKeys}
-              doctors={doctors}
-              transferDoctor={transferDoctor}
-              setTransferDoctor={setTransferDoctor}
-              transferAppsAction={transferAppsAction}
-            />
-          )}
-        />
+      {active === 'Scheduled' && (
+        <>
+          <BranchSpecialtyUserFilter
+            formValue={filter}
+            onChange={setFilter}
+            branches={filterBranches}
+            todayApp={true}
+          />
+          <ListAppointments
+            active="Scheduled"
+            title="Upcoming Appointments"
+            appointments={appointments}
+            onArchive={onClickDone}
+            onComplete={onCompleteDone}
+            onAddBusinessNotes={onAddBusinessNotes}
+            onDuplicateAppointments={onDuplicateAppointments}
+            onEditAppointments={onEditAppointments}
+            onCancelAppointments={onCancelAppointments}
+            onFollowUpAppointments={onFollowUpAppointments}
+            onConfirmed={onConfirmed}
+            defaultExpanded={true}
+            close={close}
+            followUpFeature={followUpFeature}
+            checkedKeys={checkedKeys}
+            setCheckedKeys={setCheckedKeys}
+            doctors={doctors}
+            transferDoctor={transferDoctor}
+            setTransferDoctor={setTransferDoctor}
+            transferAppsAction={transferAppsAction}
+            pages={pages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            handlePrint={handlePrint}
+          >
+            <Form
+              formValue={filter}
+              onChange={setFilter}
+              style={{ marginLeft: '10px', marginTop: '-10px' }}
+            >
+              <CRTextInput
+                name="patient"
+                placeholder={t('Search by name / phone No')}
+              />
+            </Form>
+          </ListAppointments>
+        </>
       )}
-      {active === 'waitingAppointments' && (
-        <Filter
-          appointments={waitingAppointments}
-          branches={filterBranches}
-          todayApp={true}
-          render={apps => (
-            <ListAppointments
-              appointments={apps}
-              onArchive={onClickDone}
-              onComplete={onCompleteDone}
-              onAddBusinessNotes={onAddBusinessNotes}
-              onDuplicateAppointments={onDuplicateAppointments}
-              onEditAppointments={onEditAppointments}
-              onCancelAppointments={onCancelAppointments}
-              onFollowUpAppointments={onFollowUpAppointments}
-              onConfirmed={onConfirmed}
-              defaultExpanded={true}
-              waiting={true}
-              followUpFeature={followUpFeature}
-            />
-          )}
-        />
+      {active === 'Waiting' && (
+        <>
+          <BranchSpecialtyUserFilter
+            formValue={filter}
+            onChange={setFilter}
+            branches={filterBranches}
+          />
+          <ListAppointments
+            active="Waiting"
+            appointments={appointments}
+            onArchive={onClickDone}
+            onComplete={onCompleteDone}
+            onAddBusinessNotes={onAddBusinessNotes}
+            onDuplicateAppointments={onDuplicateAppointments}
+            onEditAppointments={onEditAppointments}
+            onCancelAppointments={onCancelAppointments}
+            onFollowUpAppointments={onFollowUpAppointments}
+            onConfirmed={onConfirmed}
+            defaultExpanded={true}
+            waiting={true}
+            followUpFeature={followUpFeature}
+            pages={pages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            handlePrint={handlePrint}
+          >
+            <Form
+              formValue={filter}
+              onChange={setFilter}
+              style={{ marginLeft: '10px', marginTop: '-10px' }}
+            >
+              <CRTextInput
+                name="patient"
+                placeholder={t('Search by name / phone No')}
+              />
+            </Form>
+          </ListAppointments>
+        </>
       )}
-      {active === 'completedAppointments' && (
-        <Filter
-          appointments={completedAppointments}
-          branches={filterBranches}
-          render={apps => (
-            <ListAppointments
-              title="Completed Appointments"
-              appointments={apps}
-              onAddBusinessNotes={onAddBusinessNotes}
-              defaultExpanded={true}
-            />
-          )}
-        />
+      {active === 'Archived' && (
+        <>
+          <BranchSpecialtyUserFilter
+            formValue={filter}
+            onChange={setFilter}
+            branches={filterBranches}
+          />
+          <ListAppointments
+            active="Archived"
+            title="Completed Appointments"
+            appointments={appointments}
+            onAddBusinessNotes={onAddBusinessNotes}
+            defaultExpanded={true}
+            pages={pages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            handlePrint={handlePrint}
+          >
+            <Form
+              formValue={filter}
+              onChange={setFilter}
+              style={{ marginLeft: '10px', marginTop: '-10px' }}
+            >
+              <CRTextInput
+                name="patient"
+                placeholder={t('Search by name / phone No')}
+              />
+            </Form>
+          </ListAppointments>
+        </>
       )}
       {popUp === 'archive' && (
         <ArchiveAppointment

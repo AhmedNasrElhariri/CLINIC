@@ -8,7 +8,6 @@ const ListSurgries = ({ data, onClick }) => {
   const { t } = useTranslation();
   const history = useHistory();
 
-  console.log(data, 'DD');
   return (
     <Div>
       <CRTable

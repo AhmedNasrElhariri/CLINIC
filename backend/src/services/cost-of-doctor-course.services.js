@@ -7,14 +7,12 @@ const createCostOfDoctorsFromAppointment = (
   userId,
   parts,
   organizationId,
-  branchId,
-  specialtyId,
   doctorId,
   doctorParts,
   cName
 ) => {
   let newParts = [];
-  parts.forEach(({ name, price, number, cost, partID }) => {
+  parts.forEach(({ name, price, number, partID }) => {
     const doctorPart = doctorParts.find(({ partId }) => partId === partID);
 
     if (doctorPart) {
@@ -24,36 +22,29 @@ const createCostOfDoctorsFromAppointment = (
           ? fees * number
           : feesCalculationMethod === 'before'
           ? price * number * (fees / 100)
-          : (price * number - (cost ? cost : 0)) * (fees / 100);
-      const part = Object.assign(
-        {
-          name: 'c/' + cName + '/' + name,
-          amount: doctorFees,
-          totalPrice: price * number,
-          status: 'Draft',
-          organizationId,
-          userId,
-          partId: partID,
-          unitPrice: price,
-          numberOfUnits: number,
-        },
-        cost && { cost },
-        specialtyId && { specialtyId },
-        branchId && { branchId },
-        doctorId && { doctorId: doctorId }
-      );
+          : price * number * (fees / 100);
+      const part = {
+        name: 'c/' + cName + '/' + name,
+        amount: doctorFees,
+        totalPrice: price * number,
+        status: 'Draft',
+        organization: { connect: { id: organizationId } },
+        user: { connect: { id: userId } },
+        part: { connect: { id: partID } },
+        doctor: { connect: { id: doctorId } },
+        unitPrice: price,
+        numberOfUnits: number,
+      };
       newParts.push(part);
     }
   });
   return newParts;
 };
 
-export const CostServices = async (
+export const costServices = async (
   userId,
   sessions,
   organizationId,
-  branchId,
-  specialtyId,
   doctorId,
   cName
 ) => {
@@ -68,8 +59,6 @@ export const CostServices = async (
         userId,
         parts,
         organizationId,
-        branchId,
-        specialtyId,
         doctorId,
         doctorParts,
         cName

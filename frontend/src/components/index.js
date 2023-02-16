@@ -108,3 +108,7 @@ export { default as BranchSpecialtyUserFilter } from './branch-specialty-user-fi
 export { default as Total } from './total';
 
 export { default as Sessions } from './sessions';
+
+export { default as MenuPopover } from './menu-popover';
+
+export { default as CashAndBankContainer } from './cash-bank-container';

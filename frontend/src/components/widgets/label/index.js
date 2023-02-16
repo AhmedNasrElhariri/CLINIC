@@ -22,6 +22,8 @@ const LabelStyled = styled(ControlLabel)`
     variants: {
       inline: {
         'margin-bottom': '0px',
+        'margin-right': '8px',
+        'white-space': 'nowrap'
       },
       vertical: {
         'margin-bottom': '10px',

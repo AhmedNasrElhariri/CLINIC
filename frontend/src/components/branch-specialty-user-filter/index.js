@@ -5,6 +5,7 @@ const BranchSpecialtyUserFilter = ({
   onChange,
   branches,
   formClassName,
+  todayApp,
 }) => {
   return (
     <>
@@ -13,6 +14,7 @@ const BranchSpecialtyUserFilter = ({
         onChange={onChange}
         branches={branches}
         formClassName={formClassName}
+        todayApp={todayApp}
       />
     </>
   );

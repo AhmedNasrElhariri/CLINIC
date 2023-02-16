@@ -8,7 +8,6 @@ import {
   getEndOfDay,
 } from '@/services/date.service';
 
-
 const visa = app => {
   app.post('/bankAccountingReport', async (req, res) => {
     const {
@@ -130,7 +129,7 @@ const visa = app => {
   // insurrance report
 
   ///bankExcel
-  app.get('/accountingBankRevenueExcel', async (req, res) => {
+  app.get('/accountingBankExcel', async (req, res) => {
     const {
       dateFrom,
       dateTo,
@@ -139,8 +138,14 @@ const visa = app => {
       specialtyId,
       branchId,
       revenueName,
+      expenseBranchId,
+      expenseSpecialtyId,
+      expenseDoctorId,
+      expenseType,
       bankId,
+      columns = ['revenues', 'expenses'],
       organizationId,
+      expenseName,
     } = req.query;
     try {
       let updatedDateFrom = new Date();
@@ -180,8 +185,44 @@ const visa = app => {
           },
         },
       });
+      const expenses = await prisma.bankExpense.findMany({
+        where: {
+          organizationId,
+          AND: [
+            {
+              branchId: expenseBranchId,
+            },
+            {
+              specialtyId: expenseSpecialtyId,
+            },
+            {
+              doctorId: expenseDoctorId,
+            },
+            {
+              bankId: bankId,
+            },
+          ],
+          expenseType: {
+            contains: expenseType,
+            mode: 'insensitive',
+          },
+          date: {
+            gte: updatedDateFrom,
+            lte: updatedDateTo,
+          },
+          name: {
+            contains: expenseName,
+            mode: 'insensitive',
+          },
+        },
+      });
       let keys = ['name', 'date', 'amount'];
-      const workbook = generateExcel(keys, revenues);
+      const workbook =
+        columns.includes('revenues') && columns.includes('expenses')
+          ? generateExcel(keys, ['Revenues', 'Expenses'], revenues, expenses)
+          : columns.includes('revenues')
+          ? generateExcel(keys, ['Revenues'], revenues)
+          : generateExcel(keys, ['Expenses'], expenses);
       var fileName = 'Revenues.xlsx';
       res.setHeader(
         'Content-Type',

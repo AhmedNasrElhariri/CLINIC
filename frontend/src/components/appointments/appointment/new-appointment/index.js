@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import * as moment from 'moment';
-import { Alert, Form,  Schema } from 'rsuite';
+import { Alert, Form, Schema } from 'rsuite';
 
 import {
   CRSelectInput,
@@ -42,6 +42,7 @@ const initialValues = {
 export default function NewAppointment({ show, onHide, appointment }) {
   const { formValue, setFormValue, createAppointment, appointments } =
     useNewAppointment({ onCreate: onHide });
+
   const { patient, branch, specialty, userId } = appointment;
   const { patientCourses } = useCourses({
     patientId: patient?.id,
@@ -50,12 +51,7 @@ export default function NewAppointment({ show, onHide, appointment }) {
     name: course?.name,
     IDBTransaction: course.id,
   }));
-  // useEffect(() => {
-  //   return () => {
-  //     setFormValue(initialValues);
-  //   };
-  // }, [setFormValue]);
-  
+
   const { disabledMinutes, hideHours } = useAppointmentForm({
     date: formValue.date,
     type: formValue.type,

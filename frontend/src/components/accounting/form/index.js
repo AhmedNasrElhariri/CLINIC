@@ -110,6 +110,7 @@ const AccountingForm = ({
         <CRNumberInput
           label={t('revenueAmount')}
           name="amount"
+          float
           block
         ></CRNumberInput>
         {header === 'New Expense' && (

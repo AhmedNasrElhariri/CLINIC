@@ -14,6 +14,9 @@ const appointments = async (
     dateFrom,
     dateTo,
     status = APPOINTMENTS_STATUS.SCHEDULED,
+    doctorId,
+    specialtyId,
+    branchId,
   },
   { user, organizationId }
 ) => {
@@ -57,6 +60,19 @@ const appointments = async (
                   specialtyId: {
                     in: ids,
                   },
+                },
+              ],
+            },
+            {
+              AND: [
+                {
+                  branchId: branchId,
+                },
+                {
+                  specialtyId: specialtyId,
+                },
+                {
+                  doctorId: doctorId,
                 },
               ],
             },
@@ -114,6 +130,19 @@ const appointments = async (
                   specialtyId: {
                     in: ids,
                   },
+                },
+              ],
+            },
+            {
+              AND: [
+                {
+                  branchId: branchId,
+                },
+                {
+                  specialtyId: specialtyId,
+                },
+                {
+                  doctorId: doctorId,
                 },
               ],
             },

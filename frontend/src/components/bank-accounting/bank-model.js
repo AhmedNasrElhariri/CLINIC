@@ -46,6 +46,7 @@ function BankModel({
           label={t('revenueAmount')}
           name="amount"
           block
+          float
         ></CRNumberInput>
         <CRSelectInput
           label={t('bank')}

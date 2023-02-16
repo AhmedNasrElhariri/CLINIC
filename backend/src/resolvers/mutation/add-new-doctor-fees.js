@@ -1,11 +1,11 @@
 import { prisma } from '@';
 
-const addNewwDoctorFees = async (
+const addNewDoctorFees = async (
   _,
   { doctorFees },
   { organizationId, userId }
 ) => {
-  const { sessionId, sessionName,name, ...rest } = doctorFees;
+  const { sessionId, sessionName, name, ...rest } = doctorFees;
   return prisma.doctorFees.create({
     data: {
       name: sessionName + ' - ' + name,
@@ -17,4 +17,4 @@ const addNewwDoctorFees = async (
   });
 };
 
-export default addNewwDoctorFees;
+export default addNewDoctorFees;

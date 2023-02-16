@@ -6,6 +6,7 @@ import {
   H6,
   BranchSpecialtyUserFilter,
   CRButton,
+  MenuPopover
 } from 'components';
 import Toolbar from '../accounting/toolbar';
 import ListData from './list-data';
@@ -59,18 +60,7 @@ const initialFormValue = {
   bankId: null,
 };
 
-const MenuPopover = ({ onSelect, ...rest }) => (
-  <Popover {...rest} full>
-    <Dropdown.Menu onSelect={onSelect}>
-      <Dropdown.Item eventKey={1}>
-        <CRButton>Pdf</CRButton>
-      </Dropdown.Item>
-      <Dropdown.Item eventKey={2}>
-        <CRButton>Excel</CRButton>
-      </Dropdown.Item>
-    </Dropdown.Menu>
-  </Popover>
-);
+
 const InsuranceDebitContainer = () => {
   const { t } = useTranslation();
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);

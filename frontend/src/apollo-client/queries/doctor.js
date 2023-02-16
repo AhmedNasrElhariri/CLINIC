@@ -86,8 +86,8 @@ export const EDIT_DOCTOR_FEES = gql`
   }
 `;
 export const ADD_NEW_DOCTOR_FEES = gql`
-  mutation addNewwDoctorFees($doctorFees: DoctorFeesTransactionInput!) {
-    addNewwDoctorFees(doctorFees: $doctorFees) {
+  mutation addNewDoctorFees($doctorFees: DoctorFeesTransactionInput!) {
+    addNewDoctorFees(doctorFees: $doctorFees) {
       id
     }
   }

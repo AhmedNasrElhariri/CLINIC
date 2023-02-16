@@ -477,5 +477,12 @@ export const TRANSLATIONS_EN = {
   sellingPrice: 'Selling price',
   alertNumberOfUnits: 'Alert Number Of Units',
   sellable: 'Sellable',
-  unitSellingPrice:'Unit selling price'
+  unitSellingPrice: 'Unit selling price',
+  revenuesOrExpenses: 'Revenues / Expenses',
+  cashOrVisa: 'Cash / Visa',
+  cashAndVisa: 'Cash & Visa',
+  startTime: 'Start time',
+  endTime: 'End time',
+  expenseName: 'Expense Name',
+  visa: 'Visa',
 };

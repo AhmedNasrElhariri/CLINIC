@@ -20,7 +20,6 @@ import {
   TOTAL_UNPAID_OF_COURSES,
   LIST_COURSE_UNITS_HISTORY,
   EDIT_COURSE_UNIT_HISTORY,
-  EDIT_COURSE_WITH_DOCTOR_FEES,
   LIST_COURSE_PARTS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
@@ -60,12 +59,7 @@ function useCourses({
       sortType && { sortType: sortType }
     ),
   });
-  // const appointmentsdata = data?.appointments;
-  // const appointmentsCountNumber = useMemo(() => {
-  //   const Data = R.propOr({}, 'appointments')(data);
-  //   const pagesNumber = Data?.appointmentsCount;
-  //   return pagesNumber;
-  // }, [data]);
+
   const coursesData = useMemo(() => R.propOr({}, 'myCourses')(data), [data]);
   const courses = useMemo(
     () => R.propOr([], 'courses')(coursesData),
@@ -107,9 +101,12 @@ function useCourses({
     [totalUnpaidOfCoursesData]
   );
 
-  const { data: coursePartsData } = useQuery(LIST_COURSE_PARTS, {
-    variables: { courseId },
-  });
+  const { data: coursePartsData, refetch: refetchCourseParts } = useQuery(
+    LIST_COURSE_PARTS,
+    {
+      variables: { courseId },
+    }
+  );
   const courseParts = useMemo(
     () => R.propOr([], 'courseParts')(coursePartsData),
     [coursePartsData]
@@ -219,6 +216,7 @@ function useCourses({
   const [editCourseUnits] = useMutation(EDIT_COURSE_UNITS, {
     onCompleted() {
       Alert.success('the Course has been Edited Successfully');
+      refetchCourseParts();
       onEdit && onEdit();
     },
     refetchQueries: [
@@ -244,9 +242,7 @@ function useCourses({
         ),
       },
     ],
-    onError() {
-      Alert.error('Failed to edit the Course');
-    },
+    onError: ({ message }) => Alert.error(message),
   });
   const [editCourseDoctor] = useMutation(EDIT_COURSE_DOCTOR, {
     onCompleted() {
@@ -363,47 +359,7 @@ function useCourses({
   });
 
   //paid course and  add units with doctor fees
-  const [paidCourseWithDoctorFees] = useMutation(EDIT_COURSE_WITH_DOCTOR_FEES, {
-    onCompleted() {
-      Alert.success('the Course has been Edited Successfully');
-      onEdit && onEdit();
-    },
-    refetchQueries: [
-      {
-        query: LIST_PATIENT_COURSES,
-        variables: { patientId: patientId },
-      },
-      {
-        query: LIST_COURSES,
-        variables: Object.assign(
-          {
-            offset: (page - 1) * 20 || 0,
-            limit: 20,
-          },
-          patientId && { patientId },
-          status && { status },
-          courseID && { courseId: courseID },
-          sortType && { sortType: sortType }
-        ),
-      },
-      {
-        query: LIST_COURSE_PAYMENTS,
-        variables: { courseId: courseId },
-      },
-      {
-        query: LIST_COURSE_UNITS_HISTORY,
-        variables: { courseId: courseId },
-      },
-      {
-        query: LIST_REVENUES,
-      },
-      {
-        query: LIST_COURSE_PARTS,
-        variables: { courseId: courseId },
-      },
-    ],
-    onError: ({ message }) => Alert.error(message),
-  });
+
   return useMemo(
     () => ({
       courses,
@@ -423,7 +379,6 @@ function useCourses({
       totalUnpaidOfCourses,
       courseUnitsHistory,
       editCourseUnitHistory,
-      paidCourseWithDoctorFees,
       courseParts,
     }),
     [
@@ -443,7 +398,6 @@ function useCourses({
       totalUnpaidOfCourses,
       courseUnitsHistory,
       editCourseUnitHistory,
-      paidCourseWithDoctorFees,
       courseParts,
     ]
   );
