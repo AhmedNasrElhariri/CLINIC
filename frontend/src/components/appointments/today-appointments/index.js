@@ -118,8 +118,8 @@ function TodayAppointments() {
 
   const onClickDone = useCallback(
     appointment => {
-      setPopUp('archive');
       setAppointment(appointment);
+      setPopUp('archive');
       open();
     },
     [setAppointment, open]

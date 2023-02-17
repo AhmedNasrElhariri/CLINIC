@@ -189,12 +189,10 @@ function ListAppointments({
   currentPage,
   setCurrentPage,
   onConfirmed,
-  close,
   followUpFeature,
   checkedKeys,
   setCheckedKeys,
   doctors,
-  transferApps,
   transferDoctor,
   setTransferDoctor,
   transferAppsAction,
@@ -262,15 +260,15 @@ function ListAppointments({
         affixHorizontalScrollbar
         style={{ direction: 'ltr' }}
       >
-        <CRTable.CRColumn width={100} align="center">
+        <CRTable.CRColumn width={40} align="center">
           <CRTable.CRHeaderCell style={{ padding: 0 }}>
             <div style={{ lineHeight: '10px' }}>
-              <Div>Select / Unselect</Div>
               <Checkbox
                 inline
                 checked={checked}
                 indeterminate={indeterminate}
                 onChange={handleCheckAll}
+                style={{ marginLe: 0 }}
               />
             </div>
           </CRTable.CRHeaderCell>
@@ -304,7 +302,7 @@ function ListAppointments({
           </CRTable.CRColumn>
         )}
         {active !== 'Waiting' && (
-          <CRTable.CRColumn width={130}>
+          <CRTable.CRColumn width={70}>
             <CRTable.CRHeaderCell>{t('endTime')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date, session }) => (
@@ -324,7 +322,7 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
 
-        <CRTable.CRColumn width={200}>
+        <CRTable.CRColumn width={170}>
           <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ type, session, isFollowUp }) => (
@@ -344,6 +342,7 @@ function ListAppointments({
                 placement="top"
                 controlId="control-id-hover"
                 trigger="hover"
+                delay={500}
                 speaker={
                   <Tooltip>
                     <Div>
@@ -369,28 +368,8 @@ function ListAppointments({
         <CRTable.CRColumn width={120}>
           <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ doctor, specialty, branch }) => (
-              <Whisper
-                placement="top"
-                controlId="control-id-hover"
-                trigger="hover"
-                speaker={
-                  <Tooltip>
-                    <Div>
-                      <Div>
-                        {t('specialty:  ')}
-                        {specialty.name}
-                      </Div>
-                      <Div>
-                        {t('branch:  ')}
-                        {branch.name}
-                      </Div>
-                    </Div>
-                  </Tooltip>
-                }
-              >
-                <CRTable.CRCellStyled>{doctor?.name}</CRTable.CRCellStyled>
-              </Whisper>
+            {({ doctor }) => (
+              <CRTable.CRCellStyled>{doctor?.name}</CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>

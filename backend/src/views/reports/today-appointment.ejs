@@ -35,14 +35,20 @@
    
       <table>
         <tr>
-          <th>Date</th><th>Creator</th><th>Type</th><th>Patient</th><th>Doctor</th>
+          <th>Start Date</th>
+          <th>End Time</th>
+          <th>Creator</th>
+          <th>Session</th>
+          <th>Patient</th>
+          <th>Doctor</th>
         </tr>
     
-        <% for (var i = 0; i < appointments.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+        <% for (let i = 0; i < appointments.length; i++) { %>
         <tr>
-          <td><%= formatDateStandard(appointments[i].date) %></td>
+          <td><%= appointments[i].startDate %></td>
+          <td><%= appointments[i].endDate %></td>
           <td><%= appointments[i].user.name %></td>
-          <td><%= appointments[i].type %></td>
+          <td><%= appointments[i]?.session?.name %></td>
           <td><%= appointments[i].patient.name %></td>
           <td><%= appointments[i].doctor.name %></td>
         </tr>    

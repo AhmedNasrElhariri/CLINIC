@@ -6,7 +6,7 @@ function CompleteAppointment({ show, onOk, onCancel, appointment, t }) {
     onOk({
       appointment,
     });
-  }, [onOk]);
+  }, [onOk, appointment]);
   return (
     <CRModal
       show={show}
