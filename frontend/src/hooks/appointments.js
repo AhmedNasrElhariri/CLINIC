@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import * as R from 'ramda';
 import { useQuery, useMutation } from '@apollo/client';
-import { APPT_TYPE, APPT_STATUS } from 'utils/constants';
+import { APPT_TYPE } from 'utils/constants';
 import {
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
@@ -23,7 +23,6 @@ import {
   CONFIRMED_APPOINTMENT,
   TRANSFER_APPOINTMENTS,
   ARCHIVE_REFERED_DOCTORAPPOINTMENT,
-  CREATE_APPOINTMENT,
 } from 'apollo-client/queries';
 
 import client from 'apollo-client/client';
@@ -62,7 +61,9 @@ function useAppointments({
   setAppointment,
   onArchive,
 } = {}) {
-  const { data } = useQuery(LIST_APPOINTMENTS, {
+  const [todayAppointments, setTodayAppointments] = useState([]);
+  const [appointments, setAppointments] = useState([]);
+  const { data, refetch: refetchAppointments } = useQuery(LIST_APPOINTMENTS, {
     variables: Object.assign(
       {
         offset: (page - 1) * 20 || 0,
@@ -84,16 +85,16 @@ function useAppointments({
     [],
     'appointmentsCount'
   )(appointmentsdata);
-  const appointments = useMemo(
-    () =>
-      R.pipe(
-        R.propOr([], 'appointments'),
-        includeSurgery
-          ? R.identity
-          : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-      )(appointmentsdata),
-    [appointmentsdata, includeSurgery]
-  );
+  useEffect(() => {
+    const newAppointments = R.pipe(
+      R.propOr([], 'appointments'),
+      includeSurgery
+        ? R.identity
+        : R.reject(R.propEq('type', APPT_TYPE.Surgery))
+    )(appointmentsdata);
+    setAppointments(newAppointments);
+  }, [appointmentsdata, includeSurgery]);
+
   const pages = Math.ceil(appointmentsCountNumber / 20);
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
     variables: {
@@ -128,17 +129,18 @@ function useAppointments({
       ),
     });
   const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
-  const todayAppointments = useMemo(
-    () =>
-      R.pipe(
-        R.propOr([], 'appointments'),
-        R.reject(R.propEq('status', 'Cancelled')),
-        includeSurgery
-          ? R.identity
-          : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-      )(todayAppointmentsDATA),
-    [todayAppointmentsDATA, includeSurgery]
-  );
+
+  useEffect(() => {
+    const newTodayAppointments = R.pipe(
+      R.propOr([], 'appointments'),
+      R.reject(R.propEq('status', 'Cancelled')),
+      includeSurgery
+        ? R.identity
+        : R.reject(R.propEq('type', APPT_TYPE.Surgery))
+    )(todayAppointmentsDATA);
+    setTodayAppointments(newTodayAppointments);
+  }, [todayAppointmentsDATA, includeSurgery]);
+
   const todayAppointmentsCount = useMemo(
     () => R.propOr(0, 'appointmentsCount')(todayAppointmentsDATA),
     [todayAppointmentsDATA]
@@ -201,6 +203,7 @@ function useAppointments({
       Alert.success('Appointment has been Completed successfully');
       setAppointment({});
       refetchTodayAppointments();
+      refetchAppointments();
     },
   });
   const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
@@ -225,34 +228,37 @@ function useAppointments({
     onCompleted: () => {
       Alert.success('Appointment has been changed successfully');
       refetchTodayAppointments();
-    },
-  });
-  const [confirmedAppointment] = useMutation(CONFIRMED_APPOINTMENT, {
-    onCompleted: () => {
-      refetchTodayAppointments();
+      refetchAppointments();
     },
     refetchQueries: [
       {
         query: LIST_APPOINTMENTS,
-        variables: Object.assign(
-          {
-            offset: (page - 1) * 20 || 0,
-            limit: 20,
-            status,
-            patient,
-          },
-          dateFrom && { dateFrom },
-          dateTo && { dateTo },
-          type && { type }
-        ),
       },
     ],
+  });
+  const [confirmedAppointment] = useMutation(CONFIRMED_APPOINTMENT, {
+    onCompleted: ({ confirmedAppointment: { id } }) => {
+      const newTodayAppointments = R.map(appointment =>
+        id === appointment.id
+          ? { ...appointment, confirmed: !appointment.confirmed }
+          : appointment
+      )(todayAppointments);
+      setTodayAppointments(newTodayAppointments);
+
+      const newAppointments = R.map(appointment =>
+        id === appointment.id
+          ? { ...appointment, confirmed: !appointment.confirmed }
+          : appointment
+      )(appointments);
+      setAppointments(newAppointments);
+    },
   });
 
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been cancelled successfully');
       refetchTodayAppointments();
+      refetchAppointments();
     },
     refetchQueries: [
       {
@@ -264,6 +270,7 @@ function useAppointments({
     onCompleted: () => {
       Alert.success('Appointments has been Transfered successfully');
       refetchTodayAppointments();
+      refetchAppointments();
     },
   });
   const [deleteAppointmentPhoto] = useMutation(DELETE_APPOINTMENT_PHOTO, {

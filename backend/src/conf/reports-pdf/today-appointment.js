@@ -4,7 +4,6 @@ import moment from 'moment';
 import {
   formatDate,
   formatDateFull,
-  formatDateStandard,
   TIME_FORMAT,
 } from '../../services/date.service';
 const init = app => {

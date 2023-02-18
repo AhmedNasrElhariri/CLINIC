@@ -110,6 +110,10 @@ function TodayAppointments() {
   }, [appointment]);
 
   useEffect(() => {
+    setCurrentPage(inialCurrentPage);
+  }, [filter]);
+
+  useEffect(() => {
     const id = onCreateAppointment.subscribe(() => {
       refetchTodayAppointments();
     });

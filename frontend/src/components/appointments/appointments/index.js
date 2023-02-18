@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Filter from './filter';
-// import BranchFilter from '../../filters';
 import { Nav } from 'rsuite';
 import * as R from 'ramda';
 import { useTranslation } from 'react-i18next';
@@ -61,7 +60,6 @@ function Appointments() {
   const { visible, close, open } = useModal({});
   const {
     appointments,
-    refetchAppointments,
     filterBranches,
     archive,
     complete,
@@ -251,6 +249,11 @@ function Appointments() {
       businessNotes: R.propOr('', 'businessNotes')(appointment),
     }));
   }, [appointment]);
+
+  useEffect(() => {
+    setCurrentPage(inialCurrentPage);
+  }, [filter]);
+
   const [activeIndex, setActiveIndex] = React.useState(0);
   return (
     <>
@@ -271,11 +274,6 @@ function Appointments() {
       </Nav>
 
       {activeIndex === 0 && (
-        // <BranchFilter
-        //   appointments={appointments}
-        //   branches={filterBranches}
-        //   render={(apps) => (
-        //     <>
         <>
           <BranchSpecialtyUserFilter
             formValue={filter}
@@ -302,11 +300,6 @@ function Appointments() {
         </>
       )}
       {activeIndex === 1 && (
-        // <BranchFilter
-        //   appointments={appointments}
-        //   branches={filterBranches}
-        //   render={apps => (
-        //     <>
         <>
           <BranchSpecialtyUserFilter
             formValue={filter}
@@ -331,11 +324,6 @@ function Appointments() {
         </>
       )}
       {activeIndex === 2 && (
-        // <BranchFilter
-        //   appointments={appointments}
-        //   branches={filterBranches}
-        //   render={apps => (
-        //     <>
         <>
           <BranchSpecialtyUserFilter
             formValue={filter}
