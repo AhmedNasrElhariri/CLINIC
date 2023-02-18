@@ -1,6 +1,5 @@
 import { useCallback, useState, useMemo, useEffect } from 'react';
 import * as R from 'ramda';
-import styled from 'styled-components';
 import { Div, H3, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import { Can } from 'components/user/can';
@@ -10,6 +9,8 @@ import { useCourses } from 'hooks';
 import { useModal } from 'hooks';
 import { CRTabs } from 'components';
 import { useTranslation } from 'react-i18next';
+import { Nav } from 'rsuite';
+
 // import EditableCourse from 'components/appointments/appointment/courses/editable-course';
 
 const initValue = {
@@ -30,20 +31,11 @@ const initValue = {
   notes: '',
 };
 
-const CourseButton = styled.button`
-  width: content-fit;
-  background: transparent;
-  color: rgba(40, 49, 72, 0.5);
-  font-size: 16px;
-  cursor: pointer;
-  height: 35px;
-`;
-
 const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
   const [course, setCourse] = useState({});
+  const [active, setActive] = useState(0);
   const { t } = useTranslation();
-  const [index, setIndex] = useState(0);
   const [header, setHeader] = useState('');
   const [visa, setVisa] = useState(false);
   const [bank, setBank] = useState(null);
@@ -52,6 +44,7 @@ const Course = ({ patientId }) => {
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
+  console.log(course, 'CCC');
   const {
     addCourse,
     patientCourses,
@@ -70,11 +63,11 @@ const Course = ({ patientId }) => {
       close();
       setFormValue(initValue);
       setSelectedSessions([]);
-      setIndex(0);
     },
     onEdit: () => {
       close();
       setFormValue(initValue);
+      setConsumedParts({});
     },
     onEditDoctor: () => {
       close();
@@ -83,23 +76,22 @@ const Course = ({ patientId }) => {
     onFinishCourse: () => {
       close();
       setFormValue(initValue);
-      setIndex(0);
     },
     onDeleteCourse: () => {
       close();
       setFormValue(initValue);
-      setIndex(0);
     },
     onEditCoursePaymentHistory: () => {
       close();
       setFormValue(initValue);
     },
     patientId: patientId,
-    courseId: formValue?.id || course?.id,
+    courseId: course?.id,
   });
   useEffect(() => {
-    setCourse(patientCourses[0]);
-  }, [patientCourses]);
+    setCourse(patientCourses[active]);
+  }, [patientCourses, active]);
+
   const handleClickCreate = useCallback(() => {
     setType('create');
     setHeader(t('createNewCourse'));
@@ -393,26 +385,20 @@ const Course = ({ patientId }) => {
         </CRTabs.CRTabsGroup>
         <CRTabs.CRContentGroup>
           <CRTabs.CRContent>
-            <Div display="flex" justifyContent="space-between">
+            <Div display="flex" justifyContent="space-between" m="10px 0px">
               <Div width={1000}>
                 <>
-                  {InprogressCourses.map((course, idx) => (
-                    <CourseButton
-                      variant="primary"
-                      onClick={() => {
-                        setIndex(idx);
-                        setCourse(patientCourses[idx]);
-                      }}
-                      key={idx}
-                      style={
-                        index === idx
-                          ? { border: '3px solid #5c8b9d' }
-                          : { border: 'none' }
-                      }
-                    >
-                      {course.name}
-                    </CourseButton>
-                  ))}
+                  <Nav
+                    onSelect={setActive}
+                    appearance="tabs"
+                    justified
+                    className="text-center mb-5"
+                    activeKey={active}
+                  >
+                    {InprogressCourses.map((course, idx) => (
+                      <Nav.Item eventKey={idx}>{course.name}</Nav.Item>
+                    ))}
+                  </Nav>
                   <Div width={200} mt={2}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
@@ -423,7 +409,7 @@ const Course = ({ patientId }) => {
                   {InprogressCourses.length > 0 ? (
                     <CourseData
                       courses={InprogressCourses}
-                      indx={index}
+                      indx={active}
                       onEditPaid={handleClickEditPaid}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
@@ -445,20 +431,17 @@ const Course = ({ patientId }) => {
             <Div display="flex" justifyContent="space-between">
               <Div width={1000}>
                 <>
-                  {FinishedCourses.map((course, idx) => (
-                    <CourseButton
-                      variant="primary"
-                      onClick={() => setIndex(idx)}
-                      key={idx}
-                      style={
-                        index === idx
-                          ? { border: '3px solid #5c8b9d' }
-                          : { border: 'none' }
-                      }
-                    >
-                      {course.name}
-                    </CourseButton>
-                  ))}
+                  <Nav
+                    onSelect={setActive}
+                    appearance="tabs"
+                    justified
+                    className="text-center mb-5"
+                    activeKey={active}
+                  >
+                    {InprogressCourses.map((course, idx) => (
+                      <Nav.Item eventKey={idx}>{course.name}</Nav.Item>
+                    ))}
+                  </Nav>
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
@@ -469,7 +452,7 @@ const Course = ({ patientId }) => {
                   {FinishedCourses.length > 0 ? (
                     <CourseData
                       courses={FinishedCourses}
-                      indx={index}
+                      indx={active}
                       onEditPaid={handleClickEditPaid}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
@@ -491,20 +474,17 @@ const Course = ({ patientId }) => {
             <Div display="flex" justifyContent="space-between">
               <Div width={1000}>
                 <>
-                  {CancelledCourses.map((course, idx) => (
-                    <CourseButton
-                      variant="primary"
-                      onClick={() => setIndex(idx)}
-                      key={idx}
-                      style={
-                        index === idx
-                          ? { border: '3px solid #5c8b9d' }
-                          : { border: 'none' }
-                      }
-                    >
-                      {course.name}
-                    </CourseButton>
-                  ))}
+                  <Nav
+                    onSelect={setActive}
+                    appearance="tabs"
+                    justified
+                    className="text-center mb-5"
+                    activeKey={active}
+                  >
+                    {InprogressCourses.map((course, idx) => (
+                      <Nav.Item eventKey={idx}>{course.name}</Nav.Item>
+                    ))}
+                  </Nav>
                   <Div width={200}>
                     <Can I="Create" an="Course">
                       <CRButton variant="primary" onClick={handleClickCreate}>
@@ -515,7 +495,7 @@ const Course = ({ patientId }) => {
                   {CancelledCourses.length > 0 ? (
                     <CourseData
                       courses={CancelledCourses}
-                      indx={index}
+                      indx={active}
                       onEditPaid={handleClickEditPaid}
                       onEditUnits={handleClickEditUnits}
                       onAddUnits={handleClickAddUnits}
