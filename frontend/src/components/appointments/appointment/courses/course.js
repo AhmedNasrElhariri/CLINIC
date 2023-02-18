@@ -177,6 +177,7 @@ const CourseData = ({
               justified
               className="text-center mb-5"
               activeKey={active}
+              style={{ borderBottom: '1px solid #d9d9d9' }}
             >
               <Nav.Item eventKey="courseSession">{t('courseSession')}</Nav.Item>
               <Nav.Item eventKey="coursePaymentHistory">

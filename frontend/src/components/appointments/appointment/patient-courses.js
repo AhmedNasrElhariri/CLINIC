@@ -394,9 +394,12 @@ const Course = ({ patientId }) => {
                     justified
                     className="text-center mb-5"
                     activeKey={active}
+                    style={{ borderBottom: '1px solid #d9d9d9' }}
                   >
                     {InprogressCourses.map((course, idx) => (
-                      <Nav.Item eventKey={idx}>{course.name}</Nav.Item>
+                      <Nav.Item eventKey={idx} key={idx}>
+                        {course.name}
+                      </Nav.Item>
                     ))}
                   </Nav>
                   <Div width={200} mt={2}>
@@ -437,6 +440,7 @@ const Course = ({ patientId }) => {
                     justified
                     className="text-center mb-5"
                     activeKey={active}
+                    style={{ borderBottom: '1px solid #d9d9d9' }}
                   >
                     {InprogressCourses.map((course, idx) => (
                       <Nav.Item eventKey={idx}>{course.name}</Nav.Item>
@@ -462,6 +466,7 @@ const Course = ({ patientId }) => {
                       onEditHistoryPayment={handleClickEditHistoryPayment}
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                       courseParts={courseParts}
+                      style={{ borderBottom: '1px solid #d9d9d9' }}
                     />
                   ) : (
                     <H3>{t('noCourses')}</H3>
@@ -480,6 +485,7 @@ const Course = ({ patientId }) => {
                     justified
                     className="text-center mb-5"
                     activeKey={active}
+                    style={{ borderBottom: '1px solid #d9d9d9' }}
                   >
                     {InprogressCourses.map((course, idx) => (
                       <Nav.Item eventKey={idx}>{course.name}</Nav.Item>
