@@ -47,6 +47,7 @@ const calcDate = ({ date, time }) =>
       millisecond: 0,
     })
     .toDate();
+const PAGE_SIZE = 30;
 function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
   const [followUp, setFollowUp] = useState(false);
@@ -361,6 +362,7 @@ function TodayAppointments() {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             handlePrint={handlePrint}
+            pageSize={PAGE_SIZE}
           >
             <Form
               formValue={filter}
@@ -400,6 +402,7 @@ function TodayAppointments() {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             handlePrint={handlePrint}
+            pageSize={PAGE_SIZE}
           >
             <Form
               formValue={filter}
@@ -431,6 +434,7 @@ function TodayAppointments() {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             handlePrint={handlePrint}
+            pageSize={PAGE_SIZE}
           >
             <Form
               formValue={filter}
