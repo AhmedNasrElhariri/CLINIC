@@ -7,8 +7,6 @@ export const LIST_ITEMS = gql`
       name
       unitOfMeasure
       quantity
-      barcode
-      notes
       sellingPrice
       alertNumberOfUnits
       sellable
@@ -56,7 +54,10 @@ export const CREATE_ITEM = gql`
       id
       name
       unitOfMeasure
-      notes
+      quantity
+      sellingPrice
+      alertNumberOfUnits
+      sellable
     }
   }
 `;
@@ -65,14 +66,6 @@ export const UPDATE_ITEM = gql`
   mutation editItem($item: ItemUpdateInput!) {
     editItem(item: $item) {
       id
-      name
-      unitOfMeasure
-      quantity
-      barcode
-      notes
-      sellingPrice
-      alertNumberOfUnits
-      sellable
     }
   }
 `;
@@ -81,14 +74,6 @@ export const ADD_ITEM = gql`
   mutation addItem($item: AddToInventoryInput!) {
     addItem(item: $item) {
       id
-      name
-      unitOfMeasure
-      quantity
-      barcode
-      notes
-      sellingPrice
-      alertNumberOfUnits
-      sellable
     }
   }
 `;

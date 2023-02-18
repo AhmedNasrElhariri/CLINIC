@@ -25,6 +25,9 @@ const consumeInventoryManual = async (
       organizationId,
     },
   });
+
+  ///
+
   return updatedItems;
 };
 

@@ -3,7 +3,6 @@ import EditItem from '../edit-item';
 import RemoveItemDefinition from '../remove-item-definition';
 import { approximatlyToTwoNumbers } from 'services/general';
 const ListItemsDefinitions = ({ items, onRemove, t }) => {
-  console.log(items, 'dkdk');
   return (
     <CRTable autoHeight data={items}>
       <CRTable.CRColumn flexGrow={1}>

@@ -61,6 +61,12 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
           },
         },
         level: level,
+        InventoryItemConsumption: {
+          create: {
+            numberOfUnits: totalQuantity * input.amount,
+            price: input.price,
+          },
+        },
       },
       specialtyId && {
         specialty: {
@@ -87,6 +93,12 @@ const addItem = async (_, { item: input }, { userId, organizationId }) => {
     update: {
       quantity: newtotalQuantity,
       price: input.price,
+      InventoryItemConsumption: {
+        create: {
+          numberOfUnits: totalQuantity * input.amount,
+          price: input.price,
+        },
+      },
     },
     where: {
       id: inventoryId || '',
