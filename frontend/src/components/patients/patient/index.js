@@ -140,7 +140,11 @@ function Appointment() {
                 )}
                 {showComp('3') && (
                   <Can I="ViewSurgeries" an="Patient">
-                    <PatientSurgries history={appointmentHistory} t={t} />
+                    <PatientSurgries
+                      history={appointmentHistory}
+                      t={t}
+                      patientId={patientId}
+                    />
                   </Can>
                 )}
                 {showComp('4') && (

@@ -277,7 +277,7 @@ function useAppointments({
       },
       {
         query: GET_APPOINTMENT_HISTORY,
-        variables: { patientId: patientId },
+        variables: { patientId: patientId, type: type },
       },
     ],
   });
