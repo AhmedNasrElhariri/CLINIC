@@ -466,17 +466,30 @@ function NewCourse({
           type === 'editUnitsTransactions' ? (
           <>
             {courseParts && courseParts.length > 0 ? (
-              <Form formValue={consumedParts} onChange={setConsumedParts} fluid>
-                {courseParts.map(({ id, part }, indx) => (
-                  <Div mb={type === 'addNewUnits' ? 2 : 0}>
-                    <CRNumberInput
-                      label={`Number of Units (${part?.name})`}
-                      name={id}
-                      layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
-                    ></CRNumberInput>
-                  </Div>
-                ))}
-              </Form>
+              <>
+                <Form
+                  formValue={consumedParts}
+                  onChange={setConsumedParts}
+                  fluid
+                >
+                  {courseParts.map(({ id, part }, indx) => (
+                    <Div mb={type === 'addNewUnits' ? 2 : 0}>
+                      <CRNumberInput
+                        label={`Number of Units (${part?.name})`}
+                        name={id}
+                        layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
+                      ></CRNumberInput>
+                    </Div>
+                  ))}
+                </Form>
+                <CRSelectInput
+                  label={t('doctor')}
+                  name="consumedDoctorId"
+                  placeholder={t('select')}
+                  data={actionDoctors}
+                  block
+                />
+              </>
             ) : (
               <CRNumberInput
                 label={t('consumedUnits')}

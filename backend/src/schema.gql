@@ -727,6 +727,7 @@ type Mutation {
     type: String!
     notes: String
     parts: [PartInput]
+    doctorId: ID
   ): Course!
   editCourseUnitHistory(
     transactionId: ID

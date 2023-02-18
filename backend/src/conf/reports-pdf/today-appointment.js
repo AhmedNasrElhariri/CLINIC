@@ -81,7 +81,6 @@ const init = app => {
           doctor: true,
         },
       });
-      console.log(appointments[50].session);
       const pdfDoc = await generatePdf('/views/reports/today-appointment.ejs', {
         appointments: appointments.map(({ date, duration, ...rest }) => ({
           ...rest,

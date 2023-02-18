@@ -29,6 +29,7 @@ const initValue = {
   courseType: 'standard',
   customUnits: 0,
   notes: '',
+  consumedDoctorId: null,
 };
 
 const Course = ({ patientId }) => {
@@ -44,7 +45,6 @@ const Course = ({ patientId }) => {
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
-  console.log(course, 'CCC');
   const {
     addCourse,
     patientCourses,
@@ -113,10 +113,13 @@ const Course = ({ patientId }) => {
       const course = R.pick(['id', 'consumed'])(data);
       setType('addNewUnits');
       setHeader(t('addNewUnits'));
-      setFormValue(course);
+      setFormValue({
+        ...course,
+        consumedDoctorId: patientCourses[active]?.doctor.id,
+      });
       open();
     },
-    [open, setFormValue, setType, t]
+    [open, setFormValue, setType, t, patientCourses, active]
   );
   const handleClickEditPaid = useCallback(
     data => {
@@ -276,6 +279,7 @@ const Course = ({ patientId }) => {
               notes: formValue.notes,
               type: 'addNewUnits',
               parts: updatedConsumedUnits,
+              doctorId: formValue.consumedDoctorId,
             }
           : {
               courseId: formValue.id,
