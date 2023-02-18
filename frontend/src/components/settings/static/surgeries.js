@@ -106,7 +106,7 @@ function Surgeries() {
   return (
     <>
       <Div textAlign="right">
-        <Can I="Create" an="Surgery">
+        <Can I="Create" a="Surgery">
           <CRButton variant="primary" onClick={handleonClickCreate}>
             {t('surgery')} +
           </CRButton>

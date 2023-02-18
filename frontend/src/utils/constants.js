@@ -161,6 +161,10 @@ export const ACTIONS = Object.freeze({
   Create_SessionDefinition: 'Create_SessionDefinition',
   Create_Hospital: 'Create_Hospital',
   Create_Surgery: 'Create_Surgery',
+  List_Surgery: 'List_Surgery',
+  View_Surgery: 'View_Surgery',
+  Edit_Surgery: 'Edit_Surgery',
+  ViewHistory_Surgery: 'ViewHistory_Surgery',
   View_Payroll: 'View_Payroll',
   CreateCommission_Payroll: 'CreateCommission_Payroll',
   CreateDeduction_Payroll: 'CreateDeduction_Payroll',
@@ -249,6 +253,9 @@ export const ACTIONS_ORGANZATIONONLY = [
   'DeleteImages_CurrentAppointment',
   'View_Logging',
   'View_DoctorFees',
+  'Create_Surgery',
+  'Edit_Surgery',
+  'List_Surgery',
 ];
 
 export const LAB_STATUS = Object.freeze({

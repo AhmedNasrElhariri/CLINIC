@@ -2,6 +2,7 @@ import moment from 'moment';
 import { ACCOUNTING_VIEWS } from '@/utils/constants';
 export const STANDARD_DATE_FORMAT = 'DD-MM-YYYY';
 export const FULL_DATE_FORMAT = 'DD-MM-YYYY hh:mm a';
+export const TIME_FORMAT = 'hh:mm';
 
 export const formatDate = (date, format) => moment(date).format(format);
 

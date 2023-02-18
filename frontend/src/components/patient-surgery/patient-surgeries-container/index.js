@@ -8,7 +8,7 @@ import ListPatientSurgeries from '../list-patient-surgeries';
 import NewPatientSurgery from '../new-patient-surgery';
 import PatientSurgeryFilter from './filter';
 import { filterPatientSurgery } from 'services/patient-surgery';
-import { useForm, usePatientSurgeries, useModal } from 'hooks';
+import { useForm, usePatientSurgeries, useModal, useAuth } from 'hooks';
 import { useTranslation } from 'react-i18next';
 
 const initValue = {
@@ -41,6 +41,7 @@ const PatientSurgeriesContainer = () => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
   const history = useHistory();
+  const { can } = useAuth();
   const [currentPage, setCurrentPage] = useState(inialCurrentPage);
   const page = currentPage?.activePage;
   const [type, setType] = useState('');
@@ -100,9 +101,11 @@ const PatientSurgeriesContainer = () => {
 
   const handleSurgeryClick = useCallback(
     ({ appointment }) => {
-      history.push(`/appointments/${appointment.id}`);
+      if (can('ViewSurgeries', 'Patient')) {
+        history.push(`/appointments/${appointment.id}`);
+      }
     },
-    [history]
+    [history, can]
   );
 
   const handleClickEdit = useCallback(
@@ -146,7 +149,7 @@ const PatientSurgeriesContainer = () => {
         title={t('patientsSurgeries')}
         more={
           <Div display="flex">
-            <Can I="Create" an="Surgery">
+            <Can I="Create" a="Surgery">
               <CRButton variant="primary" onClick={handleOnClickCreate}>
                 {t('surgery')} +
               </CRButton>
@@ -167,18 +170,20 @@ const PatientSurgeriesContainer = () => {
           loading={loading}
           type={type}
         />
-        <PatientSurgeryFilter
-          formValue={filterFormValue}
-          onChange={setFilterFormValue}
-        />
-        <ListPatientSurgeries
-          patientSurgeries={filteredList}
-          onSurgeryClick={handleSurgeryClick}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          pages={pages}
-          onEdit={handleClickEdit}
-        />
+        <Can I="List" a="Surgery">
+          <PatientSurgeryFilter
+            formValue={filterFormValue}
+            onChange={setFilterFormValue}
+          />
+          <ListPatientSurgeries
+            patientSurgeries={filteredList}
+            onSurgeryClick={handleSurgeryClick}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            pages={pages}
+            onEdit={handleClickEdit}
+          />
+        </Can>
       </MainContainer>
     </>
   );

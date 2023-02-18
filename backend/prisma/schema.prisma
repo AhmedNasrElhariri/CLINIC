@@ -212,6 +212,8 @@ enum PermissionAction {
   Create_SessionDefinition
   Create_Hospital
   Create_Surgery
+  Edit_Surgery
+  List_Surgery
   View_Payroll
   CreateCommission_Payroll
   CreateDeduction_Payroll

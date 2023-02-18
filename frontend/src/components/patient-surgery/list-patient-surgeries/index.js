@@ -5,6 +5,7 @@ import { CRCard, CRTable } from 'components';
 import { formatDate } from 'utils/date';
 import { FULL_DAY_FORMAT } from 'utils/constants';
 import { Icon } from 'rsuite';
+import { Can } from 'components/user/can';
 
 function ListPatientSurgeries({
   patientSurgeries,
@@ -162,16 +163,18 @@ function ListPatientSurgeries({
             <CRTable.CRCell>
               {data => (
                 <CRTable.CRCellStyled bold>
-                  <Icon
-                    icon="edit"
-                    onClick={e => {
-                      e.stopPropagation();
-                      onEdit(data);
-                    }}
-                  >
-                    {' '}
-                    {t('edit')}
-                  </Icon>
+                  <Can I="Edit" a="Surgery">
+                    <Icon
+                      icon="edit"
+                      onClick={e => {
+                        e.stopPropagation();
+                        onEdit(data);
+                      }}
+                    >
+                      {' '}
+                      {t('edit')}
+                    </Icon>
+                  </Can>
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

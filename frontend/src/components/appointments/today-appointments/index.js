@@ -110,6 +110,10 @@ function TodayAppointments() {
   }, [appointment]);
 
   useEffect(() => {
+    setCurrentPage(inialCurrentPage);
+  }, [filter]);
+
+  useEffect(() => {
     const id = onCreateAppointment.subscribe(() => {
       refetchTodayAppointments();
     });
@@ -118,8 +122,8 @@ function TodayAppointments() {
 
   const onClickDone = useCallback(
     appointment => {
-      setPopUp('archive');
       setAppointment(appointment);
+      setPopUp('archive');
       open();
     },
     [setAppointment, open]
