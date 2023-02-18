@@ -58,6 +58,7 @@ function Appointments() {
   const followUpFeature = R.propOr(false, 'followUp')(organization);
   const { t } = useTranslation();
   const { visible, close, open } = useModal({});
+
   const {
     appointments,
     filterBranches,
@@ -244,6 +245,7 @@ function Appointments() {
     },
     [appointment, complete, close]
   );
+
   useEffect(() => {
     setNotes(val => ({
       businessNotes: R.propOr('', 'businessNotes')(appointment),
@@ -252,7 +254,7 @@ function Appointments() {
 
   useEffect(() => {
     setCurrentPage(inialCurrentPage);
-  }, [filter]);
+  }, [filter, formValue]);
 
   const [activeIndex, setActiveIndex] = React.useState(0);
   return (
