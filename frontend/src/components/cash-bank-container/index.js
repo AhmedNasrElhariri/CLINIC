@@ -96,12 +96,12 @@ const AccountingContainer = () => {
       bankId: formValue?.bankId,
       organizationId: user.organizationId,
     };
-    getPdfReport('/all-Accounting/pdf', params, 'all accounting.pdf');
-  }, [branchSpecialtyUser, formValue, page, period, user.organizationId, view]);
+    getPdfReport('/reports/transactions/pdf', params, 'all accounting.pdf');
+  }, [branchSpecialtyUser, formValue, page, period, user, view]);
 
   const handleAccountingExcel = async day => {
     axios({
-      url: '/allAccountingExcel',
+      url: '/reports/transactions/excel',
       responseType: 'blob', // important
       params: {
         view,
