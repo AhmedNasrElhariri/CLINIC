@@ -1,4 +1,5 @@
 import { prisma } from '@';
+import * as R from 'ramda';
 
 function groupArrayOfObjects(list, key) {
   return list.reduce(function (rv, x) {
@@ -10,7 +11,7 @@ function groupArrayOfObjects(list, key) {
 const nuniquePatients = arr => {
   const uniqueIds = [];
 
-  const unique = arr.filter(({ patient, doctor }) => {
+  const unique = arr.filter(({ patient }) => {
     const isDuplicate = uniqueIds.includes(patient.id);
 
     if (!isDuplicate) {
@@ -23,6 +24,10 @@ const nuniquePatients = arr => {
   });
   return unique;
 };
+
+const sumByProp = (arr, key) =>
+  arr.reduce((acc, record) => acc + record[key], 0);
+
 export const sessionsStatistics = async (sessionIds, startDay, endDay) => {
   const sessions = await prisma.sessionDefinition.findMany({
     where: {
@@ -31,7 +36,7 @@ export const sessionsStatistics = async (sessionIds, startDay, endDay) => {
       },
     },
   });
-  const sessionsTransactions = await prisma.sessionTransaction.findMany({
+  let sessionsTransactions = await prisma.sessionTransaction.findMany({
     where: {
       sessionId: {
         in: sessionIds,
@@ -41,51 +46,42 @@ export const sessionsStatistics = async (sessionIds, startDay, endDay) => {
         lte: endDay,
       },
     },
+    select: {
+      sessionId: true,
+      number: true,
+    },
   });
-  const updatedSessionsTransactions = sessionsTransactions.map(s => {
-    return { ...s, totalPrice: s.number * s.price };
-  });
-  const groups = groupArrayOfObjects(updatedSessionsTransactions, 'sessionId');
-  const groupsValue = Object.values(groups);
-  const totalsessions = groupsValue.map(g => {
-    let totalNumber = 0;
-    let totalPrice = 0;
-    g.forEach(s => {
-      totalNumber += s.number;
-      totalPrice += s.totalPrice;
-    });
+  sessionsTransactions = R.groupBy(R.prop('sessionId'))(sessionsTransactions);
+  sessionsTransactions = Object.entries(sessionsTransactions).reduce(
+    (acc, [sessionId, transactions]) => ({
+      ...acc,
+      [sessionId]: sumByProp(transactions, 'number'),
+    }),
+    {}
+  );
+
+  const allSessionsRevenues = await Promise.all(
+    sessions.map(({ name }) =>
+      prisma.revenue.findMany({
+        where: {
+          name: {
+            contains: name,
+          },
+          date: {
+            gte: startDay,
+            lte: endDay,
+          },
+        },
+        include: { patient: true, doctor: true },
+      })
+    )
+  );
+  const statistics = sessions.map(({ id, name }, index) => {
     return {
-      sessionId: g[0].sessionId,
-      totalNumber: totalNumber,
-      totalPrice: totalPrice,
-    };
-  });
-  const sessionsNames = sessions.map(({ name }) => `"${name}"`);
-  const sessionsRevenues = await prisma.revenue.findMany({
-    where: { name: { in: { sessionsNames } } },
-  });
-  console.log(sessionsRevenues,'jjj');
-  const statistics = totalsessions.map(ts => {
-    const session = sessions.find(s => s.id == ts.sessionId);
-    // const revenues = await prisma.revenue.findMany({
-    //   where: {
-    //     name: { contains: session.name },
-    //     date: {
-    //       gte: startDay,
-    //       lte: endDay,
-    //     },
-    //   },
-    //   include: { patient: true, doctor: true },
-    // });
-    // const updatedRevenue = revenues.map(rr => {
-    //   return { patient: rr.patient, doctor: rr.doctor };
-    // });
-    // const uniRevenues = nuniquePatients(updatedRevenue);
-    return {
-      name: session.name,
-      totalNumber: ts.totalNumber,
-      totalPrice: ts.totalPrice,
-      //   sessions: uniRevenues,
+      name: name,
+      totalNumber: sessionsTransactions[id],
+      totalPrice: sumByProp(allSessionsRevenues[index], 'amount'),
+      sessions: allSessionsRevenues[index],
     };
   });
   return statistics;

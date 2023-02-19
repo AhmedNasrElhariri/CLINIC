@@ -20,7 +20,8 @@ const init = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=cash.pdf');
       res.end(pdfDoc);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      res.status(400).send(e.message);
     }
   });
 
@@ -34,7 +35,7 @@ const init = app => {
 
       const workbook = generateExcel(keys, ['sessions-statistics'], statistics);
 
-      var fileName = 'sessions-statistics.xlsx';
+      const fileName = 'sessions-statistics.xlsx';
       res.setHeader(
         'Content-Type',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -43,7 +44,7 @@ const init = app => {
       await workbook.xlsx.write(res);
       res.end();
     } catch (e) {
-      res.status(400).send(e);
+      res.status(400).send(e.message);
       res.status(400).send('Invalid');
     }
   });

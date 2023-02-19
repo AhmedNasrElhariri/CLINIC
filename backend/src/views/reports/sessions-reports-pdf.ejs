@@ -1,43 +1,70 @@
-<!doctype html >
+<!DOCTYPE html>
 <html>
+  <head>
+    <title>Clinic-R Report</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0px 2px 50px 2px;
+    }
 
-<head>
-  <title>Clinic-R Report</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
-<style>
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0px 2px 50px 2px;
-  }
-  
-  th, td {
-    text-align: left;
-    padding: 8px;
-  }
-  .heading{
-    font-size: 15px;
-    margin: 5px;
-  }
-  
-  #accounting{
-    text-align: center;
-    margin: 5px 0px 10px 0x;
-  }
-  tr:nth-child(even) {background-color: #f2f2f2;}
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
+    .heading {
+      font-size: 15px;
+      margin: 5px;
+    }
+
+    #accounting {
+      text-align: center;
+      margin: 5px 0px 10px 0x;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .bold {
+      font-weight: 800;
+    }
   </style>
 
-<body>
-  <div class="test">
-    <h2 id="accounting">Sessions Report</h2>
-      <% for (var i = 0; i < statistics.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
-        <p>name: <%= statistics[i].name %></p>
-        <p>Total Number: <%= statistics[i].totalNumber %></p>
-        <p>Total Price: <%= statistics[i].totalPrice %></p>
-        <hr></hr>
-      <% } %>   
-  </div>
-</body>
+  <body>
+    <div class="test">
+      <h2 id="accounting">Sessions Report</h2>
+      <% for (let i = 0; i < statistics.length; i++) { %>
+      <p><b>Name:</b> <%= statistics[i].name %></p>
+      <p><b>Total Number:</b> <%= statistics[i].totalNumber %></p>
+      <p><b>Total Price:</b> <%= statistics[i].totalPrice %></p>
+      <div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Doctor</th>
+            <th>Date</th>
+          </tr>
 
+          <% for (let j = 0; j < statistics[i].sessions.length; j++) { %>
+          <tr>
+            <td><%= statistics[i].sessions[j].name %></td>
+            <td><%= statistics[i].sessions[j].amount %></td>
+            <td><%= statistics[i].sessions[j]?.doctor?.name %></td>
+            <td>
+              <%= new
+              Intl.DateTimeFormat('en-GB').format(statistics[i].sessions[j]?.date)
+              %>
+            </td>
+            <% } %>
+          </tr>
+        </table>
+        <hr />
+      </div>
+      <% } %>
+    </div>
+  </body>
 </html>
