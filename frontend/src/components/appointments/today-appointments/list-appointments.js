@@ -233,7 +233,6 @@ function ListAppointments({
     [setCurrentPage]
   );
 
-  console.log({ pages, currentPage });
 
   return (
     <Div padding={20} wd>
@@ -288,7 +287,7 @@ function ListAppointments({
           <CRTable.CRCell>
             {({ date }, indx) => (
               <CRTable.CRCellStyled>
-                {(currentPage.activePage - 1) * pageSize + indx + 1}
+                {((currentPage?.activePage || 1) - 1) * pageSize + indx + 1}
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>

@@ -153,11 +153,10 @@ const Course = ({ patientId }) => {
     [open, setFormValue, setType, t]
   );
   const handleDeleteCourse = useCallback(
-    data => {
-      const course = R.pick(['id'])(data);
+    ({ id }) => {
       setType('deleteCourse');
       setHeader(t('cancelTheCourse'));
-      setFormValue(course);
+      setFormValue({ id, refund: 0 });
       open();
     },
     [open, setFormValue, setType, t]

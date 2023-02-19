@@ -8,7 +8,6 @@ import {
   LIST_ALL_REVENUES,
   LIST_ACCOUNTING_DATA,
 } from 'apollo-client/queries';
-import { filterAccountingList } from 'utils/accounting';
 
 import { ACTIONS } from 'utils/constants';
 

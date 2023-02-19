@@ -17,7 +17,7 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
       .then(R.propOr({}, '0'));
     patientId = patient.id;
   }
-  console.log(patientId, 'PPa');
+
   if (type === 'Surgery') {
     return prisma.appointment.findMany({
       where: {

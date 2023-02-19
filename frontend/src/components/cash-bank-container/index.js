@@ -76,7 +76,6 @@ const AccountingContainer = () => {
       transactionType: formValue.transactionType,
       bankId: formValue?.bankId,
     });
-  console.log(formValue, 'FF');
   const pages = Math.ceil(accountingCount / 20);
   const totals = {
     total: accountingTotal,

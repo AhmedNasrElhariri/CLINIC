@@ -276,7 +276,6 @@ function AppointmentData({
       });
     }
   };
-  console.log(appointment,'opo')
   return (
     <>
       <div>

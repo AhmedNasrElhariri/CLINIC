@@ -1652,7 +1652,7 @@ type AccountingDataModel {
   name: String!
   amount: Float!
   date: Date!
-  flag: String
+  type: String
 }
 type BankRevenue {
   id: ID!

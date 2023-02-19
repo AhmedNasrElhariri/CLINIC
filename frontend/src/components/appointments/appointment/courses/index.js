@@ -146,6 +146,7 @@ function NewCourse({
     [setSelectedSessions, selectedSessions]
   );
 
+
   useEffect(() => {
     onChange(formValue);
   }, [formValue, onChange]);

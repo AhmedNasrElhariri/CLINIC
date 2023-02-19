@@ -558,7 +558,7 @@ export const LIST_ACCOUNTING_DATA = gql`
         name
         amount
         date
-        flag
+        type
       }
       total
       count
