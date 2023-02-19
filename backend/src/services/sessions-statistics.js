@@ -1,6 +1,5 @@
 import { prisma } from '@';
 
-
 function groupArrayOfObjects(list, key) {
   return list.reduce(function (rv, x) {
     (rv[x[key]] = rv[x[key]] || []).push(x);
@@ -61,6 +60,11 @@ export const sessionsStatistics = async (sessionIds, startDay, endDay) => {
       totalPrice: totalPrice,
     };
   });
+  const sessionsNames = sessions.map(({ name }) => `"${name}"`);
+  const sessionsRevenues = await prisma.revenue.findMany({
+    where: { name: { in: { sessionsNames } } },
+  });
+  console.log(sessionsRevenues,'jjj');
   const statistics = totalsessions.map(ts => {
     const session = sessions.find(s => s.id == ts.sessionId);
     // const revenues = await prisma.revenue.findMany({
