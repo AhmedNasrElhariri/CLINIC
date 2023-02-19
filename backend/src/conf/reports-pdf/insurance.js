@@ -87,7 +87,7 @@ const init = app => {
   });
 
   ///excel insurance
-  app.get('/insuranceExcel', async (req, res) => {
+  app.get('/insurance/excel', async (req, res) => {
     const {
       branchId,
       specialtyId,
@@ -135,10 +135,6 @@ const init = app => {
         },
         include: {
           company: true,
-          // user: true,
-          // branch: true,
-          // specialty: true,
-          // doctor: true,
         },
         orderBy: {
           createdAt: 'desc',
@@ -149,7 +145,7 @@ const init = app => {
         ...t,
         companyName: t.company.name,
       }));
-      const workbook = generateExcel(keys, transactions);
+      const workbook = generateExcel(keys, ['insurance'], transactions);
       var fileName = 'insurance.xlsx';
       res.setHeader(
         'Content-Type',

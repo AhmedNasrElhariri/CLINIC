@@ -22,6 +22,7 @@ const init = app => {
       organizationId,
     } = req.query;
     try {
+      console.log(accountingOption, transactionType, 'kll,');
       let updatedDateFrom = new Date();
       let updatedDateTo = new Date();
       let trans = [];

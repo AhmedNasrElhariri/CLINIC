@@ -6,7 +6,7 @@ import {
   H6,
   BranchSpecialtyUserFilter,
   CRButton,
-  MenuPopover
+  MenuPopover,
 } from 'components';
 import Toolbar from '../accounting/toolbar';
 import ListData from './list-data';
@@ -60,7 +60,6 @@ const initialFormValue = {
   bankId: null,
 };
 
-
 const InsuranceDebitContainer = () => {
   const { t } = useTranslation();
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
@@ -93,7 +92,7 @@ const InsuranceDebitContainer = () => {
     revertInsurance,
     refuseInsurance,
     addNewInsurance,
-    editInsurance
+    editInsurance,
   } = useInsuranceAccounting({
     view,
     period,
@@ -163,7 +162,7 @@ const InsuranceDebitContainer = () => {
         },
       });
     }
-  }, [addNewInsurance,editInsurance, type, formValue]);
+  }, [addNewInsurance, editInsurance, type, formValue]);
 
   const handleInsurranceReport = () => {
     axios({
@@ -194,7 +193,7 @@ const InsuranceDebitContainer = () => {
   };
   const handleInsurranceExcel = async day => {
     axios({
-      url: '/insuranceExcel',
+      url: '/insurance/excel',
       responseType: 'blob', // important
       params: {
         branchId: branchSpecialtyUser?.branch,

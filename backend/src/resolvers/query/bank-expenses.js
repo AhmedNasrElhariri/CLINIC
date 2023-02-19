@@ -96,7 +96,7 @@ const bankExpenses = async (
       doctor: true,
     },
     orderBy: {
-      date: 'asc',
+      date: 'desc',
     },
   });
 

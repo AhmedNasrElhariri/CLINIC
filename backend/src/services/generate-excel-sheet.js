@@ -1,6 +1,6 @@
 import ExcelJS from 'exceljs';
 
-export const generateExcel = (column,sheetNames, rows, rows2) => {
+export const generateExcel = (column, sheetNames, rows, rows2) => {
   const updatedColumns = column.map(c => {
     return { header: c, key: c, width: 10 };
   });

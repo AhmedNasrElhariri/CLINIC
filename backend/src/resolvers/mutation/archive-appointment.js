@@ -49,7 +49,6 @@ const archiveAppointment = async (
     userId: userID,
     coupons,
     couponsValue,
-    doctorFees,
   },
   { userId, organizationId }
 ) => {
@@ -355,7 +354,7 @@ const archiveAppointment = async (
             {
               date: new Date(date),
               name: others.name,
-              amount: others.amount - discount.amount,
+              amount: others.amount,
               level,
               organization: {
                 connect: {
@@ -485,25 +484,7 @@ const archiveAppointment = async (
       bankId,
       cardExpiryDate,
     } = company;
-    // const finalInsurrancePayment =
-    // const totalSessionAmount = sessions.reduce(
-    //   (sum, { price, number }) => sum + price * number,
-    //   0
-    // );
-    // const totalAmount =
-    //   totalSessionAmount +
-    //   others.amount +
-    //   payOfRemaining -
-    //   discount.amount -
-    //   couponsValue;
-    // let subtotal = 0;
-    // let amount = 0;
-    // subtotal = totalAmount - option.amount;
-    // amount = option.amount;
-    // if (option.option === 'percentage') {
-    //   subtotal = totalAmount - option.amount * totalAmount * 0.01;
-    //   amount = totalAmount - subtotal;
-    // }
+
     if (moment(cardExpiryDate) < moment(new Date())) {
       throw new APIExceptcion('this card expired');
     }
@@ -582,54 +563,6 @@ const archiveAppointment = async (
     id,
     referedStatus
   );
-  // ###############################
-
-  // if (doctorFees.fees > 0) {
-  //   const { fees, doctorId, doctorName } = doctorFees;
-  //   const name = 'Doctor-fees / ' + doctorName;
-  //   await prisma.expense.create({
-  //     data: Object.assign(
-  //       {
-  //         date: new Date(date),
-  //         name: name,
-  //         expenseType: 'Doctor',
-  //         amount: fees,
-  //         level,
-  //         organization: {
-  //           connect: {
-  //             id: organizationId,
-  //           },
-  //         },
-  //         user: {
-  //           connect: {
-  //             id: userId,
-  //           },
-  //         },
-  //       },
-  //       specialtyId && {
-  //         specialty: {
-  //           connect: {
-  //             id: specialtyId,
-  //           },
-  //         },
-  //       },
-  //       branchId && {
-  //         branch: {
-  //           connect: {
-  //             id: branchId,
-  //           },
-  //         },
-  //       },
-  //       userID && {
-  //         doctor: {
-  //           connect: {
-  //             id: doctorId,
-  //           },
-  //         },
-  //       }
-  //     ),
-  //   });
-  // }
 
   if (couponsValue > 0) {
     await updateCoupons(coupons, organizationId);
