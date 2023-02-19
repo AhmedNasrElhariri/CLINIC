@@ -76,7 +76,7 @@ const AccountingContainer = () => {
       transactionType: formValue.transactionType,
       bankId: formValue?.bankId,
     });
-  console.log(formValue,'FF')
+  console.log(formValue, 'FF');
   const pages = Math.ceil(accountingCount / 20);
   const totals = {
     total: accountingTotal,
@@ -96,8 +96,8 @@ const AccountingContainer = () => {
       bankId: formValue?.bankId,
       organizationId: user.organizationId,
     };
-    getPdfReport('/allAccounting', params, 'all accounting.pdf');
-  }, [getPdfReport,branchSpecialtyUser,formValue]);
+    getPdfReport('/all-Accounting/pdf', params, 'all accounting.pdf');
+  }, [branchSpecialtyUser, formValue, page, period, user.organizationId, view]);
 
   const handleAccountingExcel = async day => {
     axios({

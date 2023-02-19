@@ -40,12 +40,12 @@
           <th>Name</th><th>Amount</th><th>Date</th><th>Type</th>
         </tr>
     
-        <% for (var i = 0; i < trans.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+        <% for (var i = 0; i < transactions.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
         <tr>
-          <td><%= trans[i].name %></td>
-          <td><%= trans[i].amount %></td>
-          <td><%= trans[i].date %></td>
-          <td><%= trans[i].flag %></td>
+          <td><%= transactions[i].name %></td>
+          <td><%= transactions[i].amount %></td>
+          <td><%= transactions[i].date %></td>
+          <td><%= transactions[i].flag %></td>
         </tr>    
         <% } %>
     </table>

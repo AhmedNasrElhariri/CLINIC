@@ -31,6 +31,7 @@ const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
         inline
         onChange={onChange}
         checked={checkedKeys?.some(item => item === rowData[dataKey])}
+        style={{ marginLeft: 0 }}
       />
     </div>
   </Cell>
@@ -198,6 +199,7 @@ function ListAppointments({
   transferAppsAction,
   children,
   handlePrint,
+  pageSize = 20,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -230,6 +232,8 @@ function ListAppointments({
     },
     [setCurrentPage]
   );
+
+  console.log({ pages, currentPage });
 
   return (
     <Div padding={20} wd>
@@ -268,7 +272,7 @@ function ListAppointments({
                 checked={checked}
                 indeterminate={indeterminate}
                 onChange={handleCheckAll}
-                style={{ marginLe: 0 }}
+                style={{ marginLeft: 0 }}
               />
             </div>
           </CRTable.CRHeaderCell>
@@ -283,7 +287,9 @@ function ListAppointments({
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ date }, indx) => (
-              <CRTable.CRCellStyled>{indx + 1}</CRTable.CRCellStyled>
+              <CRTable.CRCellStyled>
+                {(currentPage.activePage - 1) * pageSize + indx + 1}
+              </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
