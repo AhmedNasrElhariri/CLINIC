@@ -12,7 +12,7 @@ const mapTypes = (transactions = [], type) =>
   transactions.map(transaction => ({ ...transaction, type }));
 
 const init = app => {
-  app.post('/allAccounting', async (req, res) => {
+  app.post('/reports/transactions', async (req, res) => {
     const {
       view,
       period,
@@ -20,7 +20,7 @@ const init = app => {
       specialtyId,
       doctorId,
       name,
-      accountingOption,
+      accountingOption = 'cash',
       transactionType,
       bankId,
       organizationId,
@@ -47,14 +47,20 @@ const init = app => {
         : ['cash', 'visa'];
 
       const accountingOptionsVsModel = {
-        cash: { revene: prisma.revenue, expense: prisma.expense },
-        visa: { revene: prisma.bankRevenue, expense: prisma.bankExpense },
+        cash: {
+          revenue: prisma.revenue.findMany,
+          expense: prisma.expense.findMany,
+        },
+        visa: {
+          revenue: prisma.bankRevenue.findMany,
+          expense: prisma.bankExpense.findMany,
+        },
       };
 
       if (accountingOptions.includes('cash')) {
         const revenues = await accountingOptionsVsModel['cash'][
           transactionType
-        ].findMany({
+        ]({
           where: {
             organizationId,
             AND: [
@@ -84,7 +90,7 @@ const init = app => {
       if (accountingOptions.includes('visa')) {
         const bankRevenues = await accountingOptionsVsModel['visa'][
           transactionType
-        ].findMany({
+        ]({
           where: {
             organizationId,
             AND: [
@@ -127,6 +133,7 @@ const init = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=cash.pdf');
       res.end(pdfDoc);
     } catch (e) {
+      console.log(e);
       res.status(400).send(e);
     }
   });

@@ -96,7 +96,7 @@ const AccountingContainer = () => {
       bankId: formValue?.bankId,
       organizationId: user.organizationId,
     };
-    getPdfReport('/allAccounting', params, 'all accounting.pdf');
+    getPdfReport('/reports/transactions', params, 'all accounting.pdf');
   }, [getPdfReport]);
 
   const handleAccountingExcel = async day => {
