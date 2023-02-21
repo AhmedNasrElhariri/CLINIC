@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Form } from 'rsuite';
 import {
   CRModal,
@@ -7,10 +7,14 @@ import {
   CRSelectInput,
   CRDatePicker,
   CRBrancheTree,
-  CRRadio,
+  Div,
 } from 'components';
+import ListInvoiceItems from 'components/appointments/list-invoice-items';
 import { filterPatientBy } from 'utils/patient';
-import { feesCalTypes, paymentMthod, ACTIONS } from 'utils/constants';
+import { paymentMthod, ACTIONS } from 'utils/constants';
+import { useCompanySessionDefinition } from 'hooks';
+import SessionParts from './session-parts';
+import * as R from 'ramda';
 const searchBy = (text, _, patient) => {
   return filterPatientBy(text, patient);
 };
@@ -26,11 +30,34 @@ const NewInsurance = ({
   banksDefinition,
   searchedPatients,
   t,
+  selectedSessions,
+  setSelectedSessions,
 }) => {
-  const header = useMemo(() =>
-    type === 'addNewInsurance' ? t('addNewInsurance') : t('editInsurance')
+  const header = useMemo(
+    () =>
+      type === 'addNewInsurance' ? t('addNewInsurance') : t('editInsurance'),
+    [t, type]
   );
-
+  const { companysSessionDefinition } = useCompanySessionDefinition({});
+  const companyId = formValue?.companyId;
+  const companySessions = useMemo(
+    () => companysSessionDefinition.filter(s => s.company.id === companyId),
+    [companyId, companysSessionDefinition]
+  );
+  const updatedCompanySessions = companySessions.map(
+    ({ name, price, id, company }) => {
+      return {
+        name: name,
+        id: { price: price, id: id, companyId: company?.id, name: name },
+      };
+    }
+  );
+  const handleDelete = useCallback(
+    idx => {
+      setSelectedSessions(R.remove(idx, 1));
+    },
+    [setSelectedSessions]
+  );
   return (
     <CRModal
       show={visible}
@@ -40,30 +67,9 @@ const NewInsurance = ({
       onCancel={onClose}
     >
       <Form formValue={formValue} onChange={onChange} fluid>
-        <CRTextInput label={t('name')} name="name" block></CRTextInput>
-        <CRNumberInput
-          label={t('totalAmount')}
-          name="totalAmount"
-          block
-        ></CRNumberInput>
-        {type === 'addNewInsurance' && (
+        {type === 'addNewInsurance' ? (
           <>
             {' '}
-            <CRRadio
-              options={feesCalTypes}
-              name="feesCalculationType"
-              label="Fixed/Percentage"
-            />
-            <CRNumberInput
-              label={t('patientFees')}
-              name="patientFees"
-              block
-            ></CRNumberInput>
-            {/* <CRNumberInput
-              label={t('doctorFees')}
-              name="doctorFees"
-              block
-            ></CRNumberInput> */}
             <CRDatePicker label={t('date')} name="date" block></CRDatePicker>
             <CRSelectInput
               name="companyId"
@@ -73,6 +79,18 @@ const NewInsurance = ({
               block
               data={companysDefinition}
             />
+            <SessionParts
+              t={t}
+              sessions={updatedCompanySessions}
+              selectedSessions={selectedSessions}
+              setSelectedSessions={setSelectedSessions}
+            />
+            <Div my={3}>
+              <ListInvoiceItems
+                items={selectedSessions}
+                onDelete={handleDelete}
+              />
+            </Div>
             <CRSelectInput
               name="doctorId"
               label={t('doctor')}
@@ -119,6 +137,18 @@ const NewInsurance = ({
               formValue={formValue}
               onChange={onChange}
               action={ACTIONS.View_DoctorFees}
+            />
+          </>
+        ) : (
+          <>
+            <CRTextInput name="name" label={t('name')} />
+            <CRNumberInput name="totalAmount" label={t('totalAmount')} />
+            <CRSelectInput
+              label={t('session')}
+              placeholder={t('select')}
+              name="session"
+              data={updatedCompanySessions}
+              block
             />
           </>
         )}

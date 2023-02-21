@@ -19,7 +19,7 @@ function ListInvoiceItems({
       setItems(newItems);
       handleChangeSessions(newItems);
     },
-    [items,handleChangeSessions,setItems]
+    [items, handleChangeSessions, setItems]
   );
   const handleChangePatientFees = useCallback(
     (value, indx) => {
@@ -29,7 +29,7 @@ function ListInvoiceItems({
       setItems(newItems);
       handleChangeSessions(newItems);
     },
-    [items,setItems,handleChangeSessions]
+    [items, setItems, handleChangeSessions]
   );
   const handleChangeType = useCallback(
     (value, indx) => {
@@ -39,7 +39,7 @@ function ListInvoiceItems({
       setItems(newItems);
       handleChangeSessions(newItems);
     },
-    [items]
+    [items, handleChangeSessions, setItems]
   );
   return (
     <Div>

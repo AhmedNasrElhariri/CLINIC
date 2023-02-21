@@ -106,11 +106,11 @@ const Test = props => {
       dateFrom: formValue.sessionDate[0],
       dateTo: formValue.sessionDate[1],
     };
-    getPdfReport('/sessionPdfReport', params, 'session-report.pdf');
-  }, [getPdfReport, formValue]);
+    getPdfReport('/sessions-pdf-report', params, 'session-report.pdf');
+  }, [formValue]);
   const handleSessionExcelReport = useCallback(() => {
     axios({
-      url: '/sessionExcelReport',
+      url: '/sessions-excel-report',
       responseType: 'blob', // important
       params: {
         sessionIds: formValue?.sessionsIds,

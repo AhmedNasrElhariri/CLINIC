@@ -19,6 +19,8 @@ const bankExpenses = async (
     specialtyId,
     branchId,
     bankId,
+    expenseName,
+    expenseType,
   },
   { user, organizationId }
 ) => {
@@ -85,6 +87,14 @@ const bankExpenses = async (
         gte: updatedDateFrom,
         lte: updatedDateTo,
       },
+      expenseType: {
+        contains: expenseType,
+        mode: 'insensitive',
+      },
+      name: {
+        contains: expenseName,
+        mode: 'insensitive',
+      },
     },
     skip: offset,
     take: limit,
@@ -149,6 +159,14 @@ const bankExpenses = async (
       date: {
         gte: updatedDateFrom,
         lte: updatedDateTo,
+      },
+      expenseType: {
+        contains: expenseType,
+        mode: 'insensitive',
+      },
+      name: {
+        contains: expenseName,
+        mode: 'insensitive',
       },
     },
   });

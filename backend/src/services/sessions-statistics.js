@@ -1,30 +1,6 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 
-function groupArrayOfObjects(list, key) {
-  return list.reduce(function (rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-}
-
-const nuniquePatients = arr => {
-  const uniqueIds = [];
-
-  const unique = arr.filter(({ patient }) => {
-    const isDuplicate = uniqueIds.includes(patient.id);
-
-    if (!isDuplicate) {
-      uniqueIds.push(patient.id);
-
-      return true;
-    }
-
-    return false;
-  });
-  return unique;
-};
-
 const sumByProp = (arr, key) =>
   arr.reduce((acc, record) => acc + record[key], 0);
 

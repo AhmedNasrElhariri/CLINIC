@@ -43,7 +43,10 @@
       <div>
         <table>
           <tr>
-            <th>Name</th>
+            <th>Seq</th>
+            <th>Transaction name</th>
+            <th>Patient name</th>
+            <th>Patient phone no</th>
             <th>Amount</th>
             <th>Doctor</th>
             <th>Date</th>
@@ -51,7 +54,10 @@
 
           <% for (let j = 0; j < statistics[i].sessions.length; j++) { %>
           <tr>
+            <td><%= j+1 %></td>
             <td><%= statistics[i].sessions[j].name %></td>
+            <td><%= statistics[i].sessions[j]?.patient?.name %></td>
+            <td><%= statistics[i].sessions[j]?.patient?.phoneNo %></td>
             <td><%= statistics[i].sessions[j].amount %></td>
             <td><%= statistics[i].sessions[j]?.doctor?.name %></td>
             <td>

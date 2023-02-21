@@ -221,6 +221,7 @@ function TodayAppointments() {
             patientFees: session?.patientFees || 0,
             feesCalType: session?.type,
             cost: session?.cost,
+            companyId: session?.companyId,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,

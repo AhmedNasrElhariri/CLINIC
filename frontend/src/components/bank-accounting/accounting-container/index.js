@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
 import {
@@ -22,22 +22,17 @@ import {
   useAppointments,
   useModal,
   useForm,
-  useConfigurations,
   useBankDefinition,
   useExpenseTypeDefinition,
 } from 'hooks';
 import Filter from './filter';
-import BranchFilter from '../../filters';
 import { ACCOUNTING_VIEWS, ACTIONS, ACCOUNT_OPTIONS } from 'utils/constants';
 import { Can } from 'components/user/can';
-import PdfView from './pdf';
 import { formatDate } from 'utils/date';
 import axios from 'axios';
 import useGlobalState from 'state';
-import { ExcelIcon } from 'components/icons/index';
 import { Form, Whisper } from 'rsuite';
 
-const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];
 const initalFilterVal = {
   expenseType: '',
   revenueName: '',
@@ -51,6 +46,7 @@ const initValue = {
   checkNumber: '',
   invoiceNo: '',
   expenseType: '',
+  expenseName: '',
   date: null,
   name: '',
 };
@@ -73,7 +69,7 @@ const inialExpenseCurrentPage = {
 const BankAccountingContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [action, setAction] = useState('');
-  const [user, setUser] = useGlobalState('user');
+  const [user] = useGlobalState('user');
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
   const { formValue, setFormValue, type, setType, show, setShow } = useForm({
@@ -92,7 +88,6 @@ const BankAccountingContainer = () => {
   const [expenseBranchSpecialtyUser, setExpenseBranchSpecialtyUser] = useState(
     initialExpenseBranchValue
   );
-  const { pageSetupData } = useConfigurations();
   const { banksDefinition } = useBankDefinition({});
   const { expenseTypesDefinition } = useExpenseTypeDefinition({});
   const updatedexpenseType = expenseTypesDefinition.map(e => {
@@ -103,11 +98,6 @@ const BankAccountingContainer = () => {
   });
   const page = currentPage?.activePage;
   const expensePage = expenseCurrentPage?.activePage;
-  const pageSetupRow = pageSetupData.find(element => element.type === 'visa');
-  const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
-  const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
-  const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
-  const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
   const { filterBranches } = useAppointments({
     action: ACTIONS.ViewBank_Accounting,
   });
@@ -137,6 +127,8 @@ const BankAccountingContainer = () => {
     bankId: filter?.bank,
     revenueName: filter?.revenueName,
     accountingOption: filter?.accountingOption,
+    expenseName: formValue?.expenseName,
+    expenseType: formValue?.expenseType,
     refetchRe: refetchRe,
     setRefetchRe: setRefetchRe,
     refetchEx: refetchEx,
@@ -308,33 +300,7 @@ const BankAccountingContainer = () => {
       })
       .catch(err => {});
   };
-  // const handleBankExpenseAccountingExcel = async day => {
-  //   axios({
-  //     url: '/accountingBankExpenseExcel',
-  //     responseType: 'blob', // important
-  //     params: {
-  //       expenseBranchId: expenseBranchSpecialtyUser?.branch,
-  //       expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
-  //       expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
-  //       expenseType: formValue?.expenseType,
-  //       expenseName: formValue?.expenseName,
-  //       bankId: filter?.bank,
-  //       view,
-  //       dateFrom: period[0],
-  //       dateTo: period[1],
-  //       organizationId: user.organizationId,
-  //     },
-  //   })
-  //     .then(function (response) {
-  //       const url = window.URL.createObjectURL(new Blob([response.data]));
-  //       const link = document.createElement('a');
-  //       link.href = url;
-  //       link.setAttribute('download', `bank-expenses-${Date.now()}.xlsx`); //or any other extension
-  //       document.body.appendChild(link);
-  //       link.click();
-  //     })
-  //     .catch(err => {});
-  // };
+
   function handleSelectMenu(eventKey, event) {
     eventKey === 1 ? handleBankAccountingReport() : handleBankAccountingExcel();
   }
@@ -408,15 +374,6 @@ const BankAccountingContainer = () => {
             setFormValue={setFilter}
             banksDefinition={banksDefinition}
           />
-          {/* <ExcelIcon
-            variant="primary"
-            onClick={handleBankRevenueAccountingExcel}
-            ml={1}
-            mr={1}
-            width="30px"
-            height="30px"
-            marginTop="40px"
-          /> */}
         </Div>
         <Div>
           <Div display="flex">
@@ -439,15 +396,6 @@ const BankAccountingContainer = () => {
                   formValue={formValue}
                   setFormValue={setFormValue}
                 />
-                {/* <ExcelIcon
-                  variant="primary"
-                  onClick={handleBankExpenseAccountingExcel}
-                  ml={1}
-                  mr={1}
-                  width="30px"
-                  height="30px"
-                  marginTop="40px"
-                /> */}
               </Div>
               <BranchSpecialtyUserFilter
                 formValue={expenseBranchSpecialtyUser}
@@ -463,61 +411,6 @@ const BankAccountingContainer = () => {
                 pages={expensesPages}
               />
               <Profit expenses={totalExpenses} revenues={totalRevenues} />
-              {/* <BranchFilter
-                appointments={updatedRevenues}
-                type="accounting"
-                method="revenues"
-                branches={filterBranches}
-                render={(revenues, totalRevenues) => (
-                  <>
-                    <ListData
-                      title={t('bankingRevenues')}
-                      data={revenues}
-                      onEdit={handleClickEditRevenue}
-                    />
-                    <Div flexGrow={1} ml={2}>
-                      <ExpenseFilter
-                        formValue={formValue}
-                        setFormValue={setFormValue}
-                      />
-                      <BranchFilter
-                        appointments={updatedExpenses}
-                        type="accounting"
-                        method="expenses"
-                        branches={filterBranches}
-                        render={(expenses, __, totalExpenses) => (
-                          <>
-                            <ListExpenseData
-                              title="Expenses"
-                              data={expenses}
-                              onEdit={handleClickEditExpense}
-                            />
-                            <Profit
-                              expenses={totalExpenses}
-                              revenues={totalRevenues}
-                            />
-                            <Div
-                              mt={10}
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                            >
-                              <PdfView
-                                data={{ revenues, expenses }}
-                                period={timeFrame}
-                                marginTop={marginTop}
-                                marginRight={marginRight}
-                                marginBottom={marginBottom}
-                                marginLeft={marginLeft}
-                              />
-                            </Div>
-                          </>
-                        )}
-                      />
-                    </Div>
-                  </>
-                )}
-              /> */}
             </Div>
           </Div>
         </Div>

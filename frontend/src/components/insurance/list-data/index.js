@@ -104,7 +104,16 @@ const ListData = ({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>{t('session')}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ companySession }) => (
+              <CRTable.CRCellStyled bold>
+                {companySession?.name}
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('companyName')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>

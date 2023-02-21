@@ -248,6 +248,7 @@ const visa = app => {
       expenseType,
       expenseName,
       organizationId,
+      bankId,
     } = req.query;
     try {
       let updatedDateFrom = new Date();

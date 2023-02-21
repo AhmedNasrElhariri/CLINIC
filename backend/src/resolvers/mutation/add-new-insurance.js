@@ -1,172 +1,71 @@
-import { prisma } from '@';
-
+import {
+  createAppointmentInsurranceRevenue,
+  createAppointmentRevenueFromInsurranceSessions,
+  createAppointmentBankRevenueFromInsurranceSessions,
+  createAppointmentInsurranceRevenueFromSessions,
+} from '@/services/insurrance.service';
+import {
+  createAppointmentRevenue,
+  createAppointmentBankRevenue,
+} from '@/services/revenue.service';
 const addNewInsurance = async (
   _,
   { insurance },
   { organizationId, userId }
 ) => {
   const {
-    name,
-    totalAmount,
     companyId,
     patientId,
     date,
-    patientFees,
-    doctorFees,
     branchId,
     specialtyId,
-    doctorId,
-    feesCalculationType,
+    doctorId: userID,
     paymentMethod,
     bankId,
+    sessions,
   } = insurance;
 
-  const patientFeesAmount =
-    feesCalculationType === 'fixed'
-      ? patientFees
-      : (patientFees * totalAmount) / 100;
-
-  const insuranceTotalAmount = totalAmount - patientFeesAmount;
-  // await prisma.doctorFees.create({
-  //   data: Object.assign(
-  //     {
-  //       name,
-  //       date,
-  //       amount:
-  //         feesCalculationType === 'fixed'
-  //           ? doctorFees
-  //           : (totalAmount * doctorFees) / 100,
-  //       doctor: { connect: { id: doctorId } },
-  //       organization: {
-  //         connect: { id: organizationId },
-  //       },
-  //       user: {
-  //         connect: { id: userId },
-  //       },
-  //     },
-  //     specialtyId && {
-  //       specialty: {
-  //         connect: {
-  //           id: specialtyId,
-  //         },
-  //       },
-  //     },
-  //     branchId && {
-  //       branch: {
-  //         connect: {
-  //           id: branchId,
-  //         },
-  //       },
-  //     }
-  //   ),
-  // });
+  await createAppointmentInsurranceRevenue(
+    createAppointmentInsurranceRevenueFromSessions(
+      userId,
+      sessions,
+      organizationId,
+      branchId,
+      date,
+      specialtyId,
+      userID,
+      patientId,
+      companyId
+    )
+  );
   if (paymentMethod === 'cash') {
-    await prisma.revenue.create({
-      data: Object.assign(
-        {
-          name,
-          date,
-          amount: patientFeesAmount,
-          organization: {
-            connect: { id: organizationId },
-          },
-          user: {
-            connect: { id: userId },
-          },
-        },
-        specialtyId && {
-          specialty: {
-            connect: {
-              id: specialtyId,
-            },
-          },
-        },
-        branchId && {
-          branch: {
-            connect: {
-              id: branchId,
-            },
-          },
-        },
-        patientId && {
-          patient: {
-            connect: { id: patientId },
-          },
-        }
-      ),
-    });
-  } else {
-    await prisma.bankRevenue.create({
-      data: Object.assign(
-        {
-          name,
-          date,
-          amount: patientFeesAmount,
-          organization: {
-            connect: { id: organizationId },
-          },
-          user: {
-            connect: { id: userId },
-          },
-          bank: { connect: { id: bankId } },
-        },
-        specialtyId && {
-          specialty: {
-            connect: {
-              id: specialtyId,
-            },
-          },
-        },
-        branchId && {
-          branch: {
-            connect: {
-              id: branchId,
-            },
-          },
-        },
-        patientId && {
-          patient: {
-            connect: { id: patientId },
-          },
-        }
-      ),
-    });
-  }
-  return prisma.insuranceRevenue.create({
-    data: Object.assign(
-      {
-        name,
+    await createAppointmentRevenue(
+      createAppointmentRevenueFromInsurranceSessions(
+        userId,
+        sessions,
+        organizationId,
+        branchId,
         date,
-        amount: insuranceTotalAmount,
-        organization: {
-          connect: { id: organizationId },
-        },
-        user: {
-          connect: { id: userId },
-        },
-        company: { connect: { id: companyId } },
-      },
-      specialtyId && {
-        specialty: {
-          connect: {
-            id: specialtyId,
-          },
-        },
-      },
-      branchId && {
-        branch: {
-          connect: {
-            id: branchId,
-          },
-        },
-      },
-      patientId && {
-        patient: {
-          connect: { id: patientId },
-        },
-      }
-    ),
-  });
+        specialtyId,
+        userID,
+        patientId
+      )
+    );
+  } else {
+    await createAppointmentBankRevenue(
+      createAppointmentBankRevenueFromInsurranceSessions(
+        userId,
+        sessions,
+        organizationId,
+        branchId,
+        date,
+        specialtyId,
+        userID,
+        patientId,
+        bankId
+      )
+    );
+  }
 };
 
 export default addNewInsurance;

@@ -35,11 +35,12 @@
    
       <table>
         <tr>
-          <th>Doctor</th><th>Date</th><th>Name</th><th>Amount</th><th>Cost</th>
+          <th>Seq</th><th>Doctor</th><th>Date</th><th>Name</th><th>Amount</th><th>Cost</th>
         </tr>
     
         <% for (var i = 0; i < doctorFees.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
         <tr>
+          <td><%= i+1 %></td>
           <td><%= doctorFees[i].doctor.name %></td>
           <td><%= formatDateStandard(doctorFees[i].date) %></td>
           <td><%= doctorFees[i].name %></td>

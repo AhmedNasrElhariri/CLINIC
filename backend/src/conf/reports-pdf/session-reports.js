@@ -4,7 +4,7 @@ import moment from 'moment';
 import { sessionsStatistics } from '@/services/sessions-statistics';
 
 const init = app => {
-  app.post('/sessionPdfReport', async (req, res) => {
+  app.post('/sessions-pdf-report', async (req, res) => {
     const { sessionIds, dateFrom, dateTo } = req.query;
     try {
       const startDay = moment(dateFrom).startOf('day').toDate();
@@ -25,7 +25,7 @@ const init = app => {
     }
   });
 
-  app.get('/sessionExcelReport', async (req, res) => {
+  app.get('/sessions-excel-report', async (req, res) => {
     const { sessionIds, dateFrom, dateTo } = req.query;
     try {
       const startDay = moment(dateFrom).startOf('day').toDate();

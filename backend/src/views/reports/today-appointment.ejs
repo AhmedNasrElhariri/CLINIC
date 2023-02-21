@@ -35,6 +35,7 @@
    
       <table>
         <tr>
+          <th>Seq</th>
           <th>Start Date</th>
           <th>End Time</th>
           <th>Creator</th>
@@ -45,6 +46,7 @@
     
         <% for (let i = 0; i < appointments.length; i++) { %>
         <tr>
+          <td><%= i+1 %></td>
           <td><%= appointments[i].startDate %></td>
           <td><%= appointments[i].endDate %></td>
           <td><%= appointments[i].user.name %></td>

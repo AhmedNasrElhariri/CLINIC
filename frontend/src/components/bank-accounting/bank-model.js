@@ -29,7 +29,7 @@ function BankModel({
         : type === 'createBankExpense'
         ? t('addNewBankTransaction')
         : t('editBankTransaction'),
-    [type]
+    [type, t]
   );
 
   return (
@@ -55,17 +55,7 @@ function BankModel({
           placeholder={t('select')}
           block
         />
-        {header === 'Add New Bank Expense Transition' && (
-          <>
-            <CRSelectInput
-              label={t('expenseType')}
-              name="expenseType"
-              block
-              data={updatedexpenseType}
-            />
-          </>
-        )}
-        {type === 'editBankExpense' && (
+        {(type === 'editBankExpense' || type === 'createBankExpense') && (
           <CRSelectInput
             label={t('expenseType')}
             name="expenseType"

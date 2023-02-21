@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 import useGlobalState from 'state';
 import axios from 'axios';
 import NewInsurance from './new-insurance';
-import { Whisper, Button, Popover, Dropdown } from 'rsuite';
+import { Whisper } from 'rsuite';
 
 const initialval = {
   company: null,
@@ -43,18 +43,13 @@ const initialBranchValue = {
   doctor: null,
 };
 const initialFormValue = {
-  name: '',
-  totalAmount: 0,
   companyId: null,
   patientId: null,
   date: null,
-  patientFees: 0,
-  doctorFees: 0,
   branchId: null,
   specialtyId: null,
   userId: null,
   doctorId: null,
-  feesCalculationType: 'percentage',
   patientSearchValue: '',
   paymentMethod: 'cash',
   bankId: null,
@@ -65,6 +60,7 @@ const InsuranceDebitContainer = () => {
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const { visible, open, close } = useModal();
   const [formValue, setFormValue] = useState(initialFormValue);
+  const [selectedSessions, setSelectedSessions] = useState([]);
   const [period, setPeriod] = useState([]);
   const [type, setType] = useState('');
   const [filter, setFilter] = useState(initialval);
@@ -114,10 +110,14 @@ const InsuranceDebitContainer = () => {
     setFormValue(initialFormValue);
   }, [open, setType, setFormValue]);
   const handleEditInsurance = useCallback(
-    data => {
-      const insurance = R.pick(['id', 'name', 'amount'])(data);
+    ({ id, name, amount, company }) => {
       setType('edit');
-      setFormValue({ ...insurance, totalAmount: insurance.amount });
+      setFormValue({
+        id: id,
+        name: name,
+        totalAmount: amount,
+        companyId: company?.id,
+      });
       open();
     },
     [open, setFormValue, setType]
@@ -137,7 +137,7 @@ const InsuranceDebitContainer = () => {
       },
     });
     setCheckedKeys([]);
-  }, [checkedKeys, gatherInsurance, setCheckedKeys]);
+  }, [checkedKeys, setCheckedKeys, refuseInsurance]);
 
   const handleRevertInsurance = useCallback(() => {
     revertInsurance({
@@ -150,7 +150,20 @@ const InsuranceDebitContainer = () => {
   const handleAdd = useCallback(() => {
     const { patientSearchValue, ...rest } = formValue;
     if (type === 'addNewInsurance') {
-      addNewInsurance({ variables: { insurance: rest } });
+      const finalForm = {
+        ...rest,
+        name: '',
+        sessions: selectedSessions.map(session => ({
+          name: session?.name,
+          price: session.price,
+          number: session.number,
+          id: session?.id,
+          patientFees: session?.patientFees || 0,
+          feesCalType: session?.type,
+          companyId: session?.companyId,
+        })),
+      };
+      addNewInsurance({ variables: { insurance: finalForm } });
     } else {
       editInsurance({
         variables: {
@@ -158,11 +171,12 @@ const InsuranceDebitContainer = () => {
             id: formValue.id,
             name: formValue.name,
             amount: formValue.totalAmount,
+            sessionId: formValue?.session?.id,
           },
         },
       });
     }
-  }, [addNewInsurance, editInsurance, type, formValue]);
+  }, [addNewInsurance, editInsurance, type, formValue, selectedSessions]);
 
   const handleInsurranceReport = () => {
     axios({
@@ -319,6 +333,8 @@ const InsuranceDebitContainer = () => {
           banksDefinition={banksDefinition}
           searchedPatients={searchedPatients}
           t={t}
+          selectedSessions={selectedSessions}
+          setSelectedSessions={setSelectedSessions}
         />
       </CRCard>
     </>

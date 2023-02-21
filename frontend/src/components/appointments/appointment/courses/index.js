@@ -146,7 +146,6 @@ function NewCourse({
     [setSelectedSessions, selectedSessions]
   );
 
-
   useEffect(() => {
     onChange(formValue);
   }, [formValue, onChange]);
@@ -213,6 +212,14 @@ function NewCourse({
     selectedSessions,
     session,
   ]);
+  const totalCoursePrice = useMemo(
+    () =>
+      selectedSessions.reduce(
+        (acc, { number, price }) => acc + number * price,
+        0
+      ),
+    [selectedSessions]
+  );
   const handleDelete = useCallback(
     idx => {
       setSelectedSessions(R.remove(idx, 1));
@@ -248,6 +255,7 @@ function NewCourse({
                     <CRButton mt="10px" onClick={() => add()}>
                       {t('add')}
                     </CRButton>
+                    <Div p="10px" border="1px solid black">Total: {totalCoursePrice}</Div>
                   </Div>
                   <Div display="flex" justifyContent="space-around">
                     <CRSelectInput

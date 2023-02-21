@@ -24,7 +24,7 @@ const initValue = {
 
 export default function Sessions({
   t,
-  company,
+  companyId,
   sessions,
   selectedSessions,
   setSelectedSessions,
@@ -78,7 +78,7 @@ export default function Sessions({
       <Form>
         <CRButton onClick={() => add()}>{t('add')}</CRButton>
         <div className="flex gap-3">
-          {company?.companyId == null ? (
+          {companyId == null ? (
             <CRSelectInput
               onChange={val => (val == null ? setSession({}) : setSession(val))}
               value={session}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from 'rsuite';
@@ -10,7 +10,6 @@ import {
   LIST_BANK_EXPENSES,
   EDIT_BANK_EXPENSE,
 } from 'apollo-client/queries';
-import { filterAccountingList } from 'utils/accounting';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import {
   getDayStartAndEnd,
@@ -41,6 +40,8 @@ const useAccounting = ({
   setRefetchRe,
   refetchEx,
   setRefetchEx,
+  expenseName,
+  expenseType,
 } = {}) => {
   const { data: revenueData, refetch } = useQuery(LIST_BANK_REVENUES, {
     variables: Object.assign(
@@ -58,7 +59,7 @@ const useAccounting = ({
       revenueName && { revenueName: revenueName }
     ),
   });
-  
+
   const { data: expenseData, refetch: refetchExpenses } = useQuery(
     LIST_BANK_EXPENSES,
     {
@@ -73,7 +74,9 @@ const useAccounting = ({
         expenseBranchId && { branchId: expenseBranchId },
         expenseSpecialtyId && { specialtyId: expenseSpecialtyId },
         expenseDoctorId && { doctorId: expenseDoctorId },
-        bankId && { bankId: bankId }
+        bankId && { bankId: bankId },
+        expenseName && { expenseName: expenseName },
+        expenseType && { expenseType: expenseType }
       ),
     }
   );
@@ -83,14 +86,14 @@ const useAccounting = ({
     return accountingOption === 'Expense'
       ? []
       : R.propOr([], 'bankRevenues')(revenuesData);
-  }, [revenueData, accountingOption]);
+  }, [accountingOption, revenuesData]);
 
   const expensesData = expenseData?.bankExpenses;
   const expenses = useMemo(() => {
     return accountingOption === 'Revenue'
       ? []
       : R.propOr([], 'bankExpenses')(expensesData);
-  }, [expenseData, accountingOption]);
+  }, [expensesData, accountingOption]);
 
   const getTimeFrameByView = view => {
     const viewVsFn = {
@@ -114,12 +117,12 @@ const useAccounting = ({
     return accountingOption === 'Expense'
       ? 0
       : R.propOr(0, 'totalRevenues')(revenuesData);
-  }, [revenueData, accountingOption]);
+  }, [revenuesData, accountingOption]);
   const RevenuesCount = useMemo(() => {
     return accountingOption === 'Expense'
       ? 0
       : R.propOr(0, 'revenuesCount')(revenuesData);
-  }, [revenueData, accountingOption]);
+  }, [revenuesData, accountingOption]);
 
   const totalExpenses = useMemo(() => {
     return accountingOption === 'Revenue'
@@ -170,11 +173,11 @@ const useAccounting = ({
   useEffect(() => {
     refetch();
     setRefetchRe(false);
-  }, [refetchRe]);
+  }, [refetch, setRefetchRe]);
   useEffect(() => {
     refetchExpenses();
     setRefetchEx(false);
-  }, [refetchEx]);
+  }, [setRefetchEx, refetchExpenses]);
 
   return useMemo(
     () => ({
