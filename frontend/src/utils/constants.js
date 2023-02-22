@@ -284,7 +284,7 @@ export const loggingModels = [
   },
   {
     key: 'BankExpense/Acc',
-    value: { model: 'BankExpense', tagName: 'revenue from appointment' },
+    value: { model: 'BankExpense', tagName: 'expense from appointment' },
   },
   {
     key: 'Add - Edit Revenue/Cash',

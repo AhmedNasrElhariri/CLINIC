@@ -3,7 +3,7 @@ import moment from 'moment';
 const logging = async (
   _,
   { offset, limit, dateFrom, dateTo, userId, model, tagName },
-  { user, organizationId }
+  {  organizationId }
 ) => {
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
