@@ -199,14 +199,14 @@ const BankAccountingContainer = () => {
         },
       });
     } else if (type === 'createBankRevenue') {
-      const { id, expenseType, ...rest } = formValue;
+      const { id, expenseType, expenseName, ...rest } = formValue;
       createBankRevenue({
         variables: {
           bankTransition: rest,
         },
       });
     } else if (type === 'createBankExpense') {
-      const { id, ...rest } = formValue;
+      const { id, expenseName, ...rest } = formValue;
       createBankExpense({
         variables: {
           bankTransition: rest,
