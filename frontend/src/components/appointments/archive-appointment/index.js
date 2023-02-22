@@ -44,9 +44,7 @@ const ArchiveAppointment = ({
   const [coupons, setCoupons] = useState([]);
   const [couponsValue, setCouponsValue] = useState(0);
   const [option, setOption] = useState(initlOption);
-  // const [doctorOption, setDoctorOption] = useState(initlDoctorOption);
   const [selectedSessions, setSelectedSessions] = useState([]);
-  // const [doctorFees, setDoctorFees] = useState(initialDoctorFess);
   const [selectedItems, setSelectedItems] = useState([]);
   const [payOfRemaining, setPayOfRemaining] = useState(0);
   const value = useRef(initValue);
@@ -72,7 +70,7 @@ const ArchiveAppointment = ({
       cardId: cardId,
       cardExpiryDate: cardExpiryDate,
     }));
-  }, [onePatient.id]);
+  }, [onePatient.id, onePatient]);
 
   const totalRemainingOfPayment = onePatient?.remainingOfPayment;
   const newCoupons = useMemo(() => {
@@ -160,7 +158,6 @@ const ArchiveAppointment = ({
         coupons: newCoupons,
         couponsValue,
       });
-      // setActiveStep(0);
       setOthers(0);
       setBank(null);
       setCompany(companyInital);
@@ -177,7 +174,6 @@ const ArchiveAppointment = ({
       };
     }
   }, [
-    // activeStep,
     onOk,
     discount,
     others,
@@ -207,7 +203,6 @@ const ArchiveAppointment = ({
       coupons: newCoupons,
       couponsValue,
     });
-    // setActiveStep(0);
     setOthers(0);
     setRemaining(0);
     setPayOfRemaining(0);
@@ -276,14 +271,16 @@ const ArchiveAppointment = ({
       ),
     [company, companysSessionDefinition]
   );
-  const updatedCompanySessions = companySessions.map(cS => {
-    return {
-      name: cS.name,
-      price: cS.price,
-      id: cS.id,
-    };
-  });
-
+  const updatedCompanySessions = companySessions.map(
+    ({ name, price, id, company }) => {
+      return {
+        name,
+        price,
+        id,
+        companyId: company?.id,
+      };
+    }
+  );
   const stepItems = useMemo(
     () =>
       [t('invoice'), t('cost'), t('inventory')].map((title, idx) => (

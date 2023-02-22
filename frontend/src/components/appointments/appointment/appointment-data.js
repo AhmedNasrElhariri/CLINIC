@@ -459,6 +459,7 @@ function AppointmentData({
           <AppointmentPictures
             formValue={appointmentFormValue.pictures}
             onChange={handlePicturesChange}
+            patientId={appointment?.patient?.id}
           />
         </SectionContainer>
       </div>

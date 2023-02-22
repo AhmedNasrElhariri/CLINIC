@@ -121,7 +121,7 @@ const visa = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
       res.end(pdfDoc);
     } catch (e) {
-      res.status(400).send(e);
+      res.status(400).send(e.message);
       res.status(400).send('Invalid');
     }
   });
@@ -232,7 +232,7 @@ const visa = app => {
       await workbook.xlsx.write(res);
       res.end();
     } catch (e) {
-      res.status(400).send(e);
+      res.status(400).send(e.message);
       res.status(400).send('Invalid');
     }
   });
@@ -248,6 +248,7 @@ const visa = app => {
       expenseType,
       expenseName,
       organizationId,
+      bankId,
     } = req.query;
     try {
       let updatedDateFrom = new Date();
@@ -302,7 +303,7 @@ const visa = app => {
       await workbook.xlsx.write(res);
       res.end();
     } catch (e) {
-      res.status(400).send(e);
+      res.status(400).send(e.message);
       res.status(400).send('Invalid');
     }
   });

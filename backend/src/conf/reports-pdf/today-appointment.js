@@ -1,7 +1,11 @@
 import { generatePdf } from '@/services/report.service';
 import { prisma } from '../..';
 import moment from 'moment';
-import { formatDateStandard } from '../../services/date.service';
+import {
+  formatDate,
+  formatDateFull,
+  TIME_FORMAT,
+} from '../../services/date.service';
 const init = app => {
   app.post('/todayAppointmentReport', async (req, res) => {
     const { status, branchId, specialtyId, doctorId, patient } = req.query;
@@ -78,14 +82,21 @@ const init = app => {
         },
       });
       const pdfDoc = await generatePdf('/views/reports/today-appointment.ejs', {
-        appointments: appointments,
-        formatDateStandard,
+        appointments: appointments.map(({ date, duration, ...rest }) => ({
+          ...rest,
+          startDate: formatDateFull(date),
+          endDate: formatDate(
+            moment(date).add(duration, 'minutes'),
+            TIME_FORMAT
+          ),
+        })),
       });
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=cash.pdf');
       res.end(pdfDoc);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      res.status(400).send(e.message);
     }
   });
 };

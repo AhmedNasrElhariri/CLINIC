@@ -65,19 +65,19 @@ const NewAppointment = ({
   const { t } = useTranslation();
   const { configurations } = useConfigurations();
   const enableSMS = R.propOr(false, 'enableSMS')(configurations);
-  const {
-    formValue,
-    setFormValue,
-    checkResult,
-    validate,
-    show,
-    setShow,
-    createAppointment,
-    loading,
-  } = useNewAppointment({
+  const { formValue, setFormValue, checkResult, validate, show, setShow } =
+    useNewAppointment({
+      onCreate: () => {
+        onHide();
+        setPatientSearchValue('');
+      },
+    });
+  const { createAppointment, loading } = useNewAppointment({
     onCreate: () => {
       onHide();
       setPatientSearchValue('');
+      setFormValue(initialValues);
+      setShow(false);
     },
   });
   const { searchedPatients } = usePatients({
@@ -137,7 +137,7 @@ const NewAppointment = ({
         });
       }
     }
-  }, [appointment, followUp]);
+  }, [appointment, followUp, setFormValue, updatedSessionsDefinition]);
 
   const handleCreate = useCallback(() => {
     setShow(true);
@@ -191,7 +191,7 @@ const NewAppointment = ({
       followUp,
       referedDoctor,
     });
-  }, [createAppointment, formValue, followUp, appointment]);
+  }, [createAppointment, formValue, followUp, appointment, setShow, validate]);
   return (
     <>
       <NewPatient
@@ -311,13 +311,14 @@ const NewAppointment = ({
               </div>
             </div>
             <Div display="flex">
-              <Checkbox
-                name="waiting"
-                value={true}
-                onChange={val => setFormValue({ ...formValue, waiting: val })}
-              >
-                {t('addToWaitingList')}
-              </Checkbox>
+              <Div display="flex" ml="30px" mt="3px">
+                <CRLabel>{t('addToWaitingList')}</CRLabel>
+                <Toggle
+                  onChange={val => setFormValue({ ...formValue, waiting: val })}
+                  checked={formValue?.waiting}
+                  style={{ margin: '5px' }}
+                />
+              </Div>
               <Div display="flex" ml="30px" mt="3px">
                 <CRLabel>External</CRLabel>
                 <Toggle

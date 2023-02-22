@@ -1,7 +1,6 @@
 import { prisma } from '@';
 import { GetLevel } from '@/services/get-level';
 
-
 export const createAppointmentInsurranceRevenue = async data => {
   return Promise.all(
     data.map(d => prisma.insuranceRevenue.create({ data: d }))
@@ -86,25 +85,36 @@ export const createAppointmentInsurranceRevenueFromSessions = (
   cardId
 ) => {
   const level = GetLevel(branchId, specialtyId, userID);
-  return sessions.map(({ name, price, number, patientFees, feesCalType }) =>
-    Object.assign(
-      {
-        date: new Date(date),
-        name,
-        amount:
-          feesCalType === 'fixed'
-            ? price * number - patientFees
-            : price * number - (patientFees / 100) * price * number,
-        level,
-        organizationId,
-        userId,
-        companyId: companyId,
-      },
-      specialtyId && { specialtyId },
-      branchId && { branchId },
-      userID && { doctorId: userID },
-      patientId && { patientId: patientId },
-      cardId && { cardId: cardId }
-    )
+  const updatedSessions = sessions.filter(({ companyId }) => companyId != null);
+  return updatedSessions.map(
+    ({
+      name,
+      price,
+      number,
+      patientFees,
+      feesCalType,
+      companyId: COMPANYID,
+      id,
+    }) =>
+      Object.assign(
+        {
+          date: new Date(date),
+          name,
+          amount:
+            feesCalType === 'fixed'
+              ? price * number - patientFees
+              : price * number - (patientFees / 100) * price * number,
+          level,
+          organizationId,
+          userId,
+          companyId: companyId,
+        },
+        specialtyId && { specialtyId },
+        branchId && { branchId },
+        userID && { doctorId: userID },
+        patientId && { patientId: patientId },
+        cardId && { cardId: cardId },
+        COMPANYID && { companySessionId: id }
+      )
   );
 };

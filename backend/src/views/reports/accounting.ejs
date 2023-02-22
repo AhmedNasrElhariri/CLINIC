@@ -31,21 +31,22 @@
 <body>
   <div class="test">
     <h2 id="accounting">Accounting Report</h2>
-    <p class="heading">from <%= from %> to <%= to %></p>
-    <p class="heading">Total Revenues = <%= totalRevenues %></p>
-    <p class="heading">Total Expenses = <%= totalExpenses %></p>
-    <p class="heading">Profit = <%= profit %></p>
+    <p class="heading">From <%= from %> to <%= to %></p>
+    <%if (showRevenues) { %><p class="heading">Total Revenues = <%= totalRevenues %></p> <% } %>
+    <%if (showExpenses) { %> <p class="heading">Total Expenses = <%= totalExpenses %></p><% } %>
+    <%if (showRevenues && showExpenses) { %><p class="heading">Profit = <%= profit %></p> <% } %>
     <hr/>
     
     <%if (showRevenues) { %>
       <p class="heading">Revenues</p>
       <table>
         <tr>
-          <th>Name</th><th>Amount</th><th>Date</th>
+          <th>Seq</th><th>Name</th><th>Amount</th><th>Date</th>
         </tr>
     
         <% for (var i = 0; i < revenues.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
         <tr>
+          <td><%= i+1 %></td>
           <td><%= revenues[i].name %></td>
           <td><%= revenues[i].amount %></td>
           <td><%= revenues[i].date %></td>
@@ -58,11 +59,12 @@
     <p class="heading">Expenses</p>
     <table>
       <tr>
-        <th>Name</th><th>Amount</th><th>Date</th>
+        <th>Seq</th><th>Name</th><th>Amount</th><th>Date</th>
       </tr>
   
       <% for (var i = 0; i < expenses.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
       <tr>
+        <td><%= i+1 %></td>
         <td><%= expenses[i].name %></td>
         <td><%= expenses[i].amount %></td>
         <td><%= expenses[i].date %></td>

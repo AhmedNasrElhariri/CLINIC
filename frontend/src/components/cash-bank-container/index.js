@@ -22,7 +22,7 @@ import {
 
 import { Can } from 'components/user/can';
 import Filter from './filter';
-import { ACCOUNTING_VIEWS, ACCOUNT_OPTIONS } from 'utils/constants';
+import { ACCOUNTING_VIEWS } from 'utils/constants';
 // import Summary from '../summary';
 import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
@@ -76,7 +76,6 @@ const AccountingContainer = () => {
       transactionType: formValue.transactionType,
       bankId: formValue?.bankId,
     });
-
   const pages = Math.ceil(accountingCount / 20);
   const totals = {
     total: accountingTotal,
@@ -96,12 +95,12 @@ const AccountingContainer = () => {
       bankId: formValue?.bankId,
       organizationId: user.organizationId,
     };
-    getPdfReport('/allAccounting', params, 'all accounting.pdf');
-  }, [getPdfReport]);
+    getPdfReport('/reports/transactions/pdf', params, 'all accounting.pdf');
+  }, [branchSpecialtyUser, formValue, page, period, user, view]);
 
   const handleAccountingExcel = async day => {
     axios({
-      url: '/allAccountingExcel',
+      url: '/reports/transactions/excel',
       responseType: 'blob', // important
       params: {
         view,

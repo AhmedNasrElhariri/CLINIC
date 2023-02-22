@@ -37,15 +37,16 @@
       <p class="heading">Transactions</p>
       <table>
         <tr>
-          <th>Name</th><th>Amount</th><th>Date</th><th>Type</th>
+          <th>Seq</th><th>Name</th><th>Amount</th><th>Date</th><th>Type</th>
         </tr>
     
-        <% for (var i = 0; i < trans.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+        <% for (var i = 0; i < transactions.length; i++) { %>
         <tr>
-          <td><%= trans[i].name %></td>
-          <td><%= trans[i].amount %></td>
-          <td><%= trans[i].date %></td>
-          <td><%= trans[i].flag %></td>
+          <td><%= i+1 %></td>
+          <td><%= transactions[i].name %></td>
+          <td><%= transactions[i].amount %></td>
+          <td><%= formatDateStandard(transactions[i].date) %></td>
+          <td><%= transactions[i].type %></td>
         </tr>    
         <% } %>
     </table>

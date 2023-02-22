@@ -1,19 +1,11 @@
-import { prisma } from '@';
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import {
   getDateFromAndDateToFromView,
   getStartOfDay,
   getEndOfDay,
 } from '@/services/date.service';
-import { ACTIONS } from '@/utils/constants';
-import {
-  revenueAccountingData,
-  expenseAccountingData,
-} from '@/services/accounting-data';
-import * as R from 'ramda';
-
-const byCreatedAt = R.descend(R.prop('createdAt'));
-
+import { prisma } from '@';
+const mapTypes = (transactions = [], type) =>
+  transactions.map(transaction => ({ ...transaction, type }));
 const accountingData = async (
   _,
   {
@@ -28,23 +20,15 @@ const accountingData = async (
     name,
     accountingOption,
     transactionType,
-    bankId
+    bankId,
   },
-  { user, organizationId }
+  { organizationId }
 ) => {
   let updatedDateFrom = new Date();
   let updatedDateTo = new Date();
-  let trans = [];
-  let total = 0;
-  let count = 0;
-  const ids = await listFlattenUsersTreeIds(
-    {
-      user,
-      organizationId,
-      action: ACTIONS.View_Accounting,
-    },
-    false
-  );
+  let transactions = [];
+  let totalAmount = 0;
+
   if (dateFrom && dateTo) {
     updatedDateFrom = getStartOfDay(dateFrom);
     updatedDateTo = getEndOfDay(dateTo);
@@ -53,78 +37,87 @@ const accountingData = async (
     updatedDateFrom = datesArray[0];
     updatedDateTo = datesArray[1];
   }
-  if (transactionType === 'revenue') {
-    const DATA = await revenueAccountingData(
-      organizationId,
-      ids,
-      branchId,
-      specialtyId,
-      doctorId,
-      updatedDateFrom,
-      updatedDateTo,
-      name,
-      offset,
-      limit,
-      bankId
-    );
-    const cashData = DATA.cash.map(t => {
-      return { ...t, flag: 'cash' };
+  const accountingOptions = accountingOption
+    ? [accountingOption]
+    : ['cash', 'visa'];
+
+  const accountingOptionsVsModel = {
+    cash: {
+      revenue: prisma.revenue.findMany,
+      expense: prisma.expense.findMany,
+    },
+    visa: {
+      revenue: prisma.bankRevenue.findMany,
+      expense: prisma.bankExpense.findMany,
+    },
+  };
+  if (accountingOptions.includes('cash')) {
+    const revenues = await accountingOptionsVsModel['cash'][transactionType]({
+      where: {
+        organizationId,
+        AND: [
+          {
+            branchId: branchId,
+          },
+          {
+            specialtyId: specialtyId,
+          },
+          {
+            doctorId: doctorId,
+          },
+        ],
+        date: {
+          gte: updatedDateFrom,
+          lte: updatedDateTo,
+        },
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
     });
-    const visaData = DATA.visa.map(t => {
-      return { ...t, flag: 'visa' };
-    });
-    if (accountingOption === 'cash') {
-      trans = cashData;
-      total = DATA.totalCash;
-      count = DATA.cashCount;
-    } else if (accountingOption === 'visa') {
-      trans = visaData;
-      total = DATA.totalVisa;
-      count = DATA.visaCount;
-    } else {
-      trans = [...cashData, ...visaData];
-      total = DATA.totalCash + DATA.totalVisa;
-      count = DATA.cashCount + DATA.visaCount;
-    }
-  } else {
-    const DATA = await expenseAccountingData(
-      organizationId,
-      ids,
-      branchId,
-      specialtyId,
-      doctorId,
-      updatedDateFrom,
-      updatedDateTo,
-      name,
-      offset,
-      limit,
-      bankId
-    );
-    const cashData = DATA.cash.map(t => {
-      return { ...t, flag: 'cash' };
-    });
-    const visaData = DATA.visa.map(t => {
-      return { ...t, flag: 'visa' };
-    });
-    if (accountingOption === 'cash') {
-      trans = cashData;
-      total = DATA.totalCash;
-      count = DATA.cashCount;
-    } else if (accountingOption === 'visa') {
-      trans = visaData;
-      total = DATA.totalVisa;
-      count = DATA.visaCount;
-    } else {
-      trans = [...cashData, ...visaData];
-      total = DATA.totalCash + DATA.totalVisa;
-      count = DATA.cashCount + DATA.visaCount;
-    }
+    transactions.push(...mapTypes(revenues, 'cash'));
   }
-  const sortedTrans = R.sort(byCreatedAt, trans);
+
+  if (accountingOptions.includes('visa')) {
+    const bankRevenues = await accountingOptionsVsModel['visa'][
+      transactionType
+    ]({
+      where: {
+        organizationId,
+        AND: [
+          {
+            branchId: branchId,
+          },
+          {
+            specialtyId: specialtyId,
+          },
+          {
+            doctorId: doctorId,
+          },
+          {
+            bankId: bankId,
+          },
+        ],
+        date: {
+          gte: updatedDateFrom,
+          lte: updatedDateTo,
+        },
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+    });
+    transactions.push(...mapTypes(bankRevenues, 'visa'));
+  }
+
+  totalAmount = transactions.reduce((acc, { amount }) => acc + amount, 0);
+  transactions.sort((a, b) => b.date - a.date);
   const data = {
-    data: sortedTrans.slice(offset, offset + limit),
-    total: total,
-    count: count,
+    data: transactions.slice(offset, offset + limit),
+    total: totalAmount,
+    count: transactions.length,
   };
   return data;
 };

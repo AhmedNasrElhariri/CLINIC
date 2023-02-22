@@ -4,7 +4,7 @@ const MenuPopover = ({ onSelect, ...rest }) => (
   <Popover {...rest} full>
     <Dropdown.Menu onSelect={onSelect}>
       <Dropdown.Item eventKey={1}>
-        <CRButton>Pdf +</CRButton>
+        <CRButton>Pdf {' '}</CRButton>
       </Dropdown.Item>
       <Dropdown.Item eventKey={2}>
         <CRButton>Excel</CRButton>

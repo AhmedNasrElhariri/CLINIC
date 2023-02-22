@@ -8,7 +8,7 @@ import { APIExceptcion } from '@/services/erros.service';
 
 const editCourseUnits = async (
   _,
-  { courseId, consumed, type, notes, parts },
+  { courseId, consumed, type, notes, parts, doctorId: DOCTORID },
   { userId, organizationId }
 ) => {
   const finalConsumed =
@@ -47,7 +47,7 @@ const editCourseUnits = async (
       };
     });
     const cName = data.customName;
-    const doctorId = data.doctorId;
+    const doctorId = DOCTORID == null ? data.doctorId : DOCTORID;
     await reduceServices(parts, courseId);
     await costServices(userId, sessions, organizationId, doctorId, cName);
     await createUnitHistoryFormParts(sessions, userId, doctorId, courseId);

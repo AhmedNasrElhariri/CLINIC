@@ -114,7 +114,7 @@ const sales = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
       res.end(pdfDoc);
     } catch (e) {
-      res.status(400).send(e);
+      res.status(400).send(e.message);
       res.status(400).send('Invalid');
     }
   });
@@ -187,7 +187,7 @@ const sales = app => {
       await workbook.xlsx.write(res);
       res.end();
     } catch (e) {
-      res.status(400).send(e);
+      res.status(400).send(e.message);
       res.status(400).send('Invalid');
     }
   });

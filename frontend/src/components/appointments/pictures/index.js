@@ -13,13 +13,20 @@ import { useModal, useAppointments } from 'hooks';
 import ImgBox from './img-box';
 import * as R from 'ramda';
 
-const AppointmentPictures = ({ formValue, onChange: setFormValue }) => {
+const AppointmentPictures = ({
+  formValue,
+  onChange: setFormValue,
+  patientId,
+}) => {
   const { visible, open, close } = useModal();
   const [photoValue, setPhotoValue] = useState({ imageId: null });
   const [header, setHeader] = useState('');
   const [galleryVisibility] = useState(false);
   const ref = useRef();
-  const { deleteAppointmentPhoto } = useAppointments({ onDeletePhoto: close });
+  const { deleteAppointmentPhoto } = useAppointments({
+    onDeletePhoto: close,
+    patientId: patientId,
+  });
   useEffect(() => {
     if (ref.current) {
       ref.current.fullScreen();
@@ -94,7 +101,7 @@ const AppointmentPictures = ({ formValue, onChange: setFormValue }) => {
     setFormValue,
     formValue,
   ]);
- 
+
   return (
     <Div>
       <Div textAlign="right">

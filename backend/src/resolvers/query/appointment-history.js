@@ -17,6 +17,7 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
       .then(R.propOr({}, '0'));
     patientId = patient.id;
   }
+
   if (type === 'Surgery') {
     return prisma.appointment.findMany({
       where: {
@@ -38,6 +39,7 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
         patient: {
           id: patientId,
         },
+        id: appointmentId,
         type: {
           not: 'Surgery',
         },

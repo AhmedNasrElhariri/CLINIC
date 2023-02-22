@@ -103,7 +103,7 @@ const bankRevenues = async (
       patient: true,
     },
     orderBy: {
-      date: 'asc',
+      date: 'desc',
     },
   });
   const totalRevenues = await prisma.bankRevenue.aggregate({

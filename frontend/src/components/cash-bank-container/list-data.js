@@ -32,7 +32,7 @@ const ListData = ({ title, data, currentPage, setCurrentPage, pages }) => {
 
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('type')}</CRTable.CRHeaderCell>
-          <CRTable.CRCell dataKey="flag" semiBold />
+          <CRTable.CRCell dataKey="type" semiBold />
         </CRTable.CRColumn>
         <CRTable.CRColumn width={100}>
           <CRTable.CRHeaderCell>{t('amount')}</CRTable.CRHeaderCell>

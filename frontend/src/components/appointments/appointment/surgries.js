@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 import { Div, CRNav, H6, CRVDivider } from 'components';
 import SessionSelector from 'components/patients/surgery-summary/session-selector';
 import Header from 'components/patients/surgery-summary/header';
@@ -16,6 +16,13 @@ import useGlobalState from 'state';
 import { normalizeDataWithGroups } from 'services/appointment';
 import { H3 } from 'components';
 import { formatNumber, isFloat } from 'utils/nubmer';
+import AppointmentGallery from 'components/appointments/pictures/gallery';
+import { useModal, useAppointments } from 'hooks';
+import DeleteImage from 'components/patients/summary/delete-image';
+
+const initalVal = {
+  imageId: null,
+};
 
 const renderFieldValue = value => {
   if (isFloat(value)) {
@@ -83,13 +90,17 @@ const renderAppointment = data => {
   );
 };
 
-const PatientSurgries = ({ history: summary, t }) => {
-  // const { surgeries } = useSuergriesAppointments({
-  //   patientId,
-  // });
-  console.log(summary, 'SUM');
+const PatientSurgries = ({ history: summary, t, patientId }) => {
   const [activeSession, setActiveSession] = useState(null);
   const [views] = useGlobalState('activeViews');
+  const { visible, open, close } = useModal();
+  const [formValue, setFormValue] = useState(initalVal);
+  const [header, setHeader] = useState('');
+  const { deleteAppointmentPhoto } = useAppointments({
+    onDeletePhoto: close,
+    patientId: patientId,
+    type: 'Surgery',
+  });
   const view = useMemo(
     () => views[activeSession?.type],
     [activeSession, views]
@@ -116,7 +127,26 @@ const PatientSurgries = ({ history: summary, t }) => {
     [activeSession]
   );
   const newGroups = normalizeDataWithGroups(groups, data);
-
+  const handleDeleteImage = useCallback(
+    data => {
+      const image = R.pick(['id'])(data);
+      setHeader('Delete Image');
+      setFormValue({ ...formValue, imageId: image.id });
+      open();
+    },
+    [open, setFormValue, setHeader, formValue]
+  );
+  const handleAdd = useCallback(() => {
+    deleteAppointmentPhoto({
+      variables: {
+        id: formValue.imageId,
+      },
+    });
+  }, [deleteAppointmentPhoto, formValue]);
+  const pictures = useMemo(
+    () => R.propOr([], 'pictures')(activeSession),
+    [activeSession]
+  );
   if (!activeSession) {
     return '...No History';
   }
@@ -181,14 +211,14 @@ const PatientSurgries = ({ history: summary, t }) => {
             </div>
 
             {activeSession.notes && renderProp('Notes', activeSession.notes)}
-            {/* {pictures.length > 0 &&
+            {pictures.length > 0 &&
               renderProp(
                 'Images',
                 <AppointmentGallery
                   pictures={pictures}
                   onDelete={handleDeleteImage}
                 />
-              )} */}
+              )}
           </>
         ) : (
           <Div
@@ -201,7 +231,7 @@ const PatientSurgries = ({ history: summary, t }) => {
           </Div>
         )}
       </div>
-      {/* {header === 'Delete Image' && (
+      {header === 'Delete Image' && (
         <DeleteImage
           visible={visible}
           formValue={formValue}
@@ -209,7 +239,7 @@ const PatientSurgries = ({ history: summary, t }) => {
           onClose={close}
           header={header}
         />
-      )} */}
+      )}
     </Div>
   );
 };

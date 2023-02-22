@@ -212,6 +212,8 @@ enum PermissionAction {
   Create_SessionDefinition
   Create_Hospital
   Create_Surgery
+  Edit_Surgery
+  List_Surgery
   View_Payroll
   CreateCommission_Payroll
   CreateDeduction_Payroll
@@ -955,30 +957,32 @@ model BankExpense {
 }
 
 model InsuranceRevenue {
-  id             String            @id @default(uuid())
-  name           String
-  date           DateTime
-  amount         Int
-  invoiceNo      String?
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @default(now()) @updatedAt
-  user           User              @relation("insuranceUser", fields: [userId], references: [id])
-  userId         String
-  doctor         User?             @relation("insuranceDoctor", fields: [doctorId], references: [id])
-  doctorId       String?
-  level          String?
-  cardId         String?
-  status         FeesStatus        @default(Draft)
-  patient        Patient?          @relation(fields: [patientId], references: [id])
-  patientId      String?
-  specialty      Specialty?        @relation(fields: [specialtyId], references: [id])
-  specialtyId    String?
-  branch         Branch?           @relation(fields: [branchId], references: [id])
-  branchId       String?
-  company        CompanyDefinition @relation(fields: [companyId], references: [id])
-  companyId      String
-  organization   Organization      @relation(fields: [organizationId], references: [id])
-  organizationId String
+  id               String                   @id @default(uuid())
+  name             String
+  date             DateTime
+  amount           Int
+  invoiceNo        String?
+  createdAt        DateTime                 @default(now())
+  updatedAt        DateTime                 @default(now()) @updatedAt
+  user             User                     @relation("insuranceUser", fields: [userId], references: [id])
+  userId           String
+  doctor           User?                    @relation("insuranceDoctor", fields: [doctorId], references: [id])
+  doctorId         String?
+  level            String?
+  cardId           String?
+  status           FeesStatus               @default(Draft)
+  patient          Patient?                 @relation(fields: [patientId], references: [id])
+  patientId        String?
+  specialty        Specialty?               @relation(fields: [specialtyId], references: [id])
+  specialtyId      String?
+  branch           Branch?                  @relation(fields: [branchId], references: [id])
+  branchId         String?
+  company          CompanyDefinition        @relation(fields: [companyId], references: [id])
+  companyId        String
+  companySession   CompanySessionDefinition? @relation(fields: [companySessionId], references: [id])
+  companySessionId String?
+  organization     Organization             @relation(fields: [organizationId], references: [id])
+  organizationId   String
 }
 
 model Notification {
@@ -1386,15 +1390,16 @@ model CompanyDefinition {
 }
 
 model CompanySessionDefinition {
-  id             String            @id @default(uuid())
-  name           String
-  price          Int
-  company        CompanyDefinition @relation(fields: [companyId], references: [id])
-  companyId      String
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @default(now()) @updatedAt
-  organization   Organization      @relation(fields: [organizationId], references: [id])
-  organizationId String
+  id               String             @id @default(uuid())
+  name             String
+  price            Int
+  company          CompanyDefinition  @relation(fields: [companyId], references: [id])
+  companyId        String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now()) @updatedAt
+  organization     Organization       @relation(fields: [organizationId], references: [id])
+  organizationId   String
+  InsuranceRevenue InsuranceRevenue[]
 }
 
 model SalesDefinition {

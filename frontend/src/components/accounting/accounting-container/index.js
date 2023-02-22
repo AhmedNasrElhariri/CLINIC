@@ -326,32 +326,7 @@ const AccountingContainer = () => {
       })
       .catch(err => {});
   };
-  // const handleExpenseAccountingExcel = async day => {
-  //   axios({
-  //     url: '/accountingExpenseExcel',
-  //     responseType: 'blob', // important
-  //     params: {
-  //       expenseBranchId: expenseBranchSpecialtyUser?.branch,
-  //       expenseSpecialtyId: expenseBranchSpecialtyUser?.specialty,
-  //       expenseDoctorId: expenseBranchSpecialtyUser?.doctor,
-  //       expenseType: formValue?.expenseType,
-  //       expenseName: formValue?.expenseName,
-  //       view,
-  //       dateFrom: period[0],
-  //       dateTo: period[1],
-  //       organizationId: user.organizationId,
-  //     },
-  //   })
-  //     .then(function (response) {
-  //       const url = window.URL.createObjectURL(new Blob([response.data]));
-  //       const link = document.createElement('a');
-  //       link.href = url;
-  //       link.setAttribute('download', `expenses-${Date.now()}.xlsx`); //or any other extension
-  //       document.body.appendChild(link);
-  //       link.click();
-  //     })
-  //     .catch(err => {});
-  // };
+
   function handleSelectMenu(eventKey, event) {
     eventKey === 1 ? handleAccountingReport() : handleAccountingExcel();
   }

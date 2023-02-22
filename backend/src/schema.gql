@@ -315,6 +315,8 @@ type Query {
     specialtyId: ID
     branchId: ID
     bankId: ID
+    expenseName: String
+    expenseType: String
   ): BankExpenseData!
   accountingData(
     offset: Int
@@ -727,6 +729,7 @@ type Mutation {
     type: String!
     notes: String
     parts: [PartInput]
+    doctorId: ID
   ): Course!
   editCourseUnitHistory(
     transactionId: ID
@@ -1394,6 +1397,7 @@ input SessionInput {
   partID: ID
   extraUnits: Int
   numberOfUnits: Int
+  companyId: ID
 }
 input PartInput {
   id: ID
@@ -1651,7 +1655,7 @@ type AccountingDataModel {
   name: String!
   amount: Float!
   date: Date!
-  flag: String
+  type: String
 }
 type BankRevenue {
   id: ID!
@@ -1738,6 +1742,7 @@ type InsuranceTransaction {
   cardId: String
   status: FeesStatus
   company: CompanyDefinition!
+  companySession: CompanySessionDefinition
 }
 type InsuranceTransactionsData {
   insuranceTransactions: [InsuranceTransaction!]
@@ -1746,7 +1751,6 @@ type InsuranceTransactionsData {
 }
 input InsuranceInput {
   name: String!
-  totalAmount: Int!
   companyId: ID!
   patientId: ID!
   date: Date!
@@ -1759,11 +1763,13 @@ input InsuranceInput {
   bankId: ID
   feesCalculationType: FeesCalculationType
   paymentMethod: PaymentMethod
+  sessions: [SessionInput]
 }
 input InsuranceEditInput {
   id: ID!
   name: String
   amount: Int
+  sessionId: ID
 }
 input RevenueInput {
   name: String!

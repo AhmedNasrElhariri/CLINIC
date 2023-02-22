@@ -273,6 +273,8 @@ export const LIST_BANK_EXPENSES = gql`
     $specialtyId: ID
     $doctorId: ID
     $bankId: ID
+    $expenseName: String
+    $expenseType: String
   ) {
     bankExpenses(
       offset: $offset
@@ -284,6 +286,8 @@ export const LIST_BANK_EXPENSES = gql`
       specialtyId: $specialtyId
       doctorId: $doctorId
       bankId: $bankId
+      expenseName: $expenseName
+      expenseType: $expenseType
     ) {
       bankExpenses {
         id
@@ -404,6 +408,9 @@ export const LIST_INSURANCE_TRANSACTIONS = gql`
         }
         doctor {
           id
+          name
+        }
+        companySession {
           name
         }
         date
@@ -558,7 +565,7 @@ export const LIST_ACCOUNTING_DATA = gql`
         name
         amount
         date
-        flag
+        type
       }
       total
       count

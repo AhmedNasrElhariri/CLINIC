@@ -13,7 +13,6 @@ const createPaymentHistoryFromSessions = data => {
 };
 const createReduceeFromCourseParts = (sessions, courseParts) => {
   let newParts = [];
-
   sessions.forEach(({ id, number }) => {
     const part = courseParts.find(s => s.id === id);
     const TOTALREMAININGUNITS = part.remainingUnits - number;

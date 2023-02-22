@@ -212,6 +212,14 @@ function NewCourse({
     selectedSessions,
     session,
   ]);
+  const totalCoursePrice = useMemo(
+    () =>
+      selectedSessions.reduce(
+        (acc, { number, price }) => acc + number * price,
+        0
+      ),
+    [selectedSessions]
+  );
   const handleDelete = useCallback(
     idx => {
       setSelectedSessions(R.remove(idx, 1));
@@ -247,6 +255,7 @@ function NewCourse({
                     <CRButton mt="10px" onClick={() => add()}>
                       {t('add')}
                     </CRButton>
+                    <Div p="10px" border="1px solid black">Total: {totalCoursePrice}</Div>
                   </Div>
                   <Div display="flex" justifyContent="space-around">
                     <CRSelectInput
@@ -466,17 +475,30 @@ function NewCourse({
           type === 'editUnitsTransactions' ? (
           <>
             {courseParts && courseParts.length > 0 ? (
-              <Form formValue={consumedParts} onChange={setConsumedParts} fluid>
-                {courseParts.map(({ id, part }, indx) => (
-                  <Div mb={type === 'addNewUnits' ? 2 : 0}>
-                    <CRNumberInput
-                      label={`Number of Units (${part?.name})`}
-                      name={id}
-                      layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
-                    ></CRNumberInput>
-                  </Div>
-                ))}
-              </Form>
+              <>
+                <Form
+                  formValue={consumedParts}
+                  onChange={setConsumedParts}
+                  fluid
+                >
+                  {courseParts.map(({ id, part }, indx) => (
+                    <Div mb={type === 'addNewUnits' ? 2 : 0}>
+                      <CRNumberInput
+                        label={`Number of Units (${part?.name})`}
+                        name={id}
+                        layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
+                      ></CRNumberInput>
+                    </Div>
+                  ))}
+                </Form>
+                <CRSelectInput
+                  label={t('doctor')}
+                  name="consumedDoctorId"
+                  placeholder={t('select')}
+                  data={actionDoctors}
+                  block
+                />
+              </>
             ) : (
               <CRNumberInput
                 label={t('consumedUnits')}

@@ -47,6 +47,7 @@ const calcDate = ({ date, time }) =>
       millisecond: 0,
     })
     .toDate();
+const PAGE_SIZE = 30;
 function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
   const [followUp, setFollowUp] = useState(false);
@@ -110,6 +111,10 @@ function TodayAppointments() {
   }, [appointment]);
 
   useEffect(() => {
+    setCurrentPage(inialCurrentPage);
+  }, [filter]);
+
+  useEffect(() => {
     const id = onCreateAppointment.subscribe(() => {
       refetchTodayAppointments();
     });
@@ -118,8 +123,8 @@ function TodayAppointments() {
 
   const onClickDone = useCallback(
     appointment => {
-      setPopUp('archive');
       setAppointment(appointment);
+      setPopUp('archive');
       open();
     },
     [setAppointment, open]
@@ -216,6 +221,7 @@ function TodayAppointments() {
             patientFees: session?.patientFees || 0,
             feesCalType: session?.type,
             cost: session?.cost,
+            companyId: session?.companyId,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,
@@ -357,6 +363,7 @@ function TodayAppointments() {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             handlePrint={handlePrint}
+            pageSize={PAGE_SIZE}
           >
             <Form
               formValue={filter}
@@ -396,6 +403,7 @@ function TodayAppointments() {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             handlePrint={handlePrint}
+            pageSize={PAGE_SIZE}
           >
             <Form
               formValue={filter}
@@ -427,6 +435,7 @@ function TodayAppointments() {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             handlePrint={handlePrint}
+            pageSize={PAGE_SIZE}
           >
             <Form
               formValue={filter}

@@ -149,7 +149,7 @@ const NewPatient = ({
         block
       />
       <CRSelectInput
-        label={t('type')}
+        label={t('sex')}
         name="sex"
         valueKey="value"
         searchable={false}

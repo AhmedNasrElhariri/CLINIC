@@ -308,6 +308,7 @@ export const EDIT_COURSE_UNITS = gql`
     $type: String!
     $notes: String
     $parts: [PartInput]
+    $doctorId: ID
   ) {
     editCourseUnits(
       courseId: $courseId
@@ -315,6 +316,7 @@ export const EDIT_COURSE_UNITS = gql`
       type: $type
       notes: $notes
       parts: $parts
+      doctorId: $doctorId
     ) {
       id
       price

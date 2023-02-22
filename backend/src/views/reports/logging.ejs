@@ -35,11 +35,12 @@
    
       <table>
         <tr>
-          <th>Date</th><th>User</th><th>text</th>
+          <th>Seq</th><th>Date</th><th>User</th><th>text</th>
         </tr>
     
         <% for (var i = 0; i < logging.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
         <tr>
+          <td><%= i+1 %></td>
           <td><%= formatDateStandard(logging[i].date) %></td>
           <td><%= logging[i].user.name %></td>
           <td><%= logging[i].text %></td>

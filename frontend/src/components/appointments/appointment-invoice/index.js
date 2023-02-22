@@ -8,7 +8,7 @@ import {
   CRNumberInput,
   CRTextInput,
   CRRadio,
-  CRDivider
+  CRDivider,
 } from 'components';
 
 import PrintInvoice from '../print-invoice/index';
@@ -96,7 +96,7 @@ function AppointmentInvoice({
         <div className="sm:pr-5">
           <Sessions
             t={t}
-            company={company}
+            companyId={company?.companyId}
             sessions={sessions}
             selectedSessions={selectedSessions}
             setSelectedSessions={setSelectedSessions}
@@ -154,7 +154,6 @@ function AppointmentInvoice({
                       (company !== null || bank !== null) && (
                         <CRNumberInput
                           label={t('percentagefrom0To100')}
-                          // name="price"
                           name="amount"
                         />
                       )
