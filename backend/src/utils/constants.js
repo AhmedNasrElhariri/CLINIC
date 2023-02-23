@@ -198,4 +198,6 @@ export const ACTIONS = Object.freeze({
   View_DoctorFees: 'View_DoctorFees',
   View_Courses: 'View_Courses',
   View_ReportsPrintout: 'View_ReportsPrintout',
+  ViewSessionsReport_ReportsPrintout: 'ViewSessionsReport_ReportsPrintout',
+  ViewCashAndVisa_Accounting: 'ViewCashAndVisa_Accounting',
 });

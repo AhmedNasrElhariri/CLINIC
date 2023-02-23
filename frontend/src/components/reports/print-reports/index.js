@@ -137,8 +137,8 @@ const Test = props => {
   return (
     <div className="flex flex-col gap-3">
       {/* <Container> */}
-      <ReportRow>
-        <Can I="GenerateMonthly" an="PulsesReport">
+      <Can I="GenerateMonthly" an="PulsesReport">
+        <ReportRow>
           <Name>{t('monthlyReport')}</Name>
           <Form formValue={formValue} onChange={setFormValue}>
             <CRSelectInput
@@ -157,14 +157,10 @@ const Test = props => {
             trigger={() => <CRButton primary>{t('print')}</CRButton>}
             content={() => refTwo.current}
           />
-        </Can>
-      </ReportRow>
-      {/* <Report> */}
-
-      {/* </Report> */}
-      {/* </Container> */}
-      <ReportRow>
-        <Can I="GenerateDaily" an="PulsesReport">
+        </ReportRow>
+      </Can>
+      <Can I="GenerateDaily" an="PulsesReport">
+        <ReportRow>
           <Name>{t('dailyReport')}</Name>
           <Form formValue={formValue} onChange={setFormValue}>
             <CRDatePicker
@@ -181,71 +177,18 @@ const Test = props => {
             trigger={() => <CRButton primary>{t('print')}</CRButton>}
             content={() => refOne.current}
           />
-        </Can>
-      </ReportRow>
-      <SessionReport
-        t={t}
-        handleSessionReport={handleSessionReport}
-        sessionsDefinition={updatedSessionsDefinitions}
-        formValue={formValue}
-        setFormValue={setFormValue}
-        handleSessionExcelReport={handleSessionExcelReport}
-      />
-      {/* <Div>
-        <Div
-          style={!showSessionData ? { overflow: 'hidden', height: '0px' } : {}}
-        >
-          <Div ref={refThree}>
-            <H3 display="flex" justifyContent="center" mt={20} mb={20}>
-              Session Report
-            </H3>
-            <Div>
-              {sessionStatistics.map(st => (
-                <Div mb={20} ml={20}>
-                  <H5>Session Name : {st.name}</H5>
-                  <H5>TotalNumber: {st.totalNumber}</H5>
-                  <H5>TotalPrice:{st.totalPrice}</H5>
-
-                  <CRTable autoHeight data={st.sessions}>
-                    <CRTable.CRColumn width={300}>
-                      <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
-                      <CRTable.CRCell>
-                        {({ patient }) => (
-                          <CRTable.CRCellStyled bold>
-                            {patient.name}
-                          </CRTable.CRCellStyled>
-                        )}
-                      </CRTable.CRCell>
-                    </CRTable.CRColumn>
-                    <CRTable.CRColumn width={300}>
-                      <CRTable.CRHeaderCell>
-                        {t('phoneNo')}
-                      </CRTable.CRHeaderCell>
-                      <CRTable.CRCell>
-                        {({ patient }) => (
-                          <CRTable.CRCellStyled bold>
-                            {patient.phoneNo}
-                          </CRTable.CRCellStyled>
-                        )}
-                      </CRTable.CRCell>
-                    </CRTable.CRColumn>
-                    <CRTable.CRColumn width={300}>
-                      <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
-                      <CRTable.CRCell>
-                        {({ doctor }) => (
-                          <CRTable.CRCellStyled bold>
-                            {doctor.name}
-                          </CRTable.CRCellStyled>
-                        )}
-                      </CRTable.CRCell>
-                    </CRTable.CRColumn>
-                  </CRTable>
-                </Div>
-              ))}
-            </Div>
-          </Div>
-        </Div>
-      </Div> */}
+        </ReportRow>
+      </Can>
+      <Can I="ViewSessionsReport" an="ReportsPrintout">
+        <SessionReport
+          t={t}
+          handleSessionReport={handleSessionReport}
+          sessionsDefinition={updatedSessionsDefinitions}
+          formValue={formValue}
+          setFormValue={setFormValue}
+          handleSessionExcelReport={handleSessionExcelReport}
+        />
+      </Can>
       <ReportRow>
         <Name>{t('totalUnpaidOfCoursesReport')}</Name>
 

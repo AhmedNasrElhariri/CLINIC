@@ -255,6 +255,8 @@ enum PermissionAction {
   View_DoctorFees
   View_Courses
   View_ReportsPrintout
+  ViewSessionsReport_ReportsPrintout
+  ViewCashAndVisa_Accounting
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
