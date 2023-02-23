@@ -207,6 +207,8 @@ export const ACTIONS = Object.freeze({
   View_DoctorFees: 'View_DoctorFees',
   View_Courses: 'View_Courses',
   View_ReportsPrintout: 'View_ReportsPrintout',
+  ViewSessionsReport_ReportsPrintout: 'ViewSessionsReport_ReportsPrintout',
+  ViewCashAndVisa_Accounting: 'ViewCashAndVisa_Accounting',
 });
 
 export const ACTIONS_ORGANZATIONONLY = [
@@ -256,6 +258,8 @@ export const ACTIONS_ORGANZATIONONLY = [
   'Create_Surgery',
   'Edit_Surgery',
   'List_Surgery',
+  'ViewSessionsReport_ReportsPrintout',
+  'ViewCashAndVisa_Accounting',
 ];
 
 export const LAB_STATUS = Object.freeze({

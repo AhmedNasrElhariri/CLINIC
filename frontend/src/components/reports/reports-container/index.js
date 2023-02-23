@@ -4,7 +4,7 @@ import {
   AccountingContainer,
   BankAccountingContainer,
   InsuranceAccountingContainer,
-  CashAndBankContainer
+  CashAndBankContainer,
 } from 'components';
 import ReportsPrintOut from '../print-reports';
 import Reports from '../reports';
@@ -20,7 +20,11 @@ export const TABS = [
   },
   {
     key: 'cashAndVisa',
-    element: () => <CashAndBankContainer />,
+    element: () => (
+      <Can I="ViewCashAndVisa" an="Accounting">
+        <CashAndBankContainer />
+      </Can>
+    ),
   },
   {
     key: 'insurance',
