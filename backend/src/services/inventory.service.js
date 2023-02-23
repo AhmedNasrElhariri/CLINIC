@@ -1,19 +1,25 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 import { INVENTORY_OPERATION } from '@/utils/constants';
-export const finalReducedItems = (items,quantity) => {
-  let
-  const orderedItems = R.sortWith([
-    R.ascend(R.prop('insertionDate'))
-  ]);
-
-}
-export const reduceFromInventoryConsumptions = (items, valus) => {
-  return valus.map(([key, value]) => {
-    const item = R.find(R.propEq('itemId', key))(items);
-    const fItems = finalReducedItems(value);
-    return { id: item.itemId, quantity: item.quantity,items: };
+export const finalReducedItems = (items, quantity) => {
+  const orderedItems = R.sortWith([R.ascend(R.prop('insertionDate'))])(items);
+  const reducedOrderedItesm = orderedItems.map(item => {
+    let x = 0;
+    x = quantity < item.numberOfUnits ? quantity : item.numberOfUnits;
+    quantity -= x;
+    return { ...item, consumedUnits: x };
   });
+  return reducedOrderedItesm;
+};
+export const reduceFromInventoryConsumptions = (items, groupedValus) => {
+  let vv = [];
+  for (const [id, consuptionItems] of Object.entries(groupedValus)) {
+    const item = R.find(R.propEq('itemId', id))(items); //i have item and consuption items of the item
+    const finalItems = finalReducedItems(consuptionItems, item.quantity);
+    const finalObject = { id: id, quantity: item.quantity, items: finalItems };
+    vv.push(finalObject);
+  }
+  return vv;
 };
 export const updatedUsedMaterials = async (organizationId, items) => {
   const persistedItems = await prisma.inventoryItem.findMany({
@@ -32,8 +38,49 @@ export const updatedUsedMaterials = async (organizationId, items) => {
       inventoryItem: true,
     },
   });
-  const vals = R.groupBy(R.prop('inventoryItemId'))(consumptionItems);
-  reduceFromInventoryConsumptions(items, vals);
+  const groubedVals = R.groupBy(R.prop('inventoryItemId'))(consumptionItems);
+  const finishedItems = reduceFromInventoryConsumptions(items, groubedVals);
+
+  finishedItems.forEach(async ({ id, quantity, items }) => {
+    const persistedItem = R.find(R.propEq('id', id))(persistedItems);
+    console.log(items, 'IISTWMS');
+    const filteredItems = items.filter(it => it.consumedUnits > 0);
+    await prisma.inventoryItem.update({
+      where: {
+        id,
+      },
+      data: {
+        quantity: persistedItem.quantity - quantity,
+        InventoryItemConsumption: {
+          update: filteredItems.map(({ consumedUnits, id, numberOfUnits }) => {
+            return {
+              data: { numberOfUnits: numberOfUnits - consumedUnits },
+              where: {
+                id: id,
+              },
+            };
+          }),
+        },
+      },
+    });
+    // items.filter(it => it.consumedUnits > 0);
+    // const upItems = items.map(({ consumedUnits, id, numberOfUnits }) => {
+    //   return {
+    //     data: { numberOfUnits: numberOfUnits - consumedUnits },
+    //     where: {
+    //       id: id,
+    //     },
+    //   };
+    // });
+    // console.log(upItems, 'upItems');
+    // const updatedConsumptionItems = upItems.map(it =>
+    //   prisma.inventoryItemConsumption.update(it)
+    // );
+    // Promise.all(
+    //   items.map(it => prisma.inventoryItemConsumption.update(it))
+    // );
+    // await prisma.$transaction([updateInventoryItem, updatedConsumptionItems]);
+  });
   ///
   // const args = items.map(({ itemId, quantity }) => {
   //   const persistedItem = R.find(R.propEq('id', itemId))(persistedItems);
@@ -49,7 +96,7 @@ export const updatedUsedMaterials = async (organizationId, items) => {
   // });
 
   //eslint-disable-next-line
-  await Promise.all(args.map(d => prisma.inventoryItem.updateMany(d)));
+  // await Promise.all(args.map(d => prisma.inventoryItem.updateMany(d)));
   return prisma.inventoryItem.findMany({
     where: {
       organizationId,
