@@ -55,6 +55,7 @@ const ArchiveAppointment = ({
     model,
   });
 
+
   useEffect(() => {
     setOption(initlOption);
     setDiscount(0);
@@ -64,17 +65,15 @@ const ArchiveAppointment = ({
     patientId: appointment?.patient.id,
     all: false,
   });
-  const cardId = onePatient?.cardId;
-  const cardExpiryDate = onePatient?.cardExpiryDate;
 
   useEffect(() => {
-    console.log('in')
     setCompany(company => ({
       ...company,
-      cardId: cardId,
-      cardExpiryDate: cardExpiryDate,
+      cardId: onePatient.cardId || '',
+      cardExpiryDate: onePatient.cardExpiryDate || null,
     }));
-  }, [cardId, cardExpiryDate, setCompany]);
+  }, [onePatient.id]);
+
   const totalRemainingOfPayment = onePatient?.remainingOfPayment;
   const newCoupons = useMemo(() => {
     let newCouponsObject = [];
@@ -191,6 +190,7 @@ const ArchiveAppointment = ({
     selectedSessions,
     appointment,
     archiveReferedDoctorAppointment,
+    // cardInfo,
   ]);
   const handleFinish = useCallback(() => {
     onOk({

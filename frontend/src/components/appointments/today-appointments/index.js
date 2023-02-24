@@ -71,7 +71,7 @@ function TodayAppointments() {
   const { users } = useCourses({});
   const [company, setCompany] = useState(companyInital);
   const [onCreateAppointment] = useGlobalState('onCreateAppointment');
-  console.log(company,'CC')
+
   const doctors = useMemo(() => {
     return users.filter(u => u.position === 'Doctor');
   }, [users]);
@@ -103,6 +103,7 @@ function TodayAppointments() {
     onAdjust: () => {},
     onArchive: () => {
       setCompany(companyInital);
+      setPopUp(null);
       close();
     },
     setAppointment,
