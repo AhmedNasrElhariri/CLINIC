@@ -1765,6 +1765,8 @@ input InsuranceInput {
   feesCalculationType: FeesCalculationType
   paymentMethod: PaymentMethod
   sessions: [SessionInput]
+  cardId: String!
+  cardExpiryDate: Date!
 }
 input InsuranceEditInput {
   id: ID!

@@ -53,6 +53,8 @@ const initialFormValue = {
   patientSearchValue: '',
   paymentMethod: 'cash',
   bankId: null,
+  cardId: '',
+  cardExpiryDate: null,
 };
 
 const InsuranceDebitContainer = () => {

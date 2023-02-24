@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Form } from 'rsuite';
 import {
   CRModal,
@@ -58,6 +58,26 @@ const NewInsurance = ({
     },
     [setSelectedSessions]
   );
+
+  useEffect(() => {
+    if (type === 'addNewInsurance') {
+      console.log('hee');
+      const patient = searchedPatients.find(
+        ({ id }) => id === formValue.patientId
+      );
+      if (!patient) {
+        return;
+      }
+      console.log(formValue.patientId);
+      console.log(patient);
+      onChange({
+        ...formValue,
+        cardId: patient.cardId || '',
+        cardExpiryDate: patient.cardExpiryDate || null,
+      });
+    }
+  }, [formValue?.patientId]);
+
   return (
     <CRModal
       show={visible}
@@ -115,6 +135,13 @@ const NewInsurance = ({
               virtualized={false}
               block
             ></CRSelectInput>
+            <CRTextInput name="cardId" label={t('cardNo')} />
+            <CRDatePicker
+              name="cardExpiryDate"
+              label={t('cardExpiryDate')}
+              block
+            ></CRDatePicker>
+            {/* <CRTextInput name="cardExpiryDate" label={t('cardExpiryDate')} /> */}
             <CRSelectInput
               label={t('paymentMethod')}
               name="paymentMethod"
