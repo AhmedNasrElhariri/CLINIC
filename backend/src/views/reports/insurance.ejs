@@ -43,6 +43,7 @@
         <tr>
           <th>Seq</th>
           <th>Name</th>
+          <th>Patient</th>
           <th>Amount</th>
           <th>Company</th>
           <th>Card ID</th>
@@ -52,7 +53,8 @@
         <% for (var i = 0; i < transactions.length; i++) { %>
         <tr>
           <td><%= i+1 %></td>
-          <td><%= transactions[i].name %></td>
+          <td><%= transactions[i]?.companySession?.name %></td>
+          <td><%= transactions[i]?.patient?.name %></td>
           <td><%= transactions[i].amount %></td>
           <td><%= transactions[i].company.name %></td>
           <td><%= transactions[i].cardId %></td>

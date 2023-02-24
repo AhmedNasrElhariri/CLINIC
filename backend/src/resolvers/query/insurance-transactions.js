@@ -94,6 +94,7 @@ const InsuranceTransactions = async (
       specialty: true,
       doctor: true,
       companySession: true,
+      patient: true,
     },
     skip: offset,
     take: limit,

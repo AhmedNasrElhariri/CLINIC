@@ -81,14 +81,34 @@ const ListData = ({
             onClick={event => event.stopPropagation()}
           />
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
+        {/* <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="name" semiBold />
+        </CRTable.CRColumn> */}
+        <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ companySession }) => (
+              <CRTable.CRCellStyled bold>
+                {companySession?.name}
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
+          <CRTable.CRCell>
+            {({ patient }) => (
+              <CRTable.CRCellStyled bold>
+                {patient?.name}
+              </CRTable.CRCellStyled>
+            )}
+          </CRTable.CRCell>
+        </CRTable.CRColumn>
+        {/* <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('payer')}</CRTable.CRHeaderCell>
           <CRTable.CRCell dataKey="payer" semiBold />
-        </CRTable.CRColumn>
+        </CRTable.CRColumn> */}
 
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('revenueAmount')}</CRTable.CRHeaderCell>
@@ -104,7 +124,7 @@ const ListData = ({
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>
-        <CRTable.CRColumn flexGrow={1}>
+        {/* <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('session')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ companySession }) => (
@@ -113,7 +133,7 @@ const ListData = ({
               </CRTable.CRCellStyled>
             )}
           </CRTable.CRCell>
-        </CRTable.CRColumn>
+        </CRTable.CRColumn> */}
         <CRTable.CRColumn flexGrow={1}>
           <CRTable.CRHeaderCell>{t('companyName')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
@@ -123,7 +143,7 @@ const ListData = ({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         <CRTable.CRColumn flexGrow={1}>
-          <CRTable.CRHeaderCell>{t('cardId')}</CRTable.CRHeaderCell>
+          <CRTable.CRHeaderCell>{t('cardNo')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {({ cardId }) => (
               <CRTable.CRCellStyled bold>{cardId}</CRTable.CRCellStyled>

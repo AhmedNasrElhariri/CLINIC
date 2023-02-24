@@ -481,4 +481,5 @@ export const TRANSLATIONS_EN = {
   endTime: 'End time',
   expenseName: 'Expense Name',
   visa: 'Visa',
+  cardNo: 'CardNo',
 };

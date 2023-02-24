@@ -1730,7 +1730,7 @@ input BankExpenseTransitionInput {
 type InsuranceTransaction {
   id: ID!
   name: String!
-  amount: Int!
+  amount: Float!
   date: Date!
   level: String
   payer: String
@@ -1743,6 +1743,7 @@ type InsuranceTransaction {
   status: FeesStatus
   company: CompanyDefinition!
   companySession: CompanySessionDefinition
+  patient: Patient
 }
 type InsuranceTransactionsData {
   insuranceTransactions: [InsuranceTransaction!]
