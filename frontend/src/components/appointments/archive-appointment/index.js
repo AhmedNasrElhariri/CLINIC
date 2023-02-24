@@ -32,6 +32,8 @@ const ArchiveAppointment = ({
   onOk,
   loading,
   archiveReferedDoctorAppointment,
+  company,
+  setCompany,
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -40,7 +42,6 @@ const ArchiveAppointment = ({
   const [othersName, setOthersName] = useState('');
   const [bank, setBank] = useState(null);
   const [cashPayment, setCashPayment] = useState(0);
-  const [company, setCompany] = useState(companyInital);
   const [coupons, setCoupons] = useState([]);
   const [couponsValue, setCouponsValue] = useState(0);
   const [option, setOption] = useState(initlOption);
@@ -63,15 +64,17 @@ const ArchiveAppointment = ({
     patientId: appointment?.patient.id,
     all: false,
   });
+  const cardId = onePatient?.cardId;
+  const cardExpiryDate = onePatient?.cardExpiryDate;
+
   useEffect(() => {
-    const { cardId, cardExpiryDate } = onePatient;
+    console.log('in')
     setCompany(company => ({
       ...company,
       cardId: cardId,
       cardExpiryDate: cardExpiryDate,
     }));
-  }, [onePatient.id, onePatient]);
-
+  }, [cardId, cardExpiryDate, setCompany]);
   const totalRemainingOfPayment = onePatient?.remainingOfPayment;
   const newCoupons = useMemo(() => {
     let newCouponsObject = [];
@@ -160,7 +163,7 @@ const ArchiveAppointment = ({
       });
       setOthers(0);
       setBank(null);
-      setCompany(companyInital);
+      // setCompany(companyInital);
       setOthersName('');
       setDiscount(0);
       setCoupons([]);
@@ -207,7 +210,7 @@ const ArchiveAppointment = ({
     setRemaining(0);
     setPayOfRemaining(0);
     setBank(null);
-    setCompany(companyInital);
+    // setCompany(companyInital);
     setOthersName('');
     setDiscount(0);
     setCoupons([]);

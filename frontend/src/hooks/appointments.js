@@ -23,6 +23,7 @@ import {
   CONFIRMED_APPOINTMENT,
   TRANSFER_APPOINTMENTS,
   ARCHIVE_REFERED_DOCTORAPPOINTMENT,
+  GET_PATIENT
 } from 'apollo-client/queries';
 
 import client from 'apollo-client/client';
@@ -180,6 +181,7 @@ function useAppointments({
           query: PATIENT_COUPONS,
           variables: { patientId: patientId, all: false },
         },
+        { query: GET_PATIENT, variables: { id: patientId } },
         { query: LIST_INVENTORY },
         { query: LIST_INVENTORY_HISTORY },
         {

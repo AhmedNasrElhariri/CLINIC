@@ -212,7 +212,6 @@ function NewCourse({
     selectedSessions,
     session,
   ]);
-  console.log(selectedSessions, 'selectedSessions');
   const totalCoursePrice = useMemo(
     () =>
       (selectedSessions || []).reduce(
