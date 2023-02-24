@@ -1,7 +1,10 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 import { INVENTORY_OPERATION } from '@/utils/constants';
+import { APIExceptcion } from '@/services/erros.service';
+
 export const finalReducedItems = (items, quantity) => {
+  const total = quantity;
   const orderedItems = R.sortWith([R.ascend(R.prop('insertionDate'))])(items);
   const reducedOrderedItesm = orderedItems.map(item => {
     let x = 0;
@@ -9,18 +12,28 @@ export const finalReducedItems = (items, quantity) => {
     quantity -= x;
     return { ...item, consumedUnits: x };
   });
+  if (quantity > 0) {
+    throw new APIExceptcion(
+      `You have been finished this items - you should use only ${
+        total - quantity
+      }`
+    );
+  }
   return reducedOrderedItesm;
 };
+
 export const reduceFromInventoryConsumptions = (items, groupedValus) => {
   let vv = [];
   for (const [id, consuptionItems] of Object.entries(groupedValus)) {
-    const item = R.find(R.propEq('itemId', id))(items); //i have item and consuption items of the item
+    const item = R.find(R.propEq('itemId', id))(items);
+    //i have item and consuption items of the item
     const finalItems = finalReducedItems(consuptionItems, item.quantity);
     const finalObject = { id: id, quantity: item.quantity, items: finalItems };
     vv.push(finalObject);
   }
   return vv;
 };
+
 export const updatedUsedMaterials = async (organizationId, items) => {
   const persistedItems = await prisma.inventoryItem.findMany({
     where: {
@@ -43,7 +56,6 @@ export const updatedUsedMaterials = async (organizationId, items) => {
 
   finishedItems.forEach(async ({ id, quantity, items }) => {
     const persistedItem = R.find(R.propEq('id', id))(persistedItems);
-    console.log(items, 'IISTWMS');
     const filteredItems = items.filter(it => it.consumedUnits > 0);
     await prisma.inventoryItem.update({
       where: {

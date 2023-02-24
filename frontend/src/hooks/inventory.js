@@ -179,8 +179,8 @@ function useInventory({
     onCompleted() {
       Alert.success('the Inventory has been Consumed Successfully');
     },
-    onError() {
-      Alert.error('Failed to consume the Inventory');
+    onError: err => {
+      Alert.error(err.message);
     },
     refetchQueries: [
       //refetchExpenses,
