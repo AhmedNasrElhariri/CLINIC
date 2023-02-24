@@ -212,9 +212,10 @@ function NewCourse({
     selectedSessions,
     session,
   ]);
+  console.log(selectedSessions, 'selectedSessions');
   const totalCoursePrice = useMemo(
     () =>
-      selectedSessions.reduce(
+      (selectedSessions || []).reduce(
         (acc, { number, price }) => acc + number * price,
         0
       ),
@@ -255,7 +256,9 @@ function NewCourse({
                     <CRButton mt="10px" onClick={() => add()}>
                       {t('add')}
                     </CRButton>
-                    <Div p="10px" border="1px solid black">Total: {totalCoursePrice}</Div>
+                    <Div p="10px" border="1px solid black">
+                      Total: {totalCoursePrice}
+                    </Div>
                   </Div>
                   <Div display="flex" justifyContent="space-around">
                     <CRSelectInput
