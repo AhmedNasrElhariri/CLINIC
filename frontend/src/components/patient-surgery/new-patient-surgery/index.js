@@ -100,7 +100,7 @@ const NewPatientSurgery = ({
           }
         />
         <CRTimePicker
-          label={t('timeOfAdmision')}
+          label={t('timeOfAdmission')}
           block
           name="time"
           startHour={8}

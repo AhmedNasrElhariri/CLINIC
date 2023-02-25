@@ -1765,6 +1765,8 @@ input InsuranceInput {
   feesCalculationType: FeesCalculationType
   paymentMethod: PaymentMethod
   sessions: [SessionInput]
+  cardId: String!
+  cardExpiryDate: Date!
 }
 input InsuranceEditInput {
   id: ID!
@@ -2511,6 +2513,7 @@ type PatientSurgery {
   surgery: Surgery
   hospital: Hospital
   date: Date
+  timeOfAdmission: Date
   fees: Int
   hospitalFees: Int
   appointment: Appointment
@@ -2531,6 +2534,7 @@ input PatientSurgeryInput {
   surgeryId: ID!
   hospitalId: ID!
   date: Date
+  timeOfAdmission: Date
   fees: Int
   hospitalFees: Int
   anesthesia: AnesthesiaType
