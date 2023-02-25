@@ -33,7 +33,6 @@ import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import useGlobalState from 'state';
-import { ExcelIcon } from 'components/icons/index';
 import { Form, Whisper } from 'rsuite';
 
 const ENTITY_PROPS = ['id', 'name', 'amount', 'date', 'invoiceNo'];

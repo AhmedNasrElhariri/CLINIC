@@ -1,12 +1,18 @@
-import { CRButton, Div } from 'components';
+import { CRButton, Div, MenuPopover } from 'components';
+import { Whisper } from 'rsuite';
+
 const Actions = ({
   filter,
   handlePayDoctorFees,
   addNewFees,
-  print,
+  printPdf,
   checkedKeys,
-  handleRevertDoctorFees
+  handleRevertDoctorFees,
+  printExcel,
 }) => {
+  function handleSelectMenu(eventKey, event) {
+    eventKey === 1 ? printPdf() : printExcel();
+  }
   return (
     <>
       {filter?.status === 'Draft' && (
@@ -33,7 +39,13 @@ const Actions = ({
         <CRButton onClick={addNewFees}>Add new fees </CRButton>
       </Div>
       <Div mt="43px" ml="10px">
-        <CRButton onClick={print}>print </CRButton>
+        <Whisper
+          placement="bottomStart"
+          trigger="click"
+          speaker={<MenuPopover onSelect={handleSelectMenu} />}
+        >
+          <CRButton>Prints</CRButton>
+        </Whisper>
       </Div>
     </>
   );

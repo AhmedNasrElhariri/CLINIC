@@ -123,6 +123,28 @@ const DoctorFees = () => {
       });
     }
   }, [addNewDoctorFees, editDoctorFees, formValue, type]);
+  const printDoctorFeesExcel = async day => {
+    axios({
+      url: '/doctor-fees/excel',
+      responseType: 'blob', // important
+      params: {
+        organizationId: user.organizationId,
+        status: filter?.status,
+        doctorId: filter?.doctorId,
+        dateFrom: period && period[0],
+        dateTo: period && period[1],
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `doctor-fees-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {});
+  };
   const printDoctorFees = () => {
     axios({
       url: '/doctorFees',
@@ -160,7 +182,8 @@ const DoctorFees = () => {
           filter={filter}
           handlePayDoctorFees={handlePayDoctorFees}
           addNewFees={handleAddNewFees}
-          print={printDoctorFees}
+          printPdf={printDoctorFees}
+          printExcel={printDoctorFeesExcel}
           checkedKeys={checkedKeys}
           handleRevertDoctorFees={handleRevertDoctorFees}
         />
