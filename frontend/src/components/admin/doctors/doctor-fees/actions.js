@@ -39,17 +39,13 @@ const Actions = ({
         <CRButton onClick={addNewFees}>Add new fees </CRButton>
       </Div>
       <Div mt="43px" ml="10px">
-<<<<<<< HEAD
         <Whisper
           placement="bottomStart"
           trigger="click"
           speaker={<MenuPopover onSelect={handleSelectMenu} />}
         >
-          <CRButton>Prints</CRButton>
+          <CRButton>Print</CRButton>
         </Whisper>
-=======
-        <CRButton onClick={print}>Print </CRButton>
->>>>>>> 2b97e55f99e6c513c84615ebb612c5f3dbb903ef
       </Div>
     </>
   );
