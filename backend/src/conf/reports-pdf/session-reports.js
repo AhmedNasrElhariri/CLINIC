@@ -42,7 +42,8 @@ const init = app => {
             transactionName: s.name,
             date: s.date,
             amount: s.amount,
-            patientName: s.patient && s.patient.name,
+            patientName: s.patient ? s.patient.name : '',
+            patientPhoneNo: s.patient ? s.patient.phoneNo : '',
             doctorName: s.doctor && s.doctor.name,
           })),
         ]
@@ -55,6 +56,7 @@ const init = app => {
         'date',
         'amount',
         'patientName',
+        'patientPhoneNo',
         'doctorName',
       ];
 

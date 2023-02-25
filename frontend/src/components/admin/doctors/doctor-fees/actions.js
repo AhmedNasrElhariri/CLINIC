@@ -33,7 +33,7 @@ const Actions = ({
         <CRButton onClick={addNewFees}>Add new fees </CRButton>
       </Div>
       <Div mt="43px" ml="10px">
-        <CRButton onClick={print}>print </CRButton>
+        <CRButton onClick={print}>Print </CRButton>
       </Div>
     </>
   );

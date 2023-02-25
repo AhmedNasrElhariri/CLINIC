@@ -129,6 +129,7 @@ const PatientSurgeriesContainer = () => {
         surgeryId: surgery.id,
         hospitalId: hospital.id,
         date: date,
+        time: date,
         anesthesia: anesthesia,
         anesthesiaDoctorName: anesthesiaDoctorName,
         fees: fees,
