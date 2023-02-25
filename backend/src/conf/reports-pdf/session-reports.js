@@ -38,21 +38,13 @@ const init = app => {
             totalNumber,
             totalPrice,
           },
-          ...sessions.map(
-            ({
-              name: transactionName,
-              date,
-              amount,
-              patient: { name: patientName },
-              doctor: { name: doctorName },
-            }) => ({
-              transactionName,
-              date,
-              amount,
-              patientName,
-              doctorName,
-            })
-          ),
+          ...sessions.map(s => ({
+            transactionName: s.transactionName,
+            date: s.date,
+            amount: s.amount,
+            patientName: s.patient && s.patient.name,
+            doctorName: s.doctor && s.doctor.name,
+          })),
         ]
       );
       let keys = [
