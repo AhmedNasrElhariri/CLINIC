@@ -66,6 +66,19 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
+          <CRTable.CRColumn minWidth={136} flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('timeOfAdmission')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ timeOfAdmission }) => (
+                <CRTable.CRCellStyled>
+                  {timeOfAdmission
+                    ? formatDate(timeOfAdmission, FULL_DAY_FORMAT)
+                    : null}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+
           <CRTable.CRColumn minWidth={64} flexGrow={1}>
             <CRTable.CRHeaderCell>{t('anesthesiaType')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>

@@ -39,7 +39,7 @@ const SessionsParts = ({
   }, [setSelectedSessions, selectedSessions, item]);
   useEffect(() => {
     const session = item?.session;
-    setItem(prev => ({ ...prev, price: session.price }));
+    setItem(prev => ({ ...prev, price: session?.price || 0 }));
   }, [item?.session]);
   return (
     <>

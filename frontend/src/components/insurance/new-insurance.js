@@ -61,15 +61,12 @@ const NewInsurance = ({
 
   useEffect(() => {
     if (type === 'addNewInsurance') {
-      console.log('hee');
       const patient = searchedPatients.find(
         ({ id }) => id === formValue.patientId
       );
       if (!patient) {
         return;
       }
-      console.log(formValue.patientId);
-      console.log(patient);
       onChange({
         ...formValue,
         cardId: patient.cardId || '',
@@ -141,7 +138,6 @@ const NewInsurance = ({
               label={t('cardExpiryDate')}
               block
             ></CRDatePicker>
-            {/* <CRTextInput name="cardExpiryDate" label={t('cardExpiryDate')} /> */}
             <CRSelectInput
               label={t('paymentMethod')}
               name="paymentMethod"
