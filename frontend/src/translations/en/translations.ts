@@ -95,7 +95,7 @@ export const TRANSLATIONS_EN = {
   hospitalFees: 'Hospital Fees',
   assistantFees: 'Assistant Fees',
   anesthesiaFees: 'Anesthesia Fees',
-  timeOfAdmission: 'Time of Admision',
+  timeOfAdmission: 'Time of Admission',
   others: 'others',
   othersFees: 'Others Fees',
   addNewSurgery: 'Add New Surgery',

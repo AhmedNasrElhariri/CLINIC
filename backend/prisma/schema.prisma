@@ -1589,7 +1589,6 @@ model PatientSurgery {
   organization         Organization    @relation(fields: [organizationId], references: [id])
   organizationId       String
   date                 DateTime
-  timeOfAdmission       DateTime?
   fees                 Int?
   hospitalFees         Int?
   anesthesia           AnesthesiaType?

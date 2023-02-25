@@ -336,7 +336,7 @@ const BankAccountingContainer = () => {
                 trigger="click"
                 speaker={<MenuPopover onSelect={handleSelectMenu} />}
               >
-                <CRButton>Prints</CRButton>
+                <CRButton>Print</CRButton>
               </Whisper>
             </>
           </Div>

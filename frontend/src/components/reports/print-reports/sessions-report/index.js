@@ -38,7 +38,7 @@ const SessionReport = ({
         trigger="click"
         speaker={<MenuPopover onSelect={handleSelectMenu} />}
       >
-        <CRButton>Prints</CRButton>
+        <CRButton>Print</CRButton>
       </Whisper>
       {/* <CRButton onClick={() => setShowSessionData(!showSessionData)}>
           {showSessionData ? t('close') : t('show')}
