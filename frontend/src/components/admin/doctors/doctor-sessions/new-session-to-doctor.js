@@ -7,7 +7,7 @@ import {
   CRNumberInput,
   CRSelectInput,
   CRLabel,
-  Div
+  Div,
 } from 'components';
 import { feesCalTypes, feesCalMethods } from 'utils/constants';
 
@@ -61,7 +61,7 @@ export default function NewSession({
             <CRRadio
               options={feesCalTypes}
               name="feesCalculationType"
-              label={t("feesCalculationType")}
+              label={t('feesCalculationType')}
             />
             {formValue.feesCalculationType === 'percentage' && (
               <CRRadio
@@ -70,13 +70,13 @@ export default function NewSession({
                 label="fees Calculation Method"
               />
             )}
-            <CRNumberInput name="fees" label={t('fees')} block />
+            <CRNumberInput name="fees" label={t('fees')} block float />
             <Div mt="20px" display="flex">
               <CRLabel>External</CRLabel>
               <Toggle
                 onChange={val => onChange({ ...formValue, referedDoctor: val })}
                 checked={formValue?.referedDoctor}
-                style={{margin:'5px 0px 0px 10px'}}
+                style={{ margin: '5px 0px 0px 10px' }}
               />
             </Div>
           </>

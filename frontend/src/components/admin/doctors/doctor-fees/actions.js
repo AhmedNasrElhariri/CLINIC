@@ -5,6 +5,7 @@ const Actions = ({
   addNewFees,
   print,
   checkedKeys,
+  handleRevertDoctorFees
 }) => {
   return (
     <>
@@ -14,7 +15,17 @@ const Actions = ({
             disabled={checkedKeys.length > 0 ? false : true}
             onClick={handlePayDoctorFees}
           >
-            Pay doctor fees{' '}
+            Pay{' '}
+          </CRButton>
+        </Div>
+      )}
+      {filter?.status === 'Cleared' && (
+        <Div mt="43px" ml="10px">
+          <CRButton
+            disabled={checkedKeys.length > 0 ? false : true}
+            onClick={handleRevertDoctorFees}
+          >
+            Revert{' '}
           </CRButton>
         </Div>
       )}

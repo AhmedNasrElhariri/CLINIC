@@ -2225,7 +2225,7 @@ type DoctorSessionDefination {
   session: SessionDefinition!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
-  fees: Int!
+  fees: Float!
   referedDoctor: Boolean
   sessionId: ID!
 }
@@ -2235,13 +2235,13 @@ input DoctorSessionDefinationInput {
   sessionId: ID!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
-  fees: Int
+  fees: Float
   referedDoctor: Boolean
 }
 input DoctorFeesTransactionInput {
   id: ID
   name: String!
-  amount: Int!
+  amount: Float!
   sessionId: ID
   doctorId: ID
   sessionName: String
@@ -2257,7 +2257,7 @@ type DoctorCoursePartDefination {
   part: CourseTypeDefinition!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
-  fees: Int!
+  fees: Float!
   partId: ID!
 }
 
@@ -2266,7 +2266,7 @@ input DoctorCoursePartDefinationInput {
   partId: ID!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
-  fees: Int
+  fees: Float
 }
 #################################################################################
 
@@ -2574,6 +2574,7 @@ type DoctorFeesData {
 }
 input GatherDoctorFeesDataInput {
   ids: [ID!]
+  type: String
 }
 ######################################ReferedDoctorInput############
 input ReferedDoctorInput {

@@ -78,6 +78,18 @@ const DoctorFees = () => {
       variables: {
         gatherDoctorFeesData: {
           ids: checkedKeys,
+          type: 'pay',
+        },
+      },
+    });
+    setCheckedKeys([]);
+  }, [checkedKeys, gatherDoctorFees, setCheckedKeys]);
+  const handleRevertDoctorFees = useCallback(() => {
+    gatherDoctorFees({
+      variables: {
+        gatherDoctorFeesData: {
+          ids: checkedKeys,
+          type: 'revert',
         },
       },
     });
@@ -87,6 +99,10 @@ const DoctorFees = () => {
     setType('addNewFees');
     open();
   }, [open, setType]);
+  const handleCancel = useCallback(() => {
+    setFormValue(initialFormValue);
+    close();
+  }, [close]);
   const handleAdd = useCallback(() => {
     if (type === 'editFees') {
       editDoctorFees({
@@ -146,6 +162,7 @@ const DoctorFees = () => {
           addNewFees={handleAddNewFees}
           print={printDoctorFees}
           checkedKeys={checkedKeys}
+          handleRevertDoctorFees={handleRevertDoctorFees}
         />
       </Filter>
       <ListDoctorFees
@@ -164,8 +181,8 @@ const DoctorFees = () => {
       />
       <EditableDoctorFees
         show={visible}
-        onHide={close}
-        onCancel={close}
+        onHide={handleCancel}
+        onCancel={handleCancel}
         onOk={handleAdd}
         formValue={formValue}
         onChange={setFormValue}

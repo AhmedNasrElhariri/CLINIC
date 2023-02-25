@@ -1769,7 +1769,7 @@ model DoctorSessionDefination {
   sessionId             String
   feesCalculationMethod FeesCalculationMethod?
   feesCalculationType   FeesCalculationType
-  fees                  Int?
+  fees                  Float?
   referedDoctor         Boolean                @default(false)
   organization          Organization           @relation(fields: [organizationId], references: [id])
   organizationId        String
@@ -1816,7 +1816,7 @@ model DoctorCoursePartDefination {
   partId                String
   feesCalculationMethod FeesCalculationMethod?
   feesCalculationType   FeesCalculationType
-  fees                  Int?
+  fees                  Float?
   organization          Organization           @relation(fields: [organizationId], references: [id])
   organizationId        String
 
