@@ -95,15 +95,15 @@ const init = app => {
         },
       });
       const updatDoctorFees = doctorFees.map(
-        ({ name, amount, date, doctor: { name: doctorName } }) => ({
+        ({ name, amount, date, cost, doctor: { name: doctorName } }) => ({
           name,
           amount,
           date,
           doctorName,
+          cost,
         })
       );
-      console.log(updatDoctorFees, 'updatDoctorFees', doctorFees);
-      let keys = ['name', 'date', 'amount', 'doctorName'];
+      let keys = ['doctorName', 'date', 'name', 'amount', 'cost'];
 
       const workbook = generateExcel(keys, ['doctor-fees'], updatDoctorFees);
       const fileName = 'sessions-statistics.xlsx';
