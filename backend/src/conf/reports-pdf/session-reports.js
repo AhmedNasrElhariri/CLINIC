@@ -39,7 +39,7 @@ const init = app => {
             totalPrice,
           },
           ...sessions.map(s => ({
-            transactionName: s.transactionName,
+            transactionName: s.name,
             date: s.date,
             amount: s.amount,
             patientName: s.patient && s.patient.name,
