@@ -74,8 +74,6 @@ function useAppointments({
   setAppointment,
   onArchive,
 } = {}) {
-  // const [todayAppointments, setTodayAppointments] = useState([]);
-  const [appointments, setAppointments] = useState([]);
   const { data, refetch: refetchAppointments } = useQuery(LIST_APPOINTMENTS, {
     fetchPolicy: 'cache-and-network',
     variables: Object.assign(
@@ -99,15 +97,17 @@ function useAppointments({
     [],
     'appointmentsCount'
   )(appointmentsdata);
-  useEffect(() => {
-    const newAppointments = R.pipe(
-      R.propOr([], 'appointments'),
-      includeSurgery
-        ? R.identity
-        : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-    )(appointmentsdata);
-    setAppointments(newAppointments);
-  }, [appointmentsdata, includeSurgery]);
+
+  const appointments = useMemo(
+    () =>
+      R.pipe(
+        R.propOr([], 'appointments'),
+        includeSurgery
+          ? R.identity
+          : R.reject(R.propEq('type', APPT_TYPE.Surgery))
+      )(appointmentsdata),
+    [appointmentsdata, includeSurgery]
+  );
 
   const pages = Math.ceil(appointmentsCountNumber / 20);
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
@@ -144,17 +144,6 @@ function useAppointments({
       ),
     });
   const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
-
-  // useEffect(() => {
-  //   const newTodayAppointments = R.pipe(
-  //     R.propOr([], 'appointments'),
-  //     R.reject(R.propEq('status', 'Cancelled')),
-  //     includeSurgery
-  //       ? R.identity
-  //       : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-  //   )(todayAppointmentsDATA);
-  //   setTodayAppointments(newTodayAppointments);
-  // }, [todayAppointmentsDATA, includeSurgery]);
 
   const todayAppointments = useMemo(
     () =>

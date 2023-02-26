@@ -32,59 +32,10 @@ const todayAppointments = async (
   }
   const appointments = await prisma.appointment.findMany({
     where: {
-      AND: [
-        {
-          OR: [
-            {
-              doctorId: {
-                in: ids,
-              },
-            },
-            {
-              branchId: {
-                in: ids,
-              },
-            },
-            {
-              specialtyId: {
-                in: ids,
-              },
-            },
-          ],
-        },
-        {
-          AND: [
-            {
-              branchId: branchId,
-            },
-            {
-              specialtyId: specialtyId,
-            },
-            {
-              doctorId: doctorId,
-            },
-          ],
-        },
-        {
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
-                },
-              },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
-                },
-              },
-            },
-          ],
-        },
-      ],
+      organizationId,
+      branchId,
+      specialtyId,
+      doctorId,
       date: {
         gte: from,
         lte: to,
@@ -92,7 +43,6 @@ const todayAppointments = async (
       status: {
         in: finalStatus,
       },
-      organizationId,
     },
     orderBy: [
       {
@@ -102,8 +52,6 @@ const todayAppointments = async (
     skip: offset,
     take: limit,
     include: {
-      specialty: true,
-      branch: true,
       user: true,
       session: true,
       patient: true,
@@ -112,59 +60,10 @@ const todayAppointments = async (
   });
   const appointmentsCount = await prisma.appointment.count({
     where: {
-      AND: [
-        {
-          OR: [
-            {
-              doctorId: {
-                in: ids,
-              },
-            },
-            {
-              branchId: {
-                in: ids,
-              },
-            },
-            {
-              specialtyId: {
-                in: ids,
-              },
-            },
-          ],
-        },
-        {
-          AND: [
-            {
-              branchId: branchId,
-            },
-            {
-              specialtyId: specialtyId,
-            },
-            {
-              doctorId: doctorId,
-            },
-          ],
-        },
-        {
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
-                },
-              },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
-                },
-              },
-            },
-          ],
-        },
-      ],
+      organizationId,
+      branchId,
+      specialtyId,
+      doctorId,
       date: {
         gte: from,
         lte: to,
@@ -172,10 +71,9 @@ const todayAppointments = async (
       status: {
         in: finalStatus,
       },
-      organizationId,
     },
   });
-  return { appointments: appointments, appointmentsCount: appointmentsCount };
+  return { appointments: appointments, appointmentsCount };
 };
 
 export default todayAppointments;
