@@ -325,6 +325,7 @@ model Organization {
   doctorFees                 DoctorFees[]
   DoctorCoursePartDefination DoctorCoursePartDefination[]
   CoursePart                 CoursePart[]
+  Appointment                Appointment[]
 }
 
 model User {
@@ -507,6 +508,10 @@ model Appointment {
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @default(now()) @updatedAt
   doctorFees            DoctorFees[]
+  organization          Organization       @relation(fields: [organizationId], references: [id])
+  organizationId        String
+
+  @@index([organizationId])
 }
 
 model PulseControl {

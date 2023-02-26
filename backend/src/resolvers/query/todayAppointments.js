@@ -92,6 +92,7 @@ const todayAppointments = async (
       status: {
         in: finalStatus,
       },
+      organizationId,
     },
     orderBy: [
       {
@@ -171,6 +172,7 @@ const todayAppointments = async (
       status: {
         in: finalStatus,
       },
+      organizationId,
     },
   });
   return { appointments: appointments, appointmentsCount: appointmentsCount };
