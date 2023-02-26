@@ -23,17 +23,29 @@ import {
   CONFIRMED_APPOINTMENT,
   TRANSFER_APPOINTMENTS,
   ARCHIVE_REFERED_DOCTORAPPOINTMENT,
-  GET_PATIENT
+  GET_PATIENT,
 } from 'apollo-client/queries';
 
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
 
-const updateCache = myAppointments => {
+const updateAppointmentsCache = ({ appointments, appointmentsCount }) => {
   client.writeQuery({
     query: LIST_APPOINTMENTS,
     data: {
-      myAppointments,
+      appointments: {
+        appointments,
+        appointmentsCount,
+      },
+    },
+  });
+};
+
+const updateTodayAppointmentsCache = ({ appointments, appointmentsCount }) => {
+  client.writeQuery({
+    query: LIST_TODAY_APPOINTMENTS,
+    data: {
+      todayAppointments: { appointments, appointmentsCount },
     },
   });
 };
@@ -62,7 +74,7 @@ function useAppointments({
   setAppointment,
   onArchive,
 } = {}) {
-  const [todayAppointments, setTodayAppointments] = useState([]);
+  // const [todayAppointments, setTodayAppointments] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const { data, refetch: refetchAppointments } = useQuery(LIST_APPOINTMENTS, {
     fetchPolicy: 'cache-and-network',
@@ -133,16 +145,28 @@ function useAppointments({
     });
   const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
 
-  useEffect(() => {
-    const newTodayAppointments = R.pipe(
-      R.propOr([], 'appointments'),
-      R.reject(R.propEq('status', 'Cancelled')),
-      includeSurgery
-        ? R.identity
-        : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-    )(todayAppointmentsDATA);
-    setTodayAppointments(newTodayAppointments);
-  }, [todayAppointmentsDATA, includeSurgery]);
+  // useEffect(() => {
+  //   const newTodayAppointments = R.pipe(
+  //     R.propOr([], 'appointments'),
+  //     R.reject(R.propEq('status', 'Cancelled')),
+  //     includeSurgery
+  //       ? R.identity
+  //       : R.reject(R.propEq('type', APPT_TYPE.Surgery))
+  //   )(todayAppointmentsDATA);
+  //   setTodayAppointments(newTodayAppointments);
+  // }, [todayAppointmentsDATA, includeSurgery]);
+
+  const todayAppointments = useMemo(
+    () =>
+      R.pipe(
+        R.propOr([], 'appointments'),
+        R.reject(R.propEq('status', 'Cancelled')),
+        includeSurgery
+          ? R.identity
+          : R.reject(R.propEq('type', APPT_TYPE.Surgery))
+      )(todayAppointmentsDATA),
+    [todayAppointmentsDATA, includeSurgery]
+  );
 
   const todayAppointmentsCount = useMemo(
     () => R.propOr(0, 'appointmentsCount')(todayAppointmentsDATA),
@@ -225,7 +249,7 @@ function useAppointments({
           return oldApp;
         }
       });
-      updateCache(allNewApp);
+      updateAppointmentsCache(allNewApp);
     },
   });
   const [adjust] = useMutation(ADJUST_APPOINTMENT, {
@@ -247,14 +271,21 @@ function useAppointments({
           ? { ...appointment, confirmed: !appointment.confirmed }
           : appointment
       )(todayAppointments);
-      setTodayAppointments(newTodayAppointments);
 
       const newAppointments = R.map(appointment =>
         id === appointment.id
           ? { ...appointment, confirmed: !appointment.confirmed }
           : appointment
       )(appointments);
-      setAppointments(newAppointments);
+
+      updateTodayAppointmentsCache({
+        appointments: newTodayAppointments,
+        appointmentsCount: todayAppointmentsCount,
+      });
+      updateAppointmentsCache({
+        appointments: newAppointments,
+        appointmentsCount,
+      });
     },
   });
 
