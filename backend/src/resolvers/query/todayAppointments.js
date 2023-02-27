@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { fetchWithCount } from '@/services/query';
+import { prisma } from '@';
 
 const todayAppointments = async (
   _,
@@ -12,11 +13,6 @@ const todayAppointments = async (
   let from = moment();
   let to = moment();
 
-  console.log(moment())
-  console.log(moment().utc())
-  console.log(new Date())
-  console.log('hours', moment().utc().hours(), new Date().getHours());
-
   if (HOUR === 0) {
     from = moment().utc().subtract(1, 'd').startOf('day').toDate();
     to = moment().utc().subtract(1, 'd').endOf('day').toDate();
@@ -28,7 +24,25 @@ const todayAppointments = async (
   const [appointments, count] = await fetchWithCount('appointment', {
     where: {
       organizationId,
-      ...(patient ? {} : { branchId, specialtyId, doctorId }),
+      ...(patient
+        ? {
+            patient: {
+              OR: [
+                {
+                  name: {
+                    contains: patient,
+                    mode: 'insensitive',
+                  },
+                },
+                {
+                  phoneNo: {
+                    contains: patient,
+                  },
+                },
+              ],
+            },
+          }
+        : { branchId, specialtyId, doctorId }),
       date: {
         gte: from,
         lte: to,
@@ -36,23 +50,6 @@ const todayAppointments = async (
       status: {
         in: finalStatus,
       },
-      OR: [
-        {
-          patient: {
-            name: {
-              contains: patient,
-              mode: 'insensitive',
-            },
-          },
-        },
-        {
-          patient: {
-            phoneNo: {
-              contains: patient,
-            },
-          },
-        },
-      ],
     },
     orderBy: [
       {
