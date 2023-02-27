@@ -29,24 +29,27 @@ const appointments = async (
         {
           status,
           organizationId,
-          ...(patient ? {} : { branchId, specialtyId, doctorId }),
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
-                },
-              },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
-                },
-              },
-            },
-          ],
+          ...(patient
+            ? {
+                OR: [
+                  {
+                    patient: {
+                      name: {
+                        contains: patient,
+                        mode: 'insensitive',
+                      },
+                    },
+                  },
+                  {
+                    patient: {
+                      phoneNo: {
+                        contains: patient,
+                      },
+                    },
+                  },
+                ],
+              }
+            : { branchId, specialtyId, doctorId }),
         },
         dateTo &&
           dateFrom && {

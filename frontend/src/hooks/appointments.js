@@ -75,6 +75,7 @@ function useAppointments({
   onArchive,
 } = {}) {
   const { data, refetch: refetchAppointments } = useQuery(LIST_APPOINTMENTS, {
+    fetchPolicy: 'cache-and-network',
     variables: Object.assign(
       {
         offset: (page - 1) * 20 || 0,
@@ -129,6 +130,7 @@ function useAppointments({
 
   const { data: todayAppointmentsData, refetch: refetchTodayAppointments } =
     useQuery(LIST_TODAY_APPOINTMENTS, {
+      fetchPolicy: 'cache-and-network',
       variables: Object.assign(
         {
           offset: (page - 1) * 30 || 0,
