@@ -14,7 +14,7 @@ const editCourseUnits = async (
   const finalConsumed =
     consumed > 0
       ? consumed
-      : parts.reduce((sum, { number }) => sum + number, 0);
+      : parts.reduce((sum, { amount }) => sum + amount, 0);
   const data = await prisma.course.findUnique({
     where: {
       id: courseId,
@@ -38,10 +38,12 @@ const editCourseUnits = async (
       include: { part: true },
     });
     const sessions = PARTS.map(({ unitPrice, partId, part, id }) => {
-      const number = parts.find(p => p.id === id).number;
+      const number = parts.find(p => p.id === id).amount;
+      const notes = parts.find(p => p.id === id).notes;
       return {
         name: part.name,
         number: number,
+        notes: notes,
         price: unitPrice,
         partID: partId,
       };

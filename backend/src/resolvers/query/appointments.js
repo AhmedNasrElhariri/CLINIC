@@ -1,8 +1,8 @@
 import { prisma } from '@';
 import moment from 'moment';
 
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS, APPOINTMENTS_STATUS } from '@/utils/constants';
+// import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { APPOINTMENTS_STATUS } from '@/utils/constants';
 
 const appointments = async (
   _,
@@ -18,16 +18,16 @@ const appointments = async (
     specialtyId,
     branchId,
   },
-  { user, organizationId }
+  { organizationId }
 ) => {
-  const ids = await listFlattenUsersTreeIds(
-    {
-      user,
-      organizationId,
-      action: ACTIONS.List_Appointment,
-    },
-    false
-  );
+  // const ids = await listFlattenUsersTreeIds(
+  //   {
+  //     user,
+  //     organizationId,
+  //     action: ACTIONS.List_Appointment,
+  //   },
+  //   false
+  // );
   // const sortingObj =
   //   type === APPOINTMENTS_STATUS.WAITING
   //     ? { updatedAt: 'asc' }
@@ -43,39 +43,8 @@ const appointments = async (
       where: Object.assign(
         {
           status,
+          organizationId,
           AND: [
-            {
-              OR: [
-                {
-                  doctorId: {
-                    in: ids,
-                  },
-                },
-                {
-                  branchId: {
-                    in: ids,
-                  },
-                },
-                {
-                  specialtyId: {
-                    in: ids,
-                  },
-                },
-              ],
-            },
-            {
-              AND: [
-                {
-                  branchId: branchId,
-                },
-                {
-                  specialtyId: specialtyId,
-                },
-                {
-                  doctorId: doctorId,
-                },
-              ],
-            },
             {
               OR: [
                 {
@@ -94,6 +63,15 @@ const appointments = async (
                   },
                 },
               ],
+            },
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
             },
           ],
         },
@@ -113,39 +91,8 @@ const appointments = async (
       where: Object.assign(
         {
           status,
+          organizationId,
           AND: [
-            {
-              OR: [
-                {
-                  doctorId: {
-                    in: ids,
-                  },
-                },
-                {
-                  branchId: {
-                    in: ids,
-                  },
-                },
-                {
-                  specialtyId: {
-                    in: ids,
-                  },
-                },
-              ],
-            },
-            {
-              AND: [
-                {
-                  branchId: branchId,
-                },
-                {
-                  specialtyId: specialtyId,
-                },
-                {
-                  doctorId: doctorId,
-                },
-              ],
-            },
             {
               OR: [
                 {
@@ -164,6 +111,15 @@ const appointments = async (
                   },
                 },
               ],
+            },
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
             },
           ],
         },
