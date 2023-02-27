@@ -1,3 +1,4 @@
+import { prisma } from '@';
 import * as R from 'ramda';
 
 export const convertArrayToInClause = (obj = {}) => {
@@ -8,4 +9,10 @@ export const convertArrayToInClause = (obj = {}) => {
   )(Object.keys(obj));
 
   return inClauses;
+};
+
+export const fetchWithCount = async (model, { where, ...rest }) => {
+  const dataQuery = prisma[model].findMany({ where, ...rest });
+  const dataCountQuery = prisma[model].count({ where });
+  return Promise.all([dataQuery, dataCountQuery]);
 };

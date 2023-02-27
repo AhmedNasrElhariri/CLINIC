@@ -226,6 +226,32 @@ function NewCourse({
     },
     [setSelectedSessions]
   );
+  useEffect(() => {
+    setConsumedParts &&
+      setConsumedParts(
+        (courseParts || []).map(({ id, part: { name } }) => ({
+          id,
+          amount: 0,
+          notes: '',
+          name,
+        }))
+      );
+  }, [courseParts, setConsumedParts]);
+  const handleChangeCoursePart = useCallback(
+    (val, checkChange, indx) => {
+      setConsumedParts &&
+        setConsumedParts(
+          (consumedParts || []).map(({ name, amount, notes, id }, index) => {
+            return index === indx
+              ? checkChange === 'amount'
+                ? { name, amount: val, notes, id }
+                : { name, amount, notes: val, id }
+              : { name, amount, notes, id };
+          })
+        );
+    },
+    [consumedParts] //not change the dependencies so that does not cause infinte loop
+  );
   const choices = useMemo(() => {
     const allChoices = [...courseTypesDefinition];
     return allChoices.map(s => ({ name: s.name, id: s }));
@@ -483,13 +509,24 @@ function NewCourse({
                   onChange={setConsumedParts}
                   fluid
                 >
-                  {courseParts.map(({ id, part }, indx) => (
-                    <Div mb={type === 'addNewUnits' ? 2 : 0}>
+                  {consumedParts?.map(({ id, amount, notes, name }, indx) => (
+                    <Div mb={type === 'addNewUnits' ? 2 : 0} display="flex">
                       <CRNumberInput
-                        label={`Number of Units (${part?.name})`}
-                        name={id}
+                        label={`Number of Units (${name})`}
+                        value={amount}
                         layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
+                        onChange={val =>
+                          handleChangeCoursePart(val, 'amount', indx)
+                        }
                       ></CRNumberInput>
+                      <CRTextInput
+                        label="Notes"
+                        layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
+                        value={notes}
+                        onChange={val =>
+                          handleChangeCoursePart(val, 'notes', indx)
+                        }
+                      />
                     </Div>
                   ))}
                 </Form>

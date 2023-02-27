@@ -1401,7 +1401,8 @@ input SessionInput {
 }
 input PartInput {
   id: ID
-  number: Int
+  amount: Int
+  notes: String
 }
 
 input Discount {

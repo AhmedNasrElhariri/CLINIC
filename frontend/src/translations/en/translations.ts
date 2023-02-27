@@ -312,7 +312,7 @@ export const TRANSLATIONS_EN = {
   pay: 'Pay',
   consumeUnits: 'Consume Units',
   editUnits: 'Edit Units',
-  finish: 'Finsh',
+  finish: 'Finish',
   totalOfUnits: 'Total of Units',
   consumed: 'Consumed',
   remaining: 'Remaining',

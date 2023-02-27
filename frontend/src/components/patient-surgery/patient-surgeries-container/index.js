@@ -71,6 +71,7 @@ const PatientSurgeriesContainer = () => {
     page: page,
     onCreate: () => {
       close();
+      setFormValue(initValue);
     },
   });
   const pages = Math.ceil(patientSurgeriesCount / 20);
@@ -144,6 +145,10 @@ const PatientSurgeriesContainer = () => {
     },
     [setFormValue, open, setType]
   );
+  const handleCancel = useCallback(() => {
+    setFormValue(initValue);
+    close();
+  }, [setFormValue, close]);
   return (
     <>
       <MainContainer
@@ -163,7 +168,7 @@ const PatientSurgeriesContainer = () => {
           formValue={formValue}
           onChange={setFormValue}
           onOk={handleAdd}
-          onClose={close}
+          onClose={handleCancel}
           checkResult={checkResult}
           validate={validate}
           show={show}

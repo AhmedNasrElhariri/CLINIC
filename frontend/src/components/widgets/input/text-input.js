@@ -24,7 +24,7 @@ const TextInput = ({
   ...rest
 }) => {
   return (
-    <FormGroupStyled>
+    <FormGroupStyled layout={layout}>
       {!noLabel && <Label layout={layout}>{label}</Label>}
       <InputGroupStyled borderless={borderless ? 1 : 0}>
         <FormControl {...rest} accepter={CustomInput} addonAfter={!!addOn} />
@@ -33,5 +33,7 @@ const TextInput = ({
     </FormGroupStyled>
   );
 };
-
+TextInput.defaultProps = {
+  layout: 'vertical',
+};
 export default memo(TextInput);

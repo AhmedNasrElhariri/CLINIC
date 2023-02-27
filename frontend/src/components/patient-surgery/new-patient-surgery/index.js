@@ -40,7 +40,7 @@ const NewPatientSurgery = ({
   });
   const header = useMemo(
     () => (type === 'create' ? t('addNewSurgery') : t('editSurgery')),
-    [type]
+    [type, t]
   );
 
   return (

@@ -20,7 +20,6 @@ git pull origin $branch
 
 echo 'start frontend build'
 cd ./frontend
-# npm ci
 echo 'start building...'
 npm run build
 cd ../
@@ -28,7 +27,6 @@ echo 'frontend finished successfully'
 
 echo 'start patients app build'
 cd ./patients-app
-# npm ci
 echo 'start building...'
 REACT_APP_GRAPHQL_URL=https://chr-ring.com npm run build
 cd ../
