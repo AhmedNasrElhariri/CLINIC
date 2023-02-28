@@ -4,9 +4,10 @@ import Filter from './filter';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
 import ListLogging from './list-logging';
-import { CRButton } from 'components';
 import axios from 'axios';
 import useGlobalState from 'state';
+import { Whisper } from 'rsuite';
+import { MenuPopover, CRButton } from 'components';
 
 const Logging = () => {
   const { t } = useTranslation();
@@ -27,9 +28,9 @@ const Logging = () => {
     model: formValue.model?.model,
     tagName: formValue.model?.tagName,
   });
-  const handleLoggingReport = () => {
+  const handleLoggingReportPdf = () => {
     axios({
-      url: '/logging',
+      url: '/logging/pdf',
       method: 'POST',
       responseType: 'blob', // important
       params: {
@@ -51,11 +52,41 @@ const Logging = () => {
       })
       .catch(err => {});
   };
+  const handleLoggingExcel = async () => {
+    axios({
+      url: '/logging/excel',
+      responseType: 'blob', // important
+      params: {
+        dateFrom: R.pathOr(null, ['date', 0])(formValue),
+        dateTo: R.pathOr(null, ['date', 1])(formValue),
+        userId: R.propOr(null, 'userId')(formValue),
+        model: formValue.model?.model,
+        tagName: formValue.model?.tagName,
+        organizationId: user.organizationId,
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `logging-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {});
+  };
+  function handleSelectMenu(eventKey, event) {
+    eventKey === 1 ? handleLoggingReportPdf() : handleLoggingExcel();
+  }
   return (
     <>
-      <CRButton variant="primary" onClick={handleLoggingReport} ml={1} mr={1}>
-        {t('print')} +
-      </CRButton>
+      <Whisper
+        placement="bottomStart"
+        trigger="click"
+        speaker={<MenuPopover onSelect={handleSelectMenu} />}
+      >
+        <CRButton>Print</CRButton>
+      </Whisper>
       <Filter
         users={users}
         formValue={formValue}

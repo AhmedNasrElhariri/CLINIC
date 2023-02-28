@@ -54,19 +54,22 @@ function useDoctor({
     [doctorSessionsData]
   );
 
-  const { data: doctorFeesData } = useQuery(LIST_DOCTOR_FEES, {
-    variables: Object.assign(
-      {
-        offset: (page - 1) * 20,
-        limit: 20,
-        doctorId,
-        status,
-      },
-      dateFrom && { dateFrom },
-      dateTo && { dateTo },
-      type && { type }
-    ),
-  });
+  const { data: doctorFeesData, refetch: refetchDoctorFees } = useQuery(
+    LIST_DOCTOR_FEES,
+    {
+      variables: Object.assign(
+        {
+          offset: (page - 1) * 20,
+          limit: 20,
+          doctorId,
+          status,
+        },
+        dateFrom && { dateFrom },
+        dateTo && { dateTo },
+        type && { type }
+      ),
+    }
+  );
   const doctorFees = doctorFeesData?.doctorFeesTransactions;
   const doctorFeesTransactions = R.propOr([], 'doctorFees')(doctorFees);
   const totalDoctorFees = R.propOr(0, 'totalDoctorFees')(doctorFees);
@@ -182,23 +185,10 @@ function useDoctor({
   });
   const [gatherDoctorFees] = useMutation(GATHER_DOCTOR_FEES, {
     onCompleted() {
+      refetchDoctorFees();
       Alert.success('The fees has been gathered Successfully');
     },
-    refetchQueries: [
-      {
-        query: LIST_DOCTOR_FEES,
-        variables: Object.assign(
-          {
-            offset: (page - 1) * 20 || 0,
-            limit: 20,
-            doctorId,
-            status,
-          },
-          dateFrom && { dateFrom },
-          dateTo && { dateTo }
-        ),
-      },
-    ],
+
     onError(err) {
       Alert.error(err.message);
     },

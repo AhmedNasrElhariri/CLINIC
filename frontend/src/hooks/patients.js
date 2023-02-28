@@ -130,6 +130,7 @@ function usePatients({
     variables: {
       id: patientId,
     },
+    fetchPolicy: 'network-only',
   });
   const onePatient = R.propOr({}, 'patient')(onePatientData);
 

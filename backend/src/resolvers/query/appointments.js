@@ -1,8 +1,7 @@
-import { prisma } from '@';
 import moment from 'moment';
 
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS, APPOINTMENTS_STATUS } from '@/utils/constants';
+import { APPOINTMENTS_STATUS } from '@/utils/constants';
+import { fetchWithCount } from '@/services/query';
 
 const appointments = async (
   _,
@@ -18,154 +17,39 @@ const appointments = async (
     specialtyId,
     branchId,
   },
-  { user, organizationId }
+  { organizationId }
 ) => {
-  const ids = await listFlattenUsersTreeIds(
-    {
-      user,
-      organizationId,
-      action: ACTIONS.List_Appointment,
-    },
-    false
-  );
-  // const sortingObj =
-  //   type === APPOINTMENTS_STATUS.WAITING
-  //     ? { updatedAt: 'asc' }
-  //     : {
-  //         date: 'asc',
-  //       };
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
   let appointmentsCount = 0;
   let appointments = [];
   if (dateFrom || patient) {
-    appointmentsCount = await prisma.appointment.count({
+    const [allAppointments, count] = await fetchWithCount('appointment', {
       where: Object.assign(
         {
           status,
-          AND: [
-            {
-              OR: [
-                {
-                  doctorId: {
-                    in: ids,
-                  },
-                },
-                {
-                  branchId: {
-                    in: ids,
-                  },
-                },
-                {
-                  specialtyId: {
-                    in: ids,
-                  },
-                },
-              ],
-            },
-            {
-              AND: [
-                {
-                  branchId: branchId,
-                },
-                {
-                  specialtyId: specialtyId,
-                },
-                {
-                  doctorId: doctorId,
-                },
-              ],
-            },
-            {
-              OR: [
-                {
-                  patient: {
-                    name: {
-                      contains: patient,
-                      mode: 'insensitive',
+          organizationId,
+          ...(patient
+            ? {
+                OR: [
+                  {
+                    patient: {
+                      name: {
+                        contains: patient,
+                        mode: 'insensitive',
+                      },
                     },
                   },
-                },
-                {
-                  patient: {
-                    phoneNo: {
-                      contains: patient,
+                  {
+                    patient: {
+                      phoneNo: {
+                        contains: patient,
+                      },
                     },
                   },
-                },
-              ],
-            },
-          ],
-        },
-        dateTo &&
-          dateFrom && {
-            date: {
-              gte: startDay,
-              lte: endDay,
-            },
-          },
-        type && {
-          sessionId: type,
-        }
-      ),
-    });
-    appointments = await prisma.appointment.findMany({
-      where: Object.assign(
-        {
-          status,
-          AND: [
-            {
-              OR: [
-                {
-                  doctorId: {
-                    in: ids,
-                  },
-                },
-                {
-                  branchId: {
-                    in: ids,
-                  },
-                },
-                {
-                  specialtyId: {
-                    in: ids,
-                  },
-                },
-              ],
-            },
-            {
-              AND: [
-                {
-                  branchId: branchId,
-                },
-                {
-                  specialtyId: specialtyId,
-                },
-                {
-                  doctorId: doctorId,
-                },
-              ],
-            },
-            {
-              OR: [
-                {
-                  patient: {
-                    name: {
-                      contains: patient,
-                      mode: 'insensitive',
-                    },
-                  },
-                },
-                {
-                  patient: {
-                    phoneNo: {
-                      contains: patient,
-                    },
-                  },
-                },
-              ],
-            },
-          ],
+                ],
+              }
+            : { branchId, specialtyId, doctorId }),
         },
         dateTo &&
           dateFrom && {
@@ -191,6 +75,8 @@ const appointments = async (
         date: 'asc',
       },
     });
+    appointments = allAppointments;
+    appointmentsCount = count;
   }
 
   const data = {

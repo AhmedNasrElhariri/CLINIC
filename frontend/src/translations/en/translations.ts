@@ -95,7 +95,7 @@ export const TRANSLATIONS_EN = {
   hospitalFees: 'Hospital Fees',
   assistantFees: 'Assistant Fees',
   anesthesiaFees: 'Anesthesia Fees',
-  timeOfAdmision: 'Time of Admision',
+  timeOfAdmission: 'Time of Admission',
   others: 'others',
   othersFees: 'Others Fees',
   addNewSurgery: 'Add New Surgery',
@@ -312,7 +312,7 @@ export const TRANSLATIONS_EN = {
   pay: 'Pay',
   consumeUnits: 'Consume Units',
   editUnits: 'Edit Units',
-  finish: 'Finsh',
+  finish: 'Finish',
   totalOfUnits: 'Total of Units',
   consumed: 'Consumed',
   remaining: 'Remaining',
@@ -485,4 +485,5 @@ export const TRANSLATIONS_EN = {
   endTime: 'End time',
   expenseName: 'Expense Name',
   visa: 'Visa',
+  cardNo: 'CardNo',
 };

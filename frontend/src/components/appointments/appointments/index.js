@@ -41,6 +41,13 @@ const tabVsStatus = new Map([
   [1, APPT_STATUS.WAITING],
   [2, APPT_STATUS.ARCHIVED],
 ]);
+export const companyInital = {
+  companyId: null,
+  cardId: '',
+  cardExpiryDate: null,
+  paymentMethod: 'cash',
+  bankId: null,
+};
 function Appointments() {
   const [formValue, setFormValue] = useState({
     date: [],
@@ -58,6 +65,7 @@ function Appointments() {
   const followUpFeature = R.propOr(false, 'followUp')(organization);
   const { t } = useTranslation();
   const { visible, close, open } = useModal({});
+  const [company, setCompany] = useState(companyInital);
 
   const {
     appointments,
@@ -69,6 +77,7 @@ function Appointments() {
     cancel,
     pages,
     confirmedAppointment,
+    archiveReferedDoctorAppointment,
   } = useAppointments({
     page,
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
@@ -81,6 +90,11 @@ function Appointments() {
     specialtyId: filter?.specialty,
     doctorId: filter?.doctor,
     setAppointment,
+    onArchive: () => {
+      setCompany(companyInital);
+      setPopUp(null);
+      close();
+    },
   });
 
   const onClickDone = useCallback(
@@ -154,7 +168,6 @@ function Appointments() {
       couponsValue,
       doctorFees,
     }) => {
-      close();
       archive({
         variables: {
           id: appointment.id,
@@ -167,6 +180,10 @@ function Appointments() {
             price: session.price,
             number: session.number,
             id: session.id,
+            patientFees: session?.patientFees || 0,
+            feesCalType: session?.type,
+            cost: session?.cost,
+            companyId: session?.companyId,
           })),
           items: items.map(({ itemId, quantity }) => ({
             itemId,
@@ -177,7 +194,7 @@ function Appointments() {
             amount: discount,
           },
           others: {
-            name: `others-${othersName}-${appointment.patient.name}`,
+            name: 'others - ' + othersName + ' - ' + appointment.patient.name,
             amount: others,
             othersName: othersName,
           },
@@ -195,7 +212,7 @@ function Appointments() {
         },
       });
     },
-    [appointment, archive, close]
+    [appointment, archive]
   );
   const addBusinessNotes = useCallback(() => {
     close();
@@ -350,6 +367,9 @@ function Appointments() {
           show={visible}
           onCancel={close}
           onOk={handleArchive}
+          company={company}
+          setCompany={setCompany}
+          archiveReferedDoctorAppointment={archiveReferedDoctorAppointment}
         />
       )}
       {popUp === 'complete' && (

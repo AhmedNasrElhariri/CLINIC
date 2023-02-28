@@ -95,7 +95,7 @@ export const TRANSLATIONS_AR = {
   assistantFees: "رسوم مساعد الدكتور",
   anesthesiaFees: "رسوم التخدير",
   doctorFees: "رسوم الدكتور",
-  timeOfAdmision: "وقت قبول الحاله",
+  timeOfAdmission: "وقت قبول الحاله",
   others: "اخري",
   addNewSurgery: "اضافه عمليه جراحيه جديده",
   editSurgery: "تعديل العمليه الجراحيه",

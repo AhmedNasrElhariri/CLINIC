@@ -214,7 +214,7 @@ function NewCourse({
   ]);
   const totalCoursePrice = useMemo(
     () =>
-      selectedSessions.reduce(
+      (selectedSessions || []).reduce(
         (acc, { number, price }) => acc + number * price,
         0
       ),
@@ -225,6 +225,32 @@ function NewCourse({
       setSelectedSessions(R.remove(idx, 1));
     },
     [setSelectedSessions]
+  );
+  useEffect(() => {
+    setConsumedParts &&
+      setConsumedParts(
+        (courseParts || []).map(({ id, part: { name } }) => ({
+          id,
+          amount: 0,
+          notes: '',
+          name,
+        }))
+      );
+  }, [courseParts, setConsumedParts]);
+  const handleChangeCoursePart = useCallback(
+    (val, checkChange, indx) => {
+      setConsumedParts &&
+        setConsumedParts(
+          (consumedParts || []).map(({ name, amount, notes, id }, index) => {
+            return index === indx
+              ? checkChange === 'amount'
+                ? { name, amount: val, notes, id }
+                : { name, amount, notes: val, id }
+              : { name, amount, notes, id };
+          })
+        );
+    },
+    [consumedParts] //not change the dependencies so that does not cause infinte loop
   );
   const choices = useMemo(() => {
     const allChoices = [...courseTypesDefinition];
@@ -255,7 +281,9 @@ function NewCourse({
                     <CRButton mt="10px" onClick={() => add()}>
                       {t('add')}
                     </CRButton>
-                    <Div p="10px" border="1px solid black">Total: {totalCoursePrice}</Div>
+                    <Div p="10px" border="1px solid black">
+                      Total: {totalCoursePrice}
+                    </Div>
                   </Div>
                   <Div display="flex" justifyContent="space-around">
                     <CRSelectInput
@@ -481,13 +509,24 @@ function NewCourse({
                   onChange={setConsumedParts}
                   fluid
                 >
-                  {courseParts.map(({ id, part }, indx) => (
-                    <Div mb={type === 'addNewUnits' ? 2 : 0}>
+                  {consumedParts?.map(({ id, amount, notes, name }, indx) => (
+                    <Div mb={type === 'addNewUnits' ? 2 : 0} display="flex">
                       <CRNumberInput
-                        label={`Number of Units (${part?.name})`}
-                        name={id}
+                        label={`Number of Units (${name})`}
+                        value={amount}
                         layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
+                        onChange={val =>
+                          handleChangeCoursePart(val, 'amount', indx)
+                        }
                       ></CRNumberInput>
+                      <CRTextInput
+                        label="Notes"
+                        layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
+                        value={notes}
+                        onChange={val =>
+                          handleChangeCoursePart(val, 'notes', indx)
+                        }
+                      />
                     </Div>
                   ))}
                 </Form>

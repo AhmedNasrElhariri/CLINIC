@@ -53,6 +53,8 @@ const initialFormValue = {
   patientSearchValue: '',
   paymentMethod: 'cash',
   bankId: null,
+  cardId: '',
+  cardExpiryDate: null,
 };
 
 const InsuranceDebitContainer = () => {
@@ -274,7 +276,7 @@ const InsuranceDebitContainer = () => {
               trigger="click"
               speaker={<MenuPopover onSelect={handleSelectMenu} />}
             >
-              <CRButton>Prints</CRButton>
+              <CRButton>Print</CRButton>
             </Whisper>
           </Div>
         </Div>

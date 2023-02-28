@@ -325,6 +325,7 @@ model Organization {
   doctorFees                 DoctorFees[]
   DoctorCoursePartDefination DoctorCoursePartDefination[]
   CoursePart                 CoursePart[]
+  Appointment                Appointment[]
 }
 
 model User {
@@ -507,6 +508,10 @@ model Appointment {
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @default(now()) @updatedAt
   doctorFees            DoctorFees[]
+  organization          Organization       @relation(fields: [organizationId], references: [id])
+  organizationId        String
+
+  @@index([organizationId])
 }
 
 model PulseControl {
@@ -959,31 +964,31 @@ model BankExpense {
 }
 
 model InsuranceRevenue {
-  id               String                   @id @default(uuid())
+  id               String                    @id @default(uuid())
   name             String
   date             DateTime
-  amount           Int
+  amount           Float
   invoiceNo        String?
-  createdAt        DateTime                 @default(now())
-  updatedAt        DateTime                 @default(now()) @updatedAt
-  user             User                     @relation("insuranceUser", fields: [userId], references: [id])
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @default(now()) @updatedAt
+  user             User                      @relation("insuranceUser", fields: [userId], references: [id])
   userId           String
-  doctor           User?                    @relation("insuranceDoctor", fields: [doctorId], references: [id])
+  doctor           User?                     @relation("insuranceDoctor", fields: [doctorId], references: [id])
   doctorId         String?
   level            String?
   cardId           String?
-  status           FeesStatus               @default(Draft)
-  patient          Patient?                 @relation(fields: [patientId], references: [id])
+  status           FeesStatus                @default(Draft)
+  patient          Patient?                  @relation(fields: [patientId], references: [id])
   patientId        String?
-  specialty        Specialty?               @relation(fields: [specialtyId], references: [id])
+  specialty        Specialty?                @relation(fields: [specialtyId], references: [id])
   specialtyId      String?
-  branch           Branch?                  @relation(fields: [branchId], references: [id])
+  branch           Branch?                   @relation(fields: [branchId], references: [id])
   branchId         String?
-  company          CompanyDefinition        @relation(fields: [companyId], references: [id])
+  company          CompanyDefinition         @relation(fields: [companyId], references: [id])
   companyId        String
   companySession   CompanySessionDefinition? @relation(fields: [companySessionId], references: [id])
   companySessionId String?
-  organization     Organization             @relation(fields: [organizationId], references: [id])
+  organization     Organization              @relation(fields: [organizationId], references: [id])
   organizationId   String
 }
 
@@ -1782,7 +1787,7 @@ model DoctorSessionDefination {
   sessionId             String
   feesCalculationMethod FeesCalculationMethod?
   feesCalculationType   FeesCalculationType
-  fees                  Int?
+  fees                  Float?
   referedDoctor         Boolean                @default(false)
   organization          Organization           @relation(fields: [organizationId], references: [id])
   organizationId        String
@@ -1829,7 +1834,7 @@ model DoctorCoursePartDefination {
   partId                String
   feesCalculationMethod FeesCalculationMethod?
   feesCalculationType   FeesCalculationType
-  fees                  Int?
+  fees                  Float?
   organization          Organization           @relation(fields: [organizationId], references: [id])
   organizationId        String
 

@@ -13,7 +13,7 @@ const createPaymentHistoryFromSessions = data => {
 };
 const createReduceeFromCourseParts = (sessions, courseParts) => {
   let newParts = [];
-  sessions.forEach(({ id, number }) => {
+  sessions.forEach(({ id, amount: number }) => {
     const part = courseParts.find(s => s.id === id);
     const TOTALREMAININGUNITS = part.remainingUnits - number;
     if (TOTALREMAININGUNITS < 0) {
@@ -32,7 +32,7 @@ const createReduceeFromCourseParts = (sessions, courseParts) => {
   return newParts;
 };
 const createUnitHistor = (sessions, userId, doctorId, courseId) => {
-  return sessions.map(({ number, name }) => {
+  return sessions.map(({ number, notes }) => {
     return {
       data: {
         user: {
@@ -51,7 +51,7 @@ const createUnitHistor = (sessions, userId, doctorId, courseId) => {
           },
         },
         units: number,
-        notes: `from part ${name}`,
+        notes,
         date: new Date(),
       },
     };

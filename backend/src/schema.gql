@@ -1401,7 +1401,8 @@ input SessionInput {
 }
 input PartInput {
   id: ID
-  number: Int
+  amount: Int
+  notes: String
 }
 
 input Discount {
@@ -1730,7 +1731,7 @@ input BankExpenseTransitionInput {
 type InsuranceTransaction {
   id: ID!
   name: String!
-  amount: Int!
+  amount: Float!
   date: Date!
   level: String
   payer: String
@@ -1743,6 +1744,7 @@ type InsuranceTransaction {
   status: FeesStatus
   company: CompanyDefinition!
   companySession: CompanySessionDefinition
+  patient: Patient
 }
 type InsuranceTransactionsData {
   insuranceTransactions: [InsuranceTransaction!]
@@ -1764,6 +1766,8 @@ input InsuranceInput {
   feesCalculationType: FeesCalculationType
   paymentMethod: PaymentMethod
   sessions: [SessionInput]
+  cardId: String!
+  cardExpiryDate: Date!
 }
 input InsuranceEditInput {
   id: ID!
@@ -2229,7 +2233,7 @@ type DoctorSessionDefination {
   session: SessionDefinition!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
-  fees: Int!
+  fees: Float!
   referedDoctor: Boolean
   sessionId: ID!
 }
@@ -2239,13 +2243,13 @@ input DoctorSessionDefinationInput {
   sessionId: ID!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
-  fees: Int
+  fees: Float
   referedDoctor: Boolean
 }
 input DoctorFeesTransactionInput {
   id: ID
   name: String!
-  amount: Int!
+  amount: Float!
   sessionId: ID
   doctorId: ID
   sessionName: String
@@ -2261,7 +2265,7 @@ type DoctorCoursePartDefination {
   part: CourseTypeDefinition!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
-  fees: Int!
+  fees: Float!
   partId: ID!
 }
 
@@ -2270,7 +2274,7 @@ input DoctorCoursePartDefinationInput {
   partId: ID!
   feesCalculationMethod: FeesCalculationMethod
   feesCalculationType: FeesCalculationType!
-  fees: Int
+  fees: Float
 }
 #################################################################################
 
@@ -2578,6 +2582,7 @@ type DoctorFeesData {
 }
 input GatherDoctorFeesDataInput {
   ids: [ID!]
+  type: String
 }
 ######################################ReferedDoctorInput############
 input ReferedDoctorInput {

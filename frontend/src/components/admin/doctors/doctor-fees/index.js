@@ -78,6 +78,18 @@ const DoctorFees = () => {
       variables: {
         gatherDoctorFeesData: {
           ids: checkedKeys,
+          type: 'pay',
+        },
+      },
+    });
+    setCheckedKeys([]);
+  }, [checkedKeys, gatherDoctorFees, setCheckedKeys]);
+  const handleRevertDoctorFees = useCallback(() => {
+    gatherDoctorFees({
+      variables: {
+        gatherDoctorFeesData: {
+          ids: checkedKeys,
+          type: 'revert',
         },
       },
     });
@@ -87,6 +99,10 @@ const DoctorFees = () => {
     setType('addNewFees');
     open();
   }, [open, setType]);
+  const handleCancel = useCallback(() => {
+    setFormValue(initialFormValue);
+    close();
+  }, [close]);
   const handleAdd = useCallback(() => {
     if (type === 'editFees') {
       editDoctorFees({
@@ -107,6 +123,28 @@ const DoctorFees = () => {
       });
     }
   }, [addNewDoctorFees, editDoctorFees, formValue, type]);
+  const printDoctorFeesExcel = async day => {
+    axios({
+      url: '/doctor-fees/excel',
+      responseType: 'blob', // important
+      params: {
+        organizationId: user.organizationId,
+        status: filter?.status,
+        doctorId: filter?.doctorId,
+        dateFrom: period && period[0],
+        dateTo: period && period[1],
+      },
+    })
+      .then(function (response) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `doctor-fees-${Date.now()}.xlsx`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch(err => {});
+  };
   const printDoctorFees = () => {
     axios({
       url: '/doctorFees',
@@ -144,8 +182,10 @@ const DoctorFees = () => {
           filter={filter}
           handlePayDoctorFees={handlePayDoctorFees}
           addNewFees={handleAddNewFees}
-          print={printDoctorFees}
+          printPdf={printDoctorFees}
+          printExcel={printDoctorFeesExcel}
           checkedKeys={checkedKeys}
+          handleRevertDoctorFees={handleRevertDoctorFees}
         />
       </Filter>
       <ListDoctorFees
@@ -164,8 +204,8 @@ const DoctorFees = () => {
       />
       <EditableDoctorFees
         show={visible}
-        onHide={close}
-        onCancel={close}
+        onHide={handleCancel}
+        onCancel={handleCancel}
         onOk={handleAdd}
         formValue={formValue}
         onChange={setFormValue}

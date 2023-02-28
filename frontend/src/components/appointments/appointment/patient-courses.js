@@ -41,7 +41,8 @@ const Course = ({ patientId }) => {
   const [visa, setVisa] = useState(false);
   const [bank, setBank] = useState(null);
   const [selectedSessions, setSelectedSessions] = useState([]);
-  const [consumedParts, setConsumedParts] = useState({});
+  const [consumedParts, setConsumedParts] = useState([]);
+
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
@@ -67,7 +68,7 @@ const Course = ({ patientId }) => {
     onEdit: () => {
       close();
       setFormValue(initValue);
-      setConsumedParts({});
+      setConsumedParts([]);
     },
     onEditDoctor: () => {
       close();
@@ -196,13 +197,13 @@ const Course = ({ patientId }) => {
       ),
     [selectedSessions]
   );
-  const updatedConsumedUnits = useMemo(() => {
-    let entries = Object.entries(consumedParts);
-    let data = entries.map(([key, val]) => {
-      return { id: key, number: val };
-    });
-    return data;
-  }, [consumedParts]);
+  // const updatedConsumedUnits = useMemo(() => {
+  //   let entries = Object.entries(consumedParts);
+  //   let data = entries.map(([key, val]) => {
+  //     return { id: key, number: val };
+  //   });
+  //   return data;
+  // }, [consumedParts]);
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       let price = 0;
@@ -277,7 +278,11 @@ const Course = ({ patientId }) => {
               courseId: formValue.id,
               notes: formValue.notes,
               type: 'addNewUnits',
-              parts: updatedConsumedUnits,
+              parts: (consumedParts || []).map(({ id, amount, notes }) => ({
+                id,
+                amount,
+                notes,
+              })),
               doctorId: formValue.consumedDoctorId,
             }
           : {
@@ -356,7 +361,7 @@ const Course = ({ patientId }) => {
     deleteCourse,
     editCourseUnits,
     totalCoursePrice,
-    updatedConsumedUnits,
+    consumedParts,
     courseParts,
   ]);
   const InprogressCourses = useMemo(

@@ -413,6 +413,9 @@ export const LIST_INSURANCE_TRANSACTIONS = gql`
         companySession {
           name
         }
+        patient {
+          name
+        }
         date
         invoiceNo
       }

@@ -32,6 +32,8 @@ const ArchiveAppointment = ({
   onOk,
   loading,
   archiveReferedDoctorAppointment,
+  company,
+  setCompany,
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -40,7 +42,6 @@ const ArchiveAppointment = ({
   const [othersName, setOthersName] = useState('');
   const [bank, setBank] = useState(null);
   const [cashPayment, setCashPayment] = useState(0);
-  const [company, setCompany] = useState(companyInital);
   const [coupons, setCoupons] = useState([]);
   const [couponsValue, setCouponsValue] = useState(0);
   const [option, setOption] = useState(initlOption);
@@ -54,6 +55,7 @@ const ArchiveAppointment = ({
     model,
   });
 
+
   useEffect(() => {
     setOption(initlOption);
     setDiscount(0);
@@ -63,14 +65,14 @@ const ArchiveAppointment = ({
     patientId: appointment?.patient.id,
     all: false,
   });
+
   useEffect(() => {
-    const { cardId, cardExpiryDate } = onePatient;
     setCompany(company => ({
       ...company,
-      cardId: cardId,
-      cardExpiryDate: cardExpiryDate,
+      cardId: onePatient.cardId || '',
+      cardExpiryDate: onePatient.cardExpiryDate || null,
     }));
-  }, [onePatient.id, onePatient]);
+  }, [onePatient.id]);
 
   const totalRemainingOfPayment = onePatient?.remainingOfPayment;
   const newCoupons = useMemo(() => {
@@ -160,7 +162,7 @@ const ArchiveAppointment = ({
       });
       setOthers(0);
       setBank(null);
-      setCompany(companyInital);
+      // setCompany(companyInital);
       setOthersName('');
       setDiscount(0);
       setCoupons([]);
@@ -188,6 +190,7 @@ const ArchiveAppointment = ({
     selectedSessions,
     appointment,
     archiveReferedDoctorAppointment,
+    // cardInfo,
   ]);
   const handleFinish = useCallback(() => {
     onOk({
@@ -207,7 +210,7 @@ const ArchiveAppointment = ({
     setRemaining(0);
     setPayOfRemaining(0);
     setBank(null);
-    setCompany(companyInital);
+    // setCompany(companyInital);
     setOthersName('');
     setDiscount(0);
     setCoupons([]);

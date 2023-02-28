@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Form } from 'rsuite';
 import { CRRadio, CRModal, H3, CRNumberInput, CRSelectInput } from 'components';
-import { feesCalTypes, feesCalMethods } from 'utils/constants';
+import { feesCalTypes } from 'utils/constants';
 
 export default function NewPart({
   show,
@@ -20,7 +20,7 @@ export default function NewPart({
     } else {
       return t('deleteCoursePart');
     }
-  }, [type]);
+  }, [type, t]);
   return (
     <CRModal
       show={show}
@@ -55,7 +55,7 @@ export default function NewPart({
               name="feesCalculationType"
               label={t('feesCalculationType')}
             />
-            <CRNumberInput name="fees" label={t('fees')} block />
+            <CRNumberInput name="fees" label={t('fees')} block float />
           </>
         )}
       </Form>

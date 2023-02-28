@@ -137,6 +137,7 @@ const useAccounting = ({
   const [editBankRevenue] = useMutation(EDIT_BANK_REVENUE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Edited Successfully');
+      refetch();
       onCreateBankRe && onCreateBankRe();
     },
     onError() {
@@ -146,6 +147,7 @@ const useAccounting = ({
   const [editBankExpense] = useMutation(EDIT_BANK_EXPENSE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Edited Successfully');
+      refetchExpenses();
       onCreateBankEx && onCreateBankEx();
     },
     onError() {
@@ -155,6 +157,7 @@ const useAccounting = ({
   const [createBankRevenue] = useMutation(CREATE_BANK_REVENUE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Created Successfully');
+      refetch();
       onCreateBankRe && onCreateBankRe();
     },
     onError() {
@@ -164,6 +167,7 @@ const useAccounting = ({
   const [createBankExpense] = useMutation(CREATE_BANK_EXPENSE, {
     onCompleted() {
       Alert.success('the Bank Transition has been Created Successfully');
+      refetchExpenses();
       onCreateBankEx && onCreateBankEx();
     },
     onError() {

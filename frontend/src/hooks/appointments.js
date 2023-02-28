@@ -23,16 +23,29 @@ import {
   CONFIRMED_APPOINTMENT,
   TRANSFER_APPOINTMENTS,
   ARCHIVE_REFERED_DOCTORAPPOINTMENT,
+  GET_PATIENT,
 } from 'apollo-client/queries';
 
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
 
-const updateCache = myAppointments => {
+const updateAppointmentsCache = ({ appointments, appointmentsCount }) => {
   client.writeQuery({
     query: LIST_APPOINTMENTS,
     data: {
-      myAppointments,
+      appointments: {
+        appointments,
+        appointmentsCount,
+      },
+    },
+  });
+};
+
+const updateTodayAppointmentsCache = ({ appointments, appointmentsCount }) => {
+  client.writeQuery({
+    query: LIST_TODAY_APPOINTMENTS,
+    data: {
+      todayAppointments: { appointments, appointmentsCount },
     },
   });
 };
@@ -61,10 +74,8 @@ function useAppointments({
   setAppointment,
   onArchive,
 } = {}) {
-  const [todayAppointments, setTodayAppointments] = useState([]);
-  const [appointments, setAppointments] = useState([]);
   const { data, refetch: refetchAppointments } = useQuery(LIST_APPOINTMENTS, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
     variables: Object.assign(
       {
         offset: (page - 1) * 20 || 0,
@@ -86,15 +97,17 @@ function useAppointments({
     [],
     'appointmentsCount'
   )(appointmentsdata);
-  useEffect(() => {
-    const newAppointments = R.pipe(
-      R.propOr([], 'appointments'),
-      includeSurgery
-        ? R.identity
-        : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-    )(appointmentsdata);
-    setAppointments(newAppointments);
-  }, [appointmentsdata, includeSurgery]);
+
+  const appointments = useMemo(
+    () =>
+      R.pipe(
+        R.propOr([], 'appointments'),
+        includeSurgery
+          ? R.identity
+          : R.reject(R.propEq('type', APPT_TYPE.Surgery))
+      )(appointmentsdata),
+    [appointmentsdata, includeSurgery]
+  );
 
   const pages = Math.ceil(appointmentsCountNumber / 20);
   const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
@@ -117,7 +130,7 @@ function useAppointments({
 
   const { data: todayAppointmentsData, refetch: refetchTodayAppointments } =
     useQuery(LIST_TODAY_APPOINTMENTS, {
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-and-network',
       variables: Object.assign(
         {
           offset: (page - 1) * 30 || 0,
@@ -132,16 +145,17 @@ function useAppointments({
     });
   const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
 
-  useEffect(() => {
-    const newTodayAppointments = R.pipe(
-      R.propOr([], 'appointments'),
-      R.reject(R.propEq('status', 'Cancelled')),
-      includeSurgery
-        ? R.identity
-        : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-    )(todayAppointmentsDATA);
-    setTodayAppointments(newTodayAppointments);
-  }, [todayAppointmentsDATA, includeSurgery]);
+  const todayAppointments = useMemo(
+    () =>
+      R.pipe(
+        R.propOr([], 'appointments'),
+        R.reject(R.propEq('status', 'Cancelled')),
+        includeSurgery
+          ? R.identity
+          : R.reject(R.propEq('type', APPT_TYPE.Surgery))
+      )(todayAppointmentsDATA),
+    [todayAppointmentsDATA, includeSurgery]
+  );
 
   const todayAppointmentsCount = useMemo(
     () => R.propOr(0, 'appointmentsCount')(todayAppointmentsDATA),
@@ -180,6 +194,7 @@ function useAppointments({
           query: PATIENT_COUPONS,
           variables: { patientId: patientId, all: false },
         },
+        { query: GET_PATIENT, variables: { id: patientId } },
         { query: LIST_INVENTORY },
         { query: LIST_INVENTORY_HISTORY },
         {
@@ -223,7 +238,7 @@ function useAppointments({
           return oldApp;
         }
       });
-      updateCache(allNewApp);
+      updateAppointmentsCache(allNewApp);
     },
   });
   const [adjust] = useMutation(ADJUST_APPOINTMENT, {
@@ -245,14 +260,21 @@ function useAppointments({
           ? { ...appointment, confirmed: !appointment.confirmed }
           : appointment
       )(todayAppointments);
-      setTodayAppointments(newTodayAppointments);
 
       const newAppointments = R.map(appointment =>
         id === appointment.id
           ? { ...appointment, confirmed: !appointment.confirmed }
           : appointment
       )(appointments);
-      setAppointments(newAppointments);
+
+      updateTodayAppointmentsCache({
+        appointments: newTodayAppointments,
+        appointmentsCount: todayAppointmentsCount,
+      });
+      updateAppointmentsCache({
+        appointments: newAppointments,
+        appointmentsCount,
+      });
     },
   });
 

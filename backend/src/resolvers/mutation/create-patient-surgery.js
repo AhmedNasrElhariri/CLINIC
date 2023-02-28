@@ -15,7 +15,6 @@ const createPatientSurgery = async (
     ...data
   } = patientSurgery;
 
-
   const persistedPatientSurgery = await prisma.patientSurgery.create({
     data: {
       fees,
@@ -57,6 +56,11 @@ const createPatientSurgery = async (
           patient: {
             connect: {
               id: patientId,
+            },
+          },
+          organization: {
+            connect: {
+              id: organizationId,
             },
           },
         },

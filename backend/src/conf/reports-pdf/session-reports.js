@@ -31,9 +31,40 @@ const init = app => {
       const startDay = moment(dateFrom).startOf('day').toDate();
       const endDay = moment(dateTo).endOf('day').toDate();
       const statistics = await sessionsStatistics(sessionIds, startDay, endDay);
-      let keys = ['name', 'totalNumber', 'totalPrice'];
+      const updatedStatistics = statistics.map(
+        ({ name, totalNumber, totalPrice, sessions }) => [
+          {
+            name,
+            totalNumber,
+            totalPrice,
+          },
+          ...sessions.map(s => ({
+            transactionName: s.name,
+            date: s.date,
+            amount: s.amount,
+            patientName: s.patient ? s.patient.name : '',
+            patientPhoneNo: s.patient ? s.patient.phoneNo : '',
+            doctorName: s.doctor && s.doctor.name,
+          })),
+        ]
+      );
+      let keys = [
+        'name',
+        'totalNumber',
+        'totalPrice',
+        'transactionName',
+        'date',
+        'amount',
+        'patientName',
+        'patientPhoneNo',
+        'doctorName',
+      ];
 
-      const workbook = generateExcel(keys, ['sessions-statistics'], statistics);
+      const workbook = generateExcel(
+        keys,
+        ['sessions-statistics'],
+        updatedStatistics.flat(1)
+      );
 
       const fileName = 'sessions-statistics.xlsx';
       res.setHeader(

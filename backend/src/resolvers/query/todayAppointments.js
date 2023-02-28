@@ -1,90 +1,47 @@
-import { prisma } from '@';
 import moment from 'moment';
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
+import { fetchWithCount } from '@/services/query';
 
 const todayAppointments = async (
   _,
   { offset, limit, status, doctorId, specialtyId, branchId, patient },
-  { user, organizationId }
+  { organizationId }
 ) => {
   const finalStatus =
     status === 'Scheduled' ? ['Scheduled', 'Changed'] : [status];
-  const ids = await listFlattenUsersTreeIds(
-    {
-      user,
-      organizationId,
-      action: ACTIONS.List_Appointment,
-    },
-    false
-  );
-  const DAY = new Date();
-  const HOUR = DAY.getHours();
-  let from = new Date();
-  let to = new Date();
+  const HOUR = moment().utc().hours();
+  let from = moment();
+  let to = moment();
 
-  if (HOUR < 3) {
-    from = moment(DAY).subtract(1, 'd').startOf('day').toDate();
-    to = moment(DAY).endOf('day').toDate();
+  if (HOUR === 0) {
+    from = moment().utc().subtract(1, 'd').startOf('day').toDate();
+    to = moment().utc().subtract(1, 'd').endOf('day').toDate();
   } else {
-    from = moment(DAY).startOf('day').toDate();
-    to = moment(DAY).endOf('day').toDate();
+    from = moment().utc().startOf('day').toDate();
+    to = moment().utc().endOf('day').toDate();
   }
-  const appointments = await prisma.appointment.findMany({
+
+  const [appointments, count] = await fetchWithCount('appointment', {
     where: {
-      AND: [
-        {
-          OR: [
-            {
-              doctorId: {
-                in: ids,
-              },
-            },
-            {
-              branchId: {
-                in: ids,
-              },
-            },
-            {
-              specialtyId: {
-                in: ids,
-              },
-            },
-          ],
-        },
-        {
-          AND: [
-            {
-              branchId: branchId,
-            },
-            {
-              specialtyId: specialtyId,
-            },
-            {
-              doctorId: doctorId,
-            },
-          ],
-        },
-        {
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
+      organizationId,
+      ...(patient
+        ? {
+            patient: {
+              OR: [
+                {
+                  name: {
+                    contains: patient,
+                    mode: 'insensitive',
+                  },
                 },
-              },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
+                {
+                  phoneNo: {
+                    contains: patient,
+                  },
                 },
-              },
+              ],
             },
-          ],
-        },
-      ],
+          }
+        : { branchId, specialtyId, doctorId }),
       date: {
         gte: from,
         lte: to,
@@ -101,79 +58,14 @@ const todayAppointments = async (
     skip: offset,
     take: limit,
     include: {
-      specialty: true,
-      branch: true,
       user: true,
       session: true,
       patient: true,
       doctor: true,
     },
   });
-  const appointmentsCount = await prisma.appointment.count({
-    where: {
-      AND: [
-        {
-          OR: [
-            {
-              doctorId: {
-                in: ids,
-              },
-            },
-            {
-              branchId: {
-                in: ids,
-              },
-            },
-            {
-              specialtyId: {
-                in: ids,
-              },
-            },
-          ],
-        },
-        {
-          AND: [
-            {
-              branchId: branchId,
-            },
-            {
-              specialtyId: specialtyId,
-            },
-            {
-              doctorId: doctorId,
-            },
-          ],
-        },
-        {
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
-                },
-              },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
-                },
-              },
-            },
-          ],
-        },
-      ],
-      date: {
-        gte: from,
-        lte: to,
-      },
-      status: {
-        in: finalStatus,
-      },
-    },
-  });
-  return { appointments: appointments, appointmentsCount: appointmentsCount };
+
+  return { appointments: appointments, appointmentsCount: count };
 };
 
 export default todayAppointments;

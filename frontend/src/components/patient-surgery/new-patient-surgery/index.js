@@ -40,7 +40,7 @@ const NewPatientSurgery = ({
   });
   const header = useMemo(
     () => (type === 'create' ? t('addNewSurgery') : t('editSurgery')),
-    [type]
+    [type, t]
   );
 
   return (
@@ -100,7 +100,7 @@ const NewPatientSurgery = ({
           }
         />
         <CRTimePicker
-          label={t('timeOfAdmision')}
+          label={t('timeOfAdmission')}
           block
           name="time"
           startHour={8}

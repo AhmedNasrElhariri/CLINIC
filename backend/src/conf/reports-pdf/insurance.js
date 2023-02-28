@@ -61,6 +61,8 @@ const init = app => {
           branch: true,
           specialty: true,
           doctor: true,
+          patient: true,
+          companySession: true,
         },
         orderBy: {
           createdAt: 'desc',
@@ -135,14 +137,18 @@ const init = app => {
         },
         include: {
           company: true,
+          companySession: true,
+          patient: true,
         },
         orderBy: {
           createdAt: 'desc',
         },
       });
-      let keys = ['name', 'amount', 'companyName', 'cardId', 'date'];
+      let keys = ['name', 'patient', 'amount', 'companyName', 'cardId', 'date'];
       transactions = transactions.map(t => ({
         ...t,
+        name: t.companySession.name,
+        patient: t.patient.name,
         companyName: t.company.name,
       }));
       const workbook = generateExcel(keys, ['insurance'], transactions);

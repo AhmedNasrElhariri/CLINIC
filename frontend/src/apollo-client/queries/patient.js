@@ -140,6 +140,8 @@ export const LIST_SEARCHED_PATIENTS = gql`
       phoneNo
       phoneNoTwo
       age
+      cardId
+      cardExpiryDate
     }
   }
 `;

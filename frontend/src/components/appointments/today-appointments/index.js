@@ -38,6 +38,13 @@ const initialBranchValue = {
   doctor: null,
   patient: '',
 };
+export const companyInital = {
+  companyId: null,
+  cardId: '',
+  cardExpiryDate: null,
+  paymentMethod: 'cash',
+  bankId: null,
+};
 const calcDate = ({ date, time }) =>
   moment(date)
     .set({
@@ -62,6 +69,7 @@ function TodayAppointments() {
   const { t } = useTranslation();
   const { organization } = useConfigurations({});
   const { users } = useCourses({});
+  const [company, setCompany] = useState(companyInital);
   const [onCreateAppointment] = useGlobalState('onCreateAppointment');
 
   const doctors = useMemo(() => {
@@ -94,6 +102,8 @@ function TodayAppointments() {
     patient: filter?.patient,
     onAdjust: () => {},
     onArchive: () => {
+      setCompany(companyInital);
+      setPopUp(null);
       close();
     },
     setAppointment,
@@ -103,7 +113,6 @@ function TodayAppointments() {
     followUpFeature,
   });
   const pages = Math.ceil(todayAppointmentsCount / 30);
-
   useEffect(() => {
     setNotes(() => ({
       businessNotes: R.propOr('', 'businessNotes')(appointment),
@@ -458,6 +467,8 @@ function TodayAppointments() {
           onOk={handleArchive}
           loading={loading}
           archiveReferedDoctorAppointment={archiveReferedDoctorAppointment}
+          company={company}
+          setCompany={setCompany}
         />
       )}
       {popUp === 'complete' && (

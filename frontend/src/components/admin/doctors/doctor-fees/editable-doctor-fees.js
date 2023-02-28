@@ -1,6 +1,12 @@
 import { useMemo } from 'react';
 import { Form } from 'rsuite';
-import { CRModal, CRNumberInput, CRTextInput, CRSelectInput, CRDatePicker } from 'components';
+import {
+  CRModal,
+  CRNumberInput,
+  CRTextInput,
+  CRSelectInput,
+  CRDatePicker,
+} from 'components';
 import { useTranslation } from 'react-i18next';
 
 export default function EditableDoctorFees({
@@ -20,7 +26,7 @@ export default function EditableDoctorFees({
     } else if (type === 'addNewFees') {
       return t('addNewFees');
     }
-  }, [type]);
+  }, [type, t]);
   const updatedSessions = useMemo(
     () =>
       sessionsDefinition.map(s => {
@@ -58,7 +64,7 @@ export default function EditableDoctorFees({
           </>
         )}
         <CRTextInput name="name" label={t('name')} block />
-        <CRNumberInput name="amount" label={t('amount')} block />
+        <CRNumberInput name="amount" label={t('amount')} block float />
         <CRDatePicker label="Date" name="date" block></CRDatePicker>
         {type === 'editFees' && (
           <>

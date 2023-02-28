@@ -6,6 +6,7 @@ import initDoctorFees from './doctor-fees';
 import initAllAccounting from './all-accounting';
 import initSessionReports from './session-reports';
 import initTodayAppointment from './today-appointment';
+import initLogging from './logging';
 
 const init = app => {
   initAccounting(app);
@@ -16,6 +17,7 @@ const init = app => {
   initAllAccounting(app);
   initSessionReports(app);
   initTodayAppointment(app);
+  initLogging(app);
 };
 
 export default init;

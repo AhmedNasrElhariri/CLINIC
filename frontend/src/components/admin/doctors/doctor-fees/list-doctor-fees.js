@@ -65,7 +65,7 @@ const ListDoctorFees = ({
     <>
       <CRCard borderless mb="20px">
         <CRTable autoHeight data={fees}>
-          {filter?.status === 'Draft' && (
+          {(filter?.status === 'Draft' || filter?.status === 'Cleared') && (
             <CRTable.CRColumn width={50} align="center">
               <CRTable.CRHeaderCell style={{ padding: 0 }}>
                 <div style={{ lineHeight: '40px' }}>
