@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from 'react';
 import * as R from 'ramda';
 import { Form, InputNumber } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
-import { CRNumberInput } from 'components';
 import ListInvoiceItems from './list-invoice-items';
 import { useInventory } from 'hooks';
 import {
@@ -79,7 +78,6 @@ function InventoryUsage({
         block
       ></CRDocSelectInput>
       <div className="flex items-end gap-3 mb-5">
-        {/* <CRNumberInput name="quantity" label={t('quantity')} /> */}
         <CRLabel>{t('quantity')}</CRLabel>
         <InputNumber
           value={formValue.quantity}
