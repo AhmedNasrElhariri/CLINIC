@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Filter from './filter';
-import { Nav } from 'rsuite';
+import { Nav, Schema } from 'rsuite';
 import * as R from 'ramda';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
@@ -15,6 +15,8 @@ import EditAppointment from 'components/appointments/edit-appointment';
 import CancelAppointment from 'components/appointments/cancel-appointment';
 import { ACTIONS, APPT_STATUS } from 'utils/constants';
 import { BranchSpecialtyUserFilter } from 'components';
+const { StringType } = Schema.Types;
+
 const initialBranchValue = {
   branch: null,
   specialty: null,
@@ -48,6 +50,9 @@ export const companyInital = {
   paymentMethod: 'cash',
   bankId: null,
 };
+const model = Schema.Model({
+  patient: StringType().pattern(/^([a-z0-9]){4}[a-z0-9]*$/i),
+});
 function Appointments() {
   const [formValue, setFormValue] = useState({
     date: [],
@@ -66,6 +71,7 @@ function Appointments() {
   const { t } = useTranslation();
   const { visible, close, open } = useModal({});
   const [company, setCompany] = useState(companyInital);
+  const [formError, setFormError] = React.useState({});
 
   const {
     appointments,
@@ -78,24 +84,31 @@ function Appointments() {
     pages,
     confirmedAppointment,
     archiveReferedDoctorAppointment,
-  } = useAppointments({
-    page,
-    dateFrom: R.pathOr(null, ['date', 0])(formValue),
-    dateTo: R.pathOr(null, ['date', 1])(formValue),
-    status: R.propOr(null, 'status')(formValue),
-    type: R.propOr(null, 'type')(formValue),
-    patient: R.propOr('', 'patient')(formValue),
-    action: ACTIONS.List_Appointment,
-    branchId: filter?.branch,
-    specialtyId: filter?.specialty,
-    doctorId: filter?.doctor,
-    setAppointment,
-    onArchive: () => {
-      setCompany(companyInital);
-      setPopUp(null);
-      close();
-    },
-  });
+  } = useAppointments(
+    Object.assign(
+      {
+        page,
+        dateFrom: R.pathOr(null, ['date', 0])(formValue),
+        dateTo: R.pathOr(null, ['date', 1])(formValue),
+        status: R.propOr(null, 'status')(formValue),
+        type: R.propOr(null, 'type')(formValue),
+        action: ACTIONS.List_Appointment,
+        branchId: filter?.branch,
+        specialtyId: filter?.specialty,
+        doctorId: filter?.doctor,
+        setAppointment,
+        onArchive: () => {
+          setCompany(companyInital);
+          setPopUp(null);
+          close();
+        },
+      },
+      !formError?.hasOwnProperty('patient') &&
+        R.propOr('', 'patient')(formValue).length > 3 && {
+          patient: R.propOr('', 'patient')(formValue),
+        }
+    )
+  );
 
   const onClickDone = useCallback(
     appointment => {
@@ -299,7 +312,12 @@ function Appointments() {
             onChange={setFilter}
             branches={filterBranches}
           />
-          <Filter formValue={formValue} onChange={setFormValue} />
+          <Filter
+            formValue={formValue}
+            onChange={setFormValue}
+            model={model}
+            setFormError={setFormError}
+          />
           <ListAppointments
             appointments={appointments}
             onArchive={onClickDone}
@@ -325,7 +343,12 @@ function Appointments() {
             onChange={setFilter}
             branches={filterBranches}
           />
-          <Filter formValue={formValue} onChange={setFormValue} />
+          <Filter
+            formValue={formValue}
+            onChange={setFormValue}
+            model={model}
+            setFormError={setFormError}
+          />
           <ListAppointments
             appointments={appointments}
             onArchive={onClickDone}
@@ -349,7 +372,12 @@ function Appointments() {
             onChange={setFilter}
             branches={filterBranches}
           />
-          <Filter formValue={formValue} onChange={setFormValue} />
+          <Filter
+            formValue={formValue}
+            onChange={setFormValue}
+            model={model}
+            setFormError={setFormError}
+          />
           <ListAppointments
             appointments={appointments}
             onArchive={onClickDone}

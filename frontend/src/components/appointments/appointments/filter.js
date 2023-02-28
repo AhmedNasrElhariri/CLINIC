@@ -7,7 +7,12 @@ import { useSessionDefinition } from 'hooks';
 
 const FilterContainer = ({ children }) => <div>{children}</div>;
 
-export default function AppointmentsFilter({ formValue, onChange }) {
+export default function AppointmentsFilter({
+  formValue,
+  onChange,
+  model,
+  setFormError,
+}) {
   const { t } = useTranslation();
   const { sessionsDefinition } = useSessionDefinition({});
   return (
@@ -16,6 +21,8 @@ export default function AppointmentsFilter({ formValue, onChange }) {
       onChange={onChange}
       fluid
       className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
+      model={model}
+      onCheck={setFormError}
     >
       <FilterContainer>
         <CRSelectInput
