@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { Nav, Form } from 'rsuite';
+import { Nav, Form, Schema } from 'rsuite';
 import * as R from 'ramda';
 import moment from 'moment';
 import useGlobalState from 'state';
@@ -22,6 +22,7 @@ import EditAppointment from '../edit-appointment';
 import CancelAppointment from '../cancel-appointment';
 import { useTranslation } from 'react-i18next';
 import TransferAppointments from '../transfer-apps';
+const { StringType } = Schema.Types;
 
 const initialValue = {
   businessNotes: '',
@@ -55,6 +56,10 @@ const calcDate = ({ date, time }) =>
     })
     .toDate();
 const PAGE_SIZE = 30;
+
+const model = Schema.Model({
+  patient: StringType().pattern(/^([a-z0-9]){4}[a-z0-9]*$/i),
+});
 function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
   const [followUp, setFollowUp] = useState(false);
@@ -71,7 +76,8 @@ function TodayAppointments() {
   const { users } = useCourses({});
   const [company, setCompany] = useState(companyInital);
   const [onCreateAppointment] = useGlobalState('onCreateAppointment');
-
+  const [formError, setFormError] = React.useState({});
+  console.log(formError, 'mm');
   const doctors = useMemo(() => {
     return users.filter(u => u.position === 'Doctor');
   }, [users]);
@@ -90,28 +96,34 @@ function TodayAppointments() {
     archiveReferedDoctorAppointment,
     todayAppointmentsCount,
     refetchTodayAppointments,
-  } = useAppointments({
-    page: currentPage?.activePage,
-    action: ACTIONS.List_Appointment,
-    status: active,
-    patientId: appointment?.patient?.id,
-    canAddFollowUp: appointment?.canAddFollowUp,
-    branchId: filter?.branch,
-    specialtyId: filter?.specialty,
-    doctorId: filter?.doctor,
-    patient: filter?.patient,
-    onAdjust: () => {},
-    onArchive: () => {
-      setCompany(companyInital);
-      setPopUp(null);
-      close();
-    },
-    setAppointment,
-    setFollowUp,
-    setPopUp,
-    open,
-    followUpFeature,
-  });
+  } = useAppointments(
+    Object.assign(
+      {
+        page: currentPage?.activePage,
+        action: ACTIONS.List_Appointment,
+        status: active,
+        patientId: appointment?.patient?.id,
+        canAddFollowUp: appointment?.canAddFollowUp,
+        branchId: filter?.branch,
+        specialtyId: filter?.specialty,
+        doctorId: filter?.doctor,
+        formError,
+        onAdjust: () => {},
+        onArchive: () => {
+          setCompany(companyInital);
+          setPopUp(null);
+          close();
+        },
+        setAppointment,
+        setFollowUp,
+        setPopUp,
+        open,
+        followUpFeature,
+      },
+      !formError?.hasOwnProperty('patient') &&
+        filter?.patient?.length > 3 && { patient: filter?.patient }
+    )
+  );
   const pages = Math.ceil(todayAppointmentsCount / 30);
   useEffect(() => {
     setNotes(() => ({
@@ -146,6 +158,7 @@ function TodayAppointments() {
     },
     [open]
   );
+
   const onAddBusinessNotes = useCallback(
     appointment => {
       setPopUp('notes');
@@ -378,6 +391,8 @@ function TodayAppointments() {
               formValue={filter}
               onChange={setFilter}
               style={{ marginLeft: '10px', marginTop: '-10px' }}
+              model={model}
+              onCheck={setFormError}
             >
               <CRTextInput
                 name="patient"
@@ -418,6 +433,8 @@ function TodayAppointments() {
               formValue={filter}
               onChange={setFilter}
               style={{ marginLeft: '10px', marginTop: '-10px' }}
+              model={model}
+              onCheck={setFormError}
             >
               <CRTextInput
                 name="patient"
@@ -450,6 +467,8 @@ function TodayAppointments() {
               formValue={filter}
               onChange={setFilter}
               style={{ marginLeft: '10px', marginTop: '-10px' }}
+              model={model}
+              onCheck={setFormError}
             >
               <CRTextInput
                 name="patient"
