@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { fetchWithCount } from '@/services/query';
-import { prisma } from '@';
 
 const todayAppointments = async (
   _,
