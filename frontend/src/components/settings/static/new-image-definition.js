@@ -25,7 +25,7 @@ function NewImageDefinition({
         : type === 'edit'
         ? t('editImageDefinition')
         : 'Delete Image Definition',
-    [type]
+    [type, t]
   );
   const { imagesCategory } = useImageCategory();
   return (

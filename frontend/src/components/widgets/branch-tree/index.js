@@ -27,7 +27,7 @@ const CustomBranchTress = ({
   });
   const branches = useMemo(
     () => R.propOr([], 'listBranchesTree')(data),
-    [data, action]
+    [data]
   );
   const { user } = useUserProfile();
   const specialties = useMemo(
@@ -47,7 +47,7 @@ const CustomBranchTress = ({
     [formValue?.specialtyId, specialties]
   );
   useEffect(() => {
-    if (branches.length == 1 && checkFormValue.check.length == 0) {
+    if (branches.length === 1 && checkFormValue.check.length === 0) {
       onChange({
         ...formValue,
         branchId: branches[0]?.id,
@@ -72,7 +72,7 @@ const CustomBranchTress = ({
   }, [doctors, formValue.specialtyId, checkFormValue]);
   useEffect(() => {
     if (
-      checkFormValue.check.length != 0 &&
+      checkFormValue.check.length !== 0 &&
       checkFormValue.check[0] === 'organization'
     ) {
       onChange({
@@ -83,7 +83,7 @@ const CustomBranchTress = ({
       });
     }
     if (
-      checkFormValue.check.length != 0 &&
+      checkFormValue.check.length !== 0 &&
       checkFormValue.check[0] === 'mySelf'
     ) {
       onChange({
@@ -108,7 +108,7 @@ const CustomBranchTress = ({
       )}
 
       <Form formValue={formValue} onChange={onChange}>
-        {checkFormValue.check.length == 0 && (
+        {checkFormValue.check.length === 0 && (
           <>
             {(branches.length > 1 || NotAutoHideNested) && (
               <CRSelectInput
