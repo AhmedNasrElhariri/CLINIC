@@ -226,14 +226,16 @@ function NewCourse({
     },
     [setSelectedSessions]
   );
+  console.log(courseParts, 'courseParts');
   useEffect(() => {
     setConsumedParts &&
       setConsumedParts(
-        (courseParts || []).map(({ id, part: { name } }) => ({
+        (courseParts || []).map(({ id, part: { name }, totalUnits }) => ({
           id,
           amount: 0,
           notes: '',
           name,
+          totalUnits,
         }))
       );
   }, [courseParts, setConsumedParts]);
@@ -241,13 +243,15 @@ function NewCourse({
     (val, checkChange, indx) => {
       setConsumedParts &&
         setConsumedParts(
-          (consumedParts || []).map(({ name, amount, notes, id }, index) => {
-            return index === indx
-              ? checkChange === 'amount'
-                ? { name, amount: val, notes, id }
-                : { name, amount, notes: val, id }
-              : { name, amount, notes, id };
-          })
+          (consumedParts || []).map(
+            ({ name, amount, notes, id, totalUnits }, index) => {
+              return index === indx
+                ? checkChange === 'amount'
+                  ? { name, amount: val, notes, id, totalUnits }
+                  : { name, amount, notes: val, id, totalUnits }
+                : { name, amount, notes, id, totalUnits };
+            }
+          )
         );
     },
     [consumedParts] //not change the dependencies so that does not cause infinte loop
@@ -509,34 +513,53 @@ function NewCourse({
                   onChange={setConsumedParts}
                   fluid
                 >
-                  {consumedParts?.map(({ id, amount, notes, name }, indx) => (
-                    <Div mb={type === 'addNewUnits' ? 2 : 0} display="flex">
-                      <CRNumberInput
-                        label={`Number of Units (${name})`}
-                        value={amount}
-                        layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
-                        onChange={val =>
-                          handleChangeCoursePart(val, 'amount', indx)
-                        }
-                      ></CRNumberInput>
-                      <CRTextInput
-                        label="Notes"
-                        layout={type === 'addNewUnits' ? 'inline' : 'vertical'}
-                        value={notes}
-                        onChange={val =>
-                          handleChangeCoursePart(val, 'notes', indx)
-                        }
-                      />
-                    </Div>
-                  ))}
+                  {consumedParts?.map(
+                    ({ id, amount, notes, name, totalUnits }, indx) => (
+                      <Div mb={type === 'addNewUnits' ? 2 : 0} display="flex">
+                        <CRNumberInput
+                          label={`Number of Units (${name})`}
+                          value={amount}
+                          layout={
+                            type === 'addNewUnits' ? 'inline' : 'vertical'
+                          }
+                          onChange={val =>
+                            handleChangeCoursePart(val, 'amount', indx)
+                          }
+                        ></CRNumberInput>
+                        {type === 'addNewUnits' && (
+                          <CRTextInput
+                            label="Notes"
+                            layout={
+                              type === 'addNewUnits' ? 'inline' : 'vertical'
+                            }
+                            value={notes}
+                            onChange={val =>
+                              handleChangeCoursePart(val, 'notes', indx)
+                            }
+                          />
+                        )}
+                        {type === 'editConsumedUnits' && (
+                          <Div display="flex" margin="auto">
+                            <Div fontWeight="bold">Total Old Units</Div>
+                            <Div>
+                              {':  '}
+                              {totalUnits}
+                            </Div>
+                          </Div>
+                        )}
+                      </Div>
+                    )
+                  )}
                 </Form>
-                <CRSelectInput
-                  label={t('doctor')}
-                  name="consumedDoctorId"
-                  placeholder={t('select')}
-                  data={actionDoctors}
-                  block
-                />
+                {type === 'addNewUnits' && (
+                  <CRSelectInput
+                    label={t('doctor')}
+                    name="consumedDoctorId"
+                    placeholder={t('select')}
+                    data={actionDoctors}
+                    block
+                  />
+                )}
               </>
             ) : (
               <CRNumberInput
@@ -545,9 +568,14 @@ function NewCourse({
                 title={t('consumedUnits')}
               />
             )}
-            {(type === 'addNewUnits' || type === 'editUnitsTransactions') && (
-              <CRTextInput label={t('notes')} name="notes" title={t('notes')} />
-            )}
+            {(type === 'addNewUnits' || type === 'editUnitsTransactions') &&
+              !courseParts.length > 0 && (
+                <CRTextInput
+                  label={t('notes')}
+                  name="notes"
+                  title={t('notes')}
+                />
+              )}
           </>
         ) : type === 'finishCourse' ? (
           <Div>{t('finishCourseMessage')} </Div>
