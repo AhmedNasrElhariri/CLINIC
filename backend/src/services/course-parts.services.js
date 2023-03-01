@@ -34,7 +34,9 @@ const createReduceeFromCourseParts = (sessions, courseParts) => {
 const changeCoursePartsUnits = sessions => {
   sessions.forEach(({ amount, oldRemainingUnits, oldTotalUnis }) => {
     if (oldRemainingUnits + (amount - oldTotalUnis) < 0) {
-      throw new APIExceptcion(`You cant't make total less than consumed`);
+      throw new APIExceptcion(
+        `Total units should be greater than remaning units`
+      );
     }
   });
   return sessions.map(({ id, amount, oldRemainingUnits, oldTotalUnis }) => ({

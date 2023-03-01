@@ -107,15 +107,15 @@ const PatientSurgries = ({ history: summary, t, patientId }) => {
   );
   const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
 
-  const updatedSummary = useMemo(() => {
-    const today = moment(new Date()).endOf('day');
-    const ss = summary.filter(s => moment(s.date) <= today);
-    return ss;
-  }, [summary]);
+  // const updatedSummary = useMemo(() => {
+  //   const today = moment(new Date()).endOf('day');
+  //   const ss = summary.filter(s => moment(s.date) <= today);
+  //   return ss;
+  // }, [summary]);
 
   useEffect(() => {
-    setActiveSession(R.propOr({}, '0')(updatedSummary));
-  }, [updatedSummary]);
+    setActiveSession(R.propOr({}, '0')(summary));
+  }, [summary]);
 
   const date = useMemo(
     () => R.propOr(new Date(), 'date')(activeSession),
@@ -150,25 +150,16 @@ const PatientSurgries = ({ history: summary, t, patientId }) => {
   if (!activeSession) {
     return '...No History';
   }
-  // const handleClickSurgery = useCallback(data => {
-  //   window.open(`/appointments/${data.id}`);
-  // }, []);
 
   return (
-    // <Div>
-    //   <Div px={5} py={2}>
-    //     <ListSurgeries data={history} onClick={handleClickSurgery} />
-    //   </Div>
-    //   <Div position="absolute" top={0} right={3}></Div>
-    // </Div>
     <Div className="flex flex-col xl:flex-row">
       <Divider className="!mt-0 sm:!hidden" />
 
-      {updatedSummary && activeSession && (
+      {summary && activeSession && (
         <SessionSelector
           activeSession={activeSession}
           setActiveSession={setActiveSession}
-          updatedSummary={updatedSummary}
+          updatedSummary={summary}
           t={t}
         />
       )}
@@ -176,34 +167,26 @@ const PatientSurgries = ({ history: summary, t, patientId }) => {
       {/* Show default sessions list if screen is not small */}
       <div className="tw-hidden xl:inline-flex">
         <CRNav vertical minWidth={180} onSelect={setActiveSession}>
-          {updatedSummary.map((session, idx) => (
+          {summary.map((session, idx) => (
             <CRNav.CRVItem
               key={session.id}
               eventKey={session}
               active={activeSession.id === session.id}
             >
-              {t('surgery')} {updatedSummary.length - idx}
+              {t('surgery')} {summary.length - idx}
             </CRNav.CRVItem>
           ))}
         </CRNav>
       </div>
 
       <div className="sm:px-5 grow overflow-x-auto">
-        {updatedSummary && updatedSummary.length > 0 ? (
+        {summary && summary.length > 0 ? (
           <>
             <Header
-              updatedSummary={updatedSummary}
+              updatedSummary={summary}
               t={t}
               activeSession={activeSession}
-              // open={open}
             />
-            {/* {header !== 'Delete Image' && (
-              <Modal show={visible} onHide={close} className="!max-w-[90%]">
-                <Modal.Body>
-                  <SummaryTable data={tabularData} fields={tabularFields} />
-                </Modal.Body>
-              </Modal>
-            )} */}
 
             {renderProp('Date', formatDate(date))}
             <div className="overflow-x-auto">
