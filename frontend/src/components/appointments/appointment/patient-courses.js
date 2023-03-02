@@ -103,7 +103,7 @@ const Course = ({ patientId }) => {
     data => {
       const course = R.pick(['id', 'consumed'])(data);
       setType('editConsumedUnits');
-      setHeader(t('editConsumedUnits'));
+      setHeader(t('editUnits'));
       setFormValue(course);
       open();
     },
@@ -113,7 +113,7 @@ const Course = ({ patientId }) => {
     data => {
       const course = R.pick(['id', 'consumed'])(data);
       setType('addNewUnits');
-      setHeader(t('addNewUnits'));
+      setHeader(t('consumeUnits'));
       setFormValue({
         ...course,
         consumedDoctorId: patientCourses[active]?.doctor.id,
@@ -197,13 +197,7 @@ const Course = ({ patientId }) => {
       ),
     [selectedSessions]
   );
-  // const updatedConsumedUnits = useMemo(() => {
-  //   let entries = Object.entries(consumedParts);
-  //   let data = entries.map(([key, val]) => {
-  //     return { id: key, number: val };
-  //   });
-  //   return data;
-  // }, [consumedParts]);
+
   const handleAdd = useCallback(() => {
     if (type === 'create') {
       let price = 0;
@@ -295,12 +289,26 @@ const Course = ({ patientId }) => {
         variables: val,
       });
     } else if (type === 'editConsumedUnits') {
+      const val =
+        courseParts && courseParts.length > 0
+          ? {
+              courseId: formValue.id,
+              notes: formValue.notes,
+              type: 'editConsumedUnits',
+              parts: (consumedParts || []).map(({ id, amount, notes }) => ({
+                id,
+                amount,
+                notes,
+              })),
+              doctorId: formValue.consumedDoctorId,
+            }
+          : {
+              courseId: formValue.id,
+              consumed: formValue.consumed,
+              type: 'editConsumedUnits',
+            };
       editCourseUnits({
-        variables: {
-          courseId: formValue.id,
-          consumed: formValue.consumed,
-          type: 'editConsumedUnits',
-        },
+        variables: val,
       });
     } else if (type === 'editUnitsTransactions') {
       editCourseUnitHistory({

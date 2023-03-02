@@ -44,7 +44,7 @@ const CourseData = ({
       history.push(`/appointments/${appointment.id}`);
     }
   };
-
+  console.log(course, 'CC');
   return (
     <Fragment>
       {course && (
@@ -93,7 +93,9 @@ const CourseData = ({
               mr={1}
               onClick={() => onEditUnits(course)}
             >
-              {t('editUnits')}
+              {courseParts && courseParts.length > 0
+                ? t('editUnits')
+                : t('editConsumedUnits')}
             </CRButton>
           )}
           {course.status === 'InProgress' && (

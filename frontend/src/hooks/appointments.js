@@ -177,6 +177,7 @@ function useAppointments({
         Alert.success('Appointment has been Archived successfully');
         onArchive && onArchive();
         refetchTodayAppointments();
+        refetchAppointments();
         if (followUpFeature && canAddFollowUp) {
           setFollowUp(true);
           setPopUp('followUpAppointment');

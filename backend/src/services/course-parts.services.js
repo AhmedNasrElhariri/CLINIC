@@ -1,5 +1,4 @@
 import { prisma } from '@';
-import { data } from '@/resolvers/appointment';
 import { APIExceptcion } from './erros.service';
 
 const updateCoursePartModel = async data => {
@@ -31,6 +30,29 @@ const createReduceeFromCourseParts = (sessions, courseParts) => {
   });
   return newParts;
 };
+
+const changeCoursePartsUnits = sessions => {
+  sessions.forEach(({ amount, oldRemainingUnits, oldTotalUnis }) => {
+    if (oldRemainingUnits + (amount - oldTotalUnis) < 0) {
+      throw new APIExceptcion(
+        `Total units should be greater than remaning units`
+      );
+    }
+  });
+  return sessions.map(({ id, amount, oldRemainingUnits, oldTotalUnis }) => ({
+    data: {
+      totalUnits: amount,
+      remainingUnits:
+        oldRemainingUnits + (amount - oldTotalUnis) > 0
+          ? oldRemainingUnits + (amount - oldTotalUnis)
+          : 0,
+    },
+    where: {
+      id: id,
+    },
+  }));
+};
+
 const createUnitHistor = (sessions, userId, doctorId, courseId) => {
   return sessions.map(({ number, notes }) => {
     return {
@@ -118,6 +140,12 @@ export const reduceServices = async (sessions, courseId) => {
       createReduceeFromCourseParts(sessions, courseParts)
     ));
 };
+
+export const changeServices = async sessions => {
+  sessions.length > 0 &&
+    (await updateCoursePartModel(changeCoursePartsUnits(sessions)));
+};
+
 export const createUnitHistoryFormParts = async (
   sessions,
   userId,
