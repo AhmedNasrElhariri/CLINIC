@@ -226,7 +226,7 @@ function NewCourse({
     },
     [setSelectedSessions]
   );
-  console.log(courseParts, 'courseParts');
+
   useEffect(() => {
     setConsumedParts &&
       setConsumedParts(

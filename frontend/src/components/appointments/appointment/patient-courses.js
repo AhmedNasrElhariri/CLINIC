@@ -1,17 +1,15 @@
-import { useCallback, useState, useMemo, useEffect } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import * as R from 'ramda';
 import { Div, H3, CRButton } from 'components';
 import useFrom from 'hooks/form';
 import { Can } from 'components/user/can';
 import NewCourse from 'components/appointments/appointment/courses';
 import CourseData from 'components/appointments/appointment/courses/course';
-import { useCourses } from 'hooks';
 import { useModal } from 'hooks';
 import { CRTabs } from 'components';
 import { useTranslation } from 'react-i18next';
 import { Nav } from 'rsuite';
-
-// import EditableCourse from 'components/appointments/appointment/courses/editable-course';
+import usePatientCourses from 'hooks/patient-courses';
 
 const initValue = {
   course: null,
@@ -34,8 +32,8 @@ const initValue = {
 
 const Course = ({ patientId }) => {
   const { visible, open, close } = useModal();
-  const [course, setCourse] = useState({});
   const [active, setActive] = useState(0);
+  const [activeCourseId, setActiveCourseId] = useState(null);
   const { t } = useTranslation();
   const [header, setHeader] = useState('');
   const [visa, setVisa] = useState(false);
@@ -59,7 +57,7 @@ const Course = ({ patientId }) => {
     finishCourse,
     editCourseUnitHistory,
     courseParts,
-  } = useCourses({
+  } = usePatientCourses({
     onCreate: () => {
       close();
       setFormValue(initValue);
@@ -87,11 +85,8 @@ const Course = ({ patientId }) => {
       setFormValue(initValue);
     },
     patientId: patientId,
-    courseId: course?.id,
+    courseId: activeCourseId,
   });
-  useEffect(() => {
-    setCourse(patientCourses[active]);
-  }, [patientCourses, active]);
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -438,6 +433,7 @@ const Course = ({ patientId }) => {
                       onEditHistoryPayment={handleClickEditHistoryPayment}
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                       courseParts={courseParts}
+                      onActiveCourse={setActiveCourseId}
                     />
                   ) : (
                     <H3>{t('noCourses')}</H3>
@@ -458,7 +454,7 @@ const Course = ({ patientId }) => {
                     activeKey={active}
                     style={{ borderBottom: '1px solid #d9d9d9' }}
                   >
-                    {InprogressCourses.map((course, idx) => (
+                    {FinishedCourses.map((course, idx) => (
                       <Nav.Item eventKey={idx}>{course.name}</Nav.Item>
                     ))}
                   </Nav>
@@ -483,6 +479,7 @@ const Course = ({ patientId }) => {
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                       courseParts={courseParts}
                       style={{ borderBottom: '1px solid #d9d9d9' }}
+                      onActiveCourse={setActiveCourseId}
                     />
                   ) : (
                     <H3>{t('noCourses')}</H3>
@@ -503,7 +500,7 @@ const Course = ({ patientId }) => {
                     activeKey={active}
                     style={{ borderBottom: '1px solid #d9d9d9' }}
                   >
-                    {InprogressCourses.map((course, idx) => (
+                    {CancelledCourses.map((course, idx) => (
                       <Nav.Item eventKey={idx}>{course.name}</Nav.Item>
                     ))}
                   </Nav>
@@ -527,6 +524,7 @@ const Course = ({ patientId }) => {
                       onEditHistoryPayment={handleClickEditHistoryPayment}
                       onEditUnitsHistory={handleClickEditUnitsHistory}
                       courseParts={courseParts}
+                      onActiveCourse={setActiveCourseId}
                     />
                   ) : (
                     <H3>{t('noCourses')}</H3>

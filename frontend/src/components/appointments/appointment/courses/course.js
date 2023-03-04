@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import CoursePayment from './course-payment-history';
 import CourseUnitsHistoryPage from './course-units-history';
@@ -12,6 +12,7 @@ import { formatDate } from 'utils/date';
 import { useTranslation } from 'react-i18next';
 import ListCourseParts from './list-course-parts';
 import { Nav } from 'rsuite';
+import usePatientCourses from 'hooks/patient-courses';
 
 const sortByDate = R.sortBy(R.compose(R.prop('date')));
 const CourseData = ({
@@ -26,6 +27,7 @@ const CourseData = ({
   onEditHistoryPayment,
   onEditUnitsHistory,
   courseParts,
+  onActiveCourse,
 }) => {
   const history = useHistory();
   const [active, setActive] = React.useState('courseSession');
@@ -33,7 +35,7 @@ const CourseData = ({
   let course = courses[indx];
   let sessions = course?.sessions || [];
   const updatedSessions = sortByDate(sessions);
-  const { coursePayments, courseUnitsHistory } = useCourses({
+  const { coursePayments, courseUnitsHistory } = usePatientCourses({
     courseId: course.id,
   });
   const handleClick = appointment => {
@@ -44,7 +46,11 @@ const CourseData = ({
       history.push(`/appointments/${appointment.id}`);
     }
   };
-  console.log(course, 'CC');
+
+  useEffect(() => {
+    onActiveCourse && onActiveCourse(course?.id || null);
+  }, [onActiveCourse, course]);
+
   return (
     <Fragment>
       {course && (
