@@ -47,7 +47,7 @@ export default function AppointmentsFilter({ formValue, onChange }) {
           label={t('nameOrPhoneNo')}
           value={patientInternalValue}
           onChange={value => {
-            const pattern = /^(010|011|012|015)\d{3,}|[^0-9]{3,}/;
+            const pattern = /^(010|011|012|015)\d{3,}|(?!(010|011|012|015)).{3,}/;
             if (pattern.test(value) || !value) {
               onChange({ ...formValue, patient: value });
             }
