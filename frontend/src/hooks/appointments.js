@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import * as R from 'ramda';
 import { useQuery, useMutation } from '@apollo/client';
 import { APPT_TYPE } from 'utils/constants';
