@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Div, CRButton } from 'components';
 import { useTranslation } from 'react-i18next';
 import { useModal, useForm } from 'hooks';
@@ -17,6 +17,7 @@ const initialToValue = {
 };
 const Transfer = () => {
   const { visible, close, open } = useModal({});
+  const [activeStep, setActiveStep] = useState(0);
   const { t } = useTranslation();
   const { formValue: fromFormValue, setFormValue: fromSetFormValue } = useForm({
     initValue: initialFromValue,
@@ -24,13 +25,20 @@ const Transfer = () => {
   const { formValue: toFormValue, setFormValue: toSetFormValue } = useForm({
     initValue: initialToValue,
   });
+  console.log(fromFormValue, '--', toFormValue);
   const handleTransferInventory = useCallback(() => {
     open();
   }, [open]);
   const handleCancel = useCallback(() => {
     close();
   }, [close]);
-  const handleOk = useCallback(() => {}, []);
+  const handleOk = useCallback(() => {
+    if (activeStep !== 2) {
+      setActiveStep(activeStep + 1);
+    } else {
+    }
+  }, []);
+
   return (
     <>
       <Div display="flex" justifyContent="right" mt={10}>
@@ -47,6 +55,8 @@ const Transfer = () => {
         fromSetFormValue={fromSetFormValue}
         toFormValue={toFormValue}
         toSetFormValue={toSetFormValue}
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
       />
     </>
   );

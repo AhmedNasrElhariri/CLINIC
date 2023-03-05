@@ -13,8 +13,9 @@ const InventoryModel = ({
   fromSetFormValue,
   toFormValue,
   toSetFormValue,
+  setActiveStep,
+  activeStep,
 }) => {
-  const [activeStep, setActiveStep] = useState(0);
   const stepItems = useMemo(
     () =>
       [t('select'), t('transfer')].map((title, idx) => (
@@ -22,11 +23,16 @@ const InventoryModel = ({
       )),
     [setActiveStep, t]
   );
+  const okTitle = useMemo(
+    () => (activeStep === 0 ? 'Next' : 'Ok'),
+    [activeStep]
+  );
   return (
     <>
       <CRModal
         show={show}
         header={t('transferMedicineOrItem')}
+        okTitle={okTitle}
         onOk={handleOk}
         onHide={() => {
           close();

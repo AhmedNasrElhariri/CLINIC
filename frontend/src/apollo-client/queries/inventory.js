@@ -103,3 +103,11 @@ export const CONSUME_INVENTORY_MANUAl = gql`
     }
   }
 `;
+
+export const TRANSFER_INVENTORY_ITEMS = gql`
+  mutation transferInventoryItems($input: TransferInventoryItemsInput!) {
+    transferInventoryItems(input: $input) {
+      id
+    }
+  }
+`;

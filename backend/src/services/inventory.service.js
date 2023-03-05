@@ -34,7 +34,7 @@ export const reduceFromInventoryConsumptions = (items, groupedValus) => {
   return vv;
 };
 
-export const updatedUsedMaterials = async (organizationId, items) => {
+export const reducedInventoryPattern = async (organizationId, items) => {
   const persistedItems = await prisma.inventoryItem.findMany({
     where: {
       organizationId,
@@ -75,40 +75,12 @@ export const updatedUsedMaterials = async (organizationId, items) => {
         },
       },
     });
-    // items.filter(it => it.consumedUnits > 0);
-    // const upItems = items.map(({ consumedUnits, id, numberOfUnits }) => {
-    //   return {
-    //     data: { numberOfUnits: numberOfUnits - consumedUnits },
-    //     where: {
-    //       id: id,
-    //     },
-    //   };
-    // });
-    // console.log(upItems, 'upItems');
-    // const updatedConsumptionItems = upItems.map(it =>
-    //   prisma.inventoryItemConsumption.update(it)
-    // );
-    // Promise.all(
-    //   items.map(it => prisma.inventoryItemConsumption.update(it))
-    // );
-    // await prisma.$transaction([updateInventoryItem, updatedConsumptionItems]);
   });
-  ///
-  // const args = items.map(({ itemId, quantity }) => {
-  //   const persistedItem = R.find(R.propEq('id', itemId))(persistedItems);
-  //   return {
-  //     data: {
-  //       quantity: persistedItem.quantity - quantity,
-  //     },
-  //     where: {
-  //       organizationId,
-  //       id: itemId,
-  //     },
-  //   };
-  // });
+  return finishedItems;
+};
 
-  //eslint-disable-next-line
-  // await Promise.all(args.map(d => prisma.inventoryItem.updateMany(d)));
+export const updatedUsedMaterials = async (organizationId, items) => {
+  await reducedInventoryPattern(organizationId, items);
   return prisma.inventoryItem.findMany({
     where: {
       organizationId,
@@ -201,32 +173,6 @@ export const createSubstractHistoryForMultipleItems = async ({
       quantity: item.quantity,
     };
   });
-  // const args = data.map(i => {
-  //   return {
-  //     item: {
-  //       connect: {
-  //         id: i.itemId,
-  //       },
-  //     },
-  //     user: {
-  //       connect: {
-  //         id: userId,
-  //       },
-  //     },
-  //     patient: {
-  //       connect: {
-  //         id: patientId,
-  //       },
-  //     },
-  //     operation: INVENTORY_OPERATION.SUBSTRACT,
-  //     quantity: i.quantity,
-  //     date: new Date(),
-  //   };
-  // });
-  //eslint-disable-next-line
-  // return prisma.inventoryHistory.createMany({
-  //   data: args,
-  // });
 
   return Promise.all(
     items.map(i =>
