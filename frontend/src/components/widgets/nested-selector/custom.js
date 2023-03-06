@@ -54,6 +54,8 @@ const CustomCascader = ({ choices, onChange, value, disabled, ...props }) => {
             onChange={handleOnChange}
             parentSelectable={false}
             childrenKey="choices"
+            valueKey="id"
+            labelKey="name"
             renderValue={(value, activePaths, activeItemLabel) => {}}
             {...props}
           />

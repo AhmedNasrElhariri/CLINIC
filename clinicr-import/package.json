@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "crypto": "^1.0.1",
+    "moment": "^2.29.4",
     "nanoid": "^3.3.4",
     "pg": "^8.9.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.2/xlsx-0.19.2.tgz"

@@ -1,4 +1,4 @@
-const { init } = require('./db');
+const { init } = require("./db");
 const {
   createOrganization,
   createPatients,
@@ -7,8 +7,13 @@ const {
   createFieldGroup,
   createNestedSelectorField,
   createOtherFields,
-} = require('./query');
-const { importPatients, extractCategoriesAndItems, extractAppointmentsData } = require('./xlsx');
+  createAppointments,
+} = require("./query");
+const {
+  importPatients,
+  extractCategoriesAndItems,
+  extractAppointmentsData,
+} = require("./xlsx");
 
 let ORGANIZATION_ID;
 let USER_ID;
@@ -16,20 +21,30 @@ let PATIENTS_INFO;
 let VIEW_ID;
 let FIELD_GROUP_ID;
 let FIELD_ID;
+let DOCTOR_ID;
 
 (async () => {
   try {
     const client = await init();
-    return extractAppointmentsData()
+    // return extractAppointmentsData()
     /////////////////////////////////////////////////////////////////////
     const orgainzaiontId = await createOrganization(client);
     ORGANIZATION_ID = orgainzaiontId;
     /////////////////////////////////////////////////////////////////////
     const userId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
+      position: "Admin",
+      email: "admin@clinicr.net",
     });
     USER_ID = userId;
     /////////////////////////////////////////////////////////////////////
+    const doctorId = await createUser(client, {
+      organizationId: ORGANIZATION_ID,
+      position: "Doctor",
+      email: "doctor@clinicr.net",
+    });
+    DOCTOR_ID = doctorId;
+    ////////////////////////////////////////////////////////////////////
     const patients = await importPatients();
     const patientsInfo = await createPatients(client, {
       data: patients,
@@ -55,9 +70,23 @@ let FIELD_ID;
     });
     FIELD_ID = fieldId;
     //////////////////////////
-    await createOtherFields(client, { fieldGroupId: FIELD_GROUP_ID });
+    const otherFieldsValues = await createOtherFields(client, {
+      fieldGroupId: FIELD_GROUP_ID,
+    });
     //////////////////////////
-    console.log('done successfully');
+    const appData = await extractAppointmentsData();
+    await createAppointments(client, {
+      organizationId: ORGANIZATION_ID,
+      userId: USER_ID,
+      doctorId: DOCTOR_ID,
+      data: appData,
+      patientsInfo: PATIENTS_INFO,
+      otherFieldsValues: otherFieldsValues,
+      choices: choices,
+      nestedFieldId: FIELD_ID,
+    });
+    /////////////////////////
+    console.log("done successfully");
   } catch (error) {
     console.log(error.message);
   }

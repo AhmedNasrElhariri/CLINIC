@@ -276,6 +276,7 @@ function AppointmentData({
       });
     }
   };
+  console.log(navs,'navs')
   return (
     <>
       <div>
