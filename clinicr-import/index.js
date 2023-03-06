@@ -1,4 +1,4 @@
-const { init } = require("./db");
+const { init } = require('./src/db');
 const {
   createOrganization,
   createPatients,
@@ -8,12 +8,13 @@ const {
   createNestedSelectorField,
   createOtherFields,
   createAppointments,
-} = require("./query");
+  clearDB,
+} = require('./src/query');
 const {
   importPatients,
   extractCategoriesAndItems,
   extractAppointmentsData,
-} = require("./xlsx");
+} = require('./src/xlsx');
 
 let ORGANIZATION_ID;
 let USER_ID;
@@ -28,20 +29,22 @@ let DOCTOR_ID;
     const client = await init();
     // return extractAppointmentsData()
     /////////////////////////////////////////////////////////////////////
+    // await clearDB(client);
+    /////////////////////////////////////////////////////////////////////
     const orgainzaiontId = await createOrganization(client);
     ORGANIZATION_ID = orgainzaiontId;
     /////////////////////////////////////////////////////////////////////
     const userId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
-      position: "Admin",
-      email: "admin@clinicr.net",
+      position: 'Admin',
+      email: 'admin@clinicr.net',
     });
     USER_ID = userId;
     /////////////////////////////////////////////////////////////////////
     const doctorId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
-      position: "Doctor",
-      email: "doctor@clinicr.net",
+      position: 'Doctor',
+      email: 'doctor@clinicr.net',
     });
     DOCTOR_ID = doctorId;
     ////////////////////////////////////////////////////////////////////
@@ -82,11 +85,11 @@ let DOCTOR_ID;
       data: appData,
       patientsInfo: PATIENTS_INFO,
       otherFieldsValues: otherFieldsValues,
-      choices: choices,
+      choices,
       nestedFieldId: FIELD_ID,
     });
     /////////////////////////
-    console.log("done successfully");
+    console.log('done successfully');
   } catch (error) {
     console.log(error.message);
   }
