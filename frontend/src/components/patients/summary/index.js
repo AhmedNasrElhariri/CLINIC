@@ -67,11 +67,13 @@ const renderValues = (fields, name) => {
         {keys?.map(key => (
           <div className="text-center" key={key}>
             <h6 className="mb-2">{key}</h6>
-            {fields[key] &&
-              fields[key].length > 0 &&
+            {fields[key] && fields[key].length > 0 ? (
               fields[key].map(v => (
                 <StyledCell>{renderFieldValue(v)}</StyledCell>
-              ))}
+              ))
+            ) : (
+              <StyledCell>{fields[key]}</StyledCell>
+            )}
           </div>
         ))}
       </div>
@@ -107,7 +109,7 @@ const renderProp = (key, value, textValue) => {
 };
 
 const renderAppointment = data => {
-  console.log(data)
+  console.log(data,'DATAT')
   return data.map(({ status, fields, name }, idx) =>
     status === 'Dynamic'
       ? renderTable(fields, name)
@@ -152,7 +154,6 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
   );
 
   const newGroups = normalizeDataWithGroups(groups, data);
-
   const handleDeleteImage = useCallback(
     data => {
       const image = R.pick(['id'])(data);

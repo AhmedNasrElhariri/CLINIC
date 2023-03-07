@@ -20,7 +20,7 @@ const init = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=cash.pdf');
       res.end(pdfDoc);
     } catch (e) {
-      console.log(e);
+      (e);
       res.status(400).send(e.message);
     }
   });

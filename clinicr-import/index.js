@@ -1,4 +1,4 @@
-const { init } = require('./src/db');
+const { init } = require("./src/db");
 const {
   createOrganization,
   createPatients,
@@ -13,12 +13,13 @@ const {
   createSpecialty,
   createBranchToSpecialty,
   createUserSpecialty,
-} = require('./src/query');
+  activateView,
+} = require("./src/query");
 const {
   importPatients,
   extractCategoriesAndItems,
   extractAppointmentsData,
-} = require('./src/xlsx');
+} = require("./src/xlsx");
 
 let ORGANIZATION_ID;
 let USER_ID;
@@ -56,15 +57,15 @@ let SPEICIALTY_ID;
     /////////////////////////////////////////////////////////////////////
     const userId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
-      position: 'Admin',
-      email: 'admin@clinicr.net',
+      position: "Admin",
+      email: "admin@clinicr.net",
     });
     USER_ID = userId;
     /////////////////////////////////////////////////////////////////////
     const doctorId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
-      position: 'Doctor',
-      email: 'doctor@clinicr.net',
+      position: "Doctor",
+      email: "doctor@clinicr.net",
     });
     DOCTOR_ID = doctorId;
     ////////////////////////////////////////////////////////////////////
@@ -124,8 +125,8 @@ let SPEICIALTY_ID;
       branchId: BRANCH_ID,
     });
     /////////////////////////
-    console.log('done successfully');
+    ("done successfully");
   } catch (error) {
-    console.log(error.message);
+    (error.message);
   }
 })();

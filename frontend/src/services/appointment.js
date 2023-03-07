@@ -14,7 +14,39 @@ export const convertGroupFieldsToNavs = groups => {
     fields: g.fields,
   }));
 };
+export const findNodePath = (node, arr, path = []) => {
+  for (let i = 0; i < arr.length; i++) {
+    const item = arr[i];
+    const currentPath = [...path, arr[i]];
+    if (item.id === node) {
+      return currentPath;
+    }
+    if (item.choices) {
+      const result = findNodePath(node, item.choices, currentPath);
+      if (result) {
+        return result;
+      }
+    }
+  }
 
+  return null;
+};
+export const getValue = field => {
+  const {
+    field: { choices, type },
+    value,
+  } = field;
+  if (type === 'NestedSelector') {
+    return (value || [])
+      .map(v => findNodePath(v, choices, []))
+      .reduce((acc, arr) => {
+        let vala = arr.map(sv => `${sv.name} - `);
+        return [...acc, vala];
+      }, []);
+  } else {
+    return value;
+  }
+};
 export const normalizeDataWithGroups = (groups = [], data = []) => {
   const normalizedFieldsData = normalizeFieldsData(data);
   return groups.map(group => {
@@ -22,9 +54,10 @@ export const normalizeDataWithGroups = (groups = [], data = []) => {
       ...group,
       fields: R.unnest(group.fields).reduce((obj, f) => {
         const appointmentField = normalizedFieldsData[f.id] || { field: {} };
+
         return {
           ...obj,
-          [appointmentField.field.name]: appointmentField.value,
+          [appointmentField.field.name]: getValue(appointmentField),
         };
       }, {}),
     };

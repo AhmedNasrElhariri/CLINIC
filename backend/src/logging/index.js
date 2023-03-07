@@ -41,7 +41,7 @@ const middlewares = async () => {
         });
         const { loggable } = organization;
         loggable && oneMiddleWare.handler(r, row, tag);
-      }).catch(err => console.log(err));
+      }).catch(err => (err));
     }
 
     return rs;

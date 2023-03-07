@@ -73,16 +73,16 @@ export const createAppointmentMessage = async appointment => {
   //     body: originalMessage,
   //     to: receiverPhoneNo, // add 'whatsapp:+...'
   //   })
-  //   .then(message => console.log(message))
+  //   .then(message => (message))
   //   .catch(err => {
-  //     console.log(err, 'EEEEEEEEEEEE');
+  //     (err, 'EEEEEEEEEEEE');
   //   });
   axios({
     method: 'get',
     url: URL,
   })
-    .then(res => console.log(res, 'rrrrrrrrSSSSS'))
-    .catch(err => console.log(err, 'ERR'));
+    .then(res => (res, 'rrrrrrrrSSSSS'))
+    .catch(err => (err, 'ERR'));
 };
 
 export const before3daysSurgeriesReminder = async () => {
@@ -122,7 +122,7 @@ export const before3daysSurgeriesReminder = async () => {
         body: originalMessage,
         to: receiverPhoneNo, // add 'whatsapp:+...'
       })
-      .then(message => console.log(message));
+      .then(message => (message));
   });
 };
 
@@ -163,7 +163,7 @@ export const beforeOneDaySurgeryReminder = async () => {
         body: originalMessage,
         to: receiverPhoneNo, // add 'whatsapp:+...'
       })
-      .then(message => console.log(message));
+      .then(message => (message));
   });
 };
 
@@ -197,6 +197,6 @@ export const every6HoursAppointmentReminder = async () => {
         body: originalMessage,
         to: receiverPhoneNo, // add 'whatsapp:+...'
       })
-      .then(message => console.log(message));
+      .then(message => (message));
   });
 };
