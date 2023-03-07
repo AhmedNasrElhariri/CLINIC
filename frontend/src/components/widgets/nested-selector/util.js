@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 
 function* getPaths(o, p = []) {
-  console.log('yy');
   yield p;
   if (Object(o) === o)
     for (let k of Object.keys(o)) yield* getPaths(o[k], [...p, k]);

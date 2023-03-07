@@ -27,7 +27,6 @@ export default function CreateView() {
   const [formValue, setFormValue] = useState({ name: '', userId: null });
   const { data: doctorsData } = useQuery(LIST_ORGANIZATION_DOCTORS);
   const location = useLocation();
-  console.log('...///////////...',lanes)
   const viewId = location?.state?.id || null;
   const doctors = useMemo(
     () => R.propOr([], 'listOrganizationDoctors')(doctorsData),

@@ -39,10 +39,13 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
         patient: {
           id: patientId,
         },
-        id: appointmentId,
         type: {
           not: 'Surgery',
         },
+      },
+      include: {
+        data: true,
+        patient: true,
       },
       orderBy: {
         date: 'desc',

@@ -107,6 +107,7 @@ const renderProp = (key, value, textValue) => {
 };
 
 const renderAppointment = data => {
+  console.log(data)
   return data.map(({ status, fields, name }, idx) =>
     status === 'Dynamic'
       ? renderTable(fields, name)

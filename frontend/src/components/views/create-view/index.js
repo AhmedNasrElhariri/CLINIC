@@ -22,7 +22,6 @@ const width = 300;
 export default function CreateView({}) {
   const [lanes, setLanes] = useGlobalState('lanes');
   const [formValue, setFormValue] = useState({ name: '', type: null });
-console.log(lanes,'LALA')
   const location = useLocation();
   const viewId = location?.state?.id || null;
   useEffect(() => setLanes(json), [setLanes]);
