@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect, memo } from 'react';
 import * as R from 'ramda';
 import { Cascader } from 'rsuite';
 import { SelectItem, ItemSelect, Item, ItemsBox, DeleteBtn } from './style';
-import { getValue } from './util';
+import { findNodePath } from './util';
 
 const CustomCascader = ({ choices, onChange, value, disabled, ...props }) => {
   const [selected, setSelected] = useState([]);
@@ -24,12 +24,10 @@ const CustomCascader = ({ choices, onChange, value, disabled, ...props }) => {
   );
 
   const data = useMemo(() => R.clone(choices), [choices]);
-
   useEffect(() => {
-    const selected = (value || []).map(val => getValue(val, data));
+    const selected = (value || []).map(val => findNodePath(val, data));
     setSelected(selected);
   }, [data, value]);
-
   return (
     <>
       {disabled ? (
