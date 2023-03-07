@@ -1,4 +1,4 @@
-const { init } = require('./src/db');
+const { init } = require("./src/db");
 const {
   createOrganization,
   createPatients,
@@ -9,12 +9,16 @@ const {
   createOtherFields,
   createAppointments,
   clearDB,
-} = require('./src/query');
+  createBranch,
+  createSpecialty,
+  createBranchToSpecialty,
+  createUserSpecialty
+} = require("./src/query");
 const {
   importPatients,
   extractCategoriesAndItems,
   extractAppointmentsData,
-} = require('./src/xlsx');
+} = require("./src/xlsx");
 
 let ORGANIZATION_ID;
 let USER_ID;
@@ -23,30 +27,54 @@ let VIEW_ID;
 let FIELD_GROUP_ID;
 let FIELD_ID;
 let DOCTOR_ID;
-
+let BRANCH_ID;
+let SPEICIALTY_ID;
 (async () => {
   try {
     const client = await init();
     // return extractAppointmentsData()
     /////////////////////////////////////////////////////////////////////
-    // await clearDB(client);
+    await clearDB(client);
     /////////////////////////////////////////////////////////////////////
     const orgainzaiontId = await createOrganization(client);
     ORGANIZATION_ID = orgainzaiontId;
     /////////////////////////////////////////////////////////////////////
+    const branchId = await createBranch(client, {
+      organizationId: ORGANIZATION_ID,
+    });
+    BRANCH_ID = branchId;
+    /////////////////////////////////////////////////////////////////////
+    const specialtyId = await createSpecialty(client, {
+      organizationId: ORGANIZATION_ID,
+    });
+    SPEICIALTY_ID = specialtyId;
+    /////////////////////////////////////////////////////////////////////
+    const branchToSpecialty = await createBranchToSpecialty(client, {
+      branchId: BRANCH_ID,
+      specialtyId: SPEICIALTY_ID,
+    });
+    SPEICIALTY_ID = specialtyId;
+    /////////////////////////////////////////////////////////////////////
     const userId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
-      position: 'Admin',
-      email: 'admin@clinicr.net',
+      position: "Admin",
+      email: "admin@clinicr.net",
     });
     USER_ID = userId;
     /////////////////////////////////////////////////////////////////////
     const doctorId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
-      position: 'Doctor',
-      email: 'doctor@clinicr.net',
+      position: "Doctor",
+      email: "doctor@clinicr.net",
     });
     DOCTOR_ID = doctorId;
+    ////////////////////////////////////////////////////////////////////
+    await createUserSpecialty(client, {
+      organizationId: ORGANIZATION_ID,
+      branchId: BRANCH_ID,
+      specialtyId: SPEICIALTY_ID,
+      doctorId: DOCTOR_ID,
+    });
     ////////////////////////////////////////////////////////////////////
     const patients = await importPatients();
     const patientsInfo = await createPatients(client, {
@@ -89,7 +117,7 @@ let DOCTOR_ID;
       nestedFieldId: FIELD_ID,
     });
     /////////////////////////
-    console.log('done successfully');
+    console.log("done successfully");
   } catch (error) {
     console.log(error.message);
   }

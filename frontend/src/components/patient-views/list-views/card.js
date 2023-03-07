@@ -14,6 +14,7 @@ import { FIELD_TYPES } from 'utils/constants';
 
 const Card = ({ laneId, index }) => {
   const [lanes, setLanes] = useGlobalState('lanes');
+  console.log(lanes,'LALA')
 
   const lane = lanes.find(l => l.id === laneId);
   const cards = lane.cards;

@@ -38,6 +38,7 @@ export default function CreateView({}) {
   });
   const location = useLocation();
   const viewId = location?.state?.id || null;
+  console.log(viewId,'viewId')
   const { data } = useQuery(MY_PATIENT_VIEW, {
     variables: {
       id: viewId,
@@ -74,6 +75,7 @@ export default function CreateView({}) {
     const lanes = mapGroupFieldsToLanes(fieldGroups);
     setLanes(lanes);
   }, [view, setLanes]);
+  console.log(view,'VIVI')
   return (
     <>
       <Form layout="inline" formValue={formValue} onChange={setFormValue}>

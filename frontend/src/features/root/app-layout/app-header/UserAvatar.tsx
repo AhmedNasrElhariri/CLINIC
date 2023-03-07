@@ -9,7 +9,7 @@ export default memo(function UserAvatar({ user }: { user: User }) {
     <Link to="/me" className="flex items-center text-slate-700">
       <div className="sm:inline-flex items-center text-sm cursor-pointer gap-2 tw-hidden">
         {user?.name}
-        <Avatar size="large" src={user.avatar} shape="circle" />
+        <Avatar size="large" src={user?.avatar} shape="circle" />
       </div>
       <MdPersonOutline className="sm:hidden" />
     </Link>

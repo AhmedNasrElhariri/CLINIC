@@ -1,10 +1,10 @@
-const crypto = require('crypto');
-const moment = require('moment');
+const crypto = require("crypto");
+const moment = require("moment");
 
-const { split, uuid, dataToCreateAppointments } = require('./helpers');
+const { split, uuid, dataToCreateAppointments } = require("./helpers");
 
 const createMuitipleInsetValues = (totalNo, paramCount) =>
-  'VALUES ' +
+  "VALUES " +
   new Array(totalNo)
     .fill(0)
     .map(
@@ -12,18 +12,18 @@ const createMuitipleInsetValues = (totalNo, paramCount) =>
         `(${new Array(paramCount)
           .fill(0)
           .map((_, paramIndex) => `$${index * paramCount + (paramIndex + 1)}`)
-          .join(', ')})`
+          .join(", ")})`
     )
-    .join(', ');
+    .join(", ");
 
-const clearDB = async client => {
+const clearDB = async (client) => {
   const text = `truncate "Organization" CASCADE;`;
   await client.query(text);
 };
 
-const createOrganization = async client => {
+const createOrganization = async (client) => {
   const text = `INSERT INTO public."Organization"("id", "name") VALUES($1, $2) RETURNING "id"`;
-  const values = [crypto.randomUUID(), 'ClinicR Test'];
+  const values = [uuid(), "ClinicR Test"];
   const res = await client.query(text, values);
   return res.rows[0].id;
 };
@@ -31,10 +31,10 @@ const createOrganization = async client => {
 const createUser = async (client, { organizationId, position, email }) => {
   const text = `INSERT INTO public."User"("id", "name","email","password","organizationId","position") VALUES($1, $2,$3,$4,$5,$6) RETURNING "id"`;
   const values = [
-    crypto.randomUUID(),
-    'ClinicR Test',
+    uuid(),
+    "ClinicR Test",
     email,
-    '$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W',
+    "$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W",
     organizationId,
     position,
   ];
@@ -42,16 +42,42 @@ const createUser = async (client, { organizationId, position, email }) => {
   return res.rows[0].id;
 };
 
+const createBranch = async (client, { organizationId }) => {
+  const text = `INSERT INTO public."Branch"("id", "name","organizationId") VALUES($1, $2,$3) RETURNING "id"`;
+  const values = [uuid(), "Alex", organizationId];
+  const res = await client.query(text, values);
+  return res.rows[0].id;
+};
+const createSpecialty = async (client, { organizationId }) => {
+  const text = `INSERT INTO public."Specialty"("id", "name","organizationId") VALUES($1, $2,$3) RETURNING "id"`;
+  const values = [uuid(), "Dermatalogy", organizationId];
+  const res = await client.query(text, values);
+  return res.rows[0].id;
+};
+const createBranchToSpecialty = async (client, { branchId, specialtyId }) => {
+  const text = `INSERT INTO public."_BranchToSpecialty"("A","B")VALUES ($1, $2)`;
+  const values = [branchId, specialtyId];
+  await client.query(text, values);
+};
+const createUserSpecialty = async (
+  client,
+  { organizationId, branchId, specialtyId, doctorId }
+) => {
+  const text = `INSERT INTO public."UserSpecialty"("id","organizationId", "branchId","specialtyId","userId") VALUES($1, $2,$3,$4,$5) RETURNING "id"`;
+  const values = [uuid(), organizationId, branchId, specialtyId, doctorId];
+  const res = await client.query(text, values);
+  return res.rows[0].id;
+};
 const createView = async (client, { userId }) => {
   const text = `INSERT INTO public."View"("id", "name", "type", "userId") VALUES($1, $2, $3, $4) RETURNING "id"`;
-  const values = [crypto.randomUUID(), 'Dynamic view', 'Session', userId];
+  const values = [uuid(), "Dynamic view", "Session", userId];
   const res = await client.query(text, values);
   return res.rows[0].id;
 };
 
 const createFieldGroup = async (client, { viewId }) => {
   const text = `INSERT INTO public."FieldGroup"("id", "name", "order", "viewId", "status") VALUES($1, $2, $3, $4, $5) RETURNING "id"`;
-  const values = [crypto.randomUUID(), 'Main', 0, viewId, 'Static'];
+  const values = [uuid(), "Main", 0, viewId, "Static"];
   const res = await client.query(text, values);
   return res.rows[0].id;
 };
@@ -59,10 +85,10 @@ const createFieldGroup = async (client, { viewId }) => {
 const createNestedSelectorField = async (client, { fieldGroupId, choices }) => {
   const text = `INSERT INTO public."Field"("id", "name", "order", "type", "choices", "fieldGroupId", "dynamic") VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING "id"`;
   const values = [
-    crypto.randomUUID(),
-    'Category / Items',
+    uuid(),
+    "Category / Items",
     0,
-    'NestedSelector',
+    "NestedSelector",
     JSON.stringify(choices),
     fieldGroupId,
     false,
@@ -72,21 +98,14 @@ const createNestedSelectorField = async (client, { fieldGroupId, choices }) => {
 };
 
 const createOtherFields = async (client, { fieldGroupId }) => {
-  const names = ['Total Cost', 'Payment', 'Remaining'];
+  const names = ["Total Cost", "Payment", "Remaining"];
   const queries = names.map((name, index) => {
     const text = `INSERT INTO public."Field"("id", "name", "order", "type", "fieldGroupId", "dynamic") VALUES($1, $2, $3, $4, $5, $6) RETURNING "id","name"`;
-    const values = [
-      crypto.randomUUID(),
-      name,
-      index + 1,
-      'Number',
-      fieldGroupId,
-      false,
-    ];
+    const values = [uuid(), name, index + 1, "Number", fieldGroupId, false];
 
     return client
       .query(text, values)
-      .then(res => ({ id: res.rows[0].id, name: res.rows[0].name }));
+      .then((res) => ({ id: res.rows[0].id, name: res.rows[0].name }));
   });
   return Promise.all(queries);
 };
@@ -108,7 +127,7 @@ const createPatients = async (client, { data, organizationId, userId }) => {
         sex,
         code,
         organizationId,
-        'Primary',
+        "Primary",
         30,
         userId,
       ],
@@ -151,13 +170,13 @@ const createAppointments = async (
     (acc, { patientId, date, appId }) => [
       ...acc,
       appId,
-      moment(date, 'DD MM YYYY hh:mm:ss').toDate(),
+      moment(date, "DD MM YYYY hh:mm:ss").toDate(),
       patientId,
       organizationId,
       userId,
       doctorId,
-      'Session',
-      'Archived',
+      "Session",
+      "Archived",
     ],
     []
   );
@@ -195,4 +214,8 @@ module.exports = {
   createNestedSelectorField,
   createOtherFields,
   createAppointments,
+  createBranch,
+  createSpecialty,
+  createBranchToSpecialty,
+  createUserSpecialty,
 };

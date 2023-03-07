@@ -23,6 +23,7 @@ const appointments = async (
   const endDay = moment(dateTo).endOf('day').toDate();
   let appointmentsCount = 0;
   let appointments = [];
+  console.log(status,organizationId,startDay,endDay)
   if (dateFrom || patient) {
     const [allAppointments, count] = await fetchWithCount('appointment', {
       where: Object.assign(
@@ -83,6 +84,7 @@ const appointments = async (
     appointments: appointments,
     appointmentsCount: appointmentsCount,
   };
+  console.log(data,'F')
   return data;
 };
 
