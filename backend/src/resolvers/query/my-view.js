@@ -1,7 +1,7 @@
 import { prisma } from '@';
 
 const myView = async (_, { id }) => {
-  const vie = await prisma.view.findUnique({
+  return prisma.view.findUnique({
     include: {
       fieldGroups: {
         orderBy: {
@@ -20,7 +20,6 @@ const myView = async (_, { id }) => {
       id,
     },
   });
-  return vie;
 };
 
 export default myView;

@@ -96,7 +96,7 @@ cron.schedule('00 06 * * *', async function () {
 //   every6HoursAppointmentReminder();
 // });
 //////////////////////////////////////////////////////////
-('env is ' + process.env.NODE_ENV);
+console.log('env is ' + process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend')));
   app.get('*', (req, res, next) => {
@@ -111,7 +111,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 server.start(options, ({ port }) => {
-  (`Server is running on localhost:${port}`);
+  `Server is running on localhost:${port}`;
   if (process.env.init) {
     ('Init Database');
   }

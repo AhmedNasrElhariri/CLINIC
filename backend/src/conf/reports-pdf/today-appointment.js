@@ -95,7 +95,7 @@ const init = app => {
       res.setHeader('Content-Disposition', 'attachment; filename=cash.pdf');
       res.end(pdfDoc);
     } catch (e) {
-      (e);
+      console.log(e);
       res.status(400).send(e.message);
     }
   });

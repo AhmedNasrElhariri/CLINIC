@@ -44,8 +44,8 @@ const sendOtp = async (_, { phoneNo }) => {
     method: 'get',
     url: URL,
   })
-    .then(res => (res, 'rrr'))
-    .catch(err => (err, 'ER'));
+    .then(res => console.log(res, 'rrr'))
+    .catch(err => console.log(err, 'ER'));
   return randomOtp;
 };
 

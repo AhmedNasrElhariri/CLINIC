@@ -16,7 +16,7 @@ export const tomorrowAppointmentsReminder = async (
   // const config = await prisma.configuration.findUnique({
   //   where: { organizationId: organizationId },
   // });
-  
+
   const day = moment(new Date()).add(1, 'days').toDate();
   const from = moment(day).startOf('day').toDate();
   const to = moment(day).endOf('day').toDate();
@@ -62,7 +62,7 @@ export const createAppointmentMessage = async appointment => {
   const updatedDate = formatDateFull(date);
   const originalMessage = 'You have Appointment at ' + updatedDate;
   const YourSenderID = 'seem';
-  const YourPassword = "77JKaw\\CpJZY]}8y";
+  const YourPassword = '77JKaw\\CpJZY]}8y';
   const YourUserName = 'seem';
 
   const URL = `http://www.mysmslogin.com/sendsms.aspx?u=${YourUserName.valueOf()}&p=${YourPassword.valueOf()}&sndr=${YourSenderID.valueOf()}&to=${receiverPhoneNo.valueOf()}&msg=${originalMessage.valueOf()}`;
@@ -73,16 +73,16 @@ export const createAppointmentMessage = async appointment => {
   //     body: originalMessage,
   //     to: receiverPhoneNo, // add 'whatsapp:+...'
   //   })
-  //   .then(message => (message))
+  //   .then(message => console.log(message))
   //   .catch(err => {
-  //     (err, 'EEEEEEEEEEEE');
+  //     console.log(err, 'EEEEEEEEEEEE');
   //   });
   axios({
     method: 'get',
     url: URL,
   })
-    .then(res => (res, 'rrrrrrrrSSSSS'))
-    .catch(err => (err, 'ERR'));
+    .then(res => console.log(res, 'rrrrrrrrSSSSS'))
+    .catch(err => console.log(err, 'ERR'));
 };
 
 export const before3daysSurgeriesReminder = async () => {
@@ -122,7 +122,7 @@ export const before3daysSurgeriesReminder = async () => {
         body: originalMessage,
         to: receiverPhoneNo, // add 'whatsapp:+...'
       })
-      .then(message => (message));
+      .then(message => console.log(message));
   });
 };
 
@@ -163,7 +163,7 @@ export const beforeOneDaySurgeryReminder = async () => {
         body: originalMessage,
         to: receiverPhoneNo, // add 'whatsapp:+...'
       })
-      .then(message => (message));
+      .then(message => console.log(message));
   });
 };
 
@@ -197,6 +197,6 @@ export const every6HoursAppointmentReminder = async () => {
         body: originalMessage,
         to: receiverPhoneNo, // add 'whatsapp:+...'
       })
-      .then(message => (message));
+      .then(message => console.log(message));
   });
 };
