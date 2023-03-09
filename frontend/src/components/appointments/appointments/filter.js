@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form } from 'rsuite';
 import { useTranslation } from 'react-i18next';
-import { appointmentTypes, appointmentStatus } from 'services/appointment';
+import { appointmentStatus } from 'services/appointment';
 import { CRTextInput, CRSelectInput, CRDateRangePicker } from 'components';
 import { useSessionDefinition } from 'hooks';
 
@@ -47,7 +47,8 @@ export default function AppointmentsFilter({ formValue, onChange }) {
           label={t('nameOrPhoneNo')}
           value={patientInternalValue}
           onChange={value => {
-            const pattern = /^(010|011|012|015)\d{3,}|(?!(010|011|012|015)).{3,}/;
+            const pattern =
+              /^(010|011|012|015)\d{3,}|(?!(010|011|012|015)).{3,}/;
             if (pattern.test(value) || !value) {
               onChange({ ...formValue, patient: value });
             }

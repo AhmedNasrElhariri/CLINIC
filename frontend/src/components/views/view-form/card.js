@@ -38,7 +38,6 @@ const Card = ({ laneId, index }) => {
   }, [lanes, laneId, index]);
 
   const { visible, open, close } = useModal();
-
   const update = useCallback(
     data => {
       const newLanes = lanes.map(l => ({
@@ -117,7 +116,6 @@ const Card = ({ laneId, index }) => {
     const choices = Array.isArray(formValue.choices) ? formValue.choices : [];
     formValue.choices = choices;
   }, [formValue]);
-
   return (
     <>
       <Panel
@@ -204,6 +202,7 @@ const Card = ({ laneId, index }) => {
             visible={visible}
             onOk={handleSetChoices}
             onClose={handleClose}
+            choices={formValue.choices}
           />
         )}
         {popup === POPUP_TYPE.TABLE_CELLS && (

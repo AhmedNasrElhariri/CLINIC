@@ -22,6 +22,7 @@ import EditAppointment from '../edit-appointment';
 import CancelAppointment from '../cancel-appointment';
 import { useTranslation } from 'react-i18next';
 import TransferAppointments from '../transfer-apps';
+import NameFilter from './name-filter';
 const { StringType } = Schema.Types;
 
 const initialValue = {
@@ -96,32 +97,28 @@ function TodayAppointments() {
     todayAppointmentsCount,
     refetchTodayAppointments,
   } = useAppointments(
-    Object.assign(
-      {
-        page: currentPage?.activePage,
-        action: ACTIONS.List_Appointment,
-        status: active,
-        patientId: appointment?.patient?.id,
-        canAddFollowUp: appointment?.canAddFollowUp,
-        branchId: filter?.branch,
-        specialtyId: filter?.specialty,
-        doctorId: filter?.doctor,
-        formError,
-        onAdjust: () => {},
-        onArchive: () => {
-          setCompany(companyInital);
-          setPopUp(null);
-          close();
-        },
-        setAppointment,
-        setFollowUp,
-        setPopUp,
-        open,
-        followUpFeature,
+    Object.assign({
+      page: currentPage?.activePage,
+      action: ACTIONS.List_Appointment,
+      status: active,
+      patientId: appointment?.patient?.id,
+      canAddFollowUp: appointment?.canAddFollowUp,
+      branchId: filter?.branch,
+      specialtyId: filter?.specialty,
+      doctorId: filter?.doctor,
+      patient: filter?.patient,
+      onAdjust: () => {},
+      onArchive: () => {
+        setCompany(companyInital);
+        setPopUp(null);
+        close();
       },
-      !formError?.hasOwnProperty('patient') &&
-        filter?.patient?.length > 3 && { patient: filter?.patient }
-    )
+      setAppointment,
+      setFollowUp,
+      setPopUp,
+      open,
+      followUpFeature,
+    })
   );
   const pages = Math.ceil(todayAppointmentsCount / 30);
   useEffect(() => {
@@ -386,18 +383,7 @@ function TodayAppointments() {
             handlePrint={handlePrint}
             pageSize={PAGE_SIZE}
           >
-            <Form
-              formValue={filter}
-              onChange={setFilter}
-              style={{ marginLeft: '10px', marginTop: '-10px' }}
-              model={model}
-              onCheck={setFormError}
-            >
-              <CRTextInput
-                name="patient"
-                placeholder={t('Search by name / phone No')}
-              />
-            </Form>
+            <NameFilter t={t} filter={filter} setFilter={setFilter} />
           </ListAppointments>
         </>
       )}
@@ -428,18 +414,7 @@ function TodayAppointments() {
             handlePrint={handlePrint}
             pageSize={PAGE_SIZE}
           >
-            <Form
-              formValue={filter}
-              onChange={setFilter}
-              style={{ marginLeft: '10px', marginTop: '-10px' }}
-              model={model}
-              onCheck={setFormError}
-            >
-              <CRTextInput
-                name="patient"
-                placeholder={t('Search by name / phone No')}
-              />
-            </Form>
+            <NameFilter t={t} filter={filter} setFilter={setFilter} />
           </ListAppointments>
         </>
       )}
@@ -462,18 +437,7 @@ function TodayAppointments() {
             handlePrint={handlePrint}
             pageSize={PAGE_SIZE}
           >
-            <Form
-              formValue={filter}
-              onChange={setFilter}
-              style={{ marginLeft: '10px', marginTop: '-10px' }}
-              model={model}
-              onCheck={setFormError}
-            >
-              <CRTextInput
-                name="patient"
-                placeholder={t('Search by name / phone No')}
-              />
-            </Form>
+            <NameFilter t={t} filter={filter} setFilter={setFilter} />
           </ListAppointments>
         </>
       )}
