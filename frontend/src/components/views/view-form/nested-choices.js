@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Input, Tree, Button } from 'rsuite';
 import { nanoid } from 'nanoid';
 import { CRModal } from 'components';
@@ -32,8 +32,22 @@ const toChoices = arr => {
     );
   });
 };
+const convertChoices = arr => {
+  if (!arr || !arr.length) {
+    return [];
+  }
+  return arr.map(({ id, name, choices }) => {
+    return Object.assign(
+      {
+        value: id,
+        label: name,
+      },
+      choices && choices.length && { children: convertChoices(choices) }
+    );
+  });
+};
 
-function NestedChoices({ visible, onOk, onClose }) {
+function NestedChoices({ visible, onOk, onClose, choices }) {
   const [label, setLabel] = useState('');
   const [activeNode, setActiveNode] = useState({});
   const dataItemType = useMemo(
@@ -49,9 +63,10 @@ function NestedChoices({ visible, onOk, onClose }) {
     {
       label: 'Root',
       value: 0,
-      children: [],
+      children: choices && Array.isArray(choices) && convertChoices(choices),
     },
   ]);
+
   const addNode = useCallback(() => {
     findNode(activeNode.value, dataItemType, data[0]);
     setData([data[0]]);

@@ -64,11 +64,13 @@ const renderValues = (fields, name) => {
           gridTemplateColumns: `repeat(${keys.length}, minmax(100px, 1fr))`,
         }}
       >
-        {keys?.map(key => (
+        {(keys || [])?.map(key => (
           <div className="text-center" key={key}>
             <h6 className="mb-2">{key}</h6>
-            {fields[key] && fields[key].length > 0 ? (
-              fields[key].map(v => (
+            {fields[key] &&
+            Array.isArray(fields[key]) &&
+            fields[key].length > 0 ? (
+              (fields[key] || []).map(v => (
                 <StyledCell>{renderFieldValue(v)}</StyledCell>
               ))
             ) : (
@@ -109,7 +111,6 @@ const renderProp = (key, value, textValue) => {
 };
 
 const renderAppointment = data => {
-  console.log(data,'DATAT')
   return data.map(({ status, fields, name }, idx) =>
     status === 'Dynamic'
       ? renderTable(fields, name)
