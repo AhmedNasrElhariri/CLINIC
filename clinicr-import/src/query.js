@@ -205,7 +205,7 @@ const createAppointments = async (
         uuid(),
         appId,
         fieldId,
-        Array.isArray(value) ? JSON.stringify(JSON.stringify(value)) : value,
+        Array.isArray(value) ? JSON.stringify(value) : value,
       ],
       []
     );
