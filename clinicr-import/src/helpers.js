@@ -1,6 +1,16 @@
 const crypto = require('crypto');
 
 const uuid = () => crypto.randomUUID();
+
+const uniqBy = (arr, selector = item => item) => {
+  const map = new Map();
+  arr.forEach(item => {
+    const prop = selector(item);
+    if (!map.has(prop)) map.set(prop, item);
+  });
+  return [...map.values()];
+};
+
 const split = (list, chunkSize) => {
   return [...Array(Math.ceil(list.length / chunkSize))].map(_ =>
     list.splice(0, chunkSize)
@@ -51,9 +61,9 @@ const returnAppointmentIdAndFieldId = (
   };
   data.forEach(d => {
     const vv = recursiveSearch(choices, d['Item Name'].trim());
-    val1['value'] += Number(d['Total Cost']);
-    val2['value'] += Number(d['Payment']);
-    val3['value'] += Number(d['Remaining']);
+    val1['value'] += Number(d['Total Cost']) || 0;
+    val2['value'] += Number(d['Payment']) || 0;
+    val3['value'] += Number(d['Remaining']) || 0;
     val4['value'] = vv ? [...val4['value'], vv] : val4['value'];
   });
   return [val1, val2, val3, val4];
@@ -67,11 +77,13 @@ const dataToCreateAppointments = (
 ) => {
   let apps = [];
   let appFields = [];
+  let i = 0;
   (data || []).forEach(({ phoneNo, appointments }) => {
+    i++;
     const patientId = patientsInfo[phoneNo];
     (appointments || []).forEach(({ date, data }) => {
       const appId = uuid();
-      apps.push({ date: date, patientId: patientId, appId: appId });
+      apps.push({ date: date, patientId, appId });
       appFields.push(
         ...returnAppointmentIdAndFieldId(
           data,
@@ -89,5 +101,6 @@ const dataToCreateAppointments = (
 module.exports = {
   uuid,
   split,
+  uniqBy,
   dataToCreateAppointments,
 };

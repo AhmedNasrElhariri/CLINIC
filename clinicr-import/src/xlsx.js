@@ -1,11 +1,19 @@
 const path = require('path');
 const { nanoid } = require('nanoid');
 const XLSX = require('xlsx');
+const { uniqBy } = require('./helpers');
 
-const PATIENTS_PATH = path.resolve(__dirname, './files/patients.xlsx');
 const PATIENTS_HISTORY_PATH = path.resolve(
   __dirname,
   './files/patients_history.xlsx'
+);
+const INVALID_PATIENTS_PATH = path.resolve(
+  __dirname,
+  './files/invalid_patients.xlsx'
+);
+const INVALID_PATIENTS_HISTORY_PATH = path.resolve(
+  __dirname,
+  './files/invalid_patients_history.xlsx'
 );
 
 const groupBy = (arr, prop) => {
@@ -41,18 +49,26 @@ const getCategoriesAndItems = groupedCategories => {
 };
 
 const importPatients = async () => {
-  const file = XLSX.readFile(PATIENTS_PATH);
+  const file = XLSX.readFile(PATIENTS_HISTORY_PATH);
+  const data = XLSX.utils.sheet_to_json(file.Sheets[file.SheetNames[0]]);
 
-  const data = XLSX.utils
-    .sheet_to_json(file.Sheets[file.SheetNames[0]])
-    .filter(p => p['Customer Name'])
+  const validData = data
+    .filter(row => row['Name'] && row['Mobile No'])
     .map(p => ({
-      name: p['Customer Name'],
-      code: p['Customer Code'],
-      phoneNo: p['Mobile No'],
+      name: p['Name'].trim(),
+      code: (p['Code'] || '').trim(),
+      phoneNo: p['Mobile No'].trim(),
       sex: 'Female',
     }));
-  return data;
+
+  const invalidData = data.filter(row => !row['Name'] || !row['Mobile No']);
+
+  await exportInvalidData(invalidData, INVALID_PATIENTS_PATH);
+
+  const uniqueData = uniqBy(validData, ({ phoneNo }) => phoneNo);
+  console.log('Valid patients: ' + uniqueData.length);
+  console.log('Invalid patients: ' + invalidData.length);
+  return uniqueData;
 };
 
 const extractCategoriesAndItems = async () => {
@@ -63,6 +79,16 @@ const extractCategoriesAndItems = async () => {
   return categories;
 };
 
+const exportInvalidData = async (rows, url) => {
+  const worksheet = XLSX.utils.json_to_sheet(rows);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invalid Data');
+
+  XLSX.writeFile(workbook, url, {
+    compression: true,
+  });
+};
+
 const extractAppointmentsData = async () => {
   const file = XLSX.readFile(PATIENTS_HISTORY_PATH);
 
@@ -70,7 +96,21 @@ const extractAppointmentsData = async () => {
     raw: false,
     dateNF: 'yyyy-mm-dd',
   });
-  const groupedByPhoneNo = groupBy(data, 'Mobile No');
+  const validData = data.filter(
+    row =>
+      row['Category'] && row['Item Name'] && row['Name'] && row['Mobile No']
+  );
+  const invalidData = data.filter(
+    row =>
+      !row['Category'] || !row['Item Name'] || !row['Name'] || !row['Mobile No']
+  );
+
+  console.log('Valid Appointments Rows: ' + validData.length);
+  console.log('Invalid Appointments Rows: ' + invalidData.length);
+
+  await exportInvalidData(invalidData, INVALID_PATIENTS_HISTORY_PATH);
+
+  const groupedByPhoneNo = groupBy(validData, 'Mobile No');
   const appointmentsWithData = Object.entries(groupedByPhoneNo).map(
     ([phoneNo, appointments]) => {
       const groupAppointmentsByData = groupBy(appointments, 'History Date');

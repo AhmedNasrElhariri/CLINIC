@@ -36,25 +36,34 @@ let SPEICIALTY_ID;
     /////////////////////////////////////////////////////////////////////
     await clearDB(client);
     /////////////////////////////////////////////////////////////////////
+    console.log('Start create organization');
     const orgainzaiontId = await createOrganization(client);
     ORGANIZATION_ID = orgainzaiontId;
+    console.log('Finish create organization');
     /////////////////////////////////////////////////////////////////////
+    console.log('Start create branch');
     const branchId = await createBranch(client, {
       organizationId: ORGANIZATION_ID,
     });
     BRANCH_ID = branchId;
+    console.log('Finish create branch');
     /////////////////////////////////////////////////////////////////////
+    console.log('Start create specialty');
     const specialtyId = await createSpecialty(client, {
       organizationId: ORGANIZATION_ID,
     });
     SPEICIALTY_ID = specialtyId;
+    console.log('Finish create specialty');
     /////////////////////////////////////////////////////////////////////
-    const branchToSpecialty = await createBranchToSpecialty(client, {
+    console.log('Start assign users to specialty');
+    await createBranchToSpecialty(client, {
       branchId: BRANCH_ID,
       specialtyId: SPEICIALTY_ID,
     });
     SPEICIALTY_ID = specialtyId;
+    console.log('Finish assign users to specialty');
     /////////////////////////////////////////////////////////////////////
+    console.log('Start create users');
     const userId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
       position: 'Admin',
@@ -75,7 +84,9 @@ let SPEICIALTY_ID;
       specialtyId: SPEICIALTY_ID,
       doctorId: DOCTOR_ID,
     });
+    console.log('Finish create user');
     ////////////////////////////////////////////////////////////////////
+    console.log('Start create patients');
     const patients = await importPatients();
     const patientsInfo = await createPatients(client, {
       data: patients,
@@ -83,12 +94,13 @@ let SPEICIALTY_ID;
       userId: USER_ID,
     });
     PATIENTS_INFO = patientsInfo;
+    console.log('Finish create patients');
     /////////////////////////////////////////////////////////////////////
+    console.log('Start create view');
     const viewId = await createView(client, {
       userId: USER_ID,
     });
     VIEW_ID = viewId;
-    //////////////////////////
     /////////////////////////////////////////////////////////////////////
     await activateView(client, {
       userId: USER_ID,
@@ -110,7 +122,9 @@ let SPEICIALTY_ID;
     const otherFieldsValues = await createOtherFields(client, {
       fieldGroupId: FIELD_GROUP_ID,
     });
+    console.log('Finish create view');
     //////////////////////////
+    console.log('Start create Appointments');
     const appData = await extractAppointmentsData();
     await createAppointments(client, {
       organizationId: ORGANIZATION_ID,
@@ -124,9 +138,11 @@ let SPEICIALTY_ID;
       specialtyId: SPEICIALTY_ID,
       branchId: BRANCH_ID,
     });
+    console.log('Finish create Appointments');
     /////////////////////////
-    ('done successfully');
+    console.log('done successfully');
   } catch (error) {
-    error.message;
+    console.log(error);
+    console.log(error.message);
   }
 })();

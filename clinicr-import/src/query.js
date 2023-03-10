@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const { split, uuid, dataToCreateAppointments } = require('./helpers');
 
-const createMuitipleInsetValues = (totalNo, paramCount) =>
+const createMultipleInsretValues = (totalNo, paramCount) =>
   'VALUES ' +
   new Array(totalNo)
     .fill(0)
@@ -115,10 +115,10 @@ const createOtherFields = async (client, { fieldGroupId }) => {
 };
 
 const createPatients = async (client, { data, organizationId, userId }) => {
-  const chunks = split(data, 100);
+  const chunks = split(data, 500);
   const result = [];
   for await (const chunk of chunks) {
-    const text = `INSERT INTO public."Patient"("id", "name", "phoneNo", "sex", "code", "organizationId", "type", "age", "userId") ${createMuitipleInsetValues(
+    const text = `INSERT INTO public."Patient"("id", "name", "phoneNo", "sex", "code", "organizationId", "type", "age", "userId") ${createMultipleInsretValues(
       chunk.length,
       9
     )} RETURNING "id", "phoneNo"`;
@@ -172,44 +172,49 @@ const createAppointments = async (
     choices,
     nestedFieldId
   );
-  const values = apps.reduce(
-    (acc, { patientId, date, appId }) => [
-      ...acc,
-      appId,
-      moment(date, 'DD MM YYYY hh:mm:ss').toDate(),
-      patientId,
-      organizationId,
-      userId,
-      doctorId,
-      'Session',
-      'Archived',
-      specialtyId,
-      branchId,
-    ],
-    []
-  );
-  const text = `INSERT INTO public."Appointment"("id", "date", "patientId", "organizationId", "userId", "doctorId", "type","status", "specialtyId", "branchId") ${createMuitipleInsetValues(
-    apps.length,
-    10
-  )} RETURNING "id"`;
-  const res = await client.query(text, values);
+  const chunks = split(apps, 500);
+  const fieldsChunks = split(appFields, 500);
+  for await (const chunk of chunks) {
+    const values = chunk.reduce(
+      (acc, { patientId, date, appId }) => [
+        ...acc,
+        appId,
+        moment(date, 'DD MM YYYY hh:mm:ss').toDate(),
+        patientId,
+        organizationId,
+        userId,
+        doctorId,
+        'Session',
+        'Archived',
+        specialtyId,
+        branchId,
+      ],
+      []
+    );
+    const text = `INSERT INTO public."Appointment"("id", "date", "patientId", "organizationId", "userId", "doctorId", "type","status", "specialtyId", "branchId") ${createMultipleInsretValues(
+      chunk.length,
+      10
+    )} RETURNING "id"`;
+    await client.query(text, values);
+  }
 
-  ////
-  const values2 = appFields.reduce(
-    (acc, { appId, fieldId, value }) => [
-      ...acc,
-      uuid(),
-      appId,
-      fieldId,
-      Array.isArray(value) ? JSON.stringify(value) : value,
-    ],
-    []
-  );
-  const text2 = `INSERT INTO public."AppointmentField"("id", "appointmentId", "fieldId", "value") ${createMuitipleInsetValues(
-    appFields.length,
-    4
-  )} RETURNING "id"`;
-  const res2 = await client.query(text2, values2);
+  for await (const chunk of fieldsChunks) {
+    const values = chunk.reduce(
+      (acc, { appId, fieldId, value }) => [
+        ...acc,
+        uuid(),
+        appId,
+        fieldId,
+        Array.isArray(value) ? JSON.stringify(JSON.stringify(value)) : value,
+      ],
+      []
+    );
+    const text = `INSERT INTO public."AppointmentField"("id", "appointmentId", "fieldId", "value") ${createMultipleInsretValues(
+      chunk.length,
+      4
+    )} RETURNING "id"`;
+    await client.query(text, values);
+  }
 };
 
 module.exports = {
