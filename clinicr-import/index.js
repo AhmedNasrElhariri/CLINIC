@@ -14,11 +14,13 @@ const {
   createBranchToSpecialty,
   createUserSpecialty,
   activateView,
+  createDoctors,
 } = require('./src/query');
 const {
   importPatients,
   extractCategoriesAndItems,
   extractAppointmentsData,
+  importDoctors,
 } = require('./src/xlsx');
 
 let ORGANIZATION_ID;
@@ -63,28 +65,30 @@ let SPEICIALTY_ID;
     SPEICIALTY_ID = specialtyId;
     console.log('Finish assign users to specialty');
     /////////////////////////////////////////////////////////////////////
-    console.log('Start create users');
+    console.log('Start create admin');
     const userId = await createUser(client, {
       organizationId: ORGANIZATION_ID,
       position: 'Admin',
-      email: 'admin@clinicr.net',
+      email: 'admin@lushelle.com',
     });
     USER_ID = userId;
+    console.log('Finish create admin');
     /////////////////////////////////////////////////////////////////////
-    const doctorId = await createUser(client, {
+    console.log('Start create doctors');
+    const doctors = await importDoctors();
+    const doctorEmailsVsIds = await createDoctors(client, {
+      doctors,
       organizationId: ORGANIZATION_ID,
-      position: 'Doctor',
-      email: 'doctor@clinicr.net',
     });
-    DOCTOR_ID = doctorId;
+    const doctorIds = Object.values(doctorEmailsVsIds);
     ////////////////////////////////////////////////////////////////////
     await createUserSpecialty(client, {
       organizationId: ORGANIZATION_ID,
       branchId: BRANCH_ID,
       specialtyId: SPEICIALTY_ID,
-      doctorId: DOCTOR_ID,
+      doctorIds,
     });
-    console.log('Finish create user');
+    console.log('Finish create doctors');
     ////////////////////////////////////////////////////////////////////
     console.log('Start create patients');
     const patients = await importPatients();
@@ -129,7 +133,7 @@ let SPEICIALTY_ID;
     await createAppointments(client, {
       organizationId: ORGANIZATION_ID,
       userId: USER_ID,
-      doctorId: DOCTOR_ID,
+      doctorEmailsVsIds,
       data: appData,
       patientsInfo: PATIENTS_INFO,
       otherFieldsValues: otherFieldsValues,

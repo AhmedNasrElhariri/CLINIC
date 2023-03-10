@@ -61,11 +61,15 @@ const returnAppointmentIdAndFieldId = (
   };
   data.forEach(d => {
     const vv = recursiveSearch(choices, d['Item Name'].trim());
+    if (!vv) {
+      console.log(vv);
+    }
     val1['value'] += Number(d['Total Cost']) || 0;
     val2['value'] += Number(d['Payment']) || 0;
     val3['value'] += Number(d['Remaining']) || 0;
     val4['value'] = vv ? [...val4['value'], vv] : val4['value'];
   });
+  console.log(val1, val2, val3, val4);
   return [val1, val2, val3, val4];
 };
 const dataToCreateAppointments = (
@@ -73,7 +77,8 @@ const dataToCreateAppointments = (
   patientsInfo,
   otherFieldsValues,
   choices,
-  nestedFieldId
+  nestedFieldId,
+  doctorEmailsVsIds
 ) => {
   let apps = [];
   let appFields = [];
@@ -81,12 +86,18 @@ const dataToCreateAppointments = (
   (data || []).forEach(({ phoneNo, appointments }) => {
     i++;
     const patientId = patientsInfo[phoneNo];
-    (appointments || []).forEach(({ date, data }) => {
+    (appointments || []).forEach(({ date, data: history }) => {
       const appId = uuid();
-      apps.push({ date: date, patientId, appId });
+      const email = history[0].Email;
+      apps.push({
+        date,
+        patientId,
+        doctorId: doctorEmailsVsIds[email],
+        appId,
+      });
       appFields.push(
         ...returnAppointmentIdAndFieldId(
-          data,
+          history,
           otherFieldsValues,
           choices,
           appId,

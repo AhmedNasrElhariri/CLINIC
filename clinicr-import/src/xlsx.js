@@ -5,7 +5,8 @@ const { uniqBy } = require('./helpers');
 
 const PATIENTS_HISTORY_PATH = path.resolve(
   __dirname,
-  './files/patients_history.xlsx'
+  './files/Book1.xlsx'
+  // './files/patients_history.xlsx'
 );
 const INVALID_PATIENTS_PATH = path.resolve(
   __dirname,
@@ -71,6 +72,21 @@ const importPatients = async () => {
   return uniqueData;
 };
 
+const importDoctors = async () => {
+  const file = XLSX.readFile(PATIENTS_HISTORY_PATH);
+  const data = XLSX.utils.sheet_to_json(file.Sheets[file.SheetNames[0]]);
+
+  const doctors = data
+    .filter(row => row['Doctor Name'])
+    .map(p => ({
+      name: p['Doctor Name'].trim(),
+      email: p['Email'].trim(),
+    }));
+
+  const uniqueData = uniqBy(doctors, ({ name }) => name);
+  return uniqueData;
+};
+
 const extractCategoriesAndItems = async () => {
   const file = XLSX.readFile(PATIENTS_HISTORY_PATH);
 
@@ -131,6 +147,7 @@ const extractAppointmentsData = async () => {
 
 module.exports = {
   importPatients,
+  importDoctors,
   extractCategoriesAndItems,
   extractAppointmentsData,
 };

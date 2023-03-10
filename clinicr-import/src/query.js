@@ -23,7 +23,7 @@ const clearDB = async client => {
 
 const createOrganization = async client => {
   const text = `INSERT INTO public."Organization"("id", "name") VALUES($1, $2) RETURNING "id"`;
-  const values = [uuid(), 'ClinicR Test'];
+  const values = [uuid(), 'Lushelle'];
   const res = await client.query(text, values);
   return res.rows[0].id;
 };
@@ -32,7 +32,7 @@ const createUser = async (client, { organizationId, position, email }) => {
   const text = `INSERT INTO public."User"("id", "name","email","password","organizationId","position") VALUES($1, $2,$3,$4,$5,$6) RETURNING "id"`;
   const values = [
     uuid(),
-    'ClinicR Test',
+    'Lushelle',
     email,
     '$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W',
     organizationId,
@@ -42,43 +42,82 @@ const createUser = async (client, { organizationId, position, email }) => {
   return res.rows[0].id;
 };
 
+const createDoctors = async (client, { doctors, organizationId }) => {
+  const text = `INSERT INTO public."User"("id", "name","email","password","organizationId","position") ${createMultipleInsretValues(
+    doctors.length,
+    6
+  )} RETURNING "id", "email"`;
+  const values = doctors.reduce(
+    (acc, { name, email }) => [
+      ...acc,
+      uuid(),
+      name,
+      email,
+      '$2y$10$SNCOdQYWg64E.GBx5iUPIuTDeb7pGwUad.XXgrRP0A7t2B/wWcW/W',
+      organizationId,
+      'Doctor',
+    ],
+    []
+  );
+  const res = await client.query(text, values);
+  return res.rows.reduce((acc, { id, email }) => ({ ...acc, [email]: id }), {});
+};
+
 const createBranch = async (client, { organizationId }) => {
   const text = `INSERT INTO public."Branch"("id", "name","organizationId") VALUES($1, $2,$3) RETURNING "id"`;
-  const values = [uuid(), 'Alex', organizationId];
+  const values = [uuid(), 'Lushelle', organizationId];
   const res = await client.query(text, values);
   return res.rows[0].id;
 };
+
 const createSpecialty = async (client, { organizationId }) => {
   const text = `INSERT INTO public."Specialty"("id", "name","organizationId") VALUES($1, $2,$3) RETURNING "id"`;
   const values = [uuid(), 'Dermatalogy', organizationId];
   const res = await client.query(text, values);
   return res.rows[0].id;
 };
+
 const createBranchToSpecialty = async (client, { branchId, specialtyId }) => {
   const text = `INSERT INTO public."_BranchToSpecialty"("A","B")VALUES ($1, $2)`;
   const values = [branchId, specialtyId];
   await client.query(text, values);
 };
+
 const createUserSpecialty = async (
   client,
-  { organizationId, branchId, specialtyId, doctorId }
+  { organizationId, branchId, specialtyId, doctorIds }
 ) => {
-  const text = `INSERT INTO public."UserSpecialty"("id","organizationId", "branchId","specialtyId","userId") VALUES($1, $2,$3,$4,$5) RETURNING "id"`;
-  const values = [uuid(), organizationId, branchId, specialtyId, doctorId];
-  const res = await client.query(text, values);
-  return res.rows[0].id;
+  const text = `INSERT INTO public."UserSpecialty"("id","organizationId", "branchId","specialtyId","userId") ${createMultipleInsretValues(
+    doctorIds.length,
+    5
+  )} RETURNING "id"`;
+  const values = doctorIds.reduce(
+    (acc, doctorId) => [
+      ...acc,
+      uuid(),
+      organizationId,
+      branchId,
+      specialtyId,
+      doctorId,
+    ],
+    []
+  );
+  return await client.query(text, values);
 };
+
 const createView = async (client, { userId }) => {
   const text = `INSERT INTO public."View"("id", "name", "type", "userId") VALUES($1, $2, $3, $4) RETURNING "id"`;
   const values = [uuid(), 'Dynamic view', 'Session', userId];
   const res = await client.query(text, values);
   return res.rows[0].id;
 };
+
 const activateView = async (client, { viewId, userId }) => {
   const text = `INSERT INTO public."ViewStatus"("id","userId","activeViewId") VALUES($1, $2, $3) RETURNING "id"`;
   const values = [uuid(), userId, viewId];
   await client.query(text, values);
 };
+
 const createFieldGroup = async (client, { viewId }) => {
   const text = `INSERT INTO public."FieldGroup"("id", "name", "order", "viewId", "status") VALUES($1, $2, $3, $4, $5) RETURNING "id"`;
   const values = [uuid(), 'Main', 0, viewId, 'Static'];
@@ -155,7 +194,6 @@ const createAppointments = async (
   {
     organizationId,
     userId,
-    doctorId,
     data,
     patientsInfo,
     otherFieldsValues,
@@ -163,6 +201,7 @@ const createAppointments = async (
     nestedFieldId,
     specialtyId,
     branchId,
+    doctorEmailsVsIds,
   }
 ) => {
   const { apps, appFields } = dataToCreateAppointments(
@@ -170,16 +209,17 @@ const createAppointments = async (
     patientsInfo,
     otherFieldsValues,
     choices,
-    nestedFieldId
+    nestedFieldId,
+    doctorEmailsVsIds
   );
   const chunks = split(apps, 500);
   const fieldsChunks = split(appFields, 500);
   for await (const chunk of chunks) {
     const values = chunk.reduce(
-      (acc, { patientId, date, appId }) => [
+      (acc, { patientId, date, doctorId, appId }) => [
         ...acc,
         appId,
-        moment(date, 'DD MM YYYY hh:mm:ss').toDate(),
+        moment(date).set('hours', 10).format('YYYY-MM-DD HH:mm:ss'),
         patientId,
         organizationId,
         userId,
@@ -222,6 +262,7 @@ module.exports = {
   createOrganization,
   createPatients,
   createUser,
+  createDoctors,
   createView,
   createFieldGroup,
   createNestedSelectorField,
