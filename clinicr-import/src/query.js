@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 const moment = require('moment');
 
 const { split, uuid, dataToCreateAppointments } = require('./helpers');
@@ -204,7 +203,7 @@ const createAppointments = async (
     doctorEmailsVsIds,
   }
 ) => {
-  const { apps, appFields } = dataToCreateAppointments(
+  const { apps, appFields } = await dataToCreateAppointments(
     appointments,
     patientsInfo,
     otherFieldsValues,

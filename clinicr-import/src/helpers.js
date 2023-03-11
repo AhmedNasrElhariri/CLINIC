@@ -21,19 +21,13 @@ const getFieldId = (name, otherFields) => {
   return otherFields.find(({ name: NAME }) => NAME === name).id;
 };
 
-const recursiveSearch = (arr, target) => {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].name == target) {
-      return arr[i].id;
-    }
-    if (arr[i].choices && arr[i].choices.length > 0) {
-      return recursiveSearch(arr[i].choices, target);
-    }
-  }
-  return null;
+const getItems = (choices = [], categoryName, itemName) => {
+  const category = choices.find(({ name }) => name === categoryName);
+  const item = category.choices.find(({ name }) => name === itemName);
+  return item.id;
 };
 
-const dataToCreateAppointments = (
+const dataToCreateAppointments = async (
   appointments,
   patientsInfo,
   otherFieldsValues,
@@ -43,18 +37,14 @@ const dataToCreateAppointments = (
 ) => {
   let apps = [];
   let appFields = [];
-  let i = 0;
   (appointments || []).forEach(
-    ({ phoneNo, date, item, cost, payment, remaining, email }) => {
+    ({ phoneNo, date, item, category, cost, payment, remaining, email }) => {
       const patientId = patientsInfo[phoneNo];
       const doctorId = doctorEmailsVsIds[email];
-      const itemId = recursiveSearch(choices, item);
+      const itemId = getItems(choices, category, item);
       const appId = uuid();
-      if (!patientId) {
-        console.log('patientId');
-        console.log(patientId);
-        console.log(phoneNo);
-      }
+      
+
       apps.push({
         date,
         patientId,
