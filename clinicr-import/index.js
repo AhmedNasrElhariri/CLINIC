@@ -129,12 +129,12 @@ let SPEICIALTY_ID;
     console.log('Finish create view');
     //////////////////////////
     console.log('Start create Appointments');
-    const appData = await extractAppointmentsData();
+    const appointments = await extractAppointmentsData();
     await createAppointments(client, {
       organizationId: ORGANIZATION_ID,
       userId: USER_ID,
       doctorEmailsVsIds,
-      data: appData,
+      appointments,
       patientsInfo: PATIENTS_INFO,
       otherFieldsValues: otherFieldsValues,
       choices,

@@ -32,48 +32,9 @@ const recursiveSearch = (arr, target) => {
   }
   return null;
 };
-const returnAppointmentIdAndFieldId = (
-  data,
-  otherFieldsValues,
-  choices,
-  appId,
-  nestedFieldId
-) => {
-  let val1 = {
-    appId: appId,
-    fieldId: getFieldId('Total Cost', otherFieldsValues),
-    value: 0,
-  };
-  let val2 = {
-    appId: appId,
-    fieldId: getFieldId('Payment', otherFieldsValues),
-    value: 0,
-  };
-  let val3 = {
-    appId: appId,
-    fieldId: getFieldId('Remaining', otherFieldsValues),
-    value: 0,
-  };
-  let val4 = {
-    appId: appId,
-    fieldId: nestedFieldId,
-    value: [],
-  };
-  data.forEach(d => {
-    const vv = recursiveSearch(choices, d['Item Name'].trim());
-    if (!vv) {
-      console.log(vv);
-    }
-    val1['value'] += Number(d['Total Cost']) || 0;
-    val2['value'] += Number(d['Payment']) || 0;
-    val3['value'] += Number(d['Remaining']) || 0;
-    val4['value'] = vv ? [...val4['value'], vv] : val4['value'];
-  });
-  console.log(val1, val2, val3, val4);
-  return [val1, val2, val3, val4];
-};
+
 const dataToCreateAppointments = (
-  data,
+  appointments,
   patientsInfo,
   otherFieldsValues,
   choices,
@@ -83,29 +44,50 @@ const dataToCreateAppointments = (
   let apps = [];
   let appFields = [];
   let i = 0;
-  (data || []).forEach(({ phoneNo, appointments }) => {
-    i++;
-    const patientId = patientsInfo[phoneNo];
-    (appointments || []).forEach(({ date, data: history }) => {
+  (appointments || []).forEach(
+    ({ phoneNo, date, item, cost, payment, remaining, email }) => {
+      const patientId = patientsInfo[phoneNo];
+      const doctorId = doctorEmailsVsIds[email];
+      const itemId = recursiveSearch(choices, item);
       const appId = uuid();
-      const email = history[0].Email;
+      if (!patientId) {
+        console.log('patientId');
+        console.log(patientId);
+        console.log(phoneNo);
+      }
       apps.push({
         date,
         patientId,
-        doctorId: doctorEmailsVsIds[email],
+        doctorId,
         appId,
       });
+
       appFields.push(
-        ...returnAppointmentIdAndFieldId(
-          history,
-          otherFieldsValues,
-          choices,
-          appId,
-          nestedFieldId
-        )
+        ...[
+          {
+            appId,
+            fieldId: getFieldId('Total Cost', otherFieldsValues),
+            value: cost,
+          },
+          {
+            appId,
+            fieldId: getFieldId('Payment', otherFieldsValues),
+            value: payment,
+          },
+          {
+            appId,
+            fieldId: getFieldId('Remaining', otherFieldsValues),
+            value: remaining,
+          },
+          {
+            appId,
+            fieldId: nestedFieldId,
+            value: [itemId],
+          },
+        ]
       );
-    });
-  });
+    }
+  );
   return { apps: apps, appFields: appFields };
 };
 

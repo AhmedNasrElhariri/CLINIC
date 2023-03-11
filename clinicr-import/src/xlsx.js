@@ -5,8 +5,8 @@ const { uniqBy } = require('./helpers');
 
 const PATIENTS_HISTORY_PATH = path.resolve(
   __dirname,
-  './files/Book1.xlsx'
-  // './files/patients_history.xlsx'
+  // './files/Book1.xlsx'
+  './files/patients_history.xlsx'
 );
 const INVALID_PATIENTS_PATH = path.resolve(
   __dirname,
@@ -112,10 +112,22 @@ const extractAppointmentsData = async () => {
     raw: false,
     dateNF: 'yyyy-mm-dd',
   });
-  const validData = data.filter(
-    row =>
-      row['Category'] && row['Item Name'] && row['Name'] && row['Mobile No']
-  );
+  const validData = data
+    .filter(
+      row =>
+        row['Category'] && row['Item Name'] && row['Name'] && row['Mobile No']
+    )
+    .map(row => ({
+      phoneNo: row['Mobile No'].trim(),
+      date: row['History Date'],
+      category: row['Category'].trim(),
+      item: row['Item Name'].trim(),
+      cost: Number(row['Cost']) || 0,
+      payment: Number(row['Payment']) || 0,
+      remaining: Number(row['Remaining']) || 0,
+      email: row['Email'].trim(),
+    }));
+
   const invalidData = data.filter(
     row =>
       !row['Category'] || !row['Item Name'] || !row['Name'] || !row['Mobile No']
@@ -125,24 +137,7 @@ const extractAppointmentsData = async () => {
   console.log('Invalid Appointments Rows: ' + invalidData.length);
 
   await exportInvalidData(invalidData, INVALID_PATIENTS_HISTORY_PATH);
-
-  const groupedByPhoneNo = groupBy(validData, 'Mobile No');
-  const appointmentsWithData = Object.entries(groupedByPhoneNo).map(
-    ([phoneNo, appointments]) => {
-      const groupAppointmentsByData = groupBy(appointments, 'History Date');
-      const data = Object.entries(groupAppointmentsByData).map(
-        ([date, data]) => ({
-          date,
-          data: data.filter(({ Category }) => !!Category),
-        })
-      );
-      return {
-        phoneNo,
-        appointments: data,
-      };
-    }
-  );
-  return appointmentsWithData;
+  return validData;
 };
 
 module.exports = {

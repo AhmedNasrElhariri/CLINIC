@@ -194,7 +194,7 @@ const createAppointments = async (
   {
     organizationId,
     userId,
-    data,
+    appointments,
     patientsInfo,
     otherFieldsValues,
     choices,
@@ -205,7 +205,7 @@ const createAppointments = async (
   }
 ) => {
   const { apps, appFields } = dataToCreateAppointments(
-    data,
+    appointments,
     patientsInfo,
     otherFieldsValues,
     choices,
