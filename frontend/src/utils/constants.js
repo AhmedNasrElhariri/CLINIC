@@ -160,7 +160,6 @@ export const ACTIONS = Object.freeze({
   Create_Hospital: 'Create_Hospital',
   Create_Surgery: 'Create_Surgery',
   List_Surgery: 'List_Surgery',
-  View_Surgery: 'View_Surgery',
   Edit_Surgery: 'Edit_Surgery',
   View_Payroll: 'View_Payroll',
   CreateCommission_Payroll: 'CreateCommission_Payroll',
