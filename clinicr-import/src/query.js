@@ -215,7 +215,7 @@ const createAppointments = async (
   const fieldsChunks = split(appFields, 500);
   for await (const chunk of chunks) {
     const values = chunk.reduce(
-      (acc, { patientId, date, doctorId, appId }) => [
+      (acc, { patientId, date, doctorId, appId, status }) => [
         ...acc,
         appId,
         moment(date).set('hours', 10).format('YYYY-MM-DD HH:mm:ss'),
@@ -224,7 +224,7 @@ const createAppointments = async (
         userId,
         doctorId,
         'Session',
-        'Archived',
+        status,
         specialtyId,
         branchId,
       ],

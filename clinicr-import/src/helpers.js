@@ -43,39 +43,41 @@ const dataToCreateAppointments = async (
       const doctorId = doctorEmailsVsIds[email];
       const itemId = getItems(choices, category, item);
       const appId = uuid();
-      
+      const status = email === 'doctor@lushelle.com' ? 'Missed' : 'Archived';
 
       apps.push({
         date,
         patientId,
         doctorId,
         appId,
+        status
       });
 
-      appFields.push(
-        ...[
-          {
-            appId,
-            fieldId: getFieldId('Total Cost', otherFieldsValues),
-            value: cost,
-          },
-          {
-            appId,
-            fieldId: getFieldId('Payment', otherFieldsValues),
-            value: payment,
-          },
-          {
-            appId,
-            fieldId: getFieldId('Remaining', otherFieldsValues),
-            value: remaining,
-          },
-          {
-            appId,
-            fieldId: nestedFieldId,
-            value: [itemId],
-          },
-        ]
-      );
+      status === 'Archived' &&
+        appFields.push(
+          ...[
+            {
+              appId,
+              fieldId: getFieldId('Total Cost', otherFieldsValues),
+              value: cost,
+            },
+            {
+              appId,
+              fieldId: getFieldId('Payment', otherFieldsValues),
+              value: payment,
+            },
+            {
+              appId,
+              fieldId: getFieldId('Remaining', otherFieldsValues),
+              value: remaining,
+            },
+            {
+              appId,
+              fieldId: nestedFieldId,
+              value: [itemId],
+            },
+          ]
+        );
     }
   );
   return { apps: apps, appFields: appFields };
