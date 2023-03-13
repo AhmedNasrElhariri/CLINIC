@@ -12,6 +12,7 @@ import {
   REMOVE_DEFINITION,
   REMOVE_ITEM,
   CONSUME_INVENTORY_MANUAl,
+  TRANSFER_INVENTORY_ITEM,
 } from 'apollo-client/queries';
 
 function useInventory({
@@ -21,10 +22,13 @@ function useInventory({
   onRemoveDefinitionError,
   onRemoveItem,
   onRemoveItemError,
+  onTransferInventory,
 } = {}) {
   const { data: ItemData } = useQuery(LIST_ITEMS);
-  const { data: InventoryData } = useQuery(LIST_INVENTORY);
-  const { data: InventoryHistoryData } = useQuery(LIST_INVENTORY_HISTORY);
+  const { data: InventoryData, refetch: refetchInventory } =
+    useQuery(LIST_INVENTORY);
+  const { data: InventoryHistoryData, refetch: refetchInventoryHistory } =
+    useQuery(LIST_INVENTORY_HISTORY);
   const items = useMemo(() => R.propOr([], 'items')(ItemData), [ItemData]);
   const inventory = useMemo(
     () => R.propOr([], 'inventory')(InventoryData),
@@ -33,20 +37,6 @@ function useInventory({
   const history = useMemo(
     () => R.propOr([], 'inventoryHistory')(InventoryHistoryData),
     [InventoryHistoryData]
-  );
-
-  const refetchInventoryHistory = useMemo(
-    () => ({
-      query: LIST_INVENTORY_HISTORY,
-    }),
-    []
-  );
-
-  const refetchInventory = useMemo(
-    () => ({
-      query: LIST_INVENTORY,
-    }),
-    []
   );
 
   const inventoryWithAmount = useMemo(
@@ -146,13 +136,11 @@ function useInventory({
 
   const [addItem, { loading: addItemLoading }] = useMutation(ADD_ITEM, {
     onCompleted: ({ addItem }) => {
+      refetchInventoryHistory();
+      refetchInventory();
       onAddCompleted && onAddCompleted(addItem);
     },
-    refetchQueries: [
-      //refetchExpenses,
-      refetchInventoryHistory,
-      refetchInventory,
-    ],
+
     update(
       cache,
       {
@@ -177,16 +165,25 @@ function useInventory({
 
   const [consumeInventoryManual] = useMutation(CONSUME_INVENTORY_MANUAl, {
     onCompleted() {
+      refetchInventoryHistory();
+      refetchInventory();
       Alert.success('the Inventory has been Consumed Successfully');
     },
     onError: err => {
       Alert.error(err.message);
     },
-    refetchQueries: [
-      //refetchExpenses,
-      refetchInventoryHistory,
-      refetchInventory,
-    ],
+  });
+
+  const [transferInventoryItem] = useMutation(TRANSFER_INVENTORY_ITEM, {
+    onCompleted() {
+      onTransferInventory && onTransferInventory();
+      refetchInventoryHistory();
+      refetchInventory();
+      Alert.success('the Inventory has been Transfered Successfully');
+    },
+    onError: err => {
+      Alert.error(err.message);
+    },
   });
 
   return useMemo(
@@ -236,6 +233,7 @@ function useInventory({
       createItemLoading,
       updateItemLoading,
       addItemLoading,
+      transferInventoryItem,
     }),
     [
       items,
@@ -252,6 +250,7 @@ function useInventory({
       updateItemLoading,
       addItemLoading,
       consumeInventoryManual,
+      transferInventoryItem,
     ]
   );
 }

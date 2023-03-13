@@ -806,7 +806,7 @@ type Mutation {
     sessions: [SessionInput]
   ): Course!
   deleteCoursePartToDoctor(partId: ID!): DoctorCoursePartDefination!
-  transferInventoryItems(input: TransferInventoryItemsInput): InventoryItem
+  transferInventoryItem(input: TransferInventoryItemsInput): InventoryItem
 }
 
 ########################### Auth ##################################

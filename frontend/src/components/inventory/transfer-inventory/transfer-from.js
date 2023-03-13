@@ -9,7 +9,6 @@ import { Form } from 'rsuite';
 import { useInventory } from 'hooks';
 const TransferFrom = ({ t, formValue, onChange }) => {
   const { inventoryWithAmount } = useInventory();
-  console.log(formValue, 'formValue');
   return (
     <Div>
       <Div>Transfer from</Div>

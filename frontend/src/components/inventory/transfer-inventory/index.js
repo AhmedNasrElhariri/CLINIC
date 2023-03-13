@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Div, CRButton } from 'components';
 import { useTranslation } from 'react-i18next';
-import { useModal, useForm } from 'hooks';
+import { useModal, useForm, useInventory } from 'hooks';
 import InventoryModel from './inventory-model';
 const initialFromValue = {
   branchId: null,
@@ -13,7 +13,7 @@ const initialFromValue = {
 const initialToValue = {
   branchId: null,
   specialtyId: null,
-  doctorId: null,
+  userId: null,
 };
 const Transfer = () => {
   const { visible, close, open } = useModal({});
@@ -25,19 +25,40 @@ const Transfer = () => {
   const { formValue: toFormValue, setFormValue: toSetFormValue } = useForm({
     initValue: initialToValue,
   });
-  console.log(fromFormValue, '--', toFormValue);
+  const { transferInventoryItem } = useInventory({
+    onTransferInventory: () => {
+      close();
+      fromSetFormValue(initialFromValue);
+      toSetFormValue(initialToValue);
+    },
+  });
   const handleTransferInventory = useCallback(() => {
     open();
   }, [open]);
   const handleCancel = useCallback(() => {
     close();
   }, [close]);
+  console.log(fromFormValue, toFormValue);
   const handleOk = useCallback(() => {
-    if (activeStep !== 2) {
+    if (activeStep !== 1) {
       setActiveStep(activeStep + 1);
     } else {
+      const { item, quantity } = fromFormValue;
+      const { branchId, specialtyId, userId } = toFormValue;
+      transferInventoryItem({
+        variables: {
+          input: {
+            id: item?.id,
+            itemId: item?.item.id,
+            quantity: quantity,
+            toBranchId: branchId,
+            toSpecialtyId: specialtyId,
+            toUserId: userId,
+          },
+        },
+      });
     }
-  }, []);
+  }, [activeStep, fromFormValue, toFormValue, transferInventoryItem]);
 
   return (
     <>

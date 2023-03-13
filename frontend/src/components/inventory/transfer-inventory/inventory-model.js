@@ -1,6 +1,6 @@
 import { CRModal, Div } from 'components';
 import { Steps } from 'rsuite';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import TransferFrom from './transfer-from';
 import TransferTo from './transfer-to';
 const InventoryModel = ({

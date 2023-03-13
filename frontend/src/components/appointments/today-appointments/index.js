@@ -77,7 +77,6 @@ function TodayAppointments() {
   const [company, setCompany] = useState(companyInital);
   const [onCreateAppointment] = useGlobalState('onCreateAppointment');
   const [formError, setFormError] = React.useState({});
-  console.log(formError, 'mm');
   const doctors = useMemo(() => {
     return users.filter(u => u.position === 'Doctor');
   }, [users]);
