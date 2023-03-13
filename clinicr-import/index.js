@@ -36,7 +36,7 @@ let SPEICIALTY_ID;
   try {
     const client = await init();
     /////////////////////////////////////////////////////////////////////
-    await clearDB(client);
+    // await clearDB(client);
     /////////////////////////////////////////////////////////////////////
     console.log('Start create organization');
     const orgainzaiontId = await createOrganization(client);
