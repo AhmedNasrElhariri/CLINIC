@@ -12,7 +12,7 @@ export function useUpload({ onCompleted = () => {}, onError = () => {} } = {}) {
         f =>
           new Promise((resolve, reject) => {
             new Compressor(f, {
-              quality: 0.6,
+              quality: 0.2,
               success: result => resolve(result),
               error(err) {},
             });

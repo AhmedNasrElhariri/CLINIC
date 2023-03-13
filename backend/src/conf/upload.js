@@ -9,6 +9,7 @@ const init = app => {
 
     const areMultipleFiles = Array.isArray(req.files.file);
     const files = areMultipleFiles ? req.files.file : [req.files.file];
+    console.log(files,'files/ff')
     const response = await Promise.all(files.map(f => upload(f)));
     res.send(response);
   });
