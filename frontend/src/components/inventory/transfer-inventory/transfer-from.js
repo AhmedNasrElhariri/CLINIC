@@ -17,6 +17,8 @@ const TransferFrom = ({ t, formValue, onChange }) => {
           formValue={formValue}
           onChange={onChange}
           action={ACTIONS.AddCustom_Inventory}
+          notAllowSpecialty
+          notAllowUser
         />
         <CRDocSelectInput
           label={t('item')}

@@ -7,7 +7,7 @@ const TransferTo = ({ formValue, onChange, fromFormValue }) => {
   const ItemName = useMemo(() => {
     const item = fromFormValue?.item;
     let objName = item?.item?.name;
-    console.log(item,objName,'--')
+    console.log(item, objName, '--');
     if (item?.level === '/organization') {
       objName = objName + 'Organization';
     } else if (item?.level === 'branch') {
@@ -44,6 +44,7 @@ const TransferTo = ({ formValue, onChange, fromFormValue }) => {
           onChange={onChange}
           action={ACTIONS.AddCustom_Inventory}
           showUserAndOrganization={false}
+          notAllowSpecialty
         />
       </Form>
     </Div>

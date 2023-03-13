@@ -1,15 +1,15 @@
-import React, { useMemo, useEffect, useState } from 'react';
-import { CRSelectInput, CRCheckBoxGroup } from 'components';
+import { useMemo, useEffect, useState } from 'react';
+import { CRSelectInput } from 'components';
 import { Form } from 'rsuite';
 import { useQuery } from '@apollo/client';
 import { LIST_BRANCHES_TREE } from 'apollo-client/queries';
 import useUserProfile from 'components/functional/root/fetch-user';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
-const options = [
-  { name: 'Organization', value: 'organization' },
-  { name: 'My Self', value: 'mySelf' },
-];
+// const options = [
+//   { name: 'Organization', value: 'organization' },
+//   { name: 'My Self', value: 'mySelf' },
+// ];
 const intialCheckValue = {
   check: [],
 };
@@ -20,8 +20,10 @@ const CustomBranchTress = ({
   showUserAndOrganization,
   NotAutoHideNested,
   t,
+  notAllowSpecialty,
+  notAllowUser,
 }) => {
-  const [checkFormValue, setCheckFormValue] = useState(intialCheckValue);
+  const [checkFormValue] = useState(intialCheckValue);
   const { data } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: action },
   });
@@ -38,6 +40,7 @@ const CustomBranchTress = ({
       )(branches),
     [formValue?.branchId, branches]
   );
+  console.log(specialties, 'specialties');
   const doctors = useMemo(
     () =>
       R.pipe(
@@ -46,66 +49,86 @@ const CustomBranchTress = ({
       )(specialties),
     [formValue?.specialtyId, specialties]
   );
+  const branchDoctors = useMemo(() => {
+    return [
+      ...new Map(
+        branches
+          .reduce(
+            (acc, { specialties }) => [
+              ...acc,
+              ...specialties.reduce(
+                (acc2, { doctors }) => [...acc2, ...doctors],
+                []
+              ),
+            ],
+            []
+          )
+          .map(item => [item.id, item])
+      ).values(),
+    ];
+  }, [branches]);
   useEffect(() => {
     if (branches.length === 1 && checkFormValue.check.length === 0) {
-      onChange({
-        ...formValue,
+      onChange(prev => ({
+        ...prev,
         branchId: branches[0]?.id,
-      });
+      }));
     }
-  }, [branches, formValue?.branchId, checkFormValue]);
+  }, [branches, formValue?.branchId, checkFormValue, onChange]);
   useEffect(() => {
-    if (specialties.length == 1) {
-      onChange({
-        ...formValue,
+    if (specialties.length === 1 && !notAllowSpecialty) {
+      onChange(prev => ({
+        ...prev,
         specialtyId: specialties[0]?.id,
-      });
+      }));
     }
-  }, [specialties, formValue.branchId]);
+  }, [specialties, formValue.branchId, onChange, notAllowSpecialty]);
   useEffect(() => {
-    if (doctors.length == 1) {
-      onChange({
-        ...formValue,
+    if (doctors.length === 1 && !notAllowUser) {
+      onChange(prev => ({
+        ...prev,
         userId: doctors[0]?.id,
-      });
+      }));
     }
-  }, [doctors, formValue.specialtyId, checkFormValue]);
+  }, [doctors, formValue.specialtyId, checkFormValue, onChange, notAllowUser]);
   useEffect(() => {
     if (
       checkFormValue.check.length !== 0 &&
       checkFormValue.check[0] === 'organization'
     ) {
-      onChange({
-        ...formValue,
+      onChange(prev => ({
+        ...prev,
         branchId: null,
         specialtyId: null,
         userId: null,
-      });
+      }));
     }
     if (
       checkFormValue.check.length !== 0 &&
       checkFormValue.check[0] === 'mySelf'
     ) {
-      onChange({
-        ...formValue,
+      onChange(prev => ({
+        ...prev,
         branchId: null,
         specialtyId: null,
         userId: user.id,
-      });
+      }));
     }
   }, [
     formValue.branchId,
     formValue.specialtyId,
     formValue.userId,
     checkFormValue.check,
+    user.id,
+    onChange,
   ]);
   return (
     <>
-      {showUserAndOrganization && (
+      {/* {showUserAndOrganization && (
         <Form formValue={checkFormValue} onChange={setCheckFormValue}>
           <CRCheckBoxGroup name="check" options={options} max={1} inline />
         </Form>
-      )}
+      )} */}
 
       <Form formValue={formValue} onChange={onChange}>
         {checkFormValue.check.length === 0 && (
@@ -119,26 +142,28 @@ const CustomBranchTress = ({
                 data={branches}
               />
             )}
-            {((specialties.length > 1 && formValue.branchId) ||
-              NotAutoHideNested) && (
-              <CRSelectInput
-                label={t('specialty')}
-                name="specialtyId"
-                placeholder={t('select')}
-                block
-                data={specialties}
-              />
-            )}
-            {((doctors.length > 1 && formValue.specialtyId) ||
-              NotAutoHideNested) && (
-              <CRSelectInput
-                label={t('user')}
-                name="userId"
-                placeholder={t('select')}
-                block
-                data={doctors}
-              />
-            )}
+            {!notAllowSpecialty &&
+              ((specialties.length > 1 && formValue.branchId) ||
+                NotAutoHideNested) && (
+                <CRSelectInput
+                  label={t('specialty')}
+                  name="specialtyId"
+                  placeholder={t('select')}
+                  block
+                  data={specialties}
+                />
+              )}
+            {!notAllowUser &&
+              ((doctors.length > 1 && formValue.specialtyId) ||
+                NotAutoHideNested) && (
+                <CRSelectInput
+                  label={t('user')}
+                  name="userId"
+                  placeholder={t('select')}
+                  block
+                  data={!notAllowUser ? branchDoctors : doctors}
+                />
+              )}
           </>
         )}
       </Form>
@@ -152,6 +177,8 @@ const CRBranchTree = ({
   action,
   showUserAndOrganization = true,
   NotAutoHideNested = true,
+  notAllowSpecialty = false,
+  notAllowUser = false,
 }) => {
   const { t } = useTranslation();
   return (
@@ -162,6 +189,8 @@ const CRBranchTree = ({
       showUserAndOrganization={showUserAndOrganization}
       NotAutoHideNested={NotAutoHideNested}
       t={t}
+      notAllowSpecialty={notAllowSpecialty}
+      notAllowUser={notAllowUser}
     />
   );
 };
