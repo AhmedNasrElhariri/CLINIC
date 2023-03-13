@@ -42,6 +42,9 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
         type: {
           not: 'Surgery',
         },
+        status: {
+          notIn: ['Missed', 'Cancelled'],
+        },
       },
       include: {
         data: true,
