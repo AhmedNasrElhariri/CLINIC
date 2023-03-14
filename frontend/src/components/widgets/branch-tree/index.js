@@ -40,7 +40,6 @@ const CustomBranchTress = ({
       )(branches),
     [formValue?.branchId, branches]
   );
-  console.log(specialties, 'specialties');
   const doctors = useMemo(
     () =>
       R.pipe(
