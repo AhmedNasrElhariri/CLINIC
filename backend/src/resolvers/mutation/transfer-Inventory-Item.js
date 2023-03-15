@@ -18,9 +18,11 @@ const transferInventoryItem = async (
     amount: quantity,
     price: inventoryItem.price,
     branchId: toBranchId,
-    specialtyId: toSpecialtyId,
-    userId: toUserId,
+    specialtyId: null,
+    userId: null,
     level: '',
+    status: 'Pending',
+    fromItemId: id,
   };
   const items = [{ itemId: id, quantity: quantity * item.quantity }];
   await reducedInventoryPattern(organizationId, items);

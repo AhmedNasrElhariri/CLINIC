@@ -13,6 +13,7 @@ import {
   REMOVE_ITEM,
   CONSUME_INVENTORY_MANUAl,
   TRANSFER_INVENTORY_ITEM,
+  LIST_PENDING_CONSUMPtION_ITEMS,
 } from 'apollo-client/queries';
 
 function useInventory({
@@ -29,6 +30,8 @@ function useInventory({
     useQuery(LIST_INVENTORY);
   const { data: InventoryHistoryData, refetch: refetchInventoryHistory } =
     useQuery(LIST_INVENTORY_HISTORY);
+  const { data: consumptionData } = useQuery(LIST_PENDING_CONSUMPtION_ITEMS);
+
   const items = useMemo(() => R.propOr([], 'items')(ItemData), [ItemData]);
   const inventory = useMemo(
     () => R.propOr([], 'inventory')(InventoryData),
@@ -38,7 +41,10 @@ function useInventory({
     () => R.propOr([], 'inventoryHistory')(InventoryHistoryData),
     [InventoryHistoryData]
   );
-
+  const pendingConsumptionItems = useMemo(
+    () => R.propOr([], 'listConsutionItems')(consumptionData),
+    [consumptionData]
+  );
   const inventoryWithAmount = useMemo(
     () =>
       inventory
@@ -234,6 +240,7 @@ function useInventory({
       updateItemLoading,
       addItemLoading,
       transferInventoryItem,
+      pendingConsumptionItems,
     }),
     [
       items,
@@ -251,6 +258,7 @@ function useInventory({
       addItemLoading,
       consumeInventoryManual,
       transferInventoryItem,
+      pendingConsumptionItems,
     ]
   );
 }

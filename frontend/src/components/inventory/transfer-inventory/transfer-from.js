@@ -11,7 +11,9 @@ const TransferFrom = ({ t, formValue, onChange }) => {
   const { inventoryWithAmount } = useInventory();
   return (
     <Div>
-      <Div>Transfer from</Div>
+      <Div fontWeight="bold" mb="20px">
+        Transfer from
+      </Div>
       <Form fluid>
         <CRBrancheTree
           formValue={formValue}
@@ -32,7 +34,7 @@ const TransferFrom = ({ t, formValue, onChange }) => {
           block
         ></CRDocSelectInput>
         <CRNumberInput
-          label={t('quantity')}
+          label="Quantity (no of medicine box)"
           value={formValue?.quantity}
           onChange={val => onChange({ ...formValue, quantity: val })}
         />

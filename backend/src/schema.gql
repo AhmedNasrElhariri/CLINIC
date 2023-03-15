@@ -484,6 +484,7 @@ type Query {
   ): DoctorFeesData!
   doctorCoursePartsDefinations(doctorId: ID!): [DoctorCoursePartDefination!]
   courseParts(courseId: ID!): [CoursePart]
+  listConsutionItems: [InventoryItemConsumption!]!
 }
 
 ########################### Mutation ##################################
@@ -1847,6 +1848,16 @@ type InventoryItem {
   specialty: Specialty
   doctor: User
   level: String!
+  item: Item
+}
+
+type InventoryItemConsumption {
+  id: ID!
+  numberOfUnits: Int!
+  price: Int!
+  insertionDate: Date!
+  inventoryItem: InventoryItem!
+  fromInventoryItemId: ID
 }
 
 type InventoryHistory {

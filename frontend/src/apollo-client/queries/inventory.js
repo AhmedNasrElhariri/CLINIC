@@ -23,6 +23,9 @@ export const LIST_INVENTORY = gql`
       quantity
       price
       level
+      item {
+        name
+      }
       branch {
         id
         name
@@ -108,6 +111,23 @@ export const TRANSFER_INVENTORY_ITEM = gql`
   mutation transferInventoryItem($input: TransferInventoryItemsInput!) {
     transferInventoryItem(input: $input) {
       id
+    }
+  }
+`;
+
+export const LIST_PENDING_CONSUMPtION_ITEMS = gql`
+  {
+    listConsutionItems {
+      id
+      numberOfUnits
+      price
+      insertionDate
+      fromInventoryItemId
+      inventoryItem {
+        item {
+          name
+        }
+      }
     }
   }
 `;

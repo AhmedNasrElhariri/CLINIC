@@ -486,4 +486,6 @@ export const TRANSLATIONS_EN = {
   expenseName: 'Expense Name',
   visa: 'Visa',
   cardNo: 'CardNo',
+  transferMedicineOrItem: 'Transfer Medicine Or Item',
+  transfer: 'Transfer',
 };

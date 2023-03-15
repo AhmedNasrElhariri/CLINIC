@@ -24,7 +24,7 @@ const TransferTo = ({ formValue, onChange, fromFormValue }) => {
       <Div display="flex" justifyContent="space-between">
         <Div>
           <Div fontWeight="bold" mb="20px">
-            Transfer From
+            Transfer To
           </Div>
           <Div>{ItemName}</Div>
         </Div>

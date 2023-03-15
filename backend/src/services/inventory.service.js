@@ -272,8 +272,14 @@ export const createInventoryItem = async (
       id: input.itemId,
     },
   });
-  const { itemId, specialtyId, branchId, userId: userID } = input;
-  console.log(input,'input')
+  const {
+    itemId,
+    specialtyId,
+    branchId,
+    userId: userID,
+    status,
+    fromItemId,
+  } = input;
   const level = GetLevel(branchId, specialtyId, userID);
   const persistedInventoryItem = await prisma.inventoryItem.findMany({
     where: {
@@ -322,10 +328,15 @@ export const createInventoryItem = async (
         },
         level: level,
         InventoryItemConsumption: {
-          create: {
-            numberOfUnits: totalQuantity * input.amount,
-            price: input.price,
-          },
+          create: Object.assign(
+            {
+              numberOfUnits: totalQuantity * input.amount,
+              price: input.price,
+              userId: userId,
+            },
+            status && { status: status },
+            fromItemId && { fromInventoryItemId: fromItemId }
+          ),
         },
       },
       specialtyId && {
@@ -354,10 +365,15 @@ export const createInventoryItem = async (
       quantity: newtotalQuantity,
       price: input.price,
       InventoryItemConsumption: {
-        create: {
-          numberOfUnits: totalQuantity * input.amount,
-          price: input.price,
-        },
+        create: Object.assign(
+          {
+            numberOfUnits: totalQuantity * input.amount,
+            price: input.price,
+            userId: userId,
+          },
+          status && { status: status },
+          fromItemId && { fromInventoryItemId: fromItemId }
+        ),
       },
     },
     where: {
