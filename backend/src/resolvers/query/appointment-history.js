@@ -43,7 +43,7 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
           not: 'Surgery',
         },
         status: {
-          notIn: ['Missed', 'Cancelled'],
+          notIn: ['Cancelled'],
         },
       },
       include: {
