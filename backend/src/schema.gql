@@ -808,6 +808,11 @@ type Mutation {
   ): Course!
   deleteCoursePartToDoctor(partId: ID!): DoctorCoursePartDefination!
   transferInventoryItem(input: TransferInventoryItemsInput): InventoryItem
+  transferAction(
+    id: ID!
+    fromInventoryItemId: ID
+    type: String
+  ): InventoryItemConsumption
 }
 
 ########################### Auth ##################################

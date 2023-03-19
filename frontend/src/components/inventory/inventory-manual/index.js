@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { CRButton, Div, CRModal } from 'components';
 import { useModal, useForm, useInventory } from 'hooks';
 import InventoryUsage from '../usage';
-import { Schema, Alert } from 'rsuite';
+import { Schema } from 'rsuite';
 import { useTranslation } from 'react-i18next';
 
 const { StringType, NumberType } = Schema.Types;
@@ -26,7 +26,11 @@ const InventoryManual = () => {
     initValue: initInventoryValue,
     model,
   });
-  const { consumeInventoryManual } = useInventory({});
+  const { consumeInventoryManual } = useInventory({
+    onConsumeInventory: () => {
+      close();
+    },
+  });
   const handleConsumeInventory = useCallback(() => {
     open();
   }, [open]);
@@ -50,9 +54,12 @@ const InventoryManual = () => {
             userId,
           };
           consumeInventoryManual(data);
-          close();
         }}
         onHide={() => {
+          close();
+          setSelectedItems([]);
+        }}
+        onCancel={() => {
           close();
           setSelectedItems([]);
         }}

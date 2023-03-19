@@ -127,7 +127,21 @@ export const LIST_PENDING_CONSUMPtION_ITEMS = gql`
         item {
           name
         }
+        branch {
+          name
+        }
       }
+    }
+  }
+`;
+export const TRANSFER_ACTION = gql`
+  mutation transferAction($id: ID!, $fromInventoryItemId: ID!, $type: String!) {
+    transferAction(
+      id: $id
+      fromInventoryItemId: $fromInventoryItemId
+      type: $type
+    ) {
+      id
     }
   }
 `;

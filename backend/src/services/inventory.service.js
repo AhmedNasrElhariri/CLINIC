@@ -3,14 +3,17 @@ import * as R from 'ramda';
 import { INVENTORY_OPERATION } from '@/utils/constants';
 import { APIExceptcion } from '@/services/erros.service';
 import { GetLevel } from '@/services/get-level';
+import { InventoryConsumedStatus } from '@/utils/constants';
 
 export const finalReducedItems = (items, quantity) => {
   const total = quantity;
   const orderedItems = R.sortWith([R.ascend(R.prop('insertionDate'))])(items);
   const reducedOrderedItesm = orderedItems.map(item => {
     let x = 0;
-    x = quantity < item.numberOfUnits ? quantity : item.numberOfUnits;
-    quantity -= x;
+    if (item.status === InventoryConsumedStatus.ACTIVE) {
+      x = quantity < item.numberOfUnits ? quantity : item.numberOfUnits;
+      quantity -= x;
+    }
     return { ...item, consumedUnits: x };
   });
   if (quantity > 0) {
@@ -276,16 +279,16 @@ export const createInventoryItem = async (
     itemId,
     specialtyId,
     branchId,
-    userId: userID,
+    userId: toUserId,
     status,
     fromItemId,
   } = input;
-  const level = GetLevel(branchId, specialtyId, userID);
+  const level = GetLevel(branchId, specialtyId, null);
   const persistedInventoryItem = await prisma.inventoryItem.findMany({
     where: {
       branchId,
-      specialtyId,
-      doctorId: userID,
+      specialtyId: null,
+      doctorId: null,
       itemId: itemId,
     },
   });
@@ -332,7 +335,7 @@ export const createInventoryItem = async (
             {
               numberOfUnits: totalQuantity * input.amount,
               price: input.price,
-              userId: userId,
+              userId: toUserId !== null ? toUserId : userId,
             },
             status && { status: status },
             fromItemId && { fromInventoryItemId: fromItemId }
@@ -352,13 +355,6 @@ export const createInventoryItem = async (
             id: branchId,
           },
         },
-      },
-      userID && {
-        doctor: {
-          connect: {
-            id: userID,
-          },
-        },
       }
     ),
     update: {
@@ -369,7 +365,7 @@ export const createInventoryItem = async (
           {
             numberOfUnits: totalQuantity * input.amount,
             price: input.price,
-            userId: userId,
+            userId: toUserId !== null ? toUserId : userId,
           },
           status && { status: status },
           fromItemId && { fromInventoryItemId: fromItemId }

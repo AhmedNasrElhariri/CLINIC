@@ -2,13 +2,14 @@ import {
   reducedInventoryPattern,
   createInventoryItem,
 } from '@/services/inventory.service';
+import { InventoryConsumedStatus } from '@/utils/constants';
 import { prisma } from '@';
 const transferInventoryItem = async (
   _,
   { input },
   { organizationId, userId }
 ) => {
-  const { id, itemId, quantity, toBranchId, toSpecialtyId, toUserId } = input;
+  const { id, itemId, quantity, toBranchId, toUserId } = input;
   const inventoryItem = await prisma.inventoryItem.findUnique({
     where: { id },
   });
@@ -19,9 +20,9 @@ const transferInventoryItem = async (
     price: inventoryItem.price,
     branchId: toBranchId,
     specialtyId: null,
-    userId: null,
+    userId: toUserId,
     level: '',
-    status: 'Pending',
+    status: InventoryConsumedStatus.PENDING,
     fromItemId: id,
   };
   const items = [{ itemId: id, quantity: quantity * item.quantity }];

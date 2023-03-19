@@ -1,9 +1,6 @@
-import { Icon } from 'rsuite';
 import { CRCard, CRTable } from 'components';
-import { useTranslation } from 'react-i18next';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-function ListPendingUserItems({ items, onGetAction }) {
-  const { t } = useTranslation();
+function ListPendingUserItems({ items, onGetAction, t }) {
   return (
     <>
       <CRCard borderless>
@@ -13,7 +10,9 @@ function ListPendingUserItems({ items, onGetAction }) {
             <CRTable.CRCell>
               {({ inventoryItem }) => (
                 <CRTable.CRCellStyled bold>
-                  {inventoryItem.item.name}
+                  {inventoryItem?.item?.name}
+                  {'/'}
+                  {inventoryItem?.branch?.name}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

@@ -159,3 +159,4 @@ export { default as deleteCoursePartToDoctor } from './delete-course-part';
 export { default as editInsurance } from './edit-insurance';
 export { default as editPatientSurgery } from './edit-patient-surgery';
 export { default as transferInventoryItem } from './transfer-Inventory-Item';
+export { default as transferAction } from './transfer-action';

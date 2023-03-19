@@ -15,6 +15,10 @@ const InventoryModel = ({
   toSetFormValue,
   setActiveStep,
   activeStep,
+  showError,
+  setShowError,
+  validate,
+  checkResult,
 }) => {
   const stepItems = useMemo(
     () =>
@@ -33,7 +37,14 @@ const InventoryModel = ({
         show={show}
         header={t('transferMedicineOrItem')}
         okTitle={okTitle}
-        onOk={handleOk}
+        onOk={() => {
+          if (activeStep === 0) {
+            handleOk();
+          } else {
+            setShowError(true);
+            validate && handleOk();
+          }
+        }}
         onHide={() => {
           close();
           setActiveStep(0);
@@ -67,6 +78,8 @@ const InventoryModel = ({
                 formValue={toFormValue}
                 onChange={toSetFormValue}
                 fromFormValue={fromFormValue}
+                showError={showError}
+                checkResult={checkResult}
               />
             </Div>
           )}

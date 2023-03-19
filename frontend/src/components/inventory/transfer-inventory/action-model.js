@@ -1,12 +1,6 @@
 import { CRModal, Div } from 'components';
 
-const InventoryModel = ({
-  show,
-  handleCancel,
-  handleOk,
-  close,
-  header,
-}) => {
+const InventoryModel = ({ show, handleCancel, handleOk, close, header }) => {
   return (
     <>
       <CRModal
@@ -19,8 +13,8 @@ const InventoryModel = ({
         onCancel={handleCancel}
         className="!w-[1024px]"
       >
-        <Div fontWeight="bold" textAlign="center">
-          Are you sure that you want to {header}
+        <Div fontWeight="bold" textAlign="center" fontSize="20px">
+          Are you sure that you want to {header} ?
         </Div>
       </CRModal>
     </>

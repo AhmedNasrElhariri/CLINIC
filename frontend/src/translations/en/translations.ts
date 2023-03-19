@@ -488,4 +488,5 @@ export const TRANSLATIONS_EN = {
   cardNo: 'CardNo',
   transferMedicineOrItem: 'Transfer Medicine Or Item',
   transfer: 'Transfer',
+  pendingItems:'Pending Items'
 };

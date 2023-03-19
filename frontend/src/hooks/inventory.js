@@ -14,6 +14,7 @@ import {
   CONSUME_INVENTORY_MANUAl,
   TRANSFER_INVENTORY_ITEM,
   LIST_PENDING_CONSUMPtION_ITEMS,
+  TRANSFER_ACTION,
 } from 'apollo-client/queries';
 
 function useInventory({
@@ -24,13 +25,15 @@ function useInventory({
   onRemoveItem,
   onRemoveItemError,
   onTransferInventory,
+  onConsumeInventory,
 } = {}) {
   const { data: ItemData } = useQuery(LIST_ITEMS);
   const { data: InventoryData, refetch: refetchInventory } =
     useQuery(LIST_INVENTORY);
   const { data: InventoryHistoryData, refetch: refetchInventoryHistory } =
     useQuery(LIST_INVENTORY_HISTORY);
-  const { data: consumptionData } = useQuery(LIST_PENDING_CONSUMPtION_ITEMS);
+  const { data: consumptionData, refetch: refetchPendingConsumption } =
+    useQuery(LIST_PENDING_CONSUMPtION_ITEMS);
 
   const items = useMemo(() => R.propOr([], 'items')(ItemData), [ItemData]);
   const inventory = useMemo(
@@ -171,6 +174,7 @@ function useInventory({
 
   const [consumeInventoryManual] = useMutation(CONSUME_INVENTORY_MANUAl, {
     onCompleted() {
+      onConsumeInventory && onConsumeInventory();
       refetchInventoryHistory();
       refetchInventory();
       Alert.success('the Inventory has been Consumed Successfully');
@@ -185,7 +189,20 @@ function useInventory({
       onTransferInventory && onTransferInventory();
       refetchInventoryHistory();
       refetchInventory();
+      refetchPendingConsumption();
       Alert.success('the Inventory has been Transfered Successfully');
+    },
+    onError: err => {
+      Alert.error(err.message);
+    },
+  });
+  const [transferAction] = useMutation(TRANSFER_ACTION, {
+    onCompleted() {
+      onTransferInventory && onTransferInventory();
+      refetchInventoryHistory();
+      refetchInventory();
+      refetchPendingConsumption();
+      Alert.success('the Inventory method has been done Successfully');
     },
     onError: err => {
       Alert.error(err.message);
@@ -241,6 +258,7 @@ function useInventory({
       addItemLoading,
       transferInventoryItem,
       pendingConsumptionItems,
+      transferAction,
     }),
     [
       items,
@@ -259,6 +277,7 @@ function useInventory({
       consumeInventoryManual,
       transferInventoryItem,
       pendingConsumptionItems,
+      transferAction,
     ]
   );
 }

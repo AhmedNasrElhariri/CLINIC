@@ -7,7 +7,7 @@ const listConsutionItems = (_, __, { userId }) => {
       status: 'Pending',
     },
     include: {
-      inventoryItem: { include: { item: true } },
+      inventoryItem: { include: { item: true, branch: true } },
     },
   });
 };

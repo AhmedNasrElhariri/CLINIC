@@ -125,6 +125,11 @@ export const ORDERBYOPTIONS = [
   },
 ];
 
+export const InventoryConsumedStatus = Object.freeze({
+  PENDING: 'Pending',
+  ACTIVE: 'Active',
+});
+
 export const ACTIONS = Object.freeze({
   Create_Appointment: 'Create_Appointment',
   List_Appointment: 'List_Appointment',

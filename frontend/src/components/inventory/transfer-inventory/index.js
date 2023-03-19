@@ -3,9 +3,9 @@ import { Div, CRButton } from 'components';
 import { useTranslation } from 'react-i18next';
 import { useModal, useForm, useInventory } from 'hooks';
 import InventoryModel from './inventory-model';
-import { Nav } from 'rsuite';
 import ListPendingUserItems from './list-pending-items';
 import ActionModel from './action-model';
+import { Schema } from 'rsuite';
 const initialFromValue = {
   branchId: null,
   specialtyId: null,
@@ -18,10 +18,16 @@ const initialToValue = {
   specialtyId: null,
   userId: null,
 };
+
+const model = Schema.Model({
+  branchId: Schema.Types.StringType().isRequired('This field is required.'),
+  userId: Schema.Types.StringType().isRequired('This field is required.'),
+});
+
 const Transfer = () => {
+  const { t } = useTranslation();
   const { visible, close, open } = useModal({});
   const [activeStep, setActiveStep] = useState(0);
-  const [activeTab, setActiveTab] = useState(0);
   const [header, setHeader] = useState('');
   const [type, setType] = useState('');
   const [clickOnItemAction, setClickOnItemAction] = useState({
@@ -29,21 +35,29 @@ const Transfer = () => {
     fromInventoryItemId: null,
     type: '',
   });
-
-  const { t } = useTranslation();
   const { formValue: fromFormValue, setFormValue: fromSetFormValue } = useForm({
     initValue: initialFromValue,
   });
-  const { formValue: toFormValue, setFormValue: toSetFormValue } = useForm({
+  const {
+    formValue: toFormValue,
+    setFormValue: toSetFormValue,
+    checkResult,
+    validate,
+    show: showError,
+    setShow: setShowError,
+  } = useForm({
     initValue: initialToValue,
+    model: model,
   });
-  const { transferInventoryItem, pendingConsumptionItems } = useInventory({
-    onTransferInventory: () => {
-      close();
-      fromSetFormValue(initialFromValue);
-      toSetFormValue(initialToValue);
-    },
-  });
+  const { transferInventoryItem, pendingConsumptionItems, transferAction } =
+    useInventory({
+      onTransferInventory: () => {
+        close();
+        setShowError(false);
+        fromSetFormValue(initialFromValue);
+        toSetFormValue(initialToValue);
+      },
+    });
   const handleTransferInventory = useCallback(() => {
     open();
     setHeader(t('transferMedicineOrItem'));
@@ -53,25 +67,37 @@ const Transfer = () => {
     close();
   }, [close]);
   const handleOk = useCallback(() => {
-    if (activeStep !== 1) {
-      setActiveStep(activeStep + 1);
-    } else {
-      const { item, quantity } = fromFormValue;
-      const { branchId, specialtyId, userId } = toFormValue;
-      transferInventoryItem({
-        variables: {
-          input: {
-            id: item?.id,
-            itemId: item?.item.id,
-            quantity: quantity,
-            toBranchId: branchId,
-            toSpecialtyId: specialtyId,
-            toUserId: userId,
+    if (type === 'transfer') {
+      if (activeStep !== 1) {
+        setActiveStep(activeStep + 1);
+      } else {
+        const { item, quantity } = fromFormValue;
+        const { branchId, specialtyId, userId } = toFormValue;
+        transferInventoryItem({
+          variables: {
+            input: {
+              id: item?.id,
+              itemId: item?.item.id,
+              quantity: quantity,
+              toBranchId: branchId,
+              toSpecialtyId: specialtyId,
+              toUserId: userId,
+            },
           },
-        },
-      });
+        });
+      }
+    } else {
+      transferAction({ variables: clickOnItemAction });
     }
-  }, [activeStep, fromFormValue, toFormValue, transferInventoryItem]);
+  }, [
+    activeStep,
+    fromFormValue,
+    toFormValue,
+    transferInventoryItem,
+    transferAction,
+    clickOnItemAction,
+    type,
+  ]);
   const handleAcceptOrRejectPendingItems = useCallback(
     ({ id, fromInventoryItemId }, type) => {
       setHeader(`${type} Item`);
@@ -92,21 +118,12 @@ const Transfer = () => {
           {t('transfer')}
         </CRButton>
       </Div>
-      <Nav
-        activeKey={activeTab}
-        onSelect={setActiveTab}
-        appearance="tabs"
-        justified
-        className="text-center max-w-5xl mb-5"
-      >
-        <Nav.Item eventKey={0}>{t('pendingItems')}</Nav.Item>
-      </Nav>
-      {activeTab === 0 && (
-        <ListPendingUserItems
-          items={pendingConsumptionItems}
-          onGetAction={handleAcceptOrRejectPendingItems}
-        />
-      )}
+      <h1 className="text-2xl mb-4 mt-5">{t('pendingItems')}</h1>
+      <ListPendingUserItems
+        items={pendingConsumptionItems}
+        onGetAction={handleAcceptOrRejectPendingItems}
+        t={t}
+      />
       {type === 'transfer' && (
         <InventoryModel
           show={visible}
@@ -120,6 +137,10 @@ const Transfer = () => {
           activeStep={activeStep}
           setActiveStep={setActiveStep}
           header={header}
+          showError={showError}
+          setShowError={setShowError}
+          validate={validate}
+          checkResult={checkResult}
         />
       )}
       {type === 'acceptOrReject' && (
@@ -129,6 +150,7 @@ const Transfer = () => {
           handleOk={handleOk}
           header={header}
           close={close}
+          t={t}
         />
       )}
     </>
