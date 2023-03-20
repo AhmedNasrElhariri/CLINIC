@@ -119,6 +119,7 @@ function NewCourse({
   setConsumedParts,
   courseParts,
 }) {
+  console.log(consumedParts,'consumedParts')
   const [session, setSession] = useState({});
   const [sessionNumber, setSessionNumber] = useState(1);
   const [sessionPrice, setSessionPrice] = useState(0);
@@ -238,7 +239,7 @@ function NewCourse({
           totalUnits,
         }))
       );
-  }, [courseParts, setConsumedParts]);
+  }, [courseParts, setConsumedParts,consumedParts.length]);
   const handleChangeCoursePart = useCallback(
     (val, checkChange, indx) => {
       setConsumedParts &&

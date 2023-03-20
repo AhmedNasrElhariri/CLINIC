@@ -2,6 +2,8 @@ import moment from 'moment';
 
 import { APPOINTMENTS_STATUS } from '@/utils/constants';
 import { fetchWithCount } from '@/services/query';
+import { listFlattenUsersTreeIds } from '@/services/permission.service';
+import { ACTIONS } from '@/utils/constants';
 
 const appointments = async (
   _,
@@ -17,10 +19,18 @@ const appointments = async (
     specialtyId,
     branchId,
   },
-  { organizationId }
+  { organizationId, user }
 ) => {
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.List_Appointment,
+    },
+    true
+  );
   let appointmentsCount = 0;
   let appointments = [];
   if (dateFrom || patient) {
@@ -29,27 +39,59 @@ const appointments = async (
         {
           status,
           organizationId,
-          ...(patient
-            ? {
-                OR: [
-                  {
-                    patient: {
-                      name: {
-                        contains: patient,
-                        mode: 'insensitive',
-                      },
+          AND: [
+            {
+              OR: [
+                {
+                  doctorId: {
+                    in: ids,
+                  },
+                },
+                {
+                  branchId: {
+                    in: ids,
+                  },
+                },
+                {
+                  specialtyId: {
+                    in: ids,
+                  },
+                },
+              ],
+            },
+            {
+              AND: [
+                {
+                  branchId: branchId,
+                },
+                {
+                  specialtyId: specialtyId,
+                },
+                {
+                  doctorId: doctorId,
+                },
+              ],
+            },
+            {
+              OR: [
+                {
+                  patient: {
+                    name: {
+                      contains: patient,
+                      mode: 'insensitive',
                     },
                   },
-                  {
-                    patient: {
-                      phoneNo: {
-                        contains: patient,
-                      },
+                },
+                {
+                  patient: {
+                    phoneNo: {
+                      contains: patient,
                     },
                   },
-                ],
-              }
-            : { branchId, specialtyId, doctorId }),
+                },
+              ],
+            },
+          ],
         },
         dateTo &&
           dateFrom && {

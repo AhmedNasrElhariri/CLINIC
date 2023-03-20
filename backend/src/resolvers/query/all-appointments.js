@@ -1,5 +1,4 @@
 import { prisma } from '@';
-import moment from 'moment';
 
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
