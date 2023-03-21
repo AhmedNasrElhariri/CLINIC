@@ -10,6 +10,8 @@ export default function AppointmentFilters({
   branches,
   render,
   todayApp = false,
+  notAllowSpecialty,
+  notAllowUser,
 }) {
   const [state, setState] = useState({
     specialty: null,
@@ -45,12 +47,14 @@ export default function AppointmentFilters({
   }
 
   return (
-    <Div mb={4}>
+    <Div mb={10}>
       <Filter
         formValue={state}
         onChange={setState}
         branches={branches}
         todayApp={todayApp}
+        notAllowSpecialty={notAllowSpecialty}
+        notAllowUser={notAllowUser}
       />
       {render(filteredAppointments, totalRevenues, totalExpenses)}
     </Div>

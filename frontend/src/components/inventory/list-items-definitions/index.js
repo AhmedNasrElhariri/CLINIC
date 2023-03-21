@@ -34,7 +34,7 @@ const ListItemsDefinitions = ({ items, onRemove, t }) => {
         </CRTable.CRCell>
       </CRTable.CRColumn>
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>{t('alertNumberOfUnits')}</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('alertNumberOfBoxes')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
           {({ alertNumberOfUnits }) => (
             <CRTable.CRCellStyled>{alertNumberOfUnits}</CRTable.CRCellStyled>

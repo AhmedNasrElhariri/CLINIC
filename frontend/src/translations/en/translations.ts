@@ -475,7 +475,7 @@ export const TRANSLATIONS_EN = {
   extraUnits: 'Extra units',
   orderBy: 'Order By',
   sellingPrice: 'Selling price',
-  alertNumberOfUnits: 'Alert Number Of Units',
+  alertNumberOfBoxes: 'Alert Number Of Boxes',
   sellable: 'Sellable',
   unitSellingPrice: 'Unit selling price',
   revenuesOrExpenses: 'Revenues / Expenses',
@@ -488,5 +488,9 @@ export const TRANSLATIONS_EN = {
   cardNo: 'CardNo',
   transferMedicineOrItem: 'Transfer Medicine Or Item',
   transfer: 'Transfer',
-  pendingItems:'Pending Items'
+  pendingItems:'Pending Items',
+  numberOfBoxes:'Number Of Boxes',
+  uintsQuantity:'Uints Quantity',
+  noOfUnits:'No of units',
+  unitOfMeasure:'Unit Of Measure'
 };

@@ -83,7 +83,7 @@ const AddItem = ({ items }) => {
             block
           ></CRSelectInput>
           <CRNumberInput
-            label={t('amount')}
+            label="Amount (No of Boxes) "
             name="amount"
             errorMessage={
               show && checkResult['amount'].hasError
@@ -101,6 +101,8 @@ const AddItem = ({ items }) => {
             formValue={formValue}
             onChange={setFormValue}
             action={ACTIONS.AddItem_Inventory}
+            notAllowSpecialty
+            notAllowUser
           />
         </Form>
         <Div mt={3} display="flex">

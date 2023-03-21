@@ -13,25 +13,12 @@ const ListInventory = ({ items }) => {
       <CRTable.CRColumn flexGrow={1}>
         <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
-          {({ name, branch, specialty, user, level }) => (
-            <CRTable.CRCellStyled>
-              {name} {' / '}
-              {level}
-              {' / '}
-              {level === 'organization'
-                ? ''
-                : level === 'branch'
-                ? branch?.name
-                : level === 'specialty'
-                ? specialty?.name
-                : user?.name}
-            </CRTable.CRCellStyled>
-          )}
+          {({ name }) => <CRTable.CRCellStyled>{name}</CRTable.CRCellStyled>}
         </CRTable.CRCell>
       </CRTable.CRColumn>
 
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>{t('amount')}</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('numberOfBoxes')}</CRTable.CRHeaderCell>
         <CRTable.CRCell dataKey="amount" semiBold>
           {({ amount }) => (
             <CRTable.CRCellStyled semiBold>
@@ -46,7 +33,7 @@ const ListInventory = ({ items }) => {
       </CRTable.CRColumn>
 
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>{t('totalQuantity')}</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('uintsQuantity')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
           {({ quantity, item }) => (
             <CRTable.CRCellStyled semiBold>
@@ -59,22 +46,6 @@ const ListInventory = ({ items }) => {
                 {getUnitOfMeasureShortCut(item.unitOfMeasure)}
               </span>
             </CRTable.CRCellStyled>
-          )}
-        </CRTable.CRCell>
-      </CRTable.CRColumn>
-      <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>{t('doctor')}</CRTable.CRHeaderCell>
-        <CRTable.CRCell>
-          {({ user }) => (
-            <CRTable.CRCellStyled>{user?.name}</CRTable.CRCellStyled>
-          )}
-        </CRTable.CRCell>
-      </CRTable.CRColumn>
-      <CRTable.CRColumn flexGrow={0.8}>
-        <CRTable.CRHeaderCell>{t('specialty')}</CRTable.CRHeaderCell>
-        <CRTable.CRCell>
-          {({ specialty }) => (
-            <CRTable.CRCellStyled>{specialty?.name}</CRTable.CRCellStyled>
           )}
         </CRTable.CRCell>
       </CRTable.CRColumn>

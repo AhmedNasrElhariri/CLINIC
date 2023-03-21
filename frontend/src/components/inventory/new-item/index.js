@@ -1,9 +1,8 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Form, Schema, Alert, Toggle } from 'rsuite';
 
-import { CRModal, CRTextInput, CRButton, CRNumberInput } from 'components';
-// import { isValid } from 'services/form';
-import { CRSelectInput } from 'components/widgets';
+import { CRModal, CRTextInput, CRButton, CRNumberInput, Div } from 'components';
+import { CRLabel, CRSelectInput } from 'components/widgets';
 import { UNIT_OF_MEASURES } from 'utils/constants';
 import { useForm, useInventory, useModal } from 'hooks';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +29,7 @@ const NewItem = () => {
   } = useForm({
     initValue: {
       name: '',
-      unitOfMeasure: '',
+      unitOfMeasure: 'PerUnit',
       quantity: 1,
       sellingPrice: 0,
       alertNumberOfUnits: 1,
@@ -100,12 +99,12 @@ const NewItem = () => {
             block
           ></CRSelectInput>
           <CRNumberInput
-            label={t('numberOfUnits')}
+            label={t('noOfUnits')}
             name="quantity"
             block
           ></CRNumberInput>
           <CRNumberInput
-            label={t('sellingPrice')}
+            label="Selling price (medicine box)"
             name="sellingPrice"
             block
           ></CRNumberInput>
@@ -116,15 +115,14 @@ const NewItem = () => {
             disabled
           ></CRNumberInput>
           <CRNumberInput
-            label={t('alertNumberOfUnits')}
+            label={t('alertNumberOfBoxes')}
             name="alertNumberOfUnits"
             block
           ></CRNumberInput>
-          <Toggle
-            label={t('sellable')}
-            value={sellable}
-            onChange={setSellable}
-          />
+          <Div mt="10px">
+            <CRLabel>{t('sellable')}</CRLabel>
+            <Toggle value={sellable} onChange={setSellable} />
+          </Div>
         </Form>
       </CRModal>
     </>

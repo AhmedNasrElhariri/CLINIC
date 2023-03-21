@@ -75,6 +75,8 @@ function NewSales({
                 formValue={formValue}
                 onChange={onChange}
                 action={ACTIONS.Create_Sales}
+                notAllowSpecialty
+                notAllowUser
               />
             )}
             <div className="flex flex-wrap items-end gap-4">

@@ -65,16 +65,17 @@ const EditItem = ({ defaultValue,t }) => {
           <CRTextInput label="Name" name="name" block></CRTextInput>
           <CRNumberInput
             label={t('numberOfUnits')}
+            disabled
             name="quantity"
             block
           ></CRNumberInput>
           <CRNumberInput
-            label={t('sellingPrice')}
+            label="Selling price (medicine box)"
             name="sellingPrice"
             block
           ></CRNumberInput>
           <CRNumberInput
-            label={t('alertNumberOfUnits')}
+            label={t('alertNumberOfBoxes')}
             name="alertNumberOfUnits"
             block
           ></CRNumberInput>

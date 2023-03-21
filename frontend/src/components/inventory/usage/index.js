@@ -66,6 +66,8 @@ function InventoryUsage({
         formValue={formValue}
         onChange={setFormValue}
         action={ACTIONS.AddCustom_Inventory}
+        notAllowSpecialty
+        notAllowUser
       />
       <CRDocSelectInput
         label={t('item')}
@@ -78,7 +80,9 @@ function InventoryUsage({
         block
       ></CRDocSelectInput>
       <div className="flex items-end gap-3 mb-5">
-        <CRLabel>{t('quantity')}</CRLabel>
+        <CRLabel style={{ margin: '0px', width: '120px' }}>
+          {t('noOfUnits')}
+        </CRLabel>
         <InputNumber
           value={formValue.quantity}
           onChange={val => {

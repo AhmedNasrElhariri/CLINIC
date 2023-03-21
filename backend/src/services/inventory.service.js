@@ -155,7 +155,6 @@ export const mapHistoryToMessage = async history => {
 export const createSubstractHistoryForMultipleItems = async ({
   patientId,
   userId,
-  branchId,
   specialtyId,
   doctorId,
   organizationId,
@@ -174,6 +173,7 @@ export const createSubstractHistoryForMultipleItems = async ({
     return {
       itemId: i.itemId,
       quantity: item.quantity,
+      branchId: i.branchId,
     };
   });
 
@@ -208,10 +208,10 @@ export const createSubstractHistoryForMultipleItems = async ({
               },
             },
           },
-          branchId && {
+          i.branchId && {
             branch: {
               connect: {
-                id: branchId,
+                id: i.branchId,
               },
             },
           },
@@ -243,21 +243,22 @@ export const createHistoryBody = async (
   branchName,
   specialtyName
 ) => {
+  console.log(patientName, doctorName, branchName, specialtyName, '..');
   switch (operation) {
     case INVENTORY_OPERATION.ADD:
       return `${user.name} added ${quantity} units of ${item.name} which cost ${price} L.E. per unit`;
     case INVENTORY_OPERATION.SUBSTRACT:
-      return `${user.name} consumed ${quantity} ${item.unitOfMeasure} from ${
-        item.name
-      } ${
+      return `${user.name} consumed ${quantity} ${
+        item.unitOfMeasure === 'PerUnit' ? 'units' : item.unitOfMeasure
+      } of ${item.name} from ${
         patientName
-          ? `to patient - ${patientName}`
+          ? `${patientName}`
           : doctorName
-          ? `to doctor - ${doctorName}`
+          ? `${doctorName}`
           : specialtyName
-          ? `to specialty - ${specialtyName}`
+          ? `${specialtyName}`
           : branchName
-          ? `to branch - ${branchName}`
+          ? `${branchName}`
           : ''
       }`;
   }
