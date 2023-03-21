@@ -7,6 +7,7 @@ import {
   getStartOfDay,
   getEndOfDay,
 } from '@/services/date.service';
+import { ORDERBYOPTIONS } from '@/utils/constants';
 
 const init = app => {
   app.post('/accounting', async (req, res) => {
@@ -25,6 +26,7 @@ const init = app => {
       expenseType,
       organizationId,
       expenseName,
+      orderByOption,
     } = req.query;
     try {
       let updatedDateFrom = new Date();
@@ -37,6 +39,9 @@ const init = app => {
         updatedDateFrom = datesArray[0];
         updatedDateTo = datesArray[1];
       }
+      const option = orderByOption
+        ? ORDERBYOPTIONS.find(o => o.name === orderByOption)
+        : ORDERBYOPTIONS.find(o => o.name === 'date');
       const revenues = await prisma.revenue.findMany({
         where: {
           organizationId,
@@ -60,6 +65,7 @@ const init = app => {
             mode: 'insensitive',
           },
         },
+        orderBy: option.value,
       });
       const expenses = await prisma.expense.findMany({
         where: {

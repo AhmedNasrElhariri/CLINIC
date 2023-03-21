@@ -85,15 +85,6 @@ const AccountingContainer = () => {
   );
   const expensePage = expenseCurrentPage?.activePage;
 
-  // const { pageSetupData } = useConfigurations();
-  // const pageSetupRow = pageSetupData.find(
-  //   element => element.type === 'accounting'
-  // );
-  // const marginTop = pageSetupRow?.top * 37.7952755906 || 0;
-  // const marginRight = pageSetupRow?.right * 37.7952755906 || 0;
-  // const marginBottom = pageSetupRow?.bottom * 37.7952755906 || 0;
-  // const marginLeft = pageSetupRow?.left * 37.7952755906 || 0;
-
   const [createExpense, { loading: createExpensesLoading }] = useMutation(
     CREATE_EXPENSE,
     {
@@ -279,6 +270,7 @@ const AccountingContainer = () => {
         dateFrom: period[0],
         dateTo: period[1],
         organizationId: user.organizationId,
+        orderByOption: formValue?.orderByOption,
       },
     })
       .then(function (response) {
