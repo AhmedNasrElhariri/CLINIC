@@ -13,6 +13,7 @@ import { Schema } from 'rsuite';
 const initInventoryValue = {
   itemId: null,
   quantity: 0,
+  noOfBoxes: 0,
   branchId: null,
   specialtyId: null,
   userId: null,
@@ -20,7 +21,7 @@ const initInventoryValue = {
 const { StringType, NumberType } = Schema.Types;
 
 const model = Schema.Model({
-  itemId: StringType().isRequired('Item is required'),
+  item: StringType().isRequired('Item is required'),
   quantity: NumberType().isRequired('Amount Type is required'),
 });
 const InventoryStatus = () => {
@@ -29,6 +30,7 @@ const InventoryStatus = () => {
       close();
     },
   });
+  console.log(items,'items')
   const { visible, close, open } = useModal({});
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState([]);

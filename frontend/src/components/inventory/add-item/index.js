@@ -11,18 +11,20 @@ import { useTranslation } from 'react-i18next';
 
 const { StringType, NumberType } = Schema.Types;
 const initValue = {
-  itemId: null,
-  amount: 1,
-  price: 1,
+  item: null,
+  amount: 0,
+  noOfBoxes: 0,
+  purshasingPricePerUnit: 0,
+  purshasingPricePerBox: 0,
   branchId: null,
   specialtyId: null,
   userId: null,
   level: '',
 };
-const model = Schema.Model({
-  itemId: StringType().isRequired('Item is required'),
-  amount: NumberType().isRequired('Amount Type is required'),
-});
+// const model = Schema.Model({
+//   item: StringType().isRequired('Item is required'),
+//   amount: NumberType().isRequired('Amount Type is required'),
+// });
 
 const AddItem = ({ items }) => {
   const { visible, open, close } = useModal();
@@ -37,7 +39,7 @@ const AddItem = ({ items }) => {
     setShow,
   } = useForm({
     initValue,
-    model,
+    // model,
   });
   const { addItem, addItemLoading } = useInventory({
     onAddCompleted: () => {
@@ -47,12 +49,43 @@ const AddItem = ({ items }) => {
       setFormValue(initValue);
     },
   });
-
+  const updatedItems = items.map(i => ({ id: i, name: i.name }));
   const handleClose = useCallback(() => {
     close();
     reset();
   }, [close, reset]);
-
+  const handleChangeBoxOrUnits = useCallback(
+    (value, type) => {
+      type === 'noOfUnits'
+        ? setFormValue(prev => ({
+            ...prev,
+            amount: value,
+            noOfBoxes: value / formValue?.item?.quantity,
+          }))
+        : setFormValue(prev => ({
+            ...prev,
+            noOfBoxes: value,
+            amount: value * formValue?.item?.quantity,
+          }));
+    },
+    [setFormValue, formValue?.item] // don't change these dependencies
+  );
+  const handleChangePurchasing = useCallback(
+    (value, type) => {
+      type === 'units'
+        ? setFormValue(prev => ({
+            ...prev,
+            purshasingPricePerUnit: value,
+            purshasingPricePerBox: value * formValue?.item?.quantity,
+          }))
+        : setFormValue(prev => ({
+            ...prev,
+            purshasingPricePerBox: value,
+            purshasingPricePerUnit: value / formValue?.item?.quantity,
+          }));
+    },
+    [setFormValue, formValue?.item] // don't change these dependencies
+  );
   return (
     <>
       <CRButton variant="primary" onClick={open}>
@@ -64,39 +97,48 @@ const AddItem = ({ items }) => {
         header={t('addToInventory')}
         loading={addItemLoading}
         onOk={() => {
-          setShow(true);
-          validate && addItem(formValue);
+          const { item, undefined, ...rest } = formValue;
+          addItem({ ...rest, itemId: item.id });
         }}
         onHide={handleClose}
         onCancel={handleClose}
       >
-        <Form formValue={formValue} model={model} onChange={setFormValue} fluid>
+        <Form formValue={formValue} onChange={setFormValue} fluid>
           <CRSelectInput
             label={t('item')}
-            name="itemId"
+            name="item"
             errorMessage={
               show && checkResult['itemId'].hasError
                 ? checkResult['itemId'].errorMessage
                 : ''
             }
-            data={items}
+            data={updatedItems}
             block
           ></CRSelectInput>
-          <CRNumberInput
-            label="Amount (No of Boxes) "
-            name="amount"
-            errorMessage={
-              show && checkResult['amount'].hasError
-                ? checkResult['amount'].errorMessage
-                : ''
-            }
-            block
-          ></CRNumberInput>
-          <CRNumberInput
-            label={t('unitPrice')}
-            name="price"
-            block
-          ></CRNumberInput>
+          <div className="flex items-end gap-3 mb-5">
+            <CRNumberInput
+              label={t('noOfUnits')}
+              value={formValue.amount}
+              onChange={val => handleChangeBoxOrUnits(val, 'noOfUnits')}
+            />
+            <CRNumberInput
+              label={t('numberOfBoxes')}
+              value={formValue.noOfBoxes}
+              onChange={val => handleChangeBoxOrUnits(val, 'numberOfBoxes')}
+            />
+          </div>
+          <div className="flex items-end gap-3 mb-5">
+            <CRNumberInput
+              label={t('purchasingPricePerUnit')}
+              value={formValue.purshasingPricePerUnit}
+              onChange={val => handleChangePurchasing(val, 'units')}
+            />
+            <CRNumberInput
+              label={t('purchasingPricePerBox')}
+              value={formValue.purshasingPricePerBox}
+              onChange={val => handleChangePurchasing(val, 'boxes')}
+            />
+          </div>
           <CRBrancheTree
             formValue={formValue}
             onChange={setFormValue}

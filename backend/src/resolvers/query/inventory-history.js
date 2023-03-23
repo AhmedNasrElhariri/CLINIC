@@ -1,12 +1,16 @@
 import { prisma } from '@';
 import { mapHistoryToMessage } from '@/services/inventory.service';
+import { INVENTORY_OPERATION } from '@/utils/constants';
 
-const inventoryHistory = (_, __, { organizationId }) => {
+const inventoryHistory = (_, { isSelling }, { organizationId }) => {
   return prisma.inventoryHistory
     .findMany({
-      where: {
-        organizationId,
-      },
+      where: Object.assign(
+        {
+          organizationId,
+        },
+        isSelling && { operation: INVENTORY_OPERATION.SELL }
+      ),
       orderBy: {
         date: 'desc',
       },

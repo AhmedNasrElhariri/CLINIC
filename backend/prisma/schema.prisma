@@ -123,6 +123,8 @@ enum UnitOfMeaure {
 enum InventoryOperation {
   Add
   Substract
+  Sell
+  Transfer
 }
 
 enum PatientOtpStatus {
@@ -1022,29 +1024,32 @@ model Event {
 }
 
 model Item {
-  id                 String             @id @default(uuid())
-  name               String             @unique
-  unitOfMeasure      UnitOfMeaure
-  quantity           Int
-  barcode            String?
-  notes              String?
-  sellingPrice       Int?
-  alertNumberOfUnits Int?
-  sellable           Boolean            @default(false)
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @default(now()) @updatedAt
-  organization       Organization       @relation(fields: [organizationId], references: [id])
-  organizationId     String
-  user               User               @relation(fields: [userId], references: [id])
-  userId             String
-  inventoryItems     InventoryItem[]
-  inventoryHistory   InventoryHistory[]
+  id                  String             @id @default(uuid())
+  name                String             @unique
+  unitOfMeasure       UnitOfMeaure
+  quantity            Int
+  barcode             String?
+  notes               String?
+  sellingPricePerBox  Int?
+  sellingPricePerUnit Float?
+  alertNumberOfBoxes  Int?
+  sellable            Boolean            @default(false)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @default(now()) @updatedAt
+  organization        Organization       @relation(fields: [organizationId], references: [id])
+  organizationId      String
+  user                User               @relation(fields: [userId], references: [id])
+  userId              String
+  inventoryItems      InventoryItem[]
+  inventoryHistory    InventoryHistory[]
 }
 
 model InventoryItem {
   id                           String                     @id @default(uuid())
-  quantity                     Float
-  price                        Int
+  quantity                     Float //quantity per units
+  noOfBoxes                    Float? //quantity per Boxes
+  price                        Int // price per unit
+  purshasingPricePerBox        Float?
   item                         Item                       @relation(fields: [itemId], references: [id])
   itemId                       String
   level                        String
@@ -1094,6 +1099,7 @@ model InventoryHistory {
   doctorId       String?
   operation      InventoryOperation
   quantity       Float
+  totalPrice     Float?
   price          Int?
   date           DateTime
   createdAt      DateTime           @default(now())

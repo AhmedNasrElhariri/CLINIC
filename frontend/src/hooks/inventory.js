@@ -26,12 +26,13 @@ function useInventory({
   onRemoveItemError,
   onTransferInventory,
   onConsumeInventory,
+  isSelling,
 } = {}) {
   const { data: ItemData } = useQuery(LIST_ITEMS);
   const { data: InventoryData, refetch: refetchInventory } =
     useQuery(LIST_INVENTORY);
   const { data: InventoryHistoryData, refetch: refetchInventoryHistory } =
-    useQuery(LIST_INVENTORY_HISTORY);
+    useQuery(LIST_INVENTORY_HISTORY, { variables: { isSelling: isSelling } });
   const { data: consumptionData, refetch: refetchPendingConsumption } =
     useQuery(LIST_PENDING_CONSUMPtION_ITEMS);
 

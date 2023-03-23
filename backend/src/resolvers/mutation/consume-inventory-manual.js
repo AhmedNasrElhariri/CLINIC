@@ -9,8 +9,8 @@ const consumeInventoryManual = async (
   { data },
   { userId, organizationId }
 ) => {
-  const { items, branchId, specialtyId, userId: doctorId } = data;
-  await updatedUsedMaterials(organizationId, items);
+  const { items, branchId, specialtyId, userId: doctorId, isSelling } = data;
+  await updatedUsedMaterials(organizationId, items, isSelling);
 
   await createSubstractHistoryForMultipleItems({
     data: items,
@@ -19,6 +19,7 @@ const consumeInventoryManual = async (
     specialtyId,
     doctorId,
     organizationId: organizationId,
+    isSelling,
   });
   const updatedItems = await prisma.inventoryItem.findMany({
     where: {

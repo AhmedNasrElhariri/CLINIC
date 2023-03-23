@@ -350,7 +350,7 @@ type Query {
   myEvents: [Event!]
   items: [Item!]
   inventory: [InventoryItem!]
-  inventoryHistory: [InventoryHistory!]
+  inventoryHistory(isSelling: Boolean): [InventoryHistory!]
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
   patientSurgeries(
@@ -1838,8 +1838,9 @@ type Item {
   name: String!
   unitOfMeasure: UnitOfMeaure
   quantity: Int!
-  sellingPrice: Int
-  alertNumberOfUnits: Int
+  sellingPricePerUnit: Float
+  sellingPricePerBox: Int
+  alertNumberOfBoxes: Int
   sellable: Boolean
 }
 
@@ -1875,8 +1876,9 @@ input ItemInput {
   name: String!
   unitOfMeasure: UnitOfMeaure
   quantity: Int!
-  sellingPrice: Int
-  alertNumberOfUnits: Int
+  sellingPricePerBox: Int
+  sellingPricePerUnit: Float
+  alertNumberOfBoxes: Int
   sellable: Boolean
 }
 
@@ -1891,7 +1893,9 @@ input ItemUpdateInput {
 input AddToInventoryInput {
   itemId: ID!
   amount: Int!
-  price: Int!
+  noOfBoxes: Float
+  purshasingPricePerUnit: Float
+  purshasingPricePerBox: Int
   branchId: ID
   specialtyId: ID
   userId: ID
@@ -1907,11 +1911,13 @@ input InventoryConsumedItemInput {
   branchId: ID
   specialtyId: ID
   userId: ID
+  isSelling: Boolean
 }
 input TransferInventoryItemsInput {
   id: ID!
   itemId: ID!
   quantity: Int!
+  noOfBoxes: Float
   toBranchId: ID
   toSpecialtyId: ID
   toUserId: ID

@@ -7,8 +7,9 @@ export const LIST_ITEMS = gql`
       name
       unitOfMeasure
       quantity
-      sellingPrice
-      alertNumberOfUnits
+      sellingPricePerBox
+      sellingPricePerUnit
+      alertNumberOfBoxes
       sellable
     }
   }
@@ -43,8 +44,8 @@ export const LIST_INVENTORY = gql`
 `;
 
 export const LIST_INVENTORY_HISTORY = gql`
-  query inventoryHistory {
-    inventoryHistory {
+  query inventoryHistory($isSelling: Boolean) {
+    inventoryHistory(isSelling: $isSelling) {
       body
       date
     }

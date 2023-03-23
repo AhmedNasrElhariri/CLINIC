@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import * as R from 'ramda';
 import { Form, InputNumber } from 'rsuite';
 import { ACTIONS } from 'utils/constants';
@@ -9,6 +9,7 @@ import {
   CRBrancheTree,
   CRDocSelectInput,
   CRLabel,
+  CRNumberInput,
 } from 'components/widgets';
 import { normalize } from 'utils/misc';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +28,7 @@ function InventoryUsage({
   setSelectedItems,
   formValue,
   setFormValue,
+  isSelling,
 }) {
   const { inventoryWithAmount } = useInventory();
   const { t } = useTranslation();
@@ -50,9 +52,13 @@ function InventoryUsage({
 
   const itemsChoices = useMemo(() => {
     const selectedItemIds = R.map(R.prop('itemId'))(selectedItems);
+    return isSelling
+      ? inventoryWithAmount.filter(
+          f => !selectedItemIds.includes(f.id) && f?.item.sellable
+        )
+      : inventoryWithAmount.filter(f => !selectedItemIds.includes(f.id));
+  }, [selectedItems, inventoryWithAmount, isSelling]);
 
-    return inventoryWithAmount.filter(f => !selectedItemIds.includes(f.id));
-  }, [selectedItems, inventoryWithAmount]);
   const itemsList = useMemo(() => {
     const byIds = normalize(inventoryWithAmount);
     return selectedItems.map(({ itemId, quantity }) => ({
@@ -60,6 +66,24 @@ function InventoryUsage({
       Quantity: quantity,
     }));
   }, [selectedItems, inventoryWithAmount]);
+
+  const handleChangeBoxOrUnits = useCallback(
+    (value, type) => {
+      const numberOfBoxes = formValue?.itemId?.quantity / formValue?.itemId?.amount;
+      type === 'noOfUnits'
+        ? setFormValue({
+            ...formValue,
+            quantity: value,
+            noOfBoxes: value / numberOfBoxes,
+          })
+        : setFormValue({
+            ...formValue,
+            noOfBoxes: value,
+            quantity: value * numberOfBoxes,
+          });
+    },
+    [setFormValue,formValue?.itemId] // don't change these dependencies
+  );
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
       <CRBrancheTree
@@ -80,14 +104,15 @@ function InventoryUsage({
         block
       ></CRDocSelectInput>
       <div className="flex items-end gap-3 mb-5">
-        <CRLabel style={{ margin: '0px', width: '120px' }}>
-          {t('noOfUnits')}
-        </CRLabel>
-        <InputNumber
+        <CRNumberInput
+          label={t('noOfUnits')}
           value={formValue.quantity}
-          onChange={val => {
-            setFormValue({ ...formValue, quantity: val });
-          }}
+          onChange={val => handleChangeBoxOrUnits(val, 'noOfUnits')}
+        />
+        <CRNumberInput
+          label={t('numberOfBoxes')}
+          value={formValue.noOfBoxes}
+          onChange={val => handleChangeBoxOrUnits(val, 'numberOfBoxes')}
         />
         <CRButton variant="primary" onClick={handleAdd}>
           {t('add')}

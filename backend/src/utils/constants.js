@@ -67,6 +67,8 @@ export const IMAGE_STATUS = Object.freeze({
 export const INVENTORY_OPERATION = {
   ADD: 'Add',
   SUBSTRACT: 'Substract',
+  SELL: 'Sell',
+  TRANSFER: 'Transfer',
 };
 
 export const POSITION = {

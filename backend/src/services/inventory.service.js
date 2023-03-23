@@ -5,6 +5,25 @@ import { APIExceptcion } from '@/services/erros.service';
 import { GetLevel } from '@/services/get-level';
 import { InventoryConsumedStatus } from '@/utils/constants';
 
+export const createRevenueFromInventory = (data, organizationId) => {
+  return data.map(
+    ({
+      consumedUnits,
+      inventoryItem: {
+        item: { name, sellingPrice },
+        branchId,
+        userId,
+      },
+    }) => ({
+      branchId,
+      userId,
+      date: new Date(),
+      name: `selling ${consumedUnits} units of - ${name}`,
+      amount: consumedUnits * sellingPrice,
+      organizationId,
+    })
+  );
+};
 export const finalReducedItems = (items, quantity) => {
   const total = quantity;
   const orderedItems = R.sortWith([R.ascend(R.prop('insertionDate'))])(items);
@@ -37,7 +56,11 @@ export const reduceFromInventoryConsumptions = (items, groupedValus) => {
   return vv;
 };
 
-export const reducedInventoryPattern = async (organizationId, items) => {
+export const reducedInventoryPattern = async (
+  organizationId,
+  items,
+  isSelling
+) => {
   const persistedItems = await prisma.inventoryItem.findMany({
     where: {
       organizationId,
@@ -51,7 +74,11 @@ export const reducedInventoryPattern = async (organizationId, items) => {
       },
     },
     include: {
-      inventoryItem: true,
+      inventoryItem: {
+        include: {
+          item: true,
+        },
+      },
     },
   });
   const groubedVals = R.groupBy(R.prop('inventoryItemId'))(consumptionItems);
@@ -60,30 +87,67 @@ export const reducedInventoryPattern = async (organizationId, items) => {
   finishedItems.forEach(async ({ id, quantity, items }) => {
     const persistedItem = R.find(R.propEq('id', id))(persistedItems);
     const filteredItems = items.filter(it => it.consumedUnits > 0);
-    await prisma.inventoryItem.update({
-      where: {
-        id,
-      },
-      data: {
-        quantity: persistedItem.quantity - quantity,
-        InventoryItemConsumption: {
-          update: filteredItems.map(({ consumedUnits, id, numberOfUnits }) => {
-            return {
-              data: { numberOfUnits: numberOfUnits - consumedUnits },
-              where: {
-                id: id,
-              },
-            };
-          }),
+    if (isSelling) {
+      const updateInventoryItem = prisma.inventoryItem.update({
+        where: {
+          id,
         },
-      },
-    });
+        data: {
+          quantity: persistedItem.quantity - quantity,
+          InventoryItemConsumption: {
+            update: filteredItems.map(
+              ({ consumedUnits, id, numberOfUnits }) => {
+                return {
+                  data: { numberOfUnits: numberOfUnits - consumedUnits },
+                  where: {
+                    id: id,
+                  },
+                };
+              }
+            ),
+          },
+        },
+      });
+
+      const createRevenueFromInvemtory = prisma.revenue.createMany({
+        data: createRevenueFromInventory(filteredItems, organizationId),
+      });
+      await prisma.$transaction([
+        updateInventoryItem,
+        createRevenueFromInvemtory,
+      ]);
+    } else {
+      await prisma.inventoryItem.update({
+        where: {
+          id,
+        },
+        data: {
+          quantity: persistedItem.quantity - quantity,
+          InventoryItemConsumption: {
+            update: filteredItems.map(
+              ({ consumedUnits, id, numberOfUnits }) => {
+                return {
+                  data: { numberOfUnits: numberOfUnits - consumedUnits },
+                  where: {
+                    id: id,
+                  },
+                };
+              }
+            ),
+          },
+        },
+      });
+    }
   });
   return finishedItems;
 };
 
-export const updatedUsedMaterials = async (organizationId, items) => {
-  await reducedInventoryPattern(organizationId, items);
+export const updatedUsedMaterials = async (
+  organizationId,
+  items,
+  isSelling
+) => {
+  await reducedInventoryPattern(organizationId, items, isSelling);
   return prisma.inventoryItem.findMany({
     where: {
       organizationId,
@@ -159,6 +223,7 @@ export const createSubstractHistoryForMultipleItems = async ({
   doctorId,
   organizationId,
   data,
+  isSelling,
 }) => {
   const itemsIds = R.map(R.prop('itemId'))(data);
   const inventoryItems = await prisma.inventoryItem.findMany({
@@ -174,6 +239,7 @@ export const createSubstractHistoryForMultipleItems = async ({
       itemId: i.itemId,
       quantity: item.quantity,
       branchId: i.branchId,
+      totalPrice: i.quantity * i.price,
     };
   });
 
@@ -197,8 +263,11 @@ export const createSubstractHistoryForMultipleItems = async ({
                 id: organizationId,
               },
             },
-            operation: INVENTORY_OPERATION.SUBSTRACT,
+            operation: isSelling
+              ? INVENTORY_OPERATION.SELL
+              : INVENTORY_OPERATION.SUBSTRACT,
             quantity: i.quantity,
+            totalPrice: i.totalPrice,
             date: new Date(),
           },
           specialtyId && {
@@ -243,10 +312,21 @@ export const createHistoryBody = async (
   branchName,
   specialtyName
 ) => {
-  console.log(patientName, doctorName, branchName, specialtyName, '..');
   switch (operation) {
     case INVENTORY_OPERATION.ADD:
       return `${user.name} added ${quantity} units of ${item.name} which cost ${price} L.E. per unit`;
+    case INVENTORY_OPERATION.SELL:
+      return `${user.name} sold ${quantity} units of ${item.name} from ${
+        patientName
+          ? `${patientName}`
+          : doctorName
+          ? `${doctorName}`
+          : specialtyName
+          ? `${specialtyName}`
+          : branchName
+          ? `${branchName}`
+          : ''
+      }`;
     case INVENTORY_OPERATION.SUBSTRACT:
       return `${user.name} consumed ${quantity} ${
         item.unitOfMeasure === 'PerUnit' ? 'units' : item.unitOfMeasure
@@ -271,11 +351,7 @@ export const createInventoryItem = async (
   if (R.isNil(userId) || R.isNil(input.itemId)) {
     throw new APIExceptcion('invalid user');
   }
-  const persistedItem = await prisma.item.findUnique({
-    where: {
-      id: input.itemId,
-    },
-  });
+
   const {
     itemId,
     specialtyId,
@@ -283,6 +359,10 @@ export const createInventoryItem = async (
     userId: toUserId,
     status,
     fromItemId,
+    noOfBoxes,
+    purshasingPricePerUnit,
+    purshasingPricePerBox,
+    amount,
   } = input;
   const level = GetLevel(branchId, specialtyId, null);
   const persistedInventoryItem = await prisma.inventoryItem.findMany({
@@ -299,15 +379,14 @@ export const createInventoryItem = async (
     0,
     'quantity'
   )(persistedInventoryItem.length > 0 ? persistedInventoryItem[0] : {});
-  const totalQuantity = R.propOr(0, 'quantity')(persistedItem);
-  const newtotalQuantity = inventoryItemQuantity + totalQuantity * input.amount;
+  const newtotalQuantity = inventoryItemQuantity + amount;
 
   await storeHistoryOfAddition({
     itemId,
     userId,
     organizationId,
-    quantity: input.amount,
-    price: input.price,
+    quantity: amount,
+    price: purshasingPricePerUnit,
   });
 
   return prisma.inventoryItem.upsert({
@@ -319,7 +398,9 @@ export const createInventoryItem = async (
           },
         },
         quantity: newtotalQuantity,
-        price: input.price,
+        price: purshasingPricePerUnit,
+        purshasingPricePerBox,
+        noOfBoxes,
         organization: {
           connect: {
             id: organizationId,
@@ -334,8 +415,8 @@ export const createInventoryItem = async (
         InventoryItemConsumption: {
           create: Object.assign(
             {
-              numberOfUnits: totalQuantity * input.amount,
-              price: input.price,
+              numberOfUnits: amount,
+              price: purshasingPricePerUnit,
               userId: toUserId !== null ? toUserId : userId,
             },
             status && { status: status },
@@ -360,12 +441,14 @@ export const createInventoryItem = async (
     ),
     update: {
       quantity: newtotalQuantity,
-      price: input.price,
+      price: purshasingPricePerUnit,
+      purshasingPricePerBox,
+      noOfBoxes,
       InventoryItemConsumption: {
         create: Object.assign(
           {
-            numberOfUnits: totalQuantity * input.amount,
-            price: input.price,
+            numberOfUnits: amount,
+            price: purshasingPricePerUnit,
             userId: toUserId !== null ? toUserId : userId,
           },
           status && { status: status },

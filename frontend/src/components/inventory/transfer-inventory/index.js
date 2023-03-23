@@ -12,6 +12,7 @@ const initialFromValue = {
   doctorId: null,
   item: null,
   quantity: 0,
+  noOfBoxes: 0,
 };
 const initialToValue = {
   branchId: null,
@@ -71,7 +72,7 @@ const Transfer = () => {
       if (activeStep !== 1) {
         setActiveStep(activeStep + 1);
       } else {
-        const { item, quantity } = fromFormValue;
+        const { item, quantity, noOfBoxes } = fromFormValue;
         const { branchId, specialtyId, userId } = toFormValue;
         transferInventoryItem({
           variables: {
@@ -79,6 +80,7 @@ const Transfer = () => {
               id: item?.id,
               itemId: item?.item.id,
               quantity: quantity,
+              noOfBoxes: noOfBoxes,
               toBranchId: branchId,
               toSpecialtyId: specialtyId,
               toUserId: userId,

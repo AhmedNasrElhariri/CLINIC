@@ -31,9 +31,9 @@ const NewItem = () => {
       name: '',
       unitOfMeasure: 'PerUnit',
       quantity: 1,
-      sellingPrice: 0,
-      alertNumberOfUnits: 1,
-      unitSellingPrice: 1,
+      sellingPricePerBox: 0,
+      sellingPricePerUnit: 0,
+      alertNumberOfBoxes: 1,
     },
     model,
   });
@@ -54,9 +54,9 @@ const NewItem = () => {
   useEffect(() => {
     setFormValue(prev => ({
       ...prev,
-      unitSellingPrice: formValue.sellingPrice / formValue.quantity,
+      sellingPricePerUnit: formValue.sellingPricePerBox / formValue.quantity,
     }));
-  }, [setFormValue, formValue.sellingPrice, formValue.quantity]);
+  }, [setFormValue, formValue.sellingPricePerBox, formValue.quantity]);
   return (
     <>
       <CRButton variant="primary" onClick={open}>
@@ -104,19 +104,20 @@ const NewItem = () => {
             block
           ></CRNumberInput>
           <CRNumberInput
-            label="Selling price (medicine box)"
-            name="sellingPrice"
+            label="Selling price per Box(medicine box)"
+            name="sellingPricePerBox"
             block
           ></CRNumberInput>
           <CRNumberInput
-            label={t('unitSellingPrice')}
-            name="unitSellingPrice"
+            label={t('sellingPricePerUnit')}
+            name="sellingPricePerUnit"
             block
             disabled
+            float
           ></CRNumberInput>
           <CRNumberInput
             label={t('alertNumberOfBoxes')}
-            name="alertNumberOfUnits"
+            name="alertNumberOfBoxes"
             block
           ></CRNumberInput>
           <Div mt="10px">

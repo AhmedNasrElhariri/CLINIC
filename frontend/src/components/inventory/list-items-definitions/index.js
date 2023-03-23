@@ -20,15 +20,15 @@ const ListItemsDefinitions = ({ items, onRemove, t }) => {
         <CRTable.CRCell dataKey="quantity" semiBold />
       </CRTable.CRColumn>
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>{t('sellingPrice')}</CRTable.CRHeaderCell>
-        <CRTable.CRCell dataKey="sellingPrice" semiBold />
+        <CRTable.CRHeaderCell>{t('sellingPricePerUnit')}</CRTable.CRHeaderCell>
+        <CRTable.CRCell dataKey="sellingPricePerUnit" semiBold />
       </CRTable.CRColumn>
       <CRTable.CRColumn flexGrow={1}>
-        <CRTable.CRHeaderCell>{t('unitSellingPrice')}</CRTable.CRHeaderCell>
+        <CRTable.CRHeaderCell>{t('sellingPricePerBox')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
-          {({ quantity, sellingPrice }) => (
+          {({ sellingPricePerBox }) => (
             <CRTable.CRCellStyled>
-              {approximatlyToTwoNumbers(sellingPrice / quantity)}
+              {approximatlyToTwoNumbers(sellingPricePerBox)}
             </CRTable.CRCellStyled>
           )}
         </CRTable.CRCell>
@@ -36,8 +36,8 @@ const ListItemsDefinitions = ({ items, onRemove, t }) => {
       <CRTable.CRColumn flexGrow={1}>
         <CRTable.CRHeaderCell>{t('alertNumberOfBoxes')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
-          {({ alertNumberOfUnits }) => (
-            <CRTable.CRCellStyled>{alertNumberOfUnits}</CRTable.CRCellStyled>
+          {({ alertNumberOfBoxes }) => (
+            <CRTable.CRCellStyled>{alertNumberOfBoxes}</CRTable.CRCellStyled>
           )}
         </CRTable.CRCell>
       </CRTable.CRColumn>

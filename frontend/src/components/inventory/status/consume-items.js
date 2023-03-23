@@ -12,8 +12,8 @@ const ConsumeItems = ({
   handleInventoryChange,
   t,
   setFormValue,
+  isSelling,
 }) => {
-  console.log(formValue, 'formValue');
   const handleOk = useCallback(() => {
     const { branchId, specialtyId, userId } = formValue;
     const data = {
@@ -21,9 +21,10 @@ const ConsumeItems = ({
       branchId,
       specialtyId,
       userId,
+      isSelling,
     };
     consumeInventoryManual(data);
-  }, [formValue, consumeInventoryManual, selectedItems]);
+  }, [formValue, consumeInventoryManual, selectedItems, isSelling]);
   return (
     <CRModal
       show={visible}
@@ -47,6 +48,7 @@ const ConsumeItems = ({
         onChange={handleInventoryChange}
         formValue={formValue}
         setFormValue={setFormValue}
+        isSelling={isSelling}
       />
     </CRModal>
   );

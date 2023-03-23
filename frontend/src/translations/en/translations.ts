@@ -488,9 +488,13 @@ export const TRANSLATIONS_EN = {
   cardNo: 'CardNo',
   transferMedicineOrItem: 'Transfer Medicine Or Item',
   transfer: 'Transfer',
-  pendingItems:'Pending Items',
-  numberOfBoxes:'Number Of Boxes',
-  uintsQuantity:'Uints Quantity',
-  noOfUnits:'No of units',
-  unitOfMeasure:'Unit Of Measure'
+  pendingItems: 'Pending Items',
+  numberOfBoxes: 'Number Of Boxes',
+  uintsQuantity: 'Uints Quantity',
+  noOfUnits: 'No of units',
+  unitOfMeasure: 'Unit Of Measure',
+  purchasingPricePerUnit: 'Purchasing Price Per Unit',
+  sellingPricePerUnit: 'Selling Price Per Unit',
+  sellingPricePerBox: 'Selling Price Per Box',
+  purchasingPricePerBox:'Purchasing Price Per Box'
 };
