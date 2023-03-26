@@ -10,7 +10,7 @@ export const createRevenueFromInventory = (data, organizationId) => {
     ({
       consumedUnits,
       inventoryItem: {
-        item: { name, sellingPrice },
+        item: { name, sellingPricePerUnit },
         branchId,
         userId,
       },
@@ -19,7 +19,7 @@ export const createRevenueFromInventory = (data, organizationId) => {
       userId,
       date: new Date(),
       name: `selling ${consumedUnits} units of - ${name}`,
-      amount: consumedUnits * sellingPrice,
+      amount: consumedUnits * sellingPricePerUnit,
       organizationId,
     })
   );
@@ -88,6 +88,7 @@ export const reducedInventoryPattern = async (
     const persistedItem = R.find(R.propEq('id', id))(persistedItems);
     const filteredItems = items.filter(it => it.consumedUnits > 0);
     if (isSelling) {
+      console.log(isSelling, 'ISSELLING');
       const updateInventoryItem = prisma.inventoryItem.update({
         where: {
           id,

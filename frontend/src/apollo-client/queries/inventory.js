@@ -59,8 +59,9 @@ export const CREATE_ITEM = gql`
       name
       unitOfMeasure
       quantity
-      sellingPrice
-      alertNumberOfUnits
+      sellingPricePerUnit
+      sellingPricePerBox
+      alertNumberOfBoxes
       sellable
     }
   }
