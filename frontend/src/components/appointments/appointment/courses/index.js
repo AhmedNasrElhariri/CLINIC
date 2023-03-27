@@ -119,7 +119,6 @@ function NewCourse({
   setConsumedParts,
   courseParts,
 }) {
-  console.log(consumedParts,'consumedParts')
   const [session, setSession] = useState({});
   const [sessionNumber, setSessionNumber] = useState(1);
   const [sessionPrice, setSessionPrice] = useState(0);
@@ -239,7 +238,7 @@ function NewCourse({
           totalUnits,
         }))
       );
-  }, [courseParts, setConsumedParts,consumedParts.length]);
+  }, [courseParts, setConsumedParts, consumedParts.length]);
   const handleChangeCoursePart = useCallback(
     (val, checkChange, indx) => {
       setConsumedParts &&
@@ -304,7 +303,7 @@ function NewCourse({
                       name="sessionsNumber"
                       value={sessionNumber}
                       onChange={setSessionNumber}
-                      style={{ width: '50px' }}
+                      style={{ minWidth: '80px' }}
                     ></CRNumberInput>
                     <CRNumberInput
                       label={t('price')}
@@ -526,6 +525,7 @@ function NewCourse({
                           onChange={val =>
                             handleChangeCoursePart(val, 'amount', indx)
                           }
+                          style={{ minWidth: '100px' }}
                         ></CRNumberInput>
                         {type === 'addNewUnits' && (
                           <CRTextInput

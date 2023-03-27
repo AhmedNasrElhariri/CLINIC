@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import * as R from 'ramda';
-import { Div, CRButton } from 'components';
+import { Div, CRButton, CRTextInput } from 'components';
 import NewSessionDefinition from './new-session-definition';
 import ListSessionsDefinition from './list-sessions-definition';
 import { useForm, useSessionDefinition } from 'hooks';
@@ -8,6 +8,7 @@ import { Can } from 'components/user/can';
 import { useModal } from 'hooks';
 import { Schema } from 'rsuite';
 import { useTranslation } from 'react-i18next';
+import { Form } from 'rsuite';
 
 const initValue = {
   name: '',
@@ -24,6 +25,7 @@ const model = Schema.Model({
 
 const SessionDefinition = () => {
   const { visible, open, close } = useModal();
+  const [filter, setFilter] = useState({ name: '' });
   const { t } = useTranslation();
   const {
     formValue,
@@ -92,15 +94,29 @@ const SessionDefinition = () => {
       });
     }
   }, [addSessionDefinition, editSessionDefinition, formValue, type]);
-
+  const updatedSessionDefinition = useMemo(
+    () =>
+      sessionsDefinition.filter(s =>
+        s?.name.toUpperCase().includes(filter?.name.toUpperCase())
+      ),
+    [sessionsDefinition, filter]
+  );
   return (
     <>
-      <Div textAlign="right">
+      <Div display="flex" flexDirection="row-reverse" m={2}>
         <Can I="Create" an="SessionDefinition">
-          <CRButton variant="primary" onClick={handleClickCreate} mt={2}>
+          <CRButton
+            variant="primary"
+            onClick={handleClickCreate}
+            ml={2}
+            mt="10px"
+          >
             {t('addNewSessionDefinition')}+
           </CRButton>
         </Can>
+        <Form formValue={filter} onChange={setFilter}>
+          <CRTextInput name="name" placeholder="Search" />
+        </Form>
       </Div>
       <NewSessionDefinition
         visible={visible}
@@ -116,7 +132,7 @@ const SessionDefinition = () => {
         loading={loading}
       />
       <ListSessionsDefinition
-        sessions={sessionsDefinition}
+        sessions={updatedSessionDefinition}
         onEdit={handleClickEdit}
       />
     </>
