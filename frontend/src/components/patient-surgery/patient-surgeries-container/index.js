@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 
 const initValue = {
   patientId: null,
-  surgeryId: null,
   hospitalId: null,
   date: null,
   time: null,
@@ -24,6 +23,7 @@ const initValue = {
   others: 0,
   fees: 0,
   hospitalFees: 0,
+  surgeriesIds: [],
 };
 const inialCurrentPage = {
   activePage: 1,

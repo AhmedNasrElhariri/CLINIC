@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Form, Schema } from 'rsuite';
+import { Form, Schema, MultiCascader } from 'rsuite';
 import { useTranslation } from 'react-i18next';
 import {
   CRModal,
@@ -8,6 +8,7 @@ import {
   CRNumberInput,
   CRTimePicker,
   CRTextInput,
+  CRLabel,
 } from 'components';
 import { useHospitals, useSurgeries, usePatients } from 'hooks';
 
@@ -42,7 +43,11 @@ const NewPatientSurgery = ({
     () => (type === 'create' ? t('addNewSurgery') : t('editSurgery')),
     [type, t]
   );
-
+  const updatedSurgeries = useMemo(
+    () => surgeries.map(({ name, id }) => ({ label: name, value: id })),
+    [surgeries]
+  );
+  console.log(formValue, 'surgeries');
   return (
     <CRModal
       show={visible}
@@ -66,8 +71,7 @@ const NewPatientSurgery = ({
           block
           disabled={type === 'create' ? false : true}
         />
-
-        <CRSelectInput
+        {/* <CRSelectInput
           label={t('surgery')}
           name="surgeryId"
           errorMessage={
@@ -77,6 +81,15 @@ const NewPatientSurgery = ({
           }
           data={surgeries}
           block
+        /> */}
+        <CRLabel>surgeries</CRLabel>
+
+        <MultiCascader
+          data={updatedSurgeries}
+          name="surgeriesIds"
+          block
+          value={formValue.surgeriesIds}
+          onChange={val => onChange({ ...formValue, surgeriesIds: val })}
         />
         <CRSelectInput
           label={t('hospital')}

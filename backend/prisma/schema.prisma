@@ -1565,28 +1565,28 @@ model PatientReport {
 }
 
 model Surgery {
-  id             String           @id @default(uuid())
-  name           String
-  level          String
-  user           User             @relation(fields: [userId], references: [id])
-  userId         String
-  specialty      Specialty?       @relation(fields: [specialtyId], references: [id])
-  specialtyId    String?
-  branch         Branch?          @relation(fields: [branchId], references: [id])
-  branchId       String?
-  organization   Organization     @relation(fields: [organizationId], references: [id])
-  organizationId String
-  patientSurgery PatientSurgery[]
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @default(now()) @updatedAt
+  id               String           @id @default(uuid())
+  name             String
+  level            String
+  user             User             @relation(fields: [userId], references: [id])
+  userId           String
+  specialty        Specialty?       @relation(fields: [specialtyId], references: [id])
+  specialtyId      String?
+  branch           Branch?          @relation(fields: [branchId], references: [id])
+  branchId         String?
+  organization     Organization     @relation(fields: [organizationId], references: [id])
+  organizationId   String
+  patientSurgeries PatientSurgery[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @default(now()) @updatedAt
 }
 
 model PatientSurgery {
   id                   String          @id @default(uuid())
   patient              Patient         @relation(fields: [patientId], references: [id])
   patientId            String
-  surgery              Surgery         @relation(fields: [surgeryId], references: [id])
-  surgeryId            String
+  surgeries            Surgery[]
+  surgeryId            String?
   hospital             Hospital        @relation(fields: [hospitalId], references: [id])
   hospitalId           String
   appointment          Appointment?    @relation(fields: [appointmentId], references: [id])

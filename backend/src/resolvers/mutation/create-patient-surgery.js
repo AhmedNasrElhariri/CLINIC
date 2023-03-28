@@ -1,5 +1,6 @@
 import { prisma } from '@';
 import { APPOINTMENTS_TYPES, APPOINTMENTS_STATUS } from '@/utils/constants';
+import { surgery } from '../patient-surgery';
 
 const createPatientSurgery = async (
   _,
@@ -8,13 +9,13 @@ const createPatientSurgery = async (
 ) => {
   const {
     patientId,
-    surgeryId,
+    surgeriesIds,
     hospitalId,
     fees,
     date,
     ...data
   } = patientSurgery;
-
+  console.log(data, 'data');
   const persistedPatientSurgery = await prisma.patientSurgery.create({
     data: {
       fees,
@@ -25,11 +26,7 @@ const createPatientSurgery = async (
           id: patientId,
         },
       },
-      surgery: {
-        connect: {
-          id: surgeryId,
-        },
-      },
+      surgeries: surgeriesIds.map(id => ({ connect: { id: id } })),
       hospital: {
         connect: {
           id: hospitalId,

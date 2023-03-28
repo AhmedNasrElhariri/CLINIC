@@ -2531,8 +2531,8 @@ type PatientSurgeryData {
 
 input PatientSurgeryInput {
   patientId: ID!
-  surgeryId: ID!
   hospitalId: ID!
+  surgeriesIds: [String]
   date: Date
   fees: Int
   hospitalFees: Int

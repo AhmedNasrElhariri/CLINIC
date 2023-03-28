@@ -1,4 +1,4 @@
-import { CRDateRangePicker, CRButton, MenuPopover } from 'components';
+import { CRDateRangePicker, CRButton, MenuPopover, CRLabel } from 'components';
 import { Form, MultiCascader, Whisper } from 'rsuite';
 import ReportRow from '../report-row';
 import { Name } from '../style';
