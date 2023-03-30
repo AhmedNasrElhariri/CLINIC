@@ -35,11 +35,15 @@ function ListPatientSurgeries({
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn minWidth={72} flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('surgery')}</CRTable.CRHeaderCell>
+          <CRTable.CRColumn minWidth={82} flexGrow={2}>
+            <CRTable.CRHeaderCell>{t('surgeries')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ surgery }) => (
-                <CRTable.CRCellStyled>{surgery.name}</CRTable.CRCellStyled>
+              {({ surgeries }) => (
+                <CRTable.CRCellStyled>
+                  {surgeries?.map(({ name }, indx) =>
+                    surgeries[indx + 1] ? `${name} +` : name
+                  )}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>

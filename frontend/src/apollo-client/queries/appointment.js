@@ -496,7 +496,7 @@ export const GET_APPOINTMENT_HISTORY = gql`
         value
       }
       patientSurgeries {
-        surgery {
+        surgeries {
           name
         }
         hospital {

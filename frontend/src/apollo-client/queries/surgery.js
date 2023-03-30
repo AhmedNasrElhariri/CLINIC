@@ -72,7 +72,7 @@ export const LIST_PATIENT_SURGERIES = gql`
           id
           name
         }
-        surgery {
+        surgeries {
           id
           name
         }

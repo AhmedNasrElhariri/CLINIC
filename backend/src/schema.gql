@@ -2511,7 +2511,7 @@ type AppointmentsOnCourses {
 type PatientSurgery {
   id: ID!
   patient: Patient
-  surgery: Surgery
+  surgeries: [Surgery]
   hospital: Hospital
   date: Date
   fees: Int

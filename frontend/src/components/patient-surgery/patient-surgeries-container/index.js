@@ -113,7 +113,7 @@ const PatientSurgeriesContainer = () => {
     data => {
       const {
         patient,
-        surgery,
+        surgeries,
         hospital,
         date,
         anesthesia,
@@ -127,7 +127,7 @@ const PatientSurgeriesContainer = () => {
       } = data;
       setFormValue({
         patientId: patient.id,
-        surgeryId: surgery.id,
+        surgeriesIds: surgeries.reduce((acc, { id }) => [...acc, id], []),
         hospitalId: hospital.id,
         date: date,
         time: date,

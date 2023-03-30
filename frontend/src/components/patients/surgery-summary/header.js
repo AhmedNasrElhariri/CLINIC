@@ -16,7 +16,9 @@ export default function Header({ updatedSummary, t, activeSession }) {
     <div className="flex flex-row flex-wrap items-center justify-between">
       <H3>
         {t('surgery')} {updatedSummary?.length - sessionId} {' / '}
-        {patientSurgeries[0]?.surgery.name}
+        {patientSurgeries[0]?.surgeries?.map(({ name }, indx) =>
+          patientSurgeries[0]?.surgeries[indx + 1] ? `${name} +` : name
+        )}
         {' / '}
         {patientSurgeries[0]?.hospital.name}
       </H3>

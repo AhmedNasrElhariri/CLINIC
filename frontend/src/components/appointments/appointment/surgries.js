@@ -106,7 +106,7 @@ const PatientSurgries = ({ history: summary, t, patientId }) => {
     [activeSession, views]
   );
   const groups = useMemo(() => R.propOr([], 'fieldGroups')(view), [view]);
-
+  console.log(summary, 'summary');
   // const updatedSummary = useMemo(() => {
   //   const today = moment(new Date()).endOf('day');
   //   const ss = summary.filter(s => moment(s.date) <= today);
