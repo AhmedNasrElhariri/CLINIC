@@ -4,7 +4,14 @@ import { Cascader } from 'rsuite';
 import { SelectItem, ItemSelect, Item, ItemsBox, DeleteBtn } from './style';
 import { findNodePath } from './util';
 
-const CustomCascader = ({ choices, onChange, value, disabled, ...props }) => {
+const CustomCascader = ({
+  choices,
+  onChange,
+  value,
+  disabled,
+  dontShow,
+  ...props
+}) => {
   const [selected, setSelected] = useState([]);
 
   const handleOnChange = useCallback(
@@ -48,7 +55,7 @@ const CustomCascader = ({ choices, onChange, value, disabled, ...props }) => {
           <Cascader
             style={{ width: 300 }}
             data={data}
-            value={null}
+            // value={null}
             onChange={handleOnChange}
             parentSelectable={false}
             childrenKey="choices"
@@ -57,19 +64,23 @@ const CustomCascader = ({ choices, onChange, value, disabled, ...props }) => {
             renderValue={(value, activePaths, activeItemLabel) => {}}
             {...props}
           />
-          <ItemsBox>
-            {selected.map((select, index) => (
-              <SelectItem key={index}>
-                <Item>
-                  {select &&
-                    select.map(({ name }, i) => (
-                      <ItemSelect key={i}>{name}</ItemSelect>
-                    ))}
-                </Item>
-                <DeleteBtn onClick={e => handleDelete(index)}>Delete</DeleteBtn>
-              </SelectItem>
-            ))}
-          </ItemsBox>
+          {!dontShow && (
+            <ItemsBox>
+              {selected.map((select, index) => (
+                <SelectItem key={index}>
+                  <Item>
+                    {select &&
+                      select.map(({ name }, i) => (
+                        <ItemSelect key={i}>{name}</ItemSelect>
+                      ))}
+                  </Item>
+                  <DeleteBtn onClick={e => handleDelete(index)}>
+                    Delete
+                  </DeleteBtn>
+                </SelectItem>
+              ))}
+            </ItemsBox>
+          )}
         </>
       )}
     </>

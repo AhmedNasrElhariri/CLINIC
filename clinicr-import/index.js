@@ -15,6 +15,7 @@ const {
   createUserSpecialty,
   activateView,
   createDoctors,
+  updateAllAppointmentsFieldsByOrgainzationId,
 } = require('./src/query');
 const {
   importPatients,
@@ -36,8 +37,9 @@ let SPEICIALTY_ID;
   try {
     const client = await init();
     /////////////////////////////////////////////////////////////////////
-    // await clearDB(client);
+    await clearDB(client);
     /////////////////////////////////////////////////////////////////////
+    /////////////////////// before
     console.log('Start create organization');
     const orgainzaiontId = await createOrganization(client);
     ORGANIZATION_ID = orgainzaiontId;
@@ -143,7 +145,6 @@ let SPEICIALTY_ID;
       branchId: BRANCH_ID,
     });
     console.log('Finish create Appointments');
-    /////////////////////////
     console.log('done successfully');
   } catch (error) {
     console.log(error);

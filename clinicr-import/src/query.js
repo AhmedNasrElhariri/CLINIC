@@ -255,6 +255,50 @@ const createAppointments = async (
     await client.query(text, values);
   }
 };
+const getIds = rows => {
+  let ids = '';
+  ids += rows.reduce(
+    (acc, { id }, index) =>
+      acc + `'${id}'${index < rows.length - 1 ? ',' : ''}`,
+    ''
+  );
+  return '(' + ids + ')';
+};
+const queryString = async rows => {
+  const chunks = split(rows, 50);
+  let q = '';
+  for await (const chunk of chunks) {
+    chunk.forEach(r => {
+      q += `WHEN '${r.id}' THEN '[${r.value}]' \n`;
+    });
+  }
+  return q;
+};
+const updateQueryWithChunks = async (rows, client) => {
+  const chunks = split(rows, 100);
+  for await (const chunk of chunks) {
+    const appointmentFieldsIds = getIds(chunk);
+    const queryStrings = await queryString(chunk);
+    const query = `UPDATE public."AppointmentField"
+                   SET value 
+                   = CASE id
+                   ${queryStrings}
+                   END
+                   WHERE id IN${appointmentFieldsIds};`;
+    await client.query(query);
+  }
+};
+const updateAllAppointmentsFieldsByOrgainzationId = async (
+  client,
+  { orgainzaiontId }
+) => {
+  const text = `SELECT id FROM public."Appointment" WHERE "organizationId"='${orgainzaiontId}' `;
+  const appointments = await client.query(text);
+  const appIds = getIds(appointments.rows);
+  const text2 = `SELECT AF.value, AF.id FROM public."AppointmentField" AF inner join "Field" F on F.id = AF."fieldId" WHERE F.type!='NestedSelector' AND AF."appointmentId" IN${appIds}`;
+  const appointmentsFields = await client.query(text2);
+  await updateQueryWithChunks(appointmentsFields.rows, client);
+};
 
 module.exports = {
   clearDB,
@@ -272,4 +316,5 @@ module.exports = {
   createBranchToSpecialty,
   createUserSpecialty,
   activateView,
+  updateAllAppointmentsFieldsByOrgainzationId,
 };

@@ -2,7 +2,7 @@ const { Client } = require('pg');
 
 const init = async () => {
   const client = new Client({
-    database: 'clinicr_import',
+    database: 'clinicr_import5',
     user: 'postgres',
     password: 'postgres',
   });

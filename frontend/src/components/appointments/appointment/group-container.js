@@ -23,7 +23,7 @@ import {
   SELECTOR_FIELD_TYPE,
 } from 'utils/constants';
 import { formatNumber } from 'utils/nubmer';
-
+import { findNodePath } from 'components/widgets/nested-selector/util';
 const CellDiv = styled.div`
   width: 100px;
   border: 1px solid #e5e5ea;
@@ -112,18 +112,42 @@ const renderItem = ({
 
     case NESTED_SELECTOR_FIELD_TYPE:
       return (
-        <CRNestedSelector label={name} name={id} choices={choices} {...props} />
+        <CRNestedSelector
+          label={name}
+          name={id}
+          choices={choices}
+          {...props}
+          dontShow
+        />
       );
     default:
       return null;
   }
 };
 
-const renderFieldValue = (value, type) => {
+const renderFieldValue = (value, type, choices) => {
   if (type === NUMBER_FIELD_TYPE) {
     return formatNumber(value);
+  } else if (type === NESTED_SELECTOR_FIELD_TYPE) {
+    return (
+      findNodePath(value, choices) &&
+      findNodePath(value, choices)[findNodePath(value, choices).length - 1].name
+    );
   }
   return value;
+};
+
+const getValueFromArrays = (formValue, formValueTwo, f) => {
+  if (
+    formValue[f.id]?.constructor === Array &&
+    formValueTwo[f.id]?.constructor === Array
+  ) {
+    return [...formValueTwo[f.id], ...formValue[f.id]];
+  } else if (formValue[f.id]?.constructor === Array) {
+    return [formValueTwo[f.id], ...formValue[f.id]];
+  } else {
+    return [formValueTwo[f.id]];
+  }
 };
 
 const GroupContainer = ({
@@ -134,15 +158,11 @@ const GroupContainer = ({
   title,
 }) => {
   const [formValueTwo, setFormValueTwo] = useState();
-
   const handleOnChange = useCallback(() => {
     let newFormVal = { ...formValue };
     fields.forEach(f => {
       let val = [];
-      val =
-        formValue[f.id].constructor === Array
-          ? [formValueTwo[f.id], ...formValue[f.id]]
-          : [formValueTwo[f.id]];
+      val = getValueFromArrays(formValue, formValueTwo, f);
       newFormVal[f.id] = val;
     });
     onChange(newFormVal);
@@ -163,7 +183,6 @@ const GroupContainer = ({
     },
     [onChange, formValue]
   );
-
   return (
     <>
       <H3 mb={10}>{title}</H3>
@@ -200,13 +219,13 @@ const GroupContainer = ({
                 }, minmax(100px, 1fr))`,
               }}
             >
-              {fields.map(({ id, name, type }, i) => (
+              {fields.map(({ id, name, type, choices }, i) => (
                 <div key={i}>
                   <h6 className="mb-3 text-center">{name}</h6>
                   <p className="text-center">
                     {formValue[id] &&
                       formValue[id]?.map((v, indx) => (
-                        <CellDiv>{renderFieldValue(v, type)}</CellDiv>
+                        <CellDiv>{renderFieldValue(v, type, choices)}</CellDiv>
                       ))}
                   </p>
                 </div>
