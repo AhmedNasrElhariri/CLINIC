@@ -34,6 +34,11 @@ const addHospital = async (_, { hospital }, { organizationId, userId }) => {
         },
       }
     ),
+    include: {
+      user: true,
+      specialty: true,
+      branch: true,
+    },
   });
 };
 

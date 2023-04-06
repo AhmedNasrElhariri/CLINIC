@@ -41,6 +41,11 @@ function useHospitals({ onCreate, onEdit, onDelete } = {}) {
       Alert.success('the Hospital has been Edited Successfully');
       onEdit && onEdit();
     },
+    update(cache, { data: { editHospital: hospital } }) {
+      const newHoss = hospitals.map(h => (h.id === hospital.id ? hospital : h));
+      console.log(newHoss, '');
+      updateCache([...newHoss]);
+    },
     onError() {
       Alert.error('Failed to edit the Hospital');
     },

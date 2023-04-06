@@ -15,7 +15,6 @@ import EditAppointment from 'components/appointments/edit-appointment';
 import CancelAppointment from 'components/appointments/cancel-appointment';
 import { ACTIONS, APPT_STATUS } from 'utils/constants';
 import { BranchSpecialtyUserFilter } from 'components';
-const { StringType } = Schema.Types;
 
 const initialBranchValue = {
   branch: null,
@@ -301,6 +300,7 @@ function Appointments() {
             formValue={filter}
             onChange={setFilter}
             branches={filterBranches}
+            cleanable
           />
           <Filter
             formValue={formValue}

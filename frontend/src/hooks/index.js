@@ -53,3 +53,4 @@ export { default as useLogging } from './logging';
 export { default as useGeneralHook } from './general-hook';
 export { default as useDoctor } from './doctor';
 export { default as useSelectedRow } from './selected-rows';
+export { default as useTodayAppointments } from './today-appointments';

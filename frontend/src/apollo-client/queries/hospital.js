@@ -31,6 +31,19 @@ export const ADD_HOSPITAL = gql`
       name
       phoneNo
       address
+      level
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty {
+        id
+        name
+      }
     }
   }
 `;
@@ -42,6 +55,19 @@ export const EDIT_HOSPITAL = gql`
       name
       phoneNo
       address
+      level
+      user {
+        id
+        name
+      }
+      branch {
+        id
+        name
+      }
+      specialty {
+        id
+        name
+      }
     }
   }
 `;

@@ -5,8 +5,7 @@ import { APPT_TYPE } from 'utils/constants';
 import {
   LIST_APPOINTMENTS,
   LIST_BRANCHES_TREE,
-  // LIST_TODAY_APPOINTMENTS,
-  APPOINTMENTS_DAY_COUNT,
+  LIST_TODAY_APPOINTMENTS,
   ARCHIVE_APPOINTMENT,
   COMPLETE_APPOINTMENT,
   LIST_REVENUES,
@@ -29,40 +28,26 @@ import {
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
 
-const updateAppointmentsCache = ({ appointments, appointmentsCount }) => {
+
+
+const updateTodayAppointmentsCache = ({ appointments, appointmentsCount }) => {
   client.writeQuery({
-    query: LIST_APPOINTMENTS,
+    query: LIST_TODAY_APPOINTMENTS,
     data: {
-      appointments: {
-        appointments,
-        appointmentsCount,
-      },
+      todayAppointments: { appointments, appointmentsCount },
     },
   });
 };
 
-// const updateTodayAppointmentsCache = ({ appointments, appointmentsCount }) => {
-//   client.writeQuery({
-//     query: LIST_TODAY_APPOINTMENTS,
-//     data: {
-//       todayAppointments: { appointments, appointmentsCount },
-//     },
-//   });
-// };
-
 function useAppointments({
   includeSurgery,
   page,
-  dateFrom,
-  dateTo,
   patient,
   specialtyId,
   branchId,
   doctorId,
   type,
   status,
-  date,
-  userId,
   action,
   patientId,
   onDeletePhoto,
@@ -74,93 +59,39 @@ function useAppointments({
   setAppointment,
   onArchive,
 } = {}) {
-  const { data, refetch: refetchAppointments } = useQuery(LIST_APPOINTMENTS, {
-    fetchPolicy: 'cache-and-network',
-    variables: Object.assign(
-      {
-        offset: (page - 1) * 20 || 0,
-        limit: 20,
-        status,
-      },
-      patient && { patient: patient },
-      dateFrom && { dateFrom },
-      dateTo && { dateTo },
-      type && { type },
-      branchId && { branchId: branchId },
-      specialtyId && { specialtyId: specialtyId },
-      doctorId && { doctorId: doctorId }
-    ),
-  });
+  const { data: todayAppointmentsData, refetch: refetchTodayAppointments } =
+    useQuery(LIST_TODAY_APPOINTMENTS, {
+      fetchPolicy: 'cache-and-network',
+      variables: Object.assign(
+        {
+          offset: (page - 1) * 30 || 0,
+          limit: 30,
+          status: status,
+        },
+        patient && { patient: patient },
+        branchId && { branchId: branchId },
+        specialtyId && { specialtyId: specialtyId },
+        doctorId && { doctorId: doctorId }
+      ),
+    });
+  const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
 
-  const appointmentsdata = data?.appointments;
-  const appointmentsCountNumber = R.propOr(
-    [],
-    'appointmentsCount'
-  )(appointmentsdata);
-
-  const appointments = useMemo(
+  const todayAppointments = useMemo(
     () =>
       R.pipe(
         R.propOr([], 'appointments'),
+        R.reject(R.propEq('status', 'Cancelled')),
         includeSurgery
           ? R.identity
           : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-      )(appointmentsdata),
-    [appointmentsdata, includeSurgery]
+      )(todayAppointmentsDATA),
+    [todayAppointmentsDATA, includeSurgery]
   );
 
-  const pages = Math.ceil(appointmentsCountNumber / 20);
-  const { data: appointmentsDay } = useQuery(APPOINTMENTS_DAY_COUNT, {
-    variables: {
-      date: date,
-      userId: userId,
-    },
-  });
-  const appointmentsCount = useMemo(
-    () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),
-    [appointmentsDay]
+  const todayAppointmentsCount = useMemo(
+    () => R.propOr(0, 'appointmentsCount')(todayAppointmentsDATA),
+    [todayAppointmentsDATA]
   );
-
-  const specialties = useMemo(
-    () => R.pipe(R.propOr([], 'specialties'))(data),
-    [data]
-  );
-
-  const doctors = useMemo(() => R.pipe(R.propOr([], 'doctors'))(data), [data]);
-
-  // const { data: todayAppointmentsData, refetch: refetchTodayAppointments } =
-  //   useQuery(LIST_TODAY_APPOINTMENTS, {
-  //     fetchPolicy: 'cache-and-network',
-  //     variables: Object.assign(
-  //       {
-  //         offset: (page - 1) * 30 || 0,
-  //         limit: 30,
-  //         status: status,
-  //       },
-  //       patient && { patient: patient },
-  //       branchId && { branchId: branchId },
-  //       specialtyId && { specialtyId: specialtyId },
-  //       doctorId && { doctorId: doctorId }
-  //     ),
-  //   });
-  // const todayAppointmentsDATA = todayAppointmentsData?.todayAppointments;
-
-  // const todayAppointments = useMemo(
-  //   () =>
-  //     R.pipe(
-  //       R.propOr([], 'appointments'),
-  //       R.reject(R.propEq('status', 'Cancelled')),
-  //       includeSurgery
-  //         ? R.identity
-  //         : R.reject(R.propEq('type', APPT_TYPE.Surgery))
-  //     )(todayAppointmentsDATA),
-  //   [todayAppointmentsDATA, includeSurgery]
-  // );
-
-  // const todayAppointmentsCount = useMemo(
-  //   () => R.propOr(0, 'appointmentsCount')(todayAppointmentsDATA),
-  //   [todayAppointmentsDATA]
-  // );
 
   const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
     variables: { action: action },
@@ -176,8 +107,7 @@ function useAppointments({
       onCompleted: () => {
         Alert.success('Appointment has been Archived successfully');
         onArchive && onArchive();
-        // refetchTodayAppointments();
-        refetchAppointments();
+        refetchTodayAppointments();
         if (followUpFeature && canAddFollowUp) {
           setFollowUp(true);
           setPopUp('followUpAppointment');
@@ -211,7 +141,7 @@ function useAppointments({
       onCompleted: () => {
         Alert.success('Appointment has been Archived successfully');
         onArchive && onArchive();
-        // refetchTodayAppointments();
+        refetchTodayAppointments();
       },
       onError: ({ message }) => Alert.error(message),
     }
@@ -220,33 +150,19 @@ function useAppointments({
     onCompleted: () => {
       Alert.success('Appointment has been Completed successfully');
       setAppointment({});
-      // refetchTodayAppointments();
-      refetchAppointments();
+      refetchTodayAppointments();
     },
   });
   const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
     onCompleted: () => {
       Alert.success('Business Notes Added Successfully');
-      // refetchTodayAppointments();
-    },
-    update(cache, { data: { updateNotes: appointment } }) {
-      const app = appointments.find(a => a.id === appointment.id);
-      const newApp = { ...app, businessNotes: appointment.businessNotes };
-      const allNewApp = appointments.map(oldApp => {
-        if (oldApp.id === appointment.id) {
-          return newApp;
-        } else {
-          return oldApp;
-        }
-      });
-      updateAppointmentsCache(allNewApp);
+      refetchTodayAppointments();
     },
   });
   const [adjust] = useMutation(ADJUST_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been changed successfully');
-      // refetchTodayAppointments();
-      refetchAppointments();
+      refetchTodayAppointments();
     },
     refetchQueries: [
       {
@@ -256,25 +172,15 @@ function useAppointments({
   });
   const [confirmedAppointment] = useMutation(CONFIRMED_APPOINTMENT, {
     onCompleted: ({ confirmedAppointment: { id } }) => {
-      // const newTodayAppointments = R.map(appointment =>
-      //   id === appointment.id
-      //     ? { ...appointment, confirmed: !appointment.confirmed }
-      //     : appointment
-      // )(todayAppointments);
-
-      const newAppointments = R.map(appointment =>
+      const newTodayAppointments = R.map(appointment =>
         id === appointment.id
           ? { ...appointment, confirmed: !appointment.confirmed }
           : appointment
-      )(appointments);
+      )(todayAppointments);
 
-      // updateTodayAppointmentsCache({
-      //   appointments: newTodayAppointments,
-      //   appointmentsCount: todayAppointmentsCount,
-      // });
-      updateAppointmentsCache({
-        appointments: newAppointments,
-        appointmentsCount,
+      updateTodayAppointmentsCache({
+        appointments: newTodayAppointments,
+        appointmentsCount: todayAppointmentsCount,
       });
     },
   });
@@ -282,8 +188,7 @@ function useAppointments({
   const [cancel] = useMutation(CANCEL_APPOINTMENT, {
     onCompleted: () => {
       Alert.success('Appointment has been cancelled successfully');
-      // refetchTodayAppointments();
-      refetchAppointments();
+      refetchTodayAppointments();
     },
     refetchQueries: [
       {
@@ -294,8 +199,7 @@ function useAppointments({
   const [transferAppointments] = useMutation(TRANSFER_APPOINTMENTS, {
     onCompleted: () => {
       Alert.success('Appointments has been Transfered successfully');
-      // refetchTodayAppointments();
-      refetchAppointments();
+      refetchTodayAppointments();
     },
   });
   const [deleteAppointmentPhoto] = useMutation(DELETE_APPOINTMENT_PHOTO, {
@@ -316,19 +220,14 @@ function useAppointments({
 
   return useMemo(
     () => ({
-      appointments,
-      // todayAppointments,
+      todayAppointments,
       filterBranches,
-      appointmentsCount,
       deleteAppointmentPhoto,
       confirmedAppointment,
       refetchAppointments: {
         query: LIST_APPOINTMENTS,
       },
       branches: [],
-      specialties,
-      pages,
-      doctors,
       archive,
       complete,
       archiveLoading,
@@ -337,18 +236,13 @@ function useAppointments({
       cancel,
       transferAppointments,
       archiveReferedDoctorAppointment,
-      // todayAppointmentsCount,
-      // refetchTodayAppointments,
+      todayAppointmentsCount,
+      refetchTodayAppointments,
     }),
     [
-      appointments,
-      appointmentsCount,
-      // todayAppointments,
-      specialties,
+      todayAppointments,
       confirmedAppointment,
       deleteAppointmentPhoto,
-      pages,
-      doctors,
       filterBranches,
       archive,
       complete,
@@ -358,8 +252,8 @@ function useAppointments({
       cancel,
       transferAppointments,
       archiveReferedDoctorAppointment,
-      // todayAppointmentsCount,
-      // refetchTodayAppointments,
+      todayAppointmentsCount,
+      refetchTodayAppointments,
     ]
   );
 }

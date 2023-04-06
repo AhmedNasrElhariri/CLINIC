@@ -342,7 +342,7 @@ function ListAppointments({
         <CRTable.CRColumn width={200}>
           <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ patient, subscriptionType }) => (
+            {({ patient }) => (
               <Whisper
                 placement="top"
                 controlId="control-id-hover"
@@ -357,10 +357,10 @@ function ListAppointments({
                       <Div>
                         {t('code')}:{patient.code}
                       </Div>
-                      <Div>
+                      {/* <Div>
                         {t('subscriptionType')}: {'  '}
                         {subscriptionType}
-                      </Div>
+                      </Div> */}
                     </Div>
                   </Tooltip>
                 }

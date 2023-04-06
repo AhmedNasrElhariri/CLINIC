@@ -1074,7 +1074,6 @@ type Appointment {
   id: ID!
   date: Date
   type: AppointmentType!
-  subscriptionType: String
   status: AppointmentStatus!
   patient: Patient!
   branch: Branch

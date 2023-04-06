@@ -24,6 +24,7 @@ function AppointmentsFilter({
   branches,
   formClassName,
   todayApp,
+  cleanable,
 }) {
   const dispatch = useAppDispatch();
   const branchId = useAppSelector(selectSelectedBranch);
@@ -62,7 +63,7 @@ function AppointmentsFilter({
       )(specialties),
     [formValue.specialty, specialties]
   );
-  
+
   return (
     <Form
       formValue={formValue}
@@ -77,6 +78,7 @@ function AppointmentsFilter({
           placeholder={t('select')}
           data={branches}
           block
+          cleanable={!cleanable}
         />
       </div>
       <div className="flex-1">
