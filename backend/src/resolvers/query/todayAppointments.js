@@ -23,25 +23,28 @@ const todayAppointments = async (
   const [appointments, count] = await fetchWithCount('appointment', {
     where: {
       organizationId,
-      ...(patient
-        ? {
-            patient: {
-              OR: [
-                {
-                  name: {
-                    contains: patient,
-                    mode: 'insensitive',
-                  },
+      AND: [
+        {
+          OR: [
+            {
+              patient: {
+                name: {
+                  contains: patient,
+                  mode: 'insensitive',
                 },
-                {
-                  phoneNo: {
-                    contains: patient,
-                  },
-                },
-              ],
+              },
             },
-          }
-        : { branchId, specialtyId, doctorId }),
+            {
+              patient: {
+                phoneNo: {
+                  contains: patient,
+                },
+              },
+            },
+          ],
+        },
+        { branchId, specialtyId, doctorId },
+      ],
       date: {
         gte: from,
         lte: to,
