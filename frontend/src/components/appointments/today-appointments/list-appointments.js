@@ -20,7 +20,7 @@ import { canAjdust } from 'services/appointment';
 import { Can } from 'components/user/can';
 import { MoreIcon } from 'components/icons';
 import { formatDate, addMinutesToDateAndReturnTime } from 'utils/date';
-import { STANDARD_DATE_FORMAT, FULL_DAY_FORMAT } from 'utils/constants';
+import { STANDARD_DATE_FORMAT, FULL_DAY_FORMAT, FULL_DATE_FORMAT } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
 const { Cell } = Table;
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
@@ -293,14 +293,14 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         {active !== 'Waiting' && (
-          <CRTable.CRColumn width={130}>
+          <CRTable.CRColumn width={70}>
             <CRTable.CRHeaderCell>{t('startTime')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date, session }) => (
                 <CRTable.CRCellStyled>
                   {waiting
                     ? formatDate(date, STANDARD_DATE_FORMAT)
-                    : formatDate(date, FULL_DAY_FORMAT)}
+                    : formatDate(date, FULL_DATE_FORMAT)}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

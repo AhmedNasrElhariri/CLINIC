@@ -24,25 +24,29 @@ const todayAppointments = async (
     where: {
       organizationId,
       AND: [
-        {
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
-                },
+        ...(patient
+          ? [
+              {
+                OR: [
+                  {
+                    patient: {
+                      name: {
+                        contains: patient,
+                        mode: 'insensitive',
+                      },
+                    },
+                  },
+                  {
+                    patient: {
+                      phoneNo: {
+                        contains: patient,
+                      },
+                    },
+                  },
+                ],
               },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
-                },
-              },
-            },
-          ],
-        },
+            ]
+          : []),
         { branchId, specialtyId, doctorId },
       ],
       date: {

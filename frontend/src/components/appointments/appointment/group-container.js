@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo, useEffect } from 'react';
 import { Form, IconButton, Icon } from 'rsuite';
 import styled from 'styled-components';
 import {
@@ -25,7 +25,7 @@ import {
 import { formatNumber } from 'utils/nubmer';
 import { findNodePath } from 'components/widgets/nested-selector/util';
 const CellDiv = styled.div`
-  width: 100px;
+  /* width: 100px; */
   border: 1px solid #e5e5ea;
   margin: 3px;
   height: 50px;
@@ -117,7 +117,7 @@ const renderItem = ({
           name={id}
           choices={choices}
           {...props}
-          dontShow
+          // dontShow
         />
       );
     default:
@@ -129,10 +129,12 @@ const renderFieldValue = (value, type, choices) => {
   if (type === NUMBER_FIELD_TYPE) {
     return formatNumber(value);
   } else if (type === NESTED_SELECTOR_FIELD_TYPE) {
-    return (
-      findNodePath(value, choices) &&
-      findNodePath(value, choices)[findNodePath(value, choices).length - 1].name
-    );
+    if (!value) {
+      return '';
+    }
+    const result =
+      findNodePath(value, choices) || findNodePath(value[0], choices);
+    return result?.[result.length - 1]?.name || '';
   }
   return value;
 };
@@ -157,7 +159,16 @@ const GroupContainer = ({
   updatedSessions,
   title,
 }) => {
-  const [formValueTwo, setFormValueTwo] = useState();
+  const [formValueTwo, setFormValueTwo] = useState({});
+
+  const initFormValue = useCallback(() => {
+    const formValueTwo = fields.reduce(
+      (acc, { id }) => ({ ...acc, [id]: '' }),
+      {}
+    );
+    setFormValueTwo(formValueTwo);
+  }, [fields]);
+
   const handleOnChange = useCallback(() => {
     let newFormVal = { ...formValue };
     fields.forEach(f => {
@@ -166,7 +177,8 @@ const GroupContainer = ({
       newFormVal[f.id] = val;
     });
     onChange(newFormVal);
-  }, [formValueTwo, setFormValueTwo, onChange]);
+    initFormValue();
+  }, [formValueTwo, onChange, fields, formValue]);
 
   const handleDelete = useCallback(
     indx => {
@@ -181,8 +193,13 @@ const GroupContainer = ({
       });
       onChange(newFormVal);
     },
-    [onChange, formValue]
+    [onChange, formValue, fields, formValueTwo]
   );
+
+  useEffect(() => {
+    initFormValue();
+  }, []);
+
   return (
     <>
       <H3 mb={10}>{title}</H3>

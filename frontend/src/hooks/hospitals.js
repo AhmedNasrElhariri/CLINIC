@@ -43,7 +43,6 @@ function useHospitals({ onCreate, onEdit, onDelete } = {}) {
     },
     update(cache, { data: { editHospital: hospital } }) {
       const newHoss = hospitals.map(h => (h.id === hospital.id ? hospital : h));
-      console.log(newHoss, '');
       updateCache([...newHoss]);
     },
     onError() {

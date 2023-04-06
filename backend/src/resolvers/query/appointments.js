@@ -21,68 +21,67 @@ const appointments = async (
 ) => {
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
-  let appointmentsCount = 0;
-  let appointments = [];
-  if (dateFrom || patient) {
-    const [allAppointments, count] = await fetchWithCount('appointment', {
-      where: Object.assign(
-        {
-          status,
-          organizationId,
-          AND: [
-            {
-              OR: [
+  const [allAppointments, count] = await fetchWithCount('appointment', {
+    where: Object.assign(
+      {
+        status,
+        organizationId,
+        AND: [
+          ...(patient
+            ? [
                 {
-                  patient: {
-                    name: {
-                      contains: patient,
-                      mode: 'insensitive',
+                  OR: [
+                    {
+                      patient: {
+                        name: {
+                          contains: patient,
+                          mode: 'insensitive',
+                        },
+                      },
                     },
-                  },
-                },
-                {
-                  patient: {
-                    phoneNo: {
-                      contains: patient,
+                    {
+                      patient: {
+                        phoneNo: {
+                          contains: patient,
+                        },
+                      },
                     },
-                  },
+                  ],
                 },
-              ],
-            },
-            { branchId, specialtyId, doctorId },
-          ],
-        },
-        dateTo &&
-          dateFrom && {
-            date: {
-              gte: startDay,
-              lte: endDay,
-            },
+              ]
+            : []),
+          { branchId, specialtyId, doctorId },
+        ],
+      },
+      dateTo &&
+        dateFrom && {
+          date: {
+            gte: startDay,
+            lte: endDay,
           },
-        type && {
-          sessionId: type,
-        }
-      ),
-
-      include: {
-        specialty: true,
-        branch: true,
-        doctor: true,
-        session: true,
-      },
-      skip: offset,
-      take: limit,
-      orderBy: {
-        date: 'asc',
-      },
-    });
-    appointments = allAppointments;
-    appointmentsCount = count;
-  }
+        },
+      type && {
+        sessionId: type,
+      }
+    ),
+    include: {
+      specialty: true,
+      branch: true,
+      doctor: true,
+      session: true,
+      patient: true,
+      user: true,
+    },
+    skip: offset,
+    take: limit,
+    orderBy: {
+      date: 'asc',
+    },
+  });
 
   const data = {
-    appointments: appointments,
-    appointmentsCount: appointmentsCount,
+    appointments: allAppointments,
+    appointmentsCount: count,
   };
   return data;
 };

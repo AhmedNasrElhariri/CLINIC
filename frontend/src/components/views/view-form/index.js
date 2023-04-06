@@ -29,7 +29,6 @@ const addLane = ({ onAdd }) => {
 
 const NewCardForm = props => {
   useEffect(() => {
-    console.log(props,'props')
     addCard(props);
   }, [props]);
   return null;
