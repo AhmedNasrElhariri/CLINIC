@@ -40,7 +40,7 @@ export const getValue = field => {
     return (value || [])
       .map(v => findNodePath(v, choices, []))
       .reduce((acc, arr) => {
-        let vala = arr.map(sv => `${sv.name} - `);
+        let vala = (arr || []).map(sv => `${sv.name} - `);
         return [...acc, vala];
       }, []);
   } else {
