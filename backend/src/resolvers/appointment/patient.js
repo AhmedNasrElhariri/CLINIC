@@ -1,6 +1,6 @@
 import { prisma } from '@';
 
-const patient = ({ patient }) => {
+const patient = ({ patient, id }) => {
   if (patient) {
     return patient;
   }

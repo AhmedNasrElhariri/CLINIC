@@ -18,11 +18,12 @@ export const findNodePath = (node, arr, path = []) => {
   for (let i = 0; i < arr.length; i++) {
     const item = arr[i];
     const currentPath = [...path, arr[i]];
-    if (item.id === node) {
+    const updateNode = Array.isArray(node) ? node[0] : node;
+    if (item.id === updateNode) {
       return currentPath;
     }
     if (item.choices) {
-      const result = findNodePath(node, item.choices, currentPath);
+      const result = findNodePath(updateNode, item.choices, currentPath);
       if (result) {
         return result;
       }

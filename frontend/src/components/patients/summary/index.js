@@ -153,7 +153,6 @@ const PatientSummary = ({ summary, tabularFields, tabularData, patientId }) => {
     () => R.propOr([], 'data')(activeSession),
     [activeSession]
   );
-
   const newGroups = normalizeDataWithGroups(groups, data);
   const handleDeleteImage = useCallback(
     data => {

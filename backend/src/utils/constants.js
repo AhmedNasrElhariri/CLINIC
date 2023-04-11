@@ -200,4 +200,5 @@ export const ACTIONS = Object.freeze({
   View_ReportsPrintout: 'View_ReportsPrintout',
   ViewSessionsReport_ReportsPrintout: 'ViewSessionsReport_ReportsPrintout',
   ViewCashAndVisa_Accounting: 'ViewCashAndVisa_Accounting',
+  ViewPhoneNo_Patient: 'ViewPhoneNo_Patient',
 });

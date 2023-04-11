@@ -257,6 +257,7 @@ enum PermissionAction {
   View_ReportsPrintout
   ViewSessionsReport_ReportsPrintout
   ViewCashAndVisa_Accounting
+  ViewPhoneNo_Patient
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
