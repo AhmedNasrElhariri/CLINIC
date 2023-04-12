@@ -296,14 +296,14 @@ function ListAppointments({
           </CRTable.CRCell>
         </CRTable.CRColumn>
         {active !== 'Waiting' && (
-          <CRTable.CRColumn width={70}>
+          <CRTable.CRColumn width={130}>
             <CRTable.CRHeaderCell>{t('startTime')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ date, session }) => (
                 <CRTable.CRCellStyled>
                   {waiting
                     ? formatDate(date, STANDARD_DATE_FORMAT)
-                    : formatDate(date, FULL_DATE_FORMAT)}
+                    : formatDate(date, FULL_DAY_FORMAT)}
                 </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>

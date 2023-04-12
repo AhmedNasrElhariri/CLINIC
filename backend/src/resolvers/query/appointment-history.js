@@ -49,15 +49,19 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
     include: {
       data: true,
       patient: true,
+      pictures: { include: { file: true } },
     },
     orderBy: {
       date: 'desc',
     },
   });
   const filteredApps = apps.filter(
-    ({ data, notes }) => data.length > 0 || notes.length !== 0
+    ({ data, notes, sessionsPulses, pictures }) =>
+      data.length > 0 ||
+      notes.length !== 0 ||
+      sessionsPulses.length > 0 ||
+      pictures.length > 0
   );
-  console.log(filteredApps, 'app//////');
   return filteredApps;
 };
 
