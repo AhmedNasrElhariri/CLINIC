@@ -17,9 +17,9 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
       .then(R.propOr({}, '0'));
     patientId = patient.id;
   }
-
+  let apps = [];
   if (type === 'Surgery') {
-    return prisma.appointment.findMany({
+    apps = await prisma.appointment.findMany({
       where: {
         patient: {
           id: patientId,
@@ -33,28 +33,32 @@ const appointmentHistory = async (_, { appointmentId, patientId, type }) => {
         date: 'desc',
       },
     });
-  } else {
-    return prisma.appointment.findMany({
-      where: {
-        patient: {
-          id: patientId,
-        },
-        type: {
-          not: 'Surgery',
-        },
-        status: {
-          notIn: ['Cancelled'],
-        },
-      },
-      include: {
-        data: true,
-        patient: true,
-      },
-      orderBy: {
-        date: 'desc',
-      },
-    });
   }
+  apps = await prisma.appointment.findMany({
+    where: {
+      patient: {
+        id: patientId,
+      },
+      type: {
+        not: 'Surgery',
+      },
+      status: {
+        notIn: ['Cancelled'],
+      },
+    },
+    include: {
+      data: true,
+      patient: true,
+    },
+    orderBy: {
+      date: 'desc',
+    },
+  });
+  const filteredApps = apps.filter(
+    ({ data, notes }) => data.length > 0 || notes.length !== 0
+  );
+  console.log(filteredApps, 'app//////');
+  return filteredApps;
 };
 
 export default appointmentHistory;

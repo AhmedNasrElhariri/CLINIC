@@ -94,11 +94,12 @@ const NewAppointment = ({
     date: formValue?.date,
     userId: formValue?.userId,
   });
-  const { disabledMinutes, hideHours } = useAppointmentForm({
-    date: formValue.date,
-    type: formValue.type,
-    appointments: appointmentsCount?.appointments || [],
-  });
+  const { disabledMinutes, hideHours, sessionNotHaveEnoughTime } =
+    useAppointmentForm({
+      date: formValue.date,
+      type: formValue.type,
+      appointments: appointmentsCount?.appointments || [],
+    });
 
   const updatedPatientCourses = patientCourses.map(course => ({
     name: course.name,
@@ -145,6 +146,7 @@ const NewAppointment = ({
       Alert.error('Complete Required Fields');
       return;
     }
+
     const {
       patientId,
       userId,
@@ -164,7 +166,10 @@ const NewAppointment = ({
       hours: timeDate.hours(),
       minute: timeDate.minutes(),
     });
-
+    if (sessionNotHaveEnoughTime(session, date)) {
+      Alert.error('This Session do not have enough time');
+      return;
+    }
     if (waiting) {
       date = moment(formValue.date).set({
         hours: '13',
@@ -191,7 +196,15 @@ const NewAppointment = ({
       followUp,
       referedDoctor,
     });
-  }, [createAppointment, formValue, followUp, appointment, setShow, validate]);
+  }, [
+    createAppointment,
+    formValue,
+    followUp,
+    appointment,
+    setShow,
+    validate,
+    sessionNotHaveEnoughTime,
+  ]);
   return (
     <>
       <NewPatient

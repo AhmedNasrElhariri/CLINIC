@@ -53,13 +53,25 @@ function useAppointmentForm({ date, type, appointments }) {
     },
     [date, selectedDayAppointments, type]
   );
+  const sessionNotHaveEnoughTime = useCallback(
+    ({ duration }, date) => {
+      return selectedDayAppointments.some(({ date: appDate }) => {
+        const startDate = moment(date);
+        const endDate = moment(startDate).add(duration, 'minutes');
+        const newDate = moment(appDate);
+        return newDate.isBetween(startDate, endDate, 'minutes', '[)');
+      });
+    },
+    [selectedDayAppointments]
+  );
 
   return useMemo(
     () => ({
       hideHours,
       disabledMinutes,
+      sessionNotHaveEnoughTime,
     }),
-    [disabledMinutes, hideHours]
+    [disabledMinutes, hideHours, sessionNotHaveEnoughTime]
   );
 }
 

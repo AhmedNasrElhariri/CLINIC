@@ -30,6 +30,10 @@ const renderFieldValue = value => {
 
 const renderTable = (fields, name) => {
   const keys = Object.keys(fields);
+  const values = Object.values(fields);
+  if (values.every(v => v?.length === 0 || typeof v === 'undefined')) {
+    return <H3> {name} - No Data</H3>;
+  }
   return (
     <>
       <H3>{name}</H3>
