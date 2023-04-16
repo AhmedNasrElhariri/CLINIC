@@ -6,6 +6,7 @@ const BranchSpecialtyUserFilter = ({
   branches,
   formClassName,
   todayApp,
+  cleanable,
 }) => {
   return (
     <>
@@ -15,6 +16,7 @@ const BranchSpecialtyUserFilter = ({
         branches={branches}
         formClassName={formClassName}
         todayApp={todayApp}
+        cleanable={cleanable}
       />
     </>
   );

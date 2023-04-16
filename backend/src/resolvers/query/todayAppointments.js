@@ -1,11 +1,10 @@
 import moment from 'moment';
 import { fetchWithCount } from '@/services/query';
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
+
 const todayAppointments = async (
   _,
   { offset, limit, status, doctorId, specialtyId, branchId, patient },
-  { organizationId, user }
+  { organizationId }
 ) => {
   const finalStatus =
     status === 'Scheduled' ? ['Scheduled', 'Changed'] : [status];
@@ -20,69 +19,35 @@ const todayAppointments = async (
     from = moment().utc().startOf('day').toDate();
     to = moment().utc().endOf('day').toDate();
   }
-  const ids = await listFlattenUsersTreeIds(
-    {
-      user,
-      organizationId,
-      action: ACTIONS.List_Appointment,
-    },
-    true
-  );
+
   const [appointments, count] = await fetchWithCount('appointment', {
     where: {
       organizationId,
       AND: [
-        {
-          OR: [
-            {
-              doctorId: {
-                in: ids,
+        ...(patient
+          ? [
+              {
+                OR: [
+                  {
+                    patient: {
+                      name: {
+                        contains: patient,
+                        mode: 'insensitive',
+                      },
+                    },
+                  },
+                  {
+                    patient: {
+                      phoneNo: {
+                        contains: patient,
+                      },
+                    },
+                  },
+                ],
               },
-            },
-            {
-              branchId: {
-                in: ids,
-              },
-            },
-            {
-              specialtyId: {
-                in: ids,
-              },
-            },
-          ],
-        },
-        {
-          AND: [
-            {
-              branchId: branchId,
-            },
-            {
-              specialtyId: specialtyId,
-            },
-            {
-              doctorId: doctorId,
-            },
-          ],
-        },
-        {
-          OR: [
-            {
-              patient: {
-                name: {
-                  contains: patient,
-                  mode: 'insensitive',
-                },
-              },
-            },
-            {
-              patient: {
-                phoneNo: {
-                  contains: patient,
-                },
-              },
-            },
-          ],
-        },
+            ]
+          : []),
+        { branchId, specialtyId, doctorId },
       ],
       date: {
         gte: from,

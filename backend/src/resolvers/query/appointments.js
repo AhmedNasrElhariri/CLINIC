@@ -2,8 +2,6 @@ import moment from 'moment';
 
 import { APPOINTMENTS_STATUS } from '@/utils/constants';
 import { fetchWithCount } from '@/services/query';
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
 
 const appointments = async (
   _,
@@ -19,111 +17,71 @@ const appointments = async (
     specialtyId,
     branchId,
   },
-  { organizationId, user }
+  { organizationId }
 ) => {
   const startDay = moment(dateFrom).startOf('day').toDate();
   const endDay = moment(dateTo).endOf('day').toDate();
-  const ids = await listFlattenUsersTreeIds(
-    {
-      user,
-      organizationId,
-      action: ACTIONS.List_Appointment,
-    },
-    true
-  );
-  let appointmentsCount = 0;
-  let appointments = [];
-  if (dateFrom || patient) {
-    const [allAppointments, count] = await fetchWithCount('appointment', {
-      where: Object.assign(
-        {
-          status,
-          organizationId,
-          AND: [
-            {
-              OR: [
+  const [allAppointments, count] = await fetchWithCount('appointment', {
+    where: Object.assign(
+      {
+        status,
+        organizationId,
+        AND: [
+          ...(patient
+            ? [
                 {
-                  doctorId: {
-                    in: ids,
-                  },
-                },
-                {
-                  branchId: {
-                    in: ids,
-                  },
-                },
-                {
-                  specialtyId: {
-                    in: ids,
-                  },
-                },
-              ],
-            },
-            {
-              AND: [
-                {
-                  branchId: branchId,
-                },
-                {
-                  specialtyId: specialtyId,
-                },
-                {
-                  doctorId: doctorId,
-                },
-              ],
-            },
-            {
-              OR: [
-                {
-                  patient: {
-                    name: {
-                      contains: patient,
-                      mode: 'insensitive',
+                  OR: [
+                    {
+                      patient: {
+                        name: {
+                          contains: patient,
+                          mode: 'insensitive',
+                        },
+                      },
                     },
-                  },
-                },
-                {
-                  patient: {
-                    phoneNo: {
-                      contains: patient,
+                    {
+                      patient: {
+                        phoneNo: {
+                          contains: patient,
+                        },
+                      },
                     },
-                  },
+                  ],
                 },
-              ],
-            },
-          ],
-        },
-        dateTo &&
-          dateFrom && {
-            date: {
-              gte: startDay,
-              lte: endDay,
-            },
+              ]
+            : []),
+          { branchId, specialtyId, doctorId },
+        ],
+      },
+      dateTo &&
+        dateFrom && {
+          date: {
+            gte: startDay,
+            lte: endDay,
           },
-        type && {
-          sessionId: type,
-        }
-      ),
-
-      include: {
-        specialty: true,
-        branch: true,
-        doctor: true,
-        session: true,
-      },
-      skip: offset,
-      take: limit,
-      orderBy: {
-        date: 'asc',
-      },
-    });
-    appointments = allAppointments;
-    appointmentsCount = count;
-  }
+        },
+      type && {
+        sessionId: type,
+      }
+    ),
+    include: {
+      specialty: true,
+      branch: true,
+      doctor: true,
+      session: true,
+      patient: true,
+      user: true,
+    },
+    skip: offset,
+    take: limit,
+    orderBy: {
+      date: 'asc',
+    },
+  });
 
   const data = {
-    appointments: appointments,
-    appointmentsCount: appointmentsCount,
+    appointments: allAppointments,
+    appointmentsCount: count,
   };
   return data;
 };

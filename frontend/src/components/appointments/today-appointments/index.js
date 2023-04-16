@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { Nav, Form, Schema } from 'rsuite';
+import { Nav } from 'rsuite';
 import * as R from 'ramda';
 import moment from 'moment';
 import useGlobalState from 'state';
@@ -10,12 +10,12 @@ import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
 import CompleteAppointment from '../complete-appointment';
 import {
-  useAppointments,
+  useTodayAppointments,
   useConfigurations,
   useModal,
   useCourses,
 } from 'hooks';
-import { BranchSpecialtyUserFilter, CRTextInput } from 'components';
+import { BranchSpecialtyUserFilter } from 'components';
 import BusinessNotes from './business-notes';
 import NewAppointment from 'components/appointments/new-appointment';
 import EditAppointment from '../edit-appointment';
@@ -23,7 +23,6 @@ import CancelAppointment from '../cancel-appointment';
 import { useTranslation } from 'react-i18next';
 import TransferAppointments from '../transfer-apps';
 import NameFilter from './name-filter';
-const { StringType } = Schema.Types;
 
 const initialValue = {
   businessNotes: '',
@@ -58,9 +57,6 @@ const calcDate = ({ date, time }) =>
     .toDate();
 const PAGE_SIZE = 30;
 
-const model = Schema.Model({
-  patient: StringType().pattern(/^([a-z0-9]){4}[a-z0-9]*$/i),
-});
 function TodayAppointments() {
   const [popUp, setPopUp] = useState('');
   const [followUp, setFollowUp] = useState(false);
@@ -77,7 +73,6 @@ function TodayAppointments() {
   const { users } = useCourses({});
   const [company, setCompany] = useState(companyInital);
   const [onCreateAppointment] = useGlobalState('onCreateAppointment');
-  const [formError, setFormError] = React.useState({});
   const doctors = useMemo(() => {
     return users.filter(u => u.position === 'Doctor');
   }, [users]);
@@ -96,7 +91,7 @@ function TodayAppointments() {
     archiveReferedDoctorAppointment,
     todayAppointmentsCount,
     refetchTodayAppointments,
-  } = useAppointments(
+  } = useTodayAppointments(
     Object.assign({
       page: currentPage?.activePage,
       action: ACTIONS.List_Appointment,
@@ -355,6 +350,7 @@ function TodayAppointments() {
             onChange={setFilter}
             branches={filterBranches}
             todayApp={true}
+            cleanable
           />
           <ListAppointments
             active="Scheduled"

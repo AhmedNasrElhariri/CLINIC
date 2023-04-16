@@ -8,6 +8,11 @@ const editHospital = async (_, { hospital, type }) => {
       where: {
         id,
       },
+      include: {
+        user: true,
+        specialty: true,
+        branch: true,
+      },
     });
   } else {
     return prisma.hospital.delete({

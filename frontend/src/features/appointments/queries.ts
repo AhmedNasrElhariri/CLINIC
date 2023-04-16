@@ -31,7 +31,6 @@ export const GET_APPOINTMENTS = gql`
         accounted
         duration
         reference
-        subscriptionType
         patient {
           id
           name

@@ -1,6 +1,9 @@
 import { prisma } from '@';
 
-const session = ({ id }) => {
+const session = ({ id, session }) => {
+  if (session) {
+    return session;
+  }
   return prisma.appointment.findUnique({ where: { id } }).session();
 };
 

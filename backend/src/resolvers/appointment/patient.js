@@ -1,6 +1,9 @@
 import { prisma } from '@';
 
-const patient = ({ id }) => {
+const patient = ({ patient, id }) => {
+  if (patient) {
+    return patient;
+  }
   return prisma.appointment.findUnique({ where: { id } }).patient();
 };
 

@@ -56,7 +56,6 @@ export const LIST_APPOINTMENTS = gql`
         confirmed
         duration
         reference
-        subscriptionType
         isFollowUp
         canAddFollowUp
         patient {
@@ -129,7 +128,6 @@ export const LIST_TODAY_APPOINTMENTS = gql`
         businessNotes
         reference
         updatedAt
-        subscriptionType
         isFollowUp
         canAddFollowUp
         referedDoctor

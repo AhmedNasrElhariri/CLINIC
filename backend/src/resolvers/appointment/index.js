@@ -9,5 +9,5 @@ export { default as doctor } from './doctor';
 export { default as updater } from './updater';
 export { default as branch } from './branch';
 export { default as specialty } from './specialty';
-export { default as subscriptionType } from './subscriptionType';
+// export { default as subscriptionType } from './subscriptionType';
 export { default as canAddFollowUp } from './can-add-followup';

@@ -238,7 +238,7 @@ function NewCourse({
           totalUnits,
         }))
       );
-  }, [courseParts, setConsumedParts, consumedParts.length]);
+  }, [courseParts, setConsumedParts, consumedParts?.length]);
   const handleChangeCoursePart = useCallback(
     (val, checkChange, indx) => {
       setConsumedParts &&

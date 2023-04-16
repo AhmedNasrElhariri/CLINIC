@@ -20,7 +20,11 @@ import { canAjdust } from 'services/appointment';
 import { Can } from 'components/user/can';
 import { MoreIcon } from 'components/icons';
 import { formatDate, addMinutesToDateAndReturnTime } from 'utils/date';
-import { STANDARD_DATE_FORMAT, FULL_DAY_FORMAT } from 'utils/constants';
+import {
+  STANDARD_DATE_FORMAT,
+  FULL_DAY_FORMAT,
+  FULL_DATE_FORMAT,
+} from 'utils/constants';
 import { useTranslation } from 'react-i18next';
 const { Cell } = Table;
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
@@ -233,7 +237,6 @@ function ListAppointments({
     [setCurrentPage]
   );
 
-
   return (
     <Div padding={20} wd>
       <Div display="flex">
@@ -342,7 +345,7 @@ function ListAppointments({
         <CRTable.CRColumn width={200}>
           <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
           <CRTable.CRCell>
-            {({ patient, subscriptionType }) => (
+            {({ patient }) => (
               <Whisper
                 placement="top"
                 controlId="control-id-hover"
@@ -351,16 +354,18 @@ function ListAppointments({
                 speaker={
                   <Tooltip>
                     <Div>
-                      <Div>
-                        {t('phoneNo')}:{patient.phoneNo}
-                      </Div>
+                      <Can I="ViewPhoneNo" an="Patient">
+                        <Div>
+                          {t('phoneNo')}:{patient.phoneNo}
+                        </Div>
+                      </Can>
                       <Div>
                         {t('code')}:{patient.code}
                       </Div>
-                      <Div>
+                      {/* <Div>
                         {t('subscriptionType')}: {'  '}
                         {subscriptionType}
-                      </Div>
+                      </Div> */}
                     </Div>
                   </Tooltip>
                 }
