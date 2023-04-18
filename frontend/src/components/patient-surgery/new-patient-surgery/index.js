@@ -47,7 +47,6 @@ const NewPatientSurgery = ({
     () => surgeries.map(({ name, id }) => ({ label: name, value: id })),
     [surgeries]
   );
-  console.log(formValue, 'surgeries');
   return (
     <CRModal
       show={visible}

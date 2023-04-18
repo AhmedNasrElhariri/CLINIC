@@ -8,7 +8,8 @@ import NewEvent from './new-event';
 
 import components from './custom-components';
 import CalendarContext from './context';
-
+import * as R from 'ramda';
+import { useQuery } from '@apollo/client';
 import { CalendarStyled } from './style';
 import { useAdjustAppointment } from '../adjust-appointment/index';
 import EditAppointment from '../edit-appointment/index';
@@ -19,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import Filter from './filter';
 import { filterTodayAppointments } from 'services/appointment';
 import { getEndOfDay, getStartOfDay } from 'utils/date';
-
+import { LIST_ORGANIZATION_DOCTORS } from 'apollo-client/queries';
 const localizer = momentLocalizer(moment);
 
 const variants = {
@@ -35,6 +36,7 @@ const initialValue = {
   startTime: null,
   endDate: null,
   endTime: null,
+  doctorId: null,
 };
 
 let allViews = Object.keys(Views).map(k => Views[k]);
@@ -64,10 +66,16 @@ function AppointmentCalendar() {
       setVisible(false);
     },
   });
+  const { data: doctorsData } = useQuery(LIST_ORGANIZATION_DOCTORS);
 
-  const { appointments: data, patientsDoctors } = useAppointments({
-    dateFrom: formValue?.startDate,
-    dateTo: formValue?.endDate,
+  const doctors = useMemo(
+    () => R.propOr([], 'listOrganizationDoctors')(doctorsData),
+    [doctorsData]
+  );
+  const { appointments: data } = useAppointments({
+    dateFrom: formValue?.startDate || getStartOfDay(new Date()),
+    dateTo: formValue?.endDate || getEndOfDay(new Date()),
+    doctorId: formValue?.doctorId,
   });
   const {
     edit,
@@ -142,9 +150,7 @@ function AppointmentCalendar() {
     () => [...filteredAppointments, ...mappedEvents],
     [filteredAppointments, mappedEvents]
   );
-  console.log(formValue, 'formValue', allEvents);
   const handleSelect = ({ start, end }) => {
-    console.log(start, 's...........');
     if (!can('create_event', 'Calendar')) {
       return;
     }
@@ -188,11 +194,7 @@ function AppointmentCalendar() {
     <CalendarContext.Provider
       value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
     >
-      {/* <Filter
-        formValue={formValue}
-        onChange={setFormValue}
-        doctors={patientsDoctors}
-      /> */}
+      <Filter formValue={formValue} onChange={setFormValue} doctors={doctors} />
       <Div bg="white" p={30}>
         <div style={{ height: 753 }}>
           <CalendarStyled
