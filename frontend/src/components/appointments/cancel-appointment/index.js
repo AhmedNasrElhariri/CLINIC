@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Div, CRModal, H3 } from 'components';
 
 const CancelAppointment = ({ show, onOk, onCancel, t }) => {

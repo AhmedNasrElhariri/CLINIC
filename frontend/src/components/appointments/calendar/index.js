@@ -15,9 +15,10 @@ import EditAppointment from '../edit-appointment/index';
 import CancelAppointment from '../cancel-appointment/index';
 import { MIN_EVENT_DURATION } from 'utils/constants';
 import { useAppointments, useEvents, useAuth } from 'hooks';
-
+import { useTranslation } from 'react-i18next';
 import Filter from './filter';
 import { filterTodayAppointments } from 'services/appointment';
+import { getEndOfDay, getStartOfDay } from 'utils/date';
 
 const localizer = momentLocalizer(moment);
 
@@ -56,6 +57,7 @@ function AppointmentCalendar() {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState(initialValue);
   const { can } = useAuth();
+  const { t } = useTranslation();
   const { events, createEvent } = useEvents({
     onCreated: () => {
       setFormValue(initialValue);
@@ -63,8 +65,10 @@ function AppointmentCalendar() {
     },
   });
 
-  const { appointments: data, patientsDoctors } = useAppointments();
-
+  const { appointments: data, patientsDoctors } = useAppointments({
+    dateFrom: formValue?.startDate,
+    dateTo: formValue?.endDate,
+  });
   const {
     edit,
     cancel,
@@ -134,23 +138,24 @@ function AppointmentCalendar() {
     [filteredAppointments, onOpen, setAppointment]
   );
 
-  const allEvents = useMemo(() => [...filteredAppointments, ...mappedEvents], [
-    filteredAppointments,
-    mappedEvents,
-  ]);
-
+  const allEvents = useMemo(
+    () => [...filteredAppointments, ...mappedEvents],
+    [filteredAppointments, mappedEvents]
+  );
+  console.log(formValue, 'formValue', allEvents);
   const handleSelect = ({ start, end }) => {
+    console.log(start, 's...........');
     if (!can('create_event', 'Calendar')) {
       return;
     }
     setVisible(true);
-    setFormValue({
-      ...formValue,
+    setFormValue(prev => ({
+      ...prev,
       startDate: start,
       startTime: null,
       endDate: end,
       endTime: null,
-    });
+    }));
   };
 
   const onCreateEvent = () => {
@@ -170,28 +175,37 @@ function AppointmentCalendar() {
       end,
     });
   };
-
+  const handleNa = useCallback(val => {
+    const start = getStartOfDay(val);
+    const end = getEndOfDay(val);
+    setFormValue(prev => ({
+      ...prev,
+      startDate: start,
+      endDate: end,
+    }));
+  }, []);
   return (
     <CalendarContext.Provider
       value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
     >
-      <Filter
+      {/* <Filter
         formValue={formValue}
         onChange={setFormValue}
         doctors={patientsDoctors}
-      />
+      /> */}
       <Div bg="white" p={30}>
         <div style={{ height: 753 }}>
           <CalendarStyled
-            events={formValue.doctor ? allEvents : []}
+            events={allEvents || []}
             views={allViews}
             localizer={localizer}
             components={components}
-            step={15}
+            onNavigate={handleNa}
+            step={5}
             timeslots={1}
             onSelectSlot={handleSelect}
             longPressThreshold={2000}
-            defaultView={Views.MONTH}
+            defaultView={Views.DAY}
             showMultiDayTimes
             selectable
             popup
@@ -216,6 +230,7 @@ function AppointmentCalendar() {
         appointment={appointment}
         onOk={cancel}
         onClose={() => onClose('cancel')}
+        t={t}
       />
     </CalendarContext.Provider>
   );

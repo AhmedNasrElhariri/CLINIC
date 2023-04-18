@@ -71,7 +71,11 @@ export default memo(function SideContent({
         name: 'reports',
         icon: FileTextOutlined,
       },
-
+      {
+        path: '/calendar',
+        name: 'calendar',
+        icon: FileTextOutlined,
+      },
       {
         path: '/surgeries',
         name: 'surgeries',
