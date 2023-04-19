@@ -1,38 +1,66 @@
 import { prisma } from '@';
+import { APPOINTMENTS_STATUS } from '@/utils/constants';
+import moment from 'moment';
 
-import { listFlattenUsersTreeIds } from '@/services/permission.service';
-import { ACTIONS } from '@/utils/constants';
-
-const allAppointments = async (_, __, { user, organizationId }) => {
-  const ids = await listFlattenUsersTreeIds(
-    {
-      user,
-      organizationId,
-      action: ACTIONS.List_Appointment,
-    },
-    true
-  );
-
-  const appointments = await prisma.appointment.findMany({
-    where: {
-      OR: [
-        {
-          userId: {
-            in: ids,
+const allAppointments = async (
+  _,
+  {
+    type,
+    patient,
+    dateFrom,
+    dateTo,
+    status = APPOINTMENTS_STATUS.SCHEDULED,
+    doctorId,
+    specialtyId,
+    branchId,
+  },
+  { organizationId }
+) => {
+  const startDay = moment(dateFrom).startOf('day').toDate();
+  const endDay = moment(dateTo).endOf('day').toDate();
+  return prisma.appointment.findMany({
+    where: Object.assign(
+      {
+        status,
+        organizationId,
+        AND: [
+          ...(patient
+            ? [
+                {
+                  OR: [
+                    {
+                      patient: {
+                        name: {
+                          contains: patient,
+                          mode: 'insensitive',
+                        },
+                      },
+                    },
+                    {
+                      patient: {
+                        phoneNo: {
+                          contains: patient,
+                        },
+                      },
+                    },
+                  ],
+                },
+              ]
+            : []),
+          { branchId, specialtyId, doctorId },
+        ],
+      },
+      dateTo &&
+        dateFrom && {
+          date: {
+            gte: startDay,
+            lte: endDay,
           },
         },
-        {
-          branchId: {
-            in: ids,
-          },
-        },
-        {
-          specialtyId: {
-            in: ids,
-          },
-        },
-      ],
-    },
+      type && {
+        sessionId: type,
+      }
+    ),
     orderBy: [
       {
         date: 'asc',
@@ -40,9 +68,9 @@ const allAppointments = async (_, __, { user, organizationId }) => {
     ],
     include: {
       patient: true,
+      session: true,
     },
   });
-  return appointments;
 };
 
 export default allAppointments;

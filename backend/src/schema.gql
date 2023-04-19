@@ -211,7 +211,12 @@ type Query {
     tagName: String
   ): LoggingData!
   loggingTags: [LoggingTag!]
-  allAppointments: [Appointment!]
+  allAppointments(
+    status: AppointmentStatus
+    dateFrom: Date
+    dateTo: Date
+    doctorId: ID
+  ): [Appointment!]
   patientsReport(area: String, reference: String): PatientsCount!
   dateAppointments(dateFrom: Date, dateTo: Date): [Appointment!]
   todayAppointments(

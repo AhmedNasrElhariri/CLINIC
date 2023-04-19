@@ -171,23 +171,28 @@ export const LIST_TODAY_APPOINTMENTS = gql`
 `;
 
 export const LIST_ALL_APPOINTMENTS = gql`
-  {
-    allAppointments {
+  query (
+    $status: AppointmentStatus
+    $dateFrom: Date
+    $dateTo: Date
+    $doctorId: ID
+  ) {
+    allAppointments(
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      status: $status
+      doctorId: $doctorId
+    ) {
       id
       type
       date
       status
-      date
-      accounted
       duration
-      businessNotes
-      updatedAt
       patient {
-        id
         name
-        age
-        sex
-        phoneNo
+      }
+      session {
+        name
       }
     }
   }

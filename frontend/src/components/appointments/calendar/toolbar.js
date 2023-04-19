@@ -45,9 +45,9 @@ function Toolbar({ date, view, onNavigate, onView }) {
           Today
         </TodayButtonStyled>
         <CRButtonGroup activeKey={view} onSelect={onView}>
-          <CRButtonGroup.CRButton eventKey={Views.MONTH}>
+          {/* <CRButtonGroup.CRButton eventKey={Views.MONTH}>
             Month
-          </CRButtonGroup.CRButton>
+          </CRButtonGroup.CRButton> */}
           <CRButtonGroup.CRButton eventKey={Views.WEEK}>
             Week
           </CRButtonGroup.CRButton>

@@ -19,8 +19,19 @@ import { useAppointments, useEvents, useAuth } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import Filter from './filter';
 import { filterTodayAppointments } from 'services/appointment';
-import { getEndOfDay, getStartOfDay } from 'utils/date';
-import { LIST_ORGANIZATION_DOCTORS } from 'apollo-client/queries';
+import {
+  endOfMonth,
+  startOfWeek,
+  getEndOfDay,
+  getStartOfDay,
+  startOfMonth,
+  endOfWeek,
+} from 'utils/date';
+import {
+  LIST_ALL_APPOINTMENTS,
+  LIST_ORGANIZATION_DOCTORS,
+} from 'apollo-client/queries';
+import { APPT_STATUS } from 'utils/constants';
 const localizer = momentLocalizer(moment);
 
 const variants = {
@@ -32,11 +43,12 @@ const variants = {
 
 const initialValue = {
   name: '',
-  startDate: null,
+  startDate: new Date(),
   startTime: null,
-  endDate: null,
+  endDate: new Date(),
   endTime: null,
   doctorId: null,
+  view: 'day',
 };
 
 let allViews = Object.keys(Views).map(k => Views[k]);
@@ -66,17 +78,34 @@ function AppointmentCalendar() {
       setVisible(false);
     },
   });
+  const period = useMemo(() => {
+    const { view, startDate, endDate } = formValue;
+    if (view === 'day') {
+      return [getStartOfDay(startDate), getEndOfDay(endDate)];
+    } else if (view === 'week') {
+      return [startOfWeek(startDate), endOfWeek(endDate)];
+    } else {
+      return [startOfMonth(startDate), endOfMonth(endDate)];
+    }
+  }, [formValue]);
   const { data: doctorsData } = useQuery(LIST_ORGANIZATION_DOCTORS);
 
   const doctors = useMemo(
     () => R.propOr([], 'listOrganizationDoctors')(doctorsData),
     [doctorsData]
   );
-  const { appointments: data } = useAppointments({
-    dateFrom: formValue?.startDate || getStartOfDay(new Date()),
-    dateTo: formValue?.endDate || getEndOfDay(new Date()),
-    doctorId: formValue?.doctorId,
+
+  const { data } = useQuery(LIST_ALL_APPOINTMENTS, {
+    variables: Object.assign(
+      {
+        status: APPT_STATUS.SCHEDULED,
+      },
+      period && { dateFrom: period[0] },
+      period && { dateTo: period[1] },
+      formValue.doctorId && { doctorId: formValue.doctorId }
+    ),
   });
+  const DATA = R.propOr([], 'allAppointments')(data);
   const {
     edit,
     cancel,
@@ -85,17 +114,16 @@ function AppointmentCalendar() {
     visible: adjustVisible,
     setVisible: setAdjustVisible,
   } = useAdjustAppointment();
-
   const appointments = useMemo(
     () =>
-      data.map(p => ({
+      (DATA || []).map(p => ({
         ...p,
         name: p.type,
         start: new Date(p.date),
-        end: moment(p.date).add(15, 'minutes').toDate(),
+        end: moment(p.date).add(p.duration, 'minutes').toDate(),
         variant: variants[p.type],
       })),
-    [data]
+    [DATA]
   );
 
   const filteredAppointments = useMemo(
@@ -181,15 +209,26 @@ function AppointmentCalendar() {
       end,
     });
   };
-  const handleNa = useCallback(val => {
-    const start = getStartOfDay(val);
-    const end = getEndOfDay(val);
-    setFormValue(prev => ({
-      ...prev,
-      startDate: start,
-      endDate: end,
-    }));
-  }, []);
+  const handleNa = useCallback(
+    val => {
+      setFormValue(prev => ({
+        ...prev,
+        startDate: val,
+        endDate: val,
+      }));
+    },
+    [setFormValue]
+  );
+  const handleView = useCallback(
+    val => {
+      setFormValue(prev => ({
+        ...prev,
+        view: val,
+      }));
+    },
+    [setFormValue]
+  );
+
   return (
     <CalendarContext.Provider
       value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
@@ -203,6 +242,7 @@ function AppointmentCalendar() {
             localizer={localizer}
             components={components}
             onNavigate={handleNa}
+            onView={handleView}
             step={5}
             timeslots={1}
             onSelectSlot={handleSelect}

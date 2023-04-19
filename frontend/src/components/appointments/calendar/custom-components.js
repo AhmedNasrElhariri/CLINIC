@@ -25,6 +25,7 @@ import { Can } from 'components/user/can';
 
 const EventDetails = ({
   patient,
+  session,
   name,
   start,
   end,
@@ -38,7 +39,9 @@ const EventDetails = ({
   return (
     <Div>
       <Div display="flex" justifyContent="space-between" alignItems="center">
-        <PatientName>{R.prop('name')(patient)}</PatientName>
+        <PatientName>
+          {R.prop('name')(patient)} / {R.prop('name')(session)}
+        </PatientName>
         <Div>
           {canAjdust && (
             <>
@@ -122,9 +125,9 @@ export default {
     },
     event: ({
       event: {
-        start,
-        patient: { name },
         session: { name: sessionName },
+        patient: { name: patientName },
+        start,
       },
     }) => (
       <DayEventStyled>
@@ -133,7 +136,9 @@ export default {
             <IconStyled icon="calendar" mr={1} />
             <Time>{formatDate(start, 'HH:mm A')}</Time>
             <Div ml={2}>
-              {name} / {sessionName}
+              <Name>
+                {sessionName} / {patientName}
+              </Name>
             </Div>
           </Div>
         </Div>
