@@ -5,7 +5,7 @@ import { Div, CRButton } from 'components';
 import ListHospitals from './list-hospitals';
 import { Schema } from 'rsuite';
 import NewHospital from './new-hospital';
-import { useForm, useModal, useHospitals, useAppointments } from 'hooks';
+import { useForm, useModal, useHospitals, useBranchTree } from 'hooks';
 import Filter from '../../filters';
 import { ACTIONS } from 'utils/constants';
 import { useTranslation } from 'react-i18next';
@@ -26,9 +26,8 @@ const initValue = {
 const Hospitals = () => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
-  const { filterBranches } = useAppointments({
-    action: ACTIONS.Create_Hospital,
-  });
+
+  const { filterBranches } = useBranchTree({ action: ACTIONS.Create_Hospital });
   const {
     formValue,
     setFormValue,

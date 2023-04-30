@@ -162,14 +162,6 @@ function useAppointments({
   //   [todayAppointmentsDATA]
   // );
 
-  const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
-    variables: { action: action },
-  });
-  const filterBranches = useMemo(
-    () => R.propOr([], 'listBranchesTree')(branchesTreeData),
-    [branchesTreeData]
-  );
-
   const [archive, { loading: archiveLoading }] = useMutation(
     ARCHIVE_APPOINTMENT,
     {
@@ -318,7 +310,6 @@ function useAppointments({
     () => ({
       appointments,
       // todayAppointments,
-      filterBranches,
       appointmentsCount,
       deleteAppointmentPhoto,
       confirmedAppointment,
@@ -349,7 +340,7 @@ function useAppointments({
       deleteAppointmentPhoto,
       pages,
       doctors,
-      filterBranches,
+      // filterBranches,
       archive,
       complete,
       archiveLoading,

@@ -26,7 +26,9 @@ function useSessionDefinition({
   dateFrom,
   dateTo,
 } = {}) {
-  const { data } = useQuery(LIST_SESSIONS_DEFINITION);
+  const { data } = useQuery(LIST_SESSIONS_DEFINITION, {
+    fetchPolicy: 'cache-first',
+  });
   const sessionsDefinition = useMemo(
     () => R.propOr([], 'mySessionsDefinition')(data),
     [data]
@@ -37,6 +39,7 @@ function useSessionDefinition({
       dateFrom && { dateFrom },
       dateTo && { dateTo }
     ),
+    fetchPolicy: 'cache-first',
   });
   const sessionStatistics = useMemo(
     () => R.propOr([], 'mySessionStatistic')(sessionData),

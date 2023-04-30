@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import * as R from 'ramda';
 import { CRSelectInput, CRButton } from 'components';
-import { usePatients, useCoursesDefinition, useCourses, useModal } from 'hooks';
+import {
+  usePatients,
+  useCoursesDefinition,
+  useCourses,
+  useModal,
+  useUsers,
+} from 'hooks';
 import useFrom from 'hooks/form';
 import ListCourses from './list-courses';
 import CourseData from './course-data';
@@ -58,6 +64,7 @@ const Courses = () => {
     patientSearchValue: patientSearchValue,
   });
   const { coursesDefinitions } = useCoursesDefinition({});
+  const { users } = useUsers({});
   const {
     addCourse,
     courses,
@@ -67,7 +74,6 @@ const Courses = () => {
     editCourseUnits,
     deleteCourse,
     editCoursePaymentHistory,
-    users,
     loading,
     finishCourse,
     editCourseUnitHistory,

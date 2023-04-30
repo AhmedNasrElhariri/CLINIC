@@ -16,7 +16,7 @@ import Toolbar from '../toolbar';
 import ListExpenseData from '../list-data/expense.js';
 import ListRevenueData from '../list-data/revenue.js';
 import Profit from '../profit';
-import { useAccounting, useAppointments, useGeneralHook } from 'hooks';
+import { useAccounting, useBranchTree, useGeneralHook } from 'hooks';
 import {
   CREATE_EXPENSE,
   CREATE_REVENUE,
@@ -65,9 +65,7 @@ const AccountingContainer = () => {
   const activeTab = '0';
   const [user] = useGlobalState('user');
   const { t } = useTranslation();
-  const { filterBranches } = useAppointments({
-    action: ACTIONS.View_Accounting,
-  });
+  const { filterBranches } = useBranchTree({ action: ACTIONS.View_Accounting });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [refetchRe, setRefetchRe] = useState(false);
   const [refetchEx, setRefetchEx] = useState(false);

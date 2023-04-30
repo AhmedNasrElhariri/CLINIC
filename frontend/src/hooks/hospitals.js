@@ -20,7 +20,7 @@ const updateCache = myHospitals => {
 };
 
 function useHospitals({ onCreate, onEdit, onDelete } = {}) {
-  const { data } = useQuery(LIST_HOSPITALS);
+  const { data } = useQuery(LIST_HOSPITALS, { fetchPolicy: 'cache-first' });
   const hospitals = useMemo(() => R.propOr([], 'myHospitals')(data), [data]);
 
   const [addHospital] = useMutation(ADD_HOSPITAL, {

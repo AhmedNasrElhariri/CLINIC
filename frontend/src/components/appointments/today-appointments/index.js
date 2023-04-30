@@ -9,12 +9,7 @@ import ListAppointments from './list-appointments';
 import ArchiveAppointment from '../archive-appointment';
 import { getName } from 'services/accounting';
 import CompleteAppointment from '../complete-appointment';
-import {
-  useTodayAppointments,
-  useConfigurations,
-  useModal,
-  useCourses,
-} from 'hooks';
+import { useTodayAppointments, useModal, useUsers } from 'hooks';
 import { BranchSpecialtyUserFilter } from 'components';
 import BusinessNotes from './business-notes';
 import NewAppointment from 'components/appointments/new-appointment';
@@ -23,7 +18,8 @@ import CancelAppointment from '../cancel-appointment';
 import { useTranslation } from 'react-i18next';
 import TransferAppointments from '../transfer-apps';
 import NameFilter from './name-filter';
-
+import { useQuery } from '@apollo/client';
+import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 const initialValue = {
   businessNotes: '',
 };
@@ -69,8 +65,14 @@ function TodayAppointments() {
   const { visible, close, open } = useModal({});
   const [appointment, setAppointment] = useState({});
   const { t } = useTranslation();
-  const { organization } = useConfigurations({});
-  const { users } = useCourses({});
+  const { data: organizationData } = useQuery(GET_INVOICE_COUNTER, {
+    fetchPolicy: 'network-only',
+  });
+  const organization = useMemo(
+    () => R.propOr({}, 'myInvoiceCounter')(organizationData),
+    [organizationData]
+  );
+  const { users } = useUsers({});
   const [company, setCompany] = useState(companyInital);
   const [onCreateAppointment] = useGlobalState('onCreateAppointment');
   const doctors = useMemo(() => {

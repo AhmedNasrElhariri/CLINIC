@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Filter from './filter';
 import { Nav, Schema } from 'rsuite';
 import * as R from 'ramda';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-import { useAppointments, useModal, useConfigurations } from 'hooks';
+import { useAppointments, useModal, useBranchTree } from 'hooks';
 import { getName } from 'services/accounting';
 import BusinessNotes from '../today-appointments/business-notes';
 import ArchiveAppointment from '../archive-appointment';
@@ -15,7 +15,8 @@ import EditAppointment from 'components/appointments/edit-appointment';
 import CancelAppointment from 'components/appointments/cancel-appointment';
 import { ACTIONS, APPT_STATUS } from 'utils/constants';
 import { BranchSpecialtyUserFilter } from 'components';
-
+import { useQuery } from '@apollo/client';
+import { GET_INVOICE_COUNTER } from 'apollo-client/queries';
 const initialBranchValue = {
   branch: null,
   specialty: null,
@@ -63,7 +64,13 @@ function Appointments() {
   const [appointment, setAppointment] = useState(null);
   const [popUp, setPopUp] = useState('');
   const [followUp, setFollowUp] = useState(false);
-  const { organization } = useConfigurations({});
+  const { data: organizationData } = useQuery(GET_INVOICE_COUNTER, {
+    fetchPolicy: 'network-only',
+  });
+  const organization = useMemo(
+    () => R.propOr({}, 'myInvoiceCounter')(organizationData),
+    [organizationData]
+  );
   const followUpFeature = R.propOr(false, 'followUp')(organization);
   const { t } = useTranslation();
   const { visible, close, open } = useModal({});
@@ -71,7 +78,7 @@ function Appointments() {
 
   const {
     appointments,
-    filterBranches,
+    // filterBranches,
     archive,
     complete,
     updateNotes,
@@ -98,7 +105,9 @@ function Appointments() {
       close();
     },
   });
-
+  const { filterBranches } = useBranchTree({
+    action: ACTIONS.List_Appointment,
+  });
   const onClickDone = useCallback(
     appointment => {
       setAppointment(appointment);
@@ -302,10 +311,7 @@ function Appointments() {
             branches={filterBranches}
             cleanable
           />
-          <Filter
-            formValue={formValue}
-            onChange={setFormValue}
-          />
+          <Filter formValue={formValue} onChange={setFormValue} />
           <ListAppointments
             appointments={appointments}
             onArchive={onClickDone}
@@ -331,10 +337,7 @@ function Appointments() {
             onChange={setFilter}
             branches={filterBranches}
           />
-          <Filter
-            formValue={formValue}
-            onChange={setFormValue}
-          />
+          <Filter formValue={formValue} onChange={setFormValue} />
           <ListAppointments
             appointments={appointments}
             onArchive={onClickDone}
@@ -358,10 +361,7 @@ function Appointments() {
             onChange={setFilter}
             branches={filterBranches}
           />
-          <Filter
-            formValue={formValue}
-            onChange={setFormValue}
-          />
+          <Filter formValue={formValue} onChange={setFormValue} />
           <ListAppointments
             appointments={appointments}
             onArchive={onClickDone}

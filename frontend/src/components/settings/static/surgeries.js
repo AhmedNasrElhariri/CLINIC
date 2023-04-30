@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import * as R from 'ramda';
 import Filter from '../../filters';
 import { Div, CRButton } from 'components';
@@ -6,7 +6,7 @@ import ListSurgeries from './list-surgeries';
 import NewSurgery from './new-surgery';
 import { Can } from 'components/user/can';
 import { ACTIONS } from 'utils/constants';
-import { useForm, useModal, useSurgeries, useAppointments } from 'hooks';
+import { useForm, useModal, useSurgeries, useBranchTree } from 'hooks';
 import { Validate } from 'services/form';
 import { Schema } from 'rsuite';
 import { useTranslation } from 'react-i18next';
@@ -19,9 +19,8 @@ const model = Schema.Model({
 function Surgeries() {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
-  const { filterBranches } = useAppointments({
-    action: ACTIONS.Create_Surgery,
-  });
+
+  const { filterBranches } = useBranchTree({ action: ACTIONS.Create_Surgery });
   const {
     formValue,
     setFormValue,

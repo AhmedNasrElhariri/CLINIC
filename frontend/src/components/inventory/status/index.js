@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react';
 import { MainContainer, CRCard } from 'components';
 import AddItem from '../add-item';
 import ListInventory from '../list-inventory';
-import { useInventory, useAppointments } from 'hooks';
+import { useInventory, useBranchTree } from 'hooks';
 import Filter from '../../filters';
 import { ACTIONS } from 'utils/constants';
 import { Div, CRButton } from 'components';
@@ -19,9 +19,8 @@ const InventoryStatus = () => {
     });
     return newInventory;
   }, [inventoryWithAmount]);
-  const { filterBranches } = useAppointments({
-    action: ACTIONS.View_Inventory,
-  });
+  const { filterBranches } = useBranchTree({ action: ACTIONS.View_Inventory });
+
   return (
     <>
       <MainContainer

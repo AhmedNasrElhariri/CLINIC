@@ -14,7 +14,7 @@ import Profit from '../accounting/profit';
 import { Can } from 'components/user/can';
 import {
   useInsuranceAccounting,
-  useAppointments,
+  useBranchTree,
   useModal,
   useDoctor,
   useBankDefinition,
@@ -77,9 +77,9 @@ const InsuranceDebitContainer = () => {
   });
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
-  const { filterBranches } = useAppointments({
-    action: ACTIONS.ViewInsurance_Accounting,
-  });
+
+  const { filterBranches } = useBranchTree({ action: ACTIONS.ViewInsurance_Accounting });
+
   const page = currentPage?.activePage;
   const {
     insuranceTransactions,

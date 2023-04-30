@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCourses, useLogging } from 'hooks';
+import { useCourses, useLogging, useUsers } from 'hooks';
 import Filter from './filter';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
@@ -19,7 +19,7 @@ const Logging = () => {
   const [user] = useGlobalState('user');
   const [currentPage, setCurrentPage] = useState({ page: 1 });
   const page = currentPage?.activePage;
-  const { users } = useCourses({});
+  const { users } = useUsers({});
   const { loggings, pages, loggingCount } = useLogging({
     dateFrom: R.pathOr(null, ['date', 0])(formValue),
     dateTo: R.pathOr(null, ['date', 1])(formValue),

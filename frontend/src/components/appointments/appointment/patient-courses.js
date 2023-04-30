@@ -5,7 +5,7 @@ import useFrom from 'hooks/form';
 import { Can } from 'components/user/can';
 import NewCourse from 'components/appointments/appointment/courses';
 import CourseData from 'components/appointments/appointment/courses/course';
-import { useModal } from 'hooks';
+import { useModal, useUsers } from 'hooks';
 import { CRTabs } from 'components';
 import { useTranslation } from 'react-i18next';
 import { Nav } from 'rsuite';
@@ -44,6 +44,7 @@ const Course = ({ patientId }) => {
   const { formValue, setFormValue, type, setType } = useFrom({
     initValue,
   });
+  const { users } = useUsers({});
   const {
     addCourse,
     patientCourses,
@@ -52,7 +53,6 @@ const Course = ({ patientId }) => {
     editCourseUnits,
     deleteCourse,
     editCoursePaymentHistory,
-    users,
     loading,
     finishCourse,
     editCourseUnitHistory,

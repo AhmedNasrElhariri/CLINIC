@@ -7,7 +7,6 @@ import {
   EDIT_SALES,
   LIST_SALESES,
   DELETE_SALES,
-  LIST_USERS,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -65,12 +64,6 @@ function useSales({
     [salesData]
   );
 
-  const { data: OrgUsers } = useQuery(LIST_USERS);
-  const organizationusers = useMemo(
-    () => R.propOr([], 'listUsers')(OrgUsers),
-    [OrgUsers]
-  );
-
   const [addSales, { loading }] = useMutation(ADD_SALES, {
     onCompleted() {
       Alert.success('the Item has been Added Successfully');
@@ -117,7 +110,6 @@ function useSales({
       totalSalesPrice,
       totalSalesCost,
       salesCounts,
-      organizationusers,
       addSales,
       editSales,
       deleteSales,
@@ -131,7 +123,6 @@ function useSales({
       addSales,
       editSales,
       deleteSales,
-      organizationusers,
       totalSalesPrice,
       totalSalesCost,
       salesCounts,

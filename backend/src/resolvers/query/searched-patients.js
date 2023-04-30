@@ -3,7 +3,7 @@ import { prisma } from '@';
 const patients = async (
   _,
   { name, organizationId: OrganizationId },
-  { user, organizationId }
+  { organizationId }
 ) => {
   const newOrgId = OrganizationId ? OrganizationId : organizationId;
   const patients = await prisma.patient.findMany({
@@ -37,7 +37,7 @@ const patients = async (
     skip: 0,
     take: 20,
   });
-  return patients
+  return patients;
 };
 
 export default patients;

@@ -24,11 +24,9 @@ import {
   ARCHIVE_REFERED_DOCTORAPPOINTMENT,
   GET_PATIENT,
 } from 'apollo-client/queries';
-
+import { useBranchTree } from 'hooks';
 import client from 'apollo-client/client';
 import { Alert } from 'rsuite';
-
-
 
 const updateTodayAppointmentsCache = ({ appointments, appointmentsCount }) => {
   client.writeQuery({
@@ -93,14 +91,7 @@ function useAppointments({
     [todayAppointmentsDATA]
   );
 
-  const { data: branchesTreeData } = useQuery(LIST_BRANCHES_TREE, {
-    variables: { action: action },
-  });
-  const filterBranches = useMemo(
-    () => R.propOr([], 'listBranchesTree')(branchesTreeData),
-    [branchesTreeData]
-  );
-
+  const { filterBranches } = useBranchTree({ action: action });
   const [archive, { loading: archiveLoading }] = useMutation(
     ARCHIVE_APPOINTMENT,
     {

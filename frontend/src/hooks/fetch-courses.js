@@ -1,15 +1,15 @@
-
 import { Alert } from 'rsuite';
-
+import { useMutation, useQuery } from '@apollo/client';
+import { useMemo } from 'react';
 import {
   ADD_COURSE,
   EDIT_COURSE,
   LIST_COURSES,
   LIST_PATIENT_COURSES,
-  LIST_USERS,
   EDIT_COURSE_DOCTOR,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
+import * as R from 'ramda';
 
 const updateCache = myCourses => {
   client.writeQuery({
@@ -32,11 +32,10 @@ function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
     { variables: { patientId } },
     { fetchPolicy: 'network-only' }
   );
-  const patientCourses = useMemo(() => R.propOr([], 'myCourses')(patientData), [
-    patientData,
-  ]);
-  const { data: userData } = useQuery(LIST_USERS);
-  const users = useMemo(() => R.propOr([], 'listUsers')(userData), [userData]);
+  const patientCourses = useMemo(
+    () => R.propOr([], 'myCourses')(patientData),
+    [patientData]
+  );
 
   const [addCourse] = useMutation(ADD_COURSE, {
     onCompleted() {
@@ -76,10 +75,9 @@ function useCourses({ onCreate, onEdit, onEditDoctor, patientId } = {}) {
       addCourse,
       editCourse,
       editCourseDoctor,
-      users,
       updateCache,
     }),
-    [courses, patientCourses, addCourse, editCourse, editCourseDoctor, users]
+    [courses, patientCourses, addCourse, editCourse, editCourseDoctor]
   );
 }
 

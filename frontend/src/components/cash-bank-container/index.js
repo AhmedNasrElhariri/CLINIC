@@ -15,7 +15,7 @@ import ListData from './list-data';
 // import Profit from '../profit';
 import {
   useAccounting,
-  useAppointments,
+  useBranchTree,
   useBankDefinition,
   useGeneralHook,
 } from 'hooks';
@@ -51,9 +51,8 @@ const AccountingContainer = () => {
   const activeTab = '0';
   const [user] = useGlobalState('user');
   const { t } = useTranslation();
-  const { filterBranches } = useAppointments({
-    action: ACTIONS.View_Accounting,
-  });
+
+  const { filterBranches } = useBranchTree({ action: ACTIONS.View_Accounting });
   const [view, setView] = useState(ACCOUNTING_VIEWS.DAY);
   const [period, setPeriod] = useState([]);
   const { timeFrame } = useGeneralHook({ view, period });

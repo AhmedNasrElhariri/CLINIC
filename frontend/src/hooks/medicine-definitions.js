@@ -20,7 +20,7 @@ const updateCache = myMedicinesDefinition => {
 };
 
 function useMedicineDefinitions({ onCreate, onEdit, onDelete } = {}) {
-  const { data } = useQuery(LIST_MEDICINES_DEFINITION);
+  const { data } = useQuery(LIST_MEDICINES_DEFINITION, { fetchPolicy: 'cache-first' });
   const medicineDefinitions = useMemo(
     () => R.propOr([], 'myMedicinesDefinition')(data),
     [data]

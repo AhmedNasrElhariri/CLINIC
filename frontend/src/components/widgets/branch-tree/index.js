@@ -6,6 +6,9 @@ import { LIST_BRANCHES_TREE } from 'apollo-client/queries';
 import useUserProfile from 'components/functional/root/fetch-user';
 import { useTranslation } from 'react-i18next';
 import * as R from 'ramda';
+import { useBranchTree } from 'hooks';
+import useGlobalState from 'state';
+
 const options = [
   { name: 'Organization', value: 'organization' },
   { name: 'My Self', value: 'mySelf' },
@@ -22,14 +25,9 @@ const CustomBranchTress = ({
   t,
 }) => {
   const [checkFormValue, setCheckFormValue] = useState(intialCheckValue);
-  const { data } = useQuery(LIST_BRANCHES_TREE, {
-    variables: { action: action },
-  });
-  const branches = useMemo(
-    () => R.propOr([], 'listBranchesTree')(data),
-    [data, action]
-  );
-  const { user } = useUserProfile();
+  const { filterBranches: branches } = useBranchTree({ action });
+  const [user] = useGlobalState('user');
+
   const specialties = useMemo(
     () =>
       R.pipe(

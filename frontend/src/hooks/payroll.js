@@ -8,7 +8,6 @@ import {
   ADD_PAYROLL_TRANSACTION,
   LIST_USER_TRANSACTIONS,
   ADD_PAY_ROLL,
-  LIST_USERS,
   DELETE_PAYROLL_USER,
   PAYSLIPS,
   TRANSCTION_COURSES_TIMEFRAME,
@@ -47,11 +46,7 @@ function usePayroll({
       )(data),
     [data]
   );
-  const { data: OrgUsers } = useQuery(LIST_USERS);
-  const organizationusers = useMemo(
-    () => R.propOr([], 'listUsers')(OrgUsers),
-    [OrgUsers]
-  );
+
   const { data: payslipsData } = useQuery(PAYSLIPS);
   const payslips = useMemo(
     () => R.propOr([], 'payslips')(payslipsData),
@@ -173,7 +168,6 @@ function usePayroll({
       payrollUsers,
       payslips,
       addTransaction,
-      organizationusers,
       userTransactions,
       userCoursesPayment,
       lastTransactionDate,
@@ -192,7 +186,6 @@ function usePayroll({
       payslips,
       addTransaction,
       userTransactions,
-      organizationusers,
       userCoursesPayment,
       lastTransactionDate,
       lastTransactionRevenueDate,

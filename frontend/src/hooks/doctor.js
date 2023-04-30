@@ -4,7 +4,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from 'rsuite';
 
 import {
-  LIST_USERS,
   ADD_SESSION_TO_DOCTOR,
   LIST_DOCTOR_SESSION_DEFINATION,
   DELETE_SESSION_TO_DOCTOR,
@@ -17,6 +16,7 @@ import {
   DELETE_COURSE_PART_TO_DOCTOR,
 } from 'apollo-client/queries';
 import { POSITIONS } from 'utils/constants';
+import useUsers from './users';
 
 function useDoctor({
   onCreateSessionToDoctor,
@@ -30,11 +30,7 @@ function useDoctor({
   type,
   onCreateCoursePartToDoctor,
 } = {}) {
-  const { data: usersData } = useQuery(LIST_USERS);
-  const users = useMemo(
-    () => R.propOr([], 'listUsers')(usersData),
-    [usersData]
-  );
+  const { users } = useUsers({});
   const doctors = useMemo(
     () => users.filter(u => u.position === POSITIONS.DOCTOR),
     [users]

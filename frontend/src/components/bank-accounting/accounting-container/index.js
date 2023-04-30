@@ -19,7 +19,7 @@ import BankModel from '../bank-model';
 import ExpenseFilter from '../../accounting/filter/expense-filter';
 import {
   useBankAccounting,
-  useAppointments,
+  useBranchTree,
   useModal,
   useForm,
   useBankDefinition,
@@ -98,9 +98,9 @@ const BankAccountingContainer = () => {
   });
   const page = currentPage?.activePage;
   const expensePage = expenseCurrentPage?.activePage;
-  const { filterBranches } = useAppointments({
-    action: ACTIONS.ViewBank_Accounting,
-  });
+ 
+  const { filterBranches } = useBranchTree({ action: ACTIONS.ViewBank_Accounting });
+
   const {
     revenues,
     expenses,
