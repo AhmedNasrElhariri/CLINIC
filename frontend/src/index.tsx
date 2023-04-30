@@ -4,7 +4,7 @@ import App from './app';
 import * as moment from 'moment';
 import 'moment-timezone';
 
-moment.tz.setDefault('Africa/Cairo');
+// moment.tz.setDefault('Africa/Cairo');
 moment.updateLocale('en', {
   week: {
     dow: 6,
