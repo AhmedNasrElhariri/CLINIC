@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { utc } from 'moment';
 import { fetchWithCount } from '@/services/query';
 
 const todayAppointments = async (
@@ -12,7 +12,7 @@ const todayAppointments = async (
   let from = moment();
   let to = moment();
 
-  if (HOUR === 0) {
+  if (HOUR >= 21) {
     from = moment().utc().subtract(1, 'd').startOf('day').toDate();
     to = moment().utc().subtract(1, 'd').endOf('day').toDate();
   } else {
