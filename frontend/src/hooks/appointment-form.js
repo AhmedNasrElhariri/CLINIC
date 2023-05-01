@@ -55,12 +55,19 @@ function useAppointmentForm({ date, type, appointments }) {
   );
   const sessionNotHaveEnoughTime = useCallback(
     ({ duration }, date) => {
-      return selectedDayAppointments.some(({ date: appDate }) => {
-        const startDate = moment(date);
-        const endDate = moment(startDate).add(duration, 'minutes');
-        const newDate = moment(appDate);
-        return newDate.isBetween(startDate, endDate, 'minutes', '[)');
-      });
+      return selectedDayAppointments.some(
+        ({ date: appDate, duration: DURATION }) => {
+          const startDate = moment(date);
+          const endDate = moment(startDate).add(duration, 'minutes');
+          const startAppDate = moment(appDate);
+          const endAppDate = moment(startAppDate).add(DURATION, 'minutes');
+          const newDate = moment(appDate);
+          return (
+            newDate.isBetween(startDate, endDate, 'minutes', '[)') ||
+            moment(date).isBetween(startAppDate, endAppDate, 'minutes', '[)')
+          );
+        }
+      );
     },
     [selectedDayAppointments]
   );
