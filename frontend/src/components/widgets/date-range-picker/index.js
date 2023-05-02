@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { FormGroup, FormControl, DateRangePicker } from 'rsuite';
 import Label from '../label';
+import moment from 'moment';
 
 const smallStyle = css`
   font-size: 18px;
@@ -55,7 +56,10 @@ const CustomDatePicker = ({
       {...props}
       value={value}
       format={format}
-      onChange={onChange}
+      onChange={values => {
+        const dates = values.map(val => moment(val).add(10, 'h').toDate());
+        onChange(dates);
+      }}
       ranges={[]}
     ></DateRangePickerStyled>
   );
