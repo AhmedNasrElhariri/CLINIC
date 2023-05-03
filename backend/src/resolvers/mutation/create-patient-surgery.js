@@ -1,6 +1,5 @@
 import { prisma } from '@';
 import { APPOINTMENTS_TYPES, APPOINTMENTS_STATUS } from '@/utils/constants';
-import { surgery } from '../patient-surgery';
 
 const createPatientSurgery = async (
   _,

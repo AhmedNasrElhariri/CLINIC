@@ -62,11 +62,11 @@ function usePatients({
   const patientsdata = patientData?.patients;
   const patients = useMemo(
     () => R.propOr([], 'patients')(patientsdata),
-    [patientData]
+    [patientsdata]
   );
   const patientsCount = useMemo(
     () => R.propOr(0, 'patientsCount')(patientsdata),
-    [patientData]
+    [patientsdata]
   );
 
   const pages = Math.ceil(patientsCount / 20);
@@ -107,7 +107,7 @@ function usePatients({
   const patientsSummarydata = patientSummaryData?.patients;
   const patientsSummary = useMemo(
     () => R.propOr([], 'patients')(patientsSummarydata),
-    [patientSummaryData]
+    [patientsSummarydata]
   );
 
   const { data: searchedPatientsData } = useQuery(LIST_SEARCHED_PATIENTS, {

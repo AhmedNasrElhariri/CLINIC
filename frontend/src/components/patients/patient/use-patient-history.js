@@ -8,10 +8,7 @@ import {
 
 import useGlobalState from 'state';
 import { useQuery } from '@apollo/client';
-import {
-  GET_APPOINTMENT_HISTORY,
-  GET_USER_PATIENT_FIELD,
-} from 'apollo-client/queries';
+import { GET_APPOINTMENT_HISTORY } from 'apollo-client/queries';
 import { NUMBER_FIELD_TYPE, TEXT_FIELD_TYPE } from 'utils/constants';
 
 const usePatientHistory = ({ patientId, appointment = {}, type }) => {
@@ -21,6 +18,7 @@ const usePatientHistory = ({ patientId, appointment = {}, type }) => {
       patientId,
       type,
     },
+    fetchPolicy: 'cache-and-network',
   });
   const View = views[0]['Examination'];
   const groups = useMemo(() => R.propOr([], 'fieldGroups')(View), [View]);
