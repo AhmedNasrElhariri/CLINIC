@@ -1,4 +1,3 @@
-import { prisma } from '@';
 import { shortFun } from './general';
 export const createBankRevenueLogging = async (r, __, tag) => {
   const coment = `create bank revenue (${r.name}) to ${r.amount}`;

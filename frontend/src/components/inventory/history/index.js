@@ -2,7 +2,6 @@ import React, { useState, useMemo, useRef } from "react";
 import { CRTable, CRSelectInput, CRButton, Div } from "components";
 import { formatFullDay } from "utils/date";
 import { Form, Table } from "rsuite";
-import Print from "../print";
 import { useInventory } from "hooks";
 import { useTranslation } from "react-i18next";
 import ReactToPrint from "react-to-print";

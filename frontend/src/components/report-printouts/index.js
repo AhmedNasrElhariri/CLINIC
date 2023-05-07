@@ -15,6 +15,7 @@ import {
   useConfigurations,
   usePatientView,
   usePatientSurgeries,
+  useTodayAppointments,
 } from 'hooks';
 import Editor from 'components/settings/static/editor';
 import { formatDate } from 'utils/date';
@@ -49,7 +50,7 @@ function ReportPrintout() {
   const { searchedPatients } = usePatients({
     patientSearchValue: patientSearchValue,
   });
-  const { todayAppointments } = useAppointments({
+  const { todayAppointments } = useTodayAppointments({
     action: ACTIONS.List_Appointment,
   });
   const { patientSurgeries } = usePatientSurgeries({});

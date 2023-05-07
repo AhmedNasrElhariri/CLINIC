@@ -3,7 +3,7 @@ import { prisma } from '@';
 const patients = async (
   _,
   { offset, limit, name, phoneNo },
-  { organizationId, user }
+  { organizationId }
 ) => {
   const patientsCount = await prisma.patient.count({
     where: Object.assign({

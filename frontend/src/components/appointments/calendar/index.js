@@ -15,7 +15,7 @@ import { useAdjustAppointment } from '../adjust-appointment/index';
 import EditAppointment from '../edit-appointment/index';
 import CancelAppointment from '../cancel-appointment/index';
 import { MIN_EVENT_DURATION } from 'utils/constants';
-import { useAppointments, useEvents, useAuth } from 'hooks';
+import { useEvents, useAuth } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import Filter from './filter';
 import { filterTodayAppointments } from 'services/appointment';

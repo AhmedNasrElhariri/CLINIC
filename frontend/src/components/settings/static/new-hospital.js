@@ -25,7 +25,7 @@ function NewHospital({
         : type === 'edit'
         ? t('editHospital')
         : 'Delete Hospital',
-    [type]
+    [type, t]
   );
   return (
     <CRModal

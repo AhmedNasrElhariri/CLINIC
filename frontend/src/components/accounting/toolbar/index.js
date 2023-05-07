@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { CRButtonGroup, Div, CRDateRangePicker } from 'components';
 import { ACCOUNTING_VIEWS } from 'utils/constants';
 import { Form } from 'rsuite';

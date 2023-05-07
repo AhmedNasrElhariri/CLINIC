@@ -46,6 +46,7 @@
           <th>Patient</th>
           <th>Amount</th>
           <th>Company</th>
+          <th>Doctor</th>
           <th>Card ID</th>
           <th>Date</th>
         </tr>
@@ -57,6 +58,7 @@
           <td><%= transactions[i]?.patient?.name %></td>
           <td><%= transactions[i].amount %></td>
           <td><%= transactions[i].company.name %></td>
+          <td><%= transactions[i].doctor.name %></td>
           <td><%= transactions[i].cardId %></td>
           <td><%= formatDateStandard(transactions[i].date) %></td>
         </tr>

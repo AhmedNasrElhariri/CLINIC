@@ -7,7 +7,6 @@ import {
   ADD_COURSE,
   EDIT_COURSE,
   LIST_PATIENT_COURSES,
-  LIST_USERS,
   EDIT_COURSE_DOCTOR,
   FINISH_COURSE,
   DELETE_COURSE,
@@ -36,11 +35,10 @@ function usePatientCourses({
     () => R.propOr([], 'myPatientCourses')(patientData),
     [patientData]
   );
-  const { data: userData } = useQuery(LIST_USERS);
-  const users = useMemo(() => R.propOr([], 'listUsers')(userData), [userData]);
 
   const { data: dataPayment } = useQuery(LIST_COURSE_PAYMENTS, {
     variables: { courseId },
+    fetchPolicy:'cache-and-network'
   });
   const coursePayments = useMemo(
     () => R.propOr([], 'coursePayments')(dataPayment),
@@ -211,7 +209,6 @@ function usePatientCourses({
       editCourse,
       editCourseDoctor,
       deleteCourse,
-      users,
       editCourseUnits,
       finishCourse,
       coursePayments,
@@ -229,7 +226,6 @@ function usePatientCourses({
       editCourseUnits,
       editCourseDoctor,
       finishCourse,
-      users,
       coursePayments,
       editCoursePaymentHistory,
       totalUnpaidOfCourses,

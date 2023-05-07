@@ -139,17 +139,27 @@ const init = app => {
           company: true,
           companySession: true,
           patient: true,
+          doctor: true,
         },
         orderBy: {
           createdAt: 'desc',
         },
       });
-      let keys = ['name', 'patient', 'amount', 'companyName', 'cardId', 'date'];
+      let keys = [
+        'name',
+        'patient',
+        'amount',
+        'companyName',
+        'doctor',
+        'cardId',
+        'date',
+      ];
       transactions = transactions.map(t => ({
         ...t,
         name: t.companySession.name,
         patient: t.patient.name,
         companyName: t.company.name,
+        doctor: t.doctor.name,
       }));
       const workbook = generateExcel(keys, ['insurance'], transactions);
       var fileName = 'insurance.xlsx';
