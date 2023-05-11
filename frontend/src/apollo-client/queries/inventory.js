@@ -7,8 +7,10 @@ export const LIST_ITEMS = gql`
       name
       unitOfMeasure
       quantity
-      barcode
-      notes
+      sellingPricePerBox
+      sellingPricePerUnit
+      alertNumberOfBoxes
+      sellable
     }
   }
 `;
@@ -22,15 +24,18 @@ export const LIST_INVENTORY = gql`
       quantity
       price
       level
-      branch{
+      item {
+        name
+      }
+      branch {
         id
         name
       }
-      specialty{
+      specialty {
         id
         name
       }
-      doctor{
+      doctor {
         id
         name
       }
@@ -39,8 +44,8 @@ export const LIST_INVENTORY = gql`
 `;
 
 export const LIST_INVENTORY_HISTORY = gql`
-  query inventoryHistory {
-    inventoryHistory {
+  query inventoryHistory($isSelling: Boolean) {
+    inventoryHistory(isSelling: $isSelling) {
       body
       date
     }
@@ -53,7 +58,11 @@ export const CREATE_ITEM = gql`
       id
       name
       unitOfMeasure
-      notes
+      quantity
+      sellingPricePerUnit
+      sellingPricePerBox
+      alertNumberOfBoxes
+      sellable
     }
   }
 `;
@@ -62,7 +71,6 @@ export const UPDATE_ITEM = gql`
   mutation editItem($item: ItemUpdateInput!) {
     editItem(item: $item) {
       id
-      name
     }
   }
 `;
@@ -71,7 +79,6 @@ export const ADD_ITEM = gql`
   mutation addItem($item: AddToInventoryInput!) {
     addItem(item: $item) {
       id
-      quantity
     }
   }
 `;
@@ -98,6 +105,45 @@ export const CONSUME_INVENTORY_MANUAl = gql`
     consumeInventoryManual(data: $data) {
       id
       quantity
+    }
+  }
+`;
+
+export const TRANSFER_INVENTORY_ITEM = gql`
+  mutation transferInventoryItem($input: TransferInventoryItemsInput!) {
+    transferInventoryItem(input: $input) {
+      id
+    }
+  }
+`;
+
+export const LIST_PENDING_CONSUMPtION_ITEMS = gql`
+  {
+    listConsutionItems {
+      id
+      numberOfUnits
+      price
+      insertionDate
+      fromInventoryItemId
+      inventoryItem {
+        item {
+          name
+        }
+        branch {
+          name
+        }
+      }
+    }
+  }
+`;
+export const TRANSFER_ACTION = gql`
+  mutation transferAction($id: ID!, $fromInventoryItemId: ID!, $type: String!) {
+    transferAction(
+      id: $id
+      fromInventoryItemId: $fromInventoryItemId
+      type: $type
+    ) {
+      id
     }
   }
 `;

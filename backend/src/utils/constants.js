@@ -67,6 +67,8 @@ export const IMAGE_STATUS = Object.freeze({
 export const INVENTORY_OPERATION = {
   ADD: 'Add',
   SUBSTRACT: 'Substract',
+  SELL: 'Sell',
+  TRANSFER: 'Transfer',
 };
 
 export const POSITION = {
@@ -124,6 +126,11 @@ export const ORDERBYOPTIONS = [
     ],
   },
 ];
+
+export const InventoryConsumedStatus = Object.freeze({
+  PENDING: 'Pending',
+  ACTIVE: 'Active',
+});
 
 export const ACTIONS = Object.freeze({
   Create_Appointment: 'Create_Appointment',

@@ -18,7 +18,7 @@ const ItemsDefinitions = () => {
         nobody
       ></MainContainer>
       <CRCard borderless>
-        <ListItemsDefinitions items={items} />
+        <ListItemsDefinitions items={items} t={t}/>
       </CRCard>
     </>
   );

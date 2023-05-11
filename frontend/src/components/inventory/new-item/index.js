@@ -1,15 +1,8 @@
-import React, { memo, useCallback } from 'react';
-import { Form, Schema, Alert } from 'rsuite';
+import { memo, useCallback, useEffect, useState } from 'react';
+import { Form, Schema, Alert, Toggle } from 'rsuite';
 
-import {
-  CRModal,
-  CRTextInput,
-  CRTextArea,
-  CRButton,
-  CRNumberInput,
-} from 'components';
-import { isValid } from 'services/form';
-import { CRSelectInput } from 'components/widgets';
+import { CRModal, CRTextInput, CRButton, CRNumberInput, Div } from 'components';
+import { CRLabel, CRSelectInput } from 'components/widgets';
 import { UNIT_OF_MEASURES } from 'utils/constants';
 import { useForm, useInventory, useModal } from 'hooks';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +17,7 @@ const model = Schema.Model({
 const NewItem = () => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
+  const [sellable, setSellable] = useState(false);
   const {
     formValue,
     setFormValue,
@@ -35,10 +29,11 @@ const NewItem = () => {
   } = useForm({
     initValue: {
       name: '',
-      unitOfMeasure: '',
+      unitOfMeasure: 'PerUnit',
       quantity: 1,
-      barcode: '',
-      notes: '',
+      sellingPricePerBox: 0,
+      sellingPricePerUnit: 0,
+      alertNumberOfBoxes: 1,
     },
     model,
   });
@@ -56,7 +51,12 @@ const NewItem = () => {
     close();
     reset();
   }, [close, reset]);
-
+  useEffect(() => {
+    setFormValue(prev => ({
+      ...prev,
+      sellingPricePerUnit: formValue.sellingPricePerBox / formValue.quantity,
+    }));
+  }, [setFormValue, formValue.sellingPricePerBox, formValue.quantity]);
   return (
     <>
       <CRButton variant="primary" onClick={open}>
@@ -69,7 +69,8 @@ const NewItem = () => {
         loading={createItemLoading}
         onOk={() => {
           setShow(true);
-          validate && create(formValue);
+          const { unitSellingPrice, ...rest } = formValue;
+          validate && create({ ...rest, sellable: sellable });
         }}
         onHide={handleClose}
         onCancel={handleClose}
@@ -98,12 +99,31 @@ const NewItem = () => {
             block
           ></CRSelectInput>
           <CRNumberInput
-            label={t('quantity')}
+            label={t('noOfUnits')}
             name="quantity"
             block
           ></CRNumberInput>
-          <CRTextInput label={t('barcode')} name="barcode" block></CRTextInput>
-          <CRTextArea label={t('notes')} name="notes" block></CRTextArea>
+          <CRNumberInput
+            label="Selling price per Box(medicine box)"
+            name="sellingPricePerBox"
+            block
+          ></CRNumberInput>
+          <CRNumberInput
+            label={t('sellingPricePerUnit')}
+            name="sellingPricePerUnit"
+            block
+            disabled
+            float
+          ></CRNumberInput>
+          <CRNumberInput
+            label={t('alertNumberOfBoxes')}
+            name="alertNumberOfBoxes"
+            block
+          ></CRNumberInput>
+          <Div mt="10px">
+            <CRLabel>{t('sellable')}</CRLabel>
+            <Toggle value={sellable} onChange={setSellable} />
+          </Div>
         </Form>
       </CRModal>
     </>

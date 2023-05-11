@@ -26,6 +26,7 @@ const addCourse = async (_, { course }, { userId, organizationId }) => {
     bank,
     selectedParts,
   } = course;
+
   const level = GetLevel(branchId, specialtyId, userID);
   const startDate = sessions.length > 0 ? sessions[0] : new Date();
   const endDate =

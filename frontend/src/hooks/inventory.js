@@ -12,6 +12,9 @@ import {
   REMOVE_DEFINITION,
   REMOVE_ITEM,
   CONSUME_INVENTORY_MANUAl,
+  TRANSFER_INVENTORY_ITEM,
+  LIST_PENDING_CONSUMPtION_ITEMS,
+  TRANSFER_ACTION,
 } from 'apollo-client/queries';
 
 function useInventory({
@@ -21,12 +24,18 @@ function useInventory({
   onRemoveDefinitionError,
   onRemoveItem,
   onRemoveItemError,
+  onTransferInventory,
+  onConsumeInventory,
+  isSelling,
 } = {}) {
-
-
   const { data: ItemData } = useQuery(LIST_ITEMS);
-  const { data: InventoryData } = useQuery(LIST_INVENTORY);
-  const { data: InventoryHistoryData } = useQuery(LIST_INVENTORY_HISTORY);
+  const { data: InventoryData, refetch: refetchInventory } =
+    useQuery(LIST_INVENTORY);
+  const { data: InventoryHistoryData, refetch: refetchInventoryHistory } =
+    useQuery(LIST_INVENTORY_HISTORY, { variables: { isSelling: isSelling } });
+  const { data: consumptionData, refetch: refetchPendingConsumption } =
+    useQuery(LIST_PENDING_CONSUMPtION_ITEMS);
+
   const items = useMemo(() => R.propOr([], 'items')(ItemData), [ItemData]);
   const inventory = useMemo(
     () => R.propOr([], 'inventory')(InventoryData),
@@ -36,21 +45,10 @@ function useInventory({
     () => R.propOr([], 'inventoryHistory')(InventoryHistoryData),
     [InventoryHistoryData]
   );
-
-  const refetchInventoryHistory = useMemo(
-    () => ({
-      query: LIST_INVENTORY_HISTORY,
-    }),
-    []
+  const pendingConsumptionItems = useMemo(
+    () => R.propOr([], 'listConsutionItems')(consumptionData),
+    [consumptionData]
   );
-
-  const refetchInventory = useMemo(
-    () => ({
-      query: LIST_INVENTORY,
-    }),
-    []
-  );
-
   const inventoryWithAmount = useMemo(
     () =>
       inventory
@@ -92,6 +90,15 @@ function useInventory({
   const [update, { loading: updateItemLoading }] = useMutation(UPDATE_ITEM, {
     onCompleted: ({ updateItem }) => {
       onCreateCompleted && onCreateCompleted(updateItem);
+    },
+    update(cache, { data: { editItem } }) {
+      const { items } = cache.readQuery({
+        query: LIST_ITEMS,
+      });
+      cache.writeQuery({
+        query: LIST_ITEMS,
+        data: { items: [...items, editItem] },
+      });
     },
   });
 
@@ -139,13 +146,11 @@ function useInventory({
 
   const [addItem, { loading: addItemLoading }] = useMutation(ADD_ITEM, {
     onCompleted: ({ addItem }) => {
+      refetchInventoryHistory();
+      refetchInventory();
       onAddCompleted && onAddCompleted(addItem);
     },
-    refetchQueries: [
-      //refetchExpenses,
-      refetchInventoryHistory,
-      refetchInventory,
-    ],
+
     update(
       cache,
       {
@@ -170,16 +175,39 @@ function useInventory({
 
   const [consumeInventoryManual] = useMutation(CONSUME_INVENTORY_MANUAl, {
     onCompleted() {
+      onConsumeInventory && onConsumeInventory();
+      refetchInventoryHistory();
+      refetchInventory();
       Alert.success('the Inventory has been Consumed Successfully');
     },
-    onError() {
-      Alert.error('Failed to consume the Inventory');
+    onError: err => {
+      Alert.error(err.message);
     },
-    refetchQueries: [
-      //refetchExpenses,
-      refetchInventoryHistory,
-      refetchInventory,
-    ],
+  });
+
+  const [transferInventoryItem] = useMutation(TRANSFER_INVENTORY_ITEM, {
+    onCompleted() {
+      onTransferInventory && onTransferInventory();
+      refetchInventoryHistory();
+      refetchInventory();
+      refetchPendingConsumption();
+      Alert.success('the Inventory has been Transfered Successfully');
+    },
+    onError: err => {
+      Alert.error(err.message);
+    },
+  });
+  const [transferAction] = useMutation(TRANSFER_ACTION, {
+    onCompleted() {
+      onTransferInventory && onTransferInventory();
+      refetchInventoryHistory();
+      refetchInventory();
+      refetchPendingConsumption();
+      Alert.success('the Inventory method has been done Successfully');
+    },
+    onError: err => {
+      Alert.error(err.message);
+    },
   });
 
   return useMemo(
@@ -229,6 +257,9 @@ function useInventory({
       createItemLoading,
       updateItemLoading,
       addItemLoading,
+      transferInventoryItem,
+      pendingConsumptionItems,
+      transferAction,
     }),
     [
       items,
@@ -245,6 +276,9 @@ function useInventory({
       updateItemLoading,
       addItemLoading,
       consumeInventoryManual,
+      transferInventoryItem,
+      pendingConsumptionItems,
+      transferAction,
     ]
   );
 }

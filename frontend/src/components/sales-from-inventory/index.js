@@ -1,0 +1,72 @@
+import { CRButton, Div, MainContainer } from 'components';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useInventory, useModal, useForm } from 'hooks';
+import { Schema } from 'rsuite';
+import ConsumeUnits from '../inventory/status/consume-items';
+import ListData from './list-data';
+const initInventoryValue = {
+  itemId: null,
+  quantity: 0,
+  branchId: null,
+  specialtyId: null,
+  userId: null,
+};
+const { StringType, NumberType } = Schema.Types;
+
+const model = Schema.Model({
+  itemId: StringType().isRequired('Item is required'),
+  quantity: NumberType().isRequired('Amount Type is required'),
+});
+const Sales = () => {
+  const { t } = useTranslation();
+  const { visible, close, open } = useModal({});
+
+  const [selectedItems, setSelectedItems] = useState([]);
+  const { formValue, setFormValue } = useForm({
+    initValue: initInventoryValue,
+    model,
+  });
+  const { consumeInventoryManual, history } = useInventory({
+    onConsumeInventory: () => {
+      close();
+    },
+    isSelling: true,
+  });
+
+  const handleSaleItem = useCallback(() => {
+    open();
+  }, [open]);
+  const handleInventoryChange = useCallback(() => {}, []);
+
+  return (
+    <>
+      <MainContainer
+        title={t('inventory')}
+        more={
+          <Div display="flex">
+            <CRButton>{t('print')}</CRButton>
+            <CRButton onClick={handleSaleItem} ml={10}>
+              {t('add')}
+            </CRButton>
+          </Div>
+        }
+        nobody
+      ></MainContainer>
+      <ListData data={history} t={t} />
+      <ConsumeUnits
+        setSelectedItems={setSelectedItems}
+        close={close}
+        selectedItems={selectedItems}
+        formValue={formValue}
+        visible={visible}
+        consumeInventoryManual={consumeInventoryManual}
+        handleInventoryChange={handleInventoryChange}
+        t={t}
+        setFormValue={setFormValue}
+        isSelling
+      />
+    </>
+  );
+};
+export default Sales;

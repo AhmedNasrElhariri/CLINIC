@@ -123,6 +123,8 @@ enum UnitOfMeaure {
 enum InventoryOperation {
   Add
   Substract
+  Sell
+  Transfer
 }
 
 enum PatientOtpStatus {
@@ -258,6 +260,11 @@ enum PermissionAction {
   ViewSessionsReport_ReportsPrintout
   ViewCashAndVisa_Accounting
   ViewPhoneNo_Patient
+}
+
+enum InventoryItemConsumptionStatus {
+  Pending
+  Active
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -411,6 +418,7 @@ model User {
   doctorFees                 DoctorFees[]                 @relation("doctorFees")
   userFees                   DoctorFees[]                 @relation("userFees")
   DoctorCoursePartDefination DoctorCoursePartDefination[]
+  InventoryItemConsumption   InventoryItemConsumption[]
 }
 
 model Patient {
@@ -1020,41 +1028,63 @@ model Event {
 }
 
 model Item {
-  id               String             @id @default(uuid())
-  name             String             @unique
-  unitOfMeasure    UnitOfMeaure
-  quantity         Int
-  barcode          String?
-  notes            String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt
-  organization     Organization       @relation(fields: [organizationId], references: [id])
-  organizationId   String
-  user             User               @relation(fields: [userId], references: [id])
-  userId           String
-  inventoryItems   InventoryItem[]
-  inventoryHistory InventoryHistory[]
+  id                  String             @id @default(uuid())
+  name                String             @unique
+  unitOfMeasure       UnitOfMeaure
+  quantity            Int
+  barcode             String?
+  notes               String?
+  sellingPricePerBox  Int?
+  sellingPricePerUnit Float?
+  alertNumberOfBoxes  Int?
+  sellable            Boolean            @default(false)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @default(now()) @updatedAt
+  organization        Organization       @relation(fields: [organizationId], references: [id])
+  organizationId      String
+  user                User               @relation(fields: [userId], references: [id])
+  userId              String
+  inventoryItems      InventoryItem[]
+  inventoryHistory    InventoryHistory[]
 }
 
 model InventoryItem {
-  id             String       @id @default(uuid())
-  quantity       Float
-  price          Int
-  item           Item         @relation(fields: [itemId], references: [id])
-  itemId         String
-  level          String
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @default(now()) @updatedAt
-  user           User         @relation("userInventoryItem", fields: [userId], references: [id])
-  doctor         User?        @relation("doctorInventoryItem", fields: [doctorId], references: [id])
-  branch         Branch?      @relation(fields: [branchId], references: [id])
-  specialty      Specialty?   @relation(fields: [specialtyId], references: [id])
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  userId         String
-  doctorId       String?
-  branchId       String?
-  specialtyId    String?
+  id                           String                     @id @default(uuid())
+  quantity                     Float //quantity per units
+  noOfBoxes                    Float? //quantity per Boxes
+  price                        Int // price per unit
+  purshasingPricePerBox        Float?
+  item                         Item                       @relation(fields: [itemId], references: [id])
+  itemId                       String
+  level                        String
+  createdAt                    DateTime                   @default(now())
+  updatedAt                    DateTime                   @default(now()) @updatedAt
+  user                         User                       @relation("userInventoryItem", fields: [userId], references: [id])
+  doctor                       User?                      @relation("doctorInventoryItem", fields: [doctorId], references: [id])
+  branch                       Branch?                    @relation(fields: [branchId], references: [id])
+  specialty                    Specialty?                 @relation(fields: [specialtyId], references: [id])
+  organization                 Organization               @relation(fields: [organizationId], references: [id])
+  organizationId               String
+  userId                       String
+  doctorId                     String?
+  branchId                     String?
+  specialtyId                  String?
+  InventoryItemConsumption     InventoryItemConsumption[] @relation("inventoryItem")
+  FromInventoryItemConsumption InventoryItemConsumption[] @relation("fromInventoryItem")
+}
+
+model InventoryItemConsumption {
+  id                  String                         @id @default(uuid())
+  numberOfUnits       Int
+  price               Int
+  insertionDate       DateTime                       @default(now())
+  status              InventoryItemConsumptionStatus @default(Active)
+  user                User                           @relation(fields: [userId], references: [id])
+  userId              String
+  inventoryItemId     String
+  inventoryItem       InventoryItem                  @relation("inventoryItem", fields: [inventoryItemId], references: [id])
+  fromInventoryItemId String?
+  fromInventoryItem   InventoryItem?                 @relation("fromInventoryItem", fields: [fromInventoryItemId], references: [id])
 }
 
 model InventoryHistory {
@@ -1073,6 +1103,7 @@ model InventoryHistory {
   doctorId       String?
   operation      InventoryOperation
   quantity       Float
+  totalPrice     Float?
   price          Int?
   date           DateTime
   createdAt      DateTime           @default(now())

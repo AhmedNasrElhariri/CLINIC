@@ -28,6 +28,7 @@ import * as fromImageDefinition from './image-definition';
 import * as fromSupplierAccount from './supplier-account';
 import * as fromSupplierInvoiceTransaction from './supplierInvoiceTransaction';
 import * as fromSessionDefination from './session-defination';
+import * as fromInventoryItem from './inventoryItem';
 export default {
   Query: fromQuery,
   Mutation: fromMutation,
@@ -58,4 +59,5 @@ export default {
   SupplierAccount: fromSupplierAccount,
   SupplierInvoiceTransaction: fromSupplierInvoiceTransaction,
   SessionDefinition: fromSessionDefination,
+  InventoryItem: fromInventoryItem,
 };

@@ -1,28 +1,154 @@
 import { prisma } from '@';
 import * as R from 'ramda';
 import { INVENTORY_OPERATION } from '@/utils/constants';
+import { APIExceptcion } from '@/services/erros.service';
+import { GetLevel } from '@/services/get-level';
+import { InventoryConsumedStatus } from '@/utils/constants';
 
-export const updatedUsedMaterials = async (organizationId, items) => {
+export const createRevenueFromInventory = (data, organizationId) => {
+  return data.map(
+    ({
+      consumedUnits,
+      inventoryItem: {
+        item: { name, sellingPricePerUnit },
+        branchId,
+        userId,
+      },
+    }) => ({
+      branchId,
+      userId,
+      date: new Date(),
+      name: `selling ${consumedUnits} units of - ${name}`,
+      amount: consumedUnits * sellingPricePerUnit,
+      organizationId,
+    })
+  );
+};
+export const finalReducedItems = (items, quantity) => {
+  const total = quantity;
+  const orderedItems = R.sortWith([R.ascend(R.prop('insertionDate'))])(items);
+  const reducedOrderedItesm = orderedItems.map(item => {
+    let x = 0;
+    if (item.status === InventoryConsumedStatus.ACTIVE) {
+      x = quantity < item.numberOfUnits ? quantity : item.numberOfUnits;
+      quantity -= x;
+    }
+    return { ...item, consumedUnits: x };
+  });
+  if (quantity > 0) {
+    throw new APIExceptcion(
+      `You have been finished this items - you should use only ${
+        total - quantity
+      }`
+    );
+  }
+  return reducedOrderedItesm;
+};
+
+export const reduceFromInventoryConsumptions = (items, groupedValus) => {
+  let vv = [];
+  for (const [id, consuptionItems] of Object.entries(groupedValus)) {
+    const item = R.find(R.propEq('itemId', id))(items);
+    const finalItems = finalReducedItems(consuptionItems, item.quantity);
+    const finalObject = { id: id, quantity: item.quantity, items: finalItems };
+    vv.push(finalObject);
+  }
+  return vv;
+};
+
+export const reducedInventoryPattern = async (
+  organizationId,
+  items,
+  isSelling
+) => {
   const persistedItems = await prisma.inventoryItem.findMany({
     where: {
       organizationId,
     },
   });
-  const args = items.map(({ itemId, quantity }) => {
-    const persistedItem = R.find(R.propEq('id', itemId))(persistedItems);
-    return {
-      data: {
-        quantity: persistedItem.quantity - quantity,
+  const persistedItemsIds = R.map(R.propOr(null, 'itemId'))(items);
+  const consumptionItems = await prisma.inventoryItemConsumption.findMany({
+    where: {
+      inventoryItemId: {
+        in: persistedItemsIds,
       },
-      where: {
-        organizationId,
-        id: itemId,
+    },
+    include: {
+      inventoryItem: {
+        include: {
+          item: true,
+        },
       },
-    };
+    },
   });
+  const groubedVals = R.groupBy(R.prop('inventoryItemId'))(consumptionItems);
+  const finishedItems = reduceFromInventoryConsumptions(items, groubedVals);
 
-  //eslint-disable-next-line
-  await Promise.all(args.map(d => prisma.inventoryItem.updateMany(d)));
+  finishedItems.forEach(async ({ id, quantity, items }) => {
+    const persistedItem = R.find(R.propEq('id', id))(persistedItems);
+    const filteredItems = items.filter(it => it.consumedUnits > 0);
+    if (isSelling) {
+      console.log(isSelling, 'ISSELLING');
+      const updateInventoryItem = prisma.inventoryItem.update({
+        where: {
+          id,
+        },
+        data: {
+          quantity: persistedItem.quantity - quantity,
+          InventoryItemConsumption: {
+            update: filteredItems.map(
+              ({ consumedUnits, id, numberOfUnits }) => {
+                return {
+                  data: { numberOfUnits: numberOfUnits - consumedUnits },
+                  where: {
+                    id: id,
+                  },
+                };
+              }
+            ),
+          },
+        },
+      });
+
+      const createRevenueFromInvemtory = prisma.revenue.createMany({
+        data: createRevenueFromInventory(filteredItems, organizationId),
+      });
+      await prisma.$transaction([
+        updateInventoryItem,
+        createRevenueFromInvemtory,
+      ]);
+    } else {
+      await prisma.inventoryItem.update({
+        where: {
+          id,
+        },
+        data: {
+          quantity: persistedItem.quantity - quantity,
+          InventoryItemConsumption: {
+            update: filteredItems.map(
+              ({ consumedUnits, id, numberOfUnits }) => {
+                return {
+                  data: { numberOfUnits: numberOfUnits - consumedUnits },
+                  where: {
+                    id: id,
+                  },
+                };
+              }
+            ),
+          },
+        },
+      });
+    }
+  });
+  return finishedItems;
+};
+
+export const updatedUsedMaterials = async (
+  organizationId,
+  items,
+  isSelling
+) => {
+  await reducedInventoryPattern(organizationId, items, isSelling);
   return prisma.inventoryItem.findMany({
     where: {
       organizationId,
@@ -94,11 +220,11 @@ export const mapHistoryToMessage = async history => {
 export const createSubstractHistoryForMultipleItems = async ({
   patientId,
   userId,
-  branchId,
   specialtyId,
   doctorId,
   organizationId,
   data,
+  isSelling,
 }) => {
   const itemsIds = R.map(R.prop('itemId'))(data);
   const inventoryItems = await prisma.inventoryItem.findMany({
@@ -113,34 +239,10 @@ export const createSubstractHistoryForMultipleItems = async ({
     return {
       itemId: i.itemId,
       quantity: item.quantity,
+      branchId: i.branchId,
+      totalPrice: i.quantity * i.price,
     };
   });
-  // const args = data.map(i => {
-  //   return {
-  //     item: {
-  //       connect: {
-  //         id: i.itemId,
-  //       },
-  //     },
-  //     user: {
-  //       connect: {
-  //         id: userId,
-  //       },
-  //     },
-  //     patient: {
-  //       connect: {
-  //         id: patientId,
-  //       },
-  //     },
-  //     operation: INVENTORY_OPERATION.SUBSTRACT,
-  //     quantity: i.quantity,
-  //     date: new Date(),
-  //   };
-  // });
-  //eslint-disable-next-line
-  // return prisma.inventoryHistory.createMany({
-  //   data: args,
-  // });
 
   return Promise.all(
     items.map(i =>
@@ -162,8 +264,11 @@ export const createSubstractHistoryForMultipleItems = async ({
                 id: organizationId,
               },
             },
-            operation: INVENTORY_OPERATION.SUBSTRACT,
+            operation: isSelling
+              ? INVENTORY_OPERATION.SELL
+              : INVENTORY_OPERATION.SUBSTRACT,
             quantity: i.quantity,
+            totalPrice: i.totalPrice,
             date: new Date(),
           },
           specialtyId && {
@@ -173,10 +278,10 @@ export const createSubstractHistoryForMultipleItems = async ({
               },
             },
           },
-          branchId && {
+          i.branchId && {
             branch: {
               connect: {
-                id: branchId,
+                id: i.branchId,
               },
             },
           },
@@ -211,19 +316,149 @@ export const createHistoryBody = async (
   switch (operation) {
     case INVENTORY_OPERATION.ADD:
       return `${user.name} added ${quantity} units of ${item.name} which cost ${price} L.E. per unit`;
-    case INVENTORY_OPERATION.SUBSTRACT:
-      return `${user.name} consumed ${quantity} ${item.unitOfMeasure} from ${
-        item.name
-      } ${
+    case INVENTORY_OPERATION.SELL:
+      return `${user.name} sold ${quantity} units of ${item.name} from ${
         patientName
-          ? `to patient - ${patientName}`
+          ? `${patientName}`
           : doctorName
-          ? `to doctor - ${doctorName}`
+          ? `${doctorName}`
           : specialtyName
-          ? `to specialty - ${specialtyName}`
+          ? `${specialtyName}`
           : branchName
-          ? `to branch - ${branchName}`
+          ? `${branchName}`
+          : ''
+      }`;
+    case INVENTORY_OPERATION.SUBSTRACT:
+      return `${user.name} consumed ${quantity} ${
+        item.unitOfMeasure === 'PerUnit' ? 'units' : item.unitOfMeasure
+      } of ${item.name} from ${
+        patientName
+          ? `${patientName}`
+          : doctorName
+          ? `${doctorName}`
+          : specialtyName
+          ? `${specialtyName}`
+          : branchName
+          ? `${branchName}`
           : ''
       }`;
   }
+};
+
+export const createInventoryItem = async (
+  input,
+  { userId, organizationId }
+) => {
+  if (R.isNil(userId) || R.isNil(input.itemId)) {
+    throw new APIExceptcion('invalid user');
+  }
+
+  const {
+    itemId,
+    specialtyId,
+    branchId,
+    userId: toUserId,
+    status,
+    fromItemId,
+    noOfBoxes,
+    purshasingPricePerUnit,
+    purshasingPricePerBox,
+    amount,
+  } = input;
+  const level = GetLevel(branchId, specialtyId, null);
+  const persistedInventoryItem = await prisma.inventoryItem.findMany({
+    where: {
+      branchId,
+      specialtyId: null,
+      doctorId: null,
+      itemId: itemId,
+    },
+  });
+  const inventoryId =
+    persistedInventoryItem.length > 0 ? persistedInventoryItem[0].id : null;
+  const inventoryItemQuantity = R.propOr(
+    0,
+    'quantity'
+  )(persistedInventoryItem.length > 0 ? persistedInventoryItem[0] : {});
+  const newtotalQuantity = inventoryItemQuantity + amount;
+
+  await storeHistoryOfAddition({
+    itemId,
+    userId,
+    organizationId,
+    quantity: amount,
+    price: purshasingPricePerUnit,
+  });
+
+  return prisma.inventoryItem.upsert({
+    create: Object.assign(
+      {
+        item: {
+          connect: {
+            id: itemId,
+          },
+        },
+        quantity: newtotalQuantity,
+        price: purshasingPricePerUnit,
+        purshasingPricePerBox,
+        noOfBoxes,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        level: level,
+        InventoryItemConsumption: {
+          create: Object.assign(
+            {
+              numberOfUnits: amount,
+              price: purshasingPricePerUnit,
+              userId: toUserId !== null ? toUserId : userId,
+            },
+            status && { status: status },
+            fromItemId && { fromInventoryItemId: fromItemId }
+          ),
+        },
+      },
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
+        },
+      },
+      branchId && {
+        branch: {
+          connect: {
+            id: branchId,
+          },
+        },
+      }
+    ),
+    update: {
+      quantity: newtotalQuantity,
+      price: purshasingPricePerUnit,
+      purshasingPricePerBox,
+      noOfBoxes,
+      InventoryItemConsumption: {
+        create: Object.assign(
+          {
+            numberOfUnits: amount,
+            price: purshasingPricePerUnit,
+            userId: toUserId !== null ? toUserId : userId,
+          },
+          status && { status: status },
+          fromItemId && { fromInventoryItemId: fromItemId }
+        ),
+      },
+    },
+    where: {
+      id: inventoryId || '',
+    },
+  });
 };

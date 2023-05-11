@@ -355,7 +355,7 @@ type Query {
   myEvents: [Event!]
   items: [Item!]
   inventory: [InventoryItem!]
-  inventoryHistory: [InventoryHistory!]
+  inventoryHistory(isSelling: Boolean): [InventoryHistory!]
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
   patientSurgeries(
@@ -494,6 +494,7 @@ type Query {
   doctorCoursePartsDefinations(doctorId: ID!): [DoctorCoursePartDefination!]
   courseParts(courseId: ID!): [CoursePart]
   myRoomsDefinition: [RoomDefinition!]
+  listConsutionItems: [InventoryItemConsumption!]!
 }
 
 ########################### Mutation ##################################
@@ -818,6 +819,12 @@ type Mutation {
   deleteCoursePartToDoctor(partId: ID!): DoctorCoursePartDefination!
   addRoomDefinition(roomDefinition: RoomInputDefinition!): RoomDefinition
   editRoomDefinition(roomDefinition: RoomInputDefinition!): RoomDefinition
+  transferInventoryItem(input: TransferInventoryItemsInput): InventoryItem
+  transferAction(
+    id: ID!
+    fromInventoryItemId: ID
+    type: String
+  ): InventoryItemConsumption
 }
 
 ########################### Auth ##################################
@@ -1843,8 +1850,10 @@ type Item {
   name: String!
   unitOfMeasure: UnitOfMeaure
   quantity: Int!
-  barcode: String
-  notes: String
+  sellingPricePerUnit: Float
+  sellingPricePerBox: Int
+  alertNumberOfBoxes: Int
+  sellable: Boolean
 }
 
 type InventoryItem {
@@ -1857,6 +1866,16 @@ type InventoryItem {
   specialty: Specialty
   doctor: User
   level: String!
+  item: Item
+}
+
+type InventoryItemConsumption {
+  id: ID!
+  numberOfUnits: Int!
+  price: Int!
+  insertionDate: Date!
+  inventoryItem: InventoryItem!
+  fromInventoryItemId: ID
 }
 
 type InventoryHistory {
@@ -1869,19 +1888,26 @@ input ItemInput {
   name: String!
   unitOfMeasure: UnitOfMeaure
   quantity: Int!
-  barcode: String
-  notes: String
+  sellingPricePerBox: Int
+  sellingPricePerUnit: Float
+  alertNumberOfBoxes: Int
+  sellable: Boolean
 }
 
 input ItemUpdateInput {
   id: ID!
   name: String!
+  quantity: Int!
+  sellingPrice: Int
+  alertNumberOfUnits: Int
 }
 
 input AddToInventoryInput {
   itemId: ID!
   amount: Int!
-  price: Int!
+  noOfBoxes: Float
+  purshasingPricePerUnit: Float
+  purshasingPricePerBox: Int
   branchId: ID
   specialtyId: ID
   userId: ID
@@ -1897,6 +1923,16 @@ input InventoryConsumedItemInput {
   branchId: ID
   specialtyId: ID
   userId: ID
+  isSelling: Boolean
+}
+input TransferInventoryItemsInput {
+  id: ID!
+  itemId: ID!
+  quantity: Int!
+  noOfBoxes: Float
+  toBranchId: ID
+  toSpecialtyId: ID
+  toUserId: ID
 }
 ########################### Organization ##################################
 

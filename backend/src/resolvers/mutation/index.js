@@ -160,3 +160,5 @@ export { default as editInsurance } from './edit-insurance';
 export { default as editPatientSurgery } from './edit-patient-surgery';
 export { default as addRoomDefinition } from './add-room';
 export { default as editRoomDefinition } from './edit-room';
+export { default as transferInventoryItem } from './transfer-Inventory-Item';
+export { default as transferAction } from './transfer-action';
