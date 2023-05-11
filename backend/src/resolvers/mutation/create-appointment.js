@@ -53,8 +53,10 @@ const createAppointment = async (
     sendSMS,
     appointmentId,
     followUp,
+    roomId,
     ...rest
   } = appointment;
+  console.log(roomId, 'RROMS///////////////////////////////');
   const creatorId = creator ? creator : userId;
   let createdAppointment = {};
   const appointments = await getDayAppointments(appointment.date, userId);
@@ -122,6 +124,13 @@ const createAppointment = async (
           organization: {
             connect: {
               id: organizationId,
+            },
+          },
+        },
+        roomId && {
+          room: {
+            connect: {
+              id: roomId,
             },
           },
         },
@@ -210,6 +219,13 @@ const createAppointment = async (
           branch: {
             connect: {
               id: branchId,
+            },
+          },
+        },
+        roomId && {
+          room: {
+            connect: {
+              id: roomId,
             },
           },
         },

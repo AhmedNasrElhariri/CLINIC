@@ -26,6 +26,7 @@ const initialValues = {
   waiting: false,
   appointmentId: null,
   referedDoctor: false,
+  roomId: null,
 };
 const { StringType, DateType } = Schema.Types;
 const model = Schema.Model({

@@ -467,7 +467,11 @@ type Query {
     specialtyId: ID
     branchId: ID
   ): [CoursePayment!]
-  appointmentsDayCount(date: Date, userId: ID): AppointmentsDayCount!
+  appointmentsDayCount(
+    date: Date
+    userId: ID
+    roomId: ID
+  ): AppointmentsDayCount!
   coursePayments(courseId: ID!): [CoursePayment!]
   courseUnitsHistory(courseId: ID!): [CourseUnitsHistory!]
   transactionCoursesTimeFrame(userId: ID!): TransctionCoursesTimeFrame
@@ -489,6 +493,7 @@ type Query {
   ): DoctorFeesData!
   doctorCoursePartsDefinations(doctorId: ID!): [DoctorCoursePartDefination!]
   courseParts(courseId: ID!): [CoursePart]
+  myRoomsDefinition: [RoomDefinition!]
 }
 
 ########################### Mutation ##################################
@@ -811,6 +816,8 @@ type Mutation {
     sessions: [SessionInput]
   ): Course!
   deleteCoursePartToDoctor(partId: ID!): DoctorCoursePartDefination!
+  addRoomDefinition(roomDefinition: RoomInputDefinition!): RoomDefinition
+  editRoomDefinition(roomDefinition: RoomInputDefinition!): RoomDefinition
 }
 
 ########################### Auth ##################################
@@ -1194,6 +1201,7 @@ input AppointmentInput {
   followUp: Boolean
   appointmentId: ID
   referedDoctor: Boolean
+  roomId: ID
 }
 
 input AppointmentPictureInput {
@@ -2190,6 +2198,17 @@ type ExpenseTypeDefinition {
 }
 
 input ExpenseTypeInputDefinition {
+  id: ID
+  name: String!
+}
+########################### Room Definition ##################################
+
+type RoomDefinition {
+  id: ID!
+  name: String!
+}
+
+input RoomInputDefinition {
   id: ID
   name: String!
 }

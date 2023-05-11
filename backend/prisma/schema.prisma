@@ -327,6 +327,7 @@ model Organization {
   DoctorCoursePartDefination DoctorCoursePartDefination[]
   CoursePart                 CoursePart[]
   Appointment                Appointment[]
+  RoomDefinition             RoomDefinition[]
 }
 
 model User {
@@ -511,6 +512,8 @@ model Appointment {
   doctorFees            DoctorFees[]
   organization          Organization       @relation(fields: [organizationId], references: [id])
   organizationId        String
+  room                  RoomDefinition?    @relation(fields: [roomId], references: [id])
+  roomId                String?
 
   @@index([organizationId])
 }
@@ -1843,4 +1846,14 @@ model CoursePart {
   partId         String
   organization   Organization         @relation(fields: [organizationId], references: [id])
   organizationId String
+}
+
+model RoomDefinition {
+  id             String        @id @default(uuid())
+  name           String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organizationId String
+  Appointment    Appointment[]
 }

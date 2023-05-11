@@ -158,3 +158,5 @@ export { default as paidCourseWithDoctorFees } from './paid-course-with-doctor-f
 export { default as deleteCoursePartToDoctor } from './delete-course-part';
 export { default as editInsurance } from './edit-insurance';
 export { default as editPatientSurgery } from './edit-patient-surgery';
+export { default as addRoomDefinition } from './add-room';
+export { default as editRoomDefinition } from './edit-room';

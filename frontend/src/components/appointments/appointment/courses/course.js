@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import CoursePayment from './course-payment-history';
 import CourseUnitsHistoryPage from './course-units-history';
@@ -26,6 +26,7 @@ const CourseData = ({
   onEditHistoryPayment,
   onEditUnitsHistory,
   courseParts,
+  onActiveCourse,
 }) => {
   const history = useHistory();
   const [active, setActive] = React.useState('courseSession');
@@ -44,6 +45,9 @@ const CourseData = ({
       history.push(`/appointments/${appointment.id}`);
     }
   };
+  useEffect(() => {
+    onActiveCourse && onActiveCourse(course?.id || null);
+  }, [onActiveCourse, course]);
   return (
     <Fragment>
       {course && (

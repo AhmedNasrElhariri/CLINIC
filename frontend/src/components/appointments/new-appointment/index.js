@@ -28,6 +28,7 @@ import {
   usePatients,
   useSessionDefinition,
   useConfigurations,
+  useRoomDefinition,
 } from 'hooks';
 
 const initialValues = {
@@ -90,9 +91,11 @@ const NewAppointment = ({
     patientId: formValue.patientId,
   });
   const { sessionsDefinition } = useSessionDefinition();
+  const { roomsDefinition } = useRoomDefinition({});
   const { appointmentsCount } = useAppointments({
     date: formValue?.date,
     userId: formValue?.userId,
+    roomId: formValue?.roomId,
   });
   const { disabledMinutes, hideHours, sessionNotHaveEnoughTime } =
     useAppointmentForm({
@@ -158,8 +161,9 @@ const NewAppointment = ({
       session,
       sendSMS,
       referedDoctor,
+      roomId,
     } = formValue;
-
+    console.log(roomId, 'ROOOMM');
     const timeDate = moment(formValue.time);
 
     let date = moment(formValue.date).set({
@@ -195,6 +199,7 @@ const NewAppointment = ({
       appointmentId,
       followUp,
       referedDoctor,
+      roomId,
     });
   }, [
     createAppointment,
@@ -256,6 +261,16 @@ const NewAppointment = ({
                     name="session"
                     block
                     data={updatedSessionsDefinition}
+                  />
+                )}
+                {roomsDefinition && roomsDefinition.length > 0 && (
+                  <CRSelectInput
+                    label="Room / Device Name"
+                    name="roomId"
+                    block
+                    data={roomsDefinition}
+                    valueKey="id"
+                    labelKey="name"
                   />
                 )}
                 <CRBrancheTree

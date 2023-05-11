@@ -2,7 +2,7 @@ import { prisma } from '@';
 import moment from 'moment';
 import * as R from 'ramda';
 import { APPOINTMENTS_STATUS } from '@/utils/constants';
-const appointmentsDayCount = async (_, { date, userId }) => {
+const appointmentsDayCount = async (_, { date, userId, roomId }) => {
   const byAppointmentStatus = R.groupBy(function (appointment) {
     const status = appointment.status;
     return status === APPOINTMENTS_STATUS.WAITING
@@ -24,7 +24,9 @@ const appointmentsDayCount = async (_, { date, userId }) => {
         gte: startOfDay,
         lte: endofDay,
       },
-      doctorId: userId,
+      OR: [{ doctorId: userId }, { roomId: roomId }],
+      // doctorId: userId,
+      // roomId,
       status: {
         in: [
           APPOINTMENTS_STATUS.SCHEDULED,

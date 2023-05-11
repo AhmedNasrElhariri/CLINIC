@@ -123,13 +123,7 @@ export default {
     eventWrapper: ({ children, event }) => {
       return <DayWrapper {...event}>{children}</DayWrapper>;
     },
-    event: ({
-      event: {
-        session: { name: sessionName },
-        patient: { name: patientName },
-        start,
-      },
-    }) => (
+    event: ({ event: { session, patient, start } }) => (
       <DayEventStyled>
         <Div height="100%" display="flex" alignItems="center">
           <Div flexGrow={1} display="flex" width="100%" alignItems="center">
@@ -137,7 +131,7 @@ export default {
             <Time>{formatDate(start, 'HH:mm A')}</Time>
             <Div ml={2}>
               <Name>
-                {sessionName} / {patientName}
+                {session?.name} / {patient?.name}
               </Name>
             </Div>
           </Div>

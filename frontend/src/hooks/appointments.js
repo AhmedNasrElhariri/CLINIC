@@ -73,6 +73,7 @@ function useAppointments({
   canAddFollowUp,
   setAppointment,
   onArchive,
+  roomId,
 } = {}) {
   const { data, refetch: refetchAppointments } = useQuery(LIST_APPOINTMENTS, {
     fetchPolicy: 'cache-and-network',
@@ -114,7 +115,9 @@ function useAppointments({
     variables: {
       date: date,
       userId: userId,
+      roomId,
     },
+    fetchPolicy: 'cache-and-network',
   });
   const appointmentsCount = useMemo(
     () => R.propOr({}, 'appointmentsDayCount')(appointmentsDay),

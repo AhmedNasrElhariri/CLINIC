@@ -114,3 +114,4 @@ export { default as doctorFeesTransactions } from './doctor-fees-transactions';
 export { default as doctorCoursePartsDefinations } from './doctor-courseParts-definations';
 export { default as courseParts } from './course-parts';
 export { default as accountingData } from './accounting-data';
+export { default as myRoomsDefinition } from './my-rooms';

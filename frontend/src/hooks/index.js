@@ -56,3 +56,4 @@ export { default as useSelectedRow } from './selected-rows';
 export { default as useTodayAppointments } from './today-appointments';
 export { default as useBranchTree } from './branch-tree';
 export { default as useUsers } from './users';
+export { default as useRoomDefinition } from './room-defination';

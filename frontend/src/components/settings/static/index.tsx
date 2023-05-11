@@ -24,6 +24,7 @@ import SupplierAccount from "./supplier-account";
 import ItemsDefinitions from "../../inventory/items-definitions";
 import { Select } from "antd";
 import UserView from "components/views/user-view";
+import Rooms from './rooms'
 // import UserView2 from "components/views/user-view/index copy";
 
 const VIEWS: { [key: string]: ReactElement } = {
@@ -50,6 +51,7 @@ const VIEWS: { [key: string]: ReactElement } = {
   supplierAccount: <SupplierAccount />,
   itemDefinition: <ItemsDefinitions />,
   views: <UserView />,
+  rooms:<Rooms />
 };
 
 const viewsKeys = Object.keys(VIEWS);
