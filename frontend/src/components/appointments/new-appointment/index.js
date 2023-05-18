@@ -163,7 +163,6 @@ const NewAppointment = ({
       referedDoctor,
       roomId,
     } = formValue;
-    console.log(roomId, 'ROOOMM');
     const timeDate = moment(formValue.time);
 
     let date = moment(formValue.date).set({

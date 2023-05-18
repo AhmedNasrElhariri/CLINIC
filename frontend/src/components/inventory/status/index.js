@@ -2,7 +2,13 @@ import React, { useMemo, useRef, useCallback, useState } from 'react';
 import { MainContainer, CRCard } from 'components';
 import AddItem from '../add-item';
 import ListInventory from '../list-inventory';
-import { useInventory, useAppointments, useModal, useForm } from 'hooks';
+import {
+  useInventory,
+  useAppointments,
+  useModal,
+  useForm,
+  useBranchTree,
+} from 'hooks';
 import Filter from '../../filters';
 import { ACTIONS } from 'utils/constants';
 import { Div, CRButton } from 'components';
@@ -30,7 +36,7 @@ const InventoryStatus = () => {
       close();
     },
   });
-  console.log(items,'items')
+  console.log(items, 'items');
   const { visible, close, open } = useModal({});
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState([]);
@@ -45,7 +51,7 @@ const InventoryStatus = () => {
     });
     return newInventory;
   }, [inventoryWithAmount]);
-  const { filterBranches } = useAppointments({
+  const { filterBranches } = useBranchTree({
     action: ACTIONS.View_Inventory,
   });
 
@@ -53,7 +59,6 @@ const InventoryStatus = () => {
     open();
   }, [open]);
   const handleInventoryChange = useCallback(() => {}, []);
-
   return (
     <>
       <MainContainer

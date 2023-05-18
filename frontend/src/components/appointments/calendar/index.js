@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { Alert } from 'rsuite';
 import moment from 'moment';
 import { momentLocalizer, Views } from 'react-big-calendar';
@@ -19,6 +19,7 @@ import { useEvents, useAuth } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import Filter from './filter';
 import { filterTodayAppointments } from 'services/appointment';
+import useGlobalState from 'state';
 import {
   endOfMonth,
   startOfWeek,
@@ -70,6 +71,7 @@ const calculateNewEventDates = ({ startDate, startTime, endDate, endTime }) => {
 function AppointmentCalendar() {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState(initialValue);
+  const [onCreateAppointment] = useGlobalState('onCreateAppointment');
   const { can } = useAuth();
   const { t } = useTranslation();
   const { events, createEvent } = useEvents({
@@ -95,16 +97,27 @@ function AppointmentCalendar() {
     [doctorsData]
   );
 
-  const { data } = useQuery(LIST_ALL_APPOINTMENTS, {
-    variables: Object.assign(
-      {
-        status: APPT_STATUS.SCHEDULED,
-      },
-      period && { dateFrom: period[0] },
-      period && { dateTo: period[1] },
-      formValue.doctorId && { doctorId: formValue.doctorId }
-    ),
-  });
+  const { data, refetch: refetchAllAppointments } = useQuery(
+    LIST_ALL_APPOINTMENTS,
+    {
+      variables: Object.assign(
+        {
+          status: APPT_STATUS.SCHEDULED,
+        },
+        period && { dateFrom: period[0] },
+        period && { dateTo: period[1] },
+        formValue.doctorId && { doctorId: formValue.doctorId }
+      ),
+      fetchPolicy: 'cache-and-network',
+    }
+  );
+  console.log(period, 'PPDD');
+  useEffect(() => {
+    const id = onCreateAppointment.subscribe(() => {
+      refetchAllAppointments();
+    });
+    return () => onCreateAppointment.unsubscribe(id);
+  }, [onCreateAppointment, refetchAllAppointments]);
   const DATA = R.propOr([], 'allAppointments')(data);
   const {
     edit,
