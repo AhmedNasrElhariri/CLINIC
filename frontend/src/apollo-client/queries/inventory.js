@@ -16,8 +16,12 @@ export const LIST_ITEMS = gql`
 `;
 
 export const LIST_INVENTORY = gql`
-  query inventory {
-    inventory {
+  query inventory($branchId: ID, $specialtyId: ID, $doctorId: ID) {
+    inventory(
+      branchId: $branchId
+      specialtyId: $specialtyId
+      doctorId: $doctorId
+    ) {
       id
       itemId
       userId
@@ -71,6 +75,13 @@ export const UPDATE_ITEM = gql`
   mutation editItem($item: ItemUpdateInput!) {
     editItem(item: $item) {
       id
+      name
+      unitOfMeasure
+      quantity
+      sellingPricePerUnit
+      sellingPricePerBox
+      alertNumberOfBoxes
+      sellable
     }
   }
 `;

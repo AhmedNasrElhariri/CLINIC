@@ -44,7 +44,17 @@ function InventoryUsage({
   const handleAdd = useCallback(() => {
     const itemId = formValue?.itemId.id;
     const quantity = parseFloat(formValue?.quantity);
-    const newItems = [...selectedItems, { itemId: itemId, quantity: quantity }];
+    const sellingPricePerBox = formValue?.itemId?.item?.sellingPricePerBox;
+    const sellingPricePerUnit = formValue?.itemId?.item?.sellingPricePerUnit;
+    const newItems = [
+      ...selectedItems,
+      {
+        itemId: itemId,
+        quantity: quantity,
+        pricePerBox: sellingPricePerBox,
+        pricePerUnit: sellingPricePerUnit,
+      },
+    ];
     setSelectedItems(newItems);
     setFormValue(initValue);
     onChange(newItems);
@@ -69,7 +79,8 @@ function InventoryUsage({
 
   const handleChangeBoxOrUnits = useCallback(
     (value, type) => {
-      const numberOfBoxes = formValue?.itemId?.quantity / formValue?.itemId?.amount;
+      const numberOfBoxes =
+        formValue?.itemId?.quantity / formValue?.itemId?.amount;
       type === 'noOfUnits'
         ? setFormValue({
             ...formValue,
@@ -82,8 +93,9 @@ function InventoryUsage({
             quantity: value * numberOfBoxes,
           });
     },
-    [setFormValue,formValue?.itemId] // don't change these dependencies
+    [setFormValue, formValue?.itemId] // don't change these dependencies
   );
+
   return (
     <Form fluid formValue={formValue} onChange={setFormValue}>
       <CRBrancheTree
@@ -118,7 +130,13 @@ function InventoryUsage({
           {t('add')}
         </CRButton>
       </div>
-      <ListInvoiceItems items={itemsList} onDelete={handleDelete} />
+      <ListInvoiceItems
+        items={itemsList}
+        onDelete={handleDelete}
+        formValue={selectedItems}
+        onChange={setSelectedItems}
+        isSelling={isSelling}
+      />
     </Form>
   );
 }

@@ -42,12 +42,12 @@ const Sales = () => {
   return (
     <>
       <MainContainer
-        title={t('inventory')}
+        title={t('sales')}
         more={
           <Div display="flex">
             <CRButton>{t('print')}</CRButton>
             <CRButton onClick={handleSaleItem} ml={10}>
-              {t('add')}
+              {t('sell')}
             </CRButton>
           </Div>
         }

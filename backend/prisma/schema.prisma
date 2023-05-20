@@ -1052,7 +1052,7 @@ model InventoryItem {
   id                           String                     @id @default(uuid())
   quantity                     Float //quantity per units
   noOfBoxes                    Float? //quantity per Boxes
-  price                        Int // price per unit
+  price                        Float // price per unit
   purshasingPricePerBox        Float?
   item                         Item                       @relation(fields: [itemId], references: [id])
   itemId                       String

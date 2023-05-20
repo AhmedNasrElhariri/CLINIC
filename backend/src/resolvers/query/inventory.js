@@ -2,7 +2,11 @@ import { prisma } from '@';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
 
-const inventory = async (_, __, { organizationId, user }) => {
+const inventory = async (
+  _,
+  { doctorId, specialtyId, branchId },
+  { organizationId, user }
+) => {
   const ids = await listFlattenUsersTreeIds(
     {
       user,
@@ -13,22 +17,39 @@ const inventory = async (_, __, { organizationId, user }) => {
   );
   return prisma.inventoryItem.findMany({
     where: {
-      organizationId,
-      OR: [
+      organizationId: organizationId,
+      AND: [
         {
-          doctorId: {
-            in: ids,
-          },
+          OR: [
+            {
+              doctorId: {
+                in: ids,
+              },
+            },
+            {
+              branchId: {
+                in: ids,
+              },
+            },
+            {
+              specialtyId: {
+                in: ids,
+              },
+            },
+          ],
         },
         {
-          branchId: {
-            in: ids,
-          },
-        },
-        {
-          specialtyId: {
-            in: ids,
-          },
+          AND: [
+            {
+              branchId: branchId,
+            },
+            {
+              specialtyId: specialtyId,
+            },
+            {
+              doctorId: doctorId,
+            },
+          ],
         },
       ],
     },

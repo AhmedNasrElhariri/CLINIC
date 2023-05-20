@@ -111,7 +111,6 @@ function AppointmentCalendar() {
       fetchPolicy: 'cache-and-network',
     }
   );
-  console.log(period, 'PPDD');
   useEffect(() => {
     const id = onCreateAppointment.subscribe(() => {
       refetchAllAppointments();
@@ -256,7 +255,7 @@ function AppointmentCalendar() {
             components={components}
             onNavigate={handleNa}
             onView={handleView}
-            step={5}
+            step={30}
             timeslots={1}
             onSelectSlot={handleSelect}
             longPressThreshold={2000}

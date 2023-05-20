@@ -28,7 +28,7 @@ const ConsumeItems = ({
   return (
     <CRModal
       show={visible}
-      header={t('consumeInventory')}
+      header={isSelling ? t('sellItem') : t('consumeInventory')}
       onOk={handleOk}
       onHide={() => {
         close();

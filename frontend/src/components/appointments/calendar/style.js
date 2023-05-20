@@ -60,6 +60,11 @@ export const IconStyled = styled(Icon)`
 `;
 
 export const CalendarStyled = styled(Calendar)`
+  .rbc-event-content * {
+    color: #51c6f3;
+    border-color: blue;
+  }
+
   & .rbc-date-cell {
     font-weight: bold;
     color: ${props => props.theme.colors.texts[1]};
@@ -88,9 +93,10 @@ export const CalendarStyled = styled(Calendar)`
         box-shadow: 0px 3px 6px #00000029;
         border-radius: 22px;
         border: none;
-
+        
         & .rbc-event-content{
           margin-bottom: 5px;
+          color: #1675e0;
         }
       }
       .rbc-overlay-header{
@@ -156,7 +162,7 @@ export const DayWrapper = styled.div`
 
 export const DayEventStyled = styled.div`
   height: 100%;
-  ${variants}
+  border-color: #51c6f3 ${variants};
 `;
 
 export const TodayButtonStyled = styled(CRButtonGroup.CRButton)`

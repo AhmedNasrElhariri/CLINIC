@@ -9,8 +9,9 @@ export const createRevenueFromInventory = (data, organizationId) => {
   return data.map(
     ({
       consumedUnits,
+      pricePerUnit,
       inventoryItem: {
-        item: { name, sellingPricePerUnit },
+        item: { name, sellingPricePerUnit, quantity },
         branchId,
         userId,
       },
@@ -18,13 +19,15 @@ export const createRevenueFromInventory = (data, organizationId) => {
       branchId,
       userId,
       date: new Date(),
-      name: `selling ${consumedUnits} units of - ${name}`,
-      amount: consumedUnits * sellingPricePerUnit,
+      name: `selling ${
+        consumedUnits / quantity
+      } boxes (${consumedUnits} units)  of  ${name}`,
+      amount: consumedUnits * pricePerUnit,
       organizationId,
     })
   );
 };
-export const finalReducedItems = (items, quantity) => {
+export const finalReducedItems = (items, quantity, pricePerUnit) => {
   const total = quantity;
   const orderedItems = R.sortWith([R.ascend(R.prop('insertionDate'))])(items);
   const reducedOrderedItesm = orderedItems.map(item => {
@@ -33,13 +36,14 @@ export const finalReducedItems = (items, quantity) => {
       x = quantity < item.numberOfUnits ? quantity : item.numberOfUnits;
       quantity -= x;
     }
-    return { ...item, consumedUnits: x };
+    return { ...item, consumedUnits: x, pricePerUnit };
   });
+  const unitsPerBox = reducedOrderedItesm[0].inventoryItem.item.quantity;
   if (quantity > 0) {
     throw new APIExceptcion(
       `You have been finished this items - you should use only ${
-        total - quantity
-      }`
+        (total - quantity) / unitsPerBox
+      } boxes (${total - quantity} units)`
     );
   }
   return reducedOrderedItesm;
@@ -49,7 +53,11 @@ export const reduceFromInventoryConsumptions = (items, groupedValus) => {
   let vv = [];
   for (const [id, consuptionItems] of Object.entries(groupedValus)) {
     const item = R.find(R.propEq('itemId', id))(items);
-    const finalItems = finalReducedItems(consuptionItems, item.quantity);
+    const finalItems = finalReducedItems(
+      consuptionItems,
+      item.quantity,
+      item.pricePerUnit
+    );
     const finalObject = { id: id, quantity: item.quantity, items: finalItems };
     vv.push(finalObject);
   }
@@ -83,12 +91,10 @@ export const reducedInventoryPattern = async (
   });
   const groubedVals = R.groupBy(R.prop('inventoryItemId'))(consumptionItems);
   const finishedItems = reduceFromInventoryConsumptions(items, groubedVals);
-
   finishedItems.forEach(async ({ id, quantity, items }) => {
     const persistedItem = R.find(R.propEq('id', id))(persistedItems);
     const filteredItems = items.filter(it => it.consumedUnits > 0);
     if (isSelling) {
-      console.log(isSelling, 'ISSELLING');
       const updateInventoryItem = prisma.inventoryItem.update({
         where: {
           id,
@@ -162,29 +168,35 @@ export const storeHistoryOfAddition = async ({
   userId,
   quantity,
   price,
+  branchId,
+  specialtyId,
 }) => {
   return prisma.inventoryHistory.create({
-    data: {
-      item: {
-        connect: {
-          id: itemId,
+    data: Object.assign(
+      {
+        item: {
+          connect: {
+            id: itemId,
+          },
         },
-      },
-      user: {
-        connect: {
-          id: userId,
+        user: {
+          connect: {
+            id: userId,
+          },
         },
-      },
-      organization: {
-        connect: {
-          id: organizationId,
+        organization: {
+          connect: {
+            id: organizationId,
+          },
         },
+        operation: INVENTORY_OPERATION.ADD,
+        quantity,
+        price,
+        date: new Date(),
       },
-      operation: INVENTORY_OPERATION.ADD,
-      quantity,
-      price,
-      date: new Date(),
-    },
+      branchId && { branch: { connect: { id: branchId } } },
+      specialtyId && { specialty: { connect: { id: specialtyId } } }
+    ),
   });
 };
 
@@ -315,9 +327,25 @@ export const createHistoryBody = async (
 ) => {
   switch (operation) {
     case INVENTORY_OPERATION.ADD:
-      return `${user.name} added ${quantity} units of ${item.name} which cost ${price} L.E. per unit`;
+      return `${user.name} added ${
+        quantity / item.quantity
+      } boxes(${quantity} units) of ${
+        item.name
+      } which cost ${price} L.E. per unit to ${
+        patientName
+          ? `${patientName}`
+          : doctorName
+          ? `${doctorName}`
+          : specialtyName
+          ? `${specialtyName}`
+          : branchName
+          ? `${branchName}`
+          : ''
+      }`;
     case INVENTORY_OPERATION.SELL:
-      return `${user.name} sold ${quantity} units of ${item.name} from ${
+      return `${user.name} sold ${
+        quantity / item.quantity
+      } boxes(${quantity} units) of ${item.name} from ${
         patientName
           ? `${patientName}`
           : doctorName
@@ -329,9 +357,11 @@ export const createHistoryBody = async (
           : ''
       }`;
     case INVENTORY_OPERATION.SUBSTRACT:
-      return `${user.name} consumed ${quantity} ${
+      return `${user.name} consumed ${
+        quantity / item.quantity
+      } boxes(${quantity} ${
         item.unitOfMeasure === 'PerUnit' ? 'units' : item.unitOfMeasure
-      } of ${item.name} from ${
+      } ) of ${item.name} from ${
         patientName
           ? `${patientName}`
           : doctorName
@@ -352,7 +382,6 @@ export const createInventoryItem = async (
   if (R.isNil(userId) || R.isNil(input.itemId)) {
     throw new APIExceptcion('invalid user');
   }
-
   const {
     itemId,
     specialtyId,
@@ -388,6 +417,8 @@ export const createInventoryItem = async (
     organizationId,
     quantity: amount,
     price: purshasingPricePerUnit,
+    branchId,
+    specialtyId,
   });
 
   return prisma.inventoryItem.upsert({

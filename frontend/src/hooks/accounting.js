@@ -73,6 +73,7 @@ const useAccounting = ({
       revenueName && { revenueName: revenueName },
       orderByOption && { orderByOption: orderByOption }
     ),
+    fetchPolicy: 'network-only',
   });
   const { data: accountingDATA } = useQuery(LIST_ACCOUNTING_DATA, {
     variables: Object.assign(

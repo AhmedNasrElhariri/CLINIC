@@ -1,12 +1,16 @@
 import { prisma } from '@';
 
 const updateItem = async (_, { item }) => {
-  const { id, ...data } = item;
-
+  const { sellingPrice, alertNumberOfUnits, id, quantity, ...rest } = item;
   return prisma.item.update({
-    data: {
-      ...data,
-    },
+    data: Object.assign(
+      {
+        ...rest,
+      },
+      sellingPrice && { sellingPricePerBox: sellingPrice },
+      sellingPrice && { sellingPricePerUnit: sellingPrice / quantity },
+      alertNumberOfUnits && { alertNumberOfBoxes: alertNumberOfUnits }
+    ),
     where: {
       id,
     },

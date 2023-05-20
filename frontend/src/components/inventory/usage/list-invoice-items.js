@@ -1,15 +1,84 @@
-import { Div } from 'components';
-import { Button } from 'rsuite';
-function ListInvoiceItems({ items, priceKey, onDelete }) {
+import { Div, CRNumberInput } from 'components';
+import { Button, Form } from 'rsuite';
+import { useCallback } from 'react';
+function ListInvoiceItems({
+  items,
+  priceKey,
+  onDelete,
+  formValue,
+  onChange,
+  isSelling,
+}) {
+  const handleChangePricePerBox = useCallback(
+    (value, index) => {
+      onChange(
+        formValue.map((s, indx) =>
+          indx === index
+            ? { ...s, pricePerBox: value, pricePerUnit: value / s.quantity }
+            : s
+        )
+      );
+    },
+    [formValue]
+  );
+  const handleChangePricePerUnit = useCallback(
+    (value, index) => {
+      onChange(
+        formValue.map((s, indx) =>
+          indx === index
+            ? { ...s, pricePerUnit: value, pricePerBox: value * s.quantity }
+            : s
+        )
+      );
+    },
+    [formValue]
+  );
+  const ItemName = itemId => {
+    const item = items.find(i => i.id === itemId);
+    return (
+      <h6 style={isSelling ? { width: '200px', marginTop: '30px' } : {}}>
+        {`${item?.Quantity} / ${item?.name} / ${item?.branch?.name}`}
+      </h6>
+    );
+  };
   return (
     <>
-      {items.length > 0 && (
+      {formValue.length > 0 && (
         <Div className="bg-slate-100 p-3">
-          {items.map((item, idx) => (
+          {formValue.map((item, idx) => (
             <div key={idx} className="flex items-center">
-              <h6>{`${item?.Quantity} / ${item?.name}`}</h6>
+              <h6
+                style={isSelling ? { width: '200px', marginTop: '30px' } : {}}
+              >
+                {ItemName(item?.itemId)}
+              </h6>
+              {isSelling && (
+                <Form>
+                  <Div display="flex">
+                    <CRNumberInput
+                      label="pricePerBox"
+                      name="pricePerBox"
+                      style={{ maxWidth: '120px' }}
+                      value={item.pricePerBox}
+                      onChange={val => handleChangePricePerBox(val, idx)}
+                    />
+                    <CRNumberInput
+                      label="pricePerUnit"
+                      name="pricePerUnit"
+                      style={{ maxWidth: '120px' }}
+                      value={item.pricePerUnit}
+                      onChange={val => handleChangePricePerUnit(val, idx)}
+                    />
+                  </Div>
+                </Form>
+              )}
+
               <Button
-                className="ml-auto !text-red-500"
+                className={
+                  isSelling
+                    ? 'ml-auto !text-red-500 mt-10'
+                    : 'ml-auto !text-red-500'
+                }
                 onClick={() => onDelete(idx)}
               >
                 Delete

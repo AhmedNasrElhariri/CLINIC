@@ -1,22 +1,22 @@
-import React, { useState, useMemo, useRef } from "react";
-import { CRTable, CRSelectInput, CRButton, Div } from "components";
-import { formatFullDay } from "utils/date";
-import { Form, Table } from "rsuite";
-import { useInventory } from "hooks";
-import { useTranslation } from "react-i18next";
-import ReactToPrint from "react-to-print";
+import React, { useState, useMemo, useRef } from 'react';
+import { CRCard, CRTable, CRSelectInput, CRButton, Div } from 'components';
+import { formatFullDay } from 'utils/date';
+import { Form, Table } from 'rsuite';
+import { useInventory } from 'hooks';
+import { useTranslation } from 'react-i18next';
+import ReactToPrint from 'react-to-print';
 
 const { Cell, Column } = Table;
 
 const initalValue = {
-  item: "",
+  item: '',
 };
 const InventoryHistory = () => {
   const { history, items } = useInventory();
   const ref = useRef();
   const { t } = useTranslation();
   const [formValue, setFormValue] = useState(initalValue);
-  const newItems = items.map((i) => {
+  const newItems = items.map(i => {
     return {
       id: i.name,
       name: i.name,
@@ -24,7 +24,7 @@ const InventoryHistory = () => {
   });
   const newHistory = useMemo(
     () =>
-      history.filter((h) =>
+      history.filter(h =>
         h.body.toLowerCase().includes(formValue.item.toLowerCase())
       ),
     [formValue, history]
@@ -32,12 +32,12 @@ const InventoryHistory = () => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl mb-4">{t("history")}</h1>
+        <h1 className="text-2xl mb-4">{t('history')}</h1>
         {/* <Print history={newHistory} /> */}
         <ReactToPrint
           trigger={() => (
             <CRButton primary mb={20}>
-              {t("print")}
+              {t('print')}
             </CRButton>
           )}
           content={() => ref.current}
@@ -45,40 +45,50 @@ const InventoryHistory = () => {
       </div>
       <Form formValue={formValue} onChange={setFormValue} className="mt-2 mb-7">
         <CRSelectInput
-          label={t("item")}
+          label={t('item')}
           name="item"
           data={newItems}
-          onChange={(val) =>
-            val == null ? setFormValue({ ...formValue, item: "" }) : ""
+          onChange={val =>
+            val == null ? setFormValue({ ...formValue, item: '' }) : ''
           }
-          style={{ width: "300px" }}
+          style={{ width: '300px' }}
         />
       </Form>
-      <Table autoHeight data={newHistory} wordWrap>
-        <Column flexGrow={1}>
-          <CRTable.CRHeaderCell>{t("date")}</CRTable.CRHeaderCell>
-          <Cell semiBold>
-            {({ date }) => <span>{formatFullDay(date)}</span>}
-          </Cell>
-        </Column>
+      <CRCard borderless>
+        <CRTable data={newHistory} autoHeight>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ date }) => (
+                <CRTable.CRCellStyled bold>
+                  {formatFullDay(date)}
+                </CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
 
-        <Column flexGrow={1}>
-          <CRTable.CRHeaderCell>{t("actions")}</CRTable.CRHeaderCell>
-          <Cell dataKey="body" semiBold />
-        </Column>
-      </Table>
-      <Div style={{ overflow: "hidden", height: "0px" }}>
+          <CRTable.CRColumn flexGrow={1}>
+            <CRTable.CRHeaderCell>{t('body')}</CRTable.CRHeaderCell>
+            <CRTable.CRCell>
+              {({ body }) => (
+                <CRTable.CRCellStyled bold>{body}</CRTable.CRCellStyled>
+              )}
+            </CRTable.CRCell>
+          </CRTable.CRColumn>
+        </CRTable>
+      </CRCard>
+      <Div style={{ overflow: 'hidden', height: '0px' }}>
         <Div ref={ref}>
-          <Table autoHeight data={newHistory} wordWrap >
+          <Table autoHeight data={newHistory} wordWrap>
             <Column flexGrow={0.3}>
-              <CRTable.CRHeaderCell>{t("date")}</CRTable.CRHeaderCell>
-              <Cell semiBold >
+              <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
+              <Cell semiBold>
                 {({ date }) => <span>{formatFullDay(date)}</span>}
               </Cell>
             </Column>
 
             <Column flexGrow={2}>
-              <CRTable.CRHeaderCell>{t("actions")}</CRTable.CRHeaderCell>
+              <CRTable.CRHeaderCell>{t('actions')}</CRTable.CRHeaderCell>
               <Cell dataKey="body" semiBold />
             </Column>
           </Table>

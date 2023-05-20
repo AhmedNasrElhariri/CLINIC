@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useCallback, useState } from 'react';
-import { MainContainer, CRCard } from 'components';
+import { MainContainer, CRCard, BranchSpecialtyUserFilter } from 'components';
 import AddItem from '../add-item';
 import ListInventory from '../list-inventory';
 import {
@@ -24,6 +24,11 @@ const initInventoryValue = {
   specialtyId: null,
   userId: null,
 };
+const initialBranchValue = {
+  branch: null,
+  specialty: null,
+  doctor: null,
+};
 const { StringType, NumberType } = Schema.Types;
 
 const model = Schema.Model({
@@ -31,12 +36,16 @@ const model = Schema.Model({
   quantity: NumberType().isRequired('Amount Type is required'),
 });
 const InventoryStatus = () => {
+  const [branchSpecialtyUser, setBranchSpecialtyUser] =
+    useState(initialBranchValue);
   const { items, inventoryWithAmount, consumeInventoryManual } = useInventory({
+    branchId: branchSpecialtyUser?.branch,
+    specialtyId: branchSpecialtyUser?.specialty,
+    doctorId: branchSpecialtyUser?.doctor,
     onConsumeInventory: () => {
       close();
     },
   });
-  console.log(items, 'items');
   const { visible, close, open } = useModal({});
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState([]);
@@ -81,7 +90,7 @@ const InventoryStatus = () => {
         }
         nobody
       ></MainContainer>
-      <CRCard borderless>
+      {/* <CRCard borderless>
         <Filter
           appointments={updatedInventoryWithAmount}
           branches={filterBranches}
@@ -98,7 +107,20 @@ const InventoryStatus = () => {
             </Div>
           )}
         />
-      </CRCard>
+      </CRCard> */}
+      <BranchSpecialtyUserFilter
+        formValue={branchSpecialtyUser}
+        onChange={setBranchSpecialtyUser}
+        branches={filterBranches}
+      />
+      <Div>
+        <ListInventory items={updatedInventoryWithAmount} />
+        <Div style={{ overflow: 'hidden', height: '0px' }}>
+          <Div ref={ref} mt={20} mr={10}>
+            <ListInventory items={updatedInventoryWithAmount} />
+          </Div>
+        </Div>
+      </Div>
       <ConsumeUnits
         setSelectedItems={setSelectedItems}
         close={close}

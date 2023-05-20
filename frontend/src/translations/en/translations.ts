@@ -496,5 +496,7 @@ export const TRANSLATIONS_EN = {
   purchasingPricePerUnit: 'Purchasing Price Per Unit',
   sellingPricePerUnit: 'Selling Price Per Unit',
   sellingPricePerBox: 'Selling Price Per Box',
-  purchasingPricePerBox:'Purchasing Price Per Box'
+  purchasingPricePerBox: 'Purchasing Price Per Box',
+  sell: 'Sell',
+  sellItem: 'Sell Item',
 };

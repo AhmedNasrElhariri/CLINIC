@@ -27,10 +27,23 @@ function useInventory({
   onTransferInventory,
   onConsumeInventory,
   isSelling,
+  branchId,
+  specialtyId,
+  doctorId,
 } = {}) {
   const { data: ItemData } = useQuery(LIST_ITEMS);
-  const { data: InventoryData, refetch: refetchInventory } =
-    useQuery(LIST_INVENTORY);
+  const { data: InventoryData, refetch: refetchInventory } = useQuery(
+    LIST_INVENTORY,
+    {
+      variables: Object.assign(
+        {},
+        branchId && { branchId: branchId },
+        specialtyId && { specialtyId: specialtyId },
+        doctorId && { doctorId: doctorId }
+      ),
+      fetchPolicy: 'cache-and-network',
+    }
+  );
   const { data: InventoryHistoryData, refetch: refetchInventoryHistory } =
     useQuery(LIST_INVENTORY_HISTORY, { variables: { isSelling: isSelling } });
   const { data: consumptionData, refetch: refetchPendingConsumption } =
@@ -95,9 +108,12 @@ function useInventory({
       const { items } = cache.readQuery({
         query: LIST_ITEMS,
       });
+      const newItems = items.map(i => (i.id === editItem.id ? editItem : i));
       cache.writeQuery({
         query: LIST_ITEMS,
-        data: { items: [...items, editItem] },
+        data: {
+          items: [...newItems],
+        },
       });
     },
   });

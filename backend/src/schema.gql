@@ -354,7 +354,7 @@ type Query {
   myNotifications: [Notification!]
   myEvents: [Event!]
   items: [Item!]
-  inventory: [InventoryItem!]
+  inventory(doctorId: ID, specialtyId: ID, branchId: ID): [InventoryItem!]
   inventoryHistory(isSelling: Boolean): [InventoryHistory!]
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
@@ -1917,6 +1917,8 @@ input AddToInventoryInput {
 input FinishAppointmentItemInput {
   itemId: String!
   quantity: Float!
+  pricePerBox: Float
+  pricePerUnit: Float
 }
 input InventoryConsumedItemInput {
   items: [FinishAppointmentItemInput!]
