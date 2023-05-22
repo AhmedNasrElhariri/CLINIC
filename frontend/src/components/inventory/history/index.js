@@ -67,7 +67,7 @@ const InventoryHistory = () => {
             </CRTable.CRCell>
           </CRTable.CRColumn>
 
-          <CRTable.CRColumn flexGrow={1}>
+          <CRTable.CRColumn flexGrow={3}>
             <CRTable.CRHeaderCell>{t('body')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ body }) => (

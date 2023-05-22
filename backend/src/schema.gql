@@ -820,11 +820,7 @@ type Mutation {
   addRoomDefinition(roomDefinition: RoomInputDefinition!): RoomDefinition
   editRoomDefinition(roomDefinition: RoomInputDefinition!): RoomDefinition
   transferInventoryItem(input: TransferInventoryItemsInput): InventoryItem
-  transferAction(
-    id: ID!
-    fromInventoryItemId: ID
-    type: String
-  ): InventoryItemConsumption
+  transferAction(id: ID!, fromInventoryItemId: ID, type: String): TransferAction
 }
 
 ########################### Auth ##################################
@@ -1877,6 +1873,10 @@ type InventoryItemConsumption {
   inventoryItem: InventoryItem!
   fromInventoryItemId: ID
 }
+type TransferAction {
+  inventoryItemConsumption: InventoryItemConsumption
+  accept: Boolean
+}
 
 type InventoryHistory {
   body: String!
@@ -2361,12 +2361,10 @@ input SalesInputDefinition {
 type Sales {
   id: ID!
   date: Date!
-  salesDefinition: SalesDefinition!
-  salesDefinitionId: ID
+  item: Item!
+  itemId: ID
   quantity: Int!
   totalPrice: Int!
-  totalCost: Int!
-  level: String!
   branch: Branch
   specialty: Specialty
   user: User
@@ -2374,7 +2372,6 @@ type Sales {
 type SalesData {
   sales: [Sales!]
   totalSalesPrice: Int
-  totalSalesCost: Int
   salesCounts: Int
 }
 

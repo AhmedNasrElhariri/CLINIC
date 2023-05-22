@@ -115,13 +115,12 @@ export const reducedInventoryPattern = async (
           },
         },
       });
-
-      const createRevenueFromInvemtory = prisma.revenue.createMany({
-        data: createRevenueFromInventory(filteredItems, organizationId),
-      });
+      // const createRevenueFromInvemtory = prisma.revenue.createMany({
+      //   data: createRevenueFromInventory(filteredItems, organizationId),
+      // });
       await prisma.$transaction([
         updateInventoryItem,
-        createRevenueFromInvemtory,
+        // createRevenueFromInvemtory,
       ]);
     } else {
       await prisma.inventoryItem.update({
@@ -252,10 +251,11 @@ export const createSubstractHistoryForMultipleItems = async ({
       itemId: i.itemId,
       quantity: item.quantity,
       branchId: i.branchId,
-      totalPrice: i.quantity * i.price,
+      totalPrice: isSelling
+        ? item.quantity * item.pricePerUnit
+        : i.quantity * i.price,
     };
   });
-
   return Promise.all(
     items.map(i =>
       prisma.inventoryHistory.create({
@@ -329,9 +329,9 @@ export const createHistoryBody = async (
     case INVENTORY_OPERATION.ADD:
       return `${user.name} added ${
         quantity / item.quantity
-      } boxes(${quantity} units) of ${
-        item.name
-      } which cost ${price} L.E. per unit to ${
+      } boxes(${quantity} units) of ${item.name} which cost (${
+        price * quantity
+      } L.E) per box (${price} L.E.) per unit to ${
         patientName
           ? `${patientName}`
           : doctorName

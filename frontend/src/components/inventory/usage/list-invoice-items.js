@@ -8,6 +8,7 @@ function ListInvoiceItems({
   formValue,
   onChange,
   isSelling,
+  t,
 }) {
   const handleChangePricePerBox = useCallback(
     (value, index) => {
@@ -48,7 +49,7 @@ function ListInvoiceItems({
           {formValue.map((item, idx) => (
             <div key={idx} className="flex items-center">
               <h6
-                style={isSelling ? { width: '200px', marginTop: '30px' } : {}}
+                style={isSelling ? { width: '200px', marginTop: '23px' } : {}}
               >
                 {ItemName(item?.itemId)}
               </h6>
@@ -56,16 +57,16 @@ function ListInvoiceItems({
                 <Form>
                   <Div display="flex">
                     <CRNumberInput
-                      label="pricePerBox"
+                      label={t('pricePerBox')}
                       name="pricePerBox"
-                      style={{ maxWidth: '120px' }}
+                      size="md"
                       value={item.pricePerBox}
                       onChange={val => handleChangePricePerBox(val, idx)}
                     />
                     <CRNumberInput
-                      label="pricePerUnit"
+                      label={t('pricePerUnit')}
                       name="pricePerUnit"
-                      style={{ maxWidth: '120px' }}
+                      size="md"
                       value={item.pricePerUnit}
                       onChange={val => handleChangePricePerUnit(val, idx)}
                     />

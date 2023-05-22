@@ -499,4 +499,9 @@ export const TRANSLATIONS_EN = {
   purchasingPricePerBox: 'Purchasing Price Per Box',
   sell: 'Sell',
   sellItem: 'Sell Item',
+  noOfUnitsPerBox: 'No Of Units Per Medicine Box',
+  pricePerBox: 'Price per box',
+  pricePerUnit: 'Price per unit',
+  salesContainer: 'Sales container',
+  salesHistory: 'Sales history',
 };

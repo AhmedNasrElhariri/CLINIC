@@ -56,21 +56,23 @@ const TransferTo = ({
       ).values(),
     ];
   }, [branches]);
-
   return (
     <Div margin="0px 50px">
-      <Div display="flex" justifyContent="space-between">
+      <Div>
         <Div>
-          <Div fontWeight="bold" mb="20px">
-            Transfer To
+          <Div fontWeight="bold" mb="10px">
+            Transfer From
           </Div>
           <Div>{ItemName}</Div>
         </Div>
         <Div>
-          <Div fontWeight="bold" mb="20px">
+          <Div fontWeight="bold" mb="10px" mt="10px">
             Quantity
           </Div>
-          <Div>{fromFormValue?.quantity}</Div>
+          <Div>
+            {fromFormValue?.quantity / fromFormValue?.item?.item?.quantity}{' '}
+            boxes ({fromFormValue?.quantity} units)
+          </Div>
         </Div>{' '}
       </Div>
       <Div fontWeight="bold" m="20px 0px">

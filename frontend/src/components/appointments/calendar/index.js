@@ -72,6 +72,7 @@ function AppointmentCalendar() {
   const [visible, setVisible] = useState(false);
   const [formValue, setFormValue] = useState(initialValue);
   const [onCreateAppointment] = useGlobalState('onCreateAppointment');
+  const today = new Date();
   const { can } = useAuth();
   const { t } = useTranslation();
   const { events, createEvent } = useEvents({
@@ -263,6 +264,14 @@ function AppointmentCalendar() {
             showMultiDayTimes
             selectable
             popup
+            min={
+              new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate(),
+                10
+              )
+            }
           />
         </div>
         <NewEvent

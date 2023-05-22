@@ -154,7 +154,10 @@ export const TRANSFER_ACTION = gql`
       fromInventoryItemId: $fromInventoryItemId
       type: $type
     ) {
-      id
+      inventoryItemConsumption {
+        id
+      }
+      accept
     }
   }
 `;

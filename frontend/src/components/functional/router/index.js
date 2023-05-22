@@ -66,7 +66,7 @@ const CreatePatientView = lazy(() =>
 );
 // const Csv = lazy(() => import('../../../components/csv'));
 const Payroll = lazy(() => import('../../../components/payroll'));
-const Sales = lazy(() => import('../../../components/sales-from-inventory'));//sales
+const Sales = lazy(() => import('../../../components/sales')); //sales
 const Courses = lazy(() => import('../../../components/courses'));
 const SupplierAccountContainer = lazy(() =>
   import('../../supplier-account-container')
@@ -84,9 +84,7 @@ const CreateDefaultView = lazy(() =>
   import('../../../components/views/create-default-view')
 );
 const LoggingContainer = lazy(() => import('../../../components/logging'));
-const DoctorsContainer = lazy(() =>
-  import('../../admin/doctors')
-);
+const DoctorsContainer = lazy(() => import('../../admin/doctors'));
 // const {
 //   NewPatient,
 //   NewAppointment,

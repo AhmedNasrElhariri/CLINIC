@@ -123,20 +123,29 @@ export default {
     eventWrapper: ({ children, event }) => {
       return <DayWrapper {...event}>{children}</DayWrapper>;
     },
-    event: ({ event: { session, patient, start } }) => (
-      <DayEventStyled>
-        <Div height="100%" display="flex" alignItems="center">
-          <Div flexGrow={1} display="flex" width="100%" alignItems="center">
-            <IconStyled icon="calendar" mr={1} />
-            <Time>{formatDate(start, 'HH:mm A')}</Time>
-            <Div ml={2}>
-              <Name>
-                {session?.name} / {patient?.name}
-              </Name>
+    event: ({ event }) => (
+      <Whisper
+        trigger="hover"
+        speaker={
+          <PopoverStyled {...event}>
+            <EventDetails {...event} />
+          </PopoverStyled>
+        }
+      >
+        <DayEventStyled>
+          <Div height="100%" display="flex" alignItems="center">
+            <Div flexGrow={1} display="flex" width="100%" alignItems="center">
+              <IconStyled icon="calendar" mr={1} />
+              <Time>{formatDate(event?.start, 'HH:mm A')}</Time>
+              <Div ml={2}>
+                <Name>
+                  {event?.session?.name} / {event?.patient?.name}
+                </Name>
+              </Div>
             </Div>
           </Div>
-        </Div>
-      </DayEventStyled>
+        </DayEventStyled>
+      </Whisper>
     ),
   },
 };

@@ -92,18 +92,18 @@ export const LIST_SALESES = gql`
       sales {
         id
         totalPrice
-        totalCost
         quantity
         date
-        salesDefinitionId
+        itemId
         user {
           id
           name
         }
-        salesDefinition {
+        item {
           id
           name
-          price
+          sellingPricePerUnit
+          sellingPricePerBox
         }
         branch {
           id
@@ -115,7 +115,6 @@ export const LIST_SALESES = gql`
         }
       }
       totalSalesPrice
-      totalSalesCost
       salesCounts
     }
   }

@@ -44,12 +44,15 @@ function useInventory({
       fetchPolicy: 'cache-and-network',
     }
   );
+
   const { data: InventoryHistoryData, refetch: refetchInventoryHistory } =
     useQuery(LIST_INVENTORY_HISTORY, { variables: { isSelling: isSelling } });
+
   const { data: consumptionData, refetch: refetchPendingConsumption } =
     useQuery(LIST_PENDING_CONSUMPtION_ITEMS);
 
   const items = useMemo(() => R.propOr([], 'items')(ItemData), [ItemData]);
+
   const inventory = useMemo(
     () => R.propOr([], 'inventory')(InventoryData),
     [InventoryData]
@@ -58,6 +61,7 @@ function useInventory({
     () => R.propOr([], 'inventoryHistory')(InventoryHistoryData),
     [InventoryHistoryData]
   );
+
   const pendingConsumptionItems = useMemo(
     () => R.propOr([], 'listConsutionItems')(consumptionData),
     [consumptionData]
@@ -167,26 +171,26 @@ function useInventory({
       onAddCompleted && onAddCompleted(addItem);
     },
 
-    update(
-      cache,
-      {
-        data: {
-          addItem: { id, quantity },
-        },
-      }
-    ) {
-      const { inventory } = cache.readQuery({
-        query: LIST_INVENTORY,
-      });
-      cache.writeQuery({
-        query: LIST_INVENTORY,
-        data: {
-          inventory: inventory.map(i =>
-            Object.assign({}, i, i.id === id && { quantity })
-          ),
-        },
-      });
-    },
+    // update(
+    //   cache,
+    //   {
+    //     data: {
+    //       addItem: { id, quantity },
+    //     },
+    //   }
+    // ) {
+    //   const { inventory } = cache.readQuery({
+    //     query: LIST_INVENTORY,
+    //   });
+    //   cache.writeQuery({
+    //     query: LIST_INVENTORY,
+    //     data: {
+    //       inventory: inventory.map(i =>
+    //         Object.assign({}, i, i.id === id && { quantity })
+    //       ),
+    //     },
+    //   });
+    // },
   });
 
   const [consumeInventoryManual] = useMutation(CONSUME_INVENTORY_MANUAl, {
@@ -214,12 +218,14 @@ function useInventory({
     },
   });
   const [transferAction] = useMutation(TRANSFER_ACTION, {
-    onCompleted() {
+    onCompleted({ transferAction: { accept } }) {
       onTransferInventory && onTransferInventory();
       refetchInventoryHistory();
       refetchInventory();
       refetchPendingConsumption();
-      Alert.success('the Inventory method has been done Successfully');
+      accept
+        ? Alert.success('Ihe inventory item has been transferd Successfully')
+        : Alert.error('The Inventory item has been rejected');
     },
     onError: err => {
       Alert.error(err.message);

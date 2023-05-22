@@ -1104,7 +1104,7 @@ model InventoryHistory {
   operation      InventoryOperation
   quantity       Float
   totalPrice     Float?
-  price          Int?
+  price          Float?
   date           DateTime
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @default(now()) @updatedAt

@@ -65,8 +65,8 @@ const ListInventory = ({ items }) => {
   );
 };
 
-ListInventory.defaultProps = {
-  items: [],
-};
+// ListInventory.defaultProps = {
+//   items: [],
+// };
 
 export default ListInventory;

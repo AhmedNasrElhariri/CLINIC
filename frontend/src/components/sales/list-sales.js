@@ -5,7 +5,6 @@ import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { CRCard, CRTable } from 'components';
 import { useTranslation } from 'react-i18next';
 
-  
 function ListSaleses({
   saleses,
   onEdit,
@@ -46,10 +45,8 @@ function ListSaleses({
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('name')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ salesDefinition }) => (
-                <CRTable.CRCellStyled bold>
-                  {salesDefinition.name}
-                </CRTable.CRCellStyled>
+              {({ item }) => (
+                <CRTable.CRCellStyled bold>{item.name}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
@@ -61,16 +58,7 @@ function ListSaleses({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ salesDefinition }) => (
-                <CRTable.CRCellStyled bold>
-                  {salesDefinition?.price}
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
+
           <CRTable.CRColumn flexGrow={1}>
             <CRTable.CRHeaderCell>{t('quantity')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>

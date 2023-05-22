@@ -103,44 +103,6 @@ function NewSales({
               </CRButton>
             </div>
             <ListInvoiceItems items={itemsList} onDelete={handleDelete} />
-            <Div style={{ overflow: 'hidden', height: '0px' }}>
-              <Div ref={ref}>
-                <H4 textAlign="center" margin="10px">
-                  Sales Invoice
-                </H4>
-                {itemsList.map((item, idx) => (
-                  <Div
-                    display="flex"
-                    justifyContent="space-between"
-                    width="400px"
-                    mb={10}
-                    key={idx}
-                  >
-                    <Div display="flex" alignItems="center" ml={10}>
-                      <H7 color="texts.1">
-                        {item.quantity}
-                        {' / '}
-                      </H7>
-                      <H7 color="texts.1" textDecoration="underline">
-                        {item.name}
-                      </H7>
-                    </Div>
-                    <Div display="flex" alignItems="center" ml={10}>
-                      <H7 color="texts.1">EGP {item.price * item.quantity}</H7>
-                    </Div>
-                  </Div>
-                ))}
-                <Div
-                  display="flex"
-                  justifyContent="space-between"
-                  width="400px"
-                  mb={10}
-                >
-                  <Div ml={10}>Total</Div>
-                  <Div>EGP {total}</Div>
-                </Div>
-              </Div>
-            </Div>
           </>
         )}
       </Form>

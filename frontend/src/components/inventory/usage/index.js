@@ -136,6 +136,7 @@ function InventoryUsage({
         formValue={selectedItems}
         onChange={setSelectedItems}
         isSelling={isSelling}
+        t={t}
       />
     </Form>
   );

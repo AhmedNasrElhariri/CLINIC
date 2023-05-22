@@ -32,9 +32,22 @@ const sales = app => {
         updatedDateFrom = datesArray[0];
         updatedDateTo = datesArray[1];
       }
-      const sales = await prisma.sales.findMany({
+      console.log(
+        dateFrom,
+        'dd',
+        dateTo,
+        view,
+        doctorId,
+        specialtyId,
+        branchId,
+        itemId,
+        creatorId,
+        organizationId
+      );
+      const sales = await prisma.inventoryHistory.findMany({
         where: {
           organizationId,
+          operation: 'Sell',
           AND: [
             {
               branchId: branchId,
@@ -46,7 +59,7 @@ const sales = app => {
               doctorId: doctorId,
             },
             {
-              salesDefinitionId: itemId,
+              itemId: itemId,
             },
             {
               userId: creatorId,
@@ -59,19 +72,20 @@ const sales = app => {
           },
         },
         include: {
-          salesDefinition: true,
+          item: true,
+          user: true,
         },
       });
-      const totalSales = await prisma.sales.aggregate({
+      const totalSales = await prisma.inventoryHistory.aggregate({
         _sum: {
           totalPrice: true,
-          totalCost: true,
         },
         _count: {
           id: true,
         },
         where: {
           organizationId,
+          operation: 'Sell',
           AND: [
             {
               branchId: branchId,
@@ -83,7 +97,7 @@ const sales = app => {
               doctorId: doctorId,
             },
             {
-              salesDefinitionId: itemId,
+              itemId: itemId,
             },
             {
               userId: creatorId,
@@ -96,15 +110,15 @@ const sales = app => {
           },
         },
       });
+      console.log(totalSales);
       const totalPrice = totalSales._sum.totalPrice;
-      const totalCost = totalSales._sum.totalCost;
       const salesCount = totalSales._count.id;
       const updatedSales = sales.map(s => {
         return { ...s, date: formatDateStandard(s.date) };
       });
+      console.log(sales, 'SSaa', 'in');
       const pdfDoc = await generatePdf('/views/reports/sales.ejs', {
-        totalPrice: totalPrice,
-        totalCost: totalCost,
+        totalSalesPrice: totalPrice,
         salesCount: salesCount,
         sales: updatedSales,
         from: formatDateStandard(updatedDateFrom),
@@ -144,9 +158,10 @@ const sales = app => {
         updatedDateTo = datesArray[1];
       }
 
-      const sales = await prisma.sales.findMany({
+      const sales = await prisma.inventoryHistory.findMany({
         where: {
           organizationId,
+          operation: 'Sell',
           AND: [
             {
               branchId: branchId,
@@ -158,7 +173,7 @@ const sales = app => {
               doctorId: doctorId,
             },
             {
-              salesDefinitionId: itemId,
+              itemId: itemId,
             },
             {
               userId: creatorId,
@@ -170,14 +185,15 @@ const sales = app => {
           },
         },
         include: {
-          salesDefinition: true,
+          item: true,
+          user: true,
         },
       });
       const updatedSales = sales.map(s => {
-        return { ...s, name: s.salesDefinition.name };
+        return { ...s, name: s.item.name, creator: s.user.name };
       });
-      let keys = ['name', 'date', 'quantity', 'totalPrice', 'totalCost'];
-      const workbook = generateExcel(keys, updatedSales);
+      let keys = ['date', 'name', 'creator', 'quantity', 'totalPrice'];
+      const workbook = generateExcel(keys, 'sales', updatedSales);
       var fileName = 'sales.xlsx';
       res.setHeader(
         'Content-Type',

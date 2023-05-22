@@ -59,6 +59,7 @@ const Transfer = () => {
         toSetFormValue(initialToValue);
       },
     });
+  console.log(pendingConsumptionItems, 'pendingConsumptionItems');
   const handleTransferInventory = useCallback(() => {
     open();
     setHeader(t('transferMedicineOrItem'));

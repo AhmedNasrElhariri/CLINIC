@@ -51,12 +51,27 @@ const NewItem = () => {
     close();
     reset();
   }, [close, reset]);
-  useEffect(() => {
-    setFormValue(prev => ({
-      ...prev,
-      sellingPricePerUnit: formValue.sellingPricePerBox / formValue.quantity,
-    }));
-  }, [setFormValue, formValue.sellingPricePerBox, formValue.quantity]);
+  const handlePriceChange = useCallback(
+    (val, type) => {
+      if (type === 'sellingPricePerBox') {
+        const sellingPricePerUnit = val / formValue.quantity;
+        setFormValue({
+          ...formValue,
+          sellingPricePerUnit: sellingPricePerUnit,
+          sellingPricePerBox: val,
+        });
+      } else {
+        const sellingPricePerBox = val * formValue.quantity;
+        setFormValue({
+          ...formValue,
+          sellingPricePerUnit: val,
+          sellingPricePerBox: sellingPricePerBox,
+        });
+      }
+    },
+    [formValue.quantity]
+  );
+
   return (
     <>
       <CRButton variant="primary" onClick={open}>
@@ -99,20 +114,21 @@ const NewItem = () => {
             block
           ></CRSelectInput>
           <CRNumberInput
-            label={t('noOfUnits')}
+            label={t('noOfUnitsPerBox')}
             name="quantity"
             block
           ></CRNumberInput>
           <CRNumberInput
             label="Selling price per Box(medicine box)"
+            onChange={val => handlePriceChange(val, 'sellingPricePerBox')}
             name="sellingPricePerBox"
             block
           ></CRNumberInput>
           <CRNumberInput
             label={t('sellingPricePerUnit')}
+            onChange={val => handlePriceChange(val, 'sellingPricePerUnit')}
             name="sellingPricePerUnit"
             block
-            disabled
             float
           ></CRNumberInput>
           <CRNumberInput

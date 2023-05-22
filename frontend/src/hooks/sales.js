@@ -7,6 +7,7 @@ import {
   EDIT_SALES,
   LIST_SALESES,
   DELETE_SALES,
+  CONSUME_INVENTORY_MANUAl,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -31,8 +32,9 @@ function useSales({
   page = 1,
   itemId,
   creatorId,
+  onConsumeInventory,
 } = {}) {
-  const { data } = useQuery(LIST_SALESES, {
+  const { data, refetch: refetchSales } = useQuery(LIST_SALESES, {
     variables: Object.assign(
       {
         offset: (page - 1) * 20 || 0,
@@ -47,14 +49,17 @@ function useSales({
       itemId && { itemId: itemId },
       creatorId && { creatorId: creatorId }
     ),
+    fetchPolicy: 'cache-and-network',
   });
   const salesData = data?.mySaleses;
 
   const saleses = useMemo(() => R.propOr([], 'sales')(salesData), [salesData]);
+
   const totalSalesPrice = useMemo(
     () => R.propOr(0, 'totalSalesPrice')(salesData),
     [salesData]
   );
+
   const totalSalesCost = useMemo(
     () => R.propOr(0, 'totalSalesCost')(salesData),
     [salesData]
@@ -63,7 +68,6 @@ function useSales({
     () => R.propOr(0, 'salesCounts')(salesData),
     [salesData]
   );
-
   const [addSales, { loading }] = useMutation(ADD_SALES, {
     onCompleted() {
       Alert.success('the Item has been Added Successfully');
@@ -104,6 +108,16 @@ function useSales({
       Alert.error('Failed to add new Item');
     },
   });
+  const [consumeInventoryManual] = useMutation(CONSUME_INVENTORY_MANUAl, {
+    onCompleted() {
+      onConsumeInventory && onConsumeInventory();
+      refetchSales();
+      Alert.success('the Inventory has been Consumed Successfully');
+    },
+    onError: err => {
+      Alert.error(err.message);
+    },
+  });
   return useMemo(
     () => ({
       saleses,
@@ -117,6 +131,12 @@ function useSales({
       loading: loading,
       editLoading: editLoading,
       deleteLoading: deleteLoading,
+      consumeInventoryManual: data =>
+        consumeInventoryManual({
+          variables: {
+            data,
+          },
+        }),
     }),
     [
       saleses,
@@ -129,6 +149,7 @@ function useSales({
       loading,
       editLoading,
       deleteLoading,
+      consumeInventoryManual,
     ]
   );
 }

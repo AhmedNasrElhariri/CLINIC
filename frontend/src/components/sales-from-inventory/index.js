@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInventory, useModal, useForm } from 'hooks';
 import { Schema } from 'rsuite';
-import ConsumeUnits from '../inventory/status/consume-items';
+import ConsumeUnits from './sale-item';
 import ListData from './list-data';
 const initInventoryValue = {
   itemId: null,
@@ -11,6 +11,10 @@ const initInventoryValue = {
   branchId: null,
   specialtyId: null,
   userId: null,
+  saleOption: 'saleByUnit',
+  pricePerUnit: 0,
+  numberOfBoxes: 0,
+  pricePerBox: 0,
 };
 const { StringType, NumberType } = Schema.Types;
 
@@ -37,7 +41,6 @@ const Sales = () => {
   const handleSaleItem = useCallback(() => {
     open();
   }, [open]);
-  const handleInventoryChange = useCallback(() => {}, []);
 
   return (
     <>
@@ -61,7 +64,6 @@ const Sales = () => {
         formValue={formValue}
         visible={visible}
         consumeInventoryManual={consumeInventoryManual}
-        handleInventoryChange={handleInventoryChange}
         t={t}
         setFormValue={setFormValue}
         isSelling

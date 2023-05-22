@@ -41,8 +41,9 @@ const mySaleses = async (
     updatedDateTo = datesArray[1];
   }
 
-  const sales = await prisma.sales.findMany({
+  const sales = await prisma.inventoryHistory.findMany({
     where: {
+      operation: 'Sell',
       AND: [
         {
           OR: [
@@ -75,7 +76,7 @@ const mySaleses = async (
               doctorId: doctorId,
             },
             {
-              salesDefinitionId: itemId,
+              itemId: itemId,
             },
             {
               userId: creatorId,
@@ -88,8 +89,11 @@ const mySaleses = async (
         lte: updatedDateTo,
       },
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
     include: {
-      salesDefinition: true,
+      item: true,
       user: true,
       branch: true,
       specialty: true,
@@ -97,15 +101,16 @@ const mySaleses = async (
     skip: offset,
     take: limit,
   });
-  const totalSales = await prisma.sales.aggregate({
+  const totalSales = await prisma.inventoryHistory.aggregate({
     _sum: {
       totalPrice: true,
-      totalCost: true,
+      // totalCost: true,
     },
     _count: {
       id: true,
     },
     where: {
+      operation: 'Sell',
       AND: [
         {
           OR: [
@@ -138,7 +143,7 @@ const mySaleses = async (
               doctorId: doctorId,
             },
             {
-              salesDefinitionId: itemId,
+              itemId: itemId,
             },
             {
               userId: creatorId,
@@ -153,12 +158,11 @@ const mySaleses = async (
     },
   });
   const totalPrice = totalSales._sum.totalPrice;
-  const totalCost = totalSales._sum.totalCost;
   const salesCount = totalSales._count.id;
+  console.log(totalPrice, 'totalPrice');
   const data = {
     sales: sales,
     totalSalesPrice: totalPrice,
-    totalSalesCost: totalCost,
     salesCounts: salesCount,
   };
   return data;
