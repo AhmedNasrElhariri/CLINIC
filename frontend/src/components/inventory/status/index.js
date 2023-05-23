@@ -15,7 +15,7 @@ import { Div, CRButton } from 'components';
 import ReactToPrint from 'react-to-print';
 import { useTranslation } from 'react-i18next';
 import ConsumeUnits from './consume-items';
-import { Schema } from 'rsuite';
+import { Schema, Alert } from 'rsuite';
 const initInventoryValue = {
   itemId: null,
   quantity: 0,
@@ -38,14 +38,24 @@ const model = Schema.Model({
 const InventoryStatus = () => {
   const [branchSpecialtyUser, setBranchSpecialtyUser] =
     useState(initialBranchValue);
-  const { items, inventoryWithAmount, consumeInventoryManual } = useInventory({
+  const {
+    items,
+    inventoryWithAmount,
+    consumeInventoryManual,
+    addItem,
+    addItemLoading,
+  } = useInventory({
     branchId: branchSpecialtyUser?.branch,
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
     onConsumeInventory: () => {
       close();
     },
+    onAddCompleted: () => {
+      Alert.success('Item has been created successfully');
+    },
   });
+
   const { visible, close, open } = useModal({});
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState([]);
@@ -68,6 +78,7 @@ const InventoryStatus = () => {
     open();
   }, [open]);
   const handleInventoryChange = useCallback(() => {}, []);
+
   return (
     <>
       <MainContainer
@@ -82,7 +93,11 @@ const InventoryStatus = () => {
               )}
               content={() => ref.current}
             />
-            <AddItem items={items} />
+            <AddItem
+              items={items}
+              addItem={addItem}
+              addItemLoading={addItemLoading}
+            />
             <CRButton onClick={() => handleConsumeInventory()} ml={10}>
               {t('consume')}
             </CRButton>

@@ -5,8 +5,10 @@ const items = (_, __, { organizationId }) => {
     where: {
       organizationId,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
-  
 };
 
 export default items;

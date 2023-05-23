@@ -66,29 +66,25 @@ function useInventory({
     () => R.propOr([], 'listConsutionItems')(consumptionData),
     [consumptionData]
   );
-  const inventoryWithAmount = useMemo(
-    () =>
-      inventory
-        .filter(
-          i => i.quantity > 0 && !!items.find(item => item.id === i.itemId)
-        )
-        .map(i => {
-          const item = items.find(item => item.id === i.itemId);
-          return {
-            name: item.name,
-            amount: i.quantity / item.quantity,
-            quantity: i.quantity,
-            price: i.price,
-            item,
-            level: i.level,
-            branch: i.branch,
-            specialty: i.specialty,
-            user: i.doctor,
-            id: i.id,
-          };
-        }),
-    [inventory, items]
-  );
+  const inventoryWithAmount = useMemo(() => {
+    return inventory
+      .filter(i => i.quantity > 0 && !!items.find(item => item.id === i.itemId))
+      .map(i => {
+        const item = items.find(item => item.id === i.itemId);
+        return {
+          name: item.name,
+          amount: i.quantity / item.quantity,
+          quantity: i.quantity,
+          price: i.price,
+          item,
+          level: i.level,
+          branch: i.branch,
+          specialty: i.specialty,
+          user: i.doctor,
+          id: i.id,
+        };
+      });
+  }, [inventory, items]);
   const [create, { loading: createItemLoading }] = useMutation(CREATE_ITEM, {
     onCompleted: ({ defineItem }) => {
       onCreateCompleted && onCreateCompleted(defineItem);
@@ -169,6 +165,9 @@ function useInventory({
       refetchInventoryHistory();
       refetchInventory();
       onAddCompleted && onAddCompleted(addItem);
+    },
+    onError: err => {
+      Alert.error(err.message);
     },
 
     // update(

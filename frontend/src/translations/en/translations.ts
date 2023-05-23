@@ -504,4 +504,5 @@ export const TRANSLATIONS_EN = {
   pricePerUnit: 'Price per unit',
   salesContainer: 'Sales container',
   salesHistory: 'Sales history',
+  editSale: 'Edit sale',
 };

@@ -82,12 +82,9 @@ function useSales({
     onCompleted() {
       Alert.success('the Item has been Edited Successfully');
       onEdit && onEdit();
+      refetchSales();
     },
-    refetchQueries: [
-      {
-        query: LIST_SALESES,
-      },
-    ],
+
     onError() {
       Alert.error('Failed to edit the Item');
     },

@@ -2364,21 +2364,21 @@ type Sales {
   item: Item!
   itemId: ID
   quantity: Int!
-  totalPrice: Int!
+  totalPrice: Float!
   branch: Branch
   specialty: Specialty
   user: User
 }
 type SalesData {
   sales: [Sales!]
-  totalSalesPrice: Int
+  totalSalesPrice: Float
   salesCounts: Int
 }
 
 input SalesInput {
   id: ID
-  salesDefinitionId: ID
   quantity: Int!
+  totalPrice: Int
 }
 
 input SalesItemsInput {

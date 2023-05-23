@@ -88,7 +88,7 @@ function ListSaleses({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn>
+          {/* <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {data => (
@@ -98,7 +98,7 @@ function ListSaleses({
                 </Icon>
               )}
             </CRTable.CRCell>
-          </CRTable.CRColumn>
+          </CRTable.CRColumn> */}
         </CRTable>
         <CRTable.CRPagination
           lengthMenu={[

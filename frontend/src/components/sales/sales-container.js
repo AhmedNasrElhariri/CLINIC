@@ -84,6 +84,7 @@ const SalesContainer = ({ t }) => {
     },
     onConsumeInventory: () => {
       close();
+      setSelectedItems([]);
     },
     isSelling: true,
     view,
@@ -118,11 +119,12 @@ const SalesContainer = ({ t }) => {
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
+
   const handleClickEdit = useCallback(
     data => {
-      const sales = R.pick(['id', 'quantity', 'salesDefinitionId'])(data);
+      const sales = R.pick(['id', 'quantity', 'totalPrice'])(data);
       setType('edit');
-      setFormValue(sales);
+      setFormValue({ ...sales, saleOption: 'saleByUnit' });
       open();
     },
     [open, setFormValue, setType]
@@ -259,6 +261,8 @@ const SalesContainer = ({ t }) => {
         t={t}
         setFormValue={setFormValue}
         isSelling
+        type={type}
+        editSale={editSales}
       />
 
       <Form

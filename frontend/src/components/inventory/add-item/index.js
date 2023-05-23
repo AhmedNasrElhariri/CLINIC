@@ -26,7 +26,7 @@ const initValue = {
 //   amount: NumberType().isRequired('Amount Type is required'),
 // });
 
-const AddItem = ({ items }) => {
+const AddItem = ({ items, addItem, addItemLoading }) => {
   const { visible, open, close } = useModal();
   const { t } = useTranslation();
   const {
@@ -41,14 +41,7 @@ const AddItem = ({ items }) => {
     initValue,
     // model,
   });
-  const { addItem, addItemLoading } = useInventory({
-    onAddCompleted: () => {
-      Alert.success('Item has been created successfully');
-      close();
-      setShow(false);
-      setFormValue(initValue);
-    },
-  });
+
   const updatedItems = items.map(i => ({ id: i, name: i.name }));
   const handleClose = useCallback(() => {
     close();
@@ -99,6 +92,9 @@ const AddItem = ({ items }) => {
         onOk={() => {
           const { item, undefined, ...rest } = formValue;
           addItem({ ...rest, itemId: item.id });
+          close();
+          setShow(false);
+          setFormValue(initValue);
         }}
         onHide={handleClose}
         onCancel={handleClose}
