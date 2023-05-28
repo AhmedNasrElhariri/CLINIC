@@ -67,6 +67,7 @@ function useInventory({
     [consumptionData]
   );
   const inventoryWithAmount = useMemo(() => {
+    console.log(inventory, 'inventory');
     return inventory
       .filter(i => i.quantity > 0 && !!items.find(item => item.id === i.itemId))
       .map(i => {
@@ -82,6 +83,7 @@ function useInventory({
           specialty: i.specialty,
           user: i.doctor,
           id: i.id,
+          barColor: i.barColor,
         };
       });
   }, [inventory, items]);
@@ -260,7 +262,7 @@ function useInventory({
       removeItem: itemInventory => {
         removeItem({
           variables: {
-            itemId: itemInventory.item.id,
+            itemId: itemInventory.id,
           },
         });
       },

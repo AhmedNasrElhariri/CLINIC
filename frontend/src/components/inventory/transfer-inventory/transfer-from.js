@@ -12,8 +12,7 @@ const TransferFrom = ({ t, formValue, onChange }) => {
   const { inventoryWithAmount } = useInventory();
   const handleChangeBoxOrUnits = useCallback(
     (value, type) => {
-      const numberOfBoxes =
-        formValue?.item?.quantity / formValue?.item?.amount;
+      const numberOfBoxes = formValue?.item?.quantity / formValue?.item?.amount;
       type === 'noOfUnits'
         ? onChange(prev => ({
             ...prev,
@@ -54,14 +53,14 @@ const TransferFrom = ({ t, formValue, onChange }) => {
         ></CRDocSelectInput>
         <div className="flex items-end gap-3 mb-5">
           <CRNumberInput
-            label={t('noOfUnits')}
-            value={formValue.quantity}
-            onChange={val => handleChangeBoxOrUnits(val, 'noOfUnits')}
-          />
-          <CRNumberInput
             label={t('numberOfBoxes')}
             value={formValue.noOfBoxes}
             onChange={val => handleChangeBoxOrUnits(val, 'numberOfBoxes')}
+          />
+          <CRNumberInput
+            label={t('noOfUnits')}
+            value={formValue.quantity}
+            onChange={val => handleChangeBoxOrUnits(val, 'noOfUnits')}
           />
         </div>
       </Form>

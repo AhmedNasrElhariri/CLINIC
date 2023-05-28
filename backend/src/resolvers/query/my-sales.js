@@ -104,6 +104,7 @@ const mySaleses = async (
   const totalSales = await prisma.inventoryHistory.aggregate({
     _sum: {
       totalPrice: true,
+      totalCost: true,
       // totalCost: true,
     },
     _count: {
@@ -164,6 +165,7 @@ const mySaleses = async (
     sales: sales,
     totalSalesPrice: totalPrice,
     salesCounts: salesCount,
+    totalCost: totalSales._sum.totalCost,
   };
   return data;
 };

@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
 import moment from 'moment';
 import { Views } from 'react-big-calendar';
+import { Navigate } from 'react-big-calendar';
 
-import { Div } from 'components';
 import { TodayButtonStyled } from './style';
 import { LeftArrowIcon, RightArrowIcon } from 'components/icons';
 import { formatDate } from 'utils/date';
-import { H4, CRButtonGroup } from 'components';
-
+import { H4, CRButtonGroup, CRDatePicker, Div } from 'components';
+import { Form } from 'rsuite';
 const renderDate = (date, view) => {
   switch (view) {
     case Views.DAY:
@@ -20,6 +20,8 @@ const renderDate = (date, view) => {
 const sameDate = date => moment(date).isSame(new Date(), 'day');
 
 function Toolbar({ date, view, onNavigate, onView }) {
+  const onPickerChange = newDate => onNavigate(Navigate.DATE, newDate);
+
   return (
     <Div
       display="flex"
@@ -38,6 +40,13 @@ function Toolbar({ date, view, onNavigate, onView }) {
       </Div>
 
       <Div display="flex">
+        <Form>
+          <CRDatePicker
+            name="date"
+            style={{ marginTop: '-10px', marginRight: '10px' }}
+            onChange={val => onPickerChange(val)}
+          />
+        </Form>
         <TodayButtonStyled
           onClick={() => onNavigate('TODAY')}
           active={sameDate(date)}

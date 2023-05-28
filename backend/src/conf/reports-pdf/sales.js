@@ -79,6 +79,7 @@ const sales = app => {
       const totalSales = await prisma.inventoryHistory.aggregate({
         _sum: {
           totalPrice: true,
+          totalCost: true,
         },
         _count: {
           id: true,
@@ -110,15 +111,15 @@ const sales = app => {
           },
         },
       });
-      console.log(totalSales);
       const totalPrice = totalSales._sum.totalPrice;
+      const totalCost = totalSales._sum.totalCost;
       const salesCount = totalSales._count.id;
       const updatedSales = sales.map(s => {
         return { ...s, date: formatDateStandard(s.date) };
       });
-      console.log(sales, 'SSaa', 'in');
       const pdfDoc = await generatePdf('/views/reports/sales.ejs', {
         totalSalesPrice: totalPrice,
+        totalCost: totalCost,
         salesCount: salesCount,
         sales: updatedSales,
         from: formatDateStandard(updatedDateFrom),

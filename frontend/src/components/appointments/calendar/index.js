@@ -224,11 +224,12 @@ function AppointmentCalendar() {
   };
   const handleNa = useCallback(
     val => {
-      setFormValue(prev => ({
-        ...prev,
+      console.log(val, 'VVV--');
+      setFormValue({
+        ...formValue,
         startDate: val,
         endDate: val,
-      }));
+      });
     },
     [setFormValue]
   );
@@ -241,7 +242,18 @@ function AppointmentCalendar() {
     },
     [setFormValue]
   );
-
+  const handleDateChange = useCallback(
+    val => {
+      console.log('---');
+      setFormValue({
+        ...formValue,
+        startDate: getStartOfDay(val),
+        endDate: getEndOfDay(val),
+      });
+    },
+    [setFormValue]
+  );
+  console.log(formValue, 'ddd');
   return (
     <CalendarContext.Provider
       value={{ onCancel: handleCancel, onAdjust: handleAdjust }}
@@ -255,8 +267,9 @@ function AppointmentCalendar() {
             localizer={localizer}
             components={components}
             onNavigate={handleNa}
+            onDateChange={handleDateChange}
             onView={handleView}
-            step={30}
+            step={15}
             timeslots={1}
             onSelectSlot={handleSelect}
             longPressThreshold={2000}

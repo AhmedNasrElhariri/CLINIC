@@ -7,6 +7,7 @@ import RemoveItem from '../remove-item';
 import { useTranslation } from 'react-i18next';
 
 const ListInventory = ({ items }) => {
+  console.log(items, 'items');
   const { t } = useTranslation();
   return (
     <CRTable autoHeight data={items}>

@@ -2,8 +2,8 @@ import { prisma } from '@';
 import { mapHistoryToMessage } from '@/services/inventory.service';
 import { INVENTORY_OPERATION } from '@/utils/constants';
 
-const inventoryHistory = (_, { isSelling }, { organizationId }) => {
-  return prisma.inventoryHistory
+const inventoryHistoryData = async (_, { isSelling }, { organizationId }) => {
+  const history = await prisma.inventoryHistory
     .findMany({
       where: Object.assign(
         {
@@ -25,6 +25,7 @@ const inventoryHistory = (_, { isSelling }, { organizationId }) => {
     .then(history => {
       return mapHistoryToMessage(history);
     });
+  return history;
 };
 
-export default inventoryHistory;
+export default inventoryHistoryData;

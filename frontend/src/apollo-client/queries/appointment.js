@@ -131,6 +131,7 @@ export const LIST_TODAY_APPOINTMENTS = gql`
         isFollowUp
         canAddFollowUp
         referedDoctor
+        barColor
         patient {
           id
           name

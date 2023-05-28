@@ -125,7 +125,7 @@ export default {
     },
     event: ({ event }) => (
       <Whisper
-        trigger="hover"
+        trigger="click"
         speaker={
           <PopoverStyled {...event}>
             <EventDetails {...event} />

@@ -1119,6 +1119,7 @@ type Appointment {
   canAddFollowUp: Boolean
   referedDoctor: Boolean
   patientSurgeries: [PatientSurgery]
+  barColor: String
 }
 
 type AppointmentData {
@@ -1863,6 +1864,7 @@ type InventoryItem {
   doctor: User
   level: String!
   item: Item
+  barColor: String
 }
 
 type InventoryItemConsumption {
@@ -2365,6 +2367,7 @@ type Sales {
   itemId: ID
   quantity: Int!
   totalPrice: Float!
+  totalCost: Float
   branch: Branch
   specialty: Specialty
   user: User
@@ -2372,6 +2375,7 @@ type Sales {
 type SalesData {
   sales: [Sales!]
   totalSalesPrice: Float
+  totalCost: Float
   salesCounts: Int
 }
 

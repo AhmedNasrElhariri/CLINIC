@@ -36,13 +36,7 @@ const CRTable = ({ children, flag, noFlag, ...props }) => (
       <CRTable.CRColumn width={7}>
         <CRTable.CRHeaderCell />
         <CRTable.CRCell>
-          {({ referedDoctor }) =>
-            referedDoctor ? (
-              <BarStyled flag="danger" />
-            ) : (
-              <BarStyled flag={flag} />
-            )
-          }
+          {({ barColor }) => <BarStyled flag={barColor ? barColor : flag} />}
         </CRTable.CRCell>
       </CRTable.CRColumn>
     )}

@@ -32,6 +32,7 @@ const transferInventoryItem = async (
   return createInventoryItem(inputTwo, {
     userId: userId,
     organizationId: organizationId,
+    notCreateHistory: true,
   });
 };
 

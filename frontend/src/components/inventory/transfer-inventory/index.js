@@ -55,6 +55,7 @@ const Transfer = () => {
       onTransferInventory: () => {
         close();
         setShowError(false);
+        setActiveStep(0);
         fromSetFormValue(initialFromValue);
         toSetFormValue(initialToValue);
       },
@@ -66,6 +67,9 @@ const Transfer = () => {
   }, [open, t, setType]);
   const handleCancel = useCallback(() => {
     close();
+    setActiveStep(0);
+    fromSetFormValue(initialFromValue);
+    toSetFormValue(initialToValue);
   }, [close]);
   const handleOk = useCallback(() => {
     if (type === 'transfer') {

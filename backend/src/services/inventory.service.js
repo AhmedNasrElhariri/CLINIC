@@ -199,6 +199,46 @@ export const storeHistoryOfAddition = async ({
   });
 };
 
+export const storeHistoryOfTransfer = async ({
+  itemId,
+  organizationId,
+  userId,
+  quantity,
+  price,
+  branchId,
+  specialtyId,
+  subOperation,
+}) => {
+  return prisma.inventoryHistory.create({
+    data: Object.assign(
+      {
+        item: {
+          connect: {
+            id: itemId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        operation: INVENTORY_OPERATION.TRANSFER,
+        quantity,
+        price,
+        date: new Date(),
+      },
+      branchId && { branch: { connect: { id: branchId } } },
+      specialtyId && { specialty: { connect: { id: specialtyId } } },
+      subOperation && { subOperation: subOperation }
+    ),
+  });
+};
+
 export const mapHistoryToMessage = async history => {
   const userIds = R.map(R.prop('userId'))(history);
   const users = await prisma.user.findMany({
@@ -254,6 +294,7 @@ export const createSubstractHistoryForMultipleItems = async ({
       totalPrice: isSelling
         ? item.quantity * item.pricePerUnit
         : i.quantity * i.price,
+      totalCost: item.quantity * i.price,
     };
   });
   return Promise.all(
@@ -281,6 +322,7 @@ export const createSubstractHistoryForMultipleItems = async ({
               : INVENTORY_OPERATION.SUBSTRACT,
             quantity: i.quantity,
             totalPrice: i.totalPrice,
+            totalCost: i.totalCost,
             date: new Date(),
           },
           specialtyId && {
@@ -318,7 +360,7 @@ export const createSubstractHistoryForMultipleItems = async ({
 };
 
 export const createHistoryBody = async (
-  { operation, price, quantity, item },
+  { operation, price, quantity, item, subOperation },
   user,
   patientName,
   doctorName,
@@ -346,38 +388,30 @@ export const createHistoryBody = async (
       return `${user.name} sold ${
         quantity / item.quantity
       } boxes(${quantity} units) of ${item.name} from ${
-        patientName
-          ? `${patientName}`
-          : doctorName
-          ? `${doctorName}`
-          : specialtyName
-          ? `${specialtyName}`
-          : branchName
-          ? `${branchName}`
-          : ''
-      }`;
+        branchName ? `${branchName}` : 'Organization warehouse'
+      } ${patientName && `to ${patientName ? `${patientName}` : ''}`}`;
     case INVENTORY_OPERATION.SUBSTRACT:
       return `${user.name} consumed ${
         quantity / item.quantity
       } boxes(${quantity} ${
         item.unitOfMeasure === 'PerUnit' ? 'units' : item.unitOfMeasure
       } ) of ${item.name} from ${
-        patientName
-          ? `${patientName}`
-          : doctorName
-          ? `${doctorName}`
-          : specialtyName
-          ? `${specialtyName}`
-          : branchName
-          ? `${branchName}`
-          : ''
-      }`;
+        branchName ? `${branchName}` : 'Organization warehouse'
+      } ${patientName && `to ${patientName ? `${patientName}` : ''}`} `;
+    case INVENTORY_OPERATION.TRANSFER:
+      return `${user.name} ${subOperation} ${
+        quantity / item.quantity
+      } boxes(${quantity} ${
+        item.unitOfMeasure === 'PerUnit' ? 'units' : item.unitOfMeasure
+      } ) of ${item.name} from ${
+        branchName ? `${branchName}` : 'Organization warehouse'
+      }  `;
   }
 };
 
 export const createInventoryItem = async (
   input,
-  { userId, organizationId }
+  { userId, organizationId, notCreateHistory }
 ) => {
   if (R.isNil(userId) || R.isNil(input.itemId)) {
     throw new APIExceptcion('invalid user');
@@ -411,15 +445,17 @@ export const createInventoryItem = async (
   )(persistedInventoryItem.length > 0 ? persistedInventoryItem[0] : {});
   const newtotalQuantity = inventoryItemQuantity + amount;
 
-  await storeHistoryOfAddition({
-    itemId,
-    userId,
-    organizationId,
-    quantity: amount,
-    price: purshasingPricePerUnit,
-    branchId,
-    specialtyId,
-  });
+  if (!notCreateHistory) {
+    await storeHistoryOfAddition({
+      itemId,
+      userId,
+      organizationId,
+      quantity: amount,
+      price: purshasingPricePerUnit,
+      branchId,
+      specialtyId,
+    });
+  }
 
   return prisma.inventoryItem.upsert({
     create: Object.assign(

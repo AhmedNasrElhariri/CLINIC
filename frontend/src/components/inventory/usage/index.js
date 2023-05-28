@@ -117,15 +117,16 @@ function InventoryUsage({
       ></CRDocSelectInput>
       <div className="flex items-end gap-3 mb-5">
         <CRNumberInput
-          label={t('noOfUnits')}
-          value={formValue.quantity}
-          onChange={val => handleChangeBoxOrUnits(val, 'noOfUnits')}
-        />
-        <CRNumberInput
           label={t('numberOfBoxes')}
           value={formValue.noOfBoxes}
           onChange={val => handleChangeBoxOrUnits(val, 'numberOfBoxes')}
         />
+        <CRNumberInput
+          label={t('noOfUnits')}
+          value={formValue.quantity}
+          onChange={val => handleChangeBoxOrUnits(val, 'noOfUnits')}
+        />
+
         <CRButton variant="primary" onClick={handleAdd}>
           {t('add')}
         </CRButton>

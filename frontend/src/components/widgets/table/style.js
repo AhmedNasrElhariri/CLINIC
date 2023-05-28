@@ -59,6 +59,9 @@ export const BarStyled = styled(Div)`
       danger: {
         background: theme => theme.colors.dangerDarker,
       },
+      alert: {
+        background: '#FFFF00',
+      },
     },
   })}
 `;

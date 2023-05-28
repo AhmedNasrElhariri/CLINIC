@@ -1,6 +1,7 @@
 import { CRCard, CRTable } from 'components';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 function ListPendingUserItems({ items, onGetAction, t }) {
+  console.log(items, 'items');
   return (
     <>
       <CRCard borderless>
@@ -28,13 +29,16 @@ function ListPendingUserItems({ items, onGetAction, t }) {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('price')}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('numberOfBoxes')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {({ price }) => (
-                <CRTable.CRCellStyled bold>{price}</CRTable.CRCellStyled>
+              {({ inventoryItem, numberOfUnits }) => (
+                <CRTable.CRCellStyled bold>
+                  {numberOfUnits / inventoryItem?.item?.quantity}
+                </CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
+
           <CRTable.CRColumn>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>

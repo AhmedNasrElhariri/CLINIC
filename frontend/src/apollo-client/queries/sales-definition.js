@@ -95,6 +95,7 @@ export const LIST_SALESES = gql`
         quantity
         date
         itemId
+        totalCost
         user {
           id
           name
@@ -116,6 +117,7 @@ export const LIST_SALESES = gql`
       }
       totalSalesPrice
       salesCounts
+      totalCost
     }
   }
 `;

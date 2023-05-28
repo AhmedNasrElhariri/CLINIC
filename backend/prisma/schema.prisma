@@ -127,6 +127,11 @@ enum InventoryOperation {
   Transfer
 }
 
+enum subInventoryOperation {
+  accept
+  reject
+}
+
 enum PatientOtpStatus {
   Pending
   Used
@@ -1088,27 +1093,29 @@ model InventoryItemConsumption {
 }
 
 model InventoryHistory {
-  id             String             @id @default(uuid())
-  item           Item               @relation(fields: [itemId], references: [id])
+  id             String                 @id @default(uuid())
+  item           Item                   @relation(fields: [itemId], references: [id])
   itemId         String
-  user           User               @relation("userInventory", fields: [userId], references: [id])
+  user           User                   @relation("userInventory", fields: [userId], references: [id])
   userId         String
-  patient        Patient?           @relation(fields: [patientId], references: [id])
+  patient        Patient?               @relation(fields: [patientId], references: [id])
   patientId      String?
-  specialty      Specialty?         @relation(fields: [specialtyId], references: [id])
+  specialty      Specialty?             @relation(fields: [specialtyId], references: [id])
   specialtyId    String?
-  branch         Branch?            @relation(fields: [branchId], references: [id])
+  branch         Branch?                @relation(fields: [branchId], references: [id])
   branchId       String?
-  doctor         User?              @relation("doctorInventory", fields: [doctorId], references: [id])
+  doctor         User?                  @relation("doctorInventory", fields: [doctorId], references: [id])
   doctorId       String?
   operation      InventoryOperation
+  subOperation   subInventoryOperation?
   quantity       Float
   totalPrice     Float?
+  totalCost      Float?
   price          Float?
   date           DateTime
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @default(now()) @updatedAt
-  organization   Organization       @relation(fields: [organizationId], references: [id])
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @default(now()) @updatedAt
+  organization   Organization           @relation(fields: [organizationId], references: [id])
   organizationId String
 }
 

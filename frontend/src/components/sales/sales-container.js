@@ -29,7 +29,7 @@ import axios from 'axios';
 
 const initValue = { itemId: '', quantity: 0 };
 const initFilter = {
-  item: {},
+  item: null,
   userId: null,
   specialtyId: null,
   branchId: null,
@@ -60,6 +60,7 @@ const SalesContainer = ({ t }) => {
   const [period, setPeriod] = useState([]);
   const { timeFrame } = useGeneralHook({ view, period });
   const { items } = useInventory({});
+  console.log(filter, 'ff');
   const { users: organizationusers } = useUsers({});
   const {
     saleses,
@@ -93,11 +94,13 @@ const SalesContainer = ({ t }) => {
     branchId: branchSpecialtyUser?.branch,
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
-    itemId: R.propOr(null, 'id')(filter?.item),
+    itemId: R.propOr(null, 'item')(filter),
     creatorId: filter?.userId,
   });
   const totals = {
     totalSales: totalSalesPrice,
+    totalCost: totalSalesCost,
+    profit: totalSalesPrice - totalSalesCost,
   };
   const pages = Math.ceil(salesCounts / 20);
   const handleDelete = useCallback(

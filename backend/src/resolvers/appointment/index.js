@@ -11,3 +11,4 @@ export { default as branch } from './branch';
 export { default as specialty } from './specialty';
 // export { default as subscriptionType } from './subscriptionType';
 export { default as canAddFollowUp } from './can-add-followup';
+export { default as barColor } from './barColor';

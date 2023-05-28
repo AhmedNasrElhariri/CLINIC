@@ -105,24 +105,7 @@ const InventoryStatus = () => {
         }
         nobody
       ></MainContainer>
-      {/* <CRCard borderless>
-        <Filter
-          appointments={updatedInventoryWithAmount}
-          branches={filterBranches}
-          notAllowUser
-          notAllowSpecialty
-          render={inventories => (
-            <Div>
-              <ListInventory items={inventories} />
-              <Div style={{ overflow: 'hidden', height: '0px' }}>
-                <Div ref={ref} mt={20} mr={10}>
-                  <ListInventory items={inventories} />
-                </Div>
-              </Div>
-            </Div>
-          )}
-        />
-      </CRCard> */}
+
       <BranchSpecialtyUserFilter
         formValue={branchSpecialtyUser}
         onChange={setBranchSpecialtyUser}

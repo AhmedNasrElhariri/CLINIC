@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { Alert, Icon } from 'rsuite';
 
-import { CRModal, H6 } from 'components';
+import { CRModal, H4 } from 'components';
 import { useModal, useInventory } from 'hooks';
 
 const RemoveItem = ({ item }) => {
@@ -24,7 +24,7 @@ const RemoveItem = ({ item }) => {
   const handleOk = useCallback(() => {
     removeItem(item);
   }, [item, removeItem]);
-
+  console.log(item, 'IIDID');
   return (
     <>
       <Icon icon="trash2" onClick={open} />
@@ -36,7 +36,7 @@ const RemoveItem = ({ item }) => {
         onHide={handleClose}
         onCancel={handleClose}
       >
-        <H6>Are you want sure?</H6>
+        <H4>Are you sure that you want to delete ?</H4>
       </CRModal>
     </>
   );

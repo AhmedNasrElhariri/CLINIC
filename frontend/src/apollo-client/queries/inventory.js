@@ -28,6 +28,7 @@ export const LIST_INVENTORY = gql`
       quantity
       price
       level
+      barColor
       item {
         name
       }
@@ -139,6 +140,7 @@ export const LIST_PENDING_CONSUMPtION_ITEMS = gql`
       inventoryItem {
         item {
           name
+          quantity
         }
         branch {
           name

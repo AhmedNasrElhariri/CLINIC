@@ -61,7 +61,7 @@ function useSales({
   );
 
   const totalSalesCost = useMemo(
-    () => R.propOr(0, 'totalSalesCost')(salesData),
+    () => R.propOr(0, 'totalCost')(salesData),
     [salesData]
   );
   const salesCounts = useMemo(
