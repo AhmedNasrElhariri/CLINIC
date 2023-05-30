@@ -38,7 +38,9 @@ function ListInvoiceItems({
     const item = items.find(i => i.id === itemId);
     return (
       <h6 style={isSelling ? { width: '200px', marginTop: '30px' } : {}}>
-        {`${item?.Quantity} / ${item?.name} / ${item?.branch?.name}`}
+        {`${item?.Quantity} / ${item?.name} / ${
+          item?.branch?.name ? item?.branch?.name : 'Organization warehouse'
+        }`}
       </h6>
     );
   };

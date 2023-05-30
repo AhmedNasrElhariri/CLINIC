@@ -31,3 +31,4 @@ export { default as CRBrancheTree } from './branch-tree';
 export { default as AllowedViews } from './allowed-views';
 export { default as CRTableWithInput } from './table-with-input';
 export { default as CRIcon } from './icon';
+export { default as CRSelectWithOrganization } from './select-with-org';

@@ -60,7 +60,6 @@ const SalesContainer = ({ t }) => {
   const [period, setPeriod] = useState([]);
   const { timeFrame } = useGeneralHook({ view, period });
   const { items } = useInventory({});
-  console.log(filter, 'ff');
   const { users: organizationusers } = useUsers({});
   const {
     saleses,

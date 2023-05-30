@@ -10,6 +10,7 @@ import {
   CRDocSelectInput,
   CRLabel,
   CRNumberInput,
+  CRSelectWithOrganization,
 } from 'components/widgets';
 import { normalize } from 'utils/misc';
 import { useTranslation } from 'react-i18next';
@@ -105,7 +106,7 @@ function InventoryUsage({
         notAllowSpecialty
         notAllowUser
       />
-      <CRDocSelectInput
+      <CRSelectWithOrganization
         label={t('item')}
         name="itemId"
         specialtyId={formValue?.specialtyId}
@@ -114,12 +115,13 @@ function InventoryUsage({
         data={itemsChoices}
         placement="auto"
         block
-      ></CRDocSelectInput>
+      ></CRSelectWithOrganization>
       <div className="flex items-end gap-3 mb-5">
         <CRNumberInput
           label={t('numberOfBoxes')}
           value={formValue.noOfBoxes}
           onChange={val => handleChangeBoxOrUnits(val, 'numberOfBoxes')}
+          float
         />
         <CRNumberInput
           label={t('noOfUnits')}

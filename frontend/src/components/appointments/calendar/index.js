@@ -224,7 +224,6 @@ function AppointmentCalendar() {
   };
   const handleNa = useCallback(
     val => {
-      console.log(val, 'VVV--');
       setFormValue({
         ...formValue,
         startDate: val,
@@ -244,7 +243,6 @@ function AppointmentCalendar() {
   );
   const handleDateChange = useCallback(
     val => {
-      console.log('---');
       setFormValue({
         ...formValue,
         startDate: getStartOfDay(val),
@@ -253,7 +251,6 @@ function AppointmentCalendar() {
     },
     [setFormValue]
   );
-  console.log(formValue, 'ddd');
   return (
     <CalendarContext.Provider
       value={{ onCancel: handleCancel, onAdjust: handleAdjust }}

@@ -8,7 +8,6 @@ const removeItem = async (_, { itemId }, { userId }) => {
     where: { id: itemId },
     include: { item: true },
   });
-  console.log(inventoryItem, 'inventoryItem');
   const history = await prisma.inventoryHistory.findMany({
     where: {
       itemId: inventoryItem.item.id,
@@ -18,7 +17,6 @@ const removeItem = async (_, { itemId }, { userId }) => {
       },
     },
   });
-  console.log(history, 'history', itemId, 'itemId');
   const removable =
     history.reduce((acc, { quantity }) => acc + quantity, 0) === 0;
 

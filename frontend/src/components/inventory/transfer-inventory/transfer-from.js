@@ -3,6 +3,7 @@ import {
   CRBrancheTree,
   CRNumberInput,
   CRDocSelectInput,
+  CRSelectWithOrganization,
 } from 'components';
 import { ACTIONS } from 'utils/constants';
 import { Form } from 'rsuite';
@@ -40,7 +41,7 @@ const TransferFrom = ({ t, formValue, onChange }) => {
           notAllowSpecialty
           notAllowUser
         />
-        <CRDocSelectInput
+        <CRSelectWithOrganization
           label={t('item')}
           specialtyId={formValue?.specialtyId}
           branchId={formValue?.branchId}
@@ -50,7 +51,7 @@ const TransferFrom = ({ t, formValue, onChange }) => {
           onChange={val => onChange({ ...formValue, item: val })}
           placement="auto"
           block
-        ></CRDocSelectInput>
+        ></CRSelectWithOrganization>
         <div className="flex items-end gap-3 mb-5">
           <CRNumberInput
             label={t('numberOfBoxes')}

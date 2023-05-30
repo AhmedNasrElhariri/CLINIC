@@ -7,7 +7,6 @@ import RemoveItem from '../remove-item';
 import { useTranslation } from 'react-i18next';
 
 const ListInventory = ({ items }) => {
-  console.log(items, 'items');
   const { t } = useTranslation();
   return (
     <CRTable autoHeight data={items}>
@@ -54,7 +53,9 @@ const ListInventory = ({ items }) => {
         <CRTable.CRHeaderCell>{t('branch')}</CRTable.CRHeaderCell>
         <CRTable.CRCell>
           {({ branch }) => (
-            <CRTable.CRCellStyled>{branch?.name}</CRTable.CRCellStyled>
+            <CRTable.CRCellStyled>
+              {branch?.name ? branch?.name : 'Organization warehouse'}
+            </CRTable.CRCellStyled>
           )}
         </CRTable.CRCell>
       </CRTable.CRColumn>

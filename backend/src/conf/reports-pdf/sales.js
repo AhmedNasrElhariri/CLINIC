@@ -32,18 +32,7 @@ const sales = app => {
         updatedDateFrom = datesArray[0];
         updatedDateTo = datesArray[1];
       }
-      console.log(
-        dateFrom,
-        'dd',
-        dateTo,
-        view,
-        doctorId,
-        specialtyId,
-        branchId,
-        itemId,
-        creatorId,
-        organizationId
-      );
+
       const sales = await prisma.inventoryHistory.findMany({
         where: {
           organizationId,

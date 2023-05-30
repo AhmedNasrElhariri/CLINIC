@@ -1,7 +1,6 @@
 import { CRCard, CRTable } from 'components';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 function ListPendingUserItems({ items, onGetAction, t }) {
-  console.log(items, 'items');
   return (
     <>
       <CRCard borderless>

@@ -7,51 +7,54 @@ const inventory = async (
   { doctorId, specialtyId, branchId },
   { organizationId, user }
 ) => {
-  const ids = await listFlattenUsersTreeIds(
-    {
-      user,
-      organizationId,
-      action: ACTIONS.View_Inventory,
-    },
-    false
-  );
+  // const ids = await listFlattenUsersTreeIds(
+  //   {
+  //     user,
+  //     organizationId,
+  //     action: ACTIONS.View_Inventory,
+  //   },
+  //   false
+  // );
   return prisma.inventoryItem.findMany({
     where: {
       organizationId: organizationId,
-      AND: [
-        {
-          OR: [
-            {
-              doctorId: {
-                in: ids,
-              },
-            },
-            {
-              branchId: {
-                in: ids,
-              },
-            },
-            {
-              specialtyId: {
-                in: ids,
-              },
-            },
-          ],
-        },
-        {
-          AND: [
-            {
-              branchId: branchId,
-            },
-            {
-              specialtyId: specialtyId,
-            },
-            {
-              doctorId: doctorId,
-            },
-          ],
-        },
-      ],
+      // AND: [
+      //   {
+      //     OR: [
+      //       {
+      //         doctorId: {
+      //           in: ids,
+      //         },
+      //       },
+      //       {
+      //         branchId: {
+      //           in: ids,
+      //         },
+      //       },
+      //       {
+      //         specialtyId: {
+      //           in: ids,
+      //         },
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     AND: [
+      //       {
+      //         branchId: branchId,
+      //       },
+      //       {
+      //         specialtyId: specialtyId,
+      //       },
+      //       {
+      //         doctorId: doctorId,
+      //       },
+      //     ],
+      //   },
+      // ],
+      branchId,
+      specialtyId,
+      doctorId,
     },
     include: {
       user: true,

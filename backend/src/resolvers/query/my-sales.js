@@ -160,7 +160,6 @@ const mySaleses = async (
   });
   const totalPrice = totalSales._sum.totalPrice;
   const salesCount = totalSales._count.id;
-  console.log(totalPrice, 'totalPrice');
   const data = {
     sales: sales,
     totalSalesPrice: totalPrice,

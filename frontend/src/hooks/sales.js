@@ -8,6 +8,7 @@ import {
   LIST_SALESES,
   DELETE_SALES,
   CONSUME_INVENTORY_MANUAl,
+  LIST_INVENTORY_HISTORY,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -111,6 +112,9 @@ function useSales({
       refetchSales();
       Alert.success('the Inventory has been Consumed Successfully');
     },
+    refetchQueries: [
+      { query: LIST_INVENTORY_HISTORY, variables: { isSelling: true } },
+    ],
     onError: err => {
       Alert.error(err.message);
     },

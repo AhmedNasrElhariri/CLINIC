@@ -11,6 +11,7 @@ import {
   CRNumberInput,
   CRSelectInput,
   Div,
+  CRSelectWithOrganization,
 } from 'components/widgets';
 import { normalize } from 'utils/misc';
 import { useTranslation } from 'react-i18next';
@@ -58,31 +59,34 @@ function InventoryUsage({
     [selectedItems, setSelectedItems]
   );
   const total = useMemo(() => {
-    return selectedItems.reduce((acc, { pricePerBox }) => pricePerBox + acc, 0);
+    return selectedItems.reduce(
+      (acc, { pricePerBox, numberOfBoxes }) =>
+        pricePerBox * numberOfBoxes + acc,
+      0
+    );
   }, [selectedItems]);
 
   const handleAdd = useCallback(() => {
     const itemId = formValue?.itemId.id;
     const option = formValue?.saleOption;
-    const quantity =
-      option === 'saleByBox'
-        ? parseFloat(formValue?.numberOfBoxes * formValue?.itemId?.quantity)
-        : parseFloat(formValue?.quantity);
-    const sellingPricePerBox =
-      option === 'saleByBox'
-        ? formValue.pricePerBox
-        : formValue.pricePerUnit * quantity;
-    const sellingPricePerUnit =
-      option === 'saleByUnit'
-        ? formValue?.pricePerUnit
-        : formValue?.pricePerBox / quantity;
+    const unitsPerBox = formValue?.itemId?.item?.quantity;
+    let quantity = formValue?.quantity;
+    let numberOfBoxes = formValue?.numberOfBoxes;
+    let pricePerBox = formValue.pricePerBox;
+    let pricePerUnit = formValue.pricePerUnit;
+    if (option === 'saleByBox') {
+      quantity = numberOfBoxes * unitsPerBox;
+    } else {
+      numberOfBoxes = quantity / unitsPerBox;
+    }
     const newItems = [
       ...selectedItems,
       {
         itemId: itemId,
         quantity: quantity,
-        pricePerBox: sellingPricePerBox,
-        pricePerUnit: sellingPricePerUnit,
+        pricePerBox: pricePerBox,
+        pricePerUnit: pricePerUnit,
+        numberOfBoxes: numberOfBoxes,
       },
     ];
     setSelectedItems(newItems);
@@ -100,12 +104,18 @@ function InventoryUsage({
 
   const itemsList = useMemo(() => {
     const byIds = normalize(inventoryWithAmount);
-    return selectedItems.map(({ itemId, quantity }) => ({
-      ...byIds[itemId],
-      Quantity: quantity,
-    }));
+    return selectedItems.map(
+      ({ itemId, quantity, numberOfBoxes, pricePerBox, pricePerUnit }) => ({
+        name: byIds[itemId].name,
+        branch: byIds[itemId].branch,
+        numberOfUnits: quantity,
+        numberOfBoxes: numberOfBoxes,
+        pricePerBox: pricePerBox,
+        pricePerUnit: pricePerUnit,
+        itemId: itemId,
+      })
+    );
   }, [selectedItems, inventoryWithAmount]);
-
   useEffect(() => {
     const pricePerUnit = formValue?.itemId?.item?.sellingPricePerUnit;
     const quantity = formValue?.itemId?.item?.quantity;
@@ -125,7 +135,7 @@ function InventoryUsage({
         notAllowSpecialty
         notAllowUser
       />
-      <CRDocSelectInput
+      <CRSelectWithOrganization
         label={t('item')}
         name="itemId"
         specialtyId={formValue?.specialtyId}
@@ -134,7 +144,7 @@ function InventoryUsage({
         data={itemsChoices}
         placement="auto"
         block
-      ></CRDocSelectInput>
+      ></CRSelectWithOrganization>
       <CRSelectInput name="saleOption" data={saleOptions} block />
       {formValue?.saleOption === 'saleByUnit' ? (
         <div className="flex items-end gap-3 mb-5">
@@ -151,7 +161,11 @@ function InventoryUsage({
         </div>
       ) : (
         <div className="flex items-end gap-3 mb-5">
-          <CRNumberInput label={t('numberOfBoxes')} name="numberOfBoxes" />
+          <CRNumberInput
+            label={t('numberOfBoxes')}
+            name="numberOfBoxes"
+            float
+          />
           <CRNumberInput
             label={t('pricePerBox')}
             name="pricePerBox"

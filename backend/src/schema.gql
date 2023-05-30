@@ -1921,6 +1921,7 @@ input FinishAppointmentItemInput {
   quantity: Float!
   pricePerBox: Float
   pricePerUnit: Float
+  numberOfBoxes: Float
 }
 input InventoryConsumedItemInput {
   items: [FinishAppointmentItemInput!]

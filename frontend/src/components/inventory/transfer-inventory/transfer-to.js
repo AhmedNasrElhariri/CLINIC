@@ -16,7 +16,7 @@ const TransferTo = ({
   const ItemName = useMemo(() => {
     const item = fromFormValue?.item;
     let objName = item?.item?.name;
-    if (item?.level === '/organization') {
+    if (item?.level === 'organization') {
       objName = objName + 'Organization';
     } else if (item?.level === 'branch') {
       objName = objName + '/' + item?.branch?.name + '(Branch)';

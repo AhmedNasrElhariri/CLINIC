@@ -11,7 +11,6 @@ const Sales = () => {
   const { history } = useInventory({
     isSelling: true,
   });
-  console.log(history, 'ddd');
   return (
     <>
       <h1 className="text-2xl mb-10">{t('sales')}</h1>

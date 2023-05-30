@@ -56,7 +56,6 @@ const createAppointment = async (
     roomId,
     ...rest
   } = appointment;
-  console.log(roomId, 'RROMS///////////////////////////////');
   const creatorId = creator ? creator : userId;
   let createdAppointment = {};
   const appointments = await getDayAppointments(appointment.date, userId);

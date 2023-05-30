@@ -67,7 +67,6 @@ function useInventory({
     [consumptionData]
   );
   const inventoryWithAmount = useMemo(() => {
-    console.log(inventory, 'inventory');
     return inventory
       .filter(i => i.quantity > 0 && !!items.find(item => item.id === i.itemId))
       .map(i => {
@@ -171,27 +170,6 @@ function useInventory({
     onError: err => {
       Alert.error(err.message);
     },
-
-    // update(
-    //   cache,
-    //   {
-    //     data: {
-    //       addItem: { id, quantity },
-    //     },
-    //   }
-    // ) {
-    //   const { inventory } = cache.readQuery({
-    //     query: LIST_INVENTORY,
-    //   });
-    //   cache.writeQuery({
-    //     query: LIST_INVENTORY,
-    //     data: {
-    //       inventory: inventory.map(i =>
-    //         Object.assign({}, i, i.id === id && { quantity })
-    //       ),
-    //     },
-    //   });
-    // },
   });
 
   const [consumeInventoryManual] = useMutation(CONSUME_INVENTORY_MANUAl, {

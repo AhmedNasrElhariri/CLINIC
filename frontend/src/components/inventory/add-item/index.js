@@ -121,6 +121,7 @@ const AddItem = ({ items, addItem, addItemLoading }) => {
               label={t('numberOfBoxes')}
               value={formValue.noOfBoxes}
               onChange={val => handleChangeBoxOrUnits(val, 'numberOfBoxes')}
+              float
             />
           </div>
           <div className="flex items-end gap-3 mb-5">

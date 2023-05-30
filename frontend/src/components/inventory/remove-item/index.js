@@ -24,7 +24,6 @@ const RemoveItem = ({ item }) => {
   const handleOk = useCallback(() => {
     removeItem(item);
   }, [item, removeItem]);
-  console.log(item, 'IIDID');
   return (
     <>
       <Icon icon="trash2" onClick={open} />
