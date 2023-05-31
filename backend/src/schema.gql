@@ -167,6 +167,11 @@ enum ReferedStatus {
   Credit
   Debit
 }
+
+enum ReconstructOperation {
+  Add
+  Subtract
+}
 ########################### Query ##################################
 
 type Query {
@@ -579,6 +584,7 @@ type Mutation {
   editItem(item: ItemUpdateInput!): Item
   addItem(item: AddToInventoryInput!): InventoryItem
   consumeInventoryManual(data: InventoryConsumedItemInput!): [InventoryItem!]
+  reconstructSales(sales: ReconstructInput!): InventoryItemConsumption
   removeItem(itemId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
   editHospital(hospital: HospitalInput!, type: String!): Hospital
@@ -1866,7 +1872,13 @@ type InventoryItem {
   item: Item
   barColor: String
 }
-
+input ReconstructInput {
+  itemId: ID!
+  branchId: ID
+  operation: ReconstructOperation
+  numberOfUnits: Int
+  noOfBoxes: Float
+}
 type InventoryItemConsumption {
   id: ID!
   numberOfUnits: Int!

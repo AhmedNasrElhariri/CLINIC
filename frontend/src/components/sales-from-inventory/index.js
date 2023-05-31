@@ -15,6 +15,7 @@ const initInventoryValue = {
   pricePerUnit: 0,
   numberOfBoxes: 0,
   pricePerBox: 0,
+  operation: 'add',
 };
 const { StringType, NumberType } = Schema.Types;
 
@@ -31,7 +32,7 @@ const Sales = () => {
     initValue: initInventoryValue,
     model,
   });
-  const { consumeInventoryManual, history } = useInventory({
+  const { consumeInventoryManual, history, reconstructSales } = useInventory({
     onConsumeInventory: () => {
       close();
     },
@@ -41,7 +42,6 @@ const Sales = () => {
   const handleSaleItem = useCallback(() => {
     open();
   }, [open]);
-
   return (
     <>
       <MainContainer
@@ -67,6 +67,8 @@ const Sales = () => {
         t={t}
         setFormValue={setFormValue}
         isSelling
+        inventoryWithAmount={inventoryWithAmount}
+        reconstructSales={reconstructSales}
       />
     </>
   );

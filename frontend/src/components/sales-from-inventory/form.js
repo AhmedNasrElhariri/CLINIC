@@ -44,8 +44,9 @@ function InventoryUsage({
   formValue,
   setFormValue,
   isSelling,
+  inventoryWithAmount,
+  itemsChoices,
 }) {
-  const { inventoryWithAmount } = useInventory();
   const saleOptions = [
     { id: 'saleByUnit', name: 'Sale By Unit' },
     { id: 'saleByBox', name: 'Sale By Box' },
@@ -76,8 +77,10 @@ function InventoryUsage({
     let pricePerUnit = formValue.pricePerUnit;
     if (option === 'saleByBox') {
       quantity = numberOfBoxes * unitsPerBox;
+      pricePerUnit = pricePerBox / unitsPerBox;
     } else {
       numberOfBoxes = quantity / unitsPerBox;
+      pricePerBox = unitsPerBox * pricePerUnit;
     }
     const newItems = [
       ...selectedItems,
@@ -92,15 +95,6 @@ function InventoryUsage({
     setSelectedItems(newItems);
     setFormValue(initValue);
   }, [formValue, selectedItems, setFormValue, setSelectedItems]);
-
-  const itemsChoices = useMemo(() => {
-    const selectedItemIds = R.map(R.prop('itemId'))(selectedItems);
-    return isSelling
-      ? inventoryWithAmount.filter(
-          f => !selectedItemIds.includes(f.id) && f?.item.sellable
-        )
-      : inventoryWithAmount.filter(f => !selectedItemIds.includes(f.id));
-  }, [selectedItems, inventoryWithAmount, isSelling]);
 
   const itemsList = useMemo(() => {
     const byIds = normalize(inventoryWithAmount);

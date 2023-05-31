@@ -9,6 +9,7 @@ import {
   DELETE_SALES,
   CONSUME_INVENTORY_MANUAl,
   LIST_INVENTORY_HISTORY,
+  RECONSTRUCT_SALES,
 } from 'apollo-client/queries';
 import client from 'apollo-client/client';
 
@@ -119,6 +120,15 @@ function useSales({
       Alert.error(err.message);
     },
   });
+  const [reconstructSales] = useMutation(RECONSTRUCT_SALES, {
+    onCompleted() {
+      Alert.success('the Reconstruct has been done Successfully');
+      onEdit && onEdit();
+    },
+    onError: err => {
+      Alert.error(err.message);
+    },
+  });
   return useMemo(
     () => ({
       saleses,
@@ -132,6 +142,7 @@ function useSales({
       loading: loading,
       editLoading: editLoading,
       deleteLoading: deleteLoading,
+      reconstructSales,
       consumeInventoryManual: data =>
         consumeInventoryManual({
           variables: {
@@ -151,6 +162,7 @@ function useSales({
       editLoading,
       deleteLoading,
       consumeInventoryManual,
+      reconstructSales,
     ]
   );
 }

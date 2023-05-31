@@ -163,3 +163,10 @@ export const TRANSFER_ACTION = gql`
     }
   }
 `;
+export const RECONSTRUCT_SALES = gql`
+  mutation reconstructSales($sales: ReconstructInput!) {
+    reconstructSales(sales: $sales) {
+      id
+    }
+  }
+`;

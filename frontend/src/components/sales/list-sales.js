@@ -1,18 +1,10 @@
-import React, { useCallback } from 'react';
-import { Icon } from 'rsuite';
+import { useCallback } from 'react';
 import { formatDate } from 'utils/date';
 import { STANDARD_DATE_FORMAT } from 'utils/constants';
 import { CRCard, CRTable } from 'components';
 import { useTranslation } from 'react-i18next';
 
-function ListSaleses({
-  saleses,
-  onEdit,
-  onDelete,
-  currentPage,
-  setCurrentPage,
-  pages,
-}) {
+function ListSaleses({ saleses, currentPage, setCurrentPage, pages }) {
   const { t } = useTranslation();
   const handleSelect = useCallback(
     eventKey => {
@@ -75,30 +67,6 @@ function ListSaleses({
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-          <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => (
-                <CRTable.CRCellStyled bold>
-                  <Icon icon="edit" onClick={() => onEdit(data)}>
-                    {' '}
-                    {t('edit')}
-                  </Icon>
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-          {/* <CRTable.CRColumn>
-            <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {data => (
-                <Icon icon="trash" onClick={() => onDelete(data)}>
-                  {' '}
-                  {t('delete')}
-                </Icon>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn> */}
         </CRTable>
         <CRTable.CRPagination
           lengthMenu={[

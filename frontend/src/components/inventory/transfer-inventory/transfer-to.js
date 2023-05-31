@@ -5,7 +5,7 @@ import { ACTIONS } from 'utils/constants';
 import { LIST_BRANCHES_TREE } from 'apollo-client/queries';
 import { useQuery } from '@apollo/client';
 import * as R from 'ramda';
-
+import { useUsers } from 'hooks';
 const TransferTo = ({
   formValue,
   onChange,
@@ -13,6 +13,8 @@ const TransferTo = ({
   showError,
   checkResult,
 }) => {
+  const { users: organizationusers } = useUsers({});
+
   const ItemName = useMemo(() => {
     const item = fromFormValue?.item;
     let objName = item?.item?.name;
@@ -93,7 +95,7 @@ const TransferTo = ({
           }
         />
         <CRSelectInput
-          data={branchDoctors}
+          data={organizationusers}
           name="userId"
           valueKey="id"
           labelKey="name"

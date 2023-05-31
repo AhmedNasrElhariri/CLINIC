@@ -1,61 +1,41 @@
 import { prisma } from '@';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import { ACTIONS } from '@/utils/constants';
+import getAllBranchesIds from '@/services/branches-specialties-users';
+import permissionLevel from '@/services/permission-level';
 
 const inventory = async (
   _,
   { doctorId, specialtyId, branchId },
   { organizationId, user }
 ) => {
-  // const ids = await listFlattenUsersTreeIds(
-  //   {
-  //     user,
-  //     organizationId,
-  //     action: ACTIONS.View_Inventory,
-  //   },
-  //   false
-  // );
-  return prisma.inventoryItem.findMany({
-    where: {
-      organizationId: organizationId,
-      // AND: [
-      //   {
-      //     OR: [
-      //       {
-      //         doctorId: {
-      //           in: ids,
-      //         },
-      //       },
-      //       {
-      //         branchId: {
-      //           in: ids,
-      //         },
-      //       },
-      //       {
-      //         specialtyId: {
-      //           in: ids,
-      //         },
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     AND: [
-      //       {
-      //         branchId: branchId,
-      //       },
-      //       {
-      //         specialtyId: specialtyId,
-      //       },
-      //       {
-      //         doctorId: doctorId,
-      //       },
-      //     ],
-      //   },
-      // ],
-      branchId,
-      specialtyId,
-      doctorId,
+  const ids = await listFlattenUsersTreeIds(
+    {
+      user,
+      organizationId,
+      action: ACTIONS.View_Inventory,
     },
+    false
+  );
+  const IDS = await getAllBranchesIds(ids, organizationId);
+
+  const { isOrganizationLevel } = await permissionLevel(
+    ACTIONS.View_Inventory,
+    user,
+    organizationId
+  );
+  console.log(isOrganizationLevel, 'isOrganizationLevel');
+  const condition =
+    isOrganizationLevel && !branchId
+      ? { organizationId: organizationId }
+      : {
+          branchId: {
+            in: branchId ? [branchId] : IDS.branchesIds,
+          },
+        };
+
+  return prisma.inventoryItem.findMany({
+    where: condition,
     include: {
       user: true,
       branch: true,

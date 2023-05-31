@@ -73,6 +73,7 @@ const SalesContainer = ({ t }) => {
     editLoading,
     deleteLoading,
     consumeInventoryManual,
+    reconstructSales,
   } = useSales({
     onCreate: () => {
       close();
@@ -131,6 +132,10 @@ const SalesContainer = ({ t }) => {
     },
     [open, setFormValue, setType]
   );
+  const handleClickReconstruct = useCallback(() => {
+    setType('reconstruct');
+    open();
+  }, [setType, open]);
   const handleClickDelete = useCallback(
     data => {
       const sales = R.pick(['id'])(data);
@@ -228,6 +233,9 @@ const SalesContainer = ({ t }) => {
             <CRButton variant="primary" onClick={handleClickCreate}>
               {t('addNewSales')} +
             </CRButton>
+            <CRButton variant="primary" onClick={handleClickReconstruct}>
+              {t('reconstruct')}
+            </CRButton>
             <Whisper
               placement="bottomStart"
               trigger="click"
@@ -264,7 +272,7 @@ const SalesContainer = ({ t }) => {
         setFormValue={setFormValue}
         isSelling
         type={type}
-        editSale={editSales}
+        reconstructSales={reconstructSales}
       />
 
       <Form
@@ -297,7 +305,7 @@ const SalesContainer = ({ t }) => {
 
       <ListSaleses
         saleses={saleses}
-        onEdit={handleClickEdit}
+        // onEdit={handleClickEdit}
         onDelete={handleClickDelete}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

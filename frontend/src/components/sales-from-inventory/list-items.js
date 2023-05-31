@@ -4,7 +4,6 @@ import { approximatlyToTwoNumbers } from 'services/general';
 import { Button } from 'rsuite';
 function ListInvoiceItems({ items, priceKey, onDelete, formValue }) {
   const ItemName = item => {
-    // const item = items.find(i => i.id === itemId);
     return (
       <h6>{`${approximatlyToTwoNumbers(item?.numberOfBoxes)} boxes (${
         item?.numberOfUnits
