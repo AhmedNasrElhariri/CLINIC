@@ -125,6 +125,7 @@ enum InventoryOperation {
   Substract
   Sell
   Transfer
+  Reconciliate
 }
 
 enum subInventoryOperation {

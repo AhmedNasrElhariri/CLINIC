@@ -505,5 +505,5 @@ export const TRANSLATIONS_EN = {
   salesContainer: 'Sales container',
   salesHistory: 'Sales history',
   editSale: 'Edit sale',
-  reconstruct: 'Reconstruct',
+  reconciliate: 'Reconciliate',
 };

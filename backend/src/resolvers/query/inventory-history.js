@@ -9,7 +9,11 @@ const inventoryHistoryData = async (_, { isSelling }, { organizationId }) => {
         {
           organizationId,
         },
-        isSelling && { operation: INVENTORY_OPERATION.SELL }
+        isSelling && {
+          operation: {
+            in: [INVENTORY_OPERATION.SELL, INVENTORY_OPERATION.RECONCILIATE],
+          },
+        }
       ),
       orderBy: {
         date: 'desc',

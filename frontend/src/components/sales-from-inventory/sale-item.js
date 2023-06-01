@@ -61,10 +61,11 @@ const ConsumeItems = ({
         )
       : inventoryWithAmount.filter(f => !selectedItemIds.includes(f.id));
   }, [selectedItems, inventoryWithAmount, isSelling]);
+
   return (
     <CRModal
       show={visible}
-      header={type === 'create' ? t('sellItem') : t('reconstruct')}
+      header={type === 'create' ? t('sellItem') : t('reconciliate')}
       onOk={handleOk}
       onHide={() => {
         close();

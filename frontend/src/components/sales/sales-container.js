@@ -66,12 +66,6 @@ const SalesContainer = ({ t }) => {
     totalSalesPrice,
     totalSalesCost,
     salesCounts,
-    addSales,
-    editSales,
-    deleteSales,
-    loading,
-    editLoading,
-    deleteLoading,
     consumeInventoryManual,
     reconstructSales,
   } = useSales({
@@ -103,19 +97,6 @@ const SalesContainer = ({ t }) => {
     profit: totalSalesPrice - totalSalesCost,
   };
   const pages = Math.ceil(salesCounts / 20);
-  const handleDelete = useCallback(
-    idx => {
-      const newItems = R.remove(idx, 1)(selectedItems);
-      setSelectedItems(newItems);
-    },
-    [selectedItems]
-  );
-
-  const handleAddItems = useCallback(() => {
-    const newItems = [...selectedItems, formValue];
-    setSelectedItems(newItems);
-    setFormValue(initValue);
-  }, [formValue, selectedItems, setFormValue]);
 
   const handleClickCreate = useCallback(() => {
     setType('create');
@@ -123,19 +104,11 @@ const SalesContainer = ({ t }) => {
     open();
   }, [open, setFormValue, setType]);
 
-  const handleClickEdit = useCallback(
-    data => {
-      const sales = R.pick(['id', 'quantity', 'totalPrice'])(data);
-      setType('edit');
-      setFormValue({ ...sales, saleOption: 'saleByUnit' });
-      open();
-    },
-    [open, setFormValue, setType]
-  );
   const handleClickReconstruct = useCallback(() => {
     setType('reconstruct');
     open();
   }, [setType, open]);
+
   const handleClickDelete = useCallback(
     data => {
       const sales = R.pick(['id'])(data);
@@ -145,28 +118,6 @@ const SalesContainer = ({ t }) => {
     },
     [open, setFormValue, setType]
   );
-  const handleAdd = useCallback(() => {
-    if (type === 'create') {
-      addSales({
-        variables: {
-          sales: selectedItems,
-        },
-      });
-      setSelectedItems([]);
-    } else if (type === 'delete') {
-      deleteSales({
-        variables: {
-          id: formValue.id,
-        },
-      });
-    } else {
-      editSales({
-        variables: {
-          sales: formValue,
-        },
-      });
-    }
-  }, [addSales, editSales, formValue, type, deleteSales, selectedItems]);
 
   const handleSalesExcelReport = async day => {
     axios({
@@ -234,7 +185,7 @@ const SalesContainer = ({ t }) => {
               {t('addNewSales')} +
             </CRButton>
             <CRButton variant="primary" onClick={handleClickReconstruct}>
-              {t('reconstruct')}
+              {t('reconciliate')}
             </CRButton>
             <Whisper
               placement="bottomStart"
@@ -305,7 +256,6 @@ const SalesContainer = ({ t }) => {
 
       <ListSaleses
         saleses={saleses}
-        // onEdit={handleClickEdit}
         onDelete={handleClickDelete}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

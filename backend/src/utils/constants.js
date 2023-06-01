@@ -69,6 +69,7 @@ export const INVENTORY_OPERATION = {
   SUBSTRACT: 'Substract',
   SELL: 'Sell',
   TRANSFER: 'Transfer',
+  RECONCILIATE: 'Reconciliate',
 };
 
 export const POSITION = {

@@ -268,6 +268,72 @@ export const mapHistoryToMessage = async history => {
   });
 };
 
+export const createHistory = (
+  i,
+  userId,
+  organizationId,
+  specialtyId,
+  doctorId,
+  branchId,
+  operation,
+  patientId
+) => {
+  return prisma.inventoryHistory.create({
+    data: Object.assign(
+      {
+        item: {
+          connect: {
+            id: i.itemId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        organization: {
+          connect: {
+            id: organizationId,
+          },
+        },
+        operation: operation,
+        quantity: i.quantity,
+        totalPrice: i.totalPrice,
+        totalCost: i.totalCost,
+        date: new Date(),
+      },
+      specialtyId && {
+        specialty: {
+          connect: {
+            id: specialtyId,
+          },
+        },
+      },
+      i.branchId && {
+        branch: {
+          connect: {
+            id: i.branchId,
+          },
+        },
+      },
+      doctorId && {
+        doctor: {
+          connect: {
+            id: doctorId,
+          },
+        },
+      },
+      patientId && {
+        patient: {
+          connect: {
+            id: patientId,
+          },
+        },
+      }
+    ),
+  });
+};
+
 export const createSubstractHistoryForMultipleItems = async ({
   patientId,
   userId,
@@ -297,70 +363,26 @@ export const createSubstractHistoryForMultipleItems = async ({
       totalCost: item.quantity * i.price,
     };
   });
+  const operation = isSelling
+    ? INVENTORY_OPERATION.SELL
+    : INVENTORY_OPERATION.SUBSTRACT;
   return Promise.all(
     items.map(i =>
-      prisma.inventoryHistory.create({
-        data: Object.assign(
-          {
-            item: {
-              connect: {
-                id: i.itemId,
-              },
-            },
-            user: {
-              connect: {
-                id: userId,
-              },
-            },
-            organization: {
-              connect: {
-                id: organizationId,
-              },
-            },
-            operation: isSelling
-              ? INVENTORY_OPERATION.SELL
-              : INVENTORY_OPERATION.SUBSTRACT,
-            quantity: i.quantity,
-            totalPrice: i.totalPrice,
-            totalCost: i.totalCost,
-            date: new Date(),
-          },
-          specialtyId && {
-            specialty: {
-              connect: {
-                id: specialtyId,
-              },
-            },
-          },
-          i.branchId && {
-            branch: {
-              connect: {
-                id: i.branchId,
-              },
-            },
-          },
-          doctorId && {
-            doctor: {
-              connect: {
-                id: doctorId,
-              },
-            },
-          },
-          patientId && {
-            patient: {
-              connect: {
-                id: patientId,
-              },
-            },
-          }
-        ),
-      })
+      createHistory(
+        i,
+        userId,
+        organizationId,
+        specialtyId,
+        doctorId,
+        null,
+        operation
+      )
     )
   );
 };
 
 export const createHistoryBody = async (
-  { operation, price, quantity, item, subOperation },
+  { operation, price, quantity, item, subOperation, totalPrice },
   user,
   patientName,
   doctorName,
@@ -406,6 +428,14 @@ export const createHistoryBody = async (
       } ) of ${item.name} from ${
         branchName ? `${branchName}` : 'Organization warehouse'
       }  `;
+    case INVENTORY_OPERATION.RECONCILIATE:
+      return `${user.name} Reconciliate ${
+        totalPrice > 0 ? '(Add)' : '(Subtract) '
+      }${quantity / item.quantity} boxes(${quantity} units) of ${
+        item.name
+      } from ${branchName ? `${branchName}` : 'Organization warehouse'} ${
+        patientName && `to ${patientName ? `${patientName}` : ''}`
+      }`;
   }
 };
 

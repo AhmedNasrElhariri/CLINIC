@@ -1,5 +1,5 @@
 import { prisma } from '@';
-import { ACTIONS } from '@/utils/constants';
+import { ACTIONS, INVENTORY_OPERATION } from '@/utils/constants';
 import { listFlattenUsersTreeIds } from '@/services/permission.service';
 import {
   getDateFromAndDateToFromView,
@@ -43,7 +43,9 @@ const mySaleses = async (
 
   const sales = await prisma.inventoryHistory.findMany({
     where: {
-      operation: 'Sell',
+      operation: {
+        in: [INVENTORY_OPERATION.SELL, INVENTORY_OPERATION.RECONCILIATE],
+      },
       AND: [
         {
           OR: [
@@ -111,7 +113,9 @@ const mySaleses = async (
       id: true,
     },
     where: {
-      operation: 'Sell',
+      operation: {
+        in: [INVENTORY_OPERATION.SELL, INVENTORY_OPERATION.RECONCILIATE],
+      },
       AND: [
         {
           OR: [
