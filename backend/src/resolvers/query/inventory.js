@@ -24,7 +24,6 @@ const inventory = async (
     user,
     organizationId
   );
-  console.log(isOrganizationLevel, 'isOrganizationLevel');
   const condition =
     isOrganizationLevel && !branchId
       ? { organizationId: organizationId }

@@ -1,8 +1,8 @@
-import { memo, useCallback, useEffect } from 'react';
-import { Form, Schema, Alert, Icon } from 'rsuite';
+import { memo, useCallback, useEffect, useState } from 'react';
+import { Form, Schema, Alert, Icon, Toggle } from 'rsuite';
 import * as R from 'ramda';
 
-import { CRModal, CRTextInput, CRNumberInput } from 'components';
+import { CRModal, CRTextInput, CRNumberInput, Div, CRLabel } from 'components';
 import { isValid } from 'services/form';
 import { useInventory, useForm, useModal } from 'hooks';
 
@@ -12,8 +12,9 @@ const model = Schema.Model({
   name: StringType().isRequired('Name Type is required'),
 });
 
-const EditItem = ({ defaultValue,t }) => {
+const EditItem = ({ defaultValue, t }) => {
   const { visible, open, close } = useModal();
+  const [sellable, setSellable] = useState(false);
   const { formValue, setFormValue } = useForm({
     initValue: {
       name: '',
@@ -24,16 +25,17 @@ const EditItem = ({ defaultValue,t }) => {
   });
 
   useEffect(() => {
+    const sellable = R.propOr(false, 'sellable')(defaultValue);
     const item = R.pick([
       'id',
       'name',
       'quantity',
-      'sellingPrice',
-      'alertNumberOfUnits',
+      'sellingPricePerBox',
+      'alertNumberOfBoxes',
     ])(defaultValue);
-    setFormValue(item);
+    setFormValue({ ...item, sellable: sellable });
+    setSellable(sellable);
   }, [defaultValue, setFormValue]);
-
   const { update } = useInventory({
     onCreateCompleted: () => {
       Alert.success('Item has been created successfully');
@@ -56,29 +58,32 @@ const EditItem = ({ defaultValue,t }) => {
             Alert.error('Complete Required Fields');
             return;
           }
-          update(formValue);
+          update({ ...formValue, sellable: sellable });
         }}
         onHide={handleClose}
         onCancel={handleClose}
       >
         <Form formValue={formValue} model={model} onChange={setFormValue} fluid>
           <CRTextInput label="Name" name="name" block></CRTextInput>
-          <CRNumberInput
-            label={t('numberOfUnits')}
-            disabled
-            name="quantity"
-            block
-          ></CRNumberInput>
+
           <CRNumberInput
             label="Selling price (medicine box)"
-            name="sellingPrice"
+            name="sellingPricePerBox"
             block
           ></CRNumberInput>
           <CRNumberInput
             label={t('alertNumberOfBoxes')}
-            name="alertNumberOfUnits"
+            name="alertNumberOfBoxes"
             block
           ></CRNumberInput>
+          <Div mt="10px">
+            <CRLabel>{t('sellable')}</CRLabel>
+            <Toggle
+              value={sellable}
+              onChange={setSellable}
+              checked={sellable}
+            />
+          </Div>
         </Form>
       </CRModal>
     </>

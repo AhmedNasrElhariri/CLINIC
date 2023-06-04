@@ -1,4 +1,3 @@
-import React from 'react';
 import NumberFormat from 'react-number-format';
 
 import { CRTable } from 'components';
@@ -59,10 +58,11 @@ const ListInventory = ({ items }) => {
           )}
         </CRTable.CRCell>
       </CRTable.CRColumn>
-      <CRTable.CRColumn width={35}>
+
+      {/* <CRTable.CRColumn width={35}>
         <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
         <CRTable.CRCell>{data => <RemoveItem item={data} />}</CRTable.CRCell>
-      </CRTable.CRColumn>
+      </CRTable.CRColumn> */}
     </CRTable>
   );
 };

@@ -113,27 +113,28 @@ const AddItem = ({ items, addItem, addItemLoading }) => {
           ></CRSelectInput>
           <div className="flex items-end gap-3 mb-5">
             <CRNumberInput
-              label={t('noOfUnits')}
-              value={formValue.amount}
-              onChange={val => handleChangeBoxOrUnits(val, 'noOfUnits')}
-            />
-            <CRNumberInput
               label={t('numberOfBoxes')}
               value={formValue.noOfBoxes}
               onChange={val => handleChangeBoxOrUnits(val, 'numberOfBoxes')}
               float
             />
+            <CRNumberInput
+              label={t('noOfUnits')}
+              value={formValue.amount}
+              onChange={val => handleChangeBoxOrUnits(val, 'noOfUnits')}
+            />
           </div>
           <div className="flex items-end gap-3 mb-5">
-            <CRNumberInput
-              label={t('purchasingPricePerUnit')}
-              value={formValue.purshasingPricePerUnit}
-              onChange={val => handleChangePurchasing(val, 'units')}
-            />
             <CRNumberInput
               label={t('purchasingPricePerBox')}
               value={formValue.purshasingPricePerBox}
               onChange={val => handleChangePurchasing(val, 'boxes')}
+              float
+            />
+            <CRNumberInput
+              label={t('purchasingPricePerUnit')}
+              value={formValue.purshasingPricePerUnit}
+              onChange={val => handleChangePurchasing(val, 'units')}
             />
           </div>
           <CRBrancheTree

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import * as R from 'ramda';
-import { Form, Whisper, Nav } from 'rsuite';
+import { Form, Whisper } from 'rsuite';
 import Toolbar from '../accounting/toolbar';
 import {
   CRButton,
@@ -67,7 +67,6 @@ const SalesContainer = ({ t }) => {
     totalSalesCost,
     salesCounts,
     consumeInventoryManual,
-    reconstructSales,
   } = useSales({
     onCreate: () => {
       close();
@@ -103,11 +102,6 @@ const SalesContainer = ({ t }) => {
     setFormValue(initValue);
     open();
   }, [open, setFormValue, setType]);
-
-  const handleClickReconstruct = useCallback(() => {
-    setType('reconstruct');
-    open();
-  }, [setType, open]);
 
   const handleClickDelete = useCallback(
     data => {
@@ -184,9 +178,6 @@ const SalesContainer = ({ t }) => {
             <CRButton variant="primary" onClick={handleClickCreate}>
               {t('addNewSales')} +
             </CRButton>
-            <CRButton variant="primary" onClick={handleClickReconstruct}>
-              {t('reconciliate')}
-            </CRButton>
             <Whisper
               placement="bottomStart"
               trigger="click"
@@ -223,7 +214,6 @@ const SalesContainer = ({ t }) => {
         setFormValue={setFormValue}
         isSelling
         type={type}
-        reconstructSales={reconstructSales}
       />
 
       <Form

@@ -429,7 +429,7 @@ export const createHistoryBody = async (
         branchName ? `${branchName}` : 'Organization warehouse'
       }  `;
     case INVENTORY_OPERATION.RECONCILIATE:
-      return `${user.name} Reconciliate ${
+      return `${user.name} Reconciliated ${
         totalPrice > 0 ? '(Add)' : '(Subtract) '
       }${quantity / item.quantity} boxes(${quantity} units) of ${
         item.name

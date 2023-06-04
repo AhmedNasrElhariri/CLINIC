@@ -168,7 +168,7 @@ enum ReferedStatus {
   Debit
 }
 
-enum ReconstructOperation {
+enum ReconcilateOperation {
   Add
   Subtract
 }
@@ -584,7 +584,7 @@ type Mutation {
   editItem(item: ItemUpdateInput!): Item
   addItem(item: AddToInventoryInput!): InventoryItem
   consumeInventoryManual(data: InventoryConsumedItemInput!): [InventoryItem!]
-  reconstructSales(sales: ReconstructInput!): InventoryItemConsumption
+  reconcilateSales(sales: ReconcilateInput!): InventoryItemConsumption
   removeItem(itemId: ID!): InventoryItem
   addHospital(hospital: HospitalInput!): Hospital
   editHospital(hospital: HospitalInput!, type: String!): Hospital
@@ -1863,7 +1863,7 @@ type InventoryItem {
   id: ID!
   itemId: ID!
   userId: ID!
-  price: Int!
+  price: Float!
   quantity: Float!
   branch: Branch
   specialty: Specialty
@@ -1872,10 +1872,10 @@ type InventoryItem {
   item: Item
   barColor: String
 }
-input ReconstructInput {
+input ReconcilateInput {
   itemId: ID!
   branchId: ID
-  operation: ReconstructOperation
+  operation: ReconcilateOperation
   numberOfUnits: Int
   noOfBoxes: Float
 }
@@ -1912,8 +1912,9 @@ input ItemUpdateInput {
   id: ID!
   name: String!
   quantity: Int!
-  sellingPrice: Int
-  alertNumberOfUnits: Int
+  sellingPricePerBox: Int
+  alertNumberOfBoxes: Int
+  sellable: Boolean
 }
 
 input AddToInventoryInput {
@@ -1921,7 +1922,7 @@ input AddToInventoryInput {
   amount: Int!
   noOfBoxes: Float
   purshasingPricePerUnit: Float
-  purshasingPricePerBox: Int
+  purshasingPricePerBox: Float
   branchId: ID
   specialtyId: ID
   userId: ID

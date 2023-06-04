@@ -36,7 +36,7 @@ const transferAction = async (_, { id, fromInventoryItemId, type }) => {
     subOperation: type,
   });
 
-  if (type === 'accept') {
+  if (type === 'accepted') {
     const inventoryItemConsumption = await prisma.inventoryItemConsumption.update(
       {
         data: {

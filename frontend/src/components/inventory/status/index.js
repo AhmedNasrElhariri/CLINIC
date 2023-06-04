@@ -16,6 +16,9 @@ import ReactToPrint from 'react-to-print';
 import { useTranslation } from 'react-i18next';
 import ConsumeUnits from './consume-items';
 import { Schema, Alert } from 'rsuite';
+import ReconciliateSales from 'components/sales-from-inventory/reconstruct';
+import * as R from 'ramda';
+
 const initInventoryValue = {
   itemId: null,
   quantity: 0,
@@ -44,11 +47,15 @@ const InventoryStatus = () => {
     consumeInventoryManual,
     addItem,
     addItemLoading,
+    reconcilateSales,
   } = useInventory({
     branchId: branchSpecialtyUser?.branch,
     specialtyId: branchSpecialtyUser?.specialty,
     doctorId: branchSpecialtyUser?.doctor,
     onConsumeInventory: () => {
+      close();
+    },
+    onReconsilate: () => {
       close();
     },
     onAddCompleted: () => {
@@ -59,7 +66,7 @@ const InventoryStatus = () => {
   const { visible, close, open } = useModal({});
   const { t } = useTranslation();
   const [selectedItems, setSelectedItems] = useState([]);
-  const { formValue, setFormValue } = useForm({
+  const { formValue, setFormValue, type, setType } = useForm({
     initValue: initInventoryValue,
     model,
   });
@@ -70,14 +77,28 @@ const InventoryStatus = () => {
     });
     return newInventory;
   }, [inventoryWithAmount]);
+
+  const itemsChoices = useMemo(() => {
+    const selectedItemIds = R.map(R.prop('itemId'))(selectedItems);
+    return inventoryWithAmount.filter(
+      f => !selectedItemIds.includes(f.id) && f?.item.sellable
+    );
+  }, [selectedItems, inventoryWithAmount]);
+
   const { filterBranches } = useBranchTree({
     action: ACTIONS.View_Inventory,
   });
 
   const handleConsumeInventory = useCallback(() => {
+    setType('consumeInventory');
     open();
   }, [open]);
   const handleInventoryChange = useCallback(() => {}, []);
+
+  const handleClickReconcilate = useCallback(() => {
+    setType('reconcilate');
+    open();
+  }, [setType, open]);
 
   return (
     <>
@@ -85,6 +106,16 @@ const InventoryStatus = () => {
         title={t('inventory')}
         more={
           <Div display="flex">
+            <CRButton onClick={() => handleConsumeInventory()} mr={10}>
+              {t('consume')}
+            </CRButton>
+            <CRButton
+              variant="primary"
+              onClick={handleClickReconcilate}
+              mr={10}
+            >
+              {t('reconciliate')}
+            </CRButton>
             <ReactToPrint
               trigger={() => (
                 <CRButton primary mr={10}>
@@ -98,9 +129,6 @@ const InventoryStatus = () => {
               addItem={addItem}
               addItemLoading={addItemLoading}
             />
-            <CRButton onClick={() => handleConsumeInventory()} ml={10}>
-              {t('consume')}
-            </CRButton>
           </Div>
         }
         nobody
@@ -119,17 +147,29 @@ const InventoryStatus = () => {
           </Div>
         </Div>
       </Div>
-      <ConsumeUnits
-        setSelectedItems={setSelectedItems}
-        close={close}
-        selectedItems={selectedItems}
-        formValue={formValue}
-        visible={visible}
-        consumeInventoryManual={consumeInventoryManual}
-        handleInventoryChange={handleInventoryChange}
-        t={t}
-        setFormValue={setFormValue}
-      />
+      {type === 'consumeInventory' && (
+        <ConsumeUnits
+          setSelectedItems={setSelectedItems}
+          close={close}
+          selectedItems={selectedItems}
+          formValue={formValue}
+          visible={visible}
+          consumeInventoryManual={consumeInventoryManual}
+          handleInventoryChange={handleInventoryChange}
+          t={t}
+          setFormValue={setFormValue}
+        />
+      )}
+      {type === 'reconcilate' && (
+        <ReconciliateSales
+          itemsChoices={itemsChoices}
+          formValue={formValue}
+          setFormValue={setFormValue}
+          reconcilateSales={reconcilateSales}
+          visible={visible}
+          close={close}
+        />
+      )}
     </>
   );
 };

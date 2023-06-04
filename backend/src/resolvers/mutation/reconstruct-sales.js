@@ -2,7 +2,7 @@ import { prisma } from '@';
 import { createHistory } from '@/services/inventory.service';
 import { INVENTORY_OPERATION } from '@/utils/constants';
 
-const reconstructSales = async (_, { sales }, { userId, organizationId }) => {
+const reconcilateSales = async (_, { sales }, { userId, organizationId }) => {
   let { branchId, operation, numberOfUnits, noOfBoxes, itemId } = sales;
 
   const inventoryItemConsumptions = await prisma.inventoryItemConsumption.findMany(
@@ -59,4 +59,4 @@ const reconstructSales = async (_, { sales }, { userId, organizationId }) => {
   });
 };
 
-export default reconstructSales;
+export default reconcilateSales;

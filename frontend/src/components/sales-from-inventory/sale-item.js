@@ -3,9 +3,9 @@ import { useCallback } from 'react';
 import SaleItem from './form';
 import EditSale from './edit-sale';
 import { useInventory } from 'hooks';
-import ReconstructSales from './reconstruct';
 import { useMemo } from 'react';
 import * as R from 'ramda';
+
 const ConsumeItems = ({
   setSelectedItems,
   close,
@@ -17,7 +17,6 @@ const ConsumeItems = ({
   setFormValue,
   isSelling,
   type,
-  reconstructSales,
 }) => {
   const { inventoryWithAmount } = useInventory({});
   const handleOk = useCallback(() => {
@@ -31,28 +30,9 @@ const ConsumeItems = ({
         isSelling,
       };
       consumeInventoryManual(data);
-    } else {
-      const { branchId, operation, quantity, itemId, noOfBoxes } = formValue;
-      reconstructSales({
-        variables: {
-          sales: {
-            branchId,
-            operation,
-            numberOfUnits: quantity,
-            itemId: itemId.id,
-            noOfBoxes,
-          },
-        },
-      });
     }
-  }, [
-    formValue,
-    consumeInventoryManual,
-    selectedItems,
-    isSelling,
-    type,
-    reconstructSales,
-  ]);
+  }, [formValue, consumeInventoryManual, selectedItems, isSelling, type]);
+
   const itemsChoices = useMemo(() => {
     const selectedItemIds = R.map(R.prop('itemId'))(selectedItems);
     return isSelling
@@ -92,13 +72,6 @@ const ConsumeItems = ({
       )}
       {type === 'edit' && (
         <EditSale formValue={formValue} setFormValue={setFormValue} />
-      )}
-      {type === 'reconstruct' && (
-        <ReconstructSales
-          itemsChoices={itemsChoices}
-          formValue={formValue}
-          setFormValue={setFormValue}
-        />
       )}
     </CRModal>
   );

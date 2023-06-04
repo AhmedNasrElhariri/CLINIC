@@ -163,9 +163,9 @@ export const TRANSFER_ACTION = gql`
     }
   }
 `;
-export const RECONSTRUCT_SALES = gql`
-  mutation reconstructSales($sales: ReconstructInput!) {
-    reconstructSales(sales: $sales) {
+export const RECONCILATE_SALES = gql`
+  mutation reconcilateSales($sales: ReconcilateInput!) {
+    reconcilateSales(sales: $sales) {
       id
     }
   }

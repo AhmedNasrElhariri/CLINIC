@@ -45,11 +45,11 @@ function ListPendingUserItems({ items, onGetAction, t }) {
                 <CRTable.CRCellStyled bold>
                   <CheckCircleOutlined
                     className="!text-[18px] mr-10"
-                    onClick={() => onGetAction(data, 'accept')}
+                    onClick={() => onGetAction(data, 'accepted')}
                   />
                   <CloseCircleOutlined
                     className="!text-[18px]"
-                    onClick={() => onGetAction(data, 'reject')}
+                    onClick={() => onGetAction(data, 'rejected')}
                   />
                 </CRTable.CRCellStyled>
               )}

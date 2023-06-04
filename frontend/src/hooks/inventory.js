@@ -15,6 +15,8 @@ import {
   TRANSFER_INVENTORY_ITEM,
   LIST_PENDING_CONSUMPtION_ITEMS,
   TRANSFER_ACTION,
+  RECONCILATE_SALES,
+  LIST_SALESES,
 } from 'apollo-client/queries';
 
 function useInventory({
@@ -30,6 +32,7 @@ function useInventory({
   branchId,
   specialtyId,
   doctorId,
+  onReconsilate,
 } = {}) {
   const { data: ItemData } = useQuery(LIST_ITEMS);
   const { data: InventoryData, refetch: refetchInventory } = useQuery(
@@ -210,6 +213,26 @@ function useInventory({
       Alert.error(err.message);
     },
   });
+  const [reconcilateSales] = useMutation(RECONCILATE_SALES, {
+    onCompleted() {
+      Alert.success('The reconsilation has been done Successfully');
+      refetchInventoryHistory();
+      refetchInventory();
+      onReconsilate && onReconsilate();
+    },
+    refetchQueries: [
+      {
+        query: LIST_SALESES,
+        variables: Object.assign(
+          { offset: 0, limit: 20 },
+          branchId && { branchId: branchId }
+        ),
+      },
+    ],
+    onError: err => {
+      Alert.error(err.message);
+    },
+  });
 
   return useMemo(
     () => ({
@@ -261,6 +284,7 @@ function useInventory({
       transferInventoryItem,
       pendingConsumptionItems,
       transferAction,
+      reconcilateSales,
     }),
     [
       items,
@@ -280,6 +304,7 @@ function useInventory({
       transferInventoryItem,
       pendingConsumptionItems,
       transferAction,
+      reconcilateSales,
     ]
   );
 }

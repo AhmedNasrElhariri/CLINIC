@@ -162,4 +162,4 @@ export { default as addRoomDefinition } from './add-room';
 export { default as editRoomDefinition } from './edit-room';
 export { default as transferInventoryItem } from './transfer-Inventory-Item';
 export { default as transferAction } from './transfer-action';
-export { default as reconstructSales } from './reconstruct-sales';
+export { default as reconcilateSales } from './reconstruct-sales';

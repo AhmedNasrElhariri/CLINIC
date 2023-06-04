@@ -128,9 +128,9 @@ enum InventoryOperation {
   Reconciliate
 }
 
-enum subInventoryOperation {
-  accept
-  reject
+enum SubInventoryOperation {
+  accepted
+  rejected
 }
 
 enum PatientOtpStatus {
@@ -1082,7 +1082,7 @@ model InventoryItem {
 model InventoryItemConsumption {
   id                  String                         @id @default(uuid())
   numberOfUnits       Int
-  price               Int
+  price               Float
   insertionDate       DateTime                       @default(now())
   status              InventoryItemConsumptionStatus @default(Active)
   user                User                           @relation(fields: [userId], references: [id])
@@ -1108,7 +1108,7 @@ model InventoryHistory {
   doctor         User?                  @relation("doctorInventory", fields: [doctorId], references: [id])
   doctorId       String?
   operation      InventoryOperation
-  subOperation   subInventoryOperation?
+  subOperation   SubInventoryOperation?
   quantity       Float
   totalPrice     Float?
   totalCost      Float?
