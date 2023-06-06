@@ -360,7 +360,14 @@ type Query {
   myEvents: [Event!]
   items: [Item!]
   inventory(doctorId: ID, specialtyId: ID, branchId: ID): [InventoryItem!]
-  inventoryHistory(isSelling: Boolean): [InventoryHistory!]
+  inventoryHistory(
+    isSelling: Boolean
+    itemId: ID
+    dateFrom: Date
+    dateTo: Date
+    offset: Int
+    limit: Int
+  ): InventoryHistoryData
   myHospitals: [Hospital!]
   mySurgeries: [Surgery!]
   patientSurgeries(
@@ -450,7 +457,7 @@ type Query {
   points: Points
   listBranches: [Branch!]
   listSpecialties: [Specialty!]
-  listUsers: [User!]
+  listUsers(action: String): [User!]
   listRoles: [Role!]
   listBranchesTree(action: String!): [Branch!]
   listBranchesTreeByOrganizationId(organizationId: ID!): [Branch!]
@@ -1895,6 +1902,12 @@ type TransferAction {
 type InventoryHistory {
   body: String!
   date: Date!
+  oldNoOfBoxes: Float
+  newNoOfBoxes: Float
+}
+type InventoryHistoryData {
+  history: [InventoryHistory!]
+  inventoryCounts: Int!
 }
 
 input ItemInput {

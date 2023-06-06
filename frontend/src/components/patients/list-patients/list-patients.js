@@ -1,14 +1,14 @@
-import { useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
-import { CRTable } from "components";
-import { Can } from "components/user/can";
-import PatientsFilter from "../filter/patients-filter";
-import EditPatient from "../edit-patient";
-import { usePatients } from "hooks";
-import { useTranslation } from "react-i18next";
+import { useState, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
+import { CRTable } from 'components';
+import { Can } from 'components/user/can';
+import PatientsFilter from '../filter/patients-filter';
+import EditPatient from '../edit-patient';
+import { usePatients } from 'hooks';
+import { useTranslation } from 'react-i18next';
 const initialValue = {
-  name: "",
-  phoneNo: "",
+  name: '',
+  phoneNo: '',
 };
 const inialCurrentPage = {
   activePage: 1,
@@ -26,7 +26,7 @@ function Patients() {
     phoneNo: filter.phoneNo,
   });
   const handleSelect = useCallback(
-    (eventKey) => {
+    eventKey => {
       setCurrentPage({ activePage: eventKey });
     },
     [setCurrentPage]
@@ -47,24 +47,25 @@ function Patients() {
           bordered={false}
         >
           <CRTable.CRColumn flexGrow={1} minWidth={160}>
-            <CRTable.CRHeaderCell>{t("patient")}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('patient')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ name }) => (
                 <CRTable.CRCellStyled bold>{name}</CRTable.CRCellStyled>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
-
           <CRTable.CRColumn flexGrow={1} minWidth={128}>
-            <CRTable.CRHeaderCell>{t("phoneNo")}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('phoneNo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ phoneNo }) => (
-                <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>
+                <Can I="ViewPhoneNo" an="Patient">
+                  <CRTable.CRCellStyled bold>{phoneNo}</CRTable.CRCellStyled>{' '}
+                </Can>
               )}
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1} minWidth={128}>
-            <CRTable.CRHeaderCell>{t("phoneNoTwo")}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('phoneNoTwo')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ phoneNoTwo }) => (
                 <CRTable.CRCellStyled bold>{phoneNoTwo}</CRTable.CRCellStyled>
@@ -72,7 +73,7 @@ function Patients() {
             </CRTable.CRCell>
           </CRTable.CRColumn>
           <CRTable.CRColumn flexGrow={1} minWidth={92}>
-            <CRTable.CRHeaderCell>{t("code")}</CRTable.CRHeaderCell>
+            <CRTable.CRHeaderCell>{t('code')}</CRTable.CRHeaderCell>
             <CRTable.CRCell>
               {({ code }) => (
                 <CRTable.CRCellStyled bold>{code}</CRTable.CRCellStyled>
@@ -83,7 +84,7 @@ function Patients() {
           <CRTable.CRColumn flexGrow={1} minWidth={64}>
             <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
             <CRTable.CRCell>
-              {(data) => <EditPatient patient={data} t={t} />}
+              {data => <EditPatient patient={data} t={t} />}
             </CRTable.CRCell>
           </CRTable.CRColumn>
         </CRTable>
@@ -103,7 +104,7 @@ function Patients() {
           pages={pages}
           onSelect={handleSelect}
           total={patients && patients.length}
-          onChangePage={(p) => setCurrentPage(p)}
+          onChangePage={p => setCurrentPage(p)}
         />
       </Can>
     </>

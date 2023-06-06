@@ -507,4 +507,6 @@ export const TRANSLATIONS_EN = {
   editSale: 'Edit sale',
   reconciliate: 'Reconciliate',
   operation: 'Operation',
+  oldNoOfBoxes: 'Old no of boxes',
+  newNoOfBoxes: 'New no of boxes',
 };

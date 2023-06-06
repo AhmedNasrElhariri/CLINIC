@@ -216,6 +216,8 @@ enum PermissionAction {
   ViewHistory_Inventory
   DefineItem_Inventory
   AddCustom_Inventory
+  Transfer_Inventory
+  Reconciliation_Inventory
   Create_Course
   Create_SessionDefinition
   Create_Hospital
@@ -1114,6 +1116,8 @@ model InventoryHistory {
   totalCost      Float?
   price          Float?
   date           DateTime
+  oldNoOfBoxes   Float?
+  newNoOfBoxes   Float?
   createdAt      DateTime               @default(now())
   updatedAt      DateTime               @default(now()) @updatedAt
   organization   Organization           @relation(fields: [organizationId], references: [id])

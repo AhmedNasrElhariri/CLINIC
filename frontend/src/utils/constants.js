@@ -155,6 +155,8 @@ export const ACTIONS = Object.freeze({
   ViewHistory_Inventory: 'ViewHistory_Inventory',
   DefineItem_Inventory: 'DefineItem_Inventory',
   AddCustom_Inventory: 'AddCustom_Inventory',
+  Transfer_Inventory: 'Transfer_Inventory',
+  Reconciliation_Inventory: 'Reconciliation_Inventory',
   Create_Course: 'Create_Course',
   Create_SessionDefinition: 'Create_SessionDefinition',
   Create_Hospital: 'Create_Hospital',

@@ -37,7 +37,7 @@ const TransferFrom = ({ t, formValue, onChange }) => {
         <CRBrancheTree
           formValue={formValue}
           onChange={onChange}
-          action={ACTIONS.AddCustom_Inventory}
+          action={ACTIONS.Transfer_Inventory}
           notAllowSpecialty
           notAllowUser
         />
@@ -57,6 +57,7 @@ const TransferFrom = ({ t, formValue, onChange }) => {
             label={t('numberOfBoxes')}
             value={formValue.noOfBoxes}
             onChange={val => handleChangeBoxOrUnits(val, 'numberOfBoxes')}
+            float
           />
           <CRNumberInput
             label={t('noOfUnits')}

@@ -1,39 +1,36 @@
-import React, { useState, useMemo, useRef } from 'react';
-import { CRCard, CRTable, CRSelectInput, CRButton, Div } from 'components';
-import { formatFullDay } from 'utils/date';
-import { Form, Table } from 'rsuite';
+import { useState, useRef } from 'react';
+import { CRButton } from 'components';
 import { useInventory } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import ReactToPrint from 'react-to-print';
-
-const { Cell, Column } = Table;
+import Filter from './filter';
+import ListHistory from './list-history';
 
 const initalValue = {
-  item: '',
+  itemId: null,
 };
+const inialCurrentPage = {
+  activePage: 1,
+};
+
 const InventoryHistory = () => {
-  const { history, items } = useInventory();
+  const [formValue, setFormValue] = useState(initalValue);
+  const [period, setPeriod] = useState([]);
+  const [currentPage, setCurrentPage] = useState(inialCurrentPage);
+  const { history, items, inventoryPages } = useInventory({
+    itemId: formValue?.itemId,
+    dateFrom: period[0],
+    dateTo: period[1],
+    page: currentPage?.activePage,
+  });
   const ref = useRef();
   const { t } = useTranslation();
-  const [formValue, setFormValue] = useState(initalValue);
-  const newItems = items.map(i => {
-    return {
-      id: i.name,
-      name: i.name,
-    };
-  });
-  const newHistory = useMemo(
-    () =>
-      history.filter(h =>
-        h.body.toLowerCase().includes(formValue.item.toLowerCase())
-      ),
-    [formValue, history]
-  );
+
   return (
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl mb-4">{t('history')}</h1>
-        {/* <Print history={newHistory} /> */}
+
         <ReactToPrint
           trigger={() => (
             <CRButton primary mb={20}>
@@ -43,57 +40,20 @@ const InventoryHistory = () => {
           content={() => ref.current}
         />
       </div>
-      <Form formValue={formValue} onChange={setFormValue} className="mt-2 mb-7">
-        <CRSelectInput
-          label={t('item')}
-          name="item"
-          data={newItems}
-          onChange={val =>
-            val == null ? setFormValue({ ...formValue, item: '' }) : ''
-          }
-          style={{ width: '300px' }}
-        />
-      </Form>
-      <CRCard borderless>
-        <CRTable data={newHistory} autoHeight>
-          <CRTable.CRColumn flexGrow={1}>
-            <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ date }) => (
-                <CRTable.CRCellStyled bold>
-                  {formatFullDay(date)}
-                </CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-
-          <CRTable.CRColumn flexGrow={3}>
-            <CRTable.CRHeaderCell>{t('body')}</CRTable.CRHeaderCell>
-            <CRTable.CRCell>
-              {({ body }) => (
-                <CRTable.CRCellStyled bold>{body}</CRTable.CRCellStyled>
-              )}
-            </CRTable.CRCell>
-          </CRTable.CRColumn>
-        </CRTable>
-      </CRCard>
-      <Div style={{ overflow: 'hidden', height: '0px' }}>
-        <Div ref={ref}>
-          <Table autoHeight data={newHistory} wordWrap>
-            <Column flexGrow={0.3}>
-              <CRTable.CRHeaderCell>{t('date')}</CRTable.CRHeaderCell>
-              <Cell semiBold>
-                {({ date }) => <span>{formatFullDay(date)}</span>}
-              </Cell>
-            </Column>
-
-            <Column flexGrow={2}>
-              <CRTable.CRHeaderCell>{t('actions')}</CRTable.CRHeaderCell>
-              <Cell dataKey="body" semiBold />
-            </Column>
-          </Table>
-        </Div>
-      </Div>
+      <Filter
+        formValue={formValue}
+        setFormValue={setFormValue}
+        setPeriod={setPeriod}
+        t={t}
+        items={items}
+      />
+      <ListHistory
+        history={history}
+        t={t}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+        pages={inventoryPages}
+      />
     </>
   );
 };

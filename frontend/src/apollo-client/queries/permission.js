@@ -42,8 +42,8 @@ export const LIST_SPECIALTIES = gql`
 `;
 
 export const LIST_USERS = gql`
-  {
-    listUsers {
+  query listUsers($action: String) {
+    listUsers(action: $action) {
       id
       name
       email

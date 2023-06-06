@@ -49,10 +49,29 @@ export const LIST_INVENTORY = gql`
 `;
 
 export const LIST_INVENTORY_HISTORY = gql`
-  query inventoryHistory($isSelling: Boolean) {
-    inventoryHistory(isSelling: $isSelling) {
-      body
-      date
+  query inventoryHistory(
+    $isSelling: Boolean
+    $itemId: ID
+    $dateFrom: Date
+    $dateTo: Date
+    $offset: Int
+    $limit: Int
+  ) {
+    inventoryHistory(
+      isSelling: $isSelling
+      itemId: $itemId
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+      offset: $offset
+      limit: $limit
+    ) {
+      history {
+        body
+        date
+        oldNoOfBoxes
+        newNoOfBoxes
+      }
+      inventoryCounts
     }
   }
 `;

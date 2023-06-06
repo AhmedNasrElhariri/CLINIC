@@ -10,9 +10,9 @@ const byOrganization = async (organizationId, allUsers = false) => {
     },
   });
   const users = await prisma.user.findMany({
-    where:{
+    where: {
       organizationId,
-    }
+    },
   });
 
   const totalIds = branches.concat(users);
@@ -67,24 +67,6 @@ export const bySpecialties = async rules => {
 };
 
 export const byUsers = rules => {
-  // const orArg = rules.map(({ userId, branchId, specialtyId }) => ({
-  //   id: branchId,
-  //   specialties: {
-  //     every: {
-  //       id: specialtyId,
-  //       userSpecialties: {
-  //         every: {
-  //           userId,
-  //         },
-  //       },
-  //     },
-  //   },
-  // }));
-  // return prisma.branch.findMany({
-  //   where: {
-  //     OR: orArg,
-  //   },
-  // });
   const usersIds = rules.map(val => {
     return { id: val.userId };
   });

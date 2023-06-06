@@ -13,7 +13,9 @@ const TransferTo = ({
   showError,
   checkResult,
 }) => {
-  const { users: organizationusers } = useUsers({});
+  const { users: organizationusers } = useUsers({
+    action: ACTIONS.Transfer_Inventory,
+  });
 
   const ItemName = useMemo(() => {
     const item = fromFormValue?.item;
@@ -30,7 +32,7 @@ const TransferTo = ({
     return objName;
   }, [fromFormValue?.item]);
   const { data } = useQuery(LIST_BRANCHES_TREE, {
-    variables: { action: ACTIONS.AddCustom_Inventory },
+    variables: { action: ACTIONS.Transfer_Inventory },
   });
   const branches = useMemo(
     () =>

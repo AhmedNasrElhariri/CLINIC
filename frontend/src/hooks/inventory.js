@@ -33,6 +33,10 @@ function useInventory({
   specialtyId,
   doctorId,
   onReconsilate,
+  itemId,
+  dateFrom,
+  dateTo,
+  page,
 } = {}) {
   const { data: ItemData } = useQuery(LIST_ITEMS);
   const { data: InventoryData, refetch: refetchInventory } = useQuery(
@@ -49,7 +53,14 @@ function useInventory({
   );
 
   const { data: InventoryHistoryData, refetch: refetchInventoryHistory } =
-    useQuery(LIST_INVENTORY_HISTORY, { variables: { isSelling: isSelling } });
+    useQuery(LIST_INVENTORY_HISTORY, {
+      variables: Object.assign(
+        { isSelling: isSelling, offset: (page - 1) * 30 || 0, limit: 30 },
+        itemId && { itemId: itemId },
+        dateFrom && { dateFrom: dateFrom },
+        dateTo && { dateTo: dateTo }
+      ),
+    });
 
   const { data: consumptionData, refetch: refetchPendingConsumption } =
     useQuery(LIST_PENDING_CONSUMPtION_ITEMS);
@@ -60,10 +71,17 @@ function useInventory({
     () => R.propOr([], 'inventory')(InventoryData),
     [InventoryData]
   );
+
+  const historyData = InventoryHistoryData?.inventoryHistory;
   const history = useMemo(
-    () => R.propOr([], 'inventoryHistory')(InventoryHistoryData),
-    [InventoryHistoryData]
+    () => R.propOr([], 'history')(historyData),
+    [historyData]
   );
+  const historyCounts = useMemo(
+    () => R.propOr(0, 'inventoryCounts')(historyData),
+    [historyData]
+  );
+  const inventoryPages = Math.ceil(historyCounts / 30);
 
   const pendingConsumptionItems = useMemo(
     () => R.propOr([], 'listConsutionItems')(consumptionData),
@@ -285,6 +303,7 @@ function useInventory({
       pendingConsumptionItems,
       transferAction,
       reconcilateSales,
+      inventoryPages,
     }),
     [
       items,
@@ -305,6 +324,7 @@ function useInventory({
       pendingConsumptionItems,
       transferAction,
       reconcilateSales,
+      inventoryPages,
     ]
   );
 }

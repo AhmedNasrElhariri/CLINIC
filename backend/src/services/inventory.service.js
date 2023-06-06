@@ -4,6 +4,7 @@ import { INVENTORY_OPERATION } from '@/utils/constants';
 import { APIExceptcion } from '@/services/erros.service';
 import { GetLevel } from '@/services/get-level';
 import { InventoryConsumedStatus } from '@/utils/constants';
+import getQuantity from './get-quantity-of-inventory-item';
 
 export const createRevenueFromInventory = (data, organizationId) => {
   return data.map(
@@ -115,13 +116,8 @@ export const reducedInventoryPattern = async (
           },
         },
       });
-      // const createRevenueFromInvemtory = prisma.revenue.createMany({
-      //   data: createRevenueFromInventory(filteredItems, organizationId),
-      // });
-      await prisma.$transaction([
-        updateInventoryItem,
-        // createRevenueFromInvemtory,
-      ]);
+
+      await prisma.$transaction([updateInventoryItem]);
     } else {
       await prisma.inventoryItem.update({
         where: {
@@ -264,6 +260,8 @@ export const mapHistoryToMessage = async history => {
         specialtyName
       ),
       date: h.date,
+      newNoOfBoxes: h.newNoOfBoxes,
+      oldNoOfBoxes: h.oldNoOfBoxes,
     };
   });
 };
@@ -301,6 +299,8 @@ export const createHistory = (
         totalPrice: i.totalPrice,
         totalCost: i.totalCost,
         date: new Date(),
+        oldNoOfBoxes: i.oldNoOfBoxes,
+        newNoOfBoxes: i.newNoOfBoxes,
       },
       specialtyId && {
         specialty: {
@@ -350,9 +350,11 @@ export const createSubstractHistoryForMultipleItems = async ({
         in: itemsIds,
       },
     },
+    include: { item: true },
   });
   const items = inventoryItems.map(i => {
     const item = R.find(R.propEq('itemId', i.id))(data);
+
     return {
       itemId: i.itemId,
       quantity: item.quantity,
@@ -361,6 +363,9 @@ export const createSubstractHistoryForMultipleItems = async ({
         ? item.quantity * item.pricePerUnit
         : i.quantity * i.price,
       totalCost: item.quantity * i.price,
+      oldNoOfBoxes: i.quantity / i.item.quantity,
+      newNoOfBoxes:
+        i.quantity / i.item.quantity - item.quantity / i.item.quantity,
     };
   });
   const operation = isSelling
@@ -409,7 +414,7 @@ export const createHistoryBody = async (
     case INVENTORY_OPERATION.SELL:
       return `${user.name} sold ${
         quantity / item.quantity
-      } boxes(${quantity} units) of ${item.name} from ${
+      } boxes(${quantity} units) of ${item.name}  from ${
         branchName ? `${branchName}` : 'Organization warehouse'
       } ${patientName && `to ${patientName ? `${patientName}` : ''}`}`;
     case INVENTORY_OPERATION.SUBSTRACT:
@@ -417,7 +422,7 @@ export const createHistoryBody = async (
         quantity / item.quantity
       } boxes(${quantity} ${
         item.unitOfMeasure === 'PerUnit' ? 'units' : item.unitOfMeasure
-      } ) of ${item.name} from ${
+      } ) of ${item.name}  from ${
         branchName ? `${branchName}` : 'Organization warehouse'
       } ${patientName && `to ${patientName ? `${patientName}` : ''}`} `;
     case INVENTORY_OPERATION.TRANSFER:
@@ -425,7 +430,7 @@ export const createHistoryBody = async (
         quantity / item.quantity
       } boxes(${quantity} ${
         item.unitOfMeasure === 'PerUnit' ? 'units' : item.unitOfMeasure
-      } ) of ${item.name} from ${
+      } ) of ${item.name}  from ${
         branchName ? `${branchName}` : 'Organization warehouse'
       }  `;
     case INVENTORY_OPERATION.RECONCILIATE:
@@ -433,7 +438,7 @@ export const createHistoryBody = async (
         totalPrice > 0 ? '(Add)' : '(Subtract) '
       }${quantity / item.quantity} boxes(${quantity} units) of ${
         item.name
-      } from ${branchName ? `${branchName}` : 'Organization warehouse'} ${
+      }  from ${branchName ? `${branchName}` : 'Organization warehouse'} ${
         patientName && `to ${patientName ? `${patientName}` : ''}`
       }`;
   }

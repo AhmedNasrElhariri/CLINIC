@@ -1,15 +1,8 @@
 import React, { useMemo, useRef, useCallback, useState } from 'react';
-import { MainContainer, CRCard, BranchSpecialtyUserFilter } from 'components';
+import { MainContainer, BranchSpecialtyUserFilter } from 'components';
 import AddItem from '../add-item';
 import ListInventory from '../list-inventory';
-import {
-  useInventory,
-  useAppointments,
-  useModal,
-  useForm,
-  useBranchTree,
-} from 'hooks';
-import Filter from '../../filters';
+import { useInventory, useModal, useForm, useBranchTree } from 'hooks';
 import { ACTIONS } from 'utils/constants';
 import { Div, CRButton } from 'components';
 import ReactToPrint from 'react-to-print';
@@ -18,6 +11,7 @@ import ConsumeUnits from './consume-items';
 import { Schema, Alert } from 'rsuite';
 import ReconciliateSales from 'components/sales-from-inventory/reconstruct';
 import * as R from 'ramda';
+import { Can } from 'components/user/can';
 
 const initInventoryValue = {
   itemId: null,
@@ -109,13 +103,15 @@ const InventoryStatus = () => {
             <CRButton onClick={() => handleConsumeInventory()} mr={10}>
               {t('consume')}
             </CRButton>
-            <CRButton
-              variant="primary"
-              onClick={handleClickReconcilate}
-              mr={10}
-            >
-              {t('reconciliate')}
-            </CRButton>
+            <Can I="Reconciliation" an="Inventory">
+              <CRButton
+                variant="primary"
+                onClick={handleClickReconcilate}
+                mr={10}
+              >
+                {t('reconciliate')}
+              </CRButton>
+            </Can>
             <ReactToPrint
               trigger={() => (
                 <CRButton primary mr={10}>

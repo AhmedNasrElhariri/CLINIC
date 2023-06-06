@@ -10,6 +10,7 @@ import {
 } from './style';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from 'utils/date';
+import { Can } from 'components/user/can';
 
 const PatientInfo = ({ patient }) => {
   const { t } = useTranslation();
@@ -28,10 +29,12 @@ const PatientInfo = ({ patient }) => {
           <CellTitle>{t('age')}</CellTitle>
           <AddressStyled>{patient.age}</AddressStyled>
         </Cell>
-        <Cell>
-          <CellTitle>{t('phoneNo')}</CellTitle>
-          <AddressStyled>{patient.phoneNo}</AddressStyled>
-        </Cell>
+        <Can I="ViewPhoneNo" an="Patient">
+          <Cell>
+            <CellTitle>{t('phoneNo')}</CellTitle>
+            <AddressStyled>{patient.phoneNo}</AddressStyled>
+          </Cell>
+        </Can>
         <Cell>
           <CellTitle>{t('code')}</CellTitle>
           <AddressStyled>{patient.code}</AddressStyled>

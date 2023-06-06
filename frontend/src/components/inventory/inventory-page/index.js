@@ -34,7 +34,7 @@ const InventoryPage = () => {
         </Can>
       )}
       {activeTab === 3 && (
-        <Can I="AddCustom" an="Inventory">
+        <Can I="Transfer" an="Inventory">
           <TransferInventory />
         </Can>
       )}
