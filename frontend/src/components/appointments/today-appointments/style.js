@@ -29,3 +29,21 @@ export const Body = styled(Div)`
 Body.Content = styled(Div)`
   flex-grow: 1;
 `;
+export const UL = styled.ul`
+  background: #ffffffc7;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 0px;
+`;
+export const LI = styled.li`
+  padding: 5px;
+  font-weight: bold;
+  span {
+    font-weight: normal;
+  }
+`;
+export const DIV = styled.div`
+  display: flex;
+  background-color: #9e9e9eb3;
+  margin: 0px 20px;
+`;

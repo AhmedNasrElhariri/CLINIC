@@ -507,6 +507,7 @@ type Query {
   courseParts(courseId: ID!): [CoursePart]
   myRoomsDefinition: [RoomDefinition!]
   listConsutionItems: [InventoryItemConsumption!]!
+  patientNotes(input: PatientNotesInput!): [PatientNotes]
 }
 
 ########################### Mutation ##################################
@@ -783,7 +784,7 @@ type Mutation {
     branchId: ID
   ): Payroll!
   deletePayrollUser(userId: ID!): PayrollUser!
-  updateNotes(id: ID!, notes: String!): Appointment!
+  updateNotes(appointmentId: ID, notes: String!, patientId: ID!): PatientNotes!
   addSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
   editSalesDefinition(
     salesDefinition: SalesInputDefinition!
@@ -1121,7 +1122,7 @@ type Appointment {
   updater: User
   data: [AppointmentField!]
   notes: String
-  businessNotes: String
+  patientNotes: [PatientNotes]
   prescription: [Prescription!]
   pictures: [AppointmentFile!]
   userId: String
@@ -2685,4 +2686,19 @@ type CoursePart {
   unitPrice: Float
   course: Course
   part: CourseTypeDefinition
+}
+
+#######################################PatientNotes############
+type PatientNotes {
+  id: ID
+  appointmentId: ID
+  patientId: ID
+  text: String
+  createdAt: Date
+  appointment: Appointment
+}
+input PatientNotesInput {
+  patientId: ID!
+  dateFrom: Date
+  dateTo: Date
 }

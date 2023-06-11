@@ -343,6 +343,7 @@ model Organization {
   CoursePart                 CoursePart[]
   Appointment                Appointment[]
   RoomDefinition             RoomDefinition[]
+  PatientNotes               PatientNotes[]
 }
 
 model User {
@@ -478,6 +479,7 @@ model Patient {
   BankRevenue        BankRevenue[]
   InsuranceRevenue   InsuranceRevenue[]
   BankExpense        BankExpense[]
+  PatientNotes       PatientNotes[]
 
   @@unique([organizationId, phoneNo], name: "organizationId_phoneNo_unique_constraint")
 }
@@ -530,6 +532,7 @@ model Appointment {
   organizationId        String
   room                  RoomDefinition?    @relation(fields: [roomId], references: [id])
   roomId                String?
+  PatientNotes          PatientNotes[]
 
   @@index([organizationId])
 }
@@ -1899,4 +1902,17 @@ model RoomDefinition {
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String
   Appointment    Appointment[]
+}
+
+model PatientNotes {
+  id             String       @id @default(uuid())
+  text           String
+  patient        Patient      @relation(fields: [patientId], references: [id])
+  patientId      String
+  appointment    Appointment? @relation(fields: [appointmentId], references: [id])
+  appointmentId  String?
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
 }

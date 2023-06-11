@@ -1,12 +1,16 @@
 import { prisma } from '@';
 
-const updateNotes = async (_, { id, notes }) => {
-  return prisma.appointment.update({
+const updateNotes = async (
+  _,
+  { appointmentId, patientId, notes },
+  { organizationId, userId }
+) => {
+  return prisma.patientNotes.create({
     data: {
-      businessNotes: notes,
-    },
-    where: {
-      id,
+      appointment: { connect: { id: appointmentId } },
+      patient: { connect: { id: patientId } },
+      text: notes,
+      organization: { connect: { id: organizationId } },
     },
   });
 };

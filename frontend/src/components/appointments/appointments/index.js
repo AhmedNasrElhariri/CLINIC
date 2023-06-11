@@ -229,8 +229,9 @@ function Appointments() {
     close();
     updateNotes({
       variables: {
-        id: appointment.id,
+        appointmentId: appointment.id,
         notes: notes.businessNotes,
+        patientId: appointment.patient.id,
       },
     });
   }, [appointment, updateNotes, notes, close]);

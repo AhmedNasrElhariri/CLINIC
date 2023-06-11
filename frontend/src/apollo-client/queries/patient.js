@@ -376,3 +376,17 @@ export const GET_USER_PATIENT_FIELD = gql`
     }
   }
 `;
+
+export const LIST_PATIENT_NOTES = gql`
+  query patientNotes($input: PatientNotesInput!) {
+    patientNotes(input: $input) {
+      id
+      text
+      createdAt
+      appointment {
+        id
+        date
+      }
+    }
+  }
+`;

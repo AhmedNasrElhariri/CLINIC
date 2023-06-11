@@ -116,3 +116,4 @@ export { default as courseParts } from './course-parts';
 export { default as accountingData } from './accounting-data';
 export { default as myRoomsDefinition } from './my-rooms';
 export { default as listConsutionItems } from './list-consution-items';
+export { default as patientNotes } from './patient-notes';

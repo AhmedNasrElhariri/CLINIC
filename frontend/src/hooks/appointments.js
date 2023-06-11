@@ -222,19 +222,21 @@ function useAppointments({
   const [updateNotes] = useMutation(UPDATE_BUSINESS_NOTES, {
     onCompleted: () => {
       Alert.success('Business Notes Added Successfully');
-      // refetchTodayAppointments();
-    },
-    update(cache, { data: { updateNotes: appointment } }) {
-      const app = appointments.find(a => a.id === appointment.id);
-      const newApp = { ...app, businessNotes: appointment.businessNotes };
-      const allNewApp = appointments.map(oldApp => {
-        if (oldApp.id === appointment.id) {
-          return newApp;
-        } else {
-          return oldApp;
-        }
-      });
-      updateAppointmentsCache(allNewApp);
+      refetchAppointments();
+      // },
+      // update(cache, { data: { updateNotes: patientNotes } }) {
+      //   console.log(appointments, 'appointments', patientNotes, 'patientNotes');
+      //   const allNewApp = appointments.map(app => {
+      //     if (app.id === patientNotes.appointmentId) {
+      //       const newPatientNotes = [...app.patientNotes, patientNotes];
+      //       console.log(newPatientNotes, 'dkkkk');
+      //       return { ...app, patientNotes: newPatientNotes };
+      //     } else {
+      //       return app;
+      //     }
+      //   });
+      //   updateAppointmentsCache(allNewApp);
+      // },
     },
   });
   const [adjust] = useMutation(ADJUST_APPOINTMENT, {

@@ -5,6 +5,7 @@ import { Can } from 'components/user/can';
 import { PatientSummary, AllowedViews } from 'components';
 import usePatientHistory from './use-patient-history';
 import PatientInfo from '../patient-info';
+import PatientNotes from '../patient-notes';
 import Dental from '../dental';
 import PatientLabs from 'components/appointments/appointment/patient-labs';
 import PatientImages from 'components/appointments/appointment/patient-images';
@@ -57,6 +58,7 @@ function Appointment() {
     t('patientInformationCreation'),
     t('patientCoupons'),
     t('patientRevenue'),
+    t('notes'),
   ];
   const tabularFields = [
     { id: 'name', name: t('name') },
@@ -206,6 +208,11 @@ function Appointment() {
                   <Can I="ViewPatientRevenue" an="Patient">
                     <PatientRevenue patient={patient} />
                   </Can>
+                )}
+                {showComp('15') && (
+                  // <Can I="ViewPatientRevenue" an="Patient">
+                  <PatientNotes patient={patient} />
+                  // </Can>
                 )}
               </TabContainer>
             </Container>

@@ -362,10 +362,6 @@ function ListAppointments({
                       <Div>
                         {t('code')}:{patient.code}
                       </Div>
-                      {/* <Div>
-                        {t('subscriptionType')}: {'  '}
-                        {subscriptionType}
-                      </Div> */}
                     </Div>
                   </Tooltip>
                 }
@@ -451,29 +447,29 @@ function ListAppointments({
           <CRTable.CRHeaderCell></CRTable.CRHeaderCell>
           <CRTable.CRCell>
             {appointment => (
-              <Whisper
-                placement="top"
-                controlId="control-id-hover"
-                trigger="hover"
-                speaker={
-                  <Tooltip>
-                    {appointment?.businessNotes.length > 0
-                      ? appointment?.businessNotes
-                      : 'No Notes'}
-                  </Tooltip>
-                }
+              // <Whisper
+              //   placement="top"
+              //   controlId="control-id-hover"
+              //   trigger="hover"
+              //   speaker={
+              //     <Tooltip>
+              //       {appointment?.businessNotes.length > 0
+              //         ? appointment?.businessNotes
+              //         : 'No Notes'}
+              //     </Tooltip>
+              //   }
+              // >
+              <CRButton
+                variant="primary"
+                onClick={e => {
+                  e.stopPropagation();
+                  onAddBusinessNotes(appointment);
+                }}
+                block
               >
-                <CRButton
-                  variant="primary"
-                  onClick={e => {
-                    e.stopPropagation();
-                    onAddBusinessNotes(appointment);
-                  }}
-                  block
-                >
-                  {t('notes')}
-                </CRButton>
-              </Whisper>
+                {t('notes')}
+              </CRButton>
+              // </Whisper>
             )}
           </CRTable.CRCell>
         </CRTable.CRColumn>

@@ -1,7 +1,8 @@
-import React from 'react';
 import { CRModal, Div } from 'components';
-import { CRTextArea } from 'components/widgets';
+import { CRButton, CRTextInput } from 'components/widgets';
 import { Form } from 'rsuite';
+import * as R from 'ramda';
+import { LI, UL, DIV } from './style';
 
 const BusinessNotes = ({
   appointment,
@@ -12,6 +13,7 @@ const BusinessNotes = ({
   setNotes,
   t,
 }) => {
+  const patientNotes = R.propOr([], 'patientNotes')(appointment);
   return (
     <CRModal
       show={show}
@@ -19,10 +21,29 @@ const BusinessNotes = ({
       onOk={onOk}
       onHide={onCancel}
       onCancel={onCancel}
+      noFooter
+      noHeader
     >
-      <Form formValue={notes} onChange={setNotes}>
-        <CRTextArea name="businessNotes" />
-      </Form>
+      {patientNotes.map(({ text }, index) => (
+        <DIV>
+          <Div p="5px 10px">{index + 1}</Div>
+          <UL>
+            <LI key={index}>
+              <span>{text}</span>
+            </LI>
+          </UL>
+        </DIV>
+      ))}
+      <Div display="flex" justifyContent="space-between" m="0px 20px">
+        <Form formValue={notes} onChange={setNotes}>
+          <CRTextInput width="400px" name="businessNotes" />
+        </Form>
+        {notes?.businessNotes.length > 0 && (
+          <CRButton mt="10px" onClick={onOk}>
+            Add
+          </CRButton>
+        )}
+      </Div>
     </CRModal>
   );
 };

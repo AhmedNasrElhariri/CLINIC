@@ -51,7 +51,12 @@ export const LIST_APPOINTMENTS = gql`
         date
         status
         date
-        businessNotes
+        patientNotes {
+          id
+          text
+          patientId
+          appointmentId
+        }
         accounted
         confirmed
         duration
@@ -125,7 +130,12 @@ export const LIST_TODAY_APPOINTMENTS = gql`
         accounted
         confirmed
         duration
-        businessNotes
+        patientNotes {
+          id
+          text
+          appointmentId
+          patientId
+        }
         reference
         updatedAt
         isFollowUp
@@ -430,10 +440,16 @@ export const ARCHIVE_REFERED_DOCTORAPPOINTMENT = gql`
   }
 `;
 export const UPDATE_BUSINESS_NOTES = gql`
-  mutation updateNotes($id: ID!, $notes: String!) {
-    updateNotes(id: $id, notes: $notes) {
+  mutation updateNotes($appointmentId: ID, $notes: String!, $patientId: ID!) {
+    updateNotes(
+      appointmentId: $appointmentId
+      notes: $notes
+      patientId: $patientId
+    ) {
       id
-      businessNotes
+      appointmentId
+      patientId
+      text
     }
   }
 `;
