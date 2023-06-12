@@ -447,13 +447,22 @@ export const UPDATE_BUSINESS_NOTES = gql`
       patientId: $patientId
     ) {
       id
-      appointmentId
-      patientId
       text
+      createdAt
+      appointment {
+        id
+        date
+      }
     }
   }
 `;
-
+export const DELETE_BUSINESS_NOTES = gql`
+  mutation deleteNotes($id: ID!) {
+    deleteNotes(id: $id) {
+      id
+    }
+  }
+`;
 export const DELETE_APPOINTMENT_PHOTO = gql`
   mutation deleteAppointmentPhoto($id: ID!) {
     deleteAppointmentPhoto(id: $id)

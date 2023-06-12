@@ -6,12 +6,14 @@ const updateNotes = async (
   { organizationId, userId }
 ) => {
   return prisma.patientNotes.create({
-    data: {
-      appointment: { connect: { id: appointmentId } },
-      patient: { connect: { id: patientId } },
-      text: notes,
-      organization: { connect: { id: organizationId } },
-    },
+    data: Object.assign(
+      {
+        patient: { connect: { id: patientId } },
+        text: notes,
+        organization: { connect: { id: organizationId } },
+      },
+      appointmentId && { appointment: { connect: { id: appointmentId } } }
+    ),
   });
 };
 

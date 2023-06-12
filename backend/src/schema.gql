@@ -785,6 +785,7 @@ type Mutation {
   ): Payroll!
   deletePayrollUser(userId: ID!): PayrollUser!
   updateNotes(appointmentId: ID, notes: String!, patientId: ID!): PatientNotes!
+  deleteNotes(id: ID!): PatientNotes!
   addSalesDefinition(salesDefinition: SalesInputDefinition!): SalesDefinition
   editSalesDefinition(
     salesDefinition: SalesInputDefinition!

@@ -163,3 +163,4 @@ export { default as editRoomDefinition } from './edit-room';
 export { default as transferInventoryItem } from './transfer-Inventory-Item';
 export { default as transferAction } from './transfer-action';
 export { default as reconcilateSales } from './reconstruct-sales';
+export { default as deleteNotes } from './delete-notes';
